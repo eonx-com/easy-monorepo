@@ -37,7 +37,7 @@ final class Generator extends BaseGenerator
     public function __construct(
         DescriptiveRecord $descriptiveRecord,
         array $transactions,
-        ?FileTotalRecord $fileTotalRecord = null
+        ?FileTotalRecord $fileTotalRecord = null,
     ) {
         if (\count($transactions) === 0) {
             throw new InvalidArgumentException('No transactions provided.');
@@ -67,7 +67,7 @@ final class Generator extends BaseGenerator
                 throw new InvalidArgumentException(\sprintf(
                     'Transaction must be %s, %s given.',
                     Transaction::class,
-                    \gettype($transaction)
+                    \gettype($transaction),
                 ));
             }
 

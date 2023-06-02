@@ -32,7 +32,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
 
     public function __construct(
         SecurityContextResolverInterface $securityContextResolver,
-        AuthenticationFailureResponseFactoryInterface $respFactory
+        AuthenticationFailureResponseFactoryInterface $respFactory,
     ) {
         $this->securityContextResolver = $securityContextResolver;
         $this->responseFactory = $respFactory;
@@ -55,7 +55,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
         return new SelfValidatingPassport(
             new UserBadge($user->getUserIdentifier(), function () use ($user): UserInterface {
                 return $user instanceof UserInterface ? $user : new FakeUser();
-            })
+            }),
         );
     }
 

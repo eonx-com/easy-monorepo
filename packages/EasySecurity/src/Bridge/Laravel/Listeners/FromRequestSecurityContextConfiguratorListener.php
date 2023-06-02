@@ -33,7 +33,7 @@ final class FromRequestSecurityContextConfiguratorListener
     {
         $this->securityContextResolver->setConfigurator(new FromRequestConfigurator(
             $event->request,
-            $this->configurators
+            $this->configurators,
         ));
     }
 }

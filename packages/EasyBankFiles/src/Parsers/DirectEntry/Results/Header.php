@@ -39,7 +39,7 @@ final class Header extends BaseResult
                 self::DATE_STRING_PATTERN,
                 \substr($value, 4, 2),
                 \substr($value, 2, 2),
-                \substr($value, 0, 2)
+                \substr($value, 0, 2),
             );
 
             return new DateTime($stringDate);

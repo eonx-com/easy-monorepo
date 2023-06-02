@@ -20,7 +20,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
         private readonly SecurityContextResolverInterface $securityContextResolver,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }

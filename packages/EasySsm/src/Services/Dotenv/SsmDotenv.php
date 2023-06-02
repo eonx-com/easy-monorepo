@@ -48,7 +48,7 @@ final class SsmDotenv implements SsmDotenvInterface
         Parameters $parametersHelper,
         EnvLoaderInterface $envLoader,
         ?LoggerInterface $logger = null,
-        ?bool $strict = null
+        ?bool $strict = null,
     ) {
         $this->ssm = $ssm;
         $this->ssmPathResolver = $ssmPathResolver;
@@ -65,8 +65,8 @@ final class SsmDotenv implements SsmDotenvInterface
 
         $this->envLoader->loadEnv(
             $this->parametersHelper->convertToEnvs(
-                $this->parametersHelper->removePathFromName($this->getParameters($path), $path)
-            )
+                $this->parametersHelper->removePathFromName($this->getParameters($path), $path),
+            ),
         );
     }
 
@@ -96,7 +96,7 @@ final class SsmDotenv implements SsmDotenvInterface
         } catch (\Throwable $throwable) {
             $this->logger->info(\sprintf(
                 '[EasySsm][Dotenv] Error while fetching SSM params: %s',
-                $throwable->getMessage()
+                $throwable->getMessage(),
             ));
 
             if ($this->strict === false) {

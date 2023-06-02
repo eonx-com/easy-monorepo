@@ -89,7 +89,7 @@ class EnvVarSubstitutionHelper
                     throw new \RuntimeException(\sprintf(
                         'Unsupported character "%s" found in the default value of variable "$%s".',
                         $unsupportedChars[0],
-                        $name
+                        $name,
                     ));
                 }
 

@@ -17,7 +17,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
      */
     public function parse(
         CsvContentsProviderInterface $contentsProvider,
-        ?CsvParserConfigInterface $config = null
+        ?CsvParserConfigInterface $config = null,
     ): iterable {
         $config = $config ?? CsvParserConfig::create();
         $index = 0;
@@ -138,7 +138,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
                 throw new MissingRequiredHeadersException(\sprintf(
                     'Missing required headers ["%s"], given headers: ["%s"]',
                     \implode('","', $missingHeaders),
-                    \implode('","', $headers)
+                    \implode('","', $headers),
                 ));
             }
         }
@@ -163,7 +163,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             throw new MissingValueForRequiredHeadersException(\sprintf(
                 'Missing values for required headers ["%s"] for record %d',
                 \implode('","', $missingValues),
-                $index
+                $index,
             ));
         }
     }

@@ -17,7 +17,7 @@ final class ErrorHandlerDataCollector extends DataCollector
     public const NAME = 'error_handler.error_handler_collector';
 
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler
+        private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
 

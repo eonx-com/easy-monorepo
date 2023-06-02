@@ -10,7 +10,7 @@ final class BatchItemSavedButBatchNotProcessedException extends AbstractEasyBatc
 {
     public function __construct(
         private readonly BatchItemInterface $batchItem,
-        \Throwable $previous
+        \Throwable $previous,
     ) {
         parent::__construct(previous: $previous);
     }

@@ -134,7 +134,7 @@ final class DecisionsTest extends AbstractTestCase
         array $rules,
         array $input,
         $expectedOutput,
-        array $expectedRulesOutput
+        array $expectedRulesOutput,
     ): void {
         $expressionLanguage = $this->createExpressionLanguage();
         $expressionLanguage->addFunctions((new ValueExpressionFunctionProvider())->getFunctions());

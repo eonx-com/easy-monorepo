@@ -30,7 +30,7 @@ final class HttpFoundationHelper
             $request->cookie ?? [],
             $files,
             \array_change_key_case($request->server ?? [], \CASE_UPPER),
-            \is_string($content) ? $content : null
+            \is_string($content) ? $content : null,
         );
 
         $hfRequest->headers = new HeaderBag($request->header ?? []);
@@ -53,7 +53,7 @@ final class HttpFoundationHelper
         HttpFoundationResponse $hfResponse,
         Response $response,
         int $chunkSize,
-        ?string $bufferedOutput = null
+        ?string $bufferedOutput = null,
     ): void {
         $response->status($hfResponse->getStatusCode());
 

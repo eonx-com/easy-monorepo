@@ -89,7 +89,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $violationBuilder = $this->mockConstraintViolationBuilder(
             Decimal::INVALID_DECIMAL_ERROR,
             $minPrecision,
-            $maxPrecision
+            $maxPrecision,
         );
         $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
         $validator->initialize($context);
@@ -167,7 +167,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         $value = 'some-value';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Decimal"'
+            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Decimal"',
         );
 
         $validator->validate($value, $constraint);
@@ -190,7 +190,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     private function mockConstraintViolationBuilder(
         string $code,
         int $minPrecision,
-        int $maxPrecision
+        int $maxPrecision,
     ): ConstraintViolationBuilderInterface {
         /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
         $violationBuilder = $this->mock(
@@ -215,7 +215,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturnSelf();
-            }
+            },
         );
 
         return $violationBuilder;
@@ -223,12 +223,12 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder
+            $violationBuilder,
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

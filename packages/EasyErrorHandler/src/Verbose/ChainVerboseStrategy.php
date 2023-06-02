@@ -25,7 +25,7 @@ final class ChainVerboseStrategy implements VerboseStrategyInterface
     public function __construct(iterable $drivers, ?bool $defaultIsVerbose = null)
     {
         $this->drivers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($drivers, VerboseStrategyDriverInterface::class)
+            CollectorHelper::filterByClass($drivers, VerboseStrategyDriverInterface::class),
         );
         $this->verbose = $defaultIsVerbose ?? false;
     }

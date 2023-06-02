@@ -23,7 +23,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
      */
     public function __construct(
         private readonly SerializerInterface $serializer,
-        ?array $errorFormats = null
+        ?array $errorFormats = null,
     ) {
         $this->errorFormats = $errorFormats ?? [];
     }
@@ -42,7 +42,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
         $content = $this->serializer->serialize(
             $data->getRawData(),
             $format->getKey(),
-            ['statusCode' => $statusCode]
+            ['statusCode' => $statusCode],
         );
 
         return new Response($content, $statusCode, $headers);

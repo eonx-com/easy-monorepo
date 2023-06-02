@@ -23,7 +23,7 @@ final class DecorateEasyWebhookClientPass extends AbstractEasyHttpClientCompiler
         $this->decorateHttpClient(
             $container,
             EasyWebhookBridgeConstantsInterface::HTTP_CLIENT,
-            self::DECORATION_SERVICE_ID
+            self::DECORATION_SERVICE_ID,
         );
     }
 

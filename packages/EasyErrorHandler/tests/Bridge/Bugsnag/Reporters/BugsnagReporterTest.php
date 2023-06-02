@@ -87,14 +87,14 @@ final class BugsnagReporterTest extends AbstractTestCase
         bool $shouldReport,
         Throwable $throwable,
         ?int $threshold = null,
-        ?array $ignoredExceptions = null
+        ?array $ignoredExceptions = null,
     ): void {
         $stub = new BugsnagClientStub();
         $reporter = new BugsnagErrorReporter(
             $stub,
             new DefaultBugsnagIgnoreExceptionsResolver($ignoredExceptions),
             new ErrorLogLevelResolver(),
-            $threshold
+            $threshold,
         );
 
         $reporter->report($throwable);
@@ -120,7 +120,7 @@ final class BugsnagReporterTest extends AbstractTestCase
             $stub,
             $ignoreExceptionsResolver,
             new ErrorLogLevelResolver(),
-            null
+            null,
         );
 
         $reporter->report($throwable);

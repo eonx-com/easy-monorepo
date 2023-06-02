@@ -13,7 +13,7 @@ final class Translator implements TranslatorInterface
 
     public function __construct(
         private readonly SymfonyTranslatorInterface $decorated,
-        private readonly ?string $domain = null
+        private readonly ?string $domain = null,
     ) {
     }
 

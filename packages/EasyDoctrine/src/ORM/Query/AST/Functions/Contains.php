@@ -29,7 +29,7 @@ final class Contains extends FunctionNode
         return \sprintf(
             '(%s @> %s)',
             $this->node->dispatch($sqlWalker),
-            $sqlWalker->walkInputParameter($this->inputParameter)
+            $sqlWalker->walkInputParameter($this->inputParameter),
         );
     }
 

@@ -32,7 +32,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         private readonly LoggerInterface $logger,
         private readonly TranslatorInterface $translator,
         private readonly bool $translateInternalMessages = false,
-        private readonly string $internalMessagesLocale = self::DEFAULT_INTERNAL_MESSAGES_LOCALE
+        private readonly string $internalMessagesLocale = self::DEFAULT_INTERNAL_MESSAGES_LOCALE,
     ) {
     }
 
@@ -53,7 +53,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
             $this->doResolveExtendedDetails($throwable),
             $throwable,
             1,
-            $maxDepth ?? self::DEFAULT_MAX_DEPTH
+            $maxDepth ?? self::DEFAULT_MAX_DEPTH,
         );
     }
 
@@ -70,7 +70,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
             $message = $this->translator->trans(
                 $message,
                 $throwable->getMessageParams(),
-                $this->internalMessagesLocale
+                $this->internalMessagesLocale,
             );
         }
 
@@ -135,7 +135,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         array $previousDetails,
         Throwable $throwable,
         int $depth,
-        int $maxDepth
+        int $maxDepth,
     ): array {
         $this->chain[] = $this->resolveErrorIdentifier($throwable);
 

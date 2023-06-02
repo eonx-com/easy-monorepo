@@ -31,7 +31,7 @@ final class EntityManagerForSanityStub extends EntityManagerDecorator
         $eventManager = new EventManager();
 
         parent::__construct(
-            EntityManager::create(new Connection([], new Driver(), null, $eventManager), $config, $eventManager)
+            EntityManager::create(new Connection([], new Driver(), null, $eventManager), $config, $eventManager),
         );
     }
 

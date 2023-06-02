@@ -31,7 +31,7 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
         $this->rolesProviders = $this->filterProviders($rolesProviders, RolesProviderInterface::class);
         $this->permissionsProviders = $this->filterProviders(
             $permissionsProviders,
-            PermissionsProviderInterface::class
+            PermissionsProviderInterface::class,
         );
     }
 

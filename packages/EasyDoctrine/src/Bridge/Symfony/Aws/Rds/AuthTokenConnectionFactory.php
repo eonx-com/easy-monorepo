@@ -36,7 +36,7 @@ final class AuthTokenConnectionFactory
         private readonly int $cacheExpiryInSeconds,
         private readonly bool $sslEnabled,
         private readonly string $sslMode,
-        private readonly string $sslCertDir
+        private readonly string $sslCertDir,
     ) {
     }
 
@@ -50,7 +50,7 @@ final class AuthTokenConnectionFactory
         array $params,
         ?Configuration $config = null,
         ?EventManager $eventManager = null,
-        ?array $mappingTypes = null
+        ?array $mappingTypes = null,
     ): Connection {
         $driverOptions = $params['driverOptions'] ?? [];
         $rdsIamEnabled = $driverOptions[self::OPTION_AWS_RDS_IAM_ENABLED] ?? true;
@@ -72,7 +72,7 @@ final class AuthTokenConnectionFactory
             $params['driverOptions'][self::OPTION_AWS_RDS_IAM_ENABLED],
             $params['driverOptions'][self::OPTION_AWS_RDS_IAM_USERNAME],
             $params['driverOptions'][self::OPTION_AWS_RDS_SSL_ENABLED],
-            $params['driverOptions'][self::OPTION_AWS_RDS_SSL_MODE]
+            $params['driverOptions'][self::OPTION_AWS_RDS_SSL_MODE],
         );
 
         return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
@@ -89,7 +89,7 @@ final class AuthTokenConnectionFactory
                 return $tokenGenerator->createToken(
                     \sprintf('%s:%s', $params['host'], $params['port']),
                     $this->awsRegion,
-                    $params['user'] ?? $this->awsUsername
+                    $params['user'] ?? $this->awsUsername,
                 );
             });
         };

@@ -30,7 +30,7 @@ abstract class AbstractPaginator implements PaginatorInterface
     private array $urls = [];
 
     public function __construct(
-        protected PaginationInterface $pagination
+        protected PaginationInterface $pagination,
     ) {
         // No body needed.
     }

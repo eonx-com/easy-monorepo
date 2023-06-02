@@ -42,7 +42,7 @@ final class StringAgg extends FunctionNode
             ($this->isDistinct ? 'DISTINCT ' : ''),
             $sqlWalker->walkPathExpression($this->expression),
             $sqlWalker->walkStringPrimary($this->delimiter),
-            ($this->orderBy !== null ? $sqlWalker->walkOrderByClause($this->orderBy) : '')
+            ($this->orderBy !== null ? $sqlWalker->walkOrderByClause($this->orderBy) : ''),
         );
     }
 

@@ -74,7 +74,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $entityEventDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $entityManagerDecorator->commit();
@@ -109,7 +109,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $entityManagerDecorator->commit();
@@ -144,7 +144,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $entityManagerDecorator->rollback();
@@ -179,7 +179,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $entityManagerDecorator->rollback();
@@ -229,7 +229,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $result = $entityManagerDecorator->transactional($callableArgument);
@@ -279,7 +279,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
@@ -333,7 +333,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
@@ -374,7 +374,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $entityManagerDecorator = new EntityManagerDecorator(
             $deferredDispatcherReveal,
             $eventDispatcherReveal,
-            $entityManagerReveal
+            $entityManagerReveal,
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator): void {

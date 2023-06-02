@@ -14,7 +14,7 @@ final class IterablePaginator extends AbstractPaginator
      */
     public function __construct(
         PaginationInterface $pagination,
-        private readonly iterable $iterable
+        private readonly iterable $iterable,
     ) {
         parent::__construct($pagination);
     }

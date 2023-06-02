@@ -62,9 +62,9 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                     }
 
                     throw new PermissionConstantNotFoundException(
-                        \sprintf('Constant for permission "%s" not found', $permission)
+                        \sprintf('Constant for permission "%s" not found', $permission),
                     );
-                }
+                },
             ),
         ];
     }

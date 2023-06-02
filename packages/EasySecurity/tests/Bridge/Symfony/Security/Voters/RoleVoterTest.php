@@ -57,7 +57,7 @@ final class RoleVoterTest extends AbstractTestCase
         AuthorizationMatrixInterface $authorizationMatrix,
         SecurityContextInterface $securityContext,
         string $role,
-        int $expectedVote
+        int $expectedVote,
     ): void {
         $securityContext->setAuthorizationMatrix($authorizationMatrix);
 

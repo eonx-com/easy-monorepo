@@ -24,7 +24,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        ?string $table = null
+        ?string $table = null,
     ) {
         parent::__construct($random, $conn, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
@@ -43,7 +43,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
     public function findDueWebhooks(
         PaginationInterface $pagination,
         ?\DateTimeInterface $sendAfter = null,
-        ?string $timezone = null
+        ?string $timezone = null,
     ): LengthAwarePaginatorInterface {
         $sendAfter = $sendAfter !== null
             ? Carbon::createFromFormat(self::DATETIME_FORMAT, $sendAfter->format(self::DATETIME_FORMAT), $timezone)
@@ -53,7 +53,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             throw new InvalidDateTimeException(\sprintf(
                 'Could not instantiate DateTime for %s::%s',
                 self::class,
-                __METHOD__
+                __METHOD__,
             ));
         }
 

@@ -36,7 +36,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     {
         $this->providers = CollectorHelper::filterByClassAsArray($providers, TemplatingBlockProviderInterface::class);
         $this->renderers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($renderers, TemplatingBlockRendererInterface::class)
+            CollectorHelper::filterByClass($renderers, TemplatingBlockRendererInterface::class),
         );
         $this->isDebug = $isDebug ?? true;
     }
@@ -60,7 +60,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
         throw new NoRendererFoundForBlockException(\sprintf(
             'No renderer found for block %s with name "%s"',
             \get_class($block),
-            $block->getName()
+            $block->getName(),
         ));
     }
 
@@ -77,7 +77,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
                     '<!-- BEGIN BLOCK | event: "%s", block: "%s", priority: %d -->',
                     $event,
                     $block->getName(),
-                    $block->getPriority()
+                    $block->getPriority(),
                 );
             }
 
@@ -87,7 +87,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
                 $output[] = \sprintf(
                     '<!-- END BLOCK | event: "%s", block: "%s" -->',
                     $event,
-                    $block->getName()
+                    $block->getName(),
                 );
             }
         }
@@ -108,7 +108,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
             /** @var iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface> $providedBlocks */
             $providedBlocks = CollectorHelper::filterByClass(
                 $provider->getBlocksForEvent($event, $context),
-                TemplatingBlockInterface::class
+                TemplatingBlockInterface::class,
             );
 
             foreach ($providedBlocks as $block) {

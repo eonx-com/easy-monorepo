@@ -136,7 +136,7 @@ final class WebhookClientTest extends AbstractTestCase
             [
                 new IdHeaderMiddleware(new ArrayStoreStub(
                     $this->getRandomGenerator(),
-                    '78981b69-535d-4483-8d94-2ef7cbdb07c8'
+                    '78981b69-535d-4483-8d94-2ef7cbdb07c8',
                 )),
             ],
         ];
@@ -166,7 +166,7 @@ final class WebhookClientTest extends AbstractTestCase
         string $method,
         string $url,
         array $httpClientOptions,
-        ?iterable $middleware = null
+        ?iterable $middleware = null,
     ): void {
         $httpClient = new HttpClientStub();
         $store = $this->getArrayStore();
@@ -198,7 +198,7 @@ final class WebhookClientTest extends AbstractTestCase
         HttpClientInterface $httpClient,
         StoreInterface $store,
         ResultStoreInterface $resultStore,
-        ?iterable $middleware = null
+        ?iterable $middleware = null,
     ): StackInterface {
         $middlewareArray = [
             new StoreMiddleware($store, $resultStore, MiddlewareInterface::PRIORITY_CORE_AFTER),

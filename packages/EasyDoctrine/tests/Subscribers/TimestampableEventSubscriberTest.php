@@ -40,7 +40,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
         $classMetadata = new ClassMetadata(Product::class);
         $metadataEventArgs = new LoadClassMetadataEventArgs(
             $classMetadata,
-            EntityManagerStub::createFromEventManager()
+            EntityManagerStub::createFromEventManager(),
         );
         $subscriber = new TimestampableEventSubscriber();
 
@@ -64,7 +64,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
         $classMetadata->isMappedSuperclass = true;
         $metadataEventArgs = new LoadClassMetadataEventArgs(
             $classMetadata,
-            EntityManagerStub::createFromEventManager()
+            EntityManagerStub::createFromEventManager(),
         );
         $subscriber = new TimestampableEventSubscriber();
 
@@ -84,7 +84,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
         $classMetadata->reflClass = new ReflectionClass(new stdClass());
         $metadataEventArgs = new LoadClassMetadataEventArgs(
             $classMetadata,
-            EntityManagerStub::createFromEventManager()
+            EntityManagerStub::createFromEventManager(),
         );
         $subscriber = new TimestampableEventSubscriber();
 
@@ -108,7 +108,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
         $classMetadata->reflClass = new ReflectionClass($entity);
         $metadataEventArgs = new LoadClassMetadataEventArgs(
             $classMetadata,
-            EntityManagerStub::createFromEventManager()
+            EntityManagerStub::createFromEventManager(),
         );
         $subscriber = new TimestampableEventSubscriber();
 

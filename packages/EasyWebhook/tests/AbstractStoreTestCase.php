@@ -25,7 +25,7 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
 
     protected function createWebhookForSendAfter(
         ?\DateTimeInterface $sendAfter = null,
-        ?string $status = null
+        ?string $status = null,
     ): WebhookInterface {
         $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD);
 

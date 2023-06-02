@@ -87,7 +87,7 @@ final class ApiPlatformDataPersistersPass implements CompilerPassInterface
 
         $container->setDefinition(
             self::ORIGINAL_DOCTRINE_ORM_PERSISTER_ID,
-            $container->getDefinition(DoctrineOrmDataPersisterInterface::class)
+            $container->getDefinition(DoctrineOrmDataPersisterInterface::class),
         );
     }
 

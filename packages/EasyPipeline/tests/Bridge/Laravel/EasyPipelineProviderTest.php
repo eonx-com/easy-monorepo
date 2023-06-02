@@ -52,7 +52,7 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
 
         self::assertInstanceOf(
             MiddlewareProviderStub::class,
-            $app->get(EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX . 'pipeline-1')
+            $app->get(EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX . 'pipeline-1'),
         );
     }
 }

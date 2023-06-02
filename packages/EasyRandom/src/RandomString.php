@@ -269,7 +269,7 @@ final class RandomString implements RandomStringInterface
         if ($attempts === $this->maxAttempts) {
             throw new InvalidRandomStringException(\sprintf(
                 'Could not generate valid random string for alphabet "%s"',
-                $this->resolveAlphabet()
+                $this->resolveAlphabet(),
             ));
         }
 

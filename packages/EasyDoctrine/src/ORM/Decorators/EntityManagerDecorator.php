@@ -29,7 +29,7 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
     public function __construct(
         DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
         EventDispatcherInterface $eventDispatcher,
-        EntityManagerInterface $wrapped
+        EntityManagerInterface $wrapped,
     ) {
         parent::__construct($wrapped);
 

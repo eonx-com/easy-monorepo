@@ -52,7 +52,7 @@ final class EntityManagerStub
     public static function createFromDeferredEntityEventDispatcher(
         DeferredEntityEventDispatcher $dispatcher,
         array $subscribedEntities = [],
-        array $fixtures = []
+        array $fixtures = [],
     ) {
         $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
         $eventManager = new EventManager();
@@ -63,7 +63,7 @@ final class EntityManagerStub
         return new EntityManagerDecorator(
             $dispatcher,
             $eventDispatcher,
-            $entityManagerStub
+            $entityManagerStub,
         );
     }
 
@@ -78,7 +78,7 @@ final class EntityManagerStub
         array $easyActivityConfig,
         ?ActorResolverInterface $actorResolver = null,
         ?ActivitySubjectResolverInterface $subjectResolver = null,
-        ?array $fixtures = null
+        ?array $fixtures = null,
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
         $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
@@ -87,11 +87,11 @@ final class EntityManagerStub
         $entityManager = self::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             $subscribedEntities,
-            $fixtures ?? [Article::class, Comment::class, Author::class]
+            $fixtures ?? [Article::class, Comment::class, Author::class],
         );
         $dbalStatementsProvider = new DoctrineDbalStatementsProvider(
             $entityManager->getConnection(),
-            self::ACTIVITY_TABLE_NAME
+            self::ACTIVITY_TABLE_NAME,
         );
         foreach ($dbalStatementsProvider->migrateStatements() as $migrateStatement) {
             $entityManager->getConnection()
@@ -101,14 +101,14 @@ final class EntityManagerStub
         $dbalStore = new DoctrineDbalStore(
             $uuidFactory,
             $entityManager->getConnection(),
-            self::ACTIVITY_TABLE_NAME
+            self::ACTIVITY_TABLE_NAME,
         );
 
         $activityLogEntryFactory = new ActivityLogFactoryStub(
             $easyActivityConfig['subjects'] ?? null,
             $easyActivityConfig['disallowed_properties'] ?? [],
             $actorResolver,
-            $subjectResolver
+            $subjectResolver,
         );
 
         $messageBus = new MessageBus([
@@ -119,7 +119,7 @@ final class EntityManagerStub
         $asyncDispatcher = new AsyncDispatcher($messageBus);
         $subscriber = new EasyDoctrineEntityEventsSubscriber(
             new AsyncActivityLogger($activityLogEntryFactory, $asyncDispatcher),
-            true
+            true,
         );
 
         $symfonyEventDispatcher->addSubscriber($subscriber);
@@ -173,14 +173,14 @@ final class EntityManagerStub
     public static function createFromSymfonyEventDispatcher(
         EventDispatcherInterface $eventDispatcher,
         array $subscribedEntities = [],
-        array $fixtures = []
+        array $fixtures = [],
     ) {
         $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             $subscribedEntities,
-            $fixtures
+            $fixtures,
         );
     }
 }

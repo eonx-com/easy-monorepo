@@ -16,11 +16,11 @@ final class EasySwooleSymfonyBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(
             ApplicationStateCheckListener::class,
-            $container->get(ApplicationStateCheckListener::class)
+            $container->get(ApplicationStateCheckListener::class),
         );
         self::assertInstanceOf(
             ApplicationStateResetListener::class,
-            $container->get(ApplicationStateResetListener::class)
+            $container->get(ApplicationStateResetListener::class),
         );
     }
 }

@@ -25,8 +25,8 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
                 \sprintf(
                     'Decision class "%s" for name "%s" is not a valid classname',
                     $this->typesMapping[$name],
-                    $name
-                )
+                    $name,
+                ),
             );
         }
 

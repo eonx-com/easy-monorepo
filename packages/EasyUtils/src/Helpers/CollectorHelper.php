@@ -33,7 +33,7 @@ class CollectorHelper
                 throw new InvalidArgumentException(\sprintf(
                     'Instance of %s expected, %s given',
                     $class,
-                    \is_object($item) === false ? \gettype($item) : \get_class($item)
+                    \is_object($item) === false ? \gettype($item) : \get_class($item),
                 ));
             }
 

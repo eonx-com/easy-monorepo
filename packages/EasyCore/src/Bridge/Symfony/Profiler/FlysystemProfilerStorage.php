@@ -211,7 +211,7 @@ final class FlysystemProfilerStorage implements ProfilerStorageInterface
             $profile->addChild($this->createProfileFromContents(
                 $token,
                 (string)$this->filesystem->read($filename),
-                $profile
+                $profile,
             ));
         }
 

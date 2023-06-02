@@ -38,11 +38,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(ErrorDetailsResolverInterface::class, ErrorDetailsResolver::class)
         ->arg(
             '$translateInternalMessages',
-            param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED)
+            param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED),
         )
         ->arg(
             '$internalMessagesLocale',
-            param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE)
+            param(BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE),
         );
 
     // ErrorLogLevelResolver

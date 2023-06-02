@@ -105,7 +105,7 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
         return new DoctrineDbalStore(
             $this->getRandomGenerator(),
             $this->getDoctrineDbalConnection(),
-            $this->getDataCleaner()
+            $this->getDataCleaner(),
         );
     }
 }

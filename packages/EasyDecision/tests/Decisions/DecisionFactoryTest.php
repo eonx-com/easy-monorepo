@@ -48,7 +48,7 @@ final class DecisionFactoryTest extends AbstractTestCase
 
         $decisionFactory = (new DecisionFactory(
             $mappingProvider,
-            new \ArrayIterator([$configurator1, $configurator2, $exprLanguageConfigurator])
+            new \ArrayIterator([$configurator1, $configurator2, $exprLanguageConfigurator]),
         ));
 
         $decision1 = $decisionFactory->createUnanimousDecision('my-unanimous-decision');

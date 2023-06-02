@@ -32,7 +32,7 @@ final class CheckCoverageCommand extends Command
 
     public function __construct(
         CoverageLoaderInterface $coverageLoader,
-        CoverageResolverLocatorInterface $coverageResolverLocator
+        CoverageResolverLocatorInterface $coverageResolverLocator,
     ) {
         $this->coverageLoader = $coverageLoader;
         $this->coverageResolverLocator = $coverageResolverLocator;
@@ -65,13 +65,13 @@ final class CheckCoverageCommand extends Command
                 \sprintf(
                     'Coverage "%d%%" is lower than expectation "%d%%"',
                     $coverageReport->getCoverage(),
-                    $checkCoverage
-                )
+                    $checkCoverage,
+                ),
             );
 
             if ($coverageReport->hasViolations()) {
                 $style->error(
-                    \sprintf('Violations: %s', \implode(\PHP_EOL, $coverageReport->getViolations()))
+                    \sprintf('Violations: %s', \implode(\PHP_EOL, $coverageReport->getViolations())),
                 );
             }
 
@@ -79,7 +79,7 @@ final class CheckCoverageCommand extends Command
         }
 
         $style->success(
-            \sprintf('Yeah nah yeah nah yeah!! Good coverage mate! "%d%%"', $coverageReport->getCoverage())
+            \sprintf('Yeah nah yeah nah yeah!! Good coverage mate! "%d%%"', $coverageReport->getCoverage()),
         );
 
         return 0;

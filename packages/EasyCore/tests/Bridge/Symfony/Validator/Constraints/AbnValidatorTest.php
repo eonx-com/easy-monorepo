@@ -122,7 +122,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
         $abn = 'some-abn';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn"'
+            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Abn"',
         );
 
         $validator->validate($abn, $constraint);
@@ -245,7 +245,7 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturnSelf();
-            }
+            },
         );
 
         return $violationBuilder;
@@ -253,12 +253,12 @@ final class AbnValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder
+            $violationBuilder,
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

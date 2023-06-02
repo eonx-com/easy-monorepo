@@ -14,7 +14,7 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly ProcessBatchForBatchItemHandler $processBatchForBatchItemHandler
+        private readonly ProcessBatchForBatchItemHandler $processBatchForBatchItemHandler,
     ) {
     }
 
@@ -28,7 +28,7 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         $this->updateBatchItem(
             $this->batchItemRepository->findOrFail($message->getBatchItemId()),
             $message->getData(),
-            $message->getErrorDetails()
+            $message->getErrorDetails(),
         );
 
         // Trigger process batch handler directly from here

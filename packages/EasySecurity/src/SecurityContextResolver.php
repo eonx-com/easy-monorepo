@@ -24,7 +24,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
     public function __construct(
         private readonly AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
         private readonly SecurityContextFactoryInterface $factory,
-        private readonly LoggerInterface $logger = new NullLogger()
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 
@@ -45,7 +45,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
                 'No security context configurator set on %s, make sure to inject security context directly into
                 classes that are instantiated only after a configurator is set, otherwise inject %s instead',
                 SecurityContextResolverInterface::class,
-                SecurityContextResolverInterface::class
+                SecurityContextResolverInterface::class,
             ));
         }
 

@@ -31,10 +31,10 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
                     return new Actor(
                         'custom-actor-type',
                         'custom-actor-id',
-                        'custom-actor-name'
+                        'custom-actor-name',
                     );
                 }
-            }
+            },
         );
         $author = new Author();
         $author->setId(1);
@@ -42,7 +42,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $author,
-            ['change' => [null, 1]]
+            ['change' => [null, 1]],
         );
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
@@ -65,7 +65,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
                 public function resolve(
                     string $action,
                     ActivitySubjectInterface $subject,
-                    array $changeSet
+                    array $changeSet,
                 ): ?ActivitySubjectDataInterface {
                     $data = [];
                     $oldData = [];
@@ -76,7 +76,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 
                     return new ActivitySubjectData(\serialize($data), \serialize($oldData));
                 }
-            }
+            },
         );
         $author = new Author();
         $author->setId(1);
@@ -84,7 +84,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $author,
-            ['field' => [1, 2]]
+            ['field' => [1, 2]],
         );
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
@@ -106,7 +106,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             [
                 'field1' => [1, 2],
                 'field2' => [2, 3],
-            ]
+            ],
         );
 
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */

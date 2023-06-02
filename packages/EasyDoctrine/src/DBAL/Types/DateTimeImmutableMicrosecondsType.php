@@ -81,7 +81,7 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
         throw ConversionException::conversionFailedFormat(
             $value,
             $this->getName(),
-            self::FORMAT_PHP_DATETIME
+            self::FORMAT_PHP_DATETIME,
         );
     }
 

@@ -36,7 +36,7 @@ final class ActivityLogEntryMessage implements WithLockDataInterface
             self::LOCK_RESOURCE,
             $this->logEntry->getSubjectId(),
             $this->logEntry->getUpdatedAt()
-                ->format('U.u')
+                ->format('U.u'),
         );
         return LockData::create($resource, self::LOCK_TTL_SEC);
     }

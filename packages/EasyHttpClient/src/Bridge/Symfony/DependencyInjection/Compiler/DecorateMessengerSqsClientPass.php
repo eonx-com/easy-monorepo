@@ -30,7 +30,7 @@ final class DecorateMessengerSqsClientPass extends AbstractEasyHttpClientCompile
             ->setArgument('$httpClient', new Reference(self::DEFAULT_CLIENT_ID))
             ->setArgument('$logger', new Reference(
                 LoggerInterface::class,
-                ContainerInterface::IGNORE_ON_INVALID_REFERENCE
+                ContainerInterface::IGNORE_ON_INVALID_REFERENCE,
             ));
 
         $container->setDefinition(self::MESSENGER_SQS_FACTORY, $def);

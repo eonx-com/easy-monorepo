@@ -36,7 +36,7 @@ final class TrimStringsTest extends AbstractTestCase
                     ->once()
                     ->with($data, $except)
                     ->andReturn($expectedResult);
-            }
+            },
         );
         $middleware = new TrimStrings($trimmer, $except);
         $symfonyRequest = new SymfonyRequest($data);
@@ -71,7 +71,7 @@ final class TrimStringsTest extends AbstractTestCase
                     ->once()
                     ->with($data, $except)
                     ->andReturn($expectedResult);
-            }
+            },
         );
         $middleware = new TrimStrings($trimmer, $except);
         $symfonyRequest = new SymfonyRequest([], [], [], [], [], [], $json);
@@ -108,7 +108,7 @@ final class TrimStringsTest extends AbstractTestCase
                     ->once()
                     ->with($data, $except)
                     ->andReturn($expectedResult);
-            }
+            },
         );
         $middleware = new TrimStrings($trimmer, $except);
         $symfonyRequest = new SymfonyRequest([], $data);

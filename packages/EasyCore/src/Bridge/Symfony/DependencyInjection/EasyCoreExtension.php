@@ -72,7 +72,7 @@ final class EasyCoreExtension extends Extension
         if ($config['search']['enabled'] ?? false) {
             $container->setParameter(
                 BridgeConstantsInterface::PARAM_ELASTICSEARCH_HOST,
-                $config['search']['elasticsearch_host']
+                $config['search']['elasticsearch_host'],
             );
 
             $loader->load('search.php');
@@ -87,7 +87,7 @@ final class EasyCoreExtension extends Extension
         if ($config['trim_strings']['enabled'] ?? false) {
             $container->setParameter(
                 BridgeConstantsInterface::PARAM_TRIM_STRINGS_EXCEPT,
-                $config['trim_strings']['except']
+                $config['trim_strings']['except'],
             );
 
             $loader->load('trim_strings.php');

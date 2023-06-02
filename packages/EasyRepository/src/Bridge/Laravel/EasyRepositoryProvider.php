@@ -23,7 +23,7 @@ final class EasyRepositoryProvider extends ServiceProvider
         $repositories = \config('easy-repository.repositories', []);
         if (empty($repositories)) {
             throw new EmptyRepositoriesListException(
-                'No repositories to register. Please make sure your application has the expected configuration'
+                'No repositories to register. Please make sure your application has the expected configuration',
             );
         }
 

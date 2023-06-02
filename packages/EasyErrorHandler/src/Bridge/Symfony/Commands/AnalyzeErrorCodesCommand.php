@@ -13,12 +13,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'easy-error-handler:error-codes:analyze',
-    description: 'Analyzes existing error codes'
+    description: 'Analyzes existing error codes',
 )]
 final class AnalyzeErrorCodesCommand extends Command
 {
     public function __construct(
-        private readonly ErrorCodesGroupProcessorInterface $errorCodesGroupProcessor
+        private readonly ErrorCodesGroupProcessorInterface $errorCodesGroupProcessor,
     ) {
         parent::__construct();
     }
@@ -48,7 +48,7 @@ final class AnalyzeErrorCodesCommand extends Command
         $output->writeln('');
         $output->writeln(\sprintf(
             '<info>The error code for the new group is %s.</info>',
-            $errorCodesDto->getNextGroupErrorCode()
+            $errorCodesDto->getNextGroupErrorCode(),
         ));
         $output->writeln('');
 

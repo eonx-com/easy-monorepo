@@ -61,7 +61,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
         WebhookInterface $webhook,
         ?callable $test = null,
         ?\Throwable $throwable = null,
-        ?string $expectedException = null
+        ?string $expectedException = null,
     ): void {
         if ($expectedException !== null) {
             $this->expectException($expectedException);

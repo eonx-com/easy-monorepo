@@ -52,7 +52,7 @@ final class CacheTableHelper
                 throw new UnexpectedValueException(\sprintf(
                     'Cache table "%s" sizes must be an array, "%s" given',
                     $name,
-                    \gettype($sizes)
+                    \gettype($sizes),
                 ));
             }
 
@@ -67,9 +67,9 @@ final class CacheTableHelper
                     new SwooleTableColumnDefinition(
                         self::COLUMN_VALUE,
                         SwooleTableColumnType::String,
-                        $sizes[1] ?? $sizes[self::KEY_COLUMN_SIZE] ?? self::DEFAULT_VALUE_COLUMN_SIZE
+                        $sizes[1] ?? $sizes[self::KEY_COLUMN_SIZE] ?? self::DEFAULT_VALUE_COLUMN_SIZE,
                     ),
-                ]
+                ],
             );
 
             $tables[] = $name;
@@ -81,7 +81,7 @@ final class CacheTableHelper
             size: 2,
             columnDefinitions: [
                 new SwooleTableColumnDefinition(self::COLUMN_VALUE, SwooleTableColumnType::Int),
-            ]
+            ],
         );
         $tickCountTable->set(self::TICK_COUNT_COLUMN_CURRENT, [self::COLUMN_VALUE => 0]);
         $tickCountTable->set(self::TICK_COUNT_COLUMN_MAXIMUM, [self::COLUMN_VALUE => $cacheClearAfterTickCount]);
@@ -97,7 +97,7 @@ final class CacheTableHelper
 
         OutputHelper::writeln(\sprintf(
             'Will automatically remove expired records after %d requests',
-            $cacheClearAfterTickCount
+            $cacheClearAfterTickCount,
         ));
     }
 

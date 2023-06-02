@@ -74,7 +74,7 @@ abstract class BaseGenerator implements GeneratorInterface
             throw new LengthMismatchesException(\sprintf(
                 'Length %s mismatches the defined %s maximum characters',
                 \strlen($line),
-                $this->getLineLength()
+                $this->getLineLength(),
             ));
         }
     }
@@ -128,7 +128,7 @@ abstract class BaseGenerator implements GeneratorInterface
                 throw new InvalidArgumentException(\sprintf(
                     'Object must be %s, %s given.',
                     BaseObject::class,
-                    \gettype($object)
+                    \gettype($object),
                 ));
             }
 

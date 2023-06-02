@@ -17,7 +17,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
         $this->expectException(UnableToMakeDecisionException::class);
         $this->expectExceptionMessage(
             'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": ' .
-            'Expression language not set, to use it in your rules you must set it on the decision instance'
+            'Expression language not set, to use it in your rules you must set it on the decision instance',
         );
 
         (new ValueDecision())->addRule($this->createLanguageRule('value + 10'))
@@ -59,7 +59,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
             'cap',
             function ($arguments, $value, $max) {
                 return \min($value, $max);
-            }
+            },
         ));
         $expressionLanguage->addFunctions((new ValueExpressionFunctionProvider())->getFunctions());
 

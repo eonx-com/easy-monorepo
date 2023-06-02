@@ -63,7 +63,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition('doctrine.orm.default_entity_manager', new Definition(EntityManager::class));
         $container->setDefinition(
             ActivitySubjectDataSerializerInterface::class,
-            new Definition(SymfonyActivitySubjectDataSerializer::class)
+            new Definition(SymfonyActivitySubjectDataSerializer::class),
         );
         $deferredEntityDefinition = new Definition(DeferredEntityEventDispatcher::class, [
             new Definition(EventDispatcher::class, [new Definition(SymfonyEventDispatcher::class)]),
@@ -78,8 +78,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             EntityEventSubscriberInterface::class,
             new Definition(
                 EntityEventSubscriber::class,
-                [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%']
-            )
+                [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%'],
+            ),
         );
         $objectNormalizerDefinition = new Definition(ObjectNormalizer::class);
         $dateTimeNormalizerDefinition = new Definition(DateTimeNormalizer::class);
@@ -89,8 +89,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             SerializerInterface::class,
             new Definition(
                 Serializer::class,
-                [[$dateTimeNormalizerDefinition, $objectNormalizerDefinition], [$jsonEncoderDefinition]]
-            )
+                [[$dateTimeNormalizerDefinition, $objectNormalizerDefinition], [$jsonEncoderDefinition]],
+            ),
         );
 
         foreach ($container->getDefinitions() as $definition) {

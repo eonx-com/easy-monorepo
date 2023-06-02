@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -32,7 +32,7 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
                 throw new BatchItemInvalidException(\sprintf(
                     'BatchItem "%s" is type of "%s" but has no message set',
                     $batchItemId,
-                    $batchItem->getType()
+                    $batchItem->getType(),
                 ));
             }
 
@@ -45,7 +45,7 @@ final class AsyncDispatcher implements AsyncDispatcherInterface
             'BatchItem "%s" is not type of "%s", "%s" given',
             $batchItemId,
             BatchItemInterface::TYPE_MESSAGE,
-            $batchItem->getType()
+            $batchItem->getType(),
         ));
     }
 }

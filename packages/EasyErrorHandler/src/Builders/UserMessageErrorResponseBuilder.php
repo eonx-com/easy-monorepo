@@ -15,7 +15,7 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?string $key = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($key, $priority);
     }
@@ -35,7 +35,7 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
 
         return $this->translator->trans(
             $message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE,
-            $parameters
+            $parameters,
         );
     }
 

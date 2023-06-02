@@ -47,7 +47,7 @@ trait MessengerAssertionsTrait
     public static function assertCountOfMessagesSentToTransport(
         int $count,
         string $transportName,
-        ?string $messageClass = null
+        ?string $messageClass = null,
     ): void {
         self::assertCount($count, self::getMessagesSentToTransport($transportName, $messageClass));
     }
@@ -61,7 +61,7 @@ trait MessengerAssertionsTrait
     public static function assertMessageSentToAsyncTransport(
         string $messageClass,
         array $expectedProperties = [],
-        int $messagesCount = 1
+        int $messagesCount = 1,
     ): void {
         self::assertMessageSentToTransport($messageClass, 'async', $expectedProperties, $messagesCount);
     }
@@ -75,7 +75,7 @@ trait MessengerAssertionsTrait
     public static function assertMessageSentToFailedTransport(
         string $messageClass,
         array $expectedProperties = [],
-        int $messagesCount = 1
+        int $messagesCount = 1,
     ): void {
         self::assertMessageSentToTransport($messageClass, 'failed', $expectedProperties, $messagesCount);
     }
@@ -90,7 +90,7 @@ trait MessengerAssertionsTrait
         string $messageClass,
         string $transportName,
         array $expectedProperties = [],
-        int $messagesCount = 1
+        int $messagesCount = 1,
     ): void {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -111,7 +111,7 @@ trait MessengerAssertionsTrait
                 }
 
                 return true;
-            }
+            },
         );
 
         self::assertCount($messagesCount, $envelopes);
@@ -133,7 +133,7 @@ trait MessengerAssertionsTrait
          */
         if (isset(self::$isInsideSafeCall) && self::$isInsideSafeCall) {
             throw new RuntimeException(
-                "You can't use MessengerAssertionsTrait::consumeAsyncMessages() in ExceptionTrait::safeCall()"
+                "You can't use MessengerAssertionsTrait::consumeAsyncMessages() in ExceptionTrait::safeCall()",
             );
         }
 
@@ -216,7 +216,7 @@ trait MessengerAssertionsTrait
     private static function runMessengerWorker(
         string $transportName,
         string $busName,
-        array $expectedExceptions = []
+        array $expectedExceptions = [],
     ): void {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
         $transport = self::getContainer()->get('messenger.transport.' . $transportName);
@@ -298,12 +298,12 @@ trait MessengerAssertionsTrait
         if (\count($expectedExceptions) > 0) {
             $exceptions = \array_map(
                 static fn (array $expectedExceptionPair): string => \key($expectedExceptionPair),
-                $expectedExceptions
+                $expectedExceptions,
             );
 
             throw new RuntimeException(
                 "The following exceptions were expected but not thrown: \n - "
-                . \implode("\n - ", $exceptions)
+                . \implode("\n - ", $exceptions),
             );
         }
     }

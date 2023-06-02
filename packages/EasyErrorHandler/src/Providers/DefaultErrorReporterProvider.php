@@ -24,7 +24,7 @@ final class DefaultErrorReporterProvider implements ErrorReporterProviderInterfa
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private readonly LoggerInterface $logger,
-        ?array $ignoredExceptions = null
+        ?array $ignoredExceptions = null,
     ) {
         $this->ignoredExceptions = $ignoredExceptions ?? [];
     }
@@ -38,7 +38,7 @@ final class DefaultErrorReporterProvider implements ErrorReporterProviderInterfa
             $this->errorDetailsResolver,
             $this->errorLogLevelResolver,
             $this->logger,
-            $this->ignoredExceptions
+            $this->ignoredExceptions,
         );
     }
 }

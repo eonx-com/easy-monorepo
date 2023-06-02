@@ -21,7 +21,7 @@ abstract class AbstractTestCase extends TestCase
     protected function getRandomGenerator(): RandomGeneratorInterface
     {
         return $this->random = $this->random ?? (new RandomGenerator())->setUuidV4Generator(
-            new RamseyUuidV4Generator()
+            new RamseyUuidV4Generator(),
         );
     }
 

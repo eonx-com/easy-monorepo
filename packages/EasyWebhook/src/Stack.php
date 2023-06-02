@@ -28,7 +28,7 @@ final class Stack implements StackInterface
     public function __construct(iterable $middleware)
     {
         $this->middleware = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($middleware, MiddlewareInterface::class)
+            CollectorHelper::filterByClass($middleware, MiddlewareInterface::class),
         );
     }
 

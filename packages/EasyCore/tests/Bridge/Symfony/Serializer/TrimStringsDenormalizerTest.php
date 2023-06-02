@@ -125,10 +125,10 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
                         $format,
                         \array_merge($context, [
                             'TRIM_STRINGS_ALREADY_CALLED' => true,
-                        ])
+                        ]),
                     )
                     ->andReturn($expectedResult);
-            }
+            },
         );
         $denormalizer = new TrimStringsDenormalizer($trimmer, $except);
         $denormalizer->setDenormalizer($innerDenormalizer);
@@ -152,7 +152,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $data,
         string $type,
         ?string $format = null,
-        ?array $context = null
+        ?array $context = null,
     ): void {
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
         $trimmer = $this->mock(StringsTrimmerInterface::class);

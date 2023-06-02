@@ -30,7 +30,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Category::class],
-            [Category::class]
+            [Category::class],
         );
         $entityManager->getConnection()
             ->insert(
@@ -39,7 +39,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'id' => 1,
                     'name' => 'Computer',
                     'activeTill' => '2022-12-20 16:23:52',
-                ]
+                ],
             );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
@@ -58,9 +58,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $category,
                 [
                     'activeTill' => [$activeTill, $newActiveTill],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
     }
 
@@ -70,7 +70,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Category::class],
-            [Category::class]
+            [Category::class],
         );
         $activeTill = '2022-12-20 16:23:52';
         $entityManager->getConnection()
@@ -80,7 +80,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'id' => 1,
                     'name' => 'Computer',
                     'activeTill' => $activeTill,
-                ]
+                ],
             );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
@@ -100,7 +100,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
-            [Product::class]
+            [Product::class],
         );
 
         $dispatcher->disable();
@@ -122,7 +122,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class]
+            [Product::class],
         );
 
         $product = new Product();
@@ -152,9 +152,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'category' => [null, null],
                     'name' => [null, 'Description 1'],
                     'price' => [null, '1000'],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
     }
 
@@ -164,7 +164,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Category::class, Product::class],
-            [Category::class, Product::class]
+            [Category::class, Product::class],
         );
         $category = new Category();
         $category->setName('Computer');
@@ -184,9 +184,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'activeTill' => [null, null],
                     'name' => [null, 'Computer'],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
@@ -195,9 +195,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => [null, 'Keyboard'],
                     'price' => [null, '1000'],
                     'category' => [null, null],
-                ]
+                ],
             ),
-            $events[1]
+            $events[1],
         );
     }
 
@@ -207,7 +207,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Category::class, Product::class],
-            [Category::class, Product::class]
+            [Category::class, Product::class],
         );
         $entityManager->getConnection()
             ->insert(
@@ -215,7 +215,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Computer',
-                ]
+                ],
             );
         $entityManager->getConnection()
             ->insert(
@@ -224,7 +224,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'id' => 1,
                     'name' => 'Keyboard',
                     'price' => '1000',
-                ]
+                ],
             );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
@@ -244,18 +244,18 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $category,
                 [
                     'name' => ['Computer', 'Computer Peripherals'],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
                 $product,
                 [
                     'price' => ['1000', '2000'],
-                ]
+                ],
             ),
-            $events[1]
+            $events[1],
         );
     }
 
@@ -265,7 +265,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Category::class, Product::class],
-            [Category::class, Product::class]
+            [Category::class, Product::class],
         );
         $eventDispatcher->addDispatchCallback(
             class: EntityCreatedEvent::class,
@@ -279,7 +279,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
                 $entityManager->persist($product);
                 $entityManager->flush();
-            }
+            },
         );
         $category = new Category();
         $category->setName('Computer');
@@ -295,9 +295,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'activeTill' => [null, null],
                     'name' => [null, 'Computer'],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->findOneBy(['name' => 'Keyboard']);
@@ -308,9 +308,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => [null, 'Keyboard'],
                     'price' => [null, '100'],
                     'category' => [null, null],
-                ]
+                ],
             ),
-            $events[1]
+            $events[1],
         );
     }
 
@@ -320,7 +320,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class]
+            [Product::class, Category::class],
         );
 
         $category = new Category();
@@ -343,9 +343,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => [null, 'Keyboard'],
                     'price' => [null, '1000'],
                     'category' => [null, $category],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
     }
 
@@ -356,7 +356,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromDeferredEntityEventDispatcher(
             $dispatcher,
             [Product::class],
-            [Product::class]
+            [Product::class],
         );
 
         $dispatcher->disable();
@@ -378,7 +378,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class]
+            [Product::class],
         );
 
         $this->safeCall(function () use ($entityManager) {
@@ -410,7 +410,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $eventDispatcher = new EventDispatcherStub();
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
-            [Product::class]
+            [Product::class],
         );
 
         $entityManager->flush();
@@ -425,7 +425,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class]
+            [Product::class, Category::class],
         );
         $entityManager->getConnection()
             ->insert(
@@ -433,7 +433,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Computer',
-                ]
+                ],
             );
         $entityManager->getConnection()
             ->insert(
@@ -443,7 +443,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => 'Keyboard',
                     'price' => '1000',
                     'category_id' => 1,
-                ]
+                ],
             );
 
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
@@ -464,7 +464,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [],
-            [Product::class]
+            [Product::class],
         );
         $product = new Product();
         $product->setName('Product 1');
@@ -482,7 +482,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class, Tag::class]
+            [Product::class, Category::class, Tag::class],
         );
         $entityManager->getConnection()
             ->insert(
@@ -490,7 +490,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Computer',
-                ]
+                ],
             );
         $entityManager->getConnection()
             ->insert(
@@ -500,7 +500,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'name' => 'Keyboard',
                     'price' => '1000',
                     'category_id' => 1,
-                ]
+                ],
             );
         $entityManager->getConnection()
             ->insert(
@@ -509,7 +509,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'id' => 1,
                     'name' => 'Tag 1',
                     'product_id' => 1,
-                ]
+                ],
             );
         $entityManager->getConnection()
             ->insert(
@@ -518,7 +518,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'id' => 2,
                     'name' => 'Tag 2',
                     'product_id' => 1,
-                ]
+                ],
             );
 
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
@@ -567,7 +567,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class]
+            [Product::class],
         );
         $entityManager->getConnection()
             ->insert(
@@ -576,7 +576,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'id' => 1,
                     'name' => 'Keyboard',
                     'price' => '1000',
-                ]
+                ],
             );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
@@ -601,9 +601,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'price' => ['1000', '3000'],
                     'name' => ['Keyboard', 'Keyboard 2'],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
     }
 
@@ -613,7 +613,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class]
+            [Product::class],
         );
 
         $product = new Product();
@@ -638,9 +638,9 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'description' => [null, 'Description 1'],
                     'price' => [null, '2000'],
                     'category' => [null, null],
-                ]
+                ],
             ),
-            $events[0]
+            $events[0],
         );
     }
 }

@@ -59,7 +59,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
 
         return $this->resolved[$pipeline] = new IlluminatePipeline(
             new Pipeline($this->container),
-            $provider->getMiddlewareList()
+            $provider->getMiddlewareList(),
         );
     }
 
@@ -69,7 +69,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
             throw new PipelineNotFoundException(\sprintf(
                 'In %s, no middleware provider configured for pipeline "%s"',
                 static::class,
-                $pipeline
+                $pipeline,
             ));
         }
 
@@ -83,7 +83,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
             'In %s, middleware provider "%s" does not implement %s',
             static::class,
             \get_class($provider),
-            MiddlewareProviderInterface::class
+            MiddlewareProviderInterface::class,
         ));
     }
 

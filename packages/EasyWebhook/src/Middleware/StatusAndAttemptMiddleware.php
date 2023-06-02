@@ -34,7 +34,7 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
                 $webhook->status(
                     $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt()
                         ? WebhookInterface::STATUS_FAILED
-                        : WebhookInterface::STATUS_FAILED_PENDING_RETRY
+                        : WebhookInterface::STATUS_FAILED_PENDING_RETRY,
                 );
         }
 

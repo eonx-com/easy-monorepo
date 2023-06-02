@@ -43,14 +43,14 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 responseData: new ResponseData(
                     content: 'some-content',
                     headers: ['headerName' => 'header-value'],
                     receivedAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
-                    statusCode: 200
-                )
+                    statusCode: 200,
+                ),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -68,10 +68,10 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 throwable: new Exception('some-exception-message'),
-                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456')
+                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -88,9 +88,9 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
-                throwable: new Exception('some-exception-message')
+                throwable: new Exception('some-exception-message'),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -107,14 +107,14 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 responseData: new ResponseData(
                     content: 'some-content',
                     headers: \array_fill(0, Breadcrumb::MAX_SIZE, '0'),
                     receivedAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
-                    statusCode: 200
-                )
+                    statusCode: 200,
+                ),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -131,14 +131,14 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: \array_fill(0, Breadcrumb::MAX_SIZE, '0'),
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 responseData: new ResponseData(
                     content: 'some-content',
                     headers: ['headerName' => 'header-value'],
                     receivedAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
-                    statusCode: 200
-                )
+                    statusCode: 200,
+                ),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -154,14 +154,14 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 responseData: new ResponseData(
                     content: \str_pad('0', Breadcrumb::MAX_SIZE),
                     headers: ['headerName' => 'header-value'],
                     receivedAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
-                    statusCode: 200
-                )
+                    statusCode: 200,
+                ),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -176,14 +176,14 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: \str_pad('0', Breadcrumb::MAX_SIZE)
+                    url: \str_pad('0', Breadcrumb::MAX_SIZE),
                 ),
                 responseData: new ResponseData(
                     content: 'some-content',
                     headers: ['headerName' => 'header-value'],
                     receivedAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
-                    statusCode: 200
-                )
+                    statusCode: 200,
+                ),
             ),
             'expectedMetadata' => [],
         ];
@@ -194,10 +194,10 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: \array_fill(0, Breadcrumb::MAX_SIZE, '0'),
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 throwable: new Exception('some-exception-message'),
-                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456')
+                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -213,10 +213,10 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     method: 'GET',
                     options: ['optionName' => 'option-value'],
                     sentAt: CarbonImmutable::parse('08.08.2022 12:34:56.789123'),
-                    url: 'http://example.test/foo'
+                    url: 'http://example.test/foo',
                 ),
                 throwable: new Exception(\str_pad('0', Breadcrumb::MAX_SIZE)),
-                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456')
+                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
             ),
             'expectedMetadata' => [
                 'Request' => 'GET - http://example.test/foo',
@@ -233,7 +233,7 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     url: \str_pad('0', Breadcrumb::MAX_SIZE),
                 ),
                 throwable: new Exception('some-exception-message'),
-                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456')
+                throwableThrownAt: CarbonImmutable::parse('08.08.2022 12:34:59.789456'),
             ),
             'expectedMetadata' => [],
         ];
@@ -253,9 +253,9 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
                     ->with(
                         HttpRequestSentBreadcrumbListener::BREADCRUMB_NAME,
                         Breadcrumb::REQUEST_TYPE,
-                        $expectedMetadata
+                        $expectedMetadata,
                     );
-            }
+            },
         );
 
         return $bugsnagClient;

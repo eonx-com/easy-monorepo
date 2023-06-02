@@ -21,7 +21,7 @@ final class ApplicationStateInitListener extends AbstractRequestEventListener
     public function __construct(iterable $appStateInitializers)
     {
         $this->appStateInitializers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($appStateInitializers, AppStateInitializerInterface::class)
+            CollectorHelper::filterByClass($appStateInitializers, AppStateInitializerInterface::class),
         );
     }
 

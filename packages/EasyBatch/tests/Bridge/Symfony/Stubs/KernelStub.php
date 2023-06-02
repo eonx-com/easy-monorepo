@@ -30,7 +30,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
         $container->setDefinition(
             Connection::class,
-            (new Definition(Connection::class))->setFactory([DoctrineDbalConnectionFactoryStub::class, 'create'])
+            (new Definition(Connection::class))->setFactory([DoctrineDbalConnectionFactoryStub::class, 'create']),
         );
 
         foreach ($container->getDefinitions() as $definition) {

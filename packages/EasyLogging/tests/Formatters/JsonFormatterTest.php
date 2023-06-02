@@ -30,7 +30,7 @@ final class JsonFormatterTest extends AbstractTestCase
 
                 self::assertInstanceOf(
                     Carbon::class,
-                    Carbon::createFromFormat('Y-m-d\TH:i:sP', $json['context']['carbon'])
+                    Carbon::createFromFormat('Y-m-d\TH:i:sP', $json['context']['carbon']),
                 );
             },
         ];

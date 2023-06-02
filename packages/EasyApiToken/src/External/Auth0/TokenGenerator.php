@@ -19,7 +19,7 @@ final class TokenGenerator implements TokenGeneratorInterface
     public function __construct(
         private readonly ?string $audience = null,
         private readonly ?string $secret = null,
-        private readonly ?string $issuer = null
+        private readonly ?string $issuer = null,
     ) {
     }
 
@@ -32,7 +32,7 @@ final class TokenGenerator implements TokenGeneratorInterface
         ?array $roles = null,
         ?string $subject = null,
         ?int $lifetime = null,
-        ?bool $secretEncoded = null
+        ?bool $secretEncoded = null,
     ): string {
         $secretEncoded = $secretEncoded ?? true;
         $lifetime = $lifetime ?? 3600;
@@ -61,7 +61,7 @@ final class TokenGenerator implements TokenGeneratorInterface
 
         $secret = $secretEncoded === true ? \base64_decode(
             \strtr((string)$this->secret, '-_', '+/'),
-            true
+            true,
         ) : $this->secret;
 
         return JWT::encode($payload, (string)$secret, self::DEFAULT_ALGO);

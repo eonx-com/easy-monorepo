@@ -15,7 +15,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
     public function __construct(
         private readonly string $class,
-        ?string $datetimeFormat = null
+        ?string $datetimeFormat = null,
     ) {
         $this->datetimeFormat = $datetimeFormat ?? BatchObjectInterface::DATETIME_FORMAT;
     }

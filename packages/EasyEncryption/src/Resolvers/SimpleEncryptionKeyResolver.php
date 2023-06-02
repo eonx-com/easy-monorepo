@@ -57,7 +57,7 @@ final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
         throw new CouldNotResolveEncryptionKeyException(\sprintf(
             'Given key must be either %d or %d bytes. Any other length requires a salt to be given',
             KeyLength::getSaltLength(),
-            KeyLength::getEncryptionKeyLength()
+            KeyLength::getEncryptionKeyLength(),
         ));
     }
 }

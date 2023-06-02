@@ -198,7 +198,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,
-        string $declaration
+        string $declaration,
     ): void {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);

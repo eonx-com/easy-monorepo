@@ -19,7 +19,7 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchObjectManagerInterface $batchObjectManager,
         private readonly BatchProcessor $batchProcessor,
-        private readonly BatchRepositoryInterface $batchRepository
+        private readonly BatchRepositoryInterface $batchRepository,
     ) {
     }
 
@@ -62,7 +62,7 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
             $this->batchObjectManager,
             $batch,
             $batchItem,
-            $updateFreshBatch
+            $updateFreshBatch,
         );
     }
 }

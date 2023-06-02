@@ -11,7 +11,7 @@ use EonX\EasyPagination\Pagination;
 final class DefaultPaginationResolver
 {
     public function __construct(
-        private PaginationConfigInterface $config
+        private PaginationConfigInterface $config,
     ) {
         // No body needed.
     }
@@ -22,7 +22,7 @@ final class DefaultPaginationResolver
             $this->config->getPageDefault(),
             $this->config->getPerPageDefault(),
             $this->config->getPageAttribute(),
-            $this->config->getPerPageAttribute()
+            $this->config->getPerPageAttribute(),
         );
     }
 }

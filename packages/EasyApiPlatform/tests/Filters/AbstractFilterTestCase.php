@@ -66,7 +66,7 @@ abstract class AbstractFilterTestCase extends KernelTestCase
         string $expectedDql,
         array $expectedParameters = null,
         callable $filterFactory = null,
-        string $resourceClass = null
+        string $resourceClass = null,
     ): void {
         if ($filterFactory === null) {
             $filterFactory = function (ManagerRegistry $managerRegistry, array $properties = null): FilterInterface {
@@ -91,7 +91,7 @@ abstract class AbstractFilterTestCase extends KernelTestCase
             new QueryNameGenerator(),
             $resourceClass,
             null,
-            ['filters' => $filterParameters]
+            ['filters' => $filterParameters],
         );
 
         $this->assertEquals($expectedDql, $queryBuilder->getQuery()->getDQL());
@@ -112,8 +112,8 @@ abstract class AbstractFilterTestCase extends KernelTestCase
                 \sprintf(
                     'Expected query parameter "%s" to be "%s"',
                     $parameterName,
-                    \var_export($expectedParameterValue, true)
-                )
+                    \var_export($expectedParameterValue, true),
+                ),
             );
         }
     }

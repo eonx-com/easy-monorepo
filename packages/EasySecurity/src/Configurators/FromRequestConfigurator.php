@@ -21,10 +21,10 @@ final class FromRequestConfigurator
      */
     public function __construct(
         private readonly Request $request,
-        iterable $configurators
+        iterable $configurators,
     ) {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
+            CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class),
         );
     }
 

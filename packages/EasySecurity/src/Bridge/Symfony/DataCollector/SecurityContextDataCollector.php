@@ -46,13 +46,13 @@ final class SecurityContextDataCollector extends DataCollector
     public function __construct(
         AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
         SecurityContextResolverInterface $securityContextResolver,
-        iterable $configurators
+        iterable $configurators,
     ) {
         $this->authorizationMatrixFactory = $authorizationMatrixFactory;
         $this->securityContextResolver = $securityContextResolver;
 
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
+            CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class),
         );
     }
 

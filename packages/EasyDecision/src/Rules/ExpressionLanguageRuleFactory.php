@@ -15,7 +15,7 @@ final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFacto
         string $expression,
         ?int $priority = null,
         ?string $name = null,
-        ?array $extra = null
+        ?array $extra = null,
     ): ExpressionLanguageRule {
         return new ExpressionLanguageRule($expression, $priority, $name, $extra);
     }

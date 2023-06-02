@@ -28,7 +28,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
     private ?EntityRepository $repository = null;
 
     public function __construct(
-        protected ManagerRegistry $registry
+        protected ManagerRegistry $registry,
     ) {
     }
 
@@ -130,13 +130,13 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?PaginationInterface $pagination = null
+        ?PaginationInterface $pagination = null,
     ): DoctrineOrmLengthAwarePaginator {
         return new DoctrineOrmLengthAwarePaginator(
             $pagination ?? $this->getPagination(),
             $this->getManager(),
             $from ?? $this->getEntityClass(),
-            $fromAlias ?? $this->getEntityAlias()
+            $fromAlias ?? $this->getEntityAlias(),
         );
     }
 
@@ -171,7 +171,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         }
 
         throw new EasyPaginationNotInstalledException(
-            'To use pagination within your repository, you must install the eonx-com/easy-pagination package'
+            'To use pagination within your repository, you must install the eonx-com/easy-pagination package',
         );
     }
 

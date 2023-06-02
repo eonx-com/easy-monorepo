@@ -89,7 +89,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
             (new Article())->setId(2),
-            ['title' => [null, 'New Title']]
+            ['title' => [null, 'New Title']],
         );
 
         self::assertNotNull($result);
@@ -97,7 +97,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertNull($result->getActorId());
         self::assertSame(
             '{"title":"New Title"}',
-            $result->getSubjectData()
+            $result->getSubjectData(),
         );
         self::assertNull($result->getSubjectOldData());
         self::assertSame(ActivityLogEntry::DEFAULT_ACTOR_TYPE, $result->getActorType());
@@ -131,7 +131,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             [
                 'content' => [null, $article->getContent()],
                 'comments' => [null, $article->getComments()],
-            ]
+            ],
         );
 
         self::assertNotNull($result);
@@ -140,7 +140,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                 'content' => 'Content',
                 'comments' => [['id' => 1], ['id' => 2]],
             ],
-            \json_decode((string)$result->getSubjectData(), true)
+            \json_decode((string)$result->getSubjectData(), true),
         );
     }
 
@@ -162,7 +162,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             [
                 'title' => [null, $article->getTitle()],
                 'author' => [null, $article->getAuthor()],
-            ]
+            ],
         );
 
         self::assertNotNull($result);
@@ -171,7 +171,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                 'title' => 'Related objects',
                 'author' => ['id' => 2],
             ],
-            \json_decode((string)$result->getSubjectData(), true)
+            \json_decode((string)$result->getSubjectData(), true),
         );
     }
 
@@ -186,7 +186,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                     ],
                 ],
             ],
-            []
+            [],
         );
         $author = new Author();
         $author->setId(2);
@@ -203,7 +203,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             [
                 'title' => [null, 'Related objects'],
                 'author' => [null, $article->getAuthor()],
-            ]
+            ],
         );
 
         self::assertNotNull($result);
@@ -215,7 +215,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                     'position' => 1,
                 ],
             ],
-            \json_decode((string)$result->getSubjectData(), true)
+            \json_decode((string)$result->getSubjectData(), true),
         );
     }
 
@@ -231,7 +231,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         array $globalDisallowedProperties,
         ?array $allowedProperties,
         array $disallowedProperties,
-        ?array $expectedDataProperties = null
+        ?array $expectedDataProperties = null,
     ): void {
         $factory = new ActivityLogFactoryStub([
             Article::class => [
@@ -255,7 +255,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                     new DateTime('2021-10-10 00:00:00'),
                     new DateTime('2021-10-10 00:00:00'),
                 ],
-            ]
+            ],
         );
 
         if ($expectedDataProperties === null) {
@@ -267,7 +267,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertNotNull($result);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($result->getSubjectData() ?? '', true))
+            \array_keys(\json_decode($result->getSubjectData() ?? '', true)),
         );
     }
 }

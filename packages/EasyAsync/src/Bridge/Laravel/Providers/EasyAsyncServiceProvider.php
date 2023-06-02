@@ -70,7 +70,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
                     : [];
 
                 return $app->make(LoggerInterface::class, $loggerParams);
-            }
+            },
         );
     }
 
@@ -85,7 +85,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             WorkerStoppingListener::class,
             static function (Container $app): WorkerStoppingListener {
                 return new WorkerStoppingListener($app->make(ErrorHandlerInterface::class));
-            }
+            },
         );
     }
 
@@ -94,7 +94,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->app->singleton(ManagersSanityChecker::class, static function (Container $app): ManagersSanityChecker {
             return new ManagersSanityChecker(
                 $app->make(ManagerRegistry::class),
-                $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
+                $app->make(BridgeConstantsInterface::SERVICE_LOGGER),
             );
         });
 
@@ -104,9 +104,9 @@ final class EasyAsyncServiceProvider extends ServiceProvider
                 return new DoctrineManagersClearListener(
                     $app->make(ManagersClearer::class),
                     \config('easy-async.queue.managers_to_clear'),
-                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
+                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER),
                 );
-            }
+            },
         );
 
         $this->app->singleton(
@@ -116,16 +116,16 @@ final class EasyAsyncServiceProvider extends ServiceProvider
                     $app->make('cache.store'),
                     $app->make(ManagersSanityChecker::class),
                     \config('easy-async.queue.managers_to_check'),
-                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
+                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER),
                 );
-            }
+            },
         );
 
         $this->app->singleton(
             QueueWorkerStoppingListener::class,
             static function (Container $app): QueueWorkerStoppingListener {
                 return new QueueWorkerStoppingListener($app->make(BridgeConstantsInterface::SERVICE_LOGGER));
-            }
+            },
         );
     }
 }

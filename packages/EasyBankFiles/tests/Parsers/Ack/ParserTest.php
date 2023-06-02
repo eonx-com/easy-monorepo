@@ -246,7 +246,7 @@ final class ParserTest extends TestCase
                     'id' => '10',
                 ],
             ])],
-            $parser->getIssues()
+            $parser->getIssues(),
         );
 
         // Test array of issues
@@ -284,7 +284,7 @@ final class ParserTest extends TestCase
                     ],
                 ]),
             ],
-            $parser->getIssues()
+            $parser->getIssues(),
         );
     }
 

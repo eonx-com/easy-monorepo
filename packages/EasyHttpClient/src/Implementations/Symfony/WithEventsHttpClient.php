@@ -36,7 +36,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         ?HttpClientInterface $decorated = null,
         private readonly ?iterable $modifiers = [],
         private readonly ?bool $modifiersEnabled = true,
-        private readonly ?array $modifiersWhitelist = []
+        private readonly ?array $modifiersWhitelist = [],
     ) {
         $this->client = $decorated ?? HttpClient::create();
     }
@@ -59,7 +59,7 @@ final class WithEventsHttpClient implements HttpClientInterface
             $requestData = $this->modifyRequestData(
                 $requestData,
                 $config->getRequestDataModifiersWhitelist(),
-                $config->getRequestDataModifiers()
+                $config->getRequestDataModifiers(),
             );
         }
 
@@ -69,7 +69,7 @@ final class WithEventsHttpClient implements HttpClientInterface
                 $requestData->getMethod(),
                 $requestData->getUrl(),
                 $requestData->getOptions(),
-                $this->getPassThruClosure($requestData, $config)
+                $this->getPassThruClosure($requestData, $config),
             );
         } catch (\Throwable $throwable) {
             $this->dispatchEvent($config, $requestData, throwable: $throwable);
@@ -82,7 +82,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         Config $config,
         RequestDataInterface $requestData,
         ?ResponseDataInterface $responseData = null,
-        ?\Throwable $throwable = null
+        ?\Throwable $throwable = null,
     ): void {
         if ($config->isEventsEnabled()) {
             $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
@@ -90,7 +90,7 @@ final class WithEventsHttpClient implements HttpClientInterface
                 $responseData,
                 $throwable,
                 $throwable !== null ? Carbon::now('UTC') : null,
-                $config->getRequestDataExtra()
+                $config->getRequestDataExtra(),
             ));
         }
     }
@@ -110,7 +110,7 @@ final class WithEventsHttpClient implements HttpClientInterface
             if ($chunkContent !== '') {
                 $asyncContext->setInfo(
                     'temp_content',
-                    ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent()
+                    ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent(),
                 );
             }
 
@@ -119,7 +119,7 @@ final class WithEventsHttpClient implements HttpClientInterface
                     (string)($asyncContext->getInfo('temp_content') ?? ''),
                     $asyncContext->getHeaders(),
                     Carbon::now('UTC'),
-                    $asyncContext->getStatusCode()
+                    $asyncContext->getStatusCode(),
                 ));
             }
 
@@ -134,7 +134,7 @@ final class WithEventsHttpClient implements HttpClientInterface
     private function modifyRequestData(
         RequestDataInterface $data,
         array $modifiersWhitelist,
-        array $modifiers
+        array $modifiers,
     ): RequestDataInterface {
         // No explicitly allowed modifiers, execute all of them
         if (\count($modifiersWhitelist) < 1) {
@@ -173,7 +173,7 @@ final class WithEventsHttpClient implements HttpClientInterface
 
         $modifiersWhitelist = \array_merge(
             $this->modifiersWhitelist ?? [],
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? []
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST] ?? [],
         );
 
         $eventsEnabled = $options[HttpOptionsInterface::EVENTS_ENABLED] ?? true;
@@ -183,7 +183,7 @@ final class WithEventsHttpClient implements HttpClientInterface
             $options[HttpOptionsInterface::REQUEST_DATA_EXTRA],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS],
             $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_ENABLED],
-            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST]
+            $options[HttpOptionsInterface::REQUEST_DATA_MODIFIERS_WHITELIST],
         );
 
         return new Config(
@@ -192,7 +192,7 @@ final class WithEventsHttpClient implements HttpClientInterface
             CollectorHelper::filterByClassAsArray($modifiers, RequestDataModifierInterface::class),
             $modifiersWhitelist,
             (bool)$modifiersEnabled,
-            (bool)$eventsEnabled
+            (bool)$eventsEnabled,
         );
     }
 }

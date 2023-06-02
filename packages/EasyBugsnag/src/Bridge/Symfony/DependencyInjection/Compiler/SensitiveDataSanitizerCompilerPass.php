@@ -29,7 +29,7 @@ final class SensitiveDataSanitizerCompilerPass implements CompilerPassInterface
         if (\interface_exists(self::SANITIZER_ID) === false || $container->has(self::SANITIZER_ID) === false) {
             throw new EasyUtilsNotInstalledException(
                 'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed,
-                and its bundle must be enabled'
+                and its bundle must be enabled',
             );
         }
 

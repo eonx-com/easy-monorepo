@@ -16,7 +16,7 @@ final class BatchItemIterator
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly int $batchItemsPerPage
+        private readonly int $batchItemsPerPage,
     ) {
     }
 
@@ -31,7 +31,7 @@ final class BatchItemIterator
             $paginator = $this->batchItemRepository->paginateItems(
                 new Pagination($page, $config->getBatchItemsPerPage() ?? $this->batchItemsPerPage),
                 $config->getBatchId(),
-                $config->getDependsOnName()
+                $config->getDependsOnName(),
             );
 
             if ($config->getExtendPaginator() !== null) {
@@ -102,7 +102,7 @@ final class BatchItemIterator
                     $queryBuilder
                         ->andWhere($queryBuilder->expr()->notIn(
                             'status',
-                            $quote($queryBuilder, BatchObjectInterface::STATUSES_FOR_COMPLETED)
+                            $quote($queryBuilder, BatchObjectInterface::STATUSES_FOR_COMPLETED),
                         ));
                 });
             });
@@ -114,7 +114,7 @@ final class BatchItemIterator
                     $queryBuilder
                         ->andWhere($queryBuilder->expr()->in(
                             'status',
-                            $quote($queryBuilder, BatchItemInterface::STATUSES_FOR_DISPATCH)
+                            $quote($queryBuilder, BatchItemInterface::STATUSES_FOR_DISPATCH),
                         ));
                 });
             });

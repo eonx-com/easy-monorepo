@@ -68,7 +68,7 @@ class SecurityContext implements SecurityContextInterface
         $this->cachePermissions = null;
 
         $roleIdentifiers = AuthorizationMatrixFormatter::formatRolesToIdentifiers(
-            AuthorizationMatrixFormatter::formatRoles((array)$roles)
+            AuthorizationMatrixFormatter::formatRoles((array)$roles),
         );
 
         foreach ($this->authorizationMatrix->getRolesByIdentifiers($roleIdentifiers) as $role) {

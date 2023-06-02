@@ -29,7 +29,7 @@ trait DoctrineDbalPaginatorTrait
         return $this->conn->fetchAllAssociative(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
-            $queryBuilder->getParameterTypes()
+            $queryBuilder->getParameterTypes(),
         );
     }
 

@@ -30,7 +30,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->info(
                         'Decision type mapping to be used by ' .
-                        '\EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName'
+                        '\EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName',
                     )
                 ->end()
             ->end();

@@ -165,7 +165,7 @@ final class LoggerFactory implements LoggerFactoryInterface
             static function (HandlerConfigInterface $config): HandlerInterface {
                 return $config->handler();
             },
-            $configs
+            $configs,
         );
 
         return \count($handlers) > 0 ? $handlers : [new NullHandler()];
@@ -191,7 +191,7 @@ final class LoggerFactory implements LoggerFactoryInterface
             static function (ProcessorConfigInterface $config): ProcessorInterface {
                 return $config->processor();
             },
-            $configs
+            $configs,
         );
     }
 

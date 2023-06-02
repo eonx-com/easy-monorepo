@@ -46,13 +46,13 @@ final class NotificationClient implements NotificationClientInterface
     public function __construct(
         iterable $configurators,
         QueueTransportFactoryInterface $transportFactory,
-        ?HttpClientInterface $httpClient = null
+        ?HttpClientInterface $httpClient = null,
     ) {
         $this->transportFactory = $transportFactory;
         $this->httpClient = $httpClient ?? HttpClient::create();
 
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($configurators, QueueMessageConfiguratorInterface::class)
+            CollectorHelper::filterByClass($configurators, QueueMessageConfiguratorInterface::class),
         );
     }
 
@@ -115,7 +115,7 @@ final class NotificationClient implements NotificationClientInterface
             throw new InvalidRealTimeMessageStatusException(\sprintf(
                 'Invalid status "%s". Valid statuses are ["%s"]',
                 $status,
-                \implode('", "', RealTimeMessage::STATUSES)
+                \implode('", "', RealTimeMessage::STATUSES),
             ));
         }
 
@@ -160,7 +160,7 @@ final class NotificationClient implements NotificationClientInterface
             throw new ApiRequestFailedException(
                 \sprintf('API Request failed: %s', $throwable->getMessage()),
                 $throwable->getCode(),
-                $throwable
+                $throwable,
             );
         }
     }

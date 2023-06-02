@@ -43,14 +43,14 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
                     return new SimpleEncryptionKeyResolver(
                         \config('easy-encryption.default_key_name'),
                         \config('easy-encryption.default_encryption_key'),
-                        \config('easy-encryption.default_salt')
+                        \config('easy-encryption.default_salt'),
                     );
-                }
+                },
             );
 
             $this->app->tag(
                 BridgeConstantsInterface::SERVICE_DEFAULT_KEY_RESOLVER,
-                [BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER]
+                [BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER],
             );
         }
     }
@@ -61,7 +61,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             return new Encryptor(
                 $app->make(EncryptionKeyFactoryInterface::class),
                 $app->make(EncryptionKeyProviderInterface::class),
-                \config('easy-encryption.default_key_name')
+                \config('easy-encryption.default_key_name'),
             );
         });
     }
@@ -72,7 +72,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             EncryptionKeyFactoryInterface::class,
             static function (): EncryptionKeyFactoryInterface {
                 return new DefaultEncryptionKeyFactory();
-            }
+            },
         );
     }
 
@@ -83,9 +83,9 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             static function (Container $app): EncryptionKeyProviderInterface {
                 return new DefaultEncryptionKeyProvider(
                     $app->make(EncryptionKeyFactoryInterface::class),
-                    $app->tagged(BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER)
+                    $app->tagged(BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER),
                 );
-            }
+            },
         );
     }
 }

@@ -101,20 +101,20 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 return new LockMiddleware(
                     $app->make(LockServiceInterface::class),
                     null,
-                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 6
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 6,
                 );
             },
             StoreMiddleware::class => static function (Container $app): StoreMiddleware {
                 return new StoreMiddleware(
                     $app->make(StoreInterface::class),
                     $app->make(ResultStoreInterface::class),
-                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 5
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 5,
                 );
             },
             EventsMiddleware::class => static function (Container $app): EventsMiddleware {
                 return new EventsMiddleware(
                     $app->make(EventDispatcherInterface::class),
-                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 4
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 4,
                 );
             },
             StatusAndAttemptMiddleware::class => static function (): StatusAndAttemptMiddleware {
@@ -127,7 +127,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 return new ResetStoreMiddleware(
                     $app->make(StoreInterface::class),
                     $app->make(ResultStoreInterface::class),
-                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 1
+                    MiddlewareInterface::PRIORITY_CORE_BEFORE - 1,
                 );
             },
             RerunMiddleware::class => static function (): RerunMiddleware {
@@ -137,13 +137,13 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             MethodMiddleware::class => static function (): MethodMiddleware {
                 return new MethodMiddleware(
                     \config('easy-webhook.method'),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER
+                    MiddlewareInterface::PRIORITY_CORE_AFTER,
                 );
             },
             SendAfterMiddleware::class => static function (Container $app): SendAfterMiddleware {
                 return new SendAfterMiddleware(
                     $app->make(StoreInterface::class),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 1
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 1,
                 );
             },
             AsyncMiddleware::class => static function (Container $app): AsyncMiddleware {
@@ -151,7 +151,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     $app->make(AsyncDispatcherInterface::class),
                     $app->make(StoreInterface::class),
                     \config('easy-webhook.send_async', true),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 2
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 2,
                 );
             },
             SyncRetryMiddleware::class => static function (Container $app): SyncRetryMiddleware {
@@ -164,13 +164,13 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     $app->make(WebhookRetryStrategyInterface::class),
                     \config('easy-webhook.send_async', true),
                     $app->make(LoggerInterface::class, $loggerParams),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 3
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 3,
                 );
             },
             SendWebhookMiddleware::class => static function (Container $app): SendWebhookMiddleware {
                 return new SendWebhookMiddleware(
                     $app->make(BridgeConstantsInterface::HTTP_CLIENT),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 4
+                    MiddlewareInterface::PRIORITY_CORE_AFTER + 4,
                 );
             },
         ];
@@ -209,7 +209,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             BridgeConstantsInterface::HTTP_CLIENT,
             static function (Container $app): HttpClientInterface {
                 return $app->make(HttpClientFactoryInterface::class)->create();
-            }
+            },
         );
 
         // Stack
@@ -264,7 +264,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             WebhookSignerInterface::class,
-            \config('easy-webhook.signature.signer', Rs256Signer::class)
+            \config('easy-webhook.signature.signer', Rs256Signer::class),
         );
 
         $this->app->singleton(
@@ -274,9 +274,9 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     $app->make(WebhookSignerInterface::class),
                     \config('easy-webhook.signature.secret'),
                     \config('easy-webhook.signature.signature_header'),
-                    100
+                    100,
                 );
-            }
+            },
         );
 
         $this->app->tag(SignatureHeaderMiddleware::class, [BridgeConstantsInterface::TAG_MIDDLEWARE]);

@@ -73,11 +73,11 @@ final class EasyBugsnagExtension extends Extension
         $container->setParameter(BridgeConstantsInterface::PARAM_API_KEY, $config['api_key']);
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DOCTRINE_DBAL_ENABLED,
-            $config['doctrine_dbal']['enabled'] ?? false
+            $config['doctrine_dbal']['enabled'] ?? false,
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DOCTRINE_DBAL_CONNECTIONS,
-            $config['doctrine_dbal']['connections'] ?? 'default'
+            $config['doctrine_dbal']['connections'] ?? 'default',
         );
 
         $container
@@ -99,7 +99,7 @@ final class EasyBugsnagExtension extends Extension
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
-            $config['sensitive_data_sanitizer']['enabled'] ?? true
+            $config['sensitive_data_sanitizer']['enabled'] ?? true,
         );
 
         if ($config['session_tracking']['enabled'] ?? false) {

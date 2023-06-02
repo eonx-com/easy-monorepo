@@ -11,7 +11,7 @@ final class BasicAuth implements BasicAuthInterface
     public function __construct(
         private string $username,
         private string $password,
-        private string $original
+        private string $original,
     ) {
     }
 

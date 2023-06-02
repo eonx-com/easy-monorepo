@@ -159,7 +159,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(
             'Invalid configuration for path "easy_decision.type_mapping.decision":' .
-            ' Class "NonExistentDecisionClass" does not exist.'
+            ' Class "NonExistentDecisionClass" does not exist.',
         );
 
         $kernel = new KernelStub([
@@ -215,7 +215,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         $this->expectException(UnableToMakeDecisionException::class);
         $this->expectExceptionMessage(
             'Decision "<no-name>" of type "EonX\EasyDecision\Decisions\ValueDecision": ' .
-            'Expression language not set, to use it in your rules you must set it on the decision instance'
+            'Expression language not set, to use it in your rules you must set it on the decision instance',
         );
 
         $kernel = new KernelStub([

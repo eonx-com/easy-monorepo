@@ -30,7 +30,7 @@ class MessageSerializer implements SerializerInterface
 
     public function __construct(
         private readonly MessageBodyDecoderInterface $bodyDecoder,
-        private readonly MessageObjectFactoryInterface $messageFactory
+        private readonly MessageObjectFactoryInterface $messageFactory,
     ) {
     }
 

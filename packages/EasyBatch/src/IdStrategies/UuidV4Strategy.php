@@ -10,7 +10,7 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 final class UuidV4Strategy implements BatchObjectIdStrategyInterface
 {
     public function __construct(
-        private readonly RandomGeneratorInterface $randomGenerator
+        private readonly RandomGeneratorInterface $randomGenerator,
     ) {
     }
 

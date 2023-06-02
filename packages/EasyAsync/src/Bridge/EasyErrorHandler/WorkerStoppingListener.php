@@ -11,7 +11,7 @@ use Illuminate\Queue\Events\WorkerStopping;
 final class WorkerStoppingListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler
+        private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
 
@@ -27,7 +27,7 @@ final class WorkerStoppingListener
         $exception = new WorkerStoppingException(\sprintf(
             'Worker stopping with status "%s"%s',
             $event->status,
-            $reason ? \sprintf(' (%s)', $reason) : ''
+            $reason ? \sprintf(' (%s)', $reason) : '',
         ));
 
         $this->errorHandler->report($exception);

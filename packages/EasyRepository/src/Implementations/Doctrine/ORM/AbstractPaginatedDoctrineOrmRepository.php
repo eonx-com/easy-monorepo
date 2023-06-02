@@ -42,13 +42,13 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?PaginationInterface $pagination = null
+        ?PaginationInterface $pagination = null,
     ): DoctrineOrmLengthAwarePaginator {
         return new DoctrineOrmLengthAwarePaginator(
             $pagination ?? $this->pagination,
             $this->manager,
             $from ?? $this->getEntityClass(),
-            $fromAlias ?? $this->getEntityAlias()
+            $fromAlias ?? $this->getEntityAlias(),
         );
     }
 }

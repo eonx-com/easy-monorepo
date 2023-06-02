@@ -63,7 +63,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
         $request = new Request();
         $request->setMethod($requestMethod);
         $contextBuilder = new SerializerContextBuilder(
-            $this->mockDecoratedSerializerContextBuilder($contextFromDecorated)
+            $this->mockDecoratedSerializerContextBuilder($contextFromDecorated),
         );
 
         $context = $contextBuilder->createFromRequest($request, true);
@@ -78,7 +78,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      * @return \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
      */
     private function mockDecoratedSerializerContextBuilder(
-        array $contextFromDecorated
+        array $contextFromDecorated,
     ): SerializerContextBuilderInterface {
         /** @var \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface $decorated */
         $decorated = $this->mock(
@@ -88,7 +88,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
                     ->shouldReceive('createFromRequest')
                     ->once()
                     ->andReturn($contextFromDecorated);
-            }
+            },
         );
 
         return $decorated;

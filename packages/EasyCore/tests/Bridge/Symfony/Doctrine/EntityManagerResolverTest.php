@@ -24,7 +24,7 @@ final class EntityManagerResolverTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturn($entityManager);
-            }
+            },
         );
         $managerResolver = new EntityManagerResolver($managerRegistry);
 

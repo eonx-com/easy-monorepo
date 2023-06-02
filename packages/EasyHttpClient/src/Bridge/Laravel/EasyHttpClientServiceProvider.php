@@ -52,7 +52,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
      */
     protected static function instantiateClient(
         Container $app,
-        ?HttpClientInterface $client = null
+        ?HttpClientInterface $client = null,
     ): HttpClientInterface {
         /** @var iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers */
         $modifiers = $app->tagged(BridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER);
@@ -62,7 +62,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
             $client,
             $modifiers,
             \config('easy-http-client.modifiers.enabled'),
-            \config('easy-http-client.modifiers.whitelist')
+            \config('easy-http-client.modifiers.whitelist'),
         );
     }
 
@@ -78,7 +78,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
             EasyWebhookBridgeConstantsInterface::HTTP_CLIENT,
             static function (HttpClientInterface $decorated, Container $app): HttpClientInterface {
                 return self::instantiateClient($app, $decorated);
-            }
+            },
         );
     }
 
@@ -88,7 +88,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
             BridgeConstantsInterface::SERVICE_HTTP_CLIENT,
             static function (Container $app): HttpClientInterface {
                 return self::instantiateClient($app);
-            }
+            },
         );
     }
 }

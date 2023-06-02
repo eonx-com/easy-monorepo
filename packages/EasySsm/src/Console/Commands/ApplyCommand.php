@@ -34,7 +34,7 @@ final class ApplyCommand extends AbstractCommand
         if ($this->hashChecker->checkHash($awsProfile, $remote) === false) {
             $style->warning(\sprintf(
                 'Your local parameters for "%s" are out of sync, use pull command',
-                $awsProfile
+                $awsProfile,
             ));
 
             return 1;

@@ -49,7 +49,7 @@ final class EasyAsyncExtension extends Extension
         // Messenger Middleware auto register
         $this->container->setParameter(
             BridgeConstantsInterface::PARAM_MESSENGER_MIDDLEWARE_AUTO_REGISTER,
-            $this->config['messenger_middleware_auto_register'] ?? true
+            $this->config['messenger_middleware_auto_register'] ?? true,
         );
 
         $this->loader->load('messenger.php');
@@ -62,12 +62,12 @@ final class EasyAsyncExtension extends Extension
         if ($this->config['messenger_worker']['stop_on_messages_limit']['enabled'] ?? false) {
             $this->container->setParameter(
                 BridgeConstantsInterface::PARAM_MESSENGER_WORKER_STOP_MIN_MESSAGES,
-                $this->config['messenger_worker']['stop_on_messages_limit']['min_messages']
+                $this->config['messenger_worker']['stop_on_messages_limit']['min_messages'],
             );
 
             $this->container->setParameter(
                 BridgeConstantsInterface::PARAM_MESSENGER_WORKER_STOP_MAX_MESSAGES,
-                $this->config['messenger_worker']['stop_on_messages_limit']['max_messages']
+                $this->config['messenger_worker']['stop_on_messages_limit']['max_messages'],
             );
 
             $this->loader->load('messenger_stop_on_messages_limit.php');
@@ -77,12 +77,12 @@ final class EasyAsyncExtension extends Extension
         if ($this->config['messenger_worker']['stop_on_time_limit']['enabled'] ?? false) {
             $this->container->setParameter(
                 BridgeConstantsInterface::PARAM_MESSENGER_WORKER_STOP_MIN_TIME,
-                $this->config['messenger_worker']['stop_on_time_limit']['min_time']
+                $this->config['messenger_worker']['stop_on_time_limit']['min_time'],
             );
 
             $this->container->setParameter(
                 BridgeConstantsInterface::PARAM_MESSENGER_WORKER_STOP_MAX_TIME,
-                $this->config['messenger_worker']['stop_on_time_limit']['max_time']
+                $this->config['messenger_worker']['stop_on_time_limit']['max_time'],
             );
 
             $this->loader->load('messenger_stop_on_time_limit.php');

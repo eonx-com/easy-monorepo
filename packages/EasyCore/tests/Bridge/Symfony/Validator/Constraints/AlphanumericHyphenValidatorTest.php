@@ -96,7 +96,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
         $value = 'some-value';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AlphanumericHyphen"'
+            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\AlphanumericHyphen"',
         );
 
         $validator->validate($value, $constraint);
@@ -121,7 +121,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
         $validator = new AlphanumericHyphenValidator();
         $constraint = new AlphanumericHyphen();
         $violationBuilder = $this->mockConstraintViolationBuilder(
-            AlphanumericHyphen::INVALID_ALPHANUMERIC_HYPHEN_ERROR
+            AlphanumericHyphen::INVALID_ALPHANUMERIC_HYPHEN_ERROR,
         );
         $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
         $validator->initialize($context);
@@ -151,7 +151,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturnSelf();
-            }
+            },
         );
 
         return $violationBuilder;
@@ -159,12 +159,12 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder
+            $violationBuilder,
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

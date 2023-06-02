@@ -83,16 +83,19 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     $app->make(LoggerInterface::class),
                     $app->make(TranslatorInterface::class),
                     (bool)\config('easy-error-handler.translate_internal_error_messages.enabled', false),
-                    (string)\config('easy-error-handler.translate_internal_error_messages.locale', self::DEFAULT_LOCALE)
+                    (string)\config(
+                        'easy-error-handler.translate_internal_error_messages.locale',
+                        self::DEFAULT_LOCALE,
+                    ),
                 );
-            }
+            },
         );
 
         $this->app->singleton(
             ErrorLogLevelResolverInterface::class,
             static function (): ErrorLogLevelResolverInterface {
                 return new ErrorLogLevelResolver(\config('easy-error-handler.logger_exception_log_levels'));
-            }
+            },
         );
 
         $this->app->singleton(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);
@@ -102,9 +105,9 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static function (Container $app): VerboseStrategyInterface {
                 return new ChainVerboseStrategy(
                     $app->tagged(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER),
-                    (bool)\config('easy-error-handler.use_extended_response', false)
+                    (bool)\config('easy-error-handler.use_extended_response', false),
                 );
-            }
+            },
         );
 
         $this->app->singleton(
@@ -115,9 +118,9 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     $app->tagged(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER),
                     $app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
                     $app->make(VerboseStrategyInterface::class),
-                    \config('easy-error-handler.ignored_exceptions')
+                    \config('easy-error-handler.ignored_exceptions'),
                 );
-            }
+            },
         );
 
         $this->app->singleton(
@@ -125,9 +128,9 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static function (Container $app): IlluminateExceptionHandlerInterface {
                 return new ExceptionHandler(
                     $app->make(ErrorHandlerInterface::class),
-                    $app->make(TranslatorInterface::class)
+                    $app->make(TranslatorInterface::class),
                 );
-            }
+            },
         );
 
         $this->app->singleton(TranslatorInterface::class, static function (Container $app): TranslatorInterface {
@@ -141,13 +144,13 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     return new DefaultErrorResponseBuilderProvider(
                         $app->make(ErrorDetailsResolverInterface::class),
                         $app->make(TranslatorInterface::class),
-                        \config('easy-error-handler.response')
+                        \config('easy-error-handler.response'),
                     );
-                }
+                },
             );
             $this->app->tag(
                 DefaultErrorResponseBuilderProvider::class,
-                [BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER]
+                [BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER],
             );
         }
 
@@ -159,13 +162,13 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                         $app->make(ErrorDetailsResolverInterface::class),
                         $app->make(ErrorLogLevelResolverInterface::class),
                         $app->make(LoggerInterface::class),
-                        \config('easy-error-handler.logger_ignored_exceptions')
+                        \config('easy-error-handler.logger_ignored_exceptions'),
                     );
-                }
+                },
             );
             $this->app->tag(
                 DefaultErrorReporterProvider::class,
-                [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]
+                [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER],
             );
         }
 
@@ -174,9 +177,9 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static function (): BugsnagIgnoreExceptionsResolverInterface {
                 return new DefaultBugsnagIgnoreExceptionsResolver(
                     \config('easy-error-handler.bugsnag_ignored_exceptions'),
-                    false
+                    false,
                 );
-            }
+            },
         );
 
         if ((bool)\config('easy-error-handler.bugsnag_enabled', true) && \class_exists(Client::class)) {
@@ -187,13 +190,13 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                         $app->make(Client::class),
                         $app->make(BugsnagIgnoreExceptionsResolverInterface::class),
                         $app->make(ErrorLogLevelResolverInterface::class),
-                        \config('easy-error-handler.bugsnag_threshold')
+                        \config('easy-error-handler.bugsnag_threshold'),
                     );
-                }
+                },
             );
             $this->app->tag(
                 BugsnagErrorReporterProvider::class,
-                [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER]
+                [BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER],
             );
 
             foreach (self::BUGSNAG_CONFIGURATORS as $configurator) {
@@ -210,14 +213,14 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             ErrorCodesFromInterfaceProvider::class,
             static function (): ErrorCodesProviderInterface {
                 return new ErrorCodesFromInterfaceProvider(\config('easy-error-handler.error_codes_interface'));
-            }
+            },
         );
 
         $this->app->singleton(
             ErrorCodesFromEnumProvider::class,
             static function (Application $app): ErrorCodesProviderInterface {
                 return new ErrorCodesFromEnumProvider($app->basePath('app'));
-            }
+            },
         );
 
         $this->app->singleton(
@@ -230,7 +233,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                         $app->make(ErrorCodesFromEnumProvider::class),
                     ],
                 );
-            }
+            },
         );
 
         $this->registerCommands();

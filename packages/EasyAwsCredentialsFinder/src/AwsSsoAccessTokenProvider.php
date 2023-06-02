@@ -53,7 +53,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
         if ($this->filesystem->exists($filename) === false) {
             throw new SsoAccessTokenNotFoundException(\sprintf(
                 'No SSO access token cache file found for startUrl "%s". Please run "aws sso login" first.',
-                $ssoConfigs['sso_start_url'] ?? ''
+                $ssoConfigs['sso_start_url'] ?? '',
             ));
         }
 
@@ -65,7 +65,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
 
         if ($expiration->isPast()) {
             throw new InvalidCachedSsoAccessTokenContentsException(
-                'Cached SSO access token found but expired. Please run "aws sso login" first.'
+                'Cached SSO access token found but expired. Please run "aws sso login" first.',
             );
         }
 
@@ -73,7 +73,7 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
             $cachedAccessToken['accessToken'],
             $expiration,
             $cachedAccessToken['region'],
-            $cachedAccessToken['startUrl']
+            $cachedAccessToken['startUrl'],
         );
     }
 
@@ -103,14 +103,14 @@ final class AwsSsoAccessTokenProvider implements AwsSsoAccessTokenProviderInterf
         if (empty($missing) === false) {
             throw new InvalidCachedSsoAccessTokenContentsException(\sprintf(
                 'Cached SSO access token contents invalid. Missing ["%s"].',
-                \implode('","', $missing)
+                \implode('","', $missing),
             ));
         }
 
         if (empty($notEqual) === false) {
             throw new InvalidCachedSsoAccessTokenContentsException(\sprintf(
                 'Cached SSO access token contents invalid. Not matching config values ["%s"].',
-                \implode('","', $notEqual)
+                \implode('","', $notEqual),
             ));
         }
     }

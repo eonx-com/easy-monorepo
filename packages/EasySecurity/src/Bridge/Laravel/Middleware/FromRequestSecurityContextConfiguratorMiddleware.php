@@ -36,7 +36,7 @@ final class FromRequestSecurityContextConfiguratorMiddleware
     {
         $this->securityContextResolver->setConfigurator(new FromRequestConfigurator(
             $request,
-            $this->configurators
+            $this->configurators,
         ));
 
         return $next($request);

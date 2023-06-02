@@ -20,7 +20,7 @@ final class DefaultStreamHandlerPass implements CompilerPassInterface
         }
 
         $handlerConfigProviders = $container->findTaggedServiceIds(
-            BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER
+            BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER,
         );
 
         // If at least one handler config provider, skip

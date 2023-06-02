@@ -52,13 +52,13 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
         $connections = $this->getParam(
             $container,
             BridgeConstantsInterface::PARAM_DOCTRINE_DBAL_CONNECTIONS,
-            ['default']
+            ['default'],
         );
 
         // Define parent definition for bugsnag sql logger
         $container->setDefinition(
             self::BUGSNAG_ABSTRACT_LOGGER,
-            (new Definition(SqlLogger::class, [new Reference(Client::class)]))->setAbstract(true)
+            (new Definition(SqlLogger::class, [new Reference(Client::class)]))->setAbstract(true),
         );
 
         foreach ($connections as $conn) {
@@ -70,7 +70,7 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
             if ($container->hasDefinition($configId) === false) {
                 throw new InvalidArgumentException(\sprintf(
                     'DBAL configuration for connection "%s" does not exist',
-                    $conn
+                    $conn,
                 ));
             }
 

@@ -43,7 +43,7 @@ final class PaginationProvider implements PaginationProviderInterface
 
         throw new NoPaginationResolverSetException(\sprintf(
             'No pagination resolver set on provider. Use %s::setResolver().',
-            PaginationProviderInterface::class
+            PaginationProviderInterface::class,
         ));
     }
 

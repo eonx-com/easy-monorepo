@@ -18,7 +18,7 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
 
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorRendererInterface $decorated
+        private readonly ErrorRendererInterface $decorated,
     ) {
     }
 
@@ -29,7 +29,7 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
         $flattenException->setAsString(\str_replace(
             $this->resolvePatterns($exception->getMessage()),
             $this->resolvePatterns($this->errorDetailsResolver->resolveInternalMessage($exception)),
-            $flattenException->getAsString()
+            $flattenException->getAsString(),
         ));
 
         return $flattenException;
@@ -42,7 +42,7 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
     {
         return \array_map(
             static fn (string $pattern): string => \sprintf($pattern, $value),
-            self::PATTERNS
+            self::PATTERNS,
         );
     }
 }

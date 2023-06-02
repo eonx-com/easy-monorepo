@@ -37,7 +37,7 @@ final class SsmClientTest extends AbstractTestCase
             new Diff(
                 [new SsmParameter('param', 'String', 'value')],
                 [new SsmParameter('param1', 'SecureString', 'value')],
-                [new SsmParameter('param2', 'String', 'value')]
+                [new SsmParameter('param2', 'String', 'value')],
             ),
             [
                 'put' => [

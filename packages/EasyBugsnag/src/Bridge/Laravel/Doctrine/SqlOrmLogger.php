@@ -28,7 +28,7 @@ final class SqlOrmLogger implements Logger
             $this->client,
             $em->getConnection(),
             null,
-            $configuration->getSQLLogger()
+            $configuration->getSQLLogger(),
         ));
     }
 }

@@ -149,7 +149,7 @@ class AbstractTestCase extends TestCase
                 $content = \json_decode((string)$response->getContent(), true);
                 self::assertMatchesRegularExpression(
                     '/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/',
-                    $content['time']
+                    $content['time'],
                 );
             },
             'config' => null,

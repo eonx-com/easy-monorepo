@@ -36,7 +36,7 @@ final class SsmParametersDumper implements SsmParametersDumperInterface
             $this->unflatten($parameters),
             \PHP_INT_MAX,
             4,
-            Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK
+            Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK,
         ));
     }
 

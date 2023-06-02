@@ -49,7 +49,7 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractTestCase
                         ->once()
                         ->withNoArgs()
                         ->andReturn(new Configuration());
-                }
+                },
             );
 
             $queryBuilder

@@ -28,7 +28,7 @@ final class BatchItemExceptionHandler
     public function __construct(
         private readonly BatchItemTransformer $batchItemTransformer,
         private readonly ContainerInterface $container,
-        private readonly string $emergencyTransportName = 'async'
+        private readonly string $emergencyTransportName = 'async',
     ) {
     }
 
@@ -53,7 +53,7 @@ final class BatchItemExceptionHandler
             throw new UnrecoverableMessageHandlingException(
                 $throwable->getMessage(),
                 $throwable->getCode(),
-                $throwable
+                $throwable,
             );
         }
 
@@ -71,7 +71,7 @@ final class BatchItemExceptionHandler
      */
     private function doHandleEmergencyException(
         EasyBatchEmergencyExceptionInterface $exception,
-        Envelope $envelope
+        Envelope $envelope,
     ): Envelope {
         $message = null;
         $errorDetails = $exception->getPrevious()
@@ -88,7 +88,7 @@ final class BatchItemExceptionHandler
             $message = new UpdateBatchItemMessage(
                 $batchItem->getIdOrFail(),
                 $this->batchItemTransformer->transformToArray($batchItem),
-                $errorDetails
+                $errorDetails,
             );
         }
 

@@ -45,14 +45,14 @@ final class DumpEnvCommand extends AbstractCommand
                 'f',
                 InputOption::VALUE_OPTIONAL,
                 'File name to generate',
-                \sprintf('%s/.env.local.php', \getcwd())
+                \sprintf('%s/.env.local.php', \getcwd()),
             )
             ->addOption(
                 'excludes',
                 'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Env vars to exclude from dump',
-                []
+                [],
             );
     }
 

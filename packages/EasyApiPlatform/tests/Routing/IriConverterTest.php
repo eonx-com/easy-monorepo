@@ -57,7 +57,7 @@ final class IriConverterTest extends AbstractTestCase
                 $mock->expects('getIriFromResource')
                     ->with($resource, UrlGeneratorInterface::ABS_PATH, null, [])
                     ->andReturn('some-iri');
-            }
+            },
         );
         $iriConverter = new IriConverter($decoratedIriConverter);
 

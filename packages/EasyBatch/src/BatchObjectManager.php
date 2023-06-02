@@ -30,7 +30,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         private readonly BatchItemDispatcher $batchItemDispatcher,
         private readonly BatchItemIterator $batchItemIterator,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -50,7 +50,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
             throw new BatchObjectNotSupportedException(\sprintf(
                 'Cannot approve BatchObject of type "%s" with status "%s"',
                 \get_class($batchObject),
-                $batchObject->getStatus()
+                $batchObject->getStatus(),
             ));
         }
 
@@ -104,7 +104,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
             $this->batchProcessor->processBatchForBatchItem(
                 $this,
                 $this->batchRepository->findOrFail($batchObject->getBatchId()),
-                $batchObject
+                $batchObject,
             );
 
             return $batchObject;
@@ -113,7 +113,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         throw new BatchObjectNotSupportedException(\sprintf(
             'BatchObject of type "%s" not supported. Supported types: ["%s"]',
             \get_class($batchObject),
-            \implode('", "', [BatchInterface::class, BatchItemInterface::class])
+            \implode('", "', [BatchInterface::class, BatchItemInterface::class]),
         ));
     }
 
@@ -133,7 +133,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         if ($batchObject->isCompleted()) {
             throw new BatchObjectInvalidException(\sprintf(
                 'Cannot cancel already completed batch object "%s"',
-                $batchObject->getId()
+                $batchObject->getId(),
             ));
         }
 
@@ -173,7 +173,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
                 $iteratorConfig = IteratorConfig::create(
                     $batchObject->getBatchId(),
                     $this->getCancelBatchItemClosure(),
-                    $batchObject->getName()
+                    $batchObject->getName(),
                 )->forCancel();
 
                 $this->batchItemIterator->iterateThroughItems($iteratorConfig);
@@ -188,7 +188,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
             $this->batchProcessor->processBatchForBatchItem(
                 $this,
                 $this->batchRepository->findOrFail($batchObject->getBatchId()),
-                $batchObject
+                $batchObject,
             );
 
             return $batchObject;
@@ -197,7 +197,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         throw new BatchObjectNotSupportedException(\sprintf(
             'BatchObject of type "%s" not supported. Supported types: ["%s"]',
             \get_class($batchObject),
-            \implode('", "', [BatchInterface::class, BatchItemInterface::class])
+            \implode('", "', [BatchInterface::class, BatchItemInterface::class]),
         ));
     }
 
@@ -229,7 +229,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
     {
         return $this->batchProcessor->restoreState(
             $this,
-            $this->batchRepository->findOrFail($batchId)
+            $this->batchRepository->findOrFail($batchId),
         );
     }
 

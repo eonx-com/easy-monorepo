@@ -26,7 +26,7 @@ final class IntegerNumberType extends DoctrineBigIntType
         throw ConversionException::conversionFailedInvalidType(
             $value,
             $this->getName(),
-            ['null', Number::class]
+            ['null', Number::class],
         );
     }
 

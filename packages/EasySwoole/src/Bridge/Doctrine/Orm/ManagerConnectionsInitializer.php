@@ -15,7 +15,7 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
         private readonly LoggerInterface $logger = new NullLogger(),
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }
@@ -38,7 +38,7 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
                 } catch (\Throwable $throwable) {
                     $this->logger->debug(\sprintf(
                         'Close DB Connection because compromised: %s',
-                        $throwable->getMessage()
+                        $throwable->getMessage(),
                     ));
 
                     // If connection is compromised, simply close it, so it can be re-opened.

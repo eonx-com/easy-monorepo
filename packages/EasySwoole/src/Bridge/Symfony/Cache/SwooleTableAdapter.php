@@ -21,14 +21,14 @@ final class SwooleTableAdapter extends AbstractAdapter
     public function __construct(
         private readonly string $tableName,
         ?int $defaultLifetime = null,
-        ?MarshallerInterface $marshaller = null
+        ?MarshallerInterface $marshaller = null,
     ) {
         $this->marshaller = $marshaller ?? new DefaultMarshaller();
 
         if (CacheTableHelper::exists($this->tableName) === false) {
             throw new InvalidArgumentException(\sprintf(
                 'SwooleTable "%s" does not exist, make sure you have set it in your easy_swoole config',
-                $this->tableName
+                $this->tableName,
             ));
         }
 

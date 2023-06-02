@@ -114,7 +114,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
             $this->getIdStrategy(),
             new BatchItemTransformer(new MessageSerializer()),
             $this->getDoctrineDbalConnection(),
-            BatchItemRepositoryInterface::DEFAULT_TABLE
+            BatchItemRepositoryInterface::DEFAULT_TABLE,
         );
     }
 }

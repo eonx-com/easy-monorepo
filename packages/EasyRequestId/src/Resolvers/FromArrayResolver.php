@@ -34,10 +34,10 @@ final class FromArrayResolver
     {
         return [
             RequestIdServiceInterface::KEY_RESOLVED_CORRELATION_ID => $this->getIdValue(
-                $this->requestIdService->getCorrelationIdHeaderName()
+                $this->requestIdService->getCorrelationIdHeaderName(),
             ),
             RequestIdServiceInterface::KEY_RESOLVED_REQUEST_ID => $this->getIdValue(
-                $this->requestIdService->getRequestIdHeaderName()
+                $this->requestIdService->getRequestIdHeaderName(),
             ),
         ];
     }

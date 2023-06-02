@@ -24,7 +24,7 @@ final class LoggerErrorReporter extends AbstractErrorReporter
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private readonly LoggerInterface $logger,
         ?array $ignoreExceptions = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->ignoreExceptions = $ignoreExceptions ?? [];
 
@@ -42,7 +42,7 @@ final class LoggerErrorReporter extends AbstractErrorReporter
         $this->logger->log(
             $this->errorLogLevelResolver->getLogLevel($throwable),
             $this->errorDetailsResolver->resolveInternalMessage($throwable),
-            ['exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable)]
+            ['exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable)],
         );
     }
 }

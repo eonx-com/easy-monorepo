@@ -29,13 +29,13 @@ final class AnalyzeErrorCodesCommand extends Command
 
         $this->table(
             ['Error code group', 'Next error code to use'],
-            $errorCodesDto->getNextGroupedErrorCodesAsArray()
+            $errorCodesDto->getNextGroupedErrorCodesAsArray(),
         );
 
         $this->newLine();
         $this->info(\sprintf(
             'The error code for the new group is %s.',
-            $errorCodesDto->getNextGroupErrorCode()
+            $errorCodesDto->getNextGroupErrorCode(),
         ));
         $this->newLine();
     }

@@ -15,7 +15,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
      */
     public function __construct(
         private readonly int $categorySize,
-        private readonly array $errorCodesProviders
+        private readonly array $errorCodesProviders,
     ) {
     }
 
@@ -49,7 +49,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
         foreach ($groupedErrorCodes as $errorCodes) {
             $nextGroupedErrorCodes[] = new ErrorCodeCategoryDto(
                 categoryName: $this->determineCategoryName($errorCodes),
-                nextErrorCodeToUse: $this->calculateMaxCategoryCode($errorCodes) + 1
+                nextErrorCodeToUse: $this->calculateMaxCategoryCode($errorCodes) + 1,
             );
         }
 
@@ -57,13 +57,13 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             $nextGroupedErrorCodes,
             static fn (
                 ErrorCodeCategoryDto $errorCategory1,
-                ErrorCodeCategoryDto $errorCategory2
+                ErrorCodeCategoryDto $errorCategory2,
             ) => $errorCategory1->getCategoryName() <=> $errorCategory2->getCategoryName()
         );
 
         return new ErrorCodesDto(
             nextGroupErrorCode: $nextGroupErrorCode,
-            nextGroupedErrorCodes: $nextGroupedErrorCodes
+            nextGroupedErrorCodes: $nextGroupedErrorCodes,
         );
     }
 

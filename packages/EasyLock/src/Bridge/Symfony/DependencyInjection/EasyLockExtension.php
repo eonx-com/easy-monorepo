@@ -30,7 +30,7 @@ final class EasyLockExtension extends Extension
         if (\class_exists(MessengerPass::class)) {
             $container->setParameter(
                 BridgeConstantsInterface::PARAM_MESSENGER_MIDDLEWARE_AUTO_REGISTER,
-                $config['messenger_middleware_auto_register'] ?? true
+                $config['messenger_middleware_auto_register'] ?? true,
             );
 
             $loader->load('messenger_middleware.php');

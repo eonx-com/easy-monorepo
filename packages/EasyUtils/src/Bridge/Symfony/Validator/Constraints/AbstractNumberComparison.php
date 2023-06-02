@@ -21,7 +21,7 @@ abstract class AbstractNumberComparison extends AbstractComparison
         ?array $options = null,
         ?bool $isMoney = null,
         ?string $message = null,
-        ?string $propertyPath = null
+        ?string $propertyPath = null,
     ) {
         $this->isMoney = $isMoney ?? true;
 

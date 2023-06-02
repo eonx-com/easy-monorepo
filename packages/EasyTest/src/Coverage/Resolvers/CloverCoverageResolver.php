@@ -36,7 +36,7 @@ final class CloverCoverageResolver implements CoverageResolverInterface
         } catch (Exception $e) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                static::class,
             ));
         }
 
@@ -67,14 +67,14 @@ final class CloverCoverageResolver implements CoverageResolverInterface
         if ($attr === null) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                static::class,
             ));
         }
 
         if (isset($attr[$attributeName]) === false) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                static::class,
             ));
         }
 

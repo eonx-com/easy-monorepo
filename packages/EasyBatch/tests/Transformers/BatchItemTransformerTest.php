@@ -57,7 +57,7 @@ final class BatchItemTransformerTest extends AbstractTestCase
     {
         $keyResolver = new SimpleEncryptionKeyResolver(
             EncryptorInterface::DEFAULT_KEY_NAME,
-            'TwzQsKkBcVlYYRQDvwgiGZemFVbpNiCr'
+            'TwzQsKkBcVlYYRQDvwgiGZemFVbpNiCr',
         );
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, [$keyResolver]);

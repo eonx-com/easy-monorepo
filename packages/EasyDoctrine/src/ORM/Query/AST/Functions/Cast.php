@@ -30,7 +30,7 @@ final class Cast extends FunctionNode
         return \sprintf(
             'CAST(%s AS %s)',
             $sqlWalker->walkPathExpression($this->expression),
-            $this->type->value
+            $this->type->value,
         );
     }
 

@@ -27,7 +27,7 @@ final class PaginationFromRequestMiddleware
     {
         $resolver = new FromHttpFoundationRequestResolver(
             $this->paginationProvider->getPaginationConfig(),
-            $request
+            $request,
         );
 
         $this->paginationProvider->setResolver($resolver);

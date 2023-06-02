@@ -40,7 +40,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
         ?JwkFetcherInterface $jwkFetcher = null,
         ?array $allowedAlgos = null,
         private readonly ?int $leeway = null,
-        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO
+        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
     ) {
         $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
         $this->allowedAlgos = $allowedAlgos ?? [];
@@ -78,7 +78,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
             throw new InvalidJwtException(\sprintf(
                 'Invalid audience "%s", expected "%s"',
                 $audience,
-                $this->userPoolConfig->getAppClientId()
+                $this->userPoolConfig->getAppClientId(),
             ));
         }
 
@@ -88,7 +88,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
             throw new InvalidJwtException(\sprintf(
                 'Invalid issuer "%s", expected "%s"',
                 $issuer,
-                $this->userPoolConfig->getIssuingUrl()
+                $this->userPoolConfig->getIssuingUrl(),
             ));
         }
 

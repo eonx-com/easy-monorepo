@@ -47,7 +47,7 @@ final class JsonbTypeTest extends AbstractTestCase
                     ],
                     'postgresValue' => '{"property":"value"}',
                 ],
-            ]
+            ],
         );
     }
 
@@ -136,7 +136,7 @@ final class JsonbTypeTest extends AbstractTestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert PHP type 'string' to 'jsonb', as an " .
-            "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization"
+            "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization",
         );
 
         $type->convertToDatabaseValue($value, $platform);

@@ -40,7 +40,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
     {
         $this->keyFactory = $keyFactory;
         $this->keyResolvers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($keyResolvers, EncryptionKeyResolverInterface::class)
+            CollectorHelper::filterByClass($keyResolvers, EncryptionKeyResolverInterface::class),
         );
     }
 
@@ -62,7 +62,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
             throw new CouldNotProvideEncryptionKeyException(
                 \sprintf('Could not provide encryption key: %s', $throwable->getMessage()),
                 $throwable->getCode(),
-                $throwable
+                $throwable,
             );
         } finally {
             unset($this->resolving[$keyName]);
@@ -91,7 +91,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
 
         throw new CircularReferenceDetectedException(\sprintf(
             'Circular reference detected for key "%s"',
-            $keyName
+            $keyName,
         ));
     }
 

@@ -35,7 +35,7 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         ?array $keysToMask = null,
         ?string $maskPattern = null,
         ?iterable $objectTransformers = null,
-        ?iterable $stringSanitizers = null
+        ?iterable $stringSanitizers = null,
     ) {
         $defaultKeysToMask = ($useDefaultKeysToMask ?? true) ? self::DEFAULT_KEYS_TO_MASK : [];
         foreach (\array_map(fn (string $key) => \mb_strtolower($key), $keysToMask ?? []) as $keyToMask) {
@@ -47,10 +47,10 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         $this->keysToMask = $defaultKeysToMask;
         $this->maskPattern = $maskPattern ?? self::DEFAULT_MASK_PATTERN;
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
+            CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class),
         );
         $this->stringSanitizers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($stringSanitizers ?? [], StringSanitizerInterface::class)
+            CollectorHelper::filterByClass($stringSanitizers ?? [], StringSanitizerInterface::class),
         );
     }
 
