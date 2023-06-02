@@ -243,13 +243,13 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
         - message: '#Method EonX\\EasySwoole\\Helpers\\SwooleTableHelper\:\:create\(\) has invalid return type OpenSwoole\\Table#'
-          path: packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 
         - message: '#PHPDoc tag @var for variable \$table contains unknown class OpenSwoole\\Table#'
-          path: packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
-          path: packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
