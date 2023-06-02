@@ -28,6 +28,7 @@ use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInClosureUseSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInClosureUseSniff;
 use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalConstantsSniff;
@@ -234,7 +235,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInClosureUseSniff::class, [
         'onlySingleLine' => true,
     ]);
-    //    $ecsConfig->rule(RequireTrailingCommaInClosureUseSniff::class);
+    $ecsConfig->rule(RequireTrailingCommaInClosureUseSniff::class);
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInDeclarationSniff::class, [
         'onlySingleLine' => true,
     ]);
