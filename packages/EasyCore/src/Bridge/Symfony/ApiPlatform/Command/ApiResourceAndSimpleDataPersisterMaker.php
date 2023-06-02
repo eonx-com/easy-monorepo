@@ -35,21 +35,21 @@ final class ApiResourceAndSimpleDataPersisterMaker extends AbstractMaker
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
-                'The name of the ApiResource class (e.g. <fg=yellow>EwalletTransfer</>)',
+                'The name of the ApiResource class (e.g. <fg=yellow>EwalletTransfer</>)'
             )
             ->addOption(
                 'resource-namespace',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The namespace for the ApiResource class',
-                'Api\\Resource\\',
+                'Api\\Resource\\'
             )
             ->addOption(
                 'persister-namespace',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The namespace for the SimpleDataPersister class',
-                'Api\\DataPersister\\',
+                'Api\\DataPersister\\'
             );
     }
 

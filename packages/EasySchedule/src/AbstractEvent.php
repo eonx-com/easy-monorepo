@@ -319,7 +319,7 @@ abstract class AbstractEvent implements EventInterface
             return Carbon::now($this->timezone)->between(
                 Carbon::parse($startTime, $this->timezone),
                 Carbon::parse($endTime, $this->timezone),
-                true,
+                true
             );
         };
     }

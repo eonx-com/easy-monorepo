@@ -22,6 +22,6 @@ interface SearchServiceInterface
         string $index,
         ?array $body = null,
         ?array $accessTokens = null,
-        ?array $options = null,
+        ?array $options = null
     ): array;
 }

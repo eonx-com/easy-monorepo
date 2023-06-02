@@ -50,7 +50,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        JwtInterface $token,
+        JwtInterface $token
     ): void;
 
     /**

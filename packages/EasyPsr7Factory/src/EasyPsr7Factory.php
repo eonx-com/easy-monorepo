@@ -29,7 +29,7 @@ final class EasyPsr7Factory implements EasyPsr7FactoryInterface
 
     public function __construct(
         ?HttpFoundationFactoryInterface $httpFoundation = null,
-        ?HttpMessageFactoryInterface $httpMessage = null,
+        ?HttpMessageFactoryInterface $httpMessage = null
     ) {
         $this->httpFoundation = $httpFoundation ?? new HttpFoundationFactory();
         $this->httpMessage = $httpMessage ?? $this->getDefaultHttpMessageFactory();

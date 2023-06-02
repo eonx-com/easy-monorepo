@@ -37,7 +37,7 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
         if (empty($middlewareList)) {
             throw new EmptyMiddlewareListException(\sprintf(
                 'In %s, given middleware list is empty',
-                static::class,
+                static::class
             ));
         }
 

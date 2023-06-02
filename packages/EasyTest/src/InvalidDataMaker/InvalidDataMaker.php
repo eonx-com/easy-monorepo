@@ -50,7 +50,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ limit }}' => $minElements,
             ],
-            $minElements,
+            $minElements
         );
 
         yield from $this->create("{$this->property} has too few elements in the collection", $value, $message);
@@ -67,7 +67,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ limit }}' => $maxElements,
             ],
-            $maxElements,
+            $maxElements
         );
 
         yield from $this->create("{$this->property} has too many elements in the collection", $value, $message);
@@ -84,7 +84,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ limit }}' => $minElements,
             ],
-            $minElements,
+            $minElements
         );
 
         yield from $this->create("{$this->property} has too few elements in the array", $value, $message);
@@ -103,7 +103,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ limit }}' => $maxElements,
             ],
-            $maxElements,
+            $maxElements
         );
 
         yield from $this->create("{$this->property} has too many elements in the array", $value, $message);
@@ -136,7 +136,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new GreaterThanOrEqual(['value' => 'now']))->message,
             [
                 '{{ compared_value }}' => \sprintf('"%s"', $this->relatedPropertyValue),
-            ],
+            ]
         );
 
         yield from $this->create("{$this->property} has less datetime than {$this->relatedProperty}", $value, $message);
@@ -152,7 +152,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new GreaterThan(['value' => 'now']))->message,
             [
                 '{{ compared_value }}' => 'now',
-            ],
+            ]
         );
 
         $value = $dateTime->clone()
@@ -182,7 +182,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new GreaterThan(['value' => 'now']))->message,
             [
                 '{{ compared_value }}' => \sprintf('"%s"', $this->relatedPropertyValue),
-            ],
+            ]
         );
 
         yield from $this->create("{$this->property} has less datetime than {$this->relatedProperty}", $value, $message);
@@ -214,7 +214,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new LessThanOrEqual(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => $lessThanOrEqualValue,
-            ],
+            ]
         );
 
         yield from $this->create("{$this->property} has greater value", $value, $message);
@@ -230,7 +230,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new LessThan(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => $lessThanValue,
-            ],
+            ]
         );
 
         yield from $this->create("{$this->property} has greater value", $value, $message);
@@ -240,7 +240,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new LessThan(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => $lessThanValue,
-            ],
+            ]
         );
 
         yield from $this->create("{$this->property} has equal value", $value, $message);
@@ -367,7 +367,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
                 'min' => $exactLength,
             ]))->exactMessage,
             ['{{ limit }}' => $exactLength],
-            $exactLength,
+            $exactLength
         );
 
         $value = \str_pad('1', $exactLength + 1, '1');
@@ -401,7 +401,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ minPrecision }}' => $minPrecision,
                 '{{ maxPrecision }}' => $maxPrecision,
-            ],
+            ]
         );
 
         $value = ($integerPart ?? 0) + \round(1 / 3, $maxPrecision + 1);
@@ -485,7 +485,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new Type(['type' => 'digit']))->message,
             [
                 '{{ type }}' => 'digit',
-            ],
+            ]
         );
 
         yield from $this->create("{$this->property} has non-digit symbols", $value, $message);
@@ -511,13 +511,13 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             (new EqualTo(['value' => $value]))->message,
             [
                 '{{ compared_value }}' => \sprintf('"%s"', $value),
-            ],
+            ]
         );
 
         yield from $this->create(
             "{$this->property} is not equal to {$value}",
             'not-equal-to' . $value,
-            $message,
+            $message
         );
     }
 
@@ -531,7 +531,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ min }}' => $min,
                 '{{ max }}' => $max,
-            ],
+            ]
         );
 
         $value = $max + 1;
@@ -554,7 +554,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ limit }}' => $maxLength,
             ],
-            $maxLength,
+            $maxLength
         );
 
         yield from $this->create("{$this->property} is too long", $value, $message);
@@ -571,7 +571,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
             [
                 '{{ limit }}' => $minLength,
             ],
-            $minLength,
+            $minLength
         );
 
         yield from $this->create("{$this->property} is too short", $value, $message);

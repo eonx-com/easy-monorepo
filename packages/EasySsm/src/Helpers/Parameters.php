@@ -103,7 +103,7 @@ final class Parameters
             $array[] = new SsmParameter(
                 \str_replace($path, '', $parameter->getName()),
                 $parameter->getType(),
-                $parameter->getValue(),
+                $parameter->getValue()
             );
         }
 
@@ -139,7 +139,7 @@ final class Parameters
             $array[$parameter->getName()] = \sprintf(
                 'type: %s, value: %s',
                 $parameter->getType(),
-                $parameter->getValue(),
+                $parameter->getValue()
             );
         }
 

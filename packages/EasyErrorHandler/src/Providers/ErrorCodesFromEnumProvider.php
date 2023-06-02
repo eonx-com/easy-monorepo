@@ -20,7 +20,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
     private Parser $parser;
 
     public function __construct(
-        private readonly string $projectDir,
+        private readonly string $projectDir
     ) {
         $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
     }
@@ -40,7 +40,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
                 $splittedName = \preg_split(
                     pattern: '/([A-Z\d][a-z\d]+)/u',
                     subject: $case->name,
-                    flags: \PREG_SPLIT_DELIM_CAPTURE,
+                    flags: \PREG_SPLIT_DELIM_CAPTURE
                 );
                 if (\is_array($splittedName)) {
                     $errorCodes[] = new ErrorCodeDto(

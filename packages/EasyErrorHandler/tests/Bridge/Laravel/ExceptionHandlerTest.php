@@ -103,7 +103,7 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
         Exception $exception,
         callable $assertResponse,
         ?array $config = null,
-        ?array $translations = null,
+        ?array $translations = null
     ): void {
         $app = $this->getApplication($config);
         /** @var \Illuminate\Contracts\Debug\ExceptionHandler $handler */

@@ -16,7 +16,7 @@ final class AccessLogListener extends AbstractTerminateEventListener
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly HttpFoundationAccessLogFormatterInterface $accessLogFormatter,
-        private readonly array $doNotLogPaths,
+        private readonly array $doNotLogPaths
     ) {
     }
 
@@ -29,7 +29,7 @@ final class AccessLogListener extends AbstractTerminateEventListener
         }
 
         $this->logger->debug(
-            $this->accessLogFormatter->formatAccessLog($request, $event->getResponse()),
+            $this->accessLogFormatter->formatAccessLog($request, $event->getResponse())
         );
     }
 }

@@ -31,7 +31,7 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
             throw new CouldNotCreateEncryptionKeyException(
                 \sprintf('Could not create encryption key: %s', $throwable->getMessage()),
                 $throwable->getCode(),
-                $throwable,
+                $throwable
             );
         }
     }
@@ -62,7 +62,7 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
 
         throw new InvalidEncryptionKeyException(\sprintf(
             'Invalid key type "%s" given, supports only "array, string"',
-            \is_object($key) ? \get_class($key) : \gettype($key),
+            \is_object($key) ? \get_class($key) : \gettype($key)
         ));
     }
 
@@ -81,14 +81,14 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
         if (isset($key[self::OPTION_KEY], $key[self::OPTION_SALT])) {
             return KeyFactory::deriveEncryptionKey(
                 $this->getHiddenString((string)$key[self::OPTION_KEY]),
-                (string)$key[self::OPTION_SALT],
+                (string)$key[self::OPTION_SALT]
             );
         }
 
         if (isset($key[self::OPTION_SECRET_KEY], $key[self::OPTION_PUBLIC_KEY])) {
             return new EncryptionKeyPair(
                 new EncryptionSecretKey($this->getHiddenString($key[self::OPTION_SECRET_KEY])),
-                new EncryptionPublicKey($this->getHiddenString($key[self::OPTION_PUBLIC_KEY])),
+                new EncryptionPublicKey($this->getHiddenString($key[self::OPTION_PUBLIC_KEY]))
             );
         }
 

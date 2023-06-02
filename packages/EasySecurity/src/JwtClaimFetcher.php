@@ -56,7 +56,7 @@ final class JwtClaimFetcher implements JwtClaimFetcherInterface
                 '[%s] Exception while getting claim "%s": %s',
                 static::class,
                 $claim,
-                $exception->getMessage(),
+                $exception->getMessage()
             ));
 
             return $default;

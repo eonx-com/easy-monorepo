@@ -200,7 +200,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
         PaginationInterface $pagination,
         Model $model,
         callable $setup,
-        callable $assert,
+        callable $assert
     ): void {
         $connectionResolver = new ConnectionResolver([
             'default' => $this->getEloquentConnection(),

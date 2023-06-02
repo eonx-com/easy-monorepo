@@ -66,7 +66,7 @@ final class CustomPaginatorTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturn(0);
-            },
+            }
         );
 
         return new Paginator($doctrinePaginator);

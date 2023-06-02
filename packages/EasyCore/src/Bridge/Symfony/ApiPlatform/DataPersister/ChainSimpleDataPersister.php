@@ -46,7 +46,7 @@ final class ChainSimpleDataPersister implements ContextAwareDataPersisterInterfa
         ContainerInterface $container,
         EventDispatcherInterface $dispatcher,
         array $simplePersisters,
-        iterable $persisters,
+        iterable $persisters
     ) {
         $this->container = $container;
         $this->dispatcher = $dispatcher;

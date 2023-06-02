@@ -18,7 +18,7 @@ final class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterfa
      * @param class-string|null $errorCodesInterface
      */
     public function __construct(
-        private readonly ?string $errorCodesInterface = null,
+        private readonly ?string $errorCodesInterface = null
     ) {
     }
 
@@ -44,7 +44,7 @@ final class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterfa
                 originalName: $name,
                 errorCode: $code,
                 splitName: \explode('_', $name),
-                groupSeparator: '_',
+                groupSeparator: '_'
             );
         }
 

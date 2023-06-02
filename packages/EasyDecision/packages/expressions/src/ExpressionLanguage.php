@@ -158,7 +158,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
                 $function->getName(),
                 static function (): void {
                 },
-                $function->getEvaluator(),
+                $function->getEvaluator()
             );
         }
 
@@ -170,7 +170,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         if ($this->locked) {
             throw new ExpressionLanguageLockedException(\sprintf(
                 'Cannot call "%s" when expression language locked',
-                $method,
+                $method
             ));
         }
     }

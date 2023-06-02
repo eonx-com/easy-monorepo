@@ -79,7 +79,7 @@ abstract class AbstractCommand extends Command
         SsmParametersParserInterface $ssmParametersParser,
         ConsoleRenderer $consoleRenderer,
         DiffResolverInterface $diffResolver,
-        Parameters $parametersHelper,
+        Parameters $parametersHelper
     ) {
         $this->awsCredentials = $awsCredentials;
         $this->filesystem = $filesystem;

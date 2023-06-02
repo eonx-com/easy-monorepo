@@ -66,10 +66,10 @@ final class EasyNotificationServiceProvider extends ServiceProvider
                     $decorated,
                     \config(
                         'easy-notification.config_expires_after',
-                        BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER,
-                    ),
+                        BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER
+                    )
                 );
-            },
+            }
         );
 
         // SubscribeInfoFinder
@@ -83,9 +83,9 @@ final class EasyNotificationServiceProvider extends ServiceProvider
             static function (Container $app): NotificationClientInterface {
                 return new NotificationClient(
                     $app->tagged(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR),
-                    $app->make(QueueTransportFactoryInterface::class),
+                    $app->make(QueueTransportFactoryInterface::class)
                 );
-            },
+            }
         );
 
         // Configurators

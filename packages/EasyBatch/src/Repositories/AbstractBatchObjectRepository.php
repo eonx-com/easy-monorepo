@@ -25,7 +25,7 @@ abstract class AbstractBatchObjectRepository
         protected BatchObjectIdStrategyInterface $idStrategy,
         protected BatchObjectTransformerInterface $transformer,
         protected Connection $conn,
-        protected string $table,
+        protected string $table
     ) {
         // No body needed.
     }
@@ -69,7 +69,7 @@ abstract class AbstractBatchObjectRepository
                 '%s with id %s was not %s in database',
                 \get_class($batchObject),
                 $batchObjectId,
-                $batchObjectExists ? 'updated' : 'inserted',
+                $batchObjectExists ? 'updated' : 'inserted'
             ));
         }
     }

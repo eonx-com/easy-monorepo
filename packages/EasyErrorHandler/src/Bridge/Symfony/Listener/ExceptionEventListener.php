@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 final class ExceptionEventListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
+        private readonly ErrorHandlerInterface $errorHandler
     ) {
     }
 

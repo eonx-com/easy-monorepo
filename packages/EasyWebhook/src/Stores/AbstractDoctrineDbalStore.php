@@ -24,7 +24,7 @@ abstract class AbstractDoctrineDbalStore extends AbstractStore
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        string $table,
+        string $table
     ) {
         $this->conn = $conn;
         $this->table = $table;

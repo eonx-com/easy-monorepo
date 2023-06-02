@@ -29,7 +29,7 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
             BridgeConstantsInterface::SERVICE_CONNECTION,
             DriverManager::getConnection([
                 'url' => 'sqlite:///:memory:',
-            ]),
+            ])
         );
 
         return $this->app = $app;

@@ -33,7 +33,7 @@ class Product
         mappedBy: 'product',
         targetEntity: Tag::class,
         cascade: ['persist'],
-        orphanRemoval: true,
+        orphanRemoval: true
     )]
     private Collection $tags;
 

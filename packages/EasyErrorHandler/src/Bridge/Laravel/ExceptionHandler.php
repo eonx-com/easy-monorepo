@@ -20,7 +20,7 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
 {
     public function __construct(
         private readonly ErrorHandlerInterface $errorHandler,
-        private readonly TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator
     ) {
     }
 

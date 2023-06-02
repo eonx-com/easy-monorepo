@@ -32,7 +32,7 @@ final class EasyDoctrineExtension extends Extension
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES,
-            $config['deferred_dispatcher_entities'],
+            $config['deferred_dispatcher_entities']
         );
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

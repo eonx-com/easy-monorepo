@@ -19,12 +19,12 @@ trait ResolvesFromHttpFoundationRequest
         // Make sure all requests have IDs set
         $request->headers->set(
             $requestIdService->getCorrelationIdHeaderName(),
-            $requestIdService->getCorrelationId(),
+            $requestIdService->getCorrelationId()
         );
 
         $request->headers->set(
             $requestIdService->getRequestIdHeaderName(),
-            $requestIdService->getRequestId(),
+            $requestIdService->getRequestId()
         );
     }
 }

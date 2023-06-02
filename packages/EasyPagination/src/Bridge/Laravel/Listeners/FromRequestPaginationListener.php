@@ -24,7 +24,7 @@ final class FromRequestPaginationListener
     {
         $resolver = new FromHttpFoundationRequestResolver(
             $this->paginationProvider->getPaginationConfig(),
-            $event->request,
+            $event->request
         );
 
         $this->paginationProvider->setResolver($resolver);

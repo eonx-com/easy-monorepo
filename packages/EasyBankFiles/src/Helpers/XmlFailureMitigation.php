@@ -40,7 +40,7 @@ final class XmlFailureMitigation
                     // Sanity check only and unable to be tested.
                     throw new ImpossibleException(\sprintf(
                         'Regular expression match result should have 3 children, %d found.',
-                        \count($match),
+                        \count($match)
                     ));
                     // @codeCoverageIgnoreEnd
                 }

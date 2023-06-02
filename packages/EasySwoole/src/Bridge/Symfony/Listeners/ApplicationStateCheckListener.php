@@ -22,7 +22,7 @@ final class ApplicationStateCheckListener extends AbstractTerminateEventListener
     public function __construct(iterable $appStateCheckers)
     {
         $this->appStateCheckers = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($appStateCheckers, AppStateCheckerInterface::class),
+            CollectorHelper::filterByClass($appStateCheckers, AppStateCheckerInterface::class)
         );
     }
 

@@ -50,11 +50,11 @@ final class EasyLoggingServiceProvider extends ServiceProvider
                     ->setHandlerConfigProviders($handlerConfigProviders)
                     ->setLoggerConfigurators($app->tagged(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR))
                     ->setProcessorConfigProviders(
-                        $app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER),
+                        $app->tagged(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)
                     );
 
                 return $factory;
-            },
+            }
         );
 
         // Override default logger only if enabled
@@ -69,7 +69,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
                 $channel = $params[BridgeConstantsInterface::KEY_CHANNEL] ?? \config('easy-logging.default_channel');
 
                 return $app->make(LoggerFactoryInterface::class)->create($channel);
-            },
+            }
         );
 
         // Override default logger alias
@@ -85,12 +85,12 @@ final class EasyLoggingServiceProvider extends ServiceProvider
                     if (\interface_exists($sanitizerId) === false || $app->has($sanitizerId) === false) {
                         throw new EasyUtilsNotInstalledException(
                             'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed,
-                            and its service provider must be registered',
+                            and its service provider must be registered'
                         );
                     }
 
                     return new SensitiveDataSanitizerProcessor($app->make($sanitizerId));
-                },
+                }
             );
         }
     }

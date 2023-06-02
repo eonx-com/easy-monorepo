@@ -44,7 +44,7 @@ final class Pagination implements PaginationInterface
         int $perPage,
         ?string $pageAttribute = null,
         ?string $perPageAttribute = null,
-        ?string $url = null,
+        ?string $url = null
     ) {
         $this->page = $page;
         $this->perPage = $perPage;
@@ -58,7 +58,7 @@ final class Pagination implements PaginationInterface
         int $perPage,
         ?string $pageAttribute = null,
         ?string $perPageAttribute = null,
-        ?string $url = null,
+        ?string $url = null
     ): self {
         return new self($page, $perPage, $pageAttribute, $perPageAttribute, $url);
     }

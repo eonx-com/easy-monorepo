@@ -20,7 +20,7 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
         private readonly BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         ?int $threshold = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->threshold = $threshold ?? Logger::ERROR;
 

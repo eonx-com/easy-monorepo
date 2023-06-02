@@ -87,7 +87,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         throw new ContextNotSetException($this->getExceptionMessage(
-            'You cannot called getContext() before decision has been made',
+            'You cannot called getContext() before decision has been made'
         ));
     }
 
@@ -118,7 +118,7 @@ abstract class AbstractDecision implements DecisionInterface
         // because context is injected in expression language rules
         if (isset($input['context'])) {
             throw new ReservedContextIndexException($this->getExceptionMessage(
-                '"context" is a reserved index it cannot be used',
+                '"context" is a reserved index it cannot be used'
             ));
         }
 
@@ -138,7 +138,7 @@ abstract class AbstractDecision implements DecisionInterface
             throw new UnableToMakeDecisionException(
                 $this->getExceptionMessage($exception->getMessage()),
                 $exception->getCode(),
-                $exception,
+                $exception
             );
         }
     }
@@ -216,7 +216,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
 
         throw new ExpressionLanguageNotSetOnDecisionException(
-            'Expression language not set, to use it in your rules you must set it on the decision instance',
+            'Expression language not set, to use it in your rules you must set it on the decision instance'
         );
     }
 

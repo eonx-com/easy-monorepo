@@ -41,7 +41,7 @@ final class DecisionFactory implements DecisionFactoryInterface
         $this->mappingProvider = $mappingProvider;
 
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($configurators ?? [], DecisionConfiguratorInterface::class),
+            CollectorHelper::filterByClass($configurators ?? [], DecisionConfiguratorInterface::class)
         );
     }
 

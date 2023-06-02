@@ -22,7 +22,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
      */
     public function __construct(
         private array $locations,
-        private LoggerInterface $logger = new NullLogger(),
+        private LoggerInterface $logger = new NullLogger()
     ) {
     }
 
@@ -53,9 +53,9 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                     }
 
                     throw new RoleConstantNotFoundException(
-                        \sprintf('Constant for role "%s" not found', $role),
+                        \sprintf('Constant for role "%s" not found', $role)
                     );
-                },
+                }
             ),
         ];
     }

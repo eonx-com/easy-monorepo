@@ -63,7 +63,7 @@ final class ErrorHandlerTest extends AbstractTestCase
             new ErrorResponseFactory(),
             [],
             $reporterProviders,
-            $verboseStrategy,
+            $verboseStrategy
         );
 
         $errorHandler->report($throwable);

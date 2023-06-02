@@ -36,7 +36,7 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
         array $globalDisallowedProperties,
         ?ActorResolverInterface $actorResolver = null,
         ?ActivitySubjectResolverInterface $subjectResolver = null,
-        ?ActivitySubjectDataResolverInterface $subjectDataResolver = null,
+        ?ActivitySubjectDataResolverInterface $subjectDataResolver = null
     ) {
         if ($subjectResolver === null) {
             $subjectResolver = new DefaultActivitySubjectResolver($subjects);
@@ -44,20 +44,20 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
         if ($subjectDataResolver === null) {
             $serializer = new Serializer(
                 [new DateTimeNormalizer(), new ObjectNormalizer()],
-                [new JsonEncoder()],
+                [new JsonEncoder()]
             );
             $subjectDataResolver = new DoctrineActivitySubjectDataResolver(
                 new SymfonyActivitySubjectDataSerializer(
                     $serializer,
                     new CircularReferenceHandler(EntityManagerStub::createFromEventManager()),
-                    $globalDisallowedProperties,
-                ),
+                    $globalDisallowedProperties
+                )
             );
         }
         $this->factory = new ActivityLogEntryFactory(
             $actorResolver ?? new DefaultActorResolver(),
             $subjectResolver,
-            $subjectDataResolver,
+            $subjectDataResolver
         );
     }
 
@@ -67,7 +67,7 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
     public function create(
         string $action,
         object $object,
-        array $changeSet,
+        array $changeSet
     ): ?ActivityLogEntry {
         return $this->factory->create($action, $object, $changeSet);
     }

@@ -32,60 +32,60 @@ final class EasyErrorHandlerExtension extends Extension
         $container->setParameter(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold']);
         $container->setParameter(
             BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
-            \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null,
+            \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_VALIDATION_ERRORS,
-            $config['bugsnag_ignore_validation_errors'],
+            $config['bugsnag_ignore_validation_errors']
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_BUGSNAG_HANDLED_EXCEPTIONS,
-            \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null,
+            \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_TRANSFORM_VALIDATION_ERRORS,
-            $config['transform_validation_errors'],
+            $config['transform_validation_errors']
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS,
-            \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null,
+            \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null
         );
 
         $container->setParameter(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS,
-            \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null,
+            \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS,
-            \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null,
+            \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_OVERRIDE_API_PLATFORM_LISTENER,
-            $config['override_api_platform_listener'],
+            $config['override_api_platform_listener']
         );
         $container->setParameter(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
         $container->setParameter(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE,
-            $config['error_codes_interface'],
+            $config['error_codes_interface']
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE,
-            $config['error_codes_category_size'],
+            $config['error_codes_category_size']
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED,
-            $config['translate_internal_error_messages']['enabled'] ?? false,
+            $config['translate_internal_error_messages']['enabled'] ?? false
         );
         $container->setParameter(
             BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE,
-            $config['translate_internal_error_messages']['locale'] ?? self::DEFAULT_LOCALE,
+            $config['translate_internal_error_messages']['locale'] ?? self::DEFAULT_LOCALE
         );
 
         $container

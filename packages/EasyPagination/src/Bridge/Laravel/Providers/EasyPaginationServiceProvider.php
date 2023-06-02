@@ -50,7 +50,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
                 PaginationFromRequestMiddleware::class,
                 static function (Container $app): PaginationFromRequestMiddleware {
                     return new PaginationFromRequestMiddleware($app->make(PaginationProviderInterface::class));
-                },
+                }
             );
             $this->app->middleware([PaginationFromRequestMiddleware::class]);
 
@@ -62,7 +62,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
             FromRequestPaginationListener::class,
             static function (Container $app): FromRequestPaginationListener {
                 return new FromRequestPaginationListener($app->make(PaginationProviderInterface::class));
-            },
+            }
         );
         $this->app->make('events')
             ->listen(RouteMatched::class, FromRequestPaginationListener::class);
@@ -77,11 +77,11 @@ final class EasyPaginationServiceProvider extends ServiceProvider
                     \config('easy-pagination.pagination.page_attribute'),
                     (int)\config('easy-pagination.pagination.page_default'),
                     \config('easy-pagination.pagination.per_page_attribute'),
-                    (int)\config('easy-pagination.pagination.per_page_default'),
+                    (int)\config('easy-pagination.pagination.per_page_default')
                 );
 
                 return new PaginationProvider($config);
-            },
+            }
         );
 
         $this->app->singleton(PaginationInterface::class, static function (Container $app): PaginationInterface {

@@ -45,7 +45,7 @@ abstract class AbstractTestCase extends TestCase
     {
         return $this->batchItemFactory = $this->batchItemFactory ??
             new BatchItemFactory(
-                new BatchItemTransformer(new MessageSerializer()),
+                new BatchItemTransformer(new MessageSerializer())
             );
     }
 

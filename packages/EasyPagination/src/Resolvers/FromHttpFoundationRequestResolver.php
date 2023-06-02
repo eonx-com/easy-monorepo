@@ -13,7 +13,7 @@ final class FromHttpFoundationRequestResolver
 {
     public function __construct(
         private PaginationConfigInterface $config,
-        private Request $request,
+        private Request $request
     ) {
         // No body needed.
     }
@@ -27,7 +27,7 @@ final class FromHttpFoundationRequestResolver
             (int)$query->get($this->config->getPerPageAttribute(), $this->config->getPerPageDefault()),
             $this->config->getPageAttribute(),
             $this->config->getPerPageAttribute(),
-            $this->request->getUri(),
+            $this->request->getUri()
         );
     }
 }

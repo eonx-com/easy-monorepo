@@ -37,16 +37,16 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'a sub-object (instance of \DateTimeImmutable)' => new DateTimeImmutable('1970-01-23 01:23:45.123456'),
                 'a sub-object (instance of \Carbon\Carbon)' => Carbon::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC',
+                    'UTC'
                 ),
                 'a sub-object (instance of \Carbon\CarbonImmutable)' => CarbonImmutable::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC',
+                    'UTC'
                 ),
                 'a sub-object (instance of \BpayBillerInfoDto)' => new ObjectDto(
                     'some-biller-code',
                     'some-long-name',
-                    'some-short-name',
+                    'some-short-name'
                 ),
             ],
             'expectedOutput' => [
@@ -68,11 +68,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'a sub-object (instance of \DateTimeImmutable)' => new DateTimeImmutable('1970-01-23 01:23:45.123456'),
                 'a sub-object (instance of \Carbon\Carbon)' => Carbon::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC',
+                    'UTC'
                 ),
                 'a sub-object (instance of \Carbon\CarbonImmutable)' => CarbonImmutable::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC',
+                    'UTC'
                 ),
                 'a sub-object (instance of \BpayBillerInfoDto)' => [
                     'prop1' => '*REDACTED*',

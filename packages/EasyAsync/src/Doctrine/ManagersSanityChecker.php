@@ -52,7 +52,7 @@ final class ManagersSanityChecker
             $this->logger->warning(\sprintf(
                 'Type "%s" for manager "%s" not supported by sanity checker',
                 \get_class($manager),
-                $managerName,
+                $managerName
             ));
         }
     }
@@ -76,7 +76,7 @@ final class ManagersSanityChecker
             throw new DoctrineConnectionNotOkException(
                 \sprintf('Connection for manager "%s" not ok: %s', $name, $throwable->getMessage()),
                 \is_string($throwable->getCode()) ? 0 : $throwable->getCode(),
-                $throwable,
+                $throwable
             );
         }
     }

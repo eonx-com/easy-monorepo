@@ -17,7 +17,7 @@ final class ValueDecision extends AbstractDecision
     {
         if (isset($input['value']) === false) {
             throw new MissingValueIndexException($this->getExceptionMessage(
-                'missing "value" index in given input',
+                'missing "value" index in given input'
             ));
         }
 

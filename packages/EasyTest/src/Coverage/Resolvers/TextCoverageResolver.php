@@ -19,7 +19,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
         if (Strings::contains($output, 'lines:') === false) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output does not contain "lines:"',
-                static::class,
+                static::class
             ));
         }
 
@@ -31,7 +31,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
 
         throw new UnableToResolveCoverageException(\sprintf(
             '[%s] Could not match any coverage number in output',
-            static::class,
+            static::class
         ));
     }
 }

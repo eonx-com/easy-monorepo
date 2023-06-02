@@ -32,7 +32,7 @@ final class AwsCredentials implements AwsCredentialsInterface
         ?string $accessKeyId = null,
         ?string $secretKey = null,
         ?string $sessionToken = null,
-        ?\DateTimeInterface $expiration = null,
+        ?\DateTimeInterface $expiration = null
     ) {
         $this->accessKeyId = $accessKeyId;
         $this->secretKey = $secretKey;

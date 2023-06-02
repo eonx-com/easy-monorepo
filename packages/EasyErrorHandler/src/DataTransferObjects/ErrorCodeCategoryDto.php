@@ -8,7 +8,7 @@ final class ErrorCodeCategoryDto
 {
     public function __construct(
         private readonly string $categoryName,
-        private readonly int $nextErrorCodeToUse,
+        private readonly int $nextErrorCodeToUse
     ) {
     }
 

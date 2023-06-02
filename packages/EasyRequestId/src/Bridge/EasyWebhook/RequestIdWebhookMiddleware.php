@@ -28,7 +28,7 @@ final class RequestIdWebhookMiddleware extends AbstractConfigureOnceMiddleware
     {
         $webhook->header(
             $this->requestIdService->getCorrelationIdHeaderName(),
-            $this->requestIdService->getCorrelationId(),
+            $this->requestIdService->getCorrelationId()
         );
         $webhook->header($this->requestIdService->getRequestIdHeaderName(), $this->requestIdService->getRequestId());
 

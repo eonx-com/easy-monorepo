@@ -38,7 +38,7 @@ final class DoctrineEntityEventTag implements EventTagInterface
         string $entity,
         ?string $method = null,
         ?string $entityManager = null,
-        ?bool $lazy = null,
+        ?bool $lazy = null
     ) {
         $this->event = $event;
         $this->entity = $entity;

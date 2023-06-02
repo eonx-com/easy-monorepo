@@ -32,7 +32,7 @@ final class EasyLockServiceProvider extends ServiceProvider
                     : self::DEFAULT_CONNECTION_ID;
 
                 return StoreFactory::createStore($conn);
-            },
+            }
         );
 
         $this->app->singleton(
@@ -44,9 +44,9 @@ final class EasyLockServiceProvider extends ServiceProvider
 
                 return new LockService(
                     $app->make(BridgeConstantsInterface::SERVICE_STORE),
-                    $app->make(LoggerInterface::class, $loggerParams),
+                    $app->make(LoggerInterface::class, $loggerParams)
                 );
-            },
+            }
         );
     }
 }

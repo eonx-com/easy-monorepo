@@ -21,7 +21,7 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
      */
     public function __construct(
         ?array $keys = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->keys = $keys ?? [];
 

@@ -39,12 +39,12 @@ final class EasyRequestIdExtension extends Extension
         // HTTP headers
         $container->setParameter(
             BridgeConstantsInterface::PARAM_HTTP_HEADER_CORRELATION_ID,
-            $config['http_headers']['correlation_id'],
+            $config['http_headers']['correlation_id']
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_HTTP_HEADER_REQUEST_ID,
-            $config['http_headers']['request_id'],
+            $config['http_headers']['request_id']
         );
 
         $loader->load('services.php');

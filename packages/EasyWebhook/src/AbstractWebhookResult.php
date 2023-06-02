@@ -33,7 +33,7 @@ abstract class AbstractWebhookResult implements WebhookResultInterface
     public function __construct(
         WebhookInterface $webhook,
         ?ResponseInterface $response = null,
-        ?\Throwable $throwable = null,
+        ?\Throwable $throwable = null
     ) {
         $this->webhook = $webhook;
         $this->response = $response;

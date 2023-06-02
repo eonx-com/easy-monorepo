@@ -27,7 +27,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
                 self::assertFalse($container->has(BridgeConstantsInterface::SIGNER));
                 self::assertInstanceOf(
                     BodyFormatterMiddleware::class,
-                    $container->get(BodyFormatterMiddleware::class),
+                    $container->get(BodyFormatterMiddleware::class)
                 );
                 self::assertInstanceOf(MethodMiddleware::class, $container->get(MethodMiddleware::class));
             },
@@ -48,7 +48,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
                 self::assertEquals('my-secret', $container->getParameter(BridgeConstantsInterface::PARAM_SECRET));
                 self::assertEquals(
                     'X-My-Header',
-                    $container->getParameter(BridgeConstantsInterface::PARAM_SIGNATURE_HEADER),
+                    $container->getParameter(BridgeConstantsInterface::PARAM_SIGNATURE_HEADER)
                 );
             },
         ];

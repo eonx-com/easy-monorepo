@@ -60,7 +60,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         PropertyAccessorInterface $propertyAccessor = null,
         LoggerInterface $logger = null,
         array $properties = null,
-        NameConverterInterface $nameConverter = null,
+        NameConverterInterface $nameConverter = null
     ) {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
 
@@ -154,7 +154,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         string $alias,
         string $field,
         mixed $values,
-        bool $caseSensitive,
+        bool $caseSensitive
     ): void {
         if (\is_array($values) === false) {
             $values = [$values];
@@ -189,27 +189,27 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $ors[] = match ($strategy) {
                 self::STRATEGY_PARTIAL => $queryBuilder->expr()->like(
                     $wrapCase($aliasedField),
-                    $wrapCase((string)$queryBuilder->expr()->concat("'%'", $keyValueParameter, "'%'")),
+                    $wrapCase((string)$queryBuilder->expr()->concat("'%'", $keyValueParameter, "'%'"))
                 ),
                 self::STRATEGY_START => $queryBuilder->expr()->like(
                     $wrapCase($aliasedField),
-                    $wrapCase((string)$queryBuilder->expr()->concat($keyValueParameter, "'%'")),
+                    $wrapCase((string)$queryBuilder->expr()->concat($keyValueParameter, "'%'"))
                 ),
                 self::STRATEGY_END => $queryBuilder->expr()->like(
                     $wrapCase($aliasedField),
-                    $wrapCase((string)$queryBuilder->expr()->concat("'%'", $keyValueParameter)),
+                    $wrapCase((string)$queryBuilder->expr()->concat("'%'", $keyValueParameter))
                 ),
                 self::STRATEGY_WORD_START => $queryBuilder->expr()->orX(
                     $queryBuilder->expr()
                         ->like(
                             $wrapCase($aliasedField),
-                            $wrapCase((string)$queryBuilder->expr()->concat($keyValueParameter, "'%'")),
+                            $wrapCase((string)$queryBuilder->expr()->concat($keyValueParameter, "'%'"))
                         ),
                     $queryBuilder->expr()
                         ->like(
                             $wrapCase($aliasedField),
-                            $wrapCase((string)$queryBuilder->expr()->concat("'% '", $keyValueParameter, "'%'")),
-                        ),
+                            $wrapCase((string)$queryBuilder->expr()->concat("'% '", $keyValueParameter, "'%'"))
+                        )
                 ),
                 default => throw new InvalidArgumentException(\sprintf('strategy %s does not exist.', $strategy)),
             };
@@ -251,7 +251,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         Operation $operation = null,
-        array $context = [],
+        array $context = []
     ): void {
         $filterParameter = $property;
         if (isset($this->properties[$filterParameter]) && \is_array($this->properties[$filterParameter])) {
@@ -300,7 +300,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 $queryBuilder,
                 $queryNameGenerator,
                 $resourceClass,
-                Join::INNER_JOIN,
+                Join::INNER_JOIN
             );
         }
 
@@ -324,7 +324,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 $this->logger->notice('Invalid filter ignored', [
                     'exception' => new InvalidArgumentException(\sprintf(
                         'Values for field "%s" are not valid according to the doctrine type.',
-                        $field,
+                        $field
                     )),
                 ]);
 
@@ -338,7 +338,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 $alias,
                 $field,
                 $values,
-                $caseSensitive,
+                $caseSensitive
             );
 
             return;
@@ -359,7 +359,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $this->logger->notice('Invalid filter ignored', [
                 'exception' => new InvalidArgumentException(\sprintf(
                     'Values for field "%s" are not valid according to the doctrine type.',
-                    $field,
+                    $field
                 )),
             ]);
 
@@ -376,7 +376,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 $queryBuilder,
                 $queryNameGenerator,
                 $alias,
-                $associationField,
+                $associationField
             );
             $associationField = $associationFieldIdentifier;
         }
@@ -388,7 +388,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $associationAlias,
             $associationField,
             $values,
-            $caseSensitive,
+            $caseSensitive
         );
     }
 

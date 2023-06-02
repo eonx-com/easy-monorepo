@@ -45,7 +45,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         private readonly ?string $serverClientCertFile = null,
         private readonly ?string $serverClientKeyFile = null,
         private readonly ?array $awsCloudHsmSdkOptions = null,
-        ?string $defaultKeyName = null,
+        ?string $defaultKeyName = null
     ) {
         parent::__construct($defaultKeyName);
     }
@@ -68,7 +68,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     protected function doDecrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw,
+        bool $raw
     ): string {
         $this->validateKey($key);
         $this->init();
@@ -84,7 +84,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     protected function doEncrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw,
+        bool $raw
     ): string {
         $this->validateKey($key);
         $this->init();
@@ -109,18 +109,18 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         if ($filesystem->exists($this->hsmCaCert) === false) {
             throw new InvalidConfigurationException(\sprintf(
                 'Given CA Cert filename "%s" does not exist',
-                $this->hsmCaCert,
+                $this->hsmCaCert
             ));
         }
 
         if ($isSetHsmIpAddress === false && $isSetCloudHsmClusterId === false) {
             throw new InvalidConfigurationException(
-                'At least HSM IP address or CloudHSM cluster id has to be set',
+                'At least HSM IP address or CloudHSM cluster id has to be set'
             );
         }
         if ($isSetHsmIpAddress && $isSetCloudHsmClusterId) {
             throw new InvalidConfigurationException(
-                'Both HSM IP address and CloudHSM cluster id options cannot be set at the same time',
+                'Both HSM IP address and CloudHSM cluster id options cannot be set at the same time'
             );
         }
 
@@ -148,7 +148,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
                 throw new InvalidConfigurationException(\sprintf(
                     'Filename "%s" for option "%s" does not exist',
                     $filename,
-                    $option,
+                    $option
                 ));
             }
 
@@ -172,7 +172,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             throw new CouldNotConfigureAwsCloudHsmSdkException(
                 $throwable->getMessage(),
                 $throwable->getCode(),
-                $throwable,
+                $throwable
             );
         }
 
@@ -180,7 +180,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             throw new CouldNotConfigureAwsCloudHsmSdkException(\sprintf(
                 'Output: %s. Error Output: %s',
                 $process->getOutput(),
-                $process->getErrorOutput(),
+                $process->getErrorOutput()
             ));
         }
     }
@@ -203,7 +203,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
 
         throw new InvalidEncryptionKeyException(\sprintf(
             'No key handle found for label "%s"',
-            $keyName,
+            $keyName
         ));
     }
 
@@ -238,12 +238,12 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
      * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
      */
     private function validateKey(
-        \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|array|string|null $key = null,
+        \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|array|string|null $key = null
     ): void {
         if ($key !== null && $this->isNonEmptyString($key) === false) {
             throw new InvalidEncryptionKeyException(\sprintf(
                 'Encryption key must be either null or string for %s',
-                self::class,
+                self::class
             ));
         }
     }

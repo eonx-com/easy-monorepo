@@ -75,7 +75,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
 
         throw new BatchNotFoundException(\sprintf(
             'Batch for parent_batch_item_id "%s" not found',
-            $parentBatchItemId,
+            $parentBatchItemId
         ));
     }
 
@@ -116,7 +116,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
                 'SELECT * FROM %s WHERE id = :id %s',
                 $this->table,
                 $this->conn->getDatabasePlatform()
-                    ->getForUpdateSQL(),
+                    ->getForUpdateSQL()
             );
             $data = $this->conn->fetchAssociative($sql, ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;

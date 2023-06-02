@@ -42,7 +42,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
             $this->getKernel(),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST,
-            $controllerResult,
+            $controllerResult
         );
 
         (new CustomPaginationListener())($event);
@@ -76,7 +76,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturn($query);
-            },
+            }
         );
 
         return new Paginator($doctrinePaginator);

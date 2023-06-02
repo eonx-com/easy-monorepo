@@ -9,7 +9,7 @@ use Monolog\Formatter\FormatterInterface;
 final class SimpleFormatter implements FormatterInterface
 {
     public function __construct(
-        private readonly string $prefix,
+        private readonly string $prefix
     ) {
     }
 

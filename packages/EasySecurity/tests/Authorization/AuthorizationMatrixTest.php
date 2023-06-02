@@ -71,7 +71,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
     {
         $factory = new AuthorizationMatrixFactory(
             [new AuthorizationRolesProviderStub($roles)],
-            [new AuthorizationPermissionsProviderStub($permissions)],
+            [new AuthorizationPermissionsProviderStub($permissions)]
         );
 
         $test($factory->create());

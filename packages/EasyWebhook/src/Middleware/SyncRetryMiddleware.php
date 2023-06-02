@@ -39,7 +39,7 @@ final class SyncRetryMiddleware extends AbstractMiddleware
         WebhookRetryStrategyInterface $retryStrategy,
         ?bool $asyncEnabled = null,
         ?LoggerInterface $logger = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->resultStore = $resultStore;
         $this->retryStrategy = $retryStrategy;
@@ -57,7 +57,7 @@ final class SyncRetryMiddleware extends AbstractMiddleware
 
         $this->logger->debug(
             'Using the synchronous retry is a nice and simple solution.
-            However, we strongly recommend to setup async feature and use a proper retry strategy within the queue.',
+            However, we strongly recommend to setup async feature and use a proper retry strategy within the queue.'
         );
 
         $rewindTo = $stack->getCurrentIndex();

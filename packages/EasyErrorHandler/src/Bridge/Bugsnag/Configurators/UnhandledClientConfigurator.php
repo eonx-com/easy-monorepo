@@ -30,7 +30,7 @@ final class UnhandledClientConfigurator extends AbstractClientConfigurator
      */
     public function __construct(
         ?array $handledExceptionClasses = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->handledExceptionClasses = \array_merge($handledExceptionClasses ?? [], [
             // Base exception class

@@ -28,7 +28,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
         private readonly OpenSSLAsymmetricKey|string $publicKey,
         private readonly OpenSSLAsymmetricKey|string $privateKey,
         ?array $allowedAlgos = null,
-        private readonly ?int $leeway = null,
+        private readonly ?int $leeway = null
     ) {
         $this->allowedAlgos = $allowedAlgos ?? [];
     }

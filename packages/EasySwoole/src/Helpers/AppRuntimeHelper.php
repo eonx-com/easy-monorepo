@@ -17,7 +17,7 @@ final class AppRuntimeHelper
     {
         $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge(
             $_SERVER[self::APP_RUNTIME_OPTIONS] ?? [],
-            $options,
+            $options
         );
     }
 

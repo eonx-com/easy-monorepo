@@ -21,7 +21,7 @@ final class BatchItemProcessor
     public function __construct(
         private readonly BatchProcessor $batchProcessor,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchObjectManagerInterface $batchObjectManager,
+        private readonly BatchObjectManagerInterface $batchObjectManager
     ) {
     }
 
@@ -52,7 +52,7 @@ final class BatchItemProcessor
             $batchItem->setStatus(
                 $batchItem->canBeRetried()
                     ? BatchItemInterface::STATUS_FAILED_PENDING_RETRY
-                    : BatchObjectInterface::STATUS_FAILED,
+                    : BatchObjectInterface::STATUS_FAILED
             );
             $batchItem->setThrowable($throwable);
 
@@ -62,7 +62,7 @@ final class BatchItemProcessor
                 $batchItem->setStatus(
                     $batchItem->isApprovalRequired()
                         ? BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL
-                        : BatchObjectInterface::STATUS_SUCCEEDED,
+                        : BatchObjectInterface::STATUS_SUCCEEDED
                 );
             }
 
@@ -107,7 +107,7 @@ final class BatchItemProcessor
             throw new BatchItemCompletedException(\sprintf(
                 'BatchItem "%s" is already completed with status "%s"',
                 $batchItem->getId(),
-                $batchItem->getStatus(),
+                $batchItem->getStatus()
             ));
         }
 
@@ -116,7 +116,7 @@ final class BatchItemProcessor
                 'BatchItem "%s" cannot be retried because current attempt %d is not lower than max attempts %d',
                 $batchItem->getId(),
                 $batchItem->getAttempts(),
-                $batchItem->getMaxAttempts(),
+                $batchItem->getMaxAttempts()
             ));
         }
 

@@ -25,7 +25,7 @@ final class RegisterLockStoreServicePass implements CompilerPassInterface
 
         $connectionId = $this->getConnectionId(
             $container,
-            $this->getParameter($container, BridgeConstantsInterface::PARAM_CONNECTION),
+            $this->getParameter($container, BridgeConstantsInterface::PARAM_CONNECTION)
         );
 
         $arg = $connectionId !== null ? new Reference($connectionId) : self::DEFAULT_CONNECTION_ID;

@@ -36,7 +36,7 @@ final class ReplaceApiFormatsMiddleware
                 new JsonResponse(
                     $this->getResponseAsArray($response->getContent()),
                     $response->getStatusCode(),
-                    $response->getHeaders(),
+                    $response->getHeaders()
                 );
         }
 

@@ -46,7 +46,7 @@ final class HttpRequestSentBreadcrumbListener
     private const METADATA_ATTRIBUTE_TIMING = 'Timing';
 
     public function __construct(
-        private Client $client,
+        private Client $client
     ) {
         // The body is not required
     }
@@ -83,7 +83,7 @@ final class HttpRequestSentBreadcrumbListener
         $this->client->leaveBreadcrumb(
             self::BREADCRUMB_NAME,
             Breadcrumb::REQUEST_TYPE,
-            $this->prepareMetadata($metadata),
+            $this->prepareMetadata($metadata)
         );
     }
 
@@ -121,7 +121,7 @@ final class HttpRequestSentBreadcrumbListener
             '%s - %s | %s',
             $sentAt->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
             $receivedAt->format(EasyHttpClientConstantsInterface::DATE_TIME_FORMAT),
-            $receivedAt->diffForHumans($sentAt, null, true),
+            $receivedAt->diffForHumans($sentAt, null, true)
         );
     }
 

@@ -39,7 +39,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             ExpressionLanguageFactoryInterface::class,
             static function (): ExpressionLanguageFactoryInterface {
                 return new ExpressionLanguageFactory();
-            },
+            }
         );
 
         $this->app->singleton(ValueExpressionFunctionProvider::class);
@@ -48,7 +48,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             AddRulesDecisionConfigurator::class,
             static function (Container $app): DecisionConfiguratorInterface {
                 return new AddRulesDecisionConfigurator($app->tagged(BridgeConstantsInterface::TAG_DECISION_RULE));
-            },
+            }
         );
 
         $defaultConfigurators = [AddRulesDecisionConfigurator::class];
@@ -58,9 +58,9 @@ final class EasyDecisionServiceProvider extends ServiceProvider
                 SetExpressionLanguageConfigurator::class,
                 static function (Container $app): SetExpressionLanguageConfigurator {
                     return new SetExpressionLanguageConfigurator(
-                        $app->make(ExpressionLanguageFactoryInterface::class),
+                        $app->make(ExpressionLanguageFactoryInterface::class)
                     );
-                },
+                }
             );
 
             $defaultConfigurators[] = SetExpressionLanguageConfigurator::class;
@@ -77,9 +77,9 @@ final class EasyDecisionServiceProvider extends ServiceProvider
             static function (Container $app): BaseDecisionFactoryInterface {
                 return new BaseDecisionFactory(
                     $app->make(MappingProviderInterface::class),
-                    $app->tagged(BridgeConstantsInterface::TAG_DECISION_CONFIGURATOR),
+                    $app->tagged(BridgeConstantsInterface::TAG_DECISION_CONFIGURATOR)
                 );
-            },
+            }
         );
 
         $this->app->singleton(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);

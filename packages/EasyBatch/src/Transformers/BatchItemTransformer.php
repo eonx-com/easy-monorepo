@@ -18,7 +18,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     public function __construct(
         private readonly MessageSerializerInterface $messageSerializer,
         ?string $class = null,
-        ?string $datetimeFormat = null,
+        ?string $datetimeFormat = null
     ) {
         parent::__construct($class ?? BatchItem::class, $datetimeFormat);
     }
@@ -100,7 +100,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
         }
 
         throw new BatchItemCannotBeEncryptedException(
-            'In order to use message encryption feature you must install eonx-com/easy-encryption',
+            'In order to use message encryption feature you must install eonx-com/easy-encryption'
         );
     }
 }

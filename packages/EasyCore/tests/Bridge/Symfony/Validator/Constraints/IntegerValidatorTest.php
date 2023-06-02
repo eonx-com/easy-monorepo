@@ -120,7 +120,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
         $value = 12345;
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Integer"',
+            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Integer"'
         );
 
         $validator->validate($value, $constraint);
@@ -141,7 +141,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturnSelf();
-            },
+            }
         );
 
         return $violationBuilder;
@@ -149,12 +149,12 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder,
+        ConstraintViolationBuilderInterface $violationBuilder
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder,
+            $violationBuilder
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

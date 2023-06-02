@@ -21,7 +21,7 @@ final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
      * @param null|array<class-string, int> $exceptionLogLevels
      */
     public function __construct(
-        ?array $exceptionLogLevels = null,
+        ?array $exceptionLogLevels = null
     ) {
         $this->exceptionLogLevels = $exceptionLogLevels ?? [HttpExceptionInterface::class => Logger::DEBUG];
     }

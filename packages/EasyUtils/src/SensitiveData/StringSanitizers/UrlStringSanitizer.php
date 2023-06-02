@@ -15,7 +15,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             $string = (string)\preg_replace(
                 \sprintf('/(%s=|\[%s\]=)([^&]+)/i', $key, $key),
                 '$1' . $maskPattern,
-                $string,
+                $string
             );
         }
 

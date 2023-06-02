@@ -55,7 +55,7 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
     public function testGetErrorLogLevel(
         Throwable $throwable,
         int $expectedLogLevel,
-        ?array $exceptionLogLevels = null,
+        ?array $exceptionLogLevels = null
     ): void {
         $resolver = new ErrorLogLevelResolver($exceptionLogLevels);
 

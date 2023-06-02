@@ -24,7 +24,7 @@ final class JwkFetcher implements JwkFetcherInterface
     public function __construct(
         private readonly CacheInterface $cache = new ArrayAdapter(),
         private readonly int $cacheExpiry = self::DEFAULT_CACHE_EXPIRY,
-        ?HttpClientInterface $httpClient = null,
+        ?HttpClientInterface $httpClient = null
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
@@ -42,7 +42,7 @@ final class JwkFetcher implements JwkFetcherInterface
                 $item->expiresAfter($this->cacheExpiry);
 
                 return $this->fetchKeysFromAws($userPoolConfig);
-            },
+            }
         );
     }
 

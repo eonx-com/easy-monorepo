@@ -15,7 +15,7 @@ final class EasyAwsCredentialsFinderBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(
             AwsCredentialsProviderInterface::class,
-            $container->get(AwsCredentialsProviderInterface::class),
+            $container->get(AwsCredentialsProviderInterface::class)
         );
     }
 }

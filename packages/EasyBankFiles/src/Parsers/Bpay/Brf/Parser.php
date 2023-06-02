@@ -165,10 +165,10 @@ final class Parser extends AbstractLineByLineParser
             'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
             'amountOfPayments' => $amountOfPayments === false ? null : $this->trimLeftZeros($amountOfPayments),
             'numberOfErrorCorrections' => $numberOfErrorCorrections === false ? null : $this->trimLeftZeros(
-                $numberOfErrorCorrections,
+                $numberOfErrorCorrections
             ),
             'amountOfErrorCorrections' => $amountOfErrorCorrections === false ? null : $this->trimLeftZeros(
-                $amountOfErrorCorrections,
+                $amountOfErrorCorrections
             ),
             'numberOfReversals' => $numberOfReversals === false ? null : $this->trimLeftZeros($numberOfReversals),
             'amountOfReversals' => $amountOfReversals === false ? null : $this->trimLeftZeros($amountOfReversals),
@@ -210,7 +210,7 @@ final class Parser extends AbstractLineByLineParser
             'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
             'paymentInstructionType' => $paymentInstructionType === false ? null : $paymentInstructionType,
             'transactionReferenceNumber' => $transactionReferenceNumber === false ? null : \trim(
-                $transactionReferenceNumber,
+                $transactionReferenceNumber
             ),
             'originalReferenceNumber' => $originalReferenceNumber === false ? null : \trim($originalReferenceNumber),
             'errorCorrectionReason' => $errorCorrectionReason === false ? null : $errorCorrectionReason,

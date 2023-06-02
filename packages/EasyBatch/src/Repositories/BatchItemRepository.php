@@ -31,7 +31,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         $results = $this->conn->fetchAllAssociative(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
-            $queryBuilder->getParameterTypes(),
+            $queryBuilder->getParameterTypes()
         );
 
         $completed = 0;
@@ -51,7 +51,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $results[BatchObjectInterface::STATUS_FAILED] ?? 0,
             $completed,
             $results[BatchObjectInterface::STATUS_SUCCEEDED] ?? 0,
-            $total,
+            $total
         );
     }
 
@@ -90,7 +90,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     public function paginateItems(
         PaginationInterface $pagination,
         int|string $batchId,
-        ?string $dependsOnName = null,
+        ?string $dependsOnName = null
     ): LengthAwarePaginatorInterface {
         $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
 
@@ -111,7 +111,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
                         ->andWhere('depends_on_name = :dependsOnName')
                         ->setParameter('dependsOnName', $dependsOnName, Types::STRING);
                 }
-            },
+            }
         );
 
         $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
@@ -183,7 +183,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         $this->conn->executeStatement(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
-            $queryBuilder->getParameterTypes(),
+            $queryBuilder->getParameterTypes()
         );
 
         foreach ($batchItems as $batchItem) {

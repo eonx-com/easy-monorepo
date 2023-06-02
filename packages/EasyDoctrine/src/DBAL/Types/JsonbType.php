@@ -38,7 +38,7 @@ final class JsonbType extends Type
             throw ConversionException::conversionFailedSerialization(
                 $value,
                 $this->getName(),
-                $exception->getMessage(),
+                $exception->getMessage()
             );
         }
     }

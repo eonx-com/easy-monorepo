@@ -23,7 +23,7 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
 
     public function __construct(
         private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         parent::__construct($priority);
     }

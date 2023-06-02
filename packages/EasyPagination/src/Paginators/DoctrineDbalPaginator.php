@@ -17,7 +17,7 @@ final class DoctrineDbalPaginator extends AbstractPaginator implements Extendabl
         PaginationInterface $pagination,
         Connection $conn,
         string $from,
-        ?string $fromAlias = null,
+        ?string $fromAlias = null
     ) {
         $this->conn = $conn;
         $this->from = $from;

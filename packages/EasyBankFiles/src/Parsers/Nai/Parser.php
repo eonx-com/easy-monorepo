@@ -171,7 +171,7 @@ final class Parser extends AbstractLineByLineParser
             $this->errors,
             $this->file,
             $this->groups,
-            $this->transactions,
+            $this->transactions
         );
     }
 

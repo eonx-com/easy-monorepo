@@ -49,7 +49,7 @@ final class SendDueWebhooksCommand extends Command
                 'sendAfter',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'DateTime to start fetching due webhooks from, in "%s" format',
+                'DateTime to start fetching due webhooks from, in "%s" format'
             )
             ->addOption('timezone', null, InputOption::VALUE_OPTIONAL, 'The timezone of sendAfter DateTimes')
             ->setDescription('Send "sendAfter" webhooks which are due');
@@ -63,7 +63,7 @@ final class SendDueWebhooksCommand extends Command
             $style->error(\sprintf(
                 'Store "%s" does not implement "%s", cannot proceed.',
                 \get_class($this->store),
-                SendAfterStoreInterface::class,
+                SendAfterStoreInterface::class
             ));
 
             return 1;

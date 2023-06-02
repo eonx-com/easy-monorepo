@@ -31,7 +31,7 @@ final class SignatureHeaderMiddleware extends AbstractConfigureOnceMiddleware
         WebhookSignerInterface $signer,
         ?string $secret = null,
         ?string $signatureHeader = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->signer = $signer;
         $this->secret = $secret;

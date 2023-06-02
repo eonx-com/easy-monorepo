@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->call('setLoggerConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR)])
         ->call(
             'setProcessorConfigProviders',
-            [tagged_iterator(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)],
+            [tagged_iterator(BridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER)]
         );
 
     $services

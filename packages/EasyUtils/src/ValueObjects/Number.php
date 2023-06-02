@@ -45,7 +45,7 @@ final class Number implements Stringable
                 }
 
                 return $leftOperand->isGreaterThan($rightOperand) ? $leftOperand : $rightOperand;
-            },
+            }
         );
     }
 
@@ -62,7 +62,7 @@ final class Number implements Stringable
                 }
 
                 return $leftOperand->isLessThan($rightOperand) ? $leftOperand : $rightOperand;
-            },
+            }
         );
     }
 

@@ -58,7 +58,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->keys = $keys ?? [];
 

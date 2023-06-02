@@ -14,7 +14,7 @@ final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
         self::assertInstanceOf(
             AffirmativeDecision::class,
             $this->getDecisionFactory()
-                ->createAffirmativeDecision('my-decision'),
+                ->createAffirmativeDecision('my-decision')
         );
     }
 }

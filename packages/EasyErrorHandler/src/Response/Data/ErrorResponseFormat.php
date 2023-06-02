@@ -8,7 +8,7 @@ final class ErrorResponseFormat
 {
     public function __construct(
         private readonly string $key,
-        private readonly string $value,
+        private readonly string $value
     ) {
     }
 

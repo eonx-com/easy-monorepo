@@ -10,7 +10,7 @@ use Symfony\Component\Uid\Factory\UuidFactory as SymfonyUuidFactory;
 final class UuidFactory implements IdFactoryInterface
 {
     public function __construct(
-        private SymfonyUuidFactory $uuidFactory,
+        private SymfonyUuidFactory $uuidFactory
     ) {
         // The body is not required
     }

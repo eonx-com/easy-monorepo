@@ -83,7 +83,7 @@ final class NumberTest extends TestCase
     public function testToStringSucceedsAndDoesCorrectRounding(
         string $value,
         int $precision,
-        string $expectedResult,
+        string $expectedResult
     ): void {
         $integer = new Number($value, $precision);
 

@@ -50,7 +50,7 @@ final class HashChecker implements HashCheckerInterface
     {
         return $this->checkHashes(
             $this->hashCalculator->calculate($params1),
-            $this->hashCalculator->calculate($params2),
+            $this->hashCalculator->calculate($params2)
         );
     }
 }

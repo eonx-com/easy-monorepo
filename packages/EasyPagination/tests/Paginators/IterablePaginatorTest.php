@@ -97,7 +97,7 @@ final class IterablePaginatorTest extends AbstractTestCase
         iterable $items,
         PaginationInterface $pagination,
         string $previousPageUrl,
-        string $nextPageUrl,
+        string $nextPageUrl
     ): void {
         $paginator = new IterablePaginator($pagination, $items);
 

@@ -52,7 +52,7 @@ final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
         $url = \sprintf(
             '%sproviders/%s/subscribe-info',
             StringHelper::ensureEnd($this->apiUrl, '/'),
-            $providerExternalId,
+            $providerExternalId
         );
 
         $response = $this->httpClient->request('POST', $url, $options)

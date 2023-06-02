@@ -12,6 +12,6 @@ interface SendAfterStoreInterface extends StoreInterface
     public function findDueWebhooks(
         PaginationInterface $pagination,
         ?\DateTimeInterface $sendAfter = null,
-        ?string $timezone = null,
+        ?string $timezone = null
     ): LengthAwarePaginatorInterface;
 }

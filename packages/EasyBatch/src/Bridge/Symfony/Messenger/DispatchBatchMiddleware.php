@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 final class DispatchBatchMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly BatchObjectManagerInterface $batchObjectManager,
+        private readonly BatchObjectManagerInterface $batchObjectManager
     ) {
     }
 

@@ -20,7 +20,7 @@ final class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogF
             $request->getQueryString() ? '?' . $request->getQueryString() : null,
             $request->getProtocolVersion(),
             $response->getStatusCode(),
-            $request->headers->get('user-agent', '<no_user_agent>'),
+            $request->headers->get('user-agent', '<no_user_agent>')
         );
     }
 }

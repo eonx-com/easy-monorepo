@@ -28,7 +28,7 @@ final class EasySwooleRunner implements RunnerInterface
      */
     public function __construct(
         private readonly HttpKernelInterface $app,
-        array $options,
+        array $options
     ) {
         OptionHelper::setOptions($options);
     }
@@ -60,7 +60,7 @@ final class EasySwooleRunner implements RunnerInterface
                     $hfResponse,
                     $response,
                     $responseChunkSize,
-                    \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null,
+                    \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
                 );
 
                 if ($app instanceof TerminableInterface) {
@@ -73,7 +73,7 @@ final class EasySwooleRunner implements RunnerInterface
                 }
 
                 CacheTableHelper::tick();
-            },
+            }
         );
 
         $server->start();
@@ -87,7 +87,7 @@ final class EasySwooleRunner implements RunnerInterface
             OptionHelper::getString('host', 'SWOOLE_HOST'),
             OptionHelper::getInteger('port', 'SWOOLE_PORT'),
             OptionHelper::getInteger('mode', 'SWOOLE_MODE'),
-            OptionHelper::getInteger('sock_type', 'SWOOLE_SOCK_TYPE'),
+            OptionHelper::getInteger('sock_type', 'SWOOLE_SOCK_TYPE')
         );
 
         $server->set(OptionHelper::getArray('settings', 'SWOOLE_SETTINGS'));
@@ -104,7 +104,7 @@ final class EasySwooleRunner implements RunnerInterface
             $this->hotReload(
                 $server,
                 OptionHelper::getArray('hot_reload_dirs', 'SWOOLE_HOT_RELOAD_DIRS'),
-                OptionHelper::getArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS'),
+                OptionHelper::getArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS')
             );
         }
 
@@ -181,14 +181,14 @@ final class EasySwooleRunner implements RunnerInterface
             Constant::EVENT_WORKER_START,
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
-            },
+            }
         );
 
         $server->on(
             Constant::EVENT_WORKER_STOP,
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
-            },
+            }
         );
     }
 }

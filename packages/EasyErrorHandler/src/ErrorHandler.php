@@ -48,7 +48,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         iterable $builderProviders,
         iterable $reporterProviders,
         private readonly VerboseStrategyInterface $verboseStrategy,
-        ?array $ignoredExceptionsForReport = null,
+        ?array $ignoredExceptionsForReport = null
     ) {
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
@@ -88,7 +88,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
         return $this->errorResponseFactory->create(
             $request,
-            ErrorResponseData::create($this->sortRecursive($data ?? []), $statusCode ?? null, $headers ?? null),
+            ErrorResponseData::create($this->sortRecursive($data ?? []), $statusCode ?? null, $headers ?? null)
         );
     }
 

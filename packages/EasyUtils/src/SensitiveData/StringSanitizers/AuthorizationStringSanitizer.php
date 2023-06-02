@@ -14,7 +14,7 @@ final class AuthorizationStringSanitizer extends AbstractStringSanitizer
         return (string)\preg_replace(
             '/(Authorization:)[A-Za-z0-9=_\-\. ]+/',
             '$1' . $maskPattern,
-            $string,
+            $string
         );
     }
 }

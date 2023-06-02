@@ -32,7 +32,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
         AwsConfigurationProviderInterface $configProvider,
         Filesystem $filesystem,
         ProcessRunnerInterface $processRunner,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->configProvider = $configProvider;
         $this->filesystem = $filesystem;
@@ -85,7 +85,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
             $contents['Credentials']['AccessKeyId'] ?? null,
             $contents['Credentials']['SecretAccessKey'] ?? null,
             $contents['Credentials']['SessionToken'] ?? null,
-            $expiration,
+            $expiration
         );
     }
 

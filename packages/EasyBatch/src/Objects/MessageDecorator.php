@@ -26,7 +26,7 @@ final class MessageDecorator
     private bool $requiresApproval = false;
 
     public function __construct(
-        private readonly object $message,
+        private readonly object $message
     ) {
     }
 

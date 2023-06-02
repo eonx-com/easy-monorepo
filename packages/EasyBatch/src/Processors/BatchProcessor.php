@@ -27,7 +27,7 @@ final class BatchProcessor
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchRepositoryInterface $batchRepository,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -39,7 +39,7 @@ final class BatchProcessor
         BatchObjectManagerInterface $batchObjectManager,
         BatchInterface $batch,
         BatchItemInterface $batchItem,
-        ?callable $updateFreshBatch = null,
+        ?callable $updateFreshBatch = null
     ): BatchInterface {
         // Prevent same batchItem to be process twice within the same message lifecycle
         if (isset($this->cache[$batchItem->getIdOrFail()])) {
@@ -163,7 +163,7 @@ final class BatchProcessor
 
     private function handleBatchItemDependentObjects(
         BatchObjectManagerInterface $batchObjectManager,
-        BatchItemInterface $batchItem,
+        BatchItemInterface $batchItem
     ): void {
         $currentStatus = $batchItem->getStatus();
         $toCancelStatuses = [
@@ -228,7 +228,7 @@ final class BatchProcessor
                 $freshBatch->setStatus(
                     $freshBatch->countSucceeded() < $freshBatch->countTotal()
                         ? BatchObjectInterface::STATUS_FAILED
-                        : BatchObjectInterface::STATUS_SUCCEEDED,
+                        : BatchObjectInterface::STATUS_SUCCEEDED
                 );
             }
         }

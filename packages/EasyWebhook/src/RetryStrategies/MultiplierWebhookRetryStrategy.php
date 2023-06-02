@@ -42,7 +42,7 @@ final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterf
     public function __construct(
         ?int $delayMilliseconds = null,
         ?float $multiplier = null,
-        ?int $maxDelayMilliseconds = null,
+        ?int $maxDelayMilliseconds = null
     ) {
         $this->delayMilliseconds = $delayMilliseconds ?? 1000;
         $this->multiplier = $multiplier ?? 1.0;

@@ -34,7 +34,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      */
     public function __construct(
         DeferredEntityEventDispatcherInterface $eventDispatcher,
-        array $entities,
+        array $entities
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->acceptableEntities = $entities;

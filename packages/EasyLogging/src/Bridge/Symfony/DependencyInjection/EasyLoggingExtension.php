@@ -41,12 +41,12 @@ final class EasyLoggingExtension extends Extension
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL,
-            $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL,
+            $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_LOGGER_CLASS,
-            \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class,
+            \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class
         );
 
         $container->setParameter(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
@@ -59,7 +59,7 @@ final class EasyLoggingExtension extends Extension
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
-            $config['sensitive_data_sanitizer']['enabled'] ?? false,
+            $config['sensitive_data_sanitizer']['enabled'] ?? false
         );
     }
 }

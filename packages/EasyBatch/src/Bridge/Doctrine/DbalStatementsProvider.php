@@ -29,7 +29,7 @@ final class DbalStatementsProvider
     public function __construct(
         private readonly Connection $conn,
         private readonly string $batchesTable = BatchRepositoryInterface::DEFAULT_TABLE,
-        private readonly string $batchItemsTable = BatchItemRepositoryInterface::DEFAULT_TABLE,
+        private readonly string $batchItemsTable = BatchItemRepositoryInterface::DEFAULT_TABLE
     ) {
         // Register types
         if (Type::hasType(DateTimeWithMicroSeconds::NAME) === false) {

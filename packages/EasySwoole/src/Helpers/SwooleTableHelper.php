@@ -33,7 +33,7 @@ final class SwooleTableHelper
             $table->column(
                 $columnDefinition->name,
                 $columnDefinition->type->value,
-                $columnDefinition->size ?? 0,
+                $columnDefinition->size ?? 0
             );
         }
 

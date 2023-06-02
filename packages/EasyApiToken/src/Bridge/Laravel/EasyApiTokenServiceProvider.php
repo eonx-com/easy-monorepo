@@ -32,7 +32,7 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
             ApiTokenDecoderInterface::class,
             static function (Container $app): ApiTokenDecoderInterface {
                 return $app->make(DecoderFactoryInterface::class)->buildDefault();
-            },
+            }
         );
 
         $this->app->singleton(
@@ -40,9 +40,9 @@ final class EasyApiTokenServiceProvider extends ServiceProvider
             static function (Container $app): DecoderFactoryInterface {
                 return new ApiTokenDecoderFactory(
                     $app->tagged(BridgeConstantsInterface::TAG_DECODER_PROVIDER),
-                    $app->make(HashedApiKeyDriverInterface::class),
+                    $app->make(HashedApiKeyDriverInterface::class)
                 );
-            },
+            }
         );
     }
 }

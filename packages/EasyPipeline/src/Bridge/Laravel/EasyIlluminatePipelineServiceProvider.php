@@ -40,9 +40,9 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
                 return new IlluminatePipelineFactory(
                     $app,
                     \array_keys(\config('easy-pipeline.pipelines', [])),
-                    self::PIPELINES_PREFIX,
+                    self::PIPELINES_PREFIX
                 );
-            },
+            }
         );
     }
 
@@ -52,7 +52,7 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
 
         if (empty($pipelines)) {
             throw new EmptyPipelinesListException(
-                'No pipelines to register. Please make sure your application has the expected configuration',
+                'No pipelines to register. Please make sure your application has the expected configuration'
             );
         }
 

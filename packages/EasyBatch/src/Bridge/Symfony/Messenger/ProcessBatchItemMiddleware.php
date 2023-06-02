@@ -30,7 +30,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         private readonly BatchItemProcessor $batchItemProcessor,
         private readonly BatchItemLockFactoryInterface $batchItemLockFactory,
         private readonly BatchProcessor $batchProcessor,
-        private readonly LockServiceInterface $lockService,
+        private readonly LockServiceInterface $lockService
     ) {
     }
 
@@ -75,7 +75,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                             'Using %s or %s is deprecated since 4.1, will be removed in 5.0. Use %s instead',
                             CurrentBatchAwareInterface::class,
                             CurrentBatchItemAwareInterface::class,
-                            CurrentBatchObjectsAwareInterface::class,
+                            CurrentBatchObjectsAwareInterface::class
                         ), \E_USER_DEPRECATED);
 
                         if ($message instanceof CurrentBatchAwareInterface) {
@@ -87,7 +87,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                     }
 
                     return $this->batchItemProcessor->processBatchItem($batch, $batchItem, $func);
-                },
+                }
             );
 
             // If lock not acquired, return envelope
@@ -105,7 +105,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         Envelope $envelope,
         StackInterface $stack,
         ?BatchItemStamp $batchItemStamp = null,
-        ?ConsumedByWorkerStamp $consumedByWorkerStamp = null,
+        ?ConsumedByWorkerStamp $consumedByWorkerStamp = null
     ): \Closure {
         return static function () use ($envelope, $stack, $batchItemStamp, $consumedByWorkerStamp): Envelope {
             $newEnvelope = $stack
@@ -117,7 +117,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                 && $newEnvelope->last(HandledStamp::class) === null) {
                 throw new BatchItemNotHandledException(\sprintf(
                     'Batch item "%s" was not handled by any handler.',
-                    $batchItemStamp->getBatchItemId(),
+                    $batchItemStamp->getBatchItemId()
                 ));
             }
 

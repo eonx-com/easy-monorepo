@@ -117,7 +117,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ?string $signature = null,
         ?string $defaultSecret = null,
         ?string $defaultHeader = null,
-        ?string $exceptedException = null,
+        ?string $exceptedException = null
     ): void {
         if ($exceptedException !== null) {
             $this->expectException($exceptedException);

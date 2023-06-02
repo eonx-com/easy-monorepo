@@ -31,7 +31,7 @@ final class TimestampableEventSubscriber implements EventSubscriber
         $isTimestampable = \is_a(
             $classMetadata->reflClass->getName(),
             TimestampableInterface::class,
-            true,
+            true
         );
         if ($isTimestampable === false) {
             return;

@@ -96,7 +96,7 @@ final class AlphanumericValidatorTest extends AbstractSymfonyTestCase
         $value = 'some-value';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Alphanumeric"',
+            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Alphanumeric"'
         );
 
         $validator->validate($value, $constraint);
@@ -121,7 +121,7 @@ final class AlphanumericValidatorTest extends AbstractSymfonyTestCase
         $validator = new AlphanumericValidator();
         $constraint = new Alphanumeric();
         $violationBuilder = $this->mockConstraintViolationBuilder(
-            Alphanumeric::INVALID_ALPHANUMERIC_ERROR,
+            Alphanumeric::INVALID_ALPHANUMERIC_ERROR
         );
         $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
         $validator->initialize($context);
@@ -151,7 +151,7 @@ final class AlphanumericValidatorTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturnSelf();
-            },
+            }
         );
 
         return $violationBuilder;
@@ -159,12 +159,12 @@ final class AlphanumericValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder,
+        ConstraintViolationBuilderInterface $violationBuilder
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder,
+            $violationBuilder
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

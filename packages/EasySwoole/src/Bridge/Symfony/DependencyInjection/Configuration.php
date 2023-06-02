@@ -115,7 +115,7 @@ final class Configuration implements ConfigurationInterface
                                         if ($phpFile->endsWith('.php') === false) {
                                             throw new \InvalidArgumentException(\sprintf(
                                                 'Only PHP files allowed, %s given',
-                                                $phpFile->toString(),
+                                                $phpFile->toString()
                                             ));
                                         }
 

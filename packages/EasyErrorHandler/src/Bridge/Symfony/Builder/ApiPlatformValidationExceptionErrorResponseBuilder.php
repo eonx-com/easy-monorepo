@@ -38,7 +38,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->keys = $keys ?? [];
 
@@ -73,7 +73,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
             if (\is_array($data[$exceptionKey] ?? null)) {
                 $data[$exceptionKey][$exceptionMessageKey] = $this->translator->trans(
                     self::MESSAGE_ENTITY_NOT_VALID,
-                    [],
+                    []
                 );
             }
 

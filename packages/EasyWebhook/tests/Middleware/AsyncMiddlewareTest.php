@@ -57,7 +57,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
         ?callable $test = null,
         ?StoreInterface $store = null,
         ?bool $enabled = null,
-        ?string $expectedException = null,
+        ?string $expectedException = null
     ): void {
         if ($expectedException !== null) {
             $this->expectException($expectedException);

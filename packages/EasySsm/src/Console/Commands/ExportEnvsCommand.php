@@ -37,7 +37,7 @@ final class ExportEnvsCommand extends AbstractCommand
                 'strict',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Determine if command should fail in case parameters cannot be fetched from SSM',
+                'Determine if command should fail in case parameters cannot be fetched from SSM'
             )
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'SSM path to get the params from');
     }

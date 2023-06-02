@@ -58,7 +58,7 @@ final class ValueDecisionTest extends AbstractTestCase
         $expectedOutput,
         array $expectedRulesOutput,
         ?string $name = null,
-        $defaultOutput = null,
+        $defaultOutput = null
     ): void {
         $decision = (new ValueDecision($name))
             ->addRules($rules)

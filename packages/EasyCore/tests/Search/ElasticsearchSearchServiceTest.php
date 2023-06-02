@@ -74,7 +74,7 @@ final class ElasticsearchSearchServiceTest extends AbstractTestCase
                         return true;
                     })
                     ->andReturn([]);
-            },
+            }
         );
         $searchService = new ElasticsearchSearchService($client);
 

@@ -24,7 +24,7 @@ final class EasyHttpClientServiceProviderTest extends AbstractLaravelTestCase
 
         self::assertInstanceOf(
             WithEventsHttpClient::class,
-            $app->get(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT),
+            $app->get(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT)
         );
     }
 }

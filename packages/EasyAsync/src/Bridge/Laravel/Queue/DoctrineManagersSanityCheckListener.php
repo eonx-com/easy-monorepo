@@ -29,7 +29,7 @@ final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
         Cache $cache,
         ManagersSanityChecker $managersSanityChecker,
         ?array $managers = null,
-        ?LoggerInterface $logger = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->managersSanityChecker = $managersSanityChecker;
         $this->managers = $managers;

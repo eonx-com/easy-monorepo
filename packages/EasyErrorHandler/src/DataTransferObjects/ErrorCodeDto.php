@@ -13,7 +13,7 @@ final class ErrorCodeDto
         private string $originalName,
         private int $errorCode,
         private array $splitName,
-        private ?string $groupSeparator = null,
+        private ?string $groupSeparator = null
     ) {
     }
 

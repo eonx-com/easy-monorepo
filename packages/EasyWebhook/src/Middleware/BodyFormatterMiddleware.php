@@ -40,7 +40,7 @@ final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
             $this->updateWebhook(
                 $webhook,
                 $this->jsonFormatter->format($json),
-                $this->jsonFormatter->getContentTypeHeader(),
+                $this->jsonFormatter->getContentTypeHeader()
             );
         }
 
@@ -49,7 +49,7 @@ final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
             $this->updateWebhook(
                 $webhook,
                 $this->bodyFormatter->format($webhook->getBody()),
-                $this->bodyFormatter->getContentTypeHeader(),
+                $this->bodyFormatter->getContentTypeHeader()
             );
         }
 

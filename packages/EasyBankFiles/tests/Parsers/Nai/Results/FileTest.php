@@ -35,7 +35,7 @@ final class FileTest extends TestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturn([]);
-            },
+            }
         );
 
         $file = new File($context, $data);

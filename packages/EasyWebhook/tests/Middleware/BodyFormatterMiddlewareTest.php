@@ -101,7 +101,7 @@ final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
     public function testProcess(
         WebhookInterface $webhook,
         callable $test,
-        ?WebhookBodyFormatterInterface $bodyFormatter = null,
+        ?WebhookBodyFormatterInterface $bodyFormatter = null
     ): void {
         $middleware = new BodyFormatterMiddleware($bodyFormatter ?? new JsonFormatter());
 

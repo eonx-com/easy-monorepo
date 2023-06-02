@@ -14,7 +14,7 @@ final class SlackBodyConfigurator extends AbstractQueueMessageConfigurator
     public function configure(
         ConfigInterface $config,
         QueueMessageInterface $queueMessage,
-        MessageInterface $message,
+        MessageInterface $message
     ): QueueMessageInterface {
         if (($message instanceof SlackMessage) === false) {
             return $queueMessage;

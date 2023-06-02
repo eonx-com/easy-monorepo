@@ -33,7 +33,7 @@ final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
             || ($handle = \fopen($this->filename, 'r')) === false) {
             throw new InvalidCsvFilenameException(\sprintf(
                 'File %s does not exist or is not readable',
-                $this->filename,
+                $this->filename
             ));
         }
 

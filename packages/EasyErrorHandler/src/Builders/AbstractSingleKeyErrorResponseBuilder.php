@@ -10,7 +10,7 @@ abstract class AbstractSingleKeyErrorResponseBuilder extends AbstractErrorRespon
 {
     public function __construct(
         protected readonly ?string $key = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         parent::__construct($priority);
     }

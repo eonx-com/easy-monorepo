@@ -41,7 +41,7 @@ final class ClientFactory implements ClientFactoryInterface
             new Configuration($apiKey),
             $this->requestResolver,
             $this->httpClient,
-            $this->shutdownStrategy,
+            $this->shutdownStrategy
         );
 
         $client->registerDefaultCallbacks();
@@ -59,7 +59,7 @@ final class ClientFactory implements ClientFactoryInterface
     public function setConfigurators(iterable $configurators): ClientFactoryInterface
     {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($configurators, ClientConfiguratorInterface::class),
+            CollectorHelper::filterByClass($configurators, ClientConfiguratorInterface::class)
         );
 
         return $this;

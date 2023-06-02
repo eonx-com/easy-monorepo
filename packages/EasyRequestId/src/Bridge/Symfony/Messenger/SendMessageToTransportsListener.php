@@ -23,7 +23,7 @@ final class SendMessageToTransportsListener
     {
         $event->setEnvelope($event->getEnvelope()->with(new RequestIdStamp(
             $this->requestIdService->getCorrelationId(),
-            $this->requestIdService->getRequestId(),
+            $this->requestIdService->getRequestId()
         )));
     }
 }

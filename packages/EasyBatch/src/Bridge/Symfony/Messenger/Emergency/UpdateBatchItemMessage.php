@@ -28,7 +28,7 @@ final class UpdateBatchItemMessage
     public function __construct(
         private readonly int|string $batchItemId,
         array $data,
-        private readonly ?array $errorDetails = null,
+        private readonly ?array $errorDetails = null
     ) {
         foreach ($data as $name => $value) {
             if (\in_array($name, self::ONLY, true)) {

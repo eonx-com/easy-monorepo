@@ -70,7 +70,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
         array $authorizationRoles,
         ?SecurityContextInterface $context = null,
         ?array $roles = null,
-        ?JwtClaimFetcherInterface $jwtClaimFetcher = null,
+        ?JwtClaimFetcherInterface $jwtClaimFetcher = null
     ): void {
         $context = $context ?? new SecurityContext();
         $context->setAuthorizationMatrix(new AuthorizationMatrix($authorizationRoles, []));

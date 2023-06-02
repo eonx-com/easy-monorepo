@@ -33,7 +33,7 @@ final class AsyncMiddleware extends AbstractMiddleware
         AsyncDispatcherInterface $dispatcher,
         StoreInterface $store,
         ?bool $enabled = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->dispatcher = $dispatcher;
         $this->store = $store;

@@ -9,7 +9,7 @@ use EonX\EasySecurity\Interfaces\UserInterface;
 final class UserInterfaceStub implements UserInterface
 {
     public function __construct(
-        private string $userIdentifier,
+        private string $userIdentifier
     ) {
     }
 

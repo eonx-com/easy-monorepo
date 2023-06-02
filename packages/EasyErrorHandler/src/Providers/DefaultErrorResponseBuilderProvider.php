@@ -32,7 +32,7 @@ final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderP
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly TranslatorInterface $translator,
-        ?array $keys = null,
+        ?array $keys = null
     ) {
         $this->keys = $keys ?? [];
     }
@@ -47,14 +47,14 @@ final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderP
             $this->errorDetailsResolver,
             $this->translator,
             $this->keys[self::KEY_EXTENDED_EXCEPTION_KEYS] ?? [],
-            $this->getKey(ExtendedExceptionErrorResponseBuilder::DEFAULT_KEY),
+            $this->getKey(ExtendedExceptionErrorResponseBuilder::DEFAULT_KEY)
         );
         yield new StatusCodeErrorResponseBuilder();
         yield new SubCodeErrorResponseBuilder($this->getKey(SubCodeErrorResponseBuilder::DEFAULT_KEY));
         yield new TimeErrorResponseBuilder($this->getKey(TimeErrorResponseBuilder::DEFAULT_KEY));
         yield new UserMessageErrorResponseBuilder(
             $this->translator,
-            $this->getKey(UserMessageErrorResponseBuilder::DEFAULT_KEY),
+            $this->getKey(UserMessageErrorResponseBuilder::DEFAULT_KEY)
         );
         yield new ViolationsErrorResponseBuilder($this->getKey(ViolationsErrorResponseBuilder::DEFAULT_KEY));
 

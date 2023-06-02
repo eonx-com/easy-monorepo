@@ -13,7 +13,7 @@ final class SignatureConfigurator extends AbstractQueueMessageConfigurator
     public function configure(
         ConfigInterface $config,
         QueueMessageInterface $queueMessage,
-        MessageInterface $message,
+        MessageInterface $message
     ): QueueMessageInterface {
         $body = \trim($queueMessage->getBody());
 

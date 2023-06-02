@@ -172,7 +172,7 @@ final class NotificationClientTest extends AbstractTestCase
 
     private function getNotificationClient(
         ?SqsClientStub $sqsClientStub = null,
-        ?HttpClientInterface $httpClient = null,
+        ?HttpClientInterface $httpClient = null
     ): NotificationClientInterface {
         $transportFactory = new SqsQueueTransportFactoryStub($sqsClientStub ?? new SqsClientStub());
 

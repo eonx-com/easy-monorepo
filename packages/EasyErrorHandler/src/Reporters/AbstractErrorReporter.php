@@ -14,7 +14,7 @@ abstract class AbstractErrorReporter implements ErrorReporterInterface
 
     public function __construct(
         protected readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->doSetPriority($priority);
     }

@@ -41,7 +41,7 @@ final class ConfiguratorsTest extends AbstractTestCase
                     [
                         QueueMessageInterface::HEADER_PROVIDER => static::$defaultConfig['externalId'],
                     ],
-                    $queueMessage->getHeaders(),
+                    $queueMessage->getHeaders()
                 );
             },
         ];
@@ -108,7 +108,7 @@ final class ConfiguratorsTest extends AbstractTestCase
             static function (QueueMessageInterface $queueMessage): void {
                 self::assertEquals(
                     RealTimeMessage::TYPE_REAL_TIME,
-                    $queueMessage->getHeaders()[QueueMessageInterface::HEADER_TYPE],
+                    $queueMessage->getHeaders()[QueueMessageInterface::HEADER_TYPE]
                 );
             },
             (new QueueMessage())->setBody('my-body'),
@@ -144,7 +144,7 @@ final class ConfiguratorsTest extends AbstractTestCase
         ConfigInterface $config,
         MessageInterface $message,
         callable $test,
-        ?QueueMessageInterface $queueMessage = null,
+        ?QueueMessageInterface $queueMessage = null
     ): void {
         $test($configurator->configure($config, $queueMessage ?? new QueueMessage(), $message), $this);
     }

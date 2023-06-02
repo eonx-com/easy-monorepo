@@ -24,6 +24,6 @@ abstract class AbstractFromHashedApiKeyConfigurator extends AbstractSecurityCont
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        HashedApiKeyInterface $apiKey,
+        HashedApiKeyInterface $apiKey
     ): void;
 }

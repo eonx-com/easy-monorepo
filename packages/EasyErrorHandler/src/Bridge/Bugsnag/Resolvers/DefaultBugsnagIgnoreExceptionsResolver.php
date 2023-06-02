@@ -23,7 +23,7 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
      */
     public function __construct(
         ?array $ignoredExceptions = null,
-        ?bool $ignoreValidationErrors = null,
+        ?bool $ignoreValidationErrors = null
     ) {
         $this->ignoredExceptions = $ignoredExceptions ?? [HttpExceptionInterface::class];
         $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;

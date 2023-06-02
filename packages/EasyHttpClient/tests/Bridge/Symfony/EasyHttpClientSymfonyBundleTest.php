@@ -23,7 +23,7 @@ final class EasyHttpClientSymfonyBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(
             WithEventsHttpClient::class,
-            $container->get(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT),
+            $container->get(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT)
         );
     }
 
@@ -33,7 +33,7 @@ final class EasyHttpClientSymfonyBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(
             WithEventsHttpClient::class,
-            $container->get(BridgeConstantsInterface::SERVICE_HTTP_CLIENT),
+            $container->get(BridgeConstantsInterface::SERVICE_HTTP_CLIENT)
         );
     }
 }

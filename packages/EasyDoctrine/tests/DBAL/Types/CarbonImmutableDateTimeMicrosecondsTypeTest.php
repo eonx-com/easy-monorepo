@@ -204,7 +204,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,
-        string $declaration,
+        string $declaration
     ): void {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
         $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
@@ -222,7 +222,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
 
         Type::overrideType(
             (new CarbonImmutableDateTimeMicrosecondsType())->getName(),
-            CarbonImmutableDateTimeMicrosecondsType::class,
+            CarbonImmutableDateTimeMicrosecondsType::class
         );
     }
 }

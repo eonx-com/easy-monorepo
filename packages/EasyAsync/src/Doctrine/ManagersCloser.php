@@ -13,7 +13,7 @@ final class ManagersCloser
 {
     public function __construct(
         private readonly ManagerRegistry $registry,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        private readonly LoggerInterface $logger = new NullLogger()
     ) {
     }
 
@@ -37,7 +37,7 @@ final class ManagersCloser
             $this->logger->warning(\sprintf(
                 'Type "%s" for manager "%s" not supported by manager closer',
                 \get_class($manager),
-                $managerName,
+                $managerName
             ));
         }
     }

@@ -148,7 +148,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     public function testFromFileForException(
         string $filename,
         CsvParserConfigInterface $config,
-        string $expectedException,
+        string $expectedException
     ): void {
         $this->expectException($expectedException);
 

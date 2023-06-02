@@ -22,7 +22,7 @@ final class RerunMiddleware extends AbstractMiddleware
             if ($webhook->isRerunAllowed() === false) {
                 throw new CannotRerunWebhookException(\sprintf(
                     'Cannot re-run webhook "%s"',
-                    $webhook->getId() ?? \spl_object_hash($webhook),
+                    $webhook->getId() ?? \spl_object_hash($webhook)
                 ));
             }
 

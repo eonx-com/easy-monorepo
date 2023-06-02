@@ -16,7 +16,7 @@ trait HttpClientAssertionTrait
         Assert::assertFalse(
             $this->getHttpClientStub($httpClientName)
                 ->hasUnusedResponses(),
-            "Not all requests of the [{$httpClientName}] HTTP client were made.",
+            "Not all requests of the [{$httpClientName}] HTTP client were made."
         );
     }
 
@@ -24,7 +24,7 @@ trait HttpClientAssertionTrait
     {
         /** @var \EonX\EasyTest\Stub\HttpClient\HttpClientStub $httpClient */
         $httpClient = KernelTestCase::getContainer()->get(
-            \sprintf('%s $%s', HttpClientInterface::class, $name),
+            \sprintf('%s $%s', HttpClientInterface::class, $name)
         );
 
         return $httpClient;

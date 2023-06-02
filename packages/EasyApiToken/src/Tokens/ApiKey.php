@@ -9,7 +9,7 @@ use EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface;
 final class ApiKey implements ApiKeyInterface
 {
     public function __construct(
-        private string $apiKey,
+        private string $apiKey
     ) {
     }
 

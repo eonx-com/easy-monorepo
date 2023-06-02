@@ -18,7 +18,7 @@ final class ObjectCopierFactory
         $deepCopy = new DeepCopy();
         $deepCopy->addFilter(
             new DoctrineCollectionFilter(),
-            new PropertyTypeMatcher(Collection::class),
+            new PropertyTypeMatcher(Collection::class)
         );
 
         return new ObjectCopier($deepCopy);

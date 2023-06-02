@@ -14,7 +14,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 final class BatchManager implements BatchManagerInterface
 {
     public function __construct(
-        private readonly BatchObjectManagerInterface $batchObjectManager,
+        private readonly BatchObjectManagerInterface $batchObjectManager
     ) {
     }
 
@@ -23,7 +23,7 @@ final class BatchManager implements BatchManagerInterface
         @\trigger_error(\sprintf(
             '%s::dispatch() is deprecated since 4.0, will be removed in 5.0. Use %s::dispatchBatch() instead.',
             BatchManagerInterface::class,
-            BatchObjectManagerInterface::class,
+            BatchObjectManagerInterface::class
         ), \E_USER_DEPRECATED);
 
         return $this->batchObjectManager->dispatchBatch($batch, $beforeFirstDispatch);

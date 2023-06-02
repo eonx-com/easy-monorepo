@@ -75,7 +75,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null,
         ?CacheItemPoolInterface $cache = null,
-        ?int $cacheTtl = null,
+        ?int $cacheTtl = null
     ) {
         $this->validAudiences = $validAudiences;
         $this->authorizedIss = $authorizedIss;
@@ -119,7 +119,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
                     null,
                     $this->privateKey,
                     $this->cacheTtl,
-                    $this->cache,
+                    $this->cache
                 );
                 $tokenIssuer = (string)\reset($this->authorizedIss);
 
@@ -133,7 +133,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
 
         throw new InvalidEasyApiTokenFromRequestException(\sprintf(
             'Could not verify signature. ["%s"]',
-            \implode('", "', $exceptions),
+            \implode('", "', $exceptions)
         ));
     }
 
@@ -153,7 +153,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
             $input['roles'] ?? [],
             $input['sub'] ?? null,
             $input['lifetime'] ?? null,
-            false,
+            false
         );
     }
 }

@@ -12,7 +12,7 @@ final class ReportErrorEventListener
 {
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorHandlerInterface $errorHandler,
+        private readonly ErrorHandlerInterface $errorHandler
     ) {
     }
 

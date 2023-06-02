@@ -18,7 +18,7 @@ final class RolesAndPermissionsServiceProvider extends ServiceProvider
             RolesAndPermissionsProviderStub::class,
             static function (): RolesAndPermissionsProviderStub {
                 return new RolesAndPermissionsProviderStub([new Role('role')], [new Permission('permission')]);
-            },
+            }
         );
 
         $this->app->tag([RolesAndPermissionsProviderStub::class], [

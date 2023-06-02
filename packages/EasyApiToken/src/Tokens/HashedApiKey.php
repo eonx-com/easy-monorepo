@@ -12,7 +12,7 @@ final class HashedApiKey implements HashedApiKeyInterface
         private int|string $id,
         private string $secret,
         private string $original,
-        private ?string $version = null,
+        private ?string $version = null
     ) {
     }
 

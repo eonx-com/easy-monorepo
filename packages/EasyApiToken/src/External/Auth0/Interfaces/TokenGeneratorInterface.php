@@ -15,6 +15,6 @@ interface TokenGeneratorInterface
         ?array $roles = null,
         ?string $subject = null,
         ?int $lifetime = null,
-        ?bool $secretEncoded = null,
+        ?bool $secretEncoded = null
     ): string;
 }

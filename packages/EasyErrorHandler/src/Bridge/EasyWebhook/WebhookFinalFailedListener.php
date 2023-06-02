@@ -10,7 +10,7 @@ use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 final class WebhookFinalFailedListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
+        private readonly ErrorHandlerInterface $errorHandler
     ) {
     }
 

@@ -72,7 +72,7 @@ final class IterableLengthAwarePaginatorTest extends AbstractTestCase
         int $total,
         Pagination $pagination,
         ?string $previousUrl = null,
-        ?string $nextUrl = null,
+        ?string $nextUrl = null
     ): void {
         $paginator = new IterableLengthAwarePaginator($pagination, [], $total);
 

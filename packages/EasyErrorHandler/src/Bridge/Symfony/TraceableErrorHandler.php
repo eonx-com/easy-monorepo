@@ -24,7 +24,7 @@ final class TraceableErrorHandler implements TraceableErrorHandlerInterface, For
     private array $reportedErrors = [];
 
     public function __construct(
-        private readonly ErrorHandlerInterface $decorated,
+        private readonly ErrorHandlerInterface $decorated
     ) {
     }
 

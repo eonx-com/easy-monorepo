@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 final class MonologLoggerFactory
 {
     public function __construct(
-        private readonly string $timezone = 'UTC',
+        private readonly string $timezone = 'UTC'
     ) {
     }
 

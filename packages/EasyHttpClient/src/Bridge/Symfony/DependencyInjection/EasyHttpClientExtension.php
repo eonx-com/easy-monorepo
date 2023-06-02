@@ -31,28 +31,28 @@ final class EasyHttpClientExtension extends Extension
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DECORATE_DEFAULT_CLIENT,
-            $config['decorate_default_client'] ?? false,
+            $config['decorate_default_client'] ?? false
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DECORATE_EASY_WEBHOOK_CLIENT,
-            $config['decorate_easy_webhook_client'] ?? false,
+            $config['decorate_easy_webhook_client'] ?? false
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_DECORATE_MESSENGER_SQS_CLIENT,
-            $config['decorate_messenger_sqs_client'] ?? false,
+            $config['decorate_messenger_sqs_client'] ?? false
         );
 
         $container->setParameter(
             BridgeConstantsInterface::PARAM_MODIFIERS_ENABLED,
-            $config['modifiers']['enabled'] ?? true,
+            $config['modifiers']['enabled'] ?? true
         );
 
         $modifiersWhitelist = $config['modifiers']['whitelist'] ?? [null];
         $container->setParameter(
             BridgeConstantsInterface::PARAM_MODIFIERS_WHITELIST,
-            \count($modifiersWhitelist) === 1 && ($modifiersWhitelist[0] === null) ? null : $modifiersWhitelist,
+            \count($modifiersWhitelist) === 1 && ($modifiersWhitelist[0] === null) ? null : $modifiersWhitelist
         );
 
         $loader->load('http_client.php');

@@ -15,7 +15,7 @@ final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
         $jsonDecoded = \json_decode(UrlHelper::urlSafeBase64Decode($hashedApiKey), true) ?? [];
         $isStructureValid = isset(
             $jsonDecoded[HashedApiKeyInterface::KEY_ID],
-            $jsonDecoded[HashedApiKeyInterface::KEY_SECRET],
+            $jsonDecoded[HashedApiKeyInterface::KEY_SECRET]
         );
 
         if ($isStructureValid === false) {
@@ -26,7 +26,7 @@ final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
             $jsonDecoded[HashedApiKeyInterface::KEY_ID],
             $jsonDecoded[HashedApiKeyInterface::KEY_SECRET],
             $hashedApiKey,
-            $jsonDecoded[HashedApiKeyInterface::KEY_VERSION] ?? null,
+            $jsonDecoded[HashedApiKeyInterface::KEY_VERSION] ?? null
         );
     }
 

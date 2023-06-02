@@ -30,7 +30,7 @@ final class StringAggTest extends AbstractTestCase
             '',
             $expressionValue,
             $delimiterValue,
-            '',
+            ''
         );
         $sqlWalker = $this->prophesize(SqlWalker::class);
         $sqlWalker->walkPathExpression(null)
@@ -58,7 +58,7 @@ final class StringAggTest extends AbstractTestCase
             'DISTINCT ',
             $expressionValue,
             $delimiterValue,
-            '',
+            ''
         );
         $sqlWalker = $this->prophesize(SqlWalker::class);
         $sqlWalker->walkPathExpression(null)
@@ -89,7 +89,7 @@ final class StringAggTest extends AbstractTestCase
             '',
             $expressionValue,
             $delimiterValue,
-            $orderByValue,
+            $orderByValue
         );
         $sqlWalker = $this->prophesize(SqlWalker::class);
         $sqlWalker->walkPathExpression(null)

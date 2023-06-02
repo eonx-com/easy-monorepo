@@ -44,7 +44,7 @@ final class CacheConfigFinder implements ConfigFinderInterface
                 $item->expiresAfter($this->expiresAfter);
 
                 return $this->decorated->find($apiKey, $providerExternalId);
-            },
+            }
         );
     }
 }

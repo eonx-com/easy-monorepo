@@ -134,7 +134,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
         callable $iterateFunc,
         ?callable $getCurrentPageCallback = null,
         ?string $batchId = null,
-        ?int $batchItemPerPage = null,
+        ?int $batchItemPerPage = null
     ): void {
         $container = $this->getKernel()
             ->getContainer();

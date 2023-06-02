@@ -65,7 +65,7 @@ final class Generator extends BaseGenerator
                 throw new InvalidArgumentException(\sprintf(
                     'Transaction must be %s, %s given.',
                     Transaction::class,
-                    \gettype($transaction),
+                    \gettype($transaction)
                 ));
             }
 

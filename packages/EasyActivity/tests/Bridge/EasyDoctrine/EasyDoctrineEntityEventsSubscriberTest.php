@@ -72,7 +72,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [
                 'subjects' => [],
-            ],
+            ]
         );
         $article = new Article();
         $article->setTitle('Resolver');
@@ -95,7 +95,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                         'type' => 'article',
                     ],
                 ],
-            ],
+            ]
         );
         $author = new Author();
         $author->setPosition(1);
@@ -147,7 +147,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                         'allowed_properties' => ['title', 'content'],
                     ],
                 ],
-            ],
+            ]
         );
 
         $article = new Article();
@@ -211,7 +211,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             ],
             null,
             null,
-            [Article::class, Comment::class],
+            [Article::class, Comment::class]
         );
 
         $article = new Article();
@@ -227,7 +227,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertSame(
             ['title' => 'Test collections'],
-            \json_decode($logEntries[0]['subject_data'], true),
+            \json_decode($logEntries[0]['subject_data'], true)
         );
     }
 
@@ -244,7 +244,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 {
                     return new Actor('actor-type', 'actor-id', 'actor-name');
                 }
-            },
+            }
         );
 
         $article = new Article();
@@ -274,7 +274,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                     ],
                     Author::class => [],
                 ],
-            ],
+            ]
         );
 
         $author = new Author();
@@ -296,14 +296,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'name' => 'John',
                 'position' => 1,
             ],
-            \json_decode($logEntries[0]['subject_data'], true),
+            \json_decode($logEntries[0]['subject_data'], true)
         );
         self::assertSame(
             [
                 'title' => 'Resolver',
                 'author' => ['id' => 1],
             ],
-            \json_decode($logEntries[1]['subject_data'], true),
+            \json_decode($logEntries[1]['subject_data'], true)
         );
     }
 
@@ -319,7 +319,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         ?array $globalDisallowedProperties = null,
         ?array $allowedProperties = null,
         ?array $disallowedProperties = null,
-        ?array $expectedDataProperties = null,
+        ?array $expectedDataProperties = null
     ): void {
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [
@@ -330,7 +330,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                     ],
                 ],
                 'disallowed_properties' => $globalDisallowedProperties,
-            ],
+            ]
         );
 
         $article = new Article();
@@ -349,7 +349,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($logEntries[0]['subject_data'], true)),
+            \array_keys(\json_decode($logEntries[0]['subject_data'], true))
         );
     }
 }

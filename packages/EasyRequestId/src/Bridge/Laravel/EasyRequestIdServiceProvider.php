@@ -69,7 +69,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                                 $ids[$requestIdService->getRequestIdHeaderName()] ?? null,
                         ];
                     });
-                },
+                }
             );
     }
 
@@ -88,9 +88,9 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                 return new RequestIdService(
                     $app->make(FallbackResolverInterface::class),
                     \config('easy-request-id.http_headers.correlation_id'),
-                    \config('easy-request-id.http_headers.request_id'),
+                    \config('easy-request-id.http_headers.request_id')
                 );
-            },
+            }
         );
 
         // Resolve from request
@@ -108,7 +108,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             $this->app->singleton(RequestIdErrorResponseBuilder::class);
             $this->app->tag(
                 RequestIdErrorResponseBuilder::class,
-                [EasyErrorHandlerBridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER],
+                [EasyErrorHandlerBridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER]
             );
         }
 
@@ -117,7 +117,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             $this->app->singleton(RequestIdProcessor::class);
             $this->app->tag(
                 RequestIdProcessor::class,
-                [EasyLoggingBridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER],
+                [EasyLoggingBridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER]
             );
         }
 
@@ -126,7 +126,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             $this->app->singleton(RequestIdRequestDataModifier::class);
             $this->app->tag(
                 RequestIdRequestDataModifier::class,
-                [EasyHttpClientBridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER],
+                [EasyHttpClientBridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER]
             );
         }
 
@@ -135,7 +135,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             $this->app->singleton(RequestIdWebhookMiddleware::class);
             $this->app->tag(
                 RequestIdWebhookMiddleware::class,
-                [EasyWebhookBridgeConstantsInterface::TAG_MIDDLEWARE],
+                [EasyWebhookBridgeConstantsInterface::TAG_MIDDLEWARE]
             );
         }
     }

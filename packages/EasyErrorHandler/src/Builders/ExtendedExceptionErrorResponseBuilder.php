@@ -41,7 +41,7 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
         private readonly TranslatorInterface $translator,
         ?array $exceptionKeys = null,
         ?string $key = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->exceptionKeys = $exceptionKeys ?? [];
 

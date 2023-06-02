@@ -28,7 +28,7 @@ final class QueueWorkerStoppingListener
         $this->logger->warning(\sprintf(
             'Worker stopping with status "%s"%s',
             $event->status,
-            $reason ? \sprintf(' (%s)', $reason) : '',
+            $reason ? \sprintf(' (%s)', $reason) : ''
         ));
     }
 }

@@ -77,7 +77,7 @@ interface MathInterface
         string $multiplicand,
         string $multiplier,
         ?int $precision = null,
-        ?int $mode = null,
+        ?int $mode = null
     ): string;
 
     /**

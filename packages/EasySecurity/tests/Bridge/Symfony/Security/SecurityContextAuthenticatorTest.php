@@ -35,7 +35,7 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
         $securityContextResolverReveal = $securityContextResolver->reveal();
         $authenticator = new SecurityContextAuthenticator(
             $securityContextResolverReveal,
-            new AuthenticationFailureResponseFactory(),
+            new AuthenticationFailureResponseFactory()
         );
 
         $authenticator->authenticate(new Request());

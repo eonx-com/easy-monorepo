@@ -66,7 +66,7 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         $paginationProvider = $container->get(PaginationProviderInterface::class);
         $paginationProvider->setResolver(new FromHttpFoundationRequestResolver(
             $container->get(PaginationConfigInterface::class),
-            $request,
+            $request
         ));
 
         /** @var \EonX\EasyPagination\Interfaces\PaginationInterface $pagination */
@@ -78,7 +78,7 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         self::assertSame('perPage', $pagination->getPerPageAttribute());
         self::assertSame(
             "http://eonx.com/?page={$page}&perPage={$perPage}",
-            $pagination->getUrl($pagination->getPage()),
+            $pagination->getUrl($pagination->getPage())
         );
     }
 

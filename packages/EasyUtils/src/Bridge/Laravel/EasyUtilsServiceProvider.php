@@ -41,7 +41,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
             CsvWithHeadersParserInterface::class,
             static function (): CsvWithHeadersParserInterface {
                 return new CsvWithHeadersParser();
-            },
+            }
         );
 
         $this->app->singleton(MathInterface::class, static function (): MathInterface {
@@ -50,7 +50,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                 \config('easy-utils.round-mode'),
                 \config('easy-utils.scale'),
                 \config('easy-utils.format-decimal-separator'),
-                \config('easy-utils.format-thousands-separator'),
+                \config('easy-utils.format-thousands-separator')
             );
         });
 
@@ -58,7 +58,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
             CreditCardNumberValidatorInterface::class,
             static function (): CreditCardNumberValidatorInterface {
                 return new CreditCardNumberValidator();
-            },
+            }
         );
 
         if (\config('easy-utils.sensitive_data.enabled', true)) {
@@ -67,11 +67,11 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                     DefaultObjectTransformer::class,
                     static function (): DefaultObjectTransformer {
                         return new DefaultObjectTransformer(10000);
-                    },
+                    }
                 );
                 $this->app->tag(
                     DefaultObjectTransformer::class,
-                    [BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER],
+                    [BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER]
                 );
             }
 
@@ -80,7 +80,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                     AuthorizationStringSanitizer::class,
                     static function (): StringSanitizerInterface {
                         return new AuthorizationStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
-                    },
+                    }
                 );
                 $this->app->tag(AuthorizationStringSanitizer::class, [
                     BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -91,9 +91,9 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                     static function (Container $app): StringSanitizerInterface {
                         return new CreditCardNumberStringSanitizer(
                             $app->make(CreditCardNumberValidatorInterface::class),
-                            self::STRING_SANITIZER_DEFAULT_PRIORITY,
+                            self::STRING_SANITIZER_DEFAULT_PRIORITY
                         );
-                    },
+                    }
                 );
                 $this->app->tag(CreditCardNumberStringSanitizer::class, [
                     BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -103,7 +103,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                     JsonStringSanitizer::class,
                     static function (): StringSanitizerInterface {
                         return new JsonStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
-                    },
+                    }
                 );
                 $this->app->tag(JsonStringSanitizer::class, [
                     BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -113,7 +113,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                     UrlStringSanitizer::class,
                     static function (): StringSanitizerInterface {
                         return new UrlStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
-                    },
+                    }
                 );
                 $this->app->tag(UrlStringSanitizer::class, [
                     BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -128,9 +128,9 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                         \config('easy-utils.sensitive_data.keys_to_mask', []),
                         \config('easy-utils.sensitive_data.mask_pattern'),
                         $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER),
-                        $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER),
+                        $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER)
                     );
-                },
+                }
             );
         }
     }

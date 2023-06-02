@@ -74,13 +74,13 @@ final class ParserTest extends TestCase
                 self::assertEquals(
                     $transaction->getReferenceNumber(),
                     $baiTransaction->getReferenceNumber(),
-                    'mismatch reference number',
+                    'mismatch reference number'
                 );
                 self::assertEquals($transaction->getText(), $baiTransaction->getText(), 'mismatch text');
                 self::assertEquals(
                     $transaction->getTransactionCode(),
                     $baiTransaction->getTransactionCode(),
-                    'mismatch transaction code',
+                    'mismatch transaction code'
                 );
 
                 $naiTransactionDetails = $transaction->getTransactionDetails();
@@ -89,17 +89,17 @@ final class ParserTest extends TestCase
                 self::assertEquals(
                     $naiTransactionDetails->getDescription(),
                     $baiTransactionDetails->getDescription(),
-                    'mismatch details description',
+                    'mismatch details description'
                 );
                 self::assertEquals(
                     $naiTransactionDetails->getParticulars(),
                     $baiTransactionDetails->getParticulars(),
-                    'mismatch details particulars',
+                    'mismatch details particulars'
                 );
                 self::assertEquals(
                     $naiTransactionDetails->getType(),
                     $baiTransactionDetails->getType(),
-                    'mismatch details type',
+                    'mismatch details type'
                 );
             }
         }

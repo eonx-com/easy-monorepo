@@ -22,7 +22,7 @@ final class RuleWithExtraOutputStub extends RuleStub implements DecisionOutputFo
         $output,
         ?array $extra = null,
         ?bool $supports = null,
-        ?int $priority = null,
+        ?int $priority = null
     ) {
         $this->extra = $extra;
 

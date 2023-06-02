@@ -53,7 +53,7 @@ final class EasyRandomServiceProvider extends ServiceProvider
                 }
 
                 return $generator;
-            },
+            }
         );
     }
 }

@@ -27,7 +27,7 @@ final class ConsoleRenderer
             '<fg=red>-</> %s (%s) = "%s"',
             $param->getName(),
             $param->getType(),
-            $param->getValue(),
+            $param->getValue()
         ));
     }
 
@@ -70,7 +70,7 @@ final class ConsoleRenderer
             '<fg=green>+</> %s (%s) = "%s"',
             $param->getName(),
             $param->getType(),
-            $param->getValue(),
+            $param->getValue()
         ));
     }
 
@@ -83,7 +83,7 @@ final class ConsoleRenderer
         $typeChange = $changedType ? \sprintf(
             ' <fg=yellow>(</>%s -> %s<fg=yellow>)</>',
             $remote->getType(),
-            $local->getType(),
+            $local->getType()
         ) : \sprintf(' (%s)', $local->getType());
         $noValueChange = $changedValue ? ':' : \sprintf(' = "%s"', $local->getValue());
 

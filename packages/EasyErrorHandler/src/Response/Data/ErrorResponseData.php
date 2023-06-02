@@ -23,7 +23,7 @@ final class ErrorResponseData implements ErrorResponseDataInterface
     public function __construct(
         private readonly array $rawData,
         ?int $statusCode = null,
-        ?array $headers = null,
+        ?array $headers = null
     ) {
         $this->statusCode = $statusCode ?? Response::HTTP_INTERNAL_SERVER_ERROR;
         $this->headers = $headers ?? [];

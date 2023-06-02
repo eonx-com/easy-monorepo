@@ -69,7 +69,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
                 return $app
                     ->make(ApiTokenDecoderFactoryInterface::class)
                     ->build(\config('easy-security.token_decoder'));
-            },
+            }
         );
     }
 
@@ -84,17 +84,17 @@ final class EasySecurityServiceProvider extends ServiceProvider
                     $app->make(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE),
                     new AuthorizationMatrixFactory(
                         $app->tagged(BridgeConstantsInterface::TAG_ROLES_PROVIDER),
-                        $app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER),
-                    ),
+                        $app->tagged(BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER)
+                    )
                 );
-            },
+            }
         );
 
         $this->app->singleton(
             AuthorizationMatrixInterface::class,
             static function (Container $app): AuthorizationMatrixInterface {
                 return $app->get(AuthorizationMatrixFactoryInterface::class)->create();
-            },
+            }
         );
     }
 
@@ -108,13 +108,13 @@ final class EasySecurityServiceProvider extends ServiceProvider
             return new ApiTokenConfigurator(
                 $app->make(ApiTokenDecoderFactoryInterface::class),
                 \config('easy-security.token_decoder'),
-                SecurityContextConfiguratorInterface::SYSTEM_PRIORITY,
+                SecurityContextConfiguratorInterface::SYSTEM_PRIORITY
             );
         });
 
         $this->app->tag(
             [ApiTokenConfigurator::class],
-            [BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR],
+            [BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR]
         );
     }
 
@@ -129,13 +129,13 @@ final class EasySecurityServiceProvider extends ServiceProvider
             SecurityContextClientConfigurator::class,
             static function (Container $app): SecurityContextClientConfigurator {
                 return new SecurityContextClientConfigurator(
-                    $app->make(SecurityContextResolverInterface::class),
+                    $app->make(SecurityContextResolverInterface::class)
                 );
-            },
+            }
         );
         $this->app->tag(
             SecurityContextClientConfigurator::class,
-            [EasyBugsnagBridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR],
+            [EasyBugsnagBridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]
         );
     }
 
@@ -149,7 +149,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
                     : [];
 
                 return $app->make(LoggerInterface::class, $loggerParams);
-            },
+            }
         );
     }
 
@@ -161,9 +161,9 @@ final class EasySecurityServiceProvider extends ServiceProvider
                 static function (Container $app): FromRequestSecurityContextConfiguratorMiddleware {
                     return new FromRequestSecurityContextConfiguratorMiddleware(
                         $app->make(SecurityContextResolverInterface::class),
-                        $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR),
+                        $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)
                     );
-                },
+                }
             );
             $this->app->middleware([FromRequestSecurityContextConfiguratorMiddleware::class]);
 
@@ -175,9 +175,9 @@ final class EasySecurityServiceProvider extends ServiceProvider
             static function (Container $app): FromRequestSecurityContextConfiguratorListener {
                 return new FromRequestSecurityContextConfiguratorListener(
                     $app->make(SecurityContextResolverInterface::class),
-                    $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR),
+                    $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)
                 );
-            },
+            }
         );
     }
 
@@ -190,9 +190,9 @@ final class EasySecurityServiceProvider extends ServiceProvider
                 return new SecurityContextResolver(
                     $app->make(AuthorizationMatrixFactoryInterface::class),
                     $app->make(SecurityContextFactoryInterface::class),
-                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER),
+                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
                 );
-            },
+            }
         );
 
         // SecurityContextFactory
@@ -200,7 +200,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             SecurityContextFactoryInterface::class,
             static function (): SecurityContextFactoryInterface {
                 return new SecurityContextFactory();
-            },
+            }
         );
 
         // SecurityContext

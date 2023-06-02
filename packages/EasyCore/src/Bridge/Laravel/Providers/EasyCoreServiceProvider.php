@@ -83,7 +83,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
             SearchServiceInterface::class,
             static function (Container $app): SearchServiceInterface {
                 return $app->make(SearchServiceFactoryInterface::class)->create();
-            },
+            }
         );
     }
 
@@ -99,7 +99,7 @@ final class EasyCoreServiceProvider extends ServiceProvider
         $app->singleton(TrimStrings::class, static function (Container $app): TrimStrings {
             return new TrimStrings(
                 $app->get(StringsTrimmerInterface::class),
-                \config('easy-core.trim_strings.except', []),
+                \config('easy-core.trim_strings.except', [])
             );
         });
         $app->middleware([TrimStrings::class]);

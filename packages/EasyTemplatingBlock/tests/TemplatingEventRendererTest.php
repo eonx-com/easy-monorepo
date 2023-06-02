@@ -69,7 +69,7 @@ final class TemplatingEventRendererTest extends AbstractTestCase
         ?array $context,
         array $providers,
         ?array $renderers = null,
-        ?bool $isDebug = null,
+        ?bool $isDebug = null
     ): void {
         $renderers = $renderers ?? [new TextBlockRenderer()];
         $eventRenderer = new TemplatingEventRenderer($providers, $renderers, $isDebug ?? false);

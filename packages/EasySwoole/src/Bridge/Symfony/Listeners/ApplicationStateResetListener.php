@@ -21,7 +21,7 @@ final class ApplicationStateResetListener extends AbstractTerminateEventListener
     public function __construct(iterable $appStateResetters)
     {
         $this->appStateResetters = CollectorHelper::orderLowerPriorityFirstAsArray(
-            CollectorHelper::filterByClass($appStateResetters, AppStateResetterInterface::class),
+            CollectorHelper::filterByClass($appStateResetters, AppStateResetterInterface::class)
         );
     }
 
