@@ -15,7 +15,7 @@ final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
     public function __construct(
         PaginationInterface $pagination,
         private readonly iterable $iterable,
-        private readonly int $total
+        private readonly int $total,
     ) {
         parent::__construct($pagination);
     }

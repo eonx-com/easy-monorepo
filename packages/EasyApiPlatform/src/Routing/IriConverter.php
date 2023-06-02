@@ -10,8 +10,9 @@ use ApiPlatform\Metadata\Operation;
 
 final class IriConverter implements IriConverterInterface
 {
-    public function __construct(private IriConverterInterface $decorated)
-    {
+    public function __construct(
+        private IriConverterInterface $decorated,
+    ) {
     }
 
     /**
@@ -21,7 +22,7 @@ final class IriConverter implements IriConverterInterface
         mixed $resource,
         ?int $referenceType = null,
         ?Operation $operation = null,
-        ?array $context = null
+        ?array $context = null,
     ): ?string {
         if ($resource instanceof SelfProvidedIriItemInterface) {
             return $resource->getIri();

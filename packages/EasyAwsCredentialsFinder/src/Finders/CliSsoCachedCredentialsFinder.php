@@ -32,7 +32,7 @@ final class CliSsoCachedCredentialsFinder extends AbstractAwsCredentialsFinder
         AwsConfigurationProviderInterface $configProvider,
         Filesystem $filesystem,
         ProcessRunnerInterface $processRunner,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->configProvider = $configProvider;
         $this->filesystem = $filesystem;

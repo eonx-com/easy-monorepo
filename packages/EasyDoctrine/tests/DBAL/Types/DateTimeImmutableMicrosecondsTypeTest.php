@@ -199,7 +199,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,
-        string $declaration
+        string $declaration,
     ): void {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);

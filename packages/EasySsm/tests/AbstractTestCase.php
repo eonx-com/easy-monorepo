@@ -32,7 +32,7 @@ abstract class AbstractTestCase extends TestCase
         string $command,
         ?array $inputs = null,
         ?array $configs = null,
-        ?array $argsOpts = null
+        ?array $argsOpts = null,
     ): string {
         $kernel = new EasySsmKernel($configs ?? []);
         $kernel->boot();

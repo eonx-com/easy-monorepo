@@ -190,7 +190,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     private function mockConstraintViolationBuilder(
         string $code,
         int $minPrecision,
-        int $maxPrecision
+        int $maxPrecision,
     ): ConstraintViolationBuilderInterface {
         /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
         $violationBuilder = $this->mock(
@@ -223,12 +223,12 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
         $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
-            $violationBuilder
+            $violationBuilder,
         ): void {
             $mock->shouldReceive('buildViolation')
                 ->once()

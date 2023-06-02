@@ -47,7 +47,7 @@ trait MessengerAssertionsTrait
     public static function assertCountOfMessagesSentToTransport(
         int $count,
         string $transportName,
-        ?string $messageClass = null
+        ?string $messageClass = null,
     ): void {
         self::assertCount($count, self::getMessagesSentToTransport($transportName, $messageClass));
     }
@@ -61,7 +61,7 @@ trait MessengerAssertionsTrait
     public static function assertMessageSentToAsyncTransport(
         string $messageClass,
         array $expectedProperties = [],
-        int $messagesCount = 1
+        int $messagesCount = 1,
     ): void {
         self::assertMessageSentToTransport($messageClass, 'async', $expectedProperties, $messagesCount);
     }
@@ -75,7 +75,7 @@ trait MessengerAssertionsTrait
     public static function assertMessageSentToFailedTransport(
         string $messageClass,
         array $expectedProperties = [],
-        int $messagesCount = 1
+        int $messagesCount = 1,
     ): void {
         self::assertMessageSentToTransport($messageClass, 'failed', $expectedProperties, $messagesCount);
     }
@@ -90,7 +90,7 @@ trait MessengerAssertionsTrait
         string $messageClass,
         string $transportName,
         array $expectedProperties = [],
-        int $messagesCount = 1
+        int $messagesCount = 1,
     ): void {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -216,7 +216,7 @@ trait MessengerAssertionsTrait
     private static function runMessengerWorker(
         string $transportName,
         string $busName,
-        array $expectedExceptions = []
+        array $expectedExceptions = [],
     ): void {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
         $transport = self::getContainer()->get('messenger.transport.' . $transportName);

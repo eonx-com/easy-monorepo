@@ -39,7 +39,7 @@ final class SyncRetryMiddleware extends AbstractMiddleware
         WebhookRetryStrategyInterface $retryStrategy,
         ?bool $asyncEnabled = null,
         ?LoggerInterface $logger = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->resultStore = $resultStore;
         $this->retryStrategy = $retryStrategy;

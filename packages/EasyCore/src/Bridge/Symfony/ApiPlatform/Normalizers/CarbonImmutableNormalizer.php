@@ -17,7 +17,7 @@ final class CarbonImmutableNormalizer extends DateTimeNormalizer
         $data,
         string $type,
         ?string $format = null,
-        ?array $context = null
+        ?array $context = null,
     ): CarbonImmutable {
         return CarbonImmutable::parse(parent::denormalize($data, $type, $format, $context ?? []));
     }

@@ -28,7 +28,7 @@ final class BatchItemExceptionHandler
     public function __construct(
         private readonly BatchItemTransformer $batchItemTransformer,
         private readonly ContainerInterface $container,
-        private readonly string $emergencyTransportName = 'async'
+        private readonly string $emergencyTransportName = 'async',
     ) {
     }
 
@@ -71,7 +71,7 @@ final class BatchItemExceptionHandler
      */
     private function doHandleEmergencyException(
         EasyBatchEmergencyExceptionInterface $exception,
-        Envelope $envelope
+        Envelope $envelope,
     ): Envelope {
         $message = null;
         $errorDetails = $exception->getPrevious()

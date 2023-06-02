@@ -13,7 +13,7 @@ final class ManagersCloser
 {
     public function __construct(
         private readonly ManagerRegistry $registry,
-        private readonly LoggerInterface $logger = new NullLogger()
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

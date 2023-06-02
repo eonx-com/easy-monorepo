@@ -12,7 +12,7 @@ final class ManagersChecker extends AbstractAppStateChecker
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }

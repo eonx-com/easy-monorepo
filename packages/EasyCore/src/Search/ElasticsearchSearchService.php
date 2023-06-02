@@ -50,7 +50,7 @@ final class ElasticsearchSearchService implements SearchServiceInterface
         string $index,
         ?array $body = null,
         ?array $accessTokens = null,
-        ?array $options = null
+        ?array $options = null,
     ): array {
         $options = $options ?? [];
         $accessTokensProperty = '_access_tokens';

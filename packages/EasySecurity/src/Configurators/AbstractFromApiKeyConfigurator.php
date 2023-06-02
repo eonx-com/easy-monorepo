@@ -24,6 +24,6 @@ abstract class AbstractFromApiKeyConfigurator extends AbstractSecurityContextCon
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        ApiKeyInterface $apiKey
+        ApiKeyInterface $apiKey,
     ): void;
 }

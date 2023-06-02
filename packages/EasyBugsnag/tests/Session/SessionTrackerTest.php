@@ -44,7 +44,7 @@ final class SessionTrackerTest extends AbstractTestCase
         bool $trackSession,
         string $uri,
         ?array $exclude = null,
-        ?string $excludeDelimiter = null
+        ?string $excludeDelimiter = null,
     ): void {
         $bugsnag = new Client(new Configuration('my-api-key'));
         $request = new Request([], [], [], [], [], [

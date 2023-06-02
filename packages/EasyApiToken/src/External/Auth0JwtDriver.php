@@ -75,7 +75,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null,
         ?CacheItemPoolInterface $cache = null,
-        ?int $cacheTtl = null
+        ?int $cacheTtl = null,
     ) {
         $this->validAudiences = $validAudiences;
         $this->authorizedIss = $authorizedIss;

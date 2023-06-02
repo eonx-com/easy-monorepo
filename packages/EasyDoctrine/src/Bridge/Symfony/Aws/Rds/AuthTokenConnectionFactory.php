@@ -36,7 +36,7 @@ final class AuthTokenConnectionFactory
         private readonly int $cacheExpiryInSeconds,
         private readonly bool $sslEnabled,
         private readonly string $sslMode,
-        private readonly string $sslCertDir
+        private readonly string $sslCertDir,
     ) {
     }
 
@@ -50,7 +50,7 @@ final class AuthTokenConnectionFactory
         array $params,
         ?Configuration $config = null,
         ?EventManager $eventManager = null,
-        ?array $mappingTypes = null
+        ?array $mappingTypes = null,
     ): Connection {
         $driverOptions = $params['driverOptions'] ?? [];
         $rdsIamEnabled = $driverOptions[self::OPTION_AWS_RDS_IAM_ENABLED] ?? true;

@@ -44,7 +44,7 @@ final class HttpRequestSentEvent
         ?ResponseDataInterface $responseData = null,
         ?Throwable $throwable = null,
         ?DateTimeInterface $throwableThrownAt = null,
-        ?array $extra = null
+        ?array $extra = null,
     ) {
         $this->requestData = $requestData;
         $this->responseData = $responseData;

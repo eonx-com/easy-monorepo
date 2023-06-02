@@ -152,7 +152,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $data,
         string $type,
         ?string $format = null,
-        ?array $context = null
+        ?array $context = null,
     ): void {
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
         $trimmer = $this->mock(StringsTrimmerInterface::class);

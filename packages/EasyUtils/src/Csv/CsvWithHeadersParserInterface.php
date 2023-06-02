@@ -11,6 +11,6 @@ interface CsvWithHeadersParserInterface
      */
     public function parse(
         CsvContentsProviderInterface $contentsProvider,
-        ?CsvParserConfigInterface $config = null
+        ?CsvParserConfigInterface $config = null,
     ): iterable;
 }

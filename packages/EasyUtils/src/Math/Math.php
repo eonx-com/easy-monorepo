@@ -23,7 +23,7 @@ class Math implements MathInterface
         private ?int $roundMode = null,
         private ?int $scale = null,
         private ?string $decimalSeparator = null,
-        private ?string $thousandsSeparator = null
+        private ?string $thousandsSeparator = null,
     ) {
         $this->roundPrecision = $roundPrecision ?? self::ROUND_PRECISION;
         $this->roundMode = $roundMode ?? self::ROUND_MODE;
@@ -69,7 +69,7 @@ class Math implements MathInterface
         string $multiplicand,
         string $multiplier,
         ?int $precision = null,
-        ?int $mode = null
+        ?int $mode = null,
     ): string {
         return $this->round(\bcmul($multiplicand, $multiplier, $this->scale), $precision, $mode);
     }

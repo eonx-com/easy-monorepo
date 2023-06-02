@@ -159,7 +159,7 @@ final class SecurityContextTest extends AbstractTestCase
         string $role,
         string $permission,
         bool $hasRole,
-        bool $hasPermission
+        bool $hasPermission,
     ): void {
         $authorizationMatrix = new AuthorizationMatrix($roles, []);
 

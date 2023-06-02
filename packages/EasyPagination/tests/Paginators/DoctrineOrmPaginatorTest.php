@@ -214,7 +214,7 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
         string $fromAlias,
         ?string $indexBy,
         callable $setup,
-        callable $assert
+        callable $assert,
     ): void {
         $entityManager = $this->getEntityManager();
         $paginator = new DoctrineOrmPaginator($pagination, $entityManager, $from, $fromAlias, $indexBy);

@@ -10,8 +10,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 final class ExceptionEventListener
 {
-    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
-    {
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler,
+    ) {
     }
 
     public function __invoke(ExceptionEvent $event): void

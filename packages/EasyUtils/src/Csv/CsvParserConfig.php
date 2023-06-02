@@ -15,7 +15,7 @@ final class CsvParserConfig implements CsvParserConfigInterface
         private readonly ?array $requiredHeaders = null,
         private readonly ?array $groupPrefixes = null,
         private readonly ?bool $ignoreEmptyRecords = null,
-        private readonly ?array $recordTransformers = null
+        private readonly ?array $recordTransformers = null,
     ) {
     }
 
@@ -28,7 +28,7 @@ final class CsvParserConfig implements CsvParserConfigInterface
         ?array $requiredHeaders = null,
         ?array $groupPrefixes = null,
         ?bool $ignoreEmptyRecords = null,
-        ?array $recordTransformers = null
+        ?array $recordTransformers = null,
     ): self {
         return new self($requiredHeaders, $groupPrefixes, $ignoreEmptyRecords, $recordTransformers);
     }

@@ -36,7 +36,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         ?HttpClientInterface $decorated = null,
         private readonly ?iterable $modifiers = [],
         private readonly ?bool $modifiersEnabled = true,
-        private readonly ?array $modifiersWhitelist = []
+        private readonly ?array $modifiersWhitelist = [],
     ) {
         $this->client = $decorated ?? HttpClient::create();
     }
@@ -82,7 +82,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         Config $config,
         RequestDataInterface $requestData,
         ?ResponseDataInterface $responseData = null,
-        ?\Throwable $throwable = null
+        ?\Throwable $throwable = null,
     ): void {
         if ($config->isEventsEnabled()) {
             $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
@@ -134,7 +134,7 @@ final class WithEventsHttpClient implements HttpClientInterface
     private function modifyRequestData(
         RequestDataInterface $data,
         array $modifiersWhitelist,
-        array $modifiers
+        array $modifiers,
     ): RequestDataInterface {
         // No explicitly allowed modifiers, execute all of them
         if (\count($modifiersWhitelist) < 1) {

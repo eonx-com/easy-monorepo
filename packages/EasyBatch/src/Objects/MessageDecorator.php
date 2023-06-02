@@ -25,8 +25,9 @@ final class MessageDecorator
 
     private bool $requiresApproval = false;
 
-    public function __construct(private readonly object $message)
-    {
+    public function __construct(
+        private readonly object $message,
+    ) {
     }
 
     public static function wrap(object $message): self

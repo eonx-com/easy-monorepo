@@ -52,7 +52,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
      */
     protected static function instantiateClient(
         Container $app,
-        ?HttpClientInterface $client = null
+        ?HttpClientInterface $client = null,
     ): HttpClientInterface {
         /** @var iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers */
         $modifiers = $app->tagged(BridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER);

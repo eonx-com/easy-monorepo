@@ -45,7 +45,7 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
         ?int $level = null,
         ?array $channels = null,
         ?array $exceptChannels = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->stream = $stream ?? 'php://stdout';
         $this->level = $level ?? Logger::DEBUG;

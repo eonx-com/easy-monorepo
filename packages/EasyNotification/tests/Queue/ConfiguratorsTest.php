@@ -144,7 +144,7 @@ final class ConfiguratorsTest extends AbstractTestCase
         ConfigInterface $config,
         MessageInterface $message,
         callable $test,
-        ?QueueMessageInterface $queueMessage = null
+        ?QueueMessageInterface $queueMessage = null,
     ): void {
         $test($configurator->configure($config, $queueMessage ?? new QueueMessage(), $message), $this);
     }

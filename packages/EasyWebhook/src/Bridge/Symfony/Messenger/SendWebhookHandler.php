@@ -14,7 +14,7 @@ final class SendWebhookHandler implements MessageHandlerInterface
 {
     public function __construct(
         readonly private WebhookClientInterface $client,
-        readonly private StoreInterface $store
+        readonly private StoreInterface $store,
     ) {
     }
 

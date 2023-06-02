@@ -29,7 +29,7 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
     public function resolve(
         string $action,
         ActivitySubjectInterface $subject,
-        array $changeSet
+        array $changeSet,
     ): ?ActivitySubjectDataInterface {
         [$oldData, $data] = $this->resolveChangeData($action, $changeSet);
 

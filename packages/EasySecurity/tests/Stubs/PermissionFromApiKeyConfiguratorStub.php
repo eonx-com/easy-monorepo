@@ -26,7 +26,7 @@ final class PermissionFromApiKeyConfiguratorStub extends AbstractFromApiKeyConfi
     protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        ApiKeyInterface $apiKey
+        ApiKeyInterface $apiKey,
     ): void {
         $context->addPermissions($this->permission);
     }

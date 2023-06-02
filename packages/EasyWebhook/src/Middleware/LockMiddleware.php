@@ -32,7 +32,7 @@ final class LockMiddleware extends AbstractMiddleware
     public function __construct(
         LockServiceInterface $lockService,
         ?string $lockResourcePattern = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->lockService = $lockService;
         $this->resourcePattern = $lockResourcePattern ?? self::DEFAULT_LOCK_RESOURCE_PATTERN;

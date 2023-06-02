@@ -27,8 +27,9 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     private ?EntityRepository $repository = null;
 
-    public function __construct(protected ManagerRegistry $registry)
-    {
+    public function __construct(
+        protected ManagerRegistry $registry,
+    ) {
     }
 
     /**
@@ -129,7 +130,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?PaginationInterface $pagination = null
+        ?PaginationInterface $pagination = null,
     ): DoctrineOrmLengthAwarePaginator {
         return new DoctrineOrmLengthAwarePaginator(
             $pagination ?? $this->getPagination(),

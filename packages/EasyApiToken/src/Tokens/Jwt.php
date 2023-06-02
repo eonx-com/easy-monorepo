@@ -16,7 +16,7 @@ final class Jwt implements JwtInterface
      */
     public function __construct(
         private array $payload,
-        private string $original
+        private string $original,
     ) {
     }
 

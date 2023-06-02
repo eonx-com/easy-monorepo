@@ -16,7 +16,7 @@ final class BatchItemIterator
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly int $batchItemsPerPage
+        private readonly int $batchItemsPerPage,
     ) {
     }
 

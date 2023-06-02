@@ -10,8 +10,9 @@ use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 
 final class SensitiveDataSanitizerProcessor extends AbstractSelfProcessorConfigProvider
 {
-    public function __construct(private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer)
-    {
+    public function __construct(
+        private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
+    ) {
     }
 
     /**

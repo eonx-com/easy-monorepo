@@ -17,7 +17,7 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
         private readonly string $storageFilename,
         private readonly ?string $url = null,
         ?int $priority = null,
-        private readonly Filesystem $filesystem = new Filesystem()
+        private readonly Filesystem $filesystem = new Filesystem(),
     ) {
         parent::__construct($priority);
     }

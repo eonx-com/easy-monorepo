@@ -231,7 +231,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         string $leftOperand,
         string $rightOperand,
         string $compareMethod,
-        bool $result
+        bool $result,
     ): void {
         $math = $this->getMath();
 
@@ -249,7 +249,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         string $expected,
         string $dividend,
         string $divisor,
-        ?int $precision = null
+        ?int $precision = null,
     ): void {
         $math = $this->getMath();
         $actual = $math->divide($dividend, $divisor, $precision);
