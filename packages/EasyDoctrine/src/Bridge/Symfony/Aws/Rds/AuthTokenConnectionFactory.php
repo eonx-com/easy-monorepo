@@ -4,39 +4,24 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Bridge\Symfony\Aws\Rds;
 
-use Aws\Credentials\CredentialProvider;
-use Aws\Rds\AuthTokenGenerator;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
+use Doctrine\DBAL\Driver;
+use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsOptionsInterface;
+use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
+use EonX\EasyDoctrine\Bridge\AwsRds\Iam\DbalV2Driver;
+use EonX\EasyDoctrine\Bridge\AwsRds\Iam\DbalV3Driver;
+use EonX\EasyDoctrine\Bridge\AwsRds\Ssl\CertificateAuthorityProvider;
 
 final class AuthTokenConnectionFactory
 {
-    public const OPTION_AWS_RDS_IAM_ENABLED = 'easy_doctrine_aws_rds_iam_enabled';
-
-    public const OPTION_AWS_RDS_IAM_USERNAME = 'easy_doctrine_aws_rds_iam_username';
-
-    public const OPTION_AWS_RDS_SSL_ENABLED = 'easy_doctrine_aws_rds_ssl_enabled';
-
-    public const OPTION_AWS_RDS_SSL_MODE = 'easy_doctrine_aws_rds_ssl_mode';
-
-    private const RDS_COMBINED_CERT_FILENAME_PATTERN = '%s/rds-combined-ca-bundle.pem';
-
-    private const RDS_COMBINED_CERT_URL = 'https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem';
-
     public function __construct(
         private readonly ConnectionFactory $factory,
-        private readonly CacheInterface $cache,
-        private readonly string $awsRegion,
-        private readonly string $awsUsername,
-        private readonly int $cacheExpiryInSeconds,
-        private readonly bool $sslEnabled,
-        private readonly string $sslMode,
-        private readonly string $sslCertDir
+        private readonly AuthTokenProvider $authTokenProvider,
+        private readonly ?string $sslMode = null,
+        private readonly ?CertificateAuthorityProvider $certificateAuthorityProvider = null
     ) {
     }
 
@@ -53,68 +38,44 @@ final class AuthTokenConnectionFactory
         ?array $mappingTypes = null
     ): Connection {
         $driverOptions = $params['driverOptions'] ?? [];
-        $rdsIamEnabled = $driverOptions[self::OPTION_AWS_RDS_IAM_ENABLED] ?? true;
-        $rdsSslEnabled = $driverOptions[self::OPTION_AWS_RDS_SSL_ENABLED] ?? $this->sslEnabled;
-
-        if ($rdsIamEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')) {
-            $params['authTokenGenerator'] = new AuthTokenGenerator(CredentialProvider::defaultProvider());
-            $params['user'] = $driverOptions[self::OPTION_AWS_RDS_IAM_USERNAME] ?? $this->awsUsername;
-            $params['passwordGenerator'] = $this->getGeneratePasswordClosure();
-            $params['wrapperClass'] = RdsIamConnection::class;
-        }
-
-        if ($rdsSslEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_SSL_ENABLED')) {
-            $params['sslmode'] = $driverOptions[self::OPTION_AWS_RDS_SSL_MODE] ?? $this->sslMode;
-            $params['sslrootcert'] = $this->resolveSslCertPath();
-        }
+        $rdsIamEnabled = $driverOptions[AwsRdsOptionsInterface::IAM_ENABLED] ?? true;
+        $rdsSslEnabled = $driverOptions[AwsRdsOptionsInterface::SSL_ENABLED] ?? true;
 
         unset(
-            $params['driverOptions'][self::OPTION_AWS_RDS_IAM_ENABLED],
-            $params['driverOptions'][self::OPTION_AWS_RDS_IAM_USERNAME],
-            $params['driverOptions'][self::OPTION_AWS_RDS_SSL_ENABLED],
-            $params['driverOptions'][self::OPTION_AWS_RDS_SSL_MODE]
+            $params['driverOptions'][AwsRdsOptionsInterface::IAM_ENABLED],
+            $params['driverOptions'][AwsRdsOptionsInterface::SSL_ENABLED],
         );
 
-        return $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
-    }
+        if ($rdsSslEnabled
+            && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_SSL_ENABLED')
+            && $this->certificateAuthorityProvider !== null) {
+            if ($this->sslMode !== null) {
+                $params['sslmode'] ??= $this->sslMode;
+            }
+            $params['sslrootcert'] = $this->certificateAuthorityProvider->getCertificateAuthorityPath();
+        }
 
-    private function getGeneratePasswordClosure(): \Closure
-    {
-        return function (AuthTokenGenerator $tokenGenerator, array $params): string {
-            $key = \sprintf('easy-doctrine-pwd-%s', $params['user'] ?? $this->awsUsername);
+        $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
 
-            return $this->cache->get($key, function (ItemInterface $item) use ($tokenGenerator, $params): string {
-                $item->expiresAfter($this->cacheExpiryInSeconds);
+        if ($rdsIamEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')) {
+            $driverClass = \method_exists(Driver::class, 'getExceptionConverter')
+                ? DbalV3Driver::class
+                : DbalV2Driver::class;
 
-                return $tokenGenerator->createToken(
-                    \sprintf('%s:%s', $params['host'], $params['port']),
-                    $this->awsRegion,
-                    $params['user'] ?? $this->awsUsername
-                );
-            });
-        };
+            $connectionClass = $connection::class;
+            $connection = new $connectionClass(
+                $connection->getParams(),
+                new $driverClass($this->authTokenProvider, $connection->getDriver()),
+                $connection->getConfiguration(),
+                $connection->getEventManager()
+            );
+        }
+
+        return $connection;
     }
 
     private function isEnabled(string $feature): bool
     {
         return ($_SERVER[$feature] ?? $_ENV[$feature] ?? 'enabled') === 'enabled';
-    }
-
-    private function resolveSslCertPath(): string
-    {
-        $filesystem = new Filesystem();
-        $filename = \sprintf(self::RDS_COMBINED_CERT_FILENAME_PATTERN, $this->sslCertDir);
-
-        if ($filesystem->exists($filename) === false) {
-            $certContents = \file_get_contents(self::RDS_COMBINED_CERT_URL);
-
-            if (\is_string($certContents) === false) {
-                throw new \RuntimeException('Could not download RDS Combined Cert');
-            }
-
-            $filesystem->dumpFile($filename, $certContents);
-        }
-
-        return $filename;
     }
 }
