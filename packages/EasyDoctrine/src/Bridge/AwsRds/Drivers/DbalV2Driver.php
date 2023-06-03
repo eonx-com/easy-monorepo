@@ -19,9 +19,9 @@ final class DbalV2Driver extends AbstractAwsRdsDriver implements Driver
      */
     public function connect(
         array $params,
-        ?string $username = null,
-        ?string $password = null,
-        ?array $driverOptions = null
+        $username = null,
+        $password = null,
+        array $driverOptions = []
     ): Connection {
         $params = $this->connectionParamsResolver->getParams(\array_merge($params, [
             'driverOptions' => $driverOptions,
