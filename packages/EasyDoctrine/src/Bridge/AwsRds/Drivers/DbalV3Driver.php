@@ -10,7 +10,6 @@ use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
 
 final class DbalV3Driver extends AbstractAwsRdsDriver implements Driver
 {

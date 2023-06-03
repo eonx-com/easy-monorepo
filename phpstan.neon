@@ -30,6 +30,7 @@ parameters:
         - packages/EasyApiToken/tests/Bridge/Symfony/*
         - packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
         - packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
+        - packages/EasyDoctrine/src/Bridge/AwsRds/Drivers/DbalV3Driver.php
         - packages/EasyEncryption/src/AwsPkcs11Encryptor.php
         - packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php

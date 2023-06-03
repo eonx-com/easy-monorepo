@@ -19,7 +19,8 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES = 'easy_doctrine.aws_rds.iam.auth_token_lifetime_in_minutes';
+    public const PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES
+        = 'easy_doctrine.aws_rds.iam.auth_token_lifetime_in_minutes';
 
     /**
      * @var string

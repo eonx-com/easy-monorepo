@@ -17,8 +17,12 @@ final class DbalV2Driver extends AbstractAwsRdsDriver implements Driver
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function connect(array $params, ?string $username = null, ?string $password = null, ?array $driverOptions = null): Connection
-    {
+    public function connect(
+        array $params,
+        ?string $username = null,
+        ?string $password = null,
+        ?array $driverOptions = null
+    ): Connection {
         $params = $this->connectionParamsResolver->getParams(\array_merge($params, [
             'driverOptions' => $driverOptions,
             'password' => $password,

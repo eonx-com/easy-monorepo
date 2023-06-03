@@ -23,7 +23,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(AuthTokenProvider::class)
         ->arg('$awsRegion', param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_REGION))
-        ->arg('$authTokenLifetimeInMinutes', param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES))
+        ->arg(
+            '$authTokenLifetimeInMinutes',
+            param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES)
+        )
         ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AWS_RDS_IAM_CACHE))
         ->arg('$awsUsername', param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_USERNAME));
 
