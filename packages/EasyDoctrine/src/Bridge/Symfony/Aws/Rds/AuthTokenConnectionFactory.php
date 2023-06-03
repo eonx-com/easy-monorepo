@@ -17,7 +17,7 @@ final class AuthTokenConnectionFactory
 {
     public function __construct(
         private readonly ConnectionFactory $factory,
-        private readonly AwsRdsConnectionParamsResolver $connectionParamsResolver
+        private readonly AwsRdsConnectionParamsResolver $connectionParamsResolver,
     ) {
     }
 

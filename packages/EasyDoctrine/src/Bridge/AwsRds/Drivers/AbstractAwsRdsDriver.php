@@ -11,7 +11,7 @@ abstract class AbstractAwsRdsDriver
 {
     public function __construct(
         protected readonly Driver $decorated,
-        protected readonly AwsRdsConnectionParamsResolver $connectionParamsResolver
+        protected readonly AwsRdsConnectionParamsResolver $connectionParamsResolver,
     ) {
     }
 }

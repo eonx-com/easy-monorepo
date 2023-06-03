@@ -12,7 +12,7 @@ final class AwsRdsConnectionParamsResolver
     public function __construct(
         private readonly AuthTokenProvider $authTokenProvider,
         private readonly ?string $sslMode = null,
-        private readonly ?CertificateAuthorityProvider $certificateAuthorityProvider = null
+        private readonly ?CertificateAuthorityProvider $certificateAuthorityProvider = null,
     ) {
     }
 

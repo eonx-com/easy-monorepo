@@ -22,7 +22,7 @@ final class AuthTokenProvider
         private readonly string $awsRegion,
         private readonly int $authTokenLifetimeInMinutes,
         private readonly CacheInterface $cache,
-        private readonly ?string $awsUsername = null
+        private readonly ?string $awsUsername = null,
     ) {
         $this->authTokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
     }

@@ -13,7 +13,7 @@ final class CertificateAuthorityProvider
     private Filesystem $filesystem;
 
     public function __construct(
-        private readonly string $caPath
+        private readonly string $caPath,
     ) {
         $this->filesystem = new Filesystem();
     }
