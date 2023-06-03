@@ -31,7 +31,7 @@ final class AuthTokenConnectionFactory
         array $params,
         ?Configuration $config = null,
         ?EventManager $eventManager = null,
-        ?array $mappingTypes = null
+        ?array $mappingTypes = null,
     ): Connection {
         $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
 

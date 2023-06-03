@@ -11,7 +11,7 @@ final class BatchProcessorResetter extends AbstractAppStateResetter
 {
     public function __construct(
         private readonly BatchProcessor $batchProcessor,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }

@@ -17,7 +17,7 @@ class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
      */
     public function __construct(
         private readonly ManagersCloser $managersCloser,
-        private readonly ?array $managers = null
+        private readonly ?array $managers = null,
     ) {
     }
 

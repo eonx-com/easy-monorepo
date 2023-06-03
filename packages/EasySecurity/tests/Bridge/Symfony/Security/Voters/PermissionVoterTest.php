@@ -55,7 +55,7 @@ final class PermissionVoterTest extends AbstractTestCase
         AuthorizationMatrixInterface $authorizationMatrix,
         SecurityContextInterface $securityContext,
         string $permission,
-        int $expectedVote
+        int $expectedVote,
     ): void {
         $securityContext->setAuthorizationMatrix($authorizationMatrix);
 

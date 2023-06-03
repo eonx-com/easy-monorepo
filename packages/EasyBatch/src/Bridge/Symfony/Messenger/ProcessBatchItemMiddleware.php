@@ -30,7 +30,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         private readonly BatchItemProcessor $batchItemProcessor,
         private readonly BatchItemLockFactoryInterface $batchItemLockFactory,
         private readonly BatchProcessor $batchProcessor,
-        private readonly LockServiceInterface $lockService
+        private readonly LockServiceInterface $lockService,
     ) {
     }
 
@@ -105,7 +105,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         Envelope $envelope,
         StackInterface $stack,
         ?BatchItemStamp $batchItemStamp = null,
-        ?ConsumedByWorkerStamp $consumedByWorkerStamp = null
+        ?ConsumedByWorkerStamp $consumedByWorkerStamp = null,
     ): \Closure {
         return static function () use ($envelope, $stack, $batchItemStamp, $consumedByWorkerStamp): Envelope {
             $newEnvelope = $stack

@@ -28,7 +28,7 @@ final class EasySwooleRunner implements RunnerInterface
      */
     public function __construct(
         private readonly HttpKernelInterface $app,
-        array $options
+        array $options,
     ) {
         OptionHelper::setOptions($options);
     }

@@ -15,8 +15,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EasyBatchTestContext
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
+    public function __construct(
+        private readonly ContainerInterface $container,
+    ) {
     }
 
     public function getBatchItemFactory(): BatchItemFactoryInterface

@@ -22,7 +22,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
      */
     public function __construct(
         private array $locations,
-        private LoggerInterface $logger = new NullLogger()
+        private LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

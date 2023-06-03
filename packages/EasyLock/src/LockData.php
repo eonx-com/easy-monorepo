@@ -13,7 +13,7 @@ final class LockData implements LockDataInterface
     public function __construct(
         private string $resource,
         private ?float $ttl = null,
-        ?bool $retry = null
+        ?bool $retry = null,
     ) {
         $this->retry = $retry ?? false;
     }

@@ -24,7 +24,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
     public function __construct(
         private readonly AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
         private readonly SecurityContextFactoryInterface $factory,
-        private readonly LoggerInterface $logger = new NullLogger()
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

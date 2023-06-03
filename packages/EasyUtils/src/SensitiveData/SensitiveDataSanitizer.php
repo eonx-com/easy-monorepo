@@ -35,7 +35,7 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         ?array $keysToMask = null,
         ?string $maskPattern = null,
         ?iterable $objectTransformers = null,
-        ?iterable $stringSanitizers = null
+        ?iterable $stringSanitizers = null,
     ) {
         $defaultKeysToMask = ($useDefaultKeysToMask ?? true) ? self::DEFAULT_KEYS_TO_MASK : [];
         foreach (\array_map(fn (string $key) => \mb_strtolower($key), $keysToMask ?? []) as $keyToMask) {

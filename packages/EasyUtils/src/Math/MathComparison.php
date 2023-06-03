@@ -10,7 +10,7 @@ class MathComparison implements MathComparisonInterface
 {
     public function __construct(
         private readonly string $leftOperand,
-        private readonly int $scale
+        private readonly int $scale,
     ) {
     }
 

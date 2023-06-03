@@ -12,8 +12,9 @@ use Symfony\Component\Lock\Store\DoctrineDbalStore;
 
 final class EasyLockDoctrineSchemaSubscriber implements EventSubscriber
 {
-    public function __construct(private PersistingStoreInterface $persistingStore)
-    {
+    public function __construct(
+        private PersistingStoreInterface $persistingStore,
+    ) {
     }
 
     public function getSubscribedEvents(): array

@@ -18,7 +18,7 @@ final class HttpClientRequestStub
         private Closure $addResponseClosure,
         private string $method,
         private string $url,
-        private ?array $options = null
+        private ?array $options = null,
     ) {
     }
 

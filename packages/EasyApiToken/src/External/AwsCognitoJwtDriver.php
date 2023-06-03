@@ -40,7 +40,7 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
         ?JwkFetcherInterface $jwkFetcher = null,
         ?array $allowedAlgos = null,
         private readonly ?int $leeway = null,
-        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO
+        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
     ) {
         $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
         $this->allowedAlgos = $allowedAlgos ?? [];

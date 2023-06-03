@@ -44,7 +44,7 @@ abstract class AbstractTestCase extends TestCase
 
     protected function mockRegistry(
         ?callable $managerExpectations = null,
-        ?callable $repositoryExpectations = null
+        ?callable $repositoryExpectations = null,
     ): LegacyMockInterface {
         return $this->mock(
             ManagerRegistry::class,

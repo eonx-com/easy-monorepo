@@ -51,7 +51,7 @@ final class Config implements ConfigInterface
         string $providerExternalId,
         string $queueRegion,
         string $queueUrl,
-        string $secret
+        string $secret,
     ) {
         $this->algorithm = $algorithm;
         $this->apiKey = $apiKey;

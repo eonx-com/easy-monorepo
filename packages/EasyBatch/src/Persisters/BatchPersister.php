@@ -12,7 +12,7 @@ final class BatchPersister
 {
     public function __construct(
         private readonly BatchRepositoryInterface $batchRepository,
-        private readonly BatchItemPersister $batchItemPersister
+        private readonly BatchItemPersister $batchItemPersister,
     ) {
     }
 

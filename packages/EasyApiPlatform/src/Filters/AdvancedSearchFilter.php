@@ -60,7 +60,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         PropertyAccessorInterface $propertyAccessor = null,
         LoggerInterface $logger = null,
         array $properties = null,
-        NameConverterInterface $nameConverter = null
+        NameConverterInterface $nameConverter = null,
     ) {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
 
@@ -154,7 +154,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         string $alias,
         string $field,
         mixed $values,
-        bool $caseSensitive
+        bool $caseSensitive,
     ): void {
         if (\is_array($values) === false) {
             $values = [$values];
@@ -251,7 +251,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         $filterParameter = $property;
         if (isset($this->properties[$filterParameter]) && \is_array($this->properties[$filterParameter])) {

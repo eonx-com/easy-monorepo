@@ -11,7 +11,7 @@ final class SwooleTableColumnDefinition
     public function __construct(
         readonly public string $name,
         readonly public SwooleTableColumnType $type,
-        readonly public ?int $size = null
+        readonly public ?int $size = null,
     ) {
     }
 }

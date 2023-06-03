@@ -14,7 +14,7 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly ProcessBatchForBatchItemHandler $processBatchForBatchItemHandler
+        private readonly ProcessBatchForBatchItemHandler $processBatchForBatchItemHandler,
     ) {
     }
 

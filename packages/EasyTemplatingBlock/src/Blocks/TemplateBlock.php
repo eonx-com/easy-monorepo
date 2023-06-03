@@ -24,7 +24,7 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
     public static function create(
         string $name,
         string $templateName,
-        ?array $templateContext = null
+        ?array $templateContext = null,
     ): TemplateBlockInterface {
         return (new self($name))
             ->setTemplateName($templateName)

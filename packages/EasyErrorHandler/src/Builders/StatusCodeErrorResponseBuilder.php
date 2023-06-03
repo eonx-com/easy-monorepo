@@ -19,7 +19,7 @@ final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
      */
     public function __construct(
         ?array $exceptionToStatusCode = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->exceptionToStatusCode = $exceptionToStatusCode ?? [];
 

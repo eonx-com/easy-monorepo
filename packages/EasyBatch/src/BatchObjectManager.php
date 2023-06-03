@@ -30,7 +30,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         private readonly BatchItemDispatcher $batchItemDispatcher,
         private readonly BatchItemIterator $batchItemIterator,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

@@ -26,7 +26,7 @@ final class ArrayStoreStub extends AbstractStore implements StoreInterface
     public function __construct(
         RandomGeneratorInterface $random,
         ?string $id = null,
-        ?DataCleanerInterface $dataCleaner = null
+        ?DataCleanerInterface $dataCleaner = null,
     ) {
         $this->id = $id;
 

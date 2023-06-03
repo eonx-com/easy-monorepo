@@ -307,7 +307,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
         string $from,
         ?string $fromAlias,
         callable $setup,
-        callable $assert
+        callable $assert,
     ): void {
         $conn = $this->getDoctrineDbalConnection();
         $paginator = new DoctrineDbalPaginator($pagination, $conn, $from, $fromAlias);

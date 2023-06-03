@@ -319,7 +319,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         ?array $globalDisallowedProperties = null,
         ?array $allowedProperties = null,
         ?array $disallowedProperties = null,
-        ?array $expectedDataProperties = null
+        ?array $expectedDataProperties = null,
     ): void {
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [

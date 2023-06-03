@@ -15,7 +15,7 @@ final class SwooleTableAdapterFactory
     public function __invoke(
         string $tableName,
         ?int $defaultLifetime = null,
-        ?MarshallerInterface $marshaller = null
+        ?MarshallerInterface $marshaller = null,
     ): CacheInterface {
         if (CacheTableHelper::exists($tableName) === false) {
             OutputHelper::writeln(\sprintf(

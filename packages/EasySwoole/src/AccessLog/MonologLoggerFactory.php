@@ -10,8 +10,9 @@ use Psr\Log\LoggerInterface;
 
 final class MonologLoggerFactory
 {
-    public function __construct(private readonly string $timezone = 'UTC')
-    {
+    public function __construct(
+        private readonly string $timezone = 'UTC',
+    ) {
     }
 
     public function create(): LoggerInterface

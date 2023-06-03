@@ -45,7 +45,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         private readonly ?string $serverClientCertFile = null,
         private readonly ?string $serverClientKeyFile = null,
         private readonly ?array $awsCloudHsmSdkOptions = null,
-        ?string $defaultKeyName = null
+        ?string $defaultKeyName = null,
     ) {
         parent::__construct($defaultKeyName);
     }
@@ -68,7 +68,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     protected function doDecrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw
+        bool $raw,
     ): string {
         $this->validateKey($key);
         $this->init();
@@ -84,7 +84,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     protected function doEncrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw
+        bool $raw,
     ): string {
         $this->validateKey($key);
         $this->init();
@@ -238,7 +238,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
      * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
      */
     private function validateKey(
-        \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|array|string|null $key = null
+        \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|array|string|null $key = null,
     ): void {
         if ($key !== null && $this->isNonEmptyString($key) === false) {
             throw new InvalidEncryptionKeyException(\sprintf(

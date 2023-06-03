@@ -11,8 +11,9 @@ final class FromIterableErrorReporterProvider implements ErrorReporterProviderIn
     /**
      * @param iterable<\EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface> $reporters
      */
-    public function __construct(private readonly iterable $reporters)
-    {
+    public function __construct(
+        private readonly iterable $reporters,
+    ) {
     }
 
     /**

@@ -37,7 +37,7 @@ final class RequestIdService implements RequestIdServiceInterface
     public function __construct(
         FallbackResolverInterface $fallback,
         ?string $correlationIdHeaderName = null,
-        ?string $requestIdHeaderName = null
+        ?string $requestIdHeaderName = null,
     ) {
         $this->fallback = $fallback;
         $this->correlationIdHeaderName = $correlationIdHeaderName ?? self::DEFAULT_HTTP_HEADER_CORRELATION_ID;

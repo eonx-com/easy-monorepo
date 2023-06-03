@@ -15,8 +15,9 @@ use Throwable;
 
 abstract class AbstractEncryptor implements EncryptorInterface
 {
-    public function __construct(private readonly ?string $defaultKeyName = null)
-    {
+    public function __construct(
+        private readonly ?string $defaultKeyName = null,
+    ) {
     }
 
     public function decrypt(string $text): DecryptedStringInterface
@@ -49,7 +50,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
      */
     public function decryptRaw(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
+        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null,
     ): string {
         return $this->execSafely(CouldNotDecryptException::class, function () use ($text, $key): string {
             return $this->doDecrypt($text, $key, true);
@@ -73,7 +74,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
      */
     public function encryptRaw(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
+        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null,
     ): string {
         return $this->execSafely(CouldNotEncryptException::class, function () use ($text, $key): string {
             return $this->doEncrypt($text, $key, true);
@@ -86,7 +87,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
     abstract protected function doDecrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw
+        bool $raw,
     ): string;
 
     /**
@@ -95,7 +96,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
     abstract protected function doEncrypt(
         string $text,
         null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
-        bool $raw
+        bool $raw,
     ): string;
 
     /**

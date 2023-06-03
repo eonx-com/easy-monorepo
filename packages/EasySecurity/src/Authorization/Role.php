@@ -22,7 +22,7 @@ final class Role implements RoleInterface
         private readonly string $identifier,
         ?array $permissions = null,
         private readonly ?string $name = null,
-        private ?array $metadata = null
+        private ?array $metadata = null,
     ) {
         $this->permissions = AuthorizationMatrixFormatter::formatPermissions($permissions ?? []);
     }

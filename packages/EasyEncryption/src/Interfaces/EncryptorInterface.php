@@ -31,7 +31,7 @@ interface EncryptorInterface
      */
     public function decryptRaw(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
+        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null,
     ): string;
 
     /**
@@ -44,6 +44,6 @@ interface EncryptorInterface
      */
     public function encryptRaw(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null
+        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null,
     ): string;
 }

@@ -48,7 +48,7 @@ final class SsmDotenv implements SsmDotenvInterface
         Parameters $parametersHelper,
         EnvLoaderInterface $envLoader,
         ?LoggerInterface $logger = null,
-        ?bool $strict = null
+        ?bool $strict = null,
     ) {
         $this->ssm = $ssm;
         $this->ssmPathResolver = $ssmPathResolver;

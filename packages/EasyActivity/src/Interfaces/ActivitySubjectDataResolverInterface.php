@@ -12,6 +12,6 @@ interface ActivitySubjectDataResolverInterface
     public function resolve(
         string $action,
         ActivitySubjectInterface $subject,
-        array $changeSet
+        array $changeSet,
     ): ?ActivitySubjectDataInterface;
 }

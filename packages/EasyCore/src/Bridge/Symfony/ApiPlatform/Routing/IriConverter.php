@@ -64,7 +64,7 @@ final class IriConverter implements IriConverterInterface
     public function getItemIriFromResourceClass(
         string $resourceClass,
         array $identifiers,
-        ?int $referenceType = null
+        ?int $referenceType = null,
     ): string {
         return $this->decorated->getItemIriFromResourceClass(
             $resourceClass,
@@ -79,7 +79,7 @@ final class IriConverter implements IriConverterInterface
     public function getSubresourceIriFromResourceClass(
         string $resourceClass,
         array $identifiers,
-        ?int $referenceType = null
+        ?int $referenceType = null,
     ): string {
         return $this->decorated->getSubresourceIriFromResourceClass(
             $resourceClass,
