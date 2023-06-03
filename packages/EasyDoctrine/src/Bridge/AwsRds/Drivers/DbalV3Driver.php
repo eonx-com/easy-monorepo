@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Bridge\AwsRds\Iam;
+namespace EonX\EasyDoctrine\Bridge\AwsRds\Drivers;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
@@ -10,15 +10,10 @@ use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
 
-final class DbalV3Driver implements Driver
+final class DbalV3Driver extends AbstractAwsRdsDriver implements Driver
 {
-    public function __construct(
-        private readonly AuthTokenProvider $authTokenProvider,
-        private readonly Driver $decorated
-    ) {
-    }
-
     /**
      * @param mixed[] $params
      *
@@ -27,7 +22,7 @@ final class DbalV3Driver implements Driver
      */
     public function connect(array $params): DriverConnection
     {
-        $params['password'] = $this->authTokenProvider->getAuthToken($params);
+        $params = $this->connectionParamsResolver->getParams($params);
 
         return $this->decorated->connect($params);
     }

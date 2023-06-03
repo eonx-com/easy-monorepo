@@ -2,38 +2,34 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Bridge\AwsRds\Iam;
+namespace EonX\EasyDoctrine\Bridge\AwsRds\Drivers;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
-final class DbalV2Driver implements Driver
+final class DbalV2Driver extends AbstractAwsRdsDriver implements Driver
 {
-    public function __construct(
-        private readonly AuthTokenProvider $authTokenProvider,
-        private readonly Driver $decorated
-    ) {
-    }
-
     /**
      * @param mixed[] $params
-     * @param null|string $username
-     * @param null|string $password
      * @param mixed[] $driverOptions
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = []): Connection
+    public function connect(array $params, ?string $username = null, ?string $password = null, ?array $driverOptions = null): Connection
     {
-        $username = $params['user'] ?? $username;
-        $password = $this->authTokenProvider->getAuthToken([
+        $params = $this->connectionParamsResolver->getParams(\array_merge($params, [
             'driverOptions' => $driverOptions,
-            'host' => $params['host'],
-            'port' => $params['port'],
+            'password' => $password,
             'user' => $username,
-        ]);
+        ]));
+
+        $username = $params['user'] ?? null;
+        $password = $password['password'] ?? null;
+        $driverOptions = $params['driverOptions'] ?? [];
+
+        unset($params['driverOptions'], $params['password'], $params['user']);
 
         return $this->decorated->connect($params, $username, $password, $driverOptions);
     }

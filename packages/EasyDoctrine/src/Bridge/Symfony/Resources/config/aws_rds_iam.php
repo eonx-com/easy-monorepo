@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
 use EonX\EasyDoctrine\Bridge\AwsRds\Ssl\CertificateAuthorityProvider;
 use EonX\EasyDoctrine\Bridge\BridgeConstantsInterface;
@@ -27,10 +28,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$awsUsername', param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_USERNAME));
 
     $services
-        ->set(AuthTokenConnectionFactory::class)
-        ->decorate('doctrine.dbal.connection_factory')
-        ->arg('$factory', service('.inner'))
+        ->set(AwsRdsConnectionParamsResolver::class)
         ->arg('$authTokenProvider', service(AuthTokenProvider::class))
         ->arg('$sslMode', param(BridgeConstantsInterface::PARAM_AWS_RDS_SSL_MODE))
         ->arg('$certificateAuthorityProvider', service(CertificateAuthorityProvider::class)->nullOnInvalid());
+
+    $services
+        ->set(AuthTokenConnectionFactory::class)
+        ->decorate('doctrine.dbal.connection_factory')
+        ->arg('$factory', service('.inner'))
+        ->arg('$connectionParamsResolver', service(AwsRdsConnectionParamsResolver::class));
 };
