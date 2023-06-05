@@ -44,8 +44,8 @@
         "symfony/validator": "^6.2",
         "symfony/var-dumper": "^6.2",
         "symfony/yaml": "^6.2",
-        "symplify/autowire-array-parameter": "^10.1",
-        "symplify/package-builder": "^10.1",
+        "symplify/autowire-array-parameter": "^11.1",
+        "symplify/package-builder": "^11.1",
         "myclabs/deep-copy": "^1.11"
     },
     "require-dev": {
@@ -75,8 +75,8 @@
         "symfony/maker-bundle": "^1.15",
         "symfony/monolog-bundle": "^3.5",
         "symfony/symfony": "^6.2",
-        "symplify/monorepo-builder": "^10.1",
-        "symplify/phpstan-extensions": "^10.1",
+        "symplify/monorepo-builder": "^11.1",
+        "symplify/phpstan-extensions": "^11.1",
         "tracy/tracy": "^2.7",
         "vlucas/phpdotenv": "^5.5",
         "symfony/amazon-sqs-messenger": "^6.2",
