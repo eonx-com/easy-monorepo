@@ -46,7 +46,7 @@ final class SecurityContextDataCollector extends DataCollector
     public function __construct(
         AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
         SecurityContextResolverInterface $securityContextResolver,
-        iterable $configurators
+        iterable $configurators,
     ) {
         $this->authorizationMatrixFactory = $authorizationMatrixFactory;
         $this->securityContextResolver = $securityContextResolver;

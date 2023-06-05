@@ -30,7 +30,7 @@ interface BatchItemRepositoryInterface
     public function paginateItems(
         PaginationInterface $pagination,
         int|string $batchId,
-        ?string $dependsOnName = null
+        ?string $dependsOnName = null,
     ): LengthAwarePaginatorInterface;
 
     public function save(BatchItemInterface $batchItem): BatchItemInterface;

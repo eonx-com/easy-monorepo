@@ -4,20 +4,59 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
 
-use EonX\EasySwoole\AppStateResetters\AbstractAppStateResetter;
-use Symfony\Contracts\Service\ResetInterface;
+use EonX\EasySwoole\Interfaces\AppStateResetterInterface;
+use EonX\EasyUtils\Traits\HasPriorityTrait;
+use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
+use Traversable;
 
-final class SymfonyServicesAppStateResetter extends AbstractAppStateResetter
+use function Symfony\Component\String\u;
+
+final class SymfonyServicesAppStateResetter extends ServicesResetter implements AppStateResetterInterface
 {
+    use HasPriorityTrait;
+
+    /**
+     * @param \Traversable<mixed> $resettableServices
+     * @param string[] $resetMethods
+     */
     public function __construct(
-        private readonly ResetInterface $servicesResetter,
-        ?int $priority = null
+        private Traversable $resettableServices,
+        private array $resetMethods,
+        ?int $priority = null,
     ) {
-        parent::__construct($priority);
+        parent::__construct($resettableServices, $resetMethods);
+
+        $this->doSetPriority($priority);
+    }
+
+    public function reset(): void
+    {
+        $this->resetState();
     }
 
     public function resetState(): void
     {
-        $this->servicesResetter->reset();
+        foreach ($this->resettableServices as $id => $service) {
+            foreach ((array)$this->resetMethods[$id] as $resetMethod) {
+                $resetMethod = u($resetMethod);
+
+                if ($resetMethod->startsWith('?')) {
+                    $resetMethod = $resetMethod->trimStart('?');
+
+                    if (\method_exists($service, (string)$resetMethod) === false) {
+                        continue;
+                    }
+                }
+
+                if ($this->shouldReset($id)) {
+                    $service->{(string)$resetMethod}();
+                }
+            }
+        }
+    }
+
+    protected function shouldReset(string $service): bool
+    {
+        return u($service)->containsAny('cache') === false;
     }
 }

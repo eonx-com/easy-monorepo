@@ -16,7 +16,7 @@ final class AmazonSqsTransportFactory extends BaseAmazonSqsTransportFactory
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,
-        private readonly ?LoggerInterface $logger = null
+        private readonly ?LoggerInterface $logger = null,
     ) {
         parent::__construct();
     }

@@ -18,7 +18,7 @@ jobs:
                 uses: ramsey/composer-install@v2
             -
                 id: output_data
-                run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
+                run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
         outputs:
             matrix: '${{ steps.output_data.outputs.matrix }}'
     split_packages:
@@ -29,7 +29,7 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 4.3.17
+                    - 4.3.25
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'

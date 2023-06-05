@@ -45,8 +45,9 @@ final class HttpRequestSentBreadcrumbListener
 
     private const METADATA_ATTRIBUTE_TIMING = 'Timing';
 
-    public function __construct(private Client $client)
-    {
+    public function __construct(
+        private Client $client,
+    ) {
         // The body is not required
     }
 

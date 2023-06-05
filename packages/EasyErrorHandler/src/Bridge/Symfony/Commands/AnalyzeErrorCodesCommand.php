@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class AnalyzeErrorCodesCommand extends Command
 {
     public function __construct(
-        private readonly ErrorCodesGroupProcessorInterface $errorCodesGroupProcessor
+        private readonly ErrorCodesGroupProcessorInterface $errorCodesGroupProcessor,
     ) {
         parent::__construct();
     }

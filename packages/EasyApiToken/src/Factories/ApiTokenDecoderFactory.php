@@ -32,7 +32,7 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
      */
     public function __construct(
         iterable $decoderProviders,
-        private readonly HashedApiKeyDriverInterface $hashedApiKeyDriver
+        private readonly HashedApiKeyDriverInterface $hashedApiKeyDriver,
     ) {
         $this->decoderProviders = $this->filter($decoderProviders, ApiTokenDecoderProviderInterface::class);
     }

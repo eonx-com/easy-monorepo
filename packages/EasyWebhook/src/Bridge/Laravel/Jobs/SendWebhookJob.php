@@ -35,7 +35,7 @@ final class SendWebhookJob implements ShouldQueue
     public function handle(
         WebhookClientInterface $client,
         WebhookRetryStrategyInterface $retryStrategy,
-        StoreInterface $store
+        StoreInterface $store,
     ): void {
         $webhook = $store->find($this->webhookId);
 

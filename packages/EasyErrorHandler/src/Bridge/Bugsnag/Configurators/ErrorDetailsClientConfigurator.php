@@ -15,7 +15,7 @@ final class ErrorDetailsClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }

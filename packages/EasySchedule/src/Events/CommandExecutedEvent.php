@@ -8,8 +8,9 @@ use EonX\EasySchedule\Interfaces\EventInterface;
 
 final class CommandExecutedEvent
 {
-    public function __construct(private readonly EventInterface $scheduleEvent)
-    {
+    public function __construct(
+        private readonly EventInterface $scheduleEvent,
+    ) {
     }
 
     public function getScheduleEvent(): EventInterface

@@ -117,19 +117,19 @@ trait DatabaseCommonPaginatorTrait
     }
 
     private function applyCommonCriteria(
-        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder
+        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder,
     ): void {
         $this->doApplyCriteria($this->commonCriteria, $queryBuilder);
     }
 
     private function applyFilterCriteria(
-        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder
+        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder,
     ): void {
         $this->doApplyCriteria($this->filterCriteria, $queryBuilder);
     }
 
     private function applyGetItemsCriteria(
-        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder
+        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder,
     ): void {
         $this->doApplyCriteria($this->getItemsCriteria, $queryBuilder);
     }
@@ -151,7 +151,7 @@ trait DatabaseCommonPaginatorTrait
      */
     private function doApplyCriteria(
         array $criteria,
-        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder
+        OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder,
     ): void {
         foreach ($criteria as $criterion) {
             \call_user_func($criterion[0], $queryBuilder);

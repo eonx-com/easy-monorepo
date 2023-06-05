@@ -11,7 +11,7 @@ final class ErrorCodesDto
      */
     public function __construct(
         private readonly int $nextGroupErrorCode = 0,
-        private readonly array $nextGroupedErrorCodes = []
+        private readonly array $nextGroupedErrorCodes = [],
     ) {
     }
 

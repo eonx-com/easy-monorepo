@@ -13,7 +13,7 @@
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.0",
         "symfony/symfony": "^6.2"
     },
     "autoload": {

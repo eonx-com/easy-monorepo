@@ -26,8 +26,9 @@ class HttpClientStub extends MockHttpClient
 
     private ?Throwable $expectedException = null;
 
-    public function __construct(protected string $baseUri = 'https://example.com')
-    {
+    public function __construct(
+        protected string $baseUri = 'https://example.com',
+    ) {
         parent::__construct(
             function ($method, $url, $options): ResponseInterface {
                 return $this->getResponse($method, $url, $options);
@@ -46,7 +47,7 @@ class HttpClientStub extends MockHttpClient
         string $url,
         ?array $headers = null,
         ?array $body = null,
-        ?array $queryParams = null
+        ?array $queryParams = null,
     ): HttpClientRequestStub {
         $url = $this->normalizeUrl($url);
         $options = [];

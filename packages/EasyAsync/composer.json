@@ -15,7 +15,7 @@
         "ramsey/uuid": "^3.9 || ^4.0",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.0",
         "symfony/symfony": "^6.2",
         "mockery/mockery": "^1.4",
         "laravel/lumen-framework": "^9.0"

@@ -30,7 +30,7 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     public function __construct(
         ActorResolverInterface $actorResolver,
         ActivitySubjectResolverInterface $subjectResolver,
-        ActivitySubjectDataResolverInterface $subjectDataResolver
+        ActivitySubjectDataResolverInterface $subjectDataResolver,
     ) {
         $this->actorResolver = $actorResolver;
         $this->subjectResolver = $subjectResolver;

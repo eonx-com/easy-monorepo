@@ -48,7 +48,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         iterable $builderProviders,
         iterable $reporterProviders,
         private readonly VerboseStrategyInterface $verboseStrategy,
-        ?array $ignoredExceptionsForReport = null
+        ?array $ignoredExceptionsForReport = null,
     ) {
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);

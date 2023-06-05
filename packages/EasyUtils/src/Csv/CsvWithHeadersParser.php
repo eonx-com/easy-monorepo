@@ -17,7 +17,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
      */
     public function parse(
         CsvContentsProviderInterface $contentsProvider,
-        ?CsvParserConfigInterface $config = null
+        ?CsvParserConfigInterface $config = null,
     ): iterable {
         $config = $config ?? CsvParserConfig::create();
         $index = 0;

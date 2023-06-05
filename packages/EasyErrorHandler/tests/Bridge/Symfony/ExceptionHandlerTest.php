@@ -24,7 +24,7 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
         Throwable $exception,
         callable $assertResponse,
         ?array $config = null,
-        ?array $translations = null
+        ?array $translations = null,
     ): void {
         // Convert array config to yaml file for symfony to load
         if ($config !== null) {

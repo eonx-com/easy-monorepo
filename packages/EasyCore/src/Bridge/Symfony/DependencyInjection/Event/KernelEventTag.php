@@ -32,7 +32,7 @@ final class KernelEventTag implements EventTagInterface
         ?string $event = null,
         ?string $method = null,
         ?int $priority = null,
-        ?string $dispatcher = null
+        ?string $dispatcher = null,
     ) {
         $this->priority = $priority;
         $this->event = $event;

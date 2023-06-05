@@ -19,7 +19,7 @@ abstract class AbstractTestCase extends TestCase
         ?string $pageAttr = null,
         ?int $pageDefault = null,
         ?string $perPageAttr = null,
-        ?int $perPageDefault = null
+        ?int $perPageDefault = null,
     ): PaginationConfig {
         return new PaginationConfig(
             $pageAttr ?? 'page',

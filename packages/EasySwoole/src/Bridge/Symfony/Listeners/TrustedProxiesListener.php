@@ -10,8 +10,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class TrustedProxiesListener extends AbstractRequestEventListener
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
+    public function __construct(
+        private readonly ContainerInterface $container,
+    ) {
     }
 
     protected function doInvoke(RequestEvent $event): void

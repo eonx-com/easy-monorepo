@@ -6,13 +6,22 @@
     "require": {
         "php": "^8.1",
         "api-platform/core": "^3.1",
+        "doctrine/doctrine-bundle": "^2.6",
+        "doctrine/orm": "^2.6",
+        "doctrine/persistence": "^2.2",
+        "monolog/monolog": "^2.0",
         "symfony/dependency-injection": "^6.2",
         "symfony/http-foundation": "^6.2"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.13",
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5",
-        "symfony/filesystem": "^6.2"
+        "phpspec/prophecy": "^1.0",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^10.0",
+        "symfony/filesystem": "^6.2",
+        "symfony/config": "^6.2",
+        "symfony/symfony": "^6.2"
     },
     "autoload": {
         "psr-4": {
@@ -22,7 +31,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyApiPlatform\\Tests\\": "tests"
+            "EonX\\EasyApiPlatform\\Tests\\": "tests",
+            "EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\": "tests/Fixtures/app/src"
         }
     },
     "conflict": {

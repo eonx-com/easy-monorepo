@@ -24,7 +24,7 @@ final class LoggerErrorReporter extends AbstractErrorReporter
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private readonly LoggerInterface $logger,
         ?array $ignoreExceptions = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         $this->ignoreExceptions = $ignoreExceptions ?? [];
 

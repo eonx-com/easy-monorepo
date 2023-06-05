@@ -109,7 +109,7 @@ abstract class AbstractTestCase extends TestCase
     protected function assertThrownException(
         string $expectedException,
         int $code,
-        ?string $previousException = null
+        ?string $previousException = null,
     ): void {
         self::assertNotNull($this->thrownException);
 

@@ -32,7 +32,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     public function __construct(
         SymfonySerializerInterface $serializer,
         CircularReferenceHandlerInterface $circularReferenceHandler,
-        array $disallowedProperties
+        array $disallowedProperties,
     ) {
         $this->serializer = $serializer;
         $this->circularReferenceHandler = $circularReferenceHandler;

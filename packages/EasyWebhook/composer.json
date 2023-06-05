@@ -17,8 +17,8 @@
     "require-dev": {
         "doctrine/dbal": "^2.6",
         "illuminate/database": "^9.0",
-        "ramsey/uuid": "^3.9 || ^4.0",
-        "phpunit/phpunit": "^9.5",
+        "ramsey/uuid": "^4.0",
+        "phpunit/phpunit": "^10.0",
         "laravel/lumen-framework": "^9.0",
         "symfony/symfony": "^6.2"
     },

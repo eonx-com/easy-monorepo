@@ -23,7 +23,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
      */
     public function __construct(
         private readonly SerializerInterface $serializer,
-        ?array $errorFormats = null
+        ?array $errorFormats = null,
     ) {
         $this->errorFormats = $errorFormats ?? [];
     }

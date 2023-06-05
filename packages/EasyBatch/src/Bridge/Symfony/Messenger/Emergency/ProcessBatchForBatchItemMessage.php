@@ -11,7 +11,7 @@ final class ProcessBatchForBatchItemMessage
      */
     public function __construct(
         private readonly int|string $batchItemId,
-        private readonly ?array $errorDetails = null
+        private readonly ?array $errorDetails = null,
     ) {
     }
 

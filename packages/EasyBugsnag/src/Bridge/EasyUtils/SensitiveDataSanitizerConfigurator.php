@@ -11,8 +11,9 @@ use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 
 final class SensitiveDataSanitizerConfigurator extends AbstractClientConfigurator
 {
-    public function __construct(private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer)
-    {
+    public function __construct(
+        private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
+    ) {
         parent::__construct(\PHP_INT_MAX);
     }
 

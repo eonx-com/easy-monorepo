@@ -32,7 +32,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
 
     public function __construct(
         SecurityContextResolverInterface $securityContextResolver,
-        AuthenticationFailureResponseFactoryInterface $respFactory
+        AuthenticationFailureResponseFactoryInterface $respFactory,
     ) {
         $this->securityContextResolver = $securityContextResolver;
         $this->responseFactory = $respFactory;

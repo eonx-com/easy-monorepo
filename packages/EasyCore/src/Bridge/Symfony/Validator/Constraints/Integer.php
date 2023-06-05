@@ -7,6 +7,8 @@ namespace EonX\EasyCore\Bridge\Symfony\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * @deprecated Use \EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer instead.
+ *
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */

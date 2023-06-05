@@ -46,7 +46,7 @@ final class NotificationClient implements NotificationClientInterface
     public function __construct(
         iterable $configurators,
         QueueTransportFactoryInterface $transportFactory,
-        ?HttpClientInterface $httpClient = null
+        ?HttpClientInterface $httpClient = null,
     ) {
         $this->transportFactory = $transportFactory;
         $this->httpClient = $httpClient ?? HttpClient::create();

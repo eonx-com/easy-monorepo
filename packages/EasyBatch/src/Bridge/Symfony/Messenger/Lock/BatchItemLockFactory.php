@@ -11,8 +11,9 @@ use Symfony\Component\Messenger\Envelope;
 
 final class BatchItemLockFactory implements BatchItemLockFactoryInterface
 {
-    public function __construct(private readonly ?float $ttl = null)
-    {
+    public function __construct(
+        private readonly ?float $ttl = null,
+    ) {
     }
 
     public function createFromEnvelope(Envelope $envelope): LockDataInterface

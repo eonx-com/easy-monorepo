@@ -18,7 +18,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        ?string $table = null
+        ?string $table = null,
     ) {
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }

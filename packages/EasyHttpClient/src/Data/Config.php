@@ -18,7 +18,7 @@ final class Config
         private readonly ?array $requestDataModifiers = null,
         private readonly ?array $requestDataModifiersWhitelist = null,
         private readonly ?bool $isRequestDataModifiersEnabled = null,
-        private readonly ?bool $isEventsEnabled = null
+        private readonly ?bool $isEventsEnabled = null,
     ) {
     }
 

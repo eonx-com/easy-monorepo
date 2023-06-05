@@ -78,7 +78,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      * @return \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
      */
     private function mockDecoratedSerializerContextBuilder(
-        array $contextFromDecorated
+        array $contextFromDecorated,
     ): SerializerContextBuilderInterface {
         /** @var \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface $decorated */
         $decorated = $this->mock(

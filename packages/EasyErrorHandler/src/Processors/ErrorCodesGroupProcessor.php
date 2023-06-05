@@ -15,7 +15,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
      */
     public function __construct(
         private readonly int $categorySize,
-        private readonly array $errorCodesProviders
+        private readonly array $errorCodesProviders,
     ) {
     }
 
@@ -57,7 +57,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             $nextGroupedErrorCodes,
             static fn (
                 ErrorCodeCategoryDto $errorCategory1,
-                ErrorCodeCategoryDto $errorCategory2
+                ErrorCodeCategoryDto $errorCategory2,
             ) => $errorCategory1->getCategoryName() <=> $errorCategory2->getCategoryName()
         );
 

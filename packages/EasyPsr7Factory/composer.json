@@ -11,7 +11,7 @@
     "require-dev": {
         "guzzlehttp/psr7": "^2.1",
         "laravel/lumen-framework": "^9.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.0",
         "symfony/symfony": "^6.2",
         "vlucas/phpdotenv": "^5.5"
     },

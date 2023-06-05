@@ -19,7 +19,7 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchObjectManagerInterface $batchObjectManager,
         private readonly BatchProcessor $batchProcessor,
-        private readonly BatchRepositoryInterface $batchRepository
+        private readonly BatchRepositoryInterface $batchRepository,
     ) {
     }
 

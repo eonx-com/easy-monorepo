@@ -358,7 +358,7 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
         string $from,
         ?string $fromAlias,
         callable $setup,
-        callable $assert
+        callable $assert,
     ): void {
         $conn = $this->getDoctrineDbalConnection();
         $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $conn, $from, $fromAlias);

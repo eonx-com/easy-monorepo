@@ -22,7 +22,7 @@ final class AsyncActivityLogger implements ActivityLoggerInterface
 
     public function __construct(
         ActivityLogEntryFactoryInterface $activityLogEntryFactory,
-        AsyncDispatcherInterface $dispatcher
+        AsyncDispatcherInterface $dispatcher,
     ) {
         $this->activityLogEntryFactory = $activityLogEntryFactory;
         $this->dispatcher = $dispatcher;

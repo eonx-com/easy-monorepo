@@ -34,7 +34,7 @@ final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFacto
     public function __construct(
         CacheInterface $cache,
         AuthorizationMatrixFactoryInterface $decorated,
-        ?string $key = null
+        ?string $key = null,
     ) {
         $this->cache = $cache;
         $this->decorated = $decorated;

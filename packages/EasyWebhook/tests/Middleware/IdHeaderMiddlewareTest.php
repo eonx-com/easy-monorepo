@@ -65,7 +65,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         WebhookInterface $webhook,
         callable $test,
         ?string $idHeader = null,
-        ?StoreInterface $store = null
+        ?StoreInterface $store = null,
     ): void {
         // Fix webhook id
         $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'not-default-webhook-id');

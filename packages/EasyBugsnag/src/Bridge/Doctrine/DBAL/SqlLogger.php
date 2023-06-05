@@ -55,7 +55,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
         Client $client,
         Connection $conn,
         ?string $connName = null,
-        ?BaseSqlLoggerInterface $decorated = null
+        ?BaseSqlLoggerInterface $decorated = null,
     ) {
         $this->client = $client;
         $this->conn = $conn;
