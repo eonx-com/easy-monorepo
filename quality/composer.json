@@ -10,5 +10,10 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
+    },
+    "extra": {
+        "eonx_docs": {
+            "ignore": true
+        }
     }
 }
