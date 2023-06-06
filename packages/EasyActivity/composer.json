@@ -14,7 +14,7 @@
         "doctrine/orm": "^2.14",
         "eonx-com/easy-doctrine": "^4.4",
         "eonx-com/easy-lock": "^4.4",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^9.6 || ^10.2",
         "ramsey/uuid": "^4.7",
         "symfony/symfony": "^6.2",
         "symfony/uid": "^6.2"

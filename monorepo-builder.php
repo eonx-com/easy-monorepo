@@ -11,13 +11,13 @@ use EonX\EasyMonorepo\Release\TagVersionReleaseWorker;
 use EonX\EasyMonorepo\Release\UpdateTagInGithubWorkflow;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use MonorepoBuilderPrefix202304\Symplify\SmartFileSystem\Finder\FinderSanitizer;
-use MonorepoBuilderPrefix202304\Symplify\SmartFileSystem\SmartFileSystem;
 use Symplify\MonorepoBuilder\Config\MBConfig;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\AddTagToChangelogReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorker;
+use Symplify\SmartFileSystem\Finder\FinderSanitizer;
+use Symplify\SmartFileSystem\SmartFileSystem;
 
 return static function (MBConfig $monorepoBuilderConfig): void {
     $monorepoBuilderConfig->packageDirectories([__DIR__ . '/packages']);

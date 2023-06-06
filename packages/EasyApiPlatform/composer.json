@@ -18,7 +18,7 @@
         "mockery/mockery": "^1.6",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^9.6 || ^10.2",
         "symfony/filesystem": "^6.2",
         "symfony/config": "^6.2",
         "symfony/symfony": "^6.2"

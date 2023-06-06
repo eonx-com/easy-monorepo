@@ -16,7 +16,7 @@
         "eonx-com/easy-encryption": "^4.4",
         "ramsey/uuid": "^4.7",
         "doctrine/orm": "^2.14",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^9.6 || ^10.2",
         "symfony/symfony": "^6.2"
     },
     "autoload": {
