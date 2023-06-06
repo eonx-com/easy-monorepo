@@ -11,8 +11,8 @@
         "symfony/string": "^6.2"
     },
     "require-dev": {
-        "monolog/monolog": "^2.0",
-        "phpunit/phpunit": "^10.0",
+        "monolog/monolog": "^2.9",
+        "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.2"
     },
     "autoload": {

@@ -9,9 +9,9 @@
         "eonx-com/easy-utils": "^4.4"
     },
     "require-dev": {
-        "ramsey/uuid": "^4.0",
-        "phpunit/phpunit": "^10.0",
-        "laravel/lumen-framework": "^9.0",
+        "ramsey/uuid": "^4.7",
+        "phpunit/phpunit": "^10.2",
+        "laravel/lumen-framework": "^9.1",
         "symfony/symfony": "^6.2"
     },
     "autoload": {

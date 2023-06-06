@@ -6,16 +6,16 @@
     "require": {
         "php": "^8.1",
         "ext-openssl": "*",
-        "nette/utils": "^3.1"
+        "nette/utils": "^3.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0",
-        "firebase/php-jwt": "^6.4",
-        "guzzlehttp/psr7": "^2.1",
+        "phpunit/phpunit": "^10.2",
+        "firebase/php-jwt": "^6.5",
+        "guzzlehttp/psr7": "^2.5",
         "eonx-com/easy-utils": "^4.4",
-        "auth0/auth0-php": "^8.0",
+        "auth0/auth0-php": "^8.6",
         "psr/container": "^2.0",
-        "laravel/lumen-framework": "^9.0",
+        "laravel/lumen-framework": "^9.1",
         "symfony/dependency-injection": "^6.2",
         "symfony/cache": "^6.2",
         "symfony/config": "^6.2",

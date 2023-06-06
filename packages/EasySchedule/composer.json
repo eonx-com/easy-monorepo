@@ -5,15 +5,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "nesbot/carbon": "^2.22",
-        "dragonmantank/cron-expression": "^3.0",
+        "nesbot/carbon": "^2.67",
+        "dragonmantank/cron-expression": "^3.3",
         "symfony/console": "^6.2",
         "eonx-com/easy-event-dispatcher": "^4.4",
         "eonx-com/easy-lock": "^4.4"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.2"
     },
     "autoload": {

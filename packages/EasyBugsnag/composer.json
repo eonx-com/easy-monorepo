@@ -5,18 +5,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "bugsnag/bugsnag": "^3.19",
+        "bugsnag/bugsnag": "^3.29",
         "eonx-com/easy-utils": "^4.4",
-        "nesbot/carbon": "^2.22",
-        "nette/utils": "^3.1",
+        "nesbot/carbon": "^2.67",
+        "nette/utils": "^3.2",
         "symfony/filesystem": "^6.2",
         "symfony/var-dumper": "^6.2"
     },
     "require-dev": {
-        "doctrine/dbal": "^2.6",
-        "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^10.0",
-        "laravel/lumen-framework": "^9.0",
+        "doctrine/dbal": "^2.13",
+        "doctrine/orm": "^2.14",
+        "phpunit/phpunit": "^10.2",
+        "laravel/lumen-framework": "^9.1",
         "symfony/symfony": "^6.2"
     },
     "autoload": {
