@@ -1,10 +1,14 @@
-<div align="center">
-    <h1>EonX - EasyHttpClient</h1>
-    <p>Utils around HTTP client.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
+### Require package (Composer)
 
-## Documentation
+The recommended way to install this package is to use [Composer][1]:
 
-Coming soon...
+```bash
+$ composer require eonx-com/easy-http-client
+```
+
+[1]: https://getcomposer.org/

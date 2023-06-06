@@ -1,21 +1,14 @@
-<div align="center">
-    <h1>EonX - EasyAsync</h1>
-    <p>Makes dealing with async processes easier.</p>
-</div>
+---eonx_docs---
+title: Introduction
+weight: 0
+---eonx_docs---
 
----
+### Require package (Composer)
 
-## Documentation
+The recommended way to install this package is to use [Composer][1]:
 
-Coming soon...
+```bash
+$ composer require eonx-com/easy-async
+```
 
-## Roadmap
-
-- [X] Add indexes on tables
-- [X] Fetching job features (per target type, for specific target, per type, ...paginated)
-- [X] Fetching job logs features (per job)
-- [X] Delete job feature
-- [X] Create doctrine migrations
-- [X] Laravel bridge
-- [X] Event for Job completed
-- [X] Write tests
+[1]: https://getcomposer.org/
