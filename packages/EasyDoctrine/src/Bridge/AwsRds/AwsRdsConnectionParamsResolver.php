@@ -10,7 +10,7 @@ use EonX\EasyDoctrine\Bridge\AwsRds\Ssl\CertificateAuthorityProvider;
 final class AwsRdsConnectionParamsResolver
 {
     public function __construct(
-        private readonly AuthTokenProvider $authTokenProvider,
+        private readonly ?AuthTokenProvider $authTokenProvider = null,
         private readonly ?string $sslMode = null,
         private readonly ?CertificateAuthorityProvider $certificateAuthorityProvider = null,
     ) {
@@ -29,7 +29,9 @@ final class AwsRdsConnectionParamsResolver
         $rdsIamEnabled = $driverOptions[AwsRdsOptionsInterface::IAM_ENABLED] ?? true;
         $rdsSslEnabled = $driverOptions[AwsRdsOptionsInterface::SSL_ENABLED] ?? true;
 
-        if ($rdsIamEnabled && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')) {
+        if ($rdsIamEnabled
+            && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')
+            && $this->authTokenProvider !== null) {
             $params['password'] = $this->authTokenProvider->getAuthToken($params);
         }
 
