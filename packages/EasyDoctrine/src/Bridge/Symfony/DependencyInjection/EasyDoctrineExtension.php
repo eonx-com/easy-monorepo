@@ -47,8 +47,16 @@ final class EasyDoctrineExtension extends Extension
             $loader->load('easy-error-handler-listener.php');
         }
 
-        $this->loadAwsRdsSsl($container, $loader, $config);
-        $this->loadAwsRdsIam($container, $loader, $config);
+        $awsRdsSslEnabled = $this->loadAwsRdsSsl($container, $loader, $config);
+        $awsRdsIamEnabled = $this->loadAwsRdsIam($container, $loader, $config);
+
+        if ($awsRdsSslEnabled || $awsRdsIamEnabled) {
+            if ($container->hasParameter(BridgeConstantsInterface::PARAM_AWS_RDS_SSL_MODE) === false) {
+                $container->setParameter(BridgeConstantsInterface::PARAM_AWS_RDS_SSL_MODE, null);
+            }
+
+            $loader->load('aws_rds.php');
+        }
     }
 
     /**
@@ -56,7 +64,7 @@ final class EasyDoctrineExtension extends Extension
      *
      * @throws \Exception
      */
-    private function loadAwsRdsIam(ContainerBuilder $container, PhpFileLoader $loader, array $config): void
+    private function loadAwsRdsIam(ContainerBuilder $container, PhpFileLoader $loader, array $config): bool
     {
         $awsRdsIamEnabled = $config['aws_rds']['iam']['enabled']
             ?? $config['aws_rds_iam']['enabled']
@@ -77,6 +85,8 @@ final class EasyDoctrineExtension extends Extension
 
             $loader->load('aws_rds_iam.php');
         }
+
+        return $awsRdsIamEnabled;
     }
 
     /**
@@ -84,7 +94,7 @@ final class EasyDoctrineExtension extends Extension
      *
      * @throws \Exception
      */
-    private function loadAwsRdsSsl(ContainerBuilder $container, PhpFileLoader $loader, array $config): void
+    private function loadAwsRdsSsl(ContainerBuilder $container, PhpFileLoader $loader, array $config): bool
     {
         $awsRdsSslEnabled = $config['aws_rds']['ssl']['enabled']
             ?? $config['aws_rds_iam']['ssl_enabled']
@@ -106,5 +116,7 @@ final class EasyDoctrineExtension extends Extension
 
             $loader->load('aws_rds_ssl.php');
         }
+
+        return $awsRdsSslEnabled;
     }
 }
