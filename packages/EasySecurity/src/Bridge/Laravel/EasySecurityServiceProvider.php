@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Laravel;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
@@ -19,7 +18,6 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
-use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContextFactory;
 use EonX\EasySecurity\SecurityContextResolver;
@@ -49,28 +47,12 @@ final class EasySecurityServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-security.php', 'easy-security');
 
-        $contextServiceId = \config('easy-security.context_service_id');
-
-        $this->registerApiTokenDecoder();
         $this->registerAuthorizationMatrix();
         $this->registerDefaultConfigurators();
         $this->registerEasyBugsnag();
         $this->registerLogger();
         $this->registerRequestConfigurators();
-        $this->registerSecurityContext($contextServiceId);
-    }
-
-    private function registerApiTokenDecoder(): void
-    {
-        // Deprecated since 4.1, will be removed in 5.0. Use the ApiTokenDecoderFactoryInterface instead.
-        $this->app->singleton(
-            BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER,
-            static function (Container $app): ApiTokenDecoderInterface {
-                return $app
-                    ->make(ApiTokenDecoderFactoryInterface::class)
-                    ->build(\config('easy-security.token_decoder'));
-            }
-        );
+        $this->registerSecurityContext();
     }
 
     private function registerAuthorizationMatrix(): void
@@ -181,7 +163,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerSecurityContext(string $contextServiceId): void
+    private function registerSecurityContext(): void
     {
         // Resolver
         $this->app->singleton(
@@ -202,10 +184,5 @@ final class EasySecurityServiceProvider extends ServiceProvider
                 return new SecurityContextFactory();
             }
         );
-
-        // SecurityContext
-        $this->app->singleton($contextServiceId, static function (Container $app): SecurityContextInterface {
-            return $app->make(SecurityContextResolverInterface::class)->resolveContext();
-        });
     }
 }

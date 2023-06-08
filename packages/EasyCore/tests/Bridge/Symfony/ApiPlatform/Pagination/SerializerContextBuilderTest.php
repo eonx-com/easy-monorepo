@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
 
-use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface;
 use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\SerializerContextBuilder;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
@@ -75,12 +75,12 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
     /**
      * @param mixed[] $contextFromDecorated
      *
-     * @return \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface
+     * @return \ApiPlatform\Serializer\SerializerContextBuilderInterface
      */
     private function mockDecoratedSerializerContextBuilder(
         array $contextFromDecorated,
     ): SerializerContextBuilderInterface {
-        /** @var \ApiPlatform\Core\Serializer\SerializerContextBuilderInterface $decorated */
+        /** @var \ApiPlatform\Serializer\SerializerContextBuilderInterface $decorated */
         $decorated = $this->mock(
             SerializerContextBuilderInterface::class,
             static function (MockInterface $mock) use ($contextFromDecorated): void {

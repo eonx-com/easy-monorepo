@@ -35,21 +35,16 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
         'nbf' => 1549340373,
     ];
 
-    /**
-     * @param null|string[] $allowedAlgos
-     */
     protected function createFirebaseJwtDriver(
         ?string $algo = null,
         OpenSSLAsymmetricKey|string|null $publicKey = null,
         OpenSSLAsymmetricKey|string|null $privateKey = null,
-        ?array $allowedAlgos = null,
         ?int $leeway = null,
     ): JwtDriverInterface {
         return new FirebaseJwtDriver(
             $algo ?? static::$defaultAlgo,
             $publicKey ?? static::$key,
             $privateKey ?? static::$key,
-            $allowedAlgos,
             $leeway
         );
     }

@@ -7,7 +7,7 @@ namespace EonX\EasyDecision\Configurators;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class AddRulesDecisionConfigurator extends AbstractConfigurator
 {

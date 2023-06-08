@@ -49,17 +49,9 @@ parameters:
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
-        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
-
-        - message: '#Parameter \#2 \$keyOrKeyArray of static method Firebase\\JWT\\JWT\:\:decode\(\) expects array<string, Firebase\\JWT\\Key>\|ArrayAccess<string, Firebase\\JWT\\Key>\|Firebase\\JWT\\Key, array\|string given#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
           path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
+
         # ---- EasyAsync ----
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
           path: %currentWorkingDirectory%/packages/EasyAsync/tests
@@ -98,26 +90,14 @@ parameters:
         - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
           path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
 
-        - message: '#PHPDoc tag @var for variable \$dataPersister has invalid type EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
-
-        - message: '#Call to method setRequestAttributes\(\) on an unknown class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Traits\\RequestAttributesAwareTrait#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Listeners/ResolveRequestAttributesListener.php
-
-        - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\DataPersisterInterface\:\:getPersistersResponse\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataCollector/RequestDataCollector.php
-
-        - message: '#Call to an undefined method ApiPlatform\\Core\\DataPersister\\ContextAwareDataPersisterInterface\:\:(getSimpleDataPersisters|getDataPersisters)\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/DataPersister/TraceableChainSimpleDataPersister.php
-
         - message: '#Property Symfony\\Component\\HttpFoundation\\Request\:\:\$request \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag#'
           path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
 
+        - message: '#Class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
+          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Normalizers/CarbonImmutableNormalizer.php
+
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
-        - message: '#Strict comparison using === between true and false will always evaluate to false.#'
-          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/ORM/Decorators/EntityManagerDecorator.php
-
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptor.php
@@ -210,9 +190,6 @@ parameters:
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
           path: %currentWorkingDirectory%/packages/EasySecurity/tests/Authorization/RoleTest.php
-
-        - message: '#Method EonX\\EasySecurity\\Bridge\\Symfony\\Security\\FakeKernel\:\:handle\(\) should return Symfony\\Component\\HttpFoundation\\Response but return statement is missing#'
-          path: %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Security/FakeKernel.php
 
         # ---- EasySsm ----
         - message: '#Parameter \#1 \$stream of class Symfony\\Component\\Console\\Output\\StreamOutput constructor expects resource, resource\|false given#'

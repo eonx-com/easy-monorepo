@@ -95,8 +95,8 @@ final class HttpFoundationRequest implements RequestInterface
      */
     private function formatHeaders(Request $request): array
     {
-        return \array_map(static function ($header) {
-            if (\is_array($header) === false || \count($header) > 1) {
+        return \array_map(static function (array $header) {
+            if (\count($header) > 1) {
                 return $header;
             }
 

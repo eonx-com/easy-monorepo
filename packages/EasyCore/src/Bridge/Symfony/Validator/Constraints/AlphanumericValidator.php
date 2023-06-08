@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class AlphanumericValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if ($constraint instanceof Alphanumeric === false) {
             throw new UnexpectedTypeException($constraint, Alphanumeric::class);
@@ -26,7 +26,7 @@ final class AlphanumericValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $value = (string) $value;
+        $value = (string)$value;
 
         if (\preg_match('/^[a-z0-9]+$/i', $value) === 0) {
             $this->context->buildViolation($constraint->message)

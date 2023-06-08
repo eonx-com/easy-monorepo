@@ -7,11 +7,10 @@ namespace EonX\EasyDoctrine\ORM\Decorators;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecorator;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use InvalidArgumentException;
 use Throwable;
 
 final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
@@ -56,24 +55,6 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
         }
 
         $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
-    }
-
-    /**
-     * @param callable $func
-     *
-     * @return mixed
-     *
-     * @throws \Throwable
-     *
-     * @deprecated
-     */
-    public function transactional($func)
-    {
-        if (\is_callable($func) === false) {
-            throw new InvalidArgumentException('Expected argument of type "callable", got "' . \gettype($func) . '"');
-        }
-
-        return $this->wrapInTransaction($func);
     }
 
     /**

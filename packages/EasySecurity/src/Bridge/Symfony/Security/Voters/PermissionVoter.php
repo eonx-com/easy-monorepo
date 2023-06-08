@@ -8,6 +8,9 @@ use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * @extends \Symfony\Component\Security\Core\Authorization\Voter\Voter<string, mixed>
+ */
 final class PermissionVoter extends Voter
 {
     /**

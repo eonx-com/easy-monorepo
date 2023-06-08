@@ -13,14 +13,6 @@ final class UserInterfaceStub implements UserInterface
     ) {
     }
 
-    /**
-     * @deprecated Will be removed in 5.0.0
-     */
-    public function getUniqueId(): null|int|string
-    {
-        return $this->userIdentifier;
-    }
-
     public function getUserIdentifier(): string
     {
         return $this->userIdentifier;

@@ -15,7 +15,7 @@ use TypeError;
 
 final class DateIntervalValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if ($constraint instanceof DateIntervalConstraint === false) {
             throw new UnexpectedTypeException($constraint, DateIntervalConstraint::class);
@@ -31,7 +31,7 @@ final class DateIntervalValidator extends ConstraintValidator
 
         try {
             new DateInterval($value);
-        } catch (Exception | TypeError $exception) {
+        } catch (Exception|TypeError $exception) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(DateIntervalConstraint::INVALID_DATE_INTERVAL_ERROR)
                 ->addViolation();

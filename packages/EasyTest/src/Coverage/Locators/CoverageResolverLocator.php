@@ -12,10 +12,13 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class CoverageResolverLocator implements CoverageResolverLocatorInterface
 {
     /**
-     * @var \Symfony\Contracts\Service\ServiceProviderInterface
+     * @var \Symfony\Contracts\Service\ServiceProviderInterface<mixed>
      */
-    private $serviceLocator;
+    private ServiceProviderInterface $serviceLocator;
 
+    /**
+     * @param \Symfony\Contracts\Service\ServiceProviderInterface<mixed> $serviceLocator
+     */
     public function __construct(ServiceProviderInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;

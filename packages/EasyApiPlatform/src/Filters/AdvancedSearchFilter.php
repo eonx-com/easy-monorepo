@@ -246,7 +246,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
      */
     protected function filterProperty(
         string $property,
-        $value,
+        mixed $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,

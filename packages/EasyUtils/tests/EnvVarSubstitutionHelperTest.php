@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
 
-use EonX\EasyUtils\EnvVarSubstitutionHelper;
+use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
 
 final class EnvVarSubstitutionHelperTest extends AbstractTestCase
 {

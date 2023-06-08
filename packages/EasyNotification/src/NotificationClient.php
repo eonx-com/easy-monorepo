@@ -14,7 +14,7 @@ use EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Queue\QueueMessage;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

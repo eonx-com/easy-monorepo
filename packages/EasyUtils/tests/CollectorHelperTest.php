@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
 
-use EonX\EasyUtils\CollectorHelper;
 use EonX\EasyUtils\Exceptions\InvalidArgumentException;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use EonX\EasyUtils\Tests\Stubs\HasPriorityStub;
 
 final class CollectorHelperTest extends AbstractTestCase

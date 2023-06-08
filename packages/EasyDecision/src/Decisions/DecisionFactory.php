@@ -9,7 +9,7 @@ use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {
