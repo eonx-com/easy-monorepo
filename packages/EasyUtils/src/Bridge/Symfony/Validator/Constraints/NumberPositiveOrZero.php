@@ -18,8 +18,8 @@ final class NumberPositiveOrZero extends AbstractComparison
      */
     public $message = 'number.should_be_positive_or_zero';
 
-    public function validatedBy(): string
+    public function validatedBy()
     {
-        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
+        return static::class . 'Validator';
     }
 }

@@ -12,10 +12,5 @@ final class NumberGreaterOrEqual extends AbstractNumberComparison
     /**
      * @var string
      */
-    public $message = 'number.should_be_greater_or_equal';
-
-    public function validatedBy(): string
-    {
-        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
-    }
+    public $message = 'This value should be greater than or equal to {compared_value}.';
 }
