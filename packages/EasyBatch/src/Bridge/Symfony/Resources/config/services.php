@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyBatch\BatchManager;
 use EonX\EasyBatch\BatchObjectManager;
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;

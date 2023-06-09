@@ -311,7 +311,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      * @dataProvider provideDoctrineExceptionClasses
      */
     public function testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions(
-        $doctrineException
+        $doctrineException,
     ): void {
         $callableArgument = static function () use ($doctrineException): void {
             throw $doctrineException;
