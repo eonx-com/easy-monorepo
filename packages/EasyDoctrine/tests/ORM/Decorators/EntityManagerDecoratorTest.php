@@ -7,7 +7,7 @@ namespace EonX\EasyDoctrine\Tests\ORM\Decorators;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
@@ -25,7 +25,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     /**
      * @return mixed[]
      *
-     * @see testTransactionalThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
+     * @see testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
      */
     public function provideDoctrineExceptionClasses(): array
     {
@@ -38,7 +38,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     /**
      * @return mixed[]
      *
-     * @see testTransactionalSucceeds
+     * @see testWrapInTransactionSucceeds
      */
     public function provideReturnValuesData(): array
     {
@@ -202,7 +202,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      *
      * @dataProvider provideReturnValuesData
      */
-    public function testTransactionalSucceeds($callableReturns, $transactionalReturns): void
+    public function testWrapInTransactionSucceeds($callableReturns, $transactionalReturns): void
     {
         $spyForCallable = new stdClass();
         $spyForCallable->wasCalled = false;
@@ -232,7 +232,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             $entityManagerReveal
         );
 
-        $result = $entityManagerDecorator->transactional($callableArgument);
+        $result = $entityManagerDecorator->wrapInTransaction($callableArgument);
 
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
@@ -255,7 +255,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     /**
      * @throws \Exception
      */
-    public function testTransactionalThrowsException(): void
+    public function testWrapInTransactionThrowsException(): void
     {
         $exception = new Exception('some-exception-message');
         $callableArgument = static function () use ($exception): void {
@@ -283,7 +283,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
-            $entityManagerDecorator->transactional($callableArgument);
+            $entityManagerDecorator->wrapInTransaction($callableArgument);
         });
 
         $this->assertThrownException(\Throwable::class, 0);
@@ -310,8 +310,9 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      *
      * @dataProvider provideDoctrineExceptionClasses
      */
-    public function testTransactionalThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions($doctrineException): void
-    {
+    public function testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions(
+        $doctrineException
+    ): void {
         $callableArgument = static function () use ($doctrineException): void {
             throw $doctrineException;
         };
@@ -337,7 +338,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
-            $entityManagerDecorator->transactional($callableArgument);
+            $entityManagerDecorator->wrapInTransaction($callableArgument);
         });
 
         $this->assertThrownException(\get_class($doctrineException), 0);
@@ -360,7 +361,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     /**
      * @throws \Exception
      */
-    public function testTransactionalThrowsExceptionWhenArgumentNotCallable(): void
+    public function testWrapInTransactionThrowsExceptionWhenArgumentNotCallable(): void
     {
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
@@ -380,7 +381,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         $this->safeCall(static function () use ($entityManagerDecorator): void {
             /** @var callable $callableFake */
             $callableFake = 'non-callable-argument';
-            $entityManagerDecorator->transactional($callableFake);
+            $entityManagerDecorator->wrapInTransaction($callableFake);
         });
 
         $this->assertThrownException(InvalidArgumentException::class, 0);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\Validator\Constraints;
+namespace EonX\EasyUtils\Tests\Bridge\Symfony\Validator\Constraints;
 
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 /**
- * @covers \EonX\EasyCore\Bridge\Symfony\Validator\Constraints\IntegerValidator
+ * @covers \EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator
  */
 final class IntegerValidatorTest extends AbstractSymfonyTestCase
 {
@@ -120,7 +120,8 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
         $value = 12345;
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Integer"'
+            'Expected argument of type "EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer", ' .
+            '"Symfony\Component\Validator\Constraint@anonymous" given'
         );
 
         $validator->validate($value, $constraint);

@@ -127,13 +127,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $product = new Product();
 
-        $entityManager->transactional(function () use ($entityManager, $product) {
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product) {
             $product->setName('Description 1');
             $product->setPrice('1000');
             $entityManager->persist($product);
             $entityManager->flush();
             try {
-                $entityManager->transactional(function () use ($entityManager, $product) {
+                $entityManager->wrapInTransaction(function () use ($entityManager, $product) {
                     $product->setPrice('2000');
                     $entityManager->persist($product);
                     $entityManager->flush();
