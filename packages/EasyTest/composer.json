@@ -14,7 +14,7 @@
         "phpunit/phpunit": "^9.6 || ^10.2",
         "symfony/config": "^6.3",
         "symfony/console": "^6.3",
-        "symfony/contracts": "^3.0",
+        "symfony/contracts": "^3.3",
         "symfony/dependency-injection": "^6.3",
         "symfony/event-dispatcher": "^6.3",
         "symfony/framework-bundle": "^6.3",
