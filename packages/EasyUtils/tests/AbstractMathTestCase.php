@@ -13,7 +13,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
      *
      * @see testAbsSucceeds
      */
-    public function provideAbsData(): array
+    public static function provideAbsData(): array
     {
         return [
             [
@@ -47,7 +47,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
      *
      * @see testCompareThatSucceeds
      */
-    public function provideCompareThatData(): iterable
+    public static function provideCompareThatData(): iterable
     {
         yield [
             'leftOperand' => '10000000',
@@ -152,7 +152,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
      *
      * @see testDivideSucceeds
      */
-    public function provideDivideData(): array
+    public static function provideDivideData(): array
     {
         return [
             'With null precision' => [
@@ -175,7 +175,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
      *
      * @see testRoundSucceeds
      */
-    public function provideRoundData(): array
+    public static function provideRoundData(): array
     {
         return [
             [

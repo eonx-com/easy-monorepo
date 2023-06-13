@@ -13,7 +13,7 @@ final class CollectorHelperTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestEnsureClass(): iterable
+    public static function providerTestEnsureClass(): iterable
     {
         yield 'basic type' => [[0], true];
 
@@ -27,7 +27,7 @@ final class CollectorHelperTest extends AbstractTestCase
      *
      * @see testFilterByClass
      */
-    public function providerTestFilterByClass(): iterable
+    public static function providerTestFilterByClass(): iterable
     {
         yield 'basic types' => [[0, 'string', 12.00, []], 0];
 
@@ -41,7 +41,7 @@ final class CollectorHelperTest extends AbstractTestCase
      *
      * @see testOrderHigherPriorityFirst
      */
-    public function providerTestOrderHigherPriorityFirst(): iterable
+    public static function providerTestOrderHigherPriorityFirst(): iterable
     {
         $priority1 = $this->hasPriorityStub(1);
         $priority10 = $this->hasPriorityStub(10);
@@ -61,7 +61,7 @@ final class CollectorHelperTest extends AbstractTestCase
      *
      * @see testOrderLowerPriorityFirst
      */
-    public function providerTestOrderLowerPriorityFirst(): iterable
+    public static function providerTestOrderLowerPriorityFirst(): iterable
     {
         $priority1 = $this->hasPriorityStub(1);
         $priority10 = $this->hasPriorityStub(10);

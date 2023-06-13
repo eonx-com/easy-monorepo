@@ -11,7 +11,7 @@ final class EnvVarSubstitutionHelperTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestResolveVariables(): iterable
+    public static function providerTestResolveVariables(): iterable
     {
         yield 'With $ in value' => [
             ['password' => 'qLiByxT5Gg11zt$2PjHb952nnVEZK'],

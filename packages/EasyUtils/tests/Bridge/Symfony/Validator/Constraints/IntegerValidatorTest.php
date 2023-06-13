@@ -23,7 +23,7 @@ final class IntegerValidatorTest extends AbstractTestCase
      *
      * @see testValidateSucceedsAndDoesNothing
      */
-    public function provideEmptyValues(): array
+    public static function provideEmptyValues(): array
     {
         return [
             'Empty value #1' => [''],
@@ -36,7 +36,7 @@ final class IntegerValidatorTest extends AbstractTestCase
      *
      * @see provideInvalidValues
      */
-    public function provideInvalidValues(): array
+    public static function provideInvalidValues(): array
     {
         return [
             'Invalid value #1' => [1.25],
@@ -50,7 +50,7 @@ final class IntegerValidatorTest extends AbstractTestCase
      *
      * @see testValidateSucceedsWithValidValue
      */
-    public function provideValidValues(): array
+    public static function provideValidValues(): array
     {
         return [
             'Valid value #1' => [123],
