@@ -6,6 +6,9 @@ on:
         branches:
             - '*' # Prevents running on tags
 
+env:
+    TERM: xterm-256color
+
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
@@ -17,7 +20,9 @@ jobs:
                     php-version: 8.1
                     coverage: none
 
-            -   uses: ramsey/composer-install@v2
+            -   run: composer --version
+
+            -   run: composer install --prefer-dist --no-progress --no-scripts
 
             -   id: output_data
                 run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
@@ -45,8 +50,8 @@ jobs:
                     coverage: none
                     extensions: pdo_sqlite
 
-            -   uses: ramsey/composer-install@v2
+            -   run: composer --version
 
             -   run: bin/monorepo localize-monorepo-packages
-            -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
+            -   run: cd packages/${{ matrix.package.dir }}; composer install --prefer-dist --no-progress --no-scripts
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
