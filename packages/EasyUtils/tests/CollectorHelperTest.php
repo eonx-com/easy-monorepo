@@ -43,8 +43,8 @@ final class CollectorHelperTest extends AbstractTestCase
      */
     public static function providerTestOrderHigherPriorityFirst(): iterable
     {
-        $priority1 = $this->hasPriorityStub(1);
-        $priority10 = $this->hasPriorityStub(10);
+        $priority1 = self::hasPriorityStub(1);
+        $priority10 = self::hasPriorityStub(10);
 
         yield 'same order' => [[$priority10, $priority1], [$priority10, $priority1]];
 
@@ -63,8 +63,8 @@ final class CollectorHelperTest extends AbstractTestCase
      */
     public static function providerTestOrderLowerPriorityFirst(): iterable
     {
-        $priority1 = $this->hasPriorityStub(1);
-        $priority10 = $this->hasPriorityStub(10);
+        $priority1 = self::hasPriorityStub(1);
+        $priority10 = self::hasPriorityStub(10);
 
         yield 'same order' => [[$priority1, $priority10], [$priority1, $priority10]];
 
@@ -134,7 +134,7 @@ final class CollectorHelperTest extends AbstractTestCase
         self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirstAsArray($items));
     }
 
-    private function hasPriorityStub(?int $priority = null): HasPriorityStub
+    private static function hasPriorityStub(?int $priority = null): HasPriorityStub
     {
         return new HasPriorityStub($priority);
     }

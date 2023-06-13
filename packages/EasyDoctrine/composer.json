@@ -22,7 +22,7 @@
         "eonx-com/easy-error-handler": "^4.4",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.6 || ^10.2",
-        "symfony/symfony": "^6.2"
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {

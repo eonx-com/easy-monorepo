@@ -20,7 +20,7 @@
         "doctrine/dbal": "^2.13",
         "doctrine/orm": "^2.14",
         "mockery/mockery": "^1.6",
-        "symfony/symfony": "^6.2",
+        "symfony/symfony": "^6.3",
         "symfony/maker-bundle": "^1.48"
     },
     "autoload": {

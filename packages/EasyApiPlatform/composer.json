@@ -10,8 +10,8 @@
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^2.2",
         "monolog/monolog": "^2.9",
-        "symfony/dependency-injection": "^6.2",
-        "symfony/http-foundation": "^6.2"
+        "symfony/dependency-injection": "^6.3",
+        "symfony/http-foundation": "^6.3"
     },
     "require-dev": {
         "doctrine/annotations": "^1.14",
@@ -19,9 +19,9 @@
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.6 || ^10.2",
-        "symfony/filesystem": "^6.2",
-        "symfony/config": "^6.2",
-        "symfony/symfony": "^6.2"
+        "symfony/filesystem": "^6.3",
+        "symfony/config": "^6.3",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {

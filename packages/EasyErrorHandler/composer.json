@@ -14,7 +14,7 @@
         "eonx-com/easy-bugsnag": "^4.4",
         "phpunit/phpunit": "^9.6 || ^10.2",
         "laravel/lumen-framework": "^9.1",
-        "symfony/symfony": "^6.2"
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
