@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "eonx-com/easy-utils": "^4.4",
-        "laminas/laminas-uri": "^2.10"
+        "spatie/url": "^2.2"
     },
     "require-dev": {
         "doctrine/annotations": "^1.14",
