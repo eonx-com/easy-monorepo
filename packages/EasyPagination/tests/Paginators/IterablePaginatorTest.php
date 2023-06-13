@@ -49,29 +49,29 @@ final class IterablePaginatorTest extends AbstractTestCase
         yield 'Default' => [
             [],
             Pagination::create(1, 15),
-            '/?page=1&perPage=15',
-            '/?page=2&perPage=15',
+            '?page=1&perPage=15',
+            '?page=2&perPage=15',
         ];
 
         yield 'Different page and perPage numbers' => [
             [],
             Pagination::create(2, 30),
-            '/?page=1&perPage=30',
-            '/?page=3&perPage=30',
+            '?page=1&perPage=30',
+            '?page=3&perPage=30',
         ];
 
         yield 'Different page and perPage attributes' => [
             [],
             Pagination::create(1, 15, 'p', '_per_page'),
-            '/?p=1&_per_page=15',
-            '/?p=2&_per_page=15',
+            '?p=1&_per_page=15',
+            '?p=2&_per_page=15',
         ];
 
         yield 'Custom URL' => [
             [],
             Pagination::create(1, 15, null, null, 'https://eonx.com?name=value#frag'),
-            'https://eonx.com/?name=value&page=1&perPage=15#frag',
-            'https://eonx.com/?name=value&page=2&perPage=15#frag',
+            'https://eonx.com?name=value&page=1&perPage=15#frag',
+            'https://eonx.com?name=value&page=2&perPage=15#frag',
         ];
     }
 

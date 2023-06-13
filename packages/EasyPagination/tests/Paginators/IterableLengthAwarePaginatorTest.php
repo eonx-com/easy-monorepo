@@ -20,38 +20,38 @@ final class IterableLengthAwarePaginatorTest extends AbstractTestCase
         yield 'Prev: no, Next: yes' => [
             10,
             new Pagination(1, 5),
-            '/?page=1&perPage=5',
-            '/?page=2&perPage=5',
+            '?page=1&perPage=5',
+            '?page=2&perPage=5',
         ];
 
-        yield 'Prev: yes, Next: yes' => [10, new Pagination(2, 2), '/?page=1&perPage=2', '/?page=3&perPage=2'];
+        yield 'Prev: yes, Next: yes' => [10, new Pagination(2, 2), '?page=1&perPage=2', '?page=3&perPage=2'];
 
         yield 'Prev: yes, Next: yes (with query)' => [
             10,
             new Pagination(2, 2, null, null, '/?arr=1'),
-            '/?arr=1&page=1&perPage=2',
-            '/?arr=1&page=3&perPage=2',
+            '?arr=1&page=1&perPage=2',
+            '?arr=1&page=3&perPage=2',
         ];
 
         yield 'Prev: yes, Next: yes (with fragment)' => [
             10,
             new Pagination(2, 2, null, null, '/#frag'),
-            '/?page=1&perPage=2#frag',
-            '/?page=3&perPage=2#frag',
+            '?page=1&perPage=2#frag',
+            '?page=3&perPage=2#frag',
         ];
 
         yield 'Prev: yes, Next: yes (with query, fragment)' => [
             10,
             new Pagination(2, 2, null, null, '/?myAttr=1#frag'),
-            '/?myAttr=1&page=1&perPage=2#frag',
-            '/?myAttr=1&page=3&perPage=2#frag',
+            '?myAttr=1&page=1&perPage=2#frag',
+            '?myAttr=1&page=3&perPage=2#frag',
         ];
 
         yield 'Prev: yes, Next: yes (with scheme, host, query, fragment)' => [
             10,
             new Pagination(2, 2, null, null, 'http://eonx.com/?myAttr=1#frag'),
-            'http://eonx.com/?myAttr=1&page=1&perPage=2#frag',
-            'http://eonx.com/?myAttr=1&page=3&perPage=2#frag',
+            'http://eonx.com?myAttr=1&page=1&perPage=2#frag',
+            'http://eonx.com?myAttr=1&page=3&perPage=2#frag',
         ];
     }
 

@@ -64,7 +64,7 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         self::assertSame('page', $pagination->getPageAttribute());
         self::assertSame('perPage', $pagination->getPerPageAttribute());
         self::assertSame(
-            "http://eonx.com/?page={$page}&perPage={$perPage}",
+            "http://eonx.com?page={$page}&perPage={$perPage}",
             $pagination->getUrl($pagination->getPage())
         );
     }
