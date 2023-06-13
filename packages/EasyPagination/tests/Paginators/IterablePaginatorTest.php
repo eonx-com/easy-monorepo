@@ -14,7 +14,7 @@ final class IterablePaginatorTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestPaginatorGetItems(): iterable
+    public static function providerTestPaginatorGetItems(): iterable
     {
         yield 'Empty array' => [
             [],
@@ -44,7 +44,7 @@ final class IterablePaginatorTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestPaginatorPageMethods(): iterable
+    public static function providerTestPaginatorPageMethods(): iterable
     {
         yield 'Default' => [
             [],

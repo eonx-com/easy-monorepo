@@ -19,7 +19,7 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
      */
     private $conn;
 
-    protected function createItemsTable(Model $model): void
+    protected static function createItemsTable(Model $model): void
     {
         $schema = new SQLiteBuilder($model->getConnection());
 
@@ -30,7 +30,7 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
         });
     }
 
-    protected function createParentsTable(Model $model): void
+    protected static function createParentsTable(Model $model): void
     {
         $schema = new SQLiteBuilder($model->getConnection());
 

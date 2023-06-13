@@ -15,7 +15,7 @@ final class IterableLengthAwarePaginatorTest extends AbstractTestCase
      *
      * @see testUrls
      */
-    public function providerTestUrls(): iterable
+    public static function providerTestUrls(): iterable
     {
         yield 'Prev: no, Next: yes' => [
             10,

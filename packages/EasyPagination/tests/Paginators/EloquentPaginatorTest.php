@@ -19,13 +19,13 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestPaginator(): iterable
+    public static function providerTestPaginator(): iterable
     {
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
             new Item(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
             },
             static function (EloquentPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -36,7 +36,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(10, 15),
             new Item(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
             },
             static function (EloquentPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -47,7 +47,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new Item(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
             },
@@ -60,7 +60,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new Item(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
                 (new Item(['title' => 'my-title-1']))->save();
@@ -78,7 +78,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new Item(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
             },
@@ -96,7 +96,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new Item(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
 
@@ -116,7 +116,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new Item(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
 
@@ -136,7 +136,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new Item(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
 
@@ -161,8 +161,8 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             Pagination::create(1, 15),
             new ParentModel(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
-                $this->createParentsTable($model);
+                self::createItemsTable($model);
+                self::createParentsTable($model);
 
                 (new Item(['title' => 'my-title']))->save();
                 (new ParentModel([

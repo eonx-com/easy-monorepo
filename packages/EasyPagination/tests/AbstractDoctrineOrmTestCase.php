@@ -20,7 +20,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
      */
     private $manager;
 
-    protected function addItemToTable(EntityManagerInterface $manager, string $title): Item
+    protected static function addItemToTable(EntityManagerInterface $manager, string $title): Item
     {
         $item = new Item();
         $item->title = $title;
@@ -31,7 +31,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         return $item;
     }
 
-    protected function addParentToTable(EntityManagerInterface $manager, string $title, Item $item): void
+    protected static function addParentToTable(EntityManagerInterface $manager, string $title, Item $item): void
     {
         $parent = new ParentEntity();
         $parent->title = $title;
@@ -45,18 +45,18 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\ORM\ORMException
      */
-    protected function createItemsTable(EntityManagerInterface $manager): void
+    protected static function createItemsTable(EntityManagerInterface $manager): void
     {
-        $this->createEntityTable($manager, Item::class);
+        self::createEntityTable($manager, Item::class);
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\ORM\ORMException
      */
-    protected function createParentsTable(EntityManagerInterface $manager): void
+    protected static function createParentsTable(EntityManagerInterface $manager): void
     {
-        $this->createEntityTable($manager, ParentEntity::class);
+        self::createEntityTable($manager, ParentEntity::class);
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\ORM\ORMException
      */
-    private function createEntityTable(EntityManagerInterface $manager, string $entity): void
+    private static function createEntityTable(EntityManagerInterface $manager, string $entity): void
     {
         $schemaTool = new SchemaTool($manager);
         $schema = $schemaTool->getSchemaFromMetadata([$manager->getClassMetadata($entity)]);
