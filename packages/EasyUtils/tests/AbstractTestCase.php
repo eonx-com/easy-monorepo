@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
 
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -23,5 +24,16 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    protected function mock($target, ?callable $expectations = null): MockInterface
+    {
+        $mock = \Mockery::mock($target);
+
+        if ($expectations !== null) {
+            \call_user_func($expectations, $mock);
+        }
+
+        return $mock;
     }
 }

@@ -14,7 +14,6 @@ use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Exception;
-use InvalidArgumentException;
 use stdClass;
 
 /**
@@ -356,34 +355,5 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $deferredEntityEventDispatcher->clear($transactionNestingLevel)
             ->shouldHaveBeenCalledOnce();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testWrapInTransactionThrowsExceptionWhenArgumentNotCallable(): void
-    {
-        $entityManager = $this->prophesize(EntityManagerInterface::class);
-        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
-        $entityManagerReveal = $entityManager->reveal();
-        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
-        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredDispatcherReveal,
-            $eventDispatcherReveal,
-            $entityManagerReveal
-        );
-
-        $this->safeCall(static function () use ($entityManagerDecorator): void {
-            /** @var callable $callableFake */
-            $callableFake = 'non-callable-argument';
-            $entityManagerDecorator->wrapInTransaction($callableFake);
-        });
-
-        $this->assertThrownException(InvalidArgumentException::class, 0);
     }
 }

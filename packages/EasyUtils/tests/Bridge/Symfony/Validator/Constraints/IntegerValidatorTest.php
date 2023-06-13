@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Bridge\Symfony\Validator\Constraints;
 
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator;
+use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 /**
  * @covers \EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator
  */
-final class IntegerValidatorTest extends AbstractSymfonyTestCase
+final class IntegerValidatorTest extends AbstractTestCase
 {
     /**
      * @return mixed[]
