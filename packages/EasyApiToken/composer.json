@@ -14,7 +14,7 @@
         "guzzlehttp/psr7": "^2.5",
         "eonx-com/easy-utils": "^4.4",
         "auth0/auth0-php": "^8.6",
-        "psr/container": "^1.0 || ^2.0",
+        "psr/container": "^2.0",
         "laravel/lumen-framework": "^9.1",
         "symfony/dependency-injection": "^6.3",
         "symfony/cache": "^6.3",
