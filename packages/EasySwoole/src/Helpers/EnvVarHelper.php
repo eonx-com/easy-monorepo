@@ -6,21 +6,51 @@ namespace EonX\EasySwoole\Helpers;
 
 use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
 
+use function Symfony\Component\String\u;
+
 final class EnvVarHelper
 {
-    private const DEFAULT_JSON_SECRETS = 'JSON_SECRETS';
+    private const DEFAULT_JSON_SECRETS = 'SECRET_.+';
+
+    private static bool $outputEnabled = true;
+
+    public static function disableOutput(): void
+    {
+        self::$outputEnabled = false;
+    }
 
     /**
      * @param string[]|null $jsonSecrets
      */
     public static function loadEnvVars(?array $jsonSecrets = null): void
     {
-        foreach ($jsonSecrets ?? [self::DEFAULT_JSON_SECRETS] as $jsonSecret) {
-            foreach (\json_decode($_SERVER[$jsonSecret] ?? '', true) ?? [] as $name => $value) {
-                OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $jsonSecret));
+        $jsonSecrets = \array_map(static function (string $jsonSecret): string {
+            $jsonSecret = u($jsonSecret);
 
-                $_SERVER[$name] = $value;
-                $_ENV[$name] = $value;
+            if ($jsonSecret->startsWith('/') === false) {
+                $jsonSecret = $jsonSecret
+                    ->prepend('/')
+                    ->append('/')
+                    ->replace('\\\\', '\\');
+            }
+
+            return $jsonSecret->toString();
+        }, $jsonSecrets ?? [self::DEFAULT_JSON_SECRETS]);
+
+        foreach (\array_keys($_SERVER) as $envVarName) {
+            foreach ($jsonSecrets as $jsonSecret) {
+                if (u($envVarName)->ignoreCase()->match($jsonSecret)) {
+                    foreach (\json_decode($_SERVER[$envVarName] ?? '', true) ?? [] as $name => $value) {
+                        if (self::$outputEnabled) {
+                            OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $envVarName));
+                        }
+
+                        $_SERVER[$name] = $value;
+                        $_ENV[$name] = $value;
+                    }
+
+                    unset($_SERVER[$envVarName]);
+                }
             }
         }
 
