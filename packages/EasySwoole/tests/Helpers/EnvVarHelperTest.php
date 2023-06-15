@@ -9,6 +9,9 @@ use EonX\EasySwoole\Tests\AbstractTestCase;
 
 final class EnvVarHelperTest extends AbstractTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
     public function providerTestLoadEnvVars(): iterable
     {
         yield 'simple test' => [
@@ -54,7 +57,9 @@ final class EnvVarHelperTest extends AbstractTestCase
     }
 
     /**
+     * @param mixed[] $secrets
      * @param mixed[] $expected
+     * @param null|string[] $expected
      *
      * @dataProvider providerTestLoadEnvVars
      */

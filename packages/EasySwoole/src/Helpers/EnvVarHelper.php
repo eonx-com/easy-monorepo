@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Helpers;
 
 use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
+
 use function Symfony\Component\String\u;
 
 final class EnvVarHelper
