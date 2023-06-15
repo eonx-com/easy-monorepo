@@ -18,7 +18,7 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function addItemToTable(Connection $conn, string $title): void
+    protected static function addItemToTable(Connection $conn, string $title): void
     {
         $conn->insert('items', ['title' => $title]);
     }
@@ -26,7 +26,7 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function addParentToTable(Connection $conn, string $title, int $itemId): void
+    protected static function addParentToTable(Connection $conn, string $title, int $itemId): void
     {
         $conn->insert('parents', [
             'parent_title' => $title,
@@ -37,7 +37,7 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function createItemsTable(Connection $conn): void
+    protected static function createItemsTable(Connection $conn): void
     {
         $schema = new Schema();
 
@@ -60,7 +60,7 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function createParentsTable(Connection $conn): void
+    protected static function createParentsTable(Connection $conn): void
     {
         $schema = new Schema();
 

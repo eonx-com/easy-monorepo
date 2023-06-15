@@ -16,7 +16,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestFromFile(): iterable
+    public static function providerTestFromFile(): iterable
     {
         yield 'Simple file' => [
             __DIR__ . '/fixtures/simple_file.csv',
@@ -111,7 +111,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestFromFileForException(): iterable
+    public static function providerTestFromFileForException(): iterable
     {
         yield 'Value for required header missing' => [
             __DIR__ . '/fixtures/missing_value_for_required_header.csv',

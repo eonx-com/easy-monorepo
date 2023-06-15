@@ -16,14 +16,14 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestPaginator(): iterable
+    public static function providerTestPaginator(): iterable
     {
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
             'items',
             null,
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
+                self::createItemsTable($conn);
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -35,7 +35,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             'i',
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
+                self::createItemsTable($conn);
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -47,7 +47,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
+                self::createItemsTable($conn);
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -59,8 +59,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -72,8 +72,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             'i',
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -85,9 +85,9 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
-                $this->addItemToTable($conn, 'my-title-1');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
+                self::addItemToTable($conn, 'my-title-1');
 
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
@@ -105,9 +105,9 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             'i',
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
-                $this->addItemToTable($conn, 'my-title-1');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
+                self::addItemToTable($conn, 'my-title-1');
 
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
@@ -125,8 +125,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 $item = (array)($paginator->getItems()[0] ?? []);
@@ -143,8 +143,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             'i',
             function (Connection $conn): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
             },
             static function (DoctrineDbalPaginator $paginator): void {
                 $item = (array)($paginator->getItems()[0] ?? []);
@@ -161,8 +161,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
 
                 $paginator->setSelect('*');
             },
@@ -181,8 +181,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             'i',
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
 
                 $paginator->setSelect('*');
             },
@@ -201,8 +201,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
 
                 $paginator->setSelect('title');
             },
@@ -221,8 +221,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             'i',
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
 
                 $paginator->setSelect('title');
             },
@@ -241,8 +241,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'items',
             null,
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
+                self::createItemsTable($conn);
+                self::addItemToTable($conn, 'my-title');
 
                 $paginator->setTransformer(static function (array $item): \stdClass {
                     $obj = new \stdClass();
@@ -269,10 +269,10 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
             'parents',
             'p',
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
-                $this->createItemsTable($conn);
-                $this->createParentsTable($conn);
-                $this->addItemToTable($conn, 'my-title');
-                $this->addParentToTable($conn, 'my-parent', 1);
+                self::createItemsTable($conn);
+                self::createParentsTable($conn);
+                self::addItemToTable($conn, 'my-title');
+                self::addParentToTable($conn, 'my-parent', 1);
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (QueryBuilder $queryBuilder): void {

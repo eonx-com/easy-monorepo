@@ -94,8 +94,10 @@ trait EloquentPaginatorTrait
         // Override select to fetch only primary key
         $primaryKeyQueryBuilder->select($prefixedPrimaryKey);
 
-        $primaryKeys = $primaryKeyQueryBuilder->get()
-            ->pluck($primaryKeyIndex)
+        /** @var \Illuminate\Database\Eloquent\Collection<array-key, \Illuminate\Database\Eloquent\Model> $result */
+        $result = $primaryKeyQueryBuilder->get();
+
+        $primaryKeys = $result->pluck($primaryKeyIndex)
             ->all();
 
         // If no primary keys, no items for current pagination
@@ -125,6 +127,9 @@ trait EloquentPaginatorTrait
      */
     private function fetchResults(Builder $queryBuilder): array
     {
-        return \array_values($queryBuilder->get()->getDictionary());
+        /** @var \Illuminate\Database\Eloquent\Collection<array-key, \Illuminate\Database\Eloquent\Model> $result */
+        $result = $queryBuilder->get();
+
+        return \array_values($result->getDictionary());
     }
 }

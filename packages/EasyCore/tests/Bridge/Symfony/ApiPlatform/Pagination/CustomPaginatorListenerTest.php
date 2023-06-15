@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
+use ApiPlatform\Doctrine\Orm\Paginator;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
@@ -51,7 +51,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return \ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator<mixed>
+     * @return \ApiPlatform\Doctrine\Orm\Paginator<mixed>
      */
     private function getApiPlatformPaginator(): Paginator
     {

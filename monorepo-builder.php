@@ -19,10 +19,10 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorke
 use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 use Symplify\SmartFileSystem\SmartFileSystem;
 
-return static function (MBConfig $MBConfig): void {
-    $MBConfig->packageDirectories([__DIR__ . '/packages']);
-    $MBConfig->packageDirectoriesExcludes([]);
-    $MBConfig->workers([
+return static function (MBConfig $monorepoBuilderConfig): void {
+    $monorepoBuilderConfig->packageDirectories([__DIR__ . '/packages']);
+    $monorepoBuilderConfig->packageDirectoriesExcludes([]);
+    $monorepoBuilderConfig->workers([
         AddTagToChangelogReleaseWorker::class,
         UpdateTagInGithubWorkflow::class,
         PackagesListInReadmeReleaseWorker::class,
@@ -33,7 +33,7 @@ return static function (MBConfig $MBConfig): void {
         PushNextDevReleaseWorker::class,
     ]);
 
-    $services = $MBConfig->services();
+    $services = $monorepoBuilderConfig->services();
     $services->defaults()
         ->autoconfigure()
         ->autowire()

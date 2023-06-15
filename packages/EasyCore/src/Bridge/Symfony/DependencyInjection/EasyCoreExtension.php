@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle as LegacyApiPlatformBundle;
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyCore\Bridge\BridgeConstantsInterface;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SimpleDataPersisterInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
-use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -43,29 +40,10 @@ final class EasyCoreExtension extends Extension
         $this->container = $container;
         $this->loader = $loader;
 
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        $apiPlatformBundleClass = \class_exists(ApiPlatformBundle::class)
-            ? ApiPlatformBundle::class
-            : LegacyApiPlatformBundle::class;
-
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
-        $this->autoconfigTag(SimpleDataPersisterInterface::class, TagsInterface::SIMPLE_DATA_PERSISTER_AUTO_CONFIG);
-
-        $this->loadIfBundlesExist('api_platform/filters.php', $apiPlatformBundleClass);
-        $this->loadIfBundlesExist('api_platform/iri_converter.php', $apiPlatformBundleClass);
-        $this->loadIfBundlesExist('api_platform/maker_commands.php', [$apiPlatformBundleClass, MakerBundle::class]);
 
         if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
-            $this->loadIfBundlesExist('api_platform/pagination.php', $apiPlatformBundleClass);
-        }
-
-        if ($config['api_platform']['simple_data_persister_enabled'] ?? false) {
-            $this->loadIfBundlesExist('api_platform/simple_data_persister.php', $apiPlatformBundleClass);
-
-            // This debug file is only for when simple data persister is enabled
-            if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
-                $this->loadIfBundlesExist('api_platform/debug.php', $apiPlatformBundleClass);
-            }
+            $this->loadIfBundlesExist('api_platform/pagination.php', ApiPlatformBundle::class);
         }
 
         // Search
@@ -94,7 +72,7 @@ final class EasyCoreExtension extends Extension
         }
 
         // Aliases for custom collection operations HTTP methods
-        if ($this->bundlesExist($apiPlatformBundleClass)) {
+        if ($this->bundlesExist(ApiPlatformBundle::class)) {
             foreach (['PATCH', 'PUT'] as $method) {
                 $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
                 $container->setAlias($alias, 'api_platform.action.placeholder')

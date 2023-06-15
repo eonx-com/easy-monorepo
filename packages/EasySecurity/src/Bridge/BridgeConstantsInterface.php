@@ -14,11 +14,6 @@ interface BridgeConstantsInterface
     /**
      * @var string
      */
-    public const PARAM_CONTEXT_SERVICE_ID = 'easy_security.context_service_id';
-
-    /**
-     * @var string
-     */
     public const PARAM_PERMISSIONS_LOCATIONS = 'easy_security.permissions_locations';
 
     /**
@@ -30,6 +25,16 @@ interface BridgeConstantsInterface
      * @var string
      */
     public const PARAM_TOKEN_DECODER = 'easy_security.token_decoder';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_AUTHORIZATION_MATRIX_CACHE = 'easy_security.authorization_matrix_cache';
+
+    /**
+     * @var string
+     */
+    public const SERVICE_LOGGER = 'easy_security.logger';
 
     /**
      * @var string
@@ -55,19 +60,4 @@ interface BridgeConstantsInterface
      * @var int
      */
     public const TAG_SECURITY_VOTER_PRIORITY = 100;
-
-    /**
-     * @var string
-     */
-    public const SERVICE_API_TOKEN_DECODER = 'easy_security.api_token_decoder';
-
-    /**
-     * @var string
-     */
-    public const SERVICE_AUTHORIZATION_MATRIX_CACHE = 'easy_security.authorization_matrix_cache';
-
-    /**
-     * @var string
-     */
-    public const SERVICE_LOGGER = 'easy_security.logger';
 }

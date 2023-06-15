@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class DecimalValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if ($constraint instanceof Decimal === false) {
             throw new UnexpectedTypeException($constraint, Decimal::class);
@@ -26,7 +26,7 @@ final class DecimalValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'scalar');
         }
 
-        $value = (string) $value;
+        $value = (string)$value;
 
         if (\is_numeric($value) === true && \str_contains($value, 'E') === true) {
             $value = \sprintf('%0.10f', $value);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyBatch\BatchManager;
 use EonX\EasyBatch\BatchObjectManager;
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
@@ -24,7 +23,6 @@ use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
@@ -79,8 +77,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Manager
     $services
-        ->set(BatchObjectManagerInterface::class, BatchObjectManager::class)
-        ->set(BatchManagerInterface::class, BatchManager::class);
+        ->set(BatchObjectManagerInterface::class, BatchObjectManager::class);
 
     // Messenger
     $services

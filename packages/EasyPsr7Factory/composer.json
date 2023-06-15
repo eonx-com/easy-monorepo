@@ -5,15 +5,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "nyholm/psr7": "^1.1",
-        "symfony/psr-http-message-bridge": "^1.1 || ^2.0"
+        "nyholm/psr7": "^1.8",
+        "symfony/psr-http-message-bridge": "^2.2"
     },
     "require-dev": {
-        "guzzlehttp/psr7": "^2.1",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "symfony/symfony": "^5.4 || ^6.0",
-        "vlucas/phpdotenv": "^3.3 || ^5.2"
+        "guzzlehttp/psr7": "^2.5",
+        "laravel/lumen-framework": "^9.1",
+        "phpunit/phpunit": "^9.6 || ^10.2",
+        "symfony/symfony": "^6.3",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {

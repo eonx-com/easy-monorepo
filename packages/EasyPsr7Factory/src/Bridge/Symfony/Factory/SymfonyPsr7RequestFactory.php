@@ -46,6 +46,6 @@ final class SymfonyPsr7RequestFactory
             return $this->getFakeRequest();
         }
 
-        return $this->requestStack->getMasterRequest() ?? $this->getFakeRequest();
+        return $this->requestStack->getMainRequest() ?? $this->getFakeRequest();
     }
 }

@@ -7,7 +7,7 @@ namespace EonX\EasyAwsCredentialsFinder;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsFinderInterface;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsInterface;
 use EonX\EasyAwsCredentialsFinder\Interfaces\AwsCredentialsProviderInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class AwsCredentialsProvider implements AwsCredentialsProviderInterface
 {

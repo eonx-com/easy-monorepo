@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
 
-use EonX\EasyUtils\CollectorHelper;
 use EonX\EasyUtils\Exceptions\InvalidArgumentException;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use EonX\EasyUtils\Tests\Stubs\HasPriorityStub;
 
 final class CollectorHelperTest extends AbstractTestCase
@@ -13,7 +13,7 @@ final class CollectorHelperTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      */
-    public function providerTestEnsureClass(): iterable
+    public static function providerTestEnsureClass(): iterable
     {
         yield 'basic type' => [[0], true];
 
@@ -27,7 +27,7 @@ final class CollectorHelperTest extends AbstractTestCase
      *
      * @see testFilterByClass
      */
-    public function providerTestFilterByClass(): iterable
+    public static function providerTestFilterByClass(): iterable
     {
         yield 'basic types' => [[0, 'string', 12.00, []], 0];
 
@@ -41,10 +41,10 @@ final class CollectorHelperTest extends AbstractTestCase
      *
      * @see testOrderHigherPriorityFirst
      */
-    public function providerTestOrderHigherPriorityFirst(): iterable
+    public static function providerTestOrderHigherPriorityFirst(): iterable
     {
-        $priority1 = $this->hasPriorityStub(1);
-        $priority10 = $this->hasPriorityStub(10);
+        $priority1 = self::hasPriorityStub(1);
+        $priority10 = self::hasPriorityStub(10);
 
         yield 'same order' => [[$priority10, $priority1], [$priority10, $priority1]];
 
@@ -61,10 +61,10 @@ final class CollectorHelperTest extends AbstractTestCase
      *
      * @see testOrderLowerPriorityFirst
      */
-    public function providerTestOrderLowerPriorityFirst(): iterable
+    public static function providerTestOrderLowerPriorityFirst(): iterable
     {
-        $priority1 = $this->hasPriorityStub(1);
-        $priority10 = $this->hasPriorityStub(10);
+        $priority1 = self::hasPriorityStub(1);
+        $priority10 = self::hasPriorityStub(10);
 
         yield 'same order' => [[$priority1, $priority10], [$priority1, $priority10]];
 
@@ -134,7 +134,7 @@ final class CollectorHelperTest extends AbstractTestCase
         self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirstAsArray($items));
     }
 
-    private function hasPriorityStub(?int $priority = null): HasPriorityStub
+    private static function hasPriorityStub(?int $priority = null): HasPriorityStub
     {
         return new HasPriorityStub($priority);
     }

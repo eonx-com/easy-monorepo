@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException as LegacyInvalidArgumentException;
 use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
@@ -69,14 +68,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     {
         $message = $throwable->getMessage();
 
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        $invalidArgumentExceptionClass = null;
-        if (\class_exists(InvalidArgumentException::class)) {
-            $invalidArgumentExceptionClass = InvalidArgumentException::class;
-        }
-
         return match ($throwable::class) {
-            $invalidArgumentExceptionClass, LegacyInvalidArgumentException::class =>
+            InvalidArgumentException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
@@ -108,18 +101,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data[$messageKey] = $this->translator->trans(self::MESSAGE_NOT_VALID, []);
 
-        $isInvalidArgumentException = null;
-
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        if (\class_exists(InvalidArgumentException::class)) {
-            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException;
-        }
-
-        if (\class_exists(InvalidArgumentException::class) === false) {
-            $isInvalidArgumentException = $throwable instanceof LegacyInvalidArgumentException;
-        }
-
-        if ($isInvalidArgumentException) {
+        if ($throwable instanceof InvalidArgumentException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data[$violationsKey] = [

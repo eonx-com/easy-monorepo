@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\Validator\Constraints;
+namespace EonX\EasyUtils\Tests\Bridge\Symfony\Validator\Constraints;
 
-use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Integer;
-use EonX\EasyCore\Bridge\Symfony\Validator\Constraints\IntegerValidator;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer;
+use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator;
+use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -14,16 +14,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 /**
- * @covers \EonX\EasyCore\Bridge\Symfony\Validator\Constraints\IntegerValidator
+ * @covers \EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator
  */
-final class IntegerValidatorTest extends AbstractSymfonyTestCase
+final class IntegerValidatorTest extends AbstractTestCase
 {
     /**
      * @return mixed[]
      *
      * @see testValidateSucceedsAndDoesNothing
      */
-    public function provideEmptyValues(): array
+    public static function provideEmptyValues(): array
     {
         return [
             'Empty value #1' => [''],
@@ -36,7 +36,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
      *
      * @see provideInvalidValues
      */
-    public function provideInvalidValues(): array
+    public static function provideInvalidValues(): array
     {
         return [
             'Invalid value #1' => [1.25],
@@ -50,7 +50,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
      *
      * @see testValidateSucceedsWithValidValue
      */
-    public function provideValidValues(): array
+    public static function provideValidValues(): array
     {
         return [
             'Valid value #1' => [123],
@@ -86,7 +86,7 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
     {
         $validator = new IntegerValidator();
         $constraint = new Integer();
-        $violationBuilder = $this->mockConstraintViolationBuilder(Integer::INVALID_INTEGER_ERROR);
+        $violationBuilder = $this->mockConstraintViolationBuilder('integer.not_valid');
         $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
         $validator->initialize($context);
 
@@ -120,7 +120,8 @@ final class IntegerValidatorTest extends AbstractSymfonyTestCase
         $value = 12345;
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyCore\Bridge\Symfony\Validator\Constraints\Integer"'
+            'Expected argument of type "EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer", ' .
+            '"Symfony\Component\Validator\Constraint@anonymous" given'
         );
 
         $validator->validate($value, $constraint);

@@ -6,7 +6,6 @@ namespace EonX\EasySecurity\Tests\Bridge\Laravel;
 
 use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
 use EonX\EasySecurity\Configurators\DefaultSecurityContextConfigurator;
-use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContext;
 use Illuminate\Http\Request;
@@ -25,8 +24,10 @@ final class EasySecurityServiceProviderTest extends AbstractLumenTestCase
         $app->instance(Request::class, new SymfonyRequest([], [], [], [], [], [
             'HTTP_HOST' => 'eonx.com',
         ]));
-        $app->make(SecurityContextResolverInterface::class)->setConfigurator(new DefaultSecurityContextConfigurator());
+        /** @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface $result */
+        $result = $app->make(SecurityContextResolverInterface::class)
+            ->setConfigurator(new DefaultSecurityContextConfigurator());
 
-        self::assertInstanceOf(SecurityContext::class, $app->make(SecurityContextInterface::class));
+        self::assertInstanceOf(SecurityContext::class, $result->resolveContext());
     }
 }

@@ -9,7 +9,7 @@ use EonX\EasyEncryption\Exceptions\CouldNotProvideEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterface
 {

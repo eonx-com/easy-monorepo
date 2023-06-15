@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\EventListener\ValidationExceptionListener;
+use ApiPlatform\Symfony\Validator\EventListener\ValidationExceptionListener;
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;

@@ -10,14 +10,14 @@
         "eonx-com/easy-pagination": "^4.4",
         "eonx-com/easy-random": "^4.4",
         "eonx-com/easy-utils": "^4.4",
-        "nesbot/carbon": "^2.22"
+        "nesbot/carbon": "^2.67"
     },
     "require-dev": {
         "eonx-com/easy-encryption": "^4.4",
-        "ramsey/uuid": "^3.9 || ^4.0",
-        "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "ramsey/uuid": "^4.7",
+        "doctrine/orm": "^2.14",
+        "phpunit/phpunit": "^9.6 || ^10.2",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {

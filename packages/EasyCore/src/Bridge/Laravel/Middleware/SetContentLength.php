@@ -13,8 +13,9 @@ final class SetContentLength
      */
     public function handle(Request $request, \Closure $next)
     {
+        /** @var \Illuminate\Http\Request $response */
         $response = $next($request);
-        $response->headers->set('Content-Length', \strlen($response->getContent()));
+        $response->headers->set('Content-Length', (string)\strlen($response->getContent()));
 
         return $response;
     }

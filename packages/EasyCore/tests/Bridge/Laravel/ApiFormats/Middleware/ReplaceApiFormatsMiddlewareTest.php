@@ -28,9 +28,9 @@ final class ReplaceApiFormatsMiddlewareTest extends AbstractTestCase
         ];
 
         yield 'Formatted api response' => [
-            new FormattedApiResponse([
+            new FormattedApiResponse(\json_encode([
                 'key' => 'value',
-            ]),
+            ])),
         ];
 
         yield 'No content response' => [new NoContentApiResponse(), NoContentApiResponse::class];
@@ -47,6 +47,7 @@ final class ReplaceApiFormatsMiddlewareTest extends AbstractTestCase
     public function testHandle($apiResponse, ?string $expectedResponseClass = null): void
     {
         $middleware = new ReplaceApiFormatsMiddleware();
+
         $response = $middleware->handle(new Request(), static function (Request $request) use ($apiResponse) {
             return $apiResponse;
         });

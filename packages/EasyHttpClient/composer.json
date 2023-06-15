@@ -7,18 +7,19 @@
         "php": "^8.1",
         "eonx-com/easy-event-dispatcher": "^4.4",
         "eonx-com/easy-utils": "^4.4",
-        "nesbot/carbon": "^2.22"
+        "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "bugsnag/bugsnag": "^3.19",
-        "doctrine/dbal": "^2.6",
+        "bugsnag/bugsnag": "^3.29",
+        "doctrine/dbal": "^2.13",
         "eonx-com/easy-lock": "^4.4",
         "eonx-com/easy-webhook": "^4.4",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "symfony/amazon-sqs-messenger": "^5.4 || ^6.0",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "laravel/lumen-framework": "^9.1",
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^9.6 || ^10.2",
+        "symfony/amazon-sqs-messenger": "^6.3",
+        "symfony/symfony": "^6.3",
+        "symfony/contracts": "^3.3"
     },
     "autoload": {
         "psr-4": {

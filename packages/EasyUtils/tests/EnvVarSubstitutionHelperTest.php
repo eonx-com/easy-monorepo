@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
 
-use EonX\EasyUtils\EnvVarSubstitutionHelper;
+use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
 
 final class EnvVarSubstitutionHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
      */
-    public function providerTestResolveVariables(): iterable
+    public static function providerTestResolveVariables(): iterable
     {
         yield 'With $ in value' => [
             ['password' => 'qLiByxT5Gg11zt$2PjHb952nnVEZK'],

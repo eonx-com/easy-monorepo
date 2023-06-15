@@ -36,6 +36,10 @@ final class TrimStringsTest extends AbstractTestCase
                     ->once()
                     ->with($data, $except)
                     ->andReturn($expectedResult);
+                $mock->shouldReceive('trim')
+                    ->once()
+                    ->with([], [])
+                    ->andReturn([]);
             }
         );
         $middleware = new TrimStrings($trimmer, $except);

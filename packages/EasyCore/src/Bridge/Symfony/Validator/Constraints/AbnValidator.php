@@ -31,7 +31,7 @@ final class AbnValidator extends ConstraintValidator
      */
     private const WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
 
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if ($constraint instanceof Abn === false) {
             throw new UnexpectedTypeException($constraint, Abn::class);
