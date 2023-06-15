@@ -59,7 +59,7 @@ final class EnvVarHelperTest extends AbstractTestCase
     /**
      * @param mixed[] $secrets
      * @param mixed[] $expected
-     * @param null|string[] $expected
+     * @param null|string[] $jsonSecrets
      *
      * @dataProvider providerTestLoadEnvVars
      */
