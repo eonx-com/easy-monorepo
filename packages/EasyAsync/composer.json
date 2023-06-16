@@ -8,17 +8,17 @@
         "eonx-com/easy-event-dispatcher": "^4.4",
         "eonx-com/easy-pagination": "^4.4",
         "eonx-com/easy-random": "^4.4",
-        "nette/utils": "^3.2",
-        "nesbot/carbon": "^2.67"
+        "nesbot/carbon": "^2.67",
+        "nette/utils": "^3.2"
     },
     "require-dev": {
-        "ramsey/uuid": "^4.7",
         "doctrine/dbal": "^2.13",
         "doctrine/orm": "^2.14",
-        "phpunit/phpunit": "^9.6 || ^10.2",
-        "symfony/symfony": "^6.3",
+        "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
-        "laravel/lumen-framework": "^9.1"
+        "phpunit/phpunit": "^9.6 || ^10.2",
+        "ramsey/uuid": "^4.7",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
