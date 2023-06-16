@@ -14,7 +14,7 @@ final class SslCertificateHelper
 
     public static function loadSslCertificates(
         ?string $certFilename = null,
-        ?string $keyFilename = null
+        ?string $keyFilename = null,
     ): void {
         $filesystem = new Filesystem();
 
