@@ -132,6 +132,16 @@ final class AppRuntimeHelper
         self::addOptions(['sock_type' => $sockType]);
     }
 
+    public static function setSslCertEnvVarName(string $sslCertEnvVarName): void
+    {
+        self::addOptions(['ssl_cert_env_var_name' => $sslCertEnvVarName]);
+    }
+
+    public static function setSslKeyEnvVarName(string $sslKeyEnvVarName): void
+    {
+        self::addOptions(['ssl_key_env_var_name' => $sslKeyEnvVarName]);
+    }
+
     public static function setUseDefaultCallbacks(bool $useDefaultCallbacks): void
     {
         self::addOptions(['use_default_callbacks' => $useDefaultCallbacks]);

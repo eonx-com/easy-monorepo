@@ -86,6 +86,6 @@ final class OptionHelper
 
     private static function getOption(string $option, string $env): mixed
     {
-        return self::$options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? self::DEFAULT_OPTIONS[$option];
+        return self::$options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? self::DEFAULT_OPTIONS[$option] ?? null;
     }
 }
