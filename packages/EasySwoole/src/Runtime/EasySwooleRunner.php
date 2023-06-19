@@ -23,7 +23,7 @@ use function Symfony\Component\String\u;
 final class EasySwooleRunner implements RunnerInterface
 {
     public function __construct(
-        private readonly HttpKernelInterface $app
+        private readonly HttpKernelInterface $app,
     ) {
     }
 
@@ -83,9 +83,6 @@ final class EasySwooleRunner implements RunnerInterface
         $sockType = OptionHelper::getInteger('sock_type');
         $settings = OptionHelper::getArray('settings');
 
-        $server = new Server($host, $port, $mode, $sockType);
-        $server->set($settings);
-
         OutputHelper::writeln(\sprintf('Starting server with following config: %s', \print_r([
             'host' => $host,
             'port' => $port,
@@ -93,6 +90,9 @@ final class EasySwooleRunner implements RunnerInterface
             'sock_type' => $sockType,
             'settings' => $settings,
         ], true)));
+
+        $server = new Server($host, $port, $mode, $sockType);
+        $server->set($settings);
 
         if (OptionHelper::getBoolean('use_default_callbacks')) {
             $this->registerDefaultCallbacks($server);
