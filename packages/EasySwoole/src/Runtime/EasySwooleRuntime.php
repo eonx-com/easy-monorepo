@@ -8,6 +8,7 @@ use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionIn
 use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
 use EonX\EasySwoole\Helpers\FunctionHelper;
+use EonX\EasySwoole\Helpers\SslCertificateHelper;
 use Swoole\Constant;
 use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -69,7 +70,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 $_SERVER[EasyBugsnagValueOptionInterface::RESOLVE_REQUEST_IN_CLI] = true;
             }
 
-            return new EasySwooleRunner($application, $options);
+            return new EasySwooleRunner($application, SslCertificateHelper::loadSslCertificates($options));
         }
 
         return parent::getRunner($application);

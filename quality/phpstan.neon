@@ -49,13 +49,7 @@ parameters:
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
-        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/AwsCognitoJwtDriver.php
-
         - message: '#Parameter \#2 \$keyOrKeyArray of static method Firebase\\JWT\\JWT\:\:decode\(\) expects array<string, Firebase\\JWT\\Key>\|ArrayAccess<string, Firebase\\JWT\\Key>\|Firebase\\JWT\\Key, array\|string given#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
-
-        - message: '#Static method Firebase\\JWT\\JWT\:\:decode\(\) invoked with 3 parameters, 2 required#'
           path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'

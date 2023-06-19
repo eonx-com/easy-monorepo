@@ -41,6 +41,10 @@ final class EnvVarHelper
             foreach ($jsonSecrets as $jsonSecret) {
                 if (u($envVarName)->ignoreCase()->match($jsonSecret)) {
                     foreach (\json_decode($_SERVER[$envVarName] ?? '', true) ?? [] as $name => $value) {
+                        $name = u($name)
+                            ->upper()
+                            ->toString();
+
                         if (self::$outputEnabled) {
                             OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $envVarName));
                         }
