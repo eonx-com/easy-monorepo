@@ -42,7 +42,7 @@ final class SslCertificateHelper
         }
 
         if ($savedCert || $savedKey) {
-            $options['socket_type'] ??= \class_exists(OpenSwooleConstant::class)
+            $options['sock_type'] ??= \class_exists(OpenSwooleConstant::class)
                 ? OpenSwooleConstant::SOCK_TCP | OpenSwooleConstant::SSL
                 : \SWOOLE_SOCK_TCP | \SWOOLE_SSL;
         }
