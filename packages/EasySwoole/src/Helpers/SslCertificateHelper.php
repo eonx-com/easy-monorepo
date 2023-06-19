@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Helpers;
 
 use OpenSwoole\Constant as OpenSwooleConstant;
-use Swoole\Constant as SwooleConstant;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class SslCertificateHelper
@@ -28,18 +27,18 @@ final class SslCertificateHelper
         $filesystem = new Filesystem();
         $certEnvVarName = $options['ssl_cert_env_var_name'] ?? self::DEFAULT_ENV_VAR_CERT;
         $keyEnvVarName = $options['ssl_key_env_var_name'] ?? self::DEFAULT_ENV_VAR_KEY;
-        $certFilename = $options['settings'][SwooleConstant::OPTION_SSL_CERT_FILE] ?? self::DEFAULT_FILENAME_CERT;
-        $keyFilename = $options['settings'][SwooleConstant::OPTION_SSL_KEY_FILE] ?? self::DEFAULT_FILENAME_KEY;
+        $certFilename = $options['settings']['ssl_cert_file'] ?? self::DEFAULT_FILENAME_CERT;
+        $keyFilename = $options['settings']['ssl_key_file'] ?? self::DEFAULT_FILENAME_KEY;
 
         $savedCert = self::saveEnvVarValueToFile($certEnvVarName, $filesystem, $certFilename);
         $savedKey = self::saveEnvVarValueToFile($keyEnvVarName, $filesystem, $keyFilename);
 
         if ($savedCert) {
-            $options['settings'][SwooleConstant::OPTION_SSL_CERT_FILE] = $certFilename;
+            $options['settings']['ssl_cert_file'] = $certFilename;
         }
 
         if ($savedKey) {
-            $options['settings'][SwooleConstant::OPTION_SSL_KEY_FILE] = $keyFilename;
+            $options['settings']['ssl_key_file'] = $keyFilename;
         }
 
         if ($savedCert || $savedKey) {

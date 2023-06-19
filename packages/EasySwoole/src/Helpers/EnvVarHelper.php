@@ -10,8 +10,6 @@ use function Symfony\Component\String\u;
 
 final class EnvVarHelper
 {
-    private const DEFAULT_JSON_SECRETS = 'SECRET_.+';
-
     private static bool $outputEnabled = true;
 
     public static function disableOutput(): void
@@ -20,9 +18,9 @@ final class EnvVarHelper
     }
 
     /**
-     * @param string[]|null $jsonSecrets
+     * @param string[] $jsonSecrets
      */
-    public static function loadEnvVars(?array $jsonSecrets = null): void
+    public static function loadEnvVars(array $jsonSecrets): void
     {
         $jsonSecrets = \array_map(static function (string $jsonSecret): string {
             $jsonSecret = u($jsonSecret);
@@ -35,7 +33,7 @@ final class EnvVarHelper
             }
 
             return $jsonSecret->toString();
-        }, $jsonSecrets ?? [self::DEFAULT_JSON_SECRETS]);
+        }, $jsonSecrets);
 
         foreach (\array_keys($_SERVER) as $envVarName) {
             foreach ($jsonSecrets as $jsonSecret) {
