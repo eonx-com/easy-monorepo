@@ -10,7 +10,6 @@ use EonX\EasySwoole\Helpers\CacheTableHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\SwooleTableHelper;
 use EonX\EasySwoole\ValueObjects\SwooleTableColumnDefinition;
-use Swoole\Constant;
 use Swoole\Http\Server;
 use Swoole\Process;
 use Symfony\Component\Console\Application;
@@ -38,7 +37,7 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
             OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
         );
 
-        $server->on(Constant::EVENT_REQUEST, static function (): void {
+        $server->on('request', static function (): void {
         });
 
         $table = SwooleTableHelper::create(

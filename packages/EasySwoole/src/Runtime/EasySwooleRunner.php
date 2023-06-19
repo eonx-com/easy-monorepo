@@ -9,7 +9,6 @@ use EonX\EasySwoole\Helpers\HttpFoundationHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\OutputHelper;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
-use Swoole\Constant;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
@@ -37,15 +36,15 @@ final class EasySwooleRunner implements RunnerInterface
     {
         $app = $this->app;
         $server = $this->createSwooleHttpServer();
-        $responseChunkSize = OptionHelper::getInteger('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
+        $responseChunkSize = OptionHelper::getInteger('response_chunk_size');
 
         CacheTableHelper::createCacheTables(
-            OptionHelper::getArray('cache_tables', 'SWOOLE_CACHE_TABLES'),
-            OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
+            OptionHelper::getArray('cache_tables'),
+            OptionHelper::getInteger('cache_clear_after_tick_count'),
         );
 
         $server->on(
-            Constant::EVENT_REQUEST,
+            'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
@@ -84,27 +83,27 @@ final class EasySwooleRunner implements RunnerInterface
     private function createSwooleHttpServer(): Server
     {
         $server = new Server(
-            OptionHelper::getString('host', 'SWOOLE_HOST'),
-            OptionHelper::getInteger('port', 'SWOOLE_PORT'),
-            OptionHelper::getInteger('mode', 'SWOOLE_MODE'),
-            OptionHelper::getInteger('sock_type', 'SWOOLE_SOCK_TYPE')
+            OptionHelper::getString('host'),
+            OptionHelper::getInteger('port'),
+            OptionHelper::getInteger('mode'),
+            OptionHelper::getInteger('sock_type')
         );
 
-        $server->set(OptionHelper::getArray('settings', 'SWOOLE_SETTINGS'));
+        $server->set(OptionHelper::getArray('settings'));
 
-        if (OptionHelper::getBoolean('use_default_callbacks', 'SWOOLE_USE_DEFAULT_CALLBACKS')) {
+        if (OptionHelper::getBoolean('use_default_callbacks')) {
             $this->registerDefaultCallbacks($server);
         }
 
-        foreach (OptionHelper::getArray('callbacks', 'SWOOLE_CALLBACKS') as $event => $fn) {
+        foreach (OptionHelper::getArray('callbacks') as $event => $fn) {
             $server->on($event, $fn);
         }
 
-        if (OptionHelper::getBoolean('hot_reload_enabled', 'SWOOLE_HOT_RELOAD_ENABLED')) {
+        if (OptionHelper::getBoolean('hot_reload_enabled')) {
             $this->hotReload(
                 $server,
-                OptionHelper::getArray('hot_reload_dirs', 'SWOOLE_HOT_RELOAD_DIRS'),
-                OptionHelper::getArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS')
+                OptionHelper::getArray('hot_reload_dirs'),
+                OptionHelper::getArray('hot_reload_extensions')
             );
         }
 
@@ -178,14 +177,14 @@ final class EasySwooleRunner implements RunnerInterface
     private function registerDefaultCallbacks(Server $server): void
     {
         $server->on(
-            Constant::EVENT_WORKER_START,
+            'workerStart',
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
             }
         );
 
         $server->on(
-            Constant::EVENT_WORKER_STOP,
+            'workerStop',
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
             }
