@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Tests\Helpers;
 
 use EonX\EasySwoole\Helpers\EnvVarHelper;
+use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Tests\AbstractTestCase;
 
 final class EnvVarHelperTest extends AbstractTestCase
@@ -69,8 +70,12 @@ final class EnvVarHelperTest extends AbstractTestCase
             $_SERVER[$name] = $value;
         }
 
+        if ($jsonSecrets !== null) {
+            OptionHelper::setOption('json_secrets', $jsonSecrets);
+        }
+
         EnvVarHelper::disableOutput();
-        EnvVarHelper::loadEnvVars($jsonSecrets);
+        EnvVarHelper::loadEnvVars(OptionHelper::getArray('json_secrets'));
 
         foreach ($expected as $key => $value) {
             self::assertEquals($value, $_ENV[$key]);

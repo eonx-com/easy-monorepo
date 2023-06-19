@@ -18,7 +18,7 @@ final class EnvVarHelper
     }
 
     /**
-     * @param string[]|null $jsonSecrets
+     * @param string[] $jsonSecrets
      */
     public static function loadEnvVars(array $jsonSecrets): void
     {
