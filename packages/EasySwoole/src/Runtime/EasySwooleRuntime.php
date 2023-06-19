@@ -66,15 +66,14 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 'worker_num' => FunctionHelper::countCpu() * 2,
             ], OptionHelper::getArray('settings'))));
 
+            OptionHelper::setOptions(SslCertificateHelper::loadSslCertificates(OptionHelper::getOptions()));
+
             // Bridge for eonx-com/easy-bugsnag to resolve request in CLI
             if (\interface_exists(EasyBugsnagValueOptionInterface::class)) {
                 $_SERVER[EasyBugsnagValueOptionInterface::RESOLVE_REQUEST_IN_CLI] = true;
             }
 
-            return new EasySwooleRunner(
-                $application,
-                SslCertificateHelper::loadSslCertificates(OptionHelper::getOptions())
-            );
+            return new EasySwooleRunner($application);
         }
 
         return parent::getRunner($application);

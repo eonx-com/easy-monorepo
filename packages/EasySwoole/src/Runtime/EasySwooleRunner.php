@@ -22,14 +22,8 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
-    /**
-     * @param mixed[] $options
-     */
-    public function __construct(
-        private readonly HttpKernelInterface $app,
-        array $options,
-    ) {
-        OptionHelper::setOptions($options);
+    public function __construct(private readonly HttpKernelInterface $app)
+    {
     }
 
     public function run(): int
