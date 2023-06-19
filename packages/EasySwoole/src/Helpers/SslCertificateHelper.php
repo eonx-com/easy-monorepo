@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Helpers;
 
 use OpenSwoole\Constant as OpenSwooleConstant;
-use Symfony\Component\Filesystem\Filesystem;
 use Swoole\Constant as SwooleConstant;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class SslCertificateHelper
 {
