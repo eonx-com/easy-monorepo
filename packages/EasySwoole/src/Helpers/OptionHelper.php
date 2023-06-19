@@ -29,11 +29,11 @@ final class OptionHelper
             '.xml',
         ],
         'json_secrets' => ['SECRET_.+'],
-        'mode' => \SWOOLE_BASE,
+        'mode' => 1,
         'port' => 8080,
         'response_chunk_size' => 1048576,
         'settings' => [],
-        'sock_type' => \SWOOLE_SOCK_TCP,
+        'sock_type' => 1,
         'use_default_callbacks' => true,
     ];
 
