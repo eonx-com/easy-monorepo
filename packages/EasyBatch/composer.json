@@ -13,10 +13,10 @@
         "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "eonx-com/easy-encryption": "^4.4",
-        "ramsey/uuid": "^4.7",
         "doctrine/orm": "^2.14",
+        "eonx-com/easy-encryption": "^4.4",
         "phpunit/phpunit": "^9.6 || ^10.2",
+        "ramsey/uuid": "^4.7",
         "symfony/symfony": "^6.3"
     },
     "autoload": {
