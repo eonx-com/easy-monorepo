@@ -13,11 +13,11 @@
         "doctrine/dbal": "^2.13",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-psr7-factory": "^4.4",
-        "phpunit/phpunit": "^9.6 || ^10.2",
         "laravel/lumen-framework": "^9.1",
-        "vlucas/phpdotenv": "^5.5",
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^9.6 || ^10.2",
         "symfony/symfony": "^6.3",
-        "mockery/mockery": "^1.6"
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {

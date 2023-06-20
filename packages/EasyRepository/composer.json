@@ -7,11 +7,11 @@
         "php": "^8.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.6 || ^10.2",
-        "mockery/mockery": "^1.6",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-pagination": "^4.4",
         "laravel/lumen-framework": "^9.1",
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^9.6 || ^10.2",
         "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
@@ -26,8 +26,8 @@
     },
     "suggest": {
         "doctrine/orm": "To use the Doctrine ORM implementation",
-        "illuminate/database": "To use the Illuminate Eloquent implementation",
-        "eonx-com/easy-pagination": "To use pagination within your repositories"
+        "eonx-com/easy-pagination": "To use pagination within your repositories",
+        "illuminate/database": "To use the Illuminate Eloquent implementation"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
