@@ -31,9 +31,9 @@
     },
     "suggest": {
         "eonx-com/easy-doctrine": "To create Log entries from to doctrine events",
-        "eonx-com/easy-lock": "To lock async messages"
+        "eonx-com/easy-lock": "To lock async messages",
         "symfony/messenger": "To save log entities asynchronously",
-        "symfony/serializer": "To serialize subject's data",
+        "symfony/serializer": "To serialize subject's data"
     },
     "extra": {
         "branch-alias": {

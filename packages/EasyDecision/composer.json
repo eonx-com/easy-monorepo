@@ -22,8 +22,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/expressions/tests"
-            "EonX\\EasyDecision\\Tests\\": "tests",
+            "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/expressions/tests",
+            "EonX\\EasyDecision\\Tests\\": "tests"
         }
     },
     "extra": {
