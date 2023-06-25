@@ -22,6 +22,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_NOT_VALID = 'exceptions.not_valid';
 
+    private const MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR = '/The type of the "(\w+)" attribute for class "(.*)" must be' .
+    ' one of "(\w+)" \("(\w+)" given\)\./';
+
+    private const MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED = '/The input data is misformatted\./';
+
     private const MESSAGE_PATTERN_INVALID_DATE = '/This value is not a valid date\/time\./';
 
     private const MESSAGE_PATTERN_INVALID_IRI = '/Invalid IRI "(.+)"/';
@@ -85,7 +90,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
-                \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1,
+                \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1 ||
+                \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $message),
             default => false
         };
     }
@@ -152,6 +158,28 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                                 : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[2], $matches[3]),
                         ],
                     ];
+
+                    break;
+                case \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $throwable->getMessage()) === 1:
+                    $hasAttributeTypeError = (bool)\preg_match(
+                        self::MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR,
+                        $throwable->getPrevious()?->getMessage(),
+                        $matches
+                    );
+
+                    if ($hasAttributeTypeError === true) {
+                        $data[$violationsKey] = [
+                            $matches[1] => [
+                                $matches[4] === self::VALUE_NULL
+                                    ? (new NotNull())->message
+                                    : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[3], $matches[4]),
+                            ],
+                        ];
+                    }
+
+                    if ($hasAttributeTypeError === false) {
+                        $data[$violationsKey] = [$message];
+                    }
 
                     break;
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1:
