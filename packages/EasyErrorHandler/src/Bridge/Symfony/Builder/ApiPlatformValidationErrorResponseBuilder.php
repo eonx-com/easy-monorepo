@@ -163,7 +163,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                 case \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $throwable->getMessage()) === 1:
                     $hasAttributeTypeError = (bool)\preg_match(
                         self::MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR,
-                        $throwable->getPrevious()?->getMessage(),
+                        (string)$throwable->getPrevious()?->getMessage(),
                         $matches
                     );
 
