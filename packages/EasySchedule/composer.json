@@ -8,8 +8,8 @@
         "nesbot/carbon": "^2.22",
         "dragonmantank/cron-expression": "^2.3 || ^3.0",
         "symfony/console": "^5.4 || ^6.0",
-        "eonx-com/easy-event-dispatcher": "^4.3.30",
-        "eonx-com/easy-lock": "^4.3.30"
+        "eonx-com/easy-event-dispatcher": "^4.4",
+        "eonx-com/easy-lock": "^4.4"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
