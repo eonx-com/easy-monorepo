@@ -91,7 +91,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1 ||
-                \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $message),
+                \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $message) === 1,
             default => false
         };
     }
