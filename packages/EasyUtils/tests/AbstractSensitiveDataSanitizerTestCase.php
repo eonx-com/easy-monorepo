@@ -149,7 +149,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
             'maskKeys' => [
                 'token',
                 'phonenumber',
-                'auth'
+                'auth',
             ],
         ];
         yield 'Mask card numbers' => [
