@@ -111,6 +111,17 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"token-to-be-masked\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"token-to-be-masked\"}',
                 'maskPhoneNumber' => '{"phoneNumber":"token-to-be-masked"}',
+                'maskArray' => '{"auth":["test",null]}',
+                'maskArrayWithEscaping' => '{\"auth\":[\"test\"]}',
+                'maskArraySpaceBeforeValue' => '{"auth": ["test"]}',
+                'maskArraySpaceAfterKey' => '{"auth" :["test"]}',
+                'maskArrayWithBothSpaces' => '{"auth" : ["test"]}',
+                'maskArrayWithDoubleSpaces' => '{"auth"  :  ["test"]}',
+                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [\"test\"]}',
+                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[\"test\"]}',
+                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [\"test\"]}',
+                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [\"test\"]}',
+
             ],
             'expectedOutput' => [
                 'maskToken' => '{"token":"*REDACTED*"}',
@@ -124,10 +135,21 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"*REDACTED*\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"*REDACTED*\"}',
                 'maskPhoneNumber' => '{"phoneNumber":"*REDACTED*"}',
+                'maskArray' => '{"auth":[*REDACTED*]}',
+                'maskArrayWithEscaping' => '{\"auth\":[*REDACTED*]}',
+                'maskArraySpaceBeforeValue' => '{"auth": [*REDACTED*]}',
+                'maskArraySpaceAfterKey' => '{"auth" :[*REDACTED*]}',
+                'maskArrayWithBothSpaces' => '{"auth" : [*REDACTED*]}',
+                'maskArrayWithDoubleSpaces' => '{"auth"  :  [*REDACTED*]}',
+                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [*REDACTED*]}',
+                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[*REDACTED*]}',
+                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [*REDACTED*]}',
+                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [*REDACTED*]}',
             ],
             'maskKeys' => [
                 'token',
                 'phonenumber',
+                'auth'
             ],
         ];
         yield 'Mask card numbers' => [

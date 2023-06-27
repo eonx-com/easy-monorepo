@@ -13,8 +13,11 @@ final class JsonStringSanitizer extends AbstractStringSanitizer
     {
         foreach ($keysToMask as $key) {
             $string = (string)\preg_replace(
-                \sprintf('/(\\\"%s\\\"\s*:\s*\\\"|"%s"\s*:\s*")([^\\\"]+)(\\\"|")/i', $key, $key),
-                '$1' . $maskPattern . '$3',
+                \sprintf(
+                    '/((\\\)?"%s(\\\)?"\s*:\s*(\\\)?(\\[|"))(?(?<=\\[)([^\\]]+)|([^\\\"]+))(\\\"|"|\\])/i',
+                    $key
+                ),
+                '$1' . $maskPattern . '$8',
                 $string
             );
         }
