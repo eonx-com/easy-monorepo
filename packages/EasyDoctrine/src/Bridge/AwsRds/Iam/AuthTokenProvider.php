@@ -12,9 +12,9 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final class AuthTokenProvider
 {
-    private const CACHE_KEY_PATTERN = 'easy_doctrine.aws_rds.iam_auth_token.%s';
-
     private const CACHE_HASH_PATTERN = '%s_%s_%s_%s';
+
+    private const CACHE_KEY_PATTERN = 'easy_doctrine.aws_rds_token.%s';
 
     private AuthTokenGenerator $authTokenGenerator;
 
