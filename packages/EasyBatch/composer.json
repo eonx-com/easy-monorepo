@@ -5,15 +5,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-event-dispatcher": "^4.4",
-        "eonx-com/easy-lock": "^4.4",
-        "eonx-com/easy-pagination": "^4.4",
-        "eonx-com/easy-random": "^4.4",
-        "eonx-com/easy-utils": "^4.4",
+        "eonx-com/easy-event-dispatcher": "^4.3.33",
+        "eonx-com/easy-lock": "^4.3.33",
+        "eonx-com/easy-pagination": "^4.3.33",
+        "eonx-com/easy-random": "^4.3.33",
+        "eonx-com/easy-utils": "^4.3.33",
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
-        "eonx-com/easy-encryption": "^4.4",
+        "eonx-com/easy-encryption": "^4.3.33",
         "ramsey/uuid": "^3.9 || ^4.0",
         "doctrine/orm": "^2.6",
         "phpunit/phpunit": "^9.5 || ^10.0",
