@@ -202,9 +202,7 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySsm/src/Services/Dotenv/Loaders/DotenvLoader.php
 
         # ---- EasySwoole ----
-        - '#Access to constant (.*) on an unknown class Swoole\\Constant#'
         - '#Call to method (.*) on an unknown class OpenSwoole\\Table#'
-        - '#Class Swoole\\Constant not found#'
 
         - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/OutputHelper.php
