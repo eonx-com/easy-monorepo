@@ -10,7 +10,7 @@
         "phpunit/phpunit": "^9.5 || ^10.0",
         "mockery/mockery": "^1.4",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-pagination": "^4.4",
+        "eonx-com/easy-pagination": "^4.3.32",
         "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
         "vlucas/phpdotenv": "^3.3 || ^5.2"
     },
