@@ -11,7 +11,7 @@ use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
-final class DbalV3Driver extends AbstractAwsRdsDriver implements Driver
+final class DbalDriver extends AbstractAwsRdsDriver implements Driver
 {
     /**
      * @param mixed[] $params

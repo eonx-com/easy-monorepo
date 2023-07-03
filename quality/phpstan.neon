@@ -30,8 +30,6 @@ parameters:
         - %currentWorkingDirectory%/packages/EasyApiToken/tests/Bridge/Symfony/*
         - %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
         - %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
-        - %currentWorkingDirectory%/packages/EasyDoctrine/src/Bridge/AwsRds/Drivers/*
-        - %currentWorkingDirectory%/packages/EasyDoctrine/src/Bridge/Symfony/Aws/Rds/AuthTokenConnectionFactory.php
         - %currentWorkingDirectory%/packages/EasyEncryption/src/AwsPkcs11Encryptor.php
         - %currentWorkingDirectory%/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
