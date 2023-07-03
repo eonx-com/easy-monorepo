@@ -10,7 +10,7 @@
     },
     "require-dev": {
         "auth0/auth0-php": "^8.6",
-        "eonx-com/easy-utils": "^4.4",
+        "eonx-com/easy-utils": "5.0-dev",
         "firebase/php-jwt": "^6.5",
         "guzzlehttp/psr7": "^2.5",
         "laravel/lumen-framework": "^9.1",
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-5.x": "5.0-dev"
         }
     },
     "minimum-stability": "dev",

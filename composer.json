@@ -227,7 +227,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-5.x": "5.0-dev"
         },
         "eonx_docs": {
             "ignore": true

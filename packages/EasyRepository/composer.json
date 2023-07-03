@@ -8,7 +8,7 @@
     },
     "require-dev": {
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-pagination": "^4.4",
+        "eonx-com/easy-pagination": "5.0-dev",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^9.6 || ^10.2",
@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-5.x": "5.0-dev"
         }
     }
 }
