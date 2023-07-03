@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "aws/aws-sdk-php": "^3.269",
-        "eonx-com/easy-utils": "^4.4",
+        "eonx-com/easy-utils": "5.0-dev",
         "nesbot/carbon": "^2.67",
         "symfony/process": "^6.3",
         "symplify/autowire-array-parameter": "^10.1",
@@ -29,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-5.x": "5.0-dev"
         }
     }
 }
