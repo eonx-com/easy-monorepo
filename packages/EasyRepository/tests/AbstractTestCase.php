@@ -12,6 +12,7 @@ use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use stdClass;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -54,11 +55,11 @@ abstract class AbstractTestCase extends TestCase
 
                 $manager->shouldReceive('getRepository')
                     ->once()
-                    ->with('my-entity-class')
+                    ->with(stdClass::class)
                     ->andReturn($repository);
                 $registry->shouldReceive('getManagerForClass')
                     ->once()
-                    ->with('my-entity-class')
+                    ->with(stdClass::class)
                     ->andReturn($manager);
             }
         );

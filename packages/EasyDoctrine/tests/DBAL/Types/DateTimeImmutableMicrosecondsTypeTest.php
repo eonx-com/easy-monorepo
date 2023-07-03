@@ -151,8 +151,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            "of type 'string' to type 'datetime'. " .
-            'Expected one of the following types: null, DateTimeImmutable');
+            'to type datetime. Expected one of the following types: null, DateTimeImmutable');
 
         $type->convertToDatabaseValue($value, $platform);
     }

@@ -137,8 +137,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            "of type 'string' to type 'datetime'. Expected one of the following types: null, DateTime");
+        $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' to type datetime. " .
+            'Expected one of the following types: null, DateTime');
 
         $type->convertToDatabaseValue($value, $platform);
     }
