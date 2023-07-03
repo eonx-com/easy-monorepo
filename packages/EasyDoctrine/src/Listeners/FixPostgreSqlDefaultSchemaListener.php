@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Listeners;
 
-use Doctrine\DBAL\Schema\PostgreSqlSchemaManager;
+use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 
 /**

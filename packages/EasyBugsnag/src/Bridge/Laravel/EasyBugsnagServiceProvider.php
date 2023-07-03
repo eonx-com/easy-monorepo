@@ -8,7 +8,6 @@ use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
 use EonX\EasyBugsnag\Bridge\EasyUtils\SensitiveDataSanitizerConfigurator;
-use EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger;
 use EonX\EasyBugsnag\Bridge\Laravel\Request\LaravelRequestResolver;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingConfigurator;
 use EonX\EasyBugsnag\Bridge\Laravel\Session\SessionTrackingListener;
@@ -32,7 +31,6 @@ use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Application as LumenApplication;
-use LaravelDoctrine\ORM\Loggers\Logger;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
 {
@@ -58,7 +56,6 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         $this->registerAwsEcsFargate();
         $this->registerClient();
         $this->registerConfigurators();
-        $this->registerDoctrineOrm();
         $this->registerRequestResolver();
         $this->registerSensitiveDataSanitizer();
         $this->registerSessionTracking();
@@ -142,16 +139,6 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             }
         );
         $this->app->tag(RuntimeVersionConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
-    }
-
-    private function registerDoctrineOrm(): void
-    {
-        if (\config('easy-bugsnag.doctrine_orm', false) === false
-            || \interface_exists(Logger::class) === false) {
-            return;
-        }
-
-        $this->app->singleton(SqlOrmLogger::class);
     }
 
     private function registerRequestResolver(): void

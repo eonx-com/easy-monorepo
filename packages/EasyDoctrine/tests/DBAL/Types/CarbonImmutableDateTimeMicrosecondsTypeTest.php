@@ -9,7 +9,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -21,6 +21,16 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType(
+            (new CarbonImmutableDateTimeMicrosecondsType())->getName(),
+            CarbonImmutableDateTimeMicrosecondsType::class
+        );
+    }
+
     /**
      * @return iterable<mixed>
      *
@@ -78,10 +88,10 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
      */
     public function provideFieldDeclarationValues(): iterable
     {
-        yield 'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'];
+        yield 'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'];
 
         yield 'mysql, with version = true' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => true,
             ],
@@ -89,7 +99,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         ];
 
         yield 'mysql, with version = false' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => false,
             ],
@@ -214,15 +224,5 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);
 
         self::assertSame($declaration, $actualDeclaration);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType(
-            (new CarbonImmutableDateTimeMicrosecondsType())->getName(),
-            CarbonImmutableDateTimeMicrosecondsType::class
-        );
     }
 }

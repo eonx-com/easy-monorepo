@@ -7,7 +7,7 @@ namespace EonX\EasyDoctrine\Tests\DBAL\Types;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -19,6 +19,13 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType(DateTimeMicrosecondsType::TYPE_NAME, DateTimeMicrosecondsType::class);
+    }
+
     /**
      * @return mixed[]
      *
@@ -66,16 +73,16 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     public function provideFieldDeclarationValues(): array
     {
         return [
-            'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'],
+            'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'],
             'mysql, with version = true' => [
-                MySqlPlatform::class,
+                MySQLPlatform::class,
                 [
                     'version' => true,
                 ],
                 DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP,
             ],
             'mysql, with version = false' => [
-                MySqlPlatform::class,
+                MySQLPlatform::class,
                 [
                     'version' => false,
                 ],
@@ -106,7 +113,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @param mixed $value
      *
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      *
      * @dataProvider provideConvertToDatabaseValues
@@ -140,7 +146,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     /**
      * @param mixed $value
      *
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      *
      * @dataProvider provideConvertToPHPValues
@@ -158,7 +163,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
     public function testConvertToPHPValueThrowsConversionException(): void
@@ -175,9 +179,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         $type->convertToPHPValue($value, $platform);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testGetNameSucceeds(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
@@ -190,8 +191,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @param mixed[] $fieldDeclaration
-     *
-     * @throws \Doctrine\DBAL\DBALException
      *
      * @dataProvider provideFieldDeclarationValues
      */
@@ -208,12 +207,5 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);
 
         self::assertSame($declaration, $actualDeclaration);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType(DateTimeMicrosecondsType::TYPE_NAME, DateTimeMicrosecondsType::class);
     }
 }

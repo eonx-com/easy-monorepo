@@ -57,11 +57,6 @@ return [
         'meta_storage_filename' => \storage_path('aws_ecs_fargate_meta.json'),
     ],
 
-    /**
-     * Enable Doctrine SQL Queries Breadcrumbs.
-     */
-    'doctrine_orm' => true,
-
     'sensitive_data_sanitizer' => [
         /**
          * Enable sensitive data sanitization.

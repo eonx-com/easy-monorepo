@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Repositories;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSavedException;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;

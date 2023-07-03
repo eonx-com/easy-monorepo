@@ -57,6 +57,7 @@ parameters:
         - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
           path: %currentWorkingDirectory%/packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
 
+        # ---- EasyAwsCredentialsFinder ----
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
           path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
@@ -72,9 +73,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyBatch/src/Repositories/BatchItemRepository.php
 
         # ---- EasyBugsnag ----
-        - message: '#Return type \(void\) of method EonX\\EasyBugsnag\\Tests\\Bridge\\Symfony\\Stubs\\ConnectionStub\:\:(query|prepare)\(\) should be compatible with return type \(Doctrine\\DBAL\\Driver\\Statement\) of method Doctrine\\DBAL\\Driver\\Connection\:\:(query|prepare)\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/ConnectionStub.php
-
         # ---- EasyCore ----
         - message: '#Access to an undefined property object::\$[\w]+.#'
           path: %currentWorkingDirectory%/packages/EasyCore/tests/Bridge/Laravel/Middleware/SetContentLengthTest.php
@@ -104,13 +102,23 @@ parameters:
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
           path: %currentWorkingDirectory%/packages/EasyErrorHandler/src/Providers/ErrorCodesFromInterfaceProvider.php
 
-        # ---- EasyLogging ----DoctrineDbalLengthAwarePaginator
+        # ---- EasyEventDispatcher ----
+        # ---- EasyHttpClient ----
+        # ---- EasyLock ----
+        - message: '#Result of && is always false#'
+          path: %currentWorkingDirectory%/packages/EasyLock/src/LockService.php
+
+        - message: "#Strict comparison using === between int and 'HY000' will always evaluate to false#"
+          path: %currentWorkingDirectory%/packages/EasyLock/src/LockService.php
+
+        # ---- EasyLogging ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: %currentWorkingDirectory%/packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
 
         - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
           path: %currentWorkingDirectory%/packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
 
+        # ---- EasyNotification ----
         # ---- EasyPagination ----
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
         - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\.*\:\:\$.*#'
@@ -223,6 +231,8 @@ parameters:
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 
+        # ---- EasyTemplatingBlock ----
+        # ---- EasyTest ----
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
