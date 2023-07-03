@@ -54,7 +54,7 @@
         "bugsnag/bugsnag-laravel": "^2.26",
         "dg/bypass-finals": "^1.4",
         "doctrine/annotations": "^1.14",
-        "doctrine/dbal": "^2.13",
+        "doctrine/dbal": "^2.13 || 3.0",
         "doctrine/doctrine-bundle": "^2.7",
         "firebase/php-jwt": "^6.5",
         "guzzlehttp/psr7": "^2.5",
