@@ -32,9 +32,6 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  *
  * @see \ApiPlatform\Doctrine\Orm\Filter\SearchFilter
  *
- * For API Platform <= 2.6.0 use VirtualSearchFilter
- * @see \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Filter\VirtualSearchFilter
- *
  * #[ApiFilter(
  *     AdvancedSearchFilter::class,
  *     properties: [
