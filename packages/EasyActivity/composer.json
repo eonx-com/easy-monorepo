@@ -10,7 +10,7 @@
     },
     "require-dev": {
         "doctrine/annotations": "^1.14",
-        "doctrine/dbal": "^2.13",
+        "doctrine/dbal": "^2.13 || 3.0",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-doctrine": "^4.4",
         "eonx-com/easy-lock": "^4.4",
