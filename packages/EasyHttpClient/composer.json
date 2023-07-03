@@ -11,7 +11,7 @@
     },
     "require-dev": {
         "bugsnag/bugsnag": "^3.29",
-        "doctrine/dbal": "^2.13 || 3.0",
+        "doctrine/dbal": "^3.0",
         "eonx-com/easy-lock": "5.0-dev",
         "eonx-com/easy-webhook": "5.0-dev",
         "laravel/lumen-framework": "^9.1",

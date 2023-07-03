@@ -19,5 +19,8 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
         $this->repository = $this->manager->getRepository($entityClass);
     }
 
+    /**
+     * @return class-string
+     */
     abstract protected function getEntityClass(): string;
 }

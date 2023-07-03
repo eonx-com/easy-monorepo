@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Tests\Bridge\Symfony\Stubs;
 
 use Doctrine\DBAL\Driver\Connection;
-use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Driver\Result;
+use Doctrine\DBAL\Driver\Statement;
 
 final class ConnectionStub implements Connection
 {
@@ -40,32 +41,27 @@ final class ConnectionStub implements Connection
         return 0;
     }
 
-    /**
-     * @param null $name
-     */
-    public function lastInsertId($name = null): string
+    public function lastInsertId(mixed $name = null): string
     {
         return 'last-insert-id';
     }
 
-    /**
-     * @param string $sql
-     */
-    public function prepare($sql): void
+    public function prepare(string $sql): Statement
     {
+        return new StatementStub();
     }
 
-    public function query(): void
+    public function query(string $sql): Result
     {
+        return new ResultStub();
     }
 
     /**
      * @param mixed $value
      * @param int $type
      */
-    public function quote($value, $type = ParameterType::STRING)
+    public function quote(mixed $value, mixed $type = null): void
     {
-        // TODO: Implement quote() method.
     }
 
     public function rollBack(): bool
