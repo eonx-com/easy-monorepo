@@ -80,6 +80,7 @@
         "symfony/symfony": "^6.3",
         "symplify/monorepo-builder": "^11.0",
         "symplify/phpstan-extensions": "^11.0",
+        "symplify/smart-file-system": "^11.0",
         "tracy/tracy": "^2.10",
         "vlucas/phpdotenv": "^5.5"
     },
