@@ -21,7 +21,7 @@
         "doctrine/orm": "^2.14",
         "eonx-com/easy-error-handler": "5.0-dev",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.6 || ^10.2",
+        "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3"
     },
     "autoload": {

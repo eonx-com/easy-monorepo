@@ -13,7 +13,7 @@
     "require-dev": {
         "eonx-com/easy-bugsnag": "5.0-dev",
         "laravel/lumen-framework": "^9.1",
-        "phpunit/phpunit": "^9.6 || ^10.2",
+        "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3"
     },
     "autoload": {

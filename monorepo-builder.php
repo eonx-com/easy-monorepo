@@ -19,6 +19,8 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorke
 use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 use Symplify\SmartFileSystem\SmartFileSystem;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 return static function (MBConfig $monorepoBuilderConfig): void {
     $monorepoBuilderConfig->packageDirectories([__DIR__ . '/packages']);
     $monorepoBuilderConfig->packageDirectoriesExcludes([]);
