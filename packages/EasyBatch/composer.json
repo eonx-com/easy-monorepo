@@ -15,7 +15,7 @@
     "require-dev": {
         "doctrine/orm": "^2.14",
         "eonx-com/easy-encryption": "5.0-dev",
-        "phpunit/phpunit": "^9.6 || ^10.2",
+        "phpunit/phpunit": "^10.2",
         "ramsey/uuid": "^4.7",
         "symfony/symfony": "^6.3"
     },

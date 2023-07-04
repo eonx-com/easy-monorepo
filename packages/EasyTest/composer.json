@@ -11,7 +11,7 @@
         "eonx-com/easy-utils": "5.0-dev",
         "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
-        "phpunit/phpunit": "^9.6 || ^10.2",
+        "phpunit/phpunit": "^10.2",
         "symfony/config": "^6.3",
         "symfony/console": "^6.3",
         "symfony/contracts": "^3.3",

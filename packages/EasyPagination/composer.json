@@ -15,7 +15,7 @@
         "eonx-com/easy-psr7-factory": "5.0-dev",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^9.6 || ^10.2",
+        "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3",
         "vlucas/phpdotenv": "^5.5"
     },

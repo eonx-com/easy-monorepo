@@ -15,7 +15,7 @@
         "guzzlehttp/psr7": "^2.5",
         "laravel/lumen-framework": "^9.1",
         "phpseclib/phpseclib": "^3.0",
-        "phpunit/phpunit": "^9.6 || ^10.2",
+        "phpunit/phpunit": "^10.2",
         "psr/container": "^2.0",
         "symfony/cache": "^6.3",
         "symfony/config": "^6.3",
