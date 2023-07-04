@@ -60,7 +60,7 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
         ]);
 
         /** @var \PDO $pdo */
-        $pdo = $doctrineConn->getWrappedConnection();
+        $pdo = $doctrineConn->getNativeConnection();
 
         $conn = new SQLiteConnection($pdo);
         $conn->setSchemaGrammar(new SQLiteGrammar());

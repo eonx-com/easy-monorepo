@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -20,6 +20,13 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType(DateTimeImmutableMicrosecondsType::TYPE_NAME, DateTimeImmutableMicrosecondsType::class);
+    }
+
     /**
      * @return iterable<mixed>
      *
@@ -77,10 +84,10 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
      */
     public function provideFieldDeclarationValues(): iterable
     {
-        yield 'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'];
+        yield 'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'];
 
         yield 'mysql, with version = true' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => true,
             ],
@@ -88,7 +95,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         ];
 
         yield 'mysql, with version = false' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => false,
             ],
@@ -144,8 +151,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            "of type 'string' to type 'datetime'. " .
-            'Expected one of the following types: null, DateTimeImmutable');
+            'to type datetime. Expected one of the following types: null, DateTimeImmutable');
 
         $type->convertToDatabaseValue($value, $platform);
     }
@@ -209,12 +215,5 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);
 
         self::assertSame($declaration, $actualDeclaration);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType(DateTimeImmutableMicrosecondsType::TYPE_NAME, DateTimeImmutableMicrosecondsType::class);
     }
 }

@@ -39,33 +39,3 @@ easy_bugsnag:
 ```
 
 You are now all set up to start logging SQL queries into your Bugsnag reports.
-
-## Laravel/Lumen
-
-To add SQL queries details to your Bugsnag reports if your application is using Laravel/Lumen and
-[Laravel Doctrine ORM][1], simply set the `doctrine_orm` configuration to `true`:
-
-```php
-// config/easy-bugsnag.php
-
-return [
-    'api_key' => \env('BUGSNAG_API_KEY'),
-    'doctrine_orm' => true,
-];
-```
-
-You must also register the SQL Logger from EasyBugsnag into the Doctrine configuration:
-
-```php
-// config/doctrine.php
-
-return [
-    // ...
-
-    'logger' => EonX\EasyBugsnag\Bridge\Laravel\Doctrine\SqlOrmLogger::class,
-
-    // ...
-];
-```
-
-[1]: http://www.laraveldoctrine.org/docs/1.4/orm

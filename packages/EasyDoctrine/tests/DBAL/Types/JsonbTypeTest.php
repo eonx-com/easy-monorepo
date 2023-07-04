@@ -15,6 +15,15 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class JsonbTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (Type::hasType(JsonbType::JSONB) === false) {
+            Type::addType(JsonbType::JSONB, JsonbType::class);
+        }
+    }
+
     /**
      * @return mixed[]
      *
@@ -106,7 +115,6 @@ final class JsonbTypeTest extends AbstractTestCase
      * @param mixed $phpValue
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
-     * @throws \Doctrine\DBAL\DBALException
      *
      * @dataProvider provideConvertToDatabaseValues
      */
@@ -123,7 +131,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
     public function testConvertToDatabaseValueThrowsConversionException(): void
@@ -146,7 +153,6 @@ final class JsonbTypeTest extends AbstractTestCase
      * @param mixed $phpValue
      *
      * @throws \Doctrine\DBAL\Types\ConversionException
-     * @throws \Doctrine\DBAL\DBALException
      *
      * @dataProvider provideConvertToPhpValues
      */
@@ -163,7 +169,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
     public function testConvertToPhpValueThrowsConversionException(): void
@@ -179,9 +184,6 @@ final class JsonbTypeTest extends AbstractTestCase
         $type->convertToPHPValue($value, $platform);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testGetNameSucceeds(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
@@ -192,9 +194,6 @@ final class JsonbTypeTest extends AbstractTestCase
         self::assertSame(JsonbType::JSONB, $name);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testGetSQLDeclaration(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
@@ -207,17 +206,5 @@ final class JsonbTypeTest extends AbstractTestCase
         $result = $type->getSQLDeclaration([], $platformReveal);
 
         self::assertSame($type::FORMAT_DB_JSONB, $result);
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (Type::hasType(JsonbType::JSONB) === false) {
-            Type::addType(JsonbType::JSONB, JsonbType::class);
-        }
     }
 }
