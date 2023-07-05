@@ -42,10 +42,9 @@ final class SerializerContextBuilderTest extends AbstractTestCase
      *
      * @dataProvider providerTestCreateFromRequest
      */
-    public function testCreateFromRequest(array $contextFromDecorated, string $requestMethod, bool $isGroupAdded): void
+    public function testCreateFromRequest(array $contextFromDecorated, bool $isGroupAdded): void
     {
         $request = new Request();
-        $request->setMethod($requestMethod);
         $contextBuilder = new SerializerContextBuilder(
             $this->mockDecoratedSerializerContextBuilder($contextFromDecorated)
         );
