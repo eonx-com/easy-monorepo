@@ -84,7 +84,7 @@ abstract class AbstractFilterTestCase extends KernelTestCase
             $repository = $manager->getRepository($resourceClass);
         }
         $resourceClass = $resourceClass ?: $this->resourceClass;
-        $queryBuilder = $repository->createQueryBuilder($this->alias);
+        $queryBuilder = $repository->createQueryBuilder(static::$alias);
         $filterCallable = $filterFactory($this->managerRegistry, $properties);
         $filterCallable->apply(
             $queryBuilder,
