@@ -34,8 +34,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         $filterFactory = static function (
             ManagerRegistry $managerRegistry,
             ?array $properties = null,
-        ) {
-            self::buildAdvancedSearchFilter($managerRegistry, $properties);
+        ): AdvancedSearchFilter {
+            return self::buildAdvancedSearchFilter($managerRegistry, $properties);
         };
 
         yield 'exact' => [
