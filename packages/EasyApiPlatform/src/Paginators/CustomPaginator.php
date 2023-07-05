@@ -8,8 +8,9 @@ use ApiPlatform\Doctrine\Orm\Paginator;
 
 final class CustomPaginator implements CustomPaginatorInterface
 {
-    public function __construct(private Paginator $decorated)
-    {
+    public function __construct(
+        private Paginator $decorated,
+    ) {
     }
 
     /**

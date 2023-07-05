@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class SerializerContextBuilder implements SerializerContextBuilderInterface
 {
-    public function __construct(private SerializerContextBuilderInterface $decorated)
-    {
+    public function __construct(
+        private SerializerContextBuilderInterface $decorated,
+    ) {
     }
 
     /**

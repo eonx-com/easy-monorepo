@@ -10,10 +10,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use EonX\EasyApiPlatform\Paginators\CustomPaginator;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 
-final class CustomPaginatorTest extends AbstractSymfonyTestCase
+final class CustomPaginatorTest extends AbstractTestCase
 {
     public function testCustomPaginator(): void
     {

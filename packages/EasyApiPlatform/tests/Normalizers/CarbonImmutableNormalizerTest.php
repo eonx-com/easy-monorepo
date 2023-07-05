@@ -6,12 +6,9 @@ namespace EonX\EasyApiPlatform\Tests\Normalizers;
 
 use Carbon\CarbonImmutable;
 use EonX\EasyApiPlatform\Normalizers\CarbonImmutableNormalizer;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 
-/**
- * @covers \EonX\EasyApiPlatform\Normalizers\CarbonImmutableNormalizer
- */
-final class CarbonImmutableNormalizerTest extends AbstractSymfonyTestCase
+final class CarbonImmutableNormalizerTest extends AbstractTestCase
 {
     public function testDenormalizeSucceeds(): void
     {

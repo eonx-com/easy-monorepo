@@ -9,11 +9,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
 use EonX\EasyApiPlatform\Serializers\SerializerContextBuilder;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
+final class SerializerContextBuilderTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
@@ -62,7 +62,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      * @param mixed[] $contextFromDecorated
      */
     private function mockDecoratedSerializerContextBuilder(
-        array $contextFromDecorated
+        array $contextFromDecorated,
     ): SerializerContextBuilderInterface {
         /** @var \ApiPlatform\Serializer\SerializerContextBuilderInterface $decorated */
         $decorated = $this->mock(

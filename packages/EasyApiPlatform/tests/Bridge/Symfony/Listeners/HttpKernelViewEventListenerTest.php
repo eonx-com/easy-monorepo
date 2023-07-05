@@ -11,7 +11,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use EonX\EasyApiPlatform\Bridge\Symfony\Listeners\HttpKernelViewEventListener;
 use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyApiPlatform\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;

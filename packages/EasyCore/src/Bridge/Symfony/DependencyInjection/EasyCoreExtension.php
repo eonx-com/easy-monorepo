@@ -20,11 +20,6 @@ final class EasyCoreExtension extends Extension
     private $container;
 
     /**
-     * @var \Symfony\Component\Config\Loader\LoaderInterface
-     */
-    private $loader;
-
-    /**
      * @param mixed[] $configs
      *
      * @throws \Exception
@@ -37,8 +32,6 @@ final class EasyCoreExtension extends Extension
         $loader->load('services.php');
 
         $this->container = $container;
-        $this->loader = $loader;
-
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
 
         // Search
