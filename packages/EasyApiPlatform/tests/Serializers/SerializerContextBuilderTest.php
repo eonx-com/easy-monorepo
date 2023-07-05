@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
+namespace EonX\EasyApiPlatform\Tests\Serializers;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Serializer\SerializerContextBuilderInterface;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\SerializerContextBuilder;
+use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
+use EonX\EasyApiPlatform\Serializers\SerializerContextBuilder;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,36 +22,18 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      */
     public function providerTestCreateFromRequest(): iterable
     {
-        yield 'Group not added, both type and request method invalid' => [
+        yield 'Group is not added because an operation is not GetCollection' => [
             'contextFromDecorated' => [
-                'operation_type' => 'invalid',
+                'operation' => new Get(),
             ],
-            'requestMethod' => 'INVALID',
-            'groupAdded' => false,
+            'isGroupAdded' => false,
         ];
 
-        yield 'Group not added, type invalid' => [
+        yield 'Group is added' => [
             'contextFromDecorated' => [
-                'operation_type' => 'invalid',
+                'operation' => new GetCollection(),
             ],
-            'requestMethod' => 'GET',
-            'groupAdded' => false,
-        ];
-
-        yield 'Group not added, request method invalid' => [
-            'contextFromDecorated' => [
-                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
-            ],
-            'requestMethod' => 'INVALID',
-            'groupAdded' => false,
-        ];
-
-        yield 'Group added' => [
-            'contextFromDecorated' => [
-                'operation_type' => CustomPaginatorInterface::OPERATION_TYPE,
-            ],
-            'requestMethod' => 'GET',
-            'groupAdded' => true,
+            'isGroupAdded' => true,
         ];
     }
 
@@ -58,7 +42,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      *
      * @dataProvider providerTestCreateFromRequest
      */
-    public function testCreateFromRequest(array $contextFromDecorated, string $requestMethod, bool $groupAdded): void
+    public function testCreateFromRequest(array $contextFromDecorated, string $requestMethod, bool $isGroupAdded): void
     {
         $request = new Request();
         $request->setMethod($requestMethod);
@@ -68,17 +52,17 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
 
         $context = $contextBuilder->createFromRequest($request, true);
 
-        $inArray = \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? [], true);
-        self::assertEquals($groupAdded, $inArray);
+        self::assertSame(
+            $isGroupAdded,
+            \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? [], true)
+        );
     }
 
     /**
      * @param mixed[] $contextFromDecorated
-     *
-     * @return \ApiPlatform\Serializer\SerializerContextBuilderInterface
      */
     private function mockDecoratedSerializerContextBuilder(
-        array $contextFromDecorated,
+        array $contextFromDecorated
     ): SerializerContextBuilderInterface {
         /** @var \ApiPlatform\Serializer\SerializerContextBuilderInterface $decorated */
         $decorated = $this->mock(

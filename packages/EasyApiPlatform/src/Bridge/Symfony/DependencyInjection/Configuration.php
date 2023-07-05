@@ -13,6 +13,11 @@ final class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('easy_api_platform');
 
+        $treeBuilder->getRootNode()
+            ->children()
+                ->booleanNode('custom_paginator_enabled')->defaultTrue()->end()
+            ->end();
+
         return $treeBuilder;
     }
 }

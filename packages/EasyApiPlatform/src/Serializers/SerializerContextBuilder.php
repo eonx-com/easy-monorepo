@@ -2,21 +2,17 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination;
+namespace EonX\EasyApiPlatform\Serializers;
 
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Serializer\SerializerContextBuilderInterface;
+use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SerializerContextBuilder implements SerializerContextBuilderInterface
 {
-    /**
-     * @var \ApiPlatform\Serializer\SerializerContextBuilderInterface
-     */
-    private $decorated;
-
-    public function __construct(SerializerContextBuilderInterface $decorated)
+    public function __construct(private SerializerContextBuilderInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**
@@ -27,11 +23,17 @@ final class SerializerContextBuilder implements SerializerContextBuilderInterfac
     public function createFromRequest(Request $request, bool $normalization, ?array $extractedAttributes = null): array
     {
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
-        $operationType = $context['operation_type'] ?? null;
+        $operation = $context['operation'] ?? null;
 
         // Customize context only for collection get
-        if ($operationType === CustomPaginatorInterface::OPERATION_TYPE && $request->isMethod(Request::METHOD_GET)) {
-            $context['groups'] = \array_merge($context['groups'] ?? [], [CustomPaginatorInterface::SERIALIZER_GROUP]);
+        if ($operation instanceof GetCollection) {
+            $groups = (array)($context['groups'] ?? []);
+
+            if (\in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $groups, true) === false) {
+                $groups[] = CustomPaginatorInterface::SERIALIZER_GROUP;
+            }
+
+            $context['groups'] = $groups;
         }
 
         return $context;

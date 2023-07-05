@@ -2,52 +2,34 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
+namespace EonX\EasyApiPlatform\Tests\Paginators;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginationListener;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface;
+use EonX\EasyApiPlatform\Paginators\CustomPaginator;
 use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
+final class CustomPaginatorTest extends AbstractSymfonyTestCase
 {
-    /**
-     * @return iterable<mixed>
-     *
-     * @see testListener
-     */
-    public function providerTestListener(): iterable
+    public function testCustomPaginator(): void
     {
-        yield 'Not paginator' => [new \stdClass(), false];
+        $paginator = new CustomPaginator($this->getApiPlatformPaginator());
 
-        yield 'Paginator' => [$this->getApiPlatformPaginator(), true];
-    }
+        $expectedPagination = [
+            'currentPage' => 1,
+            'hasNextPage' => false,
+            'hasPreviousPage' => false,
+            'itemsPerPage' => 15,
+            'totalItems' => 0,
+            'totalPages' => 1,
+        ];
 
-    /**
-     * @param mixed $controllerResult
-     *
-     * @dataProvider providerTestListener
-     */
-    public function testListener($controllerResult, bool $isCustomPaginator): void
-    {
-        $event = new ViewEvent(
-            $this->getKernel(),
-            new Request(),
-            HttpKernelInterface::MASTER_REQUEST,
-            $controllerResult
-        );
-
-        (new CustomPaginationListener())($event);
-
-        self::assertEquals($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
+        self::assertEmpty($paginator->getItems());
+        self::assertEquals($expectedPagination, $paginator->getPagination());
     }
 
     /**
@@ -76,6 +58,14 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
                     ->once()
                     ->withNoArgs()
                     ->andReturn($query);
+                $mock->shouldReceive('getIterator')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn(new \ArrayIterator());
+                $mock->shouldReceive('count')
+                    ->once()
+                    ->withNoArgs()
+                    ->andReturn(0);
             }
         );
 
