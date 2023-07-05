@@ -35,7 +35,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ManagerRegistry $managerRegistry,
             ?array $properties = null,
         ) {
-            self::buildAdvancedSearchFilter(...\func_get_args());
+            self::buildAdvancedSearchFilter($managerRegistry, $properties);
         };
 
         yield 'exact' => [
@@ -1261,19 +1261,18 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         $relatedDummyProphecy = $prophet->prophesize(RelatedDummy::class);
         $iriConverterProphecy = $prophet->prophesize(IriConverterInterface::class);
 
-        $iriConverterProphecy->getResourceFromIri(Argument::type('string'), ['fetch_data' => false])->will(function (
-            $args,
-        ) use ($relatedDummyProphecy) {
-            if (\str_contains($args[0], '/related_dummies')) {
-                $relatedDummyProphecy->getId()
-                    ->shouldBeCalled()
-                    ->willReturn(1);
+        $iriConverterProphecy->getResourceFromIri(Argument::type('string'), ['fetch_data' => false])
+            ->will(function ($args) use ($relatedDummyProphecy) {
+                if (\str_contains($args[0], '/related_dummies')) {
+                    $relatedDummyProphecy->getId()
+                        ->shouldBeCalled()
+                        ->willReturn(1);
 
-                return $relatedDummyProphecy->reveal();
-            }
+                    return $relatedDummyProphecy->reveal();
+                }
 
-            throw new InvalidArgumentException();
-        });
+                throw new InvalidArgumentException();
+            });
 
         /** @var \ApiPlatform\Api\IriConverterInterface $iriConverter */
         $iriConverter = $iriConverterProphecy->reveal();
