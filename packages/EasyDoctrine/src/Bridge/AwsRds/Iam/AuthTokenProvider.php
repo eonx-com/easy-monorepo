@@ -22,7 +22,6 @@ final class AuthTokenProvider
         private readonly string $awsRegion,
         private readonly int $authTokenLifetimeInMinutes,
         private readonly CacheInterface $cache,
-        private readonly ?string $awsUsername = null,
     ) {
         $this->authTokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
     }
@@ -35,22 +34,21 @@ final class AuthTokenProvider
     public function getAuthToken(array $params): string
     {
         $region = $params['driverOptions'][AwsRdsOptionsInterface::AWS_REGION] ?? $this->awsRegion;
-        $user = $params['driverOptions'][AwsRdsOptionsInterface::AWS_USERNAME] ?? $this->awsUsername ?? $params['user'];
         $key = \sprintf(self::CACHE_KEY_PATTERN, \hash('xxh128', \sprintf(
             self::CACHE_HASH_PATTERN,
             $region,
             $params['host'],
             $params['port'],
-            $user
+            $params['user']
         )));
 
-        return $this->cache->get($key, function (ItemInterface $item) use ($params, $region, $user): string {
+        return $this->cache->get($key, function (ItemInterface $item) use ($params, $region): string {
             $item->expiresAfter(($this->authTokenLifetimeInMinutes * 60) - 30);
 
             return $this->authTokenGenerator->createToken(
                 \sprintf('%s:%s', $params['host'], $params['port']),
                 $region,
-                $user,
+                $params['user'],
                 $this->authTokenLifetimeInMinutes
             );
         });
