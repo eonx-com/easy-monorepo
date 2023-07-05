@@ -10,7 +10,6 @@
         "psr/event-dispatcher": "^1.0"
     },
     "require-dev": {
-        "api-platform/core": "^3.1",
         "doctrine/dbal": "^3.0",
         "doctrine/orm": "^2.14",
         "laravel/lumen-framework": "^9.1",
