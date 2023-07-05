@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd"
     colors="true"
     bootstrap="tests/bootstrap.php"
 >
@@ -11,7 +11,9 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage/>
+
+    <source>
         <include>
             <directory>packages/*/src</directory>
         </include>
@@ -19,7 +21,7 @@
             <directory>packages/*/src/Bridge/Laravel/config</directory>
             <directory>packages/EasyCore/src/Bridge/Symfony/Resources/skeleton</directory>
         </exclude>
-    </coverage>
+    </source>
 
     <php>
         <env name="APP_ENV" value="test"/>

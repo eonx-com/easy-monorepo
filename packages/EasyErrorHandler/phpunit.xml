@@ -6,7 +6,7 @@
     bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="EonX EasyHttpClient Package Test Suite">
+        <testsuite name="EonX EasyErrorHandler Package Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
