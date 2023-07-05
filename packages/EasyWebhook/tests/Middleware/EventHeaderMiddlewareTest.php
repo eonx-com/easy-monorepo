@@ -14,8 +14,10 @@ final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'no event' => [
             Webhook::fromArray([]),

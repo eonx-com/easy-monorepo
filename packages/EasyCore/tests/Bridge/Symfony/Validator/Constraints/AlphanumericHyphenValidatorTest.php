@@ -21,11 +21,26 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
 {
     /**
+     * @return string[][]
+     *
+     * @see testValidateFailsWithRegexFailedError
+     */
+    public static function provideInvalidValues(): array
+    {
+        return [
+            'Invalid value #1' => ['1004^%45470'],
+            'Invalid value #2' => ['53+04085615'],
+            'Invalid value #3' => ['HGHD*#11111'],
+            'Invalid value #4' => ['YR#*JD1dsss'],
+        ];
+    }
+
+    /**
      * @return mixed[]
      *
      * @see testValidateSucceedsWithValidValue
      */
-    public function provideValidValues(): array
+    public static function provideValidValues(): array
     {
         return [
             'Valid value #1' => ['ADFSD3424DD'],
@@ -38,30 +53,16 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return string[][]
-     *
-     * @see testValidateFailsWithRegexFailedError
+     * @dataProvider provideInvalidValues
      */
-    public function provideInvalidValues(): array
-    {
-        return [
-            'Invalid value #1' => ['1004^%45470'],
-            'Invalid value #2' => ['53+04085615'],
-            'Invalid value #3' => ['HGHD*#11111'],
-            'Invalid value #4' => ['YR#*JD1dsss'],
-        ];
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @dataProvider provideValidValues
-     */
-    public function testValidateSucceedsWithValidValue($value): void
+    public function testValidateFailsWithRegexFailedError(string $value): void
     {
         $validator = new AlphanumericHyphenValidator();
         $constraint = new AlphanumericHyphen();
-        $context = $this->mockExecutionContextWithoutCalls();
+        $violationBuilder = $this->mockConstraintViolationBuilder(
+            AlphanumericHyphen::INVALID_ALPHANUMERIC_HYPHEN_ERROR
+        );
+        $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
         $validator->initialize($context);
 
         $validator->validate($value, $constraint);
@@ -84,6 +85,23 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
         $validator->initialize($context);
 
         $validator->validate($class, $constraint);
+
+        $this->expectNotToPerformAssertions();
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideValidValues
+     */
+    public function testValidateSucceedsWithValidValue($value): void
+    {
+        $validator = new AlphanumericHyphenValidator();
+        $constraint = new AlphanumericHyphen();
+        $context = $this->mockExecutionContextWithoutCalls();
+        $validator->initialize($context);
+
+        $validator->validate($value, $constraint);
 
         $this->expectNotToPerformAssertions();
     }
@@ -113,28 +131,10 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
         $validator->validate($value, $constraint);
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
-    public function testValidateFailsWithRegexFailedError(string $value): void
-    {
-        $validator = new AlphanumericHyphenValidator();
-        $constraint = new AlphanumericHyphen();
-        $violationBuilder = $this->mockConstraintViolationBuilder(
-            AlphanumericHyphen::INVALID_ALPHANUMERIC_HYPHEN_ERROR
-        );
-        $context = $this->mockExecutionContextWithBuildViolation($constraint->message, $violationBuilder);
-        $validator->initialize($context);
-
-        $validator->validate($value, $constraint);
-
-        $this->expectNotToPerformAssertions();
-    }
-
     private function mockConstraintViolationBuilder(string $code): ConstraintViolationBuilderInterface
     {
         /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
-        $violationBuilder = $this->mock(
+        $violationBuilder = self::mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code): void {
                 $mock->shouldReceive('setParameter')
@@ -162,7 +162,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
         ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
+        $context = self::mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder,
         ): void {
@@ -178,7 +178,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractSymfonyTestCase
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
+        $context = self::mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();
         });

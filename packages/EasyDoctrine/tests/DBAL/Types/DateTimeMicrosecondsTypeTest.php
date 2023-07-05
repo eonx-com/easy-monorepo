@@ -31,7 +31,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public function provideConvertToDatabaseValues(): array
+    public static function provideConvertToDatabaseValues(): array
     {
         $datetime = new DateTime();
 
@@ -46,7 +46,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @see testConvertToPHPValueSucceeds
      */
-    public function provideConvertToPHPValues(): array
+    public static function provideConvertToPHPValues(): array
     {
         $datetime = new DateTime();
         $milliseconds = $datetime->format('u');
@@ -70,7 +70,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
      *
      * @see testGetSqlDeclarationSucceeds
      */
-    public function provideFieldDeclarationValues(): array
+    public static function provideFieldDeclarationValues(): array
     {
         return [
             'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'],

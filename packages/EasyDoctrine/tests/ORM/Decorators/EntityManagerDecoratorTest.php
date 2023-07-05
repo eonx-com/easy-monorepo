@@ -26,7 +26,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      *
      * @see testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
      */
-    public function provideDoctrineExceptionClasses(): array
+    public static function provideDoctrineExceptionClasses(): array
     {
         return [
             'DBAL exception' => [new DBALException()],
@@ -39,7 +39,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      *
      * @see testWrapInTransactionSucceeds
      */
-    public function provideReturnValuesData(): array
+    public static function provideReturnValuesData(): array
     {
         return [
             'callable returns not null' => [

@@ -18,7 +18,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
      *
      * @see testCreateFromRequest
      */
-    public function providerTestCreateFromRequest(): iterable
+    public static function providerTestCreateFromRequest(): iterable
     {
         yield 'Group not added, both type and request method invalid' => [
             'contextFromDecorated' => [
@@ -81,7 +81,7 @@ final class SerializerContextBuilderTest extends AbstractSymfonyTestCase
         array $contextFromDecorated,
     ): SerializerContextBuilderInterface {
         /** @var \ApiPlatform\Serializer\SerializerContextBuilderInterface $decorated */
-        $decorated = $this->mock(
+        $decorated = self::mock(
             SerializerContextBuilderInterface::class,
             static function (MockInterface $mock) use ($contextFromDecorated): void {
                 $mock

@@ -13,8 +13,10 @@ final class TemplatingEventRendererTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRenderEvent
      */
-    public function providerTestRenderEvent(): iterable
+    public static function providerTestRenderEvent(): iterable
     {
         yield 'No block for event' => [
             [

@@ -30,7 +30,7 @@ final class ConfiguratorsTest extends AbstractTestCase
      *
      * @see testConfigure
      */
-    public function providerTestConfigure(): iterable
+    public static function providerTestConfigure(): iterable
     {
         yield 'Provider Header' => [
             new ProviderHeaderConfigurator(),

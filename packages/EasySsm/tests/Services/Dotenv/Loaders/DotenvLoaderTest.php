@@ -15,7 +15,7 @@ final class DotenvLoaderTest extends AbstractTestCase
      *
      * @see testLoadEnv
      */
-    public function providerTestLoadEnv(): iterable
+    public static function providerTestLoadEnv(): iterable
     {
         yield '1 env data' => [
             [new EnvData('env', 'value')],

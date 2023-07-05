@@ -13,12 +13,21 @@ final class EventTest extends AbstractTestCase
      */
     private $event;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->event = new Event('command:foo', [
+            '--foo' => 'bar',
+        ]);
+    }
+
     /**
      * @return iterable<mixed>
      *
      * @see testFiltersPass
      */
-    public function providerTestFiltersPass(): iterable
+    public static function providerTestFiltersPass(): iterable
     {
         yield 'False because at least one filter false' => [[false], [false], false];
 
@@ -26,9 +35,11 @@ final class EventTest extends AbstractTestCase
 
         yield 'true because no filter false and no reject true' => [
             [true],
-            [function (): bool {
-                return false;
-            }],
+            [
+                function (): bool {
+                    return false;
+                },
+            ],
             true,
         ];
     }
@@ -38,7 +49,7 @@ final class EventTest extends AbstractTestCase
      *
      * @see testNoArgsMethods
      */
-    public function providerTestNoArgsMethods(): iterable
+    public static function providerTestNoArgsMethods(): iterable
     {
         yield ['0 0 1 * *', 'monthly'];
         yield ['0 0 * * 0', 'weekly'];
@@ -154,14 +165,5 @@ final class EventTest extends AbstractTestCase
     {
         self::assertSame('0 * * * 1-5', $this->event->weekdays()->hourly()->getCronExpression());
         self::assertIsBool($this->event->isDue());
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->event = new Event('command:foo', [
-            '--foo' => 'bar',
-        ]);
     }
 }

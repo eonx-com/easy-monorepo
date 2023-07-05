@@ -18,7 +18,7 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
      *
      * @see testGetErrorLogLevel
      */
-    public function providerTestGetErrorLogLevel(): iterable
+    public static function providerTestGetErrorLogLevel(): iterable
     {
         yield 'Error because default' => [
             'throwable' => new InvalidArgumentException(),

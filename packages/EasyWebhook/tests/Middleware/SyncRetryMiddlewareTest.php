@@ -21,8 +21,10 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see
      */
-    public function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
+    public static function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
     {
         yield 'async enabled' => [true, 3];
 
@@ -35,7 +37,7 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     public function testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne(bool $asyncEnabled, int $maxAttempt): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt($maxAttempt);
-        $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $resultsStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
             new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), $asyncEnabled),
@@ -58,8 +60,8 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     public function testRetryWhenResultNotSuccessful(): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt(3);
-        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
-        $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
+        $resultsStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
             new StoreMiddleware($store, $resultsStore),

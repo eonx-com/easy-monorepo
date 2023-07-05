@@ -20,7 +20,7 @@ final class SsmDotenvTest extends AbstractTestCase
      *
      * @see testLoadEnv
      */
-    public function providerTestLoadEnv(): iterable
+    public static function providerTestLoadEnv(): iterable
     {
         yield 'no path' => [[new SsmParameter('param', 'string', 'value')], [new EnvData('param', 'value')]];
 

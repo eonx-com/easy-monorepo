@@ -23,7 +23,7 @@ final class SecurityContextTest extends AbstractTestCase
      *
      * @see testContextGetters
      */
-    public function gettersDataProvider(): iterable
+    public static function gettersDataProvider(): iterable
     {
         yield '1 role 2 permissions' => [
             [new Role('app:role', [new Permission('perm1'), new Permission('perm2')])],
@@ -58,7 +58,7 @@ final class SecurityContextTest extends AbstractTestCase
      *
      * @see testContextHas
      */
-    public function hasDataProvider(): iterable
+    public static function hasDataProvider(): iterable
     {
         yield 'No role No permission' => [
             [new Role('app:role', [new Permission('perm1')])],

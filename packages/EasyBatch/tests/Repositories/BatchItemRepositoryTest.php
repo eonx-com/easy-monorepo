@@ -18,8 +18,10 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testFindForDispatch
      */
-    public function providerTestFindForDispatch(): iterable
+    public static function providerTestFindForDispatch(): iterable
     {
         yield 'Fetch only batchItems for batch and no dependency' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {

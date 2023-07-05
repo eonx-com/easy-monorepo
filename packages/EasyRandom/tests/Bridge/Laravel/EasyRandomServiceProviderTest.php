@@ -16,7 +16,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
      *
      * @see testUuidV4GeneratorInstance
      */
-    public function providerTestUuidV4GeneratorInstance(): iterable
+    public static function providerTestUuidV4GeneratorInstance(): iterable
     {
         yield 'Ramsey\Uuid' => [new RamseyUuidV4Generator()];
         yield 'Symfony\Uid' => [new SymfonyUidUuidV4Generator()];
@@ -47,10 +47,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 
         $randomGenerator = $app->get(RandomGeneratorInterface::class);
 
-        $setUuidV4Generator = \Closure::bind(function () {
-            return $this->uuidV4Generator;
-        }, $randomGenerator, $randomGenerator)();
-
-        self::assertEquals(\spl_object_hash($uuidV4Generator), \spl_object_hash($setUuidV4Generator));
+        $actualUuidV4Generator = $this->getPrivatePropertyValue($randomGenerator, 'uuidV4Generator');
+        self::assertEquals(\spl_object_hash($uuidV4Generator), \spl_object_hash($actualUuidV4Generator));
     }
 }

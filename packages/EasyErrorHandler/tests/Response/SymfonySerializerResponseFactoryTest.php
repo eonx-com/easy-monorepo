@@ -21,7 +21,7 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
      *
      * @see testCreate
      */
-    public function providerTestCreate(): iterable
+    public static function providerTestCreate(): iterable
     {
         yield 'Default format' => [
             'request' => new Request(),

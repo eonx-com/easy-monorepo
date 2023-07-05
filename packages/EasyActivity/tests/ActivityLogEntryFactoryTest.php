@@ -19,7 +19,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
      *
      * @see testPropertyFilters
      */
-    public function providerProperties(): iterable
+    public static function providerProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowProperties' => [],

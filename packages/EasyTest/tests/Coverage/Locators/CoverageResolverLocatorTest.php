@@ -15,8 +15,10 @@ class CoverageResolverLocatorTest extends TestCase
 {
     /**
      * @return mixed[]
+     *
+     * @see testCreateResolverSucceeds
      */
-    public function provideSupportedFilepath(): array
+    public static function provideSupportedFilepath(): array
     {
         return [
             [

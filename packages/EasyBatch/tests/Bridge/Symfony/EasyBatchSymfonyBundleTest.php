@@ -19,8 +19,10 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCoreLogic
      */
-    public function providerTestCoreLogic(): iterable
+    public static function providerTestCoreLogic(): iterable
     {
         yield 'Manually approve single item within nested batch' => [
             static function (EasyBatchTestContext $context): void {
@@ -84,8 +86,10 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testRestoreBatchState
      */
-    public function providerTestRestoreBatchState(): iterable
+    public static function providerTestRestoreBatchState(): iterable
     {
         yield 'Simple batch update (batch processing)' => [
             static function (

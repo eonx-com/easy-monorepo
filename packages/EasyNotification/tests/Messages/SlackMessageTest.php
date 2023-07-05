@@ -25,7 +25,7 @@ final class SlackMessageTest extends AbstractTestCase
      *
      * @see testGetters
      */
-    public function providerTestGetters(): iterable
+    public static function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
             static function (): SlackMessage {

@@ -14,8 +14,10 @@ final class TextBlockRendererTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRenderBlock
      */
-    public function providerTestRenderBlock(): iterable
+    public static function providerTestRenderBlock(): iterable
     {
         yield 'Simple text' => [
             (new TextBlock('my-text-block'))->setContents('my simple contents'),
@@ -25,8 +27,10 @@ final class TextBlockRendererTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testSupports
      */
-    public function providerTestSupports(): iterable
+    public static function providerTestSupports(): iterable
     {
         yield 'Supported' => [
             new TextBlock('my-text-block'),

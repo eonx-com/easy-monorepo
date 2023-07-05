@@ -21,7 +21,7 @@ final class ProviderVoterTest extends AbstractTestCase
      *
      * @see testVoter
      */
-    public function providerTestVoter(): iterable
+    public static function providerTestVoter(): iterable
     {
         yield 'Abstain because subject not provider restricted' => [
             new SecurityContext(),

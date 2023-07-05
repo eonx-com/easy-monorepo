@@ -32,7 +32,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
      *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public function provideConvertToDatabaseValues(): iterable
+    public static function provideConvertToDatabaseValues(): iterable
     {
         yield 'null value' => [null, null];
 
@@ -52,7 +52,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
      *
      * @see testConvertToPHPValueSucceeds
      */
-    public function provideConvertToPHPValues(): iterable
+    public static function provideConvertToPHPValues(): iterable
     {
         yield 'null value' => [null, null];
 
@@ -82,7 +82,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
      *
      * @see testGetSqlDeclarationSucceeds
      */
-    public function provideFieldDeclarationValues(): iterable
+    public static function provideFieldDeclarationValues(): iterable
     {
         yield 'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'];
 

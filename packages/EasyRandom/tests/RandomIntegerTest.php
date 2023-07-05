@@ -13,7 +13,7 @@ final class RandomIntegerTest extends AbstractTestCase
      *
      * @see testRandomInteger
      */
-    public function providerTestRandomInteger(): iterable
+    public static function providerTestRandomInteger(): iterable
     {
         yield 'Default values' => [];
 

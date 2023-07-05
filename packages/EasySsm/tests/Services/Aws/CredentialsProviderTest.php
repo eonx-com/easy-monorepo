@@ -16,7 +16,7 @@ final class CredentialsProviderTest extends AbstractTestCase
      *
      * @see testGetCredentials
      */
-    public function providerTestGetCredentials(): iterable
+    public static function providerTestGetCredentials(): iterable
     {
         yield 'defaults' => [
             [

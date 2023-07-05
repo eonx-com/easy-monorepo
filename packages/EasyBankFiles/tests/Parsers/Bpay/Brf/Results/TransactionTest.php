@@ -18,7 +18,7 @@ final class TransactionTest extends TestCase
      *
      * @see testGetDateObjectShouldReturnNull
      */
-    public function provideInvalidDates(): iterable
+    public static function provideInvalidDates(): iterable
     {
         yield 'null paymentDate' => [
             'date' => [

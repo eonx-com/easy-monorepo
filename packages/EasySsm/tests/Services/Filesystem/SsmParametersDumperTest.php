@@ -17,7 +17,7 @@ final class SsmParametersDumperTest extends AbstractTestCase
      *
      * @see testDumpParameters
      */
-    public function providerTestDumpParameters(): iterable
+    public static function providerTestDumpParameters(): iterable
     {
         yield '1 simple param' => [
             [new SsmParameter('param', 'string', 'value')],

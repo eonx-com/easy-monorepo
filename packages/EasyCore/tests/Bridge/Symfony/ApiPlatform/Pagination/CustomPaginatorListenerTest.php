@@ -24,11 +24,11 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
      *
      * @see testListener
      */
-    public function providerTestListener(): iterable
+    public static function providerTestListener(): iterable
     {
         yield 'Not paginator' => [new \stdClass(), false];
 
-        yield 'Paginator' => [$this->getApiPlatformPaginator(), true];
+        yield 'Paginator' => [self::getApiPlatformPaginator(), true];
     }
 
     /**
@@ -53,10 +53,10 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
     /**
      * @return \ApiPlatform\Doctrine\Orm\Paginator<mixed>
      */
-    private function getApiPlatformPaginator(): Paginator
+    private static function getApiPlatformPaginator(): Paginator
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $manager */
-        $manager = $this->mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
+        $manager = self::mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('getConfiguration')
                 ->atLeast()
                 ->once()
@@ -69,7 +69,7 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
             ->setMaxResults(15);
 
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
-        $doctrinePaginator = $this->mock(
+        $doctrinePaginator = self::mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {
                 $mock->shouldReceive('getQuery')

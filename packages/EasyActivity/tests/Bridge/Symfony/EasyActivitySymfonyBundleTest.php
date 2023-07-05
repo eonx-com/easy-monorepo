@@ -19,12 +19,24 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 {
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../../../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * @return iterable<mixed>
      *
      * @see testInvalidEasyActivityConfig
      */
-    public function providerInvalidEasyConfigs(): iterable
+    public static function providerInvalidEasyConfigs(): iterable
     {
         yield 'invalid allowed_properties setting' => [
             'configName' => 'easy_activity_invalid_allowed_properties_setting.yaml',
@@ -47,7 +59,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
      *
      * @see testValidEasyActivityConfig
      */
-    public function providerValidEasyConfigs(): iterable
+    public static function providerValidEasyConfigs(): iterable
     {
         yield 'default config' => [
             'configName' => 'easy_activity_valid_default.yaml',
@@ -136,17 +148,5 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         );
         self::assertTrue($container->has(DeferredEntityEventDispatcherInterface::class));
         self::assertEquals($subjects, $this->getPrivatePropertyValue($subjectResolver, 'subjects'));
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../../../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 }

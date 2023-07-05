@@ -29,7 +29,7 @@ final class TrimStringsTest extends AbstractTestCase
             'abc' => '123',
         ];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(
+        $trimmer = self::mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('trim')
@@ -65,7 +65,7 @@ final class TrimStringsTest extends AbstractTestCase
             'abc' => '123',
         ];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(
+        $trimmer = self::mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('trim')
@@ -102,7 +102,7 @@ final class TrimStringsTest extends AbstractTestCase
             'abc' => '123',
         ];
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(
+        $trimmer = self::mock(
             StringsTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
                 $mock->shouldReceive('trim')

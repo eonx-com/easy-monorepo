@@ -38,7 +38,7 @@ final class CustomPaginatorTest extends AbstractSymfonyTestCase
     private function getApiPlatformPaginator(): Paginator
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $manager */
-        $manager = $this->mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
+        $manager = self::mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('getConfiguration')
                 ->atLeast()
                 ->once()
@@ -51,7 +51,7 @@ final class CustomPaginatorTest extends AbstractSymfonyTestCase
             ->setMaxResults(15);
 
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
-        $doctrinePaginator = $this->mock(
+        $doctrinePaginator = self::mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {
                 $mock->shouldReceive('getQuery')

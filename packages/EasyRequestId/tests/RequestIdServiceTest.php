@@ -21,7 +21,7 @@ final class RequestIdServiceTest extends AbstractTestCase
      *
      * @see testGetIds
      */
-    public function providerTestGetIds(): iterable
+    public static function providerTestGetIds(): iterable
     {
         yield 'Default fallback to UUID' => [
             new Request(),
@@ -34,7 +34,7 @@ final class RequestIdServiceTest extends AbstractTestCase
         ];
 
         yield 'Default resolver with default values' => [
-            $this->getRequestWithHeaders([
+            self::getRequestWithHeaders([
                 RequestIdServiceInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
                 RequestIdServiceInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
             ]),

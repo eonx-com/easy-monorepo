@@ -14,9 +14,9 @@ final class EntityManagerResolverTest extends AbstractSymfonyTestCase
 {
     public function testGetManagerSucceeds(): void
     {
-        $entityManager = $this->mock(EntityManagerInterface::class);
+        $entityManager = self::mock(EntityManagerInterface::class);
         /** @var \Symfony\Bridge\Doctrine\ManagerRegistry $managerRegistry */
-        $managerRegistry = $this->mock(
+        $managerRegistry = self::mock(
             ManagerRegistry::class,
             static function (MockInterface $mock) use ($entityManager): void {
                 $mock

@@ -16,7 +16,7 @@ final class SsmParametersParserTest extends AbstractTestCase
      *
      * @see testParseParameters
      */
-    public function providerTestParseParameters(): iterable
+    public static function providerTestParseParameters(): iterable
     {
         yield '1 simple param' => [
             [new SsmParameter('/param', 'String', 'value')],

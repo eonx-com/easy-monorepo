@@ -12,7 +12,7 @@ final class ArrayStoreTest extends AbstractTestCase
 {
     public function testSanity(): void
     {
-        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
         $webhook = $store->store(Webhook::fromArray([]));
         $findWebhook = $store->find((string)$webhook->getId());
         $webhooks = $store->getWebhooks();

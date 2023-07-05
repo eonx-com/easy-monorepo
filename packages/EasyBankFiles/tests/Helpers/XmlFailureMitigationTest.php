@@ -19,7 +19,7 @@ final class XmlFailureMitigationTest extends TestCase
      *
      * @see testMitigationReplacesInvalidLines
      */
-    public function getXmlScenarios(): iterable
+    public static function getXmlScenarios(): iterable
     {
         yield 'HTML-like characters in node value' => [
             'input' => '

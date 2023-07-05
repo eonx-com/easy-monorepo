@@ -22,7 +22,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      *
      * @see testPropertyFilters
      */
-    public function provideProperties(): iterable
+    public static function provideProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowedProperties' => null,

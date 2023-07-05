@@ -20,7 +20,7 @@ final class ValueDecisionTest extends AbstractTestCase
      *
      * @see testDecisionEntirely
      */
-    public function decisionEntirelyProvider(): iterable
+    public static function decisionEntirelyProvider(): iterable
     {
         yield 'No rules, no default output' => [
             [],

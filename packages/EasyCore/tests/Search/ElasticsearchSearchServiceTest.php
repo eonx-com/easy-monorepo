@@ -62,7 +62,7 @@ final class ElasticsearchSearchServiceTest extends AbstractTestCase
             ],
         ];
         /** @var \Elasticsearch\Client $client */
-        $client = $this->mock(
+        $client = self::mock(
             Client::class,
             static function (MockInterface $mock) use ($expectedParams): void {
                 $mock

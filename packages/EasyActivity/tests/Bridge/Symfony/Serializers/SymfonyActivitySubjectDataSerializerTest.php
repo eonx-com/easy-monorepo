@@ -24,7 +24,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
      *
      * @see testSerializeSucceeds
      */
-    public function provideDataForSerializeSucceeds(): iterable
+    public static function provideDataForSerializeSucceeds(): iterable
     {
         $entityId = 1;
         $authorName = 'John Doe';
@@ -60,7 +60,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $disallowedProperties = [
-            'id', 'name', 'position',
+            'id',
+            'name',
+            'position',
         ];
         yield 'Config with all properties are disallowed' => [
             'data' => [
@@ -116,7 +118,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $allowedProperties = [
-            'id', 'name',
+            'id',
+            'name',
         ];
         yield 'Config with flat allowed_properties' => [
             'data' => [

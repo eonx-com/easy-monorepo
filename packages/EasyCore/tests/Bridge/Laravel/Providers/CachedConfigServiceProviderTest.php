@@ -15,7 +15,7 @@ final class CachedConfigServiceProviderTest extends AbstractTestCase
      *
      * @see testGetCachedConfig
      */
-    public function dataProviderGetCachedConfig(): iterable
+    public static function dataProviderGetCachedConfig(): iterable
     {
         yield 'Has cached config' => [
             __DIR__ . '/../fixtures/cached_config/has_cached_config',

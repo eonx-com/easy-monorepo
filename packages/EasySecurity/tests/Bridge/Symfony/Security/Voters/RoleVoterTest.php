@@ -21,7 +21,7 @@ final class RoleVoterTest extends AbstractTestCase
      *
      * @see testVoter
      */
-    public function providerTestVoter(): iterable
+    public static function providerTestVoter(): iterable
     {
         yield 'Abstain because role not in matrix' => [
             new AuthorizationMatrix([], []),

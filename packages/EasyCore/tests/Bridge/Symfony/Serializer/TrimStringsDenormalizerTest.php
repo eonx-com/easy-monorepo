@@ -24,7 +24,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
      *
      * @see testDenormalizeSucceedsWithTrimValue
      */
-    public function provideDataForDenormalize(): array
+    public static function provideDataForDenormalize(): array
     {
         return [
             'data is string' => [' 123 ', '123'],
@@ -37,7 +37,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
      *
      * @see testSupportsDenormalizationReturnsExpectedResult
      */
-    public function provideDataForSupportsDenormalization(): array
+    public static function provideDataForSupportsDenormalization(): array
     {
         return [
             'data is an array' => [
@@ -114,7 +114,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         $except = ['some-key'];
         $trimmer = new RecursiveStringsTrimmer();
         /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $innerDenormalizer */
-        $innerDenormalizer = $this->mock(
+        $innerDenormalizer = self::mock(
             DenormalizerInterface::class,
             static function (MockInterface $mock) use ($expectedResult, $type, $format, $context): void {
                 $mock->shouldReceive('denormalize')
@@ -155,7 +155,7 @@ final class TrimStringsDenormalizerTest extends AbstractSymfonyTestCase
         ?array $context = null,
     ): void {
         /** @var \EonX\EasyCore\Helpers\StringsTrimmerInterface $trimmer */
-        $trimmer = $this->mock(StringsTrimmerInterface::class);
+        $trimmer = self::mock(StringsTrimmerInterface::class);
         $denormalizer = new TrimStringsDenormalizer($trimmer);
 
         $result = $denormalizer->supportsDenormalization($data, $type, $format, $context);

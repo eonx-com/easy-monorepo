@@ -29,10 +29,10 @@ final class JsonbTypeTest extends AbstractTestCase
      *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public function provideConvertToDatabaseValues(): array
+    public static function provideConvertToDatabaseValues(): array
     {
         return \array_merge(
-            $this->provideConvertToPhpValues(),
+            self::provideConvertToPhpValues(),
             [
                 'multidimensional array phpValue' => [
                     'phpValue' => [
@@ -65,7 +65,7 @@ final class JsonbTypeTest extends AbstractTestCase
      *
      * @see testConvertToPhpValueSucceeds
      */
-    public function provideConvertToPhpValues(): array
+    public static function provideConvertToPhpValues(): array
     {
         return [
             'null phpValue' => [

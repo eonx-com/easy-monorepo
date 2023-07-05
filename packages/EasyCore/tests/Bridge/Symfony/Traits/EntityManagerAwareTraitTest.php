@@ -16,7 +16,7 @@ final class EntityManagerAwareTraitTest extends AbstractSymfonyTestCase
             use EntityManagerAwareTrait;
         };
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
-        $entityManager = $this->mock(EntityManagerInterface::class);
+        $entityManager = self::mock(EntityManagerInterface::class);
 
         $abstractClass->setEntityManager($entityManager);
 

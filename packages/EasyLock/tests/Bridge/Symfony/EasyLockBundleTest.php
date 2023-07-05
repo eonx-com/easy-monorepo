@@ -11,8 +11,10 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testSanity
      */
-    public function providerTestSanity(): iterable
+    public static function providerTestSanity(): iterable
     {
         yield 'default config, no connection' => [null];
 

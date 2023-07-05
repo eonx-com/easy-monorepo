@@ -17,8 +17,10 @@ final class BatchItemTransformerTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testEncryptedBatchItem
      */
-    public function providerTestEncryptedBatchItem(): iterable
+    public static function providerTestEncryptedBatchItem(): iterable
     {
         yield 'Encrypted' => [true];
         yield 'Not Encrypted' => [false];

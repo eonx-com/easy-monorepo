@@ -16,12 +16,19 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class CarbonImmutableDateTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
+    }
+
     /**
      * @return iterable<mixed>
      *
      * @see testConvertToPhpValueSucceeds
      */
-    public function provideConvertToPhpValues(): iterable
+    public static function provideConvertToPhpValues(): iterable
     {
         $datetime = new DateTimeImmutable();
         $datetime = $datetime->setTime(0, 0, 0, 0);
@@ -57,12 +64,5 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
         $phpValue = $type->convertToPHPValue($value, $platform);
 
         self::assertEquals($expectedValue, $phpValue);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
     }
 }

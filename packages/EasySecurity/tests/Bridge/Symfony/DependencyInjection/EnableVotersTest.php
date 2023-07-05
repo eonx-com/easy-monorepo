@@ -16,7 +16,7 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
      *
      * @see testVotersEnabled
      */
-    public function providerTestVotersEnabled(): iterable
+    public static function providerTestVotersEnabled(): iterable
     {
         yield 'All disabled by default' => [
             [],

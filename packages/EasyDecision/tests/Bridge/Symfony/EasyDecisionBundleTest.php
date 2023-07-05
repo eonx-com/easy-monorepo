@@ -23,10 +23,10 @@ final class EasyDecisionBundleTest extends AbstractTestCase
      *
      * @see testDecisions
      */
-    public function providerCreateDecision(): iterable
+    public static function providerCreateDecision(): iterable
     {
         yield 'Affirmative decision with no configurators' => [
-            $this->getCreateAffirmativeDecision(),
+            self::getCreateAffirmativeDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(AffirmativeDecision::class, $decision);
                 self::assertSame('<no-name>', $decision->getName());
@@ -34,7 +34,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Consensus decision with no configurators' => [
-            $this->getCreateConsensusDecision(),
+            self::getCreateConsensusDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ConsensusDecision::class, $decision);
                 self::assertSame('<no-name>', $decision->getName());
@@ -42,7 +42,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Unanimous decision with no configurators' => [
-            $this->getCreateUnanimousDecision(),
+            self::getCreateUnanimousDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(UnanimousDecision::class, $decision);
                 self::assertSame('<no-name>', $decision->getName());
@@ -50,7 +50,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Value decision with no configurators' => [
-            $this->getCreateValueDecision(),
+            self::getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertSame('<no-name>', $decision->getName());
@@ -61,7 +61,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Value decision with name configurator' => [
-            $this->getCreateValueDecision(),
+            self::getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertSame('my-value-decision', $decision->getName());
@@ -73,7 +73,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Value decision with rules configurator' => [
-            $this->getCreateValueDecision(),
+            self::getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
                 self::assertSame(11, $decision->make([
@@ -84,7 +84,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Value decision with name restricted configurator supported' => [
-            $this->getCreateValueDecision('restricted'),
+            self::getCreateValueDecision('restricted'),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
@@ -102,7 +102,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Value decision with name restricted configurator not supported' => [
-            $this->getCreateValueDecision('not-restricted'),
+            self::getCreateValueDecision('not-restricted'),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
@@ -119,7 +119,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Decision with type restricted configurator supported' => [
-            $this->getCreateValueDecision(),
+            self::getCreateValueDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(ValueDecision::class, $decision);
 
@@ -137,7 +137,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
         ];
 
         yield 'Decision with type restricted configurator not supported' => [
-            $this->getCreateUnanimousDecision(),
+            self::getCreateUnanimousDecision(),
             static function (DecisionInterface $decision): void {
                 self::assertInstanceOf(UnanimousDecision::class, $decision);
 
@@ -233,28 +233,28 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             ]);
     }
 
-    private function getCreateAffirmativeDecision(?string $name = null): \Closure
+    private static function getCreateAffirmativeDecision(?string $name = null): \Closure
     {
         return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
             return $factory->createAffirmativeDecision($name);
         };
     }
 
-    private function getCreateConsensusDecision(?string $name = null): \Closure
+    private static function getCreateConsensusDecision(?string $name = null): \Closure
     {
         return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
             return $factory->createConsensusDecision($name);
         };
     }
 
-    private function getCreateUnanimousDecision(?string $name = null): \Closure
+    private static function getCreateUnanimousDecision(?string $name = null): \Closure
     {
         return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
             return $factory->createUnanimousDecision($name);
         };
     }
 
-    private function getCreateValueDecision(?string $name = null): \Closure
+    private static function getCreateValueDecision(?string $name = null): \Closure
     {
         return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
             return $factory->createValueDecision($name);

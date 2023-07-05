@@ -18,27 +18,9 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface|null
-     */
-    private $dataCleaner = null;
+    private static ?RandomGeneratorInterface $randomGenerator = null;
 
-    /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface|null
-     */
-    private $random = null;
-
-    protected function getDataCleaner(): DataCleanerInterface
-    {
-        return $this->dataCleaner = $this->dataCleaner ?? new NullDataCleaner();
-    }
-
-    protected function getRandomGenerator(): RandomGeneratorInterface
-    {
-        return $this->random = $this->random ?? (new RandomGenerator())->setUuidV4Generator(
-            new RamseyUuidV4Generator()
-        );
-    }
+    private ?DataCleanerInterface $dataCleaner = null;
 
     protected function tearDown(): void
     {
@@ -50,5 +32,21 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    protected static function getRandomGenerator(): RandomGeneratorInterface
+    {
+        self::$randomGenerator ??= (new RandomGenerator())->setUuidV4Generator(
+            new RamseyUuidV4Generator()
+        );
+
+        return self::$randomGenerator;
+    }
+
+    protected function getDataCleaner(): DataCleanerInterface
+    {
+        $this->dataCleaner ??= new NullDataCleaner();
+
+        return $this->dataCleaner;
     }
 }

@@ -19,7 +19,7 @@ final class ReplaceApiFormatsMiddlewareTest extends AbstractTestCase
      *
      * @see testHandle
      */
-    public function providerTestHandle(): iterable
+    public static function providerTestHandle(): iterable
     {
         yield 'Array' => [
             [
