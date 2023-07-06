@@ -70,6 +70,9 @@ final class EasyDoctrineExtension extends Extension
             ?? $config['aws_rds_iam']['enabled']
             ?? false;
 
+        // Always set AWS Username parameter so AwsRdsConnectionParamsResolver gets a default value
+        $container->setParameter(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_USERNAME, null);
+
         if ($awsRdsIamEnabled) {
             foreach (self::AWS_RDS_IAM_CONFIG as $configName => $param) {
                 $value = $config['aws_rds']['iam'][$configName]
