@@ -9,11 +9,6 @@ yet! Please feel free to contribute.
 
 <p style="display: none">Required not to break format below</p>
 
-::: tip PSR7
-Decoders will expect a PSR7 Request to work, you can use any library to convert Symfony Requests to PSR7 ones.
-In the following examples we will be using <a href="https://github.com/eonx-com/easy-psr7-factory">EasyPsr7Factory</a>
-:::
-
 <br>
 
 ### Decoding BasicAuth only
@@ -43,21 +38,17 @@ controller.
 namespace App\Controller;
 
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
     public function __invoke(
         ApiTokenDecoderFactoryInterface $decoderFactory,
-        EasyPsr7FactoryInterface $psr7Factory,
         Request $request
     ){
         $decoder = $decoderFactory->build('basic'); // Use the name of the decoder as an argument
 
-        $psr7Request = $psr7Factory->createRequest($request); // Convert Symfony request to PSR7 request
-
-        $apiToken = $decoder->decode($psr7Request); // Decode token for given PSR7 request
+        $apiToken = $decoder->decode($request); // Decode token for given request
 
         /**
          * $apiToken will be either a EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface instance
@@ -94,21 +85,17 @@ Once the configuration updated, simply change the argument given to the decoder 
 namespace App\Controller;
 
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
     public function __invoke(
         ApiTokenDecoderFactoryInterface $decoderFactory,
-        EasyPsr7FactoryInterface $psr7Factory,
         Request $request
     ){
         $decoder = $decoderFactory->build('user-apikey'); // Use the name of the decoder as an argument
 
-        $psr7Request = $psr7Factory->createRequest($request); // Convert Symfony request to PSR7 request
-
-        $apiToken = $decoder->decode($psr7Request); // Decode token for given PSR7 request
+        $apiToken = $decoder->decode($request); // Decode token for given request
 
         /**
          * $apiToken will now be either a EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface instance
@@ -159,21 +146,17 @@ Once the configuration updated, replace the argument for the decoder factory to 
 namespace App\Controller;
 
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use EonX\EasyPsr7Factory\Interfaces\EasyPsr7FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
     public function __invoke(
         ApiTokenDecoderFactoryInterface $decoderFactory,
-        EasyPsr7FactoryInterface $psr7Factory,
         Request $request
     ){
         $decoder = $decoderFactory->build('chain'); // Use the name of the decoder as an argument
 
-        $psr7Request = $psr7Factory->createRequest($request); // Convert Symfony request to PSR7 request
-
-        $apiToken = $decoder->decode($psr7Request); // Decode token for given PSR7 request
+        $apiToken = $decoder->decode($request); // Decode token for given request
 
         /**
          * $apiToken now be an instance of any ApiToken returned by the configured decoders under chain.list
