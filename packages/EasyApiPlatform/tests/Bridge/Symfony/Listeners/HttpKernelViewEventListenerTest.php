@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
+namespace EonX\EasyApiPlatform\Tests\Bridge\Symfony\Listeners;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginationListener;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyApiPlatform\Bridge\Symfony\Listeners\HttpKernelViewEventListener;
+use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
+use EonX\EasyApiPlatform\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
+final class HttpKernelViewEventListenerTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
@@ -26,33 +26,35 @@ final class CustomPaginatorListenerTest extends AbstractSymfonyTestCase
      */
     public static function providerTestListener(): iterable
     {
-        yield 'Not paginator' => [new \stdClass(), false];
+        yield 'The controller result is not Paginator' => [
+            'controllerResult' => new \stdClass(),
+            'isCustomPaginator' => false,
+        ];
 
-        yield 'Paginator' => [self::getApiPlatformPaginator(), true];
+        yield 'The controller result is Paginator' => [
+            'controllerResult' => self::getApiPlatformPaginator(),
+            'isCustomPaginator' => true,
+        ];
     }
 
     /**
-     * @param mixed $controllerResult
-     *
      * @dataProvider providerTestListener
      */
-    public function testListener($controllerResult, bool $isCustomPaginator): void
+    public function testListener(object $controllerResult, bool $isCustomPaginator): void
     {
         $event = new ViewEvent(
             $this->getKernel(),
             new Request(),
-            HttpKernelInterface::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             $controllerResult
         );
+        $listener = new HttpKernelViewEventListener();
 
-        (new CustomPaginationListener())($event);
+        $listener($event);
 
-        self::assertEquals($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
+        self::assertSame($isCustomPaginator, $event->getControllerResult() instanceof CustomPaginatorInterface);
     }
 
-    /**
-     * @return \ApiPlatform\Doctrine\Orm\Paginator<mixed>
-     */
     private static function getApiPlatformPaginator(): Paginator
     {
         /** @var \Doctrine\ORM\EntityManagerInterface $manager */

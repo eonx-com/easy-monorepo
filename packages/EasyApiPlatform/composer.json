@@ -10,6 +10,7 @@
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^2.2",
         "monolog/monolog": "^2.9",
+        "nesbot/carbon": "^2.67",
         "symfony/dependency-injection": "^6.3",
         "symfony/http-foundation": "^6.3"
     },

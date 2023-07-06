@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Tests\Bridge\Symfony\ApiPlatform\Pagination;
+namespace EonX\EasyApiPlatform\Tests\Paginators;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginator;
-use EonX\EasyCore\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use EonX\EasyApiPlatform\Paginators\CustomPaginator;
+use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 use Mockery\MockInterface;
 
-final class CustomPaginatorTest extends AbstractSymfonyTestCase
+final class CustomPaginatorTest extends AbstractTestCase
 {
     public function testCustomPaginator(): void
     {

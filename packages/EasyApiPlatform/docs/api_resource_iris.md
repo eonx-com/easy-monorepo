@@ -24,28 +24,28 @@ This package provides different simple solutions to allow you to create any cust
 
 Did you ever try to create a custom API endpoint outside of the traditional CRUD using ApiPlatform?
 An API endpoint that doesn't return a traditional resource with an identifier?
-How easy was it?  ...
+How easy was it? ...
 
 <br>
 
-Alright let's take a simple example, you want to implement an API endpoint as `POST - /api/emails/send` and this will 
+Alright let's take a simple example, you want to implement an API endpoint as `POST - /api/emails/send` and this will
 return in the best case scenario something like:
 
 ```json
 {
     "message": "X emails successfully sent"
 }
-``` 
+```
 
 <br>
 
-As explained ealier this example will be harder than expected to implement as ApiPlatform will require you to add an 
+As explained earlier this example will be harder than expected to implement as ApiPlatform will require you to add an
 identifier on the ApiResource and an item operation that you won't ever use.
 
 <br>
 
-Here is the solution: `EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\NoIriItemInterface`. When using the 
-`EasyCoreBundle` in your application, simply make your ApiResource implement this interface will allow you to get rid of
+Here is the solution: `EonX\EasyApiPlatform\Routing\NoIriItemInterface`. When using the
+`EasyApiPlatformSymfonyBundle` in your application, simply make your ApiResource implement this interface will allow you to get rid of
 the errors and implement only what you really need.
 
 ```php
@@ -53,34 +53,24 @@ the errors and implement only what you really need.
 
 namespace App\Api\Resource;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\NoIriItemInterface;
+use ApiPlatform\Metadata\ApiResource;
+use EonX\EasyApiPlatform\Routing\NoIriItemInterface;
 
-/**
- * @ApiResource(
- *     collectionOperations={
- *         "post"={
- *             "path"="/emails/send"
- *         }
- *     },
- *     itemOperations={}
- * )
- */
+#[ApiResource(
+    operations: [new Post()],
+)]
 final class EmailsSendResource implements NoIriItemInterface
 {
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    public function getMessage(): ?string 
-    {
-        return $this->message;
-    }
-
-    public function setMessage(string $message): void
+    public function __construct(string $message)
     {
         $this->message = $message;
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }
 ```
@@ -92,46 +82,36 @@ final class EmailsSendResource implements NoIriItemInterface
 In the previous example the created ApiResource didn't support IRI at all. This solution allows you to create ApiResources
 supporting IRI generation and control the way those IRIs are generated.
 
-Use the `EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SelfProvidedIriItemInterface`.
+Use the `EonX\EasyApiPlatform\Routing\SelfProvidedIriItemInterface`.
 
 ```php
 // src/Api/Resource/EmailsSendWithIriResource.php
 
 namespace App\Api\Resource;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use EonX\EasyCore\Bridge\Symfony\ApiPlatform\Interfaces\SelfProvidedIriItemInterface;
+use ApiPlatform\Metadata\ApiResource;
+use EonX\EasyApiPlatform\Routing\SelfProvidedIriItemInterface;
 
-/**
- * @ApiResource(
- *     collectionOperations={
- *         "post"={
- *             "path"="/emails/send"
- *         }
- *     },
- *     itemOperations={}
- * )
- */
+#[ApiResource(
+    operations: [new Post()],
+)]
 final class EmailsSendWithIriResource implements SelfProvidedIriItemInterface
 {
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
+
+    public function __construct(string $message)
+    {
+        $this->message = $message;
+    }
 
     public function getIri(): string
     {
         return '/emails/reports';
     }
 
-    public function getMessage(): ?string 
+    public function getMessage(): string
     {
         return $this->message;
-    }
-
-    public function setMessage(string $message): void
-    {
-        $this->message = $message;
     }
 }
 ```

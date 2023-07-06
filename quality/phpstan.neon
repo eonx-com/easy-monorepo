@@ -46,6 +46,9 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
+        - message: '#Class EonX\\EasyApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizers/CarbonImmutableNormalizer.php
+
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Api\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
 
@@ -94,9 +97,6 @@ parameters:
 
         - message: '#Property Symfony\\Component\\HttpFoundation\\Request\:\:\$request \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag#'
           path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
-
-        - message: '#Class EonX\\EasyCore\\Bridge\\Symfony\\ApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Normalizers/CarbonImmutableNormalizer.php
 
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
