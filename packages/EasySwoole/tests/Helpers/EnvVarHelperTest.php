@@ -12,8 +12,10 @@ final class EnvVarHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testLoadEnvVars
      */
-    public function providerTestLoadEnvVars(): iterable
+    public static function providerTestLoadEnvVars(): iterable
     {
         yield 'simple test' => [
             [

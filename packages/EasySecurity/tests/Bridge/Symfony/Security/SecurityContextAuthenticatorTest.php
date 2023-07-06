@@ -18,6 +18,29 @@ use Throwable;
 final class SecurityContextAuthenticatorTest extends AbstractTestCase
 {
     /**
+     * @return iterable<mixed>
+     *
+     * @see testAuthenticateThrowsCorrectException
+     */
+    public static function provideExceptions(): iterable
+    {
+        yield 'Library exception 1' => [
+            'thrownException' => new RuntimeException(),
+            'expectedExceptionClass' => AuthenticationException::class,
+        ];
+
+        yield 'Library exception 2' => [
+            'thrownException' => new LogicException(),
+            'expectedExceptionClass' => AuthenticationException::class,
+        ];
+
+        yield 'Custom exception' => [
+            'thrownException' => new CustomAuthenticationException(),
+            'expectedExceptionClass' => CustomAuthenticationException::class,
+        ];
+    }
+
+    /**
      * @dataProvider provideExceptions
      *
      * @psalm-param class-string<\Throwable> $expectedExceptionClass
@@ -39,28 +62,5 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
         );
 
         $authenticator->authenticate(new Request());
-    }
-
-    /**
-     * @return iterable<mixed>
-     *
-     * @see testAuthenticateThrowsCorrectException
-     */
-    protected function provideExceptions(): iterable
-    {
-        yield 'Library exception 1' => [
-            'thrownException' => new RuntimeException(),
-            'expectedExceptionClass' => AuthenticationException::class,
-        ];
-
-        yield 'Library exception 2' => [
-            'thrownException' => new LogicException(),
-            'expectedExceptionClass' => AuthenticationException::class,
-        ];
-
-        yield 'Custom exception' => [
-            'thrownException' => new CustomAuthenticationException(),
-            'expectedExceptionClass' => CustomAuthenticationException::class,
-        ];
     }
 }

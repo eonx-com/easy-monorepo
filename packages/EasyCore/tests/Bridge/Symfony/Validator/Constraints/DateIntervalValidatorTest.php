@@ -24,7 +24,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
      *
      * @see testValidateFailsWithInvalidDateIntervalValues
      */
-    public function provideInvalidDateIntervalValues(): array
+    public static function provideInvalidDateIntervalValues(): array
     {
         return [
             'Invalid date interval #1' => ['P4D1Y'],
@@ -39,7 +39,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
      *
      * @see testValidateSucceedsWithValidDateInterval
      */
-    public function provideValidDateIntervalValues(): array
+    public static function provideValidDateIntervalValues(): array
     {
         return [
             'Valid date interval #1' => ['P2D'],
@@ -111,7 +111,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
     private function mockConstraintViolationBuilder(string $code): ConstraintViolationBuilderInterface
     {
         /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
-        $violationBuilder = $this->mock(
+        $violationBuilder = self::mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code): void {
                 $mock->shouldReceive('setParameter')
@@ -139,7 +139,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
         ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
+        $context = self::mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder,
         ): void {
@@ -155,7 +155,7 @@ final class DateIntervalValidatorTest extends AbstractSymfonyTestCase
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
+        $context = self::mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();
         });

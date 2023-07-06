@@ -17,7 +17,7 @@ final class SsmClientTest extends AbstractTestCase
      *
      * @see testApplyDiff
      */
-    public function providerTestApplyDiff(): iterable
+    public static function providerTestApplyDiff(): iterable
     {
         yield '1 new param' => [
             new Diff([new SsmParameter('param', 'String', 'value')], [], []),
@@ -75,32 +75,38 @@ final class SsmClientTest extends AbstractTestCase
      *
      * @see testGetAllParameters
      */
-    public function providerTestGetAllParameters(): iterable
+    public static function providerTestGetAllParameters(): iterable
     {
         yield '1 param no path' => [
-            [[
-                'Name' => 'param',
-                'Type' => 'String',
-                'Value' => 'value',
-            ]],
+            [
+                [
+                    'Name' => 'param',
+                    'Type' => 'String',
+                    'Value' => 'value',
+                ],
+            ],
             [new SsmParameter('param', 'String', 'value')],
         ];
 
         yield '1 param trim value' => [
-            [[
-                'Name' => 'param',
-                'Type' => 'String',
-                'Value' => 'value        ',
-            ]],
+            [
+                [
+                    'Name' => 'param',
+                    'Type' => 'String',
+                    'Value' => 'value        ',
+                ],
+            ],
             [new SsmParameter('param', 'String', 'value')],
         ];
 
         yield '1 param path' => [
-            [[
-                'Name' => '/test/param',
-                'Type' => 'String',
-                'Value' => 'value',
-            ]],
+            [
+                [
+                    'Name' => '/test/param',
+                    'Type' => 'String',
+                    'Value' => 'value',
+                ],
+            ],
             [new SsmParameter('/test/param', 'String', 'value')],
             '/test',
         ];

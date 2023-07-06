@@ -18,7 +18,7 @@ final class HashDumperTest extends AbstractTestCase
      *
      * @see testDumpHash
      */
-    public function providerTestDumpHash(): iterable
+    public static function providerTestDumpHash(): iterable
     {
         yield '1 param' => [
             'test',

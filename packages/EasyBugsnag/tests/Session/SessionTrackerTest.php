@@ -14,8 +14,10 @@ final class SessionTrackerTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testExclude
      */
-    public function providerTestExclude(): iterable
+    public static function providerTestExclude(): iterable
     {
         yield 'Track' => [
             true,

@@ -16,8 +16,10 @@ final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'successful' => [new WebhookResult(new Webhook(), new MockResponse()), WebhookInterface::STATUS_SUCCESS];
 

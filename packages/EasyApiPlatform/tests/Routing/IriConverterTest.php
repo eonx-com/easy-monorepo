@@ -21,7 +21,7 @@ final class IriConverterTest extends AbstractTestCase
             // Just an object
         };
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(IriConverterInterface::class);
+        $decoratedIriConverter = self::mock(IriConverterInterface::class);
         $iriConverter = new IriConverter($decoratedIriConverter);
 
         $result = $iriConverter->getIriFromResource($resource);
@@ -38,7 +38,7 @@ final class IriConverterTest extends AbstractTestCase
             }
         };
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(IriConverterInterface::class);
+        $decoratedIriConverter = self::mock(IriConverterInterface::class);
         $iriConverter = new IriConverter($decoratedIriConverter);
 
         $result = $iriConverter->getIriFromResource($resource);
@@ -52,7 +52,7 @@ final class IriConverterTest extends AbstractTestCase
             // Just an object
         };
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(
+        $decoratedIriConverter = self::mock(
             IriConverterInterface::class,
             static function (MockInterface $mock) use ($resource): void {
                 $mock->expects('getIriFromResource')
@@ -71,7 +71,7 @@ final class IriConverterTest extends AbstractTestCase
     {
         $expectedResult = new Dummy();
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(
+        $decoratedIriConverter = self::mock(
             IriConverterInterface::class,
             static function (MockInterface $mock) use ($expectedResult): void {
                 $mock->expects('getResourceFromIri')

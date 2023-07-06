@@ -19,7 +19,7 @@ final class UuidV4GeneratorTest extends AbstractTestCase
      *
      * @see testUuidV4
      */
-    public function providerTestUuidV4(): iterable
+    public static function providerTestUuidV4(): iterable
     {
         yield 'Ramsey\Uuid' => [new RamseyUuidV4Generator()];
         yield 'Symfony\Uid' => [new SymfonyUidUuidV4Generator()];

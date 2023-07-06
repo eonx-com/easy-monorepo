@@ -19,7 +19,7 @@ final class RecursiveStringsTrimmerTest extends AbstractTestCase
      *
      * @see testCleanSucceeds
      */
-    public function provideDataForClean(): array
+    public static function provideDataForClean(): array
     {
         $object1 = new stdClass();
         $object2 = new ToStringStub();

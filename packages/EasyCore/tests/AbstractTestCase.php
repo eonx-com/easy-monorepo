@@ -23,20 +23,6 @@ abstract class AbstractTestCase extends TestCase
      */
     protected $thrownException = null;
 
-    /**
-     * @param mixed $target
-     */
-    protected function mock($target, ?callable $expectations = null): MockInterface
-    {
-        $mock = \Mockery::mock($target);
-
-        if ($expectations !== null) {
-            \call_user_func($expectations, $mock);
-        }
-
-        return $mock;
-    }
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -50,57 +36,17 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * Returns object's private property value.
-     *
-     * @param object $object
-     * @param string $property
-     *
-     * @return mixed
+     * @param mixed $target
      */
-    protected function getPrivatePropertyValue($object, string $property)
+    protected static function mock($target, ?callable $expectations = null): MockInterface
     {
-        return (function ($property) {
-            return $this->{$property};
-        })->call($object, $property);
-    }
+        $mock = \Mockery::mock($target);
 
-    /**
-     * Sets private property value.
-     *
-     * @param object $object
-     * @param string $property
-     * @param mixed $value
-     */
-    protected function setPrivatePropertyValue($object, string $property, $value): void
-    {
-        (function ($property, $value): void {
-            $this->{$property} = $value;
-        })->call($object, $property, $value);
-    }
-
-    /**
-     * Calls object's private method and returns its result.
-     *
-     * @param object $object
-     * @param string $method
-     * @param mixed ...$args
-     *
-     * @return mixed
-     */
-    protected function callPrivateMethod($object, string $method, ...$args)
-    {
-        return (function ($method, $args) {
-            return $this->{$method}(...$args);
-        })->call($object, $method, $args);
-    }
-
-    protected function safeCall(Closure $func): void
-    {
-        try {
-            $func();
-        } catch (\Throwable $exception) {
-            $this->thrownException = $exception;
+        if ($expectations !== null) {
+            \call_user_func($expectations, $mock);
         }
+
+        return $mock;
     }
 
     /**
@@ -130,5 +76,59 @@ abstract class AbstractTestCase extends TestCase
         if ($previousException !== null) {
             self::assertTrue($this->thrownException->getPrevious() instanceof $previousException);
         }
+    }
+
+    /**
+     * Calls object's private method and returns its result.
+     *
+     * @param object $object
+     * @param string $method
+     * @param mixed ...$args
+     *
+     * @return mixed
+     */
+    protected function callPrivateMethod($object, string $method, ...$args)
+    {
+        return (function ($method, $args) {
+            return $this->{$method}(...$args);
+        })->call($object, $method, $args);
+    }
+
+    /**
+     * Returns object's private property value.
+     *
+     * @param object $object
+     * @param string $property
+     *
+     * @return mixed
+     */
+    protected function getPrivatePropertyValue($object, string $property)
+    {
+        return (function ($property) {
+            return $this->{$property};
+        })->call($object, $property);
+    }
+
+    protected function safeCall(Closure $func): void
+    {
+        try {
+            $func();
+        } catch (\Throwable $exception) {
+            $this->thrownException = $exception;
+        }
+    }
+
+    /**
+     * Sets private property value.
+     *
+     * @param object $object
+     * @param string $property
+     * @param mixed $value
+     */
+    protected function setPrivatePropertyValue($object, string $property, $value): void
+    {
+        (function ($property, $value): void {
+            $this->{$property} = $value;
+        })->call($object, $property, $value);
     }
 }

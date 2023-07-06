@@ -14,20 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @param null|mixed[] $headers
-     */
-    protected function getRequestWithHeaders(?array $headers = null): Request
-    {
-        $formatted = [];
-
-        foreach ($headers ?? [] as $name => $value) {
-            $formatted[\sprintf('HTTP_%s', $name)] = $value;
-        }
-
-        return new Request([], [], [], [], [], $formatted);
-    }
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -38,5 +24,19 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    /**
+     * @param null|mixed[] $headers
+     */
+    protected static function getRequestWithHeaders(?array $headers = null): Request
+    {
+        $formatted = [];
+
+        foreach ($headers ?? [] as $name => $value) {
+            $formatted[\sprintf('HTTP_%s', $name)] = $value;
+        }
+
+        return new Request([], [], [], [], [], $formatted);
     }
 }

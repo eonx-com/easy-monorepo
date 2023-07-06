@@ -49,6 +49,12 @@ parameters:
         - message: '#Class EonX\\EasyApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizers/CarbonImmutableNormalizer.php
 
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Api\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
           path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
@@ -138,9 +144,6 @@ parameters:
         # ---- EasyRandom ----
         - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
           path: %currentWorkingDirectory%/packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
-
-        - message: '#Access to an undefined property object\:\:\$uuidV4Generator#'
-          path: %currentWorkingDirectory%/packages/EasyRandom/tests/Bridge/Laravel/EasyRandomServiceProviderTest.php
 
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'

@@ -26,7 +26,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
      *
      * @see testValidateFailsWithInvalidValue
      */
-    public function provideInvalidValues(): array
+    public static function provideInvalidValues(): array
     {
         return [
             'Invalid value #1' => ['abc', 1, 3],
@@ -50,7 +50,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
      *
      * @see testValidateSucceedsWithValidValue
      */
-    public function provideValidValues(): array
+    public static function provideValidValues(): array
     {
         return [
             'Valid value #1' => ['123', 1, 2],
@@ -193,7 +193,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         int $maxPrecision,
     ): ConstraintViolationBuilderInterface {
         /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
-        $violationBuilder = $this->mock(
+        $violationBuilder = self::mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code, $minPrecision, $maxPrecision): void {
                 $mock->shouldReceive('setParameter')
@@ -226,7 +226,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
         ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
+        $context = self::mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder,
         ): void {
@@ -242,7 +242,7 @@ final class DecimalValidatorTest extends AbstractSymfonyTestCase
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
         /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
+        $context = self::mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();
         });

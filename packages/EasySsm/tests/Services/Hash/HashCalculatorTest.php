@@ -16,7 +16,7 @@ final class HashCalculatorTest extends AbstractTestCase
      *
      * @see testCalculateHash
      */
-    public function providerTestCalculateHash(): iterable
+    public static function providerTestCalculateHash(): iterable
     {
         yield '1 string parameter' => [
             [new SsmParameter('param', 'string', 'value')],

@@ -14,8 +14,10 @@ final class JsonFormatterTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testCreateLogFormat
      */
-    public function providerTestCreateLogFormat(): iterable
+    public static function providerTestCreateLogFormat(): iterable
     {
         yield 'DateTime format' => [
             static function (Logger $logger): void {

@@ -21,7 +21,7 @@ final class RandomStringTest extends AbstractTestCase
      *
      * @see testRandomString
      */
-    public function providerTestRandomString(): iterable
+    public static function providerTestRandomString(): iterable
     {
         yield 'Default configs' => [];
 

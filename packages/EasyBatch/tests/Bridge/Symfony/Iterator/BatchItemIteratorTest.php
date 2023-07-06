@@ -23,8 +23,10 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testIterateThroughItems
      */
-    public function providerTestIterateThroughItems(): iterable
+    public static function providerTestIterateThroughItems(): iterable
     {
         yield '1 page, no changes during iteration, no reset pagination' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {

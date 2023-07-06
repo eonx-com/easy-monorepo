@@ -23,10 +23,24 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class AbstractTestCase extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $files = [__DIR__ . '/../var', __DIR__ . '/Bridge/Symfony/tmp_config.yaml'];
+
+        foreach ($files as $file) {
+            if ($fs->exists($file)) {
+                $fs->remove($file);
+            }
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * @return iterable<mixed>
      */
-    public function providerTestRenderWithDefaultBuilders(): iterable
+    public static function providerTestRenderWithDefaultBuilders(): iterable
     {
         yield 'Returns default user message' => [
             'request' => new Request(),
@@ -229,20 +243,6 @@ class AbstractTestCase extends TestCase
         $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
         $propertyReflection->setAccessible(true);
         $propertyReflection->setValue($object, $value);
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $files = [__DIR__ . '/../var', __DIR__ . '/Bridge/Symfony/tmp_config.yaml'];
-
-        foreach ($files as $file) {
-            if ($fs->exists($file)) {
-                $fs->remove($file);
-            }
-        }
-
-        parent::tearDown();
     }
 
     private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty

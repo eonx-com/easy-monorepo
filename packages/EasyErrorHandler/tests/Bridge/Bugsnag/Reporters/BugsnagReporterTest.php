@@ -22,7 +22,7 @@ final class BugsnagReporterTest extends AbstractTestCase
      *
      * @see testReportWithIgnoredExceptionsResolver
      */
-    public function provideDataForReportWithIgnoredExceptionsResolver(): iterable
+    public static function provideDataForReportWithIgnoredExceptionsResolver(): iterable
     {
         yield 'Reported' => [
             'shouldIgnore' => false,
@@ -40,7 +40,7 @@ final class BugsnagReporterTest extends AbstractTestCase
      *
      * @see testReport
      */
-    public function providerTestReport(): iterable
+    public static function providerTestReport(): iterable
     {
         yield 'Report unexpected exception with no log level' => [
             'shouldReport' => true,

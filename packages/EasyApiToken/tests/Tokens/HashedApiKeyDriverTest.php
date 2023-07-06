@@ -12,8 +12,10 @@ final class HashedApiKeyDriverTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDriver
      */
-    public function providerTestDriver(): iterable
+    public static function providerTestDriver(): iterable
     {
         yield 'Int id' => [1, 'secret'];
 

@@ -23,7 +23,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
      *
      * @see testConfigure
      */
-    public function providerTestConfigure(): iterable
+    public static function providerTestConfigure(): iterable
     {
         yield 'No role resolved because not token' => [[]];
 

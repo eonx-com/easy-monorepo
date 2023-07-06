@@ -16,7 +16,7 @@ final class TranslatorAwareTraitTest extends AbstractSymfonyTestCase
             use TranslatorAwareTrait;
         };
         /** @var \Symfony\Contracts\Translation\TranslatorInterface $translator */
-        $translator = $this->mock(TranslatorInterface::class);
+        $translator = self::mock(TranslatorInterface::class);
 
         $abstractClass->setTranslator($translator);
 

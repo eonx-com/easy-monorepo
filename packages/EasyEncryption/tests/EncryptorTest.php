@@ -21,8 +21,10 @@ final class EncryptorTest extends AbstractTestCase
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
+     *
+     * @see testEncrypt
      */
-    public function providerTestEncrypt(): iterable
+    public static function providerTestEncrypt(): iterable
     {
         $message = 'My message';
 
@@ -68,8 +70,10 @@ final class EncryptorTest extends AbstractTestCase
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
+     *
+     * @see testEncryptRaw
      */
-    public function providerTestEncryptRaw(): iterable
+    public static function providerTestEncryptRaw(): iterable
     {
         $message = 'My message';
 

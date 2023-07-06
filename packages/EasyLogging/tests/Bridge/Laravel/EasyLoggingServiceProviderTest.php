@@ -13,8 +13,10 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testChannelParameterOnMake
      */
-    public function providerTestChannelParameterOnMake(): iterable
+    public static function providerTestChannelParameterOnMake(): iterable
     {
         yield 'Default' => [null];
         yield 'App' => ['app'];

@@ -15,7 +15,7 @@ final class BaseExceptionTest extends AbstractTestCase
      *
      * @see testLogLevelConvenientMethods
      */
-    public function providerTestLogLevelConvenientMethods(): iterable
+    public static function providerTestLogLevelConvenientMethods(): iterable
     {
         yield 'critical' => [
             'method' => 'setCriticalLogLevel',

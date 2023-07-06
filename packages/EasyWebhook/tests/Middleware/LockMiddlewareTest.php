@@ -16,8 +16,10 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'should not lock (no id, not send now) -> return result from stack' => [Webhook::fromArray([]), false];
 
