@@ -142,18 +142,22 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         }
 
         if ($throwable instanceof MissingConstructorArgumentsException) {
-            // Symfony < v6.3
+            // If exception thrown in ApiPlatform's AbstractItemNormalizer
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $throwable->getMessage(), $matches);
             if ($matches !== []) {
                 $data[$violationsKey][$matches[2]] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
             }
 
-            // Symfony >= v6.3
+            // If exception thrown in Symfony's AbstractNormalizer
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $throwable->getMessage(), $matches);
             $matches = \explode('", "', $matches[2] ?? '');
             foreach ($matches as $match) {
+                if ($match === '') {
+                    continue;
+                }
+
                 $match = \str_replace('$', '', $match);
                 $data[$violationsKey][$match] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
             }
