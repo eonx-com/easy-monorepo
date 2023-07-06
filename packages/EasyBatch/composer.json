@@ -5,16 +5,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-event-dispatcher": "5.0-dev",
-        "eonx-com/easy-lock": "5.0-dev",
-        "eonx-com/easy-pagination": "5.0-dev",
-        "eonx-com/easy-random": "5.0-dev",
-        "eonx-com/easy-utils": "5.0-dev",
+        "eonx-com/easy-event-dispatcher": "^5.1",
+        "eonx-com/easy-lock": "^5.1",
+        "eonx-com/easy-pagination": "^5.1",
+        "eonx-com/easy-random": "^5.1",
+        "eonx-com/easy-utils": "^5.1",
         "nesbot/carbon": "^2.67"
     },
     "require-dev": {
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-encryption": "5.0-dev",
+        "eonx-com/easy-encryption": "^5.1",
         "phpunit/phpunit": "^10.2",
         "ramsey/uuid": "^4.7",
         "symfony/symfony": "^6.3"
@@ -32,7 +32,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-5.x": "5.0-dev"
+            "dev-master": "5.1-dev"
         }
     }
 }
