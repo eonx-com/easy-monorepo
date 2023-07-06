@@ -20,7 +20,7 @@ final class SerializerContextBuilderTest extends AbstractTestCase
      *
      * @see testCreateFromRequest
      */
-    public function providerTestCreateFromRequest(): iterable
+    public static function providerTestCreateFromRequest(): iterable
     {
         yield 'Group is not added because an operation is not GetCollection' => [
             'contextFromDecorated' => [
