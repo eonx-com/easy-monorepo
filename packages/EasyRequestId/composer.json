@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "eonx-com/easy-random": "^5.1",
-        "eonx-com/easy-utils": "5.0-dev"
+        "eonx-com/easy-utils": "^5.1"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
