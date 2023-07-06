@@ -15,13 +15,6 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('api_platform')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('custom_pagination_enabled')->defaultValue(true)->end()
-                        ->booleanNode('simple_data_persister_enabled')->defaultValue(true)->end()
-                    ->end()
-                ->end()
                 ->arrayNode('search')
                     ->addDefaultsIfNotSet()
                     ->children()

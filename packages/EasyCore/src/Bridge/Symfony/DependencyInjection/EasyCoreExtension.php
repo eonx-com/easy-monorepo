@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyCore\Bridge\Symfony\DependencyInjection;
 
-use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use EonX\EasyCore\Bridge\BridgeConstantsInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\EventListenerInterface;
 use EonX\EasyCore\Bridge\Symfony\Interfaces\TagsInterface;
@@ -21,11 +20,6 @@ final class EasyCoreExtension extends Extension
     private $container;
 
     /**
-     * @var \Symfony\Component\Config\Loader\LoaderInterface
-     */
-    private $loader;
-
-    /**
      * @param mixed[] $configs
      *
      * @throws \Exception
@@ -38,13 +32,7 @@ final class EasyCoreExtension extends Extension
         $loader->load('services.php');
 
         $this->container = $container;
-        $this->loader = $loader;
-
         $this->autoconfigTag(EventListenerInterface::class, TagsInterface::EVENT_LISTENER_AUTO_CONFIG);
-
-        if ($config['api_platform']['custom_pagination_enabled'] ?? false) {
-            $this->loadIfBundlesExist('api_platform/pagination.php', ApiPlatformBundle::class);
-        }
 
         // Search
         if ($config['search']['enabled'] ?? false) {
@@ -70,15 +58,6 @@ final class EasyCoreExtension extends Extension
 
             $loader->load('trim_strings.php');
         }
-
-        // Aliases for custom collection operations HTTP methods
-        if ($this->bundlesExist(ApiPlatformBundle::class)) {
-            foreach (['PATCH', 'PUT'] as $method) {
-                $alias = \sprintf('api_platform.action.%s_collection', \strtolower($method));
-                $container->setAlias($alias, 'api_platform.action.placeholder')
-                    ->setPublic(true);
-            }
-        }
     }
 
     /**
@@ -88,35 +67,5 @@ final class EasyCoreExtension extends Extension
     {
         $this->container->registerForAutoconfiguration($interface)
             ->addTag($tag, $attributes ?? []);
-    }
-
-    /**
-     * @param string|string[] $bundles
-     */
-    private function bundlesExist($bundles): bool
-    {
-        $kernelBundles = $this->container->getParameter('kernel.bundles');
-
-        if (\is_array($kernelBundles) && \count($kernelBundles) > 0) {
-            foreach ((array)$bundles as $bundle) {
-                if (\in_array($bundle, $kernelBundles, true)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string|string[] $bundles
-     *
-     * @throws \Exception
-     */
-    private function loadIfBundlesExist(string $resource, $bundles): void
-    {
-        if ($this->bundlesExist($bundles)) {
-            $this->loader->load($resource);
-        }
     }
 }

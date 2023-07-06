@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Normalizers;
+namespace EonX\EasyApiPlatform\Normalizers;
 
 use Carbon\CarbonImmutable;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;

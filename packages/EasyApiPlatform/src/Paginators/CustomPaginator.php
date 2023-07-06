@@ -2,23 +2,15 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination;
+namespace EonX\EasyApiPlatform\Paginators;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
 
 final class CustomPaginator implements CustomPaginatorInterface
 {
-    /**
-     * @var \ApiPlatform\Doctrine\Orm\Paginator<mixed>
-     */
-    private $decorated;
-
-    /**
-     * @param \ApiPlatform\Doctrine\Orm\Paginator<mixed> $decorated
-     */
-    public function __construct(Paginator $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private Paginator $decorated,
+    ) {
     }
 
     /**
