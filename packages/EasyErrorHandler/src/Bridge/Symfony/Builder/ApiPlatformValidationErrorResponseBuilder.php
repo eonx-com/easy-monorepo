@@ -35,8 +35,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_PATTERN_NOT_IRI = '/Expected IRI or nested document for attribute "(\w+)", "(\w+)" given/';
 
-    private const MESSAGE_PATTERN_NO_PARAMETER = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]? from serialized' .
-    ' data because its constructor requires parameter "(\w+)" to be present/';
+    private const MESSAGE_PATTERN_NO_PARAMETER = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]?' .
+    ' from serialized data because its constructor requires the following parameters to be present : "(.*)"/';
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
 
@@ -122,9 +122,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         if ($throwable instanceof MissingConstructorArgumentsException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $throwable->getMessage(), $matches);
-            $data[$violationsKey] = [
-                $matches[2] => [self::VIOLATION_VALUE_SHOULD_BE_PRESENT],
-            ];
+            $matches = \explode('", "', $matches[2] ?? '');
+            foreach ($matches as $match) {
+                $match = \str_replace('$', '', $match);
+                $data[$violationsKey][$match] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+            }
         }
 
         if ($throwable instanceof UnexpectedValueException) {
