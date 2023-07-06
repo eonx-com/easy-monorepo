@@ -64,7 +64,7 @@ final class SerializerContextBuilderTest extends AbstractTestCase
         array $contextFromDecorated,
     ): SerializerContextBuilderInterface {
         /** @var \ApiPlatform\Serializer\SerializerContextBuilderInterface $decorated */
-        $decorated = $this->mock(
+        $decorated = self::mock(
             SerializerContextBuilderInterface::class,
             static function (MockInterface $mock) use ($contextFromDecorated): void {
                 $mock
