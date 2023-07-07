@@ -11,7 +11,7 @@ use Twig\Environment;
 final class AdminContextAsTwigGlobalListener
 {
     public function __construct(
-        private readonly Environment $twig
+        private readonly Environment $twig,
     ) {
     }
 
