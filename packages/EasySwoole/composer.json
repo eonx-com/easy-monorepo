@@ -11,6 +11,7 @@
         "symfony/string": "^5.4 || ^6.0"
     },
     "require-dev": {
+        "easycorp/easyadmin-bundle": "^3.5",
         "monolog/monolog": "^1.22 || ^2.0",
         "phpunit/phpunit": "^9.5 || ^10.0",
         "symfony/symfony": "^5.4 || ^6.0"
