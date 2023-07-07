@@ -46,7 +46,10 @@ final class EasySwooleRuntime extends SymfonyRuntime
     public function getRunner(?object $application): RunnerInterface
     {
         OptionHelper::setOptions($this->options);
-        EnvVarHelper::loadEnvVars(OptionHelper::getArray('json_secrets'));
+        EnvVarHelper::loadEnvVars(
+            OptionHelper::getArray('json_secrets'),
+            OptionHelper::getStringNullable('dotenv_path')
+        );
 
         if ($application instanceof Application && OptionHelper::isset(EasyScheduleSwooleRunner::ENABLED)) {
             return new EasyScheduleSwooleRunner($application);
