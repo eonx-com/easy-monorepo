@@ -177,9 +177,6 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
             'packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
         ],
-        ReturnAssignmentFixer::class => [
-            'packages/EasyCore/src/Bridge/Symfony/Doctrine/EntityManagerResolver.php',
-        ],
         SingleSpaceAfterConstructFixer::class,
     ]);
 
