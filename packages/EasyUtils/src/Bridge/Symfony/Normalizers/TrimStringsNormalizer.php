@@ -23,8 +23,10 @@ final class TrimStringsNormalizer implements ContextAwareDenormalizerInterface, 
     /**
      * @param string[]|null $exceptKeys
      */
-    public function __construct(private StringTrimmerInterface $trimmer, ?array $exceptKeys = null)
-    {
+    public function __construct(
+        private StringTrimmerInterface $trimmer,
+        ?array $exceptKeys = null,
+    ) {
         $this->exceptKeys = $exceptKeys ?? [];
     }
 
@@ -50,7 +52,7 @@ final class TrimStringsNormalizer implements ContextAwareDenormalizerInterface, 
         mixed $data,
         string $type,
         ?string $format = null,
-        ?array $context = null
+        ?array $context = null,
     ): bool {
         $context ??= [];
 

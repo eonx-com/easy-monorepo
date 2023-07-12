@@ -18,8 +18,10 @@ final class TrimStrings
     /**
      * @param string[]|null $exceptKeys
      */
-    public function __construct(private StringTrimmerInterface $trimmer, ?array $exceptKeys = null)
-    {
+    public function __construct(
+        private StringTrimmerInterface $trimmer,
+        ?array $exceptKeys = null,
+    ) {
         $this->exceptKeys = $exceptKeys ?? [];
     }
 
@@ -50,6 +52,9 @@ final class TrimStrings
      */
     private function cleanParameterBag(ParameterBag $bag): void
     {
-        $bag->replace($this->trimmer->trim($bag->all(), $this->exceptKeys));
+        /** @var array<string, mixed> $trimmedBag */
+        $trimmedBag = $this->trimmer->trim($bag->all(), $this->exceptKeys);
+
+        $bag->replace($trimmedBag);
     }
 }

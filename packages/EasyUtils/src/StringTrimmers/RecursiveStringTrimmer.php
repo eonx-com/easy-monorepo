@@ -36,7 +36,7 @@ final class RecursiveStringTrimmer implements StringTrimmerInterface
                 continue;
             }
 
-            if (\in_array($keyPrefix . $key, $this->except, true) === false) {
+            if (\in_array($keyPrefix . $key, $this->exceptKeys, true) === false) {
                 $data[$key] = $this->cleanArray($value, $keyPrefix . $key . '.');
             }
         }
