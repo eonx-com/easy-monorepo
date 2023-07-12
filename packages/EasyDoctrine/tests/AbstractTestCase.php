@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests;
 
 use Closure;
+use LogicException;
+use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -32,60 +36,6 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
-    }
-
-    /**
-     * Returns object's private property value.
-     *
-     * @param object $object
-     * @param string $property
-     *
-     * @return mixed
-     */
-    protected function getPrivatePropertyValue($object, string $property)
-    {
-        return (function ($property) {
-            return $this->{$property};
-        })->call($object, $property);
-    }
-
-    /**
-     * Sets private property value.
-     *
-     * @param object $object
-     * @param string $property
-     * @param mixed $value
-     */
-    protected function setPrivatePropertyValue($object, string $property, $value): void
-    {
-        (function ($property, $value): void {
-            $this->{$property} = $value;
-        })->call($object, $property, $value);
-    }
-
-    /**
-     * Calls object's private method and returns its result.
-     *
-     * @param object $object
-     * @param string $method
-     * @param mixed ...$args
-     *
-     * @return mixed
-     */
-    protected function callPrivateMethod($object, string $method, ...$args)
-    {
-        return (function ($method, $args) {
-            return $this->{$method}(...$args);
-        })->call($object, $method, $args);
-    }
-
-    protected function safeCall(Closure $func): void
-    {
-        try {
-            $func();
-        } catch (\Throwable $exception) {
-            $this->thrownException = $exception;
-        }
     }
 
     /**
@@ -115,5 +65,54 @@ abstract class AbstractTestCase extends TestCase
         if ($previousException !== null) {
             self::assertTrue($this->thrownException->getPrevious() instanceof $previousException);
         }
+    }
+
+    protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
+    {
+        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
+        $propertyReflection->setAccessible(true);
+
+        return $propertyReflection->getValue($object);
+    }
+
+    protected function mock(mixed $target, ?callable $expectations = null): MockInterface
+    {
+        /** @var \Mockery\MockInterface $mock */
+        $mock = Mockery::mock($target);
+
+        if ($expectations !== null) {
+            \call_user_func($expectations, $mock);
+        }
+
+        return $mock;
+    }
+
+    protected function safeCall(Closure $func): void
+    {
+        try {
+            $func();
+        } catch (\Throwable $exception) {
+            $this->thrownException = $exception;
+        }
+    }
+
+    protected function setPrivatePropertyValue(object $object, string $propertyName, mixed $value): void
+    {
+        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
+        $propertyReflection->setAccessible(true);
+        $propertyReflection->setValue($object, $value);
+    }
+
+    private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
+    {
+        while (\property_exists($object, $propertyName) === false) {
+            $object = \get_parent_class($object);
+
+            if ($object === false) {
+                throw new LogicException(\sprintf('The $%s property does not exist.', $propertyName));
+            }
+        }
+
+        return new ReflectionProperty($object, $propertyName);
     }
 }

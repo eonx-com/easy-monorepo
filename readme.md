@@ -20,7 +20,6 @@ you can look [there][1].
 - [EasyBankFiles](https://github.com/eonx-com/easy-bank-files): Parsers/Generators for common bank files
 - [EasyBatch](https://github.com/eonx-com/easy-batch): Batching async processes made easy
 - [EasyBugsnag](https://github.com/eonx-com/easy-bugsnag): Ease integrating bugsnag in your PHP projects
-- [EasyCore](https://github.com/eonx-com/easy-core): Provides core features for Lumen applications
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions taken the easiest way
 - [EasyDoctrine](https://github.com/eonx-com/easy-doctrine): Provides functionalities to enhance Doctrine integration in your project
 - [EasyEncryption](https://github.com/eonx-com/easy-encryption): Encryption made easy
