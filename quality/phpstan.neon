@@ -28,8 +28,6 @@ parameters:
         - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
         - %currentWorkingDirectory%/packages/EasyApiToken/src/Interfaces/*
         - %currentWorkingDirectory%/packages/EasyApiToken/tests/Bridge/Symfony/*
-        - %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php
-        - %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/Resources/skeleton/*
         - %currentWorkingDirectory%/packages/EasyEncryption/src/AwsPkcs11Encryptor.php
         - %currentWorkingDirectory%/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
@@ -82,22 +80,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyBatch/src/Repositories/BatchItemRepository.php
 
         # ---- EasyBugsnag ----
-        # ---- EasyCore ----
-        - message: '#Access to an undefined property object::\$[\w]+.#'
-          path: %currentWorkingDirectory%/packages/EasyCore/tests/Bridge/Laravel/Middleware/SetContentLengthTest.php
-
-        - message: '#Access to an undefined property EonX\\EasyCore\\Bridge\\Laravel\\Providers\\CachedConfigServiceProvider::\$loadedConfigurations.#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Laravel/Providers
-
-        - message: '#Method EonX\\EasyCore\\Tests\\AbstractTestCase\:\:mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface#'
-          path: %currentWorkingDirectory%/packages/EasyCore/tests/AbstractTestCase.php
-
-        - message: '#Cannot call method newInstanceWithoutConstructor\(\) on ReflectionClass\|null#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Symfony/DependencyInjection/Compiler/AutoConfigureEventListenersPass.php
-
-        - message: '#Property Symfony\\Component\\HttpFoundation\\Request\:\:\$request \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag#'
-          path: %currentWorkingDirectory%/packages/EasyCore/src/Bridge/Laravel/ApiFormats/Middleware/ReplaceApiFormatsMiddleware.php
-
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
         # ---- EasyEncryption ----

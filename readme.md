@@ -12,6 +12,7 @@ you can look [there][1].
 ### Packages
 
 <!-- monorepo-packages -->
+
 - [EasyActivity](https://github.com/eonx-com/easy-activity): Tracking your record changes.
 - [EasyApiPlatform](https://github.com/eonx-com/easy-api-platform): Provides features for API Platform applications
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Make your API accept multiple authentication strategies in a convenient way (Basic, ApiKey, JWT, ...)
@@ -20,7 +21,6 @@ you can look [there][1].
 - [EasyBankFiles](https://github.com/eonx-com/easy-bank-files): Parsers/Generators for common bank files
 - [EasyBatch](https://github.com/eonx-com/easy-batch): Batching async processes made easy
 - [EasyBugsnag](https://github.com/eonx-com/easy-bugsnag): Ease integrating bugsnag in your PHP projects
-- [EasyCore](https://github.com/eonx-com/easy-core): Provides core features for Lumen applications
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions taken the easiest way
 - [EasyDoctrine](https://github.com/eonx-com/easy-doctrine): Provides functionalities to enhance Doctrine integration in your project
 - [EasyEncryption](https://github.com/eonx-com/easy-encryption): Encryption made easy
@@ -44,6 +44,7 @@ you can look [there][1].
 - [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier
 - [EasyUtils](https://github.com/eonx-com/easy-utils): EonX packages utils
 - [EasyWebhook](https://github.com/eonx-com/easy-webhook): Sending webhooks has never been so easy (persistence, retry, async)
+
 <!-- end-monorepo-packages -->
 
 <br>

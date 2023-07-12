@@ -22,7 +22,6 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
-use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
@@ -67,7 +66,6 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->skip([
         'packages/*/var/*php',
         '*/vendor/*.php',
-        'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Filter/VirtualSearchFilter.php',
 
         NotOperatorWithSuccessorSpaceFixer::class,
         CastSpacesFixer::class,
@@ -87,10 +85,8 @@ return static function (ECSConfig $ecsConfig): void {
         MethodChainingNewlineFixer::class => [
             // bug, to be fixed in symplify
             '*/Configuration.php',
-            'packages/EasyCore/tests/Doctrine/DBAL/Types/DateTimeMicrosecondsTypeTest.php',
         ],
         AssignmentInConditionSniff::class => [
-            'packages/EasyCore/src/Csv/FromFileCsvContentsProvider.php',
             'packages/EasyUtils/src/Csv/FromFileCsvContentsProvider.php',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
@@ -105,17 +101,12 @@ return static function (ECSConfig $ecsConfig): void {
         ParameterTypeHintSniff::class . '.MissingTraversableTypeHintSpecification',
         ReturnTypeHintSniff::class . '.MissingAnyTypeHint',
         ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
-            'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
-            'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
-            'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php',
             'packages/EasyLogging/src/Logger.php',
             'packages/EasyApiToken/src/External/Auth0JwtDriver.php',
             'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
-            'packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
-            'packages/EasyCore/tests/Stubs/LockStub.php',
             'packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
             'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
@@ -125,16 +116,11 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
         ],
         ParameterTypeHintSniff::class . '.UselessAnnotation' => [
-            'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/CacheConfigCommand.php',
-            'packages/EasyCore/src/Bridge/Laravel/Console/Commands/Lumen/ClearConfigCommand.php',
-            'packages/EasyCore/src/Bridge/Symfony/Serializer/TrimStringsDenormalizer.php',
             'packages/EasyLogging/src/Logger.php',
             'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
-            'packages/EasyCore/tests/Bridge/Symfony/Stubs/NormalizerStub.php',
-            'packages/EasyCore/tests/Stubs/LockStub.php',
             'packages/EasySsm/tests/Stubs/BaseSsmClientStub.php',
             'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
@@ -147,7 +133,6 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php',
-            'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Routing/IriConverter.php',
             'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
             'packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
@@ -159,7 +144,6 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
             'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
             'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php',
-            'packages/EasyCore/src/Bridge/Symfony/ApiPlatform/Routing/IriConverter.php',
             'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
             'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
             'packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
@@ -176,9 +160,6 @@ return static function (ECSConfig $ecsConfig): void {
         ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
             'packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
             'packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
-        ],
-        ReturnAssignmentFixer::class => [
-            'packages/EasyCore/src/Bridge/Symfony/Doctrine/EntityManagerResolver.php',
         ],
         SingleSpaceAfterConstructFixer::class,
     ]);
