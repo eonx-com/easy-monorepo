@@ -11,7 +11,7 @@ return [
         'format_thousands_separator' => null,
     ],
     'sensitive_data' => [
-        'enabled' => true,
+        'enabled' => \env('EASY_UTILS_SENSITIVE_DATA_ENABLED', true),
         'keys_to_mask' => [],
         'mask_pattern' => null,
         'use_default_keys_to_mask' => true,

@@ -70,7 +70,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
     private function sensitiveData(): void
     {
-        if ((bool)\config('easy-utils.sensitive_data.enabled', false) === false) {
+        if ((bool)\config('easy-utils.sensitive_data.enabled', true) === false) {
             return;
         }
 
