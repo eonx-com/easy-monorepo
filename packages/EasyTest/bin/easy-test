@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use EonX\EasyTest\Console\EasyTestApplication;
-use EonX\EasyTest\Console\Commands\CheckCoverageCommand;
 
 // performance boost
 \gc_disable();
@@ -74,11 +73,6 @@ final class AutoloadIncluder
 
     public function includeDependencyOrRepositoryVendorAutoloadIfExists(): self
     {
-        // EasySsm' vendor is already loaded
-        if (\class_exists('NatePage\EasySsm\HttpKernel\EasySsmKernel')) {
-            return $this;
-        }
-
         $devOrPharVendorAutoload = \sprintf('%s/../vendor/autoload.php', __DIR__);
 
         if (\is_file($devOrPharVendorAutoload) === false) {
