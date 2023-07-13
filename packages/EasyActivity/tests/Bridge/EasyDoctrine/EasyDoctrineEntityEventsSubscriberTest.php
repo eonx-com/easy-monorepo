@@ -228,10 +228,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
 
         $logEntries = $this->getLogEntries($entityManager);
         self::assertCount(1, $logEntries);
+        /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentA */
+        $commentA = $article->getComments()->get(0);
+        /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentA */
+        $commentB = $article->getComments()->get(0);
         self::assertSame(
             [
                 'title' => 'Test collections',
-                'comments' => [$article->getComments()->get(0)->getId(), $article->getComments()->get(1)->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId()],
             ],
             \json_decode($logEntries[0]['subject_data'], true)
         );

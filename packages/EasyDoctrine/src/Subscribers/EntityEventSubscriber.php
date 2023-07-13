@@ -61,7 +61,9 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
         $collectionsMapping = [];
         foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
-            $collectionsMapping[\spl_object_id($collection->getOwner())][] = $collection;
+            /** @var object $owner */
+            $owner = $collection->getOwner();
+            $collectionsMapping[\spl_object_id($owner)][] = $collection;
         }
 
         foreach ($scheduledEntityInsertions as $object) {
@@ -96,13 +98,20 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
+    /**
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
+     *
+     * @template TKey of array-key
+     * @template T
+     *
+     * @return array<string, array<mixed>>
+     */
     public function computeCollectionChangeSet(
         array $collections,
         EntityManagerInterface $entityManager,
     ): array {
         $changeSet = [];
         $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $cmd = $entityManager->getClassMetadata(\get_class($entity));
             $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
             return (string)$entityManager->getUnitOfWork()
                 ->getEntityIdentifier($entity)[$identifierName];
@@ -112,7 +121,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
             $diff = \array_diff($snapshotIds, $actualIds);
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
-                $changeSet[$collection->getMapping()['fieldName']] = [$snapshotIds, $actualIds];
+                $changeSet[(string)$collection->getMapping()['fieldName']] = [$snapshotIds, $actualIds];
             }
         }
 
