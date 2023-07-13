@@ -34,7 +34,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         $container->setDefinition('services_resetter', new Definition(ServicesResetterStub::class));
         $container->setDefinition(Environment::class, new Definition(Environment::class, [
-            'loader' => new Definition(ArrayLoader::class),
+            '$loader' => new Definition(ArrayLoader::class),
         ]));
 
         foreach ($container->getAliases() as $alias) {
