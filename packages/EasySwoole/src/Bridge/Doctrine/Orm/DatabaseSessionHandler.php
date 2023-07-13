@@ -8,7 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Contracts\Service\ResetInterface;
 
-final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
+final class DatabaseSessionHandler
+    implements ResetInterface, \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
 {
     private ?PdoSessionHandler $decorated = null;
 
@@ -81,7 +82,9 @@ final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInt
         }
 
         $conn = $this->entityManager->getConnection();
-        $nativeConnGetter = \method_exists($conn, 'getNativeConnection') ? 'getNativeConnection' : 'getWrappedConnection';
+        $nativeConnGetter = \method_exists($conn, 'getNativeConnection')
+            ? 'getNativeConnection'
+            : 'getWrappedConnection';
 
         return $this->decorated = new PdoSessionHandler($conn->{$nativeConnGetter}(), $this->options ?? []);
     }
