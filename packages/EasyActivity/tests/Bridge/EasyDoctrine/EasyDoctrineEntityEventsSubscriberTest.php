@@ -233,7 +233,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             ->get(0);
         /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentA */
         $commentB = $article->getComments()
-            ->get(0);
+            ->get(1);
         self::assertSame(
             [
                 'title' => 'Test collections',
