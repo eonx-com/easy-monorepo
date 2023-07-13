@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Subscribers;
 
 use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -58,16 +59,27 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
         $scheduledEntityDeletions = $this->filterEntities($unitOfWork->getScheduledEntityDeletions());
 
+        $collectionsMapping = [];
+        foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
+            $collectionsMapping[\spl_object_id($collection->getOwner())][] = $collection;
+        }
+
         foreach ($scheduledEntityInsertions as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
-            $changeSet = $unitOfWork->getEntityChangeSet($object);
+            $changeSet = \array_merge(
+                $unitOfWork->getEntityChangeSet($object),
+                $this->computeCollectionChangeSet($collectionsMapping[\spl_object_id($object)] ?? [], $entityManager)
+            );
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $object, $changeSet);
         }
 
         foreach ($scheduledEntityUpdates as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
-            $changeSet = $this->getClearedChangeSet($changeSet);
+            $changeSet = \array_merge(
+                $this->getClearedChangeSet($changeSet),
+                $this->computeCollectionChangeSet($collectionsMapping[\spl_object_id($object)] ?? [], $entityManager)
+            );
             if (\count($changeSet) > 0) {
                 $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
             }
@@ -82,6 +94,29 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             }
             $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
+    }
+
+    public function computeCollectionChangeSet(
+        array $collections,
+        EntityManagerInterface $entityManager,
+    ): array {
+        $changeSet = [];
+        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
+            $cmd = $entityManager->getClassMetadata(\get_class($entity));
+            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
+            return (string)$entityManager->getUnitOfWork()
+                ->getEntityIdentifier($entity)[$identifierName];
+        };
+        foreach ($collections as $collection) {
+            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
+            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
+            $diff = \array_diff($snapshotIds, $actualIds);
+            if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
+                $changeSet[$collection->getMapping()['fieldName']] = [$snapshotIds, $actualIds];
+            }
+        }
+
+        return $changeSet;
     }
 
     public function postFlush(PostFlushEventArgs $eventArgs): void

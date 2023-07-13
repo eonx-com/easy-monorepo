@@ -13,10 +13,10 @@ class Author
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      *
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -34,7 +34,7 @@ class Author
      */
     private $position;
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -49,7 +49,7 @@ class Author
         return $this->position;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
