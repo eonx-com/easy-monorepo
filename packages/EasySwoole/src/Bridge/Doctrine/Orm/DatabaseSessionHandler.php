@@ -23,27 +23,32 @@ final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInt
 
     public function close(): bool
     {
-        return $this->getDecorated()->close();
+        return $this->getDecorated()
+            ->close();
     }
 
     public function destroy(string $id): bool
     {
-        return $this->getDecorated()->destroy($id);
+        return $this->getDecorated()
+            ->destroy($id);
     }
 
     public function gc(int $max_lifetime): int|false
     {
-        return $this->getDecorated()->gc($max_lifetime);
+        return $this->getDecorated()
+            ->gc($max_lifetime);
     }
 
     public function open(string $path, string $name): bool
     {
-        return $this->getDecorated()->open($path, $name);
+        return $this->getDecorated()
+            ->open($path, $name);
     }
 
     public function read(string $id): string|false
     {
-        return $this->getDecorated()->read($id);
+        return $this->getDecorated()
+            ->read($id);
     }
 
     public function reset(): void
@@ -53,17 +58,20 @@ final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInt
 
     public function write(string $id, string $data): bool
     {
-        return $this->getDecorated()->write($id, $data);
+        return $this->getDecorated()
+            ->write($id, $data);
     }
 
     public function validateId(string $id): bool
     {
-        return $this->getDecorated()->validateId($id);
+        return $this->getDecorated()
+            ->validateId($id);
     }
 
     public function updateTimestamp(string $id, string $data): bool
     {
-        return $this->getDecorated()->updateTimestamp($id, $data);
+        return $this->getDecorated()
+            ->updateTimestamp($id, $data);
     }
 
     private function getDecorated(): PdoSessionHandler
