@@ -7,9 +7,9 @@ namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Contracts\Service\ResetInterface;
+use SessionUpdateTimestampHandlerInterface as SessionUpdateTimestampHandler;
 
-final class DatabaseSessionHandler
-    implements ResetInterface, \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
+final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInterface, SessionUpdateTimestampHandler
 {
     private ?PdoSessionHandler $decorated = null;
 
