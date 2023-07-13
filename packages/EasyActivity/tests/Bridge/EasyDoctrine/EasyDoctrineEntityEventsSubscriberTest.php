@@ -231,7 +231,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentA */
         $commentA = $article->getComments()
             ->get(0);
-        /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentA */
+        /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentB */
         $commentB = $article->getComments()
             ->get(1);
         self::assertSame(
