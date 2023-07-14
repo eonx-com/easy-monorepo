@@ -11,22 +11,12 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 final class FromRequestSecurityContextConfiguratorListener
 {
     /**
-     * @var iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface>
-     */
-    private $configurators;
-
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
-
-    /**
      * @param iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface> $configurators
      */
-    public function __construct(SecurityContextResolverInterface $securityContextResolver, iterable $configurators)
-    {
-        $this->securityContextResolver = $securityContextResolver;
-        $this->configurators = $configurators;
+    public function __construct(
+        private SecurityContextResolverInterface $securityContextResolver,
+        private iterable $configurators,
+    ) {
     }
 
     public function __invoke(RequestEvent $event): void

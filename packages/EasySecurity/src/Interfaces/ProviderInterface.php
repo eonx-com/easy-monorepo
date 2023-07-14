@@ -6,8 +6,5 @@ namespace EonX\EasySecurity\Interfaces;
 
 interface ProviderInterface
 {
-    /**
-     * @return null|int|string
-     */
-    public function getUniqueId();
+    public function getUniqueId(): int|string;
 }

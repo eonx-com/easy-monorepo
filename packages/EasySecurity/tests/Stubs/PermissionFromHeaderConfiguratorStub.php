@@ -10,15 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PermissionFromHeaderConfiguratorStub extends AbstractFromHeaderConfigurator
 {
-    /**
-     * @var string
-     */
-    private $permission;
-
-    public function __construct(string $permission, array $headerNames, ?int $priority = null)
-    {
-        $this->permission = $permission;
-
+    public function __construct(
+        private string $permission,
+        array $headerNames,
+        ?int $priority = null,
+    ) {
         parent::__construct($headerNames, $priority);
     }
 

@@ -12,17 +12,17 @@ final class AuthorizationMatrix implements AuthorizationMatrixInterface
     /**
      * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $cachePermissions;
+    private ?array $cachePermissions = null;
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $permissions = [];
+    private array $permissions = [];
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * AuthorizationMatrix constructor.

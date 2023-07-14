@@ -10,10 +10,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface
-     */
-    private $kernel;
+    private ?KernelInterface $kernel = null;
 
     /**
      * @param null|string[] $configs
@@ -24,10 +21,10 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
             return $this->kernel;
         }
 
-        $kernel = new KernelStub($configs);
-        $kernel->boot();
+        $this->kernel = new KernelStub($configs);
+        $this->kernel->boot();
 
-        return $this->kernel = $kernel;
+        return $this->kernel;
     }
 
     protected function setAppSecret(string $secret): void

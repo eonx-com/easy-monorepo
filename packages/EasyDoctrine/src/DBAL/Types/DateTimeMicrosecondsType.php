@@ -39,11 +39,9 @@ final class DateTimeMicrosecondsType extends DateTimeType
     public const TYPE_NAME = 'datetime';
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return $value;
@@ -57,11 +55,9 @@ final class DateTimeMicrosecondsType extends DateTimeType
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?DateTimeInterface
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateTimeInterface
     {
         if ($value === null || $value instanceof DateTimeInterface) {
             return $value;

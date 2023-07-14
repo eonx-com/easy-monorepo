@@ -22,21 +22,15 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     /**
      * @var string[]
      */
-    private $acceptableEntities;
-
-    /**
-     * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private array $acceptableEntities;
 
     /**
      * @param string[] $entities
      */
     public function __construct(
-        DeferredEntityEventDispatcherInterface $eventDispatcher,
+        private DeferredEntityEventDispatcherInterface $eventDispatcher,
         array $entities,
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->acceptableEntities = $entities;
     }
 

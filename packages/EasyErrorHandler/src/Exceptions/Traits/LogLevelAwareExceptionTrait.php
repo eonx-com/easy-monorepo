@@ -8,10 +8,7 @@ use Monolog\Logger;
 
 trait LogLevelAwareExceptionTrait
 {
-    /**
-     * @var int
-     */
-    protected $logLevel = Logger::INFO;
+    protected int $logLevel = Logger::INFO;
 
     public function getLogLevel(): int
     {

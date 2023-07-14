@@ -16,10 +16,8 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
 
     /**
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    public function proceed(array $input)
+    public function proceed(array $input): mixed
     {
         throw new class() extends \Exception implements NonBlockingRuleErrorInterface {
             /**

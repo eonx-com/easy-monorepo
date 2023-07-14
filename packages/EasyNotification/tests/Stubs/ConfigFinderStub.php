@@ -10,22 +10,14 @@ use EonX\EasyNotification\Interfaces\ConfigInterface;
 
 final class ConfigFinderStub implements ConfigFinderInterface
 {
-    /**
-     * @var int
-     */
-    private $called = 0;
-
-    /**
-     * @var mixed[]
-     */
-    private $config;
+    private int $called = 0;
 
     /**
      * @param mixed[] $config
      */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
+    public function __construct(
+        private array $config,
+    ) {
     }
 
     public function find(string $apiKey, string $providerExternalId): ConfigInterface

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyTest\InvalidDataMaker;
 
 use LogicException;
+use RuntimeException;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @codeCoverageIgnore
@@ -23,58 +25,28 @@ abstract class AbstractInvalidDataMaker
     /**
      * @var string[]
      */
-    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
+    protected static array $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
 
-    /**
-     * @var string
-     */
-    protected $property;
+    protected ?string $relatedProperty = null;
 
-    /**
-     * @var string
-     */
-    protected $relatedProperty;
+    protected ?string $relatedPropertyValue = null;
 
-    /**
-     * @var string
-     */
-    protected $relatedPropertyValue;
+    private static ?TranslatorInterface $translator = null;
 
-    /**
-     * @var \Symfony\Contracts\Translation\TranslatorInterface
-     */
-    private static $translator;
+    private bool $asArrayElement = false;
 
-    /**
-     * @var bool
-     */
-    private $asArrayElement = false;
+    private bool $asString = false;
 
-    /**
-     * @var bool
-     */
-    private $asString = false;
+    private ?string $message = null;
 
-    /**
-     * @var string|null
-     */
-    private $message;
+    private ?string $propertyPath = null;
 
-    /**
-     * @var string
-     */
-    private $propertyPath;
+    private ?string $wrapWith = null;
 
-    /**
-     * @var string
-     */
-    private $wrapWith;
-
-    final public function __construct(string $property)
-    {
+    final public function __construct(
+        protected string $property,
+    ) {
         self::initTranslator();
-
-        $this->property = $property;
     }
 
     final public static function addTranslations(string $translations): void
@@ -131,6 +103,10 @@ abstract class AbstractInvalidDataMaker
     final protected function translateMessage(string $messageKey, ?array $params = null, ?int $plural = null): string
     {
         $params[self::PLURAL_PARAM] = $plural;
+
+        if (self::$translator === null) {
+            throw new RuntimeException('Translator not initialized.');
+        }
 
         return self::$translator->trans($messageKey, $params);
     }

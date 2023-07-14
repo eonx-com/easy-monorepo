@@ -20,22 +20,10 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 final class SecurityContextAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
-    /**
-     * @var \EonX\EasySecurity\Bridge\Symfony\Interfaces\AuthenticationFailureResponseFactoryInterface
-     */
-    private $responseFactory;
-
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
-
     public function __construct(
-        SecurityContextResolverInterface $securityContextResolver,
-        AuthenticationFailureResponseFactoryInterface $respFactory,
+        private SecurityContextResolverInterface $securityContextResolver,
+        private AuthenticationFailureResponseFactoryInterface $responseFactory,
     ) {
-        $this->securityContextResolver = $securityContextResolver;
-        $this->responseFactory = $respFactory;
     }
 
     public function authenticate(Request $request): Passport

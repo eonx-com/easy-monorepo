@@ -10,10 +10,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
      * @param null|mixed[] $config
@@ -24,15 +21,15 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
         }
 
-        $app->register(EasyLoggingServiceProvider::class);
-        $app->boot();
+        $this->app->register(EasyLoggingServiceProvider::class);
+        $this->app->boot();
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

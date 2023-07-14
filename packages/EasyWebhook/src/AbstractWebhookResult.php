@@ -10,34 +10,13 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class AbstractWebhookResult implements WebhookResultInterface
 {
-    /**
-     * @var null|string
-     */
-    private $id;
-
-    /**
-     * @var null|\Symfony\Contracts\HttpClient\ResponseInterface
-     */
-    private $response;
-
-    /**
-     * @var null|\Throwable
-     */
-    private $throwable;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookInterface
-     */
-    private $webhook;
+    private ?string $id = null;
 
     public function __construct(
-        WebhookInterface $webhook,
-        ?ResponseInterface $response = null,
-        ?\Throwable $throwable = null,
+        private WebhookInterface $webhook,
+        private ?ResponseInterface $response = null,
+        private ?\Throwable $throwable = null,
     ) {
-        $this->webhook = $webhook;
-        $this->response = $response;
-        $this->throwable = $throwable;
     }
 
     public function getId(): ?string

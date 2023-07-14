@@ -8,18 +8,10 @@ use EonX\EasyDecision\Interfaces\DecisionInterface;
 
 final class SetDefaultOutputConfigurator extends AbstractConfigurator
 {
-    /**
-     * @var mixed
-     */
-    private $defaultOutput;
-
-    /**
-     * @param mixed $defaultOutput
-     */
-    public function __construct($defaultOutput, ?int $priority = null)
-    {
-        $this->defaultOutput = $defaultOutput;
-
+    public function __construct(
+        private mixed $defaultOutput,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

@@ -16,28 +16,13 @@ final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFacto
      */
     public const CACHE_KEY = 'easy_security.authorization_matrix_key';
 
-    /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface
-     */
-    private $decorated;
-
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
     public function __construct(
-        CacheInterface $cache,
-        AuthorizationMatrixFactoryInterface $decorated,
+        private CacheInterface $cache,
+        private AuthorizationMatrixFactoryInterface $decorated,
         ?string $key = null,
     ) {
-        $this->cache = $cache;
-        $this->decorated = $decorated;
         $this->key = $key ?? self::CACHE_KEY;
     }
 

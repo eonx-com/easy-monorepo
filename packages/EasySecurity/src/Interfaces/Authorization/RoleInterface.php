@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces\Authorization;
 
-interface RoleInterface
-{
-    public function __toString(): string;
+use Stringable;
 
+interface RoleInterface extends Stringable
+{
     public function addMetadata(string $name, mixed $value): self;
 
     public function getIdentifier(): string;

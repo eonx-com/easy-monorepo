@@ -6,29 +6,24 @@ namespace EonX\EasySchedule;
 
 use Carbon\Carbon;
 use Cron\CronExpression;
+use DateTimeZone;
 use EonX\EasySchedule\Interfaces\EventInterface;
 
 abstract class AbstractEvent implements EventInterface
 {
-    /**
-     * @var string
-     */
-    private $expression = '* * * * *';
+    private string $expression = '* * * * *';
 
     /**
      * @var callable[]
      */
-    private $filters = [];
+    private array $filters = [];
 
     /**
      * @var callable[]
      */
-    private $rejects = [];
+    private array $rejects = [];
 
-    /**
-     * @var \DateTimeZone|string
-     */
-    private $timezone;
+    private null|DateTimeZone|string $timezone = null;
 
     public function at(string $time): EventInterface
     {
@@ -63,12 +58,9 @@ abstract class AbstractEvent implements EventInterface
             ->spliceIntoPosition(1, \count($segments) === 2 ? (int)$segments[1] : '0');
     }
 
-    /**
-     * @param mixed $days
-     */
-    public function days($days): EventInterface
+    public function days(int|array $days): EventInterface
     {
-        $days = \is_array($days) ? $days : \func_get_args();
+        $days = \is_array($days) ? $days : [$days];
 
         return $this->spliceIntoPosition(5, \implode(',', $days));
     }
@@ -101,13 +93,13 @@ abstract class AbstractEvent implements EventInterface
     public function filtersPass(): bool
     {
         foreach ($this->filters as $filter) {
-            if ((bool)\call_user_func($filter) === false) {
+            if ((bool)$filter() === false) {
                 return false;
             }
         }
 
         foreach ($this->rejects as $reject) {
-            if ((bool)\call_user_func($reject) === true) {
+            if ((bool)$reject() === true) {
                 return false;
             }
         }
@@ -138,7 +130,7 @@ abstract class AbstractEvent implements EventInterface
     /**
      * @param int|int[] $offset
      */
-    public function hourlyAt($offset): EventInterface
+    public function hourlyAt(int|array $offset): EventInterface
     {
         return $this->spliceIntoPosition(1, \is_array($offset) ? \implode(',', $offset) : $offset);
     }
@@ -177,32 +169,25 @@ abstract class AbstractEvent implements EventInterface
         return $this->days(6);
     }
 
-    /**
-     * @param \DateTimeZone|string $timezone
-     */
-    public function setTimezone($timezone): EventInterface
+    public function setTimezone(DateTimeZone|string $timezone): EventInterface
     {
         $this->timezone = $timezone;
 
         return $this;
     }
 
-    /**
-     * @param callable|bool $callback
-     */
-    public function skip($callback): EventInterface
+    public function skip(callable|bool $callback): EventInterface
     {
-        $this->rejects[] = \is_callable($callback) ? $callback : function () use ($callback) {
-            return $callback;
-        };
+        $this->rejects[] = \is_callable($callback)
+            ? $callback
+            : static function () use ($callback) {
+                return $callback;
+            };
 
         return $this;
     }
 
-    /**
-     * @param int|string $value
-     */
-    public function spliceIntoPosition(int $position, $value): EventInterface
+    public function spliceIntoPosition(int $position, int|string $value): EventInterface
     {
         $segments = \explode(' ', $this->expression);
 
@@ -276,14 +261,13 @@ abstract class AbstractEvent implements EventInterface
         return $this->spliceIntoPosition(5, $day);
     }
 
-    /**
-     * @param callable|bool $callback
-     */
-    public function when($callback): EventInterface
+    public function when(callable|bool $callback): EventInterface
     {
-        $this->filters[] = \is_callable($callback) ? $callback : function () use ($callback) {
-            return $callback;
-        };
+        $this->filters[] = \is_callable($callback)
+            ? $callback
+            : static function () use ($callback) {
+                return $callback;
+            };
 
         return $this;
     }
@@ -301,11 +285,11 @@ abstract class AbstractEvent implements EventInterface
     {
         $date = Carbon::now();
 
-        if ($this->timezone) {
+        if ($this->timezone !== null) {
             $date->setTimezone($this->timezone);
         }
 
-        return CronExpression::factory($this->expression)->isDue($date->toDateTimeString());
+        return (new CronExpression($this->expression))->isDue($date->toDateTimeString());
     }
 
     protected function getExpression(): string

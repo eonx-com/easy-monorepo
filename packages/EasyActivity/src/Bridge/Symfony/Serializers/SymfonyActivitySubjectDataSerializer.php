@@ -12,31 +12,13 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
 final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
-     * @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface
-     */
-    private $circularReferenceHandler;
-
-    /**
-     * @var string[]
-     */
-    private $disallowedProperties;
-
-    /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @param string[] $disallowedProperties
      */
     public function __construct(
-        SymfonySerializerInterface $serializer,
-        CircularReferenceHandlerInterface $circularReferenceHandler,
-        array $disallowedProperties,
+        private SymfonySerializerInterface $serializer,
+        private CircularReferenceHandlerInterface $circularReferenceHandler,
+        private array $disallowedProperties,
     ) {
-        $this->serializer = $serializer;
-        $this->circularReferenceHandler = $circularReferenceHandler;
-        $this->disallowedProperties = $disallowedProperties;
     }
 
     /**

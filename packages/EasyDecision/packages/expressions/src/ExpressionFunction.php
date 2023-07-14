@@ -4,30 +4,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Expressions;
 
+use Closure;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
 
 final class ExpressionFunction implements ExpressionFunctionInterface
 {
-    /**
-     * @var null|string
-     */
-    private $description;
+    private Closure $evaluator;
 
-    /**
-     * @var callable
-     */
-    private $evaluator;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    public function __construct(string $name, callable $evaluator, ?string $description = null)
-    {
-        $this->name = $name;
-        $this->evaluator = $evaluator;
-        $this->description = $description;
+    public function __construct(
+        private string $name,
+        callable $evaluator,
+        private ?string $description = null,
+    ) {
+        $this->evaluator = Closure::fromCallable($evaluator);
     }
 
     public function getDescription(): ?string

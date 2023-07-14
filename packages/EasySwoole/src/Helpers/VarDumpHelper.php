@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
 
+use Closure;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 final class VarDumpHelper
 {
-    /**
-     * @var callable|null
-     */
-    private static $dumper;
+    private static ?Closure $dumper = null;
 
     public static function dump(mixed $var): string
     {
@@ -21,7 +19,10 @@ final class VarDumpHelper
             self::setDumper();
         }
 
-        return (self::$dumper)($var);
+        /** @var \Closure $dumper */
+        $dumper = self::$dumper;
+
+        return $dumper($var);
     }
 
     private static function setDumper(): void

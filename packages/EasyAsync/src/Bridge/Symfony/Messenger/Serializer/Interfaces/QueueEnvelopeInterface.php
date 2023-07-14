@@ -7,16 +7,11 @@ namespace EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces;
 interface QueueEnvelopeInterface
 {
     /**
-     * @return mixed[]
+     * @return mixed[]|null
      */
     public function getBody(): ?array;
 
-    /**
-     * @param null|mixed $default
-     *
-     * @return mixed
-     */
-    public function getHeader(string $header, $default = null);
+    public function getHeader(string $header, mixed $default = null): mixed;
 
     /**
      * @return mixed[]

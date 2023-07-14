@@ -31,7 +31,7 @@ final class DateIntervalValidator extends ConstraintValidator
 
         try {
             new DateInterval($value);
-        } catch (Exception|TypeError $exception) {
+        } catch (Exception|TypeError) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(DateIntervalConstraint::INVALID_DATE_INTERVAL_ERROR)
                 ->addViolation();

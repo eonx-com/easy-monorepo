@@ -10,34 +10,23 @@ use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
 use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'easy-webhooks:send-due-webhooks',
+    description: 'Sends "sendAfter" webhooks which are due'
+)]
 final class SendDueWebhooksCommand extends Command
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'easy-webhooks:send-due-webhooks';
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
-     */
-    private $client;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
-     */
-    private $store;
-
-    public function __construct(WebhookClientInterface $client, StoreInterface $store)
-    {
-        $this->client = $client;
-        $this->store = $store;
-
+    public function __construct(
+        private WebhookClientInterface $client,
+        private StoreInterface $store,
+    ) {
         parent::__construct();
     }
 
@@ -51,8 +40,7 @@ final class SendDueWebhooksCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'DateTime to start fetching due webhooks from, in "%s" format'
             )
-            ->addOption('timezone', null, InputOption::VALUE_OPTIONAL, 'The timezone of sendAfter DateTimes')
-            ->setDescription('Send "sendAfter" webhooks which are due');
+            ->addOption('timezone', null, InputOption::VALUE_OPTIONAL, 'The timezone of sendAfter DateTimes');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

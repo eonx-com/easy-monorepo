@@ -9,20 +9,10 @@ use Doctrine\DBAL\Schema\Schema;
 
 final class DoctrineDbalStatementsProvider
 {
-    /**
-     * @var string
-     */
-    private $activityLogsTable;
-
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $conn;
-
-    public function __construct(Connection $conn, string $activityLogsTable)
-    {
-        $this->conn = $conn;
-        $this->activityLogsTable = $activityLogsTable;
+    public function __construct(
+        private Connection $conn,
+        private string $activityLogsTable,
+    ) {
     }
 
     /**

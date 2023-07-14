@@ -17,47 +17,37 @@ class Article
 {
     /**
      * @ORM\ManyToOne(targetEntity=Author::class)
-     *
-     * @var \EonX\EasyActivity\Tests\Fixtures\Author
      */
-    private $author;
+    private Author $author;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", cascade={"persist"})
      *
      * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyActivity\Tests\Fixtures\Comment>
      */
-    private $comments;
+    private Collection $comments;
 
     /**
      * @ORM\Column(type="text", length=256)
-     *
-     * @var string
      */
-    private $content;
+    private string $content;
 
     /**
      * @ORM\Column(type="datetimetz")
-     *
-     * @var \DateTimeInterface
      */
-    private $createdAt;
+    private DateTimeInterface $createdAt;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=256)
-     *
-     * @var string
      */
-    private $title;
+    private string $title;
 
     public function __construct()
     {
@@ -75,7 +65,7 @@ class Article
         return $this;
     }
 
-    public function getAuthor(): ?Author
+    public function getAuthor(): Author
     {
         return $this->author;
     }
@@ -98,7 +88,7 @@ class Article
         return $this->createdAt;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

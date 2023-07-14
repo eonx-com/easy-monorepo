@@ -6,14 +6,9 @@ namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
 final class InputStub
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    public function __construct(string $initialName)
-    {
-        $this->name = $initialName;
+    public function __construct(
+        private string $name,
+    ) {
     }
 
     public function getName(): string

@@ -8,10 +8,7 @@ use EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface;
 
 abstract class AbstractConfigurator implements DecisionConfiguratorInterface
 {
-    /**
-     * @var int
-     */
-    private $priority;
+    private int $priority;
 
     public function __construct(?int $priority = null)
     {

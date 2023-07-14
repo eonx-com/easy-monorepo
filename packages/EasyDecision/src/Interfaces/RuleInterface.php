@@ -14,10 +14,8 @@ interface RuleInterface extends HasPriorityInterface
 
     /**
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    public function proceed(array $input);
+    public function proceed(array $input): mixed;
 
     /**
      * @param mixed[] $input

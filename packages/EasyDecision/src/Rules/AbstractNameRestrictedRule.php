@@ -9,10 +9,7 @@ use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 
 abstract class AbstractNameRestrictedRule implements RestrictedRuleInterface
 {
-    /**
-     * @var int
-     */
-    private $priority;
+    private int $priority;
 
     public function __construct(?int $priority = null)
     {

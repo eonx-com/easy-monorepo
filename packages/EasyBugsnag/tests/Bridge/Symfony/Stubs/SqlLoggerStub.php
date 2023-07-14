@@ -8,7 +8,7 @@ use Doctrine\DBAL\Logging\SQLLogger;
 
 final class SqlLoggerStub implements SQLLogger
 {
-    public function startQuery($sql, ?array $params = null, ?array $types = null): void
+    public function startQuery(mixed $sql, ?array $params = null, ?array $types = null): void
     {
         // TODO: Implement startQuery() method.
     }

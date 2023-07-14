@@ -9,16 +9,11 @@ use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
 final class AuthorizationRolesProviderStub implements RolesProviderInterface
 {
     /**
-     * @var null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
-     */
-    private $roles;
-
-    /**
      * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
      */
-    public function __construct(?array $roles = null)
-    {
-        $this->roles = $roles;
+    public function __construct(
+        private ?array $roles = null,
+    ) {
     }
 
     /**

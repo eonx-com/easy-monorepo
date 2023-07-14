@@ -12,23 +12,13 @@ final class PushMessage extends AbstractMessage
     public const DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
     /**
-     * @var null|string
-     */
-    private $device;
-
-    /**
-     * @var null|string
-     */
-    private $token;
-
-    /**
      * @param null|mixed[] $body
      */
-    public function __construct(?string $device = null, ?string $token = null, ?array $body = null)
-    {
-        $this->device = $device;
-        $this->token = $token;
-
+    public function __construct(
+        private ?string $device = null,
+        private ?string $token = null,
+        ?array $body = null,
+    ) {
         parent::__construct($body);
     }
 

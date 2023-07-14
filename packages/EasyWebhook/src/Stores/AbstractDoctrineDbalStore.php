@@ -10,25 +10,12 @@ use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 
 abstract class AbstractDoctrineDbalStore extends AbstractStore
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $conn;
-
-    /**
-     * @var string
-     */
-    protected $table;
-
     public function __construct(
         RandomGeneratorInterface $random,
-        Connection $conn,
+        protected Connection $conn,
         DataCleanerInterface $dataCleaner,
-        string $table,
+        protected string $table,
     ) {
-        $this->conn = $conn;
-        $this->table = $table;
-
         parent::__construct($random, $dataCleaner);
     }
 

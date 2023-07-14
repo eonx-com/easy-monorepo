@@ -10,6 +10,16 @@ use EonX\EasyUtils\Interfaces\MathInterface;
 
 class Math implements MathInterface
 {
+    private string $decimalSeparator;
+
+    private int $roundMode;
+
+    private int $roundPrecision;
+
+    private int $scale;
+
+    private string $thousandsSeparator;
+
     /**
      * @param int|null $roundMode [optional] <p>
      * One of PHP_ROUND_HALF_UP,
@@ -19,11 +29,11 @@ class Math implements MathInterface
      * </p>
      */
     public function __construct(
-        private ?int $roundPrecision = null,
-        private ?int $roundMode = null,
-        private ?int $scale = null,
-        private ?string $decimalSeparator = null,
-        private ?string $thousandsSeparator = null,
+        ?int $roundPrecision = null,
+        ?int $roundMode = null,
+        ?int $scale = null,
+        ?string $decimalSeparator = null,
+        ?string $thousandsSeparator = null,
     ) {
         $this->roundPrecision = $roundPrecision ?? self::ROUND_PRECISION;
         $this->roundMode = $roundMode ?? self::ROUND_MODE;

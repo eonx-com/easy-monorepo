@@ -12,19 +12,12 @@ use Throwable;
 
 abstract class AbstractQueueListener
 {
-    /**
-     * @var \Illuminate\Contracts\Cache\Repository
-     */
-    private $cache;
+    protected LoggerInterface $logger;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    public function __construct(Cache $cache, ?LoggerInterface $logger = null)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        private Cache $cache,
+        ?LoggerInterface $logger = null,
+    ) {
         $this->logger = $logger ?? new NullLogger();
     }
 

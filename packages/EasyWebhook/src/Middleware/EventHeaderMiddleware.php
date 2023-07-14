@@ -10,10 +10,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class EventHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var string
-     */
-    private $eventHeader;
+    private string $eventHeader;
 
     public function __construct(?string $eventHeader = null, ?int $priority = null)
     {

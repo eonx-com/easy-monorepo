@@ -9,23 +9,15 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
+use Throwable;
 
 class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var int
-     */
-    private $messagesLimit;
+    private int $messagesLimit;
 
-    /**
-     * @var int
-     */
-    private $receivedMessages = 0;
+    private int $receivedMessages = 0;
 
     /**
      * @throws \EonX\EasyAsync\Exceptions\InvalidArgumentException
@@ -34,11 +26,21 @@ class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterface
     {
         try {
             $this->messagesLimit = \random_int($minMessages, $maxMessages ?? $minMessages);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new InvalidArgumentException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
 
         $this->logger = $logger ?? new NullLogger();
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            WorkerRunningEvent::class => 'onWorkerRunning',
+        ];
     }
 
     public function onWorkerRunning(WorkerRunningEvent $event): void
@@ -58,15 +60,5 @@ class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterface
                 'count' => $this->messagesLimit,
             ]);
         }
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            WorkerRunningEvent::class => 'onWorkerRunning',
-        ];
     }
 }

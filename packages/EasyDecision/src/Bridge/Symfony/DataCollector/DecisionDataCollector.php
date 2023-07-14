@@ -18,14 +18,9 @@ final class DecisionDataCollector extends DataCollector
      */
     public const NAME = 'easy_decision.decision_collector';
 
-    /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionFactoryInterface
-     */
-    private $decisionFactory;
-
-    public function __construct(DecisionFactoryInterface $decisionFactory)
-    {
-        $this->decisionFactory = $decisionFactory;
+    public function __construct(
+        private DecisionFactoryInterface $decisionFactory,
+    ) {
     }
 
     public function collect(Request $request, Response $response, ?\Throwable $exception = null): void

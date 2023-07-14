@@ -11,12 +11,12 @@ abstract class AbstractDataBag
     /**
      * @var string[]
      */
-    protected $attributes;
+    protected array $attributes;
 
     /**
      * @var mixed[]
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * BaseResult constructor.

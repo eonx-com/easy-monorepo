@@ -9,14 +9,9 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ActivityLogEntryMessageHandler implements MessageHandlerInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\StoreInterface
-     */
-    private $store;
-
-    public function __construct(StoreInterface $store)
-    {
-        $this->store = $store;
+    public function __construct(
+        private StoreInterface $store,
+    ) {
     }
 
     public function __invoke(ActivityLogEntryMessage $message): void

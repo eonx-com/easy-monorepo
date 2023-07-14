@@ -17,7 +17,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private bool $enabled;
 
     /**
-     * @var array<int, array<string, array<string, array{mixed, mixed}>>>
+     * @var array<int, array<string, array<string, array<mixed, mixed>>>>
      */
     private array $entityChangeSets = [];
 
@@ -166,7 +166,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     }
 
     /**
-     * @param array<string, array{mixed, mixed}> $entityChangeSet
+     * @param array<string, array<mixed, mixed>> $entityChangeSet
      */
     private function createEntityEvent(string $oid, array $entityChangeSet): EntityActionEventInterface
     {
@@ -188,10 +188,10 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     }
 
     /**
-     * @param array<string, array{mixed, mixed}> $array1
-     * @param array<string, array{mixed, mixed}> $array2
+     * @param array<string, array<mixed, mixed>> $array1
+     * @param array<string, array<mixed, mixed>> $array2
      *
-     * @return array<string, array{mixed, mixed}>
+     * @return array<string, array<mixed, mixed>>
      */
     private function mergeChangeSet(array $array1, array $array2): array
     {

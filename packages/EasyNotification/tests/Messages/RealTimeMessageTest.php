@@ -15,14 +15,14 @@ final class RealTimeMessageTest extends AbstractTestCase
     /**
      * @var mixed[]
      */
-    protected static $body = [
+    protected static array $body = [
         'message' => 'hey there',
     ];
 
     /**
      * @var string[]
      */
-    protected static $topics = ['nathan', 'pavel'];
+    protected static array $topics = ['nathan', 'pavel'];
 
     /**
      * @return iterable<mixed>

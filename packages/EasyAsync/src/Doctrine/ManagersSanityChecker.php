@@ -13,19 +13,12 @@ use Psr\Log\NullLogger;
 
 final class ManagersSanityChecker
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private readonly LoggerInterface $logger;
 
-    /**
-     * @var \Doctrine\Persistence\ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(ManagerRegistry $registry, ?LoggerInterface $logger = null)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        ?LoggerInterface $logger = null,
+    ) {
         $this->logger = $logger ?? new NullLogger();
     }
 

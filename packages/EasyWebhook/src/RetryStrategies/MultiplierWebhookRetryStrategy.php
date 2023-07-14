@@ -24,29 +24,17 @@ use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
  */
 final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
 {
-    /**
-     * @var int
-     */
-    private $delayMilliseconds;
+    private int $delayMilliseconds;
 
-    /**
-     * @var null|int
-     */
-    private $maxDelayMilliseconds;
-
-    /**
-     * @var float
-     */
-    private $multiplier;
+    private float $multiplier;
 
     public function __construct(
         ?int $delayMilliseconds = null,
         ?float $multiplier = null,
-        ?int $maxDelayMilliseconds = null,
+        private ?int $maxDelayMilliseconds = null,
     ) {
         $this->delayMilliseconds = $delayMilliseconds ?? 1000;
         $this->multiplier = $multiplier ?? 1.0;
-        $this->maxDelayMilliseconds = $maxDelayMilliseconds;
     }
 
     /**

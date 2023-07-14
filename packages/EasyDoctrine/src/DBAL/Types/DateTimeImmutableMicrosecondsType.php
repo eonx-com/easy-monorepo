@@ -43,11 +43,9 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
     private static ?DateTimeZone $utc = null;
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return $value;
@@ -61,11 +59,9 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateTimeImmutable
     {
         if ($value === null) {
             return null;

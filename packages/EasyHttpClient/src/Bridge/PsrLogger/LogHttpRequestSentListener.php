@@ -10,14 +10,9 @@ use Psr\Log\LoggerInterface;
 
 final class LogHttpRequestSentListener
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(HttpRequestSentEvent $event): void

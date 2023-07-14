@@ -13,22 +13,16 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $algos = ['HS256', 'HS512', 'HS384', 'RS256', 'RS384', 'RS512'];
+    protected static array $algos = ['HS256', 'HS512', 'HS384', 'RS256', 'RS384', 'RS512'];
 
-    /**
-     * @var string
-     */
-    protected static $defaultAlgo = 'HS256';
+    protected static string $defaultAlgo = 'HS256';
 
-    /**
-     * @var string
-     */
-    protected static $key = 'key';
+    protected static string $key = 'key';
 
     /**
      * @var mixed[]
      */
-    protected static $tokenPayload = [
+    protected static array $tokenPayload = [
         'iss' => 'stepthefkup.com',
         'aud' => 'stepthefkup.com.au',
         'iat' => 1549340373,

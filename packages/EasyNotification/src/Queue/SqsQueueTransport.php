@@ -10,14 +10,9 @@ use EonX\EasyNotification\Interfaces\QueueTransportInterface;
 
 final class SqsQueueTransport implements QueueTransportInterface
 {
-    /**
-     * @var \Aws\Sqs\SqsClient
-     */
-    private $sqs;
-
-    public function __construct(SqsClient $sqs)
-    {
-        $this->sqs = $sqs;
+    public function __construct(
+        private SqsClient $sqs,
+    ) {
     }
 
     public function send(QueueMessageInterface $queueMessage): void

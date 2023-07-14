@@ -13,16 +13,11 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
     /**
-     * @var array<string, mixed>
-     */
-    private $subjects;
-
-    /**
      * @param array<string, mixed> $subjects
      */
-    public function __construct(array $subjects)
-    {
-        $this->subjects = $subjects;
+    public function __construct(
+        private array $subjects,
+    ) {
     }
 
     /**

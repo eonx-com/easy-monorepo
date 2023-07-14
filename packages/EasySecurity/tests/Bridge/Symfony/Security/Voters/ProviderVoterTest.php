@@ -29,12 +29,6 @@ final class ProviderVoterTest extends AbstractTestCase
             VoterInterface::ACCESS_ABSTAIN,
         ];
 
-        yield 'Abstain because subject provider id is null' => [
-            new SecurityContext(),
-            new ProviderRestrictedStub(),
-            VoterInterface::ACCESS_ABSTAIN,
-        ];
-
         yield 'Denied because no provider on context' => [
             new SecurityContext(),
             new ProviderRestrictedStub('provider-id'),

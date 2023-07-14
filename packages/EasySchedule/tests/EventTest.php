@@ -8,10 +8,7 @@ use EonX\EasySchedule\Event;
 
 final class EventTest extends AbstractTestCase
 {
-    /**
-     * @var \EonX\EasySchedule\Event
-     */
-    private $event;
+    private Event $event;
 
     protected function setUp(): void
     {

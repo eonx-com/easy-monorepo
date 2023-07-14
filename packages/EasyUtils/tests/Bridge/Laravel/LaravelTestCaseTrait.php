@@ -20,14 +20,14 @@ trait LaravelTestCaseTrait
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
         }
 
-        $app->register(EasyUtilsServiceProvider::class);
+        $this->app->register(EasyUtilsServiceProvider::class);
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

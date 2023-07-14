@@ -9,7 +9,7 @@ trait SignedFieldsTrait
     /**
      * @var string[] $signedFields
      */
-    private static $signedFields = [
+    private static array $signedFields = [
         '{' => '0+',
         '}' => '0-',
         'A' => '1+',

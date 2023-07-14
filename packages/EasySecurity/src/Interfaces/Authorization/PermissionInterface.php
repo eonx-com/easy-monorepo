@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces\Authorization;
 
-interface PermissionInterface
-{
-    public function __toString(): string;
+use Stringable;
 
+interface PermissionInterface extends Stringable
+{
     public function getIdentifier(): string;
 }

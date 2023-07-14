@@ -10,14 +10,9 @@ use Twig\TwigFunction;
 
 final class TwigBlockExtension extends AbstractExtension
 {
-    /**
-     * @var \EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface
-     */
-    private $templatingEventRenderer;
-
-    public function __construct(TemplatingEventRendererInterface $templatingEventRenderer)
-    {
-        $this->templatingEventRenderer = $templatingEventRenderer;
+    public function __construct(
+        private TemplatingEventRendererInterface $templatingEventRenderer,
+    ) {
     }
 
     /**

@@ -14,10 +14,7 @@ use Illuminate\Database\SQLiteConnection;
 
 abstract class AbstractEloquentTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Illuminate\Database\ConnectionInterface
-     */
-    private $conn;
+    private ?ConnectionInterface $conn = null;
 
     protected static function createItemsTable(Model $model): void
     {
@@ -62,9 +59,9 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
         /** @var \PDO $pdo */
         $pdo = $doctrineConn->getNativeConnection();
 
-        $conn = new SQLiteConnection($pdo);
-        $conn->setSchemaGrammar(new SQLiteGrammar());
+        $this->conn = new SQLiteConnection($pdo);
+        $this->conn->setSchemaGrammar(new SQLiteGrammar());
 
-        return $this->conn = $conn;
+        return $this->conn;
     }
 }

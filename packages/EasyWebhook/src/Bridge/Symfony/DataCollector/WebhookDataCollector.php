@@ -17,17 +17,12 @@ final class WebhookDataCollector extends DataCollector
      */
     public const NAME = 'easy_webhook.data_collector';
 
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
-     */
-    private $webhookClient;
-
-    public function __construct(WebhookClientInterface $webhookClient)
-    {
-        $this->webhookClient = $webhookClient;
+    public function __construct(
+        private WebhookClientInterface $webhookClient,
+    ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $this->setMiddleware();
         $this->setResults();

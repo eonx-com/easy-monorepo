@@ -15,20 +15,11 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var null|\Symfony\Component\HttpFoundation\Request
-     */
-    private static $request;
+    private static ?Request $request = null;
 
-    /**
-     * @var null|string
-     */
-    private $config;
-
-    public function __construct(?string $config = null)
-    {
-        $this->config = $config;
-
+    public function __construct(
+        private ?string $config = null,
+    ) {
         parent::__construct('test', true);
     }
 

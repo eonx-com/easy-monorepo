@@ -18,8 +18,5 @@ final class DateInterval extends Constraint
      */
     public const INVALID_DATE_INTERVAL_ERROR = 'INVALID_DATE_INTERVAL_ERROR';
 
-    /**
-     * @var string
-     */
-    public $message = 'This value is not a valid DateInterval.';
+    public string $message = 'This value is not a valid DateInterval.';
 }

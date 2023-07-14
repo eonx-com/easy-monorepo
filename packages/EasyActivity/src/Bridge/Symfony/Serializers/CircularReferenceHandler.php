@@ -10,14 +10,9 @@ use ReflectionProperty;
 
 final class CircularReferenceHandler implements CircularReferenceHandlerInterface
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
     /**

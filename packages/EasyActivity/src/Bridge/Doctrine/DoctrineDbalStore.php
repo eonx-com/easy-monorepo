@@ -11,29 +11,11 @@ use EonX\EasyActivity\Interfaces\StoreInterface;
 
 final class DoctrineDbalStore implements StoreInterface
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $connection;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\IdFactoryInterface
-     */
-    private $idFactory;
-
-    /**
-     * @var string
-     */
-    private $table;
-
     public function __construct(
-        IdFactoryInterface $idFactory,
-        Connection $connection,
-        string $table,
+        private IdFactoryInterface $idFactory,
+        private Connection $connection,
+        private string $table,
     ) {
-        $this->connection = $connection;
-        $this->idFactory = $idFactory;
-        $this->table = $table;
     }
 
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry

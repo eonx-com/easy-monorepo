@@ -8,10 +8,7 @@ use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
 
 trait ExpressionLanguageAwareTrait
 {
-    /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
-     */
-    private $expressionLanguage;
+    private ExpressionLanguageInterface $expressionLanguage;
 
     public function setExpressionLanguage(ExpressionLanguageInterface $expressionLanguage): void
     {

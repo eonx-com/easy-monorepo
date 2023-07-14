@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Session;
 
 use Bugsnag\Client;
+use Bugsnag\SessionTracker as BugsnagSessionTracker;
 use Nette\Utils\Strings;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,17 +14,11 @@ final class SessionTracker
     /**
      * @var string[]
      */
-    private $exclude;
+    private array $exclude;
 
-    /**
-     * @var string
-     */
-    private $excludeDelimiter;
+    private string $excludeDelimiter;
 
-    /**
-     * @var \Bugsnag\SessionTracker
-     */
-    private $sessionTracker;
+    private BugsnagSessionTracker $sessionTracker;
 
     /**
      * @param null|string[] $exclude

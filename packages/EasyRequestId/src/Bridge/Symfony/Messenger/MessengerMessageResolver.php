@@ -9,14 +9,9 @@ use Symfony\Component\Messenger\Envelope;
 
 final class MessengerMessageResolver
 {
-    /**
-     * @var \Symfony\Component\Messenger\Envelope
-     */
-    private $envelope;
-
-    public function __construct(Envelope $envelope)
-    {
-        $this->envelope = $envelope;
+    public function __construct(
+        private Envelope $envelope,
+    ) {
     }
 
     /**

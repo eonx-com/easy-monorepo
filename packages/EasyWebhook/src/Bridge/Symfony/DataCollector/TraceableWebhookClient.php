@@ -13,18 +13,13 @@ use EonX\EasyWebhook\WebhookClient;
 final class TraceableWebhookClient implements WebhookClientInterface
 {
     /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
-     */
-    private $decorated;
-
-    /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookResultInterface[]
      */
-    private $results = [];
+    private array $results = [];
 
-    public function __construct(WebhookClientInterface $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private WebhookClientInterface $decorated,
+    ) {
     }
 
     /**

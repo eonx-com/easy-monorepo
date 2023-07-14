@@ -9,7 +9,7 @@ trait AccountSummaryCodes
     /**
      * @var string[] $codeSummary
      */
-    private static $codeSummary = [
+    private static array $codeSummary = [
         '001' => 'Customer number',
         '003' => 'Number of segments for the account',
         '010' => 'Opening Balance',

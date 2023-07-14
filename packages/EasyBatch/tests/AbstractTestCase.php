@@ -20,46 +20,11 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchFactoryInterface|null
-     */
-    private $batchFactory = null;
+    private ?BatchFactoryInterface $batchFactory = null;
 
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchItemFactoryInterface|null
-     */
-    private $batchItemFactory = null;
+    private ?BatchItemFactoryInterface $batchItemFactory = null;
 
-    /**
-     * @var \EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface
-     */
-    private $batchObjectIdStrategy;
-
-    protected function getBatchFactory(): BatchFactoryInterface
-    {
-        return $this->batchFactory = $this->batchFactory ??
-            new BatchFactory(new BatchTransformer());
-    }
-
-    protected function getBatchItemFactory(): BatchItemFactoryInterface
-    {
-        return $this->batchItemFactory = $this->batchItemFactory ??
-            new BatchItemFactory(
-                new BatchItemTransformer(new MessageSerializer())
-            );
-    }
-
-    protected function getIdStrategy(): BatchObjectIdStrategyInterface
-    {
-        if ($this->batchObjectIdStrategy !== null) {
-            return $this->batchObjectIdStrategy;
-        }
-
-        $strategy = new UuidV4Strategy((new RandomGenerator())
-            ->setUuidV4Generator(new RamseyUuidV4Generator()));
-
-        return $this->batchObjectIdStrategy = $strategy;
-    }
+    private ?BatchObjectIdStrategyInterface $batchObjectIdStrategy = null;
 
     protected function tearDown(): void
     {
@@ -71,5 +36,42 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    protected function getBatchFactory(): BatchFactoryInterface
+    {
+        if ($this->batchFactory !== null) {
+            return $this->batchFactory;
+        }
+
+        $this->batchFactory = new BatchFactory(new BatchTransformer());
+
+        return $this->batchFactory;
+    }
+
+    protected function getBatchItemFactory(): BatchItemFactoryInterface
+    {
+        if ($this->batchItemFactory !== null) {
+            return $this->batchItemFactory;
+        }
+
+        $this->batchItemFactory = new BatchItemFactory(
+            new BatchItemTransformer(new MessageSerializer())
+        );
+
+        return $this->batchItemFactory;
+    }
+
+    protected function getIdStrategy(): BatchObjectIdStrategyInterface
+    {
+        if ($this->batchObjectIdStrategy !== null) {
+            return $this->batchObjectIdStrategy;
+        }
+
+        $this->batchObjectIdStrategy = new UuidV4Strategy(
+            (new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator())
+        );
+
+        return $this->batchObjectIdStrategy;
     }
 }

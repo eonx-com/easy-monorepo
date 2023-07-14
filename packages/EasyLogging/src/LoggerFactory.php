@@ -19,35 +19,29 @@ use Psr\Log\LoggerInterface;
 
 final class LoggerFactory implements LoggerFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $defaultChannel;
+    private string $defaultChannel;
 
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface[]
      */
-    private $handlerConfigs = [];
+    private array $handlerConfigs = [];
 
-    /**
-     * @var string
-     */
-    private $loggerClass;
+    private string $loggerClass;
 
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
      */
-    private $loggerConfigurators = [];
+    private array $loggerConfigurators = [];
 
     /**
      * @var \Monolog\Logger[]
      */
-    private $loggers = [];
+    private array $loggers = [];
 
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface[]
      */
-    private $processorConfigs = [];
+    private array $processorConfigs = [];
 
     public function __construct(?string $defaultChannel = null, ?string $loggerClass = null)
     {

@@ -22,11 +22,9 @@ final class JsonbType extends Type
     public const JSONB = 'jsonb';
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return null;
@@ -44,13 +42,9 @@ final class JsonbType extends Type
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return mixed
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value === '') {
             return null;
@@ -76,8 +70,6 @@ final class JsonbType extends Type
 
     /**
      * @param mixed[] $column
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {

@@ -4,21 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 trait EloquentPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
 
-    /**
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    private $model;
+    private Model $model;
 
-    /**
-     * @var int
-     */
-    private $totalItems;
+    private ?int $totalItems = null;
 
     /**
      * @return mixed[]
@@ -28,15 +24,12 @@ trait EloquentPaginatorTrait
         return $this->fetchItems();
     }
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $queryBuilder
-     */
-    private function applyPagination($queryBuilder): void
+    private function applyPagination(EloquentBuilder|QueryBuilder $queryBuilder): void
     {
         $queryBuilder->forPage($this->getCurrentPage(), $this->getItemsPerPage());
     }
 
-    private function createQueryBuilder(): Builder
+    private function createQueryBuilder(): EloquentBuilder
     {
         return $this->model->newQuery();
     }
@@ -52,7 +45,9 @@ trait EloquentPaginatorTrait
         $this->applyCommonCriteria($queryBuilder);
         $this->applyFilterCriteria($queryBuilder);
 
-        return $queryBuilder->count();
+        $this->totalItems = $queryBuilder->count();
+
+        return $this->totalItems;
     }
 
     /**
@@ -78,7 +73,7 @@ trait EloquentPaginatorTrait
     /**
      * @return mixed[]
      */
-    private function fetchItemsUsingPrimaryKeys(Builder $queryBuilder): array
+    private function fetchItemsUsingPrimaryKeys(EloquentBuilder $queryBuilder): array
     {
         $primaryKeyQueryBuilder = $this->createQueryBuilder();
 
@@ -114,7 +109,7 @@ trait EloquentPaginatorTrait
     /**
      * @return mixed[]
      */
-    private function fetchItemsUsingQuery(Builder $queryBuilder): array
+    private function fetchItemsUsingQuery(EloquentBuilder $queryBuilder): array
     {
         $this->applyFilterCriteria($queryBuilder);
         $this->applyPagination($queryBuilder);
@@ -125,7 +120,7 @@ trait EloquentPaginatorTrait
     /**
      * @return mixed[]
      */
-    private function fetchResults(Builder $queryBuilder): array
+    private function fetchResults(EloquentBuilder $queryBuilder): array
     {
         /** @var \Illuminate\Database\Eloquent\Collection<array-key, \Illuminate\Database\Eloquent\Model> $result */
         $result = $queryBuilder->get();

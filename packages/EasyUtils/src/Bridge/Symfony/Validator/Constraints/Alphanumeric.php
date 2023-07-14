@@ -18,8 +18,5 @@ final class Alphanumeric extends Constraint
      */
     public const INVALID_ALPHANUMERIC_ERROR = 'INVALID_ALPHANUMERIC_ERROR';
 
-    /**
-     * @var string
-     */
-    public $message = 'This value may only contain letters and numbers.';
+    public string $message = 'This value may only contain letters and numbers.';
 }

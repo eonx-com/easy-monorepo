@@ -12,19 +12,12 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface
-     */
-    private $bodyFormatter;
+    private JsonFormatter $jsonFormatter;
 
-    /**
-     * @var \EonX\EasyWebhook\Formatters\JsonFormatter
-     */
-    private $jsonFormatter;
-
-    public function __construct(WebhookBodyFormatterInterface $bodyFormatter, ?int $priority = null)
-    {
-        $this->bodyFormatter = $bodyFormatter;
+    public function __construct(
+        private WebhookBodyFormatterInterface $bodyFormatter,
+        ?int $priority = null,
+    ) {
         $this->jsonFormatter = new JsonFormatter();
 
         parent::__construct($priority);

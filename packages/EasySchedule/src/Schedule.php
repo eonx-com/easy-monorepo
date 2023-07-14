@@ -10,15 +10,12 @@ use Symfony\Component\Console\Application;
 
 final class Schedule implements ScheduleInterface
 {
-    /**
-     * @var \Symfony\Component\Console\Application
-     */
-    private $app;
+    private Application $app;
 
     /**
      * @var \EonX\EasySchedule\Interfaces\EventInterface[]
      */
-    private $events = [];
+    private array $events = [];
 
     /**
      * @param \EonX\EasySchedule\Interfaces\ScheduleProviderInterface[] $providers
@@ -37,7 +34,8 @@ final class Schedule implements ScheduleInterface
      */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
-        $this->events[] = $event = new Event($command, $parameters);
+        $event = new Event($command, $parameters);
+        $this->events[] = $event;
 
         return $event;
     }

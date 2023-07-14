@@ -13,17 +13,13 @@ class Type
 {
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
-     *
-     * @var string
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
-     *
-     * @var string
      */
-    private $title;
+    private string $title;
 
     public function __construct(string $description, string $title)
     {

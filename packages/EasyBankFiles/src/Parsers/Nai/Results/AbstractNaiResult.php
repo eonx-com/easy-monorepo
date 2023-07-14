@@ -9,19 +9,12 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 abstract class AbstractNaiResult extends BaseResult
 {
     /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface
-     */
-    protected $context;
-
-    /**
-     * AbstractNaiResult constructor.
-     *
      * @param mixed[]|null $data
      */
-    public function __construct(ResultsContextInterface $context, ?array $data = null)
-    {
+    public function __construct(
+        protected ResultsContextInterface $context,
+        ?array $data = null,
+    ) {
         parent::__construct($data);
-
-        $this->context = $context;
     }
 }

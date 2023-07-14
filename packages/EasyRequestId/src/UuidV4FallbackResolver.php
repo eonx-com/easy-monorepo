@@ -9,23 +9,18 @@ use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 
 final class UuidV4FallbackResolver implements FallbackResolverInterface
 {
-    /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
-     */
-    private $random;
-
-    public function __construct(RandomGeneratorInterface $random)
-    {
-        $this->random = $random;
+    public function __construct(
+        private RandomGeneratorInterface $randomGenerator,
+    ) {
     }
 
     public function fallbackCorrelationId(): string
     {
-        return $this->random->uuidV4();
+        return $this->randomGenerator->uuidV4();
     }
 
     public function fallbackRequestId(): string
     {
-        return $this->random->uuidV4();
+        return $this->randomGenerator->uuidV4();
     }
 }

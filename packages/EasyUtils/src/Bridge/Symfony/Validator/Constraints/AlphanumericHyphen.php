@@ -18,8 +18,5 @@ final class AlphanumericHyphen extends Constraint
      */
     public const INVALID_ALPHANUMERIC_HYPHEN_ERROR = 'INVALID_ALPHANUMERIC_HYPHEN_ERROR';
 
-    /**
-     * @var string
-     */
-    public $message = 'This value may only contain letters, numbers, and hyphens.';
+    public string $message = 'This value may only contain letters, numbers, and hyphens.';
 }

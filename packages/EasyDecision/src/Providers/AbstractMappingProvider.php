@@ -12,7 +12,7 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
     /**
      * @var string[]
      */
-    protected $typesMapping = [];
+    protected array $typesMapping = [];
 
     public function getDecisionType(string $name): string
     {

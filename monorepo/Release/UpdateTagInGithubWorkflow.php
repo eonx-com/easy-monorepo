@@ -13,9 +13,9 @@ final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
 {
     private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 
-    public function __construct(private SmartFileSystem $smartFileSystem)
-    {
-        // The body is not required
+    public function __construct(
+        private SmartFileSystem $smartFileSystem,
+    ) {
     }
 
     public function getDescription(Version $version): string

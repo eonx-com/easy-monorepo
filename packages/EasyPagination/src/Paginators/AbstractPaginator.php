@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
 
+use Closure;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Interfaces\PaginatorInterface;
 
@@ -19,10 +20,7 @@ abstract class AbstractPaginator implements PaginatorInterface
      */
     private ?array $transformedItems = null;
 
-    /**
-     * @var null|callable
-     */
-    private $transformer;
+    private ?Closure $transformer = null;
 
     /**
      * @var string[]
@@ -88,16 +86,11 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function setTransformer(?callable $transformer = null): PaginatorInterface
     {
-        $this->transformer = $transformer;
+        $this->transformer = $transformer === null ? null : Closure::fromCallable($transformer);
         $this->transformedItems = null;
 
         return $this;
     }
-
-    /**
-     * @return mixed[]
-     */
-    abstract protected function doGetItems(): array;
 
     /**
      * @return mixed[]
@@ -114,4 +107,9 @@ abstract class AbstractPaginator implements PaginatorInterface
             ],
         ];
     }
+
+    /**
+     * @return mixed[]
+     */
+    abstract protected function doGetItems(): array;
 }

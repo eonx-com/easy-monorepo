@@ -8,14 +8,9 @@ use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 
 final class ShutdownStrategyListener
 {
-    /**
-     * @var \EonX\EasyBugsnag\Shutdown\ShutdownStrategy
-     */
-    private $shutdownStrategy;
-
-    public function __construct(ShutdownStrategy $shutdownStrategy)
-    {
-        $this->shutdownStrategy = $shutdownStrategy;
+    public function __construct(
+        private ShutdownStrategy $shutdownStrategy,
+    ) {
     }
 
     public function __invoke(): void

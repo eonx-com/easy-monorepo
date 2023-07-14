@@ -15,25 +15,12 @@ use Throwable;
 
 final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
 {
-    /**
-     * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
-     */
-    private $deferredEntityEventDispatcher;
-
-    /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     public function __construct(
-        DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
-        EventDispatcherInterface $eventDispatcher,
+        private DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $wrapped,
     ) {
         parent::__construct($wrapped);
-
-        $this->deferredEntityEventDispatcher = $deferredEntityEventDispatcher;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function commit(): void

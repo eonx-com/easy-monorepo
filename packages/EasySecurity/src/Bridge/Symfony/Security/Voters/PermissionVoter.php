@@ -13,36 +13,23 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class PermissionVoter extends Voter
 {
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
-
-    public function __construct(SecurityContextResolverInterface $securityContextResolver)
-    {
-        $this->securityContextResolver = $securityContextResolver;
+    public function __construct(
+        private SecurityContextResolverInterface $securityContextResolver,
+    ) {
     }
 
-    /**
-     * @param string $attribute An attribute
-     * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
-     */
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $this->securityContextResolver
             ->resolveContext()
             ->getAuthorizationMatrix()
-            ->isPermission((string)$attribute);
+            ->isPermission($attribute);
     }
 
-    /**
-     * @param string $attribute
-     * @param mixed $subject
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         return $this->securityContextResolver
             ->resolveContext()
-            ->hasPermission((string)$attribute);
+            ->hasPermission($attribute);
     }
 }

@@ -15,24 +15,18 @@ class Author
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="text", length=256)
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="integer", length=256)
-     *
-     * @var int
      */
-    private $position;
+    private int $position;
 
     public function getId(): int
     {

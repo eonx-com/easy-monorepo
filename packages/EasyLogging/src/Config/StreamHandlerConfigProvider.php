@@ -5,53 +5,40 @@ declare(strict_types=1);
 namespace EonX\EasyLogging\Config;
 
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
+use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
-    /**
-     * @var null|string[]
-     */
-    private $channels;
-
-    /**
-     * @var null|string[]
-     */
-    private $exceptChannels;
-
-    /**
-     * @var null|int
-     */
-    private $priority;
+    private int $level;
 
     /**
      * @var resource|string
      */
-    private $stream;
-
-    /**
-     * @var int
-     */
-    private $level;
+    private mixed $stream;
 
     /**
      * @param null|resource|string $stream
-     * @param null|mixed[] $channels
-     * @param null|mixed[] $exceptChannels
+     * @param null|string[] $channels
+     * @param null|string[] $exceptChannels
      */
     public function __construct(
-        $stream = null,
+        mixed $stream = null,
         ?int $level = null,
-        ?array $channels = null,
-        ?array $exceptChannels = null,
-        ?int $priority = null,
+        private ?array $channels = null,
+        private ?array $exceptChannels = null,
+        private ?int $priority = null,
     ) {
+        if ($stream !== null && \is_string($stream) === false && \is_resource($stream) === false) {
+            throw new InvalidArgumentException(\sprintf(
+                'Stream must be "null", "string" or "resource", "%s" given',
+                \gettype($stream)
+            ));
+        }
+
         $this->stream = $stream ?? 'php://stdout';
         $this->level = $level ?? Logger::DEBUG;
-        $this->channels = $channels;
-        $this->exceptChannels = $exceptChannels ?? ['event'];
-        $this->priority = $priority;
     }
 
     /**
@@ -64,7 +51,7 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
         $handlerConfig = HandlerConfig::create(new StreamHandler($this->stream, $this->level));
         $handlerConfig
             ->channels($this->channels)
-            ->exceptChannels($this->exceptChannels)
+            ->exceptChannels($this->exceptChannels ?? ['event'])
             ->priority($this->priority);
 
         yield $handlerConfig;

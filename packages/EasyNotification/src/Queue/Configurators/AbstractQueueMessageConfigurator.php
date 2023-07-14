@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Queue\Configurators;
 
 use EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface;
+use EonX\EasyUtils\Traits\HasPriorityTrait;
 
 abstract class AbstractQueueMessageConfigurator implements QueueMessageConfiguratorInterface
 {
-    /**
-     * @var int
-     */
-    private $priority;
+    use HasPriorityTrait;
 
     public function __construct(?int $priority = null)
     {
-        $this->priority = $priority ?? 0;
+        $this->doSetPriority($priority);
     }
 
     public function getPriority(): int

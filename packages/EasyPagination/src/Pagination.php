@@ -4,50 +4,27 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination;
 
+use Closure;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use Spatie\Url\Url;
 
 final class Pagination implements PaginationInterface
 {
-    /**
-     * @var int
-     */
-    private $page;
+    private string $pageAttribute;
 
-    /**
-     * @var string
-     */
-    private $pageAttribute;
+    private string $perPageAttribute;
 
-    /**
-     * @var int
-     */
-    private $perPage;
+    private string $url;
 
-    /**
-     * @var string
-     */
-    private $perPageAttribute;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var null|callable
-     */
-    private $urlResolver;
+    private ?Closure $urlResolver = null;
 
     public function __construct(
-        int $page,
-        int $perPage,
+        private int $page,
+        private int $perPage,
         ?string $pageAttribute = null,
         ?string $perPageAttribute = null,
         ?string $url = null,
     ) {
-        $this->page = $page;
-        $this->perPage = $perPage;
         $this->pageAttribute = $pageAttribute ?? self::DEFAULT_PAGE_ATTRIBUTE;
         $this->perPageAttribute = $perPageAttribute ?? self::DEFAULT_PER_PAGE_ATTRIBUTE;
         $this->url = $url ?? self::DEFAULT_URL;
@@ -92,7 +69,7 @@ final class Pagination implements PaginationInterface
 
     public function setUrlResolver(?callable $urlResolver = null): PaginationInterface
     {
-        $this->urlResolver = $urlResolver;
+        $this->urlResolver = $urlResolver === null ? null : Closure::fromCallable($urlResolver);
 
         return $this;
     }

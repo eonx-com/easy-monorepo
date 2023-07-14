@@ -10,14 +10,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class PaginationFromRequestListener
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationProviderInterface
-     */
-    private $paginationProvider;
-
-    public function __construct(PaginationProviderInterface $paginationProvider)
-    {
-        $this->paginationProvider = $paginationProvider;
+    public function __construct(
+        private PaginationProviderInterface $paginationProvider,
+    ) {
     }
 
     public function __invoke(RequestEvent $event): void

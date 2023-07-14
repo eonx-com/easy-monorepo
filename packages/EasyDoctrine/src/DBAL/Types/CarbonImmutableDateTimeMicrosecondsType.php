@@ -15,8 +15,6 @@ use Doctrine\DBAL\Types\DateTimeImmutableType;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
-    private static ?DateTimeZone $utc = null;
-
     /**
      * @var string
      */
@@ -37,12 +35,12 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
      */
     public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
 
+    private static ?DateTimeZone $utc = null;
+
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return $value;
@@ -56,11 +54,9 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?CarbonImmutable
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?CarbonImmutable
     {
         if ($value === null || $value instanceof CarbonImmutable) {
             return $value;

@@ -10,10 +10,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
      * @param class-string $concrete
@@ -39,19 +36,14 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
     private function createApplication(?bool $pretendInConsole = null): Application
     {
         return new class(__DIR__, $pretendInConsole) extends Application {
-            /**
-             * @var null|bool
-             */
-            private $runningInConsole;
-
-            public function __construct(?string $basePath = null, ?bool $runningInConsole = null)
-            {
+            public function __construct(
+                ?string $basePath = null,
+                private ?bool $runningInConsole = null,
+            ) {
                 parent::__construct($basePath);
-
-                $this->runningInConsole = $runningInConsole;
             }
 
-            public function runningInConsole()
+            public function runningInConsole(): bool
             {
                 return $this->runningInConsole ?? false;
             }

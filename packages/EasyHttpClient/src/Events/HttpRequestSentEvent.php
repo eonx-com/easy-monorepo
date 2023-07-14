@@ -12,44 +12,20 @@ use Throwable;
 final class HttpRequestSentEvent
 {
     /**
-     * @var mixed
+     * @var mixed[]
      */
-    private $extra;
-
-    /**
-     * @var \EonX\EasyHttpClient\Interfaces\RequestDataInterface
-     */
-    private $requestData;
-
-    /**
-     * @var null|\EonX\EasyHttpClient\Interfaces\ResponseDataInterface
-     */
-    private $responseData;
-
-    /**
-     * @var null|\Throwable
-     */
-    private $throwable;
-
-    /**
-     * @var null|\DateTimeInterface
-     */
-    private $throwableThrownAt;
+    private array $extra;
 
     /**
      * @param null|mixed[] $extra
      */
     public function __construct(
-        RequestDataInterface $requestData,
-        ?ResponseDataInterface $responseData = null,
-        ?Throwable $throwable = null,
-        ?DateTimeInterface $throwableThrownAt = null,
+        private RequestDataInterface $requestData,
+        private ?ResponseDataInterface $responseData = null,
+        private ?Throwable $throwable = null,
+        private ?DateTimeInterface $throwableThrownAt = null,
         ?array $extra = null,
     ) {
-        $this->requestData = $requestData;
-        $this->responseData = $responseData;
-        $this->throwable = $throwable;
-        $this->throwableThrownAt = $throwableThrownAt;
         $this->extra = $extra ?? [];
     }
 

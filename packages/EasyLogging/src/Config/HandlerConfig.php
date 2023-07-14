@@ -9,14 +9,9 @@ use Monolog\Handler\HandlerInterface;
 
 final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfigInterface
 {
-    /**
-     * @var \Monolog\Handler\HandlerInterface
-     */
-    private $handler;
-
-    public function __construct(HandlerInterface $handler)
-    {
-        $this->handler = $handler;
+    public function __construct(
+        private HandlerInterface $handler,
+    ) {
     }
 
     public static function create(HandlerInterface $handler): HandlerConfigInterface

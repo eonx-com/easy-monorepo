@@ -18,7 +18,6 @@ final class TagVersionReleaseWorker implements ReleaseWorkerInterface
         private readonly ClientInterface $httpClient,
         private readonly ProcessRunner $processRunner
     ) {
-        // The body is not required
     }
 
     public function getDescription(Version $version): string

@@ -10,21 +10,11 @@ use Illuminate\Contracts\Cache\Repository;
 
 final class SessionTrackingConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var \Illuminate\Contracts\Cache\Repository
-     */
-    private $cache;
-
-    /**
-     * @var int
-     */
-    private $expiresAfter;
-
-    public function __construct(Repository $cache, int $expiresAfter, ?int $priority = null)
-    {
-        $this->cache = $cache;
-        $this->expiresAfter = $expiresAfter;
-
+    public function __construct(
+        private Repository $cache,
+        private int $expiresAfter,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

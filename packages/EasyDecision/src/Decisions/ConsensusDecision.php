@@ -6,22 +6,13 @@ namespace EonX\EasyDecision\Decisions;
 
 final class ConsensusDecision extends AbstractDecision
 {
-    /**
-     * @var int
-     */
-    private $countFalse;
+    private int $countFalse = 0;
 
-    /**
-     * @var int
-     */
-    private $countTrue;
+    private int $countTrue = 0;
 
-    /**
-     * @param mixed $output
-     */
-    protected function doHandleRuleOutput($output): void
+    protected function doHandleRuleOutput(mixed $output): void
     {
-        (bool)$output ? $this->countTrue++ : $this->countFalse++;
+        $output ? $this->countTrue++ : $this->countFalse++;
     }
 
     protected function doMake(): bool

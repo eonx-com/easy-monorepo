@@ -9,37 +9,19 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 
 final class RequestIdService implements RequestIdServiceInterface
 {
-    /**
-     * @var null|string
-     */
-    private $correlationId;
+    private ?string $correlationId = null;
 
-    /**
-     * @var string
-     */
-    private $correlationIdHeaderName;
+    private string $correlationIdHeaderName;
 
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\FallbackResolverInterface
-     */
-    private $fallback;
+    private ?string $requestId = null;
 
-    /**
-     * @var null|string
-     */
-    private $requestId;
-
-    /**
-     * @var string
-     */
-    private $requestIdHeaderName;
+    private string $requestIdHeaderName;
 
     public function __construct(
-        FallbackResolverInterface $fallback,
+        private FallbackResolverInterface $fallback,
         ?string $correlationIdHeaderName = null,
         ?string $requestIdHeaderName = null,
     ) {
-        $this->fallback = $fallback;
         $this->correlationIdHeaderName = $correlationIdHeaderName ?? self::DEFAULT_HTTP_HEADER_CORRELATION_ID;
         $this->requestIdHeaderName = $requestIdHeaderName ?? self::DEFAULT_HTTP_HEADER_REQUEST_ID;
     }

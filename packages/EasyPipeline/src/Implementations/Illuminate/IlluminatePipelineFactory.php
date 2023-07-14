@@ -16,33 +16,18 @@ use Illuminate\Pipeline\Pipeline;
 final class IlluminatePipelineFactory implements PipelineFactoryInterface
 {
     /**
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    private $container;
-
-    /**
-     * @var string[]
-     */
-    private $pipelines;
-
-    /**
-     * @var null|string
-     */
-    private $prefix;
-
-    /**
      * @var \EonX\EasyPipeline\Interfaces\PipelineInterface[]
      */
-    private $resolved = [];
+    private array $resolved = [];
 
     /**
      * @param string[] $pipelines
      */
-    public function __construct(ContainerInterface $container, array $pipelines, ?string $prefix = null)
-    {
-        $this->container = $container;
-        $this->pipelines = $pipelines;
-        $this->prefix = $prefix;
+    public function __construct(
+        private ContainerInterface $container,
+        private array $pipelines,
+        private ?string $prefix = null,
+    ) {
     }
 
     public function create(string $pipeline): PipelineInterface

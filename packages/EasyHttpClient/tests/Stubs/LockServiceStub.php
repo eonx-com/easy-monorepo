@@ -11,15 +11,9 @@ use Symfony\Component\Lock\LockInterface;
 
 final class LockServiceStub implements LockServiceInterface
 {
-    /**
-     * @var bool
-     */
-    private $canProcess;
+    private bool $canProcess;
 
-    /**
-     * @var \EonX\EasyLock\Interfaces\LockDataInterface
-     */
-    private $lockData;
+    private LockDataInterface $lockData;
 
     public function __construct(?bool $canProcess = null)
     {
@@ -36,10 +30,7 @@ final class LockServiceStub implements LockServiceInterface
         return $this->lockData;
     }
 
-    /**
-     * @return null|mixed
-     */
-    public function processWithLock(LockDataInterface $lockData, Closure $func)
+    public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
     {
         $this->lockData = $lockData;
 

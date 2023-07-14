@@ -12,20 +12,14 @@ use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
 
 abstract class BaseGenerator implements GeneratorInterface
 {
-    /**
-     * @var string
-     */
-    protected $breakLine = self::BREAK_LINE_WINDOWS;
+    protected string $breakLine = self::BREAK_LINE_WINDOWS;
 
-    /**
-     * @var string
-     */
-    protected $contents = '';
+    protected string $contents = '';
 
     /**
      * @var string[] $validationRules
      */
-    private static $validationRules = [
+    private static array $validationRules = [
         self::VALIDATION_RULE_ALPHA => '/[^A-Za-z0-9 &\',-\.\/\+\$\!%\(\)\*\#=:\?\[\]_\^@]/',
         self::VALIDATION_RULE_NUMERIC => '/[^0-9-]/',
         self::VALIDATION_RULE_BSB => '/^\d{3}(\-)\d{3}/',

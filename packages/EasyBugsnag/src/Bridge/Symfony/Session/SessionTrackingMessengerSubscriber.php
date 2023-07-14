@@ -11,14 +11,9 @@ use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 
 final class SessionTrackingMessengerSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var \Bugsnag\Client
-     */
-    private $client;
-
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
+    public function __construct(
+        private Client $client,
+    ) {
     }
 
     /**

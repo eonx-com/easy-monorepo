@@ -8,15 +8,12 @@ use Mockery\LegacyMockInterface;
 
 abstract class AbstractWithMockTestCase extends AbstractTestCase
 {
-    /**
-     * @param mixed $target
-     */
-    protected function mock($target, ?callable $expectations = null): LegacyMockInterface
+    protected function mock(mixed $target, ?callable $expectations = null): LegacyMockInterface
     {
         $mock = \Mockery::mock($target);
 
         if ($expectations !== null) {
-            \call_user_func($expectations, $mock);
+            $expectations($mock);
         }
 
         return $mock;

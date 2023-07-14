@@ -13,10 +13,7 @@ use EonX\EasyBankFiles\Parsers\BaseParser;
 
 abstract class Parser extends BaseParser
 {
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Ack\Results\PaymentAcknowledgement
-     */
-    protected $acknowledgement;
+    protected PaymentAcknowledgement $acknowledgement;
 
     public function __construct(string $contents)
     {

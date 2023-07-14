@@ -8,33 +8,16 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 
 class RuleStub implements RuleInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private int $priority;
 
-    /**
-     * @var mixed
-     */
-    private $output;
+    private bool $supports;
 
-    /**
-     * @var int
-     */
-    private $priority;
-
-    /**
-     * @var bool
-     */
-    private $supports;
-
-    /**
-     * @param mixed $output
-     */
-    public function __construct(string $name, $output, ?bool $supports = null, ?int $priority = null)
-    {
-        $this->name = $name;
-        $this->output = $output;
+    public function __construct(
+        private string $name,
+        private mixed $output,
+        ?bool $supports = null,
+        ?int $priority = null,
+    ) {
         $this->supports = $supports ?? true;
         $this->priority = $priority ?? 0;
     }
@@ -46,10 +29,8 @@ class RuleStub implements RuleInterface
 
     /**
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    public function proceed(array $input)
+    public function proceed(array $input): mixed
     {
         return $this->output;
     }

@@ -54,62 +54,44 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @var mixed[]
      */
-    private $accounts = [];
+    private array $accounts = [];
+
+    private ?int $currentAccount = null;
+
+    private ?int $currentGroup = null;
+
+    private int $currentLineNumber;
 
     /**
      * @var int|null
      */
-    private $currentAccount;
-
-    /**
-     * @var int|null
-     */
-    private $currentGroup;
-
-    /**
-     * @var int
-     */
-    private $currentLineNumber;
-
-    /**
-     * @var int|null
-     */
-    private $currentTransaction;
+    private ?int $currentTransaction = null;
 
     /**
      * @var mixed[]
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * @var mixed[]
      */
-    private $file = [];
+    private array $file = [];
 
     /**
      * @var mixed[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var string
-     */
-    private $previousCode;
+    private string $previousCode;
 
-    /**
-     * @var bool
-     */
-    private $previousFull = true;
+    private bool $previousFull = true;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
-     */
-    private $resultsContext;
+    private ResultsContext $resultsContext;
 
     /**
      * @var mixed[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * Get accounts.

@@ -8,6 +8,7 @@ use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -15,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \Throwable|null
-     */
-    protected $thrownException = null;
+    protected ?Throwable $thrownException = null;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
@@ -40,10 +38,6 @@ abstract class AbstractTestCase extends TestCase
         ?string $previousException = null,
     ): void {
         self::assertNotNull($this->thrownException);
-
-        if ($this->thrownException === null) {
-            return;
-        }
 
         if ($this->thrownException instanceof $expectedException === false) {
             throw $this->thrownException;

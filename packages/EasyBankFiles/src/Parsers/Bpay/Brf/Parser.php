@@ -28,24 +28,18 @@ final class Parser extends AbstractLineByLineParser
     private const TRANSACTION = '50';
 
     /**
-     * @var mixed[] $errors
+     * @var \EonX\EasyBankFiles\Parsers\Error[] $errors
      */
-    protected $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Header
-     */
-    protected $header;
+    private Header $header;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
-     */
-    protected $trailer;
+    private Trailer $trailer;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Transaction[] $transactions
      */
-    protected $transactions = [];
+    private array $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]

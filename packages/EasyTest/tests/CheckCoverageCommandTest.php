@@ -102,7 +102,7 @@ final class CheckCoverageCommandTest extends AbstractTestCase
      */
     public function testCheckCoverage(array $inputs, string $expectedOutput): void
     {
-        $output = $this->executeCommand('check-coverage', $inputs);
+        $output = $this->executeCommand('easy-test:check-coverage', $inputs);
 
         self::assertStringContainsString($expectedOutput, $output);
     }
@@ -120,6 +120,6 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     {
         $this->expectException($expectedException);
 
-        $this->executeCommand('check-coverage', $inputs);
+        $this->executeCommand('easy-test:check-coverage', $inputs);
     }
 }

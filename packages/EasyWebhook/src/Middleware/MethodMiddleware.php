@@ -10,10 +10,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class MethodMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     public function __construct(?string $method = null, ?int $priority = null)
     {

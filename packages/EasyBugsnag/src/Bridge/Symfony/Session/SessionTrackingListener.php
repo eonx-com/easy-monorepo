@@ -9,14 +9,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class SessionTrackingListener
 {
-    /**
-     * @var \EonX\EasyBugsnag\Session\SessionTracker
-     */
-    private $sessionTracker;
-
-    public function __construct(SessionTracker $sessionTracker)
-    {
-        $this->sessionTracker = $sessionTracker;
+    public function __construct(
+        private SessionTracker $sessionTracker,
+    ) {
     }
 
     public function __invoke(RequestEvent $event): void

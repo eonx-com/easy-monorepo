@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\ORM\Query\AST\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Literal;
+use Doctrine\ORM\Query\AST\OrderByClause;
 use Doctrine\ORM\Query\AST\PathExpression;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
@@ -12,25 +14,13 @@ use Doctrine\ORM\Query\SqlWalker;
 
 final class StringAgg extends FunctionNode
 {
-    /**
-     * @var \Doctrine\ORM\Query\AST\Literal
-     */
-    private $delimiter;
+    private Literal $delimiter;
 
-    /**
-     * @var \Doctrine\ORM\Query\AST\PathExpression
-     */
-    private $expression;
+    private PathExpression $expression;
 
-    /**
-     * @var bool
-     */
-    private $isDistinct = false;
+    private bool $isDistinct = false;
 
-    /**
-     * @var \Doctrine\ORM\Query\AST\OrderByClause
-     */
-    private $orderBy;
+    private ?OrderByClause $orderBy = null;
 
     /**
      * @throws \Doctrine\ORM\Query\QueryException

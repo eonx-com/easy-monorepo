@@ -15,10 +15,7 @@ use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
 
 abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    private $manager;
+    private ?EntityManagerInterface $manager = null;
 
     protected static function addItemToTable(EntityManagerInterface $manager, string $title): Item
     {
@@ -77,7 +74,9 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
-        return $this->manager = EntityManager::create($conn, $config);
+        $this->manager = EntityManager::create($conn, $config);
+
+        return $this->manager;
     }
 
     /**

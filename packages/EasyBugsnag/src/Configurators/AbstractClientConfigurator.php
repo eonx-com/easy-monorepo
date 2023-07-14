@@ -8,10 +8,7 @@ use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
 
 abstract class AbstractClientConfigurator implements ClientConfiguratorInterface
 {
-    /**
-     * @var int
-     */
-    private $priority;
+    private int $priority;
 
     public function __construct(?int $priority = null)
     {

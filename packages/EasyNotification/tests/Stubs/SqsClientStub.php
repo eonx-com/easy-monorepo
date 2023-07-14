@@ -11,7 +11,7 @@ final class SqsClientStub extends SqsClient
     /**
      * @var mixed[]
      */
-    private $calls = [];
+    private array $calls = [];
 
     public function __construct()
     {

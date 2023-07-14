@@ -30,7 +30,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
     /**
      * @var string[]
      */
-    protected static $configurators = [
+    protected static array $configurators = [
         PushBodyConfigurator::class,
         RealTimeBodyConfigurator::class,
         SlackBodyConfigurator::class,

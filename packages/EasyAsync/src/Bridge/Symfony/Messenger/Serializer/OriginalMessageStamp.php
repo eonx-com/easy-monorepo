@@ -9,22 +9,12 @@ use Symfony\Component\Messenger\Stamp\NonSendableStampInterface;
 final class OriginalMessageStamp implements NonSendableStampInterface
 {
     /**
-     * @var string
-     */
-    private $body;
-
-    /**
-     * @var mixed[]
-     */
-    private $headers;
-
-    /**
      * @param mixed[] $headers
      */
-    public function __construct(string $body, array $headers)
-    {
-        $this->body = $body;
-        $this->headers = $headers;
+    public function __construct(
+        private string $body,
+        private array $headers,
+    ) {
     }
 
     /**

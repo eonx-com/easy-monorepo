@@ -8,11 +8,10 @@ use EonX\EasyUtils\CreditCard\CreditCardNumberValidatorInterface;
 
 final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
 {
-    private CreditCardNumberValidatorInterface $creditCardNumberValidator;
-
-    public function __construct(CreditCardNumberValidatorInterface $creditCardNumberValidator, ?int $priority = null)
-    {
-        $this->creditCardNumberValidator = $creditCardNumberValidator;
+    public function __construct(
+        private CreditCardNumberValidatorInterface $creditCardNumberValidator,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

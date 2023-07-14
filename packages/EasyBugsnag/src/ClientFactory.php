@@ -18,22 +18,13 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @var \EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface[]
      */
-    private $configurators;
+    private array $configurators;
 
-    /**
-     * @var null|\GuzzleHttp\ClientInterface
-     */
-    private $httpClient;
+    private ?ClientInterface $httpClient = null;
 
-    /**
-     * @var null|\Bugsnag\Request\ResolverInterface
-     */
-    private $requestResolver;
+    private ?ResolverInterface $requestResolver = null;
 
-    /**
-     * @var null|\Bugsnag\Shutdown\ShutdownStrategyInterface
-     */
-    private $shutdownStrategy;
+    private ?ShutdownStrategyInterface $shutdownStrategy = null;
 
     public function create(string $apiKey): Client
     {

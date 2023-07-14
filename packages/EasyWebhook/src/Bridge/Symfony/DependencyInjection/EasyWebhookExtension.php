@@ -25,17 +25,11 @@ final class EasyWebhookExtension extends Extension
     /**
      * @var mixed[]
      */
-    private $config;
+    private array $config;
 
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private $container;
+    private ContainerBuilder $container;
 
-    /**
-     * @var \Symfony\Component\DependencyInjection\Loader\PhpFileLoader
-     */
-    private $loader;
+    private PhpFileLoader $loader;
 
     /**
      * @param mixed[] $configs

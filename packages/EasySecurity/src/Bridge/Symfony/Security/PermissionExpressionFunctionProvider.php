@@ -15,24 +15,17 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
     /**
      * @var mixed[]
      */
-    private $cached = [];
+    private array $cached = [];
 
-    /**
-     * @var string[]
-     */
-    private $locations;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     /**
      * @param string[] $locations
      */
-    public function __construct(array $locations, ?LoggerInterface $logger = null)
-    {
-        $this->locations = $locations;
+    public function __construct(
+        private array $locations,
+        ?LoggerInterface $logger = null,
+    ) {
         $this->logger = $logger ?? new NullLogger();
     }
 
@@ -56,7 +49,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
 
                         try {
                             return \constant($constant);
-                        } catch (\Throwable $throwable) {
+                        } catch (\Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
                     }
