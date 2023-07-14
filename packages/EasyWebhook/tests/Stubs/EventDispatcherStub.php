@@ -13,7 +13,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookEventInterface[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
     public function dispatch(object $event): object
     {
