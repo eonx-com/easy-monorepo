@@ -23,7 +23,7 @@ abstract class AbstractEvent implements EventInterface
      */
     private array $rejects = [];
 
-    private DateTimeZone|string $timezone;
+    private null|DateTimeZone|string $timezone = null;
 
     public function at(string $time): EventInterface
     {
@@ -285,7 +285,7 @@ abstract class AbstractEvent implements EventInterface
     {
         $date = Carbon::now();
 
-        if ($this->timezone) {
+        if ($this->timezone !== null) {
             $date->setTimezone($this->timezone);
         }
 

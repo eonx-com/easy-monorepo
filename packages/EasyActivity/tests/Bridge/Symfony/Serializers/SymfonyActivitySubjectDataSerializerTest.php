@@ -179,6 +179,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ->setId(1)
             ->setMessage('some-message');
         $article = new Article();
+        $article->setId(2);
+        $article->setAuthor($author);
         $article->addComment($comment);
         $allowedProperties = [
             'comments' => ['article'],
@@ -192,9 +194,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
             'expectedResult' => \sprintf(
-                '{"comments":[{"article":{"author":null,"comments":' .
+                '{"comments":[{"article":{"author":{"id":1,"name":"John Doe","position":1},"comments":' .
                 '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#1 (circular reference)"],' .
-                '"createdAt":"%s","id":null},"id":1,"message":"some-message"}]}',
+                '"createdAt":"%s","id":2},"id":1,"message":"some-message"}]}',
                 $expectedCreatedAt
             ),
         ];

@@ -14,9 +14,9 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 
 final class DbalStatementsProvider
 {
-    private Closure $extendBatchItemsTable;
+    private ?Closure $extendBatchItemsTable = null;
 
-    private Closure $extendBatchesTable;
+    private ?Closure $extendBatchesTable = null;
 
     /**
      * @throws \Doctrine\DBAL\Exception

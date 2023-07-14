@@ -20,7 +20,7 @@ abstract class AbstractPaginator implements PaginatorInterface
      */
     private ?array $transformedItems = null;
 
-    private ?Closure $transformer;
+    private ?Closure $transformer = null;
 
     /**
      * @var string[]

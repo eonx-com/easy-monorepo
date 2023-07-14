@@ -15,7 +15,7 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 final class ExpressionLanguage implements ExpressionLanguageInterface
 {
-    private CacheItemPoolInterface $cache;
+    private ?CacheItemPoolInterface $cache = null;
 
     private BaseExpressionLanguage $expressionLanguage;
 

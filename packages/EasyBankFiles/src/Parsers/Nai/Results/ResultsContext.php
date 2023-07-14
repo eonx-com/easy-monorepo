@@ -35,7 +35,7 @@ final class ResultsContext implements ResultsContextInterface
      */
     private array $errors = [];
 
-    private File $file;
+    private ?File $file = null;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Group[]

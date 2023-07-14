@@ -233,20 +233,25 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         array $disallowedProperties,
         ?array $expectedDataProperties = null,
     ): void {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [
-                'allowed_properties' => $allowedProperties,
-                'disallowed_properties' => $disallowedProperties,
+        $factory = new ActivityLogFactoryStub(
+            [
+                Article::class => [
+                    'allowed_properties' => $allowedProperties,
+                    'disallowed_properties' => $disallowedProperties,
+                ],
             ],
-        ], $globalDisallowedProperties);
+            $globalDisallowedProperties
+        );
         $author = new Author();
         $author->setName('John');
         $author->setPosition(1);
         $author->setId(1);
+        $article = new Article();
+        $article->setId(2);
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
-            new Article(),
+            $article,
             [
                 'title' => ['Title 2', 'Title'],
                 'content' => ['Content 2', 'Content'],

@@ -14,7 +14,7 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
     /**
      * @var null|mixed[]
      */
-    private ?array $context;
+    private ?array $context = null;
 
     public function __construct(
         private string $name,

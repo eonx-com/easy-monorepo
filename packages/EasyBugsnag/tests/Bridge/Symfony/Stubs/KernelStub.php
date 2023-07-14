@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    private static ?Request $request;
+    private static ?Request $request = null;
 
     /**
      * @var string[]
