@@ -12,10 +12,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApplication(): Application
     {
@@ -23,14 +20,14 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyDecisionServiceProvider::class);
-        $app->boot();
+        $this->app = new Application(__DIR__);
+        $this->app->register(EasyDecisionServiceProvider::class);
+        $this->app->boot();
 
-        $app->singleton(RulesConfiguratorStub::class);
-        $app->tag(RulesConfiguratorStub::class, [BridgeConstantsInterface::TAG_DECISION_CONFIGURATOR]);
+        $this->app->singleton(RulesConfiguratorStub::class);
+        $this->app->tag(RulesConfiguratorStub::class, [BridgeConstantsInterface::TAG_DECISION_CONFIGURATOR]);
 
-        return $this->app = $app;
+        return $this->app;
     }
 
     protected function getDecisionFactory(): DecisionFactoryInterface

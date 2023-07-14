@@ -8,7 +8,7 @@ use EonX\EasyDecision\Decisions\AbstractDecision;
 
 final class DecisionStub extends AbstractDecision
 {
-    protected function doHandleRuleOutput($output): void
+    protected function doHandleRuleOutput(mixed $output): void
     {
         // No body needed.
     }

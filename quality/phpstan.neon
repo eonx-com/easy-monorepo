@@ -61,9 +61,6 @@ parameters:
         - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
           path: %currentWorkingDirectory%/packages/EasyAsync/tests
 
-        - message: '#Method EonX\\EasyAsync\\Tests\\Stubs\\EventDispatcherStub\:\:dispatch\(\) should return EonX\\EasyAsync\\Interfaces\\EasyAsyncEventInterface but returns object#'
-          path: %currentWorkingDirectory%/packages/EasyAsync/tests/Stubs/EventDispatcherStub.php
-
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
           path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
@@ -129,12 +126,6 @@ parameters:
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Illuminate
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$repository \(Doctrine\\ORM\\EntityRepository\) does not accept Doctrine\\Persistence\\ObjectRepository.#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM
-
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository::\$manager \(Doctrine\\ORM\\EntityManagerInterface\) does not accept Doctrine\\Persistence\\ObjectManager\|null.#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM
-
         - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\LegacyMockInterface.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests/Implementation/Illuminate
 
@@ -143,9 +134,6 @@ parameters:
 
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
-
-        - message: '#Cannot call method getRepository\(\) on Doctrine\\Persistence\\ObjectManager\|null#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractDoctrineOrmRepository.php
 
         - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
@@ -182,12 +170,6 @@ parameters:
 
         # ---- EasySwoole ----
         - '#Call to method (.*) on an unknown class OpenSwoole\\Table#'
-
-        - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/OutputHelper.php
-
-        - message: '#Trying to invoke \(callable\(\)\: mixed\)\|null but it might not be a callable#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/VarDumpHelper.php
 
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php

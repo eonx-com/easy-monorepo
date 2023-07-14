@@ -13,7 +13,7 @@ final class ArrayResultStore extends AbstractStore implements ResultStoreInterfa
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookResultInterface[]
      */
-    private $results = [];
+    private array $results = [];
 
     /**
      * @return \EonX\EasyWebhook\Interfaces\WebhookResultInterface[]

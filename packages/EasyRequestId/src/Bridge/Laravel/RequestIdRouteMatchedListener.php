@@ -12,14 +12,9 @@ final class RequestIdRouteMatchedListener
 {
     use ResolvesFromHttpFoundationRequest;
 
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService)
-    {
-        $this->requestIdService = $requestIdService;
+    public function __construct(
+        private RequestIdServiceInterface $requestIdService,
+    ) {
     }
 
     public function handle(RouteMatched $event): void

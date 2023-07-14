@@ -16,22 +16,16 @@ class ParentEntity
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    public $id;
+    public int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="\EonX\EasyPagination\Tests\Stubs\Entity\Item")
-     *
-     * @var \EonX\EasyPagination\Tests\Stubs\Entity\Item
      */
-    public $item;
+    public Item $item;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     *
-     * @var string
      */
-    public $title;
+    public ?string $title = null;
 }

@@ -12,7 +12,7 @@ final class AsyncDispatcherStub implements AsyncDispatcherInterface
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookInterface[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
     public function dispatch(WebhookInterface $webhook): void
     {

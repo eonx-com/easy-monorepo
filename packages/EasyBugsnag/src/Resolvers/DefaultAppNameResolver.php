@@ -8,14 +8,9 @@ use EonX\EasyBugsnag\Interfaces\AppNameResolverInterface;
 
 final class DefaultAppNameResolver implements AppNameResolverInterface
 {
-    /**
-     * @var string
-     */
-    private $appNameEnvVar;
-
-    public function __construct(string $appNameEnvVar)
-    {
-        $this->appNameEnvVar = $appNameEnvVar;
+    public function __construct(
+        private string $appNameEnvVar,
+    ) {
     }
 
     public function resolveAppName(): ?string

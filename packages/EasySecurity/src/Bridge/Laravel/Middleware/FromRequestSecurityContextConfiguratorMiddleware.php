@@ -11,28 +11,15 @@ use Illuminate\Http\Request;
 final class FromRequestSecurityContextConfiguratorMiddleware
 {
     /**
-     * @var iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface>
-     */
-    private $configurators;
-
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
-
-    /**
      * @param iterable<\EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface> $configurators
      */
-    public function __construct(SecurityContextResolverInterface $securityContextResolver, iterable $configurators)
-    {
-        $this->securityContextResolver = $securityContextResolver;
-        $this->configurators = $configurators;
+    public function __construct(
+        private SecurityContextResolverInterface $securityContextResolver,
+        private iterable $configurators,
+    ) {
     }
 
-    /**
-     * @return mixed
-     */
-    public function handle(Request $request, \Closure $next)
+    public function handle(Request $request, \Closure $next): mixed
     {
         $this->securityContextResolver->setConfigurator(new FromRequestConfigurator(
             $request,

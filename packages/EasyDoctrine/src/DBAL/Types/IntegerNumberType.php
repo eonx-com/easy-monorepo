@@ -13,7 +13,7 @@ final class IntegerNumberType extends DoctrineBigIntType
 {
     public const INTEGER_NUMBER = 'INTEGER_NUMBER';
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return null;
@@ -30,7 +30,7 @@ final class IntegerNumberType extends DoctrineBigIntType
         );
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Number
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Number
     {
         if ($value === null) {
             return null;

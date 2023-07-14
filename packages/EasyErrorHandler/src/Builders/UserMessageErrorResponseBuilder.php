@@ -34,7 +34,7 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
         }
 
         return $this->translator->trans(
-            $message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE,
+            $message ?? TranslatableExceptionInterface::USER_MESSAGE_DEFAULT,
             $parameters
         );
     }

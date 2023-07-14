@@ -22,10 +22,7 @@ use Symfony\Component\Serializer\Serializer;
 
 final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface
-     */
-    private $factory;
+    private ActivityLogEntryFactoryInterface $factory;
 
     /**
      * @param array<string, mixed> $subjects

@@ -11,7 +11,7 @@ trait TransactionDetailCodes
     /**
      * @var mixed[] $transactionCodes
      */
-    private static $transactionCodes = [
+    private static array $transactionCodes = [
         108 => [
             'cdrd' => 'CR',
             'description' => 'Deposit',

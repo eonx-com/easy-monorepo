@@ -17,12 +17,12 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {
-        if ($this->kernel === null) {
-            $kernel = new KernelStub($configs ?? []);
-            $kernel->boot();
-
-            $this->kernel = $kernel;
+        if ($this->kernel !== null) {
+            return $this->kernel;
         }
+
+        $this->kernel = new KernelStub($configs ?? []);
+        $this->kernel->boot();
 
         return $this->kernel;
     }

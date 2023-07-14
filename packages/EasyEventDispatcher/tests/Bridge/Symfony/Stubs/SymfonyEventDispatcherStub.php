@@ -11,7 +11,7 @@ final class SymfonyEventDispatcherStub implements EventDispatcherInterface
     /**
      * @var object[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
     /**
      * @param object $event The event to pass to the event handlers/listeners

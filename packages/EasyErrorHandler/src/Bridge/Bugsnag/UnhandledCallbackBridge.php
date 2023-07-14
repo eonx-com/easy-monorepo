@@ -13,7 +13,7 @@ final class UnhandledCallbackBridge
 
     public function __construct(callable $callback)
     {
-        $this->callback = $callback(...);
+        $this->callback = Closure::fromCallable($callback);
     }
 
     public function __invoke(Report $report, callable $next): void

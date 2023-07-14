@@ -9,20 +9,10 @@ use Throwable;
 
 final class NotSupportedMessage
 {
-    /**
-     * @var \EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\QueueEnvelopeInterface
-     */
-    private $envelope;
-
-    /**
-     * @var null|\Throwable
-     */
-    private $throwable;
-
-    public function __construct(QueueEnvelopeInterface $envelope, ?Throwable $throwable = null)
-    {
-        $this->envelope = $envelope;
-        $this->throwable = $throwable;
+    public function __construct(
+        private QueueEnvelopeInterface $envelope,
+        private ?Throwable $throwable = null,
+    ) {
     }
 
     public static function create(QueueEnvelopeInterface $envelope, ?Throwable $throwable = null): self

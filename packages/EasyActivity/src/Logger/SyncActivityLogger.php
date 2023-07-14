@@ -10,22 +10,10 @@ use EonX\EasyActivity\Interfaces\StoreInterface;
 
 final class SyncActivityLogger implements ActivityLoggerInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface
-     */
-    private $activityLogEntryFactory;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\StoreInterface
-     */
-    private $store;
-
     public function __construct(
-        ActivityLogEntryFactoryInterface $activityLogEntryFactory,
-        StoreInterface $store,
+        private ActivityLogEntryFactoryInterface $activityLogEntryFactory,
+        private StoreInterface $store,
     ) {
-        $this->activityLogEntryFactory = $activityLogEntryFactory;
-        $this->store = $store;
     }
 
     /**

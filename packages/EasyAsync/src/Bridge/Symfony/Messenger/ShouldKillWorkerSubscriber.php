@@ -13,20 +13,11 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
 final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var bool
-     */
-    private $shouldKillWorker = false;
+    private bool $shouldKillWorker = false;
 
     public function __construct(?LoggerInterface $logger = null)
     {

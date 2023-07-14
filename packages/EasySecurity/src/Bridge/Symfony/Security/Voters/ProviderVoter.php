@@ -14,37 +14,30 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class ProviderVoter extends Voter
 {
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
-
-    public function __construct(SecurityContextResolverInterface $securityContextResolver)
-    {
-        $this->securityContextResolver = $securityContextResolver;
+    public function __construct(
+        private SecurityContextResolverInterface $securityContextResolver,
+    ) {
     }
 
-    /**
-     * @param string $attribute An attribute
-     * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
-     */
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
-        if (($subject instanceof ProviderRestrictedInterface) === false) {
+        if ($subject instanceof ProviderRestrictedInterface === false) {
             return false;
         }
-
-        /** @var \EonX\EasySecurity\Interfaces\ProviderRestrictedInterface $subject */
 
         return $subject->getRestrictedProviderUniqueId() !== null;
     }
 
-    /**
-     * @param string $attribute
-     * @param \EonX\EasySecurity\Interfaces\ProviderRestrictedInterface $subject
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+        if ($subject instanceof ProviderRestrictedInterface === false) {
+            throw new \InvalidArgumentException(\sprintf(
+                'Subject must be instance of "%s", "%s" given.',
+                ProviderRestrictedInterface::class,
+                \is_object($subject) ? $subject::class : \gettype($subject)
+            ));
+        }
+
         $provider = $this->securityContextResolver
             ->resolveContext()
             ->getProvider();

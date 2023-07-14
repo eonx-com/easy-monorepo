@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -21,10 +22,7 @@ abstract class AbstractTestCase extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var \Throwable|null
-     */
-    protected $thrownException = null;
+    protected ?Throwable $thrownException = null;
 
     protected function tearDown(): void
     {
@@ -47,10 +45,6 @@ abstract class AbstractTestCase extends TestCase
         ?string $previousException = null,
     ): void {
         self::assertNotNull($this->thrownException);
-
-        if ($this->thrownException === null) {
-            return;
-        }
 
         if ($this->thrownException instanceof $expectedException === false) {
             throw $this->thrownException;
@@ -81,7 +75,7 @@ abstract class AbstractTestCase extends TestCase
         $mock = Mockery::mock($target);
 
         if ($expectations !== null) {
-            \call_user_func($expectations, $mock);
+            $expectations($mock);
         }
 
         return $mock;
@@ -91,7 +85,7 @@ abstract class AbstractTestCase extends TestCase
     {
         try {
             $func();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
     }

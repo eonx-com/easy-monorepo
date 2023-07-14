@@ -12,15 +12,12 @@ use EonX\EasyWebhook\Interfaces\StackInterface;
 
 final class Stack implements StackInterface
 {
-    /**
-     * @var int
-     */
-    private $index = 0;
+    private int $index = 0;
 
     /**
      * @var \EonX\EasyWebhook\Interfaces\MiddlewareInterface[]
      */
-    private $middleware;
+    private array $middleware;
 
     /**
      * @param iterable<mixed> $middleware

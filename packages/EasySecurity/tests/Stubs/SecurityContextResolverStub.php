@@ -9,14 +9,9 @@ use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 
 final class SecurityContextResolverStub implements SecurityContextResolverInterface
 {
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextInterface
-     */
-    private $securityContext;
-
-    public function __construct(SecurityContextInterface $securityContext)
-    {
-        $this->securityContext = $securityContext;
+    public function __construct(
+        private SecurityContextInterface $securityContext,
+    ) {
     }
 
     public function resolveContext(): SecurityContextInterface

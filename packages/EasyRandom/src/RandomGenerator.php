@@ -11,10 +11,7 @@ use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
 
 final class RandomGenerator implements RandomGeneratorInterface
 {
-    /**
-     * @var \EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface
-     */
-    private $uuidV4Generator;
+    private ?UuidV4GeneratorInterface $uuidV4Generator = null;
 
     public function randomInteger(?int $min = null, ?int $max = null): int
     {

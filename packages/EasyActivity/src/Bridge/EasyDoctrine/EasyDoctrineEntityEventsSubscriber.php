@@ -12,20 +12,10 @@ use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 
 final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivityLoggerInterface
-     */
-    private $activityLogger;
-
-    /**
-     * @var bool
-     */
-    private $enabled;
-
-    public function __construct(ActivityLoggerInterface $activityLogger, bool $enabled)
-    {
-        $this->activityLogger = $activityLogger;
-        $this->enabled = $enabled;
+    public function __construct(
+        private ActivityLoggerInterface $activityLogger,
+        private bool $enabled,
+    ) {
     }
 
     public static function getSubscribedEvents(): array

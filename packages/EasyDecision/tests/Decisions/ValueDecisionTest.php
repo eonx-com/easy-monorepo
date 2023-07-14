@@ -159,10 +159,8 @@ final class ValueDecisionTest extends AbstractTestCase
 
             /**
              * @param mixed[] $input
-             *
-             * @return mixed
              */
-            public function proceed(array $input)
+            public function proceed(array $input): never
             {
                 throw new \Exception('');
             }
@@ -192,10 +190,8 @@ final class ValueDecisionTest extends AbstractTestCase
 
             /**
              * @param mixed[] $input
-             *
-             * @return mixed
              */
-            public function proceed(array $input)
+            public function proceed(array $input): mixed
             {
                 return $input['value'] + 10;
             }

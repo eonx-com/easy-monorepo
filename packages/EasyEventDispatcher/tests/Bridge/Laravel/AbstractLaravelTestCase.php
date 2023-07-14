@@ -12,10 +12,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApp(): Application
     {
@@ -23,10 +20,10 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyEventDispatcherServiceProvider::class);
-        $app->instance(IlluminateDispatcherContract::class, new LaravelEventDispatcherStub());
+        $this->app = new Application(__DIR__);
+        $this->app->register(EasyEventDispatcherServiceProvider::class);
+        $this->app->instance(IlluminateDispatcherContract::class, new LaravelEventDispatcherStub());
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

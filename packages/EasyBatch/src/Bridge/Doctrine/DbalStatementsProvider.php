@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Doctrine;
 
+use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
@@ -13,15 +14,9 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 
 final class DbalStatementsProvider
 {
-    /**
-     * @var callable
-     */
-    private $extendBatchItemsTable;
+    private Closure $extendBatchItemsTable;
 
-    /**
-     * @var callable
-     */
-    private $extendBatchesTable;
+    private Closure $extendBatchesTable;
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -39,14 +34,14 @@ final class DbalStatementsProvider
 
     public function extendBatchItemsTable(callable $callable): self
     {
-        $this->extendBatchItemsTable = $callable;
+        $this->extendBatchItemsTable = Closure::fromCallable($callable);
 
         return $this;
     }
 
     public function extendBatchesTable(callable $callable): self
     {
-        $this->extendBatchesTable = $callable;
+        $this->extendBatchesTable = Closure::fromCallable($callable);
 
         return $this;
     }

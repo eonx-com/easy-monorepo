@@ -10,14 +10,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class AsyncDispatcher implements AsyncDispatcherInterface
 {
-    /**
-     * @var \Symfony\Component\Messenger\MessageBusInterface
-     */
-    private $bus;
-
-    public function __construct(MessageBusInterface $bus)
-    {
-        $this->bus = $bus;
+    public function __construct(
+        private MessageBusInterface $bus,
+    ) {
     }
 
     public function dispatch(ActivityLogEntry $activityLogEntry): void

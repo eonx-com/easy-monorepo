@@ -18,20 +18,10 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 final class RetrySendWebhookMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var \Psr\Container\ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface
-     */
-    private $retryStrategy;
-
-    public function __construct(ContainerInterface $container, WebhookRetryStrategyInterface $retryStrategy)
-    {
-        $this->container = $container;
-        $this->retryStrategy = $retryStrategy;
+    public function __construct(
+        private ContainerInterface $container,
+        private WebhookRetryStrategyInterface $retryStrategy,
+    ) {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

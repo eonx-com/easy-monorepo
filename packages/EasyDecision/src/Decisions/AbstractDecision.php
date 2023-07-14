@@ -21,40 +21,25 @@ use EonX\EasyUtils\Helpers\CollectorHelper;
 
 abstract class AbstractDecision implements DecisionInterface
 {
-    /**
-     * @var \EonX\EasyDecision\Interfaces\ContextInterface
-     */
-    protected $context;
+    protected ?ContextInterface $context = null;
 
     /**
      * @var mixed[]
      */
-    protected $input;
+    protected array $input;
 
-    /**
-     * @var null|mixed
-     */
-    private $defaultOutput;
+    private mixed $defaultOutput;
 
-    /**
-     * @var bool
-     */
-    private $exitOnPropagationStopped = false;
+    private bool $exitOnPropagationStopped = false;
 
-    /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface
-     */
-    private $expressionLanguage;
+    private ?ExpressionLanguageInterface $expressionLanguage = null;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
-    private $rules = [];
+    private array $rules = [];
 
     public function __construct(?string $name = null)
     {
@@ -104,12 +89,10 @@ abstract class AbstractDecision implements DecisionInterface
     /**
      * @param mixed[] $input
      *
-     * @return mixed
-     *
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
-    public function make(array $input)
+    public function make(array $input): mixed
     {
         // Reset decision before each make, so a single decision instance can be used more than once
         $this->reset();
@@ -126,7 +109,7 @@ abstract class AbstractDecision implements DecisionInterface
         $this->context = new Context(static::class, $input);
 
         // If no rules provided, return default output
-        if (empty($this->rules)) {
+        if (\count($this->rules) === 0) {
             return $this->defaultOutput ?? $this->getDefaultOutput();
         }
 
@@ -174,20 +157,11 @@ abstract class AbstractDecision implements DecisionInterface
         return $this;
     }
 
-    /**
-     * @param mixed $output
-     */
-    abstract protected function doHandleRuleOutput($output): void;
+    abstract protected function doHandleRuleOutput(mixed $output): void;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function doMake();
+    abstract protected function doMake(): mixed;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getDefaultOutput();
+    abstract protected function getDefaultOutput(): mixed;
 
     abstract protected function reset(): void;
 
@@ -196,17 +170,15 @@ abstract class AbstractDecision implements DecisionInterface
         return \sprintf('Decision "%s" of type "%s": %s', $this->name, static::class, $message);
     }
 
-    /**
-     * @param mixed $output
-     */
-    private function addDecisionOutputForRule(RuleInterface $rule, $output): void
+    private function addDecisionOutputForRule(RuleInterface $rule, mixed $output): void
     {
         // Allow rules to customise decision output
         if ($rule instanceof DecisionOutputForRuleAwareInterface) {
             $output = $rule->getDecisionOutputForRule($output);
         }
 
-        $this->context->addRuleOutput($rule->toString(), $output);
+        $this->getContext()
+            ->addRuleOutput($rule->toString(), $output);
     }
 
     private function getExpressionLanguageForRule(): ExpressionLanguageInterface
@@ -227,7 +199,7 @@ abstract class AbstractDecision implements DecisionInterface
     {
         foreach (CollectorHelper::orderLowerPriorityFirstAsArray($this->rules) as $rule) {
             if ($rule instanceof ContextAwareInterface) {
-                $rule->setContext($this->context);
+                $rule->setContext($this->getContext());
             }
 
             if ($rule instanceof ExpressionLanguageAwareInterface) {
@@ -242,7 +214,7 @@ abstract class AbstractDecision implements DecisionInterface
     {
         foreach ($this->getRules() as $rule) {
             // If propagation stopped, skip all the rules
-            if ($this->context->isPropagationStopped()) {
+            if ($this->getContext()->isPropagationStopped()) {
                 // If exit on propagation stopped true, stop processing rules
                 if ($this->exitOnPropagationStopped) {
                     break;

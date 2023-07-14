@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Interfaces;
 
+use DateTimeInterface;
+use Throwable;
+
 interface BatchObjectInterface
 {
     /**
@@ -66,11 +69,11 @@ interface BatchObjectInterface
      */
     public const STATUS_SUCCEEDED_PENDING_APPROVAL = 'succeeded_pending_approval';
 
-    public function getCancelledAt(): ?\DateTimeInterface;
+    public function getCancelledAt(): ?DateTimeInterface;
 
-    public function getCreatedAt(): ?\DateTimeInterface;
+    public function getCreatedAt(): ?DateTimeInterface;
 
-    public function getFinishedAt(): ?\DateTimeInterface;
+    public function getFinishedAt(): ?DateTimeInterface;
 
     public function getId(): int|string|null;
 
@@ -86,11 +89,11 @@ interface BatchObjectInterface
 
     public function getName(): ?string;
 
-    public function getStartedAt(): ?\DateTimeInterface;
+    public function getStartedAt(): ?DateTimeInterface;
 
     public function getStatus(): string;
 
-    public function getThrowable(): ?\Throwable;
+    public function getThrowable(): ?Throwable;
 
     /**
      * @return null|mixed[]
@@ -99,7 +102,7 @@ interface BatchObjectInterface
 
     public function getType(): ?string;
 
-    public function getUpdatedAt(): ?\DateTimeInterface;
+    public function getUpdatedAt(): ?DateTimeInterface;
 
     public function isApprovalRequired(): bool;
 
@@ -115,11 +118,11 @@ interface BatchObjectInterface
 
     public function setApprovalRequired(?bool $approvalRequired = null): self;
 
-    public function setCancelledAt(\DateTimeInterface $cancelledAt): self;
+    public function setCancelledAt(DateTimeInterface $cancelledAt): self;
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self;
+    public function setCreatedAt(DateTimeInterface $createdAt): self;
 
-    public function setFinishedAt(\DateTimeInterface $finishedAt): self;
+    public function setFinishedAt(DateTimeInterface $finishedAt): self;
 
     public function setId(int|string $id): self;
 
@@ -130,11 +133,11 @@ interface BatchObjectInterface
 
     public function setName(?string $name = null): self;
 
-    public function setStartedAt(\DateTimeInterface $startedAt): self;
+    public function setStartedAt(DateTimeInterface $startedAt): self;
 
     public function setStatus(string $status): self;
 
-    public function setThrowable(\Throwable $throwable): self;
+    public function setThrowable(Throwable $throwable): self;
 
     /**
      * @param mixed[] $throwableDetails
@@ -143,7 +146,7 @@ interface BatchObjectInterface
 
     public function setType(string $type): self;
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self;
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self;
 
     /**
      * @return mixed[]

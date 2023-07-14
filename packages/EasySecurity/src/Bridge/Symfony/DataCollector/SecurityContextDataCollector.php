@@ -26,37 +26,24 @@ final class SecurityContextDataCollector extends DataCollector
     public const NAME = 'easy_security.security_context_collector';
 
     /**
-     * @var \EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface
-     */
-    private $authorizationMatrixFactory;
-
-    /**
      * @var \EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface[]
      */
-    private $configurators;
-
-    /**
-     * @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface
-     */
-    private $securityContextResolver;
+    private array $configurators;
 
     /**
      * @param iterable<mixed> $configurators
      */
     public function __construct(
-        AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
-        SecurityContextResolverInterface $securityContextResolver,
+        private AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
+        private SecurityContextResolverInterface $securityContextResolver,
         iterable $configurators,
     ) {
-        $this->authorizationMatrixFactory = $authorizationMatrixFactory;
-        $this->securityContextResolver = $securityContextResolver;
-
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)
         );
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $securityContext = $this->securityContextResolver->resolveContext();
 

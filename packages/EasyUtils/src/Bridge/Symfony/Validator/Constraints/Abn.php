@@ -33,8 +33,5 @@ final class Abn extends Constraint
      */
     public const MODULUS_CALCULATION_FAILED_ERROR = 'MODULUS_CALCULATION_FAILED_ERROR';
 
-    /**
-     * @var string
-     */
-    public $message = 'This field must be an 11-digit string representing a valid Australian Business Number.';
+    public string $message = 'This field must be an 11-digit string representing a valid Australian Business Number.';
 }

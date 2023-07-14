@@ -8,23 +8,12 @@ use EonX\EasySecurity\Interfaces\ProviderRestrictedInterface;
 
 final class ProviderRestrictedStub implements ProviderRestrictedInterface
 {
-    /**
-     * @var null|int|string
-     */
-    private $providerId;
-
-    /**
-     * @param null|int|string $providerId
-     */
-    public function __construct($providerId = null)
-    {
-        $this->providerId = $providerId;
+    public function __construct(
+        private int|string $providerId,
+    ) {
     }
 
-    /**
-     * @return null|int|string
-     */
-    public function getRestrictedProviderUniqueId()
+    public function getRestrictedProviderUniqueId(): int|string
     {
         return $this->providerId;
     }

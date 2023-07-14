@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\ORM\Query\AST\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Literal;
 use Doctrine\ORM\Query\AST\PathExpression;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
@@ -12,15 +13,9 @@ use Doctrine\ORM\Query\SqlWalker;
 
 final class Cast extends FunctionNode
 {
-    /**
-     * @var \Doctrine\ORM\Query\AST\PathExpression
-     */
-    private $expression;
+    private PathExpression $expression;
 
-    /**
-     * @var \Doctrine\ORM\Query\AST\Literal
-     */
-    private $type;
+    private Literal $type;
 
     /**
      * @throws \Doctrine\ORM\Query\QueryException

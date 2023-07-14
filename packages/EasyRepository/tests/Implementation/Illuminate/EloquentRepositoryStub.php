@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Tests\Implementation\Illuminate;
 
+use Closure;
 use EonX\EasyRepository\Implementations\Illuminate\AbstractEloquentRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 final class EloquentRepositoryStub extends AbstractEloquentRepository
 {
-    /**
-     * @var null|callable
-     */
-    private $modelExpectations;
+    private ?Closure $modelExpectations;
 
     public function __construct(?callable $modelExpectations = null)
     {
-        $this->modelExpectations = $modelExpectations;
+        $this->modelExpectations = $modelExpectations === null ? null : Closure::fromCallable($modelExpectations);
 
         parent::__construct();
     }

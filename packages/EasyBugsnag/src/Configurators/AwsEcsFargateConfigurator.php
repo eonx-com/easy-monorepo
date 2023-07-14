@@ -8,10 +8,11 @@ use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
 {
-    private ?\Throwable $throwable = null;
+    private ?Throwable $throwable = null;
 
     public function __construct(
         private readonly string $storageFilename,

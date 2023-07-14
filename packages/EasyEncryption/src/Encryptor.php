@@ -9,10 +9,9 @@ use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use ParagonIE\Halite\Asymmetric\Crypto as AsymmetricCrypto;
 use ParagonIE\Halite\EncryptionKeyPair;
-use ParagonIE\Halite\HiddenString as OldHiddenString;
 use ParagonIE\Halite\Symmetric\Crypto as SymmetricCrypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
-use ParagonIE\HiddenString\HiddenString as NewHiddenString;
+use ParagonIE\HiddenString\HiddenString;
 
 final class Encryptor extends AbstractEncryptor
 {
@@ -37,7 +36,7 @@ final class Encryptor extends AbstractEncryptor
      */
     protected function doDecrypt(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
+        null|array|string|EncryptionKey|EncryptionKeyPair $key,
         bool $raw,
     ): string {
         $key = $this->getKey($key, $raw === false);
@@ -70,18 +69,18 @@ final class Encryptor extends AbstractEncryptor
      */
     protected function doEncrypt(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
+        null|array|string|EncryptionKey|EncryptionKeyPair $key,
         bool $raw,
     ): string {
         $key = $this->getKey($key, $raw === false);
-        $text = \class_exists(NewHiddenString::class) ? new NewHiddenString($text) : new OldHiddenString($text);
+        $hiddenText = new HiddenString($text);
 
         if ($key instanceof EncryptionKeyPair) {
-            return AsymmetricCrypto::encrypt($text, $key->getSecretKey(), $key->getPublicKey());
+            return AsymmetricCrypto::encrypt($hiddenText, $key->getSecretKey(), $key->getPublicKey());
         }
 
         if ($key instanceof EncryptionKey) {
-            return SymmetricCrypto::encrypt($text, $key);
+            return SymmetricCrypto::encrypt($hiddenText, $key);
         }
 
         throw new InvalidEncryptionKeyException(\sprintf(

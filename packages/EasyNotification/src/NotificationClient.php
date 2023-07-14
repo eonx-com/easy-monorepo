@@ -20,40 +20,30 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class NotificationClient implements NotificationClientInterface
 {
-    /**
-     * @var null|\EonX\EasyNotification\Interfaces\ConfigInterface
-     */
-    private $config;
+    private ?ConfigInterface $config = null;
 
     /**
      * @var \EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface[]
      */
-    private $configurators;
+    private array $configurators;
 
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var \EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface
-     */
-    private $transportFactory;
+    private HttpClientInterface $httpClient;
 
     /**
      * @param iterable<mixed> $configurators
      */
     public function __construct(
         iterable $configurators,
-        QueueTransportFactoryInterface $transportFactory,
+        private QueueTransportFactoryInterface $transportFactory,
         ?HttpClientInterface $httpClient = null,
     ) {
-        $this->transportFactory = $transportFactory;
         $this->httpClient = $httpClient ?? HttpClient::create();
 
-        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
+        /** @var \EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface[] $filteredAndSortedConfigurators */
+        $filteredAndSortedConfigurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, QueueMessageConfiguratorInterface::class)
         );
+        $this->configurators = $filteredAndSortedConfigurators;
     }
 
     public function deleteMessage(string $messageId): void

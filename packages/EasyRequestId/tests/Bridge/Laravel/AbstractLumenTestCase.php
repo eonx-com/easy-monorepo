@@ -14,10 +14,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApplication(): Application
     {
@@ -25,18 +22,18 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(BusServiceProvider::class);
-        $app->register(EasyRequestIdServiceProvider::class);
-        $app->register(EasyRandomServiceProvider::class);
+        $this->app = new Application(__DIR__);
+        $this->app->register(BusServiceProvider::class);
+        $this->app->register(EasyRequestIdServiceProvider::class);
+        $this->app->register(EasyRandomServiceProvider::class);
 
-        $app->extend(
+        $this->app->extend(
             RandomGeneratorInterface::class,
-            static function (RandomGeneratorInterface $random): RandomGeneratorInterface {
-                return $random->setUuidV4Generator(new RamseyUuidV4Generator());
+            static function (RandomGeneratorInterface $randomGenerator): RandomGeneratorInterface {
+                return $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
             }
         );
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

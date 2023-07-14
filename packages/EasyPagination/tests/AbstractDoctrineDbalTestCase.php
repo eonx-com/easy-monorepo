@@ -10,10 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
 
 abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $conn;
+    protected ?Connection $conn = null;
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -94,8 +91,10 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
             return $this->conn;
         }
 
-        return $this->conn = DriverManager::getConnection([
+        $this->conn = DriverManager::getConnection([
             'url' => 'sqlite:///:memory:',
         ]);
+
+        return $this->conn;
     }
 }

@@ -11,16 +11,11 @@ use Doctrine\Persistence\ObjectRepository;
 final class ManagerRegistryStub implements ManagerRegistry
 {
     /**
-     * @var \Doctrine\Persistence\ObjectManager[]
-     */
-    private $managers;
-
-    /**
      * @param \Doctrine\Persistence\ObjectManager[] $managers
      */
-    public function __construct(array $managers)
-    {
-        $this->managers = $managers;
+    public function __construct(
+        private array $managers,
+    ) {
     }
 
     /**

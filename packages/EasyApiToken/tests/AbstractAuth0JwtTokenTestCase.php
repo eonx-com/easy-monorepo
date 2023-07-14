@@ -12,17 +12,14 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $authorizedIss = ['http://localhost'];
+    protected static array $authorizedIss = ['http://localhost'];
 
-    /**
-     * @var string
-     */
-    protected static $key = 'key';
+    protected static string $key = 'key';
 
     /**
      * @var mixed[]
      */
-    protected static $tokenPayload = [
+    protected static array $tokenPayload = [
         'scopes' => [],
         'aud' => 'my-identifier',
     ];
@@ -30,12 +27,11 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $validAudiences = ['my-identifier'];
+    protected static array $validAudiences = ['my-identifier'];
 
     /**
      * @param null|string[] $validAudiences
      * @param null|string[] $authorizedIss
-     * @param null|string $key
      * @param null|string[] $allowedAlgos
      */
     protected function createAuth0JwtDriver(

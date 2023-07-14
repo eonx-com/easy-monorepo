@@ -6,13 +6,7 @@ namespace EonX\EasyErrorHandler\Exceptions;
 
 abstract class BadRequestException extends BaseException
 {
-    /**
-     * @var int
-     */
-    protected $statusCode = 400;
+    protected int $statusCode = 400;
 
-    /**
-     * @var null|string
-     */
-    protected $userMessage = 'exceptions.bad_request';
+    protected string $userMessage = self::USER_MESSAGE_BAD_REQUEST;
 }

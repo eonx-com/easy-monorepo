@@ -10,17 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractFromHeaderConfigurator extends AbstractSecurityContextConfigurator
 {
     /**
-     * @var string[]
-     */
-    private $headerNames;
-
-    /**
      * @param string[] $headerNames
      */
-    public function __construct(array $headerNames, ?int $priority = null)
-    {
-        $this->headerNames = $headerNames;
-
+    public function __construct(
+        private array $headerNames,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

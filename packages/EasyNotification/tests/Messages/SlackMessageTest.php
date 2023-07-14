@@ -14,7 +14,7 @@ final class SlackMessageTest extends AbstractTestCase
     /**
      * @var string[]
      */
-    protected static $body = [
+    protected static array $body = [
         'option' => 'value',
         'channel' => 'channel',
         'text' => 'text',

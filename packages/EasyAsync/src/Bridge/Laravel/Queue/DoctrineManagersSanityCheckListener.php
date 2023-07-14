@@ -13,27 +13,14 @@ use Psr\Log\LoggerInterface;
 final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
 {
     /**
-     * @var null|string[]
-     */
-    private $managers;
-
-    /**
-     * @var \EonX\EasyAsync\Doctrine\ManagersSanityChecker
-     */
-    private $managersSanityChecker;
-
-    /**
      * @param null|string[] $managers
      */
     public function __construct(
         Cache $cache,
-        ManagersSanityChecker $managersSanityChecker,
-        ?array $managers = null,
+        private ManagersSanityChecker $managersSanityChecker,
+        private ?array $managers = null,
         ?LoggerInterface $logger = null,
     ) {
-        $this->managersSanityChecker = $managersSanityChecker;
-        $this->managers = $managers;
-
         parent::__construct($cache, $logger);
     }
 

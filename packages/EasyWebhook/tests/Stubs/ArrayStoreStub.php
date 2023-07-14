@@ -14,22 +14,15 @@ use EonX\EasyWebhook\Stores\NullDataCleaner;
 final class ArrayStoreStub extends AbstractStore implements StoreInterface
 {
     /**
-     * @var null|string
-     */
-    private $id;
-
-    /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookInterface[]
      */
-    private $webhooks = [];
+    private array $webhooks = [];
 
     public function __construct(
         RandomGeneratorInterface $random,
-        ?string $id = null,
+        private ?string $id = null,
         ?DataCleanerInterface $dataCleaner = null,
     ) {
-        $this->id = $id;
-
         parent::__construct($random, $dataCleaner ?? new NullDataCleaner());
     }
 

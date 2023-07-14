@@ -23,37 +23,31 @@ final class ResultsContext implements ResultsContextInterface
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Account[]
      */
-    private $accounts = [];
+    private array $accounts = [];
 
     /**
      * @var mixed[]
      */
-    private $caching = [];
+    private array $caching = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Error[]
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\File
-     */
-    private $file;
+    private File $file;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Group[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var bool
-     */
-    private $isBai = false;
+    private bool $isBai = false;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * ResultsContext constructor.

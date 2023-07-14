@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
+use Closure;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 
 abstract class AbstractBatch extends AbstractBatchObject implements BatchInterface
@@ -12,10 +13,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
 
     private int $failed = 0;
 
-    /**
-     * @var null|callable
-     */
-    private $itemsProvider;
+    private Closure|null $itemsProvider;
 
     private int|string|null $parentBatchItemId = null;
 
@@ -91,7 +89,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
 
     public function setItemsProvider(callable $itemsProvider): BatchInterface
     {
-        $this->itemsProvider = $itemsProvider;
+        $this->itemsProvider = Closure::fromCallable($itemsProvider);
 
         return $this;
     }

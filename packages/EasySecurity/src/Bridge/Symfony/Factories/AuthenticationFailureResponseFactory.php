@@ -14,10 +14,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class AuthenticationFailureResponseFactory implements AuthenticationFailureResponseFactoryInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(?LoggerInterface $logger = null)
     {

@@ -36,12 +36,9 @@ final class RealTimeMessage extends AbstractMessage
     /**
      * @var string[]
      */
-    private $topics;
+    private array $topics;
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     /**
      * @param null|mixed[] $body
@@ -50,10 +47,7 @@ final class RealTimeMessage extends AbstractMessage
     public function __construct(?array $body = null, ?array $topics = null, ?string $type = null)
     {
         $this->type($type ?? self::TYPE_REAL_TIME);
-
-        if ($topics !== null) {
-            $this->topics = $topics;
-        }
+        $this->topics = $topics ?? [];
 
         parent::__construct($body);
     }

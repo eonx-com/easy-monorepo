@@ -12,29 +12,14 @@ use EonX\EasyWebhook\Interfaces\WebhookSignerInterface;
 
 final class SignatureHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var null|string
-     */
-    private $secret;
-
-    /**
-     * @var string
-     */
-    private $signatureHeader;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookSignerInterface
-     */
-    private $signer;
+    private string $signatureHeader;
 
     public function __construct(
-        WebhookSignerInterface $signer,
-        ?string $secret = null,
+        private WebhookSignerInterface $signer,
+        private ?string $secret = null,
         ?string $signatureHeader = null,
         ?int $priority = null,
     ) {
-        $this->signer = $signer;
-        $this->secret = $secret;
         $this->signatureHeader = $signatureHeader ?? WebhookInterface::HEADER_SIGNATURE;
 
         parent::__construct($priority);

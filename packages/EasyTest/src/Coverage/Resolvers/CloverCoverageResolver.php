@@ -33,10 +33,10 @@ final class CloverCoverageResolver implements CoverageResolverInterface
 
         try {
             $xml = new SimpleXMLElement($coverageOutput);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                self::class
             ));
         }
 

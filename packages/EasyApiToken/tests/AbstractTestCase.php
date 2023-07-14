@@ -14,15 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @param null|mixed[] $server
-     * @param null|mixed[] $query
-     */
-    protected function createRequest(?array $server = null, ?array $query = null): Request
-    {
-        return new Request($query ?? [], [], [], [], [], $server ?? []);
-    }
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -33,5 +24,14 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    /**
+     * @param null|mixed[] $server
+     * @param null|mixed[] $query
+     */
+    protected function createRequest(?array $server = null, ?array $query = null): Request
+    {
+        return new Request($query ?? [], [], [], [], [], $server ?? []);
     }
 }

@@ -18,74 +18,30 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * @var string[]
      */
-    private $allowedAlgos;
+    private array $allowedAlgos;
+
+    private string $audienceForEncode;
+
+    private string $issuerForEncode;
 
     /**
-     * @var string
-     */
-    private $audienceForEncode;
-
-    /**
-     * @var string[]
-     */
-    private $authorizedIss;
-
-    /**
-     * @var null|\Psr\Cache\CacheItemPoolInterface
-     */
-    private $cache;
-
-    /**
-     * @var null|int
-     */
-    private $cacheTtl;
-
-    /**
-     * @var string
-     */
-    private $domain;
-
-    /**
-     * @var string
-     */
-    private $issuerForEncode;
-
-    /**
-     * @var null|string
-     */
-    private $privateKey;
-
-    /**
-     * @var string[]
-     */
-    private $validAudiences;
-
-    /**
-     * Auth0JwtDriver constructor.
-     *
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
      * @param null|string[] $allowedAlgos
      */
     public function __construct(
-        array $validAudiences,
-        array $authorizedIss,
-        string $domain,
-        ?string $privateKey = null,
+        private array $validAudiences,
+        private array $authorizedIss,
+        private string $domain,
+        private ?string $privateKey = null,
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null,
-        ?CacheItemPoolInterface $cache = null,
-        ?int $cacheTtl = null,
+        private ?CacheItemPoolInterface $cache = null,
+        private ?int $cacheTtl = null,
     ) {
-        $this->validAudiences = $validAudiences;
-        $this->authorizedIss = $authorizedIss;
-        $this->domain = $domain;
-        $this->privateKey = $privateKey;
+        $this->allowedAlgos = $allowedAlgos ?? AlgorithmsInterface::ALL;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->issuerForEncode = (string)\reset($authorizedIss);
-        $this->allowedAlgos = $allowedAlgos ?? AlgorithmsInterface::ALL;
-        $this->cache = $cache;
-        $this->cacheTtl = $cacheTtl;
     }
 
     /**

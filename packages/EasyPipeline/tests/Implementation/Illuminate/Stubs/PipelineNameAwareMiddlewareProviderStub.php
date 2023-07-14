@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs;
 
+use Closure;
 use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
 use EonX\EasyPipeline\Interfaces\PipelineNameAwareInterface;
 use EonX\EasyPipeline\Traits\PipelineNameAwareTrait;
@@ -12,10 +13,7 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
 {
     use PipelineNameAwareTrait;
 
-    /**
-     * @param mixed $input
-     */
-    public function actAsMiddleware($input, \Closure $next): string
+    public function actAsMiddleware(mixed $input, Closure $next): string
     {
         $input .= $this->pipelineName;
 

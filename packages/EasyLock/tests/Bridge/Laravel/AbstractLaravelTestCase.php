@@ -12,10 +12,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApp(): Application
     {
@@ -23,15 +20,15 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyLockServiceProvider::class);
-        $app->instance(
+        $this->app = new Application(__DIR__);
+        $this->app->register(EasyLockServiceProvider::class);
+        $this->app->instance(
             BridgeConstantsInterface::SERVICE_CONNECTION,
             DriverManager::getConnection([
                 'url' => 'sqlite:///:memory:',
             ])
         );
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

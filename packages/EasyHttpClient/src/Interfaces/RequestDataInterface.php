@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Interfaces;
 
+use DateTimeInterface;
+
 interface RequestDataInterface
 {
     public function getMethod(): string;
@@ -13,7 +15,7 @@ interface RequestDataInterface
      */
     public function getOptions(): array;
 
-    public function getSentAt(): \DateTimeInterface;
+    public function getSentAt(): DateTimeInterface;
 
     public function getUrl(): string;
 

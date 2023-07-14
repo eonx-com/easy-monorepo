@@ -29,12 +29,9 @@ abstract class AbstractTestCase extends TestCase
         return $method;
     }
 
-    /**
-     * @param string|object $class
-     */
-    protected function mock($class, ?callable $expectations = null): LegacyMockInterface
+    protected function mock(mixed $target, ?callable $expectations = null): LegacyMockInterface
     {
-        $mock = Mockery::mock($class);
+        $mock = Mockery::mock($target);
 
         if ($expectations !== null) {
             $expectations($mock);

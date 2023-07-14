@@ -9,14 +9,9 @@ use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 
 final class WorkerMessageReceivedListener
 {
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService)
-    {
-        $this->requestIdService = $requestIdService;
+    public function __construct(
+        private RequestIdServiceInterface $requestIdService,
+    ) {
     }
 
     public function __invoke(WorkerMessageReceivedEvent $event): void

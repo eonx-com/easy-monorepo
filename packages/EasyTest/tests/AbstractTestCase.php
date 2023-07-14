@@ -12,10 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \Symfony\Component\Console\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
      * @param null|mixed[] $inputs
@@ -43,10 +40,11 @@ abstract class AbstractTestCase extends TestCase
         $kernel = new EasyTestKernel('test', true);
         $kernel->boot();
 
-        /** @var \Symfony\Component\Console\Application $app */
+        /** @var \EonX\EasyTest\Console\EasyTestApplication $app */
         $app = $kernel->getContainer()
             ->get(EasyTestApplication::class);
+        $this->app = $app;
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

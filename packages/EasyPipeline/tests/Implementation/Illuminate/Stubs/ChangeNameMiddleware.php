@@ -8,22 +8,12 @@ use EonX\EasyPipeline\Interfaces\MiddlewareInterface;
 
 final class ChangeNameMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var string
-     */
-    private $changeTo;
-
-    public function __construct(string $changeTo)
-    {
-        $this->changeTo = $changeTo;
+    public function __construct(
+        private string $changeTo,
+    ) {
     }
 
-    /**
-     * @param mixed $input
-     *
-     * @return mixed
-     */
-    public function handle($input, callable $next)
+    public function handle(mixed $input, callable $next): mixed
     {
         if ($input instanceof InputStub) {
             $input->setName($this->changeTo);

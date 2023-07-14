@@ -10,14 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class HttpFoundationRequest implements RequestInterface
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        private Request $request,
+    ) {
     }
 
     public function getContext(): string

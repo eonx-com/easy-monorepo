@@ -12,14 +12,9 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
 final class ResetDecisionMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionFactoryInterface
-     */
-    private $decisionFactory;
-
-    public function __construct(DecisionFactoryInterface $decisionFactory)
-    {
-        $this->decisionFactory = $decisionFactory;
+    public function __construct(
+        private DecisionFactoryInterface $decisionFactory,
+    ) {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

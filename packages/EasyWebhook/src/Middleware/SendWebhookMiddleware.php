@@ -14,15 +14,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class SendWebhookMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
-
-    public function __construct(HttpClientInterface $httpClient, ?int $priority = null)
-    {
-        $this->httpClient = $httpClient;
-
+    public function __construct(
+        private HttpClientInterface $httpClient,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

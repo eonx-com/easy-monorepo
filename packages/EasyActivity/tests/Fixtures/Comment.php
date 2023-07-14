@@ -13,25 +13,20 @@ class Comment
 {
     /**
      * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
-     *
-     * @var \EonX\EasyActivity\Tests\Fixtures\Article
      */
-    private $article;
+    private Article $article;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(name="message", type="text")
-     * @var string
      */
-    private $message;
+    private string $message;
 
     public function getArticle(): Article
     {

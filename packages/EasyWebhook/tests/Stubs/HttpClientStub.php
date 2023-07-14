@@ -21,13 +21,11 @@ final class HttpClientStub implements HttpClientInterface
      */
     private ?array $options = null;
 
-    private ?Throwable $throwable = null;
-
     private string $url;
 
-    public function __construct(?Throwable $throwable = null)
-    {
-        $this->throwable = $throwable;
+    public function __construct(
+        private ?Throwable $throwable = null,
+    ) {
     }
 
     public function getMethod(): ?string

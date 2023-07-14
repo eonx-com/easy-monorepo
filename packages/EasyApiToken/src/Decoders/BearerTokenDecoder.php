@@ -13,19 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class BearerTokenDecoder extends AbstractApiTokenDecoder
 {
-    /**
-     * @var \EonX\EasyApiToken\External\Interfaces\JwtDriverInterface
-     */
-    private $jwtDriver;
+    private LoggerInterface $logger;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(JwtDriverInterface $jwtDriver, ?string $name = null, ?LoggerInterface $logger = null)
-    {
-        $this->jwtDriver = $jwtDriver;
+    public function __construct(
+        private JwtDriverInterface $jwtDriver,
+        ?string $name = null,
+        ?LoggerInterface $logger = null,
+    ) {
         $this->logger = $logger ?? new NullLogger();
 
         parent::__construct($name);

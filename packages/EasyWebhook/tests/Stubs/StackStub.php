@@ -12,16 +12,11 @@ final class StackStub implements StackInterface
     /**
      * @var int[]
      */
-    private $calls;
+    private array $calls = [];
 
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\StackInterface
-     */
-    private $decorated;
-
-    public function __construct(StackInterface $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private StackInterface $decorated,
+    ) {
     }
 
     /**

@@ -11,17 +11,14 @@ abstract class AbstractLoggingConfig implements LoggingConfigInterface
     /**
      * @var null|string[]
      */
-    private $channels;
+    private ?array $channels = null;
 
     /**
      * @var null|string[]
      */
-    private $exceptChannels;
+    private ?array $exceptChannels = null;
 
-    /**
-     * @var null|int
-     */
-    private $priority;
+    private ?int $priority = null;
 
     /**
      * @param null|string[] $channels

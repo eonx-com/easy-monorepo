@@ -9,20 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class HttpFoundationRequestResolver
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
-
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(Request $request, RequestIdServiceInterface $requestIdService)
-    {
-        $this->request = $request;
-        $this->requestIdService = $requestIdService;
+    public function __construct(
+        private Request $request,
+        private RequestIdServiceInterface $requestIdService,
+    ) {
     }
 
     /**

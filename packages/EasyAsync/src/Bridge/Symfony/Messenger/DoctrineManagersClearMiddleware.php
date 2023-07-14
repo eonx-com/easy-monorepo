@@ -13,22 +13,12 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 final class DoctrineManagersClearMiddleware implements MiddlewareInterface
 {
     /**
-     * @var null|string[]
-     */
-    private $managers;
-
-    /**
-     * @var \EonX\EasyAsync\Doctrine\ManagersClearer
-     */
-    private $managersClearer;
-
-    /**
      * @param null|string[] $managers
      */
-    public function __construct(ManagersClearer $managersClearer, ?array $managers = null)
-    {
-        $this->managersClearer = $managersClearer;
-        $this->managers = $managers;
+    public function __construct(
+        private readonly ManagersClearer $managersClearer,
+        private readonly ?array $managers = null,
+    ) {
     }
 
     /**

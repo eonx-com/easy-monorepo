@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Tests\Implementation\Illuminate;
 
+use Closure;
 use EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException;
 use EonX\EasyPipeline\Implementations\Illuminate\IlluminatePipeline;
 use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
@@ -14,12 +15,7 @@ use Illuminate\Pipeline\Pipeline;
 
 final class IlluminatePipelineTest extends AbstractLumenTestCase
 {
-    /**
-     * @param mixed $input
-     *
-     * @return mixed
-     */
-    public function actAsMiddleware($input, \Closure $next)
+    public function actAsMiddleware(mixed $input, Closure $next): mixed
     {
         // Just pass input to next
         return $next($input);

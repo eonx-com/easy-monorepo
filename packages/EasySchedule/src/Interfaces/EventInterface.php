@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule\Interfaces;
 
+use DateTimeZone;
 use Symfony\Component\Console\Application;
 
 interface EventInterface
@@ -23,9 +24,9 @@ interface EventInterface
     public function dailyAt(string $time): self;
 
     /**
-     * @param mixed $days
+     * @param int|int[] $days
      */
-    public function days($days): self;
+    public function days(int|array $days): self;
 
     public function everyFifteenMinutes(): self;
 
@@ -56,7 +57,7 @@ interface EventInterface
     /**
      * @param int|int[] $offset
      */
-    public function hourlyAt($offset): self;
+    public function hourlyAt(int|array $offset): self;
 
     public function isDue(): bool;
 
@@ -76,20 +77,11 @@ interface EventInterface
 
     public function setMaxLockTime(float $seconds): self;
 
-    /**
-     * @param \DateTimeZone|string $timezone
-     */
-    public function setTimezone($timezone): self;
+    public function setTimezone(DateTimeZone|string $timezone): self;
 
-    /**
-     * @param callable|bool $callback
-     */
-    public function skip($callback): self;
+    public function skip(callable|bool $callback): self;
 
-    /**
-     * @param int|string $value
-     */
-    public function spliceIntoPosition(int $position, $value): self;
+    public function spliceIntoPosition(int $position, int|string $value): self;
 
     public function sundays(): self;
 
@@ -115,10 +107,7 @@ interface EventInterface
 
     public function weeklyOn(int $day, ?string $time = null): self;
 
-    /**
-     * @param callable|bool $callback
-     */
-    public function when($callback): self;
+    public function when(callable|bool $callback): self;
 
     public function yearly(): self;
 }

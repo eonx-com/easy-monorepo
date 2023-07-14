@@ -16,15 +16,12 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var null|\Symfony\Component\HttpFoundation\Request
-     */
-    private static $request;
+    private static ?Request $request;
 
     /**
      * @var string[]
      */
-    private $configs;
+    private array $configs;
 
     /**
      * @param null|string[] $configs

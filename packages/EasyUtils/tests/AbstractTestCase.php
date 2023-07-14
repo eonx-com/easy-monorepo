@@ -39,7 +39,7 @@ abstract class AbstractTestCase extends TestCase
         $mock = Mockery::mock($target);
 
         if ($expectations !== null) {
-            \call_user_func($expectations, $mock);
+            $expectations($mock);
         }
 
         return $mock;

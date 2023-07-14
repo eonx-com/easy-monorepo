@@ -10,14 +10,9 @@ use Symfony\Component\Messenger\Stamp\AckStamp;
 
 final class MessageSerializerDecorator implements MessageSerializerInterface
 {
-    /**
-     * @var \EonX\EasyBatch\Interfaces\MessageSerializerInterface
-     */
-    private $decorated;
-
-    public function __construct(MessageSerializerInterface $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private MessageSerializerInterface $decorated,
+    ) {
     }
 
     public function serialize(object $message): string

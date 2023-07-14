@@ -11,10 +11,7 @@ use Psr\Log\NullLogger;
 
 final class QueueWorkerStoppingListener
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(?LoggerInterface $logger = null)
     {

@@ -10,10 +10,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApp(): Application
     {
@@ -21,9 +18,9 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyRandomServiceProvider::class);
+        $this->app = new Application(__DIR__);
+        $this->app->register(EasyRandomServiceProvider::class);
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

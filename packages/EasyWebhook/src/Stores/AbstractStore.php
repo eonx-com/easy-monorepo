@@ -11,20 +11,10 @@ use Nette\Utils\Json;
 
 abstract class AbstractStore
 {
-    /**
-     * @var \EonX\EasyRandom\Interfaces\RandomGeneratorInterface
-     */
-    protected $random;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface
-     */
-    private $dataCleaner;
-
-    public function __construct(RandomGeneratorInterface $random, DataCleanerInterface $dataCleaner)
-    {
-        $this->random = $random;
-        $this->dataCleaner = $dataCleaner;
+    public function __construct(
+        protected RandomGeneratorInterface $random,
+        private DataCleanerInterface $dataCleaner,
+    ) {
     }
 
     /**

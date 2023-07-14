@@ -20,9 +20,9 @@ trait SymfonyTestCaseTrait
             return $this->kernel;
         }
 
-        $kernel = new KernelStub('test', true, $configs);
-        $kernel->boot();
+        $this->kernel = new KernelStub('test', true, $configs);
+        $this->kernel->boot();
 
-        return $this->kernel = $kernel;
+        return $this->kernel;
     }
 }

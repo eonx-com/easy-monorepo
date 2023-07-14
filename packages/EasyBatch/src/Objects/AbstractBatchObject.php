@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
+use DateTimeInterface;
 use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use Throwable;
 
 abstract class AbstractBatchObject implements BatchObjectInterface
 {
     private bool $approvalRequired = false;
 
-    private ?\DateTimeInterface $cancelledAt = null;
+    private ?DateTimeInterface $cancelledAt = null;
 
-    private ?\DateTimeInterface $createdAt = null;
+    private ?DateTimeInterface $createdAt = null;
 
-    private ?\DateTimeInterface $finishedAt = null;
+    private ?DateTimeInterface $finishedAt = null;
 
     private int|string|null $id = null;
 
@@ -26,11 +28,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     private ?string $name = null;
 
-    private ?\DateTimeInterface $startedAt = null;
+    private ?DateTimeInterface $startedAt = null;
 
     private string $status = self::STATUS_PENDING;
 
-    private ?\Throwable $throwable = null;
+    private ?Throwable $throwable = null;
 
     /**
      * @var mixed[]|null
@@ -39,19 +41,19 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     private ?string $type = null;
 
-    private ?\DateTimeInterface $updatedAt = null;
+    private ?DateTimeInterface $updatedAt = null;
 
-    public function getCancelledAt(): ?\DateTimeInterface
+    public function getCancelledAt(): ?DateTimeInterface
     {
         return $this->cancelledAt;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function getFinishedAt(): ?\DateTimeInterface
+    public function getFinishedAt(): ?DateTimeInterface
     {
         return $this->finishedAt;
     }
@@ -86,7 +88,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->name;
     }
 
-    public function getStartedAt(): ?\DateTimeInterface
+    public function getStartedAt(): ?DateTimeInterface
     {
         return $this->startedAt;
     }
@@ -96,7 +98,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->status;
     }
 
-    public function getThrowable(): ?\Throwable
+    public function getThrowable(): ?Throwable
     {
         return $this->throwable;
     }
@@ -114,7 +116,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->type;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -160,21 +162,21 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setCancelledAt(\DateTimeInterface $cancelledAt): BatchObjectInterface
+    public function setCancelledAt(DateTimeInterface $cancelledAt): BatchObjectInterface
     {
         $this->cancelledAt = $cancelledAt;
 
         return $this;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): BatchObjectInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): BatchObjectInterface
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function setFinishedAt(\DateTimeInterface $finishedAt): BatchObjectInterface
+    public function setFinishedAt(DateTimeInterface $finishedAt): BatchObjectInterface
     {
         $this->finishedAt = $finishedAt;
 
@@ -205,7 +207,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setStartedAt(\DateTimeInterface $startedAt): BatchObjectInterface
+    public function setStartedAt(DateTimeInterface $startedAt): BatchObjectInterface
     {
         $this->startedAt = $startedAt;
 
@@ -219,7 +221,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setThrowable(\Throwable $throwable): BatchObjectInterface
+    public function setThrowable(Throwable $throwable): BatchObjectInterface
     {
         $this->throwable = $throwable;
 
@@ -243,7 +245,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): BatchObjectInterface
+    public function setUpdatedAt(DateTimeInterface $updatedAt): BatchObjectInterface
     {
         $this->updatedAt = $updatedAt;
 

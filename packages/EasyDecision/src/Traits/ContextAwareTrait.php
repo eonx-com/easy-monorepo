@@ -8,10 +8,7 @@ use EonX\EasyDecision\Interfaces\ContextInterface;
 
 trait ContextAwareTrait
 {
-    /**
-     * @var \EonX\EasyDecision\Interfaces\ContextInterface
-     */
-    private $context;
+    private ContextInterface $context;
 
     public function setContext(ContextInterface $context): void
     {

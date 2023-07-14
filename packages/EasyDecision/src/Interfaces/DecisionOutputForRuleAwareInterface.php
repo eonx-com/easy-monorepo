@@ -6,10 +6,5 @@ namespace EonX\EasyDecision\Interfaces;
 
 interface DecisionOutputForRuleAwareInterface
 {
-    /**
-     * @param mixed $decisionOutput
-     *
-     * @return mixed
-     */
-    public function getDecisionOutputForRule($decisionOutput);
+    public function getDecisionOutputForRule(mixed $decisionOutput): mixed;
 }

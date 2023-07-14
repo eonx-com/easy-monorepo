@@ -11,12 +11,9 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
     /**
      * @var null|mixed[]
      */
-    private $templateContext;
+    private ?array $templateContext;
 
-    /**
-     * @var string
-     */
-    private $templateName;
+    private string $templateName;
 
     /**
      * @param null|mixed[] $templateContext

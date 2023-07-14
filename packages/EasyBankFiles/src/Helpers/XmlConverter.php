@@ -22,12 +22,7 @@ final class XmlConverter
      */
     public const XML_INCLUDE_ATTRIBUTES = 1;
 
-    /**
-     * XML DOMDocument.
-     *
-     * @var \DOMDocument
-     */
-    private $xml;
+    private DOMDocument $xml;
 
     /**
      * @param mixed[] $array

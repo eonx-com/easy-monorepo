@@ -15,59 +15,35 @@ use function Symfony\Component\String\u;
 final class RandomString implements RandomStringInterface
 {
     /**
-     * @var \EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]
+     * @var null|\EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]
      */
-    private $constraints;
+    private ?array $constraints = [];
 
     /**
      * @var bool[]
      */
-    private $excludes = [];
+    private array $excludes = [];
 
     /**
      * @var bool[]
      */
-    private $includes = [];
+    private array $includes = [];
 
-    /**
-     * @var int
-     */
-    private $length;
+    private int $maxAttempts = 100;
 
-    /**
-     * @var int
-     */
-    private $maxAttempts = 100;
+    private ?string $overrideAlphabet = null;
 
-    /**
-     * @var string
-     */
-    private $overrideAlphabet;
+    private ?string $prefix = null;
 
-    /**
-     * @var string
-     */
-    private $prefix;
+    private ?string $randomString = null;
 
-    /**
-     * @var string
-     */
-    private $randomString;
+    private ?string $resolvedAlphabet = null;
 
-    /**
-     * @var string
-     */
-    private $resolvedAlphabet;
+    private ?string $suffix = null;
 
-    /**
-     * @var string
-     */
-    private $suffix;
-
-    public function __construct(int $length)
-    {
-        $this->length = $length;
-
+    public function __construct(
+        private int $length,
+    ) {
         foreach (self::ALPHABET_NAMES as $alphabet) {
             $this->include($alphabet);
         }

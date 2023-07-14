@@ -13,8 +13,8 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 final class SendWebhookHandler implements MessageHandlerInterface
 {
     public function __construct(
-        readonly private WebhookClientInterface $client,
-        readonly private StoreInterface $store,
+        private readonly WebhookClientInterface $client,
+        private readonly StoreInterface $store,
     ) {
     }
 

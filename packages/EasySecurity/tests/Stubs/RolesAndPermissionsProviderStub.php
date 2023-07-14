@@ -12,16 +12,14 @@ final class RolesAndPermissionsProviderStub implements RolesProviderInterface, P
     /**
      * @var string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $permissions;
+    private array $permissions;
 
     /**
      * @var string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
-    private $roles;
+    private array $roles;
 
     /**
-     * RolesAndPermissionsProviderStub constructor.
-     *
      * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
      * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
      */

@@ -20,24 +20,14 @@ use Symfony\Component\Lock\PersistingStoreInterface;
 
 final class LockService implements LockServiceInterface
 {
-    /**
-     * @var \Symfony\Component\Lock\LockFactory
-     */
-    private $factory;
+    private ?LockFactory $factory = null;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var \Symfony\Component\Lock\PersistingStoreInterface
-     */
-    private $store;
-
-    public function __construct(PersistingStoreInterface $store, ?LoggerInterface $logger = null)
-    {
-        $this->store = $store;
+    public function __construct(
+        private PersistingStoreInterface $store,
+        ?LoggerInterface $logger = null,
+    ) {
         $this->logger = $logger ?? new NullLogger();
     }
 
@@ -47,10 +37,7 @@ final class LockService implements LockServiceInterface
             ->createLock($resource, $ttl ?? 300.0);
     }
 
-    /**
-     * @return null|mixed
-     */
-    public function processWithLock(LockDataInterface $lockData, Closure $func)
+    public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
     {
         $lock = $this->createLock($lockData->getResource(), $lockData->getTtl());
 
@@ -90,9 +77,9 @@ final class LockService implements LockServiceInterface
             return $this->factory;
         }
 
-        $factory = new LockFactory($this->store);
-        $factory->setLogger($this->logger);
+        $this->factory = new LockFactory($this->store);
+        $this->factory->setLogger($this->logger);
 
-        return $this->factory = $factory;
+        return $this->factory;
     }
 }

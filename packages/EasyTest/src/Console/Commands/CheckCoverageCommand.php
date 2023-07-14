@@ -6,6 +6,7 @@ namespace EonX\EasyTest\Console\Commands;
 
 use EonX\EasyTest\Interfaces\CoverageLoaderInterface;
 use EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,37 +14,22 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'easy-test:check-coverage',
+    description: 'Runs given test script and checks output coverage against coverage option'
+)]
 final class CheckCoverageCommand extends Command
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'check-coverage';
-
-    /**
-     * @var \EonX\EasyTest\Interfaces\CoverageLoaderInterface
-     */
-    private $coverageLoader;
-
-    /**
-     * @var \EonX\EasyTest\Interfaces\CoverageResolverLocatorInterface
-     */
-    private $coverageResolverLocator;
-
     public function __construct(
-        CoverageLoaderInterface $coverageLoader,
-        CoverageResolverLocatorInterface $coverageResolverLocator,
+        private CoverageLoaderInterface $coverageLoader,
+        private CoverageResolverLocatorInterface $coverageResolverLocator,
     ) {
-        $this->coverageLoader = $coverageLoader;
-        $this->coverageResolverLocator = $coverageResolverLocator;
-
-        parent::__construct(null);
+        parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Run given test script and check output coverage against coverage option')
             ->addArgument('file', InputArgument::REQUIRED, 'File containing the coverage output')
             ->addOption('coverage', 'c', InputOption::VALUE_REQUIRED, 'Coverage limit to check against');
     }
