@@ -10,9 +10,9 @@ final class IteratorConfig
 {
     private ?int $batchItemsPerPage = null;
 
-    private Closure|null $currentPageCallback;
+    private ?Closure $currentPageCallback = null;
 
-    private Closure|null $extendPaginator;
+    private ?Closure $extendPaginator = null;
 
     private bool $forCancel = false;
 
