@@ -13,6 +13,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Objects\Batch;
+use stdClass;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
@@ -27,13 +28,13 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
         yield 'Manually approve single item within nested batch' => [
             static function (EasyBatchTestContext $context): void {
                 $disbursementTransferItem = $context->getBatchItemFactory()
-                    ->create('dt-batch-id', new \stdClass());
+                    ->create('dt-batch-id', new stdClass());
                 $disbursementTransferItem->setId('to-approve');
                 $disbursementTransferItem->setApprovalRequired(true);
                 $disbursementTransferItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
 
                 $disbursementTransferParentItem = $context->getBatchItemFactory()
-                    ->create('dj-batch-id', new \stdClass());
+                    ->create('dj-batch-id', new stdClass());
                 $disbursementTransferParentItem->setStatus(BatchItemInterface::STATUS_BATCH_PENDING_APPROVAL);
                 $disbursementTransferParentItem->setType(BatchItemInterface::TYPE_NESTED_BATCH);
                 $disbursementTransferParentItem->setId('dt-parent-batch-item');
@@ -97,20 +98,20 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
                 BatchItemRepositoryInterface $batchItemRepo,
                 BatchRepositoryInterface $batchRepo,
             ): void {
-                // batch items
-                $batchItemCreated = $batchItemFactory->create('batch-id', new \stdClass());
+                // Batch items
+                $batchItemCreated = $batchItemFactory->create('batch-id', new stdClass());
 
-                $batchItemCompleted = $batchItemFactory->create('batch-id', new \stdClass());
+                $batchItemCompleted = $batchItemFactory->create('batch-id', new stdClass());
                 $batchItemCompleted->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
 
-                $batchItemCancelled = $batchItemFactory->create('batch-id', new \stdClass());
+                $batchItemCancelled = $batchItemFactory->create('batch-id', new stdClass());
                 $batchItemCancelled->setStatus(BatchObjectInterface::STATUS_CANCELLED);
 
                 $batchItemRepo->save($batchItemCreated);
                 $batchItemRepo->save($batchItemCompleted);
                 $batchItemRepo->save($batchItemCancelled);
 
-                // batch
+                // Batch
                 $batch = new Batch();
                 $batch->setId('batch-id');
 
@@ -128,17 +129,17 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
                 BatchItemRepositoryInterface $batchItemRepo,
                 BatchRepositoryInterface $batchRepo,
             ): void {
-                // batch items
-                $batchItemCompleted = $batchItemFactory->create('batch-id', new \stdClass());
+                // Batch items
+                $batchItemCompleted = $batchItemFactory->create('batch-id', new stdClass());
                 $batchItemCompleted->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
 
-                $batchItemCancelled = $batchItemFactory->create('batch-id', new \stdClass());
+                $batchItemCancelled = $batchItemFactory->create('batch-id', new stdClass());
                 $batchItemCancelled->setStatus(BatchObjectInterface::STATUS_CANCELLED);
 
                 $batchItemRepo->save($batchItemCompleted);
                 $batchItemRepo->save($batchItemCancelled);
 
-                // batch
+                // Batch
                 $batch = new Batch();
                 $batch->setId('batch-id');
 

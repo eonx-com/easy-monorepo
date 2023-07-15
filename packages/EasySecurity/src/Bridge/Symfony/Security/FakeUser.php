@@ -20,7 +20,7 @@ final class FakeUser implements UserInterface, SymfonyUserInterface
 
     public function eraseCredentials(): void
     {
-        // Do nothing.
+        // Do nothing
     }
 
     /**

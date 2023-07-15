@@ -29,7 +29,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
 
     protected function addPaginationToQuery(Query $query, ?PaginationInterface $pagination = null): void
     {
-        $pagination = $pagination ?? $this->pagination;
+        $pagination ??= $this->pagination;
 
         $page = $pagination->getPage();
         $perPage = $pagination->getPerPage();

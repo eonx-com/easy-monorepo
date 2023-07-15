@@ -10,6 +10,7 @@ use EonX\EasySwoole\Helpers\EnvVarHelper;
 use EonX\EasySwoole\Helpers\FunctionHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\SslCertificateHelper;
+use ReflectionClass;
 use Swoole\Constant;
 use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -29,7 +30,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
         if (isset($options['dotenv_path']) === false && isset($options['project_dir'])) {
             $envKey = $options['env_var_name'] ??= 'APP_ENV';
             $env = $options['env'] ??= $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
-            $envPath = \sprintf('envs/%s.env', \strtolower($env));
+            $envPath = \sprintf('envs/%s.env', \strtolower((string) $env));
             $fullEnvPath = \sprintf('%s/%s', $options['project_dir'], $envPath);
 
             if (\is_file($fullEnvPath) && \is_readable($fullEnvPath)) {
@@ -94,7 +95,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
             return $settings;
         }
 
-        $reflection = new \ReflectionClass(Constant::class);
+        $reflection = new ReflectionClass(Constant::class);
         $constants = $reflection->getConstants();
 
         foreach ($constants as $constant => $constantValue) {

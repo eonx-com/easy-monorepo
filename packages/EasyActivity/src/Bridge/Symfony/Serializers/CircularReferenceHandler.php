@@ -20,7 +20,7 @@ final class CircularReferenceHandler implements CircularReferenceHandlerInterfac
      */
     public function __invoke(object $object, string $format, array $context): string
     {
-        $className = \get_class($object);
+        $className = $object::class;
         try {
             $identifier = $this->entityManager->getClassMetadata($className)
                 ->getSingleIdentifierFieldName();
@@ -28,7 +28,7 @@ final class CircularReferenceHandler implements CircularReferenceHandlerInterfac
             $reflectionProperty->setAccessible(true);
 
             return \sprintf('%s#%s (circular reference)', $className, $reflectionProperty->getValue($object));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return \sprintf('%s (circular reference)', $className);
         }
     }

@@ -60,11 +60,9 @@ abstract class AbstractInvalidDataMaker
     }
 
     /**
-     * @param mixed $value
-     *
      * @return mixed[]
      */
-    final protected function create(string $caseName, $value, ?string $message = null): array
+    final protected function create(string $caseName, mixed $value, ?string $message = null): array
     {
         if ($this->asString === true) {
             $value = (string)$value;

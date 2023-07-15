@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Tests\Paginators;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
+use ArrayIterator;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
@@ -61,7 +62,7 @@ final class CustomPaginatorTest extends AbstractTestCase
                 $mock->shouldReceive('getIterator')
                     ->once()
                     ->withNoArgs()
-                    ->andReturn(new \ArrayIterator());
+                    ->andReturn(new ArrayIterator());
                 $mock->shouldReceive('count')
                     ->once()
                     ->withNoArgs()

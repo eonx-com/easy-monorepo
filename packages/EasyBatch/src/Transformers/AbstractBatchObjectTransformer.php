@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Transformers;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
@@ -22,7 +24,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
     public function instantiateForClass(?string $class = null): BatchObjectInterface
     {
-        $class = $class ?? $this->class;
+        $class ??= $this->class;
         /** @var \EonX\EasyBatch\Interfaces\BatchObjectInterface $classInstance */
         $classInstance = new $class();
 
@@ -89,11 +91,11 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
                 $data[$name] = \json_encode($value);
             }
 
-            if ($value instanceof \DateTimeInterface) {
+            if ($value instanceof DateTimeInterface) {
                 $data[$name] = $value->format($this->datetimeFormat);
             }
 
-            if ($value instanceof \Throwable) {
+            if ($value instanceof Throwable) {
                 $data[$name] = \json_encode(ErrorDetailsHelper::resolveSimpleDetails($value));
             }
         }

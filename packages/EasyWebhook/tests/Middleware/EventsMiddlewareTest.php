@@ -60,7 +60,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 
         if ($eventClass !== null) {
             self::assertCount(1, $dispatched);
-            self::assertEquals($eventClass, \get_class($dispatched[0]));
+            self::assertEquals($eventClass, $dispatched[0]::class);
 
             return;
         }

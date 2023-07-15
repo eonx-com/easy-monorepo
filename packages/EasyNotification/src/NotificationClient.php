@@ -17,6 +17,7 @@ use EonX\EasyNotification\Queue\QueueMessage;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 final class NotificationClient implements NotificationClientInterface
 {
@@ -146,7 +147,7 @@ final class NotificationClient implements NotificationClientInterface
             $response = $this->httpClient->request($method, $this->config->getApiUrl() . $path, $options);
 
             return $response->getContent() !== '' ? $response->toArray() : [];
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new ApiRequestFailedException(
                 \sprintf('API Request failed: %s', $throwable->getMessage()),
                 $throwable->getCode(),

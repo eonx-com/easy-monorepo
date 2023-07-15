@@ -17,6 +17,8 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
     {
@@ -151,12 +153,10 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
                 self::createItemsTable($manager);
                 self::addItemToTable($manager, 'my-title');
 
-                $paginator->setTransformer(static function (Item $item): array {
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title,
-                    ];
-                });
+                $paginator->setTransformer(static fn (Item $item): array => [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                ]);
             },
             static function (DoctrineOrmPaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;

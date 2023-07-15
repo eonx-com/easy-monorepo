@@ -9,6 +9,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Throwable;
 
 final class Event extends AbstractEvent
 {
@@ -119,7 +120,7 @@ final class Event extends AbstractEvent
         return new ArrayInput($inputParams);
     }
 
-    private function renderThrowable(Application $app, \Throwable $throwable): void
+    private function renderThrowable(Application $app, Throwable $throwable): void
     {
         $app->renderThrowable($throwable, new ConsoleOutput());
     }
@@ -133,7 +134,7 @@ final class Event extends AbstractEvent
             foreach ($callbacks as $callback) {
                 \call_user_func($callback);
             }
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->renderThrowable($app, $exception);
         }
     }

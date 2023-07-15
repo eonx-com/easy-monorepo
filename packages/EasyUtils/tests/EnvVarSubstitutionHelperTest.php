@@ -10,6 +10,8 @@ final class EnvVarSubstitutionHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testResolveVariables
      */
     public static function providerTestResolveVariables(): iterable
     {

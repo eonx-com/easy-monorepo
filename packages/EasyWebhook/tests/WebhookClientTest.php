@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
+use EmptyIterator;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
@@ -86,7 +87,7 @@ final class WebhookClientTest extends AbstractTestCase
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
-            new \EmptyIterator(),
+            new EmptyIterator(),
         ];
 
         yield 'RS256 Signature' => [

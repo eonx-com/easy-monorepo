@@ -39,7 +39,7 @@ final class StaticPhpFileListener extends AbstractRequestEventListener
             if ($this->filesystem->exists($filename)) {
                 // Require will trigger any output from the file which will be captured in the $bufferedOutput
                 // and added to the response. Alternatively the file can return a Response instance, and it will
-                // be used instead.
+                // be used instead
                 $response = require $filename;
 
                 $event->setResponse($response instanceof Response ? $response : new Response());

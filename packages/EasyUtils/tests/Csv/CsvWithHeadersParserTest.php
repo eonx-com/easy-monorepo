@@ -10,11 +10,14 @@ use EonX\EasyUtils\Csv\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException;
 use EonX\EasyUtils\Csv\FromFileCsvContentsProvider;
 use EonX\EasyUtils\Tests\AbstractTestCase;
+use Traversable;
 
 final class CsvWithHeadersParserTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testFromFile
      */
     public static function providerTestFromFile(): iterable
     {
@@ -36,9 +39,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
         yield 'Simple file with transformer' => [
             __DIR__ . '/fixtures/simple_file.csv',
             CsvParserConfig::create(recordTransformers: [
-                static function (array $record): array {
-                    return \array_change_key_case($record, \CASE_UPPER);
-                },
+                static fn (array $record): array => \array_change_key_case($record, \CASE_UPPER),
             ]),
             [
                 [
@@ -110,6 +111,8 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testFromFileForException
      */
     public static function providerTestFromFileForException(): iterable
     {
@@ -132,7 +135,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     {
         $parser = new CsvWithHeadersParser();
         $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
-        $result = $result instanceof \Traversable ? \iterator_to_array($result) : $result;
+        $result = $result instanceof Traversable ? \iterator_to_array($result) : $result;
 
         self::assertEquals($expected, $result);
     }
@@ -155,7 +158,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
         $parser = new CsvWithHeadersParser();
         $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
 
-        if ($result instanceof \Traversable) {
+        if ($result instanceof Traversable) {
             \iterator_to_array($result);
         }
     }

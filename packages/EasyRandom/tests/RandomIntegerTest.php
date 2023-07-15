@@ -25,9 +25,9 @@ final class RandomIntegerTest extends AbstractTestCase
      */
     public function testRandomInteger(?int $min = null, ?int $max = null, ?int $iterations = null): void
     {
-        $min = $min ?? 0;
-        $max = $max ?? \PHP_INT_MAX;
-        $iterations = $iterations ?? 100;
+        $min ??= 0;
+        $max ??= \PHP_INT_MAX;
+        $iterations ??= 100;
         $generator = new RandomGenerator();
 
         for ($i = 0; $i < $iterations; $i++) {

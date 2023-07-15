@@ -17,7 +17,7 @@ final class HttpRequestSentBreadcrumbListener
 
     public const DEFAULT_TIMING_MESSAGE = 'No timing available';
 
-    // The metadata attributes priority list (low to high).
+    // The metadata attributes priority list (low to high)
     private const METADATA_ATTRIBUTES_PRIORITY_LIST = [
         self::METADATA_ATTRIBUTE_RESPONSE_HEADERS,
         self::METADATA_ATTRIBUTE_REQUEST_OPTIONS,

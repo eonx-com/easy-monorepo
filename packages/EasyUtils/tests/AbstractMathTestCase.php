@@ -9,36 +9,34 @@ use EonX\EasyUtils\Interfaces\MathInterface;
 abstract class AbstractMathTestCase extends AbstractTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testAbsSucceeds
      */
-    public static function provideAbsData(): array
+    public static function provideAbsData(): iterable
     {
-        return [
-            [
-                'value' => '-10.4',
-                'result' => '10.4',
-                'precision' => 1,
-            ],
-            [
-                'value' => '-10',
-                'result' => '10',
-            ],
-            [
-                'value' => '0.0',
-                'result' => '0.0',
-                'precision' => 1,
-            ],
-            [
-                'value' => '10',
-                'result' => '10',
-            ],
-            [
-                'value' => '10.4',
-                'result' => '10.4',
-                'precision' => 1,
-            ],
+        yield [
+            'value' => '-10.4',
+            'result' => '10.4',
+            'precision' => 1,
+        ];
+        yield [
+            'value' => '-10',
+            'result' => '10',
+        ];
+        yield [
+            'value' => '0.0',
+            'result' => '0.0',
+            'precision' => 1,
+        ];
+        yield [
+            'value' => '10',
+            'result' => '10',
+        ];
+        yield [
+            'value' => '10.4',
+            'result' => '10.4',
+            'precision' => 1,
         ];
     }
 
@@ -148,60 +146,56 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testDivideSucceeds
      */
-    public static function provideDivideData(): array
+    public static function provideDivideData(): iterable
     {
-        return [
-            'With null precision' => [
-                'expected' => '333',
-                'dividend' => '1000',
-                'divisor' => '3',
-                'precision' => null,
-            ],
-            'With precision' => [
-                'expected' => '333.33',
-                'dividend' => '1000',
-                'divisor' => '3',
-                'precision' => 2,
-            ],
+        yield 'With null precision' => [
+            'expected' => '333',
+            'dividend' => '1000',
+            'divisor' => '3',
+            'precision' => null,
+        ];
+        yield 'With precision' => [
+            'expected' => '333.33',
+            'dividend' => '1000',
+            'divisor' => '3',
+            'precision' => 2,
         ];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testRoundSucceeds
      */
-    public static function provideRoundData(): array
+    public static function provideRoundData(): iterable
     {
-        return [
-            [
-                'value' => '10.4',
-                'expected' => '10',
-            ],
-            [
-                'value' => '10.5',
-                'expected' => '10',
-            ],
-            [
-                'value' => '10.6',
-                'expected' => '11',
-            ],
-            [
-                'value' => '11.5',
-                'expected' => '12',
-            ],
-            [
-                'value' => '12.5',
-                'expected' => '12',
-            ],
-            [
-                'value' => '13.5',
-                'expected' => '14',
-            ],
+        yield [
+            'value' => '10.4',
+            'expected' => '10',
+        ];
+        yield [
+            'value' => '10.5',
+            'expected' => '10',
+        ];
+        yield [
+            'value' => '10.6',
+            'expected' => '11',
+        ];
+        yield [
+            'value' => '11.5',
+            'expected' => '12',
+        ];
+        yield [
+            'value' => '12.5',
+            'expected' => '12',
+        ];
+        yield [
+            'value' => '13.5',
+            'expected' => '14',
         ];
     }
 

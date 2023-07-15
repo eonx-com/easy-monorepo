@@ -13,7 +13,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
 
     private int $failed = 0;
 
-    private Closure|null $itemsProvider;
+    private Closure|null $itemsProvider = null;
 
     private int|string|null $parentBatchItemId = null;
 
@@ -80,9 +80,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
      */
     public function setItems(iterable $items): BatchInterface
     {
-        $this->itemsProvider = static function () use ($items): iterable {
-            return $items;
-        };
+        $this->itemsProvider = static fn (): iterable => $items;
 
         return $this;
     }

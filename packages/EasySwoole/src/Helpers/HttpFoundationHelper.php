@@ -19,9 +19,10 @@ final class HttpFoundationHelper
         $content = $request->rawContent();
 
         // Prevent issues with empty files
-        $files = \array_filter($request->files ?? [], function ($file) {
-            return \is_array($file) && \is_string($file['tmp_name'] ?? null) && $file['tmp_name'] !== '';
-        });
+        $files = \array_filter(
+            $request->files ?? [],
+            fn ($file): bool => \is_array($file) && \is_string($file['tmp_name'] ?? null) && $file['tmp_name'] !== ''
+        );
 
         $hfRequest = new HttpFoundationRequest(
             $request->get ?? [],

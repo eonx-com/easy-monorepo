@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Table;
@@ -15,7 +16,7 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
 {
     protected ?Connection $doctrineDbal = null;
 
-    private ?DbalStatementsProvider $stmtsProvider;
+    private ?DbalStatementsProvider $stmtsProvider = null;
 
     protected function setUp(): void
     {
@@ -50,7 +51,7 @@ abstract class AbstractStoreTestCase extends AbstractTestCase
     }
 
     protected static function createWebhookForSendAfter(
-        ?\DateTimeInterface $sendAfter = null,
+        ?DateTimeInterface $sendAfter = null,
         ?string $status = null,
     ): WebhookInterface {
         $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD);

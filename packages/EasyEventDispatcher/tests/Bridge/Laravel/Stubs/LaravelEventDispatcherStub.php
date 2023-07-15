@@ -32,7 +32,7 @@ final class LaravelEventDispatcherStub implements Dispatcher
      */
     public function flush(mixed $event): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
@@ -40,12 +40,12 @@ final class LaravelEventDispatcherStub implements Dispatcher
      */
     public function forget(mixed $event): void
     {
-        // No body needed.
+        // No body needed
     }
 
     public function forgetPushed(): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
@@ -70,7 +70,7 @@ final class LaravelEventDispatcherStub implements Dispatcher
      */
     public function listen(mixed $events, mixed $listener = null): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
@@ -79,7 +79,7 @@ final class LaravelEventDispatcherStub implements Dispatcher
      */
     public function push(mixed $event, mixed $payload = null): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
@@ -87,7 +87,7 @@ final class LaravelEventDispatcherStub implements Dispatcher
      */
     public function subscribe(mixed $subscriber): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**

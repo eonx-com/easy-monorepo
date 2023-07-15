@@ -124,16 +124,14 @@ final class DecisionsTest extends AbstractTestCase
     /**
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
      * @param mixed[] $input
-     * @param mixed $expectedOutput
      * @param mixed[] $expectedRulesOutput
-     *
      * @dataProvider providerTestDecisions
      */
     public function testDecisions(
         DecisionInterface $decision,
         array $rules,
         array $input,
-        $expectedOutput,
+        mixed $expectedOutput,
         array $expectedRulesOutput,
     ): void {
         $expressionLanguage = $this->createExpressionLanguage();
@@ -147,7 +145,7 @@ final class DecisionsTest extends AbstractTestCase
         $context = $decision->getContext();
 
         self::assertEquals($expectedOutput, $output);
-        self::assertEquals(\get_class($decision), $context->getDecisionType());
+        self::assertEquals($decision::class, $context->getDecisionType());
         self::assertEquals($input, $context->getOriginalInput());
         self::assertEquals($expectedRulesOutput, $context->getRuleOutputs());
     }

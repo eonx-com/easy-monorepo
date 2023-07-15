@@ -33,9 +33,7 @@ final class LockMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $func = function () use ($webhook, $stack): WebhookResultInterface {
-            return $this->passOn($webhook, $stack);
-        };
+        $func = fn (): WebhookResultInterface => $this->passOn($webhook, $stack);
 
         $result = $webhook->getId() !== null && $webhook->isSendNow()
             ? $this->lockService->processWithLock($this->getLockData($webhook), $func)

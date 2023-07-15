@@ -25,9 +25,9 @@ abstract class AbstractTestCase extends TestCase
             $fs->remove($var);
         }
 
-        $this->addToAssertionCount(\Mockery::getContainer()->mockery_getExpectationCount());
+        $this->addToAssertionCount(Mockery::getContainer()->mockery_getExpectationCount());
 
-        \Mockery::close();
+        Mockery::close();
 
         parent::tearDown();
     }

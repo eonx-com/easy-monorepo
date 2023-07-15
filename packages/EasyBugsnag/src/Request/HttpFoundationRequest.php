@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Request;
 
 use Bugsnag\Request\RequestInterface;
-use Nette\Utils\Strings;
 use Symfony\Component\HttpFoundation\Request;
 
 final class HttpFoundationRequest implements RequestInterface
@@ -36,7 +35,7 @@ final class HttpFoundationRequest implements RequestInterface
         /** @var string $content */
         $content = $this->request->getContent();
 
-        if (Strings::contains((string)($this->request->getContentType() ?? ''), 'json')) {
+        if (\str_contains((string)($this->request->getContentType() ?? ''), 'json')) {
             $content = \json_decode($content) ?? $content;
         }
 
@@ -67,7 +66,7 @@ final class HttpFoundationRequest implements RequestInterface
             return [];
         }
 
-        if ($this->request->attributes->get('_stateless') === true) {
+        if ($this->request->attributes->get('_stateless')) {
             return [];
         }
 

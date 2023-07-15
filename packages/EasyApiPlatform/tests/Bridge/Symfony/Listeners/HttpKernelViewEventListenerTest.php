@@ -13,6 +13,7 @@ use EonX\EasyApiPlatform\Bridge\Symfony\Listeners\HttpKernelViewEventListener;
 use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
 use EonX\EasyApiPlatform\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
+use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -27,7 +28,7 @@ final class HttpKernelViewEventListenerTest extends AbstractSymfonyTestCase
     public static function providerTestListener(): iterable
     {
         yield 'The controller result is not Paginator' => [
-            'controllerResult' => new \stdClass(),
+            'controllerResult' => new stdClass(),
             'isCustomPaginator' => false,
         ];
 

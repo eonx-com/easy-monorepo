@@ -10,11 +10,14 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\DoctrineDbalPaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineDbalTestCase;
+use stdClass;
 
 final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
     {
@@ -244,8 +247,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 self::createItemsTable($conn);
                 self::addItemToTable($conn, 'my-title');
 
-                $paginator->setTransformer(static function (array $item): \stdClass {
-                    $obj = new \stdClass();
+                $paginator->setTransformer(static function (array $item): stdClass {
+                    $obj = new stdClass();
 
                     foreach ($item as $key => $value) {
                         $obj->{$key} = $value;
@@ -258,7 +261,7 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(\stdClass::class, $item);
+                self::assertInstanceOf(stdClass::class, $item);
                 self::assertEquals(1, $item->id);
                 self::assertEquals('my-title', $item->title);
             },

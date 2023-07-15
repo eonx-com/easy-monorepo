@@ -23,13 +23,13 @@ class RelatedDummy extends ParentDummy
 {
     #[Groups(['friends'])]
     #[Orm\Column(type: Types::BOOLEAN, nullable: true)]
-    private ?bool $dummyBoolean;
+    private ?bool $dummyBoolean = null;
 
     #[ApiFilter(DateFilter::class)]
     #[Groups(['friends'])]
     #[Assert\DateTime]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?CarbonImmutable $dummyDate;
+    private ?CarbonImmutable $dummyDate = null;
 
     #[ORM\Embedded]
     #[Groups(['friends'])]
@@ -45,7 +45,7 @@ class RelatedDummy extends ParentDummy
     #[ApiProperty(iris: ['RelatedDummy.name'])]
     #[Groups(['friends'])]
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedToDummyFriend>

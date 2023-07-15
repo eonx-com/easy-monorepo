@@ -17,7 +17,7 @@ final class DecisionConfiguratorStub implements DecisionConfiguratorInterface, R
 
     public function configure(DecisionInterface $decision): void
     {
-        // No body needed.
+        // No body needed
     }
 
     public function getPriority(): int

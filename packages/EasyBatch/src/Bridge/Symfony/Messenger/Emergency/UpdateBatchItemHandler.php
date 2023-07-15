@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -36,7 +37,7 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         $processBatchForBatchItemHandler(new ProcessBatchForBatchItemMessage($message->getBatchItemId()));
     }
 
-    private function createDateTimeFromFormat(string $dateTime): \DateTimeInterface
+    private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
         /** @var \DateTimeInterface $newDateTime */
         $newDateTime = Carbon::createFromFormat(BatchObjectInterface::DATETIME_FORMAT, $dateTime, 'UTC');

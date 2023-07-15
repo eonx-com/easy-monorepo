@@ -18,35 +18,31 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class AlphanumericHyphenValidatorTest extends AbstractTestCase
 {
     /**
-     * @return string[][]
+     * @return iterable<mixed>
      *
      * @see testValidateFailsWithRegexFailedError
      */
-    public static function provideInvalidValues(): array
+    public static function provideInvalidValues(): iterable
     {
-        return [
-            'Invalid value #1' => ['1004^%45470'],
-            'Invalid value #2' => ['53+04085615'],
-            'Invalid value #3' => ['HGHD*#11111'],
-            'Invalid value #4' => ['YR#*JD1dsss'],
-        ];
+        yield 'Invalid value #1' => ['1004^%45470'];
+        yield 'Invalid value #2' => ['53+04085615'];
+        yield 'Invalid value #3' => ['HGHD*#11111'];
+        yield 'Invalid value #4' => ['YR#*JD1dsss'];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testValidateSucceedsWithValidValue
      */
-    public static function provideValidValues(): array
+    public static function provideValidValues(): iterable
     {
-        return [
-            'Valid value #1' => ['ADFSD3424DD'],
-            'Valid value #2' => ['FDSGF-32d_D'],
-            'Valid value #3' => ['9ds-ds-d_ds'],
-            'Valid value #4' => ['10000000000'],
-            'Empty string' => [''],
-            'Null value' => [null],
-        ];
+        yield 'Valid value #1' => ['ADFSD3424DD'];
+        yield 'Valid value #2' => ['FDSGF-32d_D'];
+        yield 'Valid value #3' => ['9ds-ds-d_ds'];
+        yield 'Valid value #4' => ['10000000000'];
+        yield 'Empty string' => [''];
+        yield 'Null value' => [null];
     }
 
     /**
@@ -87,11 +83,9 @@ final class AlphanumericHyphenValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideValidValues
      */
-    public function testValidateSucceedsWithValidValue($value): void
+    public function testValidateSucceedsWithValidValue(mixed $value): void
     {
         $validator = new AlphanumericHyphenValidator();
         $constraint = new AlphanumericHyphen();

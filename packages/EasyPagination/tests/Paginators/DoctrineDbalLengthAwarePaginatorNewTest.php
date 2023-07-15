@@ -10,11 +10,14 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineDbalTestCase;
+use stdClass;
 
 final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbalTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
     {
@@ -278,8 +281,8 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
                 self::createItemsTable($conn);
                 self::addItemToTable($conn, 'my-title');
 
-                $paginator->setTransformer(static function (array $item): \stdClass {
-                    $obj = new \stdClass();
+                $paginator->setTransformer(static function (array $item): stdClass {
+                    $obj = new stdClass();
 
                     foreach ($item as $key => $value) {
                         $obj->{$key} = $value;
@@ -293,7 +296,7 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
-                self::assertInstanceOf(\stdClass::class, $item);
+                self::assertInstanceOf(stdClass::class, $item);
                 self::assertEquals(1, $item->id);
                 self::assertEquals('my-title', $item->title);
             },
@@ -309,7 +312,7 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
                 self::addItemToTable($conn, 'my-title');
                 self::addParentToTable($conn, 'my-parent', 1);
 
-                //$paginator->hasJoinsInQuery();
+                // $paginator->hasJoinsInQuery();
                 $paginator->setPrimaryKeyIndex('id');
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder

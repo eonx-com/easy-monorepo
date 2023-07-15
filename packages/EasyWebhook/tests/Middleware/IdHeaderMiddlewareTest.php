@@ -70,7 +70,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ?StoreInterface $store = null,
     ): void {
         // Fix webhook id
-        $store = $store ?? new ArrayStoreStub(self::getRandomGenerator(), 'not-default-webhook-id');
+        $store ??= new ArrayStoreStub(self::getRandomGenerator(), 'not-default-webhook-id');
         $middleware = new IdHeaderMiddleware($store, $idHeader);
 
         $test($this->process($middleware, $webhook));

@@ -36,13 +36,11 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PipelineFactoryInterface::class,
-            static function (Container $app): IlluminatePipelineFactory {
-                return new IlluminatePipelineFactory(
-                    $app,
-                    \array_keys(\config('easy-pipeline.pipelines', [])),
-                    self::PIPELINES_PREFIX
-                );
-            }
+            static fn (Container $app): IlluminatePipelineFactory => new IlluminatePipelineFactory(
+                $app,
+                \array_keys(\config('easy-pipeline.pipelines', [])),
+                self::PIPELINES_PREFIX
+            )
         );
     }
 

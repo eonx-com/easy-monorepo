@@ -12,11 +12,9 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Throwable;
 
-class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
+final class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
 {
     private float $endTime;
-
-    private LoggerInterface $logger;
 
     private int $timeLimitInSeconds;
 
@@ -26,7 +24,7 @@ class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
     public function __construct(
         int $minTimeLimitInSeconds,
         ?int $maxTimeLimitInSeconds = null,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
         try {
             $this->timeLimitInSeconds = \random_int(
@@ -36,8 +34,6 @@ class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
         } catch (Throwable $throwable) {
             throw new InvalidArgumentException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
-
-        $this->logger = $logger ?? new NullLogger();
     }
 
     /**

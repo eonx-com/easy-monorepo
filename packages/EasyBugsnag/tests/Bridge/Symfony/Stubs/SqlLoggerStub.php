@@ -10,11 +10,11 @@ final class SqlLoggerStub implements SQLLogger
 {
     public function startQuery(mixed $sql, ?array $params = null, ?array $types = null): void
     {
-        // TODO: Implement startQuery() method.
+        // TODO: Implement startQuery() method
     }
 
     public function stopQuery(): void
     {
-        // TODO: Implement stopQuery() method.
+        // TODO: Implement stopQuery() method
     }
 }

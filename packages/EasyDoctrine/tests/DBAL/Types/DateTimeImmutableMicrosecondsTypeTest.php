@@ -126,11 +126,9 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue = null): void
+    public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);
@@ -157,11 +155,9 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);

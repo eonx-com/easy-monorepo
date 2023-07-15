@@ -23,7 +23,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
     /**
      * @var null|mixed[]
      */
-    private ?array $types;
+    private ?array $types = null;
 
     public function __construct(
         private Client $client,

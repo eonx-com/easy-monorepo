@@ -8,11 +8,12 @@ use EonX\EasyRandom\Exceptions\InvalidAlphabetException;
 use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
+use Stringable;
 use Symfony\Component\String\ByteString;
 
 use function Symfony\Component\String\u;
 
-final class RandomString implements RandomStringInterface
+final class RandomString implements RandomStringInterface, Stringable
 {
     /**
      * @var null|\EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]

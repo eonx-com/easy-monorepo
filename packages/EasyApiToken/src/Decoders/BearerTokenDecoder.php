@@ -10,18 +10,15 @@ use EonX\EasyApiToken\Tokens\Jwt;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Request;
+use Throwable;
 
 final class BearerTokenDecoder extends AbstractApiTokenDecoder
 {
-    private LoggerInterface $logger;
-
     public function __construct(
         private JwtDriverInterface $jwtDriver,
         ?string $name = null,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
-        $this->logger = $logger ?? new NullLogger();
-
         parent::__construct($name);
     }
 
@@ -36,7 +33,7 @@ final class BearerTokenDecoder extends AbstractApiTokenDecoder
 
         try {
             return new Jwt((array)$this->jwtDriver->decode(\trim($authorization)), $authorization);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->logger->info(\sprintf('Invalid JWT token from request: "%s"', $throwable->getMessage()));
 
             // Return null not to break chain decoder

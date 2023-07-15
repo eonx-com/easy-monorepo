@@ -50,7 +50,7 @@ final class LogHttpRequestSentListener
         if ($throwable !== null) {
             $throwableMessage = \sprintf('Throwable: "%s"', $request->getUrl());
             $throwableContext = [
-                'class' => \get_class($throwable),
+                'class' => $throwable::class,
                 'message' => $throwable->getMessage(),
             ];
 

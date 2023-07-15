@@ -6,5 +6,5 @@ namespace EonX\EasySecurity\Exceptions;
 
 final class NoUserInContextException extends AbstractEasySecurityException
 {
-    // No body needed.
+    // No body needed
 }

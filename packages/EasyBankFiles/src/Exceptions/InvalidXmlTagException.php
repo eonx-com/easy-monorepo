@@ -6,5 +6,5 @@ namespace EonX\EasyBankFiles\Exceptions;
 
 final class InvalidXmlTagException extends AbstractRuntimeException
 {
-    // No body needed.
+    // No body needed
 }

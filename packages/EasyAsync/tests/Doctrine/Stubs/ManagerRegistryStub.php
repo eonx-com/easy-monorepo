@@ -7,6 +7,7 @@ namespace EonX\EasyAsync\Tests\Doctrine\Stubs;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
+use RuntimeException;
 
 final class ManagerRegistryStub implements ManagerRegistry
 {
@@ -34,7 +35,7 @@ final class ManagerRegistryStub implements ManagerRegistry
      */
     public function getConnection($name = null)
     {
-        throw new \RuntimeException('not implemented');
+        throw new RuntimeException('not implemented');
     }
 
     /**
@@ -85,7 +86,7 @@ final class ManagerRegistryStub implements ManagerRegistry
 
         // To reproduce doctrine behavior
         foreach ($this->managers as $name => $manager) {
-            $return[$name] = \get_class($manager);
+            $return[$name] = $manager::class;
         }
 
         return $return;
@@ -105,7 +106,7 @@ final class ManagerRegistryStub implements ManagerRegistry
      */
     public function getRepository($persistentObject, $persistentManagerName = null): ObjectRepository
     {
-        throw new \RuntimeException('not implemented');
+        throw new RuntimeException('not implemented');
     }
 
     /**

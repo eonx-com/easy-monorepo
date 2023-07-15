@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Symfony;
 
+use Closure;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
@@ -47,9 +48,7 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
             ->getContainer()
             ->get(RandomGeneratorInterface::class);
 
-        $uuidV4Generator = \Closure::bind(function () {
-            return $this->uuidV4Generator;
-        }, $randomGenerator, $randomGenerator)();
+        $uuidV4Generator = Closure::bind(fn () => $this->uuidV4Generator, $randomGenerator, $randomGenerator)();
 
         self::assertInstanceOf($uuidV4GeneratorClass, $uuidV4Generator);
     }

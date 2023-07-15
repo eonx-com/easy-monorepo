@@ -10,6 +10,8 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -106,8 +108,8 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
             CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_DATETIME,
         ];
 
-        $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
-        $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
+        $platformClassNameDbal2 = '\\' . PostgreSQL94Platform::class;
+        $platformClassNameDbal3 = '\\' . PostgreSQLPlatform::class;
         $platformClassName = \class_exists($platformClassNameDbal2) ? $platformClassNameDbal2 : $platformClassNameDbal3;
 
         yield 'postgresql' => [
@@ -134,11 +136,9 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue = null): void
+    public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
         $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
@@ -165,11 +165,9 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
         $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());

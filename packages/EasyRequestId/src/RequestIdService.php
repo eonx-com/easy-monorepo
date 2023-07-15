@@ -28,7 +28,7 @@ final class RequestIdService implements RequestIdServiceInterface
 
     public function getCorrelationId(): string
     {
-        return $this->correlationId = $this->correlationId ?? $this->fallback->fallbackCorrelationId();
+        return $this->correlationId ??= $this->fallback->fallbackCorrelationId();
     }
 
     public function getCorrelationIdHeaderName(): string
@@ -38,7 +38,7 @@ final class RequestIdService implements RequestIdServiceInterface
 
     public function getRequestId(): string
     {
-        return $this->requestId = $this->requestId ?? $this->fallback->fallbackRequestId();
+        return $this->requestId ??= $this->fallback->fallbackRequestId();
     }
 
     public function getRequestIdHeaderName(): string

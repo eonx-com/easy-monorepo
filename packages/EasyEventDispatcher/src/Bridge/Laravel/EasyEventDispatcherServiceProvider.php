@@ -15,9 +15,9 @@ final class EasyEventDispatcherServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             EventDispatcherInterface::class,
-            static function (Container $app): EventDispatcherInterface {
-                return new EventDispatcher($app->make(IlluminateDispatcherContract::class));
-            }
+            static fn (Container $app): EventDispatcherInterface => new EventDispatcher(
+                $app->make(IlluminateDispatcherContract::class)
+            )
         );
     }
 }

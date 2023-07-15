@@ -10,7 +10,7 @@ final class DecisionStub extends AbstractDecision
 {
     protected function doHandleRuleOutput(mixed $output): void
     {
-        // No body needed.
+        // No body needed
     }
 
     protected function doMake(): bool
@@ -25,6 +25,6 @@ final class DecisionStub extends AbstractDecision
 
     protected function reset(): void
     {
-        // No body needed.
+        // No body needed
     }
 }

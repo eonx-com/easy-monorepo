@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Throwable;
 
 final class RoleExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -47,7 +48,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                         try {
                             $this->cached[$role] = \constant($constant);
                             return $this->cached[$role];
-                        } catch (\Throwable) {
+                        } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
                     }

@@ -16,17 +16,14 @@ final class SyncRetryMiddleware extends AbstractMiddleware
 {
     private bool $asyncEnabled;
 
-    private LoggerInterface $logger;
-
     public function __construct(
         private ResultStoreInterface $resultStore,
         private WebhookRetryStrategyInterface $retryStrategy,
         ?bool $asyncEnabled = null,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
         ?int $priority = null,
     ) {
         $this->asyncEnabled = $asyncEnabled ?? true;
-        $this->logger = $logger ?? new NullLogger();
 
         parent::__construct($priority);
     }

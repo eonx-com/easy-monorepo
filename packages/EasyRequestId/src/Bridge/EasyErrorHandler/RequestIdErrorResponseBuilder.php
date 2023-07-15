@@ -21,7 +21,7 @@ final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder i
 
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array
     {
-        $headers = $headers ?? [];
+        $headers ??= [];
         $headers[$this->requestIdService->getCorrelationIdHeaderName()] = $this->requestIdService->getCorrelationId();
         $headers[$this->requestIdService->getRequestIdHeaderName()] = $this->requestIdService->getRequestId();
 

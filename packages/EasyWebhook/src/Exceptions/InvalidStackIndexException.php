@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Exceptions;
 
 final class InvalidStackIndexException extends AbstractEasyWebhookException
 {
-    // No body needed.
+    // No body needed
 }

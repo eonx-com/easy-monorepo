@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $activeTill;
+    private ?DateTimeInterface $activeTill = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

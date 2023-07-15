@@ -33,7 +33,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
 
         foreach ($providedErrorCodes as $errorCodeDto) {
             $errorCodeCategory = $errorCodeDto->getErrorCode() - ($errorCodeDto->getErrorCode() % $this->categorySize);
-            $groupedErrorCodes[$errorCodeCategory] = $groupedErrorCodes[$errorCodeCategory] ?? [];
+            $groupedErrorCodes[$errorCodeCategory] ??= [];
             $groupedErrorCodes[$errorCodeCategory][] = $errorCodeDto;
         }
 
@@ -58,7 +58,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
             static fn (
                 ErrorCodeCategoryDto $errorCategory1,
                 ErrorCodeCategoryDto $errorCategory2,
-            ) => $errorCategory1->getCategoryName() <=> $errorCategory2->getCategoryName()
+            ): int => $errorCategory1->getCategoryName() <=> $errorCategory2->getCategoryName()
         );
 
         return new ErrorCodesDto(

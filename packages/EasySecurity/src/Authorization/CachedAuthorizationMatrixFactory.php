@@ -28,9 +28,10 @@ final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFacto
 
     public function create(): AuthorizationMatrixInterface
     {
-        return $this->cache->get($this->key, function (ItemInterface $item): AuthorizationMatrixInterface {
-            return $this->decorated->create();
-        });
+        return $this->cache->get(
+            $this->key,
+            fn (ItemInterface $item): AuthorizationMatrixInterface => $this->decorated->create()
+        );
     }
 
     public function getDecorated(): AuthorizationMatrixFactoryInterface

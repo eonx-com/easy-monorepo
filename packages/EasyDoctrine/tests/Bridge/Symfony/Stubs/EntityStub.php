@@ -6,5 +6,5 @@ namespace EonX\EasyDoctrine\Tests\Bridge\Symfony\Stubs;
 
 final class EntityStub
 {
-    // No body needed for now.
+    // No body needed for now
 }

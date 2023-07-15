@@ -17,6 +17,8 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
     {
@@ -158,12 +160,10 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
                 self::createItemsTable($manager);
                 self::addItemToTable($manager, 'my-title');
 
-                $paginator->setTransformer(static function (Item $item): array {
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title,
-                    ];
-                });
+                $paginator->setTransformer(static fn (Item $item): array => [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                ]);
             },
             static function (DoctrineOrmLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;

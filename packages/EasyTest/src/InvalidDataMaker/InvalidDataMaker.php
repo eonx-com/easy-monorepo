@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints\Uuid;
 /**
  * @codeCoverageIgnore
  */
-class InvalidDataMaker extends AbstractInvalidDataMaker
+final class InvalidDataMaker extends AbstractInvalidDataMaker
 {
     /**
      * @return iterable<mixed>

@@ -23,7 +23,7 @@ final class ManagersCloser
     public function close(?array $managers = null): void
     {
         // If no managers given, default to all
-        $managers = $managers ?? \array_keys($this->registry->getManagerNames());
+        $managers ??= \array_keys($this->registry->getManagerNames());
 
         foreach ($managers as $managerName) {
             $manager = $this->registry->getManager($managerName);
@@ -36,7 +36,7 @@ final class ManagersCloser
 
             $this->logger->warning(\sprintf(
                 'Type "%s" for manager "%s" not supported by manager closer',
-                \get_class($manager),
+                $manager::class,
                 $managerName
             ));
         }

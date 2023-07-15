@@ -9,5 +9,5 @@ use LogicException;
 
 final class PipelineDidntRunException extends LogicException implements EasyPipelineExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

@@ -7,12 +7,13 @@ namespace EonX\EasyApiToken\Tests\Tokens;
 use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tokens\Jwt;
+use stdClass;
 
 final class JwtEasyApiTokenTest extends AbstractTestCase
 {
     public function testGetClaimForceArraySuccessfully(): void
     {
-        $claim = new \stdClass();
+        $claim = new stdClass();
         $token = new Jwt([
             'claim' => $claim,
         ], 'original');
@@ -23,10 +24,10 @@ final class JwtEasyApiTokenTest extends AbstractTestCase
 
     public function testGetClaimForceArrayWithProperties(): void
     {
-        $claim = new \stdClass();
+        $claim = new stdClass();
         $claim->key = 'value';
 
-        $subClaim = new \stdClass();
+        $subClaim = new stdClass();
         $subClaim->key1 = 'value1';
 
         $claim->subClaim = $subClaim;

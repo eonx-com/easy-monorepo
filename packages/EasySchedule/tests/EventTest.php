@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule\Tests;
 
+use DateTimeZone;
 use EonX\EasySchedule\Event;
 
 final class EventTest extends AbstractTestCase
@@ -33,9 +34,7 @@ final class EventTest extends AbstractTestCase
         yield 'true because no filter false and no reject true' => [
             [true],
             [
-                function (): bool {
-                    return false;
-                },
+                fn (): bool => false,
             ],
             true,
         ];
@@ -107,7 +106,7 @@ final class EventTest extends AbstractTestCase
 
     public function testGetDescription(): void
     {
-        self::assertSame('\'command:foo\' --foo=bar', $this->event->getDescription());
+        self::assertSame("'command:foo' --foo=bar", $this->event->getDescription());
     }
 
     public function testGetLockResource(): void
@@ -134,7 +133,7 @@ final class EventTest extends AbstractTestCase
             '--foo' => 'bar',
         ]);
 
-        // Ok this is for coverage only, please don't judge me...
+        // Ok this is for coverage only, please don't judge me
         $event->before(function (): void {
         })
             ->then(function (): void {
@@ -147,7 +146,7 @@ final class EventTest extends AbstractTestCase
 
     public function testTimezone(): void
     {
-        $timezone = new \DateTimeZone('Australia/Melbourne');
+        $timezone = new DateTimeZone('Australia/Melbourne');
 
         self::assertSame('UTC', $this->event->setTimezone('utc')->getTimezone());
         self::assertSame('Australia/Melbourne', $this->event->setTimezone($timezone)->getTimezone());

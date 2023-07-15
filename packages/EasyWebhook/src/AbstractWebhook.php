@@ -402,7 +402,7 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    public function sendAfter(\DateTimeInterface $after): WebhookInterface
+    public function sendAfter(DateTimeInterface $after): WebhookInterface
     {
         $this->sendAfter = $after;
 

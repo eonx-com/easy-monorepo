@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Laravel\Middleware;
 
+use Closure;
 use EonX\EasySecurity\Configurators\FromRequestConfigurator;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ final class FromRequestSecurityContextConfiguratorMiddleware
     ) {
     }
 
-    public function handle(Request $request, \Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
         $this->securityContextResolver->setConfigurator(new FromRequestConfigurator(
             $request,

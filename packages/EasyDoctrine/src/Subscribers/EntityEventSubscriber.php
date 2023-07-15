@@ -112,7 +112,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      */
     private function getClearedChangeSet(array $changeSet): array
     {
-        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem) {
+        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
             if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
                 ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
                 return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==

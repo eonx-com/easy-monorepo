@@ -18,6 +18,8 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
     {
@@ -154,12 +156,10 @@ final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
 
                 (new Item(['title' => 'my-title']))->save();
 
-                $paginator->setTransformer(static function (Item $item): array {
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title,
-                    ];
-                });
+                $paginator->setTransformer(static fn (Item $item): array => [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                ]);
             },
             static function (EloquentLengthAwarePaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;

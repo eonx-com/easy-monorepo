@@ -14,7 +14,6 @@ final class TokenGenerator implements TokenGeneratorInterface
     /**
      * @param null|string $audience Audience for the ID token.
      * @param null|string $secret Secret used to encode the token.
-     * @param null|string $issuer
      */
     public function __construct(
         private readonly ?string $audience = null,
@@ -34,8 +33,8 @@ final class TokenGenerator implements TokenGeneratorInterface
         ?int $lifetime = null,
         ?bool $secretEncoded = null,
     ): string {
-        $secretEncoded = $secretEncoded ?? true;
-        $lifetime = $lifetime ?? 3600;
+        $secretEncoded ??= true;
+        $lifetime ??= 3600;
 
         $time = \time();
         $payload = [

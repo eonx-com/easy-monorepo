@@ -6,5 +6,5 @@ namespace EonX\EasyRepository\Exceptions;
 
 final class EasyPaginationNotInstalledException extends AbstractEasyRepositoryException
 {
-    // No body needed.
+    // No body needed
 }

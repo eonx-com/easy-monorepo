@@ -21,15 +21,12 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
     private const TOKEN_TYPE_ID = 'id';
 
-    private JwkFetcherInterface $jwkFetcher;
-
     public function __construct(
         private readonly UserPoolConfigInterface $userPoolConfig,
-        ?JwkFetcherInterface $jwkFetcher = null,
+        private JwkFetcherInterface $jwkFetcher = new JwkFetcher(),
         private readonly ?int $leeway = null,
         private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
     ) {
-        $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
     }
 
     /**

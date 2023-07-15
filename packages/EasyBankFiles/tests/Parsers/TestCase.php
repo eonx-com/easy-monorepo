@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Parsers;
 
 use EonX\EasyBankFiles\Tests\TestCases\TestCase as BaseTestCase;
+use Mockery;
 use Mockery\LegacyMockInterface;
 use ReflectionClass;
 use ReflectionMethod;
@@ -20,7 +21,7 @@ class TestCase extends BaseTestCase
      */
     protected function getMockWithExpectations(string $class, callable $setExpectations): LegacyMockInterface
     {
-        $mock = \Mockery::mock($class);
+        $mock = Mockery::mock($class);
 
         $setExpectations($mock);
 

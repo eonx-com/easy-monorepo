@@ -9,5 +9,5 @@ use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
 
 final class UnrecoverableWebhookMessageException extends RuntimeException implements UnrecoverableExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

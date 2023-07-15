@@ -6,5 +6,5 @@ namespace EonX\EasyRandom\Exceptions;
 
 final class InvalidAlphabetNameException extends AbstractEasyRandomException
 {
-    // No body needed.
+    // No body needed
 }

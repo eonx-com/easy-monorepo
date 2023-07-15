@@ -73,7 +73,7 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
         $rules = [
             new RestrictedRuleStub($expectedRule, 'decision-stub', $expectedOutput),
             new class() {
-                // No body needed.
+                // No body needed
             },
         ];
 

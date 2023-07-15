@@ -33,6 +33,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        // No body needed.
+        // No body needed
     }
 }

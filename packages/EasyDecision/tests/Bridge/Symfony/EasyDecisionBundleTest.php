@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Bridge\Symfony;
 
+use Closure;
 use EonX\EasyDecision\Decisions\AffirmativeDecision;
 use EonX\EasyDecision\Decisions\ConsensusDecision;
 use EonX\EasyDecision\Decisions\UnanimousDecision;
@@ -233,31 +234,29 @@ final class EasyDecisionBundleTest extends AbstractTestCase
             ]);
     }
 
-    private static function getCreateAffirmativeDecision(?string $name = null): \Closure
+    private static function getCreateAffirmativeDecision(?string $name = null): Closure
     {
-        return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
-            return $factory->createAffirmativeDecision($name);
-        };
+        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createAffirmativeDecision(
+            $name
+        );
     }
 
-    private static function getCreateConsensusDecision(?string $name = null): \Closure
+    private static function getCreateConsensusDecision(?string $name = null): Closure
     {
-        return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
-            return $factory->createConsensusDecision($name);
-        };
+        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createConsensusDecision(
+            $name
+        );
     }
 
-    private static function getCreateUnanimousDecision(?string $name = null): \Closure
+    private static function getCreateUnanimousDecision(?string $name = null): Closure
     {
-        return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
-            return $factory->createUnanimousDecision($name);
-        };
+        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createUnanimousDecision(
+            $name
+        );
     }
 
-    private static function getCreateValueDecision(?string $name = null): \Closure
+    private static function getCreateValueDecision(?string $name = null): Closure
     {
-        return static function (DecisionFactoryInterface $factory) use ($name): DecisionInterface {
-            return $factory->createValueDecision($name);
-        };
+        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createValueDecision($name);
     }
 }

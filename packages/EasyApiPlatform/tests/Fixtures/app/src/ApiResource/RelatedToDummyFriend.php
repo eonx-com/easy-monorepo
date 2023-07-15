@@ -17,7 +17,7 @@ class RelatedToDummyFriend
 {
     #[Orm\Column(type: Types::STRING, nullable: true)]
     #[Groups(['fakemanytomany', 'friends'])]
-    private ?string $description;
+    private ?string $description = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: DummyFriend::class)]

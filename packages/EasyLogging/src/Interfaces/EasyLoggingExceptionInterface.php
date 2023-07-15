@@ -6,5 +6,5 @@ namespace EonX\EasyLogging\Interfaces;
 
 interface EasyLoggingExceptionInterface
 {
-    // Marker for all exceptions to this package.
+    // Marker for all exceptions to this package
 }

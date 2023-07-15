@@ -22,7 +22,7 @@ class Dummy
 {
     #[Orm\Column(type: Types::STRING, nullable: true)]
     #[ApiProperty(types: ['https://schema.org/alternateName'])]
-    private ?string $alias;
+    private ?string $alias = null;
 
     /**
      * @var mixed[]|null
@@ -32,23 +32,23 @@ class Dummy
 
     #[ApiProperty(types: ['https://schema.org/description'])]
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $description;
+    private ?string $description = null;
 
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $dummy;
+    private ?string $dummy = null;
 
     #[Orm\Column(type: Types::BOOLEAN, nullable: true)]
-    private ?bool $dummyBoolean;
+    private ?bool $dummyBoolean = null;
 
     #[ApiProperty(types: ['https://schema.org/DateTime'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?CarbonImmutable $dummyDate;
+    private ?CarbonImmutable $dummyDate = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $dummyFloat;
+    private ?float $dummyFloat = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $dummyPrice;
+    private ?string $dummyPrice = null;
 
     /**
      * @var mixed[]
@@ -69,10 +69,10 @@ class Dummy
     #[Orm\Column(type: Types::STRING, nullable: true)]
     #[ApiProperty(types: ['https://schema.org/name'])]
     #[Assert\NotBlank]
-    private ?string $name;
+    private ?string $name = null;
 
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $nameConverted;
+    private ?string $nameConverted = null;
 
     /**
      * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedDummy> Several dummies
@@ -82,13 +82,13 @@ class Dummy
 
     #[ORM\ManyToOne(targetEntity: RelatedDummy::class)]
     #[ApiProperty(push: true)]
-    private ?RelatedDummy $relatedDummy;
+    private ?RelatedDummy $relatedDummy = null;
 
     #[ORM\OneToOne(mappedBy: 'owningDummy', targetEntity: RelatedOwnedDummy::class, cascade: ['persist'])]
-    private ?RelatedOwnedDummy $relatedOwnedDummy;
+    private ?RelatedOwnedDummy $relatedOwnedDummy = null;
 
     #[ORM\OneToOne(inversedBy: 'ownedDummy', targetEntity: RelatedOwningDummy::class, cascade: ['persist'])]
-    private ?RelatedOwningDummy $relatedOwningDummy;
+    private ?RelatedOwningDummy $relatedOwningDummy = null;
 
     public function __construct()
     {

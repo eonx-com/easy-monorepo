@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Orm\MappedSuperclass]
-class ParentDummy
+abstract class ParentDummy
 {
     #[Orm\Column(type: Types::INTEGER, nullable: true)]
     #[Groups(['friends'])]
-    private ?int $age;
+    private ?int $age = null;
 
     public function getAge(): ?int
     {

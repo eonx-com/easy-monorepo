@@ -65,8 +65,8 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
             $this->expectException($expectedException);
         }
 
-        $enabled = $enabled ?? true;
-        $store = $store ?? new ArrayStoreStub(self::getRandomGenerator());
+        $enabled ??= true;
+        $store ??= new ArrayStoreStub(self::getRandomGenerator());
         $middleware = new AsyncMiddleware(new NullAsyncDispatcher(), $store, $enabled);
 
         $result = $this->process($middleware, $webhook);

@@ -35,7 +35,7 @@ final class StackStub implements StackInterface
     public function next(): MiddlewareInterface
     {
         $next = $this->decorated->next();
-        $class = \get_class($next);
+        $class = $next::class;
 
         if (isset($this->calls[$class]) === false) {
             $this->calls[$class] = 0;

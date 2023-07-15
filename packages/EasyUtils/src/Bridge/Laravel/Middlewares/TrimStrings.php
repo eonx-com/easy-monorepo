@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Bridge\Laravel\Middlewares;
 
+use Closure;
 use EonX\EasyUtils\StringTrimmers\StringTrimmerInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -25,7 +26,7 @@ final class TrimStrings
         $this->exceptKeys = $exceptKeys ?? [];
     }
 
-    public function handle(Request $request, \Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
         $this->clean($request);
 

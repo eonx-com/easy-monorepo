@@ -96,7 +96,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
      */
     private function getKey(string $name, ?array $keys = null): string
     {
-        $keys = $keys ?? $this->keys;
+        $keys ??= $this->keys;
         $nameParts = \explode(self::KEY_NAME_SEPARATOR, $name);
 
         if (\count($nameParts) <= 1) {

@@ -16,6 +16,7 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Exception;
 use Prophecy\Argument;
 use stdClass;
+use Throwable;
 
 /**
  * @covers \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -23,34 +24,30 @@ use stdClass;
 final class EntityManagerDecoratorTest extends AbstractTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
      */
-    public static function provideDoctrineExceptionClasses(): array
+    public static function provideDoctrineExceptionClasses(): iterable
     {
-        return [
-            'DBAL exception' => [new DBALException()],
-            'ORM exception' => [new ORMException()],
-        ];
+        yield 'DBAL exception' => [new DBALException()];
+        yield 'ORM exception' => [new ORMException()];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testWrapInTransactionSucceeds
      */
-    public static function provideReturnValuesData(): array
+    public static function provideReturnValuesData(): iterable
     {
-        return [
-            'callable returns not null' => [
-                'callableReturns' => 'some-value',
-                'transactionalReturns' => 'some-value',
-            ],
-            'callable returns null' => [
-                'callableReturns' => null,
-                'transactionalReturns' => null,
-            ],
+        yield 'callable returns not null' => [
+            'callableReturns' => 'some-value',
+            'transactionalReturns' => 'some-value',
+        ];
+        yield 'callable returns null' => [
+            'callableReturns' => null,
+            'transactionalReturns' => null,
         ];
     }
 
@@ -195,14 +192,11 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $callableReturns
-     * @param mixed $transactionalReturns
-     *
      * @throws \Throwable
      *
      * @dataProvider provideReturnValuesData
      */
-    public function testWrapInTransactionSucceeds($callableReturns, $transactionalReturns): void
+    public function testWrapInTransactionSucceeds(mixed $callableReturns, mixed $transactionalReturns): void
     {
         $spyForCallable = new stdClass();
         $spyForCallable->wasCalled = false;
@@ -258,7 +252,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     public function testWrapInTransactionThrowsException(): void
     {
         $exception = new Exception('some-exception-message');
-        $callableArgument = static function () use ($exception): void {
+        $callableArgument = static function () use ($exception): never {
             throw $exception;
         };
         $connection = $this->prophesize(Connection::class);
@@ -288,7 +282,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             $entityManagerDecorator->wrapInTransaction($callableArgument);
         });
 
-        $this->assertThrownException(\Throwable::class, 0);
+        $this->assertThrownException(Throwable::class, 0);
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
@@ -315,7 +309,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     public function testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions(
         $doctrineException,
     ): void {
-        $callableArgument = static function () use ($doctrineException): void {
+        $callableArgument = static function () use ($doctrineException): never {
             throw $doctrineException;
         };
         $connection = $this->prophesize(Connection::class);
@@ -345,7 +339,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             $entityManagerDecorator->wrapInTransaction($callableArgument);
         });
 
-        $this->assertThrownException(\get_class($doctrineException), 0);
+        $this->assertThrownException($doctrineException::class, 0);
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()

@@ -51,7 +51,7 @@ abstract class Parser extends BaseParser
             $result = $xmlConverter->xmlToArray($xml, XmlConverter::XML_INCLUDE_ATTRIBUTES);
         } catch (InvalidXmlException $exception) {
             // When an exception is thrown, let's attempt to mitigate the issue by cleaning up some common
-            // inconsistencies from the bank's side.
+            // inconsistencies from the bank's side
             $fixedContents = XmlFailureMitigation::tryMitigateParseFailures($xml);
 
             // If the content back from mitigation is empty, throw the initial exception
@@ -70,11 +70,9 @@ abstract class Parser extends BaseParser
      * Determine how to process issues, this array can change depending on whether there
      * are one or many issues to be stored.
      *
-     * @param mixed $issues
-     *
      * @return \EonX\EasyBankFiles\Parsers\Ack\Results\Issue[]
      */
-    protected function extractIssues($issues): array
+    protected function extractIssues(mixed $issues): array
     {
         // If there are no issues, return
         if ($issues === null) {

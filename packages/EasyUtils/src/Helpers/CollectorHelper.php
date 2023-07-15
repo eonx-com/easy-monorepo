@@ -6,8 +6,9 @@ namespace EonX\EasyUtils\Helpers;
 
 use EonX\EasyUtils\Exceptions\InvalidArgumentException;
 use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+use Traversable;
 
-class CollectorHelper
+final class CollectorHelper
 {
     /**
      * @param iterable<mixed> $items
@@ -16,7 +17,7 @@ class CollectorHelper
      */
     public static function convertToArray(iterable $items): array
     {
-        return $items instanceof \Traversable ? \iterator_to_array($items) : $items;
+        return $items instanceof Traversable ? \iterator_to_array($items) : $items;
     }
 
     /**
@@ -33,7 +34,7 @@ class CollectorHelper
                 throw new InvalidArgumentException(\sprintf(
                     'Instance of %s expected, %s given',
                     $class,
-                    \is_object($item) === false ? \gettype($item) : \get_class($item)
+                    \is_object($item) === false ? \gettype($item) : $item::class
                 ));
             }
 

@@ -7,19 +7,22 @@ namespace EonX\EasyUtils\Tests;
 use EonX\EasyUtils\Exceptions\InvalidArgumentException;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use EonX\EasyUtils\Tests\Stubs\HasPriorityStub;
+use stdClass;
 
 final class CollectorHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testEnsureClass
      */
     public static function providerTestEnsureClass(): iterable
     {
         yield 'basic type' => [[0], true];
 
-        yield 'basic object' => [[new \stdClass()], false];
+        yield 'basic object' => [[new stdClass()], false];
 
-        yield 'interface based' => [[new HasPriorityStub(), new \stdClass()], true];
+        yield 'interface based' => [[new HasPriorityStub(), new stdClass()], true];
     }
 
     /**
@@ -31,9 +34,9 @@ final class CollectorHelperTest extends AbstractTestCase
     {
         yield 'basic types' => [[0, 'string', 12.00, []], 0];
 
-        yield 'basic object' => [[new \stdClass()], 1];
+        yield 'basic object' => [[new stdClass()], 1];
 
-        yield 'interface based' => [[new HasPriorityStub(), new \stdClass()], 1];
+        yield 'interface based' => [[new HasPriorityStub(), new stdClass()], 1];
     }
 
     /**
@@ -50,8 +53,8 @@ final class CollectorHelperTest extends AbstractTestCase
 
         yield 'order changed' => [[$priority1, $priority10], [$priority10, $priority1]];
 
-        $noPriority1 = new \stdClass();
-        $noPriority2 = new \stdClass();
+        $noPriority1 = new stdClass();
+        $noPriority2 = new stdClass();
 
         yield 'same order when no priority' => [[$noPriority1, $noPriority2], [$noPriority1, $noPriority2]];
     }
@@ -70,8 +73,8 @@ final class CollectorHelperTest extends AbstractTestCase
 
         yield 'order changed' => [[$priority10, $priority1], [$priority1, $priority10]];
 
-        $noPriority1 = new \stdClass();
-        $noPriority2 = new \stdClass();
+        $noPriority1 = new stdClass();
+        $noPriority2 = new stdClass();
 
         yield 'same order when no priority' => [[$noPriority1, $noPriority2], [$noPriority1, $noPriority2]];
     }
@@ -88,7 +91,7 @@ final class CollectorHelperTest extends AbstractTestCase
         }
 
         // Convert to array so it goes through the generator
-        CollectorHelper::ensureClassAsArray($items, $class ?? \stdClass::class);
+        CollectorHelper::ensureClassAsArray($items, $class ?? stdClass::class);
 
         // If it reaches here, test is valid
         self::assertTrue(true);
@@ -102,7 +105,7 @@ final class CollectorHelperTest extends AbstractTestCase
      */
     public function testFilterByClass(iterable $items, int $expectedCount, ?string $class = null): void
     {
-        $class = $class ?? \stdClass::class;
+        $class ??= stdClass::class;
         $results = CollectorHelper::filterByClassAsArray($items, $class);
 
         self::assertCount($expectedCount, $results);

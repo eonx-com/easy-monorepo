@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
+use Closure;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Lock\BatchItemLockFactoryInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
 use EonX\EasyBatch\Exceptions\BatchItemNotHandledException;
@@ -55,7 +56,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         try {
             // Since items can be dispatched multiple times to guarantee all items are dispatched
             // We must protect the processing logic with a lock to make sure the same item isn't processed
-            // by multiple workers concurrently.
+            // by multiple workers concurrently
             $result = $this->lockService->processWithLock(
                 $this->batchItemLockFactory->createFromEnvelope($envelope),
                 function () use ($batchItemStamp, $message, $func) {
@@ -88,7 +89,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         StackInterface $stack,
         ?BatchItemStamp $batchItemStamp = null,
         ?ConsumedByWorkerStamp $consumedByWorkerStamp = null,
-    ): \Closure {
+    ): Closure {
         return static function () use ($envelope, $stack, $batchItemStamp, $consumedByWorkerStamp): Envelope {
             $newEnvelope = $stack
                 ->next()

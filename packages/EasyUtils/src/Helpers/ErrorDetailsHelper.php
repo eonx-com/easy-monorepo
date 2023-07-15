@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Helpers;
 
-class ErrorDetailsHelper
+use Throwable;
+
+final class ErrorDetailsHelper
 {
     /**
      * @return mixed[]
      */
-    public static function resolveSimpleDetails(\Throwable $throwable, ?bool $withTrace = null): array
+    public static function resolveSimpleDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         $details = [
             'code' => $throwable->getCode(),
-            'class' => \get_class($throwable),
+            'class' => $throwable::class,
             'file' => $throwable->getFile(),
             'line' => $throwable->getLine(),
             'message' => $throwable->getMessage(),

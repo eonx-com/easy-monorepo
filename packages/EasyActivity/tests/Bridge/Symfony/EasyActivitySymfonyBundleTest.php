@@ -124,7 +124,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function testInvalidEasyActivityConfig(string $configName, string $expectedExceptionClass): void
     {
-        $this->safeCall(function () use ($configName) {
+        $this->safeCall(function () use ($configName): void {
             $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
         });
 

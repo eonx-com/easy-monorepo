@@ -14,9 +14,9 @@ use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
  * each retry will wait exactly 10 seconds.
  *
  * But if $delayMilliseconds=10000 & $multiplier=2:.
- *      * Retry 1: 10 second delay.
- *      * Retry 2: 20 second delay (10000 * 2 = 20000).
- *      * Retry 3: 40 second delay (20000 * 2 = 40000).
+ * * Retry 1: 10 second delay.
+ * * Retry 2: 20 second delay (10000 * 2 = 20000).
+ * * Retry 3: 40 second delay (20000 * 2 = 40000).
  *
  * @author Ryan Weaver <ryan@symfonycasts.com>
  *
@@ -42,7 +42,7 @@ final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterf
      */
     public function getWaitingTime(WebhookInterface $webhook): int
     {
-        $delay = (int)($this->delayMilliseconds * \pow($this->multiplier, $webhook->getCurrentAttempt()));
+        $delay = (int)($this->delayMilliseconds * $this->multiplier ** $webhook->getCurrentAttempt());
 
         return $this->maxDelayMilliseconds !== null && $delay > $this->maxDelayMilliseconds
             ? $this->maxDelayMilliseconds

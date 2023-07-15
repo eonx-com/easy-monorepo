@@ -31,7 +31,7 @@ final class OptionHelper
         'json_secrets' => ['SECRET_.+'],
         'mode' => 1,
         'port' => 8080,
-        'response_chunk_size' => 1048576,
+        'response_chunk_size' => 1_048_576,
         'settings' => [],
         'sock_type' => 1,
         'use_default_callbacks' => true,

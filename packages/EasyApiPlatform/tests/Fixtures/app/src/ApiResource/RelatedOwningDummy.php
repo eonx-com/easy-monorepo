@@ -18,10 +18,10 @@ class RelatedOwningDummy
     private int $id;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\OneToOne(mappedBy: 'relatedOwningDummy', targetEntity: Dummy::class, cascade: ['persist'])]
-    private ?Dummy $ownedDummy;
+    private ?Dummy $ownedDummy = null;
 
     public function getId(): int
     {

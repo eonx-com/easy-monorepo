@@ -42,9 +42,10 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
         }
 
         // Convert easy async middleware classes to reference
-        $easyAsyncMiddlewareList = \array_map(static function (string $class): Reference {
-            return new Reference($class);
-        }, $enabledMiddlewareList);
+        $easyAsyncMiddlewareList = \array_map(
+            static fn (string $class): Reference => new Reference($class),
+            $enabledMiddlewareList
+        );
 
         foreach (\array_keys($container->findTaggedServiceIds(self::MESSENGER_BUS_TAG)) as $busId) {
             $busDef = $container->getDefinition($busId);
@@ -55,9 +56,12 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
             }
 
             // Remove easy async middleware if added in the app config
-            $existingMiddlewareList = \array_filter($middleware->getValues(), static function (Reference $ref): bool {
-                return \in_array((string)$ref, self::EASY_ASYNC_MIDDLEWARE_LIST, true) === false;
-            });
+            $existingMiddlewareList = \array_filter(
+                $middleware->getValues(),
+                static fn (
+                    Reference $ref,
+                ): bool => \in_array((string)$ref, self::EASY_ASYNC_MIDDLEWARE_LIST, true) === false
+            );
 
             // Add reference to easy async middleware at the start of existing list
             \array_unshift($existingMiddlewareList, ...$easyAsyncMiddlewareList);

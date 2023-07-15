@@ -42,27 +42,21 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             CreditCardNumberValidatorInterface::class,
-            static function (): CreditCardNumberValidatorInterface {
-                return new CreditCardNumberValidator();
-            }
+            static fn (): CreditCardNumberValidatorInterface => new CreditCardNumberValidator()
         );
 
         $this->app->singleton(
             CsvWithHeadersParserInterface::class,
-            static function (): CsvWithHeadersParserInterface {
-                return new CsvWithHeadersParser();
-            }
+            static fn (): CsvWithHeadersParserInterface => new CsvWithHeadersParser()
         );
 
-        $this->app->singleton(MathInterface::class, static function (): MathInterface {
-            return new Math(
-                roundPrecision: \config('easy-utils.math.round-precision'),
-                roundMode: \config('easy-utils.math.round-mode'),
-                scale: \config('easy-utils.math.scale'),
-                decimalSeparator: \config('easy-utils.math.format-decimal-separator'),
-                thousandsSeparator: \config('easy-utils.math.format-thousands-separator')
-            );
-        });
+        $this->app->singleton(MathInterface::class, static fn (): MathInterface => new Math(
+            roundPrecision: \config('easy-utils.math.round-precision'),
+            roundMode: \config('easy-utils.math.round-mode'),
+            scale: \config('easy-utils.math.scale'),
+            decimalSeparator: \config('easy-utils.math.format-decimal-separator'),
+            thousandsSeparator: \config('easy-utils.math.format-thousands-separator')
+        ));
 
         $this->sensitiveData();
         $this->stringTrimmer();
@@ -77,9 +71,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
         if (\config('easy-utils.sensitive_data.use_default_object_transformers', true)) {
             $this->app->singleton(
                 DefaultObjectTransformer::class,
-                static function (): DefaultObjectTransformer {
-                    return new DefaultObjectTransformer(10000);
-                }
+                static fn (): DefaultObjectTransformer => new DefaultObjectTransformer(10000)
             );
             $this->app->tag(
                 DefaultObjectTransformer::class,
@@ -90,9 +82,9 @@ final class EasyUtilsServiceProvider extends ServiceProvider
         if (\config('easy-utils.sensitive_data.use_default_string_sanitizers', true)) {
             $this->app->singleton(
                 AuthorizationStringSanitizer::class,
-                static function (): StringSanitizerInterface {
-                    return new AuthorizationStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
-                }
+                static fn (): StringSanitizerInterface => new AuthorizationStringSanitizer(
+                    self::STRING_SANITIZER_DEFAULT_PRIORITY
+                )
             );
             $this->app->tag(AuthorizationStringSanitizer::class, [
                 BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -100,12 +92,10 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 CreditCardNumberStringSanitizer::class,
-                static function (Container $app): StringSanitizerInterface {
-                    return new CreditCardNumberStringSanitizer(
-                        $app->make(CreditCardNumberValidatorInterface::class),
-                        self::STRING_SANITIZER_DEFAULT_PRIORITY
-                    );
-                }
+                static fn (Container $app): StringSanitizerInterface => new CreditCardNumberStringSanitizer(
+                    $app->make(CreditCardNumberValidatorInterface::class),
+                    self::STRING_SANITIZER_DEFAULT_PRIORITY
+                )
             );
             $this->app->tag(CreditCardNumberStringSanitizer::class, [
                 BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -113,9 +103,9 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 JsonStringSanitizer::class,
-                static function (): StringSanitizerInterface {
-                    return new JsonStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
-                }
+                static fn (): StringSanitizerInterface => new JsonStringSanitizer(
+                    self::STRING_SANITIZER_DEFAULT_PRIORITY
+                )
             );
             $this->app->tag(JsonStringSanitizer::class, [
                 BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -123,9 +113,9 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 UrlStringSanitizer::class,
-                static function (): StringSanitizerInterface {
-                    return new UrlStringSanitizer(self::STRING_SANITIZER_DEFAULT_PRIORITY);
-                }
+                static fn (): StringSanitizerInterface => new UrlStringSanitizer(
+                    self::STRING_SANITIZER_DEFAULT_PRIORITY
+                )
             );
             $this->app->tag(UrlStringSanitizer::class, [
                 BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER,
@@ -134,15 +124,13 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             SensitiveDataSanitizerInterface::class,
-            static function (Container $container): SensitiveDataSanitizerInterface {
-                return new SensitiveDataSanitizer(
-                    \config('easy-utils.sensitive_data.use_default_keys_to_mask', true),
-                    \config('easy-utils.sensitive_data.keys_to_mask', []),
-                    \config('easy-utils.sensitive_data.mask_pattern'),
-                    $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER),
-                    $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER)
-                );
-            }
+            static fn (Container $container): SensitiveDataSanitizerInterface => new SensitiveDataSanitizer(
+                \config('easy-utils.sensitive_data.use_default_keys_to_mask', true),
+                \config('easy-utils.sensitive_data.keys_to_mask', []),
+                \config('easy-utils.sensitive_data.mask_pattern'),
+                $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER),
+                $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER)
+            )
         );
     }
 
@@ -155,12 +143,13 @@ final class EasyUtilsServiceProvider extends ServiceProvider
         /** @var \Laravel\Lumen\Application $app */
         $app = $this->app;
         $app->singleton(StringTrimmerInterface::class, RecursiveStringTrimmer::class);
-        $app->singleton(TrimStrings::class, static function (Container $app): TrimStrings {
-            return new TrimStrings(
+        $app->singleton(
+            TrimStrings::class,
+            static fn (Container $app): TrimStrings => new TrimStrings(
                 $app->get(StringTrimmerInterface::class),
                 \config('easy-utils.string_trimmer.except_keys', [])
-            );
-        });
+            )
+        );
         $app->middleware([TrimStrings::class]);
     }
 }

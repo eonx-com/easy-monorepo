@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @covers \EonX\EasyErrorHandler\Tests\AbstractTestCase
  */
-class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends TestCase
 {
     protected function tearDown(): void
     {

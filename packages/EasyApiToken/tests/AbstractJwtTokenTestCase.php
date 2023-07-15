@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests;
 
-use Nette\Utils\Strings;
 use OpenSSLAsymmetricKey;
 
 abstract class AbstractJwtTokenTestCase extends AbstractTestCase
@@ -21,6 +20,6 @@ abstract class AbstractJwtTokenTestCase extends AbstractTestCase
 
     protected function isAlgoRs(string $algo): bool
     {
-        return Strings::startsWith(\strtolower($algo), 'rs');
+        return \str_starts_with(\strtolower($algo), 'rs');
     }
 }

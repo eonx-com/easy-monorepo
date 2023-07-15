@@ -6,5 +6,5 @@ namespace EonX\EasyEncryption\Exceptions;
 
 final class CouldNotResolveEncryptionKeyException extends AbstractEasyEncryptionException
 {
-    // No body needed.
+    // No body needed
 }

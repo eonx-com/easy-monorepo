@@ -14,6 +14,8 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testSanitize
      */
     public static function providerTestSanitize(): iterable
     {

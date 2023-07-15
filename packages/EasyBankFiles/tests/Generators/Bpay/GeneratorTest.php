@@ -33,7 +33,7 @@ final class GeneratorTest extends TestCase
     {
         $header = $this->createHeader();
 
-        // create a transaction and set it's values
+        // Create a transaction and set it's values
         $trans1 = $this->createTransaction();
         $trans1
             ->setAttribute('billerCode', '11133')

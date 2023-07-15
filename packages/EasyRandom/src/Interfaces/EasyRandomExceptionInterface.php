@@ -6,5 +6,5 @@ namespace EonX\EasyRandom\Interfaces;
 
 interface EasyRandomExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

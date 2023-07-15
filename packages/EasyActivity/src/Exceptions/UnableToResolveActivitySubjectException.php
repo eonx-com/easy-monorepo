@@ -6,5 +6,5 @@ namespace EonX\EasyActivity\Exceptions;
 
 final class UnableToResolveActivitySubjectException extends EasyActivityException
 {
-    // No body needed.
+    // No body needed
 }

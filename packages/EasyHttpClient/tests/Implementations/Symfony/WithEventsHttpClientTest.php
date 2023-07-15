@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Tests\Implementations\Symfony;
 
+use DateTimeInterface;
 use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Implementations\Symfony\WithEventsHttpClient;
 use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 final class WithEventsHttpClientTest extends AbstractTestCase
 {
@@ -47,15 +49,13 @@ final class WithEventsHttpClientTest extends AbstractTestCase
     public function testRequestThrowsException(): void
     {
         $eventDispatcher = new EventDispatcherStub();
-        $httpClient = new MockHttpClient(function (): string {
-            return 'invalid';
-        });
+        $httpClient = new MockHttpClient(fn (): string => 'invalid');
         $withEventsHttpClient = new WithEventsHttpClient($eventDispatcher, $httpClient);
         $throwable = null;
 
         try {
             $withEventsHttpClient->request('POST', 'https://eonx.com');
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             self::assertInstanceOf(TransportException::class, $throwable);
         }
 
@@ -67,6 +67,6 @@ final class WithEventsHttpClientTest extends AbstractTestCase
 
         self::assertNull($event->getResponseData());
         self::assertSame($throwable, $event->getThrowable());
-        self::assertInstanceOf(\DateTimeInterface::class, $event->getThrowableThrownAt());
+        self::assertInstanceOf(DateTimeInterface::class, $event->getThrowableThrownAt());
     }
 }

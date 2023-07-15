@@ -32,25 +32,19 @@ final class RealTimeMessageTest extends AbstractTestCase
     public static function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
-            function (): RealTimeMessage {
-                return new RealTimeMessage(static::$body, static::$topics);
-            },
+            fn (): RealTimeMessage => new RealTimeMessage(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method' => [
-            function (): RealTimeMessage {
-                return RealTimeMessage::create(static::$body, static::$topics);
-            },
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method + topics' => [
-            function (): RealTimeMessage {
-                return RealTimeMessage::create(static::$body)->topics(static::$topics);
-            },
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body)->topics(static::$topics),
             static::$body,
             static::$topics,
         ];

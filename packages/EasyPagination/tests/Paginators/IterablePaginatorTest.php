@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Paginators;
 
+use ArrayIterator;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\IterablePaginator;
@@ -13,6 +14,8 @@ final class IterablePaginatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginatorGetItems
      */
     public static function providerTestPaginatorGetItems(): iterable
     {
@@ -24,7 +27,7 @@ final class IterablePaginatorTest extends AbstractTestCase
         ];
 
         yield 'Iterable to array' => [
-            new \ArrayIterator(),
+            new ArrayIterator(),
             static function (array $items): void {
                 self::assertEquals([], $items);
             },
@@ -35,14 +38,14 @@ final class IterablePaginatorTest extends AbstractTestCase
             static function (array $items): void {
                 self::assertEquals([1, 1], $items);
             },
-            static function ($item) {
-                return $item === null ? 1 : $item;
-            },
+            static fn ($item) => $item ?? 1,
         ];
     }
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginatorPageMethods
      */
     public static function providerTestPaginatorPageMethods(): iterable
     {

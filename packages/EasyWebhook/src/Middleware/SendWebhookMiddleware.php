@@ -11,6 +11,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\WebhookResult;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 final class SendWebhookMiddleware extends AbstractMiddleware
 {
@@ -36,7 +37,7 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             $response = $this->httpClient->request($method, $url, $webhook->getHttpClientOptions() ?? []);
             // Trigger exception on bad response
             $response->getContent();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             // Set response to null here to make sure not to carry over the faulty response
             $response = null;
 

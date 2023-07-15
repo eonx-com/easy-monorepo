@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Helpers;
 
-class EnvVarSubstitutionHelper
+use RuntimeException;
+
+final class EnvVarSubstitutionHelper
 {
     private const VAR_NAME_REGEX = '(?i:[A-Z][A-Z0-9_]*+)';
 
@@ -64,36 +66,36 @@ class EnvVarSubstitutionHelper
             return $value;
         }
 
-        return (string)\preg_replace_callback(self::VAR_REGEX, function ($matches) {
-            // odd number of backslashes means the $ character is escaped
+        return (string)\preg_replace_callback(self::VAR_REGEX, function ($matches): string {
+            // Odd number of backslashes means the $ character is escaped
             if (\strlen($matches['backslashes']) % 2 === 1) {
                 return \substr($matches[0], 1);
             }
 
-            // unescaped $ not followed by variable name
+            // Unescaped $ not followed by variable name
             if (isset($matches['name']) === false) {
                 return $matches[0];
             }
 
             if ($matches['opening_brace'] === '{' && isset($matches['closing_brace']) === false) {
-                throw new \RuntimeException('Unclosed braces on variable expansion');
+                throw new RuntimeException('Unclosed braces on variable expansion');
             }
 
             $name = $matches['name'];
             $value = self::resolveEnvVarValue($name);
 
             if ($value === '' && isset($matches['default_value']) && $matches['default_value'] !== '') {
-                $unsupportedChars = \strpbrk($matches['default_value'], '\'"{$');
+                $unsupportedChars = \strpbrk((string) $matches['default_value'], '\'"{$');
 
                 if (\is_string($unsupportedChars)) {
-                    throw new \RuntimeException(\sprintf(
+                    throw new RuntimeException(\sprintf(
                         'Unsupported character "%s" found in the default value of variable "$%s".',
                         $unsupportedChars[0],
                         $name
                     ));
                 }
 
-                $value = \substr($matches['default_value'], 2);
+                $value = \substr((string) $matches['default_value'], 2);
 
                 if ($matches['default_value'][1] === '=') {
                     self::$values[$name] = $value;

@@ -12,6 +12,7 @@ use EonX\EasyPipeline\Interfaces\PipelineInterface;
 use EonX\EasyPipeline\Tests\AbstractLumenTestCase;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\PipelineNameAwareMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ValidMiddlewareProviderStub;
+use stdClass;
 
 final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
 {
@@ -34,7 +35,7 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         $this->expectException(InvalidMiddlewareProviderException::class);
 
         $app = $this->getApplication();
-        $app->instance('pipeline', new \stdClass());
+        $app->instance('pipeline', new stdClass());
 
         (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
     }

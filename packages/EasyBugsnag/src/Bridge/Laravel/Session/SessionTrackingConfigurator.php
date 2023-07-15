@@ -21,10 +21,8 @@ final class SessionTrackingConfigurator extends AbstractClientConfigurator
     public function configure(Client $bugsnag): void
     {
         $bugsnag->getSessionTracker()
-            ->setStorageFunction(function (string $key, $value = null) {
-                return $value === null
-                    ? $this->cache->get($key)
-                    : $this->cache->put($key, $value, $this->expiresAfter);
-            });
+            ->setStorageFunction(fn (string $key, $value = null) => $value === null
+                ? $this->cache->get($key)
+                : $this->cache->put($key, $value, $this->expiresAfter));
     }
 }

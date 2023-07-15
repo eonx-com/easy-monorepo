@@ -20,7 +20,7 @@ final class MailerMessageLoggerListenerPhpUnitExtension implements Extension
             public function notify(TestFinishedEvent $event): void
             {
                 // We will do this reset even if MailerMessageLoggerListenerStub is not enabled.
-                // This is faster because we don't need to boot the kernel to get the bundle config.
+                // This is faster because we don't need to boot the kernel to get the bundle config
                 MailerMessageLoggerListenerStub::reset();
             }
         });

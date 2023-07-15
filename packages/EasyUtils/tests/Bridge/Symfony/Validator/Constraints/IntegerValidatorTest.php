@@ -19,53 +19,46 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class IntegerValidatorTest extends AbstractTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testValidateSucceedsAndDoesNothing
      */
-    public static function provideEmptyValues(): array
+    public static function provideEmptyValues(): iterable
     {
-        return [
-            'Empty value #1' => [''],
-            'Empty value #2' => [null],
-        ];
+        yield 'Empty value #1' => [''];
+        yield 'Empty value #2' => [null];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see provideInvalidValues
+     * @see testValidateSucceedsWithInvalidValue
      */
-    public static function provideInvalidValues(): array
+    public static function provideInvalidValues(): iterable
     {
-        return [
-            'Invalid value #1' => [1.25],
-            'Invalid value #2' => ['1.25'],
-            'Invalid value #3' => ['A#4'],
-        ];
+        yield 'Invalid value #1' => [1.25];
+        yield 'Invalid value #2' => ['1.25'];
+        yield 'Invalid value #3' => ['A#4'];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testValidateSucceedsWithValidValue
      */
-    public static function provideValidValues(): array
+    public static function provideValidValues(): iterable
     {
-        return [
-            'Valid value #1' => [123],
-            'Valid value #2' => ['123'],
-            'Valid value #3' => [-123],
-            'Valid value #4' => ['-123'],
-        ];
+        yield 'Valid value #1' => [123];
+        yield 'Valid value #2' => ['123'];
+        yield 'Valid value #3' => [-123];
+        yield 'Valid value #4' => ['-123'];
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideEmptyValues
      */
-    public function testValidateSucceedsAndDoesNothing($value): void
+    public function testValidateSucceedsAndDoesNothing(mixed $value): void
     {
         $validator = new IntegerValidator();
         $constraint = new Integer();
@@ -78,11 +71,9 @@ final class IntegerValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideInvalidValues
      */
-    public function testValidateSucceedsWithInvalidValue($value): void
+    public function testValidateSucceedsWithInvalidValue(mixed $value): void
     {
         $validator = new IntegerValidator();
         $constraint = new Integer();
@@ -96,11 +87,9 @@ final class IntegerValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideValidValues
      */
-    public function testValidateSucceedsWithValidValue($value): void
+    public function testValidateSucceedsWithValidValue(mixed $value): void
     {
         $validator = new IntegerValidator();
         $constraint = new Integer();

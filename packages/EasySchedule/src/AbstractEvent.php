@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasySchedule;
 
 use Carbon\Carbon;
+use Closure;
 use Cron\CronExpression;
 use DateTimeZone;
 use EonX\EasySchedule\Interfaces\EventInterface;
@@ -180,9 +181,7 @@ abstract class AbstractEvent implements EventInterface
     {
         $this->rejects[] = \is_callable($callback)
             ? $callback
-            : static function () use ($callback) {
-                return $callback;
-            };
+            : static fn (): bool => $callback;
 
         return $this;
     }
@@ -265,9 +264,7 @@ abstract class AbstractEvent implements EventInterface
     {
         $this->filters[] = \is_callable($callback)
             ? $callback
-            : static function () use ($callback) {
-                return $callback;
-            };
+            : static fn (): bool => $callback;
 
         return $this;
     }
@@ -297,14 +294,12 @@ abstract class AbstractEvent implements EventInterface
         return $this->expression;
     }
 
-    private function inTimeInterval(string $startTime, string $endTime): \Closure
+    private function inTimeInterval(string $startTime, string $endTime): Closure
     {
-        return function () use ($startTime, $endTime) {
-            return Carbon::now($this->timezone)->between(
-                Carbon::parse($startTime, $this->timezone),
-                Carbon::parse($endTime, $this->timezone),
-                true
-            );
-        };
+        return fn (): bool => Carbon::now($this->timezone)->between(
+            Carbon::parse($startTime, $this->timezone),
+            Carbon::parse($endTime, $this->timezone),
+            true
+        );
     }
 }

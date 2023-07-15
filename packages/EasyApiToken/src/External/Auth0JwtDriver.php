@@ -12,6 +12,7 @@ use EonX\EasyApiToken\External\Auth0\TokenGenerator;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use EonX\EasyApiToken\Interfaces\AlgorithmsInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Throwable;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
@@ -82,7 +83,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
                 return $verifier
                     ->validate($tokenIssuer, $this->validAudiences)
                     ->toArray();
-            } catch (\Throwable $throwable) {
+            } catch (Throwable $throwable) {
                 $exceptions[] = $throwable->getMessage();
             }
         }

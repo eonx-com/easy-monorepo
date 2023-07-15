@@ -26,7 +26,7 @@ final class FirebaseJwtDriver implements JwtDriverInterface
          * the signing and verifying servers. It is recommended that this leeway should
          * not be bigger than a few minutes.
          *
-         * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
+         * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef.
          */
         if ($this->leeway !== null) {
             JWT::$leeway = $this->leeway;

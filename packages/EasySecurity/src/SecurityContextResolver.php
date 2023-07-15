@@ -15,7 +15,7 @@ use Psr\Log\NullLogger;
 
 final class SecurityContextResolver implements SecurityContextResolverInterface
 {
-    private ?Closure $configurator;
+    private ?Closure $configurator = null;
 
     private ?SecurityContextInterface $securityContext = null;
 

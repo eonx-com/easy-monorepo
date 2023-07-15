@@ -6,7 +6,7 @@ namespace EonX\EasyActivity\Exceptions;
 
 use RuntimeException;
 
-class EasyActivityException extends RuntimeException
+abstract class EasyActivityException extends RuntimeException
 {
-    // No body needed.
+    // No body needed
 }

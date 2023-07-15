@@ -31,12 +31,10 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
      */
     public static function provideApplyTestData(): iterable
     {
-        $filterFactory = static function (
+        $filterFactory = static fn (
             ManagerRegistry $managerRegistry,
             ?array $properties = null,
-        ): AdvancedSearchFilter {
-            return self::buildAdvancedSearchFilter($managerRegistry, $properties);
-        };
+        ): AdvancedSearchFilter => self::buildAdvancedSearchFilter($managerRegistry, $properties);
 
         yield 'exact' => [
             [
@@ -1262,8 +1260,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         $iriConverterProphecy = $prophet->prophesize(IriConverterInterface::class);
 
         $iriConverterProphecy->getResourceFromIri(Argument::type('string'), ['fetch_data' => false])
-            ->will(function ($args) use ($relatedDummyProphecy) {
-                if (\str_contains($args[0], '/related_dummies')) {
+            ->will(function ($args) use ($relatedDummyProphecy): RelatedDummy {
+                if (\str_contains((string)$args[0], '/related_dummies')) {
                     $relatedDummyProphecy->getId()
                         ->shouldBeCalled()
                         ->willReturn(1);

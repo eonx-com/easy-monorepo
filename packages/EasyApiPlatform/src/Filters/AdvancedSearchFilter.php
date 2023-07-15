@@ -28,17 +28,17 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  * This filter allows to define multiple search strategy for the same property on a single resource.
  *
  * This class was created by copying of base ApiPlatform SearchFilter with the following changes:
- *   - Allow to configure multiple strategies for the same property
+ * - Allow to configure multiple strategies for the same property.
  *
  * @see \ApiPlatform\Doctrine\Orm\Filter\SearchFilter
  *
  * #[ApiFilter(
- *     AdvancedSearchFilter::class,
- *     properties: [
- *         'email' => 'iexact', // Normal search property definition
- *         'description[exact]' => ['description' => 'exact'], // Filter for description field with exact strategy
- *         'description[partial]' => ['description' => 'partial'], // Filter for description field with partial strategy
- *     ]
+ * AdvancedSearchFilter::class,
+ * properties: [
+ * 'email' => 'iexact', // Normal search property definition
+ * 'description[exact]' => ['description' => 'exact'], // Filter for description field with exact strategy
+ * 'description[partial]' => ['description' => 'partial'], // Filter for description field with partial strategy
+ * ]
  * )]
  */
 final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterInterface
@@ -102,7 +102,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $filterParameterName = $this->normalizePropertyName($filterParameter);
             if ($metadata->hasField($field)) {
                 $typeOfField = $this->getType($metadata->getTypeOfField($field));
-                $strategy = $strategy ?? self::STRATEGY_EXACT;
+                $strategy ??= self::STRATEGY_EXACT;
                 $filterParameterNames = [$filterParameterName];
 
                 if ($strategy === self::STRATEGY_EXACT) {
@@ -181,7 +181,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $parameters = [];
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
-            $parameters[] = [$caseSensitive ? $value : \strtolower($value), $keyValueParameter];
+            $parameters[] = [$caseSensitive ? $value : \strtolower((string) $value), $keyValueParameter];
 
             $ors[] = match ($strategy) {
                 self::STRATEGY_PARTIAL => $queryBuilder->expr()->like(
@@ -239,7 +239,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     /**
      * @param mixed[] $context
      *
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function filterProperty(
         string $property,
@@ -302,11 +302,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         }
 
         $caseSensitive = true;
-        $strategy = $strategy ?? ($this->properties[$filterParameter] ?? self::STRATEGY_EXACT);
+        $strategy ??= $this->properties[$filterParameter] ?? self::STRATEGY_EXACT;
 
-        // prefixing the strategy with i makes it case-insensitive
-        if (\str_starts_with($strategy, 'i')) {
-            $strategy = \substr($strategy, 1);
+        // Prefixing the strategy with i makes it case-insensitive
+        if (\str_starts_with((string) $strategy, 'i')) {
+            $strategy = \substr((string) $strategy, 1);
             $caseSensitive = false;
         }
 
@@ -314,7 +314,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
         if ($metadata->hasField($field)) {
             if ($field === 'id') {
-                $values = \array_map([$this, 'getIdFromValue'], $values);
+                $values = \array_map($this->getIdFromValue(...), $values);
             }
 
             if ($this->hasValidValues($values, $this->getDoctrineFieldType($property, $resourceClass)) === false) {
@@ -341,12 +341,12 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             return;
         }
 
-        // metadata doesn't have the field, nor an association on the field
+        // Metadata doesn't have the field, nor an association on the field
         if ($metadata->hasAssociation($field) === false) {
             return;
         }
 
-        $values = \array_map([$this, 'getIdFromValue'], $values);
+        $values = \array_map($this->getIdFromValue(...), $values);
 
         $associationResourceClass = (string)$metadata->getAssociationTargetClass($field);
         $associationFieldIdentifier = $metadata->getIdentifierFieldNames()[0];

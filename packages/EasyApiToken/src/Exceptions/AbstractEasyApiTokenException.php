@@ -9,5 +9,5 @@ use Exception;
 
 abstract class AbstractEasyApiTokenException extends Exception implements EasyApiTokenExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

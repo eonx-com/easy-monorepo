@@ -18,7 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ObjectCopierInterface::class)
-        ->factory([ObjectCopierFactory::class, 'create']);
+        ->factory(ObjectCopierFactory::create(...));
 
     $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class);
 };

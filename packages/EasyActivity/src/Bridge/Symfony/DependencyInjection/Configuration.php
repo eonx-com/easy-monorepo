@@ -46,10 +46,10 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultValue([])
                                 ->beforeNormalization()
                                     ->ifArray()
-                                    ->then(static function (array $properties) {
+                                    ->then(static function (array $properties): array {
                                         $result = [];
                                         foreach ($properties as $key => $property) {
-                                            if (\is_array($property) === true) {
+                                            if (\is_array($property)) {
                                                 $key = \array_key_first($property);
                                                 $property = \reset($property);
                                             }
@@ -62,7 +62,7 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->validate()
                                     ->ifArray()
-                                    ->then(static function (array $properties) {
+                                    ->then(static function (array $properties): array {
                                         foreach ($properties as $key => $property) {
                                             if (\is_string($key) === true && \is_array($property) === false) {
                                                 $errorMessage = 'Value of named property should be an array type.';
@@ -81,7 +81,7 @@ final class Configuration implements ConfigurationInterface
                                 ->prototype('variable')
                                     ->validate()
                                         ->always()
-                                        ->then(static function ($property) {
+                                        ->then(static function ($property): array {
                                             if (\is_array($property) === false) {
                                                 $errorMessage = 'Property should be an array type';
                                                 throw new InvalidTypeException($errorMessage);
