@@ -15,7 +15,9 @@ use Rector\Core\ValueObject\PhpVersion;
 use Rector\Php71\Rector\FuncCall\CountOnNullRector;
 use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
+use Rector\Php81\Rector\ClassMethod\NewInInitializerRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 
@@ -48,6 +50,16 @@ return static function (RectorConfig $rectorConfig): void {
         FinalizePublicClassConstantRector::class,
         JsonThrowOnErrorRector::class,
         ReadOnlyPropertyRector::class,
+        FirstClassCallableRector::class => [
+            'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyBatch/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Compiler/RegisterLockStoreServicePass.php',
+            'packages/EasyPagination/tests/Bridge/Symfony/Stubs/KernelStub.php',
+        ],
+        NewInInitializerRector::class => [
+            'packages/EasySwoole/src/Bridge/Symfony/Cache/SwooleTableAdapter.php',
+        ],
     ]);
 
     $rectorConfig->rule(AddSeeAnnotationRector::class);
