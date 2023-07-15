@@ -10,8 +10,8 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineOrmTestCase;
+use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
-use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
 
 final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTestCase
 {
@@ -178,7 +178,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
 
         yield 'Paginate parents of item by title' => [
             Pagination::create(1, 15),
-            ParentEntity::class,
+            ChildItem::class,
             'p',
             null,
             function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
@@ -202,7 +202,7 @@ final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTe
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
-                self::assertInstanceOf(ParentEntity::class, $item);
+                self::assertInstanceOf(ChildItem::class, $item);
                 self::assertInstanceOf(Item::class, $item->item);
                 self::assertEquals(1, $item->id);
                 self::assertEquals(1, $item->item->id);

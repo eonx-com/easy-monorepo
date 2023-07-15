@@ -4,28 +4,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Fixtures;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Author
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
-    /**
-     * @ORM\Column(type="text", length=256)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
 
-    /**
-     * @ORM\Column(type="integer", length=256)
-     */
+    #[ORM\Column(type: Types::INTEGER)]
     private int $position;
 
     public function getId(): int

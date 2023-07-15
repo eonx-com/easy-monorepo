@@ -10,8 +10,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\SchemaTool;
+use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
-use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
 
 abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
 {
@@ -30,7 +30,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
 
     protected static function addParentToTable(EntityManagerInterface $manager, string $title, Item $item): void
     {
-        $parent = new ParentEntity();
+        $parent = new ChildItem();
         $parent->title = $title;
         $parent->item = $item;
 
@@ -53,7 +53,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
      */
     protected static function createParentsTable(EntityManagerInterface $manager): void
     {
-        self::createEntityTable($manager, ParentEntity::class);
+        self::createEntityTable($manager, ChildItem::class);
     }
 
     /**
