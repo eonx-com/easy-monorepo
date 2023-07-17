@@ -20,7 +20,6 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
      */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
-        /** @var string[][] $matches */
         $matches = [];
         $matched = \preg_match_all('/(\d[^A-Za-z&="\'<]*){12,}/', $string, $matches);
 
@@ -29,6 +28,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         }
 
         // Mask potentially unmasked credit card numbers anywhere else
+        /** @var string[] $matches */
         foreach ($matches as $match) {
             if ($this->creditCardNumberValidator->isCreditCardNumberValid($match[0]) === false) {
                 continue;
