@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Stubs;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStatementsProvider;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
@@ -70,6 +69,7 @@ final class EntityManagerStub
     /**
      * @param array<string, mixed> $easyActivityConfig
      * @param string[]|null $fixtures
+     *
      * @return \Doctrine\ORM\EntityManagerInterface
      */
     public static function createFromEasyActivityConfig(
@@ -143,7 +143,7 @@ final class EntityManagerStub
         $config->setProxyDir(__DIR__ . '/../var');
         $config->setProxyNamespace('Proxy');
 
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
 
         $entityManager = EntityManager::create($conn, $config, $eventManager);
         $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
@@ -161,6 +161,7 @@ final class EntityManagerStub
     /**
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
+     *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
      */
     public static function createFromSymfonyEventDispatcher(
