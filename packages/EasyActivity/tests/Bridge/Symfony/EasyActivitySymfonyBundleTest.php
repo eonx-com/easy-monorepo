@@ -108,9 +108,8 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
     public function testEasyDoctrineEntitiesOverride(): void
     {
-        $container = $this->getKernel(
-            [__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml']
-        )->getContainer();
+        $container = $this->getKernel([__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml'])
+            ->getContainer();
 
         /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
         $subscriber = $container->get(EntityEventSubscriberInterface::class);

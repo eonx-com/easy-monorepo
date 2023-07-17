@@ -20,6 +20,8 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
      */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
+        /** @var string[][] $matches */
+        $matches = [];
         $matched = \preg_match_all('/(\d[^A-Za-z&="\'<]*){12,}/', $string, $matches);
 
         if ($matched === 0 || $matched === false) {
@@ -32,12 +34,12 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
                 continue;
             }
 
-            $lastSymbol = \str_ends_with((string) $match[0], '\\') ? '\\' : '';
+            $lastSymbol = \str_ends_with($match[0], '\\') ? '\\' : '';
 
             $replace = \preg_replace(
                 '/^(\d{6}).+(\d{4})$/',
                 '$1' . $maskPattern . '$2',
-                \preg_replace('/[\D]/', '', (string) $match) ?? ''
+                \preg_replace('/[\D]/', '', $match) ?? ''
             );
 
             $string = \str_replace($match, ($replace[0] ?? '') . $lastSymbol, $string);

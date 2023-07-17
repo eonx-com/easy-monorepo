@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
@@ -70,7 +69,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         ];
 
         $config = new Configuration();
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
