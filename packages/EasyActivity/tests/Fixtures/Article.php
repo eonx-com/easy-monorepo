@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Fixtures;
 
-use Carbon\CarbonImmutable;
+use Carbon\Carbon;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,8 +26,8 @@ class Article
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $content;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private CarbonImmutable $createdAt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private DateTimeInterface $createdAt;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]
@@ -40,7 +40,7 @@ class Article
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->createdAt = CarbonImmutable::now();
+        $this->createdAt = Carbon::now();
     }
 
     public function addComment(Comment $comment): self
@@ -100,7 +100,7 @@ class Article
         return $this;
     }
 
-    public function setCreatedAt(CarbonImmutable $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 

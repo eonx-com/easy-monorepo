@@ -31,23 +31,31 @@ final class JsonbTypeTest extends AbstractTestCase
      */
     public static function provideConvertToDatabaseValues(): iterable
     {
-        yield from self::provideConvertToPhpValues();
-        yield 'multidimensional array phpValue' => [
-            'phpValue' => [
-                'key3' => '15',
-                'key1' => 'value1',
-                'key4' => 15,
-                'key2' => false,
-                'key6' => [
-                    'sub-key-2' => 'bar',
-                    'sub-key-3' => 42,
-                    'sub-key-1' => 'foo',
-                ],
-                'key5' => [112, 242, 309, 310],
-            ],
-            'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
-                '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
-        ];
+        foreach (self::provideConvertToPhpValues() as $name => $data) {
+            if ($name === 'multidimensional array phpValue') {
+                yield $name => [
+                    'phpValue' => [
+                        'key3' => '15',
+                        'key1' => 'value1',
+                        'key4' => 15,
+                        'key2' => false,
+                        'key6' => [
+                            'sub-key-2' => 'bar',
+                            'sub-key-3' => 42,
+                            'sub-key-1' => 'foo',
+                        ],
+                        'key5' => [112, 242, 309, 310],
+                    ],
+                    'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
+                        '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
+                ];
+
+                continue;
+            }
+
+            yield $name => $data;
+        }
+
         yield 'object phpValue' => [
             'phpValue' => (object)[
                 'property' => 'value',
