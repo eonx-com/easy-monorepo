@@ -18,9 +18,9 @@ final class EntityManagerDecorator extends DoctrineEntityManagerDecorator
     public function __construct(
         private DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
         private EventDispatcherInterface $eventDispatcher,
-        EntityManagerInterface $wrapped,
+        EntityManagerInterface $decorated,
     ) {
-        parent::__construct($wrapped);
+        parent::__construct($decorated);
     }
 
     public function commit(): void
