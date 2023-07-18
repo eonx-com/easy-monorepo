@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Stubs;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStatementsProvider;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
@@ -41,7 +41,6 @@ final class EntityManagerStub
     public const ACTIVITY_TABLE_NAME = 'test_easy_activity_logs';
 
     /**
-     * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *
@@ -69,7 +68,6 @@ final class EntityManagerStub
 
     /**
      * @param array<string, mixed> $easyActivityConfig
-     * @param \EonX\EasyActivity\Interfaces\ActorResolverInterface|null $actorResolver
      * @param string[]|null $fixtures
      *
      * @return \Doctrine\ORM\EntityManagerInterface
@@ -128,7 +126,6 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \Doctrine\Common\EventManager|null $eventManager
      * @param string[] $fixtures
      *
      * @return \Doctrine\ORM\EntityManager
@@ -146,12 +143,10 @@ final class EntityManagerStub
         $config->setProxyDir(__DIR__ . '/../var');
         $config->setProxyNamespace('Proxy');
 
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
 
         $entityManager = EntityManager::create($conn, $config, $eventManager);
-        $schema = \array_map(function ($class) use ($entityManager) {
-            return $entityManager->getClassMetadata($class);
-        }, $fixtures);
+        $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
 
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema([]);
@@ -164,7 +159,6 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *

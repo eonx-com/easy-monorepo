@@ -14,9 +14,11 @@ use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class SecurityContextDataCollector extends DataCollector
 {
@@ -43,7 +45,7 @@ final class SecurityContextDataCollector extends DataCollector
         );
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         $securityContext = $this->securityContextResolver->resolveContext();
 
@@ -133,7 +135,7 @@ final class SecurityContextDataCollector extends DataCollector
         $this->data['context_configurators'] = [];
 
         foreach ($this->configurators as $contextConfigurator) {
-            $reflection = new \ReflectionClass($contextConfigurator);
+            $reflection = new ReflectionClass($contextConfigurator);
 
             $this->data['context_configurators'][] = [
                 'class' => $reflection->getName(),
@@ -157,7 +159,7 @@ final class SecurityContextDataCollector extends DataCollector
         }
 
         foreach ($factory->getRolesProviders() as $rolesProvider) {
-            $reflection = new \ReflectionClass($rolesProvider);
+            $reflection = new ReflectionClass($rolesProvider);
 
             $this->data['roles_providers'][] = [
                 'class' => $reflection->getName(),
@@ -166,7 +168,7 @@ final class SecurityContextDataCollector extends DataCollector
         }
 
         foreach ($factory->getPermissionsProviders() as $permissionsProvider) {
-            $reflection = new \ReflectionClass($permissionsProvider);
+            $reflection = new ReflectionClass($permissionsProvider);
 
             $this->data['permissions_providers'][] = [
                 'class' => $reflection->getName(),

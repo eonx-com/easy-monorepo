@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasySwoole\AppStateInitializers\AbstractAppStateInitializer;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Throwable;
 
 final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
 {
@@ -23,25 +24,25 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
     public function initState(): void
     {
         // This class recycles the db connection if compromised BEFORE processing a request.
-        // It should help prevent a request because of lost connection.
+        // It should help prevent a request because of lost connection
         foreach ($this->managerRegistry->getManagers() as $manager) {
             if ($manager instanceof EntityManagerInterface) {
                 $conn = $manager->getConnection();
 
-                // If connection is not connected, nothing to do.
+                // If connection is not connected, nothing to do
                 if ($conn->isConnected() === false) {
                     continue;
                 }
 
                 try {
                     $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());
-                } catch (\Throwable $throwable) {
+                } catch (Throwable $throwable) {
                     $this->logger->debug(\sprintf(
                         'Close DB Connection because compromised: %s',
                         $throwable->getMessage()
                     ));
 
-                    // If connection is compromised, simply close it, so it can be re-opened.
+                    // If connection is compromised, simply close it, so it can be re-opened
                     $conn->close();
                 }
             }

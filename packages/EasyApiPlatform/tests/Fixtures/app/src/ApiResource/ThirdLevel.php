@@ -14,11 +14,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ThirdLevel
 {
     #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
-    public ?FourthLevel $badFourthLevel;
+    public ?FourthLevel $badFourthLevel = null;
 
     #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
     #[Groups(['barcelona', 'chicago', 'friends'])]
-    public ?FourthLevel $fourthLevel;
+    public ?FourthLevel $fourthLevel = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

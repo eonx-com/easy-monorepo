@@ -11,7 +11,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-class HttpClientStub extends MockHttpClient
+final class HttpClientStub extends MockHttpClient
 {
     use HttpClientTrait;
 
@@ -30,9 +30,7 @@ class HttpClientStub extends MockHttpClient
         protected string $baseUri = 'https://example.com',
     ) {
         parent::__construct(
-            function ($method, $url, $options): ResponseInterface {
-                return $this->getResponse($method, $url, $options);
-            },
+            fn ($method, $url, $options): ResponseInterface => $this->getResponse($method, $url, $options),
             $baseUri
         );
     }
@@ -55,8 +53,8 @@ class HttpClientStub extends MockHttpClient
         if ($body !== null) {
             $contentType = null;
             foreach ($options['headers'] as $header) {
-                if (\str_starts_with($header, 'Content-Type')) {
-                    $contentType = \str_replace('Content-Type: ', '', $header);
+                if (\str_starts_with((string) $header, 'Content-Type')) {
+                    $contentType = \str_replace('Content-Type: ', '', (string) $header);
 
                     break;
                 }

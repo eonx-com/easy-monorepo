@@ -23,7 +23,7 @@ abstract class AbstractQueueListener
 
     protected function killWorker(Throwable $throwable): void
     {
-        $this->logger->info(\sprintf('Kill worker because of exception "%s"', \get_class($throwable)));
+        $this->logger->info(\sprintf('Kill worker because of exception "%s"', $throwable::class));
 
         $this->cache->forever('illuminate:queue:restart', Carbon::now()->getTimestamp());
     }

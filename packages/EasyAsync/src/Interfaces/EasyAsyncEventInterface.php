@@ -6,5 +6,5 @@ namespace EonX\EasyAsync\Interfaces;
 
 interface EasyAsyncEventInterface
 {
-    // Marker for all events of this package.
+    // Marker for all events of this package
 }

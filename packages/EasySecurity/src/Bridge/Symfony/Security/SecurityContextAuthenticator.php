@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Throwable;
 
 final class SecurityContextAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
@@ -32,7 +33,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
             $user = $this->securityContextResolver
                 ->resolveContext()
                 ->getUserOrFail();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             if ($throwable instanceof AuthenticationExceptionInterface) {
                 throw $throwable;
             }
@@ -41,9 +42,10 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
 
         // From here we know we have a user, simply fake it in symfony
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier(), function () use ($user): UserInterface {
-                return $user instanceof UserInterface ? $user : new FakeUser();
-            })
+            new UserBadge(
+                $user->getUserIdentifier(),
+                fn (): UserInterface => $user instanceof UserInterface ? $user : new FakeUser()
+            )
         );
     }
 

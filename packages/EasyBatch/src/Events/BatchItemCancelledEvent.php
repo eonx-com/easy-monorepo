@@ -6,5 +6,5 @@ namespace EonX\EasyBatch\Events;
 
 final class BatchItemCancelledEvent extends AbstractBatchItemEvent
 {
-    // No body needed.
+    // No body needed
 }

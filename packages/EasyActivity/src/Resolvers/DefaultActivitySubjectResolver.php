@@ -29,7 +29,7 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
             return $object;
         }
 
-        $subjectClass = ClassUtils::getRealClass(\get_class($object));
+        $subjectClass = ClassUtils::getRealClass($object::class);
         $subjectConfig = $this->subjects[$subjectClass] ?? null;
         if ($subjectConfig === null) {
             return null;

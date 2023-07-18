@@ -75,8 +75,8 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
 
     private static function createExceptionChain(int $max, ?int $current = null, ?Throwable $previous = null): Throwable
     {
-        $current = $current ?? 0;
-        $previous = $previous ?? new Exception();
+        $current ??= 0;
+        $previous ??= new Exception();
 
         if ($max === $current) {
             return $previous;

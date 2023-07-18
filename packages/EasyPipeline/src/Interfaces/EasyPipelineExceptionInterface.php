@@ -6,5 +6,5 @@ namespace EonX\EasyPipeline\Interfaces;
 
 interface EasyPipelineExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

@@ -22,9 +22,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('type_mapping')
                     ->prototype('scalar')
                     ->validate()
-                        ->ifTrue(static function ($class) {
-                            return \class_exists($class) === false;
-                        })
+                        ->ifTrue(static fn ($class): bool => \class_exists($class) === false)
                         ->thenInvalid('Class %s does not exist.')
                     ->end()
                     ->end()

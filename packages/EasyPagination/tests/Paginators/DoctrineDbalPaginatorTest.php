@@ -10,11 +10,14 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\DoctrineDbalPaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineDbalTestCase;
+use stdClass;
 
 final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
     {
@@ -244,8 +247,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 self::createItemsTable($conn);
                 self::addItemToTable($conn, 'my-title');
 
-                $paginator->setTransformer(static function (array $item): \stdClass {
-                    $obj = new \stdClass();
+                $paginator->setTransformer(static function (array $item): stdClass {
+                    $obj = new stdClass();
 
                     foreach ($item as $key => $value) {
                         $obj->{$key} = $value;
@@ -258,27 +261,27 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(\stdClass::class, $item);
+                self::assertInstanceOf(stdClass::class, $item);
                 self::assertEquals(1, $item->id);
                 self::assertEquals('my-title', $item->title);
             },
         ];
 
-        yield 'Paginate parents of item by title' => [
+        yield 'Paginate children of item by title' => [
             Pagination::create(1, 15),
-            'parents',
-            'p',
+            'child_items',
+            'ci',
             function (Connection $conn, DoctrineDbalPaginator $paginator): void {
                 self::createItemsTable($conn);
-                self::createParentsTable($conn);
-                self::addItemToTable($conn, 'my-title');
-                self::addParentToTable($conn, 'my-parent', 1);
+                self::createChildItemsTable($conn);
+                self::addItemToTable($conn, 'my-parent');
+                self::addChildItemToTable($conn, 'my-child', 1);
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
-                        ->join('p', 'items', 'i', 'i.title = :title')
-                        ->setParameter('title', 'my-title');
+                        ->join('ci', 'items', 'i', 'i.title = :title')
+                        ->setParameter('title', 'my-parent');
                 });
                 $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder->addSelect('i.*');
@@ -291,8 +294,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
                 self::assertIsArray($item);
                 self::assertEquals(1, $item['id']);
                 self::assertEquals(1, $item['item_id']);
-                self::assertEquals('my-title', $item['title']);
-                self::assertEquals('my-parent', $item['parent_title']);
+                self::assertEquals('my-parent', $item['title']);
+                self::assertEquals('my-child', $item['child_title']);
             },
         ];
     }

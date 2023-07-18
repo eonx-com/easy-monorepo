@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Interfaces;
 
 interface DoNotHandleMeEasyWebhookExceptionInterface extends EasyWebhookExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

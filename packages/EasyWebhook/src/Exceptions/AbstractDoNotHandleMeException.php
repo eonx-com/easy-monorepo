@@ -8,5 +8,5 @@ use EonX\EasyWebhook\Interfaces\DoNotHandleMeEasyWebhookExceptionInterface as Do
 
 abstract class AbstractDoNotHandleMeException extends AbstractEasyWebhookException implements DoNotHandleMeInterface
 {
-    // No need for body.
+    // No need for body
 }

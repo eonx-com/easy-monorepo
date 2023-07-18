@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests;
 
+use LogicException;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -25,18 +27,22 @@ abstract class AbstractTestCase extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * Returns object's private property value.
-     *
-     * @param object $object
-     * @param string $property
-     *
-     * @return mixed
-     */
-    protected function getPrivatePropertyValue($object, string $property)
+    protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
-        return (function ($property) {
-            return $this->{$property};
-        })->call($object, $property);
+        return $this->resolvePropertyReflection($object, $propertyName)
+            ->getValue($object);
+    }
+
+    private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
+    {
+        while (\property_exists($object, $propertyName) === false) {
+            $object = \get_parent_class($object);
+
+            if ($object === false) {
+                throw new LogicException(\sprintf('The $%s property does not exist.', $propertyName));
+            }
+        }
+
+        return new ReflectionProperty($object, $propertyName);
     }
 }

@@ -47,11 +47,9 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToPhpValues
      */
-    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPhpValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType $type */
         $type = Type::getType((new CarbonImmutableDateType())->getName());

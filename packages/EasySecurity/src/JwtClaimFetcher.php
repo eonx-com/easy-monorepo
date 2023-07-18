@@ -12,11 +12,9 @@ use Psr\Log\NullLogger;
 
 final class JwtClaimFetcher implements JwtClaimFetcherInterface
 {
-    private LoggerInterface $logger;
-
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     /**

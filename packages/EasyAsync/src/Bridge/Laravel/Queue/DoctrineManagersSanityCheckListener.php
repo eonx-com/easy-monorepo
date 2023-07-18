@@ -9,6 +9,7 @@ use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Queue\Events\JobProcessing;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
 {
@@ -39,7 +40,7 @@ final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
 
         try {
             $this->managersSanityChecker->checkSanity($this->managers);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             if ($throwable instanceof ShouldKillWorkerExceptionInterface) {
                 $this->killWorker($throwable);
             }

@@ -18,61 +18,53 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class AbnValidatorTest extends AbstractTestCase
 {
     /**
-     * @return string[][]
+     * @return iterable<mixed>
      *
      * @see testValidateFailsWithInvalidCharactersError
      */
-    public static function provideAbnWithInvalidCharacters(): array
+    public static function provideAbnWithInvalidCharacters(): iterable
     {
-        return [
-            'Contains letter' => ['1234567890a'],
-            'Contains special symbols' => ['1234(678900'],
-        ];
+        yield 'Contains letter' => ['1234567890a'];
+        yield 'Contains special symbols' => ['1234(678900'];
     }
 
     /**
-     * @return string[][]
+     * @return iterable<mixed>
      *
      * @see testValidateFailsWithModulusCalculationFailedError
      */
-    public static function provideInvalidAbnValues(): array
+    public static function provideInvalidAbnValues(): iterable
     {
-        return [
-            'Invalid Abn #1' => ['10043145470'],
-            'Invalid Abn #2' => ['53004085615'],
-            'Invalid Abn #3' => ['53004085615'],
-            'Invalid Abn #4' => ['10000000001'],
-        ];
+        yield 'Invalid Abn #1' => ['10043145470'];
+        yield 'Invalid Abn #2' => ['53004085615'];
+        yield 'Invalid Abn #3' => ['53004085615'];
+        yield 'Invalid Abn #4' => ['10000000001'];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testValidateThrowsUnexpectedValueException
      */
-    public static function provideUnexpectedValues(): array
+    public static function provideUnexpectedValues(): iterable
     {
-        return [
-            'class without __toString' => [new stdClass(), 'Expected argument of type "string", "stdClass" given'],
-            'integer' => [53004085616, 'Expected argument of type "string", "int" given'],
-        ];
+        yield 'class without __toString' => [new stdClass(), 'Expected argument of type "string", "stdClass" given'];
+        yield 'integer' => [53004085616, 'Expected argument of type "string", "int" given'];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testValidateSucceedsWithValidAbn
      */
-    public static function provideValidAbnValues(): array
+    public static function provideValidAbnValues(): iterable
     {
-        return [
-            'Valid Abn #1' => ['53004085616'],
-            'Valid Abn #2' => ['28043145470'],
-            'Valid Abn #3' => ['91724684688'],
-            'Valid Abn #4' => ['10000000000'],
-            'Empty string' => [''],
-            'Null value' => [null],
-        ];
+        yield 'Valid Abn #1' => ['53004085616'];
+        yield 'Valid Abn #2' => ['28043145470'];
+        yield 'Valid Abn #3' => ['91724684688'];
+        yield 'Valid Abn #4' => ['10000000000'];
+        yield 'Empty string' => [''];
+        yield 'Null value' => [null];
     }
 
     /**
@@ -155,11 +147,9 @@ final class AbnValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $abn
-     *
      * @dataProvider provideValidAbnValues
      */
-    public function testValidateSucceedsWithValidAbn($abn): void
+    public function testValidateSucceedsWithValidAbn(mixed $abn): void
     {
         $validator = new AbnValidator();
         $constraint = new Abn();
@@ -186,38 +176,14 @@ final class AbnValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $abn
-     *
      * @dataProvider provideUnexpectedValues
      */
-    public function testValidateThrowsUnexpectedValueException($abn, string $message): void
+    public function testValidateThrowsUnexpectedValueException(mixed $abn, string $message): void
     {
         $validator = new AbnValidator();
         $constraint = new Abn();
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage($message);
-
-        $validator->validate($abn, $constraint);
-    }
-
-    public function testValidateThrowsUnexpectedValueExceptionIfNumberGiven(): void
-    {
-        $abn = 53004085616;
-        $validator = new AbnValidator();
-        $constraint = new Abn();
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Expected argument of type "string", "int" given');
-
-        $validator->validate($abn, $constraint);
-    }
-
-    public function testValidateThrowsUnexpectedValueExceptionIfObjectGiven(): void
-    {
-        $abn = new stdClass();
-        $validator = new AbnValidator();
-        $constraint = new Abn();
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Expected argument of type "string", "stdClass" given');
 
         $validator->validate($abn, $constraint);
     }

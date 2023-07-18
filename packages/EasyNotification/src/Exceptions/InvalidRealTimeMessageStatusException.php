@@ -6,5 +6,5 @@ namespace EonX\EasyNotification\Exceptions;
 
 final class InvalidRealTimeMessageStatusException extends AbstractEasyNotificationException
 {
-    // No body needed.
+    // No body needed
 }

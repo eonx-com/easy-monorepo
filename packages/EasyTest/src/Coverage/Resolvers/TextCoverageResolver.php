@@ -16,10 +16,10 @@ final class TextCoverageResolver implements CoverageResolverInterface
         // Lower and remove spaces
         $output = Strings::replace(Strings::lower($coverageOutput), '/ /', '');
 
-        if (Strings::contains($output, 'lines:') === false) {
+        if (\str_contains($output, 'lines:') === false) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output does not contain "lines:"',
-                static::class
+                self::class
             ));
         }
 
@@ -31,7 +31,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
 
         throw new UnableToResolveCoverageException(\sprintf(
             '[%s] Could not match any coverage number in output',
-            static::class
+            self::class
         ));
     }
 }

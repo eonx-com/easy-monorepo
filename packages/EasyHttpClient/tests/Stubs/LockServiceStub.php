@@ -7,6 +7,7 @@ namespace EonX\EasyHttpClient\Tests\Stubs;
 use Closure;
 use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
+use RuntimeException;
 use Symfony\Component\Lock\LockInterface;
 
 final class LockServiceStub implements LockServiceInterface
@@ -22,7 +23,7 @@ final class LockServiceStub implements LockServiceInterface
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {
-        throw new \RuntimeException('not required');
+        throw new RuntimeException('not required');
     }
 
     public function getLockData(): ?LockDataInterface

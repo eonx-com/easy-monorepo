@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @covers \EonX\EasyErrorHandler\Tests\AbstractTestCase
  */
-class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends TestCase
 {
     protected function tearDown(): void
     {
@@ -232,17 +232,14 @@ class AbstractTestCase extends TestCase
 
     protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
-        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
-        $propertyReflection->setAccessible(true);
-
-        return $propertyReflection->getValue($object);
+        return $this->resolvePropertyReflection($object, $propertyName)
+            ->getValue($object);
     }
 
     protected function setPrivatePropertyValue(object $object, string $propertyName, mixed $value): void
     {
-        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
-        $propertyReflection->setAccessible(true);
-        $propertyReflection->setValue($object, $value);
+        $this->resolvePropertyReflection($object, $propertyName)
+            ->setValue($object, $value);
     }
 
     private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty

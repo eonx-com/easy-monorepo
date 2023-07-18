@@ -13,19 +13,19 @@ final class ProcessorWrapper implements ProcessorInterface
 
     public function __construct(callable $wrapped)
     {
-        $this->wrapped = Closure::fromCallable($wrapped);
+        $this->wrapped = $wrapped(...);
     }
 
     /**
-     * @param mixed[] $records
+     * @param mixed[] $record
      *
      * @return mixed[]
      */
-    public function __invoke(array $records): array
+    public function __invoke(array $record): array
     {
         $wrapped = $this->wrapped;
 
-        return $wrapped($records);
+        return $wrapped($record);
     }
 
     public static function wrap(callable $wrapped): self

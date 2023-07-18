@@ -12,6 +12,7 @@ use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
+use Exception;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
@@ -46,16 +47,14 @@ final class ValueDecisionTest extends AbstractTestCase
     /**
      * @param mixed[] $rules
      * @param mixed[] $input
-     * @param mixed $expectedOutput
      * @param mixed[] $expectedRulesOutput
      * @param null|mixed $defaultOutput
-     *
      * @dataProvider decisionEntirelyProvider
      */
     public function testDecisionEntirely(
         array $rules,
         array $input,
-        $expectedOutput,
+        mixed $expectedOutput,
         array $expectedRulesOutput,
         ?string $name = null,
         $defaultOutput = null,
@@ -162,7 +161,7 @@ final class ValueDecisionTest extends AbstractTestCase
              */
             public function proceed(array $input): never
             {
-                throw new \Exception('');
+                throw new Exception('');
             }
 
             /**

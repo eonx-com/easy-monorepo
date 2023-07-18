@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Formatters;
 
+use DateTimeInterface;
 use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
 
 final class JsonFormatter extends BaseJsonFormatter
@@ -24,7 +25,7 @@ final class JsonFormatter extends BaseJsonFormatter
             }
         }
 
-        if ($data instanceof \DateTimeInterface) {
+        if ($data instanceof DateTimeInterface) {
             return $data->format('Y-m-d\TH:i:sP');
         }
 

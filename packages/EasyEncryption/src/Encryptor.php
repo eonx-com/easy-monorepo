@@ -53,7 +53,7 @@ final class Encryptor extends AbstractEncryptor
             'Expected key instance of %s|%s, %s given',
             EncryptionKey::class,
             EncryptionKeyPair::class,
-            \get_class($key)
+            $key::class
         ));
     }
 
@@ -87,7 +87,7 @@ final class Encryptor extends AbstractEncryptor
             'Expected key instance of %s|%s, %s given',
             EncryptionKey::class,
             EncryptionKeyPair::class,
-            \get_class($key)
+            $key::class
         ));
     }
 

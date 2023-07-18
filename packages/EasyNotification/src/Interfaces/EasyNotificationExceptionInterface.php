@@ -6,5 +6,5 @@ namespace EonX\EasyNotification\Interfaces;
 
 interface EasyNotificationExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

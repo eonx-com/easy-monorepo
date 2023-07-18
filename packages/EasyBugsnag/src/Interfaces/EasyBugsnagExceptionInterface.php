@@ -6,5 +6,5 @@ namespace EonX\EasyBugsnag\Interfaces;
 
 interface EasyBugsnagExceptionInterface
 {
-    // Marker to all exceptions to this package.
+    // Marker to all exceptions to this package
 }

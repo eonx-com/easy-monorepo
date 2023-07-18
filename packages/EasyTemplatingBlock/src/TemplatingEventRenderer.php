@@ -56,7 +56,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
 
         throw new NoRendererFoundForBlockException(\sprintf(
             'No renderer found for block %s with name "%s"',
-            \get_class($block),
+            $block::class,
             $block->getName()
         ));
     }

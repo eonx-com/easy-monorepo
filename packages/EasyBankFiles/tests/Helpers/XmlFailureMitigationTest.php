@@ -43,7 +43,7 @@ final class XmlFailureMitigationTest extends TestCase
     public function testMitigationLeavesValidXmlAlone(): void
     {
         // phpcs:disable
-        // Disabled to ignore long lines in XML sample.
+        // Disabled to ignore long lines in XML sample
         $xml = <<<'XML'
 <PaymentsAcknowledgement type="info">
 <PaymentId>94829970</PaymentId>

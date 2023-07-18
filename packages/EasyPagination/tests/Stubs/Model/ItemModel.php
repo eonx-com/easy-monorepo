@@ -6,7 +6,7 @@ namespace EonX\EasyPagination\Tests\Stubs\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class Item extends Model
+final class ItemModel extends Model
 {
     /**
      * @var bool
@@ -19,4 +19,9 @@ final class Item extends Model
     protected $fillable = [
         'title',
     ];
+
+    /**
+     * @var string
+     */
+    protected $table = 'items';
 }

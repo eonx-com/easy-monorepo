@@ -15,6 +15,7 @@ use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
+use stdClass;
 
 final class SecurityContextTest extends AbstractTestCase
 {
@@ -41,7 +42,7 @@ final class SecurityContextTest extends AbstractTestCase
         ];
 
         yield '1 role 1 permission because non role given' => [
-            [new Role('app:role', [new Permission('perm1')]), new \stdClass()],
+            [new Role('app:role', [new Permission('perm1')]), new stdClass()],
             1,
             1,
         ];

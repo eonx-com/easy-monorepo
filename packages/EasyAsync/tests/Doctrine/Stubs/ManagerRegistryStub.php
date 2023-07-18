@@ -6,7 +6,7 @@ namespace EonX\EasyAsync\Tests\Doctrine\Stubs;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\Persistence\ObjectRepository;
+use RuntimeException;
 
 final class ManagerRegistryStub implements ManagerRegistry
 {
@@ -18,23 +18,14 @@ final class ManagerRegistryStub implements ManagerRegistry
     ) {
     }
 
-    /**
-     * @param string $alias The alias.
-     */
-    public function getAliasNamespace($alias): string
+    public function getAliasNamespace(string $alias): string
     {
         return $alias;
     }
 
-    /**
-     * @param null|string $name
-     *e
-     *
-     * @return object
-     */
-    public function getConnection($name = null)
+    public function getConnection(?string $name = null): never
     {
-        throw new \RuntimeException('not implemented');
+        throw new RuntimeException('Not implemented.');
     }
 
     /**
@@ -68,10 +59,7 @@ final class ManagerRegistryStub implements ManagerRegistry
         return $this->managers[$name ?? $this->getDefaultManagerName()];
     }
 
-    /**
-     * @param string $class A persistent object class name.
-     */
-    public function getManagerForClass($class): ?ObjectManager
+    public function getManagerForClass(string $class): ?ObjectManager
     {
         return null;
     }
@@ -85,7 +73,7 @@ final class ManagerRegistryStub implements ManagerRegistry
 
         // To reproduce doctrine behavior
         foreach ($this->managers as $name => $manager) {
-            $return[$name] = \get_class($manager);
+            $return[$name] = $manager::class;
         }
 
         return $return;
@@ -99,19 +87,12 @@ final class ManagerRegistryStub implements ManagerRegistry
         return $this->managers;
     }
 
-    /**
-     * @param string $persistentObject
-     * @param string $persistentManagerName
-     */
-    public function getRepository($persistentObject, $persistentManagerName = null): ObjectRepository
+    public function getRepository(string $persistentObject, ?string $persistentManagerName = null): never
     {
-        throw new \RuntimeException('not implemented');
+        throw new RuntimeException('Not implemented.');
     }
 
-    /**
-     * @param string|null $name
-     */
-    public function resetManager($name = null): ObjectManager
+    public function resetManager(?string $name = null): ObjectManager
     {
         return $this->managers[$name ?? $this->getDefaultManagerName()];
     }

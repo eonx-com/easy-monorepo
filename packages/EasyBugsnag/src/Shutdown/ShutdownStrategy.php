@@ -7,7 +7,7 @@ namespace EonX\EasyBugsnag\Shutdown;
 use Bugsnag\Client;
 use Bugsnag\Shutdown\ShutdownStrategyInterface;
 
-class ShutdownStrategy implements ShutdownStrategyInterface
+final class ShutdownStrategy implements ShutdownStrategyInterface
 {
     private ?Client $client = null;
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Interfaces;
 
+use DateTimeInterface;
+
 interface WebhookInterface
 {
     /**
@@ -200,7 +202,7 @@ interface WebhookInterface
 
     public function getSecret(): ?string;
 
-    public function getSendAfter(): ?\DateTimeInterface;
+    public function getSendAfter(): ?DateTimeInterface;
 
     public function getStatus(): string;
 
@@ -251,7 +253,7 @@ interface WebhookInterface
 
     public function secret(string $secret): self;
 
-    public function sendAfter(\DateTimeInterface $after): self;
+    public function sendAfter(DateTimeInterface $after): self;
 
     public function sendNow(?bool $sendNow = null): self;
 

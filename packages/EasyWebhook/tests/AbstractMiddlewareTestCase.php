@@ -11,6 +11,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Stack;
 use EonX\EasyWebhook\Tests\Stubs\MiddlewareStub;
 use EonX\EasyWebhook\Tests\Stubs\StackThrowStub;
+use Throwable;
 
 abstract class AbstractMiddlewareTestCase extends AbstractTestCase
 {
@@ -26,7 +27,7 @@ abstract class AbstractMiddlewareTestCase extends AbstractTestCase
     protected function processWithThrowable(
         MiddlewareInterface $middleware,
         WebhookInterface $webhook,
-        \Throwable $throwable,
+        Throwable $throwable,
     ): WebhookResultInterface {
         return $middleware->process($webhook, new StackThrowStub($throwable));
     }

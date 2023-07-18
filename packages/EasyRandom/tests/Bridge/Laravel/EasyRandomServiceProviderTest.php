@@ -38,11 +38,9 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
         $app = $this->getApp();
         $app->extend(
             RandomGeneratorInterface::class,
-            static function (RandomGeneratorInterface $randomGenerator) use (
-                $uuidV4Generator,
-            ): RandomGeneratorInterface {
-                return $randomGenerator->setUuidV4Generator($uuidV4Generator);
-            }
+            static fn (
+                RandomGeneratorInterface $randomGenerator,
+            ): RandomGeneratorInterface => $randomGenerator->setUuidV4Generator($uuidV4Generator)
         );
 
         $randomGenerator = $app->get(RandomGeneratorInterface::class);

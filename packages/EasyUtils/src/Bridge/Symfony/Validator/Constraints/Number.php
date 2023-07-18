@@ -37,7 +37,7 @@ final class Number extends Composite
 
     public function validatedBy(): string
     {
-        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
+        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
     }
 
     protected function getCompositeOption(): string

@@ -8,5 +8,5 @@ use EonX\EasyBankFiles\Exceptions\AbstractRuntimeException;
 
 final class LengthMismatchesException extends AbstractRuntimeException
 {
-    // No body needed.
+    // No body needed
 }

@@ -16,13 +16,14 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\MiddlewareStub;
 use EonX\EasyWebhook\Tests\Stubs\StackStub;
 use EonX\EasyWebhook\Webhook;
+use Exception;
 
 final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
      *
-     * @see
+     * @see testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne
      */
     public static function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
     {
@@ -41,7 +42,7 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
 
         $stack = new StackStub(new Stack([
             new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), $asyncEnabled),
-            new MiddlewareStub(null, new \Exception('my-message')),
+            new MiddlewareStub(null, new Exception('my-message')),
         ]));
 
         $result = $stack
@@ -68,7 +69,7 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
             new StatusAndAttemptMiddleware(),
             new MethodMiddleware('POST'),
             new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), false),
-            new MiddlewareStub(null, new \Exception('my-message')),
+            new MiddlewareStub(null, new Exception('my-message')),
         ]));
 
         $result = $stack

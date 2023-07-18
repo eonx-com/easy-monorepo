@@ -27,97 +27,86 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public static function provideConvertToDatabaseValues(): array
+    public static function provideConvertToDatabaseValues(): iterable
     {
         $datetime = new DateTime();
-
-        return [
-            'null value' => [null, null],
-            'datetime value' => [$datetime, $datetime->format(DateTimeMicrosecondsType::FORMAT_PHP_DATETIME)],
-        ];
+        yield 'null value' => [null, null];
+        yield 'datetime value' => [$datetime, $datetime->format(DateTimeMicrosecondsType::FORMAT_PHP_DATETIME)];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testConvertToPHPValueSucceeds
      */
-    public static function provideConvertToPHPValues(): array
+    public static function provideConvertToPHPValues(): iterable
     {
         $datetime = new DateTime();
         $milliseconds = $datetime->format('u');
-
-        return [
-            'null value' => [null, null],
-            'DateTimeInterface object' => [$datetime, $datetime],
-            'datetime string with milliseconds' => [
-                $datetime->format(DateTimeMicrosecondsType::FORMAT_PHP_DATETIME),
-                $datetime,
-            ],
-            'datetime string' => [
-                $datetime->format('Y-m-d H:i:s'),
-                (clone $datetime)->modify("-{$milliseconds} microsecond"),
-            ],
+        yield 'null value' => [null, null];
+        yield 'DateTimeInterface object' => [$datetime, $datetime];
+        yield 'datetime string with milliseconds' => [
+            $datetime->format(DateTimeMicrosecondsType::FORMAT_PHP_DATETIME),
+            $datetime,
+        ];
+        yield 'datetime string' => [
+            $datetime->format('Y-m-d H:i:s'),
+            (clone $datetime)->modify("-{$milliseconds} microsecond"),
         ];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testGetSqlDeclarationSucceeds
      */
-    public static function provideFieldDeclarationValues(): array
+    public static function provideFieldDeclarationValues(): iterable
     {
-        return [
-            'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'],
-            'mysql, with version = true' => [
-                MySQLPlatform::class,
-                [
-                    'version' => true,
-                ],
-                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP,
+        yield 'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'];
+        yield 'mysql, with version = true' => [
+            MySQLPlatform::class,
+            [
+                'version' => true,
             ],
-            'mysql, with version = false' => [
-                MySQLPlatform::class,
-                [
-                    'version' => false,
-                ],
-                DateTimeMicrosecondsType::FORMAT_DB_DATETIME,
+            DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP,
+        ];
+        yield 'mysql, with version = false' => [
+            MySQLPlatform::class,
+            [
+                'version' => false,
             ],
-            'postgresql' => [
-                PostgreSQL94Platform::class,
-                [],
-                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            DateTimeMicrosecondsType::FORMAT_DB_DATETIME,
+        ];
+        yield 'postgresql' => [
+            PostgreSQL94Platform::class,
+            [],
+            DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+        ];
+        yield 'postgresql, with version = true' => [
+            PostgreSQL94Platform::class,
+            [
+                'version' => true,
             ],
-            'postgresql, with version = true' => [
-                PostgreSQL94Platform::class,
-                [
-                    'version' => true,
-                ],
-                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+        ];
+        yield 'postgresql, with version = false' => [
+            PostgreSQL94Platform::class,
+            [
+                'version' => false,
             ],
-            'postgresql, with version = false' => [
-                PostgreSQL94Platform::class,
-                [
-                    'version' => false,
-                ],
-                DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
-            ],
+            DateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
         ];
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
-     *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue = null): void
+    public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);
@@ -144,13 +133,10 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
-     *
      * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
         $type = Type::getType(DateTimeMicrosecondsType::TYPE_NAME);

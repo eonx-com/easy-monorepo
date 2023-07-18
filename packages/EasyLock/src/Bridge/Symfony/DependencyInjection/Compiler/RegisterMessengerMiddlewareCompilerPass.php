@@ -38,9 +38,10 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
         }
 
         // Convert easy lock middleware classes to reference
-        $easyLockMiddlewareList = \array_map(static function (string $class): Reference {
-            return new Reference($class);
-        }, $enabledMiddlewareList);
+        $easyLockMiddlewareList = \array_map(
+            static fn (string $class): Reference => new Reference($class),
+            $enabledMiddlewareList
+        );
 
         foreach (\array_keys($container->findTaggedServiceIds(self::MESSENGER_BUS_TAG)) as $busId) {
             $busDef = $container->getDefinition($busId);
@@ -51,9 +52,12 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
             }
 
             // Remove easy lock middleware if added in the app config
-            $existingMiddlewareList = \array_filter($middleware->getValues(), static function (Reference $ref): bool {
-                return \in_array((string)$ref, self::EASY_LOCK_MIDDLEWARE_LIST, true) === false;
-            });
+            $existingMiddlewareList = \array_filter(
+                $middleware->getValues(),
+                static fn (
+                    Reference $ref,
+                ): bool => \in_array((string)$ref, self::EASY_LOCK_MIDDLEWARE_LIST, true) === false
+            );
 
             // Add reference to easy lock middleware at the start of existing list
             \array_unshift($existingMiddlewareList, ...$easyLockMiddlewareList);

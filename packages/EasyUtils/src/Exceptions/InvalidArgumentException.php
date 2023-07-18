@@ -8,5 +8,5 @@ use EonX\EasyUtils\Interfaces\EasyUtilsExceptionInterface;
 
 final class InvalidArgumentException extends \InvalidArgumentException implements EasyUtilsExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

@@ -65,13 +65,19 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerAppName(): void
     {
         if (\config('easy-bugsnag.app_name.enabled', false)) {
-            $this->app->singleton(AppNameResolverInterface::class, static function (): AppNameResolverInterface {
-                return new DefaultAppNameResolver(\config('easy-bugsnag.app_name.env_var'));
-            });
+            $this->app->singleton(
+                AppNameResolverInterface::class,
+                static fn (): AppNameResolverInterface => new DefaultAppNameResolver(
+                    \config('easy-bugsnag.app_name.env_var')
+                )
+            );
 
-            $this->app->singleton(AppNameConfigurator::class, static function (Container $app): AppNameConfigurator {
-                return new AppNameConfigurator($app->make(AppNameResolverInterface::class));
-            });
+            $this->app->singleton(
+                AppNameConfigurator::class,
+                static fn (Container $app): AppNameConfigurator => new AppNameConfigurator(
+                    $app->make(AppNameResolverInterface::class)
+                )
+            );
             $this->app->tag(AppNameConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
         }
     }
@@ -79,12 +85,13 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerAwsEcsFargate(): void
     {
         if (\config('easy-bugsnag.aws_ecs_fargate.enabled', false)) {
-            $this->app->singleton(AwsEcsFargateConfigurator::class, static function (): AwsEcsFargateConfigurator {
-                return new AwsEcsFargateConfigurator(
+            $this->app->singleton(
+                AwsEcsFargateConfigurator::class,
+                static fn (): AwsEcsFargateConfigurator => new AwsEcsFargateConfigurator(
                     \config('easy-bugsnag.aws_ecs_fargate.meta_storage_filename'),
                     \config('easy-bugsnag.aws_ecs_fargate.meta_url')
-                );
-            });
+                )
+            );
             $this->app->tag(AwsEcsFargateConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
         }
     }
@@ -94,19 +101,16 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         // Client Factory + Client
         $this->app->singleton(
             ClientFactoryInterface::class,
-            static function (Container $app): ClientFactoryInterface {
-                return (new ClientFactory())
-                    ->setConfigurators($app->tagged(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR))
-                    ->setRequestResolver($app->make(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER))
-                    ->setShutdownStrategy($app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY));
-            }
+            static fn (Container $app): ClientFactoryInterface => (new ClientFactory())
+                ->setConfigurators($app->tagged(BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR))
+                ->setRequestResolver($app->make(BridgeConstantsInterface::SERVICE_REQUEST_RESOLVER))
+                ->setShutdownStrategy($app->make(BridgeConstantsInterface::SERVICE_SHUTDOWN_STRATEGY))
         );
 
         $this->app->singleton(
             Client::class,
-            static function (Container $app): Client {
-                return $app->make(ClientFactoryInterface::class)->create(\config('easy-bugsnag.api_key'));
-            }
+            static fn (Container $app): Client => $app->make(ClientFactoryInterface::class)
+                ->create(\config('easy-bugsnag.api_key'))
         );
     }
 
@@ -118,13 +122,11 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             BasicsConfigurator::class,
-            static function (): BasicsConfigurator {
-                return new BasicsConfigurator(
-                    \config('easy-bugsnag.project_root'),
-                    \config('easy-bugsnag.strip_path'),
-                    \config('easy-bugsnag.release_stage')
-                );
-            }
+            static fn (): BasicsConfigurator => new BasicsConfigurator(
+                \config('easy-bugsnag.project_root'),
+                \config('easy-bugsnag.strip_path'),
+                \config('easy-bugsnag.release_stage')
+            )
         );
         $this->app->tag(BasicsConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
 
@@ -178,30 +180,27 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
     private function registerSessionTracking(): void
     {
         if (\config('easy-bugsnag.session_tracking.enabled', false)) {
-            $this->app->singleton(SessionTracker::class, static function (Container $app): SessionTracker {
-                return new SessionTracker(
+            $this->app->singleton(
+                SessionTracker::class,
+                static fn (Container $app): SessionTracker => new SessionTracker(
                     $app->make(Client::class),
                     \config('easy-bugsnag.session_tracking.exclude_urls', []),
                     \config('easy-bugsnag.session_tracking.exclude_urls_delimiter', '#')
-                );
-            });
+                )
+            );
 
             $this->app->singleton(
                 BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE,
-                static function (Container $app): Repository {
-                    return $app->make('cache')
-                        ->store(\config('easy-bugsnag.session_tracking.cache_store', 'file'));
-                }
+                static fn (Container $app): Repository => $app->make('cache')
+                    ->store(\config('easy-bugsnag.session_tracking.cache_store', 'file'))
             );
 
             $this->app->singleton(
                 SessionTrackingConfigurator::class,
-                static function (Container $app): SessionTrackingConfigurator {
-                    return new SessionTrackingConfigurator(
-                        $app->make(BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE),
-                        \config('easy-bugsnag.session_tracking.cache_expires_after', 3600)
-                    );
-                }
+                static fn (Container $app): SessionTrackingConfigurator => new SessionTrackingConfigurator(
+                    $app->make(BridgeConstantsInterface::SERVICE_SESSION_TRACKING_CACHE),
+                    \config('easy-bugsnag.session_tracking.cache_expires_after', 3600)
+                )
             );
             $this->app->tag(SessionTrackingConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
 

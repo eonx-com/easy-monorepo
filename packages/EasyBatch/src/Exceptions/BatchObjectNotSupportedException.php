@@ -6,5 +6,5 @@ namespace EonX\EasyBatch\Exceptions;
 
 final class BatchObjectNotSupportedException extends AbstractEasyBatchException
 {
-    // No body needed.
+    // No body needed
 }

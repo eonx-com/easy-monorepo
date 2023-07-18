@@ -77,7 +77,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
             'url' => $webhook->getUrl(),
             'http_options' => $webhook->getHttpClientOptions(),
             'updated_at' => $now,
-            'webhook_class' => \get_class($webhook),
+            'webhook_class' => $webhook::class,
             'webhook_id' => $webhook->getId(),
         ];
 

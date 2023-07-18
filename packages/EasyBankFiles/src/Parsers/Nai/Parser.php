@@ -7,7 +7,6 @@ namespace EonX\EasyBankFiles\Parsers\Nai;
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsers\Nai\Results\File;
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
-use Nette\Utils\Strings;
 
 final class Parser extends AbstractLineByLineParser
 {
@@ -315,7 +314,7 @@ final class Parser extends AbstractLineByLineParser
     private function checkFullLine(string $line): bool
     {
         // Prevent logic to add extra coma on continuation logic if already there
-        return Strings::endsWith($line, '/') && Strings::endsWith($line, ',/') === false;
+        return \str_ends_with($line, '/') && \str_ends_with($line, ',/') === false;
     }
 
     /**
@@ -428,7 +427,7 @@ final class Parser extends AbstractLineByLineParser
     private function sanitizeFullLine(string $line): string
     {
         // Remove trailing slash
-        if (Strings::endsWith($line, '/')) {
+        if (\str_ends_with($line, '/')) {
             $line = \substr($line, 0, -1);
         }
 

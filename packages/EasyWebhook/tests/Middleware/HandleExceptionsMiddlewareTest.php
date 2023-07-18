@@ -8,6 +8,7 @@ use EonX\EasyWebhook\Exceptions\CannotRerunWebhookException;
 use EonX\EasyWebhook\Middleware\HandleExceptionsMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use Exception;
 
 final class HandleExceptionsMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -15,7 +16,7 @@ final class HandleExceptionsMiddlewareTest extends AbstractMiddlewareTestCase
     {
         $middleware = new HandleExceptionsMiddleware();
         $webhook = Webhook::create('https://eonx.com');
-        $throwable = new \Exception('message');
+        $throwable = new Exception('message');
 
         $result = $this->processWithThrowable($middleware, $webhook, $throwable);
 

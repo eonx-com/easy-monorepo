@@ -49,6 +49,8 @@ abstract class AbstractFilterTestCase extends KernelTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testApply
      */
     abstract public static function provideApplyTestData(): iterable;
 
@@ -77,7 +79,7 @@ abstract class AbstractFilterTestCase extends KernelTestCase
         }
 
         $repository = $this->repository;
-        if ($resourceClass) {
+        if ($resourceClass !== null) {
             /** @var \Doctrine\Persistence\ObjectManager $manager */
             $manager = $this->managerRegistry->getManagerForClass($resourceClass);
             /** @var \Doctrine\ORM\EntityRepository<\stdClass> $repository */

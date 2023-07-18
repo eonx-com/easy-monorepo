@@ -90,7 +90,7 @@ abstract class BaseGenerator implements GeneratorInterface
             $this->processRule($errors, $rule, $attribute, (string)$object->{'get' . \ucfirst($attribute)}());
         }
 
-        if (\count($errors)) {
+        if (\count($errors) > 0) {
             throw new ValidationFailedException($errors, 'Validation Errors');
         }
     }
@@ -141,16 +141,17 @@ abstract class BaseGenerator implements GeneratorInterface
      */
     private function processRule(array &$errors, string $rule, string $attribute, mixed $value): void
     {
-        // Not sure why we allow arrays here...
+        // Not sure why we allow arrays here
         if ($value === null || $value === '' || (\is_array($value) && \count($value) === 0)) {
-            $errors[] = \array_merge(\compact('attribute', 'value'), [
+            $errors[] = [
+                ...\compact('attribute', 'value'),
                 'rule' => 'required',
-            ]);
+            ];
 
             return;
         }
 
-        // Not sure why we would have anything else than a string value here...
+        // Not sure why we would have anything else than a string value here
         if (\is_string($value) === false) {
             return;
         }

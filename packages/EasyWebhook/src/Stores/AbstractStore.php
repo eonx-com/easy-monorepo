@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Stores;
 
+use DateTimeInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
@@ -31,7 +32,7 @@ abstract class AbstractStore
                 return Json::encode($value);
             }
 
-            if ($value instanceof \DateTimeInterface) {
+            if ($value instanceof DateTimeInterface) {
                 return $value->format(StoreInterface::DATETIME_FORMAT);
             }
 

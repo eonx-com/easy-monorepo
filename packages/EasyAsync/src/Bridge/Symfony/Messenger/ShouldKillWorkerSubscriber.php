@@ -13,15 +13,13 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
 final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
 {
-    private LoggerInterface $logger;
-
     private string $message;
 
     private bool $shouldKillWorker = false;
 
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     /**
@@ -38,7 +36,7 @@ final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
     public function onWorkerMessageFailed(WorkerMessageFailedEvent $event): void
     {
         if ($event->getThrowable() instanceof ShouldKillWorkerExceptionInterface) {
-            $this->message = \sprintf('Kill worker because of exception "%s"', \get_class($event->getThrowable()));
+            $this->message = \sprintf('Kill worker because of exception "%s"', $event->getThrowable()::class);
             $this->shouldKillWorker = true;
         }
     }

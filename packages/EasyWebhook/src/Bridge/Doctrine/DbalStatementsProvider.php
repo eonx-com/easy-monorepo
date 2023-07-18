@@ -31,14 +31,14 @@ final class DbalStatementsProvider
 
     public function extendWebhookResultsTable(callable $callable): self
     {
-        $this->extendWebhookResultsTable = Closure::fromCallable($callable);
+        $this->extendWebhookResultsTable = $callable(...);
 
         return $this;
     }
 
     public function extendWebhooksTable(callable $callable): self
     {
-        $this->extendWebhooksTable = Closure::fromCallable($callable);
+        $this->extendWebhooksTable = $callable(...);
 
         return $this;
     }

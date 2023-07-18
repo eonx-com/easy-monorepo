@@ -6,5 +6,5 @@ namespace EonX\EasyBatch\Objects;
 
 final class BatchItem extends AbstractBatchItem
 {
-    // No body needed.
+    // No body needed
 }

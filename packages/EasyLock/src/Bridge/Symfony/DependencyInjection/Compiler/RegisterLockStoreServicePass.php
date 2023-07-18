@@ -21,8 +21,7 @@ final class RegisterLockStoreServicePass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        // If connection from config doesn't exist in container, use flock by default.
-
+        // If connection from config doesn't exist in container, use flock by default
         $connectionId = $this->getConnectionId(
             $container,
             $this->getParameter($container, BridgeConstantsInterface::PARAM_CONNECTION)

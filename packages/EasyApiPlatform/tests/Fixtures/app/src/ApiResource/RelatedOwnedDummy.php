@@ -18,7 +18,7 @@ class RelatedOwnedDummy
     private int $id;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\OneToOne(inversedBy: 'relatedOwnedDummy', targetEntity: Dummy::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]

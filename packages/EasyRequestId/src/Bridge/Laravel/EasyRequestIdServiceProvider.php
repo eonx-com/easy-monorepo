@@ -39,14 +39,12 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         // Queue
         // Add IDs to jobs pushed to the queue
-        Queue::createPayloadUsing(static function () use ($requestIdService): array {
-            return [
-                'easy_request_id' => [
-                    $requestIdService->getCorrelationIdHeaderName() => $requestIdService->getCorrelationId(),
-                    $requestIdService->getRequestIdHeaderName() => $requestIdService->getRequestId(),
-                ],
-            ];
-        });
+        Queue::createPayloadUsing(static fn (): array => [
+            'easy_request_id' => [
+                $requestIdService->getCorrelationIdHeaderName() => $requestIdService->getCorrelationId(),
+                $requestIdService->getRequestIdHeaderName() => $requestIdService->getRequestId(),
+            ],
+        ]);
 
         // Resolve IDs from jobs from the queue
         $this->app->make('events')
@@ -84,13 +82,11 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             RequestIdServiceInterface::class,
-            static function (Container $app): RequestIdServiceInterface {
-                return new RequestIdService(
-                    $app->make(FallbackResolverInterface::class),
-                    \config('easy-request-id.http_headers.correlation_id'),
-                    \config('easy-request-id.http_headers.request_id')
-                );
-            }
+            static fn (Container $app): RequestIdServiceInterface => new RequestIdService(
+                $app->make(FallbackResolverInterface::class),
+                \config('easy-request-id.http_headers.correlation_id'),
+                \config('easy-request-id.http_headers.request_id')
+            )
         );
 
         // Resolve from request

@@ -9,5 +9,5 @@ use InvalidArgumentException;
 
 final class EmptyPipelinesListException extends InvalidArgumentException implements ExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

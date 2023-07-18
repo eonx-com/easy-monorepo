@@ -2,17 +2,22 @@
 
 declare(strict_types=1);
 
+use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use EonX\EasyApiPlatform\Bridge\Symfony\EasyApiPlatformSymfonyBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+
 return [
-    ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => [
+    ApiPlatformBundle::class => [
         'all' => true,
     ],
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => [
+    DoctrineBundle::class => [
         'all' => true,
     ],
-    EonX\EasyApiPlatform\Bridge\Symfony\EasyApiPlatformSymfonyBundle::class => [
+    EasyApiPlatformSymfonyBundle::class => [
         'all' => true,
     ],
-    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => [
+    FrameworkBundle::class => [
         'all' => true,
     ],
 ];

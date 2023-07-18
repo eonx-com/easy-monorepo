@@ -51,7 +51,7 @@ final class LoggerFactory implements LoggerFactoryInterface
 
     public function create(?string $channel = null): LoggerInterface
     {
-        $channel = $channel ?? $this->defaultChannel;
+        $channel ??= $this->defaultChannel;
 
         if (isset($this->loggers[$channel])) {
             return $this->loggers[$channel];
@@ -156,9 +156,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         $configs = $this->filterAndSortConfigs($this->handlerConfigs, $channel);
 
         $handlers = \array_map(
-            static function (HandlerConfigInterface $config): HandlerInterface {
-                return $config->handler();
-            },
+            static fn (HandlerConfigInterface $config): HandlerInterface => $config->handler(),
             $configs
         );
 
@@ -182,9 +180,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         $configs = $this->filterAndSortConfigs($this->processorConfigs, $channel);
 
         return \array_map(
-            static function (ProcessorConfigInterface $config): ProcessorInterface {
-                return $config->processor();
-            },
+            static fn (ProcessorConfigInterface $config): ProcessorInterface => $config->processor(),
             $configs
         );
     }

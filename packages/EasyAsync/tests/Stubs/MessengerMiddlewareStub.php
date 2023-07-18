@@ -15,7 +15,7 @@ final class MessengerMiddlewareStub implements MiddlewareInterface
 
     public function __construct(callable $func)
     {
-        $this->func = Closure::fromCallable($func);
+        $this->func = $func(...);
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

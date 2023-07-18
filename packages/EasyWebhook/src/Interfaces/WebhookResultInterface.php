@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Interfaces;
 
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 interface WebhookResultInterface
 {
@@ -12,7 +13,7 @@ interface WebhookResultInterface
 
     public function getResponse(): ?ResponseInterface;
 
-    public function getThrowable(): ?\Throwable;
+    public function getThrowable(): ?Throwable;
 
     public function getWebhook(): WebhookInterface;
 

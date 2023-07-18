@@ -36,7 +36,7 @@ final class Number implements Stringable
     {
         return \array_reduce(
             $values,
-            static function (?self $leftOperand = null, ?self $rightOperand = null) {
+            static function (?self $leftOperand = null, ?self $rightOperand = null): ?self {
                 if ($leftOperand === null) {
                     return $rightOperand;
                 }
@@ -53,7 +53,7 @@ final class Number implements Stringable
     {
         return \array_reduce(
             $values,
-            static function (?self $leftOperand = null, ?self $rightOperand = null) {
+            static function (?self $leftOperand = null, ?self $rightOperand = null): ?self {
                 if ($leftOperand === null) {
                     return $rightOperand;
                 }

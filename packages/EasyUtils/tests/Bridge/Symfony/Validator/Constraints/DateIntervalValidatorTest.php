@@ -17,34 +17,30 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class DateIntervalValidatorTest extends AbstractTestCase
 {
     /**
-     * @return string[][]
+     * @return iterable<mixed>
      *
      * @see testValidateFailsWithInvalidDateIntervalValues
      */
-    public static function provideInvalidDateIntervalValues(): array
+    public static function provideInvalidDateIntervalValues(): iterable
     {
-        return [
-            'Invalid date interval #1' => ['P4D1Y'],
-            'Invalid date interval #2' => ['6MT'],
-            'Invalid date interval #3' => ['abc'],
-            'Invalid date interval #4' => ['123'],
-        ];
+        yield 'Invalid date interval #1' => ['P4D1Y'];
+        yield 'Invalid date interval #2' => ['6MT'];
+        yield 'Invalid date interval #3' => ['abc'];
+        yield 'Invalid date interval #4' => ['123'];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testValidateSucceedsWithValidDateInterval
      */
-    public static function provideValidDateIntervalValues(): array
+    public static function provideValidDateIntervalValues(): iterable
     {
-        return [
-            'Valid date interval #1' => ['P2D'],
-            'Valid date interval #2' => ['PT2S'],
-            'Valid date interval #3' => ['P6YT5M'],
-            'Empty string' => [''],
-            'Null value' => [null],
-        ];
+        yield 'Valid date interval #1' => ['P2D'];
+        yield 'Valid date interval #2' => ['PT2S'];
+        yield 'Valid date interval #3' => ['P6YT5M'];
+        yield 'Empty string' => [''];
+        yield 'Null value' => [null];
     }
 
     /**
@@ -64,11 +60,9 @@ final class DateIntervalValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $dateInterval
-     *
      * @dataProvider provideValidDateIntervalValues
      */
-    public function testValidateSucceedsWithValidDateInterval($dateInterval): void
+    public function testValidateSucceedsWithValidDateInterval(mixed $dateInterval): void
     {
         $validator = new DateIntervalValidator();
         $constraint = new DateInterval();
@@ -96,7 +90,7 @@ final class DateIntervalValidatorTest extends AbstractTestCase
 
     public function testValidateThrowsUnexpectedValueExceptionIfNumberGiven(): void
     {
-        $dateInterval = 53004085616;
+        $dateInterval = 123;
         $validator = new DateIntervalValidator();
         $constraint = new DateInterval();
         $this->expectException(UnexpectedValueException::class);

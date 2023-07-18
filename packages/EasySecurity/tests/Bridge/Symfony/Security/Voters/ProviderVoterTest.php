@@ -46,11 +46,9 @@ final class ProviderVoterTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $subject
-     *
      * @dataProvider providerTestVoter
      */
-    public function testVoter(SecurityContextInterface $securityContext, $subject, int $expectedVote): void
+    public function testVoter(SecurityContextInterface $securityContext, mixed $subject, int $expectedVote): void
     {
         $voter = new ProviderVoter(new SecurityContextResolverStub($securityContext));
         $token = new NullToken();

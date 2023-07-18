@@ -14,11 +14,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class AuthenticationFailureResponseFactory implements AuthenticationFailureResponseFactoryInterface
 {
-    private LoggerInterface $logger;
-
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     public function create(Request $request, ?AuthenticationException $exception = null): Response

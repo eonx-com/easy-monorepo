@@ -53,7 +53,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function testProcess(WebhookInterface $webhook, bool $shouldLock, ?bool $canProcess = null): void
     {
-        $canProcess = $canProcess ?? true;
+        $canProcess ??= true;
         $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId());
         $expectedResult = new WebhookResult($webhook);
         $lockService = new LockServiceStub($canProcess);

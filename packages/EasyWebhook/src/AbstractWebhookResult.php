@@ -7,6 +7,7 @@ namespace EonX\EasyWebhook;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 abstract class AbstractWebhookResult implements WebhookResultInterface
 {
@@ -15,7 +16,7 @@ abstract class AbstractWebhookResult implements WebhookResultInterface
     public function __construct(
         private WebhookInterface $webhook,
         private ?ResponseInterface $response = null,
-        private ?\Throwable $throwable = null,
+        private ?Throwable $throwable = null,
     ) {
     }
 
@@ -29,7 +30,7 @@ abstract class AbstractWebhookResult implements WebhookResultInterface
         return $this->response;
     }
 
-    public function getThrowable(): ?\Throwable
+    public function getThrowable(): ?Throwable
     {
         return $this->throwable;
     }

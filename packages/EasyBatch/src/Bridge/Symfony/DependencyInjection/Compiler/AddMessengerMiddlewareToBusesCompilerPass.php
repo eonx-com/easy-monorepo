@@ -31,14 +31,18 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
             }
 
             // Remove easy batch middleware if added in the app config
-            $existingMiddlewareList = \array_filter($middleware->getValues(), static function (Reference $ref): bool {
-                return \in_array((string)$ref, self::EASY_BATCH_MIDDLEWARE_LIST, true) === false;
-            });
+            $existingMiddlewareList = \array_filter(
+                $middleware->getValues(),
+                static fn (
+                    Reference $ref,
+                ): bool => \in_array((string)$ref, self::EASY_BATCH_MIDDLEWARE_LIST, true) === false
+            );
 
             // Convert easy batch middleware classes to reference
-            $easyBatchMiddlewareList = \array_map(static function (string $class): Reference {
-                return new Reference($class);
-            }, self::EASY_BATCH_MIDDLEWARE_LIST);
+            $easyBatchMiddlewareList = \array_map(
+                static fn (string $class): Reference => new Reference($class),
+                self::EASY_BATCH_MIDDLEWARE_LIST
+            );
 
             // Add reference to easy batch middleware at the start of existing list
             \array_unshift($existingMiddlewareList, ...$easyBatchMiddlewareList);

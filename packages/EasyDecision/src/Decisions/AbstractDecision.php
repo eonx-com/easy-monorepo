@@ -18,6 +18,7 @@ use EonX\EasyDecision\Interfaces\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
+use Throwable;
 
 abstract class AbstractDecision implements DecisionInterface
 {
@@ -117,7 +118,7 @@ abstract class AbstractDecision implements DecisionInterface
             // Let children classes handle rules output and define the output
             return $this->processRules()
                 ->doMake();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             throw new UnableToMakeDecisionException(
                 $this->getExceptionMessage($exception->getMessage()),
                 $exception->getCode(),

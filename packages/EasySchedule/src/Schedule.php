@@ -50,9 +50,7 @@ final class Schedule implements ScheduleInterface
      */
     public function getDueEvents(): array
     {
-        return \array_filter($this->events, static function (EventInterface $event): bool {
-            return $event->isDue();
-        });
+        return \array_filter($this->events, static fn (EventInterface $event): bool => $event->isDue());
     }
 
     public function setApplication(Application $app): ScheduleInterface

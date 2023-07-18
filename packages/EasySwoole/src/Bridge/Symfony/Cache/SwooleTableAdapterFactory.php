@@ -7,6 +7,7 @@ namespace EonX\EasySwoole\Bridge\Symfony\Cache;
 use EonX\EasySwoole\Helpers\CacheTableHelper;
 use EonX\EasySwoole\Helpers\OutputHelper;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\Marshaller\MarshallerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -15,7 +16,7 @@ final class SwooleTableAdapterFactory
     public function __invoke(
         string $tableName,
         ?int $defaultLifetime = null,
-        ?MarshallerInterface $marshaller = null,
+        MarshallerInterface $marshaller = new DefaultMarshaller(),
     ): CacheInterface {
         if (CacheTableHelper::exists($tableName) === false) {
             OutputHelper::writeln(\sprintf(

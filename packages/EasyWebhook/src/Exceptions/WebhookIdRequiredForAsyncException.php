@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Exceptions;
 
 final class WebhookIdRequiredForAsyncException extends AbstractDoNotHandleMeException
 {
-    // No body needed.
+    // No body needed
 }

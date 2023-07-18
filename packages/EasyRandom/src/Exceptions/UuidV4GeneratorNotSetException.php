@@ -6,5 +6,5 @@ namespace EonX\EasyRandom\Exceptions;
 
 final class UuidV4GeneratorNotSetException extends AbstractEasyRandomException
 {
-    // No body needed.
+    // No body needed
 }

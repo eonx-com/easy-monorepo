@@ -7,9 +7,11 @@ namespace EonX\EasyDecision\Bridge\Symfony\DataCollector;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class DecisionDataCollector extends DataCollector
 {
@@ -23,7 +25,7 @@ final class DecisionDataCollector extends DataCollector
     ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         $this->data['decisions'] = $this->mapDecisions();
     }
@@ -54,7 +56,7 @@ final class DecisionDataCollector extends DataCollector
         $configurators = [];
 
         foreach ($this->decisionFactory->getConfiguratorsByDecision($decision) as $configurator) {
-            $reflection = new \ReflectionClass($configurator);
+            $reflection = new ReflectionClass($configurator);
 
             $configurators[] = [
                 'priority' => $configurator->getPriority(),
@@ -76,16 +78,16 @@ final class DecisionDataCollector extends DataCollector
         foreach ($this->decisionFactory->getConfiguredDecisions() as $decision) {
             try {
                 $context = $decision->getContext();
-            } catch (ContextNotSetException $exception) {
+            } catch (ContextNotSetException) {
                 $context = null;
             }
 
             $decisions[] = [
                 'name' => $decision->getName(),
                 'context' => [
-                    'decision_type' => $context ? $context->getDecisionType() : \get_class($decision),
-                    'original_input' => $context ? $context->getOriginalInput() : 'Decision not made...',
-                    'rule_output' => $context ? $context->getRuleOutputs() : [],
+                    'decision_type' => $context !== null ? $context->getDecisionType() : $decision::class,
+                    'original_input' => $context !== null ? $context->getOriginalInput() : 'Decision not made...',
+                    'rule_output' => $context !== null ? $context->getRuleOutputs() : [],
                 ],
                 'configurators' => $this->mapConfigurators($decision),
             ];

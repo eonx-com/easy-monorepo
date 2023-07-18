@@ -32,7 +32,7 @@ final class HttpClientRequestStub
 
         $body = \is_array($data) ? (string)\json_encode($data) : $data;
 
-        $count = $count ?? 1;
+        $count ??= 1;
         do {
             $httpClient = $addResponseClosure(new MockResponse($body, $info ?? []), $this->getHash());
         } while ($count-- > 1);

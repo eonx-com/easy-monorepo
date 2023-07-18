@@ -12,6 +12,7 @@ use EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
+use Throwable;
 
 final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterface
 {
@@ -58,7 +59,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
 
         try {
             return $this->doGetKey($keyName);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new CouldNotProvideEncryptionKeyException(
                 \sprintf('Could not provide encryption key: %s', $throwable->getMessage()),
                 $throwable->getCode(),
@@ -85,7 +86,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
         $this->resolved = [];
     }
 
-    private function circularReference(string $keyName): void
+    private function circularReference(string $keyName): never
     {
         $this->resolving = [];
 

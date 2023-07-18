@@ -9,5 +9,5 @@ use InvalidArgumentException;
 
 final class PipelineNotFoundException extends InvalidArgumentException implements EasyPipelineExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

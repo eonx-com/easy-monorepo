@@ -34,7 +34,7 @@ final class TraceableSchedule implements TraceableScheduleInterface
     public function addProviders(array $providers): ScheduleInterface
     {
         foreach ($providers as $provider) {
-            $this->currentProvider = \get_class($provider);
+            $this->currentProvider = $provider::class;
             $this->providers[] = $provider;
 
             $provider->schedule($this);

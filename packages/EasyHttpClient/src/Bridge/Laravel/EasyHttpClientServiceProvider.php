@@ -68,7 +68,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
 
     private function registerEasyWebhookBridge(): void
     {
-        // Register only if enabled and eonx-com/easy-webhook installed.
+        // Register only if enabled and eonx-com/easy-webhook installed
         if (\config('easy-http-client.decorate_easy_webhook_client', false) === false
             || \interface_exists(EasyWebhookBridgeConstantsInterface::class) === false) {
             return;
@@ -76,9 +76,10 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
 
         $this->app->extend(
             EasyWebhookBridgeConstantsInterface::HTTP_CLIENT,
-            static function (HttpClientInterface $decorated, Container $app): HttpClientInterface {
-                return self::instantiateClient($app, $decorated);
-            }
+            static fn (HttpClientInterface $decorated, Container $app): HttpClientInterface => self::instantiateClient(
+                $app,
+                $decorated
+            )
         );
     }
 
@@ -86,9 +87,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             BridgeConstantsInterface::SERVICE_HTTP_CLIENT,
-            static function (Container $app): HttpClientInterface {
-                return self::instantiateClient($app);
-            }
+            static fn (Container $app): HttpClientInterface => self::instantiateClient($app)
         );
     }
 }

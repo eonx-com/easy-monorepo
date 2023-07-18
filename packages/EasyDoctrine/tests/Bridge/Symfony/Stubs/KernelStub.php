@@ -20,6 +20,6 @@ final class KernelStub extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        // No body needed.
+        // No body needed
     }
 }

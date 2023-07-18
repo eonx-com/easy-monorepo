@@ -7,6 +7,7 @@ namespace EonX\EasyDoctrine\Tests\Stubs;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
@@ -20,7 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 final class EntityManagerStub
 {
     /**
-     * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *
@@ -47,7 +47,6 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \Doctrine\Common\EventManager|null $eventManager
      * @param string[] $fixtures
      *
      * @return \Doctrine\ORM\EntityManager
@@ -68,9 +67,7 @@ final class EntityManagerStub
         $config->setMetadataDriverImpl(new AttributeDriver([]));
 
         $entityManager = EntityManager::create($conn, $config, $eventManager);
-        $schema = \array_map(function ($class) use ($entityManager) {
-            return $entityManager->getClassMetadata($class);
-        }, $fixtures);
+        $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
 
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema([]);
@@ -83,7 +80,6 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *

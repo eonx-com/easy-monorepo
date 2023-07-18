@@ -29,9 +29,9 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
         $this->app->extend(
             RandomGeneratorInterface::class,
-            static function (RandomGeneratorInterface $randomGenerator): RandomGeneratorInterface {
-                return $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
-            }
+            static fn (
+                RandomGeneratorInterface $randomGenerator,
+            ): RandomGeneratorInterface => $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator())
         );
 
         return $this->app;

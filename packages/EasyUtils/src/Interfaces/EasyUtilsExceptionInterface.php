@@ -6,5 +6,5 @@ namespace EonX\EasyUtils\Interfaces;
 
 interface EasyUtilsExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

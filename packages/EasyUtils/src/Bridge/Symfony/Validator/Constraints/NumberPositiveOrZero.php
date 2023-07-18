@@ -20,6 +20,6 @@ final class NumberPositiveOrZero extends AbstractComparison
 
     public function validatedBy(): string
     {
-        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
+        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
     }
 }

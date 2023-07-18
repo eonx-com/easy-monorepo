@@ -6,5 +6,5 @@ namespace EonX\EasyAsync\Interfaces;
 
 interface EasyAsyncExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

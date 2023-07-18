@@ -52,40 +52,43 @@ final class EasyNotificationServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-notification.php', 'easy-notification');
 
         // Config + ConfigFinder
-        $this->app->singleton(ConfigFinderInterface::class, static function (): ConfigFinderInterface {
-            return new ConfigFinder(\config('easy-notification.api_url'));
-        });
+        $this->app->singleton(
+            ConfigFinderInterface::class,
+            static fn (): ConfigFinderInterface => new ConfigFinder(\config('easy-notification.api_url'))
+        );
 
         $this->app->singleton(BridgeConstantsInterface::SERVICE_CONFIG_CACHE, ArrayAdapter::class);
 
         $this->app->extend(
             ConfigFinderInterface::class,
-            static function (ConfigFinderInterface $decorated, Container $app): ConfigFinderInterface {
-                return new CacheConfigFinder(
-                    $app->make(BridgeConstantsInterface::SERVICE_CONFIG_CACHE),
-                    $decorated,
-                    \config(
-                        'easy-notification.config_expires_after',
-                        BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER
-                    )
-                );
-            }
+            static fn (
+                ConfigFinderInterface $decorated,
+                Container $app,
+            ): ConfigFinderInterface => new CacheConfigFinder(
+                $app->make(BridgeConstantsInterface::SERVICE_CONFIG_CACHE),
+                $decorated,
+                \config(
+                    'easy-notification.config_expires_after',
+                    BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER
+                )
+            )
         );
 
         // SubscribeInfoFinder
-        $this->app->singleton(SubscribeInfoFinderInterface::class, static function (): SubscribeInfoFinderInterface {
-            return new SubscribeInfoFinder(\config('easy-notification.api_url'));
-        });
+        $this->app->singleton(
+            SubscribeInfoFinderInterface::class,
+            static fn (): SubscribeInfoFinderInterface => new SubscribeInfoFinder(
+                \config('easy-notification.api_url')
+            )
+        );
 
         // Client
         $this->app->singleton(
             NotificationClientInterface::class,
-            static function (Container $app): NotificationClientInterface {
-                return new NotificationClient(
-                    $app->tagged(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR),
-                    $app->make(QueueTransportFactoryInterface::class)
-                );
-            }
+            static fn (Container $app): NotificationClientInterface => new NotificationClient(
+                $app->tagged(BridgeConstantsInterface::TAG_QUEUE_MESSAGE_CONFIGURATOR),
+                $app->make(QueueTransportFactoryInterface::class)
+            )
         );
 
         // Configurators

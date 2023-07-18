@@ -93,12 +93,9 @@ final class Parser extends AbstractLineByLineParser
         return $this->transactions;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function processLine(int $lineNumber, string $line): void
     {
-        // code is the first character in line
+        // Code is the first character in line
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
         $lineLength = \strlen($line);
 

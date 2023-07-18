@@ -42,9 +42,7 @@ final class TrimStringsTest extends AbstractTestCase
         $symfonyRequest->server->set('REQUEST_METHOD', 'GET');
         $request = Request::createFromBase($symfonyRequest);
 
-        $result = $middleware->handle($request, static function (Request $request): string {
-            return $request->get('abc');
-        });
+        $result = $middleware->handle($request, static fn (Request $request): string => $request->get('abc'));
 
         self::assertSame('123', $result);
     }
@@ -80,9 +78,7 @@ final class TrimStringsTest extends AbstractTestCase
         ]);
         $request = Request::createFromBase($symfonyRequest);
 
-        $result = $middleware->handle($request, static function (Request $request): string {
-            return $request->json('abc');
-        });
+        $result = $middleware->handle($request, static fn (Request $request): string => $request->json('abc'));
 
         self::assertSame('123', $result);
     }
@@ -114,9 +110,7 @@ final class TrimStringsTest extends AbstractTestCase
         $symfonyRequest->server->set('REQUEST_METHOD', 'POST');
         $request = Request::createFromBase($symfonyRequest);
 
-        $result = $middleware->handle($request, static function (Request $request): string {
-            return $request->get('abc');
-        });
+        $result = $middleware->handle($request, static fn (Request $request): string => $request->get('abc'));
 
         self::assertSame('123', $result);
     }

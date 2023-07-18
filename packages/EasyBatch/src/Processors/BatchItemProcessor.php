@@ -15,6 +15,7 @@ use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
+use Throwable;
 
 final class BatchItemProcessor
 {
@@ -46,7 +47,7 @@ final class BatchItemProcessor
 
         try {
             return $func();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $messageFuncSuccess = false;
 
             $batchItem->setStatus(
@@ -70,7 +71,7 @@ final class BatchItemProcessor
 
             try {
                 $batchItem = $this->batchItemRepository->save($batchItem);
-            } catch (\Throwable $throwableSaveBatchItem) {
+            } catch (Throwable $throwableSaveBatchItem) {
                 // If batchItem not saved and message logic failed, simply let it fail so the queue can retry it
                 if ($messageFuncSuccess === false) {
                     throw $throwableSaveBatchItem;
@@ -84,7 +85,7 @@ final class BatchItemProcessor
                 $this->batchProcessor
                     ->reset()
                     ->processBatchForBatchItem($this->batchObjectManager, $batch, $batchItem);
-            } catch (\Throwable $throwableProcessBatch) {
+            } catch (Throwable $throwableProcessBatch) {
                 // If batchItem can be retried and message logic failed, simply let it fail so the queue can retry it
                 if ($batchItem->canBeRetried() && $messageFuncSuccess === false) {
                     throw $throwableProcessBatch;

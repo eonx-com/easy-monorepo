@@ -58,7 +58,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             }
 
             if (\is_object($value)) {
-                $objectClass = \get_class($value);
+                $objectClass = $value::class;
 
                 $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
                     ?? $allowedProperties[$key] ?? ['id'];

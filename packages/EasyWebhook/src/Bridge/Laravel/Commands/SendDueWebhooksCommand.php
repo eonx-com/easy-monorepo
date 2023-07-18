@@ -35,7 +35,7 @@ final class SendDueWebhooksCommand extends Command
         if ($store instanceof SendAfterStoreInterface === false) {
             $this->error(\sprintf(
                 'Store "%s" does not implement "%s", cannot proceed.',
-                \get_class($store),
+                $store::class,
                 SendAfterStoreInterface::class
             ));
 

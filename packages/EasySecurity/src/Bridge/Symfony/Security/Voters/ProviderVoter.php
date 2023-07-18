@@ -6,6 +6,7 @@ namespace EonX\EasySecurity\Bridge\Symfony\Security\Voters;
 
 use EonX\EasySecurity\Interfaces\ProviderRestrictedInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -31,10 +32,10 @@ final class ProviderVoter extends Voter
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         if ($subject instanceof ProviderRestrictedInterface === false) {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 'Subject must be instance of "%s", "%s" given.',
                 ProviderRestrictedInterface::class,
-                \is_object($subject) ? $subject::class : \gettype($subject)
+                \get_debug_type($subject)
             ));
         }
 

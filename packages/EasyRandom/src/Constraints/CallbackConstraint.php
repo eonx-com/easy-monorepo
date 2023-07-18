@@ -13,7 +13,7 @@ final class CallbackConstraint implements RandomStringConstraintInterface
 
     public function __construct(callable $callback)
     {
-        $this->callback = Closure::fromCallable($callback);
+        $this->callback = $callback(...);
     }
 
     public function isValid(string $randomString): bool

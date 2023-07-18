@@ -30,7 +30,7 @@ abstract class AbstractPaginator implements PaginatorInterface
     public function __construct(
         protected PaginationInterface $pagination,
     ) {
-        // No body needed.
+        // No body needed
     }
 
     public function getCurrentPage(): int
@@ -68,7 +68,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getPageUrl(int $page): string
     {
-        return $this->urls[$page] = $this->urls[$page] ?? $this->pagination->getUrl($page);
+        return $this->urls[$page] ??= $this->pagination->getUrl($page);
     }
 
     public function getPreviousPageUrl(): string
@@ -86,7 +86,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function setTransformer(?callable $transformer = null): PaginatorInterface
     {
-        $this->transformer = $transformer === null ? null : Closure::fromCallable($transformer);
+        $this->transformer = $transformer === null ? null : $transformer(...);
         $this->transformedItems = null;
 
         return $this;

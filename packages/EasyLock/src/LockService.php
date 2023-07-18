@@ -22,13 +22,10 @@ final class LockService implements LockServiceInterface
 {
     private ?LockFactory $factory = null;
 
-    private LoggerInterface $logger;
-
     public function __construct(
         private PersistingStoreInterface $store,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
-        $this->logger = $logger ?? new NullLogger();
     }
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
@@ -48,7 +45,7 @@ final class LockService implements LockServiceInterface
             $easyAsyncInstalled = \interface_exists(ShouldKillWorkerExceptionInterface::class);
 
             // If eonx-com/easy-async installed, and previous is because SQL connection not ok, kill worker
-            if ($easyAsyncInstalled && $previous instanceof PdoException && $previous->getCode() === 'HY000') {
+            if ($easyAsyncInstalled && $previous instanceof PdoException && $previous->getCode() === 0) {
                 throw new LockAcquiringException($exception->getMessage(), $exception->getCode(), $previous);
             }
 

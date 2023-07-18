@@ -227,7 +227,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertSame(
             ['title' => 'Test collections'],
-            \json_decode($logEntries[0]['subject_data'], true)
+            \json_decode((string)$logEntries[0]['subject_data'], true)
         );
     }
 
@@ -296,14 +296,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'name' => 'John',
                 'position' => 1,
             ],
-            \json_decode($logEntries[0]['subject_data'], true)
+            \json_decode((string)$logEntries[0]['subject_data'], true)
         );
         self::assertSame(
             [
                 'title' => 'Resolver',
                 'author' => ['id' => 1],
             ],
-            \json_decode($logEntries[1]['subject_data'], true)
+            \json_decode((string)$logEntries[1]['subject_data'], true)
         );
     }
 
@@ -349,7 +349,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($logEntries[0]['subject_data'], true))
+            \array_keys(\json_decode((string)$logEntries[0]['subject_data'], true))
         );
     }
 }

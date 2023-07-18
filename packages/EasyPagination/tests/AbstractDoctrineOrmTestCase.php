@@ -4,18 +4,27 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
+use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
-use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
 
 abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
 {
     private ?EntityManagerInterface $manager = null;
+
+    protected static function addChildItemToTable(EntityManagerInterface $manager, string $title, Item $item): void
+    {
+        $childItem = new ChildItem();
+        $childItem->title = $title;
+        $childItem->item = $item;
+
+        $manager->persist($childItem);
+        $manager->flush();
+    }
 
     protected static function addItemToTable(EntityManagerInterface $manager, string $title): Item
     {
@@ -26,16 +35,6 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         $manager->flush();
 
         return $item;
-    }
-
-    protected static function addParentToTable(EntityManagerInterface $manager, string $title, Item $item): void
-    {
-        $parent = new ParentEntity();
-        $parent->title = $title;
-        $parent->item = $item;
-
-        $manager->persist($parent);
-        $manager->flush();
     }
 
     /**
@@ -53,7 +52,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
      */
     protected static function createParentsTable(EntityManagerInterface $manager): void
     {
-        self::createEntityTable($manager, ParentEntity::class);
+        self::createEntityTable($manager, ChildItem::class);
     }
 
     /**
@@ -70,7 +69,7 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         ];
 
         $config = new Configuration();
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 

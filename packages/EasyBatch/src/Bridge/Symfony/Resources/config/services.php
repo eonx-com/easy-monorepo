@@ -110,7 +110,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%')
         ->arg('$transformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
-    //Serializer
+    // Serializer
     $services->set(MessageSerializerInterface::class, MessageSerializer::class);
 
     $services->alias(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializerInterface::class);

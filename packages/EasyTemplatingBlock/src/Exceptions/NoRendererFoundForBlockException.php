@@ -6,5 +6,5 @@ namespace EonX\EasyTemplatingBlock\Exceptions;
 
 final class NoRendererFoundForBlockException extends AbstractEasyTemplatingBlockException
 {
-    // No body needed.
+    // No body needed
 }

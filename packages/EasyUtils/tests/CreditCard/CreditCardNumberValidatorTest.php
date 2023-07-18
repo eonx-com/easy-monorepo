@@ -11,6 +11,8 @@ final class CreditCardNumberValidatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testIsCreditCardNumberValidSucceeds
      */
     public static function provideCardNumbers(): iterable
     {

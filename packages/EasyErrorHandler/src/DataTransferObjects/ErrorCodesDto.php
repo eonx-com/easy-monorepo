@@ -26,7 +26,7 @@ final class ErrorCodesDto
     public function getNextGroupedErrorCodesAsArray(): array
     {
         return \array_map(
-            static fn (ErrorCodeCategoryDto $errorCodeCategoryDto) => $errorCodeCategoryDto->asArray(),
+            static fn (ErrorCodeCategoryDto $errorCodeCategoryDto): array => $errorCodeCategoryDto->asArray(),
             $this->nextGroupedErrorCodes
         );
     }

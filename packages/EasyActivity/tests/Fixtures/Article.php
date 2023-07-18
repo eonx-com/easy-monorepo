@@ -8,45 +8,33 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Article
 {
-    /**
-     * @ORM\ManyToOne(targetEntity=Author::class)
-     */
+    #[ORM\ManyToOne(targetEntity: Author::class)]
     private Author $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", cascade={"persist"})
-     *
      * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyActivity\Tests\Fixtures\Comment>
      */
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class, cascade: ['persist'])]
     private Collection $comments;
 
-    /**
-     * @ORM\Column(type="text", length=256)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $content;
 
-    /**
-     * @ORM\Column(type="datetimetz")
-     */
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=256)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $title;
 
     public function __construct()

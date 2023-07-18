@@ -10,8 +10,9 @@ use RuntimeException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Throwable;
 
-class MessageSerializer implements SerializerInterface
+final class MessageSerializer implements SerializerInterface
 {
     /**
      * @var string
@@ -53,7 +54,7 @@ class MessageSerializer implements SerializerInterface
             }
 
             return Envelope::wrap($message, $stamps);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             return Envelope::wrap(NotSupportedMessage::create($queueEnvelope, $throwable), $stamps);
         }
     }

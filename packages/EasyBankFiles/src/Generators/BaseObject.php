@@ -49,14 +49,10 @@ abstract class BaseObject extends AbstractDataBag
             $value = $this->data[$attribute] ?? '';
 
             if (isset($paddingRules[$attribute])) {
-                \array_unshift($paddingRules[$attribute], $value);
+                $paddingRulesForAttribute = (array)$paddingRules[$attribute];
+                \array_unshift($paddingRulesForAttribute, (string)$value);
 
-                // Ensure first attribute is a string
-                if (\is_string($paddingRules[$attribute][0]) === false) {
-                    $paddingRules[$attribute][0] = (string)$paddingRules[$attribute][0];
-                }
-
-                $value = \str_pad(...$paddingRules[$attribute]);
+                $value = \str_pad(...$paddingRulesForAttribute);
             }
 
             $line[] = $value;

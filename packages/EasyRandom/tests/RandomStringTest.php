@@ -138,9 +138,7 @@ final class RandomStringTest extends AbstractTestCase
     {
         $this->expectException(InvalidRandomStringException::class);
 
-        $alwaysInvalid = new CallbackConstraint(static function (): bool {
-            return false;
-        });
+        $alwaysInvalid = new CallbackConstraint(static fn (): bool => false);
 
         (new RandomGenerator())
             ->randomString(8)
@@ -154,7 +152,7 @@ final class RandomStringTest extends AbstractTestCase
     public function testRandomString(?int $length = null, ?callable $configure = null, ?callable $assert = null): void
     {
         $iterations = 100;
-        $length = $length ?? 100;
+        $length ??= 100;
         $generator = new RandomGenerator();
         $generated = [];
 

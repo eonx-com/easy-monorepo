@@ -17,6 +17,7 @@ use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Fixtures\Tag;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
+use RuntimeException;
 
 /**
  * @covers \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber
@@ -127,19 +128,19 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $product = new Product();
 
-        $entityManager->wrapInTransaction(function () use ($entityManager, $product) {
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
             $product->setPrice('1000');
             $entityManager->persist($product);
             $entityManager->flush();
             try {
-                $entityManager->wrapInTransaction(function () use ($entityManager, $product) {
+                $entityManager->wrapInTransaction(function () use ($entityManager, $product): never {
                     $product->setPrice('2000');
                     $entityManager->persist($product);
                     $entityManager->flush();
-                    throw new \RuntimeException('Test', 1);
+                    throw new RuntimeException('Test', 1);
                 });
-            } catch (\RuntimeException $exception) {
+            } catch (RuntimeException) {
             }
         });
 
@@ -269,7 +270,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
         $eventDispatcher->addDispatchCallback(
             class: EntityCreatedEvent::class,
-            callback: static function (EntityCreatedEvent $event) use ($entityManager) {
+            callback: static function (EntityCreatedEvent $event) use ($entityManager): void {
                 if ($event->getEntity() instanceof Category === false) {
                     return;
                 }
@@ -381,26 +382,26 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             [Product::class]
         );
 
-        $this->safeCall(function () use ($entityManager) {
+        $this->safeCall(function () use ($entityManager): void {
             $product = new Product();
 
-            $entityManager->transactional(function () use ($entityManager, $product) {
+            $entityManager->transactional(function () use ($entityManager, $product): void {
                 $product->setName('Description 1');
                 $product->setPrice('1000');
                 $entityManager->persist($product);
                 $entityManager->flush();
-                $entityManager->transactional(function () use ($entityManager, $product) {
+                $entityManager->transactional(function () use ($entityManager, $product): never {
                     $product->setPrice('2000');
                     $entityManager->persist($product);
                     $entityManager->flush();
-                    throw new \RuntimeException('Test', 1);
+                    throw new RuntimeException('Test', 1);
                 });
             });
 
             $entityManager->flush();
         });
 
-        $this->assertThrownException(\RuntimeException::class, 1);
+        $this->assertThrownException(RuntimeException::class, 1);
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(0, $events);
     }
@@ -581,11 +582,11 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
 
-        $entityManager->transactional(function () use ($entityManager, $product) {
+        $entityManager->transactional(function () use ($entityManager, $product): void {
             $product->setPrice('2000');
             $entityManager->persist($product);
             $entityManager->flush();
-            $entityManager->transactional(function () use ($entityManager, $product) {
+            $entityManager->transactional(function () use ($entityManager, $product): void {
                 $product->setPrice('3000');
                 $product->setName('Keyboard 2');
                 $entityManager->flush();
@@ -617,12 +618,12 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
 
         $product = new Product();
-        $entityManager->transactional(function () use ($entityManager, $product) {
+        $entityManager->transactional(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
             $product->setPrice('1000');
             $entityManager->persist($product);
             $entityManager->flush();
-            $entityManager->transactional(function () use ($entityManager, $product) {
+            $entityManager->transactional(function () use ($entityManager, $product): void {
                 $product->setPrice('2000');
                 $entityManager->flush();
             });

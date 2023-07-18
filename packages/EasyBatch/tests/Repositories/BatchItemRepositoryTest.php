@@ -13,6 +13,7 @@ use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Pagination;
+use stdClass;
 
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 {
@@ -25,12 +26,12 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
     {
         yield 'Fetch only batchItems for batch and no dependency' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
-                $batchItem1 = $factory->create('batch-id', new \stdClass());
+                $batchItem1 = $factory->create('batch-id', new stdClass());
                 $batchItem1->setName('right-one');
                 $batchItem1->setMetadata(['key' => 'value']);
 
-                $batchItem2 = $factory->create('another-batch-id', new \stdClass());
-                $batchItem3 = $factory->create('batch-id', new \stdClass())
+                $batchItem2 = $factory->create('another-batch-id', new stdClass());
+                $batchItem3 = $factory->create('batch-id', new stdClass())
                     ->setDependsOnName('dependency');
 
                 $repo->save($batchItem1);
@@ -45,12 +46,12 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 
         yield 'Fetch only batchItems for batch and given dependency' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
-                $batchItem1 = $factory->create('batch-id', new \stdClass());
+                $batchItem1 = $factory->create('batch-id', new stdClass());
                 $batchItem1->setName('right-one');
                 $batchItem1->setDependsOnName('dependency');
 
-                $batchItem2 = $factory->create('another-batch-id', new \stdClass());
-                $batchItem3 = $factory->create('batch-id', new \stdClass());
+                $batchItem2 = $factory->create('another-batch-id', new stdClass());
+                $batchItem3 = $factory->create('batch-id', new stdClass());
                 $batchItem3->setName('dependency');
 
                 $repo->save($batchItem1);
@@ -73,8 +74,8 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
         $factory = $this->getBatchItemFactory();
         $repo = $this->getBatchItemRepository($factory);
 
-        $batchItem1 = $factory->create('batch-id', new \stdClass());
-        $batchItem2 = $factory->create('batch-id', new \stdClass());
+        $batchItem1 = $factory->create('batch-id', new stdClass());
+        $batchItem2 = $factory->create('batch-id', new stdClass());
         $batchItem2->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
 
         $repo->save($batchItem1);

@@ -6,5 +6,5 @@ namespace EonX\EasyRandom\Exceptions;
 
 final class InvalidRandomStringException extends AbstractEasyRandomException
 {
-    // No body needed.
+    // No body needed
 }

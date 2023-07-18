@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Fixtures;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Embeddable
- */
+#[ORM\Embeddable]
 class Type
 {
-    /**
-     * @ORM\Column(type="string", length=128, nullable=true)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $description;
 
-    /**
-     * @ORM\Column(type="string", length=128, nullable=true)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $title;
 
     public function __construct(string $description, string $title)

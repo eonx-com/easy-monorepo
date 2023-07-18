@@ -11,17 +11,14 @@ use Psr\Log\NullLogger;
 
 final class DoctrineManagersClearListener
 {
-    private LoggerInterface $logger;
-
     /**
      * @param null|string[] $managers
      */
     public function __construct(
         private ManagersClearer $managersClearer,
         private ?array $managers = null,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
-        $this->logger = $logger ?? new NullLogger();
     }
 
     /**

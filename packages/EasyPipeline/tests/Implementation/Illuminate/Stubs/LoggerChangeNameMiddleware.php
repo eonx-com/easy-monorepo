@@ -22,7 +22,7 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
         if ($input instanceof InputStub) {
             $previousName = $input->getName();
 
-            $this->decorated->handle($input, function (InputStub $input) use ($previousName) {
+            $this->decorated->handle($input, function (InputStub $input) use ($previousName): InputStub {
                 $this->log(\sprintf('Changed name "%s" to "%s"', $previousName, $input->getName()));
 
                 return $input;

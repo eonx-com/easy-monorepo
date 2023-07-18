@@ -11,10 +11,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Throwable;
 
-class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterface
+final class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterface
 {
-    private LoggerInterface $logger;
-
     private int $messagesLimit;
 
     private int $receivedMessages = 0;
@@ -22,15 +20,16 @@ class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterface
     /**
      * @throws \EonX\EasyAsync\Exceptions\InvalidArgumentException
      */
-    public function __construct(int $minMessages, ?int $maxMessages = null, ?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        int $minMessages,
+        ?int $maxMessages = null,
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
         try {
             $this->messagesLimit = \random_int($minMessages, $maxMessages ?? $minMessages);
         } catch (Throwable $throwable) {
             throw new InvalidArgumentException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
-
-        $this->logger = $logger ?? new NullLogger();
     }
 
     /**

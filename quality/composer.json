@@ -4,7 +4,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "eonx-com/easy-quality": "^3.0"
+        "eonx-com/easy-quality": "^3.3"
     },
     "config": {
         "allow-plugins": {

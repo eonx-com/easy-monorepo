@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Stores;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
@@ -42,7 +43,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
     public function findDueWebhooks(
         PaginationInterface $pagination,
-        ?\DateTimeInterface $sendAfter = null,
+        ?DateTimeInterface $sendAfter = null,
         ?string $timezone = null,
     ): LengthAwarePaginatorInterface {
         $sendAfter = $sendAfter !== null
@@ -69,10 +70,8 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ])
                     ->orderBy('created_at');
             })
-            ->setTransformer(function (array $item): WebhookInterface {
-                return $this->instantiateWebhook($item)
-                    ->bypassSendAfter(true);
-            });
+            ->setTransformer(fn (array $item): WebhookInterface => $this->instantiateWebhook($item)
+                ->bypassSendAfter(true));
 
         return $paginator;
     }
@@ -86,7 +85,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
     {
         $now = Carbon::now('UTC');
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
-        $data['class'] = \get_class($webhook);
+        $data['class'] = $webhook::class;
         $data['updated_at'] = $now;
 
         // New result with no id

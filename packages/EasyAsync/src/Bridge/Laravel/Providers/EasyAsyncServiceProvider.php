@@ -107,49 +107,46 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             WorkerStoppingListener::class,
-            static function (Container $app): WorkerStoppingListener {
-                return new WorkerStoppingListener($app->make(ErrorHandlerInterface::class));
-            }
+            static fn (
+                Container $app,
+            ): WorkerStoppingListener => new WorkerStoppingListener($app->make(ErrorHandlerInterface::class))
         );
     }
 
     private function registerQueueListeners(): void
     {
-        $this->app->singleton(ManagersSanityChecker::class, static function (Container $app): ManagersSanityChecker {
-            return new ManagersSanityChecker(
+        $this->app->singleton(
+            ManagersSanityChecker::class,
+            static fn (Container $app): ManagersSanityChecker => new ManagersSanityChecker(
                 $app->make(ManagerRegistry::class),
                 $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
-            );
-        });
+            )
+        );
 
         $this->app->singleton(
             DoctrineManagersClearListener::class,
-            static function (Container $app): DoctrineManagersClearListener {
-                return new DoctrineManagersClearListener(
-                    $app->make(ManagersClearer::class),
-                    \config('easy-async.queue.managers_to_clear'),
-                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
-                );
-            }
+            static fn (Container $app): DoctrineManagersClearListener => new DoctrineManagersClearListener(
+                $app->make(ManagersClearer::class),
+                \config('easy-async.queue.managers_to_clear'),
+                $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
+            )
         );
 
         $this->app->singleton(
             DoctrineManagersSanityCheckListener::class,
-            static function (Container $app): DoctrineManagersSanityCheckListener {
-                return new DoctrineManagersSanityCheckListener(
-                    $app->make('cache.store'),
-                    $app->make(ManagersSanityChecker::class),
-                    \config('easy-async.queue.managers_to_check'),
-                    $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
-                );
-            }
+            static fn (Container $app): DoctrineManagersSanityCheckListener => new DoctrineManagersSanityCheckListener(
+                $app->make('cache.store'),
+                $app->make(ManagersSanityChecker::class),
+                \config('easy-async.queue.managers_to_check'),
+                $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
+            )
         );
 
         $this->app->singleton(
             QueueWorkerStoppingListener::class,
-            static function (Container $app): QueueWorkerStoppingListener {
-                return new QueueWorkerStoppingListener($app->make(BridgeConstantsInterface::SERVICE_LOGGER));
-            }
+            static fn (Container $app): QueueWorkerStoppingListener => new QueueWorkerStoppingListener(
+                $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
+            )
         );
     }
 

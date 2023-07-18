@@ -6,5 +6,5 @@ namespace EonX\EasyAsync\Exceptions;
 
 final class InvalidArgumentException extends AbstractEasyAsyncException
 {
-    // No body needed.
+    // No body needed
 }

@@ -6,5 +6,5 @@ namespace EonX\EasyApiToken\Interfaces;
 
 interface EasyApiTokenExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

@@ -15,81 +15,77 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class TrimStringsNormalizerTest extends AbstractTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testDenormalizeSucceedsWithTrimValue
      */
-    public static function provideDataForDenormalize(): array
+    public static function provideDataForDenormalize(): iterable
     {
-        return [
-            'data is string' => [' 123 ', '123'],
-            'data is array' => [[' 123 '], ['123']],
-        ];
+        yield 'data is string' => [' 123 ', '123'];
+        yield 'data is array' => [[' 123 '], ['123']];
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testSupportsDenormalizationReturnsExpectedResult
      */
-    public static function provideDataForSupportsDenormalization(): array
+    public static function provideDataForSupportsDenormalization(): iterable
     {
-        return [
-            'data is an array' => [
-                'expected' => true,
-                'data' => [],
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => [
-                    'some-key' => 'some-value',
-                ],
+        yield 'data is an array' => [
+            'expected' => true,
+            'data' => [],
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => [
+                'some-key' => 'some-value',
             ],
-            'data is a string' => [
-                'expected' => true,
-                'data' => 'some-correct-value',
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => [
-                    'some-key' => 'some-value',
-                ],
+        ];
+        yield 'data is a string' => [
+            'expected' => true,
+            'data' => 'some-correct-value',
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => [
+                'some-key' => 'some-value',
             ],
-            'already called' => [
-                'expected' => false,
-                'data' => 'some-correct-value',
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => [
-                    'TRIM_STRINGS_ALREADY_CALLED' => true,
-                ],
+        ];
+        yield 'already called' => [
+            'expected' => false,
+            'data' => 'some-correct-value',
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => [
+                'TRIM_STRINGS_ALREADY_CALLED' => true,
             ],
-            'data is an object' => [
-                'expected' => false,
-                'data' => new stdClass(),
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => null,
-            ],
-            'data is an integer' => [
-                'expected' => false,
-                'data' => 123,
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => null,
-            ],
-            'data is a float' => [
-                'expected' => false,
-                'data' => 12.34,
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => null,
-            ],
-            'data is a bool' => [
-                'expected' => false,
-                'data' => true,
-                'type' => 'no-matter',
-                'format' => 'no-matter',
-                'context' => null,
-            ],
+        ];
+        yield 'data is an object' => [
+            'expected' => false,
+            'data' => new stdClass(),
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => null,
+        ];
+        yield 'data is an integer' => [
+            'expected' => false,
+            'data' => 123,
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => null,
+        ];
+        yield 'data is a float' => [
+            'expected' => false,
+            'data' => 12.34,
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => null,
+        ];
+        yield 'data is a bool' => [
+            'expected' => false,
+            'data' => true,
+            'type' => 'no-matter',
+            'format' => 'no-matter',
+            'context' => null,
         ];
     }
 

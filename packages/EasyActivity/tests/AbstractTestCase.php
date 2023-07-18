@@ -7,7 +7,9 @@ namespace EonX\EasyActivity\Tests;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use LogicException;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use Throwable;
 
 /**
@@ -19,7 +21,6 @@ abstract class AbstractTestCase extends TestCase
     protected ?Throwable $thrownException = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param array<int, array<string, mixed>> $expectedLogEntries
      */
     protected function assertLogEntries(EntityManagerInterface $entityManager, array $expectedLogEntries): void
@@ -55,8 +56,6 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function getLogEntries(EntityManagerInterface $entityManager): array
@@ -72,27 +71,31 @@ abstract class AbstractTestCase extends TestCase
         return $logEntries;
     }
 
-    /**
-     * Returns object's private property value.
-     *
-     * @param object $object
-     * @param string $property
-     *
-     * @return mixed
-     */
-    protected function getPrivatePropertyValue($object, string $property)
+    protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
-        return (function ($property) {
-            return $this->{$property};
-        })->call($object, $property);
+        return $this->resolvePropertyReflection($object, $propertyName)
+            ->getValue($object);
     }
 
     protected function safeCall(Closure $func): void
     {
         try {
             $func();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
+    }
+
+    private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
+    {
+        while (\property_exists($object, $propertyName) === false) {
+            $object = \get_parent_class($object);
+
+            if ($object === false) {
+                throw new LogicException(\sprintf('The $%s property does not exist.', $propertyName));
+            }
+        }
+
+        return new ReflectionProperty($object, $propertyName);
     }
 }

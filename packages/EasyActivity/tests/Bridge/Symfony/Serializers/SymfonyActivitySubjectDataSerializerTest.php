@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony\Serializers;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use EonX\EasyActivity\ActivitySubject;
@@ -89,7 +90,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'expectedResult' => '{"name":"John Doe","position":1}',
         ];
 
-        $moment = new \DateTimeImmutable();
+        $moment = new DateTimeImmutable();
         yield 'Config with nested object' => [
             'data' => [
                 'author' => $author,
@@ -141,7 +142,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'author' => $author,
                 'comment' => new ArrayCollection(),
                 'content' => 'text',
-                'createdAt' => new \DateTimeImmutable(),
+                'createdAt' => new DateTimeImmutable(),
                 'id' => $entityId,
             ],
             'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
@@ -161,7 +162,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'author' => $author,
                 'comment' => new ArrayCollection(),
                 'content' => 'text',
-                'createdAt' => new \DateTimeImmutable(),
+                'createdAt' => new DateTimeImmutable(),
                 'id' => $entityId,
             ],
             'subject' => new ActivitySubject(

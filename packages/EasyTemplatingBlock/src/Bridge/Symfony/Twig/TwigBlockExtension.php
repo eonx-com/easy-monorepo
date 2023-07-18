@@ -21,7 +21,7 @@ final class TwigBlockExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('render_templating_event', [$this, 'render'], ['is_safe' => ['html']]),
+            new TwigFunction('render_templating_event', $this->render(...), ['is_safe' => ['html']]),
         ];
     }
 

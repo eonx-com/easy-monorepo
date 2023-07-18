@@ -6,9 +6,11 @@ namespace EonX\EasySchedule\Bridge\Symfony\DataCollector;
 
 use EonX\EasySchedule\Bridge\Symfony\Interfaces\TraceableScheduleInterface;
 use EonX\EasySchedule\Interfaces\ScheduleInterface;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class ScheduleDataCollector extends DataCollector
 {
@@ -22,7 +24,7 @@ final class ScheduleDataCollector extends DataCollector
     ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         if (($this->schedule instanceof TraceableScheduleInterface) === false) {
             return;
@@ -32,12 +34,12 @@ final class ScheduleDataCollector extends DataCollector
         $this->data['events'] = [];
 
         foreach ($this->schedule->getProviders() as $provider) {
-            $class = \get_class($provider);
+            $class = $provider::class;
 
             $this->data['providers'][$class] = [
                 'class' => $class,
                 'events_count' => 0,
-                'file' => (new \ReflectionClass($class))->getFileName(),
+                'file' => (new ReflectionClass($class))->getFileName(),
             ];
         }
 

@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Interfaces;
 
 interface EasyWebhookExceptionInterface
 {
-    // Marker for all exceptions from this package.
+    // Marker for all exceptions from this package
 }

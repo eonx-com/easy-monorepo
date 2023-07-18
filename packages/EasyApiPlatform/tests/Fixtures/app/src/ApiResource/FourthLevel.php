@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class FourthLevel
 {
-    #[ORM\OneToMany(mappedBy: 'badFourthLevel', targetEntity: ThirdLevel::class, cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: ThirdLevel::class, cascade: ['persist'])]
     private ThirdLevel $badThirdLevel;
 
     #[ORM\Column(type: Types::INTEGER)]

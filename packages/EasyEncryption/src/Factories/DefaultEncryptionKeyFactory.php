@@ -14,6 +14,7 @@ use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use ParagonIE\HiddenString\HiddenString;
+use Throwable;
 
 final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
 {
@@ -21,7 +22,7 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     {
         try {
             return $this->doCreate($key);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new CouldNotCreateEncryptionKeyException(
                 \sprintf('Could not create encryption key: %s', $throwable->getMessage()),
                 $throwable->getCode(),
@@ -52,7 +53,7 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
 
         throw new InvalidEncryptionKeyException(\sprintf(
             'Invalid key type "%s" given, supports only "array, string"',
-            \is_object($key) ? \get_class($key) : \gettype($key)
+            \get_debug_type($key)
         ));
     }
 

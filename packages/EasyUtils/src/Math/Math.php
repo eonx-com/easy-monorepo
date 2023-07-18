@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Math;
 
+use DivisionByZeroError;
 use EonX\EasyUtils\Exceptions\InvalidDivisionByZeroException;
 use EonX\EasyUtils\Interfaces\MathComparisonInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 
-class Math implements MathInterface
+final class Math implements MathInterface
 {
     private string $decimalSeparator;
 
@@ -68,7 +69,7 @@ class Math implements MathInterface
     {
         try {
             $value = \bcdiv($dividend, $divisor, $this->scale);
-        } catch (\DivisionByZeroError $exception) {
+        } catch (DivisionByZeroError $exception) {
             throw new InvalidDivisionByZeroException('Division by 0 is invalid', 0, $exception);
         }
 
@@ -86,11 +87,11 @@ class Math implements MathInterface
 
     public function round(string $value, ?int $precision = null, ?int $mode = null): string
     {
-        $precision = (int)($precision ?? $this->roundPrecision);
-        /** @phpstan-var 1|2|3|4 $mode */
-        $mode = $mode ?? $this->roundMode;
+        $precision ??= $this->roundPrecision;
+        /** @phpstan-var 1|2|3|4 $roundMode */
+        $roundMode = $mode ?? $this->roundMode;
 
-        $rounded = \round((float)$value, $precision, $mode);
+        $rounded = \round((float)$value, $precision, $roundMode);
 
         return \number_format($rounded, $precision, $this->decimalSeparator, $this->thousandsSeparator);
     }

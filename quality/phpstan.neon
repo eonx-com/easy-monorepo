@@ -89,12 +89,6 @@ parameters:
         # ---- EasyEventDispatcher ----
         # ---- EasyHttpClient ----
         # ---- EasyLock ----
-        - message: '#Result of && is always false#'
-          path: %currentWorkingDirectory%/packages/EasyLock/src/LockService.php
-
-        - message: "#Strict comparison using === between int and 'HY000' will always evaluate to false#"
-          path: %currentWorkingDirectory%/packages/EasyLock/src/LockService.php
-
         # ---- EasyLogging ----
         - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
           path: %currentWorkingDirectory%/packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php

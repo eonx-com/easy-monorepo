@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Exceptions;
 
 final class CannotRerunWebhookException extends AbstractDoNotHandleMeException
 {
-    // No body needed.
+    // No body needed
 }

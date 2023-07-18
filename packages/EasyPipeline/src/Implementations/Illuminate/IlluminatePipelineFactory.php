@@ -53,7 +53,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         if (\in_array($pipeline, $this->pipelines, true) === false) {
             throw new PipelineNotFoundException(\sprintf(
                 'In %s, no middleware provider configured for pipeline "%s"',
-                static::class,
+                self::class,
                 $pipeline
             ));
         }
@@ -66,8 +66,8 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
 
         throw new InvalidMiddlewareProviderException(\sprintf(
             'In %s, middleware provider "%s" does not implement %s',
-            static::class,
-            \get_class($provider),
+            self::class,
+            $provider::class,
             MiddlewareProviderInterface::class
         ));
     }

@@ -9,5 +9,5 @@ use Exception;
 
 final class EmptyRepositoriesListException extends Exception implements EasyRepositoryExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

@@ -6,5 +6,5 @@ namespace EonX\EasyTest\Interfaces;
 
 interface EasyTestExceptionInterface
 {
-    // Marker for all exceptions from this package.
+    // Marker for all exceptions from this package
 }

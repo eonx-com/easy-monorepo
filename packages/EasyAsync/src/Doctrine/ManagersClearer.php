@@ -19,7 +19,7 @@ final class ManagersClearer
     public function clear(?array $managers = null): void
     {
         // If no managers given, default to all
-        $managers = $managers ?? \array_keys($this->registry->getManagerNames());
+        $managers ??= \array_keys($this->registry->getManagerNames());
 
         foreach ($managers as $managerName) {
             $this->registry->getManager($managerName)

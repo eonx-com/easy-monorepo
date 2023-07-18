@@ -15,7 +15,7 @@ use Psr\Log\NullLogger;
 
 final class SecurityContextResolver implements SecurityContextResolverInterface
 {
-    private ?Closure $configurator;
+    private ?Closure $configurator = null;
 
     private ?SecurityContextInterface $securityContext = null;
 
@@ -52,7 +52,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
 
     public function setConfigurator(callable $configurator): SecurityContextResolverInterface
     {
-        $this->configurator = Closure::fromCallable($configurator);
+        $this->configurator = $configurator(...);
         $this->securityContext = null;
 
         return $this;
