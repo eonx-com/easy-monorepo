@@ -61,6 +61,10 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
         $collectionsMapping = [];
         foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
+           if ($collection->getTypeClass()->idGenerator->isPostInsertGenerator()) {
+               continue;
+           }
+
             /** @var object $owner */
             $owner = $collection->getOwner();
             $collectionsMapping[\spl_object_id($owner)][] = $collection;
