@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Subscribers;
 
-use DateTimeInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use EonX\EasyDoctrine\Interfaces\ChangesetCleanerProviderInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
     /**
-     * @var string
-     */
-    private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
-
-    /**
      * @var string[]
      */
     private $acceptableEntities;
+
+    private ChangesetCleanerProviderInterface $changesetCleanerProvider;
 
     /**
      * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
@@ -35,9 +32,11 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     public function __construct(
         DeferredEntityEventDispatcherInterface $eventDispatcher,
         array $entities,
+        ChangesetCleanerProviderInterface $changesetCleanerProvider,
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->acceptableEntities = $entities;
+        $this->changesetCleanerProvider = $changesetCleanerProvider;
     }
 
     /**
@@ -118,14 +117,27 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      */
     private function getClearedChangeSet(array $changeSet): array
     {
-        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem) {
-            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
-                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
-                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
-                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+        return \array_filter($changeSet, function (array|PersistentCollection $changeSetItem) {
+            $shouldBeCleared = false;
+            $cleaner = null;
+
+            if ($changeSetItem[0] === null || $changeSetItem[1] === null) {
+                return true;
             }
 
-            return true;
+            $oldValue = $changeSetItem[0];
+            $newValue = $changeSetItem[1];
+
+            if (\is_object($oldValue) && \is_object($newValue)) {
+                $cleaner = $this->changesetCleanerProvider
+                    ->getChangesetCleaner(\get_class($oldValue), \get_class($newValue));
+            }
+
+            if ($cleaner !== null) {
+                $shouldBeCleared = $cleaner->shouldBeCleared($oldValue, $newValue);
+            }
+
+            return $shouldBeCleared === false;
         });
     }
 }

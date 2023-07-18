@@ -10,8 +10,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
+use EonX\EasyDoctrine\Cleaners\DateTimeChangesetCleaner;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
+use EonX\EasyDoctrine\Providers\ChangesetCleanerProvider;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
@@ -33,7 +35,11 @@ final class EntityManagerStub
         array $subscribedEntities = [],
         array $fixtures = [],
     ) {
-        $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
+        $eventSubscriber = new EntityEventSubscriber(
+            $dispatcher,
+            $subscribedEntities,
+            new ChangesetCleanerProvider([new DateTimeChangesetCleaner()])
+        );
         $eventManager = new EventManager();
         $eventManager->addEventSubscriber($eventSubscriber);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
