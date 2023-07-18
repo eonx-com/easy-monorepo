@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Tests\Bridge\Laravel;
 
 use EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider;
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyRequestId\Bridge\Laravel\EasyRequestIdServiceProvider;
 use EonX\EasyRequestId\Tests\AbstractTestCase;
 use Illuminate\Bus\BusServiceProvider;

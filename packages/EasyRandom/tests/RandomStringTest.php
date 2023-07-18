@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests;
 
-use EonX\EasyRandom\Constraints\CallbackConstraint;
+use EonX\EasyRandom\Constraints\CallbackRandomStringConstraint;
 use EonX\EasyRandom\Exceptions\InvalidAlphabetException;
 use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
+use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
-use EonX\EasyRandom\RandomGenerator;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
 
 use function Symfony\Component\String\u;
@@ -138,7 +138,7 @@ final class RandomStringTest extends AbstractTestCase
     {
         $this->expectException(InvalidRandomStringException::class);
 
-        $alwaysInvalid = new CallbackConstraint(static fn (): bool => false);
+        $alwaysInvalid = new CallbackRandomStringConstraint(static fn (): bool => false);
 
         (new RandomGenerator())
             ->randomString(8)

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Laravel;
 
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\SymfonyUidUuidV4Generator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
+use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
@@ -33,7 +33,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
     /**
      * @dataProvider providerTestUuidV4GeneratorInstance
      */
-    public function testUuidV4GeneratorInstance(UuidV4GeneratorInterface $uuidV4Generator): void
+    public function testUuidV4GeneratorInstance(UuidGeneratorInterface $uuidV4Generator): void
     {
         $app = $this->getApp();
         $app->extend(

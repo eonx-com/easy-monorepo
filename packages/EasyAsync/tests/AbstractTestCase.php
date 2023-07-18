@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests;
 
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;

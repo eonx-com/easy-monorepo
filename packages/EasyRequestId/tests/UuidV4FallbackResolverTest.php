@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests;
 
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRequestId\UuidV4FallbackResolver;
 use Ramsey\Uuid\Uuid;
 

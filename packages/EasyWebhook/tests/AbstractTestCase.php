@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Stores\NullDataCleaner;
 use PHPUnit\Framework\TestCase;

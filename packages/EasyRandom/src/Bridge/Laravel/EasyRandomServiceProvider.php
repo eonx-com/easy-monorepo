@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Bridge\Laravel;
 
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\SymfonyUidUuidV4Generator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Ramsey\Uuid\Uuid as RamseyUuid;

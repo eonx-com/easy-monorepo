@@ -32,8 +32,8 @@ a service and, then set the service id into the bundle configuration.
 
 By default, this package will register the built-in supported implementations as services:
 
-- *easy_random.ramsey_uuid4* alias for `EonX\EasyRandom\UuidV4\RamseyUuidV4Generator`
-- *easy_random.symfony_uuid4* alias for `EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator`
+- *easy_random.ramsey_uuid4* alias for `EonX\EasyRandom\Generators\RamseyUuidV4Generator`
+- *easy_random.symfony_uuid4* alias for `EonX\EasyRandom\Generators\SymfonyUidUuidV4Generator`
 
 #### Set the service id into the bundle configuration
 
@@ -41,7 +41,7 @@ By default, this package will register the built-in supported implementations as
 # config/packages/easy_random.yaml
 
 easy_random:
-    uuid_v4_generator: EonX\EasyRandom\UuidV4\RamseyUuidV4Generator # The service id
+    uuid_v4_generator: EonX\EasyRandom\Generators\RamseyUuidV4Generator # The service id
 ```
 
 [1]: https://flex.symfony.com/

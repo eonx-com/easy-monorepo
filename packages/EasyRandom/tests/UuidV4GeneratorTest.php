@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace EonX\EasyRandom\Tests;
 
 use EonX\EasyRandom\Exceptions\UuidV4GeneratorNotSetException;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\SymfonyUidUuidV4Generator;
+use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Uid\UuidV4;
 
@@ -28,7 +28,7 @@ final class UuidV4GeneratorTest extends AbstractTestCase
     /**
      * @dataProvider providerTestUuidV4
      */
-    public function testUuidV4(UuidV4GeneratorInterface $uuidV4Generator): void
+    public function testUuidV4(UuidGeneratorInterface $uuidV4Generator): void
     {
         $randomGenerator = (new RandomGenerator())->setUuidV4Generator($uuidV4Generator);
 

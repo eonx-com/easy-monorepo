@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests;
 
-use EonX\EasyRandom\RandomGenerator;
+use EonX\EasyRandom\Generators\RandomGenerator;
 
 final class RandomIntegerTest extends AbstractTestCase
 {

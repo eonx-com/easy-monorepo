@@ -15,7 +15,7 @@ not familiar with this concept make sure to have a look at the [documentation][1
 
 'providers' => [
     // Other Service Providers...
-    
+
     \EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider::class,
 ],
 ```
@@ -50,22 +50,20 @@ onto the random generator instance. To do so, we recommend extending the random 
 ```php
 // app/Providers/MyRandomServiceProvider.php
 
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use Illuminate\Support\ServiceProvider;
+use EonX\EasyRandom\Generators\RamseyUuidV4Generator;use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;use Illuminate\Support\ServiceProvider;
 
 class MyRandomServiceProvider extends ServiceProvider
 {
-    public function register(): void 
+    public function register(): void
     {
         $this->app->extend(
-            RandomGeneratorInterface::class, 
+            RandomGeneratorInterface::class,
             static function (RandomGeneratorInterface $randomGenerator): RandomGeneratorInterface {
                 return $randomGenerator->setUuidV4Generator(new RamseyUuidV4Generator());
             }
         );
     }
 }
-``` 
+```
 
 [1]: https://laravel.com/docs/5.8/providers

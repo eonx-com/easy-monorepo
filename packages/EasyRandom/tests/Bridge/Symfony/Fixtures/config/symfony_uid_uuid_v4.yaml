@@ -1,5 +1,5 @@
 easy_random:
-    uuid_v4_generator: EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator
+    uuid_v4_generator: EonX\EasyRandom\Generators\SymfonyUidUuidV4Generator
 
 services:
     EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator: ~
