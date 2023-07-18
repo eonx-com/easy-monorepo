@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests;
 
-use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
-use EonX\EasyRandom\Generators\RandomGenerator;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +11,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractTestCase extends TestCase
 {
-    private ?RandomGeneratorInterface $random = null;
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -30,19 +25,6 @@ abstract class AbstractTestCase extends TestCase
         Mockery::close();
 
         parent::tearDown();
-    }
-
-    protected function getRandomGenerator(): RandomGeneratorInterface
-    {
-        if ($this->random !== null) {
-            return $this->random;
-        }
-
-        $this->random = (new RandomGenerator())->setUuidV4Generator(
-            new RamseyUuidV4Generator()
-        );
-
-        return $this->random;
     }
 
     protected function mock(mixed $target, ?callable $expectations = null): MockInterface

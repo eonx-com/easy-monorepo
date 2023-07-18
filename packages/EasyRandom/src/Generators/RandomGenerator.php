@@ -15,7 +15,7 @@ final class RandomGenerator implements RandomGeneratorInterface
     public function __construct(
         private RandomStringGeneratorInterface $randomStringGenerator,
         private RandomIntegerGeneratorInterface $randomIntegerGenerator,
-        private UuidGeneratorInterface $uuidV4Generator
+        private UuidGeneratorInterface $uuidGenerator,
     ) {
     }
 
@@ -31,11 +31,6 @@ final class RandomGenerator implements RandomGeneratorInterface
 
     public function uuid(): string
     {
-        return $this->uuidV4();
-    }
-
-    public function uuidV4(): string
-    {
-        return $this->uuidV4Generator->generate();
+        return $this->uuidGenerator->generate();
     }
 }

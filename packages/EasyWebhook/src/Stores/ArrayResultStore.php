@@ -31,7 +31,7 @@ final class ArrayResultStore extends AbstractStore implements ResultStoreInterfa
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
         if ($result->getId() === null) {
-            $result->setId($this->random->uuidV4());
+            $result->setId($this->random->uuid());
         }
 
         return $this->results[$result->getId()] = $result;

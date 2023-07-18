@@ -11,6 +11,4 @@ interface RandomGeneratorInterface
     public function string(int $length): RandomStringInterface;
 
     public function uuid(): string;
-
-    public function uuidV4(): string;
 }

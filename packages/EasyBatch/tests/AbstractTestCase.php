@@ -6,15 +6,17 @@ namespace EonX\EasyBatch\Tests;
 
 use EonX\EasyBatch\Factories\BatchFactory;
 use EonX\EasyBatch\Factories\BatchItemFactory;
-use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
+use EonX\EasyBatch\IdStrategies\UuidStrategy;
 use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
-use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\RandomIntegerGenerator;
+use EonX\EasyRandom\Generators\RandomStringGenerator;
+use EonX\EasyRandom\Generators\SymfonyUuidV6Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -68,8 +70,12 @@ abstract class AbstractTestCase extends TestCase
             return $this->batchObjectIdStrategy;
         }
 
-        $this->batchObjectIdStrategy = new UuidV4Strategy(
-            (new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator())
+        $this->batchObjectIdStrategy = new UuidStrategy(
+            new RandomGenerator(
+                randomStringGenerator: new RandomStringGenerator(),
+                randomIntegerGenerator: new RandomIntegerGenerator(),
+                uuidGenerator: new SymfonyUuidV6Generator(),
+            )
         );
 
         return $this->batchObjectIdStrategy;

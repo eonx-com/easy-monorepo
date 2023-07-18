@@ -113,9 +113,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyPipeline/tests
 
         # ---- EasyRandom ----
-        - message: '#Access to an undefined property EonX\\EasyRandom\\Interfaces\\RandomGeneratorInterface\:\:\$uuidV4Generator#'
-          path: %currentWorkingDirectory%/packages/EasyRandom/tests/Bridge/Symfony/EasyRandomBundleTest.php
-
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Illuminate

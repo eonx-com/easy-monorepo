@@ -29,7 +29,7 @@ $ composer require eonx-com/easy-random
 
 ```php
 // Will generate a random integer between 0 and 20 (both included)
-$myNumber = (new \EonX\EasyRandom\Generators\RandomGenerator())->randomInteger(0, 20);
+$myNumber = (new \EonX\EasyRandom\Generators\RandomGenerator(...))->integer(0, 20);
 ```
 
 <br>
@@ -40,8 +40,8 @@ The random generator allows you to control the length, and the composition of th
 fluent interface:
 
 ```php
-$myString = (new \EonX\EasyRandom\Generators\RandomGenerator())
-    ->randomString(16)
+$myString = (new \EonX\EasyRandom\Generators\RandomGenerator(...))
+    ->string(16)
     ->excludeSimilar() // Will exclude similar characters
     ->excludeVowel() // Will exclude vowels, nice trick to avoid "bad words" in generated random strings
     ->includeNumeric(); // Include 0-9 numbers
@@ -57,26 +57,21 @@ Do you need to generate random strings for your end users?
 // - include numeric
 // - include uppercase
 
-$reference = (new \EonX\EasyRandom\Generators\RandomGenerator())
-    ->randomString(16)
+$reference = (new \EonX\EasyRandom\Generators\RandomGenerator(...))
+    ->string(16)
     ->userFriendly();
 ```
 
 <br>
 
-### UUID V4
+### UUID
 
-The random generator allows you to generate UUID V4, to do so, you will need to set the UUID V4 generator of your choice
-onto the random generator instance.
+The random generator allows you to generate UUID.
 This package comes with built-in implementations for: [ramsey/uuid][3], [symfony/uid][2].
-If you want to use your own, then you will need to make sure it implements `EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface`.
+If you want to use your own, then you will need to make sure it implements `EonX\EasyRandom\Interfaces\UuidGeneratorInterface`.
 
 ```php
-
-$uuidV4Generator = new \EonX\EasyRandom\Generators\RamseyUuidV4Generator();
-$randomGenerator = (new \EonX\EasyRandom\Generators\RandomGenerator())->setUuidV4Generator($uuidV4Generator);
-
-$uuidV4 = $randomGenerator->uuidV4();
+$uuid = (new \EonX\EasyRandom\Generators\RandomGenerator(...))->uuid();
 ```
 
 [1]: https://getcomposer.org/

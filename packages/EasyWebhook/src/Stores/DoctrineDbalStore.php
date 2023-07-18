@@ -78,7 +78,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
     public function generateWebhookId(): string
     {
-        return $this->random->uuidV4();
+        return $this->random->uuid();
     }
 
     public function store(WebhookInterface $webhook): WebhookInterface
@@ -90,7 +90,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
         // New result with no id
         if ($webhook->getId() === null) {
-            $webhook->id($this->random->uuidV4());
+            $webhook->id($this->random->uuid());
 
             $data['id'] = $webhook->getId();
             $data['created_at'] = $now;

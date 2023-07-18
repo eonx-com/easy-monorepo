@@ -50,7 +50,7 @@ final class RandomString implements RandomStringInterface
 
     public function __toString(): string
     {
-        return $this->generate();
+        return $this->randomString();
     }
 
     public function alphabet(string $alphabet): RandomStringInterface

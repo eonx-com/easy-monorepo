@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests;
 
-use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\RandomIntegerGenerator;
+use EonX\EasyRandom\Generators\RandomStringGenerator;
+use EonX\EasyRandom\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\Resolvers\HttpFoundationRequestResolver;
-use EonX\EasyRequestId\UuidV4FallbackResolver;
-use Ramsey\Uuid\Uuid;
+use EonX\EasyRequestId\UuidFallbackResolver;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Uuid;
 
 final class RequestIdServiceTest extends AbstractTestCase
 {
@@ -62,11 +64,11 @@ final class RequestIdServiceTest extends AbstractTestCase
         $service->getRequestId();
 
         if ($requestId !== null) {
-            self::assertEquals($requestId, $service->getRequestId());
+            self::assertSame($requestId, $service->getRequestId());
         }
 
         if ($correlationId !== null) {
-            self::assertEquals($correlationId, $service->getCorrelationId());
+            self::assertSame($correlationId, $service->getCorrelationId());
         }
 
         if ($assert !== null) {
@@ -76,6 +78,12 @@ final class RequestIdServiceTest extends AbstractTestCase
 
     private function defaultFallbackResolver(): FallbackResolverInterface
     {
-        return new UuidV4FallbackResolver((new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
+        return new UuidFallbackResolver(
+            new RandomGenerator(
+                randomStringGenerator: new RandomStringGenerator(),
+                randomIntegerGenerator: new RandomIntegerGenerator(),
+                uuidGenerator: new SymfonyUuidV6Generator(),
+            )
+        );
     }
 }
