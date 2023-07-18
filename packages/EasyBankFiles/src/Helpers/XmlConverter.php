@@ -165,7 +165,7 @@ final class XmlConverter
         // Get document element
         $element = $document->documentElement;
 
-        // DocumentElement can be null on a newly created DOMDocument
+        // The "documentElement" value can be null on a newly created DOMDocument
         if ($element === null) {
             // @codeCoverageIgnoreStart
             // The element can only be null when a newly created DomDocument is loaded

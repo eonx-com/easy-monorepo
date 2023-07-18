@@ -69,7 +69,7 @@ final class Pagination implements PaginationInterface
 
     public function setUrlResolver(?callable $urlResolver = null): PaginationInterface
     {
-        $this->urlResolver = $urlResolver === null ? null : Closure::fromCallable($urlResolver);
+        $this->urlResolver = $urlResolver === null ? null : $urlResolver(...);
 
         return $this;
     }

@@ -16,7 +16,7 @@ final class ExpressionFunction implements ExpressionFunctionInterface
         callable $evaluator,
         private ?string $description = null,
     ) {
-        $this->evaluator = Closure::fromCallable($evaluator);
+        $this->evaluator = $evaluator(...);
     }
 
     public function getDescription(): ?string

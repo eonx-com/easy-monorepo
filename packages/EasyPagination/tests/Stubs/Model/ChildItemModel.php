@@ -7,7 +7,7 @@ namespace EonX\EasyPagination\Tests\Stubs\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-final class ParentModel extends Model
+final class ChildItemModel extends Model
 {
     /**
      * @var bool
@@ -18,17 +18,17 @@ final class ParentModel extends Model
      * @var string[]
      */
     protected $fillable = [
+        'child_title',
         'item_id',
-        'title',
     ];
 
     /**
      * @var string
      */
-    protected $table = 'parents';
+    protected $table = 'child_items';
 
     public function item(): BelongsTo
     {
-        return $this->belongsTo(Item::class, 'item_id', 'id');
+        return $this->belongsTo(ItemModel::class, 'item_id', 'id');
     }
 }

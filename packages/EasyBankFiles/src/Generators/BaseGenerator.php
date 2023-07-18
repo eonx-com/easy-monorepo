@@ -143,8 +143,10 @@ abstract class BaseGenerator implements GeneratorInterface
     {
         // Not sure why we allow arrays here
         if ($value === null || $value === '' || (\is_array($value) && \count($value) === 0)) {
-            $errors[] = [...\compact('attribute', 'value'),
-                'rule' => 'required'];
+            $errors[] = [
+                ...\compact('attribute', 'value'),
+                'rule' => 'required',
+            ];
 
             return;
         }

@@ -86,7 +86,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function setTransformer(?callable $transformer = null): PaginatorInterface
     {
-        $this->transformer = $transformer === null ? null : Closure::fromCallable($transformer);
+        $this->transformer = $transformer === null ? null : $transformer(...);
         $this->transformedItems = null;
 
         return $this;

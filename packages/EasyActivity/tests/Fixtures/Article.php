@@ -26,7 +26,7 @@ class Article
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $content;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private DateTimeInterface $createdAt;
 
     #[ORM\Column(type: Types::INTEGER)]

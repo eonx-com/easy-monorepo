@@ -86,8 +86,8 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
      */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        $platformClassNameDbal2 = '\\' . PostgreSQL94Platform::class;
-        $platformClassNameDbal3 = '\\' . PostgreSQLPlatform::class;
+        $platformClassNameDbal2 = PostgreSQL94Platform::class;
+        $platformClassNameDbal3 = PostgreSQLPlatform::class;
         if (\is_a($platform, $platformClassNameDbal3) || \is_a($platform, $platformClassNameDbal2)) {
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }

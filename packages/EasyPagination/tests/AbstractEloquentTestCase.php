@@ -16,6 +16,22 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
 {
     private ?ConnectionInterface $conn = null;
 
+    protected static function createChildItemsTable(Model $model): void
+    {
+        $schema = new SQLiteBuilder($model->getConnection());
+
+        $schema->create('child_items', static function (Blueprint $table): void {
+            $table->integer('id', true);
+            $table->string('child_title')
+                ->nullable();
+            $table->integer('item_id', false, true);
+
+            $table->foreign('item_id')
+                ->references('id')
+                ->on('items');
+        });
+    }
+
     protected static function createItemsTable(Model $model): void
     {
         $schema = new SQLiteBuilder($model->getConnection());
@@ -23,23 +39,7 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
         $schema->create('items', static function (Blueprint $table): void {
             $table->integer('id', true);
             $table->string('title')
-                ->nullable(true);
-        });
-    }
-
-    protected static function createParentsTable(Model $model): void
-    {
-        $schema = new SQLiteBuilder($model->getConnection());
-
-        $schema->create('parents', static function (Blueprint $table): void {
-            $table->integer('id', true);
-            $table->string('title')
-                ->nullable(true);
-            $table->integer('item_id', false, true);
-
-            $table->foreign('item_id')
-                ->references('id')
-                ->on('items');
+                ->nullable();
         });
     }
 

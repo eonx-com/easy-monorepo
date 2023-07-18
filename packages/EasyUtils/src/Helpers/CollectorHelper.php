@@ -30,11 +30,11 @@ final class CollectorHelper
     public static function ensureClass(iterable $items, string $class): iterable
     {
         foreach ($items as $item) {
-            if (($item instanceof $class) === false) {
+            if ($item instanceof $class === false) {
                 throw new InvalidArgumentException(\sprintf(
                     'Instance of %s expected, %s given',
                     $class,
-                    \is_object($item) === false ? \gettype($item) : $item::class
+                    \get_debug_type($item)
                 ));
             }
 

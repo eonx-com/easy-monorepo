@@ -52,7 +52,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
 
     public function setConfigurator(callable $configurator): SecurityContextResolverInterface
     {
-        $this->configurator = Closure::fromCallable($configurator);
+        $this->configurator = $configurator(...);
         $this->securityContext = null;
 
         return $this;

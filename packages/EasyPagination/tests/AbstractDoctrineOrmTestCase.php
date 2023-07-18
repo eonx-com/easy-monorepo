@@ -16,6 +16,16 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
 {
     private ?EntityManagerInterface $manager = null;
 
+    protected static function addChildItemToTable(EntityManagerInterface $manager, string $title, Item $item): void
+    {
+        $childItem = new ChildItem();
+        $childItem->title = $title;
+        $childItem->item = $item;
+
+        $manager->persist($childItem);
+        $manager->flush();
+    }
+
     protected static function addItemToTable(EntityManagerInterface $manager, string $title): Item
     {
         $item = new Item();
@@ -25,16 +35,6 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         $manager->flush();
 
         return $item;
-    }
-
-    protected static function addParentToTable(EntityManagerInterface $manager, string $title, Item $item): void
-    {
-        $parent = new ChildItem();
-        $parent->title = $title;
-        $parent->item = $item;
-
-        $manager->persist($parent);
-        $manager->flush();
     }
 
     /**

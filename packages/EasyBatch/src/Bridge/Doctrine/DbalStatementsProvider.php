@@ -34,14 +34,14 @@ final class DbalStatementsProvider
 
     public function extendBatchItemsTable(callable $callable): self
     {
-        $this->extendBatchItemsTable = Closure::fromCallable($callable);
+        $this->extendBatchItemsTable = $callable(...);
 
         return $this;
     }
 
     public function extendBatchesTable(callable $callable): self
     {
-        $this->extendBatchesTable = Closure::fromCallable($callable);
+        $this->extendBatchesTable = $callable(...);
 
         return $this;
     }

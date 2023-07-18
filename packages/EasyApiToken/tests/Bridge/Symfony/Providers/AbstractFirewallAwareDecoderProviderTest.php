@@ -15,7 +15,6 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
     /**
      * @return iterable<mixed>
      *
-     * @see providerTestDecoderProvider
      * @see testDecoderProvider
      */
     public static function providerTestDecoderProvider(): iterable

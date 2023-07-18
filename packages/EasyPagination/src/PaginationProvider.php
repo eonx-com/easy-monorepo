@@ -44,7 +44,7 @@ final class PaginationProvider implements PaginationProviderInterface
 
     public function setResolver(callable $resolver): PaginationProviderInterface
     {
-        $this->resolver = Closure::fromCallable($resolver);
+        $this->resolver = $resolver(...);
         $this->pagination = null;
 
         return $this;

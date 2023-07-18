@@ -21,7 +21,7 @@ final class MessageSerializer implements MessageSerializerInterface
 
     public function unserialize(string $message): object
     {
-        if (\str_contains($message, '}') === false) {
+        if (\str_ends_with($message, '}') === false) {
             /** @var string $message */
             $message = \base64_decode($message, true);
         }

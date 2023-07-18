@@ -67,7 +67,7 @@ final class ParserTest extends TestCase
 
                 // Assert fixed values
                 self::assertEquals('0', $transaction->getFundsType());
-                self::assertEquals('z', \strtolower((string) $baiTransaction->getFundsType()));
+                self::assertEquals('z', \strtolower((string)$baiTransaction->getFundsType()));
 
                 self::assertEquals($transaction->getAmount(), $baiTransaction->getAmount(), 'mismatch amount');
                 self::assertEquals($transaction->getCode(), $baiTransaction->getCode(), 'mismatch code');
@@ -292,8 +292,11 @@ final class ParserTest extends TestCase
     private function getTransactionsForAccounts(array $accounts, ?array $filter = null): array
     {
         $return = [];
-        $filter ??= \array_map(static fn (Account $account): string => $account->getIdentifier()
-            ->getCommercialAccountNumber(), $accounts);
+        $filter ??= \array_map(
+            static fn (Account $account): string => $account->getIdentifier()
+                ->getCommercialAccountNumber(),
+            $accounts
+        );
 
         foreach ($accounts as $account) {
             $accountNumber = $account->getIdentifier()

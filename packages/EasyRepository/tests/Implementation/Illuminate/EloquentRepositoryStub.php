@@ -16,7 +16,7 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
 
     public function __construct(?callable $modelExpectations = null)
     {
-        $this->modelExpectations = $modelExpectations === null ? null : Closure::fromCallable($modelExpectations);
+        $this->modelExpectations = $modelExpectations === null ? null : $modelExpectations(...);
 
         parent::__construct();
     }

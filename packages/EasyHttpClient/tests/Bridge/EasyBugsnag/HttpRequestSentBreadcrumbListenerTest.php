@@ -20,7 +20,6 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      *
-     * @see testItSucceeds
      * @see testPrepareMetadataSucceeds
      */
     public static function provideEvents(): iterable

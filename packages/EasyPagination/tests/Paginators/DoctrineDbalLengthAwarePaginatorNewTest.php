@@ -302,22 +302,22 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
             },
         ];
 
-        yield 'Paginate parents of item by title' => [
+        yield 'Paginate children of item by title' => [
             Pagination::create(1, 15),
-            'parents',
-            'p',
+            'child_items',
+            'ci',
             function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
                 self::createItemsTable($conn);
-                self::createParentsTable($conn);
-                self::addItemToTable($conn, 'my-title');
-                self::addParentToTable($conn, 'my-parent', 1);
+                self::createChildItemsTable($conn);
+                self::addItemToTable($conn, 'my-parent');
+                self::addChildItemToTable($conn, 'my-child', 1);
 
                 // $paginator->hasJoinsInQuery();
                 $paginator->setPrimaryKeyIndex('id');
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
-                        ->join('p', 'items', 'i', 'i.title = :title')
-                        ->setParameter('title', 'my-title');
+                        ->join('ci', 'items', 'i', 'i.title = :title')
+                        ->setParameter('title', 'my-parent');
 
                     $queryBuilder->addSelect('i.*');
                 });
@@ -330,8 +330,8 @@ final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbal
                 self::assertIsArray($item);
                 self::assertEquals(1, $item['id']);
                 self::assertEquals(1, $item['item_id']);
-                self::assertEquals('my-title', $item['title']);
-                self::assertEquals('my-parent', $item['parent_title']);
+                self::assertEquals('my-parent', $item['title']);
+                self::assertEquals('my-child', $item['child_title']);
             },
         ];
 

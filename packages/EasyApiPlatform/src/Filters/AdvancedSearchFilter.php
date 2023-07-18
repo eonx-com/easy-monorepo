@@ -28,17 +28,17 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  * This filter allows to define multiple search strategy for the same property on a single resource.
  *
  * This class was created by copying of base ApiPlatform SearchFilter with the following changes:
- * - Allow to configure multiple strategies for the same property.
+ *   - Allow to configure multiple strategies for the same property.
  *
  * @see \ApiPlatform\Doctrine\Orm\Filter\SearchFilter
  *
  * #[ApiFilter(
- * AdvancedSearchFilter::class,
- * properties: [
- * 'email' => 'iexact', // Normal search property definition
- * 'description[exact]' => ['description' => 'exact'], // Filter for description field with exact strategy
- * 'description[partial]' => ['description' => 'partial'], // Filter for description field with partial strategy
- * ]
+ *     AdvancedSearchFilter::class,
+ *     properties: [
+ *         'email' => 'iexact', // Normal search property definition
+ *         'description[exact]' => ['description' => 'exact'], // Filter for description field with exact strategy
+ *         'description[partial]' => ['description' => 'partial'], // Filter for description field with partial strategy
+ *     ]
  * )]
  */
 final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterInterface
@@ -181,7 +181,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $parameters = [];
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
-            $parameters[] = [$caseSensitive ? $value : \strtolower((string) $value), $keyValueParameter];
+            $parameters[] = [$caseSensitive ? $value : \strtolower((string)$value), $keyValueParameter];
 
             $ors[] = match ($strategy) {
                 self::STRATEGY_PARTIAL => $queryBuilder->expr()->like(
@@ -305,8 +305,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $strategy ??= $this->properties[$filterParameter] ?? self::STRATEGY_EXACT;
 
         // Prefixing the strategy with i makes it case-insensitive
-        if (\str_starts_with((string) $strategy, 'i')) {
-            $strategy = \substr((string) $strategy, 1);
+        if (\str_starts_with((string)$strategy, 'i')) {
+            $strategy = \substr((string)$strategy, 1);
             $caseSensitive = false;
         }
 

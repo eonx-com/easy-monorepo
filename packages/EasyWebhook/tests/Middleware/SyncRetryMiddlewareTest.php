@@ -23,7 +23,6 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @return iterable<mixed>
      *
-     * @see
      * @see testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne
      */
     public static function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable

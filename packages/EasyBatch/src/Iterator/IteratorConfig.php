@@ -25,7 +25,7 @@ final class IteratorConfig
         callable $func,
         private readonly ?string $dependsOnName = null,
     ) {
-        $this->func = Closure::fromCallable($func);
+        $this->func = $func(...);
     }
 
     public static function create(int|string $batchId, callable $func, ?string $dependsOnName = null): self
@@ -104,14 +104,14 @@ final class IteratorConfig
 
     public function setCurrentPageCallback(callable $currentPageCallback): self
     {
-        $this->currentPageCallback = Closure::fromCallable($currentPageCallback);
+        $this->currentPageCallback = $currentPageCallback(...);
 
         return $this;
     }
 
     public function setExtendPaginator(callable $extendPaginator): self
     {
-        $this->extendPaginator = Closure::fromCallable($extendPaginator);
+        $this->extendPaginator = $extendPaginator(...);
 
         return $this;
     }

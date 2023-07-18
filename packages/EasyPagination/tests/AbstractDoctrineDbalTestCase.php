@@ -15,6 +15,17 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
+    protected static function addChildItemToTable(Connection $conn, string $title, int $itemId): void
+    {
+        $conn->insert('child_items', [
+            'child_title' => $title,
+            'item_id' => $itemId,
+        ]);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected static function addItemToTable(Connection $conn, string $title): void
     {
         $conn->insert('items', ['title' => $title]);
@@ -23,12 +34,29 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function addParentToTable(Connection $conn, string $title, int $itemId): void
+    protected static function createChildItemsTable(Connection $conn): void
     {
-        $conn->insert('parents', [
-            'parent_title' => $title,
-            'item_id' => $itemId,
-        ]);
+        $schema = new Schema();
+
+        $table = $schema->createTable('child_items');
+
+        $table
+            ->addColumn('id', 'integer')
+            ->setAutoincrement(true);
+
+        $table
+            ->addColumn('child_title', 'string', ['length' => 255])
+            ->setNotnull(false);
+
+        $table
+            ->addColumn('item_id', 'integer');
+
+        $table->setPrimaryKey(['id']);
+        $table->addForeignKeyConstraint('items', ['item_id'], ['id']);
+
+        foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
+            $conn->executeStatement($sql);
+        }
     }
 
     /**
@@ -44,38 +72,10 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
             ->setAutoincrement(true);
 
         $table
-            ->addColumn('title', 'string', ['length' => 191])
+            ->addColumn('title', 'string', ['length' => 255])
             ->setNotnull(false);
 
         $table->setPrimaryKey(['id']);
-
-        foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
-            $conn->executeStatement($sql);
-        }
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected static function createParentsTable(Connection $conn): void
-    {
-        $schema = new Schema();
-
-        $table = $schema->createTable('parents');
-
-        $table
-            ->addColumn('id', 'integer')
-            ->setAutoincrement(true);
-
-        $table
-            ->addColumn('parent_title', 'string', ['length' => 191])
-            ->setNotnull(false);
-
-        $table
-            ->addColumn('item_id', 'integer');
-
-        $table->setPrimaryKey(['id']);
-        $table->addForeignKeyConstraint('items', ['item_id'], ['id']);
 
         foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
             $conn->executeStatement($sql);

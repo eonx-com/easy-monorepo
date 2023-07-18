@@ -32,7 +32,6 @@ final class IntegerValidatorTest extends AbstractTestCase
     /**
      * @return iterable<mixed>
      *
-     * @see provideInvalidValues
      * @see testValidateSucceedsWithInvalidValue
      */
     public static function provideInvalidValues(): iterable

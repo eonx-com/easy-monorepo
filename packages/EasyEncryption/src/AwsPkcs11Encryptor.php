@@ -96,7 +96,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             ->findKey($this->getKeyName($key))
             ->encrypt($this->getMechanism(), $text);
 
-        return \bin2hex((string) $encrypted);
+        return \bin2hex((string)$encrypted);
     }
 
     private function configureAwsCloudHsmSdk(): void
@@ -197,7 +197,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         }
 
         $objects = $this->session->findObjects([
-            \CKA_LABEL => $keyName,
+            \Pkcs11\CKA_LABEL => $keyName,
         ]);
 
         if (\is_array($objects) || \count($objects) > 0) {
@@ -208,6 +208,11 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             'No key handle found for label "%s"',
             $keyName
         ));
+    }
+
+    private function getMechanism(): Mechanism
+    {
+        return new Mechanism(\Pkcs11\CKM_AES_GCM, new AwsGcmParams($this->aad, self::AWS_GCM_TAG_LENGTH));
     }
 
     private function init(): void
@@ -223,18 +228,13 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
 
         $this->module ??= new Module(self::AWS_CLOUDHSM_EXTENSION);
 
-        $this->session = $this->module->openSession($this->module->getSlotList()[0], \CKF_RW_SESSION);
-        $this->session->login(\CKU_USER, $this->userPin);
+        $this->session = $this->module->openSession($this->module->getSlotList()[0], \Pkcs11\CKF_RW_SESSION);
+        $this->session->login(\Pkcs11\CKU_USER, $this->userPin);
     }
 
     private function isNonEmptyString(mixed $string): bool
     {
         return \is_string($string) && $string !== '';
-    }
-
-    private function getMechanism(): Mechanism
-    {
-        return new Mechanism(\CKM_AES_GCM, new AwsGcmParams($this->aad, self::AWS_GCM_TAG_LENGTH));
     }
 
     /**

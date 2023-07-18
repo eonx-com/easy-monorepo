@@ -13,14 +13,12 @@ use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
  * For example, if $delayMilliseconds=10000 & $multiplier=1 (default),
  * each retry will wait exactly 10 seconds.
  *
- * But if $delayMilliseconds=10000 & $multiplier=2:.
- * * Retry 1: 10 second delay.
- * * Retry 2: 20 second delay (10000 * 2 = 20000).
- * * Retry 3: 40 second delay (20000 * 2 = 40000).
+ * But if $delayMilliseconds=10000 & $multiplier=2:
+ * - Retry 1: 10 second delay.
+ * - Retry 2: 20 second delay (10000 * 2 = 20000).
+ * - Retry 3: 40 second delay (20000 * 2 = 40000).
  *
  * @author Ryan Weaver <ryan@symfonycasts.com>
- *
- * @final
  */
 final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
 {

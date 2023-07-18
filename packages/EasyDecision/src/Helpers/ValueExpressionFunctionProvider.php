@@ -21,7 +21,7 @@ final class ValueExpressionFunctionProvider
 
     private function add(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('add', function ($arguments, $value): float|int|array {
+        return new ExpressionFunction('add', function ($arguments, $value): int|float {
             $this->validateArguments($arguments);
 
             return $arguments['value'] + $value;

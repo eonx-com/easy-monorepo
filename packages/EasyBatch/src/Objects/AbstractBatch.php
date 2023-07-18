@@ -87,7 +87,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
 
     public function setItemsProvider(callable $itemsProvider): BatchInterface
     {
-        $this->itemsProvider = Closure::fromCallable($itemsProvider);
+        $this->itemsProvider = $itemsProvider(...);
 
         return $this;
     }
