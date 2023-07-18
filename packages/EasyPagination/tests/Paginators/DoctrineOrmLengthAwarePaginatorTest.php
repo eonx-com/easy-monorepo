@@ -13,7 +13,7 @@ use EonX\EasyPagination\Tests\AbstractDoctrineOrmTestCase;
 use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
 
-final class DoctrineOrmLengthAwarePaginatorNewTest extends AbstractDoctrineOrmTestCase
+final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestCase
 {
     /**
      * @return iterable<mixed>

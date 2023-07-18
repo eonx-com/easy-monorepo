@@ -49,7 +49,7 @@ final class AbnValidatorTest extends AbstractTestCase
     public static function provideUnexpectedValues(): iterable
     {
         yield 'class without __toString' => [new stdClass(), 'Expected argument of type "string", "stdClass" given'];
-        yield 'integer' => [53_004_085_616, 'Expected argument of type "string", "int" given'];
+        yield 'integer' => [53004085616, 'Expected argument of type "string", "int" given'];
     }
 
     /**
@@ -184,28 +184,6 @@ final class AbnValidatorTest extends AbstractTestCase
         $constraint = new Abn();
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage($message);
-
-        $validator->validate($abn, $constraint);
-    }
-
-    public function testValidateThrowsUnexpectedValueExceptionIfNumberGiven(): void
-    {
-        $abn = 53_004_085_616;
-        $validator = new AbnValidator();
-        $constraint = new Abn();
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Expected argument of type "string", "int" given');
-
-        $validator->validate($abn, $constraint);
-    }
-
-    public function testValidateThrowsUnexpectedValueExceptionIfObjectGiven(): void
-    {
-        $abn = new stdClass();
-        $validator = new AbnValidator();
-        $constraint = new Abn();
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Expected argument of type "string", "stdClass" given');
 
         $validator->validate($abn, $constraint);
     }

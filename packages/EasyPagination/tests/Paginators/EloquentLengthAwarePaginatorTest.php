@@ -14,7 +14,7 @@ use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-final class EloquentLengthAwarePaginatorNewTest extends AbstractEloquentTestCase
+final class EloquentLengthAwarePaginatorTest extends AbstractEloquentTestCase
 {
     /**
      * @return iterable<mixed>

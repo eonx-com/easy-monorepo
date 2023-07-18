@@ -90,7 +90,7 @@ final class DateIntervalValidatorTest extends AbstractTestCase
 
     public function testValidateThrowsUnexpectedValueExceptionIfNumberGiven(): void
     {
-        $dateInterval = 53_004_085_616;
+        $dateInterval = 123;
         $validator = new DateIntervalValidator();
         $constraint = new DateInterval();
         $this->expectException(UnexpectedValueException::class);

@@ -73,10 +73,8 @@ abstract class AbstractTestCase extends TestCase
 
     protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
-        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
-        $propertyReflection->setAccessible(true);
-
-        return $propertyReflection->getValue($object);
+        return $this->resolvePropertyReflection($object, $propertyName)
+            ->getValue($object);
     }
 
     protected function safeCall(Closure $func): void

@@ -11,10 +11,6 @@ final class TokenGenerator implements TokenGeneratorInterface
 {
     private const DEFAULT_ALGO = 'HS256';
 
-    /**
-     * @param null|string $audience Audience for the ID token.
-     * @param null|string $secret Secret used to encode the token.
-     */
     public function __construct(
         private readonly ?string $audience = null,
         private readonly ?string $secret = null,

@@ -12,7 +12,7 @@ use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineDbalTestCase;
 use stdClass;
 
-final class DoctrineDbalLengthAwarePaginatorNewTest extends AbstractDoctrineDbalTestCase
+final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalTestCase
 {
     /**
      * @return iterable<mixed>

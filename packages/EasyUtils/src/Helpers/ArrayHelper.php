@@ -85,7 +85,7 @@ final class ArrayHelper
     {
         $unpacked = [];
 
-        // Set() recurses the array and unflattens dot notations correctly, so just pass-through
+        // The set() method recurses the array and unflattens dot notations correctly, so just pass-through
         foreach ($array as $key => $value) {
             self::set($unpacked, (string)$key, $value);
         }

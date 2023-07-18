@@ -25,8 +25,8 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
     protected static array $tokenPayload = [
         'iss' => 'stepthefkup.com',
         'aud' => 'stepthefkup.com.au',
-        'iat' => 1_549_340_373,
-        'nbf' => 1_549_340_373,
+        'iat' => 1549340373,
+        'nbf' => 1549340373,
     ];
 
     protected function createFirebaseJwtDriver(
