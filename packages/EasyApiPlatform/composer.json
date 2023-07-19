@@ -6,22 +6,22 @@
     "require": {
         "php": "^8.1",
         "api-platform/core": "^3.1",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/dbal": "^3.0",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
-        "monolog/monolog": "^2.9",
         "nesbot/carbon": "^2.67",
-        "symfony/dependency-injection": "^6.3",
-        "symfony/http-foundation": "^6.3"
+        "psr/log": "^3.0",
+        "symfony/http-foundation": "^6.3",
+        "symfony/property-access": "^6.3",
+        "symfony/serializer": "^6.3"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.14",
+        "doctrine/common": "^3.0",
+        "doctrine/doctrine-bundle": "^2.7",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/config": "^6.3",
-        "symfony/filesystem": "^6.3",
         "symfony/symfony": "^6.3"
     },
     "autoload": {
@@ -36,8 +36,10 @@
             "EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\": "tests/Fixtures/app/src"
         }
     },
-    "conflict": {
-        "api-platform/core": "<3.1"
+    "suggest": {
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {
