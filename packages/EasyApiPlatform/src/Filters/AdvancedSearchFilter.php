@@ -48,8 +48,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 {
     use SearchFilterTrait;
 
-    public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
-
     /**
      * @param \ApiPlatform\Api\IriConverterInterface $iriConverter
      * @param mixed[] $properties
