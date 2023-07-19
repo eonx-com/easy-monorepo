@@ -5,18 +5,26 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-random": "^5.1",
+        "doctrine/common": "^3.0",
         "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.14",
         "doctrine/dbal": "^3.0",
         "doctrine/orm": "^2.14",
+        "doctrine/persistence": "^3.0",
         "eonx-com/easy-doctrine": "^5.1",
+        "eonx-com/easy-event-dispatcher": "^5.1",
         "eonx-com/easy-lock": "^5.1",
+        "eonx-com/easy-webhook": "^5.1",
         "phpunit/phpunit": "^10.2",
-        "ramsey/uuid": "^4.7",
-        "symfony/symfony": "^6.3",
+        "psr/log": "^3.0",
+        "symfony/config": "^6.3",
+        "symfony/dependency-injection": "^6.3",
+        "symfony/event-dispatcher": "^6.3",
+        "symfony/filesystem": "^6.3",
+        "symfony/http-kernel": "^6.3",
+        "symfony/messenger": "^6.3",
+        "symfony/serializer": "^6.3",
         "symfony/uid": "^6.3"
     },
     "autoload": {

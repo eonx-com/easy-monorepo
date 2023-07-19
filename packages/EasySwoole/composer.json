@@ -11,6 +11,7 @@
         "symfony/string": "^6.3"
     },
     "require-dev": {
+        "doctrine/persistence": "^3.0",
         "monolog/monolog": "^2.9",
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3"
