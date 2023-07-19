@@ -179,7 +179,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'name' => null,
             ],
             [
-                'foo' => 'exact',
+                'someInvalidProperty' => 'exact',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
@@ -195,8 +195,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ],
             [
                 'name' => ['foo'],
-                'relatedDummy' => ['foo'],
-                'relatedDummies' => [['foo']],
+                'relatedDummy' => ['some-invalid-value'],
+                'relatedDummies' => [['some-invalid-value']],
             ],
             \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
             [],
@@ -568,7 +568,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => null,
             ],
             [
-                'relatedDummy' => 'exact',
+                'relatedDummy' => 'some-invalid-value',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
@@ -582,7 +582,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => null,
             ],
             [
-                'relatedDummy' => '/related_dummie/1',
+                'relatedDummy' => '/some-invalid-iri/1',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
@@ -637,7 +637,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'entityId' => null,
             ],
             [
-                'entityId' => '/related_dummie/1',
+                'entityId' => '/some-invalid-iri/1',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
