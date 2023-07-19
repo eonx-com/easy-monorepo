@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Laravel;
 
-use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
-use EonX\EasyRandom\Generators\RamseyUuidV6Generator;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;
 use EonX\EasyRandom\Generators\RandomStringGenerator;

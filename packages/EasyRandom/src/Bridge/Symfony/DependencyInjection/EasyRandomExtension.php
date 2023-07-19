@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EonX\EasyRandom\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyRandom\Bridge\BridgeConstantsInterface;
-use EonX\EasyRandom\Generators\SymfonyUuidV4Generator;
-use EonX\EasyRandom\Generators\SymfonyUuidV6Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

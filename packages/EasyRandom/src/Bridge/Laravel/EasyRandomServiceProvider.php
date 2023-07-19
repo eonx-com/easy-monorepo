@@ -6,13 +6,13 @@ namespace EonX\EasyRandom\Bridge\Laravel;
 
 use EonX\EasyRandom\Bridge\Laravel\Exceptions\UnsupportedUuidVersion;
 use EonX\EasyRandom\Bridge\Laravel\Exceptions\UuidLibraryNotFound;
-use EonX\EasyRandom\Generators\RamseyUuidV4Generator;
-use EonX\EasyRandom\Generators\RamseyUuidV6Generator;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;
 use EonX\EasyRandom\Generators\RandomStringGenerator;
-use EonX\EasyRandom\Generators\SymfonyUuidV4Generator;
-use EonX\EasyRandom\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyRandom\Generators;
+namespace EonX\EasyRandom\Bridge\Symfony\Generators;
 
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use Symfony\Component\Uid\UuidV6;

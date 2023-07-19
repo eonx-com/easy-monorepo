@@ -20,8 +20,6 @@ not familiar with this concept make sure to have a look at the [documentation][1
 ],
 ```
 
-<br>
-
 #### Lumen Actions Required
 
 To install this package in a Lumen application the procedures are a bit different.
@@ -39,6 +37,34 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 $app->register(\EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider::class);
 ```
+
+<br>
+
+### Configuration
+
+```php
+// config/easy_random.php
+
+<?php
+
+declare(strict_types=1);
+
+return [
+    // Version of UUID to generate
+    'uuid_version' => 6, // Default value
+];
+```
+
+You can configure the UUID version to use for the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` service.
+The default value is `6`. The possible values are `4` and `6`.
+
+The following classes will be used depending on the version you choose:
+
+- Version 4: `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator` (the `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator` class if the "ramsey/uuid" package is not installed)
+- Version 6: `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator` (the `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator` class if the "ramsey/uuid" package is not installed)
+
+Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
+and register it in your service provider.
 
 <br>
 

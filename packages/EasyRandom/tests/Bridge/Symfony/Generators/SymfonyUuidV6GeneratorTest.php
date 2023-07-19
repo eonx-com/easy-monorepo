@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyRandom\Tests\Generators;
+namespace EonX\EasyRandom\Tests\Bridge\Symfony\Generators;
 
-use EonX\EasyRandom\Generators\RamseyUuidV6Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Tests\AbstractTestCase;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use Symfony\Component\Uid\UuidV6 as SymfonyUuidV6;
 
-final class RamseyUuidV6GeneratorTest extends AbstractTestCase
+final class SymfonyUuidV6GeneratorTest extends AbstractTestCase
 {
     public function testGenerateSucceeds(): void
     {
-        $sut = new RamseyUuidV6Generator();
+        $sut = new SymfonyUuidV6Generator();
 
         $result = $sut->generate();
 
