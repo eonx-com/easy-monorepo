@@ -18,16 +18,7 @@
         "eonx-com/easy-webhook": "^5.1",
         "phpunit/phpunit": "^10.2",
         "psr/log": "^3.0",
-        "symfony/config": "^6.3",
-        "symfony/dependency-injection": "^6.3",
-        "symfony/event-dispatcher": "^6.3",
-        "symfony/filesystem": "^6.3",
-        "symfony/http-kernel": "^6.3",
-        "symfony/messenger": "^6.3",
-        "symfony/property-access": "^6.3",
-        "symfony/serializer": "^6.3",
-        "symfony/uid": "^6.3",
-        "symfony/yaml": "^6.3"
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -40,10 +31,17 @@
         }
     },
     "suggest": {
-        "eonx-com/easy-doctrine": "To create Log entries from to doctrine events",
+        "doctrine/dbal": "To save log entities to a database",
+        "doctrine/orm": "To save log entities to a database",
+        "eonx-com/easy-doctrine": "To create log entries from Doctrine events",
         "eonx-com/easy-lock": "To lock async messages",
-        "symfony/messenger": "To save log entities asynchronously",
-        "symfony/serializer": "To serialize subject's data"
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/event-dispatcher": "To subscribe to EasyDoctrine events",
+        "symfony/http-kernel": "To use this package with Symfony",
+        "symfony/messenger": "To use this package with Symfony",
+        "symfony/serializer": "To use this package with Symfony",
+        "symfony/uid": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {
