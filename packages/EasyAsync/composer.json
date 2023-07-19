@@ -7,7 +7,7 @@
         "php": "^8.1",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
-        "psr/log": "^3.0",
+        "psr/log": "^3.0"
     },
     "require-dev": {
         "doctrine/common": "^3.0",
