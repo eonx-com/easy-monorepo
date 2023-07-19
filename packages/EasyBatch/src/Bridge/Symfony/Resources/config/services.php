@@ -18,7 +18,7 @@ use EonX\EasyBatch\Bridge\Symfony\Serializers\MessageSerializerDecorator;
 use EonX\EasyBatch\Dispatchers\BatchItemDispatcher;
 use EonX\EasyBatch\Factories\BatchFactory;
 use EonX\EasyBatch\Factories\BatchItemFactory;
-use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
+use EonX\EasyBatch\IdStrategies\UuidStrategy;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
@@ -62,7 +62,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // IdStrategies
     $services
-        ->set(BatchObjectIdStrategyInterface::class, UuidV4Strategy::class)
+        ->set(BatchObjectIdStrategyInterface::class, UuidStrategy::class)
         ->alias(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY, BatchObjectIdStrategyInterface::class)
         ->alias(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY, BatchObjectIdStrategyInterface::class);
 

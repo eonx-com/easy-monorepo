@@ -7,7 +7,7 @@ namespace EonX\EasyRandom\Constraints;
 use Closure;
 use EonX\EasyRandom\Interfaces\RandomStringConstraintInterface;
 
-final class CallbackConstraint implements RandomStringConstraintInterface
+final class CallbackRandomStringConstraint implements RandomStringConstraintInterface
 {
     private Closure $callback;
 

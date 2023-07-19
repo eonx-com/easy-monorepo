@@ -7,7 +7,7 @@ namespace EonX\EasyBatch\IdStrategies;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
-final class UuidV4Strategy implements BatchObjectIdStrategyInterface
+final class UuidStrategy implements BatchObjectIdStrategyInterface
 {
     public function __construct(
         private readonly RandomGeneratorInterface $randomGenerator,
@@ -16,6 +16,6 @@ final class UuidV4Strategy implements BatchObjectIdStrategyInterface
 
     public function generateId(): string
     {
-        return $this->randomGenerator->uuidV4();
+        return $this->randomGenerator->uuid();
     }
 }

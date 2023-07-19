@@ -12,13 +12,21 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 {
     private ?Application $app = null;
 
-    protected function getApp(): Application
+    /**
+     * @param null|mixed[] $config
+     */
+    protected function getApp(?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
         $this->app = new Application(__DIR__);
+
+        if ($config !== null) {
+            \config($config);
+        }
+
         $this->app->register(EasyRandomServiceProvider::class);
 
         return $this->app;

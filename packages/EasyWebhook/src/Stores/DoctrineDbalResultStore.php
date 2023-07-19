@@ -30,7 +30,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
 
         // New result with no id
         if ($result->getId() === null) {
-            $result->setId($this->random->uuidV4());
+            $result->setId($this->random->uuid());
 
             $data['id'] = $result->getId();
             $data['created_at'] = $now;

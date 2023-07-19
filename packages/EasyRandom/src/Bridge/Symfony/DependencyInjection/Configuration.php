@@ -15,9 +15,13 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('uuid_v4_generator')
-                    ->defaultNull()
-                    ->info('Service id of the UUID V4 generator to use')
+                ->integerNode('uuid_version')
+                    ->validate()
+                        ->ifNotInArray([4, 6])
+                        ->thenInvalid('Invalid UUID version %s')
+                    ->end()
+                    ->defaultValue(6)
+                    ->info('Version of UUID to generate')
                 ->end()
             ->end();
 

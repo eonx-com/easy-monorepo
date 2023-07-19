@@ -22,26 +22,27 @@ return [
 
 <br>
 
-### UUID V4 Generator
-
-In the case you want to generate UUID V4 in your application, you will need to set the UUID V4 generator of your choice
-onto the random generator instance. To do so, you will first need to register the UUID V4 generator of your choice as
-a service and, then set the service id into the bundle configuration.
-
-#### Register UUID V4 generator as a service
-
-By default, this package will register the built-in supported implementations as services:
-
-- *easy_random.ramsey_uuid4* alias for `EonX\EasyRandom\UuidV4\RamseyUuidV4Generator`
-- *easy_random.symfony_uuid4* alias for `EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator`
-
-#### Set the service id into the bundle configuration
+### Configuration
 
 ```yaml
 # config/packages/easy_random.yaml
 
 easy_random:
-    uuid_v4_generator: EonX\EasyRandom\UuidV4\RamseyUuidV4Generator # The service id
+    uuid_version: 6 # Default value
+
 ```
+
+You can configure the UUID version to use for the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` service.
+The default value is `6`. The possible values are `4` and `6`.
+
+The following classes will be used depending on the version you choose:
+
+- Version 4: `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator` (the `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator` class if the "symfony/uid" package is not installed)
+- Version 6: `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator` (the `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator` class if the "symfony/uid" package is not installed)
+
+Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
+and register it in your container.
+
+<br>
 
 [1]: https://flex.symfony.com/
