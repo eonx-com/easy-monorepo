@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Providers;
@@ -14,7 +15,7 @@ final class ChangesetCleanerProvider implements ChangesetCleanerProviderInterfac
     private iterable $cleaners;
 
     /**
-     * @var array<class-string, \EonX\EasyDoctrine\Interfaces\ChangesetCleanerInterface<object>>
+     * @var array<class-string, \EonX\EasyDoctrine\Interfaces\ChangesetCleanerInterface<object>|null>
      */
     private array $cleanersByClass = [];
 
@@ -43,6 +44,6 @@ final class ChangesetCleanerProvider implements ChangesetCleanerProviderInterfac
         $this->cleanersByClass[$oldClass] = $cleanerForClass;
         $this->cleanersByClass[$newClass] = $cleanerForClass;
 
-        return null;
+        return $cleanerForClass;
     }
 }

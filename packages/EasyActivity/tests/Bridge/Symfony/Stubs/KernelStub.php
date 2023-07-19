@@ -14,9 +14,12 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyDoctrine\Bridge\BridgeConstantsInterface;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle;
+use EonX\EasyDoctrine\Cleaners\DateTimeChangesetCleaner;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
+use EonX\EasyDoctrine\Interfaces\ChangesetCleanerProviderInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
+use EonX\EasyDoctrine\Providers\ChangesetCleanerProvider;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Utils\ObjectCopier;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
@@ -74,11 +77,22 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(UuidFactory::class, new Definition(UuidFactory::class));
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
+        $changesetCleanerProviderDefinition = $container->setDefinition(
+            ChangesetCleanerProviderInterface::class,
+            new Definition(
+                ChangesetCleanerProvider::class,
+                [[new Definition(DateTimeChangesetCleaner::class)]]
+            )
+        );
         $container->setDefinition(
             EntityEventSubscriberInterface::class,
             new Definition(
                 EntityEventSubscriber::class,
-                [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%']
+                [
+                    $deferredEntityDefinition,
+                    '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%',
+                    $changesetCleanerProviderDefinition,
+                ]
             )
         );
         $objectNormalizerDefinition = new Definition(ObjectNormalizer::class);

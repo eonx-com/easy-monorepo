@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Cleaners;
@@ -7,7 +8,7 @@ use DateTimeInterface;
 use EonX\EasyDoctrine\Interfaces\ChangesetCleanerInterface;
 
 /**
- * @implements ChangesetCleanerInterface<DateTimeInterface>
+ * @implements \EonX\EasyDoctrine\Interfaces\ChangesetCleanerInterface<\DateTimeInterface>
  */
 final class DateTimeChangesetCleaner implements ChangesetCleanerInterface
 {
