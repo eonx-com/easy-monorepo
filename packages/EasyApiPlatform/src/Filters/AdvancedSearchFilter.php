@@ -316,7 +316,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $metadata = $this->getNestedMetadata($resourceClass, $associations);
 
         if ($metadata->hasField($field)) {
-            if ($field === 'id') {
+            if ($field === 'id' || $field === 'entityId') {
                 $values = \array_map([$this, 'getIdFromValue'], $values);
             }
 

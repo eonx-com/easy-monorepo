@@ -632,6 +632,52 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             $filterFactory,
         ];
 
+        yield 'invalid IRI for entityId field' => [
+            [
+                'entityId' => null,
+            ],
+            [
+                'entityId' => '/related_dummie/1',
+            ],
+            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            [],
+            $filterFactory,
+        ];
+
+        yield 'IRI value for entityId field' => [
+            [
+                'entityId' => null,
+            ],
+            [
+                'entityId' => '/related_dummies/1',
+            ],
+            \sprintf(
+                'SELECT %s FROM %s %1$s WHERE %1$s.entityId = :entityId_p1',
+                $this->alias,
+                Dummy::class
+            ),
+            ['entityId_p1' => 1],
+            $filterFactory,
+        ];
+
+        yield 'mixed IRI and entity ID values for entityId field' => [
+            [
+                'entityId' => null,
+            ],
+            [
+                'entityId' => ['/related_dummies/1', '2'],
+            ],
+            \sprintf(
+                'SELECT %s FROM %s %1$s WHERE %1$s.entityId IN(:entityId_p1)',
+                $this->alias,
+                Dummy::class
+            ),
+            [
+                'entityId_p1' => [1, 2],
+            ],
+            $filterFactory,
+        ];
+
         yield 'nested property' => [
             [
                 'id' => null,
@@ -1103,6 +1149,20 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             'dummyPrice[]' => [
                 'property' => 'dummyPrice',
                 'type' => 'string',
+                'required' => false,
+                'strategy' => 'exact',
+                'is_collection' => true,
+            ],
+            'entityId' => [
+                'property' => 'entityId',
+                'type' => 'int',
+                'required' => false,
+                'strategy' => 'exact',
+                'is_collection' => false,
+            ],
+            'entityId[]' => [
+                'property' => 'entityId',
+                'type' => 'int',
                 'required' => false,
                 'strategy' => 'exact',
                 'is_collection' => true,
