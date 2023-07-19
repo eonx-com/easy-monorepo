@@ -8,7 +8,7 @@
         "api-platform/core": "^2.6 || ^2.7",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/orm": "^2.6",
-        "doctrine/persistence": "^2.2",
+        "doctrine/persistence": "^2.2 || ^3.0",
         "monolog/monolog": "^1.22 || ^2.0",
         "symfony/dependency-injection": "^5.4 || ^6.0",
         "symfony/http-foundation": "^5.4 || ^6.0"
