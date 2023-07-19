@@ -14,7 +14,7 @@ use EonX\EasyRequestId\Bridge\EasyWebhook\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
-use EonX\EasyRequestId\UuidV4FallbackResolver;
+use EonX\EasyRequestId\UuidFallbackResolver;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
@@ -78,7 +78,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-request-id.php', 'easy-request-id');
 
-        $this->app->singleton(FallbackResolverInterface::class, UuidV4FallbackResolver::class);
+        $this->app->singleton(FallbackResolverInterface::class, UuidFallbackResolver::class);
 
         $this->app->singleton(
             RequestIdServiceInterface::class,

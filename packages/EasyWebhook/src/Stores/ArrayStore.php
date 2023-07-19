@@ -22,7 +22,7 @@ final class ArrayStore extends AbstractStore implements StoreInterface, ResetSto
 
     public function generateWebhookId(): string
     {
-        return $this->random->uuidV4();
+        return $this->random->uuid();
     }
 
     /**

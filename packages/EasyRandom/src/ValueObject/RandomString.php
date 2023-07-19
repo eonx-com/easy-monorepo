@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyRandom;
+namespace EonX\EasyRandom\ValueObject;
 
 use EonX\EasyRandom\Exceptions\InvalidAlphabetException;
 use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
-use Stringable;
 use Symfony\Component\String\ByteString;
+use Symfony\Component\String\UnicodeString;
 
-use function Symfony\Component\String\u;
-
-final class RandomString implements RandomStringInterface, Stringable
+final class RandomString implements RandomStringInterface
 {
     /**
      * @var null|\EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]
@@ -258,7 +256,9 @@ final class RandomString implements RandomStringInterface, Stringable
             $randomString .= $this->suffix;
         }
 
-        return $this->randomString = $randomString;
+        $this->randomString = $randomString;
+
+        return $this->randomString;
     }
 
     private function resolveAlphabet(): string
@@ -308,7 +308,7 @@ final class RandomString implements RandomStringInterface, Stringable
 
         foreach ([$this->prefix, $this->suffix] as $string) {
             if ($string !== null) {
-                $length -= u($string)
+                $length -= (new UnicodeString($string))
                     ->length();
             }
         }
@@ -318,7 +318,7 @@ final class RandomString implements RandomStringInterface, Stringable
 
     private function validateAlphabet(string $alphabet): string
     {
-        if (\strlen($alphabet) > 0) {
+        if ($alphabet !== '') {
             return $alphabet;
         }
 
