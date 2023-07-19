@@ -220,26 +220,59 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $article = new Article();
         $article->setTitle('Test collections');
         $article->setContent('Content');
-        $article->addComment((new Comment())->setMessage('comment 1'));
-        $article->addComment((new Comment())->setMessage('comment 2'));
+        $commentA = (new Comment())->setMessage('comment 1');
+        $commentB = (new Comment())->setMessage('comment 2');
+        $commentC = (new Comment())->setMessage('comment 3');
+        $article->addComment($commentA);
+        $article->addComment($commentB);
+        $article->addComment($commentC);
 
         $entityManager->persist($article);
         $entityManager->flush();
+        $article->getComments()
+            ->removeElement($commentC);
+        $entityManager->flush();
+        $commentA->setMessage('comment 1 updated');
+        $entityManager->flush();
+        $commentD = (new Comment())->setMessage('comment 4');
+        $article->addComment($commentD);
+        $entityManager->flush();
 
         $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(1, $logEntries);
-        /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentA */
-        $commentA = $article->getComments()
-            ->get(0);
-        /** @var \EonX\EasyActivity\Tests\Fixtures\Comment $commentB */
-        $commentB = $article->getComments()
-            ->get(1);
+        self::assertCount(3, $logEntries);
+        self::assertSame('create', $logEntries[0]['action']);
         self::assertSame(
             [
                 'title' => 'Test collections',
-                'comments' => [$commentA->getId(), $commentB->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
             ],
             \json_decode($logEntries[0]['subject_data'], true)
+        );
+        self::assertSame('update', $logEntries[1]['action']);
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId()],
+            ],
+            \json_decode($logEntries[1]['subject_data'], true)
+        );
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
+            ],
+            \json_decode($logEntries[1]['subject_old_data'], true)
+        );
+        self::assertSame('update', $logEntries[2]['action']);
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentD->getId()],
+            ],
+            \json_decode($logEntries[2]['subject_data'], true)
+        );
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId()],
+            ],
+            \json_decode($logEntries[2]['subject_old_data'], true)
         );
     }
 

@@ -58,34 +58,50 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityInsertions = $this->filterEntities($unitOfWork->getScheduledEntityInsertions());
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
         $scheduledEntityDeletions = $this->filterEntities($unitOfWork->getScheduledEntityDeletions());
+        $scheduledCollectionUpdates = $this->filterCollections($unitOfWork->getScheduledCollectionUpdates());
 
-        $collectionsMapping = [];
-        foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
-           if ($collection->getTypeClass()->idGenerator->isPostInsertGenerator()) {
-               continue;
-           }
-
+        $collectionsMapping = new \SplObjectStorage();
+        foreach ($scheduledCollectionUpdates as $collection) {
             /** @var object $owner */
             $owner = $collection->getOwner();
-            $collectionsMapping[\spl_object_id($owner)][] = $collection;
+            if ($collectionsMapping->contains($owner) === false) {
+                $collectionsMapping->offsetSet($owner, []);
+            }
+            $collections = $collectionsMapping->offsetGet($owner);
+            $collections[] = $collection;
+            $collectionsMapping->offsetSet($owner, $collections);
         }
 
         foreach ($scheduledEntityInsertions as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
-            $changeSet = \array_merge(
-                $unitOfWork->getEntityChangeSet($object),
-                $this->computeCollectionChangeSet($collectionsMapping[\spl_object_id($object)] ?? [], $entityManager)
-            );
+            $changeSet = $unitOfWork->getEntityChangeSet($object);
+
+            if ($collectionsMapping->contains($object)) {
+                $collectionsChangeSet = $this->computeCollectionsChangeSet(
+                    $collectionsMapping->offsetGet($object),
+                    $entityManager
+                );
+                $collectionsMapping->detach($object);
+                /** @var array<string, array{mixed, mixed}> $changeSet */
+                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+            }
+
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $object, $changeSet);
         }
 
         foreach ($scheduledEntityUpdates as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
-            $changeSet = $unitOfWork->getEntityChangeSet($object);
-            $changeSet = \array_merge(
-                $this->getClearedChangeSet($changeSet),
-                $this->computeCollectionChangeSet($collectionsMapping[\spl_object_id($object)] ?? [], $entityManager)
-            );
+            $changeSet = $this->getClearedChangeSet($unitOfWork->getEntityChangeSet($object));
+            if ($collectionsMapping->contains($object)) {
+                $collectionsChangeSet = $this->computeCollectionsChangeSet(
+                    $collectionsMapping->offsetGet($object),
+                    $entityManager
+                );
+                $collectionsMapping->detach($object);
+                /** @var array<string, array{mixed, mixed}> $changeSet */
+                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+            }
+
             if (\count($changeSet) > 0) {
                 $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
             }
@@ -100,6 +116,16 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             }
             $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
+
+        $collectionsMapping->rewind();
+        foreach ($collectionsMapping as $object) {
+            /** @var array<string, array{mixed, mixed}> $collectionsChangeSet */
+            $collectionsChangeSet = $this->computeCollectionsChangeSet(
+                $collectionsMapping->offsetGet($object),
+                $entityManager
+            );
+            $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $collectionsChangeSet);
+        }
     }
 
     /**
@@ -110,7 +136,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      *
      * @return array<string, array<mixed>>
      */
-    public function computeCollectionChangeSet(
+    public function computeCollectionsChangeSet(
         array $collections,
         EntityManagerInterface $entityManager,
     ): array {
@@ -127,7 +153,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
                 /** @var array{'fieldName': string} $mapping */
                 $mapping = $collection->getMapping();
-                $changeSet[$mapping['fieldName']] = [$snapshotIds, $actualIds];
+                $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
             }
         }
 
@@ -141,6 +167,34 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         if ($entityManager->getConnection()->getTransactionNestingLevel() === 0) {
             $this->eventDispatcher->dispatch();
         }
+    }
+
+    /**
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
+     *
+     * @template TKey of array-key
+     * @template T
+     *
+     * @return list<\Doctrine\ORM\PersistentCollection<TKey, T>>
+     */
+    private function filterCollections(array $collections): array
+    {
+        return \array_filter($collections, function (PersistentCollection $collection): bool {
+            $typeClass = $collection->getTypeClass();
+            if ($typeClass->idGenerator->isPostInsertGenerator()) {
+                return false;
+            }
+
+            /** @var object $owner */
+            $owner = $collection->getOwner();
+            foreach ($this->acceptableEntities as $acceptableEntityClass) {
+                if (\is_a($owner, $acceptableEntityClass)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 
     /**
