@@ -13,7 +13,6 @@ final class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('easy_api_platform');
 
-
         $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('advanced_search_filter')

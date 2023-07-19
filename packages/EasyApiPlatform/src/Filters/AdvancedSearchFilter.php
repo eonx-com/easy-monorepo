@@ -52,6 +52,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
     /**
      * @param mixed[] $properties
+     * @param string[] $iriFields
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
