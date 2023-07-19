@@ -20,9 +20,11 @@ final class ChangesetCleanerProvider implements ChangesetCleanerProviderInterfac
     private array $cleanersByClass = [];
 
     /**
-     * @param iterable<\EonX\EasyDoctrine\Interfaces\ChangesetCleanerInterface<object>> $cleaners
+     * @param iterable<\EonX\EasyDoctrine\Interfaces\ChangesetCleanerInterface<T>> $cleaners
+     *
+     * @template T of object
      */
-    public function __construct(iterable $cleaners)
+    public function __construct(array $cleaners)
     {
         $this->cleaners = $cleaners;
     }
