@@ -32,13 +32,16 @@ final class ChangesetCleanerProvider implements ChangesetCleanerProviderInterfac
             return $this->cleanersByClass[$oldClass];
         }
 
+        $cleanerForClass = null;
         foreach ($this->cleaners as $cleaner) {
             if ($cleaner->supports($oldClass) && $cleaner->supports($newClass)) {
-                $this->cleanersByClass[$oldClass] = $cleaner;
-                $this->cleanersByClass[$newClass] = $cleaner;
-                return $cleaner;
+                $cleanerForClass = $cleaner;
+                break;
             }
         }
+
+        $this->cleanersByClass[$oldClass] = $cleanerForClass;
+        $this->cleanersByClass[$newClass] = $cleanerForClass;
 
         return null;
     }
