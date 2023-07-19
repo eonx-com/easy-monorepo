@@ -1333,7 +1333,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             $propertyAccessor,
             null,
             $properties,
-            new CustomConverter()
+            new CustomConverter(),
+            ['entityId']
         );
     }
 }

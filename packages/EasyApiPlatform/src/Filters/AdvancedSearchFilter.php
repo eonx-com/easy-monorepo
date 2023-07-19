@@ -51,16 +51,16 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     /**
-     * @param \ApiPlatform\Api\IriConverterInterface $iriConverter
      * @param mixed[] $properties
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
-        $iriConverter,
+        IriConverterInterface $iriConverter,
         PropertyAccessorInterface $propertyAccessor = null,
         LoggerInterface $logger = null,
-        array $properties = null,
+        ?array $properties = null,
         NameConverterInterface $nameConverter = null,
+        private readonly array $iriFields = [],
     ) {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
 
@@ -316,7 +316,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $metadata = $this->getNestedMetadata($resourceClass, $associations);
 
         if ($metadata->hasField($field)) {
-            if ($field === 'id' || $field === 'entityId') {
+            if ($field === 'id' || \in_array($field, $this->iriFields, true)) {
                 $values = \array_map([$this, 'getIdFromValue'], $values);
             }
 
