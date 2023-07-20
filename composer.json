@@ -81,7 +81,8 @@
         "symplify/phpstan-extensions": "^11.0",
         "symplify/smart-file-system": "^11.0",
         "tracy/tracy": "^2.10",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "icanhazstring/composer-unused": "^0.8.10"
     },
     "autoload": {
         "psr-4": {
