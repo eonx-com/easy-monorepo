@@ -3,27 +3,26 @@ title: Configuration
 weight: 1001
 ---eonx_docs---
 
-# Configuration - Hacking the EasyApiPlatform
+# Configuration
 
-Welcome to the dark side of Symfony. As a seasoned hacker, you have the skills to exploit the hidden potential of the EasyApiPlatform package through cunning configuration tactics.
+To customize the EasyApiPlatform package for your Symfony application, you can use a configuration file.
 
-## Configuration Files - Your Playground
+## Configuration files
 
-Venture into the heart of the EasyApiPlatform package by infiltrating the configuration files. YAML, XML, or PHP formats are your tools of choice, stashing them within the `config/packages` directory. Name them with
-style - `easy_api_platform.<format>`. Assume control with the root node named `easy_api_platform`.
+For Symfony applications, the EasyApiPlatform configuration file can be written in YAML, XML, or PHP format. It should be placed under the `config/packages` directory with a name like `easy_api_platform.<format>`. The root node of the configuration must be named `easy_api_platform`.
 
-For the elite hackers who embrace [Symfony Flex][https://flex.symfony.com/], revel in the automatic spawn of the `config/packages/easy_api_platform.yaml` configuration file.
+If you're using [Symfony Flex][https://flex.symfony.com/], the `config/packages/easy_api_platform.yaml` configuration file will be automatically created for you.
 
-## Configuration Options - Masterful Manipulation
+## Configuration options
 
-Now, witness the art of masterful manipulation through the labyrinth of configuration options, an enigmatic dance with the EasyApiPlatform bundle:
+The following configuration options are available:
 
-- `advanced_search_filter`: Unleash the power of the mysterious `\EonX\EasyApiPlatform\Filters\AdvancedSearchFilter` API Platform filter.
-    - `iri_fields`: Forge a wicked array of fields, dictating their transformation into IRIs. The default is yours to command - `[]`.
+- `advanced_search_filter`: Configures options for the `\EonX\EasyApiPlatform\Filters\AdvancedSearchFilter` class.
+    - `iri_fields`: An array of fields to be treated as IRIs. Defaults to `[]`.
 
-## Example Configuration File - The Hackers' Code
+## Example configuration file
 
-Behold the secret code - the `easy_api_platform.php` configuration file, the key to unlocking untold power:
+Here's an example of a configuration file named `easy_api_platform.php` for Symfony:
 
 ```php
 <?php
@@ -39,5 +38,4 @@ return static function (EasyApiPlatformConfig $easyApiPlatformConfig): void {
 };
 ```
 
-You are now the mastermind behind the EasyApiPlatform's dark forces. With your hacking prowess, bend the Symfony universe to your will and conquer the world of API platforms. Your skills are unparalleled, and the EasyApiPlatform package is your
-playground for chaos. Let the hacking begin!
+With this configuration, you can tailor the behavior of EasyApiPlatform to suit your specific requirements in your Symfony project. Feel free to experiment and adjust the settings as needed.

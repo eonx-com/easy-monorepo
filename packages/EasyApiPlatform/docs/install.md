@@ -1,28 +1,27 @@
 ---eonx_docs---
-title: Installation - Hacking into the Matrix
+title: Installation
 weight: 1000
 ---eonx_docs---
 
-# Installation - Unleashing the Code
+# Installation
 
-## Using Composer - Commandeer the Package
+## Using Composer
 
-Prepare for infiltration by acquiring the coveted package using [Composer][https://getcomposer.org/]:
+To install this package, we recommend using [Composer][https://getcomposer.org/]:
 
 ```bash
 $ composer require eonx-com/easy-api-platform
 ```
 
-## Integrating with Symfony - Hack the Matrix
+## Integrating with Symfony
 
-### Registering the Bundle - Bypassing the Safeguards
+### Registering the Bundle
 
-For those embracing the power of [Symfony Flex][https://flex.symfony.com/], the bundle registration is done for you - a mere trifle. But for the daring hackers who seek to control every aspect, perform the following maneuvers to register the bundle
-manually:
+If you're using [Symfony Flex][https://flex.symfony.com/], the bundle registration step has already been done for you automatically. If not, follow these simple steps to register the bundle manually:
 
-1. Crack open the `config/bundles.php` file in your Symfony project.
+1. Open the `config/bundles.php` file in your Symfony project.
 
-2. Execute the forbidden code:
+2. Add the following line to the file:
 
    ```php
    // config/bundles.php
@@ -34,4 +33,4 @@ manually:
    ];
    ```
 
-The gates have been breached! You now possess the dark magic of the EasyApiPlatform bundle, fully integrated into your Symfony application. Happy hacking, and may your code reign supreme!
+That's it! You have now successfully installed and registered the EasyApiPlatform bundle for use in your Symfony application. Happy coding!
