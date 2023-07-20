@@ -24,7 +24,7 @@ final class ChangesetCleanerProvider implements ChangesetCleanerProviderInterfac
      *
      * @template T of object
      */
-    public function __construct(array $cleaners)
+    public function __construct(iterable $cleaners)
     {
         $this->cleaners = $cleaners;
     }
