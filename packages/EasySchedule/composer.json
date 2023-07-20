@@ -27,6 +27,14 @@
             "EonX\\EasySchedule\\Tests\\": "tests"
         }
     },
+    "suggest": {
+        "doctrine/orm": "To clear the Doctrine Entity Manager",
+        "doctrine/persistence": "To clear the Doctrine Entity Manager",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-foundation": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {

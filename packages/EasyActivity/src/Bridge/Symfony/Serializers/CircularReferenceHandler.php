@@ -25,7 +25,6 @@ final class CircularReferenceHandler implements CircularReferenceHandlerInterfac
             $identifier = $this->entityManager->getClassMetadata($className)
                 ->getSingleIdentifierFieldName();
             $reflectionProperty = new ReflectionProperty($className, $identifier);
-            $reflectionProperty->setAccessible(true);
 
             return \sprintf('%s#%s (circular reference)', $className, $reflectionProperty->getValue($object));
         } catch (Exception) {

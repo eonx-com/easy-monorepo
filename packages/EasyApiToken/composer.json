@@ -6,23 +6,19 @@
     "require": {
         "php": "^8.1",
         "ext-openssl": "*",
-        "nette/utils": "^3.2"
+        "eonx-com/easy-utils": "^5.1",
+        "nette/utils": "^3.2",
+        "psr/log": "^3.0",
+        "symfony/http-foundation": "^6.3"
     },
     "require-dev": {
         "auth0/auth0-php": "^8.6",
-        "eonx-com/easy-utils": "^5.1",
         "firebase/php-jwt": "^6.5",
-        "guzzlehttp/psr7": "^2.5",
         "laravel/lumen-framework": "^9.1",
         "phpseclib/phpseclib": "^3.0",
         "phpunit/phpunit": "^10.2",
-        "psr/container": "^2.0",
-        "symfony/cache": "^6.3",
-        "symfony/config": "^6.3",
-        "symfony/dependency-injection": "^6.3",
-        "symfony/http-client": "^6.3",
-        "symfony/security-bundle": "^6.3",
-        "symfony/yaml": "^6.3"
+        "psr/cache": "^3.0",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -37,8 +33,18 @@
     },
     "suggest": {
         "auth0/auth0-php": "To use the Auth0 JWT driver to decode/encode tokens",
-        "firebase/php-jwt": "To use the Amazon Cognito or the Firebase JWT driver to decode/encode tokens",
-        "phpseclib/phpseclib": "To use the Amazon Cognito JWT driver to decode/encode tokens"
+        "firebase/php-jwt": "To use the Auth0, Amazon Cognito, or Firebase JWT driver to decode/encode tokens",
+        "illuminate/contracts": "To use this package with Laravel/Lumen",
+        "illuminate/support": "To use this package with Laravel/Lumen",
+        "phpseclib/phpseclib": "To use the Amazon Cognito JWT driver to decode/encode tokens",
+        "symfony/cache": "To use the Amazon Cognito JWT driver to decode/encode tokens",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-client": "To use the Amazon Cognito JWT driver to decode/encode tokens",
+        "symfony/http-kernel": "To use this package with Symfony",
+        "symfony/security-bundle": "To use this package with Symfony",
+        "symfony/security-http": "To use this package with Symfony",
+        "symfony/service-contracts": "To use this package with Symfony"
     },
     "config": {
         "allow-plugins": {
