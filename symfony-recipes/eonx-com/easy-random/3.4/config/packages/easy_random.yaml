@@ -1,2 +1,0 @@
-easy_random:
-    uuid_v4_generator: EonX\EasyRandom\Generators\SymfonyUidUuidV4Generator
