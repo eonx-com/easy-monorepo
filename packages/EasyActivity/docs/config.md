@@ -17,9 +17,6 @@ For Symfony applications, the EasyActivity configuration file can be a YAML, XML
 `config/packages` directory, with a name like `easy_activity.<format>`. The root node of the configuration must be
 called `easy_activity`.
 
-If you're using [Symfony Flex][1], the `config/packages/easy_activity.yaml` configuration file will be created for you
-automatically.
-
 ## Configuration options
 
 The configuration options are as follows:
@@ -27,15 +24,15 @@ The configuration options are as follows:
 - `disallowed_properties`: An optional array of subject property names to be excluded from activity log entries globally
   (i.e. the list will be applied to all subjects defined in the `subjects` configuration option).
 - `subjects`: A set of subject classes to be logged. Each subject can contain the following parameters:
-  - `allowed_properties`: An optional array of subject property names to be allowed for activity log entries. If the
-    option is present, only the specified properties will be included in activity log entries for the relevant subject.
-  - `disallowed_properties`: An optional array of subject property names to be excluded from activity log entries for
-    the relevant subject.
-  - `nested_object_allowed_properties`: By default, nested objects within a subject only contain the `id` key. You can
-    specify an optional set of classes that describe nested objects within the subject, each containing an array of
-    property names to be included for activity log entries.
-  - `type`: an optional subject type mapping. If no type is provided, a FQCN (Fully Qualified Class Name) will be used
-    by default.
+    - `allowed_properties`: An optional array of subject property names to be allowed for activity log entries. If the
+      option is present, only the specified properties will be included in activity log entries for the relevant subject.
+    - `disallowed_properties`: An optional array of subject property names to be excluded from activity log entries for
+      the relevant subject.
+    - `nested_object_allowed_properties`: By default, nested objects within a subject only contain the `id` key. You can
+      specify an optional set of classes that describe nested objects within the subject, each containing an array of
+      property names to be included for activity log entries.
+    - `type`: an optional subject type mapping. If no type is provided, a FQCN (Fully Qualified Class Name) will be used
+      by default.
 - `table_name`: Table name for storing activity log entries (the default is `easy_activity_logs`).
 
 ## Example configuration file
