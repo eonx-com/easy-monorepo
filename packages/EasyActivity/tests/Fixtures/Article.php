@@ -30,7 +30,7 @@ class Article
     private DateTimeInterface $createdAt;
 
     #[ORM\Column(type: Types::GUID)]
-    #[ORM\GeneratedValue(strategy: "UUID")]
+    #[ORM\GeneratedValue(strategy: 'UUID')]
     #[ORM\Id]
     private string $id;
 

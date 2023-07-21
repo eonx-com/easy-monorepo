@@ -12,6 +12,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
+use SplObjectStorage;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
@@ -54,7 +55,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityDeletions = $this->filterEntities($unitOfWork->getScheduledEntityDeletions());
         $scheduledCollectionUpdates = $this->filterCollections($unitOfWork->getScheduledCollectionUpdates());
 
-        $collectionsMapping = new \SplObjectStorage();
+        $collectionsMapping = new SplObjectStorage();
         foreach ($scheduledCollectionUpdates as $collection) {
             /** @var object $owner */
             $owner = $collection->getOwner();
@@ -77,7 +78,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 );
                 $collectionsMapping->detach($object);
                 /** @var array<string, array{mixed, mixed}> $changeSet */
-                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+                $changeSet = [...$changeSet, ...$collectionsChangeSet];
             }
 
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $object, $changeSet);
@@ -93,7 +94,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 );
                 $collectionsMapping->detach($object);
                 /** @var array<string, array{mixed, mixed}> $changeSet */
-                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+                $changeSet = [...$changeSet, ...$collectionsChangeSet];
             }
 
             if (\count($changeSet) > 0) {
@@ -136,7 +137,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     ): array {
         $changeSet = [];
         $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
+            $identifierName = \current($entityManager->getClassMetadata($entity::class)->getIdentifier());
             return (string)$entityManager->getUnitOfWork()
                 ->getEntityIdentifier($entity)[$identifierName];
         };

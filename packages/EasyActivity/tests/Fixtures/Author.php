@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Author
 {
     #[ORM\Column(type: Types::GUID)]
-    #[ORM\GeneratedValue(strategy: "UUID")]
+    #[ORM\GeneratedValue(strategy: 'UUID')]
     #[ORM\Id]
     private string $id;
 
