@@ -6,6 +6,7 @@ namespace EonX\EasyActivity\Tests\Fixtures;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 class Comment
@@ -14,7 +15,8 @@ class Comment
     private Article $article;
 
     #[ORM\Column(type: Types::GUID)]
-    #[ORM\GeneratedValue(strategy: 'UUID')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Id]
     private string $id;
 

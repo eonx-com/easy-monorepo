@@ -197,10 +197,10 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'subject' => new ActivitySubject($entityId, Article::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
             'expectedResult' => \sprintf(
-                '{"comments":[{"article":{"author":null,"comments":' .
-                '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#00000000-0000-0000-0000-000000000000' .
-                ' (circular reference)"],"createdAt":"%s"},"id":"00000000-0000-0000-0000-000000000000",' .
-                '"message":"some-message"}]}',
+                '{"comments":[{"article":{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"'
+                . ',"position":1},"comments":["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#00000000-0000-0000-0000'
+                . '-000000000000 (circular reference)"],"createdAt":"%s","id":"00000000-0000-0000-0000-000000000001"},'
+                . '"id":"00000000-0000-0000-0000-000000000000","message":"some-message"}]}',
                 $expectedCreatedAt
             ),
         ];
