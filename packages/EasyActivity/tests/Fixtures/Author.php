@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Author
 {
-    #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue(strategy: "UUID")]
     #[ORM\Id]
-    private int $id;
+    private string $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
@@ -21,7 +21,7 @@ class Author
     #[ORM\Column(type: Types::INTEGER)]
     private int $position;
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -36,7 +36,7 @@ class Author
         return $this->position;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }

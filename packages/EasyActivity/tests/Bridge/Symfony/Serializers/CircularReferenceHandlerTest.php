@@ -19,11 +19,14 @@ final class CircularReferenceHandlerTest extends AbstractSymfonyTestCase
     {
         $entityManager = EntityManagerStub::createFromEventManager();
         $handler = new CircularReferenceHandler($entityManager);
-        $article = (new Article())->setId(1);
+        $article = (new Article())->setId('00000000-0000-0000-0000-000000000000');
 
         $result = $handler($article, 'json', []);
 
-        self::assertSame('EonX\EasyActivity\Tests\Fixtures\Article#1 (circular reference)', $result);
+        self::assertSame(
+            'EonX\EasyActivity\Tests\Fixtures\Article#00000000-0000-0000-0000-000000000000 (circular reference)',
+            $result
+        );
     }
 
     public function testInvokeSucceedsWithoutId(): void
