@@ -32,9 +32,5 @@ final class EasyApiPlatformExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
         $loader->load('filters.php');
-
-        if ($config['custom_paginator_enabled'] ?? true) {
-            $loader->load('pagination.php');
-        }
     }
 }
