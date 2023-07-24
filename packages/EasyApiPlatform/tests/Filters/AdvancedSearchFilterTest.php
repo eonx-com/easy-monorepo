@@ -179,7 +179,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'name' => null,
             ],
             [
-                'foo' => 'exact',
+                'someInvalidProperty' => 'exact',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
@@ -195,8 +195,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ],
             [
                 'name' => ['foo'],
-                'relatedDummy' => ['foo'],
-                'relatedDummies' => [['foo']],
+                'relatedDummy' => ['some-invalid-value'],
+                'relatedDummies' => [['some-invalid-value']],
             ],
             \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', $this->alias, Dummy::class),
             [],
@@ -568,7 +568,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => null,
             ],
             [
-                'relatedDummy' => 'exact',
+                'relatedDummy' => 'some-invalid-value',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
@@ -582,7 +582,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => null,
             ],
             [
-                'relatedDummy' => '/related_dummie/1',
+                'relatedDummy' => '/some-invalid-iri/1',
             ],
             \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
             [],
@@ -628,6 +628,52 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy_p1' => [1, 2],
                 'id_p2' => 1,
+            ],
+            $filterFactory,
+        ];
+
+        yield 'invalid IRI for entityId field' => [
+            [
+                'entityId' => null,
+            ],
+            [
+                'entityId' => '/some-invalid-iri/1',
+            ],
+            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            [],
+            $filterFactory,
+        ];
+
+        yield 'IRI value for entityId field' => [
+            [
+                'entityId' => null,
+            ],
+            [
+                'entityId' => '/related_dummies/1',
+            ],
+            \sprintf(
+                'SELECT %s FROM %s %1$s WHERE %1$s.entityId = :entityId_p1',
+                $this->alias,
+                Dummy::class
+            ),
+            ['entityId_p1' => 1],
+            $filterFactory,
+        ];
+
+        yield 'mixed IRI and entity ID values for entityId field' => [
+            [
+                'entityId' => null,
+            ],
+            [
+                'entityId' => ['/related_dummies/1', '2'],
+            ],
+            \sprintf(
+                'SELECT %s FROM %s %1$s WHERE %1$s.entityId IN(:entityId_p1)',
+                $this->alias,
+                Dummy::class
+            ),
+            [
+                'entityId_p1' => [1, 2],
             ],
             $filterFactory,
         ];
@@ -1107,6 +1153,20 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'strategy' => 'exact',
                 'is_collection' => true,
             ],
+            'entityId' => [
+                'property' => 'entityId',
+                'type' => 'int',
+                'required' => false,
+                'strategy' => 'exact',
+                'is_collection' => false,
+            ],
+            'entityId[]' => [
+                'property' => 'entityId',
+                'type' => 'int',
+                'required' => false,
+                'strategy' => 'exact',
+                'is_collection' => true,
+            ],
             'jsonData' => [
                 'property' => 'jsonData',
                 'type' => 'string',
@@ -1273,7 +1333,8 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             $propertyAccessor,
             null,
             $properties,
-            new CustomConverter()
+            new CustomConverter(),
+            ['entityId']
         );
     }
 }

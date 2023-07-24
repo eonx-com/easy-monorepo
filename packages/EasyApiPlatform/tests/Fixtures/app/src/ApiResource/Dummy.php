@@ -50,6 +50,9 @@ class Dummy
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $dummyPrice;
 
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $entityId;
+
     /**
      * @var mixed[]
      */
@@ -146,6 +149,11 @@ class Dummy
     public function getDummyPrice(): ?string
     {
         return $this->dummyPrice;
+    }
+
+    public function getEntityId(): int
+    {
+        return $this->entityId;
     }
 
     /**
@@ -248,6 +256,11 @@ class Dummy
     public function setDummyPrice(?string $dummyPrice = null): void
     {
         $this->dummyPrice = $dummyPrice;
+    }
+
+    public function setEntityId(int $entityId): void
+    {
+        $this->entityId = $entityId;
     }
 
     /**
