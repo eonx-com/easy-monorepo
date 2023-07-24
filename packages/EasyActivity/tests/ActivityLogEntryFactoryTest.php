@@ -11,6 +11,7 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
+use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryTest extends AbstractTestCase
 {
@@ -88,7 +89,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
-            (new Article())->setId((string) (new \Symfony\Component\Uid\NilUuid())),
+            (new Article())->setId((string) (new NilUuid())),
             ['title' => [null, 'New Title']]
         );
 
@@ -103,7 +104,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertSame(ActivityLogEntry::DEFAULT_ACTOR_TYPE, $result->getActorType());
         self::assertSame(ActivityLogEntry::ACTION_CREATE, $result->getAction());
         self::assertNull($result->getActorName());
-        self::assertSame((string) (new \Symfony\Component\Uid\NilUuid()), $result->getSubjectId());
+        self::assertSame((string) (new NilUuid()), $result->getSubjectId());
         self::assertSame(Article::class, $result->getSubjectType());
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getCreatedAt());
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getUpdatedAt());
@@ -113,7 +114,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $comment1 = (new Comment())
-            ->setId((string) (new \Symfony\Component\Uid\NilUuid()))
+            ->setId((string) (new NilUuid()))
             ->setMessage('Test 1');
         $comment2 = (new Comment())
             ->setId('00000000-0000-0000-0000-000000000001')
@@ -140,7 +141,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             [
                 'content' => 'Content',
                 'comments' => [
-                    ['id' => (string) (new \Symfony\Component\Uid\NilUuid())],
+                    ['id' => (string) (new NilUuid())],
                     ['id' => '00000000-0000-0000-0000-000000000001'],
                 ],
             ],
@@ -152,7 +153,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $author = new Author();
-        $author->setId((string) (new \Symfony\Component\Uid\NilUuid()));
+        $author->setId((string) (new NilUuid()));
         $author->setName('John');
         $author->setPosition(1);
         $article = new Article();
@@ -174,7 +175,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertEquals(
             [
                 'title' => 'Related objects',
-                'author' => ['id' => (string) (new \Symfony\Component\Uid\NilUuid())],
+                'author' => ['id' => (string) (new NilUuid())],
             ],
             \json_decode((string)$result->getSubjectData(), true)
         );
@@ -194,7 +195,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             []
         );
         $author = new Author();
-        $author->setId((string) (new \Symfony\Component\Uid\NilUuid()));
+        $author->setId((string) (new NilUuid()));
         $author->setName('John');
         $author->setPosition(1);
         $article = new Article();
@@ -251,7 +252,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $author = new Author();
         $author->setName('John');
         $author->setPosition(1);
-        $author->setId((string) (new \Symfony\Component\Uid\NilUuid()));
+        $author->setId((string) (new NilUuid()));
         $article = new Article();
         $article->setId('00000000-0000-0000-0000-000000000001');
 

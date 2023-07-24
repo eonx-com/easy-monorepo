@@ -17,6 +17,7 @@ use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\NilUuid;
 
 final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
 {
@@ -27,7 +28,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
      */
     public static function provideDataForSerializeSucceeds(): iterable
     {
-        $entityId = (string) (new \Symfony\Component\Uid\NilUuid());
+        $entityId = (string) (new NilUuid());
         $authorName = 'John Doe';
         $authorPosition = 1;
         $author = new Author();
@@ -179,7 +180,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $comment = (new Comment())
-            ->setId((string) (new \Symfony\Component\Uid\NilUuid()))
+            ->setId((string) (new NilUuid()))
             ->setMessage('some-message');
         $article = new Article();
         $article->setId('00000000-0000-0000-0000-000000000001');
