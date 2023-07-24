@@ -227,23 +227,20 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $article->addComment($commentB);
         $article->addComment($commentC);
 
-        // Create an article
         $entityManager->persist($article);
         $entityManager->flush();
-        // Delete the comment C of the article
         $article->getComments()
             ->removeElement($commentC);
         $entityManager->flush();
-        // Update the message value of the comment A of the article
         $commentA->setMessage('comment 1 updated');
         $entityManager->flush();
-        // Add a new comment D to the article
         $commentD = (new Comment())->setMessage('comment 4');
         $article->addComment($commentD);
         $entityManager->flush();
 
         $logEntries = $this->getLogEntries($entityManager);
         self::assertCount(3, $logEntries);
+        // Create an article
         self::assertSame('create', $logEntries[0]['action']);
         self::assertSame(
             [
@@ -252,6 +249,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             ],
             \json_decode($logEntries[0]['subject_data'], true)
         );
+        // Delete the comment C of the article
         self::assertSame('update', $logEntries[1]['action']);
         self::assertSame(
             [
@@ -265,6 +263,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             ],
             \json_decode($logEntries[1]['subject_old_data'], true)
         );
+        // Add a new comment D to the article
         self::assertSame('update', $logEntries[2]['action']);
         self::assertSame(
             [
