@@ -95,6 +95,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
         $category->setActiveTill(new DateTimeImmutable($activeTill));
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
         $product->setPrice(new Price('1000', 'USD'));
 
