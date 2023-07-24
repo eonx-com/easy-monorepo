@@ -16,14 +16,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     /**
-     * @ORM\ManyToOne(targetEntity=Author::class)
+     * @ORM\ManyToOne(targetEntity=\EonX\EasyActivity\Tests\Fixtures\Author::class)
      *
      * @var \EonX\EasyActivity\Tests\Fixtures\Author
      */
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=\EonX\EasyActivity\Tests\Fixtures\Comment::class, mappedBy="article", cascade={"persist"})
      *
      * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyActivity\Tests\Fixtures\Comment>
      */

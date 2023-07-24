@@ -28,7 +28,7 @@ interface CustomPaginatorInterface
      *
      * @return mixed[]
      *
-     * @Groups({CustomPaginatorInterface::SERIALIZER_GROUP})
+     * @Groups({\EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface::SERIALIZER_GROUP})
      */
     public function getItems(): array;
 
@@ -37,7 +37,7 @@ interface CustomPaginatorInterface
      *
      * @return mixed[]
      *
-     * @Groups({CustomPaginatorInterface::SERIALIZER_GROUP})
+     * @Groups({\EonX\EasyCore\Bridge\Symfony\ApiPlatform\Pagination\CustomPaginatorInterface::SERIALIZER_GROUP})
      */
     public function getPagination(): array;
 }
