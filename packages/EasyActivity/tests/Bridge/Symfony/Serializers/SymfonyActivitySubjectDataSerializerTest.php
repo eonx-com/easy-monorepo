@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony\Serializers;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use EonX\EasyActivity\ActivitySubject;
@@ -16,6 +17,7 @@ use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\NilUuid;
 
 final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
 {
@@ -26,7 +28,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
      */
     public function provideDataForSerializeSucceeds(): iterable
     {
-        $entityId = 1;
+        $entityId = (string) (new NilUuid());
         $authorName = 'John Doe';
         $authorPosition = 1;
         $author = new Author();
@@ -42,7 +44,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, [], [], []),
             'disallowedProperties' => null,
-            'expectedResult' => '{"id":1,"name":"John Doe","position":1}',
+            'expectedResult' => '{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe","position":1}',
         ];
 
         $disallowedProperties = [
@@ -87,7 +89,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'expectedResult' => '{"name":"John Doe","position":1}',
         ];
 
-        $moment = new \DateTimeImmutable();
+        $moment = new DateTimeImmutable();
         yield 'Config with nested object' => [
             'data' => [
                 'author' => $author,
@@ -99,7 +101,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], []),
             'disallowedProperties' => null,
             'expectedResult' => \sprintf(
-                '{"author":{"id":1},"comments":[],"content":"text","createdAt":"%s","id":1}',
+                '{"author":{"id":"00000000-0000-0000-0000-000000000000"},"comments":[],"content":"text",' .
+                '"createdAt":"%s","id":"00000000-0000-0000-0000-000000000000"}',
                 $moment->format(DateTimeInterface::ATOM)
             ),
         ];
@@ -126,7 +129,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             ],
             'subject' => new ActivitySubject((string)$entityId, Author::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
-            'expectedResult' => '{"id":1,"name":"John Doe"}',
+            'expectedResult' => '{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"}',
         ];
 
         $allowedProperties = [
@@ -138,12 +141,13 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'author' => $author,
                 'comment' => new ArrayCollection(),
                 'content' => 'text',
-                'createdAt' => new \DateTimeImmutable(),
+                'createdAt' => new DateTimeImmutable(),
                 'id' => $entityId,
             ],
             'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
-            'expectedResult' => '{"author":{"id":1,"name":"John Doe"},"content":"text"}',
+            'expectedResult' => '{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"},' .
+                '"content":"text"}',
         ];
 
         $allowedProperties = [
@@ -158,7 +162,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
                 'author' => $author,
                 'comment' => new ArrayCollection(),
                 'content' => 'text',
-                'createdAt' => new \DateTimeImmutable(),
+                'createdAt' => new DateTimeImmutable(),
                 'id' => $entityId,
             ],
             'subject' => new ActivitySubject(
@@ -173,7 +177,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $comment = (new Comment())
-            ->setId(1)
+            ->setId((string) (new NilUuid()))
             ->setMessage('some-message');
         $article = new Article();
         $article->addComment($comment);
@@ -186,12 +190,13 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'data' => [
                 'comments' => [$comment],
             ],
-            'subject' => new ActivitySubject((string)$entityId, Article::class, [], [], $allowedProperties),
+            'subject' => new ActivitySubject($entityId, Article::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
             'expectedResult' => \sprintf(
                 '{"comments":[{"article":{"author":null,"comments":' .
-                '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#1 (circular reference)"],' .
-                '"createdAt":"%s","id":null},"id":1,"message":"some-message"}]}',
+                '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#00000000-0000-0000-0000-000000000000' .
+                ' (circular reference)"],"createdAt":"%s"},"id":"00000000-0000-0000-0000-000000000000",' .
+                '"message":"some-message"}]}',
                 $expectedCreatedAt
             ),
         ];

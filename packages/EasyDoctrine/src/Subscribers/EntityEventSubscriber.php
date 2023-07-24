@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Subscribers;
 
 use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
+use SplObjectStorage;
 use Stringable;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
@@ -58,17 +60,50 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityInsertions = $this->filterEntities($unitOfWork->getScheduledEntityInsertions());
         $scheduledEntityUpdates = $this->filterEntities($unitOfWork->getScheduledEntityUpdates());
         $scheduledEntityDeletions = $this->filterEntities($unitOfWork->getScheduledEntityDeletions());
+        $scheduledCollectionUpdates = $this->filterCollections($unitOfWork->getScheduledCollectionUpdates());
+
+        $collectionsMapping = new SplObjectStorage();
+        foreach ($scheduledCollectionUpdates as $collection) {
+            /** @var object $owner */
+            $owner = $collection->getOwner();
+            if ($collectionsMapping->contains($owner) === false) {
+                $collectionsMapping->offsetSet($owner, []);
+            }
+            $collections = $collectionsMapping->offsetGet($owner);
+            $collections[] = $collection;
+            $collectionsMapping->offsetSet($owner, $collections);
+        }
 
         foreach ($scheduledEntityInsertions as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
+
+            if ($collectionsMapping->contains($object)) {
+                $collectionsChangeSet = $this->computeCollectionsChangeSet(
+                    $collectionsMapping->offsetGet($object),
+                    $entityManager
+                );
+                $collectionsMapping->detach($object);
+                /** @var array<string, array{mixed, mixed}> $changeSet */
+                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+            }
+
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $object, $changeSet);
         }
 
         foreach ($scheduledEntityUpdates as $object) {
             /** @var array<string, array{mixed, mixed}> $changeSet */
-            $changeSet = $unitOfWork->getEntityChangeSet($object);
-            $changeSet = $this->getClearedChangeSet($changeSet);
+            $changeSet = $this->getClearedChangeSet($unitOfWork->getEntityChangeSet($object));
+            if ($collectionsMapping->contains($object)) {
+                $collectionsChangeSet = $this->computeCollectionsChangeSet(
+                    $collectionsMapping->offsetGet($object),
+                    $entityManager
+                );
+                $collectionsMapping->detach($object);
+                /** @var array<string, array{mixed, mixed}> $changeSet */
+                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+            }
+
             if (\count($changeSet) > 0) {
                 $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $changeSet);
             }
@@ -83,6 +118,48 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             }
             $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
+
+        $collectionsMapping->rewind();
+        foreach ($collectionsMapping as $object) {
+            /** @var array<string, array{mixed, mixed}> $collectionsChangeSet */
+            $collectionsChangeSet = $this->computeCollectionsChangeSet(
+                $collectionsMapping->offsetGet($object),
+                $entityManager
+            );
+            $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $collectionsChangeSet);
+        }
+    }
+
+    /**
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
+     *
+     * @template TKey of array-key
+     * @template T
+     *
+     * @return array<string, array<mixed>>
+     */
+    public function computeCollectionsChangeSet(
+        array $collections,
+        EntityManagerInterface $entityManager,
+    ): array {
+        $changeSet = [];
+        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
+            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
+            return (string)$entityManager->getUnitOfWork()
+                ->getEntityIdentifier($entity)[$identifierName];
+        };
+        foreach ($collections as $collection) {
+            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
+            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
+            $diff = \array_diff($snapshotIds, $actualIds);
+            if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
+                /** @var array{fieldName: string} $mapping */
+                $mapping = $collection->getMapping();
+                $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
+            }
+        }
+
+        return $changeSet;
     }
 
     public function postFlush(PostFlushEventArgs $eventArgs): void
@@ -92,6 +169,34 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         if ($entityManager->getConnection()->getTransactionNestingLevel() === 0) {
             $this->eventDispatcher->dispatch();
         }
+    }
+
+    /**
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
+     *
+     * @template TKey of array-key
+     * @template T
+     *
+     * @return list<\Doctrine\ORM\PersistentCollection<TKey, T>>
+     */
+    private function filterCollections(array $collections): array
+    {
+        return \array_filter($collections, function (PersistentCollection $collection): bool {
+            $typeClass = $collection->getTypeClass();
+            if ($typeClass->idGenerator->isPostInsertGenerator()) {
+                return false;
+            }
+
+            /** @var object $owner */
+            $owner = $collection->getOwner();
+            foreach ($this->acceptableEntities as $acceptableEntityClass) {
+                if (\is_a($owner, $acceptableEntityClass)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 
     /**
