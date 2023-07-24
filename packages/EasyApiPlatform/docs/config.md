@@ -9,9 +9,8 @@ To customize the EasyApiPlatform package for your Symfony application, you can u
 
 ## Configuration files
 
-For Symfony applications, the EasyApiPlatform configuration file can be written in YAML, XML, or PHP format. It should be placed under the `config/packages` directory with a name like `easy_api_platform.<format>`. The root node of the configuration must be named `easy_api_platform`.
-
-If you're using [Symfony Flex][https://flex.symfony.com/], the `config/packages/easy_api_platform.yaml` configuration file will be automatically created for you.
+For Symfony applications, the EasyApiPlatform configuration file can be written in YAML, XML, or PHP format. It should be placed under the `config/packages` directory with a name like `easy_api_platform.<format>`. The root node of the configuration
+must be named `easy_api_platform`.
 
 ## Configuration options
 
