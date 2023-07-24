@@ -12,6 +12,10 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyApiPlatformExtension extends Extension
 {
+    private const EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG = [
+        'iri_fields' => BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
+    ];
+
     /**
      * @param mixed[] $configs
      *
@@ -20,14 +24,17 @@ final class EasyApiPlatformExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
+
+        foreach (self::EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
+            $container->setParameter($param, $config['advanced_search_filter'][$name]);
+        }
+
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-
-        $container->setParameter(
-            BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
-            $config['advanced_search_filter']['iri_fields']
-        );
-
         $loader->load('services.php');
         $loader->load('filters.php');
+
+        if ($config['custom_paginator_enabled'] ?? true) {
+            $loader->load('pagination.php');
+        }
     }
 }
