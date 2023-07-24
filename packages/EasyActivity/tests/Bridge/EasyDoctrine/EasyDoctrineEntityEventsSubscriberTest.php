@@ -227,13 +227,17 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $article->addComment($commentB);
         $article->addComment($commentC);
 
+        // Create an article
         $entityManager->persist($article);
         $entityManager->flush();
+        // Delete the comment C of the article
         $article->getComments()
             ->removeElement($commentC);
         $entityManager->flush();
+        // Update the message value of the comment A of the article
         $commentA->setMessage('comment 1 updated');
         $entityManager->flush();
+        // Add a new comment D to the article
         $commentD = (new Comment())->setMessage('comment 4');
         $article->addComment($commentD);
         $entityManager->flush();

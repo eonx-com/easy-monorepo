@@ -12,6 +12,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
+use SplObjectStorage;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
@@ -60,7 +61,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledEntityDeletions = $this->filterEntities($unitOfWork->getScheduledEntityDeletions());
         $scheduledCollectionUpdates = $this->filterCollections($unitOfWork->getScheduledCollectionUpdates());
 
-        $collectionsMapping = new \SplObjectStorage();
+        $collectionsMapping = new SplObjectStorage();
         foreach ($scheduledCollectionUpdates as $collection) {
             /** @var object $owner */
             $owner = $collection->getOwner();
@@ -151,7 +152,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
             $diff = \array_diff($snapshotIds, $actualIds);
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
-                /** @var array{'fieldName': string} $mapping */
+                /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
                 $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
             }

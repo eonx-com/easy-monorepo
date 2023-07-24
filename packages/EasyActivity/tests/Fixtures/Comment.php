@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Comment
 {
     /**
-     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=\EonX\EasyActivity\Tests\Fixtures\Article::class, inversedBy="comments")
      *
      * @var \EonX\EasyActivity\Tests\Fixtures\Article
      */
