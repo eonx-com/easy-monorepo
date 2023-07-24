@@ -11,6 +11,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
+use Stringable;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
@@ -123,6 +124,11 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
                 return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
                     $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            }
+
+            if (($changeSetItem[0] ?? null) instanceof Stringable &&
+                ($changeSetItem[1] ?? null) instanceof Stringable) {
+                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
             }
 
             return true;
