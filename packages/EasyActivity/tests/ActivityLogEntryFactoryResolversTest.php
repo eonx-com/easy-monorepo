@@ -15,6 +15,7 @@ use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Tests\Fixtures\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
+use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 {
@@ -37,7 +38,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId(1);
+        $author->setId((string) (new NilUuid()));
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
@@ -79,7 +80,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId(1);
+        $author->setId((string) (new NilUuid()));
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,

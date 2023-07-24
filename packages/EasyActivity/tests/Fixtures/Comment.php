@@ -6,6 +6,7 @@ namespace EonX\EasyActivity\Tests\Fixtures;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 class Comment
@@ -13,10 +14,11 @@ class Comment
     #[ORM\ManyToOne(targetEntity: Article::class, inversedBy: 'comments')]
     private Article $article;
 
-    #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::GUID)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Id]
-    private int $id;
+    private string $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $message;
@@ -26,7 +28,7 @@ class Comment
         return $this->article;
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -43,7 +45,7 @@ class Comment
         return $this;
     }
 
-    public function setId(int $id): self
+    public function setId(string $id): self
     {
         $this->id = $id;
 
