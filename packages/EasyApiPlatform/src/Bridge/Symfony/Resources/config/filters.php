@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyApiPlatform\Bridge\BridgeConstantsInterface;
 use EonX\EasyApiPlatform\Filters\AdvancedSearchFilter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -12,15 +13,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set('eonx.api_platform.doctrine.orm.advanced_search_filter', AdvancedSearchFilter::class)
         ->autoconfigure(false)
         ->autowire(false)
-        ->args([
-            service('doctrine'),
-            service('api_platform.iri_converter'),
-            service('api_platform.property_accessor'),
-            service('logger')
-                ->ignoreOnInvalid(),
-            '$nameConverter' => service('api_platform.name_converter')
-                ->ignoreOnInvalid(),
-        ])
+        ->arg('$managerRegistry', service('doctrine'))
+        ->arg('$iriConverter', service('api_platform.iri_converter'))
+        ->arg('$propertyAccessor', service('api_platform.property_accessor'))
+        ->arg('$logger', service('logger')->ignoreOnInvalid())
+        ->arg('$nameConverter', service('api_platform.name_converter')->ignoreOnInvalid())
+        ->arg('$iriFields', param(BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS))
         ->private()
         ->abstract();
 
