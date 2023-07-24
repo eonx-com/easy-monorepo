@@ -240,6 +240,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
 
         $logEntries = $this->getLogEntries($entityManager);
         self::assertCount(3, $logEntries);
+        // Create an article
         self::assertSame('create', $logEntries[0]['action']);
         self::assertSame(
             [
@@ -248,6 +249,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             ],
             \json_decode((string)$logEntries[0]['subject_data'], true)
         );
+        // Delete the comment C of the article
         self::assertSame('update', $logEntries[1]['action']);
         self::assertSame(
             [
@@ -261,6 +263,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             ],
             \json_decode((string) $logEntries[1]['subject_old_data'], true)
         );
+        // Add a new comment D to the article
         self::assertSame('update', $logEntries[2]['action']);
         self::assertSame(
             [

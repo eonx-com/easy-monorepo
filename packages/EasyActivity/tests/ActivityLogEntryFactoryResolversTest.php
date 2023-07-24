@@ -37,7 +37,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId('00000000-0000-0000-0000-000000000000');
+        $author->setId((string) (new \Symfony\Component\Uid\NilUuid()));
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
@@ -79,7 +79,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId('00000000-0000-0000-0000-000000000000');
+        $author->setId((string) (new \Symfony\Component\Uid\NilUuid()));
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,

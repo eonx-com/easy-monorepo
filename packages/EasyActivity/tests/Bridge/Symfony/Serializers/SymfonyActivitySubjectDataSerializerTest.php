@@ -27,7 +27,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
      */
     public static function provideDataForSerializeSucceeds(): iterable
     {
-        $entityId = '00000000-0000-0000-0000-000000000000';
+        $entityId = (string) (new \Symfony\Component\Uid\NilUuid());
         $authorName = 'John Doe';
         $authorPosition = 1;
         $author = new Author();
@@ -179,7 +179,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $comment = (new Comment())
-            ->setId('00000000-0000-0000-0000-000000000000')
+            ->setId((string) (new \Symfony\Component\Uid\NilUuid()))
             ->setMessage('some-message');
         $article = new Article();
         $article->setId('00000000-0000-0000-0000-000000000001');

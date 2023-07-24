@@ -146,7 +146,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
             $diff = \array_diff($snapshotIds, $actualIds);
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
-                /** @var array{'fieldName': string} $mapping */
+                /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
                 $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
             }

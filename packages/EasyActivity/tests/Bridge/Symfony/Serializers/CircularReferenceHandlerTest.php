@@ -19,7 +19,7 @@ final class CircularReferenceHandlerTest extends AbstractSymfonyTestCase
     {
         $entityManager = EntityManagerStub::createFromEventManager();
         $handler = new CircularReferenceHandler($entityManager);
-        $article = (new Article())->setId('00000000-0000-0000-0000-000000000000');
+        $article = (new Article())->setId((string) (new \Symfony\Component\Uid\NilUuid()));
 
         $result = $handler($article, 'json', []);
 
