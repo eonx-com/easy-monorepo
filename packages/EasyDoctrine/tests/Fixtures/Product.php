@@ -23,8 +23,8 @@ class Product
     #[ORM\Column(type: Types::STRING, length: 128)]
     private string $name;
 
-    #[ORM\Column(type: Types::BIGINT)]
-    private string $price;
+    #[ORM\Column(type: PriceType::NAME)]
+    private Price $price;
 
     /**
      * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Tag>
@@ -67,7 +67,7 @@ class Product
         return $this->name;
     }
 
-    public function getPrice(): string
+    public function getPrice(): Price
     {
         return $this->price;
     }
@@ -101,7 +101,7 @@ class Product
         return $this;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(Price $price): self
     {
         $this->price = $price;
 

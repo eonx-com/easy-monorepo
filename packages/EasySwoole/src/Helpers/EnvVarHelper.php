@@ -20,7 +20,7 @@ final class EnvVarHelper
     /**
      * @param string[] $jsonSecrets
      */
-    public static function loadEnvVars(array $jsonSecrets): void
+    public static function loadEnvVars(array $jsonSecrets, ?string $dotEnvPath = null): void
     {
         $jsonSecrets = \array_map(static function (string $jsonSecret): string {
             $jsonSecret = u($jsonSecret);
@@ -63,6 +63,12 @@ final class EnvVarHelper
 
         foreach (EnvVarSubstitutionHelper::resolveVariables($_ENV) as $name => $value) {
             $_ENV[$name] = $value;
+        }
+
+        if (self::$outputEnabled && $dotEnvPath !== null && isset($_SERVER['SYMFONY_DOTENV_VARS'])) {
+            foreach (\explode(',', $_SERVER['SYMFONY_DOTENV_VARS']) as $name) {
+                OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $dotEnvPath));
+            }
         }
     }
 }

@@ -35,7 +35,10 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_PATTERN_NOT_IRI = '/Expected IRI or nested document for attribute "(\w+)", "(\w+)" given/';
 
-    private const MESSAGE_PATTERN_NO_PARAMETER = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]?' .
+    private const MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]?' .
+    ' from serialized data because its constructor requires parameter "(\w+)" to be present/';
+
+    private const MESSAGE_PATTERN_NO_PARAMETER_SYMFONY = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]?' .
     ' from serialized data because its constructor requires the following parameters to be present : "(.*)"/';
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
@@ -77,7 +80,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             InvalidArgumentException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
-                \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
+                \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $message) === 1 ||
+                \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $message) === 1,
             UnexpectedValueException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
@@ -120,10 +124,22 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         }
 
         if ($throwable instanceof MissingConstructorArgumentsException) {
+            // If exception thrown in ApiPlatform's AbstractItemNormalizer
             $matches = [];
-            \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $throwable->getMessage(), $matches);
+            \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $throwable->getMessage(), $matches);
+            if ($matches !== []) {
+                $data[$violationsKey][$matches[2]] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+            }
+
+            // If exception thrown in Symfony's AbstractNormalizer
+            $matches = [];
+            \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $throwable->getMessage(), $matches);
             $matches = \explode('", "', $matches[2] ?? '');
             foreach ($matches as $match) {
+                if ($match === '') {
+                    continue;
+                }
+
                 $match = \str_replace('$', '', $match);
                 $data[$violationsKey][$match] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
             }

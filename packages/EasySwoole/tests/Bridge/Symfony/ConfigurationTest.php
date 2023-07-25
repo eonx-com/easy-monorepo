@@ -20,6 +20,9 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
             'enabled' => true,
             'reset_dbal_connections' => true,
         ],
+        'easy_admin' => [
+            'enabled' => true,
+        ],
         'easy_batch' => [
             'enabled' => true,
             'reset_batch_processor' => true,

@@ -13,6 +13,7 @@ use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
+use EonX\EasyDoctrine\Tests\Fixtures\Price;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Fixtures\Tag;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
@@ -65,13 +66,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
     }
 
-    public function testEventIsNotDispatchedForEqualDates(): void
+    public function testEventIsNotDispatchedForEqualObjects(): void
     {
         $eventDispatcher = new EventDispatcherStub();
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
-            [Category::class],
-            [Category::class]
+            [Category::class, Product::class],
+            [Category::class, Product::class]
         );
         $activeTill = '2022-12-20 16:23:52';
         $entityManager->getConnection()
@@ -83,11 +84,22 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'activeTill' => $activeTill,
                 ]
             );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Laptop',
+                    'price' => '1000 USD',
+                ]
+            );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
         $category->setActiveTill(new DateTimeImmutable($activeTill));
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $product->setPrice(new Price('1000', 'USD'));
 
-        $entityManager->persist($category);
         $entityManager->flush();
 
         $events = $eventDispatcher->getDispatchedEvents();
@@ -108,7 +120,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $dispatcher->enable();
         $product = new Product();
         $product->setName('Description 1');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $entityManager->persist($product);
 
         $entityManager->flush();
@@ -130,12 +142,12 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
-            $product->setPrice('1000');
+            $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
             try {
                 $entityManager->wrapInTransaction(function () use ($entityManager, $product): never {
-                    $product->setPrice('2000');
+                    $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
                     throw new RuntimeException('Test', 1);
@@ -152,7 +164,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'category' => [null, null],
                     'name' => [null, 'Description 1'],
-                    'price' => [null, '1000'],
+                    'price' => [null, new Price('1000', 'USD')],
                 ]
             ),
             $events[0]
@@ -172,7 +184,8 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager->persist($category);
         $product = new Product();
         $product->setName('Keyboard');
-        $product->setPrice('1000');
+        $price = new Price('1000', 'USD');
+        $product->setPrice($price);
         $entityManager->persist($product);
 
         $entityManager->flush();
@@ -194,7 +207,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
-                    'price' => [null, '1000'],
+                    'price' => [null, $price],
                     'category' => [null, null],
                 ]
             ),
@@ -224,7 +237,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                 ]
             );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
@@ -232,7 +245,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
         $category->setName('Computer Peripherals');
-        $product->setPrice('2000');
+        $product->setPrice(new Price('2000', 'USD'));
 
         $entityManager->persist($category);
         $entityManager->persist($product);
@@ -253,7 +266,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             new EntityUpdatedEvent(
                 $product,
                 [
-                    'price' => ['1000', '2000'],
+                    'price' => [new Price('1000', 'USD'), new Price('2000', 'USD')],
                 ]
             ),
             $events[1]
@@ -276,7 +289,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 }
                 $product = new Product();
                 $product->setName('Keyboard');
-                $product->setPrice('100');
+                $product->setPrice(new Price('100', 'USD'));
 
                 $entityManager->persist($product);
                 $entityManager->flush();
@@ -307,7 +320,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
-                    'price' => [null, '100'],
+                    'price' => [null, new Price('100', 'USD')],
                     'category' => [null, null],
                 ]
             ),
@@ -329,7 +342,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager->persist($category);
         $product = new Product();
         $product->setName('Keyboard');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $product->setCategory($category);
         $entityManager->persist($product);
 
@@ -342,7 +355,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
-                    'price' => [null, '1000'],
+                    'price' => [null, new Price('1000', 'USD')],
                     'category' => [null, $category],
                 ]
             ),
@@ -363,10 +376,10 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $dispatcher->disable();
         $product = new Product();
         $product->setName('Description 1');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $entityManager->persist($product);
         $entityManager->flush();
-        $product->setPrice('2000');
+        $product->setPrice(new Price('2000', 'USD'));
         $entityManager->flush();
 
         $events = $eventDispatcher->getDispatchedEvents();
@@ -387,11 +400,11 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
             $entityManager->transactional(function () use ($entityManager, $product): void {
                 $product->setName('Description 1');
-                $product->setPrice('1000');
+                $product->setPrice(new Price('1000', 'USD'));
                 $entityManager->persist($product);
                 $entityManager->flush();
                 $entityManager->transactional(function () use ($entityManager, $product): never {
-                    $product->setPrice('2000');
+                    $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
                     throw new RuntimeException('Test', 1);
@@ -442,7 +455,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                     'category_id' => 1,
                 ]
             );
@@ -469,7 +482,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
         $product = new Product();
         $product->setName('Product 1');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $entityManager->persist($product);
 
         $entityManager->flush();
@@ -499,7 +512,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                     'category_id' => 1,
                 ]
             );
@@ -533,10 +546,10 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Events\EntityDeletedEvent $actualEvent */
         $actualEvent = $events[0];
         self::assertInstanceOf(EntityDeletedEvent::class, $actualEvent);
-        self::assertSame($actualEvent->getChangeSet(), [
+        self::assertEquals($actualEvent->getChangeSet(), [
             'id' => [1, null],
             'name' => ['Keyboard', null],
-            'price' => ['1000', null],
+            'price' => [new Price('1000', 'USD'), null],
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
             'tags' => [$product->getTags(), null],
@@ -546,7 +559,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         self::assertInstanceOf(Product::class, $product);
         self::assertSame(1, $product->getId());
         self::assertSame('Keyboard', $product->getName());
-        self::assertSame('1000', $product->getPrice());
+        self::assertEquals(new Price('1000', 'USD'), $product->getPrice());
         self::assertNotNull($product->getCategory());
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $product->getCategory();
@@ -576,18 +589,18 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                 ]
             );
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
 
         $entityManager->transactional(function () use ($entityManager, $product): void {
-            $product->setPrice('2000');
+            $product->setPrice(new Price('2000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
             $entityManager->transactional(function () use ($entityManager, $product): void {
-                $product->setPrice('3000');
+                $product->setPrice(new Price('3000', 'USD'));
                 $product->setName('Keyboard 2');
                 $entityManager->flush();
             });
@@ -600,7 +613,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             new EntityUpdatedEvent(
                 $product,
                 [
-                    'price' => ['1000', '3000'],
+                    'price' => [new Price('1000', 'USD'), new Price('3000', 'USD')],
                     'name' => ['Keyboard', 'Keyboard 2'],
                 ]
             ),
@@ -620,11 +633,11 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $product = new Product();
         $entityManager->transactional(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
-            $product->setPrice('1000');
+            $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
             $entityManager->transactional(function () use ($entityManager, $product): void {
-                $product->setPrice('2000');
+                $product->setPrice(new Price('2000', 'USD'));
                 $entityManager->flush();
             });
         });
@@ -637,7 +650,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'description' => [null, 'Description 1'],
-                    'price' => [null, '2000'],
+                    'price' => [null, new Price('2000', 'USD')],
                     'category' => [null, null],
                 ]
             ),
