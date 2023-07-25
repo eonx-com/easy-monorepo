@@ -61,7 +61,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
             foreach ($cases as $case) {
                 $splitName = \preg_split(
                     pattern: '/([A-Z\d][a-z\d]+)/u',
-                    subject: (string) $case->name,
+                    subject: (string)$case->name,
                     flags: \PREG_SPLIT_DELIM_CAPTURE
                 );
                 if (\is_array($splitName)) {

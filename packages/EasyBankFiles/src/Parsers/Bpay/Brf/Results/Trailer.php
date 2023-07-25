@@ -132,14 +132,14 @@ final class Trailer extends BaseResult
         $value = $this->data[$attrAmount];
 
         // Code is in the last digit
-        $sfCode = $value[\strlen((string) $value) - 1] ?? '';
+        $sfCode = $value[\strlen((string)$value) - 1] ?? '';
         $sfValue = $this->getSignedFieldValue($sfCode);
 
         if ($sfValue === null) {
             throw new InvalidSignFieldException(\sprintf('Invalid signed amount: %s', $attrAmount));
         }
 
-        $amountOfPayments = \substr((string) $value, 0, -1) . $sfValue['value'];
+        $amountOfPayments = \substr((string)$value, 0, -1) . $sfValue['value'];
 
         $amount = \ltrim($amountOfPayments, '0');
 

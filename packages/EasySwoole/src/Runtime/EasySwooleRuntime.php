@@ -30,7 +30,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
         if (isset($options['dotenv_path']) === false && isset($options['project_dir'])) {
             $envKey = $options['env_var_name'] ??= 'APP_ENV';
             $env = $options['env'] ??= $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
-            $envPath = \sprintf('envs/%s.env', \strtolower((string) $env));
+            $envPath = \sprintf('envs/%s.env', \strtolower((string)$env));
             $fullEnvPath = \sprintf('%s/%s', $options['project_dir'], $envPath);
 
             if (\is_file($fullEnvPath) && \is_readable($fullEnvPath)) {

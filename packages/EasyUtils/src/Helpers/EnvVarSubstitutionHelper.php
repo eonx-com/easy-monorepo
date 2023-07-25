@@ -85,7 +85,7 @@ final class EnvVarSubstitutionHelper
             $value = self::resolveEnvVarValue($name);
 
             if ($value === '' && isset($matches['default_value']) && $matches['default_value'] !== '') {
-                $unsupportedChars = \strpbrk((string) $matches['default_value'], '\'"{$');
+                $unsupportedChars = \strpbrk((string)$matches['default_value'], '\'"{$');
 
                 if (\is_string($unsupportedChars)) {
                     throw new RuntimeException(\sprintf(
@@ -95,7 +95,7 @@ final class EnvVarSubstitutionHelper
                     ));
                 }
 
-                $value = \substr((string) $matches['default_value'], 2);
+                $value = \substr((string)$matches['default_value'], 2);
 
                 if ($matches['default_value'][1] === '=') {
                     self::$values[$name] = $value;

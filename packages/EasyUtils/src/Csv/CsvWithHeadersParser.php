@@ -37,7 +37,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             foreach ($row as $key => $value) {
                 // Accept only value for known headers and no empty string
                 if (isset($headers[$key]) && $value !== '') {
-                    $record[$headers[$key]] = \trim((string) $value);
+                    $record[$headers[$key]] = \trim((string)$value);
                 }
             }
 

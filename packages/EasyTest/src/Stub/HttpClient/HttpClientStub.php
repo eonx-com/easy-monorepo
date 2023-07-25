@@ -53,8 +53,8 @@ final class HttpClientStub extends MockHttpClient
         if ($body !== null) {
             $contentType = null;
             foreach ($options['headers'] as $header) {
-                if (\str_starts_with((string) $header, 'Content-Type')) {
-                    $contentType = \str_replace('Content-Type: ', '', (string) $header);
+                if (\str_starts_with((string)$header, 'Content-Type')) {
+                    $contentType = \str_replace('Content-Type: ', '', (string)$header);
 
                     break;
                 }

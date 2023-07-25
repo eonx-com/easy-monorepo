@@ -66,7 +66,7 @@ final class EnvVarHelper
         }
 
         if (self::$outputEnabled && $dotEnvPath !== null && isset($_SERVER['SYMFONY_DOTENV_VARS'])) {
-            foreach (\explode(',', $_SERVER['SYMFONY_DOTENV_VARS']) as $name) {
+            foreach (\explode(',', (string)$_SERVER['SYMFONY_DOTENV_VARS']) as $name) {
                 OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $dotEnvPath));
             }
         }

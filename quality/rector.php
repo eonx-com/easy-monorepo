@@ -46,7 +46,8 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->skip([
-        // Skip entire files
+        // Skip entire files or directories
+        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is a test app
         'packages/EasyEncryption/src/AwsPkcs11Encryptor.php', // Because of Pkcs11
 
         // Skip rules

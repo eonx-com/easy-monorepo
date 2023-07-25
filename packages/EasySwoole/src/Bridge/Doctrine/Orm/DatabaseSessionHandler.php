@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SessionHandlerInterface;
 use SessionUpdateTimestampHandlerInterface as SessionUpdateTimestampHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Contracts\Service\ResetInterface;
 
-final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInterface, SessionUpdateTimestampHandler
+final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInterface, SessionUpdateTimestampHandler
 {
     private ?PdoSessionHandler $decorated = null;
 
@@ -57,10 +58,10 @@ final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInt
         $this->decorated = null;
     }
 
-    public function write(string $id, string $data): bool
+    public function updateTimestamp(string $id, string $data): bool
     {
         return $this->getDecorated()
-            ->write($id, $data);
+            ->updateTimestamp($id, $data);
     }
 
     public function validateId(string $id): bool
@@ -69,10 +70,10 @@ final class DatabaseSessionHandler implements ResetInterface, \SessionHandlerInt
             ->validateId($id);
     }
 
-    public function updateTimestamp(string $id, string $data): bool
+    public function write(string $id, string $data): bool
     {
         return $this->getDecorated()
-            ->updateTimestamp($id, $data);
+            ->write($id, $data);
     }
 
     private function getDecorated(): PdoSessionHandler

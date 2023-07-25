@@ -648,7 +648,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'entityId' => '/some-invalid-iri/1',
             ],
-            \sprintf('SELECT %s FROM %s %1$s', $this->alias, Dummy::class),
+            \sprintf('SELECT %s FROM %s %1$s', self::$alias, Dummy::class),
             [],
             $filterFactory,
         ];
@@ -662,7 +662,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ],
             \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.entityId = :entityId_p1',
-                $this->alias,
+                self::$alias,
                 Dummy::class
             ),
             ['entityId_p1' => 1],
@@ -678,7 +678,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ],
             \sprintf(
                 'SELECT %s FROM %s %1$s WHERE %1$s.entityId IN(:entityId_p1)',
-                $this->alias,
+                self::$alias,
                 Dummy::class
             ),
             [

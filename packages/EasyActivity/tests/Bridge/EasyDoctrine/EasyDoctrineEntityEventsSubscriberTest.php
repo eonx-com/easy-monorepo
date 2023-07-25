@@ -255,13 +255,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'comments' => [$commentA->getId(), $commentB->getId()],
             ],
-            \json_decode((string) $logEntries[1]['subject_data'], true)
+            \json_decode((string)$logEntries[1]['subject_data'], true)
         );
         self::assertSame(
             [
                 'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
             ],
-            \json_decode((string) $logEntries[1]['subject_old_data'], true)
+            \json_decode((string)$logEntries[1]['subject_old_data'], true)
         );
         // Add a new comment D to the article
         self::assertSame('update', $logEntries[2]['action']);
@@ -269,13 +269,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'comments' => [$commentA->getId(), $commentB->getId(), $commentD->getId()],
             ],
-            \json_decode((string) $logEntries[2]['subject_data'], true)
+            \json_decode((string)$logEntries[2]['subject_data'], true)
         );
         self::assertSame(
             [
                 'comments' => [$commentA->getId(), $commentB->getId()],
             ],
-            \json_decode((string) $logEntries[2]['subject_old_data'], true)
+            \json_decode((string)$logEntries[2]['subject_old_data'], true)
         );
     }
 

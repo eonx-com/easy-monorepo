@@ -22,6 +22,7 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue([])
                             ->info('Fields that could be passed as IRI')
                             ->prototype('scalar')
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

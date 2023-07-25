@@ -90,7 +90,7 @@ final class Configuration implements ConfigurationInterface
 
                                     // Remove trailing slashes
                                     $dirs = \array_map(static function ($mapValue): string {
-                                        $dir = u((string) $mapValue);
+                                        $dir = u((string)$mapValue);
 
                                         while ($dir->endsWith('/')) {
                                             $dir = $dir->trimSuffix('/');
@@ -121,7 +121,7 @@ final class Configuration implements ConfigurationInterface
                                     }
 
                                     return \array_map(static function ($mapValue): string {
-                                        $phpFile = u((string) $mapValue)->ensureStart('/');
+                                        $phpFile = u((string)$mapValue)->ensureStart('/');
 
                                         if ($phpFile->endsWith('.php') === false) {
                                             throw new InvalidArgumentException(
