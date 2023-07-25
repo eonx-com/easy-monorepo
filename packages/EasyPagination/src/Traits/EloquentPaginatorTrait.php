@@ -125,6 +125,6 @@ trait EloquentPaginatorTrait
      */
     private function fetchResults(Builder $queryBuilder): array
     {
-        return \array_values($queryBuilder->get()->getDictionary());
+        return \iterator_to_array($queryBuilder->get()->getIterator());
     }
 }
