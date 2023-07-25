@@ -38,7 +38,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId((string) (new NilUuid()));
+        $author->setId((string)(new NilUuid()));
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
@@ -80,7 +80,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId((string) (new NilUuid()));
+        $author->setId((string)(new NilUuid()));
 
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,

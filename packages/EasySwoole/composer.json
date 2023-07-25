@@ -39,6 +39,7 @@
     "suggest": {
         "doctrine/orm": "To use this package with Doctrine",
         "doctrine/persistence": "To use this package with Doctrine",
+        "easycorp/easyadmin-bundle": "To use this package with EasyAdmin",
         "eonx-com/easy-batch": "To use this package with EasyBatch",
         "nesbot/carbon": "To work with dates",
         "symfony/cache": "To use this package with Symfony",

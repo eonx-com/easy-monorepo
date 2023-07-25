@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests\Stubs;
 
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -14,6 +15,7 @@ use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFac
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Tests\Fixtures\PriceType;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
@@ -68,6 +70,10 @@ final class EntityManagerStub
 
         $entityManager = EntityManager::create($conn, $config, $eventManager);
         $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
+
+        if (Type::hasType(PriceType::NAME) === false) {
+            Type::addType(PriceType::NAME, PriceType::class);
+        }
 
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema([]);

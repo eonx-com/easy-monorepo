@@ -30,7 +30,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
         if (isset($options['dotenv_path']) === false && isset($options['project_dir'])) {
             $envKey = $options['env_var_name'] ??= 'APP_ENV';
             $env = $options['env'] ??= $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
-            $envPath = \sprintf('envs/%s.env', \strtolower((string) $env));
+            $envPath = \sprintf('envs/%s.env', \strtolower((string)$env));
             $fullEnvPath = \sprintf('%s/%s', $options['project_dir'], $envPath);
 
             if (\is_file($fullEnvPath) && \is_readable($fullEnvPath)) {
@@ -47,7 +47,10 @@ final class EasySwooleRuntime extends SymfonyRuntime
     public function getRunner(?object $application): RunnerInterface
     {
         OptionHelper::setOptions($this->options);
-        EnvVarHelper::loadEnvVars(OptionHelper::getArray('json_secrets'));
+        EnvVarHelper::loadEnvVars(
+            OptionHelper::getArray('json_secrets'),
+            OptionHelper::getStringNullable('dotenv_path')
+        );
 
         if ($application instanceof Application && OptionHelper::isset(EasyScheduleSwooleRunner::ENABLED)) {
             return new EasyScheduleSwooleRunner($application);

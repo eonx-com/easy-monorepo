@@ -283,7 +283,7 @@ final class ResultsContext implements ResultsContextInterface
          *
          * But first let remove the first 3 elements.
          */
-        $transactionCodes = \array_slice(\explode(',', (string) $identifier['line']), 3);
+        $transactionCodes = \array_slice(\explode(',', (string)$identifier['line']), 3);
         $transactionCodes = $this->formatTransactionCodes(\array_chunk($transactionCodes, 2));
 
         return new AccountIdentifier(\array_merge($data, [

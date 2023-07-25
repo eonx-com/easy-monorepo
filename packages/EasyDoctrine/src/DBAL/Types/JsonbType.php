@@ -55,7 +55,7 @@ final class JsonbType extends Type
         }
 
         try {
-            $decodedValue = \json_decode((string) $value, true, 512, \JSON_THROW_ON_ERROR);
+            $decodedValue = \json_decode((string)$value, true, 512, \JSON_THROW_ON_ERROR);
 
             return \is_array($decodedValue) ? $this->sortByKey($decodedValue) : $decodedValue;
         } catch (JsonException $exception) {

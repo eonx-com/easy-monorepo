@@ -15,7 +15,14 @@ final class EasyApiPlatformExtension extends Extension
     /**
      * @var array<string, string>
      */
-    private const EASY_API_PLATFORM_CONFIG = [
+    private const EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG = [
+        'iri_fields' => BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    private const EASY_API_PLATFORM_BASE_CONFIG = [
         'custom_paginator_enabled' => BridgeConstantsInterface::PARAM_CUSTOM_PAGINATOR_ENABLED,
     ];
 
@@ -28,8 +35,12 @@ final class EasyApiPlatformExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        foreach (self::EASY_API_PLATFORM_CONFIG as $name => $param) {
+        foreach (self::EASY_API_PLATFORM_BASE_CONFIG as $name => $param) {
             $container->setParameter($param, $config[$name]);
+        }
+
+        foreach (self::EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
+            $container->setParameter($param, $config['advanced_search_filter'][$name]);
         }
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

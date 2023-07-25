@@ -87,6 +87,13 @@ final class OptionHelper
         return (string)self::getOption($option, $env);
     }
 
+    public static function getStringNullable(string $option, ?string $env = null): ?string
+    {
+        $value = self::getOption($option, $env);
+
+        return \is_string($value) && $value !== '' ? $value : null;
+    }
+
     public static function isset(string $option, ?string $env = null): bool
     {
         return self::getOption($option, $env, false) !== null;

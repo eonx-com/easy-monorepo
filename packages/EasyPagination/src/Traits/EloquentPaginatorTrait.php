@@ -122,9 +122,9 @@ trait EloquentPaginatorTrait
      */
     private function fetchResults(EloquentBuilder $queryBuilder): array
     {
-        /** @var \Illuminate\Database\Eloquent\Collection<array-key, \Illuminate\Database\Eloquent\Model> $result */
-        $result = $queryBuilder->get();
+        /** @var \Illuminate\Database\Eloquent\Collection<array-key, \Illuminate\Database\Eloquent\Model> $collection */
+        $collection = $queryBuilder->get();
 
-        return \array_values($result->getDictionary());
+        return \iterator_to_array($collection->getIterator());
     }
 }
