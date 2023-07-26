@@ -399,8 +399,8 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $message = $this->translateMessage(
             (new Decimal(\compact('minPrecision', 'maxPrecision')))->message,
             [
-                '{{ minPrecision }}' => $minPrecision,
                 '{{ maxPrecision }}' => $maxPrecision,
+                '{{ minPrecision }}' => $minPrecision,
             ]
         );
 
@@ -529,8 +529,8 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         $message = $this->translateMessage(
             (new Range(\compact('min', 'max')))->notInRangeMessage,
             [
-                '{{ min }}' => $min,
                 '{{ max }}' => $max,
+                '{{ min }}' => $min,
             ]
         );
 

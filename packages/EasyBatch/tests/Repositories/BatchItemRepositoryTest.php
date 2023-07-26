@@ -91,9 +91,9 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
     }
 
     /**
-     * @dataProvider providerTestFindForDispatch
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestFindForDispatch
      */
     public function testFindForDispatch(callable $setup, callable $test, ?string $dependsOnName = null): void
     {

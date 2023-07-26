@@ -135,6 +135,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $events = [];
+
         try {
             $mergedEntityChangeSets = [];
             foreach ($this->entityChangeSets as $levelChangeSets) {
@@ -198,6 +199,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         foreach ($array2 as $key => [$old, $new]) {
             if (isset($array1[$key]) === false) {
                 $array1[$key] = [$old, $new];
+
                 continue;
             }
             $array1[$key][1] = $new;

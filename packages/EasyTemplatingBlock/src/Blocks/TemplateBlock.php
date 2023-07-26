@@ -9,14 +9,14 @@ use EonX\EasyTemplatingBlock\Interfaces\TemplateBlockInterface;
 final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlockInterface
 {
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $templateContext = null;
 
     private string $templateName;
 
     /**
-     * @param null|mixed[] $templateContext
+     * @param mixed[]|null $templateContext
      */
     public static function create(
         string $name,
@@ -29,7 +29,7 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getTemplateContext(): ?array
     {
@@ -46,7 +46,7 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
     }
 
     /**
-     * @param null|mixed[] $templateContext
+     * @param mixed[]|null $templateContext
      */
     public function setTemplateContext(?array $templateContext = null): self
     {

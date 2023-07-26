@@ -35,9 +35,9 @@ final class HeaderTest extends TestCase
     /**
      * Should return processing date as a null when date string is invalid.
      *
-     * @group Batch-Header
-     *
      * @param mixed[] $dateProcessed
+     *
+     * @group Batch-Header
      *
      * @dataProvider provideInvalidDateProcessedValues
      */

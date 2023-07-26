@@ -27,7 +27,7 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * @param null|mixed[] $headers
+     * @param mixed[]|null $headers
      */
     protected static function getRequestWithHeaders(?array $headers = null): Request
     {

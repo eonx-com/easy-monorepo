@@ -16,7 +16,7 @@ interface ExpressionLanguageInterface
     public function addFunctions(array $functions): self;
 
     /**
-     * @param null|mixed[] $arguments
+     * @param mixed[]|null $arguments
      *
      * @return mixed
      */
@@ -37,7 +37,7 @@ interface ExpressionLanguageInterface
     public function setCache(CacheItemPoolInterface $cache): self;
 
     /**
-     * @param null|string[] $names
+     * @param string[]|null $names
      */
     public function validate(string $expression, ?array $names = null): bool;
 }

@@ -49,9 +49,9 @@ final class TransactionTest extends TestCase
     /**
      * Should return date as a null when date string is invalid.
      *
-     * @group Brf-Transaction
-     *
      * @param mixed[] $date
+     *
+     * @group Brf-Transaction
      *
      * @dataProvider provideInvalidDates
      */

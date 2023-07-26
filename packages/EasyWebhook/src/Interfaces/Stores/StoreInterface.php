@@ -10,10 +10,6 @@ interface StoreInterface
 {
     public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
-    public const DEFAULT_TABLE = 'easy_webhooks';
-
-    public const DEFAULT_WEBHOOK_ID = 'webhook-id';
-
     public const DEFAULT_COLUMNS = [
         'class',
         'created_at',
@@ -28,6 +24,10 @@ interface StoreInterface
         'updated_at',
         'url',
     ];
+
+    public const DEFAULT_TABLE = 'easy_webhooks';
+
+    public const DEFAULT_WEBHOOK_ID = 'webhook-id';
 
     public function find(string $id): ?WebhookInterface;
 

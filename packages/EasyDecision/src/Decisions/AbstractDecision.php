@@ -128,7 +128,7 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * @param null|mixed $defaultOutput
+     * @param mixed|null $defaultOutput
      */
     public function setDefaultOutput($defaultOutput = null): DecisionInterface
     {
@@ -222,12 +222,14 @@ abstract class AbstractDecision implements DecisionInterface
                 }
 
                 $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_SKIPPED);
+
                 continue;
             }
 
             // If rule doesn't support the input
             if ($rule->supports($this->input) === false) {
                 $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_UNSUPPORTED);
+
                 continue;
             }
 

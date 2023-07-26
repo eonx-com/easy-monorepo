@@ -18,7 +18,7 @@ final class JwtClaimFetcher implements JwtClaimFetcherInterface
     }
 
     /**
-     * @param null|mixed[] $default
+     * @param mixed[]|null $default
      *
      * @return mixed[]
      */

@@ -13,9 +13,9 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class EasyDoctrineExtension extends Extension
 {
     private const AWS_RDS_IAM_CONFIG = [
+        'auth_token_lifetime_in_minutes' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES,
         'aws_region' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_REGION,
         'aws_username' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_USERNAME,
-        'auth_token_lifetime_in_minutes' => BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES,
     ];
 
     private const AWS_RDS_SSL_CONFIG = [

@@ -37,9 +37,6 @@ final class Parser extends AbstractLineByLineParser
 
     private int $currentLineNumber;
 
-    /**
-     * @var int|null
-     */
     private ?int $currentTransaction = null;
 
     /**
@@ -169,26 +166,33 @@ final class Parser extends AbstractLineByLineParser
             case self::ACCOUNT_IDENTIFIER:
                 $this->currentAccount = ($this->currentAccount ?? 0) + 1;
                 $this->addAccountIdentifier($this->currentAccount, $line);
+
                 break;
             case self::ACCOUNT_TRAILER:
                 $this->addAccountTrailer($this->currentAccount ?? 0, $line);
+
                 break;
             case self::FILE_HEADER:
                 $this->file['header'] = $this->setItem($line);
+
                 break;
             case self::FILE_TRAILER:
                 $this->file['trailer'] = $this->setItem($line);
+
                 break;
             case self::GROUP_HEADER:
                 $this->currentGroup = \count($this->groups) + 1;
                 $this->addGroupHeader($this->currentGroup, $line);
+
                 break;
             case self::GROUP_TRAILER:
                 $this->addGroupTrailer($this->currentGroup ?? 0, $line);
+
                 break;
             case self::TRANSACTION_DETAIL:
                 $this->currentTransaction = ($this->currentTransaction ?? 0) + 1;
                 $this->addTransaction($line);
+
                 break;
         }
     }
@@ -345,24 +349,31 @@ final class Parser extends AbstractLineByLineParser
         switch ($this->previousCode) {
             case self::ACCOUNT_IDENTIFIER:
                 $this->continueAccount('identifier', $line);
+
                 break;
             case self::ACCOUNT_TRAILER:
                 $this->continueAccount('trailer', $line);
+
                 break;
             case self::FILE_HEADER:
                 $this->continueFile('header', $line);
+
                 break;
             case self::FILE_TRAILER:
                 $this->continueFile('trailer', $line);
+
                 break;
             case self::GROUP_HEADER:
                 $this->continueGroup('header', $line);
+
                 break;
             case self::GROUP_TRAILER:
                 $this->continueGroup('trailer', $line);
+
                 break;
             case self::TRANSACTION_DETAIL:
                 $this->continueTransaction($line);
+
                 break;
         }
     }

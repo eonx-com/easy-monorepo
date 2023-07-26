@@ -5,13 +5,70 @@ declare(strict_types=1);
 return [
     /*
     |--------------------------------------------------------------------------
-    | Use Expression Language
+    | Decision Rules
     |--------------------------------------------------------------------------
     |
-    | ExpressionLanguage will automatically be injected in all decisions when true.
+    | Here you will define your rules that will automatically be added to your decisions.
+    | It can be one of:
+    |       \EonX\EasyDecision\Interfaces\RuleInterface
+    |       \EonX\EasyDecision\Interfaces\RestrictedRuleInterface
+    |
+    | Example:
+    |
+    | \EonX\EasyDecision\Rules\MyRestrictedRuleForDecisionA::class
+    | \EonX\EasyDecision\Rules\MyRuleForAnyDecision::class
     |
     */
-    'use_expression_language' => true,
+    'rules' => [],
+    /*
+    |--------------------------------------------------------------------------
+    | Decision type mapping
+    |--------------------------------------------------------------------------
+    |
+    | Here you will define your decision type mapping to be able to use
+    | \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName
+    |
+    | Example:
+    |
+    | 'my-decision' => \EonX\EasyDecision\Decisions\UnanimousDecision::class
+    |
+    */
+    'type_mapping' => [],
+    /*
+    |--------------------------------------------------------------------------
+    | Decisions
+    |--------------------------------------------------------------------------
+    |
+    | Here you will define your actual decisions and their configuration.
+    | Decisions list must be an associative array where the keys are the names
+    | of each decision and the value is the configuration.
+    |
+    | Each decision's configuration can either be defined directly in this file
+    | using an associative array:
+    |
+    | 'my-decision' => [
+    |     'type' => \EonX\EasyDecision\Decisions\UnanimousDecision::class,
+    |     'providers' => [
+    |          \App\Decisions\MyDecisionRuleProvider::class, -> Instantiated from container
+    |          new \App\Decisions\MyDecisionAdditionalRuleProvider()
+    |     ],
+    |     'default_output' => false, // *optional* Define default output decision returns if no rules provided
+    |     *** Optional ***
+    |     'expressions' => [
+    |          'functions' => [] -> Same logic as global expressions functions
+    |          'providers' => [] -> Same logic as global expressions functions providers
+    |     ]
+    | ]
+    |
+    | Or you have the possibility to use a decision config provider if you prefer.
+    | Your decision config providers must implement:
+    | \EonX\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface
+    |
+    | 'my-decision' => \App\Decisions\MyDecisionConfigProvider::class -> Instantiated from container
+    | 'my-other-decision' => new \App\Decisions\MyOtherDecisionConfigProvider()
+    |
+    */
+    'decisions' => [],
     /*
     |--------------------------------------------------------------------------
     | Expression Language
@@ -59,74 +116,11 @@ return [
     ],
     /*
     |--------------------------------------------------------------------------
-    | Decisions
+    | Use Expression Language
     |--------------------------------------------------------------------------
     |
-    | Here you will define your actual decisions and their configuration.
-    | Decisions list must be an associative array where the keys are the names
-    | of each decision and the value is the configuration.
-    |
-    | Each decision's configuration can either be defined directly in this file
-    | using an associative array:
-    |
-    | 'my-decision' => [
-    |     'type' => \EonX\EasyDecision\Decisions\UnanimousDecision::class,
-    |     'providers' => [
-    |          \App\Decisions\MyDecisionRuleProvider::class, -> Instantiated from container
-    |          new \App\Decisions\MyDecisionAdditionalRuleProvider()
-    |     ],
-    |     'default_output' => false, // *optional* Define default output decision returns if no rules provided
-    |     *** Optional ***
-    |     'expressions' => [
-    |          'functions' => [] -> Same logic as global expressions functions
-    |          'providers' => [] -> Same logic as global expressions functions providers
-    |     ]
-    | ]
-    |
-    | Or you have the possibility to use a decision config provider if you prefer.
-    | Your decision config providers must implement:
-    | \EonX\EasyDecision\Bridge\Laravel\DecisionConfigProviderInterface
-    |
-    | 'my-decision' => \App\Decisions\MyDecisionConfigProvider::class -> Instantiated from container
-    | 'my-other-decision' => new \App\Decisions\MyOtherDecisionConfigProvider()
+    | ExpressionLanguage will automatically be injected in all decisions when true.
     |
     */
-    'decisions' => [
-        // Your decisions here...
-    ],
-    /*
-    |--------------------------------------------------------------------------
-    | Decision type mapping
-    |--------------------------------------------------------------------------
-    |
-    | Here you will define your decision type mapping to be able to use
-    | \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName
-    |
-    | Example:
-    |
-    | 'my-decision' => \EonX\EasyDecision\Decisions\UnanimousDecision::class
-    |
-    */
-    'type_mapping' => [
-        // Your decision type mapping here...
-    ],
-    /*
-    |--------------------------------------------------------------------------
-    | Decision Rules
-    |--------------------------------------------------------------------------
-    |
-    | Here you will define your rules that will automatically be added to your decisions.
-    | It can be one of:
-    |       \EonX\EasyDecision\Interfaces\RuleInterface
-    |       \EonX\EasyDecision\Interfaces\RestrictedRuleInterface
-    |
-    | Example:
-    |
-    | \EonX\EasyDecision\Rules\MyRestrictedRuleForDecisionA::class
-    | \EonX\EasyDecision\Rules\MyRuleForAnyDecision::class
-    |
-    */
-    'rules' => [
-        // Your rules here...
-    ],
+    'use_expression_language' => true,
 ];

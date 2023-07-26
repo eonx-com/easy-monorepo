@@ -7,7 +7,7 @@ namespace EonX\EasyTemplatingBlock\Interfaces;
 interface TemplatingEventRendererInterface
 {
     /**
-     * @param null|mixed[] $context
+     * @param mixed[]|null $context
      */
     public function renderEvent(string $event, ?array $context = null): string;
 }

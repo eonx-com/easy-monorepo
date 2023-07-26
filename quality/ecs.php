@@ -4,222 +4,141 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
-use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff;
+use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
+use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
+use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
+use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
+use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
+use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
+use EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
+use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
+use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
-use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
-use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
-use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
-use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
-use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
+use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
-use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
-use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
-use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
-use PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer;
-use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
-use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
-use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
-use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
-use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInClosureUseSniff;
-use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInDeclarationSniff;
-use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInClosureUseSniff;
-use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInDeclarationSniff;
-use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff;
-use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalConstantsSniff;
+use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
+use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
-use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
-use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
-use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
-use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
-use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
-use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
-use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
-use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
-use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
-use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
-use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->sets([
-        SetList::ARRAY,
-        SetList::CLEAN_CODE,
-        SetList::COMMON,
-        SetList::PSR_12,
-    ]);
-
-    $ecsConfig->parallel();
-    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
+    $ecsConfig->import(EasyQualitySetList::ECS);
+    $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
 
     $ecsConfig->paths([
-        __DIR__ . '/ecs.php',
-        __DIR__ . '/rector.php',
         __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
+        __DIR__ . '/ecs.php',
+        __DIR__ . '/rector.php',
     ]);
 
     $ecsConfig->skip([
-        'packages/*/var/*php',
-        '*/vendor/*.php',
-
-        NotOperatorWithSuccessorSpaceFixer::class,
-        CastSpacesFixer::class,
-        OrderedClassElementsFixer::class,
-        NoSuperfluousPhpdocTagsFixer::class,
-        PhpdocVarWithoutNameFixer::class,
-        PhpUnitStrictFixer::class,
-        BlankLineAfterOpeningTagFixer::class,
-        ArrayOpenerAndCloserNewlineFixer::class,
-        RemoveUselessDefaultCommentFixer::class,
-
+        // Skip entire files or directories
+        'packages/*/tests/var/*',
+        // Symfony cache files
+        'packages/*/var/*',
+        // Symfony cache files
+        'packages/EasyApiPlatform/tests/Fixtures/app/var',
+        // It is an Api Platform test app
+        // Skip rules
+        SingleSpaceAfterConstructFixer::class => null,
+        AlphabeticallySortedArrayKeysSniff::class => [
+            'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
+            'packages/*/tests/*',
+        ],
+        AvoidPublicPropertiesSniff::class => null,
+        BlankLineAfterOpeningTagFixer::class => null,
+        DateTimeImmutableFixer::class => null,
+        DisallowMixedTypeHintSniff::class => null,
+        DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [
-            'config/*',
-            'src/*/Config/*',
-        ],
-
-        MethodChainingNewlineFixer::class => [
-            // Bug, to be fixed in symplify
-            '*/Configuration.php',
-        ],
-        AssignmentInConditionSniff::class => [
-            'packages/EasyUtils/src/Csv/FromFileCsvContentsProvider.php',
+            'packages/*/src/Bridge/Symfony/Resources/config/*',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
-            'packages/EasyEncryption/src/Bridge/BridgeConstantsInterface.php',
-            'packages/EasyEncryption/src/Bridge/Symfony/Resources/config/aws_pkcs11_encryptor.php',
-            'packages/EasyErrorHandler/src/Bridge/BridgeConstantsInterface.php',
+            'packages/*/src/Bridge/BridgeConstantsInterface.php',
+            'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
         ],
-        MethodChainingIndentationFixer::class => ['*/Configuration.php'],
-        NullTypeHintOnLastPositionSniff::class . '.NullTypeHintNotOnLastPosition',
-        ParameterTypeHintSniff::class . '.MissingAnyTypeHint',
-        ReturnTypeHintSniff::class . '.MissingTraversableTypeHintSpecification',
-        ParameterTypeHintSniff::class . '.MissingTraversableTypeHintSpecification',
-        ReturnTypeHintSniff::class . '.MissingAnyTypeHint',
-        ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
-            'packages/EasyLogging/src/Logger.php',
-            'packages/EasyApiToken/src/External/Auth0JwtDriver.php',
-            'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
-            'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            'packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
+        PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
+            'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
+            'packages/*/tests/Stubs/Model/*',
         ],
-        ParameterTypeHintSniff::class . '.UselessAnnotation' => [
-            'packages/EasyLogging/src/Logger.php',
-            'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/PermissionVoter.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/RoleVoter.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/ProviderVoter.php',
-            'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            'packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
+        PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
+        PropertyTypeHintSniff::class . '.UselessAnnotation' => [
+            'packages/*/tests/Stubs/Model/*',
         ],
-        ReturnTypeHintSniff::class . '.MissingNativeTypeHint' => [
-            'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
-            'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
-            'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php',
-            'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            'packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
+        StaticClosureSniff::class => [
+            'packages/*/tests/*',
         ],
-        ReturnTypeHintSniff::class . '.UselessAnnotation' => [
-            'packages/EasyRepository/src/Implementations/Illuminate/AbstractEloquentRepository.php',
-            'packages/EasyRepository/src/Interfaces/ObjectRepositoryInterface.php',
-            'packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php',
-            'packages/EasyEventDispatcher/src/Bridge/Laravel/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Bridge/Symfony/EventDispatcher.php',
-            'packages/EasyEventDispatcher/src/Interfaces/EventDispatcherInterface.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Laravel/Stubs/LaravelEventDispatcherStub.php',
-            'packages/EasyEventDispatcher/tests/Bridge/Symfony/Stubs/SymfonyEventDispatcherStub.php',
-            'packages/EasyWebhook/tests/Stubs/EventDispatcherStub.php',
-        ],
-        UselessVariableSniff::class . '.UselessVariable' => ['packages/EasySchedule/src/Schedule.php'],
-        UnusedVariableSniff::class . '.UnusedVariable' => [
-            __DIR__ .
-            '/packages/EasyAsync/src/Bridge/Symfony/DependencyInjection/Compiler/' .
-            'AddBatchMiddlewareToMessengerBusesPass.php',
-        ],
-        ReferenceThrowableOnlySniff::class . '.ReferencedGeneralException' => [
-            'packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php',
-            'packages/EasyErrorHandler/tests/Bridge/Laravel/ExceptionHandlerTest.php',
-        ],
-        SingleSpaceAfterConstructFixer::class,
+        StrictDeclarationFormatSniff::class => null,
     ]);
 
-    $ecsConfig->rule(FileHeaderSniff::class);
-
-    $ecsConfig->rule(FullyQualifiedClassNameInAnnotationSniff::class);
-    $ecsConfig->rule(FullyQualifiedGlobalConstantsSniff::class);
-    $ecsConfig->rule(FullyQualifiedGlobalFunctionsSniff::class);
-
-    $ecsConfig->rule(MethodChainingNewlineFixer::class);
-
-    $ecsConfig->ruleWithConfiguration(YodaStyleFixer::class, [
-        'equal' => false,
-        'identical' => false,
-        'less_and_greater' => false,
+    $ecsConfig->rules([
+        FileHeaderSniff::class,
+        AvoidPublicPropertiesSniff::class,
+        DateTimeImmutableFixer::class,
+        DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class,
+        LinebreakAfterEqualsSignSniff::class,
+        SortAttributesAlphabeticallySniff::class,
+        SortedApiResourceOperationKeysSniff::class,
+        StaticClosureSniff::class,
+        UselessConstantTypeHintSniff::class,
     ]);
 
-    $ecsConfig->rule(NoNotOperatorSniff::class);
-
-    $ecsConfig->rule(Psr4Sniff::class);
-
-    // Symplify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
-    // arrays
-    $ecsConfig->rule(StandaloneLineInMultilineArrayFixer::class);
-
-    // Annotations
-    $ecsConfig->rule(ParamReturnAndVarTagMalformsFixer::class);
-
-    // Extra spaces
-    $ecsConfig->rule(PhpdocTrimConsecutiveBlankLineSeparationFixer::class);
-    $ecsConfig->rule(BinaryOperatorSpacesFixer::class);
-
-    $ecsConfig->rule(VisibilityRequiredFixer::class);
-
-    $ecsConfig->ruleWithConfiguration(ClassAttributesSeparationFixer::class, [
-        'elements' => [
-            'const' => 'one',
-            'method' => 'one',
-            'property' => 'one',
+    $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
+        'skipPatterns' => [\T_ATTRIBUTE => []],
+    ]);
+    $ecsConfig->ruleWithConfiguration(ArrangeActAssertSniff::class, [
+        'testNamespace' => 'Test',
+    ]);
+    $ecsConfig->ruleWithConfiguration(DocCommentSpacingSniff::class, [
+        'annotationsGroups' => [
+            '@Annotation',
+            '@Target',
+            '@param',
+            '@return ',
+            '@throws',
+            '@deprecated',
+            '@method',
+            '@property',
+            '@noinspection',
+            '@phpstan-param',
+            '@psalm-param',
+            '@phpstan-return',
+            '@phpstan-template',
+            '@phpstan-var',
+            '@see',
+            '@SuppressWarnings',
+            '@var',
+            '@author',
+        ],
+        'linesCountBetweenAnnotationsGroups' => 1,
+    ]);
+    $ecsConfig->ruleWithConfiguration(MakeClassAbstractSniff::class, [
+        'applyTo' => [
+            [
+                'namespace' => '/^Test/',
+                'patterns' => [
+                    '/.*TestCase$/',
+                ],
+            ],
         ],
     ]);
-
-    $ecsConfig->ruleWithConfiguration(LineLengthSniff::class, [
-        'absoluteLineLimit' => 120,
-        'ignoreComments' => true,
+    $ecsConfig->ruleWithConfiguration(UseYieldInsteadOfReturnSniff::class, [
+        'applyTo' => [
+            [
+                'namespace' => '/^Test/',
+                'patterns' => [
+                    '/^provide[A-Z]*/',
+                ],
+            ],
+        ],
     ]);
-
-    // Trailing commas
-    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
-        'onlySingleLine' => true,
-    ]);
-    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInClosureUseSniff::class, [
-        'onlySingleLine' => true,
-    ]);
-    $ecsConfig->rule(RequireTrailingCommaInClosureUseSniff::class);
-    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInDeclarationSniff::class, [
-        'onlySingleLine' => true,
-    ]);
-    $ecsConfig->rule(RequireTrailingCommaInDeclarationSniff::class);
-
-    // Constants
-    $ecsConfig->rule(UselessConstantTypeHintSniff::class);
 };

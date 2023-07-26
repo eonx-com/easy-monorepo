@@ -31,7 +31,7 @@ final class SqsClientStub extends SqsClient
     }
 
     /**
-     * @param null|mixed[] $args
+     * @param mixed[]|null $args
      */
     public function sendMessage(?array $args = null): void
     {

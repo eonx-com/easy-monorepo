@@ -58,7 +58,7 @@ final class NotificationClient implements NotificationClientInterface
 
     /**
      * @param string[] $topics
-     * @param null|mixed[] $options HTTP Client options
+     * @param mixed[]|null $options HTTP Client options
      *
      * @return mixed[]
      */
@@ -126,7 +126,7 @@ final class NotificationClient implements NotificationClientInterface
     }
 
     /**
-     * @param null|mixed[] $options
+     * @param mixed[]|null $options
      *
      * @return mixed[]
      */

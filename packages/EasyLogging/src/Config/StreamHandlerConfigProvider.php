@@ -19,9 +19,9 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
     private mixed $stream;
 
     /**
-     * @param null|resource|string $stream
-     * @param null|string[] $channels
-     * @param null|string[] $exceptChannels
+     * @param resource|string|null $stream
+     * @param string[]|null $channels
+     * @param string[]|null $exceptChannels
      */
     public function __construct(
         mixed $stream = null,

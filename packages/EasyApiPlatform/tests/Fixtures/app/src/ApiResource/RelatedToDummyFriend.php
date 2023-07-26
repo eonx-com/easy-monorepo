@@ -15,27 +15,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 class RelatedToDummyFriend
 {
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[Groups(['fakemanytomany', 'friends'])]
+    #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: DummyFriend::class)]
-    #[ORM\JoinColumn(name: 'dummyfriend_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['fakemanytomany', 'friends'])]
     #[Assert\NotNull]
+    #[Groups(['fakemanytomany', 'friends'])]
+    #[ORM\Id]
+    #[ORM\JoinColumn(name: 'dummyfriend_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: DummyFriend::class)]
     private DummyFriend $dummyFriend;
 
-    #[Orm\Column(type: Types::STRING)]
-    #[Assert\NotBlank]
     #[ApiProperty(types: ['https://schema.org/name'])]
+    #[Assert\NotBlank]
     #[Groups(['fakemanytomany', 'friends'])]
+    #[Orm\Column(type: Types::STRING)]
     private string $name;
 
-    #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: RelatedDummy::class, inversedBy: 'relatedToDummyFriend')]
-    #[ORM\JoinColumn(name: 'relateddummy_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotNull]
+    #[ORM\Id]
+    #[ORM\JoinColumn(name: 'relateddummy_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: RelatedDummy::class, inversedBy: 'relatedToDummyFriend')]
     private RelatedDummy $relatedDummy;
 
     public function getDescription(): ?string

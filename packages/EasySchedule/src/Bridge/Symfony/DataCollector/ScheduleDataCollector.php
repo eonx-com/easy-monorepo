@@ -46,10 +46,10 @@ final class ScheduleDataCollector extends DataCollector
             foreach ($events as $event) {
                 $this->data['events'][] = [
                     'allowsOverlapping' => $event->allowsOverlapping(),
-                    'description' => $event->getDescription(),
                     'cronExpression' => $event->getCronExpression(),
-                    'maxLockTime' => $event->getMaxLockTime(),
+                    'description' => $event->getDescription(),
                     'lockResource' => $event->getLockResource(),
+                    'maxLockTime' => $event->getMaxLockTime(),
                     'provider' => $this->data['providers'][$provider],
                     'timezone' => $event->getTimezone(),
                 ];

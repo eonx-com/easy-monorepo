@@ -30,7 +30,7 @@ final class Schedule implements ScheduleInterface
     }
 
     /**
-     * @param null|mixed[] $parameters
+     * @param mixed[]|null $parameters
      */
     public function command(string $command, ?array $parameters = null): EventInterface
     {

@@ -13,6 +13,14 @@ final class TranslatorStub implements TranslatorInterface
      */
     private array $translated = [];
 
+    /**
+     * @return mixed[]
+     */
+    public function getTranslatedMessages(): array
+    {
+        return $this->translated;
+    }
+
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
         $this->translated[] = [
@@ -22,13 +30,5 @@ final class TranslatorStub implements TranslatorInterface
         ];
 
         return $message;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getTranslatedMessages(): array
-    {
-        return $this->translated;
     }
 }

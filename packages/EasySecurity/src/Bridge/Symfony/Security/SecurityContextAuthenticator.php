@@ -37,6 +37,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
             if ($throwable instanceof AuthenticationExceptionInterface) {
                 throw $throwable;
             }
+
             throw new AuthenticationException($throwable->getMessage());
         }
 
@@ -44,7 +45,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
         return new SelfValidatingPassport(
             new UserBadge(
                 $user->getUserIdentifier(),
-                fn (): UserInterface => $user instanceof UserInterface ? $user : new FakeUser()
+                static fn (): UserInterface => $user instanceof UserInterface ? $user : new FakeUser()
             )
         );
     }
@@ -59,7 +60,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
         return null;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         return $this->responseFactory->create($request, $authException);
     }

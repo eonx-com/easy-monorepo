@@ -35,7 +35,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
         return [
             new ExpressionFunction(
                 'permission',
-                function (): void {
+                static function (): void {
                 },
                 function ($params, string $permission): string {
                     if (isset($this->cached[$permission])) {

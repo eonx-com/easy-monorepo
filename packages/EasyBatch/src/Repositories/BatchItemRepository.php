@@ -77,7 +77,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      */
     public function findOrFail(int|string $batchItemId): BatchItemInterface
     {
-        /** @var null|\EonX\EasyBatch\Interfaces\BatchItemInterface $batchItem */
+        /** @var \EonX\EasyBatch\Interfaces\BatchItemInterface|null $batchItem */
         $batchItem = $this->doFind($batchItemId);
 
         if ($batchItem !== null) {

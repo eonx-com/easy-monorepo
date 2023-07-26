@@ -9,7 +9,7 @@ use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 interface JwtClaimFetcherInterface
 {
     /**
-     * @param null|mixed[] $default
+     * @param mixed[]|null $default
      *
      * @return mixed[]
      */

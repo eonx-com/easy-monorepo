@@ -163,9 +163,9 @@ final class ResultsContext implements ResultsContextInterface
             $amount = $this->removeTrailingSlash($codes[1] ?? '');
 
             $transactionCodes[$key] = [
+                'amount' => $amount,
                 'code' => $code,
                 'description' => $this->getCodeSummary($code),
-                'amount' => $amount,
             ];
         }
 

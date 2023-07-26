@@ -157,7 +157,7 @@ final class WebhookClientTest extends AbstractTestCase
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      * @param mixed[] $httpClientOptions
      *
      * @dataProvider providerTestSend
@@ -193,7 +193,7 @@ final class WebhookClientTest extends AbstractTestCase
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      */
     private function getStack(
         HttpClientInterface $httpClient,

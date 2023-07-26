@@ -17,7 +17,7 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
     private readonly array $keys;
 
     /**
-     * @param null|mixed[] $keys
+     * @param mixed[]|null $keys
      */
     public function __construct(
         ?array $keys = null,

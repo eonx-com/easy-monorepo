@@ -14,7 +14,7 @@ final class ManagersClearer
     }
 
     /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      */
     public function clear(?array $managers = null): void
     {

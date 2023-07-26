@@ -17,9 +17,9 @@ return [
     'send_async' => true,
     'signature' => [
         'enabled' => false,
-        'signer' => Rs256Signer::class,
-        'signature_header' => 'X-Webhook-Signature',
         'secret' => 'easy-webhook-secret',
+        'signature_header' => 'X-Webhook-Signature',
+        'signer' => Rs256Signer::class,
     ],
     'use_default_middleware' => true,
 ];

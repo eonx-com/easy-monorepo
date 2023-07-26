@@ -36,8 +36,8 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
                 } catch (Throwable $throwable) {
                     $report->setMetaData([
                         'security' => [
-                            'message' => 'Error thrown during security context resolution',
                             'error_details' => ErrorDetailsHelper::resolveSimpleDetails($throwable),
+                            'message' => 'Error thrown during security context resolution',
                         ],
                     ]);
 

@@ -35,7 +35,7 @@ final class Event extends AbstractEvent
     private array $then = [];
 
     /**
-     * @param null|mixed[] $params
+     * @param mixed[]|null $params
      */
     public function __construct(
         private string $command,

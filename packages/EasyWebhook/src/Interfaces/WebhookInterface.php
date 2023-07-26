@@ -74,6 +74,11 @@ interface WebhookInterface
 
     public const STATUS_SUCCESS = 'success';
 
+    /**
+     * @param mixed[] $data
+     */
+    public static function fromArray(array $data): self;
+
     public function allowRerun(?bool $allowRerun = null): self;
 
     /**
@@ -97,12 +102,7 @@ interface WebhookInterface
     public function extra(array $extra): self;
 
     /**
-     * @param mixed[] $data
-     */
-    public static function fromArray(array $data): self;
-
-    /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getBody(): ?array;
 
@@ -113,12 +113,12 @@ interface WebhookInterface
     public function getEvent(): ?string;
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getExtra(): ?array;
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getHttpClientOptions(): ?array;
 

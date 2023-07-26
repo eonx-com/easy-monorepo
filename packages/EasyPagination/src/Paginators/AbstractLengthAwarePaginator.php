@@ -47,10 +47,10 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
         return \array_merge_recursive(parent::toArray(), [
             'pagination' => [
                 'firstPageUrl' => $this->getFirstPageUrl(),
-                'lastPageUrl' => $this->getLastPageUrl(),
-                'totalPages' => $this->getTotalPages(),
                 'hasNextPage' => $this->hasNextPage(),
                 'hasPreviousPage' => $this->hasPreviousPage(),
+                'lastPageUrl' => $this->getLastPageUrl(),
+                'totalPages' => $this->getTotalPages(),
             ],
         ]);
     }

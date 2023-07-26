@@ -15,9 +15,9 @@ class Product
     #[ORM\ManyToOne(targetEntity: Category::class)]
     private ?Category $category = null;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 128)]

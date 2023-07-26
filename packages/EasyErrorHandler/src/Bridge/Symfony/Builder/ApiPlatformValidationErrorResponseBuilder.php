@@ -60,7 +60,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     private readonly array $keys;
 
     /**
-     * @param null|mixed[] $keys
+     * @param mixed[]|null $keys
      */
     public function __construct(
         private readonly TranslatorInterface $translator,

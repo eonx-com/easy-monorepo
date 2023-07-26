@@ -56,9 +56,9 @@ final class DecisionDataCollector extends DataCollector
             $reflection = new ReflectionClass($configurator);
 
             $configurators[] = [
-                'priority' => $configurator->getPriority(),
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
+                'priority' => $configurator->getPriority(),
             ];
         }
 
@@ -80,13 +80,13 @@ final class DecisionDataCollector extends DataCollector
             }
 
             $decisions[] = [
-                'name' => $decision->getName(),
+                'configurators' => $this->mapConfigurators($decision),
                 'context' => [
                     'decision_type' => $context !== null ? $context->getDecisionType() : $decision::class,
                     'original_input' => $context !== null ? $context->getOriginalInput() : 'Decision not made...',
                     'rule_output' => $context !== null ? $context->getRuleOutputs() : [],
                 ],
-                'configurators' => $this->mapConfigurators($decision),
+                'name' => $decision->getName(),
             ];
         }
 

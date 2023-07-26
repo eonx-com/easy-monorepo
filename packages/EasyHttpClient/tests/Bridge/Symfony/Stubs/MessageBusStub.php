@@ -15,7 +15,7 @@ final class MessageBusStub implements MessageBusInterface
     private array $envelopes = [];
 
     /**
-     * @param null|\Symfony\Component\Messenger\Stamp\StampInterface[] $stamps
+     * @param \Symfony\Component\Messenger\Stamp\StampInterface[]|null $stamps
      */
     public function dispatch(object $message, ?array $stamps = null): Envelope
     {

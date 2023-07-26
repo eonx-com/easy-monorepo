@@ -22,7 +22,7 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      *
      * @dataProvider providerTestSanity
      */

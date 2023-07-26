@@ -38,7 +38,7 @@ final class SessionTrackerTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[] $exclude
+     * @param string[]|null $exclude
      *
      * @dataProvider providerTestExclude
      */

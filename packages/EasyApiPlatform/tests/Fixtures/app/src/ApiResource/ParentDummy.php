@@ -11,8 +11,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Orm\MappedSuperclass]
 abstract class ParentDummy
 {
-    #[Orm\Column(type: Types::INTEGER, nullable: true)]
     #[Groups(['friends'])]
+    #[Orm\Column(type: Types::INTEGER, nullable: true)]
     private ?int $age = null;
 
     public function getAge(): ?int

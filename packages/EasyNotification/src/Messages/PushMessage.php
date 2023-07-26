@@ -9,7 +9,7 @@ final class PushMessage extends AbstractMessage
     public const DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public function __construct(
         private ?string $device = null,
@@ -20,7 +20,7 @@ final class PushMessage extends AbstractMessage
     }
 
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public static function create(?string $device = null, ?string $token = null, ?array $body = null): self
     {
@@ -28,7 +28,7 @@ final class PushMessage extends AbstractMessage
     }
 
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public static function createDoNotSend(?string $device = null, ?array $body = null): self
     {

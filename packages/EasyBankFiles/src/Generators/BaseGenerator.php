@@ -20,9 +20,9 @@ abstract class BaseGenerator implements GeneratorInterface
      * @var string[] $validationRules
      */
     private static array $validationRules = [
-        self::VALIDATION_RULE_ALPHA => '/[^A-Za-z0-9 &\',-\.\/\+\$\!%\(\)\*\#=:\?\[\]_\^@]/',
+        self::VALIDATION_RULE_ALPHA => '/[^A-Za-z0-9 &\',-\\.\\/\\+\\$\\!%\\(\\)\\*\\#=:\\?\\[\\]_\\^@]/',
+        self::VALIDATION_RULE_BSB => '/^\\d{3}(\\-)\\d{3}/',
         self::VALIDATION_RULE_NUMERIC => '/[^0-9-]/',
-        self::VALIDATION_RULE_BSB => '/^\d{3}(\-)\d{3}/',
     ];
 
     /**
@@ -76,7 +76,7 @@ abstract class BaseGenerator implements GeneratorInterface
     /**
      * Validate object attributes.
      *
-     * @param null|mixed[] $rules
+     * @param mixed[]|null $rules
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      *
@@ -162,6 +162,7 @@ abstract class BaseGenerator implements GeneratorInterface
                 if (\preg_match(self::$validationRules[$rule], $value) === 0) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
+
                 break;
 
             case self::VALIDATION_RULE_DATE:
@@ -169,6 +170,7 @@ abstract class BaseGenerator implements GeneratorInterface
                     DateTime::createFromFormat('Ymd', $value) === false) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
+
                 break;
 
             case self::VALIDATION_RULE_ALPHA:
@@ -176,6 +178,7 @@ abstract class BaseGenerator implements GeneratorInterface
                 if (\preg_match(self::$validationRules[$rule], $value)) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
+
                 break;
         }
     }

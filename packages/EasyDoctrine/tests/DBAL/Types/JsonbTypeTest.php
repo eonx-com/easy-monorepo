@@ -115,6 +115,7 @@ final class JsonbTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToDatabaseValues
      */
     public function testConvertToDatabaseValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
@@ -150,6 +151,7 @@ final class JsonbTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToPhpValues
      */
     public function testConvertToPhpValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void

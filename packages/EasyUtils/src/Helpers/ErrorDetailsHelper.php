@@ -14,8 +14,8 @@ final class ErrorDetailsHelper
     public static function resolveSimpleDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         $details = [
-            'code' => $throwable->getCode(),
             'class' => $throwable::class,
+            'code' => $throwable->getCode(),
             'file' => $throwable->getFile(),
             'line' => $throwable->getLine(),
             'message' => $throwable->getMessage(),

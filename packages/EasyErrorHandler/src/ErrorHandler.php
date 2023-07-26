@@ -41,7 +41,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     /**
      * @param iterable<mixed> $builderProviders
      * @param iterable<mixed> $reporterProviders
-     * @param null|class-string[] $ignoredExceptionsForReport
+     * @param class-string[]|null $ignoredExceptionsForReport
      */
     public function __construct(
         private readonly ErrorResponseFactoryInterface $errorResponseFactory,

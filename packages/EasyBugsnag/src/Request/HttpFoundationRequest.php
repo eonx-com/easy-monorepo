@@ -41,11 +41,11 @@ final class HttpFoundationRequest implements RequestInterface
 
         $request = [
             'client_ip' => $this->request->getClientIp(),
-            'url' => $this->request->getUri(),
-            'method' => $this->request->getMethod(),
-            'headers' => $this->formatHeaders($this->request),
-            'query' => $this->request->query->all(),
             'content' => $content,
+            'headers' => $this->formatHeaders($this->request),
+            'method' => $this->request->getMethod(),
+            'query' => $this->request->query->all(),
+            'url' => $this->request->getUri(),
         ];
 
         if (\count($this->request->request->all()) > 0) {

@@ -66,7 +66,7 @@ final class EnvVarSubstitutionHelper
             return $value;
         }
 
-        return (string)\preg_replace_callback(self::VAR_REGEX, function ($matches): string {
+        return (string)\preg_replace_callback(self::VAR_REGEX, static function ($matches): string {
             // Odd number of backslashes means the $ character is escaped
             if (\strlen($matches['backslashes']) % 2 === 1) {
                 return \substr($matches[0], 1);

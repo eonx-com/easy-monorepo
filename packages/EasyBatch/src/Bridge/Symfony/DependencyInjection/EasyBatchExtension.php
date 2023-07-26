@@ -14,10 +14,10 @@ final class EasyBatchExtension extends Extension
 {
     private const CONFIGS_TO_PARAMS = [
         'batch_class' => BridgeConstantsInterface::PARAM_BATCH_CLASS,
-        'batch_table' => BridgeConstantsInterface::PARAM_BATCH_TABLE,
         'batch_item_class' => BridgeConstantsInterface::PARAM_BATCH_ITEM_CLASS,
         'batch_item_per_page' => BridgeConstantsInterface::PARAM_BATCH_ITEM_PER_PAGE,
         'batch_item_table' => BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE,
+        'batch_table' => BridgeConstantsInterface::PARAM_BATCH_TABLE,
         'date_time_format' => BridgeConstantsInterface::PARAM_DATE_TIME_FORMAT,
         'lock_ttl' => BridgeConstantsInterface::PARAM_LOCK_TTL,
     ];

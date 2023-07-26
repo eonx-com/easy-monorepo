@@ -9,7 +9,7 @@ use EonX\EasyDecision\Rules\ExpressionLanguageRule;
 interface ExpressionLanguageRuleFactoryInterface
 {
     /**
-     * @param null|mixed[] $extra
+     * @param mixed[]|null $extra
      */
     public function create(
         string $expression,

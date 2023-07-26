@@ -79,9 +79,9 @@ final class BugsnagReporterTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerTestReport
+     * @param class-string[]|null $ignoredExceptions
      *
-     * @param null|class-string[] $ignoredExceptions
+     * @dataProvider providerTestReport
      */
     public function testReport(
         bool $shouldReport,
@@ -111,8 +111,11 @@ final class BugsnagReporterTest extends AbstractTestCase
         $ignoreExceptionsResolver = new class() implements BugsnagIgnoreExceptionsResolverInterface {
             public function shouldIgnore(Throwable $throwable): bool
             {
-                /** @var \EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub $throwable */
-                return $throwable->getSubCode() === 2;
+                if ($throwable instanceof BaseExceptionStub) {
+                    return $throwable->getSubCode() === 2;
+                }
+
+                return false;
             }
         };
         $stub = new BugsnagClientStub();

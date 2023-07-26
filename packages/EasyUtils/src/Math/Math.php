@@ -23,11 +23,11 @@ final class Math implements MathInterface
 
     /**
      * @param int|null $roundMode [optional] <p>
-     * One of PHP_ROUND_HALF_UP,
-     * PHP_ROUND_HALF_DOWN,
-     * PHP_ROUND_HALF_EVEN, or
-     * PHP_ROUND_HALF_ODD.
-     * </p>
+     *                            One of PHP_ROUND_HALF_UP,
+     *                            PHP_ROUND_HALF_DOWN,
+     *                            PHP_ROUND_HALF_EVEN, or
+     *                            PHP_ROUND_HALF_ODD.
+     *                            </p>
      */
     public function __construct(
         ?int $roundPrecision = null,

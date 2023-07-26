@@ -7,7 +7,7 @@ namespace EonX\EasyTemplatingBlock\Interfaces;
 interface TemplatingBlockProviderInterface
 {
     /**
-     * @param null|mixed[] $context
+     * @param mixed[]|null $context
      *
      * @return iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface>
      */

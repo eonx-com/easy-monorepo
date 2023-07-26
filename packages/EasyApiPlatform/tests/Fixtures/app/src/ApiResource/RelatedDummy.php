@@ -26,20 +26,20 @@ class RelatedDummy extends ParentDummy
     private ?bool $dummyBoolean = null;
 
     #[ApiFilter(DateFilter::class)]
-    #[Groups(['friends'])]
     #[Assert\DateTime]
+    #[Groups(['friends'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?CarbonImmutable $dummyDate = null;
 
-    #[ORM\Embedded]
     #[Groups(['friends'])]
+    #[ORM\Embedded]
     private EmbeddableDummy $embeddedDummy;
 
     #[ApiProperty(writable: false)]
-    #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[Groups(['chicago', 'friends'])]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
     #[ApiProperty(iris: ['RelatedDummy.name'])]
@@ -50,18 +50,18 @@ class RelatedDummy extends ParentDummy
     /**
      * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedToDummyFriend>
      */
-    #[ORM\OneToMany(mappedBy: 'relatedDummy', targetEntity: RelatedToDummyFriend::class, cascade: ['persist'])]
     #[Groups(['fakemanytomany', 'friends'])]
+    #[ORM\OneToMany(mappedBy: 'relatedDummy', targetEntity: RelatedToDummyFriend::class, cascade: ['persist'])]
     private Collection $relatedToDummyFriend;
 
-    #[ApiProperty(deprecationReason: 'This property is deprecated for upgrade test')]
     #[ApiFilter(AdvancedSearchFilter::class)]
-    #[ORM\Column(type: Types::STRING)]
+    #[ApiProperty(deprecationReason: 'This property is deprecated for upgrade test')]
     #[Groups(['barcelona', 'chicago', 'friends'])]
+    #[ORM\Column(type: Types::STRING)]
     private string $symfony = 'symfony';
 
-    #[ORM\ManyToOne(targetEntity: ThirdLevel::class, cascade: ['persist'])]
     #[Groups(['barcelona', 'chicago', 'friends'])]
+    #[ORM\ManyToOne(targetEntity: ThirdLevel::class, cascade: ['persist'])]
     private ThirdLevel $thirdLevel;
 
     public function __construct()

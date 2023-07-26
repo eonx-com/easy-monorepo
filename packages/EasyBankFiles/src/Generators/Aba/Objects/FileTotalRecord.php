@@ -40,19 +40,19 @@ final class FileTotalRecord extends BaseObject
     public function getValidationRules(): array
     {
         return [
-            'fileUserNetTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'fileUserCountOfRecordsType' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
             'fileUserCreditTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
             'fileUserDebitTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'fileUserCountOfRecordsType' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'fileUserNetTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
         ];
     }
 
     /**
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
-     * @see http://php.net/manual/en/function.str-pad.php
-     *
      * @return mixed[]
+     *
+     * @see http://php.net/manual/en/function.str-pad.php
      */
     protected function getAttributesPaddingRules(): array
     {
@@ -61,9 +61,9 @@ final class FileTotalRecord extends BaseObject
             'blank2' => [24],
             'blank3' => [40],
             'fileUserCountOfRecordsType' => [6, '0', \STR_PAD_LEFT],
-            'fileUserNetTotalAmount' => [10, '0', \STR_PAD_LEFT],
             'fileUserCreditTotalAmount' => [10, '0', \STR_PAD_LEFT],
             'fileUserDebitTotalAmount' => [10, '0', \STR_PAD_LEFT],
+            'fileUserNetTotalAmount' => [10, '0', \STR_PAD_LEFT],
         ];
     }
 

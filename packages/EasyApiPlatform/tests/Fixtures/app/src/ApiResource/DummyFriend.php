@@ -16,14 +16,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DummyFriend
 {
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
-    #[Orm\Column(type: Types::STRING)]
-    #[Assert\NotBlank]
     #[ApiProperty(types: ['https://schema.org/name'])]
+    #[Assert\NotBlank]
     #[Groups(['fakemanytomany', 'friends'])]
+    #[Orm\Column(type: Types::STRING)]
     private string $name;
 
     public function getId(): int

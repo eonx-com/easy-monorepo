@@ -17,9 +17,9 @@ interface ErrorResponseBuilderInterface extends HasPriorityInterface
     public function buildData(Throwable $throwable, array $data): array;
 
     /**
-     * @param null|mixed[] $headers
+     * @param mixed[]|null $headers
      *
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array;
 

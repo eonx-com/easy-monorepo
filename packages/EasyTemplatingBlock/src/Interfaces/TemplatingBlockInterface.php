@@ -9,14 +9,14 @@ use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 interface TemplatingBlockInterface extends HasPriorityInterface
 {
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getContext(): ?array;
 
     public function getName(): string;
 
     /**
-     * @param null|mixed[] $context
+     * @param mixed[]|null $context
      */
     public function setContext(?array $context = null): self;
 }

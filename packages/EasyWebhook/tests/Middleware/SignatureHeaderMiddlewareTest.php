@@ -109,7 +109,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     }
 
     /**
-     * @phpstan-param null|class-string<\Throwable> $exceptedException
+     * @phpstan-param class-string<\Throwable>|null $exceptedException
      *
      * @dataProvider providerTestProcess
      */

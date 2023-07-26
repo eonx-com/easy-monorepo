@@ -19,7 +19,7 @@ final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInte
     private readonly array $errorFormats;
 
     /**
-     * @param null|mixed[] $errorFormats
+     * @param mixed[]|null $errorFormats
      */
     public function __construct(
         private readonly SerializerInterface $serializer,

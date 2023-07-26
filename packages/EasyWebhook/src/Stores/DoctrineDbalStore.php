@@ -65,8 +65,8 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                 $queryBuilder
                     ->where('status = :status AND send_after < :sendAfter')
                     ->setParameters([
-                        'status' => WebhookInterface::STATUS_PENDING,
                         'sendAfter' => $sendAfter->format(self::DATETIME_FORMAT),
+                        'status' => WebhookInterface::STATUS_PENDING,
                     ])
                     ->orderBy('created_at');
             })

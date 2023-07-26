@@ -13,9 +13,9 @@ interface BatchObjectInterface
 
     public const DATE_TIMES = [
         'cancelled_at' => 'setCancelledAt',
+        'created_at' => 'setCreatedAt',
         'finished_at' => 'setFinishedAt',
         'started_at' => 'setStartedAt',
-        'created_at' => 'setCreatedAt',
         'updated_at' => 'setUpdatedAt',
     ];
 
@@ -53,7 +53,7 @@ interface BatchObjectInterface
     public function getIdOrFail(): int|string;
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getMetadata(): ?array;
 
@@ -66,7 +66,7 @@ interface BatchObjectInterface
     public function getThrowable(): ?Throwable;
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getThrowableDetails(): ?array;
 

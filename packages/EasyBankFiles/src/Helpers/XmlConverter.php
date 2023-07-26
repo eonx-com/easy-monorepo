@@ -210,11 +210,13 @@ final class XmlConverter
                     if (\trim($childElement->textContent) !== '') {
                         $array['@value'] = $this->stringToX(\trim($childElement->textContent));
                     }
+
                     break;
 
                 case \XML_ELEMENT_NODE:
                     // Convert element to array recursively
                     $array[$childElement->tagName][] = $this->domElementToArray($childElement);
+
                     break;
             }
         }
@@ -301,6 +303,7 @@ final class XmlConverter
             // Ensure the attribute key is valid
             if ($this->isValidXmlTag($key) === false) {
                 $message = \sprintf('Attribute name is invalid for "%s" in node "%s"', $key, $name);
+
                 throw new InvalidXmlTagException($message);
             }
 

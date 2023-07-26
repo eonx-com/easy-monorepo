@@ -17,7 +17,7 @@ final class ArrayTemplatingBlockProvider implements TemplatingBlockProviderInter
     }
 
     /**
-     * @param null|mixed[] $context
+     * @param mixed[]|null $context
      *
      * @return iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface>
      */

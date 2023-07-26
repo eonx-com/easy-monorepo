@@ -57,6 +57,56 @@ abstract class AbstractInvalidDataMaker
     }
 
     /**
+     * @return static
+     */
+    final public function asArrayElement(): self
+    {
+        $this->asArrayElement = true;
+
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    final public function asString(): self
+    {
+        $this->asString = true;
+
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    final public function message(string $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    final public function propertyPath(string $propertyPath): self
+    {
+        $this->propertyPath = $propertyPath;
+
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    final public function wrapWith(string $wrapWith): self
+    {
+        $this->wrapWith = $wrapWith;
+
+        return $this;
+    }
+
+    /**
      * @return mixed[]
      */
     final protected function create(string $caseName, mixed $value, ?string $message = null): array
@@ -166,55 +216,5 @@ abstract class AbstractInvalidDataMaker
         }
 
         return $propertyName;
-    }
-
-    /**
-     * @return static
-     */
-    final public function asArrayElement(): self
-    {
-        $this->asArrayElement = true;
-
-        return $this;
-    }
-
-    /**
-     * @return static
-     */
-    final public function asString(): self
-    {
-        $this->asString = true;
-
-        return $this;
-    }
-
-    /**
-     * @return static
-     */
-    final public function message(string $message): self
-    {
-        $this->message = $message;
-
-        return $this;
-    }
-
-    /**
-     * @return static
-     */
-    final public function propertyPath(string $propertyPath): self
-    {
-        $this->propertyPath = $propertyPath;
-
-        return $this;
-    }
-
-    /**
-     * @return static
-     */
-    final public function wrapWith(string $wrapWith): self
-    {
-        $this->wrapWith = $wrapWith;
-
-        return $this;
     }
 }

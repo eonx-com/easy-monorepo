@@ -41,19 +41,19 @@ final class DescriptiveRecord extends BaseObject
     public function getValidationRules(): array
     {
         return [
+            'dateToBeProcessed' => GeneratorInterface::VALIDATION_RULE_DATE,
+            'descriptionOfEntries' => GeneratorInterface::VALIDATION_RULE_ALPHA,
             'nameOfUserSupplyingFile' => GeneratorInterface::VALIDATION_RULE_ALPHA,
             'numberOfUserSupplyingFile' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'descriptionOfEntries' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'dateToBeProcessed' => GeneratorInterface::VALIDATION_RULE_DATE,
         ];
     }
 
     /**
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
-     * @see http://php.net/manual/en/function.str-pad.php
-     *
      * @return mixed[]
+     *
+     * @see http://php.net/manual/en/function.str-pad.php
      */
     protected function getAttributesPaddingRules(): array
     {
@@ -61,9 +61,9 @@ final class DescriptiveRecord extends BaseObject
             'blank1' => [17],
             'blank2' => [7],
             'blank3' => [40],
+            'descriptionOfEntries' => [12],
             'nameOfUserSupplyingFile' => [26],
             'numberOfUserSupplyingFile' => [6, '0', \STR_PAD_LEFT],
-            'descriptionOfEntries' => [12],
         ];
     }
 

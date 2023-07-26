@@ -21,6 +21,7 @@ final class CircularReferenceHandler implements CircularReferenceHandlerInterfac
     public function __invoke(object $object, string $format, array $context): string
     {
         $className = $object::class;
+
         try {
             $identifier = $this->entityManager->getClassMetadata($className)
                 ->getSingleIdentifierFieldName();

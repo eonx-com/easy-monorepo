@@ -17,7 +17,7 @@ final class SerializerContextBuilder implements SerializerContextBuilderInterfac
     }
 
     /**
-     * @param null|mixed[] $extractedAttributes
+     * @param mixed[]|null $extractedAttributes
      *
      * @return mixed[]
      */

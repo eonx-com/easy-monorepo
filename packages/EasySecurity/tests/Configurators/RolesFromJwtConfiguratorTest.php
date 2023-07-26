@@ -62,7 +62,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $authorizationRoles
-     * @param null|mixed[] $roles
+     * @param mixed[]|null $roles
      *
      * @dataProvider providerTestConfigure
      */

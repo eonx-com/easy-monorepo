@@ -12,7 +12,7 @@ use Doctrine\DBAL\Logging\SQLLogger as BaseSqlLoggerInterface;
 final class SqlLogger implements BaseSqlLoggerInterface
 {
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $params = null;
 
@@ -21,7 +21,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
     private ?float $start = null;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $types = null;
 
@@ -64,10 +64,10 @@ final class SqlLogger implements BaseSqlLoggerInterface
         }
 
         $metadata = [
-            'SQL' => $this->sql,
             'Params' => \json_encode($this->params),
-            'Types' => \json_encode($this->types),
+            'SQL' => $this->sql,
             'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
+            'Types' => \json_encode($this->types),
         ];
 
         if (\method_exists($this->conn, 'getDatabase')) {

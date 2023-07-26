@@ -47,8 +47,8 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param mixed[] $events
-     * @param null|mixed[] $context
-     * @param null|string[] $configs
+     * @param mixed[]|null $context
+     * @param string[]|null $configs
      *
      * @dataProvider providerTestRenderEvent
      */

@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
  * @Annotation
+ *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
@@ -26,9 +27,9 @@ final class Decimal extends Constraint
 
     public function __construct(
         $options = null,
-        int $minPrecision = null,
-        int $maxPrecision = null,
-        array $groups = null,
+        ?int $minPrecision = null,
+        ?int $maxPrecision = null,
+        ?array $groups = null,
         $payload = null,
     ) {
         $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? 0);

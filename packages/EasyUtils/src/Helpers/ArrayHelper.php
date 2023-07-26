@@ -44,7 +44,7 @@ final class ArrayHelper
         while (\count($keys) > 1) {
             $key = \array_shift($keys);
 
-            if (empty($key)) {
+            if ($key === '') {
                 continue;
             }
 

@@ -123,7 +123,7 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @param null|mixed[] $params
+     * @param mixed[]|null $params
      *
      * @dataProvider providerTestNoArgsMethods
      */

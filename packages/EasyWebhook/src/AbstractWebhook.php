@@ -27,8 +27,8 @@ abstract class AbstractWebhook implements WebhookInterface
         self::OPTION_BODY_AS_STRING => 'bodyAsString',
         self::OPTION_CURRENT_ATTEMPT => 'currentAttempt',
         self::OPTION_EVENT => 'event',
-        self::OPTION_ID => 'id',
         self::OPTION_HTTP_OPTIONS => 'httpClientOptions',
+        self::OPTION_ID => 'id',
         self::OPTION_MAX_ATTEMPT => 'maxAttempt',
         self::OPTION_METHOD => 'method',
         self::OPTION_SECRET => 'secret',
@@ -41,7 +41,7 @@ abstract class AbstractWebhook implements WebhookInterface
     private ?bool $allowRerun = null;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $body = null;
 
@@ -56,17 +56,17 @@ abstract class AbstractWebhook implements WebhookInterface
     private ?string $event = null;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $extra = null;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $headers = null;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $httpClientOptions = null;
 
@@ -92,7 +92,7 @@ abstract class AbstractWebhook implements WebhookInterface
     private ?string $url = null;
 
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public static function create(string $url, ?array $body = null, ?string $method = null): WebhookInterface
     {
@@ -195,7 +195,7 @@ abstract class AbstractWebhook implements WebhookInterface
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getBody(): ?array
     {
@@ -218,7 +218,7 @@ abstract class AbstractWebhook implements WebhookInterface
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getExtra(): ?array
     {
@@ -226,7 +226,7 @@ abstract class AbstractWebhook implements WebhookInterface
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getHttpClientOptions(): ?array
     {

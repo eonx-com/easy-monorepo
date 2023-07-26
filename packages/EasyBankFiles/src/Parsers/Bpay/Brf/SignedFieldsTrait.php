@@ -10,8 +10,6 @@ trait SignedFieldsTrait
      * @var string[] $signedFields
      */
     private static array $signedFields = [
-        '{' => '0+',
-        '}' => '0-',
         'A' => '1+',
         'B' => '2+',
         'C' => '3+',
@@ -30,6 +28,8 @@ trait SignedFieldsTrait
         'P' => '7-',
         'Q' => '8-',
         'R' => '9-',
+        '{' => '0+',
+        '}' => '0-',
     ];
 
     /**
@@ -46,8 +46,8 @@ trait SignedFieldsTrait
         $signedField = self::$signedFields[$code];
 
         return [
-            'value' => $signedField[0],
             'type' => $signedField[1] === '+' ? 'credit' : 'debit',
+            'value' => $signedField[0],
         ];
     }
 }

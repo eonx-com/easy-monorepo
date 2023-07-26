@@ -99,7 +99,7 @@ final class CollectorHelperTest extends AbstractTestCase
 
     /**
      * @param iterable<mixed> $items
-     * @param null|class-string $class
+     * @param class-string|null $class
      *
      * @dataProvider providerTestFilterByClass
      */

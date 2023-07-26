@@ -65,19 +65,19 @@ final class RealTimeMessageTest extends AbstractTestCase
      * @param mixed[] $body
      * @param string[] $topics
      *
-     * @dataProvider providerTestGetters
-     *
      * @throws \Nette\Utils\JsonException
+     *
+     * @dataProvider providerTestGetters
      */
     public function testGetters(callable $getMessage, array $body, array $topics): void
     {
-        /** @var \EonX\EasyNotification\Messages\RealTimeMessage $message */
         // Trick for coverage
+        /** @var \EonX\EasyNotification\Messages\RealTimeMessage $message */
         $message = $getMessage();
 
-        self::assertEquals(MessageInterface::TYPE_REAL_TIME, $message->getType());
-        self::assertEquals(Json::encode($body), $message->getBody());
-        self::assertEquals($topics, $message->getTopics());
+        self::assertSame(MessageInterface::TYPE_REAL_TIME, $message->getType());
+        self::assertSame(Json::encode($body), $message->getBody());
+        self::assertSame($topics, $message->getTopics());
     }
 
     public function testInvalidTypeException(): void

@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class RelatedOwningDummy
 {
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]

@@ -74,18 +74,22 @@ final class Parser extends AbstractLineByLineParser
         switch ($code) {
             case self::HEADER:
                 $this->header = $this->processHeader($line);
+
                 break;
 
             case self::TRANSACTION:
                 $this->transactions[] = $this->processTransaction($line);
+
                 break;
 
             case self::TRAILER:
                 $this->trailer = $this->processTrailer($line);
+
                 break;
 
             default:
                 $this->errors[] = new Error(\compact('line', 'lineNumber'));
+
                 break;
         }
     }
@@ -133,12 +137,12 @@ final class Parser extends AbstractLineByLineParser
         $restOfRecord = \substr($line, 70, 149);
 
         return new Trailer([
-            'numberOfApprovals' => $numberOfApprovals === false ? null : $this->trimLeftZeros($numberOfApprovals),
             'amountOfApprovals' => $amountOfApprovals === false ? null : $this->trimLeftZeros($amountOfApprovals),
-            'numberOfDeclines' => $numberOfDeclines === false ? null : $this->trimLeftZeros($numberOfDeclines),
             'amountOfDeclines' => $amountOfDeclines === false ? null : $this->trimLeftZeros($amountOfDeclines),
-            'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
             'amountOfPayments' => $amountOfPayments === false ? null : $this->trimLeftZeros($amountOfPayments),
+            'numberOfApprovals' => $numberOfApprovals === false ? null : $this->trimLeftZeros($numberOfApprovals),
+            'numberOfDeclines' => $numberOfDeclines === false ? null : $this->trimLeftZeros($numberOfDeclines),
+            'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
             'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
         ]);
     }
@@ -174,18 +178,18 @@ final class Parser extends AbstractLineByLineParser
         $restOfRecord = \substr($line, 214, 5);
 
         return new Transaction([
-            'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
             'accountBsb' => $accountBsb === false ? null : $accountBsb,
             'accountNumber' => $accountNumber === false ? null : $accountNumber,
-            'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
             'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
+            'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
+            'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
             'reference1' => $reference1 === false ? null : \trim($reference1),
             'reference2' => $reference2 === false ? null : \trim($reference2),
             'reference3' => $reference3 === false ? null : \trim($reference3),
+            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
             'returnCode' => $returnCode === false ? null : $returnCode,
             'returnCodeDescription' => $returnCodeDescription === false ? null : \trim($returnCodeDescription),
             'transactionReferenceNumber' => $transactionReferenceNumber === false ? null : $transactionReferenceNumber,
-            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
         ]);
     }
 }

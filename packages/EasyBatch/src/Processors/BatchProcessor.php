@@ -86,6 +86,13 @@ final class BatchProcessor
         return $freshBatch;
     }
 
+    public function reset(): self
+    {
+        $this->cache = [];
+
+        return $this;
+    }
+
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
@@ -115,13 +122,6 @@ final class BatchProcessor
         }
 
         return $freshBatch;
-    }
-
-    public function reset(): self
-    {
-        $this->cache = [];
-
-        return $this;
     }
 
     private function areBatchesIdentical(BatchInterface $batch1, BatchInterface $batch2): bool

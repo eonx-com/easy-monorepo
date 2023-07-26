@@ -195,7 +195,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[] $configPaths
+     * @param string[]|null $configPaths
      *
      * @dataProvider providerCreateDecision
      */

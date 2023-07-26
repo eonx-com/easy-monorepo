@@ -211,9 +211,9 @@ final class EloquentLengthAwarePaginatorTest extends AbstractEloquentTestCase
     }
 
     /**
-     * @dataProvider providerTestPaginator
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestPaginator
      */
     public function testPaginator(
         PaginationInterface $pagination,

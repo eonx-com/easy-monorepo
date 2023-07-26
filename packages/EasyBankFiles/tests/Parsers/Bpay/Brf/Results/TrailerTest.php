@@ -16,9 +16,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return amount of error corrections.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnAmountOfErrorCorrections(): void
     {
@@ -38,9 +38,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return amount of payments.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnAmountOfPayments(): void
     {
@@ -60,9 +60,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return amount of payments.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnAmountOfReversals(): void
     {
@@ -82,9 +82,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return number of error corrections.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnNumberOfErrorCorrections(): void
     {
@@ -104,9 +104,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return number of payments.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnNumberOfPayments(): void
     {
@@ -126,9 +126,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return number of reversals.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnNumberOfReversals(): void
     {
@@ -148,9 +148,9 @@ final class TrailerTest extends TestCase
     /**
      * Should return settlement amount.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldReturnSettlementAmount(): void
     {
@@ -170,9 +170,9 @@ final class TrailerTest extends TestCase
     /**
      * Should throw exception if sign field is not found.
      *
-     * @group Brf-Trailer
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     *
+     * @group Brf-Trailer
      */
     public function testShouldThrowExceptionIfSignedFileNotFound(): void
     {

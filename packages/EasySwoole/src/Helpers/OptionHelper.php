@@ -11,8 +11,8 @@ final class OptionHelper
     private const DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
 
     private const DEFAULT_OPTIONS = [
-        'cache_tables' => [],
         'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
+        'cache_tables' => [],
         'callbacks' => [],
         'env_var_output_enabled' => true,
         'host' => '0.0.0.0',

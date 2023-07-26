@@ -20,7 +20,7 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     private int $priority;
 
     /**
-     * @param null|mixed[] $extra
+     * @param mixed[]|null $extra
      */
     public function __construct(
         private string $expression,

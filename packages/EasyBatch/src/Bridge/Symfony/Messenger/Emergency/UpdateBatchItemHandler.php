@@ -66,8 +66,8 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         }
 
         $internal['update_batch_item_emergency'][] = [
-            'triggered_at' => $now,
             'error_details' => $errorDetails,
+            'triggered_at' => $now,
         ];
 
         $metadata['_internal'] = $internal;

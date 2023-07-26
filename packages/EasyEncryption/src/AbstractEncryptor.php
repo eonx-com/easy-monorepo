@@ -24,7 +24,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
 
     public function decrypt(string $text): DecryptedStringInterface
     {
-        $toDecrypt = $this->execSafely(CouldNotDecryptException::class, function () use ($text): array {
+        $toDecrypt = $this->execSafely(CouldNotDecryptException::class, static function () use ($text): array {
             $toDecryptArray = \json_decode(Encoding::base64Decode($text), true);
 
             return \is_array($toDecryptArray) ? $toDecryptArray : [];
@@ -98,11 +98,11 @@ abstract class AbstractEncryptor implements EncryptorInterface
     ): string;
 
     /**
+     * @throws T
+     *
      * @phpstan-param class-string<T> $throwableClass
      *
      * @phpstan-template T of \Throwable
-     *
-     * @throws T
      */
     protected function execSafely(string $throwableClass, callable $func): mixed
     {

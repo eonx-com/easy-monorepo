@@ -18,7 +18,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 abstract class AbstractBatchObjectRepository
 {
     /**
-     * @var null|string[]
+     * @var string[]|null
      */
     private ?array $tableColumns = null;
 
@@ -85,7 +85,7 @@ abstract class AbstractBatchObjectRepository
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      *
      * @throws \Doctrine\DBAL\Exception
      */

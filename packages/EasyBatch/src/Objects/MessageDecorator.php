@@ -61,7 +61,7 @@ final class MessageDecorator
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getMetadata(): ?array
     {

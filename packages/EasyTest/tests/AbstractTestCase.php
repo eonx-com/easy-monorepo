@@ -15,7 +15,7 @@ abstract class AbstractTestCase extends TestCase
     private ?Application $app = null;
 
     /**
-     * @param null|mixed[] $inputs
+     * @param mixed[]|null $inputs
      *
      * @throws \Exception
      */

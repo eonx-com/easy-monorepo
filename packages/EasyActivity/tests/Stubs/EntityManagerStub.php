@@ -45,6 +45,7 @@ final class EntityManagerStub
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
@@ -129,6 +130,7 @@ final class EntityManagerStub
      * @param string[] $fixtures
      *
      * @return \Doctrine\ORM\EntityManager
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */

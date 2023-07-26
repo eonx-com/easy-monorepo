@@ -14,8 +14,8 @@ use Throwable;
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
     /**
-     * @param null|mixed[] $config
-     * @param null|mixed[] $translations
+     * @param mixed[]|null $config
+     * @param mixed[]|null $translations
      *
      * @dataProvider providerTestRenderWithDefaultBuilders
      */

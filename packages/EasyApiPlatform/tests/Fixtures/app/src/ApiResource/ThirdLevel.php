@@ -16,17 +16,17 @@ class ThirdLevel
     #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
     public ?FourthLevel $badFourthLevel = null;
 
-    #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
     #[Groups(['barcelona', 'chicago', 'friends'])]
+    #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
     public ?FourthLevel $fourthLevel = null;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
-    #[ORM\Column(type: Types::INTEGER)]
     #[Groups(['barcelona', 'chicago'])]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $level = 3;
 
     #[ORM\Column(type: Types::BOOLEAN)]

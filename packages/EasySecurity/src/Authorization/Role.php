@@ -15,8 +15,8 @@ final class Role implements RoleInterface
     private array $permissions;
 
     /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
-     * @param null|mixed[] $metadata
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
+     * @param mixed[]|null $metadata
      */
     public function __construct(
         private readonly string $identifier,

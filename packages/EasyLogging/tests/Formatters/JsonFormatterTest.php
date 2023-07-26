@@ -39,9 +39,9 @@ final class JsonFormatterTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerTestCreateLogFormat
-     *
      * @throws \Exception
+     *
+     * @dataProvider providerTestCreateLogFormat
      */
     public function testCreateLogFormat(callable $log, callable $assert): void
     {

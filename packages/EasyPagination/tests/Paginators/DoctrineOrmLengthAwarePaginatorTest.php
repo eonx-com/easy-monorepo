@@ -229,9 +229,9 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestC
     }
 
     /**
-     * @dataProvider providerTestPaginator
-     *
      * @throws \Doctrine\ORM\ORMException
+     *
+     * @dataProvider providerTestPaginator
      */
     public function testPaginator(
         PaginationInterface $pagination,

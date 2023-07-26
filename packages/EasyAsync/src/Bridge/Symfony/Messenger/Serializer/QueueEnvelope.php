@@ -10,7 +10,7 @@ final class QueueEnvelope implements QueueEnvelopeInterface
 {
     /**
      * @param mixed[] $headers
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public function __construct(
         private string $originalBody,
@@ -21,7 +21,7 @@ final class QueueEnvelope implements QueueEnvelopeInterface
 
     /**
      * @param mixed[] $headers
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public static function create(string $originalBody, array $headers, ?array $body = null): QueueEnvelopeInterface
     {

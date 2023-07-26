@@ -10,7 +10,7 @@ interface NotificationClientInterface
 
     /**
      * @param string[] $topics
-     * @param null|mixed[] $options HTTP Client options
+     * @param mixed[]|null $options HTTP Client options
      *
      * @return mixed[]
      */

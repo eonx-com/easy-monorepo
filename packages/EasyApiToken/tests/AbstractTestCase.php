@@ -27,8 +27,8 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * @param null|mixed[] $server
-     * @param null|mixed[] $query
+     * @param mixed[]|null $server
+     * @param mixed[]|null $query
      */
     protected function createRequest(?array $server = null, ?array $query = null): Request
     {

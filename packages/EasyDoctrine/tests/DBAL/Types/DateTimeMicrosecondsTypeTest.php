@@ -104,6 +104,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToDatabaseValues
      */
     public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
@@ -134,6 +135,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToPHPValues
      */
     public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void

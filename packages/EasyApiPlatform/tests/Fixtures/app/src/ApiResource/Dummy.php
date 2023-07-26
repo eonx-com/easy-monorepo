@@ -15,13 +15,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
 #[ApiFilter(SearchFilter::class)]
+#[ApiResource]
 #[ORM\Entity]
 class Dummy
 {
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[ApiProperty(types: ['https://schema.org/alternateName'])]
+    #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $alias = null;
 
     /**
@@ -59,8 +59,8 @@ class Dummy
     private array $foo;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
     /**
@@ -69,9 +69,9 @@ class Dummy
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $jsonData;
 
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[ApiProperty(types: ['https://schema.org/name'])]
     #[Assert\NotBlank]
+    #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $name = null;
 
     #[Orm\Column(type: Types::STRING, nullable: true)]
@@ -83,8 +83,8 @@ class Dummy
     #[ORM\ManyToMany(targetEntity: RelatedDummy::class)]
     private Collection $relatedDummies;
 
-    #[ORM\ManyToOne(targetEntity: RelatedDummy::class)]
     #[ApiProperty(push: true)]
+    #[ORM\ManyToOne(targetEntity: RelatedDummy::class)]
     private ?RelatedDummy $relatedDummy = null;
 
     #[ORM\OneToOne(mappedBy: 'owningDummy', targetEntity: RelatedOwnedDummy::class, cascade: ['persist'])]
@@ -243,7 +243,7 @@ class Dummy
         $this->dummyBoolean = $dummyBoolean;
     }
 
-    public function setDummyDate(CarbonImmutable $dummyDate = null): void
+    public function setDummyDate(?CarbonImmutable $dummyDate = null): void
     {
         $this->dummyDate = $dummyDate;
     }

@@ -7,7 +7,7 @@ namespace EonX\EasyTemplatingBlock\Interfaces;
 interface TemplateBlockInterface extends TemplatingBlockInterface
 {
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getTemplateContext(): ?array;
 

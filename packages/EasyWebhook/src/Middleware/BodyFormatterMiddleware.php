@@ -37,11 +37,14 @@ final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
             );
         }
 
+        $bodyAsString = $webhook->getBodyAsString() ?? '';
+        $body = $webhook->getBody() ?? [];
+
         // Body set as string has priority
-        if (empty($webhook->getBodyAsString()) && empty($webhook->getBody()) === false) {
+        if ($bodyAsString === '' && \count($body) > 0) {
             $this->updateWebhook(
                 $webhook,
-                $this->bodyFormatter->format($webhook->getBody()),
+                $this->bodyFormatter->format($body),
                 $this->bodyFormatter->getContentTypeHeader()
             );
         }
@@ -56,10 +59,10 @@ final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
         $webhook->bodyAsString($formatted);
 
         $webhook->mergeHttpClientOptions([
+            'body' => $formatted,
             'headers' => [
                 'Content-Type' => $header,
             ],
-            'body' => $formatted,
         ]);
     }
 }

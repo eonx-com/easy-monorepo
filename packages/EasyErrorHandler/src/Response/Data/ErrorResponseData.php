@@ -18,7 +18,7 @@ final class ErrorResponseData implements ErrorResponseDataInterface
 
     /**
      * @param mixed[] $rawData
-     * @param null|mixed[] $headers
+     * @param mixed[]|null $headers
      */
     public function __construct(
         private readonly array $rawData,
@@ -31,7 +31,7 @@ final class ErrorResponseData implements ErrorResponseDataInterface
 
     /**
      * @param mixed[] $rawData
-     * @param null|mixed[] $headers
+     * @param mixed[]|null $headers
      */
     public static function create(array $rawData, ?int $statusCode = null, ?array $headers = null): self
     {

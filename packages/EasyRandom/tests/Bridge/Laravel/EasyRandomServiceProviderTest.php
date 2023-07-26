@@ -81,9 +81,9 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
     /**
      * @param string[] $config
      *
-     * @dataProvider provideConfigsForUuidGenerator
-     *
      * @psalm-param class-string $expectedUuidGeneratorClass
+     *
+     * @dataProvider provideConfigsForUuidGenerator
      */
     public function testUuidGeneratorInstance(array $config, string $expectedUuidGeneratorClass): void
     {

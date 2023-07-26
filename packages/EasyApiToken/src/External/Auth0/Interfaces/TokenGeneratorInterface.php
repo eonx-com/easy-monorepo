@@ -8,7 +8,7 @@ interface TokenGeneratorInterface
 {
     /**
      * @param mixed[] $scopes
-     * @param null|mixed[] $roles
+     * @param mixed[]|null $roles
      */
     public function generate(
         array $scopes,

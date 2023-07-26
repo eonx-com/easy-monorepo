@@ -11,12 +11,12 @@ use EonX\EasyPagination\Interfaces\PaginatorInterface;
 abstract class AbstractPaginator implements PaginatorInterface
 {
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $items = null;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $transformedItems = null;
 

@@ -17,7 +17,7 @@ final class HttpClientStub implements HttpClientInterface
     private string $method;
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $options = null;
 
@@ -34,7 +34,7 @@ final class HttpClientStub implements HttpClientInterface
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getOptions(): ?array
     {
@@ -47,7 +47,7 @@ final class HttpClientStub implements HttpClientInterface
     }
 
     /**
-     * @param null|mixed[] $options
+     * @param mixed[]|null $options
      *
      * @throws \Throwable
      */

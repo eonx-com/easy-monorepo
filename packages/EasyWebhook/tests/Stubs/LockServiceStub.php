@@ -32,7 +32,7 @@ final class LockServiceStub implements LockServiceInterface
     }
 
     /**
-     * @return null|mixed
+     * @return mixed|null
      */
     public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
     {

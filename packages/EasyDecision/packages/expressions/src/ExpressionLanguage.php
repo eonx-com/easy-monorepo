@@ -48,7 +48,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * @param null|mixed[] $arguments
+     * @param mixed[]|null $arguments
      *
      * @return mixed
      */
@@ -97,7 +97,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * @param null|string[] $names
+     * @param string[]|null $names
      *
      * @throws \EonX\EasyDecision\Exceptions\InvalidExpressionException
      */

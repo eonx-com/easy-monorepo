@@ -21,7 +21,7 @@ final class SessionTracker
     private BugsnagSessionTracker $sessionTracker;
 
     /**
-     * @param null|string[] $exclude
+     * @param string[]|null $exclude
      */
     public function __construct(Client $client, ?array $exclude = null, ?string $excludeDelimiter = null)
     {

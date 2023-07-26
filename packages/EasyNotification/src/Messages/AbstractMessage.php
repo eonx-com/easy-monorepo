@@ -10,7 +10,7 @@ use Nette\Utils\Json;
 abstract class AbstractMessage implements MessageInterface
 {
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public function __construct(
         private ?array $body = null,

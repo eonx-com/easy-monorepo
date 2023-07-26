@@ -85,10 +85,10 @@ final class EasySwooleRunner implements RunnerInterface
 
         OutputHelper::writeln(\sprintf('Starting server with following config: %s', \print_r([
             'host' => $host,
-            'port' => $port,
             'mode' => $mode,
-            'sock_type' => $sockType,
+            'port' => $port,
             'settings' => $settings,
+            'sock_type' => $sockType,
         ], true)));
 
         $server = new Server($host, $port, $mode, $sockType);

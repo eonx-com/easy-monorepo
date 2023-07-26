@@ -56,7 +56,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
     }
 
     /**
-     * @phpstan-param null|class-string<\Throwable> $expectedException
+     * @phpstan-param class-string<\Throwable>|null $expectedException
      *
      * @dataProvider providerTestProcess
      */

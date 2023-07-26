@@ -88,8 +88,8 @@ abstract class Parser extends BaseParser
         $objects = [];
         foreach ($issues as $issue) {
             $objects[] = new Issue([
-                'value' => $issue['@value'] ?? null,
                 'attributes' => $issue['@attributes'] ?? null,
+                'value' => $issue['@value'] ?? null,
             ]);
         }
 

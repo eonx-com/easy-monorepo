@@ -33,7 +33,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(DecisionDataCollector::class)
         ->tag('data_collector', [
-            'template' => '@EasyDecisionSymfony/Collector/decision_collector.html.twig',
             'id' => DecisionDataCollector::NAME,
+            'template' => '@EasyDecisionSymfony/Collector/decision_collector.html.twig',
         ]);
 };

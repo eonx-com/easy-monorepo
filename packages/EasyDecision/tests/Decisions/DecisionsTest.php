@@ -125,6 +125,7 @@ final class DecisionsTest extends AbstractTestCase
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
      * @param mixed[] $input
      * @param mixed[] $expectedRulesOutput
+     *
      * @dataProvider providerTestDecisions
      */
     public function testDecisions(

@@ -14,7 +14,7 @@ interface ScheduleInterface
     public function addProviders(array $providers): self;
 
     /**
-     * @param null|mixed[] $parameters
+     * @param mixed[]|null $parameters
      */
     public function command(string $command, ?array $parameters = null): EventInterface;
 

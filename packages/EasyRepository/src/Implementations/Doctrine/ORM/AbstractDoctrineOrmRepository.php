@@ -15,7 +15,7 @@ abstract class AbstractDoctrineOrmRepository implements DatabaseRepositoryInterf
     public function __construct(ManagerRegistry $registry)
     {
         $entityClass = $this->getEntityClass();
-        /** @var null|\Doctrine\ORM\EntityManagerInterface $manager */
+        /** @var \Doctrine\ORM\EntityManagerInterface|null $manager */
         $manager = $registry->getManagerForClass($entityClass);
 
         if ($manager === null) {

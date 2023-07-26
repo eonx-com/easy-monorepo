@@ -39,7 +39,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     }
 
     /**
-     * @param null|mixed[] $context
+     * @param mixed[]|null $context
      */
     public function renderEvent(string $event, ?array $context = null): string
     {
@@ -93,7 +93,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     }
 
     /**
-     * @param null|mixed[] $context
+     * @param mixed[]|null $context
      *
      * @return \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface[]
      */

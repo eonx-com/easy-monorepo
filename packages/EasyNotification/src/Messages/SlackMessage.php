@@ -7,7 +7,7 @@ namespace EonX\EasyNotification\Messages;
 final class SlackMessage extends AbstractMessage
 {
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public function __construct(
         private string $channel,
@@ -18,7 +18,7 @@ final class SlackMessage extends AbstractMessage
     }
 
     /**
-     * @param null|mixed[] $body
+     * @param mixed[]|null $body
      */
     public static function create(string $channel, ?string $text = null, ?array $body = null): self
     {

@@ -48,7 +48,8 @@ final class ValueDecisionTest extends AbstractTestCase
      * @param mixed[] $rules
      * @param mixed[] $input
      * @param mixed[] $expectedRulesOutput
-     * @param null|mixed $defaultOutput
+     * @param mixed|null $defaultOutput
+     *
      * @dataProvider decisionEntirelyProvider
      */
     public function testDecisionEntirely(

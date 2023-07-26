@@ -21,9 +21,9 @@ abstract class AbstractFromHeaderConfigurator extends AbstractSecurityContextCon
 
     public function configure(SecurityContextInterface $context, Request $request): void
     {
-        $header = $this->getHeaderValue($request);
+        $header = $this->getHeaderValue($request) ?? '';
 
-        if (empty($header)) {
+        if ($header === '') {
             return;
         }
 
@@ -35,9 +35,9 @@ abstract class AbstractFromHeaderConfigurator extends AbstractSecurityContextCon
     private function getHeaderValue(Request $request): ?string
     {
         foreach ($this->headerNames as $headerName) {
-            $header = $request->headers->get($headerName);
+            $header = $request->headers->get($headerName) ?? '';
 
-            if (empty($header) === false) {
+            if ($header !== '') {
                 return $header;
             }
         }

@@ -43,6 +43,7 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
      * @param \EonX\EasyWebhook\Interfaces\WebhookInterface[] $webhooks
      *
      * @throws \Doctrine\DBAL\Exception
+     *
      * @dataProvider providerTestFindDueWebhooks
      */
     public function testFindDueWebhooks(array $webhooks, int $expectedDue): void

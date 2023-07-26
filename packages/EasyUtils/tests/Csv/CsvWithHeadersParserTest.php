@@ -126,10 +126,10 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     /**
      * @param mixed[] $expected
      *
-     * @dataProvider providerTestFromFile
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
+     *
+     * @dataProvider providerTestFromFile
      */
     public function testFromFile(string $filename, CsvParserConfigInterface $config, array $expected): void
     {
@@ -141,12 +141,12 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
+     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
+     *
      * @phpstan-param class-string<\Throwable> $expectedException
      *
      * @dataProvider providerTestFromFileForException
-     *
-     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
-     * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
     public function testFromFileForException(
         string $filename,

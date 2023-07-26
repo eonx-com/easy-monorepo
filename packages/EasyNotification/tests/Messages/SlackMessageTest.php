@@ -57,17 +57,17 @@ final class SlackMessageTest extends AbstractTestCase
     /**
      * @param mixed[] $body
      *
-     * @dataProvider providerTestGetters
-     *
      * @throws \Nette\Utils\JsonException
+     *
+     * @dataProvider providerTestGetters
      */
     public function testGetters(callable $getMessage, array $body): void
     {
-        /** @var \EonX\EasyNotification\Messages\SlackMessage $message */
         // Trick for coverage
+        /** @var \EonX\EasyNotification\Messages\SlackMessage $message */
         $message = $getMessage();
 
-        self::assertEquals(MessageInterface::TYPE_SLACK, $message->getType());
-        self::assertEquals(Json::encode($body), $message->getBody());
+        self::assertSame(MessageInterface::TYPE_SLACK, $message->getType());
+        self::assertSame(Json::encode($body), $message->getBody());
     }
 }

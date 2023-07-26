@@ -10,12 +10,12 @@ interface BatchRepositoryInterface
 
     public function find(int|string $id): ?BatchInterface;
 
+    public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface;
+
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      */
     public function findOrFail(int|string $id): BatchInterface;
-
-    public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface;
 
     public function reset(): self;
 

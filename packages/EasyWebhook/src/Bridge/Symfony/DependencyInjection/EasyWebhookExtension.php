@@ -15,8 +15,8 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 final class EasyWebhookExtension extends Extension
 {
     private const SIGNATURE_PARAMS = [
-        BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
         BridgeConstantsInterface::PARAM_SECRET => 'secret',
+        BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
     ];
 
     /**

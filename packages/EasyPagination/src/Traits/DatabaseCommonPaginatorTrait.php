@@ -32,13 +32,6 @@ trait DatabaseCommonPaginatorTrait
 
     private mixed $select = null;
 
-    public function hasJoinsInQuery(?bool $hasJoinsInQuery = null): self
-    {
-        $this->hasJoinsInQuery = $hasJoinsInQuery ?? true;
-
-        return $this;
-    }
-
     public function addCommonCriteria(callable $commonCriteria, ?string $name = null): self
     {
         $this->commonCriteria = $this->doAddCriteria($this->commonCriteria, $commonCriteria, $name);
@@ -56,6 +49,13 @@ trait DatabaseCommonPaginatorTrait
     public function addGetItemsCriteria(callable $getItemsCriteria, ?string $name = null): self
     {
         $this->getItemsCriteria = $this->doAddCriteria($this->getItemsCriteria, $getItemsCriteria, $name);
+
+        return $this;
+    }
+
+    public function hasJoinsInQuery(?bool $hasJoinsInQuery = null): self
+    {
+        $this->hasJoinsInQuery = $hasJoinsInQuery ?? true;
 
         return $this;
     }

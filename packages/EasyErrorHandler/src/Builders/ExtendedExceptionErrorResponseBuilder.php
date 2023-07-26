@@ -34,7 +34,7 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
     private readonly array $exceptionKeys;
 
     /**
-     * @param null|string[] $exceptionKeys
+     * @param string[]|null $exceptionKeys
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,

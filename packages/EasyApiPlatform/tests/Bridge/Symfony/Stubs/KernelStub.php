@@ -19,7 +19,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     private array $configs;
 
     /**
-     * @param null|mixed[] $configs
+     * @param mixed[]|null $configs
      */
     public function __construct(?array $configs = null)
     {

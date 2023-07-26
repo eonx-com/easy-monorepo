@@ -128,9 +128,9 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @dataProvider providerTestIterateThroughItems
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestIterateThroughItems
      */
     public function testIterateThroughItems(
         callable $setup,

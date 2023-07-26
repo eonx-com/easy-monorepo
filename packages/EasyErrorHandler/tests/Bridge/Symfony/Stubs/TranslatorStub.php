@@ -13,7 +13,7 @@ final class TranslatorStub implements TranslatorInterface
     private const LOCALE = 'en';
 
     /**
-     * @var null|mixed[]
+     * @var mixed[]|null
      */
     private ?array $translations = null;
 
@@ -33,7 +33,10 @@ final class TranslatorStub implements TranslatorInterface
     }
 
     /**
-     * @param null|mixed[] $parameters
+     * @param mixed[]|null $parameters
+     * @param mixed $id
+     * @param mixed|null $domain
+     * @param mixed|null $locale
      */
     public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
     {
@@ -41,7 +44,7 @@ final class TranslatorStub implements TranslatorInterface
             ->trans($id, $parameters ?? [], $domain, $locale);
 
         // TODO - That's cheating... Translations need to be reworked completely
-        if (empty($parameters) === false) {
+        if (\count($parameters ?? []) > 0) {
             $translated = \str_replace(':', '', $translated);
         }
 

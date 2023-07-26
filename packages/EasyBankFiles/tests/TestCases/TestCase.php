@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 /**
  * The base test case.
+ *
  * @covers \EonX\EasyBankFiles\Tests\TestCases\TestCase
  */
 class TestCase extends PHPUnitTestCase

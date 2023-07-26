@@ -54,10 +54,10 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     public function __construct(
         ManagerRegistry $managerRegistry,
         IriConverterInterface $iriConverter,
-        PropertyAccessorInterface $propertyAccessor = null,
-        LoggerInterface $logger = null,
+        ?PropertyAccessorInterface $propertyAccessor = null,
+        ?LoggerInterface $logger = null,
         ?array $properties = null,
-        NameConverterInterface $nameConverter = null,
+        ?NameConverterInterface $nameConverter = null,
         private readonly array $iriFields = [],
     ) {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
@@ -112,11 +112,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
                 foreach ($filterParameterNames as $filterParameterName) {
                     $description[$filterParameterName] = [
+                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
                         'property' => $propertyName,
-                        'type' => $typeOfField,
                         'required' => false,
                         'strategy' => $strategy,
-                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
+                        'type' => $typeOfField,
                     ];
                 }
             } elseif ($metadata->hasAssociation($field)) {
@@ -127,11 +127,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
                 foreach ($filterParameterNames as $filterParameterName) {
                     $description[$filterParameterName] = [
+                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
                         'property' => $propertyName,
-                        'type' => 'string',
                         'required' => false,
                         'strategy' => self::STRATEGY_EXACT,
-                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
+                        'type' => 'string',
                     ];
                 }
             }
@@ -248,7 +248,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = [],
     ): void {
         $filterParameter = $property;

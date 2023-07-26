@@ -204,9 +204,9 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
     }
 
     /**
-     * @dataProvider providerTestPaginator
-     *
      * @throws \Doctrine\ORM\ORMException
+     *
+     * @dataProvider providerTestPaginator
      */
     public function testPaginator(
         PaginationInterface $pagination,

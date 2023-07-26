@@ -25,9 +25,9 @@ final class GeneratorTest extends TestCase
     /**
      * Generated data should be present in the content.
      *
-     * @group Generator-Bpay
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
+     *
+     * @group Generator-Bpay
      */
     public function testGeneratedDataShouldBeInTheContent(): void
     {

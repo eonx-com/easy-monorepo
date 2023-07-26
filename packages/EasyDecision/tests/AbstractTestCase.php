@@ -38,7 +38,7 @@ abstract class AbstractTestCase extends TestCase
     }
 
     /**
-     * @param null|mixed[] $extra
+     * @param mixed[]|null $extra
      */
     protected static function createLanguageRule(
         string $expression,

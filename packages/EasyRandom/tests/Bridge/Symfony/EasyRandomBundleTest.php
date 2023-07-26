@@ -76,9 +76,9 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
     /**
      * @param string[] $configs
      *
-     * @dataProvider provideConfigsForUuidGenerator
-     *
      * @psalm-param class-string $expectedUuidGeneratorClass
+     *
+     * @dataProvider provideConfigsForUuidGenerator
      */
     public function testUuidGeneratorInstance(array $configs, string $expectedUuidGeneratorClass): void
     {

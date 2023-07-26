@@ -17,7 +17,7 @@ final class HttpRequestSentEvent
     private array $extra;
 
     /**
-     * @param null|mixed[] $extra
+     * @param mixed[]|null $extra
      */
     public function __construct(
         private RequestDataInterface $requestData,

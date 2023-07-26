@@ -50,7 +50,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     }
 
     /**
-     * @param null|mixed[] $default
+     * @param mixed[]|null $default
      *
      * @return mixed[]
      */

@@ -7,7 +7,7 @@ namespace EonX\EasyDecision\Interfaces;
 interface RuleProviderInterface
 {
     /**
-     * @param null|mixed[] $params
+     * @param mixed[]|null $params
      *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */

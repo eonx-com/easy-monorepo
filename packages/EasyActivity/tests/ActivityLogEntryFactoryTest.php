@@ -256,6 +256,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $article = new Article();
         $article->setId('00000000-0000-0000-0000-000000000001');
 
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $article,
@@ -275,7 +276,6 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
             return;
         }
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,

@@ -88,7 +88,7 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     private function getMethodCall(Definition $definition): ?array
     {
@@ -102,9 +102,9 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
     }
 
     /**
-     * @param null|mixed $default
+     * @param mixed|null $default
      *
-     * @return null|mixed
+     * @return mixed|null
      */
     private function getParam(ContainerBuilder $container, string $param, $default = null)
     {

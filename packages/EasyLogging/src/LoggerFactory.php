@@ -96,7 +96,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     }
 
     /**
-     * @param null|iterable<mixed> $processorConfigProviders
+     * @param iterable<mixed>|null $processorConfigProviders
      */
     public function setProcessorConfigProviders(?iterable $processorConfigProviders = null): LoggerFactoryInterface
     {

@@ -14,7 +14,7 @@ final class ViolationsErrorResponseBuilder extends AbstractSingleKeyErrorRespons
     /**
      * @param mixed[] $data
      *
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     protected function doBuildValue(Throwable $throwable, array $data): ?array
     {

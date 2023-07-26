@@ -23,14 +23,14 @@ final class AuthenticationFailureResponseFactory implements AuthenticationFailur
     {
         if ($exception !== null) {
             $this->logger->info('Authentication exception', [
-                'message' => $exception->getMessageKey(),
                 'data' => $exception->getMessageData(),
+                'message' => $exception->getMessageKey(),
             ]);
         }
 
         $data = [
-            'message' => 'Unauthorized',
             'code' => JsonResponse::HTTP_UNAUTHORIZED,
+            'message' => 'Unauthorized',
             'subCode' => 0,
         ];
 

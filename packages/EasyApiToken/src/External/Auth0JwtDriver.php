@@ -28,7 +28,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
-     * @param null|string[] $allowedAlgos
+     * @param string[]|null $allowedAlgos
      */
     public function __construct(
         private array $validAudiences,
@@ -61,10 +61,10 @@ final class Auth0JwtDriver implements JwtDriverInterface
 
         // Had to fake clientId to work as it is automatically added to audience
         $config = new Auth0V8SdkConfiguration([
-            'domain' => $this->domain,
-            'clientId' => 'client_id',
-            'strategy' => Auth0V8SdkConfiguration::STRATEGY_API,
             'audience' => [$this->audienceForEncode],
+            'clientId' => 'client_id',
+            'domain' => $this->domain,
+            'strategy' => Auth0V8SdkConfiguration::STRATEGY_API,
         ]);
         $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
         $exceptions = [];

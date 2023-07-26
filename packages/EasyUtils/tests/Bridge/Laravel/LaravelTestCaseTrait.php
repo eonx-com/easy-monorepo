@@ -12,7 +12,7 @@ trait LaravelTestCaseTrait
     private ?Application $app = null;
 
     /**
-     * @param null|mixed[] $config
+     * @param mixed[]|null $config
      */
     protected function getApplication(?array $config = null): Application
     {

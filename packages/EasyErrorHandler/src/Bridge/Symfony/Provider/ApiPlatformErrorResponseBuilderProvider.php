@@ -20,7 +20,7 @@ final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuil
     private readonly bool $transformValidationErrors;
 
     /**
-     * @param null|mixed[] $keys
+     * @param mixed[]|null $keys
      */
     public function __construct(
         private readonly TranslatorInterface $translator,

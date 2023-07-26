@@ -9,19 +9,19 @@ use EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface;
 abstract class AbstractLoggingConfig implements LoggingConfigInterface
 {
     /**
-     * @var null|string[]
+     * @var string[]|null
      */
     private ?array $channels = null;
 
     /**
-     * @var null|string[]
+     * @var string[]|null
      */
     private ?array $exceptChannels = null;
 
     private ?int $priority = null;
 
     /**
-     * @param null|string[] $channels
+     * @param string[]|null $channels
      */
     public function channels(?array $channels = null): LoggingConfigInterface
     {
@@ -31,7 +31,7 @@ abstract class AbstractLoggingConfig implements LoggingConfigInterface
     }
 
     /**
-     * @param null|string[] $exceptChannels
+     * @param string[]|null $exceptChannels
      */
     public function exceptChannels(?array $exceptChannels = null): LoggingConfigInterface
     {
@@ -41,7 +41,7 @@ abstract class AbstractLoggingConfig implements LoggingConfigInterface
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getChannels(): ?array
     {
@@ -49,7 +49,7 @@ abstract class AbstractLoggingConfig implements LoggingConfigInterface
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getExceptChannels(): ?array
     {

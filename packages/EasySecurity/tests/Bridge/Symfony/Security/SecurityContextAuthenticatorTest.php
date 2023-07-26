@@ -41,9 +41,9 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider provideExceptions
-     *
      * @psalm-param class-string<\Throwable> $expectedExceptionClass
+     *
+     * @dataProvider provideExceptions
      */
     public function testAuthenticateThrowsCorrectException(
         Throwable $thrownException,

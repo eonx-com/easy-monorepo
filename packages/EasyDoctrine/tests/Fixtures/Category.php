@@ -14,9 +14,9 @@ class Category
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $activeTill = null;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 128)]

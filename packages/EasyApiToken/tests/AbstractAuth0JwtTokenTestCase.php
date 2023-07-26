@@ -30,9 +30,9 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     protected static array $validAudiences = ['my-identifier'];
 
     /**
-     * @param null|string[] $validAudiences
-     * @param null|string[] $authorizedIss
-     * @param null|string[] $allowedAlgos
+     * @param string[]|null $validAudiences
+     * @param string[]|null $authorizedIss
+     * @param string[]|null $allowedAlgos
      */
     protected function createAuth0JwtDriver(
         ?array $validAudiences = null,

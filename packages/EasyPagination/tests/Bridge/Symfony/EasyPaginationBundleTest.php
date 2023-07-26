@@ -83,7 +83,7 @@ final class EasyPaginationBundleTest extends AbstractTestCase
     }
 
     /**
-     * @param null|mixed[] $query
+     * @param mixed[]|null $query
      */
     private static function createRequest(?array $query = null): Request
     {

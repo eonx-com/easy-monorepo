@@ -76,7 +76,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getMetadata(): ?array
     {
@@ -104,7 +104,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     }
 
     /**
-     * @return null|mixed[]
+     * @return mixed[]|null
      */
     public function getThrowableDetails(): ?array
     {
@@ -258,13 +258,13 @@ abstract class AbstractBatchObject implements BatchObjectInterface
     public function toArray(): array
     {
         return [
-            'class' => static::class,
             'cancelled_at' => $this->getCancelledAt(),
+            'class' => static::class,
             'created_at' => $this->getCreatedAt(),
+            'finished_at' => $this->getFinishedAt(),
             'id' => $this->getId(),
             'metadata' => $this->getMetadata(),
             'name' => $this->getName(),
-            'finished_at' => $this->getFinishedAt(),
             'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
             'started_at' => $this->getStartedAt(),
             'status' => $this->getStatus(),

@@ -35,15 +35,15 @@ final class Transaction extends BaseObject
     public function getValidationRules(): array
     {
         return [
-            'bsbNumber' => GeneratorInterface::VALIDATION_RULE_BSB,
             'accountNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
             'amount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'titleOfAccount' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'lodgementReference' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'traceBsb' => GeneratorInterface::VALIDATION_RULE_BSB,
-            'traceAccountNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'nameOfRemitter' => GeneratorInterface::VALIDATION_RULE_ALPHA,
             'amountOfWithholdingTax' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'bsbNumber' => GeneratorInterface::VALIDATION_RULE_BSB,
+            'lodgementReference' => GeneratorInterface::VALIDATION_RULE_ALPHA,
+            'nameOfRemitter' => GeneratorInterface::VALIDATION_RULE_ALPHA,
+            'titleOfAccount' => GeneratorInterface::VALIDATION_RULE_ALPHA,
+            'traceAccountNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
+            'traceBsb' => GeneratorInterface::VALIDATION_RULE_BSB,
             'transactionCode' => GeneratorInterface::class,
         ];
     }
@@ -51,21 +51,21 @@ final class Transaction extends BaseObject
     /**
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
-     * @see http://php.net/manual/en/function.str-pad.php
-     *
      * @return mixed[]
+     *
+     * @see http://php.net/manual/en/function.str-pad.php
      */
     protected function getAttributesPaddingRules(): array
     {
         return [
             'accountNumber' => [9, ' ', \STR_PAD_LEFT],
-            'indicator' => [1],
             'amount' => [10, '0', \STR_PAD_LEFT],
-            'titleOfAccount' => [32],
-            'lodgementReference' => [18],
-            'traceAccountNumber' => [9, ' ', \STR_PAD_LEFT],
-            'nameOfRemitter' => [16],
             'amountOfWithholdingTax' => [8, '0', \STR_PAD_LEFT],
+            'indicator' => [1],
+            'lodgementReference' => [18],
+            'nameOfRemitter' => [16],
+            'titleOfAccount' => [32],
+            'traceAccountNumber' => [9, ' ', \STR_PAD_LEFT],
         ];
     }
 

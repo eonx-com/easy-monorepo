@@ -61,13 +61,13 @@ final class EasySwooleRuntime extends SymfonyRuntime
             OptionHelper::setOption('settings', $this->resolveSwooleSettings(\array_merge([
                 // Process
                 'daemonize' => 0,
-                'group' => 'www-data',
-                'user' => 'www-data',
+                // Processes number
+                'reactor_num' => FunctionHelper::countCpu() * 2,
                 // Static Handler
                 'enable_static_handler' => true,
                 'document_root' => '/var/www/public',
-                // Processes number
-                'reactor_num' => FunctionHelper::countCpu() * 2,
+                'group' => 'www-data',
+                'user' => 'www-data',
                 'worker_num' => FunctionHelper::countCpu() * 2,
             ], OptionHelper::getArray('settings'))));
 
