@@ -152,21 +152,15 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         EntityManagerInterface $entityManager,
     ): array {
         $changeSet = [];
-        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
-
-            try {
-                return (string)$entityManager->getUnitOfWork()
-                    ->getEntityIdentifier($entity)[(string)$identifierName];
-            } catch (\Throwable) {
-                return '';
-            }
+        $mappingIdsFunction = static function (object $entity) use ($entityManager): mixed {
+            return $entityManager->getUnitOfWork()->getSingleIdentifierValue($entity);
         };
 
         foreach ($collections as $collection) {
-            $snapshotIds = \array_filter(\array_map($mappingIdsFunction, $collection->getSnapshot()));
-            $actualIds = \array_filter(\array_map($mappingIdsFunction, $collection->toArray()));
+            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
+            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
             $diff = \array_diff($snapshotIds, $actualIds);
+
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
                 /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
