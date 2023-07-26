@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
@@ -123,12 +122,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 $changeSet[$attribute] = [$value, null];
             }
 
-            $classMetadata = $entityManager->getClassMetadata(\get_class($object));
-            if ($classMetadata->isIdentifierComposite) {
-                throw ORMInvalidArgumentException::invalidCompositeIdentifier();
-            }
-
-            $this->deletedEntitiesIds[\spl_object_hash($object)] = $originalEntityData[$classMetadata->identifier[0]];
+            $this->deletedEntitiesIds[\spl_object_hash($object)] = $unitOfWork->getSingleIdentifierValue($object);
 
             $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
