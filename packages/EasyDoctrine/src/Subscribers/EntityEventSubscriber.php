@@ -153,13 +153,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     ): array {
         $changeSet = [];
         $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $identifiers = $entityManager->getClassMetadata(\get_class($entity))?->getIdentifier();
-
-            if ($identifiers === null) {
-                return '';
-            }
-
-            $identifierName = \current($identifiers);
+            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
 
             try {
                 return (string)$entityManager->getUnitOfWork()
