@@ -166,7 +166,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 ->getSingleIdentifierValue($entity);
 
             if ($id === null) {
-                $class = $entityManager->getClassMetadata(get_class($entity));
+                $class = $entityManager->getClassMetadata(\get_class($entity));
 
                 if ($class->isIdentifierComposite) {
                     throw ORMInvalidArgumentException::invalidCompositeIdentifier();
