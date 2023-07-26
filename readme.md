@@ -12,7 +12,6 @@ you can look [there][1].
 ### Packages
 
 <!-- monorepo-packages -->
-
 - [EasyActivity](https://github.com/eonx-com/easy-activity): Tracking your record changes.
 - [EasyApiPlatform](https://github.com/eonx-com/easy-api-platform): Provides features for API Platform applications
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Make your API accept multiple authentication strategies in a convenient way (Basic, ApiKey, JWT, ...)
@@ -41,7 +40,6 @@ you can look [there][1].
 - [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier
 - [EasyUtils](https://github.com/eonx-com/easy-utils): EonX packages utils
 - [EasyWebhook](https://github.com/eonx-com/easy-webhook): Sending webhooks has never been so easy (persistence, retry, async)
-
 <!-- end-monorepo-packages -->
 
 <br>
