@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyTest\Bridge\BridgeConstantsInterface;
+use Exception;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\Mailer\Mailer;
 
 final class EasyTestExtension extends Extension
 {
@@ -24,6 +27,14 @@ final class EasyTestExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
+
+        if ($config['mailer_message_logger_listener_stub']['enabled'] === true
+            && \class_exists(Mailer::class) === false
+        ) {
+            throw new RuntimeException(
+                'symfony/mailer package should be installed to use MailerMessageLoggerListenerStub.'
+            );
+        }
 
         /** @var string[]|string $param */
         foreach (self::CONFIGS_TO_PARAMS as $configKey => $param) {
