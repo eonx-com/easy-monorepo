@@ -14,6 +14,7 @@ final class OptionHelper
         'cache_tables' => [],
         'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
         'callbacks' => [],
+        'env_var_output_enabled' => true,
         'host' => '0.0.0.0',
         'hot_reload_dirs' => [
             self::DEFAULT_PUBLIC_DIR . 'config',
@@ -121,7 +122,7 @@ final class OptionHelper
         $env ??= \sprintf('SWOOLE_%s', u($option)->upper());
         $value = self::$options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? null;
 
-        if ($useDefault ?? true) {
+        if (($useDefault ?? true) && $value === null) {
             $value = self::DEFAULT_OPTIONS[$option] ?? $value;
         }
 
