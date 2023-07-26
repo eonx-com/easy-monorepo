@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Bridge\Symfony\DependencyInjection;
 
 use EonX\EasyTest\Bridge\BridgeConstantsInterface;
-use Exception;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
