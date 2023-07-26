@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Doctrine\ORM\PersistentCollection;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
@@ -26,6 +27,11 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      * @var string[]
      */
     private $acceptableEntities;
+
+    /**
+     * @var array<string, mixed>
+     */
+    private array $deletedEntitiesData = [];
 
     /**
      * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
@@ -116,6 +122,9 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
             foreach ($originalEntityData as $attribute => $value) {
                 $changeSet[$attribute] = [$value, null];
             }
+
+            $this->deletedEntitiesData[\spl_object_hash($object)] = $originalEntityData;
+
             $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
 
@@ -152,9 +161,21 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         EntityManagerInterface $entityManager,
     ): array {
         $changeSet = [];
-        $mappingIdsFunction = static function (object $entity) use ($entityManager): mixed {
-            return $entityManager->getUnitOfWork()
+        $mappingIdsFunction = function (object $entity) use ($entityManager): mixed {
+            $id = $entityManager->getUnitOfWork()
                 ->getSingleIdentifierValue($entity);
+
+            if ($id === null) {
+                $class = $entityManager->getClassMetadata(get_class($entity));
+
+                if ($class->isIdentifierComposite) {
+                    throw ORMInvalidArgumentException::invalidCompositeIdentifier();
+                }
+
+                $id = $this->deletedEntitiesData[\spl_object_hash($entity)][$class->identifier[0]];
+            }
+
+            return $id;
         };
 
         foreach ($collections as $collection) {
