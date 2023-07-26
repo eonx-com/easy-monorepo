@@ -31,7 +31,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     /**
      * @var array<string, mixed>
      */
-    private array $deletedEntitiesData = [];
+    private array $deletedEntitiesIds = [];
 
     /**
      * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
@@ -123,7 +123,12 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 $changeSet[$attribute] = [$value, null];
             }
 
-            $this->deletedEntitiesData[\spl_object_hash($object)] = $originalEntityData;
+            $classMetadata = $entityManager->getClassMetadata(\get_class($object));
+            if ($classMetadata->isIdentifierComposite) {
+                throw ORMInvalidArgumentException::invalidCompositeIdentifier();
+            }
+
+            $this->deletedEntitiesIds[\spl_object_hash($object)] = $originalEntityData[$classMetadata->identifier[0]];
 
             $this->eventDispatcher->deferDelete($transactionNestingLevel, $object, $changeSet);
         }
@@ -166,13 +171,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 ->getSingleIdentifierValue($entity);
 
             if ($id === null) {
-                $class = $entityManager->getClassMetadata(\get_class($entity));
-
-                if ($class->isIdentifierComposite) {
-                    throw ORMInvalidArgumentException::invalidCompositeIdentifier();
-                }
-
-                $id = $this->deletedEntitiesData[\spl_object_hash($entity)][$class->identifier[0]];
+                $id = $this->deletedEntitiesIds[\spl_object_hash($entity)];
             }
 
             return $id;
