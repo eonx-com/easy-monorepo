@@ -10,18 +10,14 @@ use function Symfony\Component\String\u;
 
 final class EnvVarHelper
 {
-    private static bool $outputEnabled = true;
-
-    public static function disableOutput(): void
-    {
-        self::$outputEnabled = false;
-    }
-
     /**
      * @param string[] $jsonSecrets
      */
-    public static function loadEnvVars(array $jsonSecrets, ?string $dotEnvPath = null): void
-    {
+    public static function loadEnvVars(
+        array $jsonSecrets,
+        ?string $dotEnvPath = null,
+        ?bool $outputEnabled = null,
+    ): void {
         $jsonSecrets = \array_map(static function (string $jsonSecret): string {
             $jsonSecret = u($jsonSecret);
 
@@ -43,7 +39,7 @@ final class EnvVarHelper
                             ->upper()
                             ->toString();
 
-                        if (self::$outputEnabled) {
+                        if ($outputEnabled ?? true) {
                             OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $envVarName));
                         }
 
@@ -65,7 +61,7 @@ final class EnvVarHelper
             $_ENV[$name] = $value;
         }
 
-        if (self::$outputEnabled && $dotEnvPath !== null && isset($_SERVER['SYMFONY_DOTENV_VARS'])) {
+        if (($outputEnabled ?? true) && $dotEnvPath !== null && isset($_SERVER['SYMFONY_DOTENV_VARS'])) {
             foreach (\explode(',', $_SERVER['SYMFONY_DOTENV_VARS']) as $name) {
                 OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $dotEnvPath));
             }
