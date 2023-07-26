@@ -22,7 +22,7 @@ return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $c
 
     $entityManager->mapping('AppApiResource')
         ->alias('AppApiResource')
-        ->dir(\param('kernel.project_dir') . '/src/ApiResource')
+        ->dir(param('kernel.project_dir') . '/src/ApiResource')
         ->isBundle(false)
         ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource')
         ->type('attribute');
