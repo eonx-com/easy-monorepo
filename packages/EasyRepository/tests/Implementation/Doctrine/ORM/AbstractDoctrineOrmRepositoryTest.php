@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Tests\Implementation\Doctrine\ORM;
 
+use Closure;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use stdClass;
 
 final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 {
     public function testAllReturnsExpectedArray(): void
     {
-        $expected = [new \stdClass(), new \stdClass()];
+        $expected = [new stdClass(), new stdClass()];
 
         /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($expected): void {
@@ -47,7 +49,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 
     public function testDeleteCallsRemoveOnObjectManager(): void
     {
-        $tests = [new \stdClass(), [new \stdClass(), new \stdClass()]];
+        $tests = [new stdClass(), [new stdClass(), new stdClass()]];
 
         foreach ($tests as $test) {
             /** @var \Doctrine\Persistence\ManagerRegistry $registry */
@@ -60,7 +62,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
     public function testFindReturnsExpectedValues(): void
     {
         $expected = [
-            'found' => new \stdClass(),
+            'found' => new stdClass(),
             null,
         ];
 
@@ -79,7 +81,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
 
     public function testSaveCallsRemoveOnObjectManager(): void
     {
-        $tests = [new \stdClass(), [new \stdClass(), new \stdClass()]];
+        $tests = [new stdClass(), [new stdClass(), new stdClass()]];
 
         foreach ($tests as $test) {
             /** @var \Doctrine\Persistence\ManagerRegistry $registry */
@@ -89,10 +91,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @param mixed $objects
-     */
-    private function getManagerExpectations(string $method, $objects): \Closure
+    private function getManagerExpectations(string $method, mixed $objects): Closure
     {
         return function (MockInterface $manager) use ($method, $objects): void {
             $times = \is_array($objects) ? \count($objects) : 1;
@@ -100,9 +99,9 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractTestCase
             $manager->shouldReceive($method)
                 ->times($times)
                 ->withArgs(function ($object): bool {
-                    self::assertInstanceOf(\stdClass::class, $object);
+                    self::assertInstanceOf(stdClass::class, $object);
 
-                    return $object instanceof \stdClass;
+                    return $object instanceof stdClass;
                 });
             $manager->shouldReceive('flush')
                 ->once()

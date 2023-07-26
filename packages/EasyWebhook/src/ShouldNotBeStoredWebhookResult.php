@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook;
 
 final class ShouldNotBeStoredWebhookResult extends AbstractWebhookResult
 {
-    // No body needed.
+    // No body needed
 }

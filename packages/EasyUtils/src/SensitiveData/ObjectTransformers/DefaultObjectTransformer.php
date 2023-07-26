@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData\ObjectTransformers;
 
+use DateTimeInterface;
+
 final class DefaultObjectTransformer extends AbstractObjectTransformer
 {
     /**
@@ -16,6 +18,6 @@ final class DefaultObjectTransformer extends AbstractObjectTransformer
 
     public function supports(object $object): bool
     {
-        return $object instanceof \DateTimeInterface === false;
+        return $object instanceof DateTimeInterface === false;
     }
 }

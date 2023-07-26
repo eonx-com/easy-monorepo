@@ -14,7 +14,7 @@ final class SlackMessageTest extends AbstractTestCase
     /**
      * @var string[]
      */
-    protected static $body = [
+    protected static array $body = [
         'option' => 'value',
         'channel' => 'channel',
         'text' => 'text',
@@ -25,23 +25,19 @@ final class SlackMessageTest extends AbstractTestCase
      *
      * @see testGetters
      */
-    public function providerTestGetters(): iterable
+    public static function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
-            static function (): SlackMessage {
-                return new SlackMessage('channel', 'text', [
-                    'option' => 'value',
-                ]);
-            },
+            static fn (): SlackMessage => new SlackMessage('channel', 'text', [
+                'option' => 'value',
+            ]),
             static::$body,
         ];
 
         yield 'Create method' => [
-            static function (): SlackMessage {
-                return SlackMessage::create('channel', 'text', [
-                    'option' => 'value',
-                ]);
-            },
+            static fn (): SlackMessage => SlackMessage::create('channel', 'text', [
+                'option' => 'value',
+            ]),
             static::$body,
         ];
 

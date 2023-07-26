@@ -8,56 +8,36 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Article
 {
-    /**
-     * @ORM\ManyToOne(targetEntity=\EonX\EasyActivity\Tests\Fixtures\Author::class)
-     *
-     * @var \EonX\EasyActivity\Tests\Fixtures\Author
-     */
-    private $author;
+    #[ORM\ManyToOne(targetEntity: Author::class)]
+    private Author $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=\EonX\EasyActivity\Tests\Fixtures\Comment::class, mappedBy="article", cascade={"persist"})
-     *
      * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyActivity\Tests\Fixtures\Comment>
      */
-    private $comments;
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class, cascade: ['persist'])]
+    private Collection $comments;
 
-    /**
-     * @ORM\Column(type="text", length=256)
-     *
-     * @var string
-     */
-    private $content;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private string $content;
 
-    /**
-     * @ORM\Column(type="datetimetz")
-     *
-     * @var \DateTimeInterface
-     */
-    private $createdAt;
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    private DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid")
-     *
-     * @var string
-     */
-    private $id;
+    #[ORM\Column(type: Types::GUID)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
+    private string $id;
 
-    /**
-     * @ORM\Column(type="string", length=256)
-     *
-     * @var string
-     */
-    private $title;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private string $title;
 
     public function __construct()
     {
@@ -75,7 +55,7 @@ class Article
         return $this;
     }
 
-    public function getAuthor(): ?Author
+    public function getAuthor(): Author
     {
         return $this->author;
     }

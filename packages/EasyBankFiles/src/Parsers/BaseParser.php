@@ -6,17 +6,9 @@ namespace EonX\EasyBankFiles\Parsers;
 
 abstract class BaseParser
 {
-    /**
-     * @var string
-     */
-    protected $contents;
-
-    /**
-     * BaseParser constructor.
-     */
-    public function __construct(string $contents)
-    {
-        $this->contents = $contents;
+    public function __construct(
+        protected string $contents,
+    ) {
     }
 
     /**

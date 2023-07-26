@@ -25,21 +25,15 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     /**
      * @var string[]
      */
-    private $acceptableEntities;
-
-    /**
-     * @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private array $acceptableEntities;
 
     /**
      * @param string[] $entities
      */
     public function __construct(
-        DeferredEntityEventDispatcherInterface $eventDispatcher,
+        private DeferredEntityEventDispatcherInterface $eventDispatcher,
         array $entities,
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->acceptableEntities = $entities;
     }
 
@@ -85,7 +79,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 );
                 $collectionsMapping->detach($object);
                 /** @var array<string, array{mixed, mixed}> $changeSet */
-                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+                $changeSet = [...$changeSet, ...$collectionsChangeSet];
             }
 
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $object, $changeSet);
@@ -101,7 +95,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 );
                 $collectionsMapping->detach($object);
                 /** @var array<string, array{mixed, mixed}> $changeSet */
-                $changeSet = \array_merge($changeSet, $collectionsChangeSet);
+                $changeSet = [...$changeSet, ...$collectionsChangeSet];
             }
 
             if (\count($changeSet) > 0) {
@@ -144,7 +138,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     ): array {
         $changeSet = [];
         $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
+            $identifierName = \current($entityManager->getClassMetadata($entity::class)->getIdentifier());
             return (string)$entityManager->getUnitOfWork()
                 ->getEntityIdentifier($entity)[$identifierName];
         };
@@ -224,7 +218,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      */
     private function getClearedChangeSet(array $changeSet): array
     {
-        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem) {
+        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
             if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
                 ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
                 return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==

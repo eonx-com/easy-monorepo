@@ -9,24 +9,21 @@ use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class TemplatingEventRenderer implements TemplatingEventRendererInterface
 {
-    /**
-     * @var bool
-     */
-    private $isDebug;
+    private bool $isDebug;
 
     /**
      * @var \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface[]
      */
-    private $providers;
+    private array $providers;
 
     /**
      * @var \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface[]
      */
-    private $renderers;
+    private array $renderers;
 
     /**
      * @param iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface> $providers
@@ -59,7 +56,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
 
         throw new NoRendererFoundForBlockException(\sprintf(
             'No renderer found for block %s with name "%s"',
-            \get_class($block),
+            $block::class,
             $block->getName()
         ));
     }

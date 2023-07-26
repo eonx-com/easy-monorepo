@@ -13,7 +13,6 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Files\Trailer as FileTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Header as GroupHeader;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer as GroupTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
-use Nette\Utils\Strings;
 
 final class ResultsContext implements ResultsContextInterface
 {
@@ -23,37 +22,31 @@ final class ResultsContext implements ResultsContextInterface
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Account[]
      */
-    private $accounts = [];
+    private array $accounts = [];
 
     /**
      * @var mixed[]
      */
-    private $caching = [];
+    private array $caching = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Error[]
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\File
-     */
-    private $file;
+    private ?File $file = null;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Group[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var bool
-     */
-    private $isBai = false;
+    private bool $isBai = false;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * ResultsContext constructor.
@@ -66,7 +59,7 @@ final class ResultsContext implements ResultsContextInterface
      */
     public function __construct(array $accounts, array $errors, array $file, array $groups, array $transactions)
     {
-        // Not proud of that, but the order matters, DO NOT change it...
+        // Not proud of that, but the order matters, DO NOT change it
         $this
             ->initTransactions($transactions)
             ->initAccounts($accounts)
@@ -138,10 +131,8 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Cache result for given key.
-     *
-     * @param mixed $result
      */
-    private function cacheResult(string $key, $result): void
+    private function cacheResult(string $key, mixed $result): void
     {
         if (isset($this->caching[$key]) === false) {
             $this->caching[$key] = [];
@@ -223,7 +214,7 @@ final class ResultsContext implements ResultsContextInterface
         $data = [];
         /** @var string[] $lineArray */
         $lineArray = \explode(',', $line);
-        $attributes = \array_merge($required, $optional);
+        $attributes = [...$required, ...$optional];
 
         // Remove CustomerReferenceNumber for BAI because always empty
         if (\strtolower($lineArray[3] ?? '') === 'z') {
@@ -236,7 +227,7 @@ final class ResultsContext implements ResultsContextInterface
 
         foreach ($attributes as $index => $attribute) {
             $value = $lineArray[$index] ?? '';
-            $endsWithSlash = Strings::endsWith($value, '/');
+            $endsWithSlash = \str_ends_with($value, '/');
             $data[$attribute] = $endsWithSlash ? \substr($value, 0, -1) : $value;
 
             // If attribute ends with slash, it's the last one of line, exit
@@ -251,16 +242,16 @@ final class ResultsContext implements ResultsContextInterface
                 continue;
             }
 
-            // if this is a required attribute fail and return.
+            // If this is a required attribute fail and return
             if (\in_array($attribute, $required, true)) {
                 // Add error if data is either null or empty string
                 $this->addError($line, $lineNumber);
 
-                // stop processing this line.
+                // Stop processing this line
                 return null;
             }
 
-            // otherwise set a default value to it.
+            // Otherwise set a default value to it
             $data[$attribute] = '';
         }
 
@@ -290,9 +281,9 @@ final class ResultsContext implements ResultsContextInterface
          * So from 4th item onwards are Transaction code and Amount
          * We can group them in pairs [transactionCode, Amount]
          *
-         * But first let remove the first 3 elements
+         * But first let remove the first 3 elements.
          */
-        $transactionCodes = \array_slice(\explode(',', $identifier['line']), 3);
+        $transactionCodes = \array_slice(\explode(',', (string)$identifier['line']), 3);
         $transactionCodes = $this->formatTransactionCodes(\array_chunk($transactionCodes, 2));
 
         return new AccountIdentifier(\array_merge($data, [

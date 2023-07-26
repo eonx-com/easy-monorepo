@@ -11,19 +11,13 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final class SessionTrackingConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
-     */
-    private $cache;
+    private int $expiresAfter;
 
-    /**
-     * @var int
-     */
-    private $expiresAfter;
-
-    public function __construct(CacheInterface $cache, ?int $expiresAfter = null, ?int $priority = null)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        private CacheInterface $cache,
+        ?int $expiresAfter = null,
+        ?int $priority = null,
+    ) {
         $this->expiresAfter = $expiresAfter ?? 3600;
 
         parent::__construct($priority);

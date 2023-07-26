@@ -12,108 +12,11 @@ use UnexpectedValueException;
 final class NumberTest extends TestCase
 {
     /**
-     * @dataProvider provideInvalidData
-     */
-    public function testConstructorThrowsExceptionWithInvalidValue(string $value): void
-    {
-        $exception = null;
-
-        try {
-            new Number($value);
-        } catch (Throwable $exception) {
-        }
-
-        self::assertInstanceOf(UnexpectedValueException::class, $exception);
-    }
-
-    /**
-     * @param mixed[] $args
-     *
-     * @dataProvider provideFunctionData
-     */
-    public function testMathOperationSucceeds(string $function, int $input, array $args, int|bool $expectedResult): void
-    {
-        $constructorValueCastFunctions = [
-            '\strval',
-            '\intval',
-        ];
-        $object = new Number($constructorValueCastFunctions[\random_int(0, 1)]($input));
-        $argumentCastFunctions = [
-            '\strval',
-            '\intval',
-            '\floatval',
-            static fn (int $a): Number => new Number($a),
-        ];
-        $args = \array_map($argumentCastFunctions[\random_int(0, 3)], $args);
-        $objectValue = (string)$object;
-
-        $result = $object->{$function}(...$args);
-
-        self::assertSame((string)$expectedResult, (string)$result);
-        self::assertSame($objectValue, (string)$object);
-    }
-
-    /**
-     * @param \EonX\EasyUtils\ValueObjects\Number[] $values
-     *
-     * @dataProvider provideMaxData
-     */
-    public function testMaxSucceeds(array $values, ?int $expectedValue = null): void
-    {
-        $result = Number::max(...$values);
-
-        self::assertSame((string)$expectedValue, (string)$result);
-    }
-
-    /**
-     * @param \EonX\EasyUtils\ValueObjects\Number[] $values
-     *
-     * @dataProvider provideMinData
-     */
-    public function testMinSucceeds(array $values, ?int $expectedValue = null): void
-    {
-        $result = Number::min(...$values);
-
-        self::assertSame((string)$expectedValue, (string)$result);
-    }
-
-    /**
-     * @dataProvider provideRoundData
-     */
-    public function testToStringSucceedsAndDoesCorrectRounding(
-        string $value,
-        int $precision,
-        string $expectedResult,
-    ): void {
-        $integer = new Number($value, $precision);
-
-        self::assertSame($expectedResult, (string)$integer);
-    }
-
-    public function testToStringSucceedsWithBigNumbers(): void
-    {
-        $integer1 = new Number('9999999999999999999999');
-
-        $result = $integer1->add(1);
-
-        self::assertSame('10000000000000000000000', (string)$result);
-    }
-
-    public function testToStringSucceedsWithMultipleOperations(): void
-    {
-        $integer1 = new Number(10);
-        $integer2 = $integer1->divide(3);
-        $integer3 = $integer2->multiply(3);
-
-        self::assertSame('9', (string)$integer3);
-    }
-
-    /**
      * @return iterable<mixed>
      *
      * @see testMathOperationSucceeds
      */
-    protected function provideFunctionData(): iterable
+    public static function provideFunctionData(): iterable
     {
         yield [
             'function' => 'abs',
@@ -377,7 +280,7 @@ final class NumberTest extends TestCase
      *
      * @see testConstructorThrowsExceptionWithInvalidValue
      */
-    protected function provideInvalidData(): iterable
+    public static function provideInvalidData(): iterable
     {
         yield [
             'value' => '3.2.1',
@@ -392,7 +295,7 @@ final class NumberTest extends TestCase
      *
      * @see testMaxSucceeds
      */
-    protected function provideMaxData(): iterable
+    public static function provideMaxData(): iterable
     {
         yield [
             'values' => [new Number('100'), new Number('10'), new Number(400)],
@@ -417,7 +320,7 @@ final class NumberTest extends TestCase
      *
      * @see testMinSucceeds
      */
-    protected function provideMinData(): iterable
+    public static function provideMinData(): iterable
     {
         yield [
             'values' => [new Number('100'), new Number(10), new Number('400')],
@@ -442,7 +345,7 @@ final class NumberTest extends TestCase
      *
      * @see testToStringSucceedsAndDoesCorrectRounding
      */
-    protected function provideRoundData(): iterable
+    public static function provideRoundData(): iterable
     {
         yield [
             'value' => '3.2',
@@ -559,5 +462,102 @@ final class NumberTest extends TestCase
             'precision' => 5,
             'expectedResult' => '0.35000',
         ];
+    }
+
+    /**
+     * @dataProvider provideInvalidData
+     */
+    public function testConstructorThrowsExceptionWithInvalidValue(string $value): void
+    {
+        $exception = null;
+
+        try {
+            new Number($value);
+        } catch (Throwable $exception) {
+        }
+
+        self::assertInstanceOf(UnexpectedValueException::class, $exception);
+    }
+
+    /**
+     * @param mixed[] $args
+     *
+     * @dataProvider provideFunctionData
+     */
+    public function testMathOperationSucceeds(string $function, int $input, array $args, int|bool $expectedResult): void
+    {
+        $constructorValueCastFunctions = [
+            '\strval',
+            '\intval',
+        ];
+        $object = new Number($constructorValueCastFunctions[\random_int(0, 1)]($input));
+        $argumentCastFunctions = [
+            '\strval',
+            '\intval',
+            '\floatval',
+            static fn (int $a): Number => new Number($a),
+        ];
+        $args = \array_map($argumentCastFunctions[\random_int(0, 3)], $args);
+        $objectValue = (string)$object;
+
+        $result = $object->{$function}(...$args);
+
+        self::assertSame((string)$expectedResult, (string)$result);
+        self::assertSame($objectValue, (string)$object);
+    }
+
+    /**
+     * @param \EonX\EasyUtils\ValueObjects\Number[] $values
+     *
+     * @dataProvider provideMaxData
+     */
+    public function testMaxSucceeds(array $values, ?int $expectedValue = null): void
+    {
+        $result = Number::max(...$values);
+
+        self::assertSame((string)$expectedValue, (string)$result);
+    }
+
+    /**
+     * @param \EonX\EasyUtils\ValueObjects\Number[] $values
+     *
+     * @dataProvider provideMinData
+     */
+    public function testMinSucceeds(array $values, ?int $expectedValue = null): void
+    {
+        $result = Number::min(...$values);
+
+        self::assertSame((string)$expectedValue, (string)$result);
+    }
+
+    /**
+     * @dataProvider provideRoundData
+     */
+    public function testToStringSucceedsAndDoesCorrectRounding(
+        string $value,
+        int $precision,
+        string $expectedResult,
+    ): void {
+        $integer = new Number($value, $precision);
+
+        self::assertSame($expectedResult, (string)$integer);
+    }
+
+    public function testToStringSucceedsWithBigNumbers(): void
+    {
+        $integer1 = new Number('9999999999999999999999');
+
+        $result = $integer1->add(1);
+
+        self::assertSame('10000000000000000000000', (string)$result);
+    }
+
+    public function testToStringSucceedsWithMultipleOperations(): void
+    {
+        $integer1 = new Number(10);
+        $integer2 = $integer1->divide(3);
+        $integer3 = $integer2->multiply(3);
+
+        self::assertSame('9', (string)$integer3);
     }
 }

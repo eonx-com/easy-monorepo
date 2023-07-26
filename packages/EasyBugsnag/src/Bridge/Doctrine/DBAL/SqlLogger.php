@@ -12,55 +12,25 @@ use Doctrine\DBAL\Logging\SQLLogger as BaseSqlLoggerInterface;
 final class SqlLogger implements BaseSqlLoggerInterface
 {
     /**
-     * @var \Bugsnag\Client
+     * @var null|mixed[]
      */
-    private $client;
+    private ?array $params = null;
 
-    /**
-     * @var \Doctrine\DBAL\Driver\Connection
-     */
-    private $conn;
+    private ?string $sql = null;
 
-    /**
-     * @var null|string
-     */
-    private $connName;
-
-    /**
-     * @var null|\Doctrine\DBAL\Logging\SQLLogger
-     */
-    private $decorated;
+    private ?float $start = null;
 
     /**
      * @var null|mixed[]
      */
-    private $params;
-
-    /**
-     * @var null|string
-     */
-    private $sql;
-
-    /**
-     * @var null|float
-     */
-    private $start;
-
-    /**
-     * @var null|mixed[]
-     */
-    private $types;
+    private ?array $types = null;
 
     public function __construct(
-        Client $client,
-        Connection $conn,
-        ?string $connName = null,
-        ?BaseSqlLoggerInterface $decorated = null,
+        private Client $client,
+        private Connection $conn,
+        private ?string $connName = null,
+        private ?BaseSqlLoggerInterface $decorated = null,
     ) {
-        $this->client = $client;
-        $this->conn = $conn;
-        $this->connName = $connName;
-        $this->decorated = $decorated;
     }
 
     public function getDecorated(): ?BaseSqlLoggerInterface

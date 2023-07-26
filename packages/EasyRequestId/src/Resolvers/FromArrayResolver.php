@@ -9,22 +9,12 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 final class FromArrayResolver
 {
     /**
-     * @var mixed[]
-     */
-    private $array;
-
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    /**
      * @param mixed[] $array
      */
-    public function __construct(array $array, RequestIdServiceInterface $requestIdService)
-    {
-        $this->array = $array;
-        $this->requestIdService = $requestIdService;
+    public function __construct(
+        private array $array,
+        private RequestIdServiceInterface $requestIdService,
+    ) {
     }
 
     /**

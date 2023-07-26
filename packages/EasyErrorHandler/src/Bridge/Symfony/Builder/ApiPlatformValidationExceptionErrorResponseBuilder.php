@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException as LegacyValidationException;
 use ApiPlatform\Symfony\Validator\Exception\ValidationException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
@@ -46,15 +45,14 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
     }
 
     /**
-     * @param \ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException $throwable
+     * @param \ApiPlatform\Symfony\Validator\Exception\ValidationException $throwable
      * @param mixed[] $data
      *
      * @return mixed[]
      */
     public function buildData(Throwable $throwable, array $data): array
     {
-        if ($this->isValidationException($throwable)) {
-            /** @var \ApiPlatform\Symfony\Validator\Exception\ValidationException $throwable */
+        if ($throwable instanceof ValidationException) {
             $violations = [];
 
             foreach ($throwable->getConstraintViolationList() as $violation) {
@@ -86,7 +84,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
     {
-        if ($this->isValidationException($throwable)) {
+        if ($throwable instanceof ValidationException) {
             $statusCode = Response::HTTP_BAD_REQUEST;
         }
 
@@ -98,7 +96,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
      */
     private function getKey(string $name, ?array $keys = null): string
     {
-        $keys = $keys ?? $this->keys;
+        $keys ??= $this->keys;
         $nameParts = \explode(self::KEY_NAME_SEPARATOR, $name);
 
         if (\count($nameParts) <= 1) {
@@ -112,21 +110,5 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
         }
 
         return $this->getKey(\implode(self::KEY_NAME_SEPARATOR, $nameParts), $keys[$firstPartOfName]);
-    }
-
-    private function isValidationException(Throwable $throwable): bool
-    {
-        $isValidationException = null;
-
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        if (\class_exists(ValidationException::class)) {
-            $isValidationException = $throwable instanceof ValidationException;
-        }
-
-        if (\class_exists(ValidationException::class) === false) {
-            $isValidationException = $throwable instanceof LegacyValidationException;
-        }
-
-        return $isValidationException ?? false;
     }
 }

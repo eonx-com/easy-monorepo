@@ -57,9 +57,7 @@ final class DecisionWithExpressionLanguageTest extends AbstractTestCase
 
         $expressionLanguage->addFunction(new ExpressionFunction(
             'cap',
-            function ($arguments, $value, $max) {
-                return \min($value, $max);
-            }
+            fn ($arguments, $value, $max) => \min($value, $max)
         ));
         $expressionLanguage->addFunctions((new ValueExpressionFunctionProvider())->getFunctions());
 

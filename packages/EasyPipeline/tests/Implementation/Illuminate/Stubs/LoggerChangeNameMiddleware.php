@@ -12,27 +12,17 @@ final class LoggerChangeNameMiddleware implements MiddlewareInterface, Middlewar
 {
     use MiddlewareLoggerAwareTrait;
 
-    /**
-     * @var \EonX\EasyPipeline\Tests\Implementation\Illuminate\Stubs\ChangeNameMiddleware
-     */
-    private $decorated;
-
-    public function __construct(ChangeNameMiddleware $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private ChangeNameMiddleware $decorated,
+    ) {
     }
 
-    /**
-     * @param mixed $input
-     *
-     * @return mixed
-     */
-    public function handle($input, callable $next)
+    public function handle(mixed $input, callable $next): mixed
     {
         if ($input instanceof InputStub) {
             $previousName = $input->getName();
 
-            $this->decorated->handle($input, function (InputStub $input) use ($previousName) {
+            $this->decorated->handle($input, function (InputStub $input) use ($previousName): InputStub {
                 $this->log(\sprintf('Changed name "%s" to "%s"', $previousName, $input->getName()));
 
                 return $input;

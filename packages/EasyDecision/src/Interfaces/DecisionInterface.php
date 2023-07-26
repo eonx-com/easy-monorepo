@@ -24,17 +24,12 @@ interface DecisionInterface
     /**
      * @param mixed[] $input
      *
-     * @return mixed
-     *
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
-    public function make(array $input);
+    public function make(array $input): mixed;
 
-    /**
-     * @param null|mixed $defaultOutput
-     */
-    public function setDefaultOutput($defaultOutput = null): self;
+    public function setDefaultOutput(mixed $defaultOutput = null): self;
 
     public function setExitOnPropagationStopped(?bool $exit = null): self;
 

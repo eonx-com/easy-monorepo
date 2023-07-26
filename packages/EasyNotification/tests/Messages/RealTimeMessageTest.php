@@ -15,42 +15,36 @@ final class RealTimeMessageTest extends AbstractTestCase
     /**
      * @var mixed[]
      */
-    protected static $body = [
+    protected static array $body = [
         'message' => 'hey there',
     ];
 
     /**
      * @var string[]
      */
-    protected static $topics = ['nathan', 'pavel'];
+    protected static array $topics = ['nathan', 'pavel'];
 
     /**
      * @return iterable<mixed>
      *
      * @see testGetters
      */
-    public function providerTestGetters(): iterable
+    public static function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
-            function (): RealTimeMessage {
-                return new RealTimeMessage(static::$body, static::$topics);
-            },
+            fn (): RealTimeMessage => new RealTimeMessage(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method' => [
-            function (): RealTimeMessage {
-                return RealTimeMessage::create(static::$body, static::$topics);
-            },
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method + topics' => [
-            function (): RealTimeMessage {
-                return RealTimeMessage::create(static::$body)->topics(static::$topics);
-            },
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body)->topics(static::$topics),
             static::$body,
             static::$topics,
         ];

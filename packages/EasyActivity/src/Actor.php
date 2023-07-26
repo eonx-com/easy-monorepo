@@ -8,26 +8,11 @@ use EonX\EasyActivity\Interfaces\ActorInterface;
 
 final class Actor implements ActorInterface
 {
-    /**
-     * @var string|null
-     */
-    private $id;
-
-    /**
-     * @var string|null
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    public function __construct(string $type, ?string $id = null, ?string $name = null)
-    {
-        $this->type = $type;
-        $this->id = $id;
-        $this->name = $name;
+    public function __construct(
+        private string $type,
+        private ?string $id = null,
+        private ?string $name = null,
+    ) {
     }
 
     public function getActorId(): ?string

@@ -165,9 +165,7 @@ trait DatabaseCommonPaginatorTrait
      */
     private function doRemoveCriteriaByName(array $criteria, string $name): array
     {
-        return \array_filter($criteria, static function (array $current) use ($name): bool {
-            return $current[1] !== $name;
-        });
+        return \array_filter($criteria, static fn (array $current): bool => $current[1] !== $name);
     }
 
     /**

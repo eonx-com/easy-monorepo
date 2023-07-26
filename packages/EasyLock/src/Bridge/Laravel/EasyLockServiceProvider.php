@@ -26,7 +26,7 @@ final class EasyLockServiceProvider extends ServiceProvider
         $this->app->singleton(
             BridgeConstantsInterface::SERVICE_STORE,
             static function (Container $app): PersistingStoreInterface {
-                // If connection from config doesn't exist in container, use flock by default.
+                // If connection from config doesn't exist in container, use flock by default
                 $conn = $app->has(BridgeConstantsInterface::SERVICE_CONNECTION)
                     ? $app->make(BridgeConstantsInterface::SERVICE_CONNECTION)
                     : self::DEFAULT_CONNECTION_ID;

@@ -6,5 +6,5 @@ namespace EonX\EasyPagination\Exceptions;
 
 final class NoPaginationResolverSetException extends AbstractEasyPaginationException
 {
-    // No body needed.
+    // No body needed
 }

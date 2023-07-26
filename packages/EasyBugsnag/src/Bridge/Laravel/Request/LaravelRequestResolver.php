@@ -11,14 +11,9 @@ use Illuminate\Http\Request;
 
 final class LaravelRequestResolver extends AbstractRequestResolver
 {
-    /**
-     * @var \Illuminate\Http\Request
-     */
-    private $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        private Request $request,
+    ) {
     }
 
     protected function doResolve(): RequestInterface

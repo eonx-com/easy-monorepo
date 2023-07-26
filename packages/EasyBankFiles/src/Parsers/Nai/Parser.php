@@ -7,7 +7,6 @@ namespace EonX\EasyBankFiles\Parsers\Nai;
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsers\Nai\Results\File;
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
-use Nette\Utils\Strings;
 
 final class Parser extends AbstractLineByLineParser
 {
@@ -54,62 +53,44 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @var mixed[]
      */
-    private $accounts = [];
+    private array $accounts = [];
+
+    private ?int $currentAccount = null;
+
+    private ?int $currentGroup = null;
+
+    private int $currentLineNumber;
 
     /**
      * @var int|null
      */
-    private $currentAccount;
-
-    /**
-     * @var int|null
-     */
-    private $currentGroup;
-
-    /**
-     * @var int
-     */
-    private $currentLineNumber;
-
-    /**
-     * @var int|null
-     */
-    private $currentTransaction;
+    private ?int $currentTransaction = null;
 
     /**
      * @var mixed[]
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * @var mixed[]
      */
-    private $file = [];
+    private array $file = [];
 
     /**
      * @var mixed[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var string
-     */
-    private $previousCode;
+    private string $previousCode;
 
-    /**
-     * @var bool
-     */
-    private $previousFull = true;
+    private bool $previousFull = true;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
-     */
-    private $resultsContext;
+    private ResultsContext $resultsContext;
 
     /**
      * @var mixed[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * Get accounts.
@@ -333,7 +314,7 @@ final class Parser extends AbstractLineByLineParser
     private function checkFullLine(string $line): bool
     {
         // Prevent logic to add extra coma on continuation logic if already there
-        return Strings::endsWith($line, '/') && Strings::endsWith($line, ',/') === false;
+        return \str_ends_with($line, '/') && \str_ends_with($line, ',/') === false;
     }
 
     /**
@@ -446,7 +427,7 @@ final class Parser extends AbstractLineByLineParser
     private function sanitizeFullLine(string $line): string
     {
         // Remove trailing slash
-        if (Strings::endsWith($line, '/')) {
+        if (\str_ends_with($line, '/')) {
             $line = \substr($line, 0, -1);
         }
 

@@ -15,10 +15,8 @@ final class RuleStopPropagationStub extends RuleStub implements ContextAwareInte
      * Stop propagation.
      *
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    public function proceed(array $input)
+    public function proceed(array $input): mixed
     {
         $this->context->stopPropagation();
 

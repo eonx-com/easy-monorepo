@@ -30,12 +30,11 @@ final class ContainsTest extends AbstractTestCase
             ->willReturn($parameter);
         $sqlWalker->walkInputParameter($inputParameter)
             ->willReturn($parameterValue);
-
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
         $parser = $this->mockParser($contains, $inputParameter);
         $contains->parse($parser);
 
-        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
-        $sqlWalkerReveal = $sqlWalker->reveal();
         $result = $contains->getSql($sqlWalkerReveal);
 
         self::assertSame(\sprintf('(%s @> %s)', $parameter, $parameterValue), $result);

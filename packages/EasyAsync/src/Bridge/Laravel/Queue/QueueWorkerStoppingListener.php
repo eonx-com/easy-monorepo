@@ -11,14 +11,9 @@ use Psr\Log\NullLogger;
 
 final class QueueWorkerStoppingListener
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     public function handle(WorkerStopping $event): void

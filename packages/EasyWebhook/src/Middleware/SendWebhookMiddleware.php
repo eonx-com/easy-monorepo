@@ -11,18 +11,14 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\WebhookResult;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 final class SendWebhookMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
-
-    public function __construct(HttpClientInterface $httpClient, ?int $priority = null)
-    {
-        $this->httpClient = $httpClient;
-
+    public function __construct(
+        private HttpClientInterface $httpClient,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 
@@ -41,7 +37,7 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             $response = $this->httpClient->request($method, $url, $webhook->getHttpClientOptions() ?? []);
             // Trigger exception on bad response
             $response->getContent();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             // Set response to null here to make sure not to carry over the faulty response
             $response = null;
 

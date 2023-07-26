@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Interfaces;
 
-interface RandomStringInterface
+use Stringable;
+
+interface RandomStringInterface extends Stringable
 {
     public const ALPHABETS = [
         self::AMBIGUOUS => '-[]\\;\',./!()_{}:"<>?',

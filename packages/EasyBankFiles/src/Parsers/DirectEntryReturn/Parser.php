@@ -48,24 +48,18 @@ final class Parser extends AbstractLineByLineParser
     private const TRANSACTION_2 = '2';
 
     /**
-     * @var mixed[] $errors
+     * @var \EonX\EasyBankFiles\Parsers\Error[] $errors
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header
-     */
-    private $header;
+    private Header $header;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Trailer
-     */
-    private $trailer;
+    private Trailer $trailer;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Transaction[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]
@@ -99,12 +93,9 @@ final class Parser extends AbstractLineByLineParser
         return $this->transactions;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function processLine(int $lineNumber, string $line): void
     {
-        // code is the first character in line
+        // Code is the first character in line
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
         $lineLength = \strlen($line);
 

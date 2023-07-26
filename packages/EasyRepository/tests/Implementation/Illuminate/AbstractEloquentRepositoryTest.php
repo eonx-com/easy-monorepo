@@ -7,6 +7,7 @@ namespace EonX\EasyRepository\Tests\Implementation\Illuminate;
 use EonX\EasyRepository\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\MockInterface;
+use stdClass;
 
 final class AbstractEloquentRepositoryTest extends AbstractTestCase
 {
@@ -27,7 +28,7 @@ final class AbstractEloquentRepositoryTest extends AbstractTestCase
 
     public function testFindUsesModelAndReturnExpectedValue(): void
     {
-        $object = new \stdClass();
+        $object = new stdClass();
 
         $repo = $this->createEloquentRepository(function (MockInterface $model) use ($object): void {
             $model->shouldReceive('find')

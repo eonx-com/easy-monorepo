@@ -10,23 +10,13 @@ use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
+use Throwable;
 
-class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
+final class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var int
-     */
-    private $timeLimitInSeconds;
+    private float $endTime;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var float
-     */
-    private $endTime;
+    private int $timeLimitInSeconds;
 
     /**
      * @throws \EonX\EasyAsync\Exceptions\InvalidArgumentException
@@ -34,24 +24,27 @@ class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
     public function __construct(
         int $minTimeLimitInSeconds,
         ?int $maxTimeLimitInSeconds = null,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
         try {
             $this->timeLimitInSeconds = \random_int(
                 $minTimeLimitInSeconds,
                 $maxTimeLimitInSeconds ?? $minTimeLimitInSeconds
             );
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new InvalidArgumentException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
-
-        $this->logger = $logger ?? new NullLogger();
     }
 
-    public function onWorkerStarted(): void
+    /**
+     * @return string[]
+     */
+    public static function getSubscribedEvents(): array
     {
-        $startTime = \microtime(true);
-        $this->endTime = $startTime + $this->timeLimitInSeconds;
+        return [
+            WorkerStartedEvent::class => 'onWorkerStarted',
+            WorkerRunningEvent::class => 'onWorkerRunning',
+        ];
     }
 
     public function onWorkerRunning(WorkerRunningEvent $event): void
@@ -67,14 +60,9 @@ class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return string[]
-     */
-    public static function getSubscribedEvents(): array
+    public function onWorkerStarted(): void
     {
-        return [
-            WorkerStartedEvent::class => 'onWorkerStarted',
-            WorkerRunningEvent::class => 'onWorkerRunning',
-        ];
+        $startTime = \microtime(true);
+        $this->endTime = $startTime + $this->timeLimitInSeconds;
     }
 }

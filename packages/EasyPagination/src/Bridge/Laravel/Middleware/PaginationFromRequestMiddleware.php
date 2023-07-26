@@ -4,26 +4,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Bridge\Laravel\Middleware;
 
+use Closure;
 use EonX\EasyPagination\Interfaces\PaginationProviderInterface;
 use EonX\EasyPagination\Resolvers\FromHttpFoundationRequestResolver;
 use Illuminate\Http\Request;
 
 final class PaginationFromRequestMiddleware
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationProviderInterface
-     */
-    private $paginationProvider;
-
-    public function __construct(PaginationProviderInterface $paginationProvider)
-    {
-        $this->paginationProvider = $paginationProvider;
+    public function __construct(
+        private PaginationProviderInterface $paginationProvider,
+    ) {
     }
 
-    /**
-     * @return mixed
-     */
-    public function handle(Request $request, \Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $resolver = new FromHttpFoundationRequestResolver(
             $this->paginationProvider->getPaginationConfig(),

@@ -16,8 +16,10 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'should not lock (no id, not send now) -> return result from stack' => [Webhook::fromArray([]), false];
 
@@ -51,7 +53,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
      */
     public function testProcess(WebhookInterface $webhook, bool $shouldLock, ?bool $canProcess = null): void
     {
-        $canProcess = $canProcess ?? true;
+        $canProcess ??= true;
         $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId());
         $expectedResult = new WebhookResult($webhook);
         $lockService = new LockServiceStub($canProcess);

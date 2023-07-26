@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
+final class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
 {
     /**
      * @param null|string[] $managers

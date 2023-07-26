@@ -21,12 +21,26 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @covers \EonX\EasyErrorHandler\Tests\AbstractTestCase
  */
-class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $files = [__DIR__ . '/../var', __DIR__ . '/Bridge/Symfony/tmp_config.yaml'];
+
+        foreach ($files as $file) {
+            if ($fs->exists($file)) {
+                $fs->remove($file);
+            }
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * @return iterable<mixed>
      */
-    public function providerTestRenderWithDefaultBuilders(): iterable
+    public static function providerTestRenderWithDefaultBuilders(): iterable
     {
         yield 'Returns default user message' => [
             'request' => new Request(),
@@ -218,31 +232,14 @@ class AbstractTestCase extends TestCase
 
     protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
-        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
-        $propertyReflection->setAccessible(true);
-
-        return $propertyReflection->getValue($object);
+        return $this->resolvePropertyReflection($object, $propertyName)
+            ->getValue($object);
     }
 
     protected function setPrivatePropertyValue(object $object, string $propertyName, mixed $value): void
     {
-        $propertyReflection = $this->resolvePropertyReflection($object, $propertyName);
-        $propertyReflection->setAccessible(true);
-        $propertyReflection->setValue($object, $value);
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $files = [__DIR__ . '/../var', __DIR__ . '/Bridge/Symfony/tmp_config.yaml'];
-
-        foreach ($files as $file) {
-            if ($fs->exists($file)) {
-                $fs->remove($file);
-            }
-        }
-
-        parent::tearDown();
+        $this->resolvePropertyReflection($object, $propertyName)
+            ->setValue($object, $value);
     }
 
     private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty

@@ -19,7 +19,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
         CsvContentsProviderInterface $contentsProvider,
         ?CsvParserConfigInterface $config = null,
     ): iterable {
-        $config = $config ?? CsvParserConfig::create();
+        $config ??= CsvParserConfig::create();
         $index = 0;
         $headers = [];
 
@@ -37,7 +37,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             foreach ($row as $key => $value) {
                 // Accept only value for known headers and no empty string
                 if (isset($headers[$key]) && $value !== '') {
-                    $record[$headers[$key]] = \trim($value);
+                    $record[$headers[$key]] = \trim((string)$value);
                 }
             }
 

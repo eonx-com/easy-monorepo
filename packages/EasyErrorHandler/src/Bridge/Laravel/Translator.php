@@ -29,7 +29,7 @@ final class Translator implements TranslatorInterface
         $namespacedMessage = \sprintf('%s::%s', BridgeConstantsInterface::TRANSLATION_NAMESPACE, \trim($message));
         $translation = $this->doTranslate($namespacedMessage, $parameters, $locale);
 
-        // If translation is finally different we return it otherwise default to original message.
+        // If translation is finally different we return it otherwise default to original message
         return $translation !== $namespacedMessage ? $translation : $message;
     }
 

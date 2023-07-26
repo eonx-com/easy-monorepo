@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
 
+use Closure;
 use EonX\EasySwoole\Bridge\Monolog\SimpleFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -14,21 +15,21 @@ final class OutputHelper
 
     private const STREAM = 'php://stdout';
 
-    /**
-     * @var callable|null
-     */
-    private static $writer;
+    private static ?Closure $writer = null;
 
     public static function writeln(string $message): void
     {
         if (self::$writer === null) {
-            self::init();
+            self::setWriter();
         }
 
-        (self::$writer)($message);
+        /** @var \Closure $writer */
+        $writer = self::$writer;
+
+        $writer($message);
     }
 
-    private static function init(): void
+    private static function setWriter(): void
     {
         if (\class_exists(Logger::class)) {
             $logger = new Logger(self::PREFIX, [

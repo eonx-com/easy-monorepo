@@ -16,15 +16,11 @@ use Throwable;
 
 final class SwooleTableAdapter extends AbstractAdapter
 {
-    private MarshallerInterface $marshaller;
-
     public function __construct(
         private readonly string $tableName,
         ?int $defaultLifetime = null,
-        ?MarshallerInterface $marshaller = null,
+        private ?MarshallerInterface $marshaller = new DefaultMarshaller(),
     ) {
-        $this->marshaller = $marshaller ?? new DefaultMarshaller();
-
         if (CacheTableHelper::exists($this->tableName) === false) {
             throw new InvalidArgumentException(\sprintf(
                 'SwooleTable "%s" does not exist, make sure you have set it in your easy_swoole config',
@@ -100,7 +96,7 @@ final class SwooleTableAdapter extends AbstractAdapter
     protected function doSave(array $values, int $lifetime): array|bool
     {
         $table = $this->getSwooleTable();
-        $expiresAt = $lifetime ? (\time() + $lifetime) : 0;
+        $expiresAt = $lifetime !== 0 ? (\time() + $lifetime) : 0;
         $values = $this->marshaller->marshall($values, $failed);
 
         foreach ($values as $id => $value) {

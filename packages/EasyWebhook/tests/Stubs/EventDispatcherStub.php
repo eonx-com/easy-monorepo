@@ -5,21 +5,26 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stubs;
 
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyWebhook\Interfaces\WebhookEventInterface;
+use InvalidArgumentException;
 
 final class EventDispatcherStub implements EventDispatcherInterface
 {
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookEventInterface[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
-    /**
-     * @param \EonX\EasyWebhook\Interfaces\WebhookEventInterface $event
-     *
-     * @return object
-     */
-    public function dispatch($event)
+    public function dispatch(object $event): object
     {
+        if ($event instanceof WebhookEventInterface === false) {
+            throw new InvalidArgumentException(\sprintf(
+                'Event must be instance of "%s", "%s" given.',
+                WebhookEventInterface::class,
+                $event::class
+            ));
+        }
+
         $this->dispatched[] = $event;
 
         return $event;

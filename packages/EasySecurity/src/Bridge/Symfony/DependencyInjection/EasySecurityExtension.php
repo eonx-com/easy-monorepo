@@ -50,13 +50,11 @@ final class EasySecurityExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
 
-        $contextServiceId = $config['context_service_id'];
         $permissionsLocations = $config['permissions_locations'] ?? [];
         $rolesLocations = $config['roles_locations'] ?? [];
 
         $container->setParameter(BridgeConstantsInterface::PARAM_PERMISSIONS_LOCATIONS, $permissionsLocations);
         $container->setParameter(BridgeConstantsInterface::PARAM_ROLES_LOCATIONS, $rolesLocations);
-        $container->setParameter(BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID, $contextServiceId);
         $container->setParameter(BridgeConstantsInterface::PARAM_TOKEN_DECODER, $config['token_decoder'] ?? null);
 
         foreach (self::AUTO_CONFIG_TAGS as $interface => $tag) {

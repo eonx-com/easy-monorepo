@@ -6,5 +6,5 @@ namespace EonX\EasyApiToken\Exceptions;
 
 final class InvalidJwtException extends AbstractEasyApiTokenException
 {
-    // No body needed.
+    // No body needed
 }

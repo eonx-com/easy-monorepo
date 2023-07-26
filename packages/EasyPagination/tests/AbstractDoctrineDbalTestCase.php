@@ -10,26 +10,15 @@ use Doctrine\DBAL\Schema\Schema;
 
 abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $conn;
+    protected ?Connection $conn = null;
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function addItemToTable(Connection $conn, string $title): void
+    protected static function addChildItemToTable(Connection $conn, string $title, int $itemId): void
     {
-        $conn->insert('items', ['title' => $title]);
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function addParentToTable(Connection $conn, string $title, int $itemId): void
-    {
-        $conn->insert('parents', [
-            'parent_title' => $title,
+        $conn->insert('child_items', [
+            'child_title' => $title,
             'item_id' => $itemId,
         ]);
     }
@@ -37,41 +26,26 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function createItemsTable(Connection $conn): void
+    protected static function addItemToTable(Connection $conn, string $title): void
     {
-        $schema = new Schema();
-
-        $table = $schema->createTable('items');
-        $table
-            ->addColumn('id', 'integer')
-            ->setAutoincrement(true);
-
-        $table
-            ->addColumn('title', 'string', ['length' => 191])
-            ->setNotnull(false);
-
-        $table->setPrimaryKey(['id']);
-
-        foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
-            $conn->executeStatement($sql);
-        }
+        $conn->insert('items', ['title' => $title]);
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function createParentsTable(Connection $conn): void
+    protected static function createChildItemsTable(Connection $conn): void
     {
         $schema = new Schema();
 
-        $table = $schema->createTable('parents');
+        $table = $schema->createTable('child_items');
 
         $table
             ->addColumn('id', 'integer')
             ->setAutoincrement(true);
 
         $table
-            ->addColumn('parent_title', 'string', ['length' => 191])
+            ->addColumn('child_title', 'string', ['length' => 255])
             ->setNotnull(false);
 
         $table
@@ -88,14 +62,39 @@ abstract class AbstractDoctrineDbalTestCase extends AbstractTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
+    protected static function createItemsTable(Connection $conn): void
+    {
+        $schema = new Schema();
+
+        $table = $schema->createTable('items');
+        $table
+            ->addColumn('id', 'integer')
+            ->setAutoincrement(true);
+
+        $table
+            ->addColumn('title', 'string', ['length' => 255])
+            ->setNotnull(false);
+
+        $table->setPrimaryKey(['id']);
+
+        foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
+            $conn->executeStatement($sql);
+        }
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function getDoctrineDbalConnection(): Connection
     {
         if ($this->conn !== null) {
             return $this->conn;
         }
 
-        return $this->conn = DriverManager::getConnection([
+        $this->conn = DriverManager::getConnection([
             'url' => 'sqlite:///:memory:',
         ]);
+
+        return $this->conn;
     }
 }

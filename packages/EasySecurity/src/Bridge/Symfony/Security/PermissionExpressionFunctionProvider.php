@@ -9,31 +9,22 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Throwable;
 
 final class PermissionExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
     /**
      * @var mixed[]
      */
-    private $cached = [];
-
-    /**
-     * @var string[]
-     */
-    private $locations;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private array $cached = [];
 
     /**
      * @param string[] $locations
      */
-    public function __construct(array $locations, ?LoggerInterface $logger = null)
-    {
-        $this->locations = $locations;
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private array $locations,
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     /**
@@ -56,7 +47,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
 
                         try {
                             return \constant($constant);
-                        } catch (\Throwable $throwable) {
+                        } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
                     }

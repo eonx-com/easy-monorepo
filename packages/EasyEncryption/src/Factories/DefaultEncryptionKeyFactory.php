@@ -11,23 +11,18 @@ use EonX\EasyEncryption\Utils\KeyLength;
 use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
 use ParagonIE\Halite\EncryptionKeyPair;
-use ParagonIE\Halite\HiddenString as OldHiddenString;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
-use ParagonIE\HiddenString\HiddenString as NewHiddenString;
+use ParagonIE\HiddenString\HiddenString;
+use Throwable;
 
 final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
 {
-    /**
-     * @param mixed $key
-     *
-     * @return \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
-     */
-    public function create($key)
+    public function create(mixed $key): EncryptionKey|EncryptionKeyPair
     {
         try {
             return $this->doCreate($key);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new CouldNotCreateEncryptionKeyException(
                 \sprintf('Could not create encryption key: %s', $throwable->getMessage()),
                 $throwable->getCode(),
@@ -37,16 +32,12 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     }
 
     /**
-     * @param mixed $key
-     *
-     * @return \ParagonIE\Halite\EncryptionKeyPair|\ParagonIE\Halite\Symmetric\EncryptionKey
-     *
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \ParagonIE\Halite\Alerts\InvalidSalt
      * @throws \ParagonIE\Halite\Alerts\InvalidType
      * @throws \SodiumException
      */
-    private function doCreate($key)
+    private function doCreate(mixed $key): EncryptionKey|EncryptionKeyPair
     {
         if ($key instanceof EncryptionKey || $key instanceof EncryptionKeyPair) {
             return $key;
@@ -62,21 +53,19 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
 
         throw new InvalidEncryptionKeyException(\sprintf(
             'Invalid key type "%s" given, supports only "array, string"',
-            \is_object($key) ? \get_class($key) : \gettype($key)
+            \get_debug_type($key)
         ));
     }
 
     /**
      * @param mixed[] $key
      *
-     * @return \ParagonIE\Halite\EncryptionKeyPair|\ParagonIE\Halite\Symmetric\EncryptionKey
-     *
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \ParagonIE\Halite\Alerts\InvalidSalt
      * @throws \ParagonIE\Halite\Alerts\InvalidType
      * @throws \SodiumException
      */
-    private function doCreateFromArray(array $key)
+    private function doCreateFromArray(array $key): EncryptionKey|EncryptionKeyPair
     {
         if (isset($key[self::OPTION_KEY], $key[self::OPTION_SALT])) {
             return KeyFactory::deriveEncryptionKey(
@@ -96,12 +85,9 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     }
 
     /**
-     * @return \ParagonIE\Halite\EncryptionKeyPair|\ParagonIE\Halite\Symmetric\EncryptionKey
-     *
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
-     * @throws \SodiumException
      */
-    private function doCreateFromString(string $key)
+    private function doCreateFromString(string $key): EncryptionKey|EncryptionKeyPair
     {
         if (KeyLength::isEncryptionKeyLength($key)) {
             return new EncryptionKey($this->getHiddenString($key));
@@ -118,11 +104,8 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
         throw new InvalidEncryptionKeyException('Could not identify key type from given string');
     }
 
-    /**
-     * @return \ParagonIE\Halite\HiddenString|\ParagonIE\HiddenString\HiddenString
-     */
-    private function getHiddenString(string $value)
+    private function getHiddenString(string $value): HiddenString
     {
-        return \class_exists(NewHiddenString::class) ? new NewHiddenString($value) : new OldHiddenString($value);
+        return new HiddenString($value);
     }
 }

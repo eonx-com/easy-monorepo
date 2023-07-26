@@ -9,9 +9,9 @@ use EonX\EasySwoole\Enums\SwooleTableColumnType;
 final class SwooleTableColumnDefinition
 {
     public function __construct(
-        readonly public string $name,
-        readonly public SwooleTableColumnType $type,
-        readonly public ?int $size = null,
+        public readonly string $name,
+        public readonly SwooleTableColumnType $type,
+        public readonly ?int $size = null,
     ) {
     }
 }

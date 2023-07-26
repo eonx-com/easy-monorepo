@@ -26,9 +26,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
      *
      * @see testSerializeSucceeds
      */
-    public function provideDataForSerializeSucceeds(): iterable
+    public static function provideDataForSerializeSucceeds(): iterable
     {
-        $entityId = (string) (new NilUuid());
+        $entityId = (string)(new NilUuid());
         $authorName = 'John Doe';
         $authorPosition = 1;
         $author = new Author();
@@ -62,7 +62,9 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $disallowedProperties = [
-            'id', 'name', 'position',
+            'id',
+            'name',
+            'position',
         ];
         yield 'Config with all properties are disallowed' => [
             'data' => [
@@ -119,7 +121,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $allowedProperties = [
-            'id', 'name',
+            'id',
+            'name',
         ];
         yield 'Config with flat allowed_properties' => [
             'data' => [
@@ -177,9 +180,11 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
 
         $comment = (new Comment())
-            ->setId((string) (new NilUuid()))
+            ->setId((string)(new NilUuid()))
             ->setMessage('some-message');
         $article = new Article();
+        $article->setId('00000000-0000-0000-0000-000000000001');
+        $article->setAuthor($author);
         $article->addComment($comment);
         $allowedProperties = [
             'comments' => ['article'],
@@ -193,10 +198,10 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'subject' => new ActivitySubject($entityId, Article::class, [], [], $allowedProperties),
             'disallowedProperties' => null,
             'expectedResult' => \sprintf(
-                '{"comments":[{"article":{"author":null,"comments":' .
-                '["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#00000000-0000-0000-0000-000000000000' .
-                ' (circular reference)"],"createdAt":"%s"},"id":"00000000-0000-0000-0000-000000000000",' .
-                '"message":"some-message"}]}',
+                '{"comments":[{"article":{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"'
+                . ',"position":1},"comments":["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#00000000-0000-0000-0000'
+                . '-000000000000 (circular reference)"],"createdAt":"%s","id":"00000000-0000-0000-0000-000000000001"},'
+                . '"id":"00000000-0000-0000-0000-000000000000","message":"some-message"}]}',
                 $expectedCreatedAt
             ),
         ];

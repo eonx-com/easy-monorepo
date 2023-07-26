@@ -6,5 +6,5 @@ namespace EonX\EasySecurity\Interfaces;
 
 interface EasySecurityExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

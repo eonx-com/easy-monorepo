@@ -8,5 +8,5 @@ use EonX\EasyUtils\Exceptions\AbstractEasyUtilsException;
 
 final class MissingValueForRequiredHeadersException extends AbstractEasyUtilsException
 {
-    // No body needed.
+    // No body needed
 }

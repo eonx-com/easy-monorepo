@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Helpers;
 
-class UrlHelper
+final class UrlHelper
 {
     public static function urlSafeBase64Decode(string $input): string
     {
         $remainder = \strlen($input) % 4;
 
-        if ($remainder) {
+        if ($remainder !== 0) {
             $padLen = 4 - $remainder;
             $input .= \str_repeat('=', $padLen);
         }

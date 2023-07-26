@@ -9,14 +9,9 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 
 final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider
 {
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService)
-    {
-        $this->requestIdService = $requestIdService;
+    public function __construct(
+        private RequestIdServiceInterface $requestIdService,
+    ) {
     }
 
     /**

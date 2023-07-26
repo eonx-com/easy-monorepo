@@ -13,8 +13,10 @@ final class TemplatingEventRendererTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRenderEvent
      */
-    public function providerTestRenderEvent(): iterable
+    public static function providerTestRenderEvent(): iterable
     {
         yield 'No block for event' => [
             [
@@ -71,7 +73,7 @@ final class TemplatingEventRendererTest extends AbstractTestCase
         ?array $renderers = null,
         ?bool $isDebug = null,
     ): void {
-        $renderers = $renderers ?? [new TextBlockRenderer()];
+        $renderers ??= [new TextBlockRenderer()];
         $eventRenderer = new TemplatingEventRenderer($providers, $renderers, $isDebug ?? false);
 
         foreach ($events as $event => $expectedRendered) {

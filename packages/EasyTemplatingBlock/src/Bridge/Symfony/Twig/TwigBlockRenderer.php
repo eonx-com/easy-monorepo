@@ -8,18 +8,14 @@ use EonX\EasyTemplatingBlock\Exceptions\UnableToRenderBlockException;
 use EonX\EasyTemplatingBlock\Interfaces\TemplateBlockInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Renderers\AbstractSimpleTemplatingBlockRenderer;
+use Throwable;
 use Twig\Environment;
 
 final class TwigBlockRenderer extends AbstractSimpleTemplatingBlockRenderer
 {
-    /**
-     * @var \Twig\Environment
-     */
-    private $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        private Environment $twig,
+    ) {
     }
 
     /**
@@ -29,7 +25,7 @@ final class TwigBlockRenderer extends AbstractSimpleTemplatingBlockRenderer
     {
         try {
             return $this->twig->render($block->getTemplateName(), $block->getTemplateContext() ?? []);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new UnableToRenderBlockException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }

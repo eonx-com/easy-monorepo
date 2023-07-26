@@ -5,21 +5,17 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\ORM\Query\AST\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\InputParameter;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 final class Contains extends FunctionNode
 {
-    /**
-     * @var \Doctrine\ORM\Query\AST\InputParameter
-     */
-    private $inputParameter;
+    private InputParameter $inputParameter;
 
-    /**
-     * @var \Doctrine\ORM\Query\AST\Node
-     */
-    private $node;
+    private Node $node;
 
     /**
      * @throws \Doctrine\ORM\Query\AST\ASTException

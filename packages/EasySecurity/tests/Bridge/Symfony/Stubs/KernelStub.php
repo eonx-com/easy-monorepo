@@ -22,20 +22,18 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private $configs;
-
-    /**
-     * @var null|\Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
+    private array $configs;
 
     /**
      * @param null|string[] $configs
      */
-    public function __construct(string $environment, bool $debug, ?array $configs = null, ?Request $request = null)
-    {
+    public function __construct(
+        string $environment,
+        bool $debug,
+        ?array $configs = null,
+        private ?Request $request = null,
+    ) {
         $this->configs = $configs ?? [];
-        $this->request = $request;
 
         parent::__construct($environment, $debug);
     }
@@ -73,8 +71,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__ . '/../Fixtures/config/default.yaml');
-
         foreach ($this->configs as $config) {
             $loader->load($config);
         }

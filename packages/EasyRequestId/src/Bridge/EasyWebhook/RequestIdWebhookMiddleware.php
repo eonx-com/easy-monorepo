@@ -12,15 +12,10 @@ use EonX\EasyWebhook\Middleware\AbstractConfigureOnceMiddleware;
 
 final class RequestIdWebhookMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService, ?int $priority = null)
-    {
-        $this->requestIdService = $requestIdService;
-
+    public function __construct(
+        private RequestIdServiceInterface $requestIdService,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

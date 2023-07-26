@@ -6,9 +6,11 @@ namespace EonX\EasyWebhook\Bridge\Symfony\DataCollector;
 
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class WebhookDataCollector extends DataCollector
 {
@@ -17,17 +19,12 @@ final class WebhookDataCollector extends DataCollector
      */
     public const NAME = 'easy_webhook.data_collector';
 
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
-     */
-    private $webhookClient;
-
-    public function __construct(WebhookClientInterface $webhookClient)
-    {
-        $this->webhookClient = $webhookClient;
+    public function __construct(
+        private WebhookClientInterface $webhookClient,
+    ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         $this->setMiddleware();
         $this->setResults();
@@ -68,7 +65,7 @@ final class WebhookDataCollector extends DataCollector
         }
 
         foreach ($this->webhookClient->getMiddleware() as $middleware) {
-            $reflection = new \ReflectionClass($middleware);
+            $reflection = new ReflectionClass($middleware);
 
             $this->data['webhook_middleware'][] = [
                 'class' => $reflection->getName(),
@@ -86,14 +83,12 @@ final class WebhookDataCollector extends DataCollector
             return;
         }
 
-        $map = static function (WebhookResultInterface $result): array {
-            return [
-                'webhook' => $result->getWebhook(),
-                'response' => $result->getResponse() !== null ? $result->getResponse()
-                    ->getInfo() : null,
-                'throwable' => $result->getThrowable(),
-            ];
-        };
+        $map = static fn (WebhookResultInterface $result): array => [
+            'webhook' => $result->getWebhook(),
+            'response' => $result->getResponse() !== null ? $result->getResponse()
+                ->getInfo() : null,
+            'throwable' => $result->getThrowable(),
+        ];
 
         $this->data['webhook_results'] = \array_map($map, $this->webhookClient->getResults());
     }

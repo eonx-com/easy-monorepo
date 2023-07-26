@@ -6,7 +6,7 @@ namespace EonX\EasyUtils\Math;
 
 use EonX\EasyUtils\Interfaces\MathComparisonInterface;
 
-class MathComparison implements MathComparisonInterface
+final class MathComparison implements MathComparisonInterface
 {
     public function __construct(
         private readonly string $leftOperand,

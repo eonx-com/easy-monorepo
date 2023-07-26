@@ -4,53 +4,93 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Laravel;
 
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\RandomIntegerGenerator;
+use EonX\EasyRandom\Generators\RandomStringGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\Interfaces\UuidV4GeneratorInterface;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
+use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
+use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
+use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
     /**
      * @return iterable<mixed>
      *
-     * @see testUuidV4GeneratorInstance
+     * @see testUuidGeneratorInstance
      */
-    public function providerTestUuidV4GeneratorInstance(): iterable
+    public static function provideConfigsForUuidGenerator(): iterable
     {
-        yield 'Ramsey\Uuid' => [new RamseyUuidV4Generator()];
-        yield 'Symfony\Uid' => [new SymfonyUidUuidV4Generator()];
+        yield 'UUID v4' => [
+            'config' => [
+                'easy-random' => [
+                    'uuid_version' => 4,
+                ],
+            ],
+            'expectedUuidGeneratorClass' => RamseyUuidV4Generator::class,
+        ];
+
+        yield 'UUID v6' => [
+            'config' => [
+                'easy-random' => [
+                    'uuid_version' => 6,
+                ],
+            ],
+            'expectedUuidGeneratorClass' => RamseyUuidV6Generator::class,
+        ];
     }
 
-    public function testSanity(): void
+    public function testRandomGeneratorInstance(): void
     {
-        $randomGenerator = $this->getApp()
-            ->get(RandomGeneratorInterface::class);
+        $sut = $this->getApp();
 
-        self::assertInstanceOf(RandomGeneratorInterface::class, $randomGenerator);
+        $result = $sut->get(RandomGeneratorInterface::class);
+
+        self::assertInstanceOf(RandomGenerator::class, $result);
+        self::assertInstanceOf(
+            RandomStringGenerator::class,
+            $this->getPrivatePropertyValue($result, 'randomStringGenerator')
+        );
+        self::assertInstanceOf(
+            RandomIntegerGenerator::class,
+            $this->getPrivatePropertyValue($result, 'randomIntegerGenerator')
+        );
+        self::assertInstanceOf(RamseyUuidV6Generator::class, $this->getPrivatePropertyValue($result, 'uuidGenerator'));
+    }
+
+    public function testRandomIntegerGeneratorInstance(): void
+    {
+        $sut = $this->getApp();
+
+        $result = $sut->get(RandomIntegerGeneratorInterface::class);
+
+        self::assertInstanceOf(RandomIntegerGenerator::class, $result);
+    }
+
+    public function testRandomStringGeneratorInstance(): void
+    {
+        $sut = $this->getApp();
+
+        $result = $sut->get(RandomStringGeneratorInterface::class);
+
+        self::assertInstanceOf(RandomStringGenerator::class, $result);
     }
 
     /**
-     * @dataProvider providerTestUuidV4GeneratorInstance
+     * @param string[] $config
+     *
+     * @dataProvider provideConfigsForUuidGenerator
+     *
+     * @psalm-param class-string $expectedUuidGeneratorClass
      */
-    public function testUuidV4GeneratorInstance(UuidV4GeneratorInterface $uuidV4Generator): void
+    public function testUuidGeneratorInstance(array $config, string $expectedUuidGeneratorClass): void
     {
-        $app = $this->getApp();
-        $app->extend(
-            RandomGeneratorInterface::class,
-            static function (RandomGeneratorInterface $randomGenerator) use (
-                $uuidV4Generator,
-            ): RandomGeneratorInterface {
-                return $randomGenerator->setUuidV4Generator($uuidV4Generator);
-            }
-        );
+        $sut = $this->getApp($config);
 
-        $randomGenerator = $app->get(RandomGeneratorInterface::class);
+        $result = $sut->get(UuidGeneratorInterface::class);
 
-        $setUuidV4Generator = \Closure::bind(function () {
-            return $this->uuidV4Generator;
-        }, $randomGenerator, $randomGenerator)();
-
-        self::assertEquals(\spl_object_hash($uuidV4Generator), \spl_object_hash($setUuidV4Generator));
+        self::assertInstanceOf($expectedUuidGeneratorClass, $result);
     }
 }

@@ -9,50 +9,38 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Throwable;
 
 final class Event extends AbstractEvent
 {
-    /**
-     * @var bool
-     */
-    private $allowOverlapping = false;
+    private bool $allowOverlapping = false;
 
     /**
      * @var callable[]
      */
-    private $before = [];
+    private array $before = [];
 
-    /**
-     * @var string
-     */
-    private $command;
+    private InputInterface $input;
 
-    /**
-     * @var \Symfony\Component\Console\Input\InputInterface
-     */
-    private $input;
-
-    /**
-     * @var float
-     */
-    private $maxLockTime = 60.0;
+    private float $maxLockTime = 60.0;
 
     /**
      * @var mixed[]
      */
-    private $params;
+    private array $params;
 
     /**
      * @var callable[]
      */
-    private $then = [];
+    private array $then = [];
 
     /**
      * @param null|mixed[] $params
      */
-    public function __construct(string $command, ?array $params = null)
-    {
-        $this->command = $command;
+    public function __construct(
+        private string $command,
+        ?array $params = null,
+    ) {
         $this->params = $params ?? [];
         $this->input = $this->buildInput();
     }
@@ -132,7 +120,7 @@ final class Event extends AbstractEvent
         return new ArrayInput($inputParams);
     }
 
-    private function renderThrowable(Application $app, \Throwable $throwable): void
+    private function renderThrowable(Application $app, Throwable $throwable): void
     {
         $app->renderThrowable($throwable, new ConsoleOutput());
     }
@@ -146,7 +134,7 @@ final class Event extends AbstractEvent
             foreach ($callbacks as $callback) {
                 \call_user_func($callback);
             }
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->renderThrowable($app, $exception);
         }
     }

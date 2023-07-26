@@ -22,7 +22,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      *
      * @see testPropertyFilters
      */
-    public function provideProperties(): iterable
+    public static function provideProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowedProperties' => null,
@@ -247,7 +247,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'title' => 'Test collections',
                 'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
             ],
-            \json_decode($logEntries[0]['subject_data'], true)
+            \json_decode((string)$logEntries[0]['subject_data'], true)
         );
         // Delete the comment C of the article
         self::assertSame('update', $logEntries[1]['action']);
@@ -255,13 +255,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'comments' => [$commentA->getId(), $commentB->getId()],
             ],
-            \json_decode($logEntries[1]['subject_data'], true)
+            \json_decode((string)$logEntries[1]['subject_data'], true)
         );
         self::assertSame(
             [
                 'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
             ],
-            \json_decode($logEntries[1]['subject_old_data'], true)
+            \json_decode((string)$logEntries[1]['subject_old_data'], true)
         );
         // Add a new comment D to the article
         self::assertSame('update', $logEntries[2]['action']);
@@ -269,13 +269,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             [
                 'comments' => [$commentA->getId(), $commentB->getId(), $commentD->getId()],
             ],
-            \json_decode($logEntries[2]['subject_data'], true)
+            \json_decode((string)$logEntries[2]['subject_data'], true)
         );
         self::assertSame(
             [
                 'comments' => [$commentA->getId(), $commentB->getId()],
             ],
-            \json_decode($logEntries[2]['subject_old_data'], true)
+            \json_decode((string)$logEntries[2]['subject_old_data'], true)
         );
     }
 
@@ -345,14 +345,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
                 'name' => 'John',
                 'position' => 1,
             ],
-            \json_decode($logEntries[0]['subject_data'], true)
+            \json_decode((string)$logEntries[0]['subject_data'], true)
         );
         self::assertSame(
             [
                 'title' => 'Resolver',
                 'author' => ['id' => $author->getId()],
             ],
-            \json_decode($logEntries[1]['subject_data'], true)
+            \json_decode((string)$logEntries[1]['subject_data'], true)
         );
     }
 
@@ -398,7 +398,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($logEntries[0]['subject_data'], true))
+            \array_keys(\json_decode((string)$logEntries[0]['subject_data'], true))
         );
     }
 }

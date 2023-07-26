@@ -6,29 +6,13 @@ namespace EonX\EasyDecision\Helpers;
 
 final class IfConditionForValue
 {
-    /**
-     * @var bool
-     */
-    private $condition;
-
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    /**
-     * @param mixed $value
-     */
-    public function __construct(bool $condition, $value)
-    {
-        $this->condition = $condition;
-        $this->value = $value;
+    public function __construct(
+        private bool $condition,
+        private mixed $value,
+    ) {
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function else($value): self
+    public function else(mixed $value): self
     {
         if ($this->condition === false) {
             $this->value = $value;
@@ -37,18 +21,12 @@ final class IfConditionForValue
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function then($value): self
+    public function then(mixed $value): self
     {
         if ($this->condition === true) {
             $this->value = $value;

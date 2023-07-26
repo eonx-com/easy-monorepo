@@ -14,8 +14,10 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testDecoderProvider
      */
-    public function providerTestDecoderProvider(): iterable
+    public static function providerTestDecoderProvider(): iterable
     {
         yield 'Null firewall' => [null];
 

@@ -100,9 +100,7 @@ trait DoctrineCommonPaginatorTrait
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
-        $primaryKeysMap = static function (array $row) use ($primaryKeyIndex) {
-            return $row[$primaryKeyIndex];
-        };
+        $primaryKeysMap = static fn (array $row) => $row[$primaryKeyIndex];
 
         /** @var string[] $primaryKeys */
         $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));

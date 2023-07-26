@@ -8,6 +8,7 @@ use EonX\EasyBatch\Exceptions\BatchNotFoundException;
 use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use Throwable;
 
 final class BatchRepository extends AbstractBatchObjectRepository implements BatchRepositoryInterface
 {
@@ -130,7 +131,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             $this->commit();
 
             return $freshBatch;
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->rollback();
 
             throw $throwable;

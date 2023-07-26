@@ -19,7 +19,7 @@ final class AdminContextAsTwigGlobalListener
     {
         // EasyAdmin sets the twig global "ea" as part of its extension,
         // because the stateful nature of swoole, this logic is executed only once,
-        // this listener explicitly sets the admin context as twig global to prevent side effects.
+        // this listener explicitly sets the admin context as twig global to prevent side effects
         $this->twig->addGlobal('ea', $event->getRequest()->attributes->get(EA::CONTEXT_REQUEST_ATTRIBUTE));
     }
 }

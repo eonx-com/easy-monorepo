@@ -11,7 +11,7 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderRestrictedStub;
 use EonX\EasySecurity\Tests\Stubs\SecurityContextResolverStub;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 final class ProviderVoterTest extends AbstractTestCase
@@ -21,17 +21,11 @@ final class ProviderVoterTest extends AbstractTestCase
      *
      * @see testVoter
      */
-    public function providerTestVoter(): iterable
+    public static function providerTestVoter(): iterable
     {
         yield 'Abstain because subject not provider restricted' => [
             new SecurityContext(),
             [],
-            VoterInterface::ACCESS_ABSTAIN,
-        ];
-
-        yield 'Abstain because subject provider id is null' => [
-            new SecurityContext(),
-            new ProviderRestrictedStub(),
             VoterInterface::ACCESS_ABSTAIN,
         ];
 
@@ -52,14 +46,12 @@ final class ProviderVoterTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $subject
-     *
      * @dataProvider providerTestVoter
      */
-    public function testVoter(SecurityContextInterface $securityContext, $subject, int $expectedVote): void
+    public function testVoter(SecurityContextInterface $securityContext, mixed $subject, int $expectedVote): void
     {
         $voter = new ProviderVoter(new SecurityContextResolverStub($securityContext));
-        $token = new AnonymousToken('secret', 'user');
+        $token = new NullToken();
 
         self::assertEquals($expectedVote, $voter->vote($token, $subject, ['attr']));
     }

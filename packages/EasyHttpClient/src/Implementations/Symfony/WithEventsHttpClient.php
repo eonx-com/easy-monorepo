@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Implementations\Symfony;
 
 use Carbon\Carbon;
+use Closure;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyHttpClient\Data\Config;
 use EonX\EasyHttpClient\Data\RequestData;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Contracts\HttpClient\ChunkInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 final class WithEventsHttpClient implements HttpClientInterface
 {
@@ -71,7 +73,7 @@ final class WithEventsHttpClient implements HttpClientInterface
                 $requestData->getOptions(),
                 $this->getPassThruClosure($requestData, $config)
             );
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->dispatchEvent($config, $requestData, throwable: $throwable);
 
             throw $throwable;
@@ -82,7 +84,7 @@ final class WithEventsHttpClient implements HttpClientInterface
         Config $config,
         RequestDataInterface $requestData,
         ?ResponseDataInterface $responseData = null,
-        ?\Throwable $throwable = null,
+        ?Throwable $throwable = null,
     ): void {
         if ($config->isEventsEnabled()) {
             $this->eventDispatcher->dispatch(new HttpRequestSentEvent(
@@ -95,13 +97,13 @@ final class WithEventsHttpClient implements HttpClientInterface
         }
     }
 
-    private function getPassThruClosure(RequestDataInterface $requestData, Config $config): \Closure
+    private function getPassThruClosure(RequestDataInterface $requestData, Config $config): Closure
     {
         return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
             // Get chunk content here, so we can handle transport/timeout exceptions
             try {
                 $chunkContent = $chunk->getContent();
-            } catch (\Throwable $throwable) {
+            } catch (Throwable $throwable) {
                 $this->dispatchEvent($config, $requestData, throwable: $throwable);
 
                 throw $throwable;

@@ -10,10 +10,8 @@ final class ValueDecision extends AbstractDecision
 {
     /**
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    public function make(array $input)
+    public function make(array $input): mixed
     {
         if (isset($input['value']) === false) {
             throw new MissingValueIndexException($this->getExceptionMessage(
@@ -24,27 +22,18 @@ final class ValueDecision extends AbstractDecision
         return parent::make($input);
     }
 
-    /**
-     * @param mixed $output
-     */
-    protected function doHandleRuleOutput($output): void
+    protected function doHandleRuleOutput(mixed $output): void
     {
         // Update input for next rules with new value
         $this->input['value'] = $output;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function doMake()
+    protected function doMake(): mixed
     {
         return $this->input['value'];
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getDefaultOutput()
+    protected function getDefaultOutput(): mixed
     {
         return $this->input['value'];
     }

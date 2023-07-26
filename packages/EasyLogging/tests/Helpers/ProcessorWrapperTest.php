@@ -15,11 +15,11 @@ final class ProcessorWrapperTest extends AbstractTestCase
      *
      * @see testInvoke
      */
-    public function providerTestInvoke(): iterable
+    public static function providerTestInvoke(): iterable
     {
-        yield 'Using closure' => [function (array $records): array {
-            return $records;
-        }];
+        yield 'Using closure' => [
+            fn (array $records): array => $records,
+        ];
 
         yield 'Using object with __invoke method' => [new InvokableStub()];
     }

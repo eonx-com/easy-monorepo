@@ -10,23 +10,14 @@ use EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException;
 use EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Throwable;
 
 final class ManagersSanityChecker
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var \Doctrine\Persistence\ManagerRegistry
-     */
-    private $registry;
-
-    public function __construct(ManagerRegistry $registry, ?LoggerInterface $logger = null)
-    {
-        $this->registry = $registry;
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     /**
@@ -38,7 +29,7 @@ final class ManagersSanityChecker
     public function checkSanity(?array $managers = null): void
     {
         // If no managers given, default to all
-        $managers = $managers ?? \array_keys($this->registry->getManagerNames());
+        $managers ??= \array_keys($this->registry->getManagerNames());
 
         foreach ($managers as $managerName) {
             $manager = $this->registry->getManager($managerName);
@@ -51,7 +42,7 @@ final class ManagersSanityChecker
 
             $this->logger->warning(\sprintf(
                 'Type "%s" for manager "%s" not supported by sanity checker',
-                \get_class($manager),
+                $manager::class,
                 $managerName
             ));
         }
@@ -72,7 +63,7 @@ final class ManagersSanityChecker
         try {
             $conn = $entityManager->getConnection();
             $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new DoctrineConnectionNotOkException(
                 \sprintf('Connection for manager "%s" not ok: %s', $name, $throwable->getMessage()),
                 \is_string($throwable->getCode()) ? 0 : $throwable->getCode(),

@@ -15,17 +15,25 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class JsonbTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (Type::hasType(JsonbType::JSONB) === false) {
+            Type::addType(JsonbType::JSONB, JsonbType::class);
+        }
+    }
+
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public function provideConvertToDatabaseValues(): array
+    public static function provideConvertToDatabaseValues(): iterable
     {
-        return \array_merge(
-            $this->provideConvertToPhpValues(),
-            [
-                'multidimensional array phpValue' => [
+        foreach (self::provideConvertToPhpValues() as $name => $data) {
+            if ($name === 'multidimensional array phpValue') {
+                yield $name => [
                     'phpValue' => [
                         'key3' => '15',
                         'key1' => 'value1',
@@ -40,77 +48,76 @@ final class JsonbTypeTest extends AbstractTestCase
                     ],
                     'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
                         '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
-                ],
-                'object phpValue' => [
-                    'phpValue' => (object)[
-                        'property' => 'value',
-                    ],
-                    'postgresValue' => '{"property":"value"}',
-                ],
-            ]
-        );
-    }
+                ];
 
-    /**
-     * @return mixed[]
-     *
-     * @see testConvertToPhpValueSucceeds
-     */
-    public function provideConvertToPhpValues(): array
-    {
-        return [
-            'null phpValue' => [
-                'phpValue' => null,
-                'postgresValue' => null,
+                continue;
+            }
+
+            yield $name => $data;
+        }
+
+        yield 'object phpValue' => [
+            'phpValue' => (object)[
+                'property' => 'value',
             ],
-            'empty phpValue' => [
-                'phpValue' => [],
-                'postgresValue' => '[]',
-            ],
-            'integer phpValue' => [
-                'phpValue' => 13,
-                'postgresValue' => '13',
-            ],
-            'float phpValue' => [
-                'phpValue' => 13.93,
-                'postgresValue' => '13.93',
-            ],
-            'string phpValue' => [
-                'phpValue' => 'a string value',
-                'postgresValue' => '"a string value"',
-            ],
-            'array of integers phpValue' => [
-                'phpValue' => [681, 1185, 1878, 1989],
-                'postgresValue' => '[681,1185,1878,1989]',
-            ],
-            'multidimensional array phpValue' => [
-                'phpValue' => [
-                    'key1' => 'value1',
-                    'key2' => false,
-                    'key3' => '15',
-                    'key4' => 15,
-                    'key5' => [112, 242, 309, 310],
-                    'key6' => [
-                        'sub-key-1' => 'foo',
-                        'sub-key-2' => 'bar',
-                        'sub-key-3' => 42,
-                    ],
-                ],
-                'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
-                    '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
-            ],
+            'postgresValue' => '{"property":"value"}',
         ];
     }
 
     /**
-     * @param mixed $phpValue
+     * @return iterable<mixed>
      *
+     * @see testConvertToPhpValueSucceeds
+     */
+    public static function provideConvertToPhpValues(): iterable
+    {
+        yield 'null phpValue' => [
+            'phpValue' => null,
+            'postgresValue' => null,
+        ];
+        yield 'empty phpValue' => [
+            'phpValue' => [],
+            'postgresValue' => '[]',
+        ];
+        yield 'integer phpValue' => [
+            'phpValue' => 13,
+            'postgresValue' => '13',
+        ];
+        yield 'float phpValue' => [
+            'phpValue' => 13.93,
+            'postgresValue' => '13.93',
+        ];
+        yield 'string phpValue' => [
+            'phpValue' => 'a string value',
+            'postgresValue' => '"a string value"',
+        ];
+        yield 'array of integers phpValue' => [
+            'phpValue' => [681, 1185, 1878, 1989],
+            'postgresValue' => '[681,1185,1878,1989]',
+        ];
+        yield 'multidimensional array phpValue' => [
+            'phpValue' => [
+                'key1' => 'value1',
+                'key2' => false,
+                'key3' => '15',
+                'key4' => 15,
+                'key5' => [112, 242, 309, 310],
+                'key6' => [
+                    'sub-key-1' => 'foo',
+                    'sub-key-2' => 'bar',
+                    'sub-key-3' => 42,
+                ],
+            ],
+            'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
+                '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
+        ];
+    }
+
+    /**
      * @throws \Doctrine\DBAL\Types\ConversionException
-     * @throws \Doctrine\DBAL\DBALException
-     *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($phpValue, ?string $postgresValue = null): void
+    public function testConvertToDatabaseValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
         $type = Type::getType(JsonbType::JSONB);
@@ -123,7 +130,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
     public function testConvertToDatabaseValueThrowsConversionException(): void
@@ -143,14 +149,10 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $phpValue
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
-     * @throws \Doctrine\DBAL\DBALException
-     *
      * @dataProvider provideConvertToPhpValues
      */
-    public function testConvertToPhpValueSucceeds($phpValue, ?string $postgresValue = null): void
+    public function testConvertToPhpValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
         $type = Type::getType(JsonbType::JSONB);
@@ -163,7 +165,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
     public function testConvertToPhpValueThrowsConversionException(): void
@@ -179,9 +180,6 @@ final class JsonbTypeTest extends AbstractTestCase
         $type->convertToPHPValue($value, $platform);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testGetNameSucceeds(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
@@ -192,9 +190,6 @@ final class JsonbTypeTest extends AbstractTestCase
         self::assertSame(JsonbType::JSONB, $name);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function testGetSQLDeclaration(): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
@@ -207,17 +202,5 @@ final class JsonbTypeTest extends AbstractTestCase
         $result = $type->getSQLDeclaration([], $platformReveal);
 
         self::assertSame($type::FORMAT_DB_JSONB, $result);
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (Type::hasType(JsonbType::JSONB) === false) {
-            Type::addType(JsonbType::JSONB, JsonbType::class);
-        }
     }
 }

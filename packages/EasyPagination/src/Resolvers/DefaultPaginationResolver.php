@@ -13,7 +13,7 @@ final class DefaultPaginationResolver
     public function __construct(
         private PaginationConfigInterface $config,
     ) {
-        // No body needed.
+        // No body needed
     }
 
     public function __invoke(): PaginationInterface

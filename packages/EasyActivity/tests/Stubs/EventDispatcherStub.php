@@ -11,12 +11,9 @@ final class EventDispatcherStub implements EventDispatcherInterface
     /**
      * @var object[]
      */
-    private $events = [];
+    private array $events = [];
 
-    /**
-     * @param object $event
-     */
-    public function dispatch($event)
+    public function dispatch(object $event): object
     {
         $this->events[] = $event;
 

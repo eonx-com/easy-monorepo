@@ -23,15 +23,10 @@ final class EventsMiddleware extends AbstractMiddleware
         WebhookInterface::STATUS_SUCCESS => SuccessWebhookEvent::class,
     ];
 
-    /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher, ?int $priority = null)
-    {
-        $this->dispatcher = $dispatcher;
-
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

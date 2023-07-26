@@ -22,12 +22,7 @@ final class XmlConverter
      */
     public const XML_INCLUDE_ATTRIBUTES = 1;
 
-    /**
-     * XML DOMDocument.
-     *
-     * @var \DOMDocument
-     */
-    private $xml;
+    private DOMDocument $xml;
 
     /**
      * @param mixed[] $array
@@ -40,7 +35,7 @@ final class XmlConverter
         $this->xml->formatOutput = true;
 
         // Determine root node
-        $rootNode = $rootNode ?? $array['@rootNode'] ?? 'data';
+        $rootNode ??= $array['@rootNode'] ?? 'data';
 
         if ($this->isValidXmlTag($rootNode) === false) {
             throw new InvalidXmlTagException(\sprintf('RootNode %s is not a valid xml tag', $rootNode));
@@ -128,7 +123,7 @@ final class XmlConverter
      *
      * @throws \EonX\EasyBankFiles\Exceptions\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
-    private function createXmlElement(string $name, $value): DOMElement
+    private function createXmlElement(string $name, mixed $value): DOMElement
     {
         // If value is an array, attempt to process attributes and values
         if (\is_array($value)) {
@@ -149,7 +144,7 @@ final class XmlConverter
      *
      * @return \DOMNode
      */
-    private function createXmlNode($value): DOMNode
+    private function createXmlNode(mixed $value): DOMNode
     {
         $value = $this->xToString($value);
 
@@ -170,11 +165,11 @@ final class XmlConverter
         // Get document element
         $element = $document->documentElement;
 
-        // documentElement can be null on a newly created DOMDocument.
+        // The "documentElement" value can be null on a newly created DOMDocument
         if ($element === null) {
             // @codeCoverageIgnoreStart
             // The element can only be null when a newly created DomDocument is loaded
-            // which cant happen here - the document is loaded.
+            // which cant happen here - the document is loaded
             return [];
             // @codeCoverageIgnoreEnd
         }
@@ -400,7 +395,7 @@ final class XmlConverter
      *
      * @return string
      */
-    private function xToString($value): string
+    private function xToString(mixed $value): string
     {
         // Convert booleans to string true/false as (string) converts to 1/0
         if (\is_bool($value)) {

@@ -10,15 +10,17 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\DoctrineOrmPaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineOrmTestCase;
+use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
-use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
 
 final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginator
      */
-    public function providerTestPaginator(): iterable
+    public static function providerTestPaginator(): iterable
     {
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
@@ -26,7 +28,7 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager): void {
-                $this->createItemsTable($manager);
+                self::createItemsTable($manager);
             },
             static function (DoctrineOrmPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -39,7 +41,7 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager): void {
-                $this->createItemsTable($manager);
+                self::createItemsTable($manager);
             },
             static function (DoctrineOrmPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -52,8 +54,8 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager): void {
-                $this->createItemsTable($manager);
-                $this->addItemToTable($manager, 'my-title');
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title');
             },
             static function (DoctrineOrmPaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -66,9 +68,9 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager, DoctrineOrmPaginator $paginator): void {
-                $this->createItemsTable($manager);
-                $this->addItemToTable($manager, 'my-title');
-                $this->addItemToTable($manager, 'my-title-1');
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title');
+                self::addItemToTable($manager, 'my-title-1');
 
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
@@ -87,8 +89,8 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager): void {
-                $this->createItemsTable($manager);
-                $this->addItemToTable($manager, 'my-title');
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title');
             },
             static function (DoctrineOrmPaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
@@ -106,8 +108,8 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager, DoctrineOrmPaginator $paginator): void {
-                $this->createItemsTable($manager);
-                $this->addItemToTable($manager, 'my-title');
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title');
 
                 $paginator->setSelect('*');
             },
@@ -127,8 +129,8 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager, DoctrineOrmPaginator $paginator): void {
-                $this->createItemsTable($manager);
-                $this->addItemToTable($manager, 'my-title');
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title');
 
                 $paginator->setSelect('i.title');
             },
@@ -148,15 +150,13 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             'i',
             null,
             function (EntityManagerInterface $manager, DoctrineOrmPaginator $paginator): void {
-                $this->createItemsTable($manager);
-                $this->addItemToTable($manager, 'my-title');
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title');
 
-                $paginator->setTransformer(static function (Item $item): array {
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title,
-                    ];
-                });
+                $paginator->setTransformer(static fn (Item $item): array => [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                ]);
             },
             static function (DoctrineOrmPaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
@@ -168,37 +168,37 @@ final class DoctrineOrmPaginatorTest extends AbstractDoctrineOrmTestCase
             },
         ];
 
-        yield 'Paginate parents of item by title' => [
+        yield 'Paginate children of item by title' => [
             Pagination::create(1, 15),
-            ParentEntity::class,
-            'p',
+            ChildItem::class,
+            'ci',
             null,
             function (EntityManagerInterface $manager, DoctrineOrmPaginator $paginator): void {
-                $this->createItemsTable($manager);
-                $this->createParentsTable($manager);
-                $item = $this->addItemToTable($manager, 'my-title');
-                $this->addParentToTable($manager, 'my-parent', $item);
+                self::createItemsTable($manager);
+                self::createParentsTable($manager);
+                $item = self::addItemToTable($manager, 'my-parent');
+                self::addChildItemToTable($manager, 'my-child', $item);
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
-                        ->join('p.item', 'i', 'WITH', 'i.title = :title')
-                        ->setParameter('title', 'my-title');
+                        ->join('ci.item', 'i', 'WITH', 'i.title = :title')
+                        ->setParameter('title', 'my-parent');
                 });
                 $paginator->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder->addSelect('i');
                 });
             },
             static function (DoctrineOrmPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $childItem = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(ParentEntity::class, $item);
-                self::assertInstanceOf(Item::class, $item->item);
-                self::assertEquals(1, $item->id);
-                self::assertEquals(1, $item->item->id);
-                self::assertEquals('my-title', $item->item->title);
-                self::assertEquals('my-parent', $item->title);
+                self::assertInstanceOf(ChildItem::class, $childItem);
+                self::assertInstanceOf(Item::class, $childItem->item);
+                self::assertEquals(1, $childItem->id);
+                self::assertEquals(1, $childItem->item->id);
+                self::assertEquals('my-parent', $childItem->item->title);
+                self::assertEquals('my-child', $childItem->title);
             },
         ];
     }

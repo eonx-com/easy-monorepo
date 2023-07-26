@@ -13,14 +13,9 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 
 final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface
-     */
-    private $serializer;
-
-    public function __construct(ActivitySubjectDataSerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        private ActivitySubjectDataSerializerInterface $serializer,
+    ) {
     }
 
     /**

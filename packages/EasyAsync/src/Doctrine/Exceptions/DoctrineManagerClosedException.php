@@ -10,5 +10,5 @@ use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface;
 final class DoctrineManagerClosedException extends AbstractEasyAsyncException implements
     ShouldKillWorkerExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

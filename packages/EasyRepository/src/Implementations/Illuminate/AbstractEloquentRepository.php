@@ -7,6 +7,7 @@ namespace EonX\EasyRepository\Implementations\Illuminate;
 use Closure;
 use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Throwable;
 
 abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 {
@@ -61,7 +62,7 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
 
     public function flush(): void
     {
-        // Feature not supported by eloquent.
+        // Feature not supported by eloquent
     }
 
     public function rollback(): void
@@ -98,7 +99,7 @@ abstract class AbstractEloquentRepository implements DatabaseRepositoryInterface
             $this->commit();
 
             return $return ?? true;
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->rollback();
 
             throw $exception;

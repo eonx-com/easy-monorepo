@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Stubs;
 
+use Closure;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 
 final class MessengerMiddlewareStub implements MiddlewareInterface
 {
-    /**
-     * @var callable
-     */
-    private $func;
+    private Closure $func;
 
     public function __construct(callable $func)
     {
-        $this->func = $func;
+        $this->func = $func(...);
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

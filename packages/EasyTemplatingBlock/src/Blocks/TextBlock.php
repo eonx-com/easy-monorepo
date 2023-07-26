@@ -8,10 +8,7 @@ use EonX\EasyTemplatingBlock\Interfaces\TextBlockInterface;
 
 final class TextBlock extends AbstractTemplatingBlock implements TextBlockInterface
 {
-    /**
-     * @var string
-     */
-    private $contents;
+    private string $contents;
 
     public static function create(string $name, string $contents): TextBlockInterface
     {

@@ -6,5 +6,5 @@ namespace EonX\EasyAsync\Interfaces;
 
 interface ShouldKillWorkerExceptionInterface extends EasyAsyncExceptionInterface
 {
-    // No body needed.
+    // No body needed
 }

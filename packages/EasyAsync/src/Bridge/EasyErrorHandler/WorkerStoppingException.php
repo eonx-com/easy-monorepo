@@ -8,5 +8,5 @@ use EonX\EasyErrorHandler\Exceptions\ErrorException;
 
 final class WorkerStoppingException extends ErrorException
 {
-    // No body needed.
+    // No body needed
 }

@@ -7,12 +7,9 @@ namespace EonX\EasyBugsnag\Shutdown;
 use Bugsnag\Client;
 use Bugsnag\Shutdown\ShutdownStrategyInterface;
 
-class ShutdownStrategy implements ShutdownStrategyInterface
+final class ShutdownStrategy implements ShutdownStrategyInterface
 {
-    /**
-     * @var \Bugsnag\Client
-     */
-    private $client;
+    private ?Client $client = null;
 
     public function registerShutdownStrategy(Client $client): void
     {

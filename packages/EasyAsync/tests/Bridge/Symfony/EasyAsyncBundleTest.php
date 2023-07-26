@@ -12,8 +12,10 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testMessengerConfig
      */
-    public function providerTestMessengerConfig(): iterable
+    public static function providerTestMessengerConfig(): iterable
     {
         yield 'no config - no subscribers' => [
             static function (ContainerInterface $container): void {

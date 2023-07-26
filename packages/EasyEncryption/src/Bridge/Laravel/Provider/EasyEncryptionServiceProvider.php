@@ -39,13 +39,11 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         if (\config('easy-encryption.use_default_key_resolvers', true)) {
             $this->app->singleton(
                 BridgeConstantsInterface::SERVICE_DEFAULT_KEY_RESOLVER,
-                static function (): SimpleEncryptionKeyResolver {
-                    return new SimpleEncryptionKeyResolver(
-                        \config('easy-encryption.default_key_name'),
-                        \config('easy-encryption.default_encryption_key'),
-                        \config('easy-encryption.default_salt')
-                    );
-                }
+                static fn (): SimpleEncryptionKeyResolver => new SimpleEncryptionKeyResolver(
+                    \config('easy-encryption.default_key_name'),
+                    \config('easy-encryption.default_encryption_key'),
+                    \config('easy-encryption.default_salt')
+                )
             );
 
             $this->app->tag(
@@ -57,22 +55,21 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
     private function registerEncryptor(): void
     {
-        $this->app->singleton(EncryptorInterface::class, static function (Container $app): EncryptorInterface {
-            return new Encryptor(
+        $this->app->singleton(
+            EncryptorInterface::class,
+            static fn (Container $app): EncryptorInterface => new Encryptor(
                 $app->make(EncryptionKeyFactoryInterface::class),
                 $app->make(EncryptionKeyProviderInterface::class),
                 \config('easy-encryption.default_key_name')
-            );
-        });
+            )
+        );
     }
 
     private function registerFactory(): void
     {
         $this->app->singleton(
             EncryptionKeyFactoryInterface::class,
-            static function (): EncryptionKeyFactoryInterface {
-                return new DefaultEncryptionKeyFactory();
-            }
+            static fn (): EncryptionKeyFactoryInterface => new DefaultEncryptionKeyFactory()
         );
     }
 
@@ -80,12 +77,10 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             EncryptionKeyProviderInterface::class,
-            static function (Container $app): EncryptionKeyProviderInterface {
-                return new DefaultEncryptionKeyProvider(
-                    $app->make(EncryptionKeyFactoryInterface::class),
-                    $app->tagged(BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER)
-                );
-            }
+            static fn (Container $app): EncryptionKeyProviderInterface => new DefaultEncryptionKeyProvider(
+                $app->make(EncryptionKeyFactoryInterface::class),
+                $app->tagged(BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER)
+            )
         );
     }
 }

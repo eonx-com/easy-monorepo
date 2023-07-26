@@ -4,35 +4,24 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Fixtures;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Author
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid")
-     *
-     * @var string
-     */
-    private $id;
+    #[ORM\Column(type: Types::GUID)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
+    private string $id;
 
-    /**
-     * @ORM\Column(type="text", length=256)
-     *
-     * @var string
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="integer", length=256)
-     *
-     * @var int
-     */
-    private $position;
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $position;
 
     public function getId(): string
     {

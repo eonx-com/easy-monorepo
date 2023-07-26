@@ -12,21 +12,16 @@ use Throwable;
 final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder implements
     ErrorResponseBuilderProviderInterface
 {
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService, ?int $priority = null)
-    {
-        $this->requestIdService = $requestIdService;
-
+    public function __construct(
+        private RequestIdServiceInterface $requestIdService,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array
     {
-        $headers = $headers ?? [];
+        $headers ??= [];
         $headers[$this->requestIdService->getCorrelationIdHeaderName()] = $this->requestIdService->getCorrelationId();
         $headers[$this->requestIdService->getRequestIdHeaderName()] = $this->requestIdService->getRequestId();
 

@@ -8,20 +8,10 @@ use EonX\EasyEncryption\Interfaces\DecryptedStringInterface;
 
 final class DecryptedString implements DecryptedStringInterface
 {
-    /**
-     * @var string
-     */
-    private $decryptedString;
-
-    /**
-     * @var string
-     */
-    private $keyName;
-
-    public function __construct(string $decryptedString, string $keyName)
-    {
-        $this->decryptedString = $decryptedString;
-        $this->keyName = $keyName;
+    public function __construct(
+        private string $decryptedString,
+        private string $keyName,
+    ) {
     }
 
     public function __toString(): string

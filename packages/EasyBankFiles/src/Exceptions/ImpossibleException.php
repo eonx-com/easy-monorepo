@@ -10,5 +10,5 @@ namespace EonX\EasyBankFiles\Exceptions;
  */
 final class ImpossibleException extends AbstractRuntimeException
 {
-    // Body needed.
+    // No body needed
 }

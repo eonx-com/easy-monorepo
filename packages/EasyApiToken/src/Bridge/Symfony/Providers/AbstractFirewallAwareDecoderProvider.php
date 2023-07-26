@@ -66,7 +66,7 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
         }
 
         $request = $this->requestStack?->getMainRequest();
-        $firewallConfig = $request ? $this->firewallMap?->getFirewallConfig($request) : null;
+        $firewallConfig = $request !== null ? $this->firewallMap?->getFirewallConfig($request) : null;
 
         $this->firewall = $firewallConfig?->getName() ?? self::NO_FIREWALL;
     }

@@ -11,8 +11,10 @@ final class OptionHelperTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testGetBoolean
      */
-    public function providerTestGetBoolean(): iterable
+    public static function providerTestGetBoolean(): iterable
     {
         yield 'True with boolean' => [
             ['test' => true],
@@ -101,8 +103,10 @@ final class OptionHelperTest extends AbstractTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testIsset
      */
-    public function providerTestIsset(): iterable
+    public static function providerTestIsset(): iterable
     {
         yield 'Simple isset true' => [
             ['test' => 'test'],
@@ -126,7 +130,7 @@ final class OptionHelperTest extends AbstractTestCase
     {
         OptionHelper::setOptions($options);
 
-        self::assertEquals($expected, OptionHelper::getBoolean($key));
+        self::assertSame($expected, OptionHelper::getBoolean($key));
     }
 
     /**
@@ -138,6 +142,6 @@ final class OptionHelperTest extends AbstractTestCase
     {
         OptionHelper::setOptions($options);
 
-        self::assertEquals($expected, OptionHelper::isset($issetKey));
+        self::assertSame($expected, OptionHelper::isset($issetKey));
     }
 }

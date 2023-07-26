@@ -9,28 +9,13 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 final class ActivityLogEntity implements ActivitySubjectInterface
 {
     /**
-     * @var list<string>|array<string, list<string>>|null
-     */
-    private $allowedProperties;
-
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $subjectType;
-
-    /**
      * @param array<string>|array<string, mixed> $allowedProperties
      */
-    public function __construct(string $id, string $subjectType, array $allowedProperties)
-    {
-        $this->id = $id;
-        $this->subjectType = $subjectType;
-        $this->allowedProperties = $allowedProperties;
+    public function __construct(
+        private string $id,
+        private string $subjectType,
+        private array $allowedProperties,
+    ) {
     }
 
     public function getActivitySubjectId(): string

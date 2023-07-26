@@ -1,8 +1,0 @@
-{
-    "bundles": {
-        "EonX\\EasyActivity\\Bridge\\Symfony\\EasyActivitySymfonyBundle": ["all"]
-    },
-    "copy-from-recipe": {
-        "config/": "%CONFIG_DIR%/"
-    }
-}

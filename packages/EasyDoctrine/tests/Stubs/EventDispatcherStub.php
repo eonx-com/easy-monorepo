@@ -28,14 +28,12 @@ final class EventDispatcherStub implements EventDispatcherInterface
         $this->dispatchCallbacks[$class] = $callback;
     }
 
-    /**
-     * @param object $event
-     */
-    public function dispatch($event)
+    public function dispatch(object $event): object
     {
         $this->events[] = $event;
 
-        $callback = $this->dispatchCallbacks[\get_class($event)] ?? null;
+        $callback = $this->dispatchCallbacks[$event::class] ?? null;
+
         if ($callback !== null) {
             $callback($event);
         }

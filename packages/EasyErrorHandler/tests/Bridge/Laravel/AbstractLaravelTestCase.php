@@ -23,16 +23,14 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
         }
 
-        $app->register(EasyErrorHandlerServiceProvider::class);
-        $app->instance(Client::class, new BugsnagClientStub());
-
-        $this->app = $app;
+        $this->app->register(EasyErrorHandlerServiceProvider::class);
+        $this->app->instance(Client::class, new BugsnagClientStub());
 
         return $this->app;
     }

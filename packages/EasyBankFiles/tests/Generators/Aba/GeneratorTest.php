@@ -137,7 +137,7 @@ final class GeneratorTest extends AbaTestCase
         ];
 
         $trans = $this->createTransaction();
-        // without '-'
+        // Without '-'
         $trans->setAttribute('bsbNumber', '1112333');
 
         try {
@@ -161,6 +161,7 @@ final class GeneratorTest extends AbaTestCase
      */
     public function testValuesShouldBePresentInTheContent(): void
     {
+        $transactions = [];
         $descriptiveRecord = $this->createDescriptiveRecord();
 
         $transactions[] = $this->createTransaction();

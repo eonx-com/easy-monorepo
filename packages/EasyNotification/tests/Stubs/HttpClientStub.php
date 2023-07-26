@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Stubs;
 
+use Generator;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -12,20 +13,14 @@ use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 final class HttpClientStub implements HttpClientInterface
 {
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     /**
      * @var null|mixed[]
      */
-    private $options;
+    private ?array $options = null;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
     public function getMethod(): ?string
     {
@@ -69,9 +64,19 @@ final class HttpClientStub implements HttpClientInterface
     }
 
     /**
+     * @param mixed[] $options
+     */
+    public function withOptions(array $options): static
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
      * @return \Generator<string>
      */
-    private function getGenerator(): \Generator
+    private function getGenerator(): Generator
     {
         yield 'stream';
     }

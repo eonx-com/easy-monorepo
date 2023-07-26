@@ -10,12 +10,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TranslatorStub implements TranslatorInterface
 {
+    private const LOCALE = 'en';
+
     /**
      * @var null|mixed[]
      */
     private ?array $translations = null;
 
     private ?Translator $translator = null;
+
+    public function getLocale(): string
+    {
+        return self::LOCALE;
+    }
 
     /**
      * @param mixed[] $translations
@@ -47,11 +54,11 @@ final class TranslatorStub implements TranslatorInterface
             return $this->translator;
         }
 
-        $translator = new Translator('en');
+        $translator = new Translator(self::LOCALE);
         $translator->addLoader('array', new ArrayLoader());
 
         if ($this->translations !== null) {
-            $translator->addResource('array', $this->translations, 'en', 'EasyErrorHandlerBundle');
+            $translator->addResource('array', $this->translations, self::LOCALE, 'EasyErrorHandlerBundle');
         }
 
         $this->translator = $translator;

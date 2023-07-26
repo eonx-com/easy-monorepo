@@ -47,7 +47,7 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
         ]);
 
     $apiPlatformConfig->swagger()
-        ->apiKeys()
+        ->apiKeys('Some_Authorization_Name')
         ->name('Authorization')
         ->type('header');
 

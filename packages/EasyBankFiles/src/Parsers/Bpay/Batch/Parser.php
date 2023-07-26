@@ -30,22 +30,16 @@ final class Parser extends AbstractLineByLineParser
     /**
      * @var \EonX\EasyBankFiles\Parsers\Error[]
      */
-    protected $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Header
-     */
-    protected $header;
+    private Header $header;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Trailer
-     */
-    protected $trailer;
+    private Trailer $trailer;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Transaction[]
      */
-    protected $transactions = [];
+    private array $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]

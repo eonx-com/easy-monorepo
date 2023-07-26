@@ -15,21 +15,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @param class-string|object $target
-     */
-    protected function mock(string|object $target, ?callable $expectations = null): MockInterface
-    {
-        /** @var \Mockery\MockInterface $mock */
-        $mock = Mockery::mock($target);
-
-        if ($expectations !== null) {
-            $expectations($mock);
-        }
-
-        return $mock;
-    }
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -40,5 +25,20 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    /**
+     * @param class-string|object $target
+     */
+    protected static function mock(string|object $target, ?callable $expectations = null): MockInterface
+    {
+        /** @var \Mockery\MockInterface $mock */
+        $mock = Mockery::mock($target);
+
+        if ($expectations !== null) {
+            $expectations($mock);
+        }
+
+        return $mock;
     }
 }

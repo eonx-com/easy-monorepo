@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyBatch\BatchManager;
 use EonX\EasyBatch\BatchObjectManager;
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\AsyncDispatcher;
@@ -19,12 +18,11 @@ use EonX\EasyBatch\Bridge\Symfony\Serializers\MessageSerializerDecorator;
 use EonX\EasyBatch\Dispatchers\BatchItemDispatcher;
 use EonX\EasyBatch\Factories\BatchFactory;
 use EonX\EasyBatch\Factories\BatchItemFactory;
-use EonX\EasyBatch\IdStrategies\UuidV4Strategy;
+use EonX\EasyBatch\IdStrategies\UuidStrategy;
 use EonX\EasyBatch\Interfaces\AsyncDispatcherInterface;
 use EonX\EasyBatch\Interfaces\BatchFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Interfaces\BatchManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
@@ -64,7 +62,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // IdStrategies
     $services
-        ->set(BatchObjectIdStrategyInterface::class, UuidV4Strategy::class)
+        ->set(BatchObjectIdStrategyInterface::class, UuidStrategy::class)
         ->alias(BridgeConstantsInterface::SERVICE_BATCH_ID_STRATEGY, BatchObjectIdStrategyInterface::class)
         ->alias(BridgeConstantsInterface::SERVICE_BATCH_ITEM_ID_STRATEGY, BatchObjectIdStrategyInterface::class);
 
@@ -79,8 +77,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Manager
     $services
-        ->set(BatchObjectManagerInterface::class, BatchObjectManager::class)
-        ->set(BatchManagerInterface::class, BatchManager::class);
+        ->set(BatchObjectManagerInterface::class, BatchObjectManager::class);
 
     // Messenger
     $services
@@ -113,7 +110,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$table', '%' . BridgeConstantsInterface::PARAM_BATCH_ITEM_TABLE . '%')
         ->arg('$transformer', service(BridgeConstantsInterface::SERVICE_BATCH_ITEM_TRANSFORMER));
 
-    //Serializer
+    // Serializer
     $services->set(MessageSerializerInterface::class, MessageSerializer::class);
 
     $services->alias(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER, MessageSerializerInterface::class);

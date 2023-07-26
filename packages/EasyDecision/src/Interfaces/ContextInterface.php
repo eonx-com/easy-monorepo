@@ -6,10 +6,7 @@ namespace EonX\EasyDecision\Interfaces;
 
 interface ContextInterface
 {
-    /**
-     * @param mixed $output
-     */
-    public function addRuleOutput(string $rule, $output): self;
+    public function addRuleOutput(string $rule, mixed $output): self;
 
     public function getDecisionType(): string;
 

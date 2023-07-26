@@ -25,9 +25,7 @@ final class SchedulePass implements CompilerPassInterface
     {
         $tagged = $container->findTaggedServiceIds('easy_schedule.schedule_provider');
 
-        return \array_map(static function (string $id): Reference {
-            return new Reference($id);
-        }, \array_keys($tagged));
+        return \array_map(static fn (string $id): Reference => new Reference($id), \array_keys($tagged));
     }
 
     private function registerSchedule(ContainerBuilder $container): void

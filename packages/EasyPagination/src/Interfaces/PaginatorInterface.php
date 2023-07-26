@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Interfaces;
 
-interface PaginatorInterface extends \JsonSerializable
+use JsonSerializable;
+
+interface PaginatorInterface extends JsonSerializable
 {
     public function getCurrentPage(): int;
 

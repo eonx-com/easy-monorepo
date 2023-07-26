@@ -29,7 +29,7 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
 
     public function report(Throwable $throwable): void
     {
-        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable) === true) {
+        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable)) {
             return;
         }
 

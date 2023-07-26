@@ -9,10 +9,7 @@ use EonX\EasySchedule\Interfaces\ScheduleProviderInterface;
 
 final class ScheduleProviderStub implements ScheduleProviderInterface
 {
-    /**
-     * @var \EonX\EasySchedule\Interfaces\ScheduleInterface
-     */
-    private $schedule;
+    private ScheduleInterface $schedule;
 
     public function getSchedule(): ScheduleInterface
     {

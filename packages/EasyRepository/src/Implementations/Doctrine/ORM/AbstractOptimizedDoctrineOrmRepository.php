@@ -18,6 +18,7 @@ use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Exceptions\EasyPaginationNotInstalledException;
 use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
 use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as PaginatedObjRepoInterface;
+use Throwable;
 
 abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseRepositoryInterface, PaginatedObjRepoInterface
 {
@@ -91,7 +92,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             $this->commit();
 
             return $return ?? true;
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             if ($exception instanceof ORMException || $exception instanceof Exception) {
                 $this->getManager()
                     ->close();

@@ -9,31 +9,19 @@ use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Queue\Events\JobProcessing;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
 {
-    /**
-     * @var null|string[]
-     */
-    private $managers;
-
-    /**
-     * @var \EonX\EasyAsync\Doctrine\ManagersSanityChecker
-     */
-    private $managersSanityChecker;
-
     /**
      * @param null|string[] $managers
      */
     public function __construct(
         Cache $cache,
-        ManagersSanityChecker $managersSanityChecker,
-        ?array $managers = null,
+        private ManagersSanityChecker $managersSanityChecker,
+        private ?array $managers = null,
         ?LoggerInterface $logger = null,
     ) {
-        $this->managersSanityChecker = $managersSanityChecker;
-        $this->managers = $managers;
-
         parent::__construct($cache, $logger);
     }
 
@@ -52,7 +40,7 @@ final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
 
         try {
             $this->managersSanityChecker->checkSanity($this->managers);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             if ($throwable instanceof ShouldKillWorkerExceptionInterface) {
                 $this->killWorker($throwable);
             }

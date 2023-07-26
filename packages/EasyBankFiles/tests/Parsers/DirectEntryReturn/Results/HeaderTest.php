@@ -18,7 +18,7 @@ final class HeaderTest extends TestCase
      *
      * @see testGetDateProcessedShouldReturnNull
      */
-    public function provideInvalidDateProcessedValues(): iterable
+    public static function provideInvalidDateProcessedValues(): iterable
     {
         yield 'null dateProcessed' => [
             'dateProcessed' => [

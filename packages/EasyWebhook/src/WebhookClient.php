@@ -11,14 +11,9 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class WebhookClient implements WebhookClientInterface
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\StackInterface
-     */
-    private $stack;
-
-    public function __construct(StackInterface $stack)
-    {
-        $this->stack = $stack;
+    public function __construct(
+        private StackInterface $stack,
+    ) {
     }
 
     public function getStack(): StackInterface

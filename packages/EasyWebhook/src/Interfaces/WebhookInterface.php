@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Interfaces;
 
+use DateTimeInterface;
+
 interface WebhookInterface
 {
     /**
@@ -200,16 +202,13 @@ interface WebhookInterface
 
     public function getSecret(): ?string;
 
-    public function getSendAfter(): ?\DateTimeInterface;
+    public function getSendAfter(): ?DateTimeInterface;
 
     public function getStatus(): string;
 
     public function getUrl(): ?string;
 
-    /**
-     * @param mixed $value
-     */
-    public function header(string $name, $value): self;
+    public function header(string $name, mixed $value): self;
 
     /**
      * @param mixed[] $headers
@@ -250,14 +249,11 @@ interface WebhookInterface
      */
     public function queries(array $queries): self;
 
-    /**
-     * @param mixed $value
-     */
-    public function query(string $name, $value): self;
+    public function query(string $name, mixed $value): self;
 
     public function secret(string $secret): self;
 
-    public function sendAfter(\DateTimeInterface $after): self;
+    public function sendAfter(DateTimeInterface $after): self;
 
     public function sendNow(?bool $sendNow = null): self;
 

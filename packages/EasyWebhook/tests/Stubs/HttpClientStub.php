@@ -4,37 +4,28 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stubs;
 
+use Generator;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
+use Throwable;
 
 final class HttpClientStub implements HttpClientInterface
 {
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     /**
      * @var null|mixed[]
      */
-    private $options;
+    private ?array $options = null;
 
-    /**
-     * @var null|\Throwable
-     */
-    private $throwable;
+    private string $url;
 
-    /**
-     * @var string
-     */
-    private $url;
-
-    public function __construct(?\Throwable $throwable = null)
-    {
-        $this->throwable = $throwable;
+    public function __construct(
+        private ?Throwable $throwable = null,
+    ) {
     }
 
     public function getMethod(): ?string
@@ -85,9 +76,19 @@ final class HttpClientStub implements HttpClientInterface
     }
 
     /**
+     * @param mixed[] $options
+     */
+    public function withOptions(array $options): static
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
      * @return \Generator<string>
      */
-    private function getGenerator(): \Generator
+    private function getGenerator(): Generator
     {
         yield 'stream';
     }

@@ -17,7 +17,7 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
     {
         $conn = $this->getDoctrineDbalConnection();
         $id = 'my-id';
-        $store = new DoctrineDbalStore($this->getRandomGenerator(), $conn, $this->getDataCleaner());
+        $store = new DoctrineDbalStore(self::getRandomGenerator(), $conn, $this->getDataCleaner());
         $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD)->id($id);
 
         // Save new result with set id
@@ -30,14 +30,18 @@ final class DoctrineDbalStoreFromIlluminateDatabaseTest extends AbstractStoreTes
 
     protected function getDoctrineDbalConnection(): Connection
     {
-        $dbManager = new Manager();
-        $dbManager->addConnection([
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        if ($this->doctrineDbal === null) {
+            $dbManager = new Manager();
+            $dbManager->addConnection([
+                'driver' => 'sqlite',
+                'database' => ':memory:',
+                'prefix' => '',
+            ]);
 
-        return $this->doctrineDbal = $this->doctrineDbal ?? $dbManager->getConnection()
-            ->getDoctrineConnection();
+            $this->doctrineDbal = $dbManager->getConnection()
+                ->getDoctrineConnection();
+        }
+
+        return $this->doctrineDbal;
     }
 }

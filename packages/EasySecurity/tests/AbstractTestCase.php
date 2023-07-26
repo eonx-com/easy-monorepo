@@ -16,10 +16,7 @@ abstract class AbstractTestCase extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var string
-     */
-    protected static $mainJwtClaim = 'https://eonx.com/user';
+    protected static string $mainJwtClaim = 'https://eonx.com/user';
 
     protected function tearDown(): void
     {

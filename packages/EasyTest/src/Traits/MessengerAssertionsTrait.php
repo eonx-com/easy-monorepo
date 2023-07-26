@@ -96,7 +96,7 @@ trait MessengerAssertionsTrait
 
         $envelopes = \array_filter(
             self::getMessagesSentToTransport($transportName),
-            static function (object $message) use ($messageClass, $expectedProperties, $propertyAccessor) {
+            static function (object $message) use ($messageClass, $expectedProperties, $propertyAccessor): bool {
                 if ($message instanceof $messageClass === false) {
                     return false;
                 }
@@ -203,7 +203,7 @@ trait MessengerAssertionsTrait
         echo 'Exception code: ' . $errorDetailsStamp->getExceptionCode() . "\n";
         echo 'Exception message: ' . $errorDetailsStamp->getExceptionMessage() . "\n";
         echo "Stack trace:\n";
-        echo $errorDetailsStamp->getFlattenException()
+        echo $errorDetailsStamp->getFlattenException() !== null
             ? $errorDetailsStamp->getFlattenException()
                 ->getTraceAsString()
             : 'No stack trace available.';
@@ -254,7 +254,7 @@ trait MessengerAssertionsTrait
         // Message handler may dispatch new messages to async transport and this can happen multiple times.
         // We need to consume all messages from async transport to make sure that all messages were processed.
         // By default, we try to consume messages from async transport 10 times, and this is enough for most cases.
-        // If we don't do this, we may get false positive results.
+        // If we don't do this, we may get false positive results
         if (\count((array)$transport->get()) > 0) {
             throw new RuntimeException('Unable to consume all messages from async transport.');
         }
@@ -262,12 +262,12 @@ trait MessengerAssertionsTrait
         // Symfony Messenger does not throw exceptions when message handler throws an exception.
         // Instead, it stores exception details in ErrorDetailsStamp, and we need to check it manually.
         // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException,
-        // and we can't get original exception.
+        // and we can't get original exception
         foreach ($transport->getRejected() as $envelope) {
             /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
             foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
                 foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
-                    // if $expectedExceptionPairOrClass is a string = exceptionClass
+                    // If $expectedExceptionPairOrClass is a string = exceptionClass
                     if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
                         $errorDetailsStamp->getExceptionCode() === 0
                     ) {
@@ -275,7 +275,7 @@ trait MessengerAssertionsTrait
 
                         continue 2;
                     }
-                    // if $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
+                    // If $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
                     if (
                         isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
                         && (

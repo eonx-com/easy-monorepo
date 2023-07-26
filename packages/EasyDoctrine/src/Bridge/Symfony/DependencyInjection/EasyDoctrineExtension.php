@@ -80,7 +80,7 @@ final class EasyDoctrineExtension extends Extension
                     ?? null;
 
                 if ($configName === 'auth_token_lifetime_in_minutes') {
-                    $value = $value ?? (($config['aws_rds_iam']['cache_expiry_in_seconds'] ?? 15) / 60);
+                    $value ??= ($config['aws_rds_iam']['cache_expiry_in_seconds'] ?? 15) / 60;
                 }
 
                 $container->setParameter($param, $value);
@@ -108,10 +108,10 @@ final class EasyDoctrineExtension extends Extension
                 $value = $config['aws_rds']['ssl'][$configName] ?? null;
 
                 if ($configName === 'ca_path') {
-                    $value = $value ?? $config['aws_rds_iam']['ssl_cert_dir'] . '/rds-combined-ca-bundle.pem';
+                    $value ??= $config['aws_rds_iam']['ssl_cert_dir'] . '/rds-combined-ca-bundle.pem';
                 }
                 if ($configName === 'mode') {
-                    $value = $value ?? $config['aws_rds_iam']['ssl_mode'] ?? null;
+                    $value ??= $config['aws_rds_iam']['ssl_mode'] ?? null;
                 }
 
                 $container->setParameter($param, $value);

@@ -1,4 +1,0 @@
-easy_webhook:
-    signature:
-        enabled: true
-        secret: '%env(APP_SECRET)%'

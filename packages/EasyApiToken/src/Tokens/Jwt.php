@@ -29,7 +29,7 @@ final class Jwt implements JwtInterface
             return $this->payload[$claim];
         }
 
-        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', static::class, $claim));
+        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', self::class, $claim));
     }
 
     /**

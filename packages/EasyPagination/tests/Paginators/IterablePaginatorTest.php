@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Paginators;
 
+use ArrayIterator;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\IterablePaginator;
@@ -13,8 +14,10 @@ final class IterablePaginatorTest extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginatorGetItems
      */
-    public function providerTestPaginatorGetItems(): iterable
+    public static function providerTestPaginatorGetItems(): iterable
     {
         yield 'Empty array' => [
             [],
@@ -24,7 +27,7 @@ final class IterablePaginatorTest extends AbstractTestCase
         ];
 
         yield 'Iterable to array' => [
-            new \ArrayIterator(),
+            new ArrayIterator(),
             static function (array $items): void {
                 self::assertEquals([], $items);
             },
@@ -35,43 +38,43 @@ final class IterablePaginatorTest extends AbstractTestCase
             static function (array $items): void {
                 self::assertEquals([1, 1], $items);
             },
-            static function ($item) {
-                return $item === null ? 1 : $item;
-            },
+            static fn ($item) => $item ?? 1,
         ];
     }
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testPaginatorPageMethods
      */
-    public function providerTestPaginatorPageMethods(): iterable
+    public static function providerTestPaginatorPageMethods(): iterable
     {
         yield 'Default' => [
             [],
             Pagination::create(1, 15),
-            '/?page=1&perPage=15',
-            '/?page=2&perPage=15',
+            '?page=1&perPage=15',
+            '?page=2&perPage=15',
         ];
 
         yield 'Different page and perPage numbers' => [
             [],
             Pagination::create(2, 30),
-            '/?page=1&perPage=30',
-            '/?page=3&perPage=30',
+            '?page=1&perPage=30',
+            '?page=3&perPage=30',
         ];
 
         yield 'Different page and perPage attributes' => [
             [],
             Pagination::create(1, 15, 'p', '_per_page'),
-            '/?p=1&_per_page=15',
-            '/?p=2&_per_page=15',
+            '?p=1&_per_page=15',
+            '?p=2&_per_page=15',
         ];
 
         yield 'Custom URL' => [
             [],
             Pagination::create(1, 15, null, null, 'https://eonx.com?name=value#frag'),
-            'https://eonx.com/?name=value&page=1&perPage=15#frag',
-            'https://eonx.com/?name=value&page=2&perPage=15#frag',
+            'https://eonx.com?name=value&page=1&perPage=15#frag',
+            'https://eonx.com?name=value&page=2&perPage=15#frag',
         ];
     }
 

@@ -30,8 +30,7 @@ $ composer require eonx-com/easy-pagination
 
 This package provides different "resolvers" which will extract the pagination data from a request according to your
 configuration. To guarantee interoperability, the resolvers expect a [PSR7 ServerRequestInterface][2], if your project
-uses it too then perfect! But no stress if it doesn't you can use the [EasyPsr7Factory][3] package which will convert
-your requests for you!
+uses it too then perfect!
 
 ## Resolvers
 
@@ -47,10 +46,10 @@ Here are some examples of configuration you can have:
 
 | start_attributes | start_default | size_attribute | size_default |
 |------------------|---------------|----------------|--------------|
-| page | 1 | perPage | 15 |
-| _page | 1 | _per_page | 15 |
-| number | 1 | size | 15 |
-| offset | 0 | limit | 30 |
+| page             | 1             | perPage        | 15           |
+| _page            | 1             | _per_page      | 15           |
+| number           | 1             | size           | 15           |
+| offset           | 0             | limit          | 30           |
 
 ##### StartSize Resolvers List
 
@@ -58,5 +57,5 @@ Here are some examples of configuration you can have:
 - [StartSizeAsArrayInQueryResolver](docs/resolvers/startsize_as_array_in_query_resolver.md)
 
 [1]: https://getcomposer.org/
+
 [2]: https://www.php-fig.org/psr/psr-7/#15-server-side-requests
-[3]: https://github.com/EonX/EasyPsr7Factory

@@ -6,5 +6,5 @@ namespace EonX\EasyTemplatingBlock\Interfaces;
 
 interface EasyTemplatingBlockExceptionInterface
 {
-    // Marker for all exceptions for this package.
+    // Marker for all exceptions for this package
 }

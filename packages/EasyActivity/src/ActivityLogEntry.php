@@ -31,55 +31,25 @@ final class ActivityLogEntry
      */
     public const DEFAULT_ACTOR_TYPE = 'system';
 
-    /**
-     * @var string
-     */
-    private $action;
+    private string $action;
 
-    /**
-     * @var string|null
-     */
-    private $actorId;
+    private ?string $actorId = null;
 
-    /**
-     * @var string|null
-     */
-    private $actorName;
+    private ?string $actorName = null;
 
-    /**
-     * @var string
-     */
-    private $actorType;
+    private string $actorType;
 
-    /**
-     * @var \DateTimeInterface
-     */
-    private $createdAt;
+    private DateTimeInterface $createdAt;
 
-    /**
-     * @var string|null
-     */
-    private $subjectData;
+    private ?string $subjectData = null;
 
-    /**
-     * @var string
-     */
-    private $subjectId;
+    private string $subjectId;
 
-    /**
-     * @var string|null
-     */
-    private $subjectOldData;
+    private ?string $subjectOldData = null;
 
-    /**
-     * @var string
-     */
-    private $subjectType;
+    private string $subjectType;
 
-    /**
-     * @var \DateTimeInterface
-     */
-    private $updatedAt;
+    private DateTimeInterface $updatedAt;
 
     public function getAction(): string
     {

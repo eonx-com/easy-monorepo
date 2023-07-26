@@ -6,5 +6,5 @@ namespace EonX\EasyApiToken\Exceptions;
 
 final class InvalidConfigurationException extends AbstractEasyApiTokenException
 {
-    // No body needed.
+    // No body needed
 }

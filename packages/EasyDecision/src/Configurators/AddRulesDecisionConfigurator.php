@@ -7,23 +7,25 @@ namespace EonX\EasyDecision\Configurators;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\RestrictedRuleInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class AddRulesDecisionConfigurator extends AbstractConfigurator
 {
     /**
-     * @var iterable<\EonX\EasyDecision\Interfaces\RuleInterface>
+     * @var \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
-    private $rules;
+    private array $rules;
 
     /**
-     * @param mixed[]|iterable<\EonX\EasyDecision\Interfaces\RuleInterface> $rules
+     * @param iterable<mixed> $rules
      */
     public function __construct(iterable $rules, ?int $priority = null)
     {
         parent::__construct($priority);
 
-        $this->rules = CollectorHelper::filterByClassAsArray($rules, RuleInterface::class);
+        /** @var \EonX\EasyDecision\Interfaces\RuleInterface[] $filteredRules */
+        $filteredRules = CollectorHelper::filterByClassAsArray($rules, RuleInterface::class);
+        $this->rules = $filteredRules;
     }
 
     public function configure(DecisionInterface $decision): void

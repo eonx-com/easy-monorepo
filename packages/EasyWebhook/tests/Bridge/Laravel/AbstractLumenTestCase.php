@@ -12,10 +12,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
      * @param null|string[] $providers
@@ -27,7 +24,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
@@ -40,11 +37,11 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         ]);
 
         foreach ($providers as $provider) {
-            $app->register($provider);
+            $this->app->register($provider);
         }
 
-        $app->boot();
+        $this->app->boot();
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

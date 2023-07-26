@@ -14,35 +14,32 @@ use Illuminate\Database\SQLiteConnection;
 
 abstract class AbstractEloquentTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Illuminate\Database\ConnectionInterface
-     */
-    private $conn;
+    private ?ConnectionInterface $conn = null;
 
-    protected function createItemsTable(Model $model): void
+    protected static function createChildItemsTable(Model $model): void
+    {
+        $schema = new SQLiteBuilder($model->getConnection());
+
+        $schema->create('child_items', static function (Blueprint $table): void {
+            $table->integer('id', true);
+            $table->string('child_title')
+                ->nullable();
+            $table->integer('item_id', false, true);
+
+            $table->foreign('item_id')
+                ->references('id')
+                ->on('items');
+        });
+    }
+
+    protected static function createItemsTable(Model $model): void
     {
         $schema = new SQLiteBuilder($model->getConnection());
 
         $schema->create('items', static function (Blueprint $table): void {
             $table->integer('id', true);
             $table->string('title')
-                ->nullable(true);
-        });
-    }
-
-    protected function createParentsTable(Model $model): void
-    {
-        $schema = new SQLiteBuilder($model->getConnection());
-
-        $schema->create('parents', static function (Blueprint $table): void {
-            $table->integer('id', true);
-            $table->string('title')
-                ->nullable(true);
-            $table->integer('item_id', false, true);
-
-            $table->foreign('item_id')
-                ->references('id')
-                ->on('items');
+                ->nullable();
         });
     }
 
@@ -60,11 +57,11 @@ abstract class AbstractEloquentTestCase extends AbstractTestCase
         ]);
 
         /** @var \PDO $pdo */
-        $pdo = $doctrineConn->getWrappedConnection();
+        $pdo = $doctrineConn->getNativeConnection();
 
-        $conn = new SQLiteConnection($pdo);
-        $conn->setSchemaGrammar(new SQLiteGrammar());
+        $this->conn = new SQLiteConnection($pdo);
+        $this->conn->setSchemaGrammar(new SQLiteGrammar());
 
-        return $this->conn = $conn;
+        return $this->conn;
     }
 }

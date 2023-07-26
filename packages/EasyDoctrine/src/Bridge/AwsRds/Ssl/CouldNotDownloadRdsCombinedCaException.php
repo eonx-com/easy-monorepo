@@ -8,5 +8,5 @@ use EonX\EasyDoctrine\Exceptions\AbstractEasyDoctrineException;
 
 final class CouldNotDownloadRdsCombinedCaException extends AbstractEasyDoctrineException
 {
-    // No body needed.
+    // No body needed
 }

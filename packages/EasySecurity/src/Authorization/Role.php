@@ -32,6 +32,17 @@ final class Role implements RoleInterface
         return $this->identifier;
     }
 
+    public function addMetadata(string $name, mixed $value): RoleInterface
+    {
+        if ($this->metadata === null) {
+            $this->metadata = [];
+        }
+
+        $this->metadata[$name] = $value;
+
+        return $this;
+    }
+
     public function getIdentifier(): string
     {
         return $this->identifier;
@@ -53,17 +64,6 @@ final class Role implements RoleInterface
     public function getPermissions(): array
     {
         return $this->permissions;
-    }
-
-    public function addMetadata(string $name, mixed $value): RoleInterface
-    {
-        if ($this->metadata === null) {
-            $this->metadata = [];
-        }
-
-        $this->metadata[$name] = $value;
-
-        return $this;
     }
 
     public function hasMetadata(string $name): bool

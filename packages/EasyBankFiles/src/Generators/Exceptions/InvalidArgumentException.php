@@ -8,5 +8,5 @@ use EonX\EasyBankFiles\Exceptions\AbstractRuntimeException;
 
 final class InvalidArgumentException extends AbstractRuntimeException
 {
-    // No body needed.
+    // No body needed
 }

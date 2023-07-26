@@ -8,20 +8,14 @@ use EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface;
 
 trait MiddlewareLoggerAwareTrait
 {
-    /**
-     * @var \EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface
-     */
-    private $logger;
+    private MiddlewareLoggerInterface $logger;
 
     public function setLogger(MiddlewareLoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
 
-    /**
-     * @param mixed $content Content to log
-     */
-    private function log($content, ?string $middleware = null): void
+    private function log(mixed $content, ?string $middleware = null): void
     {
         $this->logger->log($middleware ?? static::class, $content);
     }

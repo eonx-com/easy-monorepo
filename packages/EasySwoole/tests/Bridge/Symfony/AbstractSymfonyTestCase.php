@@ -21,9 +21,9 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
             return $this->kernel;
         }
 
-        $kernel = new KernelStub($configs);
-        $kernel->boot();
+        $this->kernel = new KernelStub($configs);
+        $this->kernel->boot();
 
-        return $this->kernel = $kernel;
+        return $this->kernel;
     }
 }

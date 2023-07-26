@@ -14,8 +14,10 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testSanitize
      */
-    public function providerTestSanitize(): iterable
+    public static function providerTestSanitize(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [

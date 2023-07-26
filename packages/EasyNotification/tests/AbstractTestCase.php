@@ -16,7 +16,7 @@ abstract class AbstractTestCase extends TestCase
     /**
      * @var string[]
      */
-    protected static $defaultConfig = [
+    protected static array $defaultConfig = [
         'algorithm' => 'sha256',
         'apiKey' => 'my-api-key',
         'apiUrl' => 'http://eonx.com/',

@@ -8,45 +8,26 @@ use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use Carbon\Carbon;
+use DateTimeInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 final class WorkerMessageReceivedListener
 {
-    /**
-     * @var \Bugsnag\Client
-     */
-    private $client;
+    private WorkerMessageReceivedEvent $event;
 
-    /**
-     * @var \Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent
-     */
-    private $event;
+    private bool $isSetup = false;
 
-    /**
-     * @var bool
-     */
-    private $isSetup = false;
+    private DateTimeInterface $receivedAt;
 
-    /**
-     * @var \DateTimeInterface
-     */
-    private $receivedAt;
+    private ?VarCloner $varCloner = null;
 
-    /**
-     * @var \Symfony\Component\VarDumper\Cloner\VarCloner|null
-     */
-    private $varCloner;
+    private ?CliDumper $varDumper = null;
 
-    /**
-     * @var \Symfony\Component\VarDumper\Dumper\CliDumper|null
-     */
-    private $varDumper;
-
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
+    public function __construct(
+        private Client $client,
+    ) {
     }
 
     public function __invoke(WorkerMessageReceivedEvent $event): void
@@ -78,12 +59,7 @@ final class WorkerMessageReceivedListener
         $this->isSetup = true;
     }
 
-    /**
-     * @param mixed $var
-     *
-     * @throws \ErrorException
-     */
-    private function dump($var): string
+    private function dump(mixed $var): string
     {
         return (string)$this->getDumper()
             ->dump($this->getCloner()->cloneVar($var), true);
@@ -91,11 +67,23 @@ final class WorkerMessageReceivedListener
 
     private function getCloner(): VarCloner
     {
-        return $this->varCloner = $this->varCloner ?? new VarCloner();
+        if ($this->varCloner !== null) {
+            return $this->varCloner;
+        }
+
+        $this->varCloner = new VarCloner();
+
+        return $this->varCloner;
     }
 
     private function getDumper(): CliDumper
     {
-        return $this->varDumper = $this->varDumper ?? new CliDumper();
+        if ($this->varDumper !== null) {
+            return $this->varDumper;
+        }
+
+        $this->varDumper = new CliDumper();
+
+        return $this->varDumper;
     }
 }

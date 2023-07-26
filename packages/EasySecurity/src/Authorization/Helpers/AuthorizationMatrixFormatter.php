@@ -18,12 +18,13 @@ final class AuthorizationMatrixFormatter
      */
     public static function formatPermissions(array $permissions): array
     {
-        $filter = static function ($permission): bool {
-            return \is_string($permission) || $permission instanceof PermissionInterface;
-        };
-        $map = static function ($permission): PermissionInterface {
-            return \is_string($permission) ? new Permission($permission) : $permission;
-        };
+        $filter = static fn (
+            $permission,
+        ): bool => \is_string($permission) || $permission instanceof PermissionInterface;
+
+        $map = static fn (
+            $permission,
+        ): PermissionInterface => \is_string($permission) ? new Permission($permission) : $permission;
 
         return \array_map($map, \array_filter($permissions, $filter));
     }
@@ -35,12 +36,8 @@ final class AuthorizationMatrixFormatter
      */
     public static function formatRoles(array $roles): array
     {
-        $filter = static function ($role): bool {
-            return \is_string($role) || $role instanceof RoleInterface;
-        };
-        $map = static function ($role): RoleInterface {
-            return \is_string($role) ? new Role($role, []) : $role;
-        };
+        $filter = static fn ($role): bool => \is_string($role) || $role instanceof RoleInterface;
+        $map = static fn ($role): RoleInterface => \is_string($role) ? new Role($role, []) : $role;
 
         return \array_map($map, \array_filter($roles, $filter));
     }
@@ -52,12 +49,8 @@ final class AuthorizationMatrixFormatter
      */
     public static function formatRolesToIdentifiers(array $roles): array
     {
-        $filter = static function ($role): bool {
-            return $role instanceof RoleInterface;
-        };
-        $map = static function (RoleInterface $role): string {
-            return $role->getIdentifier();
-        };
+        $filter = static fn ($role): bool => $role instanceof RoleInterface;
+        $map = static fn (RoleInterface $role): string => $role->getIdentifier();
 
         return \array_map($map, \array_filter($roles, $filter));
     }

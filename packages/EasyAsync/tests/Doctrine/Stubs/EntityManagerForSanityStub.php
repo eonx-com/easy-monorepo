@@ -14,15 +14,9 @@ use Doctrine\Persistence\Mapping\Driver\StaticPHPDriver;
 
 final class EntityManagerForSanityStub extends EntityManagerDecorator
 {
-    /**
-     * @var bool
-     */
-    private $isOpen;
-
-    public function __construct(bool $isOpen)
-    {
-        $this->isOpen = $isOpen;
-
+    public function __construct(
+        private bool $isOpen,
+    ) {
         $config = new Configuration();
         $config->setMetadataDriverImpl(new StaticPHPDriver([]));
         $config->setProxyDir(__DIR__);

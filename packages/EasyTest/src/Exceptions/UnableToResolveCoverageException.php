@@ -6,5 +6,5 @@ namespace EonX\EasyTest\Exceptions;
 
 final class UnableToResolveCoverageException extends AbstractEasyTestException
 {
-    // No body needed.
+    // No body needed
 }

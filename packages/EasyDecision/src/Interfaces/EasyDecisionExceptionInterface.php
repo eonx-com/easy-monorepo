@@ -6,5 +6,5 @@ namespace EonX\EasyDecision\Interfaces;
 
 interface EasyDecisionExceptionInterface
 {
-    // Marker for all exceptions of this package.
+    // Marker for all exceptions of this package
 }

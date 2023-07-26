@@ -10,8 +10,10 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testRenderEvent
      */
-    public function providerTestRenderEvent(): iterable
+    public static function providerTestRenderEvent(): iterable
     {
         yield 'No block provider for event' => [
             [

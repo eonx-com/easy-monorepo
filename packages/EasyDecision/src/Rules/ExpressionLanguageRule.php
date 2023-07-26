@@ -17,43 +17,21 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
     use ContextAwareTrait;
     use ExpressionLanguageAwareTrait;
 
-    /**
-     * @var string
-     */
-    private $expression;
-
-    /**
-     * @var null|mixed[]
-     */
-    private $extra;
-
-    /**
-     * @var null|string
-     */
-    private $name;
-
-    /**
-     * @var int
-     */
-    private $priority;
+    private int $priority;
 
     /**
      * @param null|mixed[] $extra
      */
-    public function __construct(string $expression, ?int $priority = null, ?string $name = null, ?array $extra = null)
-    {
-        $this->expression = $expression;
+    public function __construct(
+        private string $expression,
+        ?int $priority = null,
+        private ?string $name = null,
+        private ?array $extra = null,
+    ) {
         $this->priority = $priority ?? 0;
-        $this->name = $name;
-        $this->extra = $extra;
     }
 
-    /**
-     * @param mixed $decisionOutput
-     *
-     * @return mixed
-     */
-    public function getDecisionOutputForRule($decisionOutput)
+    public function getDecisionOutputForRule(mixed $decisionOutput): mixed
     {
         if ($this->extra === null) {
             return $decisionOutput;
@@ -71,10 +49,8 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
 
     /**
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    public function proceed(array $input)
+    public function proceed(array $input): mixed
     {
         $input['context'] = $this->context;
 
@@ -96,10 +72,8 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
 
     /**
      * @param mixed[] $input
-     *
-     * @return mixed
      */
-    private function getOutput(array $input)
+    private function getOutput(array $input): mixed
     {
         $output = $this->expressionLanguage->evaluate($this->expression, $input);
 

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Interfaces;
 
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
+
 interface EncryptionKeyFactoryInterface
 {
     /**
@@ -26,10 +29,5 @@ interface EncryptionKeyFactoryInterface
      */
     public const OPTION_SECRET_KEY = 'secret_key';
 
-    /**
-     * @param mixed $key
-     *
-     * @return \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
-     */
-    public function create($key);
+    public function create(mixed $key): EncryptionKey|EncryptionKeyPair;
 }

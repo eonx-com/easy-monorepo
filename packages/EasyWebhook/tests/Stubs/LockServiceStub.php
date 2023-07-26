@@ -7,19 +7,14 @@ namespace EonX\EasyWebhook\Tests\Stubs;
 use Closure;
 use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
+use RuntimeException;
 use Symfony\Component\Lock\LockInterface;
 
 final class LockServiceStub implements LockServiceInterface
 {
-    /**
-     * @var bool
-     */
-    private $canProcess;
+    private bool $canProcess;
 
-    /**
-     * @var \EonX\EasyLock\Interfaces\LockDataInterface
-     */
-    private $lockData;
+    private ?LockDataInterface $lockData = null;
 
     public function __construct(?bool $canProcess = null)
     {
@@ -28,7 +23,7 @@ final class LockServiceStub implements LockServiceInterface
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {
-        throw new \RuntimeException('not required');
+        throw new RuntimeException('Not required.');
     }
 
     public function getLockData(): ?LockDataInterface
@@ -39,7 +34,7 @@ final class LockServiceStub implements LockServiceInterface
     /**
      * @return null|mixed
      */
-    public function processWithLock(LockDataInterface $lockData, Closure $func)
+    public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
     {
         $this->lockData = $lockData;
 

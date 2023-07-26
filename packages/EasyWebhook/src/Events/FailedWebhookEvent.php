@@ -6,5 +6,5 @@ namespace EonX\EasyWebhook\Events;
 
 final class FailedWebhookEvent extends AbstractWebhookEvent
 {
-    // No body needed.
+    // No body needed
 }

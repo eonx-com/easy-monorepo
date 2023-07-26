@@ -5,19 +5,13 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Request;
 
 use Bugsnag\Request\RequestInterface;
-use Nette\Utils\Strings;
 use Symfony\Component\HttpFoundation\Request;
 
 final class HttpFoundationRequest implements RequestInterface
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    private $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        private Request $request,
+    ) {
     }
 
     public function getContext(): string
@@ -41,7 +35,7 @@ final class HttpFoundationRequest implements RequestInterface
         /** @var string $content */
         $content = $this->request->getContent();
 
-        if (Strings::contains((string)($this->request->getContentType() ?? ''), 'json')) {
+        if (\str_contains((string)($this->request->getContentType() ?? ''), 'json')) {
             $content = \json_decode($content) ?? $content;
         }
 
@@ -72,7 +66,7 @@ final class HttpFoundationRequest implements RequestInterface
             return [];
         }
 
-        if ($this->request->attributes->get('_stateless') === true) {
+        if ($this->request->attributes->get('_stateless')) {
             return [];
         }
 
@@ -95,8 +89,8 @@ final class HttpFoundationRequest implements RequestInterface
      */
     private function formatHeaders(Request $request): array
     {
-        return \array_map(static function ($header) {
-            if (\is_array($header) === false || \count($header) > 1) {
+        return \array_map(static function (array $header) {
+            if (\count($header) > 1) {
                 return $header;
             }
 

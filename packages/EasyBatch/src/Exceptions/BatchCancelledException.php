@@ -8,5 +8,5 @@ use EonX\EasyBatch\Interfaces\EasyBatchPreventProcessExceptionInterface as Preve
 
 final class BatchCancelledException extends AbstractEasyBatchException implements PreventProcessInterface
 {
-    // No body needed.
+    // No body needed
 }

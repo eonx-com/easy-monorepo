@@ -12,14 +12,9 @@ use Psr\Log\NullLogger;
 
 final class JwtClaimFetcher implements JwtClaimFetcherInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     /**
@@ -32,29 +27,19 @@ final class JwtClaimFetcher implements JwtClaimFetcherInterface
         return $this->doGetClaim($token, $claim, $default ?? []);
     }
 
-    /**
-     * @param null|mixed $default
-     *
-     * @return mixed
-     */
-    public function getClaim(JwtInterface $token, string $claim, $default = null)
+    public function getClaim(JwtInterface $token, string $claim, mixed $default = null): mixed
     {
         return $this->doGetClaim($token, $claim, $default);
     }
 
-    /**
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    private function doGetClaim(JwtInterface $token, string $claim, $default)
+    private function doGetClaim(JwtInterface $token, string $claim, mixed $default): mixed
     {
         try {
             return $token->getClaimForceArray($claim);
         } catch (InvalidArgumentException $exception) {
             $this->logger->info(\sprintf(
                 '[%s] Exception while getting claim "%s": %s',
-                static::class,
+                self::class,
                 $claim,
                 $exception->getMessage()
             ));

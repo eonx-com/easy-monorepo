@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
 
+use Closure;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Lock\BatchItemLockFactoryInterface;
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
 use EonX\EasyBatch\Exceptions\BatchItemNotHandledException;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
-use EonX\EasyBatch\Interfaces\CurrentBatchAwareInterface;
-use EonX\EasyBatch\Interfaces\CurrentBatchItemAwareInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
 use EonX\EasyBatch\Processors\BatchItemProcessor;
 use EonX\EasyBatch\Processors\BatchProcessor;
@@ -20,6 +19,7 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Throwable;
 
 final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
@@ -56,7 +56,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         try {
             // Since items can be dispatched multiple times to guarantee all items are dispatched
             // We must protect the processing logic with a lock to make sure the same item isn't processed
-            // by multiple workers concurrently.
+            // by multiple workers concurrently
             $result = $this->lockService->processWithLock(
                 $this->batchItemLockFactory->createFromEnvelope($envelope),
                 function () use ($batchItemStamp, $message, $func) {
@@ -69,30 +69,13 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
                         $message->setCurrentBatchObjects($batch, $batchItem);
                     }
 
-                    if ($message instanceof CurrentBatchAwareInterface
-                        || $message instanceof CurrentBatchItemAwareInterface) {
-                        @\trigger_error(\sprintf(
-                            'Using %s or %s is deprecated since 4.1, will be removed in 5.0. Use %s instead',
-                            CurrentBatchAwareInterface::class,
-                            CurrentBatchItemAwareInterface::class,
-                            CurrentBatchObjectsAwareInterface::class
-                        ), \E_USER_DEPRECATED);
-
-                        if ($message instanceof CurrentBatchAwareInterface) {
-                            $message->setCurrentBatch($batch);
-                        }
-                        if ($message instanceof CurrentBatchItemAwareInterface) {
-                            $message->setCurrentBatchItem($batchItem);
-                        }
-                    }
-
                     return $this->batchItemProcessor->processBatchItem($batch, $batchItem, $func);
                 }
             );
 
             // If lock not acquired, return envelope
-            return $result === null ? $envelope : $result;
-        } catch (\Throwable $throwable) {
+            return $result ?? $envelope;
+        } catch (Throwable $throwable) {
             return $this->batchItemExceptionHandler->handleException($throwable, $envelope);
         } finally {
             if ($message instanceof CurrentBatchObjectsAwareInterface) {
@@ -106,7 +89,7 @@ final class ProcessBatchItemMiddleware implements MiddlewareInterface
         StackInterface $stack,
         ?BatchItemStamp $batchItemStamp = null,
         ?ConsumedByWorkerStamp $consumedByWorkerStamp = null,
-    ): \Closure {
+    ): Closure {
         return static function () use ($envelope, $stack, $batchItemStamp, $consumedByWorkerStamp): Envelope {
             $newEnvelope = $stack
                 ->next()

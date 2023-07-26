@@ -19,7 +19,7 @@ final class AuthorizationMatrixTest extends AbstractTestCase
      *
      * @see testMatrix
      */
-    public function providerTestMatrix(): iterable
+    public static function providerTestMatrix(): iterable
     {
         yield 'Empty roles and permissions' => [
             static function (AuthorizationMatrix $matrix): void {

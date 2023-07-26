@@ -9,40 +9,37 @@ use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Interfaces\MappingProviderInterface;
 use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {
     /**
      * @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]
      */
-    private $configurators;
+    private array $configurators;
 
     /**
      * @var \EonX\EasyDecision\Interfaces\DecisionInterface[]
      */
-    private $configuredDecisions = [];
+    private array $configuredDecisions = [];
 
     /**
-     * @var mixed[]
+     * @var array<string, \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[]>
      */
-    private $decisionConfigurators = [];
-
-    /**
-     * @var \EonX\EasyDecision\Interfaces\MappingProviderInterface
-     */
-    private $mappingProvider;
+    private array $decisionConfigurators = [];
 
     /**
      * @param null|iterable<mixed> $configurators
      */
-    public function __construct(MappingProviderInterface $mappingProvider, ?iterable $configurators = null)
-    {
-        $this->mappingProvider = $mappingProvider;
-
-        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
+    public function __construct(
+        private MappingProviderInterface $mappingProvider,
+        ?iterable $configurators = null,
+    ) {
+        /** @var \EonX\EasyDecision\Interfaces\DecisionConfiguratorInterface[] $filteredAndSortedConfigurators */
+        $filteredAndSortedConfigurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators ?? [], DecisionConfiguratorInterface::class)
         );
+        $this->configurators = $filteredAndSortedConfigurators;
     }
 
     public function createAffirmativeDecision(?string $name = null): DecisionInterface

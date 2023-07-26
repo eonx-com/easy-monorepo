@@ -8,5 +8,5 @@ use EonX\EasyBatch\Interfaces\EasyBatchPreventProcessExceptionInterface as Preve
 
 final class BatchItemCompletedException extends AbstractEasyBatchException implements PreventProcessInterface
 {
-    // No body needed.
+    // No body needed
 }

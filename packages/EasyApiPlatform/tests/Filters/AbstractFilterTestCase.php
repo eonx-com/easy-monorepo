@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractFilterTestCase extends KernelTestCase
 {
-    protected string $alias = 'o';
+    protected static string $alias = 'o';
 
     /**
      * @var class-string<\ApiPlatform\Doctrine\Orm\Filter\FilterInterface>
@@ -49,8 +49,10 @@ abstract class AbstractFilterTestCase extends KernelTestCase
 
     /**
      * @return iterable<mixed>
+     *
+     * @see testApply
      */
-    abstract public function provideApplyTestData(): iterable;
+    abstract public static function provideApplyTestData(): iterable;
 
     /**
      * @param mixed[]|null $properties
@@ -77,14 +79,14 @@ abstract class AbstractFilterTestCase extends KernelTestCase
         }
 
         $repository = $this->repository;
-        if ($resourceClass) {
+        if ($resourceClass !== null) {
             /** @var \Doctrine\Persistence\ObjectManager $manager */
             $manager = $this->managerRegistry->getManagerForClass($resourceClass);
             /** @var \Doctrine\ORM\EntityRepository<\stdClass> $repository */
             $repository = $manager->getRepository($resourceClass);
         }
         $resourceClass = $resourceClass ?: $this->resourceClass;
-        $queryBuilder = $repository->createQueryBuilder($this->alias);
+        $queryBuilder = $repository->createQueryBuilder(static::$alias);
         $filterCallable = $filterFactory($this->managerRegistry, $properties);
         $filterCallable->apply(
             $queryBuilder,

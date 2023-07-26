@@ -16,8 +16,10 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'id from store' => [
             Webhook::fromArray([]),
@@ -68,7 +70,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ?StoreInterface $store = null,
     ): void {
         // Fix webhook id
-        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'not-default-webhook-id');
+        $store ??= new ArrayStoreStub(self::getRandomGenerator(), 'not-default-webhook-id');
         $middleware = new IdHeaderMiddleware($store, $idHeader);
 
         $test($this->process($middleware, $webhook));

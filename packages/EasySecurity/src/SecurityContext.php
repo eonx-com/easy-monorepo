@@ -18,7 +18,7 @@ use EonX\EasySecurity\Interfaces\UserInterface;
 /**
  * Class not final to allow apps to extend it.
  */
-class SecurityContext implements SecurityContextInterface
+final class SecurityContext implements SecurityContextInterface
 {
     private AuthorizationMatrixInterface $authorizationMatrix;
 

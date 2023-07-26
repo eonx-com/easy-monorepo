@@ -152,9 +152,10 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             return;
         }
 
-        $batchItemIds = \array_map(static function (BatchItemInterface $batchItem): int|string {
-            return $batchItem->getIdOrFail();
-        }, $batchItems);
+        $batchItemIds = \array_map(
+            static fn (BatchItemInterface $batchItem): int|string => $batchItem->getIdOrFail(),
+            $batchItems
+        );
 
         $queryBuilder = $this->conn->createQueryBuilder();
         $queryBuilder
@@ -173,9 +174,10 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
 
         // Handle more than 1 batchItem
         if ($count > 1) {
-            $batchItemIds = \array_map(function (string $batchItemId): string {
-                return $this->conn->quote($batchItemId);
-            }, $batchItemIds);
+            $batchItemIds = \array_map(
+                fn (string $batchItemId): string => $this->conn->quote($batchItemId),
+                $batchItemIds
+            );
 
             $queryBuilder->andWhere($queryBuilder->expr()->in('id', $batchItemIds));
         }

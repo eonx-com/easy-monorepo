@@ -12,25 +12,13 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final class CacheConfigFinder implements ConfigFinderInterface
 {
-    /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
-     */
-    private $cache;
+    private int $expiresAfter;
 
-    /**
-     * @var \EonX\EasyNotification\Interfaces\ConfigFinderInterface
-     */
-    private $decorated;
-
-    /**
-     * @var int
-     */
-    private $expiresAfter;
-
-    public function __construct(CacheInterface $cache, ConfigFinderInterface $decorated, ?int $expiresAfter = null)
-    {
-        $this->cache = $cache;
-        $this->decorated = $decorated;
+    public function __construct(
+        private CacheInterface $cache,
+        private ConfigFinderInterface $decorated,
+        ?int $expiresAfter = null,
+    ) {
         $this->expiresAfter = $expiresAfter ?? BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER;
     }
 

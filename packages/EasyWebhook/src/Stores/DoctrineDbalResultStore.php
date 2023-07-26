@@ -7,7 +7,7 @@ namespace EonX\EasyWebhook\Stores;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyUtils\ErrorDetailsHelper;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
@@ -30,7 +30,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
 
         // New result with no id
         if ($result->getId() === null) {
-            $result->setId($this->random->uuidV4());
+            $result->setId($this->random->uuid());
 
             $data['id'] = $result->getId();
             $data['created_at'] = $now;
@@ -77,7 +77,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
             'url' => $webhook->getUrl(),
             'http_options' => $webhook->getHttpClientOptions(),
             'updated_at' => $now,
-            'webhook_class' => \get_class($webhook),
+            'webhook_class' => $webhook::class,
             'webhook_id' => $webhook->getId(),
         ];
 

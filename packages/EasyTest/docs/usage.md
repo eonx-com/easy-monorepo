@@ -39,19 +39,8 @@ return static function (EasyTestConfig $easyTestConfig): void {
 
 Update the PHPUnit configuration file to use `MailerMessageLoggerListenerPhpUnitExtension`:
 
-For PHPUnit < 10:
 ```xml
-<phpunit>
-    <!-- ... -->
-    <extensions>
-        <!-- ... -->
-        <extension class="EonX\EasyTest\Bridge\PhpUnit\Extension\MailerMessageLoggerListenerPhpUnitExtension"/>
-    </extensions>
-</phpunit>
-```
 
-For PHPUnit 10:
-```xml
 <phpunit>
     <!-- ... -->
     <extensions>
@@ -60,6 +49,7 @@ For PHPUnit 10:
     </extensions>
 </phpunit>
 ```
+
 #### Manual configuration
 
 It is also possible to configure the `MailerMessageLoggerListenerStub` manually.

@@ -12,25 +12,18 @@ use Throwable;
 
 abstract class AbstractQueueListener
 {
-    /**
-     * @var \Illuminate\Contracts\Cache\Repository
-     */
-    private $cache;
+    protected LoggerInterface $logger;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    public function __construct(Cache $cache, ?LoggerInterface $logger = null)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        private Cache $cache,
+        ?LoggerInterface $logger = null,
+    ) {
         $this->logger = $logger ?? new NullLogger();
     }
 
     protected function killWorker(Throwable $throwable): void
     {
-        $this->logger->info(\sprintf('Kill worker because of exception "%s"', \get_class($throwable)));
+        $this->logger->info(\sprintf('Kill worker because of exception "%s"', $throwable::class));
 
         $this->cache->forever('illuminate:queue:restart', Carbon::now()->getTimestamp());
     }

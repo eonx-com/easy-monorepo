@@ -20,25 +20,12 @@ use Symfony\Component\Lock\PersistingStoreInterface;
 
 final class LockService implements LockServiceInterface
 {
-    /**
-     * @var \Symfony\Component\Lock\LockFactory
-     */
-    private $factory;
+    private ?LockFactory $factory = null;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var \Symfony\Component\Lock\PersistingStoreInterface
-     */
-    private $store;
-
-    public function __construct(PersistingStoreInterface $store, ?LoggerInterface $logger = null)
-    {
-        $this->store = $store;
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private PersistingStoreInterface $store,
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
@@ -47,10 +34,7 @@ final class LockService implements LockServiceInterface
             ->createLock($resource, $ttl ?? 300.0);
     }
 
-    /**
-     * @return null|mixed
-     */
-    public function processWithLock(LockDataInterface $lockData, Closure $func)
+    public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
     {
         $lock = $this->createLock($lockData->getResource(), $lockData->getTtl());
 
@@ -61,7 +45,7 @@ final class LockService implements LockServiceInterface
             $easyAsyncInstalled = \interface_exists(ShouldKillWorkerExceptionInterface::class);
 
             // If eonx-com/easy-async installed, and previous is because SQL connection not ok, kill worker
-            if ($easyAsyncInstalled && $previous instanceof PdoException && $previous->getCode() === 'HY000') {
+            if ($easyAsyncInstalled && $previous instanceof PdoException && $previous->getCode() === 0) {
                 throw new LockAcquiringException($exception->getMessage(), $exception->getCode(), $previous);
             }
 
@@ -90,9 +74,9 @@ final class LockService implements LockServiceInterface
             return $this->factory;
         }
 
-        $factory = new LockFactory($this->store);
-        $factory->setLogger($this->logger);
+        $this->factory = new LockFactory($this->store);
+        $this->factory->setLogger($this->logger);
 
-        return $this->factory = $factory;
+        return $this->factory;
     }
 }

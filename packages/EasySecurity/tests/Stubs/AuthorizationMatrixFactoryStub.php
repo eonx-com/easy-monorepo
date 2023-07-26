@@ -11,10 +11,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 
 final class AuthorizationMatrixFactoryStub implements AuthorizationMatrixFactoryInterface
 {
-    /**
-     * @var int
-     */
-    private $calls = 0;
+    private int $calls = 0;
 
     public function create(): AuthorizationMatrixInterface
     {

@@ -9,42 +9,43 @@ use EonX\EasyEncryption\Exceptions\CouldNotProvideEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
+use Throwable;
 
 final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterface
 {
     /**
-     * @var \EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface
-     */
-    private $keyFactory;
-
-    /**
      * @var \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]
      */
-    private $keyResolvers;
+    private array $keyResolvers;
 
     /**
      * @var \ParagonIE\Halite\Symmetric\EncryptionKey[]|\ParagonIE\Halite\EncryptionKeyPair[]
      */
-    private $resolved = [];
+    private array $resolved = [];
 
     /**
      * @var string[]
      */
-    private $resolving = [];
+    private array $resolving = [];
 
     /**
      * @param iterable<\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface> $keyResolvers
      */
-    public function __construct(EncryptionKeyFactoryInterface $keyFactory, iterable $keyResolvers)
-    {
-        $this->keyFactory = $keyFactory;
-        $this->keyResolvers = CollectorHelper::orderLowerPriorityFirstAsArray(
+    public function __construct(
+        private EncryptionKeyFactoryInterface $keyFactory,
+        iterable $keyResolvers,
+    ) {
+        /** @var \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $filteredAndSortedKeyResolvers */
+        $filteredAndSortedKeyResolvers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($keyResolvers, EncryptionKeyResolverInterface::class)
         );
+        $this->keyResolvers = $filteredAndSortedKeyResolvers;
     }
 
-    public function getKey(string $keyName)
+    public function getKey(string $keyName): EncryptionKey|EncryptionKeyPair
     {
         if (isset($this->resolved[$keyName])) {
             return $this->resolved[$keyName];
@@ -58,7 +59,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
 
         try {
             return $this->doGetKey($keyName);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new CouldNotProvideEncryptionKeyException(
                 \sprintf('Could not provide encryption key: %s', $throwable->getMessage()),
                 $throwable->getCode(),
@@ -85,7 +86,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
         $this->resolved = [];
     }
 
-    private function circularReference(string $keyName): void
+    private function circularReference(string $keyName): never
     {
         $this->resolving = [];
 

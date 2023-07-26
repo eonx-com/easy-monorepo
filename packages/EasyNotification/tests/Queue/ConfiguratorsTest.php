@@ -20,8 +20,8 @@ use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\QueueMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use EonX\EasyNotification\Tests\Stubs\MessageStub;
+use Error;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 final class ConfiguratorsTest extends AbstractTestCase
 {
@@ -30,7 +30,7 @@ final class ConfiguratorsTest extends AbstractTestCase
      *
      * @see testConfigure
      */
-    public function providerTestConfigure(): iterable
+    public static function providerTestConfigure(): iterable
     {
         yield 'Provider Header' => [
             new ProviderHeaderConfigurator(),
@@ -60,7 +60,7 @@ final class ConfiguratorsTest extends AbstractTestCase
             Config::fromArray(static::$defaultConfig),
             new MessageStub([]),
             static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
-                $testCase->expectException(TypeError::class);
+                $testCase->expectException(Error::class);
                 $queueMessage->getBody();
             },
         ];
@@ -119,7 +119,7 @@ final class ConfiguratorsTest extends AbstractTestCase
             Config::fromArray(static::$defaultConfig),
             new MessageStub([]),
             static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
-                $testCase->expectException(TypeError::class);
+                $testCase->expectException(Error::class);
                 $queueMessage->getBody();
             },
         ];

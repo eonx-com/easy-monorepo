@@ -17,7 +17,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
      *
      * @see testConfigAndDependenciesSanity
      */
-    public function providerTestConfigAndDependenciesSanity(): iterable
+    public static function providerTestConfigAndDependenciesSanity(): iterable
     {
         yield 'Defaults' => [
             [],

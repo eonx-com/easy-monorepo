@@ -11,7 +11,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\SecurityContextResolverStub;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 final class PermissionVoterTest extends AbstractTestCase
@@ -21,7 +21,7 @@ final class PermissionVoterTest extends AbstractTestCase
      *
      * @see testVoter
      */
-    public function providerTestVoter(): iterable
+    public static function providerTestVoter(): iterable
     {
         yield 'Abstain because permission not in matrix' => [
             new AuthorizationMatrix([], []),
@@ -60,7 +60,7 @@ final class PermissionVoterTest extends AbstractTestCase
         $securityContext->setAuthorizationMatrix($authorizationMatrix);
 
         $voter = new PermissionVoter(new SecurityContextResolverStub($securityContext));
-        $token = new AnonymousToken('secret', 'user');
+        $token = new NullToken();
 
         self::assertEquals($expectedVote, $voter->vote($token, null, [$permission]));
     }

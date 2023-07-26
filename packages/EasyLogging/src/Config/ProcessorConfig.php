@@ -9,14 +9,9 @@ use Monolog\Processor\ProcessorInterface;
 
 final class ProcessorConfig extends AbstractLoggingConfig implements ProcessorConfigInterface
 {
-    /**
-     * @var \Monolog\Processor\ProcessorInterface
-     */
-    private $processor;
-
-    public function __construct(ProcessorInterface $processor)
-    {
-        $this->processor = $processor;
+    public function __construct(
+        private ProcessorInterface $processor,
+    ) {
     }
 
     public static function create(ProcessorInterface $processor): self

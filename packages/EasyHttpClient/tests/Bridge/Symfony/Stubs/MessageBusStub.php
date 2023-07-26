@@ -10,15 +10,14 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class MessageBusStub implements MessageBusInterface
 {
     /**
-     * @var mixed[]
+     * @var \Symfony\Component\Messenger\Envelope[]
      */
-    private $envelopes = [];
+    private array $envelopes = [];
 
     /**
-     * @param object|\Symfony\Component\Messenger\Envelope $message The message or the message pre-wrapped in an envelope
-     * @param \Symfony\Component\Messenger\Stamp\StampInterface[] $stamps
+     * @param null|\Symfony\Component\Messenger\Stamp\StampInterface[] $stamps
      */
-    public function dispatch($message, ?array $stamps = null): Envelope
+    public function dispatch(object $message, ?array $stamps = null): Envelope
     {
         $envelope = Envelope::wrap($message, $stamps ?? []);
 
