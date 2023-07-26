@@ -27,6 +27,7 @@ use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
+use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
@@ -66,6 +67,10 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/*/src/Bridge/BridgeConstantsInterface.php',
             'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
         ],
+        MethodChainingNewlineFixer::class => [
+            // Bug, to be fixed in symplify
+            'packages/*/src/Bridge/Symfony/DependencyInjection/Configuration.php',
+        ],
         PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
             'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
             'packages/*/tests/Stubs/Model/*',
@@ -81,11 +86,12 @@ return static function (ECSConfig $ecsConfig): void {
     ]);
 
     $ecsConfig->rules([
-        FileHeaderSniff::class,
         AvoidPublicPropertiesSniff::class,
         DateTimeImmutableFixer::class,
         DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class,
+        FileHeaderSniff::class,
         LinebreakAfterEqualsSignSniff::class,
+        MethodChainingNewlineFixer::class,
         SortAttributesAlphabeticallySniff::class,
         SortedApiResourceOperationKeysSniff::class,
         StaticClosureSniff::class,

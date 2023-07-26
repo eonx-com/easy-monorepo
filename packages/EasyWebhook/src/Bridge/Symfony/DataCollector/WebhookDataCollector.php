@@ -81,7 +81,8 @@ final class WebhookDataCollector extends DataCollector
         }
 
         $map = static fn (WebhookResultInterface $result): array => [
-            'response' => $result->getResponse() !== null ? $result->getResponse()->getInfo() : null,
+            'response' => $result->getResponse() !== null ? $result->getResponse()
+                ->getInfo() : null,
             'throwable' => $result->getThrowable(),
             'webhook' => $result->getWebhook(),
         ];
