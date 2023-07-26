@@ -12,19 +12,10 @@ use EonX\EasyBankFiles\Parsers\Error;
 
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string
-     */
     private const HEADER = '1';
 
-    /**
-     * @var string
-     */
     private const TRAILER = '9';
 
-    /**
-     * @var string
-     */
     private const TRANSACTION = '2';
 
     /**

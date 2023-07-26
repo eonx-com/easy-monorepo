@@ -12,16 +12,10 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyApiPlatformExtension extends Extension
 {
-    /**
-     * @var array<string, string>
-     */
     private const EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG = [
         'iri_fields' => BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
     ];
 
-    /**
-     * @var array<string, string>
-     */
     private const EASY_API_PLATFORM_BASE_CONFIG = [
         'custom_paginator_enabled' => BridgeConstantsInterface::PARAM_CUSTOM_PAGINATOR_ENABLED,
     ];

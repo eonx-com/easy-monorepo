@@ -13,29 +13,14 @@ use Doctrine\DBAL\Types\DateTimeType;
 
 final class DateTimeMicrosecondsType extends DateTimeType
 {
-    /**
-     * @var string
-     */
     public const FORMAT_DB_DATETIME = 'DATETIME(6)';
 
-    /**
-     * @var string
-     */
     public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
 
-    /**
-     * @var string
-     */
     public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
 
-    /**
-     * @var string
-     */
     public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
 
-    /**
-     * @var string
-     */
     public const TYPE_NAME = 'datetime';
 
     /**

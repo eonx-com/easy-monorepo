@@ -8,9 +8,6 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 interface ResultStoreInterface
 {
-    /**
-     * @var string
-     */
     public const DEFAULT_TABLE = 'easy_webhook_results';
 
     public function store(WebhookResultInterface $result): WebhookResultInterface;

@@ -12,19 +12,10 @@ use SimpleXMLElement;
 
 final class CloverCoverageResolver implements CoverageResolverInterface
 {
-    /**
-     * @var string
-     */
     private const ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
 
-    /**
-     * @var string
-     */
     private const ATTRIBUTE_NAME_ELEMENTS = 'elements';
 
-    /**
-     * @var string
-     */
     private const ATTRIBUTE_NAME_FILE_NAME = 'name';
 
     public function resolve(string $coverageOutput): CoverageReportDto

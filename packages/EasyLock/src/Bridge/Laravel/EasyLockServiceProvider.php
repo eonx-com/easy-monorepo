@@ -16,9 +16,6 @@ use Symfony\Component\Lock\Store\StoreFactory;
 
 final class EasyLockServiceProvider extends ServiceProvider
 {
-    /**
-     * @var string
-     */
     private const DEFAULT_CONNECTION_ID = 'flock';
 
     public function register(): void

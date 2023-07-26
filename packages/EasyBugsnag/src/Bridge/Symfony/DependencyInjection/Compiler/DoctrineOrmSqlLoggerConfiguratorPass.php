@@ -16,29 +16,14 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const BUGSNAG_ABSTRACT_LOGGER = 'easy_bugsnag.sql_logger.abstract';
 
-    /**
-     * @var string
-     */
     private const BUGSNAG_SQL_LOGGER_PATTERN = 'easy_bugsnag.sql_logger.%s';
 
-    /**
-     * @var string
-     */
     private const DBAL_CONFIGURATION_METHOD_CALL = 'setSQLLogger';
 
-    /**
-     * @var string
-     */
     private const DBAL_CONFIGURATION_PATTERN = 'doctrine.dbal.%s_connection.configuration';
 
-    /**
-     * @var string
-     */
     private const DBAL_CONNECTION_PATTERN = 'doctrine.dbal.%s_connection';
 
     public function process(ContainerBuilder $container): void

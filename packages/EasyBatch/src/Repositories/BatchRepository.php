@@ -12,9 +12,6 @@ use Throwable;
 
 final class BatchRepository extends AbstractBatchObjectRepository implements BatchRepositoryInterface
 {
-    /**
-     * @var string
-     */
     private const SAVEPOINT = 'easy_batch_conn_savepoint';
 
     /**

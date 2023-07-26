@@ -12,9 +12,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class SetEncryptorOnBatchItemTransformerCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const ENCRYPTOR_SETTER = 'setEncryptor';
 
     /**

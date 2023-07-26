@@ -12,9 +12,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyBatchExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const CONFIGS_TO_PARAMS = [
         'batch_class' => BridgeConstantsInterface::PARAM_BATCH_CLASS,
         'batch_table' => BridgeConstantsInterface::PARAM_BATCH_TABLE,

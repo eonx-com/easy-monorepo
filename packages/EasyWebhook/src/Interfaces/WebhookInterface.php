@@ -8,34 +8,16 @@ use DateTimeInterface;
 
 interface WebhookInterface
 {
-    /**
-     * @var int
-     */
     public const DEFAULT_CURRENT_ATTEMPT = 0;
 
-    /**
-     * @var string
-     */
     public const DEFAULT_METHOD = 'POST';
 
-    /**
-     * @var string
-     */
     public const HEADER_EVENT = 'X-Webhook-Event';
 
-    /**
-     * @var string
-     */
     public const HEADER_ID = 'X-Webhook-Id';
 
-    /**
-     * @var string
-     */
     public const HEADER_SIGNATURE = 'X-Webhook-Signature';
 
-    /**
-     * @var string[]
-     */
     public const OPTIONS = [
         self::OPTION_BODY,
         self::OPTION_BODY_AS_STRING,
@@ -51,74 +33,32 @@ interface WebhookInterface
         self::OPTION_URL,
     ];
 
-    /**
-     * @var string
-     */
     public const OPTION_BODY = 'body';
 
-    /**
-     * @var string
-     */
     public const OPTION_BODY_AS_STRING = 'body_as_string';
 
-    /**
-     * @var string
-     */
     public const OPTION_CURRENT_ATTEMPT = 'current_attempt';
 
-    /**
-     * @var string
-     */
     public const OPTION_EVENT = 'event';
 
-    /**
-     * @var string
-     */
     public const OPTION_HTTP_OPTIONS = 'http_options';
 
-    /**
-     * @var string
-     */
     public const OPTION_ID = 'id';
 
-    /**
-     * @var string
-     */
     public const OPTION_MAX_ATTEMPT = 'max_attempt';
 
-    /**
-     * @var string
-     */
     public const OPTION_METHOD = 'method';
 
-    /**
-     * @var string
-     */
     public const OPTION_SECRET = 'secret';
 
-    /**
-     * @var string
-     */
     public const OPTION_SEND_AFTER = 'send_after';
 
-    /**
-     * @var string
-     */
     public const OPTION_SEND_NOW = 'send_now';
 
-    /**
-     * @var string
-     */
     public const OPTION_STATUS = 'status';
 
-    /**
-     * @var string
-     */
     public const OPTION_URL = 'url';
 
-    /**
-     * @var string[]
-     */
     public const STATUSES = [
         self::STATUS_FAILED,
         self::STATUS_FAILED_PENDING_RETRY,
@@ -126,24 +66,12 @@ interface WebhookInterface
         self::STATUS_SUCCESS,
     ];
 
-    /**
-     * @var string
-     */
     public const STATUS_FAILED = 'failed';
 
-    /**
-     * @var string
-     */
     public const STATUS_FAILED_PENDING_RETRY = 'failed_pending_retry';
 
-    /**
-     * @var string
-     */
     public const STATUS_PENDING = 'pending';
 
-    /**
-     * @var string
-     */
     public const STATUS_SUCCESS = 'success';
 
     public function allowRerun(?bool $allowRerun = null): self;

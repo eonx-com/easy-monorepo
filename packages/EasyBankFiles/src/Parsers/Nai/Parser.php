@@ -10,44 +10,20 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
 
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string
-     */
     private const ACCOUNT_IDENTIFIER = '03';
 
-    /**
-     * @var string
-     */
     private const ACCOUNT_TRAILER = '49';
 
-    /**
-     * @var string
-     */
     private const CONTINUATION = '88';
 
-    /**
-     * @var string
-     */
     private const FILE_HEADER = '01';
 
-    /**
-     * @var string
-     */
     private const FILE_TRAILER = '99';
 
-    /**
-     * @var string
-     */
     private const GROUP_HEADER = '02';
 
-    /**
-     * @var string
-     */
     private const GROUP_TRAILER = '98';
 
-    /**
-     * @var string
-     */
     private const TRANSACTION_DETAIL = '16';
 
     /**

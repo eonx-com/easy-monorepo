@@ -15,9 +15,6 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class Decimal extends Constraint
 {
-    /**
-     * @var string
-     */
     public const INVALID_DECIMAL_ERROR = 'INVALID_DECIMAL_ERROR';
 
     public int $maxPrecision;

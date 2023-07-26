@@ -14,14 +14,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ReplaceChannelsDefinitionPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const MONOLOG_LOGGER_ID_PATTERN = 'monolog.logger.%s';
 
-    /**
-     * @var string
-     */
     private const MONOLOG_LOGGER_TAG = 'monolog.logger';
 
     public function process(ContainerBuilder $container): void

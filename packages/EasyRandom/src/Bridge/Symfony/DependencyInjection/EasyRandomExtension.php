@@ -20,9 +20,6 @@ use Symfony\Component\Uid\Uuid as SymfonyUuid;
 
 final class EasyRandomExtension extends Extension
 {
-    /**
-     * @var array<string, string>
-     */
     private const EASY_RANDOM_CONFIG = [
         'uuid_version' => BridgeConstantsInterface::PARAM_UUID_VERSION,
     ];

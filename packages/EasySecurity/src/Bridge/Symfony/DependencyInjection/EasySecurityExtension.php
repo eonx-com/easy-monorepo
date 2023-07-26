@@ -20,18 +20,12 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasySecurityExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const AUTO_CONFIG_TAGS = [
         RolesProviderInterface::class => BridgeConstantsInterface::TAG_ROLES_PROVIDER,
         PermissionsProviderInterface::class => BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER,
         SecurityContextConfiguratorInterface::class => BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR,
     ];
 
-    /**
-     * @var string[]
-     */
     private const VOTERS = [
         'permission' => PermissionVoter::class,
         'provider' => ProviderVoter::class,

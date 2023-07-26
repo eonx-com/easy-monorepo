@@ -9,19 +9,10 @@ use ParagonIE\Halite\Symmetric\EncryptionKey;
 
 interface EncryptorInterface
 {
-    /**
-     * @var string
-     */
     public const DEFAULT_KEY_NAME = 'app';
 
-    /**
-     * @var string
-     */
     public const ENCRYPTED_KEY_NAME = 'keyName';
 
-    /**
-     * @var string
-     */
     public const ENCRYPTED_KEY_VALUE = 'value';
 
     /**

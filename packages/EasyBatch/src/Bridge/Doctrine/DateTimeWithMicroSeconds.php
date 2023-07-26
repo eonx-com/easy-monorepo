@@ -9,9 +9,6 @@ use Doctrine\DBAL\Types\Type;
 
 final class DateTimeWithMicroSeconds extends Type
 {
-    /**
-     * @var string
-     */
     public const NAME = 'datetime_with_microseconds';
 
     public function getName(): string

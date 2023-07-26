@@ -14,9 +14,6 @@ use EonX\EasyWebhook\WebhookResult;
 
 final class LockMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var string
-     */
     private const DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
 
     private string $resourcePattern;

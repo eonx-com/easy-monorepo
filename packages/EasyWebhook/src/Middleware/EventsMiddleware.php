@@ -14,9 +14,6 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class EventsMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var string[]
-     */
     private const EVENT_CLASSES = [
         WebhookInterface::STATUS_FAILED => FinalFailedWebhookEvent::class,
         WebhookInterface::STATUS_FAILED_PENDING_RETRY => FailedWebhookEvent::class,

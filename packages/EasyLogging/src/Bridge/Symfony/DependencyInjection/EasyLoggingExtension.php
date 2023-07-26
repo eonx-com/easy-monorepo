@@ -18,9 +18,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyLoggingExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const AUTO_CONFIGS = [
         HandlerConfigProviderInterface::class => BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER,
         LoggerConfiguratorInterface::class => BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR,

@@ -10,9 +10,6 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 
 interface BatchItemRepositoryInterface
 {
-    /**
-     * @var string
-     */
     public const DEFAULT_TABLE = 'easy_batch_items';
 
     public function findCountsForBatch(int|string $batchId): BatchCountsDto;
