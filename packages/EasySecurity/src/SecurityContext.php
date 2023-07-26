@@ -16,9 +16,9 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 
 /**
- * Class not final to allow apps to extend it.
+ * This class is not final to allow apps to extend it.
  */
-final class SecurityContext implements SecurityContextInterface
+class SecurityContext implements SecurityContextInterface
 {
     private AuthorizationMatrixInterface $authorizationMatrix;
 
@@ -112,7 +112,9 @@ final class SecurityContext implements SecurityContextInterface
             $cachePermissions[$permission->getIdentifier()] = $permission;
         }
 
-        return $this->cachePermissions = $cachePermissions;
+        $this->cachePermissions = $cachePermissions;
+
+        return $this->cachePermissions;
     }
 
     public function getProvider(): ?ProviderInterface

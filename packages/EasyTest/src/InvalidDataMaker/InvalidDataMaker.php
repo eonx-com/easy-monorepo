@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\Uuid;
 
 /**
- * @codeCoverageIgnore
+ * This class is not final to allow apps to extend it.
  */
 class InvalidDataMaker extends AbstractInvalidDataMaker
 {

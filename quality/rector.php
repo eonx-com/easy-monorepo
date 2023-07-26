@@ -58,6 +58,7 @@ return static function (RectorConfig $rectorConfig): void {
         ClassPropertyAssignToConstructorPromotionRector::class,
         CountOnNullRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
+            'packages/EasySecurity/src/SecurityContext.php',
             'packages/EasyTest/src/InvalidDataMaker/InvalidDataMaker.php',
         ],
         FinalizePublicClassConstantRector::class,
