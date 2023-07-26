@@ -44,9 +44,6 @@ use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
 {
-    /**
-     * @var string[]
-     */
     private const BUGSNAG_CONFIGURATORS = [
         ErrorDetailsClientConfigurator::class,
         SeverityClientConfigurator::class,

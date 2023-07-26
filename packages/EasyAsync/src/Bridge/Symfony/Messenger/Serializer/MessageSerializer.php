@@ -14,19 +14,10 @@ use Throwable;
 
 final class MessageSerializer implements SerializerInterface
 {
-    /**
-     * @var string
-     */
     private const HEADER_RETRY = 'retry';
 
-    /**
-     * @var string
-     */
     private const KEY_BODY = 'body';
 
-    /**
-     * @var string
-     */
     private const KEY_HEADERS = 'headers';
 
     public function __construct(

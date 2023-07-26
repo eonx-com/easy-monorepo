@@ -14,9 +14,6 @@ use Throwable;
 
 final class ScheduleDataCollector extends DataCollector
 {
-    /**
-     * @var string
-     */
     public const NAME = 'schedule.schedule_collector';
 
     public function __construct(

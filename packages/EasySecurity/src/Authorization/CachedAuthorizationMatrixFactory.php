@@ -11,9 +11,6 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
-    /**
-     * @var string
-     */
     public const CACHE_KEY = 'easy_security.authorization_matrix_key';
 
     private string $key;

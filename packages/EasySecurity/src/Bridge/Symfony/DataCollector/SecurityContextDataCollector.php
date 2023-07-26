@@ -22,9 +22,6 @@ use Throwable;
 
 final class SecurityContextDataCollector extends DataCollector
 {
-    /**
-     * @var string
-     */
     public const NAME = 'easy_security.security_context_collector';
 
     /**

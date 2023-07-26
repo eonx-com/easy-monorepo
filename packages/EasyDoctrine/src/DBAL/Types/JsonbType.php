@@ -11,14 +11,8 @@ use JsonException;
 
 final class JsonbType extends Type
 {
-    /**
-     * @var string
-     */
     public const FORMAT_DB_JSONB = 'JSONB';
 
-    /**
-     * @var string
-     */
     public const JSONB = 'jsonb';
 
     /**

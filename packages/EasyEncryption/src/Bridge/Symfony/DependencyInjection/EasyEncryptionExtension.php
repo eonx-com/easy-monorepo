@@ -13,18 +13,12 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyEncryptionExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const CONFIGS_TO_PARAMS = [
         'default_key_name' => BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME,
         'default_encryption_key' => BridgeConstantsInterface::PARAM_DEFAULT_ENCRYPTION_KEY,
         'default_salt' => BridgeConstantsInterface::PARAM_DEFAULT_SALT,
     ];
 
-    /**
-     * @var string[]
-     */
     private const AWS_PKCS11_CONFIGS_TO_PARAMS = [
         'user_pin' => BridgeConstantsInterface::PARAM_AWS_PKCS11_USER_PIN,
         'hsm_ca_cert' => BridgeConstantsInterface::PARAM_AWS_PKCS11_HSM_CA_CERT,

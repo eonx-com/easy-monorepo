@@ -12,14 +12,8 @@ use EonX\EasyBankFiles\Exceptions\InvalidXmlTagException;
 
 final class XmlConverter
 {
-    /**
-     * @var int
-     */
     public const XML_IGNORE_ATTRIBUTES = 0;
 
-    /**
-     * @var int
-     */
     public const XML_INCLUDE_ATTRIBUTES = 1;
 
     private DOMDocument $xml;

@@ -14,9 +14,6 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class DateInterval extends Constraint
 {
-    /**
-     * @var string
-     */
     public const INVALID_DATE_INTERVAL_ERROR = 'INVALID_DATE_INTERVAL_ERROR';
 
     public string $message = 'This value is not a valid DateInterval.';

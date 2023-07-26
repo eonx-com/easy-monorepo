@@ -6,9 +6,6 @@ namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
 
 final class UpdateBatchItemMessage
 {
-    /**
-     * @var string[]
-     */
     private const ONLY = [
         'attempts',
         'finished_at',

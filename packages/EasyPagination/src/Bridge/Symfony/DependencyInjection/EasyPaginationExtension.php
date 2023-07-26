@@ -12,9 +12,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyPaginationExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const PAGINATION_PARAMS = [
         'page_attribute' => BridgeConstantsInterface::PARAM_PAGE_ATTRIBUTE,
         'page_default' => BridgeConstantsInterface::PARAM_PAGE_DEFAULT,

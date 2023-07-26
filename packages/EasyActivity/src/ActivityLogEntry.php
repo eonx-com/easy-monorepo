@@ -11,24 +11,12 @@ use EonX\EasyActivity\Interfaces\ActorInterface;
 
 final class ActivityLogEntry
 {
-    /**
-     * @var string
-     */
     public const ACTION_CREATE = 'create';
 
-    /**
-     * @var string
-     */
     public const ACTION_DELETE = 'delete';
 
-    /**
-     * @var string
-     */
     public const ACTION_UPDATE = 'update';
 
-    /**
-     * @var string
-     */
     public const DEFAULT_ACTOR_TYPE = 'system';
 
     private string $action;

@@ -9,14 +9,8 @@ use Throwable;
 
 interface BatchObjectInterface
 {
-    /**
-     * @var string
-     */
     public const DATETIME_FORMAT = 'Y-m-d H:i:s.u';
 
-    /**
-     * @var string[]
-     */
     public const DATE_TIMES = [
         'cancelled_at' => 'setCancelledAt',
         'finished_at' => 'setFinishedAt',
@@ -25,48 +19,24 @@ interface BatchObjectInterface
         'updated_at' => 'setUpdatedAt',
     ];
 
-    /**
-     * @var string[]
-     */
     public const STATUSES_FOR_COMPLETED = [
         self::STATUS_CANCELLED,
         self::STATUS_FAILED,
         self::STATUS_SUCCEEDED,
     ];
 
-    /**
-     * @var string
-     */
     public const STATUS_CANCELLED = 'cancelled';
 
-    /**
-     * @var string
-     */
     public const STATUS_CREATED = 'created';
 
-    /**
-     * @var string
-     */
     public const STATUS_FAILED = 'failed';
 
-    /**
-     * @var string
-     */
     public const STATUS_PENDING = 'pending';
 
-    /**
-     * @var string
-     */
     public const STATUS_PROCESSING = 'processing';
 
-    /**
-     * @var string
-     */
     public const STATUS_SUCCEEDED = 'succeeded';
 
-    /**
-     * @var string
-     */
     public const STATUS_SUCCEEDED_PENDING_APPROVAL = 'succeeded_pending_approval';
 
     public function getCancelledAt(): ?DateTimeInterface;

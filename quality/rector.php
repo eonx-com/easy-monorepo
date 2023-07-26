@@ -43,11 +43,15 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
         __DIR__ . '/../packages',
         __DIR__ . '/../tests',
+        __DIR__ . '/ecs.php',
+        __DIR__ . '/rector.php',
     ]);
 
     $rectorConfig->skip([
         // Skip entire files or directories
-        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is a test app
+        'packages/*/tests/var/*', // Symfony cache files
+        'packages/*/var/*', // Symfony cache files
+        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
         'packages/EasyEncryption/src/AwsPkcs11Encryptor.php', // Because of Pkcs11
 
         // Skip rules

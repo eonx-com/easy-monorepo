@@ -17,9 +17,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 abstract class AbstractInvalidDataMaker
 {
-    /**
-     * @var string
-     */
     private const PLURAL_PARAM = '%count%';
 
     /**

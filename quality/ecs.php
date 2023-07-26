@@ -35,6 +35,7 @@ use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
@@ -83,7 +84,7 @@ return static function (ECSConfig $ecsConfig): void {
         ],
 
         MethodChainingNewlineFixer::class => [
-            // bug, to be fixed in symplify
+            // Bug, to be fixed in symplify
             '*/Configuration.php',
         ],
         AssignmentInConditionSniff::class => [
@@ -180,14 +181,14 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->rule(Psr4Sniff::class);
 
-    // symplify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
+    // Symplify rules - see https://github.com/symplify/coding-standard/blob/master/docs/phpcs_fixer_fixers.md
     // arrays
     $ecsConfig->rule(StandaloneLineInMultilineArrayFixer::class);
 
-    // annotations
+    // Annotations
     $ecsConfig->rule(ParamReturnAndVarTagMalformsFixer::class);
 
-    // extra spaces
+    // Extra spaces
     $ecsConfig->rule(PhpdocTrimConsecutiveBlankLineSeparationFixer::class);
     $ecsConfig->rule(BinaryOperatorSpacesFixer::class);
 
@@ -206,7 +207,7 @@ return static function (ECSConfig $ecsConfig): void {
         'ignoreComments' => true,
     ]);
 
-    // trailing commas
+    // Trailing commas
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
         'onlySingleLine' => true,
     ]);
@@ -218,4 +219,7 @@ return static function (ECSConfig $ecsConfig): void {
         'onlySingleLine' => true,
     ]);
     $ecsConfig->rule(RequireTrailingCommaInDeclarationSniff::class);
+
+    // Constants
+    $ecsConfig->rule(UselessConstantTypeHintSniff::class);
 };

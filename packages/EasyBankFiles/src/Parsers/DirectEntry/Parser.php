@@ -12,39 +12,18 @@ use EonX\EasyBankFiles\Parsers\Error;
 
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string Code for header line
-     */
     private const HEADER = '0';
 
-    /**
-     * @var int Minimal header line length (calculated from maximum substr arguments)
-     */
     private const MIN_HEADER_LINE_LENGTH = 80;
 
-    /**
-     * @var int Minimal trailer line length (calculated from maximum substr arguments)
-     */
     private const MIN_TRAILER_LINE_LENGTH = 80;
 
-    /**
-     * @var int Minimal transaction line length (calculated from maximum substr arguments)
-     */
     private const MIN_TRANSACTION_LINE_LENGTH = 120;
 
-    /**
-     * @var string Code for trailer line
-     */
     private const TRAILER = '7';
 
-    /**
-     * @var string Code for transaction
-     */
     private const TRANSACTION_1 = '1';
 
-    /**
-     * @var string Code for transaction
-     */
     private const TRANSACTION_2 = '2';
 
     /**

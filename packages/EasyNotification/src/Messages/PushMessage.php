@@ -6,9 +6,6 @@ namespace EonX\EasyNotification\Messages;
 
 final class PushMessage extends AbstractMessage
 {
-    /**
-     * @var string
-     */
     public const DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
     /**

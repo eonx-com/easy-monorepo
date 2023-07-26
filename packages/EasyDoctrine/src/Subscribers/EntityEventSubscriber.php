@@ -17,9 +17,6 @@ use Stringable;
 
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
-    /**
-     * @var string
-     */
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**

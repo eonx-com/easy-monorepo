@@ -12,9 +12,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class SetPaginationOnRepositoryPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const PAGINATION_SETTER = 'setPagination';
 
     /**

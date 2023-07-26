@@ -6,9 +6,6 @@ namespace EonX\EasyBatch\Interfaces;
 
 interface BatchRepositoryInterface
 {
-    /**
-     * @var string
-     */
     public const DEFAULT_TABLE = 'easy_batches';
 
     public function find(int|string $id): ?BatchInterface;
