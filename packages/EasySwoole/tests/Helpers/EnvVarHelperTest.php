@@ -76,8 +76,10 @@ final class EnvVarHelperTest extends AbstractTestCase
             OptionHelper::setOption('json_secrets', $jsonSecrets);
         }
 
-        EnvVarHelper::disableOutput();
-        EnvVarHelper::loadEnvVars(OptionHelper::getArray('json_secrets'));
+        EnvVarHelper::loadEnvVars(
+            OptionHelper::getArray('json_secrets'),
+            outputEnabled: false,
+        );
 
         foreach ($expected as $key => $value) {
             self::assertEquals($value, $_ENV[$key]);

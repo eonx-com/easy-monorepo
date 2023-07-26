@@ -49,7 +49,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
         OptionHelper::setOptions($this->options);
         EnvVarHelper::loadEnvVars(
             OptionHelper::getArray('json_secrets'),
-            OptionHelper::getStringNullable('dotenv_path')
+            OptionHelper::getStringNullable('dotenv_path'),
+            OptionHelper::getBoolean('env_var_output_enabled'),
         );
 
         if ($application instanceof Application && OptionHelper::isset(EasyScheduleSwooleRunner::ENABLED)) {

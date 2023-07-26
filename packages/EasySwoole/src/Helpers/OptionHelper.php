@@ -62,8 +62,12 @@ final class OptionHelper
     {
         $value = self::getOption($option, $env);
 
+        if (\is_numeric($value)) {
+            return (float)$value > 0;
+        }
+
         if (\is_string($value)) {
-            return \in_array($value, ['false', '0'], true) === false;
+            return $value === 'true';
         }
 
         return (bool)$value;
@@ -117,6 +121,10 @@ final class OptionHelper
         $env ??= \sprintf('SWOOLE_%s', u($option)->upper());
         $value = self::$options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? null;
 
-        return ($useDefault ?? true) ? ($value ?? self::DEFAULT_OPTIONS[$option] ?? null) : null;
+        if ($useDefault ?? true) {
+            $value = self::DEFAULT_OPTIONS[$option] ?? $value;
+        }
+
+        return $value;
     }
 }
