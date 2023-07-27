@@ -29,10 +29,12 @@ use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
+use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->import(EasyQualitySetList::ECS);
+
     $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
 
     $ecsConfig->paths([
@@ -44,12 +46,10 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->skip([
         // Skip entire files or directories
-        'packages/*/tests/var/*',
-        // Symfony cache files
-        'packages/*/var/*',
-        // Symfony cache files
-        'packages/EasyApiPlatform/tests/Fixtures/app/var',
-        // It is an Api Platform test app
+        'packages/*/tests/var/*', // Symfony cache files
+        'packages/*/var/*', // Symfony cache files
+        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
+
         // Skip rules
         SingleSpaceAfterConstructFixer::class => null,
         AlphabeticallySortedArrayKeysSniff::class => [
@@ -58,6 +58,7 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
             'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
+            'quality/ecs.php',
             'quality/rector.php',
         ],
         AvoidPublicPropertiesSniff::class => null,
@@ -103,6 +104,7 @@ return static function (ECSConfig $ecsConfig): void {
         MethodChainingNewlineFixer::class,
         SortAttributesAlphabeticallySniff::class,
         SortedApiResourceOperationKeysSniff::class,
+        StandaloneLinePromotedPropertyFixer::class,
         StaticClosureSniff::class,
         UselessConstantTypeHintSniff::class,
     ]);
