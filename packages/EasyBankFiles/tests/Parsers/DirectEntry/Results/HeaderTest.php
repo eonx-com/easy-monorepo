@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry\Results;
@@ -14,7 +13,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class HeaderTest extends TestCase
 {
     /**
-     @see testGetDateProcessedShouldReturnNull
+     * @see testGetDateProcessedShouldReturnNull
      */
     public static function provideInvalidDateProcessedValues(): iterable
     {

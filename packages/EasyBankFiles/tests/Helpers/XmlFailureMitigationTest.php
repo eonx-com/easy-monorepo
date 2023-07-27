@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Helpers;
@@ -15,7 +14,7 @@ final class XmlFailureMitigationTest extends TestCase
     /**
      * Gets the XML scenarios for testing.
      *
-     @see testMitigationReplacesInvalidLines
+     * @see testMitigationReplacesInvalidLines
      */
     public static function getXmlScenarios(): iterable
     {

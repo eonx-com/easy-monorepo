@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Bpay\Brf\Results;
@@ -19,7 +18,7 @@ final class Trailer extends BaseResult
     /**
      * Get the amount of error correction and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getAmountOfErrorCorrections(): array
     {
@@ -29,7 +28,7 @@ final class Trailer extends BaseResult
     /**
      * Get the amount of payment and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getAmountOfPayments(): array
     {
@@ -39,7 +38,7 @@ final class Trailer extends BaseResult
     /**
      * Get the amount fo reversal and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getAmountOfReversals(): array
     {
@@ -49,7 +48,7 @@ final class Trailer extends BaseResult
     /**
      * Get number of error corrections and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getNumberOfErrorCorrections(): array
     {
@@ -59,7 +58,7 @@ final class Trailer extends BaseResult
     /**
      * Get number of payments and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getNumberOfPayments(): array
     {
@@ -69,7 +68,7 @@ final class Trailer extends BaseResult
     /**
      * Get Number of Reversals and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getNumberOfReversals(): array
     {
@@ -79,7 +78,7 @@ final class Trailer extends BaseResult
     /**
      * Get the settlement amount and type.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getSettlementAmount(): array
     {
@@ -109,7 +108,7 @@ final class Trailer extends BaseResult
     /**
      * Get the trailer amount and convert to proper value based on signed field.
      *
-     @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
+     * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     private function getTrailerAmount(string $attrAmount): array
     {

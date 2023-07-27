@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators\Bpay\Objects;
@@ -31,7 +30,7 @@ final class Trailer extends BaseObject
     /**
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
-     @see http://php.net/manual/en/function.str-pad.php
+     * @see http://php.net/manual/en/function.str-pad.php
      */
     protected function getAttributesPaddingRules(): array
     {

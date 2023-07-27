@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
@@ -20,7 +19,7 @@ trait DoctrineDbalPaginatorTrait
     }
 
     /**
-     @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
