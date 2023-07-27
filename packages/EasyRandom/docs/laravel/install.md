@@ -46,7 +46,6 @@ $app->register(\EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider::class)
 // config/easy_random.php
 
 <?php
-
 declare(strict_types=1);
 
 return [

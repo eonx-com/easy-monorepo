@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
@@ -18,7 +17,7 @@ trait DoctrineCommonPaginatorTrait
     private ?int $totalItems = null;
 
     /**
-     @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     protected function doGetItems(): array
     {
@@ -60,7 +59,7 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchItems(): array
     {
@@ -77,7 +76,7 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchItemsUsingPrimaryKeys(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
     {
@@ -111,7 +110,7 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchItemsUsingQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
     {

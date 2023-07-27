@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -9,7 +8,6 @@ use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
 use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
-use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
 use EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
 use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
@@ -17,13 +15,14 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
-use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
+use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
+use SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
@@ -64,6 +63,7 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/*/tests/Stubs/Model/*',
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
         ],
+        BlankLineAfterOpeningTagFixer::class => null,
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
             'packages/EasyBankFiles/src/Generators/BaseGenerator.php',
@@ -103,14 +103,12 @@ return static function (ECSConfig $ecsConfig): void {
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
-        StrictDeclarationFormatSniff::class => null,
     ]);
 
     $ecsConfig->rules([
         AvoidPublicPropertiesSniff::class,
         DateTimeImmutableFixer::class,
         DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class,
-        FileHeaderSniff::class,
         LinebreakAfterEqualsSignSniff::class,
         MethodChainingNewlineFixer::class,
         SortAttributesAlphabeticallySniff::class,
@@ -161,6 +159,9 @@ return static function (ECSConfig $ecsConfig): void {
                 ],
             ],
         ],
+    ]);
+    $ecsConfig->ruleWithConfiguration(UseSpacingSniff::class, [
+        'linesCountBetweenUseTypes' => 1,
     ]);
     $ecsConfig->ruleWithConfiguration(UseYieldInsteadOfReturnSniff::class, [
         'applyTo' => [

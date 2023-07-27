@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Ack;
@@ -222,10 +221,12 @@ final class ParserTest extends TestCase
             ],
         ]);
         $parser = new AbaParser($xml);
-        self::assertEquals([new Issue([
-            'value' => 'test',
-            'attributes' => null,
-        ])], $parser->getIssues());
+        self::assertEquals([
+            new Issue([
+                'value' => 'test',
+                'attributes' => null,
+            ]),
+        ], $parser->getIssues());
 
         // Test single issue with attribute
         $xml = $converter->arrayToXml([
@@ -240,12 +241,14 @@ final class ParserTest extends TestCase
         ]);
         $parser = new AbaParser($xml);
         self::assertEquals(
-            [new Issue([
-                'value' => 'test',
-                'attributes' => [
-                    'id' => '10',
-                ],
-            ])],
+            [
+                new Issue([
+                    'value' => 'test',
+                    'attributes' => [
+                        'id' => '10',
+                    ],
+                ]),
+            ],
             $parser->getIssues()
         );
 

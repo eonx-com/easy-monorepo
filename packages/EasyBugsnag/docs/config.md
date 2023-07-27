@@ -104,7 +104,6 @@ In Laravel, the `easy-bugsnag.php` configuration file could look like the follow
 
 ``` php
 <?php
-
 declare(strict_types=1);
 
 return [
