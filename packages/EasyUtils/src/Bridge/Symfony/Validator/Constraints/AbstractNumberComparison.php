@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Bridge\Symfony\Validator\Constraints;
@@ -10,10 +9,6 @@ abstract class AbstractNumberComparison extends AbstractComparison
 {
     public bool $isMoney;
 
-    /**
-     * @param array<mixed>|null $groups
-     * @param array<mixed>|null $options
-     */
     public function __construct(
         mixed $value = null,
         mixed $payload = null,

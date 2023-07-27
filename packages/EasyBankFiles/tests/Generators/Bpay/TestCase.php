@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Generators\Bpay;
@@ -11,7 +10,7 @@ use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 /**
  * @covers \EonX\EasyBankFiles\Tests\Generators\Bpay\TestCase
  */
-class TestCase extends GeneratorTestCase
+abstract class TestCase extends GeneratorTestCase
 {
     /**
      * Create a Header object.

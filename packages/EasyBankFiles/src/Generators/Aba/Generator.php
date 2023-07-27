@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators\Aba;
@@ -13,39 +12,16 @@ use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 final class Generator extends BaseGenerator
 {
     /**
-     * @var \EonX\EasyBankFiles\Generators\Aba\Objects\DescriptiveRecord
-     */
-    private $descriptiveRecord;
-
-    /**
-     * @var \EonX\EasyBankFiles\Generators\Aba\Objects\FileTotalRecord|null
-     */
-    private $fileTotalRecord;
-
-    /**
-     * @var mixed[]
-     */
-    private $transactions;
-
-    /**
-     * Generator constructor.
-     *
-     * @param mixed[] $transactions
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
     public function __construct(
-        DescriptiveRecord $descriptiveRecord,
-        array $transactions,
-        ?FileTotalRecord $fileTotalRecord = null,
+        private DescriptiveRecord $descriptiveRecord,
+        private array $transactions,
+        private ?FileTotalRecord $fileTotalRecord = null,
     ) {
         if (\count($transactions) === 0) {
             throw new InvalidArgumentException('No transactions provided.');
         }
-
-        $this->descriptiveRecord = $descriptiveRecord;
-        $this->transactions = $transactions;
-        $this->fileTotalRecord = $fileTotalRecord;
     }
 
     /**

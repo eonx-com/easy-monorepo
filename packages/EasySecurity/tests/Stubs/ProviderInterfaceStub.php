@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
@@ -8,24 +7,13 @@ use EonX\EasySecurity\Interfaces\ProviderInterface;
 
 final class ProviderInterfaceStub implements ProviderInterface
 {
-    /**
-     * @var null|int|string
-     */
-    private $uniqueId;
-
-    /**
-     * @param null|int|string $uniqueId
-     */
-    public function __construct($uniqueId)
-    {
-        $this->uniqueId = $uniqueId;
+    public function __construct(
+        private int|string $providerId,
+    ) {
     }
 
-    /**
-     * @return null|int|string
-     */
-    public function getUniqueId()
+    public function getUniqueId(): int|string
     {
-        return $this->uniqueId;
+        return $this->providerId;
     }
 }

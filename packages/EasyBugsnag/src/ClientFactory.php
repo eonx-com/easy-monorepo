@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag;
@@ -10,7 +9,7 @@ use Bugsnag\Request\ResolverInterface;
 use Bugsnag\Shutdown\ShutdownStrategyInterface;
 use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use GuzzleHttp\ClientInterface;
 
 final class ClientFactory implements ClientFactoryInterface
@@ -18,22 +17,13 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @var \EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface[]
      */
-    private $configurators;
+    private array $configurators;
 
-    /**
-     * @var null|\GuzzleHttp\ClientInterface
-     */
-    private $httpClient;
+    private ?ClientInterface $httpClient = null;
 
-    /**
-     * @var null|\Bugsnag\Request\ResolverInterface
-     */
-    private $requestResolver;
+    private ?ResolverInterface $requestResolver = null;
 
-    /**
-     * @var null|\Bugsnag\Shutdown\ShutdownStrategyInterface
-     */
-    private $shutdownStrategy;
+    private ?ShutdownStrategyInterface $shutdownStrategy = null;
 
     public function create(string $apiKey): Client
     {

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Stubs;
@@ -21,21 +20,18 @@ final class EventDispatcherStub implements EventDispatcherInterface
 
     /**
      * @param class-string $class
-     * @param \Closure(mixed ): void $callback
      */
     public function addDispatchCallback(string $class, Closure $callback): void
     {
         $this->dispatchCallbacks[$class] = $callback;
     }
 
-    /**
-     * @param object $event
-     */
-    public function dispatch($event)
+    public function dispatch(object $event): object
     {
         $this->events[] = $event;
 
-        $callback = $this->dispatchCallbacks[\get_class($event)] ?? null;
+        $callback = $this->dispatchCallbacks[$event::class] ?? null;
+
         if ($callback !== null) {
             $callback($event);
         }

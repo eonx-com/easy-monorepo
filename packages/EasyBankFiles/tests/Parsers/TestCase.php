@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers;
 
 use EonX\EasyBankFiles\Tests\TestCases\TestCase as BaseTestCase;
+use Mockery;
 use Mockery\LegacyMockInterface;
 use ReflectionClass;
 use ReflectionMethod;
@@ -20,7 +20,7 @@ class TestCase extends BaseTestCase
      */
     protected function getMockWithExpectations(string $class, callable $setExpectations): LegacyMockInterface
     {
-        $mock = \Mockery::mock($class);
+        $mock = Mockery::mock($class);
 
         $setExpectations($mock);
 
@@ -30,9 +30,9 @@ class TestCase extends BaseTestCase
     /**
      * Set the protected/private function to accessible and return reflection method.
      *
-     * @throws \ReflectionException
-     *
      * @phpstan-param class-string $class
+     *
+     * @throws \ReflectionException
      */
     protected function getProtectedMethod(string $class, string $method): ReflectionMethod
     {
@@ -47,9 +47,9 @@ class TestCase extends BaseTestCase
     /**
      * Set property to accessible and return reflection property.
      *
-     * @throws \ReflectionException
-     *
      * @phpstan-param class-string $class
+     *
+     * @throws \ReflectionException
      */
     protected function getProtectedProperty(string $class, string $property): ReflectionProperty
     {

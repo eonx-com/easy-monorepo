@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler;
@@ -11,7 +10,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ErrorHandlerCompilerPass implements CompilerPassInterface
+final class ErrorHandlerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {

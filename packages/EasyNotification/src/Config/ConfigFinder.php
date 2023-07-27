@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Config;
@@ -12,19 +11,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ConfigFinder implements ConfigFinderInterface
 {
-    /**
-     * @var string
-     */
-    private $apiUrl;
+    private HttpClientInterface $httpClient;
 
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
-
-    public function __construct(string $apiUrl, ?HttpClientInterface $httpClient = null)
-    {
-        $this->apiUrl = $apiUrl;
+    public function __construct(
+        private string $apiUrl,
+        ?HttpClientInterface $httpClient = null,
+    ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
@@ -41,9 +33,9 @@ final class ConfigFinder implements ConfigFinderInterface
         $response = $this->httpClient->request('GET', $url, $options)
             ->toArray();
 
-        return Config::fromArray($response + [
+        return Config::fromArray(\array_merge([
             'apiKey' => $apiKey,
             'apiUrl' => $this->apiUrl,
-        ]);
+        ], $response));
     }
 }

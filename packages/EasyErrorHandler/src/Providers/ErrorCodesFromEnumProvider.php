@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Providers;
@@ -25,40 +24,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
         $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
     }
 
-    public function provide(): array
-    {
-        $enums = $this->locateErrorCodesEnums();
-
-        if (\count($enums) === 0) {
-            return [];
-        }
-
-        $errorCodes = [];
-        foreach ($enums as $enum) {
-            $cases = $enum::cases();
-            foreach ($cases as $case) {
-                $splittedName = \preg_split(
-                    pattern: '/([A-Z\d][a-z\d]+)/u',
-                    subject: $case->name,
-                    flags: \PREG_SPLIT_DELIM_CAPTURE
-                );
-                if (\is_array($splittedName)) {
-                    $errorCodes[] = new ErrorCodeDto(
-                        originalName: $case->name,
-                        errorCode: $case->value,
-                        splitName: \array_filter($splittedName, static fn ($value) => $value !== '')
-                    );
-                }
-            }
-        }
-
-        return $errorCodes;
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function locateErrorCodesEnums()
+    public function locateErrorCodesEnums(): array
     {
         $files = (new Finder())
             ->in($this->projectDir)
@@ -75,6 +41,36 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
         }
 
         return $enums;
+    }
+
+    public function provide(): array
+    {
+        $enums = $this->locateErrorCodesEnums();
+
+        if (\count($enums) === 0) {
+            return [];
+        }
+
+        $errorCodes = [];
+        foreach ($enums as $enum) {
+            $cases = $enum::cases();
+            foreach ($cases as $case) {
+                $splitName = \preg_split(
+                    pattern: '/([A-Z\d][a-z\d]+)/u',
+                    subject: (string)$case->name,
+                    flags: \PREG_SPLIT_DELIM_CAPTURE
+                );
+                if (\is_array($splitName)) {
+                    $errorCodes[] = new ErrorCodeDto(
+                        originalName: $case->name,
+                        errorCode: $case->value,
+                        splitName: \array_filter($splitName, static fn ($value): bool => $value !== '')
+                    );
+                }
+            }
+        }
+
+        return $errorCodes;
     }
 
     private function extractFqcn(string $file): ?string
@@ -95,8 +91,8 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
                     }
                 }
             }
-        } catch(Error $e) {
-            // ignore
+        } catch (Error) {
+            // Ignore
         }
 
         return null;

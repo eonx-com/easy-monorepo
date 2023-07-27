@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\DependencyInjection;
@@ -18,8 +17,6 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 final class EasyDecisionExtension extends Extension
 {
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

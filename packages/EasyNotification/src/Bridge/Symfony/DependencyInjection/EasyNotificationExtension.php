@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Bridge\Symfony\DependencyInjection;
@@ -16,14 +15,12 @@ final class EasyNotificationExtension extends Extension
     /**
      * @var string[]
      */
-    private static $configToParam = [
+    private static array $configToParam = [
         'api_url' => BridgeConstantsInterface::PARAM_API_URL,
         'config_expires_after' => BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER,
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

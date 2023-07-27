@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\ValueObjects;
@@ -32,11 +31,16 @@ final class Number implements Stringable
         $this->precision = $precision ?? self::DEFAULT_PRECISION;
     }
 
+    public function __toString(): string
+    {
+        return $this->round($this->value);
+    }
+
     public static function max(?self ...$values): ?self
     {
         return \array_reduce(
             $values,
-            static function (?self $leftOperand = null, ?self $rightOperand = null) {
+            static function (?self $leftOperand = null, ?self $rightOperand = null): ?self {
                 if ($leftOperand === null) {
                     return $rightOperand;
                 }
@@ -53,7 +57,7 @@ final class Number implements Stringable
     {
         return \array_reduce(
             $values,
-            static function (?self $leftOperand = null, ?self $rightOperand = null) {
+            static function (?self $leftOperand = null, ?self $rightOperand = null): ?self {
                 if ($leftOperand === null) {
                     return $rightOperand;
                 }
@@ -64,11 +68,6 @@ final class Number implements Stringable
                 return $leftOperand->isLessThan($rightOperand) ? $leftOperand : $rightOperand;
             }
         );
-    }
-
-    public function __toString(): string
-    {
-        return $this->round($this->value);
     }
 
     public function abs(): self

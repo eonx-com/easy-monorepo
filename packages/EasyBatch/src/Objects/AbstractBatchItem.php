@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
@@ -138,9 +137,6 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [

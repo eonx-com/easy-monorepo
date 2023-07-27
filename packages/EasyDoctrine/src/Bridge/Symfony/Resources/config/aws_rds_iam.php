@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -24,6 +23,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '$authTokenLifetimeInMinutes',
             param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES)
         )
-        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AWS_RDS_IAM_CACHE))
-        ->arg('$awsUsername', param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AWS_USERNAME));
+        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AWS_RDS_IAM_CACHE));
 };

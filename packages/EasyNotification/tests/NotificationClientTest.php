@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests;
@@ -24,14 +23,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class NotificationClientTest extends AbstractTestCase
 {
-    public function testConfigRequiredException(): void
-    {
-        $this->expectException(ConfigRequiredException::class);
-
-        $this->getNotificationClient()
-            ->deleteMessage('messageId');
-    }
-
     public function testApiRequestException(): void
     {
         $this->expectException(ApiRequestFailedException::class);
@@ -42,6 +33,14 @@ final class NotificationClientTest extends AbstractTestCase
             ->withConfig($config);
 
         $client->deleteMessage('message-id');
+    }
+
+    public function testConfigRequiredException(): void
+    {
+        $this->expectException(ConfigRequiredException::class);
+
+        $this->getNotificationClient()
+            ->deleteMessage('messageId');
     }
 
     public function testDeleteMessage(): void

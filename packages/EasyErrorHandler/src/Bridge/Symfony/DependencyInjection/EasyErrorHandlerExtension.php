@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection;
@@ -20,8 +19,6 @@ final class EasyErrorHandlerExtension extends Extension
     private const DEFAULT_LOCALE = 'en';
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

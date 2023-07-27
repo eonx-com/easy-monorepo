@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Helpers;
@@ -12,26 +11,13 @@ use EonX\EasyBankFiles\Exceptions\InvalidXmlTagException;
 
 final class XmlConverter
 {
-    /**
-     * @var int
-     */
     public const XML_IGNORE_ATTRIBUTES = 0;
 
-    /**
-     * @var int
-     */
     public const XML_INCLUDE_ATTRIBUTES = 1;
 
-    /**
-     * XML DOMDocument.
-     *
-     * @var \DOMDocument
-     */
-    private $xml;
+    private DOMDocument $xml;
 
     /**
-     * @param mixed[] $array
-     *
      * @throws \EonX\EasyBankFiles\Exceptions\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
     public function arrayToXml(array $array, ?string $rootNode = null): string
@@ -40,7 +26,7 @@ final class XmlConverter
         $this->xml->formatOutput = true;
 
         // Determine root node
-        $rootNode = $rootNode ?? $array['@rootNode'] ?? 'data';
+        $rootNode ??= $array['@rootNode'] ?? 'data';
 
         if ($this->isValidXmlTag($rootNode) === false) {
             throw new InvalidXmlTagException(\sprintf('RootNode %s is not a valid xml tag', $rootNode));
@@ -52,8 +38,6 @@ final class XmlConverter
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBankFiles\Exceptions\InvalidXmlException If the XML is invalid and can't be loaded
      */
     public function xmlToArray(string $xml, ?int $options = null): array
@@ -103,7 +87,7 @@ final class XmlConverter
      *
      * @param \DOMElement $node The node to add the value to
      * @param string $name The node name to add
-     * @param mixed[] $values The value to attach to the node
+     * @param array $values The value to attach to the node
      *
      * @return \DOMElement
      *
@@ -122,13 +106,13 @@ final class XmlConverter
      * Create an XML node from an array, recursively.
      *
      * @param string $name The name of the node to convert this array to
-     * @param mixed $value The value to add, can be array or scalar value
+     * @param $value The value to add, can be array or scalar value
      *
      * @return \DOMElement
      *
      * @throws \EonX\EasyBankFiles\Exceptions\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
-    private function createXmlElement(string $name, $value): DOMElement
+    private function createXmlElement(string $name, mixed $value): DOMElement
     {
         // If value is an array, attempt to process attributes and values
         if (\is_array($value)) {
@@ -145,11 +129,11 @@ final class XmlConverter
     /**
      * Create the correct xml correct for a value.
      *
-     * @param mixed $value The value to create a child from
+     * @param $value The value to create a child from
      *
      * @return \DOMNode
      */
-    private function createXmlNode($value): DOMNode
+    private function createXmlNode(mixed $value): DOMNode
     {
         $value = $this->xToString($value);
 
@@ -162,19 +146,17 @@ final class XmlConverter
      *
      * @param \DOMDocument $document The document to convert
      * @param int|null $options Additional xml parsing options
-     *
-     * @return mixed[]
      */
     private function documentToArray(DOMDocument $document, ?int $options = null): array
     {
         // Get document element
         $element = $document->documentElement;
 
-        // documentElement can be null on a newly created DOMDocument.
+        // The "documentElement" value can be null on a newly created DOMDocument
         if ($element === null) {
             // @codeCoverageIgnoreStart
             // The element can only be null when a newly created DomDocument is loaded
-            // which cant happen here - the document is loaded.
+            // which cant happen here - the document is loaded
             return [];
             // @codeCoverageIgnoreEnd
         }
@@ -203,12 +185,10 @@ final class XmlConverter
      * Recursively convert a DOMElement to an array.
      *
      * @param \DOMElement $element The element to convert
-     *
-     * @return mixed[]
      */
     private function domElementToArray(DOMElement $element): array
     {
-        /** @var array<string, mixed> $array */
+        /** @var array<string, string|bool|array> $array */
         $array = [];
 
         /** @var \DOMElement $childElement */
@@ -221,11 +201,18 @@ final class XmlConverter
                     if (\trim($childElement->textContent) !== '') {
                         $array['@value'] = $this->stringToX(\trim($childElement->textContent));
                     }
+
                     break;
 
                 case \XML_ELEMENT_NODE:
-                    // Convert element to array recursively
-                    $array[$childElement->tagName][] = $this->domElementToArray($childElement);
+                    $array[$childElement->tagName] ??= [];
+
+                    if (\is_array($array[$childElement->tagName])) {
+                        // Convert element to array recursively
+                        /** @noinspection UnsupportedStringOffsetOperationsInspection */
+                        $array[$childElement->tagName][] = $this->domElementToArray($childElement);
+                    }
+
                     break;
             }
         }
@@ -268,10 +255,8 @@ final class XmlConverter
     /**
      * Post-process a converted DOMNode array and flatten based on options.
      *
-     * @param mixed[] $array The array to process
+     * @param array $array The array to process
      * @param int $options Additional xml parsing options
-     *
-     * @return mixed[]
      */
     private function postProcessDomElementArray(array $array, int $options): array
     {
@@ -302,7 +287,7 @@ final class XmlConverter
      *
      * @param \DOMElement $node The node to add attributes to
      * @param string $name The node name
-     * @param mixed[] $attributes The attributes to set on the node
+     * @param array $attributes The attributes to set on the node
      *
      * @throws \EonX\EasyBankFiles\Exceptions\InvalidXmlTagException If the xml is invalid or contains invalid tag
      */
@@ -312,6 +297,7 @@ final class XmlConverter
             // Ensure the attribute key is valid
             if ($this->isValidXmlTag($key) === false) {
                 $message = \sprintf('Attribute name is invalid for "%s" in node "%s"', $key, $name);
+
                 throw new InvalidXmlTagException($message);
             }
 
@@ -323,7 +309,7 @@ final class XmlConverter
      * Create an XML node from an array of node values.
      *
      * @param string $name The node name
-     * @param mixed[] $values
+     * @param array $values Node values
      *
      * @return \DOMElement
      *
@@ -396,11 +382,11 @@ final class XmlConverter
     /**
      * Convert a value to a string.
      *
-     * @param mixed $value The value to convert
+     * @param $value The value to convert
      *
      * @return string
      */
-    private function xToString($value): string
+    private function xToString(mixed $value): string
     {
         // Convert booleans to string true/false as (string) converts to 1/0
         if (\is_bool($value)) {

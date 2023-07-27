@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests;
@@ -13,43 +12,29 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $algos = ['HS256', 'HS512', 'HS384', 'RS256', 'RS384', 'RS512'];
+    protected static array $algos = ['HS256', 'HS512', 'HS384', 'RS256', 'RS384', 'RS512'];
 
-    /**
-     * @var string
-     */
-    protected static $defaultAlgo = 'HS256';
+    protected static string $defaultAlgo = 'HS256';
 
-    /**
-     * @var string
-     */
-    protected static $key = 'key';
+    protected static string $key = 'key';
 
-    /**
-     * @var mixed[]
-     */
-    protected static $tokenPayload = [
+    protected static array $tokenPayload = [
         'iss' => 'stepthefkup.com',
         'aud' => 'stepthefkup.com.au',
         'iat' => 1549340373,
         'nbf' => 1549340373,
     ];
 
-    /**
-     * @param null|string[] $allowedAlgos
-     */
     protected function createFirebaseJwtDriver(
         ?string $algo = null,
         OpenSSLAsymmetricKey|string|null $publicKey = null,
         OpenSSLAsymmetricKey|string|null $privateKey = null,
-        ?array $allowedAlgos = null,
         ?int $leeway = null,
     ): JwtDriverInterface {
         return new FirebaseJwtDriver(
             $algo ?? static::$defaultAlgo,
             $publicKey ?? static::$key,
             $privateKey ?? static::$key,
-            $allowedAlgos,
             $leeway
         );
     }

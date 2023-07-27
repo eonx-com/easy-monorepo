@@ -1,30 +1,22 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Formatters;
 
+use DateTimeInterface;
 use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
 
 final class JsonFormatter extends BaseJsonFormatter
 {
     /**
-     * @param mixed $data
-     * @param null|int $depth
-     *
-     * @return mixed
+     * @param int|null $depth
      */
-    protected function normalize($data, $depth = null)
+    protected function normalize(mixed $data, mixed $depth = null): mixed
     {
         return parent::normalize($this->formatDateTimes($data), $depth ?? 0);
     }
 
-    /**
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    private function formatDateTimes($data)
+    private function formatDateTimes(mixed $data): mixed
     {
         if (\is_array($data)) {
             foreach ($data as $key => $value) {
@@ -32,7 +24,7 @@ final class JsonFormatter extends BaseJsonFormatter
             }
         }
 
-        if ($data instanceof \DateTimeInterface) {
+        if ($data instanceof DateTimeInterface) {
             return $data->format('Y-m-d\TH:i:sP');
         }
 

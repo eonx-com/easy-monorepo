@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Generators\Stubs;
@@ -8,29 +7,17 @@ use EonX\EasyBankFiles\Generators\BaseGenerator;
 
 final class GeneratorStub extends BaseGenerator
 {
-    /**
-     * @var mixed[]
-     */
-    private $descriptiveRecord;
+    private array $transactions;
 
     /**
-     * @var mixed[]
-     */
-    private $transactions;
-
-    /**
-     * StubGenerator constructor.
-     *
-     * @param mixed[] $descriptiveRecord
-     * @param mixed[] $transactions
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException
      */
-    public function __construct(array $descriptiveRecord, ?array $transactions = null)
-    {
-        $this->descriptiveRecord = $descriptiveRecord;
+    public function __construct(
+        private array $descriptiveRecord,
+        ?array $transactions = null,
+    ) {
         $this->transactions = $transactions ?? [];
 
         $this->generate();

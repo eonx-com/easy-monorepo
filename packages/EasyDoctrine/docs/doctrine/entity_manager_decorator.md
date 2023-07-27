@@ -11,16 +11,19 @@ Two main features of EntityManagerDecorator are Transactional and Deferred entit
 ### Transactional
 
 `$entityManager->transactional(callable $callback)` provide:
+
 - flush and commit or rollback if something goes wrong
 - close EntityManager if `Doctrine\ORM\ORMException` or `Doctrine\DBAL\Exception` is thrown
 
 #### Configuration
+
 Register the decorator
+
 ```yaml
 services:
     EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator:
         arguments:
-            $wrapped: '@.inner'
+            $decorated: '@.inner'
         decorates: doctrine.orm.default_entity_manager
 ```
 
@@ -61,14 +64,12 @@ Register a listener:
 services:
     App\Listener\SomeEntityCreatedListener:
         tags:
-            -
-                name: kernel.event_listener
+            -   name: kernel.event_listener
                 event: EonX\EasyDoctrine\Events\EntityCreatedEvent
 
     App\Listener\SomeEntityUpdatedListener:
         tags:
-            -
-                name: kernel.event_listener
+            -   name: kernel.event_listener
                 event: EonX\EasyDoctrine\Events\EntityUpdatedEvent
 ```
 

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
@@ -11,9 +10,10 @@ use Symplify\MonorepoBuilder\Utils\VersionUtils;
 
 final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
 {
-    public function __construct(private ProcessRunner $processRunner, private VersionUtils $versionUtils)
-    {
-        // The body is not required
+    public function __construct(
+        private ProcessRunner $processRunner,
+        private VersionUtils $versionUtils,
+    ) {
     }
 
     public function getDescription(Version $version): string

@@ -5,19 +5,20 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-random": "^4.4",
-        "nesbot/carbon": "^2.22"
+        "doctrine/common": "^3.0",
+        "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.13",
-        "doctrine/dbal": "^2.6",
-        "doctrine/orm": "^2.6",
-        "eonx-com/easy-doctrine": "^4.4",
-        "eonx-com/easy-lock": "^4.4",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "ramsey/uuid": "^3.9 || ^4.0",
-        "symfony/symfony": "^5.4 || ^6.0",
-        "symfony/uid": "^5.4 || ^6.0"
+        "doctrine/dbal": "^3.0",
+        "doctrine/orm": "^2.14",
+        "doctrine/persistence": "^3.0",
+        "eonx-com/easy-doctrine": "^5.1",
+        "eonx-com/easy-event-dispatcher": "^5.1",
+        "eonx-com/easy-lock": "^5.1",
+        "eonx-com/easy-webhook": "^5.1",
+        "phpunit/phpunit": "^10.2",
+        "psr/log": "^3.0",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -30,14 +31,21 @@
         }
     },
     "suggest": {
-        "symfony/serializer": "To serialize subject's data",
-        "symfony/messenger": "To save log entities asynchronously",
-        "eonx-com/easy-doctrine": "To create Log entries from to doctrine events",
-        "eonx-com/easy-lock": "To lock async messages"
+        "doctrine/dbal": "To save log entities to a database",
+        "doctrine/orm": "To save log entities to a database",
+        "eonx-com/easy-doctrine": "To create log entries from Doctrine events",
+        "eonx-com/easy-lock": "To lock async messages",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/event-dispatcher": "To subscribe to EasyDoctrine events",
+        "symfony/http-kernel": "To use this package with Symfony",
+        "symfony/messenger": "To use this package with Symfony",
+        "symfony/serializer": "To use this package with Symfony",
+        "symfony/uid": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.1-dev"
         }
     }
 }

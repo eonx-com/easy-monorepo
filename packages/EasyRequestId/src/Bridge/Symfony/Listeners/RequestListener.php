@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\Symfony\Listeners;
@@ -12,21 +11,14 @@ final class RequestListener
 {
     use ResolvesFromHttpFoundationRequest;
 
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService)
-    {
-        $this->requestIdService = $requestIdService;
+    public function __construct(
+        private RequestIdServiceInterface $requestIdService,
+    ) {
     }
 
     public function __invoke(RequestEvent $event): void
     {
-        $isMainRequestMethod = \method_exists($event, 'isMainRequest') ? 'isMainRequest' : 'isMasterRequest';
-
-        if ($event->{$isMainRequestMethod}()) {
+        if ($event->isMainRequest()) {
             $this->setResolver($event->getRequest(), $this->requestIdService);
         }
     }

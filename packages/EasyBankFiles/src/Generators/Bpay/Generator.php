@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators\Bpay;
@@ -13,36 +12,18 @@ use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 final class Generator extends BaseGenerator
 {
     /**
-     * @var \EonX\EasyBankFiles\Generators\Bpay\Objects\Header
-     */
-    private $header;
-
-    /**
-     * @var \EonX\EasyBankFiles\Generators\Bpay\Objects\Trailer|null
-     */
-    private $trailer;
-
-    /**
-     * @var mixed[]
-     */
-    private $transactions;
-
-    /**
      * Generator constructor.
-     *
-     * @param mixed[] $transactions
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
-    public function __construct(Header $header, array $transactions, ?Trailer $trailer = null)
-    {
+    public function __construct(
+        private Header $header,
+        private array $transactions,
+        private ?Trailer $trailer = null,
+    ) {
         if (\count($transactions) === 0) {
             throw new InvalidArgumentException('No transactions provided.');
         }
-
-        $this->header = $header;
-        $this->transactions = $transactions;
-        $this->trailer = $trailer;
     }
 
     /**
@@ -92,8 +73,8 @@ final class Generator extends BaseGenerator
     private function createTrailer(int $count, int $totalAmount): Trailer
     {
         return new Trailer([
-            'totalNumberOfPayments' => $count,
             'totalFileValue' => $totalAmount,
+            'totalNumberOfPayments' => $count,
         ]);
     }
 }

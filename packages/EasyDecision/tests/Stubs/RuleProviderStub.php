@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Stubs;
@@ -10,8 +9,6 @@ use EonX\EasyDecision\Rules\ExpressionLanguageRule;
 final class RuleProviderStub implements RuleProviderInterface
 {
     /**
-     * @param mixed[]|null $params
-     *
      * @return \EonX\EasyDecision\Interfaces\RuleInterface[]
      */
     public function getRules(?array $params = null): array

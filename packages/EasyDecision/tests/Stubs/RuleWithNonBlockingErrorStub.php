@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Stubs;
 
 use EonX\EasyDecision\Interfaces\NonBlockingRuleErrorInterface;
 use EonX\EasyDecision\Interfaces\RuleInterface;
+use Exception;
 
 final class RuleWithNonBlockingErrorStub implements RuleInterface
 {
@@ -14,14 +14,9 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
         return 0;
     }
 
-    /**
-     * @param mixed[] $input
-     *
-     * @return mixed
-     */
-    public function proceed(array $input)
+    public function proceed(array $input): never
     {
-        throw new class() extends \Exception implements NonBlockingRuleErrorInterface {
+        throw new class() extends Exception implements NonBlockingRuleErrorInterface {
             /**
              * Get error output.
              */
@@ -32,9 +27,6 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
         };
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function supports(array $input): bool
     {
         return true;

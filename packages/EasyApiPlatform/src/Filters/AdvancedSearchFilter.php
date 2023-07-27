@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Filters;
@@ -28,12 +27,9 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  * This filter allows to define multiple search strategy for the same property on a single resource.
  *
  * This class was created by copying of base ApiPlatform SearchFilter with the following changes:
- *   - Allow to configure multiple strategies for the same property
+ *   - Allow to configure multiple strategies for the same property.
  *
  * @see \ApiPlatform\Doctrine\Orm\Filter\SearchFilter
- *
- * For API Platform <= 2.6.0 use VirtualSearchFilter
- * @see \EonX\EasyCore\Bridge\Symfony\ApiPlatform\Filter\VirtualSearchFilter
  *
  * #[ApiFilter(
  *     AdvancedSearchFilter::class,
@@ -51,16 +47,16 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     /**
-     * @param \ApiPlatform\Api\IriConverterInterface $iriConverter
-     * @param mixed[] $properties
+     * @param string[] $iriFields
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
-        $iriConverter,
-        PropertyAccessorInterface $propertyAccessor = null,
-        LoggerInterface $logger = null,
-        array $properties = null,
-        NameConverterInterface $nameConverter = null,
+        IriConverterInterface $iriConverter,
+        ?PropertyAccessorInterface $propertyAccessor = null,
+        ?LoggerInterface $logger = null,
+        ?array $properties = null,
+        ?NameConverterInterface $nameConverter = null,
+        private readonly array $iriFields = [],
     ) {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
 
@@ -68,9 +64,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getDescription(string $resourceClass): array
     {
         $description = [];
@@ -105,7 +98,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $filterParameterName = $this->normalizePropertyName($filterParameter);
             if ($metadata->hasField($field)) {
                 $typeOfField = $this->getType($metadata->getTypeOfField($field));
-                $strategy = $strategy ?? self::STRATEGY_EXACT;
+                $strategy ??= self::STRATEGY_EXACT;
                 $filterParameterNames = [$filterParameterName];
 
                 if ($strategy === self::STRATEGY_EXACT) {
@@ -114,11 +107,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
                 foreach ($filterParameterNames as $filterParameterName) {
                     $description[$filterParameterName] = [
+                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
                         'property' => $propertyName,
-                        'type' => $typeOfField,
                         'required' => false,
                         'strategy' => $strategy,
-                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
+                        'type' => $typeOfField,
                     ];
                 }
             } elseif ($metadata->hasAssociation($field)) {
@@ -129,11 +122,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
                 foreach ($filterParameterNames as $filterParameterName) {
                     $description[$filterParameterName] = [
+                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
                         'property' => $propertyName,
-                        'type' => 'string',
                         'required' => false,
                         'strategy' => self::STRATEGY_EXACT,
-                        'is_collection' => \str_ends_with($filterParameterName, '[]'),
+                        'type' => 'string',
                     ];
                 }
             }
@@ -184,7 +177,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $parameters = [];
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
-            $parameters[] = [$caseSensitive ? $value : \strtolower($value), $keyValueParameter];
+            $parameters[] = [$caseSensitive ? $value : \strtolower((string)$value), $keyValueParameter];
 
             $ors[] = match ($strategy) {
                 self::STRATEGY_PARTIAL => $queryBuilder->expr()->like(
@@ -239,18 +232,13 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         };
     }
 
-    /**
-     * @param mixed[] $context
-     *
-     * {@inheritdoc}
-     */
     protected function filterProperty(
         string $property,
-        $value,
+        mixed $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = [],
     ): void {
         $filterParameter = $property;
@@ -305,19 +293,19 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         }
 
         $caseSensitive = true;
-        $strategy = $strategy ?? ($this->properties[$filterParameter] ?? self::STRATEGY_EXACT);
+        $strategy ??= $this->properties[$filterParameter] ?? self::STRATEGY_EXACT;
 
-        // prefixing the strategy with i makes it case-insensitive
-        if (\str_starts_with($strategy, 'i')) {
-            $strategy = \substr($strategy, 1);
+        // Prefixing the strategy with i makes it case-insensitive
+        if (\str_starts_with((string)$strategy, 'i')) {
+            $strategy = \substr((string)$strategy, 1);
             $caseSensitive = false;
         }
 
         $metadata = $this->getNestedMetadata($resourceClass, $associations);
 
         if ($metadata->hasField($field)) {
-            if ($field === 'id') {
-                $values = \array_map([$this, 'getIdFromValue'], $values);
+            if ($field === 'id' || \in_array($field, $this->iriFields, true)) {
+                $values = \array_map($this->getIdFromValue(...), $values);
             }
 
             if ($this->hasValidValues($values, $this->getDoctrineFieldType($property, $resourceClass)) === false) {
@@ -344,12 +332,12 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             return;
         }
 
-        // metadata doesn't have the field, nor an association on the field
+        // Metadata doesn't have the field, nor an association on the field
         if ($metadata->hasAssociation($field) === false) {
             return;
         }
 
-        $values = \array_map([$this, 'getIdFromValue'], $values);
+        $values = \array_map($this->getIdFromValue(...), $values);
 
         $associationResourceClass = (string)$metadata->getAssociationTargetClass($field);
         $associationFieldIdentifier = $metadata->getIdentifierFieldNames()[0];

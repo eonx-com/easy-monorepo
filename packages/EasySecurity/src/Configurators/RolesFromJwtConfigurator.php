@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
@@ -15,7 +14,7 @@ final class RolesFromJwtConfigurator extends AbstractFromJwtConfigurator
         $roles = $context->getAuthorizationMatrix()
             ->getRolesByIdentifiers($this->getMainClaim($token)['roles'] ?? []);
 
-        if (empty($roles)) {
+        if (\count($roles) === 0) {
             return;
         }
 

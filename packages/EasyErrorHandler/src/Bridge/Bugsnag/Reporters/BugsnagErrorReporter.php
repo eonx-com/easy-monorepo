@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Reporters;
@@ -29,7 +28,7 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
 
     public function report(Throwable $throwable): void
     {
-        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable) === true) {
+        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable)) {
             return;
         }
 

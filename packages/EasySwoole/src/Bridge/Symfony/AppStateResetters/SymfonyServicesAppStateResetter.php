@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
@@ -16,7 +15,6 @@ final class SymfonyServicesAppStateResetter extends ServicesResetter implements 
     use HasPriorityTrait;
 
     /**
-     * @param \Traversable<mixed> $resettableServices
      * @param string[] $resetMethods
      */
     public function __construct(

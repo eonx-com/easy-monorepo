@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
+use Closure;
 use EonX\EasySecurity\Configurators\DefaultSecurityContextConfigurator;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextFactoryInterface;
@@ -14,10 +14,7 @@ use Psr\Log\NullLogger;
 
 final class SecurityContextResolver implements SecurityContextResolverInterface
 {
-    /**
-     * @var null|callable
-     */
-    private $configurator;
+    private ?Closure $configurator = null;
 
     private ?SecurityContextInterface $securityContext = null;
 
@@ -54,7 +51,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
 
     public function setConfigurator(callable $configurator): SecurityContextResolverInterface
     {
-        $this->configurator = $configurator;
+        $this->configurator = $configurator(...);
         $this->securityContext = null;
 
         return $this;

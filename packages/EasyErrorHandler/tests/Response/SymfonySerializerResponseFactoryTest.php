@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Response;
@@ -17,11 +16,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCreate
      */
-    public function providerTestCreate(): iterable
+    public static function providerTestCreate(): iterable
     {
         yield 'Default format' => [
             'request' => new Request(),
@@ -46,8 +43,6 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $errorFormats
-     *
      * @dataProvider providerTestCreate
      */
     public function testCreate(

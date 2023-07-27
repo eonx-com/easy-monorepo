@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\Laravel;
@@ -14,7 +13,7 @@ use EonX\EasyRequestId\Bridge\EasyWebhook\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
-use EonX\EasyRequestId\UuidV4FallbackResolver;
+use EonX\EasyRequestId\UuidFallbackResolver;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
@@ -39,14 +38,12 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         // Queue
         // Add IDs to jobs pushed to the queue
-        Queue::createPayloadUsing(static function () use ($requestIdService): array {
-            return [
-                'easy_request_id' => [
-                    $requestIdService->getCorrelationIdHeaderName() => $requestIdService->getCorrelationId(),
-                    $requestIdService->getRequestIdHeaderName() => $requestIdService->getRequestId(),
-                ],
-            ];
-        });
+        Queue::createPayloadUsing(static fn (): array => [
+            'easy_request_id' => [
+                $requestIdService->getCorrelationIdHeaderName() => $requestIdService->getCorrelationId(),
+                $requestIdService->getRequestIdHeaderName() => $requestIdService->getRequestId(),
+            ],
+        ]);
 
         // Resolve IDs from jobs from the queue
         $this->app->make('events')
@@ -80,17 +77,15 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-request-id.php', 'easy-request-id');
 
-        $this->app->singleton(FallbackResolverInterface::class, UuidV4FallbackResolver::class);
+        $this->app->singleton(FallbackResolverInterface::class, UuidFallbackResolver::class);
 
         $this->app->singleton(
             RequestIdServiceInterface::class,
-            static function (Container $app): RequestIdServiceInterface {
-                return new RequestIdService(
-                    $app->make(FallbackResolverInterface::class),
-                    \config('easy-request-id.http_headers.correlation_id'),
-                    \config('easy-request-id.http_headers.request_id')
-                );
-            }
+            static fn (Container $app): RequestIdServiceInterface => new RequestIdService(
+                $app->make(FallbackResolverInterface::class),
+                \config('easy-request-id.http_headers.correlation_id'),
+                \config('easy-request-id.http_headers.request_id')
+            )
         );
 
         // Resolve from request

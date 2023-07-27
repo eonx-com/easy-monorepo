@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\Symfony\Messenger;
@@ -29,18 +28,18 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
                 ->handle($envelope, $stack);
         }
 
-        $newEnvelope = $this->processWithLock($withLockData, static function () use ($envelope, $stack): Envelope {
-            return $stack->next()
-                ->handle($envelope, $stack);
-        });
+        $newEnvelope = $this->processWithLock($withLockData, static fn (): Envelope => $stack->next()
+            ->handle($envelope, $stack));
 
         return $newEnvelope ?? $envelope;
     }
 
     private function getLockData(Envelope $envelope): ?WithLockDataInterface
     {
-        if ($envelope->getMessage() instanceof WithLockDataInterface) {
-            return $envelope->getMessage();
+        $message = $envelope->getMessage();
+
+        if ($message instanceof WithLockDataInterface) {
+            return $message;
         }
 
         return $envelope->last(WithLockDataStamp::class);

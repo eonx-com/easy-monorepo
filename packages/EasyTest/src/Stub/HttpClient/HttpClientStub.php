@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Stub\HttpClient;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-class HttpClientStub extends MockHttpClient
+final class HttpClientStub extends MockHttpClient
 {
     use HttpClientTrait;
 
@@ -30,18 +29,11 @@ class HttpClientStub extends MockHttpClient
         protected string $baseUri = 'https://example.com',
     ) {
         parent::__construct(
-            function ($method, $url, $options): ResponseInterface {
-                return $this->getResponse($method, $url, $options);
-            },
+            fn ($method, $url, $options): ResponseInterface => $this->getResponse($method, $url, $options),
             $baseUri
         );
     }
 
-    /**
-     * @param mixed[] $headers
-     * @param mixed[] $body
-     * @param mixed[] $queryParams
-     */
     public function forRequest(
         string $method,
         string $url,
@@ -55,8 +47,8 @@ class HttpClientStub extends MockHttpClient
         if ($body !== null) {
             $contentType = null;
             foreach ($options['headers'] as $header) {
-                if (\str_starts_with($header, 'Content-Type')) {
-                    $contentType = \str_replace('Content-Type: ', '', $header);
+                if (\str_starts_with((string)$header, 'Content-Type')) {
+                    $contentType = \str_replace('Content-Type: ', '', (string)$header);
 
                     break;
                 }
@@ -109,9 +101,6 @@ class HttpClientStub extends MockHttpClient
         return $this->defaultResponse ?? new MockResponse('');
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function getResponse(string $method, string $url, ?array $options = null): MockResponse
     {
         $url = $this->normalizeUrl($url);
@@ -146,9 +135,6 @@ class HttpClientStub extends MockHttpClient
         return false;
     }
 
-    /**
-     * @param mixed[]|null $options
-     */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         if ($this->expectedException !== null) {
@@ -160,9 +146,6 @@ class HttpClientStub extends MockHttpClient
         return parent::request($method, $url, $options ?? []);
     }
 
-    /**
-     * @param mixed[] $body
-     */
     public function setDefaultResponse(array $body): void
     {
         $this->defaultResponse = new MockResponse((string)\json_encode($body));

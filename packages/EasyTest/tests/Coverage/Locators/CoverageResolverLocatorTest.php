@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Tests\Coverage\Locators;
@@ -11,22 +10,20 @@ use EonX\EasyTest\HttpKernel\EasyTestKernel;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class CoverageResolverLocatorTest extends TestCase
+final class CoverageResolverLocatorTest extends TestCase
 {
     /**
-     * @return mixed[]
+     * @see testCreateResolverSucceeds
      */
-    public function provideSupportedFilepath(): array
+    public static function provideSupportedFilepath(): iterable
     {
-        return [
-            [
-                '/foo/bar/report.txt',
-                TextCoverageResolver::class,
-            ],
-            [
-                '/foo/bar/report.clover',
-                CloverCoverageResolver::class,
-            ],
+        yield [
+            '/foo/bar/report.txt',
+            TextCoverageResolver::class,
+        ];
+        yield [
+            '/foo/bar/report.clover',
+            CloverCoverageResolver::class,
         ];
     }
 

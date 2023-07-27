@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\ORM\Query\AST\Functions;
@@ -24,15 +23,17 @@ final class CastTest extends AbstractTestCase
     {
         $path = 'some-path';
         $typeValue = 'some-value';
+        $expression = new PathExpression(PathExpression::TYPE_STATE_FIELD, 'no-matter');
         $type = new Literal(Literal::STRING, $typeValue);
         $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)
+        $sqlWalker->walkPathExpression($expression)
             ->willReturn($path);
-        $cast = new Cast('no-matter');
-        $this->setPrivatePropertyValue($cast, 'type', $type);
-
         /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
         $sqlWalkerReveal = $sqlWalker->reveal();
+        $cast = new Cast('no-matter');
+        $this->setPrivatePropertyValue($cast, 'expression', $expression);
+        $this->setPrivatePropertyValue($cast, 'type', $type);
+
         $result = $cast->getSql($sqlWalkerReveal);
 
         self::assertSame(\sprintf('CAST(%s AS %s)', $path, $typeValue), $result);

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Security;
@@ -15,11 +14,7 @@ final class FakeUserTest extends AbstractSymfonyTestCase
         // For coverage
         $user->eraseCredentials();
 
-        self::assertNull($user->getPassword());
         self::assertEmpty($user->getRoles());
-        self::assertNull($user->getSalt());
         self::assertEquals(FakeUser::ID_USERNAME, $user->getUserIdentifier());
-        self::assertEquals(FakeUser::ID_USERNAME, $user->getUniqueId());
-        self::assertEquals(FakeUser::ID_USERNAME, $user->getUsername());
     }
 }

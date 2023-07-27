@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch;
 
 use Carbon\Carbon;
+use Closure;
 use EonX\EasyBatch\Dispatchers\BatchItemDispatcher;
 use EonX\EasyBatch\Events\BatchCompletedEvent;
 use EonX\EasyBatch\Exceptions\BatchObjectInvalidException;
@@ -49,7 +49,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         if ($batchObject->isPendingApproval() === false) {
             throw new BatchObjectNotSupportedException(\sprintf(
                 'Cannot approve BatchObject of type "%s" with status "%s"',
-                \get_class($batchObject),
+                $batchObject::class,
                 $batchObject->getStatus()
             ));
         }
@@ -112,7 +112,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         throw new BatchObjectNotSupportedException(\sprintf(
             'BatchObject of type "%s" not supported. Supported types: ["%s"]',
-            \get_class($batchObject),
+            $batchObject::class,
             \implode('", "', [BatchInterface::class, BatchItemInterface::class])
         ));
     }
@@ -196,7 +196,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         throw new BatchObjectNotSupportedException(\sprintf(
             'BatchObject of type "%s" not supported. Supported types: ["%s"]',
-            \get_class($batchObject),
+            $batchObject::class,
             \implode('", "', [BatchInterface::class, BatchItemInterface::class])
         ));
     }
@@ -233,7 +233,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
         );
     }
 
-    private function getCancelBatchItemClosure(): \Closure
+    private function getCancelBatchItemClosure(): Closure
     {
         return function (BatchItemInterface $batchItem): void {
             $this->cancel($batchItem);

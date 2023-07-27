@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bridge\Symfony\DependencyInjection;
@@ -18,9 +17,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyLoggingExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const AUTO_CONFIGS = [
         HandlerConfigProviderInterface::class => BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER,
         LoggerConfiguratorInterface::class => BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR,
@@ -28,8 +24,6 @@ final class EasyLoggingExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

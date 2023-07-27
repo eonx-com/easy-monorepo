@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -15,9 +14,9 @@ use EonX\EasyWebhook\Webhook;
 final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'body null' => [
             Webhook::fromArray([

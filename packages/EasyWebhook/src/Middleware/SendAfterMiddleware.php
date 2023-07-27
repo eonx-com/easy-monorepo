@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -13,25 +12,21 @@ use EonX\EasyWebhook\WebhookResult;
 
 final class SendAfterMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
-     */
-    private $store;
-
-    public function __construct(StoreInterface $store, ?int $priority = null)
-    {
-        $this->store = $store;
-
+    public function __construct(
+        private StoreInterface $store,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if ($webhook->isSendAfterBypassed() || $webhook->isSendNow() || $webhook->getSendAfter() === null) {
+        $sendAfter = $webhook->getSendAfter();
+
+        if ($sendAfter === null || $webhook->isSendAfterBypassed() || $webhook->isSendNow()) {
             return $this->passOn($webhook, $stack);
         }
 
-        $sendAfter = $webhook->getSendAfter();
         $now = Carbon::now($sendAfter->getTimezone());
 
         // If sendAfter is in the future, simply store webhook

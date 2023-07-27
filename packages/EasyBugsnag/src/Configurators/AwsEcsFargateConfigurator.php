@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Configurators;
@@ -8,10 +7,11 @@ use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
 {
-    private ?\Throwable $throwable = null;
+    private ?Throwable $throwable = null;
 
     public function __construct(
         private readonly string $storageFilename,
@@ -31,7 +31,7 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
 
                 $awsData = $this->getAwsFargateTaskData();
 
-                // Something happened...
+                // Something happened
                 if ($awsData === null) {
                     $message = $this->throwable !== null ? $this->throwable->getMessage() : 'Something went wrong...';
 
@@ -55,9 +55,6 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
             }));
     }
 
-    /**
-     * @return null|mixed[]
-     */
     private function getAwsFargateTaskData(): ?array
     {
         try {
@@ -72,7 +69,7 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
             }
 
             return \json_decode((string)\file_get_contents($this->storageFilename), true);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->throwable = $throwable;
 
             return null;

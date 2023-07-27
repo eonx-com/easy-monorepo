@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers;
@@ -19,7 +18,7 @@ final class BaseParserTest extends TestCase
 
         $parser = new ParserStub($content);
 
-        $property = $this->getProtectedProperty(\get_class($parser), 'contents');
+        $property = $this->getProtectedProperty($parser::class, 'contents');
 
         self::assertSame($content, $property->getValue($parser));
     }

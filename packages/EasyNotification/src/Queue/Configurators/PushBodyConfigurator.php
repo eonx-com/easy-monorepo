@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Queue\Configurators;
@@ -17,15 +16,13 @@ final class PushBodyConfigurator extends AbstractQueueMessageConfigurator
         QueueMessageInterface $queueMessage,
         MessageInterface $message,
     ): QueueMessageInterface {
-        if (($message instanceof PushMessage) === false) {
+        if ($message instanceof PushMessage === false) {
             return $queueMessage;
         }
 
-        /** @var \EonX\EasyNotification\Messages\PushMessage $message */
-
         return $queueMessage->setBody(Json::encode([
-            'device' => $message->getDevice(),
             'body' => $message->getBody(),
+            'device' => $message->getDevice(),
             'token' => $message->getToken(),
         ]));
     }

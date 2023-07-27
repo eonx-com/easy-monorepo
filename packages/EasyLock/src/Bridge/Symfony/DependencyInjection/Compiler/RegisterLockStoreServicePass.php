@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\Symfony\DependencyInjection\Compiler;
@@ -14,15 +13,11 @@ use Symfony\Component\Lock\Store\StoreFactory;
 
 final class RegisterLockStoreServicePass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const DEFAULT_CONNECTION_ID = 'flock';
 
     public function process(ContainerBuilder $container): void
     {
-        // If connection from config doesn't exist in container, use flock by default.
-
+        // If connection from config doesn't exist in container, use flock by default
         $connectionId = $this->getConnectionId(
             $container,
             $this->getParameter($container, BridgeConstantsInterface::PARAM_CONNECTION)

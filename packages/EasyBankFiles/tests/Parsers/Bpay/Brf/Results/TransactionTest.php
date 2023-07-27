@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Brf\Results;
@@ -14,11 +13,9 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TransactionTest extends TestCase
 {
     /**
-     * @return mixed[]
-     *
      * @see testGetDateObjectShouldReturnNull
      */
-    public function provideInvalidDates(): iterable
+    public static function provideInvalidDates(): iterable
     {
         yield 'null paymentDate' => [
             'date' => [
@@ -50,8 +47,6 @@ final class TransactionTest extends TestCase
      * Should return date as a null when date string is invalid.
      *
      * @group Brf-Transaction
-     *
-     * @param mixed[] $date
      *
      * @dataProvider provideInvalidDates
      */

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\Resolvers;
@@ -12,19 +11,10 @@ use SimpleXMLElement;
 
 final class CloverCoverageResolver implements CoverageResolverInterface
 {
-    /**
-     * @var string
-     */
     private const ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
 
-    /**
-     * @var string
-     */
     private const ATTRIBUTE_NAME_ELEMENTS = 'elements';
 
-    /**
-     * @var string
-     */
     private const ATTRIBUTE_NAME_FILE_NAME = 'name';
 
     public function resolve(string $coverageOutput): CoverageReportDto
@@ -33,10 +23,10 @@ final class CloverCoverageResolver implements CoverageResolverInterface
 
         try {
             $xml = new SimpleXMLElement($coverageOutput);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                self::class
             ));
         }
 
@@ -67,14 +57,14 @@ final class CloverCoverageResolver implements CoverageResolverInterface
         if ($attr === null) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                self::class
             ));
         }
 
         if (isset($attr[$attributeName]) === false) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
-                static::class
+                self::class
             ));
         }
 

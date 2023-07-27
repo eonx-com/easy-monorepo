@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Laravel;
@@ -10,20 +9,22 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
-    protected function getApp(): Application
+    protected function getApp(?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyRandomServiceProvider::class);
+        $this->app = new Application(__DIR__);
 
-        return $this->app = $app;
+        if ($config !== null) {
+            \config($config);
+        }
+
+        $this->app->register(EasyRandomServiceProvider::class);
+
+        return $this->app;
     }
 }

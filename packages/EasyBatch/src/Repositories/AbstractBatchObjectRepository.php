@@ -1,12 +1,13 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Repositories;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use EonX\EasyBatch\Exceptions\BatchObjectNotSavedException;
 use EonX\EasyBatch\Interfaces\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
@@ -16,7 +17,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
 abstract class AbstractBatchObjectRepository
 {
     /**
-     * @var null|string[]
+     * @var string[]|null
      */
     private ?array $tableColumns = null;
 
@@ -27,7 +28,7 @@ abstract class AbstractBatchObjectRepository
         protected Connection $conn,
         protected string $table,
     ) {
-        // No body needed.
+        // No body needed
     }
 
     /**
@@ -67,7 +68,7 @@ abstract class AbstractBatchObjectRepository
         if ($affectedRows !== 1) {
             throw new BatchObjectNotSavedException(\sprintf(
                 '%s with id %s was not %s in database',
-                \get_class($batchObject),
+                $batchObject::class,
                 $batchObjectId,
                 $batchObjectExists ? 'updated' : 'inserted'
             ));
@@ -83,8 +84,6 @@ abstract class AbstractBatchObjectRepository
     }
 
     /**
-     * @return null|mixed[]
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     private function fetchData(int|string $id): ?array
@@ -118,8 +117,8 @@ abstract class AbstractBatchObjectRepository
         }
 
         if (
-            \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\MySqlPlatform')
-            || \is_a($this->conn->getDatabasePlatform(), '\Doctrine\DBAL\Platforms\AbstractMySQLPlatform')
+            \is_a($this->conn->getDatabasePlatform(), MySQLPlatform::class)
+            || \is_a($this->conn->getDatabasePlatform(), AbstractMySQLPlatform::class)
         ) {
             $nameColumnKey = 'Field';
         }

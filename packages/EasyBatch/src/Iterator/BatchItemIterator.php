@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Iterator;
@@ -43,7 +42,7 @@ final class BatchItemIterator
             $items = $paginator->getItems();
 
             // Check hasNextPage before iterating through items in case the logic modifies the pagination,
-            // It would impact the total number of pages as well.
+            // It would impact the total number of pages as well
             $hasNextPage = $paginator->hasNextPage();
 
             // Implement hash and cache mechanism to prevent infinite loop due to resetPagination logic.
@@ -67,7 +66,7 @@ final class BatchItemIterator
             // which results in missing items to dispatch. The solution is to reset the pagination until all items
             // have been dispatched as expected.
             // Reset pagination only when not on first page, and last page was reached.
-            // Because no more items to dispatch means 0 items in first page.
+            // Because no more items to dispatch means 0 items in first page
             $resetPagination = $page > 1 && $hasNextPage === false;
             $page = $resetPagination ? 1 : $page + 1;
         } while (($hasNextPage || $resetPagination) && $pageAlreadyProcessed === false);
@@ -89,12 +88,14 @@ final class BatchItemIterator
 
     private function processConfig(IteratorConfig $config): void
     {
-        $quote = static function (QueryBuilder $queryBuilder, array $statuses): array {
-            return \array_map(static function (string $status) use ($queryBuilder): string {
-                return $queryBuilder->getConnection()
-                    ->quote($status);
-            }, $statuses);
-        };
+        $quote = static fn (
+            QueryBuilder $queryBuilder,
+            array $statuses,
+        ): array => \array_map(
+            static fn (string $status): string => $queryBuilder->getConnection()
+                ->quote($status),
+            $statuses
+        );
 
         if ($config->isForCancel()) {
             $config->setExtendPaginator(static function (ExtendablePaginatorInterface $paginator) use ($quote): void {

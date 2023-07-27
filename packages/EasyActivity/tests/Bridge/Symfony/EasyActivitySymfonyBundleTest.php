@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony;
@@ -19,12 +18,22 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 {
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../../../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
+    }
+
     /**
-     * @return iterable<mixed>
-     *
      * @see testInvalidEasyActivityConfig
      */
-    public function providerInvalidEasyConfigs(): iterable
+    public static function providerInvalidEasyConfigs(): iterable
     {
         yield 'invalid allowed_properties setting' => [
             'configName' => 'easy_activity_invalid_allowed_properties_setting.yaml',
@@ -43,11 +52,9 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidEasyActivityConfig
      */
-    public function providerValidEasyConfigs(): iterable
+    public static function providerValidEasyConfigs(): iterable
     {
         yield 'default config' => [
             'configName' => 'easy_activity_valid_default.yaml',
@@ -96,9 +103,8 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
     public function testEasyDoctrineEntitiesOverride(): void
     {
-        $container = $this->getKernel(
-            [__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml']
-        )->getContainer();
+        $container = $this->getKernel([__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml'])
+            ->getContainer();
 
         /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
         $subscriber = $container->get(EntityEventSubscriberInterface::class);
@@ -112,7 +118,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
      */
     public function testInvalidEasyActivityConfig(string $configName, string $expectedExceptionClass): void
     {
-        $this->safeCall(function () use ($configName) {
+        $this->safeCall(function () use ($configName): void {
             $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
         });
 
@@ -120,8 +126,6 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param array<mixed> $subjects
-     *
      * @dataProvider providerValidEasyConfigs
      */
     public function testValidEasyActivityConfig(string $configName, array $subjects): void
@@ -136,17 +140,5 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         );
         self::assertTrue($container->has(DeferredEntityEventDispatcherInterface::class));
         self::assertEquals($subjects, $this->getPrivatePropertyValue($subjectResolver, 'subjects'));
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../../../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 }

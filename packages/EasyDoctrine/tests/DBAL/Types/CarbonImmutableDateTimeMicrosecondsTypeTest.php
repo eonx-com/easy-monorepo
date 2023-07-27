@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\DBAL\Types;
@@ -9,7 +8,9 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -21,12 +22,20 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType(
+            (new CarbonImmutableDateTimeMicrosecondsType())->getName(),
+            CarbonImmutableDateTimeMicrosecondsType::class
+        );
+    }
+
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public function provideConvertToDatabaseValues(): iterable
+    public static function provideConvertToDatabaseValues(): iterable
     {
         yield 'null value' => [null, null];
 
@@ -42,11 +51,9 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPHPValueSucceeds
      */
-    public function provideConvertToPHPValues(): iterable
+    public static function provideConvertToPHPValues(): iterable
     {
         yield 'null value' => [null, null];
 
@@ -72,16 +79,14 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetSqlDeclarationSucceeds
      */
-    public function provideFieldDeclarationValues(): iterable
+    public static function provideFieldDeclarationValues(): iterable
     {
-        yield 'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'];
+        yield 'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'];
 
         yield 'mysql, with version = true' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => true,
             ],
@@ -89,15 +94,15 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         ];
 
         yield 'mysql, with version = false' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => false,
             ],
             CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_DATETIME,
         ];
 
-        $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
-        $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
+        $platformClassNameDbal2 = PostgreSQL94Platform::class;
+        $platformClassNameDbal3 = PostgreSQLPlatform::class;
         $platformClassName = \class_exists($platformClassNameDbal2) ? $platformClassNameDbal2 : $platformClassNameDbal3;
 
         yield 'postgresql' => [
@@ -124,11 +129,9 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToDatabaseValues
      */
-    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue = null): void
+    public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
         $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
@@ -149,18 +152,15 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            "of type 'string' to type 'datetime_immutable'. " .
-            'Expected one of the following types: null, DateTimeInterface');
+            'to type datetime_immutable. Expected one of the following types: null, DateTimeInterface');
 
         $type->convertToDatabaseValue($value, $platform);
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToPHPValues
      */
-    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
         $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
@@ -197,8 +197,6 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $fieldDeclaration
-     *
      * @dataProvider provideFieldDeclarationValues
      */
     public function testGetSqlDeclarationSucceeds(
@@ -214,15 +212,5 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);
 
         self::assertSame($declaration, $actualDeclaration);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType(
-            (new CarbonImmutableDateTimeMicrosecondsType())->getName(),
-            CarbonImmutableDateTimeMicrosecondsType::class
-        );
     }
 }

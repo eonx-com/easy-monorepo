@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Rules;
@@ -8,9 +7,6 @@ use EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface;
 
 final class ExpressionLanguageRuleFactory implements ExpressionLanguageRuleFactoryInterface
 {
-    /**
-     * @param null|mixed[] $extra
-     */
     public function create(
         string $expression,
         ?int $priority = null,

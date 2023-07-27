@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Tests\Bridge\Laravel;
@@ -24,6 +23,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
 
     public function testRegisterRepositoriesSuccessfully(): void
     {
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
         \config()
             ->set('easy-repository.repositories', [
@@ -31,7 +31,6 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
                 'interface-2' => Repository2Stub::class,
             ]);
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $provider = new EasyRepositoryProvider($app);
         $provider->boot();
         $provider->register();

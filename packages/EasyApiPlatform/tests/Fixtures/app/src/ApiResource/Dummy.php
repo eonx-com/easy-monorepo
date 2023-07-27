@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
@@ -15,64 +14,58 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
 #[ApiFilter(SearchFilter::class)]
+#[ApiResource]
 #[ORM\Entity]
 class Dummy
 {
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[ApiProperty(types: ['https://schema.org/alternateName'])]
-    private ?string $alias;
+    #[Orm\Column(type: Types::STRING, nullable: true)]
+    private ?string $alias = null;
 
-    /**
-     * @var mixed[]|null
-     */
     #[Orm\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private ?array $arrayData;
 
     #[ApiProperty(types: ['https://schema.org/description'])]
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $description;
+    private ?string $description = null;
 
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $dummy;
+    private ?string $dummy = null;
 
     #[Orm\Column(type: Types::BOOLEAN, nullable: true)]
-    private ?bool $dummyBoolean;
+    private ?bool $dummyBoolean = null;
 
     #[ApiProperty(types: ['https://schema.org/DateTime'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?CarbonImmutable $dummyDate;
+    private ?CarbonImmutable $dummyDate = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $dummyFloat;
+    private ?float $dummyFloat = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $dummyPrice;
+    private ?string $dummyPrice = null;
 
-    /**
-     * @var mixed[]
-     */
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $entityId;
+
     private array $foo;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
-    /**
-     * @var mixed[]|null
-     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $jsonData;
 
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[ApiProperty(types: ['https://schema.org/name'])]
     #[Assert\NotBlank]
-    private ?string $name;
+    #[Orm\Column(type: Types::STRING, nullable: true)]
+    private ?string $name = null;
 
     #[Orm\Column(type: Types::STRING, nullable: true)]
-    private ?string $nameConverted;
+    private ?string $nameConverted = null;
 
     /**
      * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedDummy> Several dummies
@@ -80,15 +73,15 @@ class Dummy
     #[ORM\ManyToMany(targetEntity: RelatedDummy::class)]
     private Collection $relatedDummies;
 
-    #[ORM\ManyToOne(targetEntity: RelatedDummy::class)]
     #[ApiProperty(push: true)]
-    private ?RelatedDummy $relatedDummy;
+    #[ORM\ManyToOne(targetEntity: RelatedDummy::class)]
+    private ?RelatedDummy $relatedDummy = null;
 
     #[ORM\OneToOne(mappedBy: 'owningDummy', targetEntity: RelatedOwnedDummy::class, cascade: ['persist'])]
-    private ?RelatedOwnedDummy $relatedOwnedDummy;
+    private ?RelatedOwnedDummy $relatedOwnedDummy = null;
 
     #[ORM\OneToOne(inversedBy: 'ownedDummy', targetEntity: RelatedOwningDummy::class, cascade: ['persist'])]
-    private ?RelatedOwningDummy $relatedOwningDummy;
+    private ?RelatedOwningDummy $relatedOwningDummy = null;
 
     public function __construct()
     {
@@ -115,9 +108,6 @@ class Dummy
         return $this->alias;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getArrayData(): ?array
     {
         return $this->arrayData;
@@ -148,9 +138,11 @@ class Dummy
         return $this->dummyPrice;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getEntityId(): int
+    {
+        return $this->entityId;
+    }
+
     public function getFoo(): array
     {
         return $this->foo;
@@ -161,9 +153,6 @@ class Dummy
         return $this->id;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getJsonData(): ?array
     {
         return $this->jsonData;
@@ -212,9 +201,6 @@ class Dummy
         $this->alias = $alias;
     }
 
-    /**
-     * @param mixed[]|null $arrayData
-     */
     public function setArrayData(?array $arrayData = null): void
     {
         $this->arrayData = $arrayData;
@@ -235,7 +221,7 @@ class Dummy
         $this->dummyBoolean = $dummyBoolean;
     }
 
-    public function setDummyDate(CarbonImmutable $dummyDate = null): void
+    public function setDummyDate(?CarbonImmutable $dummyDate = null): void
     {
         $this->dummyDate = $dummyDate;
     }
@@ -250,9 +236,11 @@ class Dummy
         $this->dummyPrice = $dummyPrice;
     }
 
-    /**
-     * @param mixed[] $foo
-     */
+    public function setEntityId(int $entityId): void
+    {
+        $this->entityId = $entityId;
+    }
+
     public function setFoo(array $foo): void
     {
         $this->foo = $foo;
@@ -263,9 +251,6 @@ class Dummy
         $this->id = $id;
     }
 
-    /**
-     * @param mixed[]|null $jsonData
-     */
     public function setJsonData(?array $jsonData = null): void
     {
         $this->jsonData = $jsonData;

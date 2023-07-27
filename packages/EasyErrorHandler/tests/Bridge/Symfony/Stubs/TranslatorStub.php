@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
@@ -10,31 +9,29 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TranslatorStub implements TranslatorInterface
 {
-    /**
-     * @var null|mixed[]
-     */
+    private const LOCALE = 'en';
+
     private ?array $translations = null;
 
     private ?Translator $translator = null;
 
-    /**
-     * @param mixed[] $translations
-     */
+    public function getLocale(): string
+    {
+        return self::LOCALE;
+    }
+
     public function setTranslations(array $translations): void
     {
         $this->translations = $translations;
     }
 
-    /**
-     * @param null|mixed[] $parameters
-     */
-    public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
+    public function trans(string $id, ?array $parameters = null, ?string $domain = null, ?string $locale = null): string
     {
         $translated = $this->getTranslator()
             ->trans($id, $parameters ?? [], $domain, $locale);
 
         // TODO - That's cheating... Translations need to be reworked completely
-        if (empty($parameters) === false) {
+        if (\count($parameters ?? []) > 0) {
             $translated = \str_replace(':', '', $translated);
         }
 
@@ -47,11 +44,11 @@ final class TranslatorStub implements TranslatorInterface
             return $this->translator;
         }
 
-        $translator = new Translator('en');
+        $translator = new Translator(self::LOCALE);
         $translator->addLoader('array', new ArrayLoader());
 
         if ($this->translations !== null) {
-            $translator->addResource('array', $this->translations, 'en', 'EasyErrorHandlerBundle');
+            $translator->addResource('array', $this->translations, self::LOCALE, 'EasyErrorHandlerBundle');
         }
 
         $this->translator = $translator;

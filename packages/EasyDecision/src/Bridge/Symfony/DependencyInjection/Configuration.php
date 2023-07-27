@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\DependencyInjection;
@@ -22,9 +21,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('type_mapping')
                     ->prototype('scalar')
                     ->validate()
-                        ->ifTrue(static function ($class) {
-                            return \class_exists($class) === false;
-                        })
+                        ->ifTrue(static fn ($class): bool => \class_exists($class) === false)
                         ->thenInvalid('Class %s does not exist.')
                     ->end()
                     ->end()

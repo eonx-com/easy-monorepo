@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests;
@@ -13,11 +12,9 @@ use Throwable;
 final class ErrorDetailsResolverTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testResolveExtendedDetails
      */
-    public function providerTestResolveExtendedDetails(): iterable
+    public static function providerTestResolveExtendedDetails(): iterable
     {
         yield 'simple' => [
             'throwable' => new Exception(),
@@ -34,7 +31,7 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
         ];
 
         yield 'max depth -1 so infinite' => [
-            'throwable' => $this->createExceptionChain(100),
+            'throwable' => self::createExceptionChain(100),
             'assertions' => static function (array $details): void {
                 self::assertNotNull($details['previous_1'] ?? null);
             },
@@ -42,7 +39,7 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
         ];
 
         yield 'all previous in root level' => [
-            'throwable' => $this->createExceptionChain(2),
+            'throwable' => self::createExceptionChain(2),
             'assertions' => static function (array $details): void {
                 self::assertNotNull($details['previous_1'] ?? null);
                 self::assertNotNull($details['previous_2'] ?? null);
@@ -73,15 +70,15 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
         }
     }
 
-    private function createExceptionChain(int $max, ?int $current = null, ?Throwable $previous = null): Throwable
+    private static function createExceptionChain(int $max, ?int $current = null, ?Throwable $previous = null): Throwable
     {
-        $current = $current ?? 0;
-        $previous = $previous ?? new Exception();
+        $current ??= 0;
+        $previous ??= new Exception();
 
         if ($max === $current) {
             return $previous;
         }
 
-        return $this->createExceptionChain($max, $current + 1, new Exception('message', 0, $previous));
+        return self::createExceptionChain($max, $current + 1, new Exception('message', 0, $previous));
     }
 }

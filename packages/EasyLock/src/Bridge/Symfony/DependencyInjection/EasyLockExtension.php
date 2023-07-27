@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\Symfony\DependencyInjection;
@@ -14,8 +13,6 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 final class EasyLockExtension extends Extension
 {
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

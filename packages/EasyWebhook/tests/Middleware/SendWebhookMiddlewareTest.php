@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -14,13 +13,14 @@ use EonX\EasyWebhook\Webhook;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'empty url exception' => [Webhook::fromArray([]), null, null, InvalidWebhookUrlException::class];
 
@@ -42,7 +42,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
                 'url' => 'https://eonx.com',
             ]),
             static function (WebhookResultInterface $webhookResult, HttpClientStub $httpClient): void {
-                self::assertInstanceOf(\Throwable::class, $webhookResult->getThrowable());
+                self::assertInstanceOf(Throwable::class, $webhookResult->getThrowable());
                 self::assertInstanceOf(ResponseInterface::class, $webhookResult->getResponse());
                 self::assertEquals('https://eonx.com', $httpClient->getUrl());
                 self::assertEquals(WebhookInterface::DEFAULT_METHOD, $httpClient->getMethod());
@@ -53,14 +53,14 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
     }
 
     /**
-     * @phpstan-param null|class-string<\Throwable> $expectedException
+     * @phpstan-param class-string<\Throwable>|null $expectedException
      *
      * @dataProvider providerTestProcess
      */
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,
-        ?\Throwable $throwable = null,
+        ?Throwable $throwable = null,
         ?string $expectedException = null,
     ): void {
         if ($expectedException !== null) {

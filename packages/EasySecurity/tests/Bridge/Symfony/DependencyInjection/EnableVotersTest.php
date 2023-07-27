@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\DependencyInjection;
@@ -12,11 +11,9 @@ use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 final class EnableVotersTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testVotersEnabled
      */
-    public function providerTestVotersEnabled(): iterable
+    public static function providerTestVotersEnabled(): iterable
     {
         yield 'All disabled by default' => [
             [],
@@ -66,7 +63,6 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[] $configs
-     * @param mixed[] $assertions
      *
      * @dataProvider providerTestVotersEnabled
      */

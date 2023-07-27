@@ -1,11 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Bridge\Symfony;
 
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
 {

@@ -1,46 +1,96 @@
 <?php
-
 declare(strict_types=1);
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
+use EonX\EasyQuality\Rector\PhpDocCommentRector;
+use EonX\EasyQuality\Rector\ReturnArrayToYieldRector;
+use EonX\EasyQuality\Rector\SingleLineCommentRector;
+use EonX\EasyQuality\Rector\UselessSingleAnnotationRector;
+use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
+use EonX\EasyQuality\ValueObject\EasyQualitySetList;
+use PHPUnit\Framework\TestCase;
+use Rector\Config\RectorConfig;
+use Rector\Core\ValueObject\PhpVersion;
+use Rector\Php71\Rector\FuncCall\CountOnNullRector;
+use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
+use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Php81\Rector\Array_\FirstClassCallableRector;
+use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
+use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
+use Rector\Set\ValueObject\LevelSetList;
 
-use Rector\Core\Configuration\Option;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
-use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
-use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
-use Rector\Set\ValueObject\SetList;
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->import(EasyQualitySetList::RECTOR);
+    $rectorConfig->import(LevelSetList::UP_TO_PHP_81);
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    // get parameters
-    $parameters = $containerConfigurator->parameters();
+    $rectorConfig->phpVersion(PhpVersion::PHP_81);
 
-    $parameters->set(Option::PATHS, [
-        __DIR__ . '/packages',
-        __DIR__ . '/tests',
+    $rectorConfig->autoloadPaths([__DIR__ . '/../vendor']);
+
+    $rectorConfig->bootstrapFiles([
+        __DIR__ . '/../vendor/autoload.php',
     ]);
 
-    $containerConfigurator->import(SetList::DEAD_CODE);
+    $rectorConfig->importNames(importDocBlockNames: false);
 
-    $parameters->set(Option::AUTOLOAD_PATHS, [
-        __DIR__ . '/tests/rector_bootstrap.php',
+    $rectorConfig->importShortClasses();
+
+    $rectorConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
+
+    $rectorConfig->paths([
+        __DIR__ . '/../packages',
+        __DIR__ . '/../tests',
+        __DIR__ . '/ecs.php',
+        __DIR__ . '/rector.php',
     ]);
 
-    $parameters->set(Option::SKIP, [
-        RemoveUnreachableStatementRector::class => [
-            __DIR__ . '/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php',
+    $rectorConfig->skip([
+        // Skip entire files or directories
+        'packages/*/tests/var/*', // Symfony cache files
+        'packages/*/var/*', // Symfony cache files
+        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
+        'packages/EasyEncryption/src/AwsPkcs11Encryptor.php', // Because of Pkcs11
+
+        // Skip rules
+        AddLiteralSeparatorToNumberRector::class => [
+            'packages/EasyApiToken/tests/AbstractFirebaseJwtTokenTestCase.php',
+            'packages/EasyUtils/tests/Bridge/Symfony/Validator/Constraints/AbnValidatorTest.php',
         ],
-        RemoveUselessParamTagRector::class,
-        RemoveUselessReturnTagRector::class,
-        RemoveUnusedPrivatePropertyRector::class,
+        ClassPropertyAssignToConstructorPromotionRector::class,
+        CountOnNullRector::class,
+        FinalizeClassesWithoutChildrenRector::class => [
+            'packages/EasySecurity/src/SecurityContext.php',
+            'packages/EasyTest/src/InvalidDataMaker/InvalidDataMaker.php',
+        ],
+        FinalizePublicClassConstantRector::class,
+        FirstClassCallableRector::class => [
+            'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyBatch/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyDoctrine/src/Bridge/Symfony/Resources/config/services.php',
+            'packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Compiler/RegisterLockStoreServicePass.php',
+            'packages/EasyPagination/tests/Bridge/Symfony/Stubs/KernelStub.php',
+        ],
+        JsonThrowOnErrorRector::class,
+        PhpDocCommentRector::class => [
+            'packages/EasyApiPlatform/src/Filters/AdvancedSearchFilter.php',
+        ],
+        ReadOnlyPropertyRector::class,
     ]);
 
-    $services = $containerConfigurator->services();
-    $services->load('EonX\EasyQuality\Rector\\', __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector')
-        ->exclude([
-            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/PhpDocCommentRector.php',
-            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/SingleLineCommentRector.php',
-            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/PhpDocReturnForIterableRector.php',
-            __DIR__ . '/.quality/vendor/eonx-com/easy-quality/src/Rector/ReturnArrayToYieldRector.php',
-        ]);
+    $rectorConfig->rule(AddSeeAnnotationRector::class);
+    $rectorConfig->ruleWithConfiguration(PhpDocCommentRector::class, [[]]);
+    $rectorConfig->ruleWithConfiguration(SingleLineCommentRector::class, [[]]);
+
+    $rectorConfig->ruleWithConfiguration(ReturnArrayToYieldRector::class, [
+        ReturnArrayToYieldRector::METHODS_TO_YIELDS => [
+            new ReturnArrayToYield(TestCase::class, 'provide*'),
+        ],
+    ]);
+
+    $rectorConfig->ruleWithConfiguration(UselessSingleAnnotationRector::class, [
+        UselessSingleAnnotationRector::ANNOTATIONS => ['{@inheritDoc}'],
+    ]);
 };

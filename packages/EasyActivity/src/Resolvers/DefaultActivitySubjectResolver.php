@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Resolvers;
@@ -12,17 +11,9 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 
 final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
-    /**
-     * @var array<string, mixed>
-     */
-    private $subjects;
-
-    /**
-     * @param array<string, mixed> $subjects
-     */
-    public function __construct(array $subjects)
-    {
-        $this->subjects = $subjects;
+    public function __construct(
+        private array $subjects,
+    ) {
     }
 
     /**
@@ -34,7 +25,7 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
             return $object;
         }
 
-        $subjectClass = ClassUtils::getRealClass(\get_class($object));
+        $subjectClass = ClassUtils::getRealClass($object::class);
         $subjectConfig = $this->subjects[$subjectClass] ?? null;
         if ($subjectConfig === null) {
             return null;

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
@@ -41,9 +40,6 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         $this->internalMessages = [];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function resolveExtendedDetails(Throwable $throwable, ?int $maxDepth = null): array
     {
         // Reset throwable chain
@@ -77,9 +73,6 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $this->internalMessages[$errorIdentifier] = $message;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function resolveSimpleDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         return ErrorDetailsHelper::resolveSimpleDetails($throwable, $withTrace);
@@ -98,9 +91,6 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $maxDepth === -1 || $depth < $maxDepth;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function doResolveExtendedDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         $details = $this->resolveSimpleDetails($throwable, $withTrace);
@@ -126,11 +116,6 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $details;
     }
 
-    /**
-     * @param mixed[] $previousDetails
-     *
-     * @return mixed[]
-     */
     private function doResolvePreviousDetails(
         array $previousDetails,
         Throwable $throwable,

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Stubs;
@@ -9,9 +8,6 @@ use Bugsnag\Configuration;
 
 final class BugsnagClientStub extends Client
 {
-    /**
-     * @var mixed[]
-     */
     private array $calls = [];
 
     public function __construct()
@@ -19,9 +15,6 @@ final class BugsnagClientStub extends Client
         parent::__construct(new Configuration('my-api-key'));
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getCalls(): array
     {
         return $this->calls;

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Providers;
@@ -18,7 +17,7 @@ final class DefaultErrorReporterProvider implements ErrorReporterProviderInterfa
     private readonly array $ignoredExceptions;
 
     /**
-     * @param null|class-string[] $ignoredExceptions
+     * @param class-string[]|null $ignoredExceptions
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,

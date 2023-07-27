@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Decoders;
@@ -12,7 +11,7 @@ abstract class AbstractApiTokenDecoder implements ApiTokenDecoderInterface
     public function __construct(
         private ?string $name = null,
     ) {
-        // No body needed.
+        // No body needed
     }
 
     public function getName(): string

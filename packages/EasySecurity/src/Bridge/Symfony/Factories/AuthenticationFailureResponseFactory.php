@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Factories;
@@ -14,28 +13,23 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class AuthenticationFailureResponseFactory implements AuthenticationFailureResponseFactoryInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger ?? new NullLogger();
+    public function __construct(
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     public function create(Request $request, ?AuthenticationException $exception = null): Response
     {
         if ($exception !== null) {
             $this->logger->info('Authentication exception', [
-                'message' => $exception->getMessageKey(),
                 'data' => $exception->getMessageData(),
+                'message' => $exception->getMessageKey(),
             ]);
         }
 
         $data = [
-            'message' => 'Unauthorized',
             'code' => JsonResponse::HTTP_UNAUTHORIZED,
+            'message' => 'Unauthorized',
             'subCode' => 0,
         ];
 

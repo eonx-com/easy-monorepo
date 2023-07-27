@@ -1,14 +1,20 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRandom\Bridge\Laravel;
 
+use EonX\EasyRandom\Bridge\Laravel\Exceptions\UnsupportedUuidVersionException;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\RandomIntegerGenerator;
+use EonX\EasyRandom\Generators\RandomStringGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
-use Illuminate\Contracts\Container\Container;
+use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
+use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
+use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use Illuminate\Support\ServiceProvider;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use Symfony\Component\Uid\Uuid as SymfonyUuid;
@@ -26,34 +32,35 @@ final class EasyRandomServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-random.php', 'easy-random');
 
-        $this->app->singleton(
-            RandomGeneratorInterface::class,
-            static function (Container $app): RandomGeneratorInterface {
-                $generator = new RandomGenerator();
-                $fromConfig = \config('easy-random.uuid_v4_generator');
-                $uuidV4Generator = null;
+        $uuidVersion = (int)\config('easy-random.uuid_version', 6);
 
-                // UUID v4 from config
-                if ($fromConfig !== null) {
-                    $uuidV4Generator = $app->make($fromConfig);
-                }
+        if (\in_array($uuidVersion, [4, 6], true) === false) {
+            throw UnsupportedUuidVersionException::create($uuidVersion);
+        }
 
-                // Fallback using ramsey/uuid if it exists
-                if ($uuidV4Generator === null && \class_exists(RamseyUuid::class)) {
-                    $uuidV4Generator = new RamseyUuidV4Generator();
-                }
+        $this->app->singleton(RandomStringGeneratorInterface::class, RandomStringGenerator::class);
+        $this->app->singleton(RandomIntegerGeneratorInterface::class, RandomIntegerGenerator::class);
 
-                // Fallback using symfony/uid if it exists
-                if ($uuidV4Generator === null && \class_exists(SymfonyUuid::class)) {
-                    $uuidV4Generator = new SymfonyUidUuidV4Generator();
-                }
-
-                if ($uuidV4Generator !== null) {
-                    $generator->setUuidV4Generator($uuidV4Generator);
-                }
-
-                return $generator;
+        if ($uuidVersion === 4) {
+            if (\class_exists(SymfonyUuid::class)) {
+                $this->app->singleton(UuidGeneratorInterface::class, SymfonyUuidV4Generator::class);
             }
-        );
+
+            if (\class_exists(RamseyUuid::class)) {
+                $this->app->singleton(UuidGeneratorInterface::class, RamseyUuidV4Generator::class);
+            }
+        }
+
+        if ($uuidVersion === 6) {
+            if (\class_exists(SymfonyUuid::class)) {
+                $this->app->singleton(UuidGeneratorInterface::class, SymfonyUuidV6Generator::class);
+            }
+
+            if (\class_exists(RamseyUuid::class)) {
+                $this->app->singleton(UuidGeneratorInterface::class, RamseyUuidV6Generator::class);
+            }
+        }
+
+        $this->app->singleton(RandomGeneratorInterface::class, RandomGenerator::class);
     }
 }

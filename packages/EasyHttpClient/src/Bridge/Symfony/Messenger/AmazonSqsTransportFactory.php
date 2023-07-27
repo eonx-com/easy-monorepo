@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Bridge\Symfony\Messenger;
@@ -21,9 +20,6 @@ final class AmazonSqsTransportFactory extends BaseAmazonSqsTransportFactory
         parent::__construct();
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
         unset($options['transport_name']);

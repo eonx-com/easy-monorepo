@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule\Tests\Stubs;
@@ -9,10 +8,7 @@ use EonX\EasySchedule\Interfaces\ScheduleProviderInterface;
 
 final class ScheduleProviderStub implements ScheduleProviderInterface
 {
-    /**
-     * @var \EonX\EasySchedule\Interfaces\ScheduleInterface
-     */
-    private $schedule;
+    private ScheduleInterface $schedule;
 
     public function getSchedule(): ScheduleInterface
     {

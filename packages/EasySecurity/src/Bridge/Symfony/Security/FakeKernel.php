@@ -1,16 +1,16 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class FakeKernel implements HttpKernelInterface
 {
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
     {
-        // TODO: Implement handle() method.
+        return new Response();
     }
 }

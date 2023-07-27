@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
@@ -11,9 +10,6 @@ final class TimeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuild
 {
     public const DEFAULT_KEY = 'time';
 
-    /**
-     * @param mixed[] $data
-     */
     protected function doBuildValue(Throwable $throwable, array $data): string
     {
         return Carbon::now()->toIso8601ZuluString();

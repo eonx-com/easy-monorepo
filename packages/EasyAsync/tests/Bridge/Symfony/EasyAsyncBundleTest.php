@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Bridge\Symfony;
@@ -11,9 +10,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testMessengerConfig
      */
-    public function providerTestMessengerConfig(): iterable
+    public static function providerTestMessengerConfig(): iterable
     {
         yield 'no config - no subscribers' => [
             static function (ContainerInterface $container): void {
@@ -54,9 +53,9 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @dataProvider providerTestMessengerConfig
+     * @param string[]|null $configs
      *
-     * @param null|string[] $configs
+     * @dataProvider providerTestMessengerConfig
      */
     public function testMessengerConfig(callable $assert, ?array $configs = null): void
     {

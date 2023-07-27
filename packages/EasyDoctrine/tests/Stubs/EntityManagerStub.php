@@ -1,18 +1,20 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Stubs;
 
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Tests\Fixtures\PriceType;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
@@ -20,11 +22,11 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 final class EntityManagerStub
 {
     /**
-     * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
@@ -47,10 +49,10 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \Doctrine\Common\EventManager|null $eventManager
      * @param string[] $fixtures
      *
      * @return \Doctrine\ORM\EntityManager
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
@@ -68,9 +70,11 @@ final class EntityManagerStub
         $config->setMetadataDriverImpl(new AttributeDriver([]));
 
         $entityManager = EntityManager::create($conn, $config, $eventManager);
-        $schema = \array_map(function ($class) use ($entityManager) {
-            return $entityManager->getClassMetadata($class);
-        }, $fixtures);
+        $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
+
+        if (Type::hasType(PriceType::NAME) === false) {
+            Type::addType(PriceType::NAME, PriceType::class);
+        }
 
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema([]);
@@ -83,11 +87,11 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher
      * @param string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */

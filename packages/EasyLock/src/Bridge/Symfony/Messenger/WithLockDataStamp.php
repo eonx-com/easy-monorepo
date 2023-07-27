@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\Symfony\Messenger;
@@ -11,20 +10,10 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 
 final class WithLockDataStamp implements StampInterface, WithLockDataInterface
 {
-    /**
-     * @var string
-     */
-    private $resource;
-
-    /**
-     * @var null|float
-     */
-    private $ttl;
-
-    public function __construct(string $resource, ?float $ttl = null)
-    {
-        $this->resource = $resource;
-        $this->ttl = $ttl;
+    public function __construct(
+        private string $resource,
+        private ?float $ttl = null,
+    ) {
     }
 
     public function getLockData(): LockDataInterface

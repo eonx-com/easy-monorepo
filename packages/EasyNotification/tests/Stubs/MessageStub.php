@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Stubs;
@@ -8,18 +7,10 @@ use EonX\EasyNotification\Messages\AbstractMessage;
 
 final class MessageStub extends AbstractMessage
 {
-    /**
-     * @var null|string
-     */
-    private $type;
-
-    /**
-     * @param mixed[] $body
-     */
-    public function __construct(array $body, ?string $type = null)
-    {
-        $this->type = $type;
-
+    public function __construct(
+        array $body,
+        private ?string $type = null,
+    ) {
         parent::__construct($body);
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Symfony\DependencyInjection;
@@ -13,9 +12,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyActivityExtension extends Extension implements PrependExtensionInterface
 {
-    /**
-     * @var array<string, string>
-     */
     private const EASY_ACTIVITY_CONFIG = [
         'disallowed_properties' => BridgeConstantsInterface::PARAM_DISALLOWED_PROPERTIES,
         'easy_doctrine_subscriber_enabled' => BridgeConstantsInterface::PARAM_EASY_DOCTRINE_SUBSCRIBER_ENABLED,
@@ -24,8 +20,6 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

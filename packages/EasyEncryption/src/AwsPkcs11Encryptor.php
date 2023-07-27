@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEncryption;
@@ -8,12 +7,15 @@ use EonX\EasyEncryption\Exceptions\CouldNotConfigureAwsCloudHsmSdkException;
 use EonX\EasyEncryption\Exceptions\InvalidConfigurationException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Pkcs11\GcmParams;
 use Pkcs11\Mechanism;
 use Pkcs11\Module;
 use Pkcs11\Session;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use Throwable;
 
 final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11EncryptorInterface
 {
@@ -62,12 +64,9 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $this->session = null;
     }
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     protected function doDecrypt(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
+        null|array|string|EncryptionKey|EncryptionKeyPair $key,
         bool $raw,
     ): string {
         $this->validateKey($key);
@@ -78,12 +77,9 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             ->decrypt($this->getMechanism(), \hex2bin($text));
     }
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     protected function doEncrypt(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key,
+        null|array|string|EncryptionKey|EncryptionKeyPair $key,
         bool $raw,
     ): string {
         $this->validateKey($key);
@@ -93,7 +89,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             ->findKey($this->getKeyName($key))
             ->encrypt($this->getMechanism(), $text);
 
-        return \bin2hex($encrypted);
+        return \bin2hex((string)$encrypted);
     }
 
     private function configureAwsCloudHsmSdk(): void
@@ -168,7 +164,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         try {
             $process = new Process($cmd);
             $process->run();
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new CouldNotConfigureAwsCloudHsmSdkException(
                 $throwable->getMessage(),
                 $throwable->getCode(),
@@ -207,6 +203,14 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         ));
     }
 
+    private function getMechanism(): Mechanism
+    {
+        return new Mechanism(
+            \Pkcs11\CKM_VENDOR_DEFINED | \Pkcs11\CKM_AES_GCM,
+            new GcmParams('', $this->aad, self::AWS_GCM_TAG_LENGTH)
+        );
+    }
+
     private function init(): void
     {
         if ($this->session !== null) {
@@ -229,19 +233,11 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         return \is_string($string) && $string !== '';
     }
 
-    private function getMechanism(): Mechanism
-    {
-        return new Mechanism(
-            \Pkcs11\CKM_VENDOR_DEFINED | \Pkcs11\CKM_AES_GCM,
-            new GcmParams('', $this->aad, self::AWS_GCM_TAG_LENGTH)
-        );
-    }
-
     /**
      * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
      */
     private function validateKey(
-        \ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|array|string|null $key = null,
+        EncryptionKey|EncryptionKeyPair|array|string|null $key = null,
     ): void {
         if ($key !== null && $this->isNonEmptyString($key) === false) {
             throw new InvalidEncryptionKeyException(\sprintf(

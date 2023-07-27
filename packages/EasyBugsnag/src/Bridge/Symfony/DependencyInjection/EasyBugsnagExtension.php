@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection;
@@ -13,17 +12,11 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyBugsnagExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const AWS_ECS_FARGATE_CONFIG = [
-        'meta_url' => BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_URL,
         'meta_storage_filename' => BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_STORAGE_FILENAME,
+        'meta_url' => BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_URL,
     ];
 
-    /**
-     * @var string[]
-     */
     private const BASICS_CONFIG = [
         'project_root' => BridgeConstantsInterface::PARAM_PROJECT_ROOT,
         'release_stage' => BridgeConstantsInterface::PARAM_RELEASE_STAGE,
@@ -32,9 +25,6 @@ final class EasyBugsnagExtension extends Extension
         'strip_path' => BridgeConstantsInterface::PARAM_STRIP_PATH,
     ];
 
-    /**
-     * @var string[]
-     */
     private const SESSION_TRACKING_CONFIG = [
         'cache_directory' => BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_DIRECTORY,
         'cache_expires_after' => BridgeConstantsInterface::PARAM_SESSION_TRACKING_CACHE_EXPIRES_AFTER,
@@ -44,8 +34,6 @@ final class EasyBugsnagExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

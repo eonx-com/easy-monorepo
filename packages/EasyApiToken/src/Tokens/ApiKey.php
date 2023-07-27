@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tokens;
@@ -23,9 +22,6 @@ final class ApiKey implements ApiKeyInterface
         return $this->apiKey;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return [

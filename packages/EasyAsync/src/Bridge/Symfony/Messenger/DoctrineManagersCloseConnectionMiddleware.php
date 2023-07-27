@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger;
@@ -10,10 +9,10 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
+final class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
 {
     /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      */
     public function __construct(
         private readonly ManagersCloser $managersCloser,

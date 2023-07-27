@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\Symfony\DependencyInjection\Compiler;
@@ -15,9 +14,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class SensitiveDataSanitizerCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     public const SANITIZER_ID = SensitiveDataSanitizerInterface::class;
 
     public function process(ContainerBuilder $container): void

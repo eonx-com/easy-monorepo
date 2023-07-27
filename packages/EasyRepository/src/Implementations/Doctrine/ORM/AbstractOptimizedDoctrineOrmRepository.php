@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
@@ -18,6 +17,7 @@ use EonX\EasyPagination\Paginators\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyRepository\Exceptions\EasyPaginationNotInstalledException;
 use EonX\EasyRepository\Interfaces\DatabaseRepositoryInterface;
 use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface as PaginatedObjRepoInterface;
+use Throwable;
 
 abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseRepositoryInterface, PaginatedObjRepoInterface
 {
@@ -73,34 +73,9 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             ->flush();
     }
 
-    /**
-     * @phpstan-return class-string
-     */
-    abstract protected function getEntityClass(): string;
-
-    /**
-     * @throws \Throwable
-     */
-    public function transactional(Closure $func): mixed
+    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface
     {
-        $this->beginTransaction();
-
-        try {
-            $return = \call_user_func($func);
-
-            $this->commit();
-
-            return $return ?? true;
-        } catch (\Throwable $exception) {
-            if ($exception instanceof ORMException || $exception instanceof Exception) {
-                $this->getManager()
-                    ->close();
-            }
-
-            $this->rollback();
-
-            throw $exception;
-        }
+        return $this->createLengthAwarePaginator(null, null, $pagination);
     }
 
     public function rollback(): void
@@ -122,10 +97,35 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         $this->pagination = $pagination;
     }
 
-    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface
+    /**
+     * @throws \Throwable
+     */
+    public function transactional(Closure $func): mixed
     {
-        return $this->createLengthAwarePaginator(null, null, $pagination);
+        $this->beginTransaction();
+
+        try {
+            $return = \call_user_func($func);
+
+            $this->commit();
+
+            return $return ?? true;
+        } catch (Throwable $exception) {
+            if ($exception instanceof ORMException || $exception instanceof Exception) {
+                $this->getManager()
+                    ->close();
+            }
+
+            $this->rollback();
+
+            throw $exception;
+        }
     }
+
+    /**
+     * @phpstan-return class-string
+     */
+    abstract protected function getEntityClass(): string;
 
     protected function createLengthAwarePaginator(
         ?string $from = null,
@@ -146,17 +146,17 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             ->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
     }
 
+    protected function getClassMetadata(): ClassMetadata
+    {
+        return $this->getManager()
+            ->getClassMetadata($this->getRepository()->getClassName());
+    }
+
     protected function getEntityAlias(): string
     {
         $exploded = \explode('\\', $this->getRepository()->getClassName());
 
         return \strtolower(\substr($exploded[\count($exploded) - 1], 0, 1));
-    }
-
-    protected function getClassMetadata(): ClassMetadata
-    {
-        return $this->getManager()
-            ->getClassMetadata($this->getRepository()->getClassName());
     }
 
     protected function getManager(): EntityManagerInterface

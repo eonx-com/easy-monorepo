@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
+use Closure;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 
 abstract class AbstractBatch extends AbstractBatchObject implements BatchInterface
@@ -12,10 +12,7 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
 
     private int $failed = 0;
 
-    /**
-     * @var null|callable
-     */
-    private $itemsProvider;
+    private Closure|null $itemsProvider = null;
 
     private int|string|null $parentBatchItemId = null;
 
@@ -82,16 +79,14 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
      */
     public function setItems(iterable $items): BatchInterface
     {
-        $this->itemsProvider = static function () use ($items): iterable {
-            return $items;
-        };
+        $this->itemsProvider = static fn (): iterable => $items;
 
         return $this;
     }
 
     public function setItemsProvider(callable $itemsProvider): BatchInterface
     {
-        $this->itemsProvider = $itemsProvider;
+        $this->itemsProvider = $itemsProvider(...);
 
         return $this;
     }
@@ -124,9 +119,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [

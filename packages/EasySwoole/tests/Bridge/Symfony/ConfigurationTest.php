@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Tests\Bridge\Symfony;
@@ -19,6 +18,9 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         'doctrine' => [
             'enabled' => true,
             'reset_dbal_connections' => true,
+        ],
+        'easy_admin' => [
+            'enabled' => true,
         ],
         'easy_batch' => [
             'enabled' => true,
@@ -40,24 +42,9 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     ];
 
     /**
-     * @param mixed[] $configs
-     * @param mixed[] $expectedConfig
-     *
-     * @dataProvider providerTestConfiguration
-     */
-    public function testConfiguration(array $configs, array $expectedConfig): void
-    {
-        $config = (new Processor())->processConfiguration(new Configuration(), $configs);
-
-        self::assertEquals($expectedConfig, $config);
-    }
-
-    /**
-     * @return iterable<mixed>
-     *
      * @see testConfiguration
      */
-    protected function providerTestConfiguration(): iterable
+    public static function providerTestConfiguration(): iterable
     {
         yield 'No configuration set' => [
             'configs' => [],
@@ -197,5 +184,15 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
                 ],
             ]),
         ];
+    }
+
+    /**
+     * @dataProvider providerTestConfiguration
+     */
+    public function testConfiguration(array $configs, array $expectedConfig): void
+    {
+        $config = (new Processor())->processConfiguration(new Configuration(), $configs);
+
+        self::assertEquals($expectedConfig, $config);
     }
 }

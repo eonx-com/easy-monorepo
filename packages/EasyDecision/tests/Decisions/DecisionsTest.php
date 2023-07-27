@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Decisions;
@@ -17,11 +16,9 @@ use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
 final class DecisionsTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDecisions
      */
-    public function providerTestDecisions(): iterable
+    public static function providerTestDecisions(): iterable
     {
         yield 'No rules' => [
             new ValueDecision(),
@@ -35,7 +32,7 @@ final class DecisionsTest extends AbstractTestCase
 
         yield 'Simple rule' => [
             new ValueDecision(),
-            [$this->createLanguageRule('add(5)')],
+            [self::createLanguageRule('add(5)')],
             [
                 'value' => 5,
             ],
@@ -48,12 +45,12 @@ final class DecisionsTest extends AbstractTestCase
         yield 'Rules with name and extra' => [
             new ValueDecision(),
             [
-                $this->createLanguageRule('add(5)'),
-                $this->createLanguageRule('add(10)', null, 'Add 10'),
-                $this->createLanguageRule('add(20)', null, null, [
+                self::createLanguageRule('add(5)'),
+                self::createLanguageRule('add(10)', null, 'Add 10'),
+                self::createLanguageRule('add(20)', null, null, [
                     'key' => 'value',
                 ]),
-                $this->createLanguageRule('add(30)', null, 'Add 30', [
+                self::createLanguageRule('add(30)', null, 'Add 30', [
                     'key1' => 'value1',
                 ]),
             ],
@@ -106,9 +103,9 @@ final class DecisionsTest extends AbstractTestCase
         yield 'Exit on propagation stopped' => [
             (new ValueDecision())->setExitOnPropagationStopped(),
             [
-                $this->createLanguageRule('add(5)'),
+                self::createLanguageRule('add(5)'),
                 new RuleStopPropagationStub('exit-on-propagation-stopped', 10, true),
-                $this->createLanguageRule('add(10)'),
+                self::createLanguageRule('add(10)'),
             ],
             [
                 'value' => 5,
@@ -123,9 +120,6 @@ final class DecisionsTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param mixed[] $input
-     * @param mixed $expectedOutput
-     * @param mixed[] $expectedRulesOutput
      *
      * @dataProvider providerTestDecisions
      */
@@ -133,7 +127,7 @@ final class DecisionsTest extends AbstractTestCase
         DecisionInterface $decision,
         array $rules,
         array $input,
-        $expectedOutput,
+        mixed $expectedOutput,
         array $expectedRulesOutput,
     ): void {
         $expressionLanguage = $this->createExpressionLanguage();
@@ -147,7 +141,7 @@ final class DecisionsTest extends AbstractTestCase
         $context = $decision->getContext();
 
         self::assertEquals($expectedOutput, $output);
-        self::assertEquals(\get_class($decision), $context->getDecisionType());
+        self::assertEquals($decision::class, $context->getDecisionType());
         self::assertEquals($input, $context->getOriginalInput());
         self::assertEquals($expectedRulesOutput, $context->getRuleOutputs());
     }

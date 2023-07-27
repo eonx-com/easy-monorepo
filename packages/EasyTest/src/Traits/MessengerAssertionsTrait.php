@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Traits;
@@ -56,7 +55,6 @@ trait MessengerAssertionsTrait
      * Asserts that the given message class was dispatched by the message bus to async transport.
      *
      * @param class-string $messageClass
-     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToAsyncTransport(
         string $messageClass,
@@ -70,7 +68,6 @@ trait MessengerAssertionsTrait
      * Asserts that the given message class was dispatched by the message bus to failed transport.
      *
      * @param class-string $messageClass
-     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToFailedTransport(
         string $messageClass,
@@ -84,7 +81,6 @@ trait MessengerAssertionsTrait
      * Asserts that the given message class was dispatched by the message bus.
      *
      * @param class-string $messageClass
-     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToTransport(
         string $messageClass,
@@ -96,7 +92,7 @@ trait MessengerAssertionsTrait
 
         $envelopes = \array_filter(
             self::getMessagesSentToTransport($transportName),
-            static function (object $message) use ($messageClass, $expectedProperties, $propertyAccessor) {
+            static function (object $message) use ($messageClass, $expectedProperties, $propertyAccessor): bool {
                 if ($message instanceof $messageClass === false) {
                     return false;
                 }
@@ -143,11 +139,11 @@ trait MessengerAssertionsTrait
     /**
      * Returns dispatched messages by the message bus to async transport.
      *
+     * @template TMessageClass
+     *
      * @param class-string<TMessageClass>|null $messageClass
      *
      * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
-     *
-     * @template TMessageClass
      */
     public static function getMessagesSentToAsyncTransport(?string $messageClass = null): array
     {
@@ -157,11 +153,11 @@ trait MessengerAssertionsTrait
     /**
      * Returns dispatched messages by the message bus to failed transport.
      *
+     * @template TMessageClass
+     *
      * @param class-string<TMessageClass>|null $messageClass
      *
      * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
-     *
-     * @template TMessageClass
      */
     public static function getMessagesSentToFailedTransport(?string $messageClass = null): array
     {
@@ -171,11 +167,11 @@ trait MessengerAssertionsTrait
     /**
      * Returns dispatched messages by the message bus to async transport.
      *
+     * @template TMessageClass
+     *
      * @param class-string<TMessageClass>|null $messageClass
      *
      * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
-     *
-     * @template TMessageClass
      */
     public static function getMessagesSentToTransport(string $transportName, ?string $messageClass = null): array
     {
@@ -203,7 +199,7 @@ trait MessengerAssertionsTrait
         echo 'Exception code: ' . $errorDetailsStamp->getExceptionCode() . "\n";
         echo 'Exception message: ' . $errorDetailsStamp->getExceptionMessage() . "\n";
         echo "Stack trace:\n";
-        echo $errorDetailsStamp->getFlattenException()
+        echo $errorDetailsStamp->getFlattenException() !== null
             ? $errorDetailsStamp->getFlattenException()
                 ->getTraceAsString()
             : 'No stack trace available.';
@@ -254,7 +250,7 @@ trait MessengerAssertionsTrait
         // Message handler may dispatch new messages to async transport and this can happen multiple times.
         // We need to consume all messages from async transport to make sure that all messages were processed.
         // By default, we try to consume messages from async transport 10 times, and this is enough for most cases.
-        // If we don't do this, we may get false positive results.
+        // If we don't do this, we may get false positive results
         if (\count((array)$transport->get()) > 0) {
             throw new RuntimeException('Unable to consume all messages from async transport.');
         }
@@ -262,12 +258,12 @@ trait MessengerAssertionsTrait
         // Symfony Messenger does not throw exceptions when message handler throws an exception.
         // Instead, it stores exception details in ErrorDetailsStamp, and we need to check it manually.
         // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException,
-        // and we can't get original exception.
+        // and we can't get original exception
         foreach ($transport->getRejected() as $envelope) {
             /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
             foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
                 foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
-                    // if $expectedExceptionPairOrClass is a string = exceptionClass
+                    // If $expectedExceptionPairOrClass is a string = exceptionClass
                     if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
                         $errorDetailsStamp->getExceptionCode() === 0
                     ) {
@@ -275,7 +271,7 @@ trait MessengerAssertionsTrait
 
                         continue 2;
                     }
-                    // if $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
+                    // If $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
                     if (
                         isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
                         && (

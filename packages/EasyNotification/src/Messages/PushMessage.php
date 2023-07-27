@@ -1,48 +1,25 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Messages;
 
 final class PushMessage extends AbstractMessage
 {
-    /**
-     * @var string
-     */
     public const DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
-    /**
-     * @var null|string
-     */
-    private $device;
-
-    /**
-     * @var null|string
-     */
-    private $token;
-
-    /**
-     * @param null|mixed[] $body
-     */
-    public function __construct(?string $device = null, ?string $token = null, ?array $body = null)
-    {
-        $this->device = $device;
-        $this->token = $token;
-
+    public function __construct(
+        private ?string $device = null,
+        private ?string $token = null,
+        ?array $body = null,
+    ) {
         parent::__construct($body);
     }
 
-    /**
-     * @param null|mixed[] $body
-     */
     public static function create(?string $device = null, ?string $token = null, ?array $body = null): self
     {
         return new self($device, $token, $body);
     }
 
-    /**
-     * @param null|mixed[] $body
-     */
     public static function createDoNotSend(?string $device = null, ?array $body = null): self
     {
         return new self($device, self::DO_NOT_SEND_TOKEN, $body);

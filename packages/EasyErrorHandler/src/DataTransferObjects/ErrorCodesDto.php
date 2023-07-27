@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\DataTransferObjects;
@@ -20,13 +19,10 @@ final class ErrorCodesDto
         return $this->nextGroupErrorCode;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getNextGroupedErrorCodesAsArray(): array
     {
         return \array_map(
-            static fn (ErrorCodeCategoryDto $errorCodeCategoryDto) => $errorCodeCategoryDto->asArray(),
+            static fn (ErrorCodeCategoryDto $errorCodeCategoryDto): array => $errorCodeCategoryDto->asArray(),
             $this->nextGroupedErrorCodes
         );
     }

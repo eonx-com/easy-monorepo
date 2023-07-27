@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData\StringSanitizers;
@@ -8,19 +7,16 @@ use EonX\EasyUtils\CreditCard\CreditCardNumberValidatorInterface;
 
 final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
 {
-    private CreditCardNumberValidatorInterface $creditCardNumberValidator;
-
-    public function __construct(CreditCardNumberValidatorInterface $creditCardNumberValidator, ?int $priority = null)
-    {
-        $this->creditCardNumberValidator = $creditCardNumberValidator;
+    public function __construct(
+        private CreditCardNumberValidatorInterface $creditCardNumberValidator,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 
-    /**
-     * @param mixed[] $keysToMask
-     */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
+        $matches = [];
         $matched = \preg_match_all('/(\d[^A-Za-z&="\'<]*){12,}/', $string, $matches);
 
         if ($matched === 0 || $matched === false) {
@@ -28,6 +24,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         }
 
         // Mask potentially unmasked credit card numbers anywhere else
+        /** @var string[] $match */
         foreach ($matches as $match) {
             if ($this->creditCardNumberValidator->isCreditCardNumberValid($match[0]) === false) {
                 continue;

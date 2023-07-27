@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
@@ -11,9 +10,6 @@ final class SubCodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBu
 {
     public const DEFAULT_KEY = 'sub_code';
 
-    /**
-     * @param mixed[] $data
-     */
     protected function doBuildValue(Throwable $throwable, array $data): ?int
     {
         if (($throwable instanceof SubCodeAwareExceptionInterface) === false) {

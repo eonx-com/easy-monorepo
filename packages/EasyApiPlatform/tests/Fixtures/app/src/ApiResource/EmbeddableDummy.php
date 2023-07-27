@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
@@ -14,25 +13,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EmbeddableDummy
 {
     #[Orm\Column(type: Types::BOOLEAN, nullable: true)]
-    private ?bool $dummyBoolean;
+    private ?bool $dummyBoolean = null;
 
     #[Assert\DateTime]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?CarbonImmutable $dummyDate;
+    private ?CarbonImmutable $dummyDate = null;
 
     #[Orm\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $dummyFloat;
+    private ?float $dummyFloat = null;
 
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[Groups(['embed'])]
-    private ?string $dummyName;
+    #[Orm\Column(type: Types::STRING, nullable: true)]
+    private ?string $dummyName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $dummyPrice;
+    private ?string $dummyPrice = null;
 
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[Groups(['barcelona', 'chicago'])]
-    private ?string $symfony;
+    #[Orm\Column(type: Types::STRING, nullable: true)]
+    private ?string $symfony = null;
 
     public function __construct()
     {

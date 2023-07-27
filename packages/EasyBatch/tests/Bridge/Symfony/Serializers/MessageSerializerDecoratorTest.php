@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony\Serializers;
@@ -17,6 +16,6 @@ final class MessageSerializerDecoratorTest extends AbstractSymfonyTestCase
             ->getContainer()
             ->get(BridgeConstantsInterface::SERVICE_BATCH_MESSAGE_SERIALIZER);
 
-        self::assertSame(MessageSerializerDecorator::class, \get_class($messageSerializer));
+        self::assertSame(MessageSerializerDecorator::class, $messageSerializer::class);
     }
 }

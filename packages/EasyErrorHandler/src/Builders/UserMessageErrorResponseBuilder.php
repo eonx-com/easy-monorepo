@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
@@ -20,9 +19,6 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
         parent::__construct($key, $priority);
     }
 
-    /**
-     * @param mixed[] $data
-     */
     protected function doBuildValue(Throwable $throwable, array $data): string
     {
         $message = null;
@@ -34,7 +30,7 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
         }
 
         return $this->translator->trans(
-            $message ?? TranslatableExceptionInterface::DEFAULT_USER_MESSAGE,
+            $message ?? TranslatableExceptionInterface::USER_MESSAGE_DEFAULT,
             $parameters
         );
     }

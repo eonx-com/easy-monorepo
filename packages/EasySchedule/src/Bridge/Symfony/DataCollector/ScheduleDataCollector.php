@@ -1,66 +1,54 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule\Bridge\Symfony\DataCollector;
 
 use EonX\EasySchedule\Bridge\Symfony\Interfaces\TraceableScheduleInterface;
 use EonX\EasySchedule\Interfaces\ScheduleInterface;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class ScheduleDataCollector extends DataCollector
 {
-    /**
-     * @var string
-     */
     public const NAME = 'schedule.schedule_collector';
 
-    /**
-     * @var \EonX\EasySchedule\Interfaces\ScheduleInterface
-     */
-    private $schedule;
-
-    public function __construct(ScheduleInterface $schedule)
-    {
-        $this->schedule = $schedule;
+    public function __construct(
+        private ScheduleInterface $schedule,
+    ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         if (($this->schedule instanceof TraceableScheduleInterface) === false) {
             return;
         }
 
-        /** @var \EonX\EasySchedule\Bridge\Symfony\Interfaces\TraceableScheduleInterface $schedule */
-        $schedule = $this->schedule;
-
         $this->data['providers'] = [];
         $this->data['events'] = [];
 
-        foreach ($schedule->getProviders() as $provider) {
-            $class = \get_class($provider);
+        foreach ($this->schedule->getProviders() as $provider) {
+            $class = $provider::class;
 
             $this->data['providers'][$class] = [
                 'class' => $class,
                 'events_count' => 0,
-                'file' => (new \ReflectionClass($class))->getFileName(),
+                'file' => (new ReflectionClass($class))->getFileName(),
             ];
         }
 
-        foreach ($schedule->getEvents() as $provider => $events) {
-            /** @var \EonX\EasySchedule\Interfaces\EventInterface[] $events */
+        foreach ($this->schedule->getEvents() as $provider => $events) {
             $this->data['providers'][$provider]['events_count'] = \count($events);
 
             foreach ($events as $event) {
-                /** @var \EonX\EasySchedule\Interfaces\EventInterface $event */
                 $this->data['events'][] = [
                     'allowsOverlapping' => $event->allowsOverlapping(),
-                    'description' => $event->getDescription(),
                     'cronExpression' => $event->getCronExpression(),
-                    'maxLockTime' => $event->getMaxLockTime(),
+                    'description' => $event->getDescription(),
                     'lockResource' => $event->getLockResource(),
+                    'maxLockTime' => $event->getMaxLockTime(),
                     'provider' => $this->data['providers'][$provider],
                     'timezone' => $event->getTimezone(),
                 ];
@@ -68,9 +56,6 @@ final class ScheduleDataCollector extends DataCollector
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getEvents(): array
     {
         return $this->data['events'] ?? [];

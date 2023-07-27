@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Csv;
@@ -7,7 +6,7 @@ namespace EonX\EasyUtils\Csv;
 interface CsvParserConfigInterface
 {
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getGroupPrefixes(): ?array;
 
@@ -17,7 +16,7 @@ interface CsvParserConfigInterface
     public function getRecordTransformers(): array;
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getRequiredHeaders(): ?array;
 

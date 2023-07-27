@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Configurators;
@@ -73,7 +72,7 @@ final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
         $rules = [
             new RestrictedRuleStub($expectedRule, 'decision-stub', $expectedOutput),
             new class() {
-                // No body needed.
+                // No body needed
             },
         ];
 

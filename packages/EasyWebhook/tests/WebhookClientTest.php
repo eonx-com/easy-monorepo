@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
+use EmptyIterator;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
@@ -33,11 +33,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class WebhookClientTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSend
      */
-    public function providerTestSend(): iterable
+    public static function providerTestSend(): iterable
     {
         yield 'Simple URL' => [
             (new Webhook())->url('https://eonx.com'),
@@ -86,7 +84,7 @@ final class WebhookClientTest extends AbstractTestCase
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
-            new \EmptyIterator(),
+            new EmptyIterator(),
         ];
 
         yield 'RS256 Signature' => [
@@ -135,7 +133,7 @@ final class WebhookClientTest extends AbstractTestCase
             ],
             [
                 new IdHeaderMiddleware(new ArrayStoreStub(
-                    $this->getRandomGenerator(),
+                    self::getRandomGenerator(),
                     '78981b69-535d-4483-8d94-2ef7cbdb07c8'
                 )),
             ],
@@ -156,8 +154,7 @@ final class WebhookClientTest extends AbstractTestCase
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
-     * @param mixed[] $httpClientOptions
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      *
      * @dataProvider providerTestSend
      */
@@ -183,16 +180,16 @@ final class WebhookClientTest extends AbstractTestCase
 
     private function getArrayResultStore(): ArrayResultStore
     {
-        return new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        return new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
     }
 
     private function getArrayStore(): ArrayStore
     {
-        return new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
+        return new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      */
     private function getStack(
         HttpClientInterface $httpClient,

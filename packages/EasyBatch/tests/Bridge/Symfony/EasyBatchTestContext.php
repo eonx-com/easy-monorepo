@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony;
@@ -30,14 +29,14 @@ final class EasyBatchTestContext
         return $this->container->get(BatchItemRepositoryInterface::class);
     }
 
-    public function getBatchRepository(): BatchRepositoryInterface
-    {
-        return $this->container->get(BatchRepositoryInterface::class);
-    }
-
     public function getBatchObjectManager(): BatchObjectManagerInterface
     {
         return $this->container->get(BatchObjectManagerInterface::class);
+    }
+
+    public function getBatchRepository(): BatchRepositoryInterface
+    {
+        return $this->container->get(BatchRepositoryInterface::class);
     }
 
     public function getConnection(): Connection

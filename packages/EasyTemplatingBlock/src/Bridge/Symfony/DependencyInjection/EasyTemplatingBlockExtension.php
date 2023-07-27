@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Bridge\Symfony\DependencyInjection;
@@ -16,8 +15,6 @@ use Twig\Environment as TwigEnvironment;
 final class EasyTemplatingBlockExtension extends Extension
 {
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

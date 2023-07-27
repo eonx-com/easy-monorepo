@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Bridge\Symfony\DependencyInjection;
@@ -12,9 +11,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyPaginationExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const PAGINATION_PARAMS = [
         'page_attribute' => BridgeConstantsInterface::PARAM_PAGE_ATTRIBUTE,
         'page_default' => BridgeConstantsInterface::PARAM_PAGE_DEFAULT,
@@ -23,8 +19,6 @@ final class EasyPaginationExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

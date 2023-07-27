@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -17,9 +16,9 @@ use EonX\EasyWebhook\WebhookResult;
 final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'No event for pending' => [];
 
@@ -58,7 +57,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 
         if ($eventClass !== null) {
             self::assertCount(1, $dispatched);
-            self::assertEquals($eventClass, \get_class($dispatched[0]));
+            self::assertEquals($eventClass, $dispatched[0]::class);
 
             return;
         }

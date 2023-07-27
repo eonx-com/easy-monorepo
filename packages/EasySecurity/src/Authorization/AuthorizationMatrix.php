@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization;
@@ -10,19 +9,19 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 final class AuthorizationMatrix implements AuthorizationMatrixInterface
 {
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
-    private $cachePermissions;
+    private ?array $cachePermissions = null;
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $permissions = [];
+    private array $permissions = [];
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * AuthorizationMatrix constructor.

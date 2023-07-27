@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony\Iterator;
 
+use Closure;
 use EonX\EasyBatch\Interfaces\BatchItemFactoryInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
@@ -11,6 +11,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Iterator\BatchItemIterator;
 use EonX\EasyBatch\Iterator\IteratorConfig;
 use EonX\EasyBatch\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use stdClass;
 
 final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 {
@@ -22,14 +23,14 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
     private static array $iteratedItems = [];
 
     /**
-     * @return iterable<mixed>
+     * @see testIterateThroughItems
      */
-    public function providerTestIterateThroughItems(): iterable
+    public static function providerTestIterateThroughItems(): iterable
     {
         yield '1 page, no changes during iteration, no reset pagination' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
-                $batchItem1 = $factory->create('batch-id', new \stdClass());
-                $batchItem2 = $factory->create('batch-id', new \stdClass());
+                $batchItem1 = $factory->create('batch-id', new stdClass());
+                $batchItem2 = $factory->create('batch-id', new stdClass());
 
                 $repo->save($batchItem1);
                 $repo->save($batchItem2);
@@ -44,9 +45,9 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 
         yield '2 pages, no changes during iteration, no reset pagination' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
-                $batchItem1 = $factory->create('batch-id', new \stdClass());
-                $batchItem2 = $factory->create('batch-id', new \stdClass());
-                $batchItem3 = $factory->create('batch-id', new \stdClass());
+                $batchItem1 = $factory->create('batch-id', new stdClass());
+                $batchItem2 = $factory->create('batch-id', new stdClass());
+                $batchItem3 = $factory->create('batch-id', new stdClass());
 
                 $repo->save($batchItem1);
                 $repo->save($batchItem2);
@@ -62,8 +63,8 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 
         yield '1 page, status changed during iteration, no reset pagination' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
-                $batchItem1 = $factory->create('batch-id', new \stdClass());
-                $batchItem2 = $factory->create('batch-id', new \stdClass());
+                $batchItem1 = $factory->create('batch-id', new stdClass());
+                $batchItem2 = $factory->create('batch-id', new stdClass());
 
                 $repo->save($batchItem1);
                 $repo->save($batchItem2);
@@ -74,23 +75,23 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
             static function (): void {
                 self::$iterateFuncCalls++;
             },
-            static function (BatchItemRepositoryInterface $batchItemRepo): \Closure {
-                return static function (array $batchItems) use ($batchItemRepo): void {
-                    foreach ($batchItems as $batchItem) {
-                        $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
-                        $batchItemRepo->save($batchItem);
-                    }
-                };
+            static fn (BatchItemRepositoryInterface $batchItemRepo): Closure => static function (
+                array $batchItems,
+            ) use ($batchItemRepo): void {
+                foreach ($batchItems as $batchItem) {
+                    $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                    $batchItemRepo->save($batchItem);
+                }
             },
         ];
 
         yield '2 pages, status changed during iteration, reset pagination, 1 item processed twice' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
-                $batchItem1 = $factory->create('batch-id', new \stdClass());
+                $batchItem1 = $factory->create('batch-id', new stdClass());
                 $batchItem1->setName('batchItem1');
-                $batchItem2 = $factory->create('batch-id', new \stdClass());
+                $batchItem2 = $factory->create('batch-id', new stdClass());
                 $batchItem2->setName('batchItem2');
-                $batchItem3 = $factory->create('batch-id', new \stdClass());
+                $batchItem3 = $factory->create('batch-id', new stdClass());
                 $batchItem3->setName('batchItem3');
 
                 $repo->save($batchItem1);
@@ -110,23 +111,23 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                 self::$iteratedItems[] = (string)$batchItem->getName();
                 self::$iterateFuncCalls++;
             },
-            static function (BatchItemRepositoryInterface $batchItemRepo): \Closure {
-                return static function (array $batchItems) use ($batchItemRepo): void {
-                    foreach ($batchItems as $batchItem) {
-                        if ($batchItem->getName() === 'batchItem1') {
-                            $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
-                            $batchItemRepo->save($batchItem);
-                        }
+            static fn (BatchItemRepositoryInterface $batchItemRepo): Closure => static function (
+                array $batchItems,
+            ) use ($batchItemRepo): void {
+                foreach ($batchItems as $batchItem) {
+                    if ($batchItem->getName() === 'batchItem1') {
+                        $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                        $batchItemRepo->save($batchItem);
                     }
-                };
+                }
             },
         ];
     }
 
     /**
-     * @dataProvider providerTestIterateThroughItems
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestIterateThroughItems
      */
     public function testIterateThroughItems(
         callable $setup,
@@ -148,7 +149,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
             ->setBatchItemsPerPage($batchItemPerPage ?? 2)
             ->forDispatch();
 
-        if ($getCurrentPageCallback) {
+        if ($getCurrentPageCallback !== null) {
             $iteratorConfig->setCurrentPageCallback($getCurrentPageCallback($batchItemRepo));
         }
 

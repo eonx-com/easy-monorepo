@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -17,9 +16,9 @@ use EonX\EasyWebhook\Webhook;
 final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'enabled = false so just pass on the webhook' => [
             Webhook::fromArray([]),
@@ -43,7 +42,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
             static function (WebhookResultInterface $webhookResult): void {
                 self::assertEquals('webhook-id', $webhookResult->getWebhook()->getId());
             },
-            new ArrayStoreStub($this->getRandomGenerator(), 'webhook-id'),
+            new ArrayStoreStub(self::getRandomGenerator(), 'webhook-id'),
         ];
     }
 
@@ -63,8 +62,8 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
             $this->expectException($expectedException);
         }
 
-        $enabled = $enabled ?? true;
-        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator());
+        $enabled ??= true;
+        $store ??= new ArrayStoreStub(self::getRandomGenerator());
         $middleware = new AsyncMiddleware(new NullAsyncDispatcher(), $store, $enabled);
 
         $result = $this->process($middleware, $webhook);

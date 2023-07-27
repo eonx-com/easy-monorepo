@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tokens;
@@ -11,9 +10,6 @@ use stdClass;
 
 final class Jwt implements JwtInterface
 {
-    /**
-     * @param mixed[] $payload
-     */
     public function __construct(
         private array $payload,
         private string $original,
@@ -29,7 +25,7 @@ final class Jwt implements JwtInterface
             return $this->payload[$claim];
         }
 
-        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', static::class, $claim));
+        throw new InvalidArgumentException(\sprintf('In "%s", claim "%s" not found', self::class, $claim));
     }
 
     /**
@@ -54,9 +50,6 @@ final class Jwt implements JwtInterface
         return $this->original;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return $this->payload;

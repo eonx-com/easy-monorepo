@@ -1,24 +1,28 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule\Tests;
 
+use DateTimeZone;
 use EonX\EasySchedule\Event;
 
 final class EventTest extends AbstractTestCase
 {
-    /**
-     * @var \EonX\EasySchedule\Event
-     */
-    private $event;
+    private Event $event;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->event = new Event('command:foo', [
+            '--foo' => 'bar',
+        ]);
+    }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testFiltersPass
      */
-    public function providerTestFiltersPass(): iterable
+    public static function providerTestFiltersPass(): iterable
     {
         yield 'False because at least one filter false' => [[false], [false], false];
 
@@ -26,19 +30,17 @@ final class EventTest extends AbstractTestCase
 
         yield 'true because no filter false and no reject true' => [
             [true],
-            [function (): bool {
-                return false;
-            }],
+            [
+                fn (): bool => false,
+            ],
             true,
         ];
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testNoArgsMethods
      */
-    public function providerTestNoArgsMethods(): iterable
+    public static function providerTestNoArgsMethods(): iterable
     {
         yield ['0 0 1 * *', 'monthly'];
         yield ['0 0 * * 0', 'weekly'];
@@ -76,9 +78,6 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $filters
-     * @param mixed[] $rejects
-     *
      * @dataProvider providerTestFiltersPass
      */
     public function testFiltersPass(array $filters, array $rejects, bool $expected): void
@@ -99,7 +98,7 @@ final class EventTest extends AbstractTestCase
 
     public function testGetDescription(): void
     {
-        self::assertSame('\'command:foo\' --foo=bar', $this->event->getDescription());
+        self::assertSame("'command:foo' --foo=bar", $this->event->getDescription());
     }
 
     public function testGetLockResource(): void
@@ -116,8 +115,6 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @param null|mixed[] $params
-     *
      * @dataProvider providerTestNoArgsMethods
      */
     public function testNoArgsMethods(string $expression, string $method, ?array $params = null): void
@@ -126,7 +123,7 @@ final class EventTest extends AbstractTestCase
             '--foo' => 'bar',
         ]);
 
-        // Ok this is for coverage only, please don't judge me...
+        // Ok this is for coverage only, please don't judge me
         $event->before(function (): void {
         })
             ->then(function (): void {
@@ -139,7 +136,7 @@ final class EventTest extends AbstractTestCase
 
     public function testTimezone(): void
     {
-        $timezone = new \DateTimeZone('Australia/Melbourne');
+        $timezone = new DateTimeZone('Australia/Melbourne');
 
         self::assertSame('UTC', $this->event->setTimezone('utc')->getTimezone());
         self::assertSame('Australia/Melbourne', $this->event->setTimezone($timezone)->getTimezone());
@@ -154,14 +151,5 @@ final class EventTest extends AbstractTestCase
     {
         self::assertSame('0 * * * 1-5', $this->event->weekdays()->hourly()->getCronExpression());
         self::assertIsBool($this->event->isDue());
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->event = new Event('command:foo', [
-            '--foo' => 'bar',
-        ]);
     }
 }

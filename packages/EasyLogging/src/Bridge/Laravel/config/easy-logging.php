@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;

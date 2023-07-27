@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Bridge\Symfony;
@@ -16,41 +15,26 @@ use Symfony\Component\HttpFoundation\Request;
 final class EasyPaginationBundleTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginationResolver
      */
-    public function providerTestPaginationResolver(): iterable
+    public static function providerTestPaginationResolver(): iterable
     {
         yield 'Page_PerPage_Defaults' => [
             __DIR__ . '/fixtures/data/page_perPage_1_15.yaml',
-            $this->createRequest(),
+            self::createRequest(),
             1,
             15,
         ];
 
         yield 'Page_PerPage_2_30' => [
             __DIR__ . '/fixtures/data/page_perPage_1_15.yaml',
-            $this->createRequest([
+            self::createRequest([
                 'page' => 2,
                 'perPage' => 30,
             ]),
             2,
             30,
         ];
-    }
-
-    public function testSanity(): void
-    {
-        $kernel = new KernelStub();
-        $kernel->boot();
-        $container = $kernel->getContainer();
-
-        $paginationProvider = $container->get(PaginationProviderInterface::class);
-        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfig()));
-
-        self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
-        self::assertInstanceOf(PaginationInterface::class, $container->get(PaginationInterface::class));
     }
 
     /**
@@ -77,15 +61,25 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         self::assertSame('page', $pagination->getPageAttribute());
         self::assertSame('perPage', $pagination->getPerPageAttribute());
         self::assertSame(
-            "http://eonx.com/?page={$page}&perPage={$perPage}",
+            "http://eonx.com?page={$page}&perPage={$perPage}",
             $pagination->getUrl($pagination->getPage())
         );
     }
 
-    /**
-     * @param null|mixed[] $query
-     */
-    private function createRequest(?array $query = null): Request
+    public function testSanity(): void
+    {
+        $kernel = new KernelStub();
+        $kernel->boot();
+        $container = $kernel->getContainer();
+
+        $paginationProvider = $container->get(PaginationProviderInterface::class);
+        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfig()));
+
+        self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
+        self::assertInstanceOf(PaginationInterface::class, $container->get(PaginationInterface::class));
+    }
+
+    private static function createRequest(?array $query = null): Request
     {
         return new Request($query ?? [], [], [], [], [], [
             'HTTP_HOST' => 'eonx.com',

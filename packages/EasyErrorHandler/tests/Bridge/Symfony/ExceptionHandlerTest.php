@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony;
@@ -14,9 +13,6 @@ use Throwable;
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
     /**
-     * @param null|mixed[] $config
-     * @param null|mixed[] $translations
-     *
      * @dataProvider providerTestRenderWithDefaultBuilders
      */
     public function testRenderWithDefaultBuilders(
@@ -61,9 +57,6 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
         }
     }
 
-    /**
-     * @param mixed[] $config
-     */
     private function dumpConfigFile(array $config): string
     {
         $filename = __DIR__ . '/tmp_config.yaml';

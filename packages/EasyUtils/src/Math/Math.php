@@ -1,15 +1,25 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Math;
 
+use DivisionByZeroError;
 use EonX\EasyUtils\Exceptions\InvalidDivisionByZeroException;
 use EonX\EasyUtils\Interfaces\MathComparisonInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 
-class Math implements MathInterface
+final class Math implements MathInterface
 {
+    private string $decimalSeparator;
+
+    private int $roundMode;
+
+    private int $roundPrecision;
+
+    private int $scale;
+
+    private string $thousandsSeparator;
+
     /**
      * @param int|null $roundMode [optional] <p>
      * One of PHP_ROUND_HALF_UP,
@@ -19,11 +29,11 @@ class Math implements MathInterface
      * </p>
      */
     public function __construct(
-        private ?int $roundPrecision = null,
-        private ?int $roundMode = null,
-        private ?int $scale = null,
-        private ?string $decimalSeparator = null,
-        private ?string $thousandsSeparator = null,
+        ?int $roundPrecision = null,
+        ?int $roundMode = null,
+        ?int $scale = null,
+        ?string $decimalSeparator = null,
+        ?string $thousandsSeparator = null,
     ) {
         $this->roundPrecision = $roundPrecision ?? self::ROUND_PRECISION;
         $this->roundMode = $roundMode ?? self::ROUND_MODE;
@@ -58,7 +68,7 @@ class Math implements MathInterface
     {
         try {
             $value = \bcdiv($dividend, $divisor, $this->scale);
-        } catch (\DivisionByZeroError $exception) {
+        } catch (DivisionByZeroError $exception) {
             throw new InvalidDivisionByZeroException('Division by 0 is invalid', 0, $exception);
         }
 
@@ -76,11 +86,11 @@ class Math implements MathInterface
 
     public function round(string $value, ?int $precision = null, ?int $mode = null): string
     {
-        $precision = (int)($precision ?? $this->roundPrecision);
-        /** @phpstan-var 1|2|3|4 $mode */
-        $mode = $mode ?? $this->roundMode;
+        $precision ??= $this->roundPrecision;
+        /** @phpstan-var 1|2|3|4 $roundMode */
+        $roundMode = $mode ?? $this->roundMode;
 
-        $rounded = \round((float)$value, $precision, $mode);
+        $rounded = \round((float)$value, $precision, $roundMode);
 
         return \number_format($rounded, $precision, $this->decimalSeparator, $this->thousandsSeparator);
     }

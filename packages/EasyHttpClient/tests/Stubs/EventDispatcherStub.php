@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Tests\Stubs;
@@ -11,14 +10,9 @@ final class EventDispatcherStub implements EventDispatcherInterface
     /**
      * @var object[]
      */
-    private $dispatchedEvents = [];
+    private array $dispatchedEvents = [];
 
-    /**
-     * @param object $event
-     *
-     * @return object
-     */
-    public function dispatch($event)
+    public function dispatch(object $event): object
     {
         $this->dispatchedEvents[] = $event;
 

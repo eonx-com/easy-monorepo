@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Symfony\DependencyInjection\Compiler;
@@ -13,9 +12,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class AddMessengerMiddlewarePass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const RETRY_LISTENER_ID = 'messenger.retry.send_failed_message_for_retry_listener';
 
     public function process(ContainerBuilder $container): void

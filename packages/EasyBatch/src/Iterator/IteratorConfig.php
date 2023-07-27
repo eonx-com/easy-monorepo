@@ -1,38 +1,30 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Iterator;
+
+use Closure;
 
 final class IteratorConfig
 {
     private ?int $batchItemsPerPage = null;
 
-    /**
-     * @var callable|null
-     */
-    private $currentPageCallback;
+    private ?Closure $currentPageCallback = null;
 
-    /**
-     * @var callable|null
-     */
-    private $extendPaginator;
+    private ?Closure $extendPaginator = null;
 
     private bool $forCancel = false;
 
     private bool $forDispatch = false;
 
-    /**
-     * @var callable
-     */
-    private $func;
+    private Closure $func;
 
     public function __construct(
         private readonly int|string $batchId,
         callable $func,
         private readonly ?string $dependsOnName = null,
     ) {
-        $this->func = $func;
+        $this->func = $func(...);
     }
 
     public static function create(int|string $batchId, callable $func, ?string $dependsOnName = null): self
@@ -111,14 +103,14 @@ final class IteratorConfig
 
     public function setCurrentPageCallback(callable $currentPageCallback): self
     {
-        $this->currentPageCallback = $currentPageCallback;
+        $this->currentPageCallback = $currentPageCallback(...);
 
         return $this;
     }
 
     public function setExtendPaginator(callable $extendPaginator): self
     {
-        $this->extendPaginator = $extendPaginator;
+        $this->extendPaginator = $extendPaginator(...);
 
         return $this;
     }

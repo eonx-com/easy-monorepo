@@ -1,10 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\EventListener\ValidationExceptionListener;
+use ApiPlatform\Symfony\Validator\EventListener\ValidationExceptionListener;
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
@@ -18,14 +17,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var mixed[]
-     */
     private readonly array $configs;
 
-    /**
-     * @param null|mixed[] $configs
-     */
     public function __construct(?array $configs = null)
     {
         $this->configs = $configs ?? [];

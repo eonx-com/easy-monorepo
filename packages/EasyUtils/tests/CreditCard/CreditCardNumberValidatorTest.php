@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\CreditCard;
@@ -10,21 +9,9 @@ use EonX\EasyUtils\Tests\AbstractTestCase;
 final class CreditCardNumberValidatorTest extends AbstractTestCase
 {
     /**
-     * @dataProvider provideCardNumbers
+     * @see testIsCreditCardNumberValidSucceeds
      */
-    public function testIsCreditCardNumberValidSucceeds(string $number, bool $expectedResult): void
-    {
-        $validator = new CreditCardNumberValidator();
-
-        $result = $validator->isCreditCardNumberValid($number);
-
-        self::assertSame($expectedResult, $result);
-    }
-
-    /**
-     * @return iterable<mixed>
-     */
-    public function provideCardNumbers(): iterable
+    public static function provideCardNumbers(): iterable
     {
         yield 'maestro' => [
             'number' => '6771 7980 2100 0008',
@@ -105,5 +92,17 @@ final class CreditCardNumberValidatorTest extends AbstractTestCase
             'number' => '6243 0300 0000 0001 3201',
             'expectedResult' => false,
         ];
+    }
+
+    /**
+     * @dataProvider provideCardNumbers
+     */
+    public function testIsCreditCardNumberValidSucceeds(string $number, bool $expectedResult): void
+    {
+        $validator = new CreditCardNumberValidator();
+
+        $result = $validator->isCreditCardNumberValid($number);
+
+        self::assertSame($expectedResult, $result);
     }
 }

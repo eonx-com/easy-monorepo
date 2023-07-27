@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bridge\EasyUtils;
@@ -15,11 +14,6 @@ final class SensitiveDataSanitizerProcessor extends AbstractSelfProcessorConfigP
     ) {
     }
 
-    /**
-     * @param mixed[] $record
-     *
-     * @return mixed[]
-     */
     public function __invoke(array $record): array
     {
         return $this->sensitiveDataSanitizer->sanitize($record);

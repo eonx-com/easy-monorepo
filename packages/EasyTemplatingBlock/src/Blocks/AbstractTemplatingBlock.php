@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Blocks;
@@ -11,24 +10,13 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
 {
     use HasPriorityTrait;
 
-    /**
-     * @var null|mixed[]
-     */
-    private $context;
+    private ?array $context = null;
 
-    /**
-     * @var string
-     */
-    private $name;
-
-    public function __construct(string $name)
-    {
-        $this->name = $name;
+    public function __construct(
+        private string $name,
+    ) {
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getContext(): ?array
     {
         return $this->context;
@@ -39,9 +27,6 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
         return $this->name;
     }
 
-    /**
-     * @param null|mixed[] $context
-     */
     public function setContext(?array $context = null): TemplatingBlockInterface
     {
         $this->context = $context;

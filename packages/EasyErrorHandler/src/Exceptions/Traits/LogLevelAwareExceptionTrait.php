@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
@@ -8,10 +7,7 @@ use Monolog\Logger;
 
 trait LogLevelAwareExceptionTrait
 {
-    /**
-     * @var int
-     */
-    protected $logLevel = Logger::INFO;
+    protected int $logLevel = Logger::INFO;
 
     public function getLogLevel(): int
     {

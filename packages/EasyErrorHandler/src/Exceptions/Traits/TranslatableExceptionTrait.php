@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
@@ -8,25 +7,13 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 
 trait TranslatableExceptionTrait
 {
-    /**
-     * @var null|string
-     */
-    protected $domain;
+    protected ?string $domain = null;
 
-    /**
-     * @var mixed[]
-     */
-    protected $messageParams = [];
+    protected array $messageParams = [];
 
-    /**
-     * @var null|string
-     */
-    protected $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
+    protected string $userMessage = TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
 
-    /**
-     * @var mixed[]
-     */
-    protected $userMessageParams = [];
+    protected array $userMessageParams = [];
 
     public function getDomain(): ?string
     {
@@ -38,7 +25,7 @@ trait TranslatableExceptionTrait
         return $this->messageParams;
     }
 
-    public function getUserMessage(): ?string
+    public function getUserMessage(): string
     {
         return $this->userMessage;
     }
@@ -60,8 +47,6 @@ trait TranslatableExceptionTrait
 
     /**
      * Sets the exception message parameters.
-     *
-     * @param mixed[] $messageParams
      */
     public function setMessageParams(array $messageParams): self
     {
@@ -75,15 +60,13 @@ trait TranslatableExceptionTrait
      */
     public function setUserMessage(?string $userMessage = null): self
     {
-        $this->userMessage = $userMessage;
+        $this->userMessage = $userMessage ?? TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
 
         return $this;
     }
 
     /**
      * Sets the user-friendly message parameters.
-     *
-     * @param mixed[] $userMessageParams
      */
     public function setUserMessageParams(array $userMessageParams): self
     {

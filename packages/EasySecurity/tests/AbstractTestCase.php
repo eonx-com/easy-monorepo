@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
@@ -16,10 +15,7 @@ abstract class AbstractTestCase extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var string
-     */
-    protected static $mainJwtClaim = 'https://eonx.com/user';
+    protected static string $mainJwtClaim = 'https://eonx.com/user';
 
     protected function tearDown(): void
     {

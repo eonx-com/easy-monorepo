@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bridge\Symfony\DependencyInjection;
@@ -11,9 +10,6 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 final class EasyRepositoryExtension extends Extension
 {
-    /**
-     * @param mixed[] $configs
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $container

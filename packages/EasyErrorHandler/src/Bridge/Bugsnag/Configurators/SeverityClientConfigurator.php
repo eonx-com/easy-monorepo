@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators;
@@ -16,9 +15,9 @@ use Throwable;
 final class SeverityClientConfigurator extends AbstractClientConfigurator
 {
     private const MAPPING = [
+        Logger::ERROR => SeverityAwareExceptionInterface::SEVERITY_ERROR,
         Logger::INFO => SeverityAwareExceptionInterface::SEVERITY_INFO,
         Logger::WARNING => SeverityAwareExceptionInterface::SEVERITY_WARNING,
-        Logger::ERROR => SeverityAwareExceptionInterface::SEVERITY_ERROR,
     ];
 
     public function __construct(

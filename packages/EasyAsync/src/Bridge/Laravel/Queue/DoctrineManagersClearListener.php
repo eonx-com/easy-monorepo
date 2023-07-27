@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Laravel\Queue;
@@ -12,31 +11,13 @@ use Psr\Log\NullLogger;
 final class DoctrineManagersClearListener
 {
     /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var null|string[]
-     */
-    private $managers;
-
-    /**
-     * @var \EonX\EasyAsync\Doctrine\ManagersClearer
-     */
-    private $managersClearer;
-
-    /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      */
     public function __construct(
-        ManagersClearer $managersClearer,
-        ?array $managers = null,
-        ?LoggerInterface $logger = null,
+        private ManagersClearer $managersClearer,
+        private ?array $managers = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
-        $this->managersClearer = $managersClearer;
-        $this->managers = $managers;
-        $this->logger = $logger ?? new NullLogger();
     }
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification;
@@ -14,46 +13,34 @@ use EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface;
 use EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Queue\QueueMessage;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 final class NotificationClient implements NotificationClientInterface
 {
-    /**
-     * @var null|\EonX\EasyNotification\Interfaces\ConfigInterface
-     */
-    private $config;
+    private ?ConfigInterface $config = null;
 
     /**
      * @var \EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface[]
      */
-    private $configurators;
+    private array $configurators;
 
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
-    /**
-     * @var \EonX\EasyNotification\Interfaces\QueueTransportFactoryInterface
-     */
-    private $transportFactory;
-
-    /**
-     * @param iterable<mixed> $configurators
-     */
     public function __construct(
         iterable $configurators,
-        QueueTransportFactoryInterface $transportFactory,
+        private QueueTransportFactoryInterface $transportFactory,
         ?HttpClientInterface $httpClient = null,
     ) {
-        $this->transportFactory = $transportFactory;
         $this->httpClient = $httpClient ?? HttpClient::create();
 
-        $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
+        /** @var \EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface[] $filteredAndSortedConfigurators */
+        $filteredAndSortedConfigurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, QueueMessageConfiguratorInterface::class)
         );
+        $this->configurators = $filteredAndSortedConfigurators;
     }
 
     public function deleteMessage(string $messageId): void
@@ -67,9 +54,7 @@ final class NotificationClient implements NotificationClientInterface
 
     /**
      * @param string[] $topics
-     * @param null|mixed[] $options HTTP Client options
-     *
-     * @return mixed[]
+     * @param array|null $options HTTP Client options
      */
     public function getMessages(array $topics, ?array $options = null): array
     {
@@ -134,11 +119,6 @@ final class NotificationClient implements NotificationClientInterface
         return $this;
     }
 
-    /**
-     * @param null|mixed[] $options
-     *
-     * @return mixed[]
-     */
     private function sendApiRequest(string $method, string $path, ?array $options = null): array
     {
         if ($this->config === null) {
@@ -156,7 +136,7 @@ final class NotificationClient implements NotificationClientInterface
             $response = $this->httpClient->request($method, $this->config->getApiUrl() . $path, $options);
 
             return $response->getContent() !== '' ? $response->toArray() : [];
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             throw new ApiRequestFailedException(
                 \sprintf('API Request failed: %s', $throwable->getMessage()),
                 $throwable->getCode(),

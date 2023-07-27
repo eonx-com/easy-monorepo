@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization;
@@ -8,19 +7,19 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface[]
      */
-    private $permissionsProviders;
+    private array $permissionsProviders;
 
     /**
      * @var \EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface[]
      */
-    private $rolesProviders;
+    private array $rolesProviders;
 
     /**
      * @param iterable<\EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface> $rolesProviders
@@ -72,10 +71,7 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
     }
 
     /**
-     * @param iterable<mixed> $providers
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     private function filterProviders(iterable $providers, string $class): array
     {

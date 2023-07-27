@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Tests\Bridge\Symfony;
@@ -13,7 +12,7 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
     private ?KernelInterface $kernel = null;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {
@@ -21,9 +20,9 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
             return $this->kernel;
         }
 
-        $kernel = new KernelStub($configs);
-        $kernel->boot();
+        $this->kernel = new KernelStub($configs);
+        $this->kernel->boot();
 
-        return $this->kernel = $kernel;
+        return $this->kernel;
     }
 }

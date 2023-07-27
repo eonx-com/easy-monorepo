@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -14,37 +13,16 @@ use Psr\Log\NullLogger;
 
 final class SyncRetryMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var bool
-     */
-    private $asyncEnabled;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface
-     */
-    private $resultStore;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface
-     */
-    private $retryStrategy;
+    private bool $asyncEnabled;
 
     public function __construct(
-        ResultStoreInterface $resultStore,
-        WebhookRetryStrategyInterface $retryStrategy,
+        private ResultStoreInterface $resultStore,
+        private WebhookRetryStrategyInterface $retryStrategy,
         ?bool $asyncEnabled = null,
-        ?LoggerInterface $logger = null,
+        private LoggerInterface $logger = new NullLogger(),
         ?int $priority = null,
     ) {
-        $this->resultStore = $resultStore;
-        $this->retryStrategy = $retryStrategy;
         $this->asyncEnabled = $asyncEnabled ?? true;
-        $this->logger = $logger ?? new NullLogger();
 
         parent::__construct($priority);
     }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {

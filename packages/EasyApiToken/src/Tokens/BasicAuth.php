@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tokens;
@@ -25,9 +24,6 @@ final class BasicAuth implements BasicAuthInterface
         return $this->password;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return [

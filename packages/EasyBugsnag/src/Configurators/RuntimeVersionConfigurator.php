@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Configurators;
@@ -8,22 +7,11 @@ use Bugsnag\Client;
 
 final class RuntimeVersionConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var string
-     */
-    private $runtime;
-
-    /**
-     * @var string
-     */
-    private $version;
-
-    public function __construct(string $runtime, string $version)
-    {
-        $this->runtime = $runtime;
-        $this->version = $version;
-
-        parent::__construct(null);
+    public function __construct(
+        private string $runtime,
+        private string $version,
+    ) {
+        parent::__construct();
     }
 
     public function configure(Client $bugsnag): void

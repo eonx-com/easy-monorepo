@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\DataTransferObjects;
@@ -12,9 +11,6 @@ final class ErrorCodeCategoryDto
     ) {
     }
 
-    /**
-     * @return mixed[]
-     */
     public function asArray(): array
     {
         return [

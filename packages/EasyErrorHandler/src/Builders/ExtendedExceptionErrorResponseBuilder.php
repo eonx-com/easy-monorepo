@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Builders;
@@ -34,7 +33,7 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
     private readonly array $exceptionKeys;
 
     /**
-     * @param null|string[] $exceptionKeys
+     * @param string[]|null $exceptionKeys
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
@@ -48,9 +47,6 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
         parent::__construct($key, $priority);
     }
 
-    /**
-     * @return mixed[]|null
-     */
     protected function doBuildValue(Throwable $throwable, array $data): ?array
     {
         // Skip if not verbose

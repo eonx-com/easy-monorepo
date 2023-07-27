@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
@@ -13,6 +12,6 @@ abstract class AbstractSecurityContextConfigurator implements SecurityContextCon
 
     public function __construct(?int $priority = null)
     {
-        $this->priority = $priority ?? 0;
+        $this->doSetPriority($priority);
     }
 }

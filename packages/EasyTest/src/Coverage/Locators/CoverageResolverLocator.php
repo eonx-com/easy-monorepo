@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\Locators;
@@ -12,13 +11,11 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class CoverageResolverLocator implements CoverageResolverLocatorInterface
 {
     /**
-     * @var \Symfony\Contracts\Service\ServiceProviderInterface
+     * @param \Symfony\Contracts\Service\ServiceProviderInterface<\EonX\EasyTest\Interfaces\CoverageResolverInterface> $serviceLocator
      */
-    private $serviceLocator;
-
-    public function __construct(ServiceProviderInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
+    public function __construct(
+        private ServiceProviderInterface $serviceLocator,
+    ) {
     }
 
     public function getCoverageResolver(string $filePath): CoverageResolverInterface

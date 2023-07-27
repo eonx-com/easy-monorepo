@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Symfony\Stubs;
@@ -13,16 +12,16 @@ use Symfony\Component\HttpKernel\Kernel;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
-     * @var null|string[]
+     * @var string[]
      */
-    private $configs;
+    private array $configs;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     public function __construct(string $environment, bool $debug, ?array $configs = null)
     {
-        $this->configs = $configs;
+        $this->configs = $configs ?? [];
 
         parent::__construct($environment, $debug);
     }
@@ -44,7 +43,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        foreach ($this->configs ?? [] as $config) {
+        foreach ($this->configs as $config) {
             $loader->load($config);
         }
     }

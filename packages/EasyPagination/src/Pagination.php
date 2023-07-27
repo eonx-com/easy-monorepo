@@ -1,53 +1,29 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination;
 
+use Closure;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
-use Laminas\Uri\Uri;
+use Spatie\Url\Url;
 
 final class Pagination implements PaginationInterface
 {
-    /**
-     * @var int
-     */
-    private $page;
+    private string $pageAttribute;
 
-    /**
-     * @var string
-     */
-    private $pageAttribute;
+    private string $perPageAttribute;
 
-    /**
-     * @var int
-     */
-    private $perPage;
+    private string $url;
 
-    /**
-     * @var string
-     */
-    private $perPageAttribute;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var null|callable
-     */
-    private $urlResolver;
+    private ?Closure $urlResolver = null;
 
     public function __construct(
-        int $page,
-        int $perPage,
+        private int $page,
+        private int $perPage,
         ?string $pageAttribute = null,
         ?string $perPageAttribute = null,
         ?string $url = null,
     ) {
-        $this->page = $page;
-        $this->perPage = $perPage;
         $this->pageAttribute = $pageAttribute ?? self::DEFAULT_PAGE_ATTRIBUTE;
         $this->perPageAttribute = $perPageAttribute ?? self::DEFAULT_PER_PAGE_ATTRIBUTE;
         $this->url = $url ?? self::DEFAULT_URL;
@@ -87,26 +63,25 @@ final class Pagination implements PaginationInterface
     {
         $urlResolver = $this->urlResolver ?? $this->getDefaultUrlResolver();
 
-        return $urlResolver(new Uri($this->url), $this, $page)
-            ->toString();
+        return (string)$urlResolver(Url::fromString($this->url), $this, $page);
     }
 
     public function setUrlResolver(?callable $urlResolver = null): PaginationInterface
     {
-        $this->urlResolver = $urlResolver;
+        $this->urlResolver = $urlResolver === null ? null : $urlResolver(...);
 
         return $this;
     }
 
     private function getDefaultUrlResolver(): callable
     {
-        return static function (Uri $uri, PaginationInterface $pagination, int $page): Uri {
-            $query = $uri->getQueryAsArray();
+        return static function (Url $url, PaginationInterface $pagination, int $page): Url {
+            $query = $url->getAllQueryParameters();
 
             $query[$pagination->getPageAttribute()] = $page > 0 ? $page : 1;
             $query[$pagination->getPerPageAttribute()] = $pagination->getPerPage();
 
-            return $uri->setQuery($query);
+            return $url->withQueryParameters($query);
         };
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
@@ -13,16 +12,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class FourthLevel
 {
-    #[ORM\OneToMany(mappedBy: 'badFourthLevel', targetEntity: ThirdLevel::class, cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: ThirdLevel::class, cascade: ['persist'])]
     private ThirdLevel $badThirdLevel;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
-    #[ORM\Column(type: Types::INTEGER)]
     #[Groups(['barcelona', 'chicago'])]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $level = 4;
 
     public function getBadThirdLevel(): ThirdLevel

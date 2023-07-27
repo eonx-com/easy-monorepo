@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException as LegacyInvalidArgumentException;
 use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
@@ -22,6 +20,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_NOT_VALID = 'exceptions.not_valid';
 
+    private const MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR = '/The type of the "(\w+)" attribute for class "(.*)" must be' .
+    ' one of "(\w+)" \("(\w+)" given\)\./';
+
+    private const MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED = '/The input data is misformatted\./';
+
     private const MESSAGE_PATTERN_INVALID_DATE = '/This value is not a valid date\/time\./';
 
     private const MESSAGE_PATTERN_INVALID_IRI = '/Invalid IRI "(.+)"/';
@@ -31,8 +34,11 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_PATTERN_NOT_IRI = '/Expected IRI or nested document for attribute "(\w+)", "(\w+)" given/';
 
-    private const MESSAGE_PATTERN_NO_PARAMETER = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]? from serialized' .
-    ' data because its constructor requires parameter "(\w+)" to be present/';
+    private const MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]?' .
+    ' from serialized data because its constructor requires parameter "(\w+)" to be present/';
+
+    private const MESSAGE_PATTERN_NO_PARAMETER_SYMFONY = '/Cannot create an instance of [\"]?([\w\\\\]+)[\"]?' .
+    ' from serialized data because its constructor requires the following parameters to be present : "(.*)"/';
 
     private const MESSAGE_PATTERN_TYPE_ERROR = '/The type of the "(\w+)" attribute must be "(\w+)", "(\w+)" given/';
 
@@ -47,14 +53,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const VIOLATION_VALUE_SHOULD_BE_PRESENT = 'This value should be present.';
 
-    /**
-     * @var mixed[]
-     */
     private readonly array $keys;
 
-    /**
-     * @param null|mixed[] $keys
-     */
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
@@ -69,34 +69,23 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     {
         $message = $throwable->getMessage();
 
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        $invalidArgumentExceptionClass = null;
-        if (\class_exists(InvalidArgumentException::class)) {
-            $invalidArgumentExceptionClass = InvalidArgumentException::class;
-        }
-
         return match ($throwable::class) {
-            $invalidArgumentExceptionClass, LegacyInvalidArgumentException::class =>
+            InvalidArgumentException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
-                \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $message) === 1,
+                \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $message) === 1 ||
+                \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $message) === 1,
             UnexpectedValueException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
-                \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1,
+                \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1 ||
+                \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $message) === 1,
             default => false
         };
     }
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) We have many exceptions
-     */
     public function buildData(Throwable $throwable, array $data): array
     {
         if (self::supports($throwable) === false) {
@@ -108,18 +97,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data[$messageKey] = $this->translator->trans(self::MESSAGE_NOT_VALID, []);
 
-        $isInvalidArgumentException = null;
-
-        // TODO: refactor in 5.0. Use the ApiPlatform\Symfony\Bundle\ApiPlatformBundle class only.
-        if (\class_exists(InvalidArgumentException::class)) {
-            $isInvalidArgumentException = $throwable instanceof InvalidArgumentException;
-        }
-
-        if (\class_exists(InvalidArgumentException::class) === false) {
-            $isInvalidArgumentException = $throwable instanceof LegacyInvalidArgumentException;
-        }
-
-        if ($isInvalidArgumentException) {
+        if ($throwable instanceof InvalidArgumentException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data[$violationsKey] = [
@@ -132,11 +110,25 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         }
 
         if ($throwable instanceof MissingConstructorArgumentsException) {
+            // If exception thrown in ApiPlatform's AbstractItemNormalizer
             $matches = [];
-            \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER, $throwable->getMessage(), $matches);
-            $data[$violationsKey] = [
-                $matches[2] => [self::VIOLATION_VALUE_SHOULD_BE_PRESENT],
-            ];
+            \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $throwable->getMessage(), $matches);
+            if ($matches !== []) {
+                $data[$violationsKey][$matches[2]] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+            }
+
+            // If exception thrown in Symfony's AbstractNormalizer
+            $matches = [];
+            \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $throwable->getMessage(), $matches);
+            $matches = \explode('", "', $matches[2] ?? '');
+            foreach ($matches as $match) {
+                if ($match === '') {
+                    continue;
+                }
+
+                $match = \str_replace('$', '', $match);
+                $data[$violationsKey][$match] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+            }
         }
 
         if ($throwable instanceof UnexpectedValueException) {
@@ -152,6 +144,28 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                                 : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[2], $matches[3]),
                         ],
                     ];
+
+                    break;
+                case \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $throwable->getMessage()) === 1:
+                    $hasAttributeTypeError = (bool)\preg_match(
+                        self::MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR,
+                        (string)$throwable->getPrevious()?->getMessage(),
+                        $matches
+                    );
+
+                    if ($hasAttributeTypeError === true) {
+                        $data[$violationsKey] = [
+                            $matches[1] => [
+                                $matches[4] === self::VALUE_NULL
+                                    ? (new NotNull())->message
+                                    : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[3], $matches[4]),
+                            ],
+                        ];
+                    }
+
+                    if ($hasAttributeTypeError === false) {
+                        $data[$violationsKey] = [$message];
+                    }
 
                     break;
                 case \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1:

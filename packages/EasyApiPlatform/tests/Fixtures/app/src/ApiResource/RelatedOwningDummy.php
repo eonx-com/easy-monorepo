@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
@@ -13,15 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
 class RelatedOwningDummy
 {
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\OneToOne(mappedBy: 'relatedOwningDummy', targetEntity: Dummy::class, cascade: ['persist'])]
-    private ?Dummy $ownedDummy;
+    private ?Dummy $ownedDummy = null;
 
     public function getId(): int
     {

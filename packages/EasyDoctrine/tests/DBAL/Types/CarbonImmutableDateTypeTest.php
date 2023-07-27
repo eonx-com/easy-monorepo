@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\DBAL\Types;
@@ -16,12 +15,17 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
  */
 final class CarbonImmutableDateTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
+    }
+
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPhpValueSucceeds
      */
-    public function provideConvertToPhpValues(): iterable
+    public static function provideConvertToPhpValues(): iterable
     {
         $datetime = new DateTimeImmutable();
         $datetime = $datetime->setTime(0, 0, 0, 0);
@@ -40,11 +44,9 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideConvertToPhpValues
      */
-    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    public function testConvertToPhpValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType $type */
         $type = Type::getType((new CarbonImmutableDateType())->getName());
@@ -57,12 +59,5 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
         $phpValue = $type->convertToPHPValue($value, $platform);
 
         self::assertEquals($expectedValue, $phpValue);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
     }
 }

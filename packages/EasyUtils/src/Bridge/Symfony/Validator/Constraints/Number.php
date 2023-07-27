@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Bridge\Symfony\Validator\Constraints;
@@ -18,7 +17,6 @@ final class Number extends Composite
     /**
      * @param \Symfony\Component\Validator\Constraint[]|null $constraints
      * @param string[]|null $groups
-     * @param mixed|null $payload
      */
     public function __construct(?array $constraints = null, ?array $groups = null, mixed $payload = null)
     {
@@ -37,7 +35,7 @@ final class Number extends Composite
 
     public function validatedBy(): string
     {
-        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
+        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
     }
 
     protected function getCompositeOption(): string

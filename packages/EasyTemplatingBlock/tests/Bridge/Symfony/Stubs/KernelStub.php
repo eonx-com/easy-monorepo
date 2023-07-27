@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Tests\Bridge\Symfony\Stubs;
@@ -19,10 +18,10 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private $configs;
+    private array $configs;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     public function __construct(?array $configs = null)
     {

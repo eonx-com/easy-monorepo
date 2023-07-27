@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Ack;
@@ -17,16 +16,16 @@ final class AbaParser extends Parser
 
         $this->acknowledgement = new PaymentAcknowledgement([
             'attributes' => $result['@attributes'] ?? null,
-            'paymentId' => $result['PaymentId'] ?? null,
-            'originalMessageId' => $result['OriginalMessageId'] ?? null,
-            'dateTime' => $result['DateTime'] ?? null,
-            'customerId' => $result['CustomerId'] ?? null,
             'companyName' => $result['CompanyName'] ?? null,
-            'userMessage' => $result['UserMessage'] ?? null,
+            'customerId' => $result['CustomerId'] ?? null,
+            'dateTime' => $result['DateTime'] ?? null,
             'detailedMessage' => $result['DetailedMessage'] ?? null,
-            'originalFilename' => $result['OriginalFilename'] ?? null,
-            'originalReference' => $result['OriginalReference'] ?? null,
             'issues' => $this->extractIssues($result['Issues']['Issue'] ?? null),
+            'originalFilename' => $result['OriginalFilename'] ?? null,
+            'originalMessageId' => $result['OriginalMessageId'] ?? null,
+            'originalReference' => $result['OriginalReference'] ?? null,
+            'paymentId' => $result['PaymentId'] ?? null,
+            'userMessage' => $result['UserMessage'] ?? null,
         ]);
     }
 }

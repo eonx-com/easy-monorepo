@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\Configurators;
@@ -22,9 +21,6 @@ final class NameRestrictedExpressionFunctionConfigurator extends AbstractNameRes
         }));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function getNames(): array
     {
         return ['restricted'];

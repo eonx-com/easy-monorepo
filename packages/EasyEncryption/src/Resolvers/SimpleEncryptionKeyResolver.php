@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Resolvers;
@@ -7,29 +6,16 @@ namespace EonX\EasyEncryption\Resolvers;
 use EonX\EasyEncryption\Exceptions\CouldNotResolveEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Utils\KeyLength;
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
 
 final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
 {
-    /**
-     * @var string
-     */
-    private $encryptionKey;
-
-    /**
-     * @var string
-     */
-    private $keyName;
-
-    /**
-     * @var null|string
-     */
-    private $salt;
-
-    public function __construct(string $keyName, string $encryptionKey, ?string $salt = null)
-    {
-        $this->keyName = $keyName;
-        $this->encryptionKey = $encryptionKey;
-        $this->salt = $salt;
+    public function __construct(
+        private string $keyName,
+        private string $encryptionKey,
+        private ?string $salt = null,
+    ) {
     }
 
     public function supportsKey(string $keyName): bool
@@ -37,7 +23,7 @@ final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
         return $this->keyName === $keyName;
     }
 
-    protected function doResolveKey(string $keyName)
+    protected function doResolveKey(string $keyName): string|array|EncryptionKey|EncryptionKeyPair
     {
         // Key itself is enough
         if (KeyLength::isEncryptionKeyLength($this->encryptionKey)) {

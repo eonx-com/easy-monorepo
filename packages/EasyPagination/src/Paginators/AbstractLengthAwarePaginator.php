@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
@@ -39,18 +38,15 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
         return $this->getCurrentPage() > 1;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return \array_merge_recursive(parent::toArray(), [
             'pagination' => [
                 'firstPageUrl' => $this->getFirstPageUrl(),
-                'lastPageUrl' => $this->getLastPageUrl(),
-                'totalPages' => $this->getTotalPages(),
                 'hasNextPage' => $this->hasNextPage(),
                 'hasPreviousPage' => $this->hasPreviousPage(),
+                'lastPageUrl' => $this->getLastPageUrl(),
+                'totalPages' => $this->getTotalPages(),
             ],
         ]);
     }

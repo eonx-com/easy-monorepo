@@ -1,15 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
 trait StatusCodeAwareExceptionTrait
 {
-    /**
-     * @var int
-     */
-    protected $statusCode = 500;
+    protected int $statusCode = 500;
 
     public function getStatusCode(): int
     {

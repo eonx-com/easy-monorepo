@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Symfony\DependencyInjection;
@@ -14,32 +13,18 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyWebhookExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const SIGNATURE_PARAMS = [
-        BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
         BridgeConstantsInterface::PARAM_SECRET => 'secret',
+        BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
     ];
 
-    /**
-     * @var mixed[]
-     */
-    private $config;
+    private array $config;
+
+    private ContainerBuilder $container;
+
+    private PhpFileLoader $loader;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private $container;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\Loader\PhpFileLoader
-     */
-    private $loader;
-
-    /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

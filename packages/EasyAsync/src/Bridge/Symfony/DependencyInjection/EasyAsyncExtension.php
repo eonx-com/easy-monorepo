@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection;
@@ -14,9 +13,6 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyAsyncExtension extends Extension
 {
-    /**
-     * @var mixed[]
-     */
     private array $config;
 
     private ContainerBuilder $container;
@@ -24,8 +20,6 @@ final class EasyAsyncExtension extends Extension
     private PhpFileLoader $loader;
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

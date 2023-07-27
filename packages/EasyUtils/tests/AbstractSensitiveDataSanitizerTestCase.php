@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
@@ -13,9 +12,9 @@ use EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto;
 abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testSanitize
      */
-    public function providerTestSanitize(): iterable
+    public static function providerTestSanitize(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
@@ -111,6 +110,17 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"token-to-be-masked\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"token-to-be-masked\"}',
                 'maskPhoneNumber' => '{"phoneNumber":"token-to-be-masked"}',
+                'maskArray' => '{"auth":["test",null]}',
+                'maskArrayWithEscaping' => '{\"auth\":[\"test\"]}',
+                'maskArraySpaceBeforeValue' => '{"auth": ["test"]}',
+                'maskArraySpaceAfterKey' => '{"auth" :["test"]}',
+                'maskArrayWithBothSpaces' => '{"auth" : ["test"]}',
+                'maskArrayWithDoubleSpaces' => '{"auth"  :  ["test"]}',
+                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [\"test\"]}',
+                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[\"test\"]}',
+                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [\"test\"]}',
+                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [\"test\"]}',
+
             ],
             'expectedOutput' => [
                 'maskToken' => '{"token":"*REDACTED*"}',
@@ -124,10 +134,21 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"*REDACTED*\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"*REDACTED*\"}',
                 'maskPhoneNumber' => '{"phoneNumber":"*REDACTED*"}',
+                'maskArray' => '{"auth":[*REDACTED*]}',
+                'maskArrayWithEscaping' => '{\"auth\":[*REDACTED*]}',
+                'maskArraySpaceBeforeValue' => '{"auth": [*REDACTED*]}',
+                'maskArraySpaceAfterKey' => '{"auth" :[*REDACTED*]}',
+                'maskArrayWithBothSpaces' => '{"auth" : [*REDACTED*]}',
+                'maskArrayWithDoubleSpaces' => '{"auth"  :  [*REDACTED*]}',
+                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [*REDACTED*]}',
+                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[*REDACTED*]}',
+                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [*REDACTED*]}',
+                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [*REDACTED*]}',
             ],
             'maskKeys' => [
                 'token',
                 'phonenumber',
+                'auth',
             ],
         ];
         yield 'Mask card numbers' => [
@@ -183,8 +204,6 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $input
-     * @param mixed[] $expectedOutput
      * @param string[]|null $keysToMask
      *
      * @dataProvider providerTestSanitize
@@ -196,8 +215,5 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         self::assertEquals($expectedOutput, $sanitizer->sanitize($input));
     }
 
-    /**
-     * @param mixed[]|null $keysToMask
-     */
     abstract protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface;
 }

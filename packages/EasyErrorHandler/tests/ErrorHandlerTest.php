@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests;
@@ -18,9 +17,9 @@ use Throwable;
 final class ErrorHandlerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testReport
      */
-    public function providerTestReport(): iterable
+    public static function providerTestReport(): iterable
     {
         yield 'Simple report' => [
             'throwable' => new Exception('message'),

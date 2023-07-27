@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\DBAL\Types;
@@ -10,39 +9,27 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
+    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
+
+    public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+
+    public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
+
+    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+
     private static ?DateTimeZone $utc = null;
 
     /**
-     * @var string
-     */
-    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
-
-    /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return $value;
@@ -56,11 +43,9 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?CarbonImmutable
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?CarbonImmutable
     {
         if ($value === null || $value instanceof CarbonImmutable) {
             return $value;
@@ -83,13 +68,10 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
         throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
     }
 
-    /**
-     * @param mixed[] $fieldDeclaration
-     */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        $platformClassNameDbal2 = '\Doctrine\DBAL\Platforms\PostgreSQL94Platform';
-        $platformClassNameDbal3 = '\Doctrine\DBAL\Platforms\PostgreSQLPlatform';
+        $platformClassNameDbal2 = PostgreSQL94Platform::class;
+        $platformClassNameDbal3 = PostgreSQLPlatform::class;
         if (\is_a($platform, $platformClassNameDbal3) || \is_a($platform, $platformClassNameDbal2)) {
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests;
@@ -10,41 +9,9 @@ use EonX\EasyBatch\Bridge\Doctrine\DbalStatementsProvider;
 
 abstract class AbstractRepositoriesTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $doctrineDbal;
+    protected ?Connection $doctrineDbal = null;
 
-    /**
-     * @var \EonX\EasyBatch\Bridge\Doctrine\DbalStatementsProvider
-     */
-    private $statementsProvider;
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function getDoctrineDbalConnection(): Connection
-    {
-        if ($this->doctrineDbal !== null) {
-            return $this->doctrineDbal;
-        }
-
-        return $this->doctrineDbal = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
-        ]);
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    protected function getStatementsProvider(): DbalStatementsProvider
-    {
-        if ($this->statementsProvider !== null) {
-            return $this->statementsProvider;
-        }
-
-        return $this->statementsProvider = new DbalStatementsProvider($this->getDoctrineDbalConnection());
-    }
+    private ?DbalStatementsProvider $statementsProvider = null;
 
     protected function setUp(): void
     {
@@ -69,5 +36,35 @@ abstract class AbstractRepositoriesTestCase extends AbstractTestCase
         $conn->close();
 
         parent::tearDown();
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function getDoctrineDbalConnection(): Connection
+    {
+        if ($this->doctrineDbal !== null) {
+            return $this->doctrineDbal;
+        }
+
+        $this->doctrineDbal = DriverManager::getConnection([
+            'url' => 'sqlite:///:memory:',
+        ]);
+
+        return $this->doctrineDbal;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function getStatementsProvider(): DbalStatementsProvider
+    {
+        if ($this->statementsProvider !== null) {
+            return $this->statementsProvider;
+        }
+
+        $this->statementsProvider = new DbalStatementsProvider($this->getDoctrineDbalConnection());
+
+        return $this->statementsProvider;
     }
 }

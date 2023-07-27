@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEventDispatcher\Tests\Bridge\Laravel\Stubs;
@@ -9,17 +8,17 @@ use Illuminate\Contracts\Events\Dispatcher;
 final class LaravelEventDispatcherStub implements Dispatcher
 {
     /**
-     * @var object[]
+     * @var array<int, object>
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
     /**
      * @param object $event
-     * @param mixed $payload
+     * @param bool|null $halt
      *
-     * @return null|mixed[]
+     * @return array<int, object>
      */
-    public function dispatch($event, $payload = null, $halt = null)
+    public function dispatch(mixed $event, mixed $payload = null, mixed $halt = null): array
     {
         $this->dispatched[] = $event;
 
@@ -29,22 +28,22 @@ final class LaravelEventDispatcherStub implements Dispatcher
     /**
      * @param string $event
      */
-    public function flush($event): void
+    public function flush(mixed $event): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
      * @param string $event
      */
-    public function forget($event): void
+    public function forget(mixed $event): void
     {
-        // No body needed.
+        // No body needed
     }
 
     public function forgetPushed(): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
@@ -58,44 +57,39 @@ final class LaravelEventDispatcherStub implements Dispatcher
     /**
      * @param string $eventName
      */
-    public function hasListeners($eventName): bool
+    public function hasListeners(mixed $eventName): bool
     {
         return false;
     }
 
     /**
      * @param string|string[] $events
-     * @param mixed $listener
      */
-    public function listen($events, $listener = null): void
+    public function listen(mixed $events, mixed $listener = null): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
      * @param string $event
-     * @param mixed[] $payload
      */
-    public function push($event, $payload = null): void
+    public function push(mixed $event, mixed $payload = null): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
      * @param object|string $subscriber
      */
-    public function subscribe($subscriber): void
+    public function subscribe(mixed $subscriber): void
     {
-        // No body needed.
+        // No body needed
     }
 
     /**
      * @param string|object $event
-     * @param mixed $payload
-     *
-     * @return mixed|null
      */
-    public function until($event, $payload = null)
+    public function until(mixed $event, mixed $payload = null)
     {
         return null;
     }

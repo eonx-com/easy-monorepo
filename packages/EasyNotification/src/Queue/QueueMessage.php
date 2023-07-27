@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Queue;
@@ -8,20 +7,14 @@ use EonX\EasyNotification\Interfaces\QueueMessageInterface;
 
 final class QueueMessage implements QueueMessageInterface
 {
-    /**
-     * @var string
-     */
-    private $body;
+    private string $body;
 
     /**
      * @var string[]
      */
-    private $headers = [];
+    private array $headers = [];
 
-    /**
-     * @var string
-     */
-    private $queueUrl;
+    private string $queueUrl;
 
     public function addHeader(string $name, string $value): QueueMessageInterface
     {

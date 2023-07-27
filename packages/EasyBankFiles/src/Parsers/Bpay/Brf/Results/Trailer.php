@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Bpay\Brf\Results;
@@ -19,8 +18,6 @@ final class Trailer extends BaseResult
     /**
      * Get the amount of error correction and type.
      *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getAmountOfErrorCorrections(): array
@@ -30,8 +27,6 @@ final class Trailer extends BaseResult
 
     /**
      * Get the amount of payment and type.
-     *
-     * @return mixed[]
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
@@ -43,8 +38,6 @@ final class Trailer extends BaseResult
     /**
      * Get the amount fo reversal and type.
      *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getAmountOfReversals(): array
@@ -54,8 +47,6 @@ final class Trailer extends BaseResult
 
     /**
      * Get number of error corrections and type.
-     *
-     * @return mixed[]
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
@@ -67,8 +58,6 @@ final class Trailer extends BaseResult
     /**
      * Get number of payments and type.
      *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getNumberOfPayments(): array
@@ -79,8 +68,6 @@ final class Trailer extends BaseResult
     /**
      * Get Number of Reversals and type.
      *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     public function getNumberOfReversals(): array
@@ -90,8 +77,6 @@ final class Trailer extends BaseResult
 
     /**
      * Get the settlement amount and type.
-     *
-     * @return mixed[]
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
@@ -123,23 +108,21 @@ final class Trailer extends BaseResult
     /**
      * Get the trailer amount and convert to proper value based on signed field.
      *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
      */
     private function getTrailerAmount(string $attrAmount): array
     {
         $value = $this->data[$attrAmount];
 
-        // code is in the last digit
-        $sfCode = $value[\strlen($value) - 1] ?? '';
+        // Code is in the last digit
+        $sfCode = $value[\strlen((string)$value) - 1] ?? '';
         $sfValue = $this->getSignedFieldValue($sfCode);
 
         if ($sfValue === null) {
             throw new InvalidSignFieldException(\sprintf('Invalid signed amount: %s', $attrAmount));
         }
 
-        $amountOfPayments = \substr($value, 0, -1) . $sfValue['value'];
+        $amountOfPayments = \substr((string)$value, 0, -1) . $sfValue['value'];
 
         $amount = \ltrim($amountOfPayments, '0');
 

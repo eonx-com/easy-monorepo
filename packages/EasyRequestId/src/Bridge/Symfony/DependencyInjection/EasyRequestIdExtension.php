@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\Symfony\DependencyInjection;
@@ -10,31 +9,23 @@ use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstan
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyRequestIdExtension extends Extension
 {
-    /**
-     * @var mixed[]
-     */
-    private $config;
+    private array $config;
+
+    private LoaderInterface $loader;
 
     /**
-     * @var \Symfony\Component\Config\Loader\LoaderInterface
-     */
-    private $loader;
-
-    /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $this->config = $config = $this->processConfiguration(new Configuration(), $configs);
-        $this->loader = $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
         // HTTP headers
         $container->setParameter(
@@ -47,7 +38,11 @@ final class EasyRequestIdExtension extends Extension
             $config['http_headers']['request_id']
         );
 
+        $loader = new PhpFileLoader($container, new FileLocator([__DIR__ . '/../Resources/config']));
         $loader->load('services.php');
+
+        $this->config = $config;
+        $this->loader = $loader;
 
         $this->loadIfEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class);
         $this->loadIfEnabled('easy_logging', EasyLoggingBridgeConstantsInterface::class);

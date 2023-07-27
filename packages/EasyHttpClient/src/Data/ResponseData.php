@@ -1,42 +1,19 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Data;
 
+use DateTimeInterface;
 use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
 
 final class ResponseData implements ResponseDataInterface
 {
-    /**
-     * @var string
-     */
-    private $content;
-
-    /**
-     * @var mixed[]
-     */
-    private $headers;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $receivedAt;
-
-    /**
-     * @var int
-     */
-    private $statusCode;
-
-    /**
-     * @param mixed[] $headers
-     */
-    public function __construct(string $content, array $headers, \DateTimeInterface $receivedAt, int $statusCode)
-    {
-        $this->content = $content;
-        $this->headers = $headers;
-        $this->receivedAt = $receivedAt;
-        $this->statusCode = $statusCode;
+    public function __construct(
+        private string $content,
+        private array $headers,
+        private DateTimeInterface $receivedAt,
+        private int $statusCode,
+    ) {
     }
 
     public function getContent(): string
@@ -44,15 +21,12 @@ final class ResponseData implements ResponseDataInterface
         return $this->content;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public function getReceivedAt(): \DateTimeInterface
+    public function getReceivedAt(): DateTimeInterface
     {
         return $this->receivedAt;
     }

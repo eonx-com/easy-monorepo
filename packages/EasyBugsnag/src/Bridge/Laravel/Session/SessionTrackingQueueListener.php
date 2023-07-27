@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\Laravel\Session;
@@ -9,19 +8,11 @@ use Illuminate\Queue\Events\JobProcessing;
 
 final class SessionTrackingQueueListener
 {
-    /**
-     * @var \Bugsnag\Client
-     */
-    private $client;
+    private bool $configured = false;
 
-    /**
-     * @var bool
-     */
-    private $configured = false;
-
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
+    public function __construct(
+        private Client $client,
+    ) {
     }
 
     public function handle(JobProcessing $event): void

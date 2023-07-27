@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Doctrine;
 
+use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
@@ -11,48 +11,33 @@ use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 
 final class DbalStatementsProvider
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $conn;
+    private ?Closure $extendWebhookResultsTable = null;
 
-    /**
-     * @var callable
-     */
-    private $extendWebhookResultsTable;
+    private ?Closure $extendWebhooksTable = null;
 
-    /**
-     * @var callable
-     */
-    private $extendWebhooksTable;
+    private string $webhookResultsTable;
 
-    /**
-     * @var string
-     */
-    private $webhookResultsTable;
+    private string $webhooksTable;
 
-    /**
-     * @var string
-     */
-    private $webhooksTable;
-
-    public function __construct(Connection $conn, ?string $webhooksTable = null, ?string $webhookResultsTable = null)
-    {
-        $this->conn = $conn;
+    public function __construct(
+        private Connection $conn,
+        ?string $webhooksTable = null,
+        ?string $webhookResultsTable = null,
+    ) {
         $this->webhooksTable = $webhooksTable ?? StoreInterface::DEFAULT_TABLE;
         $this->webhookResultsTable = $webhookResultsTable ?? ResultStoreInterface::DEFAULT_TABLE;
     }
 
     public function extendWebhookResultsTable(callable $callable): self
     {
-        $this->extendWebhookResultsTable = $callable;
+        $this->extendWebhookResultsTable = $callable(...);
 
         return $this;
     }
 
     public function extendWebhooksTable(callable $callable): self
     {
-        $this->extendWebhooksTable = $callable;
+        $this->extendWebhooksTable = $callable(...);
 
         return $this;
     }
@@ -139,8 +124,6 @@ final class DbalStatementsProvider
 
     /**
      * @return string[]
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     public function rollbackStatements(): array
     {

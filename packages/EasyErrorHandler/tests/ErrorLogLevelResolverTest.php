@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests;
@@ -14,11 +13,9 @@ use Throwable;
 final class ErrorLogLevelResolverTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetErrorLogLevel
      */
-    public function providerTestGetErrorLogLevel(): iterable
+    public static function providerTestGetErrorLogLevel(): iterable
     {
         yield 'Error because default' => [
             'throwable' => new InvalidArgumentException(),

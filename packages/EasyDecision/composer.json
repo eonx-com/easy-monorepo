@@ -5,13 +5,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^4.4",
-        "symfony/expression-language": "^5.4 || ^6.0"
+        "eonx-com/easy-utils": "^5.1",
+        "psr/cache": "^3.0",
+        "symfony/expression-language": "^6.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "laravel/lumen-framework": "^9.1",
+        "phpunit/phpunit": "^10.2",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -22,13 +23,22 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyDecision\\Tests\\": "tests",
-            "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/expressions/tests"
+            "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/expressions/tests",
+            "EonX\\EasyDecision\\Tests\\": "tests"
         }
+    },
+    "suggest": {
+        "illuminate/contracts": "To use this package with Laravel/Lumen",
+        "illuminate/support": "To use this package with Laravel/Lumen",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-foundation": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony",
+        "symfony/messenger": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.1-dev"
         }
     }
 }

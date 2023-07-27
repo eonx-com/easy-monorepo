@@ -5,14 +5,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-random": "^4.4",
-        "eonx-com/easy-utils": "^4.4"
+        "eonx-com/easy-random": "^5.1",
+        "eonx-com/easy-utils": "^5.1"
     },
     "require-dev": {
-        "ramsey/uuid": "^3.9 || ^4.0",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "laravel/lumen-framework": "^9.1",
+        "phpunit/phpunit": "^10.2",
+        "symfony/symfony": "^6.3",
+        "symfony/uid": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +27,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.1-dev"
         }
     }
 }

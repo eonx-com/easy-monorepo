@@ -10,12 +10,12 @@ jobs:
             matrix:
                 php: [ '8.1' ]
                 actions:
-                    - { name: ecs, run: composer check-ecs, cache: ecs }
-                    - { name: monorepo, run: composer check-monorepo }
                     - { name: composer, run: composer check-composer }
-                    - { name: phpstan, run: composer check-phpstan, cache: phpstan }
+                    - { name: monorepo, run: composer check-monorepo }
                     - { name: composer-audit, run: composer audit }
-                    #- { name: rector, coverage: none, run: composer check-rector }
+                    - { name: ecs, run: composer check-ecs, cache: ecs }
+                    - { name: rector, run: composer check-rector, cache: rector }
+                    - { name: phpstan, run: composer check-phpstan, cache: phpstan }
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
 

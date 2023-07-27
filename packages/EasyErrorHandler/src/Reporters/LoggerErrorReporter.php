@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Reporters;
@@ -17,7 +16,7 @@ final class LoggerErrorReporter extends AbstractErrorReporter
     private readonly array $ignoreExceptions;
 
     /**
-     * @param null|class-string[] $ignoreExceptions
+     * @param class-string[]|null $ignoreExceptions
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,

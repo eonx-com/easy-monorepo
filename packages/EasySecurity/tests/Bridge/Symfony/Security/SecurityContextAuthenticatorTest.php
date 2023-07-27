@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Security;
@@ -18,9 +17,30 @@ use Throwable;
 final class SecurityContextAuthenticatorTest extends AbstractTestCase
 {
     /**
-     * @dataProvider provideExceptions
-     *
+     * @see testAuthenticateThrowsCorrectException
+     */
+    public static function provideExceptions(): iterable
+    {
+        yield 'Library exception 1' => [
+            'thrownException' => new RuntimeException(),
+            'expectedExceptionClass' => AuthenticationException::class,
+        ];
+
+        yield 'Library exception 2' => [
+            'thrownException' => new LogicException(),
+            'expectedExceptionClass' => AuthenticationException::class,
+        ];
+
+        yield 'Custom exception' => [
+            'thrownException' => new CustomAuthenticationException(),
+            'expectedExceptionClass' => CustomAuthenticationException::class,
+        ];
+    }
+
+    /**
      * @psalm-param class-string<\Throwable> $expectedExceptionClass
+     *
+     * @dataProvider provideExceptions
      */
     public function testAuthenticateThrowsCorrectException(
         Throwable $thrownException,
@@ -39,28 +59,5 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
         );
 
         $authenticator->authenticate(new Request());
-    }
-
-    /**
-     * @return iterable<mixed>
-     *
-     * @see testAuthenticateThrowsCorrectException
-     */
-    protected function provideExceptions(): iterable
-    {
-        yield 'Library exception 1' => [
-            'thrownException' => new RuntimeException(),
-            'expectedExceptionClass' => AuthenticationException::class,
-        ];
-
-        yield 'Library exception 2' => [
-            'thrownException' => new LogicException(),
-            'expectedExceptionClass' => AuthenticationException::class,
-        ];
-
-        yield 'Custom exception' => [
-            'thrownException' => new CustomAuthenticationException(),
-            'expectedExceptionClass' => CustomAuthenticationException::class,
-        ];
     }
 }

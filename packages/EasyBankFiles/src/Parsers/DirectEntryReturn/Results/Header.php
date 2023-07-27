@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results;
@@ -18,9 +17,6 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  */
 final class Header extends BaseResult
 {
-    /**
-     * @var string Date in string representation pattern
-     */
     private const DATE_STRING_PATTERN = '%s-%s-%s';
 
     /**

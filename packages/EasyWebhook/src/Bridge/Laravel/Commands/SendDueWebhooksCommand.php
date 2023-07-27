@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Laravel\Commands;
@@ -35,7 +34,7 @@ final class SendDueWebhooksCommand extends Command
         if ($store instanceof SendAfterStoreInterface === false) {
             $this->error(\sprintf(
                 'Store "%s" does not implement "%s", cannot proceed.',
-                \get_class($store),
+                $store::class,
                 SendAfterStoreInterface::class
             ));
 

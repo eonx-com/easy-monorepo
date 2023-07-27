@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
@@ -44,9 +43,6 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
         $this->replaceContentsInReadme($contents);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     private function getPackagesList(): iterable
     {
         $composerFiles = (new Finder())

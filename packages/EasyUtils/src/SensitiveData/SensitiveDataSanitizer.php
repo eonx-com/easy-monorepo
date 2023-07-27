@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData;
@@ -27,8 +26,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 
     /**
      * @param string[]|null $keysToMask
-     * @param iterable<mixed>|null $objectTransformers
-     * @param iterable<mixed>|null $stringSanitizers
      */
     public function __construct(
         ?bool $useDefaultKeysToMask = null,
@@ -38,8 +35,13 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         ?iterable $stringSanitizers = null,
     ) {
         $defaultKeysToMask = ($useDefaultKeysToMask ?? true) ? self::DEFAULT_KEYS_TO_MASK : [];
-        foreach (\array_map(fn (string $key) => \mb_strtolower($key), $keysToMask ?? []) as $keyToMask) {
-            if (\in_array($keysToMask, $defaultKeysToMask, true) === false) {
+        $keysToMask = \array_map(
+            static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
+            $keysToMask ?? []
+        );
+
+        foreach ($keysToMask as $keyToMask) {
+            if (\in_array($keyToMask, $defaultKeysToMask, true) === false) {
                 $defaultKeysToMask[] = $keyToMask;
             }
         }
@@ -71,11 +73,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         return $data;
     }
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     private function sanitizeArray(array $data): array
     {
         foreach ($data as $key => $value) {
@@ -87,9 +84,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         return $data;
     }
 
-    /**
-     * @return mixed[]|object
-     */
     private function sanitizeObject(object $object): array|object
     {
         foreach ($this->objectTransformers as $objectTransformer) {

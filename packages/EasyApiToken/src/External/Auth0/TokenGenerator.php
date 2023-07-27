@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External\Auth0;
@@ -11,11 +10,6 @@ final class TokenGenerator implements TokenGeneratorInterface
 {
     private const DEFAULT_ALGO = 'HS256';
 
-    /**
-     * @param null|string $audience Audience for the ID token.
-     * @param null|string $secret Secret used to encode the token.
-     * @param null|string $issuer
-     */
     public function __construct(
         private readonly ?string $audience = null,
         private readonly ?string $secret = null,
@@ -23,10 +17,6 @@ final class TokenGenerator implements TokenGeneratorInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $scopes
-     * @param null|mixed[] $roles
-     */
     public function generate(
         array $scopes,
         ?array $roles = null,
@@ -34,15 +24,15 @@ final class TokenGenerator implements TokenGeneratorInterface
         ?int $lifetime = null,
         ?bool $secretEncoded = null,
     ): string {
-        $secretEncoded = $secretEncoded ?? true;
-        $lifetime = $lifetime ?? 3600;
+        $secretEncoded ??= true;
+        $lifetime ??= 3600;
 
         $time = \time();
         $payload = [
+            'aud' => $this->audience,
+            'exp' => $time + $lifetime,
             'iat' => $time,
             'scopes' => $scopes,
-            'exp' => $time + $lifetime,
-            'aud' => $this->audience,
         ];
 
         if ($subject !== null) {

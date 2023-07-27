@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Providers;
@@ -13,9 +12,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testDecoderProvider
      */
-    public function providerTestDecoderProvider(): iterable
+    public static function providerTestDecoderProvider(): iterable
     {
         yield 'Null firewall' => [null];
 

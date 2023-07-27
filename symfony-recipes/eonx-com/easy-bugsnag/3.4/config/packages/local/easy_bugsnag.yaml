@@ -1,6 +1,0 @@
-easy_bugsnag:
-    aws_ecs_fargate:
-        enabled: false
-
-    session_tracking:
-        enabled: false

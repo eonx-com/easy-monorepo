@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Bridge\Symfony\Validator\Constraints;
@@ -16,6 +15,6 @@ final class NumberLessOrEqual extends AbstractNumberComparison
 
     public function validatedBy(): string
     {
-        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
+        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
     }
 }

@@ -5,19 +5,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "bugsnag/bugsnag": "^3.19",
-        "eonx-com/easy-utils": "^4.4",
-        "nesbot/carbon": "^2.22",
-        "nette/utils": "^3.1",
-        "symfony/filesystem": "^5.4 || ^6.0",
-        "symfony/var-dumper": "^5.4 || ^6.0"
+        "bugsnag/bugsnag": "^3.29",
+        "eonx-com/easy-utils": "^5.1",
+        "guzzlehttp/guzzle": "^7.0",
+        "nette/utils": "^3.2",
+        "symfony/filesystem": "^6.3",
+        "symfony/http-foundation": "^6.3"
     },
     "require-dev": {
-        "doctrine/dbal": "^2.6",
-        "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "doctrine/dbal": "^3.0",
+        "laravel/lumen-framework": "^9.1",
+        "phpunit/phpunit": "^10.2",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -30,9 +29,29 @@
             "EonX\\EasyBugsnag\\Tests\\": "tests"
         }
     },
+    "suggest": {
+        "doctrine/dbal": "To log SQL queries in Bugsnag",
+        "illuminate/contracts": "To use this package with Laravel/Lumen",
+        "illuminate/http": "To use this package with Laravel/Lumen",
+        "illuminate/queue": "To use this package with Laravel/Lumen",
+        "illuminate/routing": "To use this package with Laravel/Lumen",
+        "illuminate/support": "To use this package with Laravel/Lumen",
+        "laravel/lumen-framework": "To use this package with Lumen",
+        "nesbot/carbon": "To use this package with Symfony",
+        "symfony/cache": "To use this package with Symfony",
+        "symfony/cache-contracts": "To use this package with Symfony",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/console": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/event-dispatcher": "To use this package with Symfony",
+        "symfony/http-foundation": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony",
+        "symfony/messenger": "To use this package with Symfony",
+        "symfony/var-dumper": "To use this package with Symfony"
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.1-dev"
         }
     }
 }

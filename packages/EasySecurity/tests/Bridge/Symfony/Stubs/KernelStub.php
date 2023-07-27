@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Stubs;
@@ -22,20 +21,18 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private $configs;
+    private array $configs;
 
     /**
-     * @var null|\Symfony\Component\HttpFoundation\Request
+     * @param string[]|null $configs
      */
-    private $request;
-
-    /**
-     * @param null|string[] $configs
-     */
-    public function __construct(string $environment, bool $debug, ?array $configs = null, ?Request $request = null)
-    {
+    public function __construct(
+        string $environment,
+        bool $debug,
+        ?array $configs = null,
+        private ?Request $request = null,
+    ) {
         $this->configs = $configs ?? [];
-        $this->request = $request;
 
         parent::__construct($environment, $debug);
     }
@@ -73,8 +70,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__ . '/../Fixtures/config/default.yaml');
-
         foreach ($this->configs as $config) {
             $loader->load($config);
         }

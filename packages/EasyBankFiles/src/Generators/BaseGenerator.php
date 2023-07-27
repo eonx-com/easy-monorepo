@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators;
@@ -12,23 +11,17 @@ use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
 
 abstract class BaseGenerator implements GeneratorInterface
 {
-    /**
-     * @var string
-     */
-    protected $breakLine = self::BREAK_LINE_WINDOWS;
+    protected string $breakLine = self::BREAK_LINE_WINDOWS;
 
-    /**
-     * @var string
-     */
-    protected $contents = '';
+    protected string $contents = '';
 
     /**
      * @var string[] $validationRules
      */
-    private static $validationRules = [
-        self::VALIDATION_RULE_ALPHA => '/[^A-Za-z0-9 &\',-\.\/\+\$\!%\(\)\*\#=:\?\[\]_\^@]/',
+    private static array $validationRules = [
+        self::VALIDATION_RULE_ALPHA => '/[^A-Za-z0-9 &\',-\\.\\/\\+\\$\\!%\\(\\)\\*\\#=:\\?\\[\\]_\\^@]/',
+        self::VALIDATION_RULE_BSB => '/^\\d{3}(\\-)\\d{3}/',
         self::VALIDATION_RULE_NUMERIC => '/[^0-9-]/',
-        self::VALIDATION_RULE_BSB => '/^\d{3}(\-)\d{3}/',
     ];
 
     /**
@@ -82,11 +75,7 @@ abstract class BaseGenerator implements GeneratorInterface
     /**
      * Validate object attributes.
      *
-     * @param null|mixed[] $rules
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     protected function validateAttributes(BaseObject $object, ?array $rules = null): void
     {
@@ -96,7 +85,7 @@ abstract class BaseGenerator implements GeneratorInterface
             $this->processRule($errors, $rule, $attribute, (string)$object->{'get' . \ucfirst($attribute)}());
         }
 
-        if (\count($errors)) {
+        if (\count($errors) > 0) {
             throw new ValidationFailedException($errors, 'Validation Errors');
         }
     }
@@ -114,8 +103,6 @@ abstract class BaseGenerator implements GeneratorInterface
 
     /**
      * Add lines for given objects.
-     *
-     * @param mixed[] $objects
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException
@@ -140,23 +127,24 @@ abstract class BaseGenerator implements GeneratorInterface
     /**
      * Process rule against a value.
      *
-     * @param mixed[] $errors The errors array to set errors to
+     * @param array $errors The errors array to set errors to
      * @param string $rule The rule to process
      * @param string $attribute The attribute the value relates to
      * @param mixed $value The value from the attribute
      */
     private function processRule(array &$errors, string $rule, string $attribute, mixed $value): void
     {
-        // Not sure why we allow arrays here...
+        // Not sure why we allow arrays here
         if ($value === null || $value === '' || (\is_array($value) && \count($value) === 0)) {
-            $errors[] = \array_merge(\compact('attribute', 'value'), [
+            $errors[] = [
+                ...\compact('attribute', 'value'),
                 'rule' => 'required',
-            ]);
+            ];
 
             return;
         }
 
-        // Not sure why we would have anything else than a string value here...
+        // Not sure why we would have anything else than a string value here
         if (\is_string($value) === false) {
             return;
         }
@@ -167,6 +155,7 @@ abstract class BaseGenerator implements GeneratorInterface
                 if (\preg_match(self::$validationRules[$rule], $value) === 0) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
+
                 break;
 
             case self::VALIDATION_RULE_DATE:
@@ -174,6 +163,7 @@ abstract class BaseGenerator implements GeneratorInterface
                     DateTime::createFromFormat('Ymd', $value) === false) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
+
                 break;
 
             case self::VALIDATION_RULE_ALPHA:
@@ -181,6 +171,7 @@ abstract class BaseGenerator implements GeneratorInterface
                 if (\preg_match(self::$validationRules[$rule], $value)) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
+
                 break;
         }
     }

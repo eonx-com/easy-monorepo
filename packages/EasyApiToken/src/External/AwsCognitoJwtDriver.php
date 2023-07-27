@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
@@ -15,35 +14,18 @@ use Firebase\JWT\Key;
 
 final class AwsCognitoJwtDriver implements JwtDriverInterface
 {
-    use FirebaseJwtVersionTrait;
-
     private const DEFAULT_JWK_ALGO = 'RS256';
 
     private const TOKEN_TYPE_ACCESS = 'access';
 
     private const TOKEN_TYPE_ID = 'id';
 
-    /**
-     * @var string[]
-     *
-     * @deprecated will be removed in 5.0
-     */
-    private array $allowedAlgos;
-
-    private JwkFetcherInterface $jwkFetcher;
-
-    /**
-     * @param null|string[] $allowedAlgos
-     */
     public function __construct(
         private readonly UserPoolConfigInterface $userPoolConfig,
-        ?JwkFetcherInterface $jwkFetcher = null,
-        ?array $allowedAlgos = null,
+        private JwkFetcherInterface $jwkFetcher = new JwkFetcher(),
         private readonly ?int $leeway = null,
         private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
     ) {
-        $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
-        $this->allowedAlgos = $allowedAlgos ?? [];
     }
 
     /**
@@ -58,14 +40,11 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
 
         $jwks = $this->jwkFetcher->getJwks($this->userPoolConfig);
 
-        if (self::isFirebaseJwtV6()) {
-            foreach ($jwks as $keyId => $key) {
-                $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo);
-            }
+        foreach ($jwks as $keyId => $key) {
+            $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo);
         }
 
-        $decodedToken = JWT::decode($token, $jwks, $this->allowedAlgos);
-
+        $decodedToken = JWT::decode($token, $jwks);
         $tokenType = $decodedToken->token_use ?? null;
 
         // Validate audience

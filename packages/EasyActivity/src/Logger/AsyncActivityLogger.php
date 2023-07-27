@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Logger;
@@ -10,22 +9,10 @@ use EonX\EasyActivity\Interfaces\AsyncDispatcherInterface;
 
 final class AsyncActivityLogger implements ActivityLoggerInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface
-     */
-    private $activityLogEntryFactory;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\AsyncDispatcherInterface
-     */
-    private $dispatcher;
-
     public function __construct(
-        ActivityLogEntryFactoryInterface $activityLogEntryFactory,
-        AsyncDispatcherInterface $dispatcher,
+        private ActivityLogEntryFactoryInterface $activityLogEntryFactory,
+        private AsyncDispatcherInterface $dispatcher,
     ) {
-        $this->activityLogEntryFactory = $activityLogEntryFactory;
-        $this->dispatcher = $dispatcher;
     }
 
     /**

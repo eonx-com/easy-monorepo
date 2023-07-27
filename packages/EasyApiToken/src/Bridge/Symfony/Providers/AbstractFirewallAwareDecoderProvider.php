@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Bridge\Symfony\Providers;
@@ -66,7 +65,7 @@ abstract class AbstractFirewallAwareDecoderProvider implements ApiTokenDecoderPr
         }
 
         $request = $this->requestStack?->getMainRequest();
-        $firewallConfig = $request ? $this->firewallMap?->getFirewallConfig($request) : null;
+        $firewallConfig = $request !== null ? $this->firewallMap?->getFirewallConfig($request) : null;
 
         $this->firewall = $firewallConfig?->getName() ?? self::NO_FIREWALL;
     }

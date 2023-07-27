@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Bridge\Symfony\DependencyInjection;
@@ -16,8 +15,7 @@ final class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('api_url')
-->end()
+                ->scalarNode('api_url')->end()
                 ->integerNode('config_expires_after')
                     ->defaultValue(BridgeConstantsInterface::CONFIG_CACHE_EXPIRES_AFTER)
                 ->end()

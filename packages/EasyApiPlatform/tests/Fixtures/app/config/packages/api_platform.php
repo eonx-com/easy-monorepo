@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -47,7 +46,7 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
         ]);
 
     $apiPlatformConfig->swagger()
-        ->apiKeys()
+        ->apiKeys('Some_Authorization_Name')
         ->name('Authorization')
         ->type('header');
 

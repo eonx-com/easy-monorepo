@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Providers;
@@ -12,11 +11,11 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
     /**
      * @var string[]
      */
-    protected $typesMapping = [];
+    protected array $typesMapping = [];
 
     public function getDecisionType(string $name): string
     {
-        if (empty($this->typesMapping[$name]) === true) {
+        if (($this->typesMapping[$name] ?? '') === '') {
             throw new InvalidMappingException(\sprintf('Decision for name "%s" is not configured', $name));
         }
 

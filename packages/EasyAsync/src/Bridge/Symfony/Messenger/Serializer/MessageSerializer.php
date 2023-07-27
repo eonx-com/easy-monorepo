@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer;
@@ -10,22 +9,14 @@ use RuntimeException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Throwable;
 
-class MessageSerializer implements SerializerInterface
+final class MessageSerializer implements SerializerInterface
 {
-    /**
-     * @var string
-     */
     private const HEADER_RETRY = 'retry';
 
-    /**
-     * @var string
-     */
     private const KEY_BODY = 'body';
 
-    /**
-     * @var string
-     */
     private const KEY_HEADERS = 'headers';
 
     public function __construct(
@@ -34,9 +25,6 @@ class MessageSerializer implements SerializerInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $encodedEnvelope
-     */
     public function decode(array $encodedEnvelope): Envelope
     {
         $originalBody = $encodedEnvelope[self::KEY_BODY] ?? '';
@@ -53,14 +41,11 @@ class MessageSerializer implements SerializerInterface
             }
 
             return Envelope::wrap($message, $stamps);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             return Envelope::wrap(NotSupportedMessage::create($queueEnvelope, $throwable), $stamps);
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function encode(Envelope $envelope): array
     {
         $originalStamp = $envelope->last(OriginalMessageStamp::class);

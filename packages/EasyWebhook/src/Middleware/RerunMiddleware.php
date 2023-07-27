@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -11,9 +10,6 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class RerunMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var string[]
-     */
     private const SHOULD_NOT_RERUN = [WebhookInterface::STATUS_FAILED, WebhookInterface::STATUS_SUCCESS];
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Bridge\Symfony\Stubs;
@@ -12,14 +11,9 @@ use EonX\EasyNotification\Queue\SqsQueueTransport;
 
 final class SqsQueueTransportFactoryStub implements QueueTransportFactoryInterface
 {
-    /**
-     * @var \Aws\Sqs\SqsClient
-     */
-    private $sqsClient;
-
-    public function __construct(SqsClient $sqsClient)
-    {
-        $this->sqsClient = $sqsClient;
+    public function __construct(
+        private SqsClient $sqsClient,
+    ) {
     }
 
     public function create(ConfigInterface $config): QueueTransportInterface

@@ -1,28 +1,20 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
 
 use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
 use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class TokenDecoderStub implements ApiTokenDecoderInterface
 {
-    /**
-     * @var null|\EonX\EasyApiToken\Interfaces\ApiTokenInterface
-     */
-    private $token;
-
-    public function __construct(?ApiTokenInterface $token = null)
-    {
-        $this->token = $token;
+    public function __construct(
+        private ?ApiTokenInterface $token = null,
+    ) {
     }
 
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface|\Symfony\Component\HttpFoundation\Request $request
-     */
-    public function decode($request): ?ApiTokenInterface
+    public function decode(Request $request): ?ApiTokenInterface
     {
         return $this->token;
     }

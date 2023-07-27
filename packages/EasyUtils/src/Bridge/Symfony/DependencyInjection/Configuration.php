@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Bridge\Symfony\DependencyInjection;
@@ -34,6 +33,15 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('use_default_keys_to_mask')->defaultTrue()->end()
                         ->booleanNode('use_default_object_transformers')->defaultTrue()->end()
                         ->booleanNode('use_default_string_sanitizers')->defaultTrue()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('string_trimmer')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->arrayNode('except_keys')
+                            ->scalarPrototype()->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();

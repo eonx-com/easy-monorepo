@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Decisions;
 
+use ArrayIterator;
 use EonX\EasyDecision\Configurators\SetExpressionLanguageConfigurator;
 use EonX\EasyDecision\Decisions\DecisionFactory;
 use EonX\EasyDecision\Decisions\UnanimousDecision;
@@ -48,7 +48,7 @@ final class DecisionFactoryTest extends AbstractTestCase
 
         $decisionFactory = (new DecisionFactory(
             $mappingProvider,
-            new \ArrayIterator([$configurator1, $configurator2, $exprLanguageConfigurator])
+            new ArrayIterator([$configurator1, $configurator2, $exprLanguageConfigurator])
         ));
 
         $decision1 = $decisionFactory->createUnanimousDecision('my-unanimous-decision');

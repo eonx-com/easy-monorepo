@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection;
 
 use Doctrine\Persistence\ManagerRegistry;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
 use EonX\EasySwoole\Interfaces\AppStateInitializerInterface;
@@ -31,8 +31,8 @@ final class EasySwooleExtension extends Extension
     ];
 
     private const REQUEST_LIMITS_CONFIG = [
-        'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
         'max' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MAX,
+        'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
     ];
 
     private const STATIC_PHP_FILES_CONFIG = [
@@ -41,8 +41,6 @@ final class EasySwooleExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
@@ -78,6 +76,10 @@ final class EasySwooleExtension extends Extension
             }
 
             $loader->load('doctrine.php');
+        }
+
+        if (($config['easy_admin']['enabled'] ?? true) && \class_exists(EA::class)) {
+            $loader->load('easy_admin.php');
         }
 
         if ($config['easy_batch']['enabled'] ?? true) {

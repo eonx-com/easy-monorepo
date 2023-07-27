@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Bridge\Symfony\Stubs;
@@ -17,9 +16,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     private array $configs;
 
-    /**
-     * @param null|mixed[] $configs
-     */
     public function __construct(string $environment, bool $debug, ?array $configs = null)
     {
         $this->configs = $configs ?? [];

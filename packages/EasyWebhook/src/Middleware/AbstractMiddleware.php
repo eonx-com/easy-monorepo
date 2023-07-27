@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -16,9 +15,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
 
     public function __construct(?int $priority = null)
     {
-        if ($priority !== null) {
-            $this->priority = $priority;
-        }
+        $this->doSetPriority($priority);
     }
 
     protected function passOn(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface

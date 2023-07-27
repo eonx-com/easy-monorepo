@@ -1,11 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
 
 use Closure;
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
@@ -13,15 +14,9 @@ use Throwable;
 
 trait DoctrineOrmRepositoryTrait
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $manager;
+    protected EntityManagerInterface $manager;
 
-    /**
-     * @var \Doctrine\ORM\EntityRepository
-     */
-    protected $repository;
+    protected EntityRepository $repository;
 
     /**
      * @return object[]
@@ -80,7 +75,7 @@ trait DoctrineOrmRepositoryTrait
         $this->beginTransaction();
 
         try {
-            $return = \call_user_func($func);
+            $return = $func();
 
             $this->commit();
 

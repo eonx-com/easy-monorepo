@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule\Command;
@@ -12,22 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ScheduleRunCommand extends Command
 {
-    /**
-     * @var \EonX\EasySchedule\Interfaces\ScheduleRunnerInterface
-     */
-    private $runner;
-
-    /**
-     * @var \EonX\EasySchedule\Interfaces\ScheduleInterface
-     */
-    private $schedule;
-
-    public function __construct(ScheduleRunnerInterface $runner, ScheduleInterface $schedule)
-    {
+    public function __construct(
+        private ScheduleRunnerInterface $runner,
+        private ScheduleInterface $schedule,
+    ) {
         parent::__construct();
-
-        $this->runner = $runner;
-        $this->schedule = $schedule;
     }
 
     protected function configure(): void

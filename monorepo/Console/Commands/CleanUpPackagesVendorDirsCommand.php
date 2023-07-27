@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Console\Commands;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,10 +11,11 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 
+#[AsCommand(
+    name: 'clean-up-packages-vendor-dirs'
+)]
 final class CleanUpPackagesVendorDirsCommand extends Command
 {
-    protected static $defaultName = 'clean-up-packages-vendor-dirs';
-
     protected function configure(): void
     {
         $this->addArgument('version');

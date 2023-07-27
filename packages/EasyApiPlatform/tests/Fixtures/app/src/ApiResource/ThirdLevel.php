@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
@@ -14,23 +13,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ThirdLevel
 {
     #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
-    public ?FourthLevel $badFourthLevel;
+    private ?FourthLevel $badFourthLevel = null;
 
-    #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
     #[Groups(['barcelona', 'chicago', 'friends'])]
-    public ?FourthLevel $fourthLevel;
+    #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
+    private ?FourthLevel $fourthLevel = null;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
-    #[ORM\Column(type: Types::INTEGER)]
     #[Groups(['barcelona', 'chicago'])]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $level = 3;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $test = true;
+
+    public function getBadFourthLevel(): ?FourthLevel
+    {
+        return $this->badFourthLevel;
+    }
 
     public function getFourthLevel(): ?FourthLevel
     {
@@ -50,6 +54,11 @@ class ThirdLevel
     public function isTest(): bool
     {
         return $this->test;
+    }
+
+    public function setBadFourthLevel(?FourthLevel $badFourthLevel = null): void
+    {
+        $this->badFourthLevel = $badFourthLevel;
     }
 
     public function setFourthLevel(?FourthLevel $fourthLevel = null): void

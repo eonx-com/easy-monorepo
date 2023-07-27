@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Bridge\AwsRds;
@@ -13,14 +12,11 @@ final class AwsRdsConnectionParamsResolver
         private readonly ?AuthTokenProvider $authTokenProvider = null,
         private readonly ?string $sslMode = null,
         private readonly ?CertificateAuthorityProvider $certificateAuthorityProvider = null,
+        private readonly ?string $awsUsername = null,
     ) {
     }
 
     /**
-     * @param mixed[] $params
-     *
-     * @return mixed[]
-     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getParams(array $params): array
@@ -32,6 +28,11 @@ final class AwsRdsConnectionParamsResolver
         if ($rdsIamEnabled
             && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')
             && $this->authTokenProvider !== null) {
+            // Override username with aws one if provided to provide auth issue with db
+            $params['user'] = $params['driverOptions'][AwsRdsOptionsInterface::AWS_USERNAME]
+                ?? $this->awsUsername
+                ?? $params['user'];
+
             $params['password'] = $this->authTokenProvider->getAuthToken($params);
         }
 

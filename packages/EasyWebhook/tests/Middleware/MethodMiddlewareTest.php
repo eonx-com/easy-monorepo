@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -12,9 +11,9 @@ use EonX\EasyWebhook\Webhook;
 final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'default method' => [Webhook::fromArray([]), WebhookInterface::DEFAULT_METHOD];
 

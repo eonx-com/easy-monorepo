@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Paginators;
@@ -8,8 +7,8 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\EloquentPaginator;
 use EonX\EasyPagination\Tests\AbstractEloquentTestCase;
-use EonX\EasyPagination\Tests\Stubs\Model\Item;
-use EonX\EasyPagination\Tests\Stubs\Model\ParentModel;
+use EonX\EasyPagination\Tests\Stubs\Model\ChildItemModel;
+use EonX\EasyPagination\Tests\Stubs\Model\ItemModel;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -17,15 +16,15 @@ use Illuminate\Database\Eloquent\Model;
 final class EloquentPaginatorTest extends AbstractEloquentTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testPaginator
      */
-    public function providerTestPaginator(): iterable
+    public static function providerTestPaginator(): iterable
     {
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
             },
             static function (EloquentPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -34,9 +33,9 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield 'High pagination when no items in db' => [
             Pagination::create(10, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
             },
             static function (EloquentPaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -45,11 +44,11 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield 'Default 1 item' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
+                (new ItemModel(['title' => 'my-title']))->save();
             },
             static function (EloquentPaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -58,12 +57,12 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield '2 items filter 1' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
-                (new Item(['title' => 'my-title-1']))->save();
+                (new ItemModel(['title' => 'my-title']))->save();
+                (new ItemModel(['title' => 'my-title-1']))->save();
 
                 $paginator->setFilterCriteria(static function (Builder $queryBuilder): void {
                     $queryBuilder->where('title', 'my-title-1');
@@ -76,17 +75,17 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield '1 item select everything by default' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
+                (new ItemModel(['title' => 'my-title']))->save();
             },
             static function (EloquentPaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(Item::class, $item);
+                self::assertInstanceOf(ItemModel::class, $item);
                 self::assertEquals(1, $item->id);
                 self::assertEquals('my-title', $item->title);
             },
@@ -94,11 +93,11 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield '1 item select everything explicitly' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
+                (new ItemModel(['title' => 'my-title']))->save();
 
                 $paginator->setSelect('*');
             },
@@ -106,7 +105,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(Item::class, $item);
+                self::assertInstanceOf(ItemModel::class, $item);
                 self::assertEquals(1, $item->id);
                 self::assertEquals('my-title', $item->title);
             },
@@ -114,11 +113,11 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield '1 item select only title' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
+                (new ItemModel(['title' => 'my-title']))->save();
 
                 $paginator->setSelect('title');
             },
@@ -126,7 +125,7 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
                 $item = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(Item::class, $item);
+                self::assertInstanceOf(ItemModel::class, $item);
                 self::assertNull($item->id);
                 self::assertEquals('my-title', $item->title);
             },
@@ -134,18 +133,16 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
         yield '1 item transform entity to array' => [
             Pagination::create(1, 15),
-            new Item(),
+            new ItemModel(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
+                self::createItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
+                (new ItemModel(['title' => 'my-title']))->save();
 
-                $paginator->setTransformer(static function (Item $item): array {
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title,
-                    ];
-                });
+                $paginator->setTransformer(static fn (ItemModel $item): array => [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                ]);
             },
             static function (EloquentPaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
@@ -157,44 +154,45 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
             },
         ];
 
-        yield 'Paginate parents of item by title' => [
+        yield 'Paginate children of item by title' => [
             Pagination::create(1, 15),
-            new ParentModel(),
+            new ChildItemModel(),
             function (Model $model, EloquentPaginator $paginator): void {
-                $this->createItemsTable($model);
-                $this->createParentsTable($model);
+                self::createItemsTable($model);
+                self::createChildItemsTable($model);
 
-                (new Item(['title' => 'my-title']))->save();
-                (new ParentModel([
-                    'title' => 'my-parent',
+                (new ItemModel(['title' => 'my-parent']))->save();
+                (new ChildItemModel([
+                    'child_title' => 'my-child',
                     'item_id' => 1,
                 ]))->save();
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (Builder $queryBuilder): void {
-                    $queryBuilder->join('items', 'items.title', '=', 'my-title');
+                    $queryBuilder->join('items', 'items.title', '=', 'my-parent');
                 });
                 $paginator->setGetItemsCriteria(static function (Builder $queryBuilder): void {
                     $queryBuilder->with('item');
                 });
             },
             static function (EloquentPaginator $paginator): void {
-                $item = $paginator->getItems()[0] ?? null;
+                $childItem = $paginator->getItems()[0] ?? null;
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertInstanceOf(ParentModel::class, $item);
-                self::assertInstanceOf(Item::class, $item->item);
-                self::assertEquals(1, $item->id);
-                self::assertEquals(1, $item->item->id);
-                self::assertEquals('my-title', $item->item->title);
+                self::assertInstanceOf(ChildItemModel::class, $childItem);
+                self::assertInstanceOf(ItemModel::class, $childItem->item);
+                self::assertEquals(1, $childItem->id);
+                self::assertEquals(1, $childItem->item->id);
+                self::assertEquals('my-parent', $childItem->item->title);
+                self::assertEquals('my-child', $childItem->child_title);
             },
         ];
     }
 
     /**
-     * @dataProvider providerTestPaginator
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestPaginator
      */
     public function testPaginator(
         PaginationInterface $pagination,

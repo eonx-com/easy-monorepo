@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Batch\Results;
@@ -14,11 +13,9 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class HeaderTest extends TestCase
 {
     /**
-     * @return mixed[]
-     *
      * @see testGetDateProcessedShouldReturnNull
      */
-    public function provideInvalidDateProcessedValues(): iterable
+    public static function provideInvalidDateProcessedValues(): iterable
     {
         yield 'null dateProcessed' => [
             'dateProcessed' => [
@@ -36,8 +33,6 @@ final class HeaderTest extends TestCase
      * Should return processing date as a null when date string is invalid.
      *
      * @group Batch-Header
-     *
-     * @param mixed[] $dateProcessed
      *
      * @dataProvider provideInvalidDateProcessedValues
      */

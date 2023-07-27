@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
@@ -34,9 +33,6 @@ final class CacheTableHelper
 
     private const TICK_COUNT_COLUMN_MAXIMUM = 'maximum';
 
-    /**
-     * @param mixed[] $config
-     */
     public static function createCacheTables(array $config, int $cacheClearAfterTickCount): void
     {
         $tables = [];

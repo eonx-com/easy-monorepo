@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Generators\Stubs;
@@ -10,8 +9,6 @@ final class ObjectStub extends BaseObject
 {
     /**
      * Get validation rules.
-     *
-     * @return mixed[]
      */
     public function getValidationRules(): array
     {
@@ -22,8 +19,6 @@ final class ObjectStub extends BaseObject
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
      * @see http://php.net/manual/en/function.str-pad.php
-     *
-     * @return mixed[]
      */
     protected function getAttributesPaddingRules(): array
     {

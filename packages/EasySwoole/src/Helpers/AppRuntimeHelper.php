@@ -1,8 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
+
+use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
+use EonX\EasySwoole\Runtime\EasySwooleRuntime;
 
 final class AppRuntimeHelper
 {
@@ -10,15 +12,22 @@ final class AppRuntimeHelper
 
     private const APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
 
-    /**
-     * @param mixed[] $options
-     */
     public static function addOptions(array $options): void
     {
         $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge(
             $_SERVER[self::APP_RUNTIME_OPTIONS] ?? [],
             $options
         );
+    }
+
+    public static function enableEasyScheduleRunner(): void
+    {
+        self::addOptions([EasyScheduleSwooleRunner::ENABLED => true]);
+    }
+
+    public static function enableRuntime(): void
+    {
+        self::setRuntime(EasySwooleRuntime::class);
     }
 
     public static function getOption(string $name, mixed $default = null): mixed
@@ -31,9 +40,6 @@ final class AppRuntimeHelper
         self::addOptions(['cache_clear_after_tick_count' => $cacheClearAfterTickCount]);
     }
 
-    /**
-     * @param mixed[] $cacheTables
-     */
     public static function setCacheTables(array $cacheTables): void
     {
         self::addOptions(['cache_tables' => $cacheTables]);
@@ -45,6 +51,11 @@ final class AppRuntimeHelper
     public static function setCallbacks(array $callbacks): void
     {
         self::addOptions(['callbacks' => $callbacks]);
+    }
+
+    public static function setEnvVarName(string $envVarName): void
+    {
+        self::addOptions(['env_var_name' => $envVarName]);
     }
 
     public static function setHost(string $host): void
@@ -73,6 +84,14 @@ final class AppRuntimeHelper
         self::addOptions(['hot_reload_extensions' => $hotReloadExtensions]);
     }
 
+    /**
+     * @param string[] $jsonSecrets
+     */
+    public static function setJsonSecrets(array $jsonSecrets): void
+    {
+        self::addOptions(['json_secrets' => $jsonSecrets]);
+    }
+
     public static function setMode(int $mode): void
     {
         self::addOptions(['mode' => $mode]);
@@ -93,9 +112,6 @@ final class AppRuntimeHelper
         $_SERVER[self::APP_RUNTIME] = $runtime;
     }
 
-    /**
-     * @param mixed[] $settings
-     */
     public static function setSettings(array $settings): void
     {
         self::addOptions(['settings' => $settings]);
@@ -104,6 +120,16 @@ final class AppRuntimeHelper
     public static function setSockType(int $sockType): void
     {
         self::addOptions(['sock_type' => $sockType]);
+    }
+
+    public static function setSslCertEnvVarName(string $sslCertEnvVarName): void
+    {
+        self::addOptions(['ssl_cert_env_var_name' => $sslCertEnvVarName]);
+    }
+
+    public static function setSslKeyEnvVarName(string $sslKeyEnvVarName): void
+    {
+        self::addOptions(['ssl_key_env_var_name' => $sslKeyEnvVarName]);
     }
 
     public static function setUseDefaultCallbacks(bool $useDefaultCallbacks): void

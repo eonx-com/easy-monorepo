@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Repositories;
@@ -8,12 +7,10 @@ use EonX\EasyBatch\Exceptions\BatchNotFoundException;
 use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
+use Throwable;
 
 final class BatchRepository extends AbstractBatchObjectRepository implements BatchRepositoryInterface
 {
-    /**
-     * @var string
-     */
     private const SAVEPOINT = 'easy_batch_conn_savepoint';
 
     /**
@@ -32,7 +29,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             return $this->cache[$id];
         }
 
-        /** @var null|\EonX\EasyBatch\Interfaces\BatchInterface $batch */
+        /** @var \EonX\EasyBatch\Interfaces\BatchInterface|null $batch */
         $batch = $this->doFind($id);
 
         if ($batch !== null) {
@@ -40,21 +37,6 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         }
 
         return $batch;
-    }
-
-    /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
-     * @throws \Doctrine\DBAL\Exception
-     */
-    public function findOrFail(int|string $id): BatchInterface
-    {
-        $batch = $this->find($id);
-
-        if ($batch !== null) {
-            return $batch;
-        }
-
-        throw new BatchNotFoundException(\sprintf('Batch for id "%s" not found', $id));
     }
 
     /**
@@ -77,6 +59,21 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             'Batch for parent_batch_item_id "%s" not found',
             $parentBatchItemId
         ));
+    }
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function findOrFail(int|string $id): BatchInterface
+    {
+        $batch = $this->find($id);
+
+        if ($batch !== null) {
+            return $batch;
+        }
+
+        throw new BatchNotFoundException(\sprintf('Batch for id "%s" not found', $id));
     }
 
     public function reset(): BatchRepositoryInterface
@@ -130,7 +127,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             $this->commit();
 
             return $freshBatch;
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->rollback();
 
             throw $throwable;

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Request;
@@ -11,9 +10,6 @@ use EonX\EasyBugsnag\Interfaces\ValueOptionInterface;
 
 abstract class AbstractRequestResolver implements ResolverInterface
 {
-    /**
-     * @var string[]
-     */
     private const IN_CLI = ['cli', 'phpdbg', 'embed'];
 
     public function resolve(): RequestInterface

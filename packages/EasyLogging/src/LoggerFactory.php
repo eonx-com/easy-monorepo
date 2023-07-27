@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging;
@@ -10,7 +9,7 @@ use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
@@ -19,35 +18,29 @@ use Psr\Log\LoggerInterface;
 
 final class LoggerFactory implements LoggerFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $defaultChannel;
+    private string $defaultChannel;
 
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface[]
      */
-    private $handlerConfigs = [];
+    private array $handlerConfigs = [];
 
-    /**
-     * @var string
-     */
-    private $loggerClass;
+    private string $loggerClass;
 
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
      */
-    private $loggerConfigurators = [];
+    private array $loggerConfigurators = [];
 
     /**
      * @var \Monolog\Logger[]
      */
-    private $loggers = [];
+    private array $loggers = [];
 
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface[]
      */
-    private $processorConfigs = [];
+    private array $processorConfigs = [];
 
     public function __construct(?string $defaultChannel = null, ?string $loggerClass = null)
     {
@@ -57,7 +50,7 @@ final class LoggerFactory implements LoggerFactoryInterface
 
     public function create(?string $channel = null): LoggerInterface
     {
-        $channel = $channel ?? $this->defaultChannel;
+        $channel ??= $this->defaultChannel;
 
         if (isset($this->loggers[$channel])) {
             return $this->loggers[$channel];
@@ -75,9 +68,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         return $this->loggers[$channel] = $logger;
     }
 
-    /**
-     * @param iterable<mixed> $handlerConfigProviders
-     */
     public function setHandlerConfigProviders(iterable $handlerConfigProviders): LoggerFactoryInterface
     {
         foreach ($this->filterIterable($handlerConfigProviders, HandlerConfigProviderInterface::class) as $provider) {
@@ -91,9 +81,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         return $this;
     }
 
-    /**
-     * @param iterable<mixed> $loggerConfigurators
-     */
     public function setLoggerConfigurators(iterable $loggerConfigurators): LoggerFactoryInterface
     {
         $this->loggerConfigurators = $this->filterIterable($loggerConfigurators, LoggerConfiguratorInterface::class);
@@ -101,9 +88,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         return $this;
     }
 
-    /**
-     * @param null|iterable<mixed> $processorConfigProviders
-     */
     public function setProcessorConfigProviders(?iterable $processorConfigProviders = null): LoggerFactoryInterface
     {
         if ($processorConfigProviders === null) {
@@ -143,10 +127,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     }
 
     /**
-     * @param iterable<mixed> $iterable
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     private function filterIterable(iterable $iterable, string $class): array
     {
@@ -162,9 +143,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         $configs = $this->filterAndSortConfigs($this->handlerConfigs, $channel);
 
         $handlers = \array_map(
-            static function (HandlerConfigInterface $config): HandlerInterface {
-                return $config->handler();
-            },
+            static fn (HandlerConfigInterface $config): HandlerInterface => $config->handler(),
             $configs
         );
 
@@ -188,9 +167,7 @@ final class LoggerFactory implements LoggerFactoryInterface
         $configs = $this->filterAndSortConfigs($this->processorConfigs, $channel);
 
         return \array_map(
-            static function (ProcessorConfigInterface $config): ProcessorInterface {
-                return $config->processor();
-            },
+            static fn (ProcessorConfigInterface $config): ProcessorInterface => $config->processor(),
             $configs
         );
     }

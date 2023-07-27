@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Bridge\Laravel\Listeners;
@@ -10,14 +9,9 @@ use Illuminate\Routing\Events\RouteMatched;
 
 final class FromRequestPaginationListener
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationProviderInterface
-     */
-    private $paginationProvider;
-
-    public function __construct(PaginationProviderInterface $paginationProvider)
-    {
-        $this->paginationProvider = $paginationProvider;
+    public function __construct(
+        private PaginationProviderInterface $paginationProvider,
+    ) {
     }
 
     public function handle(RouteMatched $event): void

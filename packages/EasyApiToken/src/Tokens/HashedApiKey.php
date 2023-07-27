@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tokens;
@@ -16,14 +15,16 @@ final class HashedApiKey implements HashedApiKeyInterface
     ) {
     }
 
+    public function getId(): int|string
+    {
+        return $this->id;
+    }
+
     public function getOriginalToken(): string
     {
         return $this->original;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return [
@@ -33,18 +34,13 @@ final class HashedApiKey implements HashedApiKeyInterface
         ];
     }
 
-    public function getId(): int|string
+    public function getSecret(): string
     {
-        return $this->id;
+        return $this->secret;
     }
 
     public function getVersion(): string
     {
         return $this->version ?? self::DEFAULT_VERSION;
-    }
-
-    public function getSecret(): string
-    {
-        return $this->secret;
     }
 }

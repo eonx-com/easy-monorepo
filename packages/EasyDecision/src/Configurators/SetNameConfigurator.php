@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Configurators;
@@ -8,15 +7,10 @@ use EonX\EasyDecision\Interfaces\DecisionInterface;
 
 final class SetNameConfigurator extends AbstractConfigurator
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    public function __construct(string $name, ?int $priority = null)
-    {
-        $this->name = $name;
-
+    public function __construct(
+        private string $name,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

@@ -1,24 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Interfaces;
 
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
+
 interface EncryptorInterface
 {
-    /**
-     * @var string
-     */
     public const DEFAULT_KEY_NAME = 'app';
 
-    /**
-     * @var string
-     */
     public const ENCRYPTED_KEY_NAME = 'keyName';
 
-    /**
-     * @var string
-     */
     public const ENCRYPTED_KEY_VALUE = 'value';
 
     /**
@@ -26,12 +19,9 @@ interface EncryptorInterface
      */
     public function decrypt(string $text): DecryptedStringInterface;
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     public function decryptRaw(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null,
+        null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
     ): string;
 
     /**
@@ -39,11 +29,8 @@ interface EncryptorInterface
      */
     public function encrypt(string $text, ?string $keyName = null): string;
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     public function encryptRaw(
         string $text,
-        null|array|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair $key = null,
+        null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
     ): string;
 }

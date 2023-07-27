@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Tests\Bridge\Symfony\Stubs;
@@ -16,18 +15,15 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var null|\Symfony\Component\HttpFoundation\Request
-     */
-    private static $request;
+    private static ?Request $request = null;
 
     /**
      * @var string[]
      */
-    private $configs;
+    private array $configs;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     public function __construct(?array $configs = null)
     {

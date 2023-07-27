@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection;
 
+use InvalidArgumentException;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -28,11 +28,12 @@ final class Configuration implements ConfigurationInterface
                                         $value = [];
                                     }
 
-                                    return \array_map(static function ($mapValue): string {
-                                        return u((string)$mapValue)
+                                    return \array_map(
+                                        static fn ($mapValue): string => u((string)$mapValue)
                                             ->ensureStart('/')
-                                            ->toString();
-                                    }, \is_array($value) ? $value : [$value]);
+                                            ->toString(),
+                                        \is_array($value) ? $value : [$value]
+                                    );
                                 })
                             ->end()
                             ->scalarPrototype()->end()
@@ -45,6 +46,12 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
                         ->booleanNode('reset_dbal_connections')->defaultTrue()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('easy_admin')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
                 ->arrayNode('easy_batch')
@@ -82,7 +89,7 @@ final class Configuration implements ConfigurationInterface
 
                                     // Remove trailing slashes
                                     $dirs = \array_map(static function ($mapValue): string {
-                                        $dir = u((string) $mapValue);
+                                        $dir = u((string)$mapValue);
 
                                         while ($dir->endsWith('/')) {
                                             $dir = $dir->trimSuffix('/');
@@ -92,9 +99,12 @@ final class Configuration implements ConfigurationInterface
                                     }, \is_array($value) ? $value : [$value]);
 
                                     // Filter empty strings
-                                    $dirs = \array_filter($dirs, static function ($filterValue): bool {
-                                        return \is_string($filterValue) && $filterValue !== '';
-                                    });
+                                    $dirs = \array_filter(
+                                        $dirs,
+                                        static fn (
+                                            $filterValue,
+                                        ): bool => \is_string($filterValue) && $filterValue !== ''
+                                    );
 
                                     // Default to public dir if not set
                                     return \count($dirs) > 0 ? $dirs : ['%kernel.project_dir%/public'];
@@ -110,13 +120,15 @@ final class Configuration implements ConfigurationInterface
                                     }
 
                                     return \array_map(static function ($mapValue): string {
-                                        $phpFile = u((string) $mapValue)->ensureStart('/');
+                                        $phpFile = u((string)$mapValue)->ensureStart('/');
 
                                         if ($phpFile->endsWith('.php') === false) {
-                                            throw new \InvalidArgumentException(\sprintf(
-                                                'Only PHP files allowed, %s given',
-                                                $phpFile->toString()
-                                            ));
+                                            throw new InvalidArgumentException(
+                                                \sprintf(
+                                                    'Only PHP files allowed, %s given',
+                                                    $phpFile->toString()
+                                                )
+                                            );
                                         }
 
                                         return $phpFile->toString();

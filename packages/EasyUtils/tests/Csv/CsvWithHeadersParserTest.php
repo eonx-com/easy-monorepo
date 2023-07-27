@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Csv;
@@ -10,13 +9,14 @@ use EonX\EasyUtils\Csv\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException;
 use EonX\EasyUtils\Csv\FromFileCsvContentsProvider;
 use EonX\EasyUtils\Tests\AbstractTestCase;
+use Traversable;
 
 final class CsvWithHeadersParserTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testFromFile
      */
-    public function providerTestFromFile(): iterable
+    public static function providerTestFromFile(): iterable
     {
         yield 'Simple file' => [
             __DIR__ . '/fixtures/simple_file.csv',
@@ -36,9 +36,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
         yield 'Simple file with transformer' => [
             __DIR__ . '/fixtures/simple_file.csv',
             CsvParserConfig::create(recordTransformers: [
-                static function (array $record): array {
-                    return \array_change_key_case($record, \CASE_UPPER);
-                },
+                static fn (array $record): array => \array_change_key_case($record, \CASE_UPPER),
             ]),
             [
                 [
@@ -109,9 +107,9 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
+     * @see testFromFileForException
      */
-    public function providerTestFromFileForException(): iterable
+    public static function providerTestFromFileForException(): iterable
     {
         yield 'Value for required header missing' => [
             __DIR__ . '/fixtures/missing_value_for_required_header.csv',
@@ -121,18 +119,16 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $expected
-     *
-     * @dataProvider providerTestFromFile
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
+     *
+     * @dataProvider providerTestFromFile
      */
     public function testFromFile(string $filename, CsvParserConfigInterface $config, array $expected): void
     {
         $parser = new CsvWithHeadersParser();
         $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
-        $result = $result instanceof \Traversable ? \iterator_to_array($result) : $result;
+        $result = $result instanceof Traversable ? \iterator_to_array($result) : $result;
 
         self::assertEquals($expected, $result);
     }
@@ -140,10 +136,10 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     /**
      * @phpstan-param class-string<\Throwable> $expectedException
      *
-     * @dataProvider providerTestFromFileForException
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
+     *
+     * @dataProvider providerTestFromFileForException
      */
     public function testFromFileForException(
         string $filename,
@@ -155,7 +151,7 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
         $parser = new CsvWithHeadersParser();
         $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
 
-        if ($result instanceof \Traversable) {
+        if ($result instanceof Traversable) {
             \iterator_to_array($result);
         }
     }

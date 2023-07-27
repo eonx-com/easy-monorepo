@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Laravel;
@@ -15,9 +14,6 @@ final class Translator implements TranslatorInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
         $translation = $this->doTranslate($message, $parameters, $locale);
@@ -29,13 +25,10 @@ final class Translator implements TranslatorInterface
         $namespacedMessage = \sprintf('%s::%s', BridgeConstantsInterface::TRANSLATION_NAMESPACE, \trim($message));
         $translation = $this->doTranslate($namespacedMessage, $parameters, $locale);
 
-        // If translation is finally different we return it otherwise default to original message.
+        // If translation is finally different we return it otherwise default to original message
         return $translation !== $namespacedMessage ? $translation : $message;
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     private function doTranslate(string $message, array $parameters, ?string $locale = null): string
     {
         $method = \method_exists($this->decorated, 'lang') ? 'lang' : 'get';

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Helpers;
@@ -32,12 +31,12 @@ final class XmlFailureMitigation
             }
 
             // Begin to iterate through each node key and value
-            // We assume here that there *could* be more than one XML element in a given line.
+            // We assume here that there *could* be more than one XML element in a given line
             foreach ($matches as $match) {
                 // If the match does not contain three elements, skip
                 if (\count($match) !== 3) {
                     // @codeCoverageIgnoreStart
-                    // Sanity check only and unable to be tested.
+                    // Sanity check only and unable to be tested
                     throw new ImpossibleException(\sprintf(
                         'Regular expression match result should have 3 children, %d found.',
                         \count($match)

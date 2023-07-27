@@ -41,19 +41,19 @@ The common configuration options for Laravel and Symfony are as follows:
 
 Laravel has the following additional configuration option:
 
-| Configuration | Default | Description |
-| ------------- | ------- | ----------- |
+| Configuration           | Default | Description                                                           |
+|-------------------------|---------|-----------------------------------------------------------------------|
 | `use_extended_response` | `false` | Use extended error response containing exception message, trace, etc. |
 
 Symfony has the following additional configuration options:
 
-| Configuration                       | Default    | Description                                                                                              |
-|-------------------------------------|------------|----------------------------------------------------------------------------------------------------------|
-| `bugsnag_ignore_validation_errors`  | `true`     | Ignore validation errors based on ApiPlatformValidationErrorsResponseBuilder                             |
-| `override_api_platform_listener`    | `true`     | If using [API Platform][1], override its inbuilt exception handling to use the EasyErrorHandler package. |
-| `transform_validation_errors`       | `true`     | Transform validation errors response structure based on ApiPlatformValidationErrrorResponseBuilder.      |
-| `translation_domain`                | `messages` | Symfony translation domain.                                                                              |
-| `verbose`                           | `false`    | Use extended error response containing exception message, trace, etc.                                    |
+| Configuration                      | Default    | Description                                                                                              |
+|------------------------------------|------------|----------------------------------------------------------------------------------------------------------|
+| `bugsnag_ignore_validation_errors` | `true`     | Ignore validation errors based on ApiPlatformValidationErrorsResponseBuilder                             |
+| `override_api_platform_listener`   | `true`     | If using [API Platform][1], override its inbuilt exception handling to use the EasyErrorHandler package. |
+| `transform_validation_errors`      | `true`     | Transform validation errors response structure based on ApiPlatformValidationErrrorResponseBuilder.      |
+| `translation_domain`               | `messages` | Symfony translation domain.                                                                              |
+| `verbose`                          | `false`    | Use extended error response containing exception message, trace, etc.                                    |
 
 ## Example configuration files
 
@@ -99,7 +99,6 @@ In Laravel, the `easy-error-handler.php` configuration file could look like the 
 
 ```php
 <?php
-
 declare(strict_types=1);
 
 return [

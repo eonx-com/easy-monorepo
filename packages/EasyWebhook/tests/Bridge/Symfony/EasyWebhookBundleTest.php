@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Bridge\Symfony;
@@ -13,11 +12,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigAndDependenciesSanity
      */
-    public function providerTestConfigAndDependenciesSanity(): iterable
+    public static function providerTestConfigAndDependenciesSanity(): iterable
     {
         yield 'Defaults' => [
             [],

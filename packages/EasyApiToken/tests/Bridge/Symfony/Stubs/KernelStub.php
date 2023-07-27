@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs;
@@ -16,7 +15,7 @@ use Symfony\Component\HttpKernel\Kernel;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     public function __construct(
         private ?array $configs = null,

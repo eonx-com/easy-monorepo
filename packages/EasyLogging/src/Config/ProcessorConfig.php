@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Config;
@@ -9,14 +8,9 @@ use Monolog\Processor\ProcessorInterface;
 
 final class ProcessorConfig extends AbstractLoggingConfig implements ProcessorConfigInterface
 {
-    /**
-     * @var \Monolog\Processor\ProcessorInterface
-     */
-    private $processor;
-
-    public function __construct(ProcessorInterface $processor)
-    {
-        $this->processor = $processor;
+    public function __construct(
+        private ProcessorInterface $processor,
+    ) {
     }
 
     public static function create(ProcessorInterface $processor): self

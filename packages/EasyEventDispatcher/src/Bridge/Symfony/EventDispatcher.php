@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEventDispatcher\Bridge\Symfony;
@@ -9,22 +8,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 
 final class EventDispatcher implements EventDispatcherInterface
 {
-    /**
-     * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
-     */
-    private $decorated;
-
-    public function __construct(SymfonyEventDispatcherInterface $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private SymfonyEventDispatcherInterface $decorated,
+    ) {
     }
 
-    /**
-     * @param object $event
-     *
-     * @return object
-     */
-    public function dispatch($event)
+    public function dispatch(object $event): object
     {
         return $this->decorated->dispatch($event);
     }

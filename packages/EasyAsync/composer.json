@@ -5,20 +5,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-event-dispatcher": "^4.4",
-        "eonx-com/easy-pagination": "^4.4",
-        "eonx-com/easy-random": "^4.4",
-        "nette/utils": "^3.1",
-        "nesbot/carbon": "^2.22"
+        "doctrine/orm": "^2.14",
+        "doctrine/persistence": "^3.0",
+        "psr/log": "^3.0"
     },
     "require-dev": {
-        "ramsey/uuid": "^3.9 || ^4.0",
-        "doctrine/dbal": "^2.6",
-        "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "symfony/symfony": "^5.4 || ^6.0",
-        "mockery/mockery": "^1.4",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0"
+        "doctrine/common": "^3.0",
+        "doctrine/dbal": "^3.0",
+        "eonx-com/easy-event-dispatcher": "^5.1",
+        "eonx-com/easy-random": "^5.1",
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^10.2",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -31,9 +29,19 @@
             "EonX\\EasyAsync\\Tests\\": "tests"
         }
     },
+    "suggest": {
+        "eonx-com/easy-error-handler": "To report about the Illuminate worker stopping event",
+        "eonx-com/easy-logging": "To provide the logging service",
+        "illuminate/contracts": "To use this package with Laravel/Lumen",
+        "illuminate/queue": "To use this package with Laravel/Lumen",
+        "illuminate/support": "To use this package with Laravel/Lumen",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony"
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.1-dev"
         }
     }
 }

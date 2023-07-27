@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests;
@@ -21,15 +20,31 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
-     */
-    private $expressionLanguageFactory;
+    private static ?ExpressionLanguageRuleFactoryInterface $languageRuleFactory = null;
 
-    /**
-     * @var \EonX\EasyDecision\Interfaces\ExpressionLanguageRuleFactoryInterface
-     */
-    private $languageRuleFactory;
+    private ?ExpressionLanguageFactoryInterface $expressionLanguageFactory = null;
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
+    }
+
+    protected static function createLanguageRule(
+        string $expression,
+        ?int $priority = null,
+        ?string $name = null,
+        ?array $extra = null,
+    ): RuleInterface {
+        return self::getLanguageRuleFactory()
+            ->create($expression, $priority, $name, $extra);
+    }
 
     protected function createExpressionLanguage(): ExpressionLanguageInterface
     {
@@ -40,19 +55,6 @@ abstract class AbstractTestCase extends TestCase
     protected function createFalseRule(string $name, ?int $priority = null): RuleInterface
     {
         return new RuleStub($name, false, null, $priority);
-    }
-
-    /**
-     * @param null|mixed[] $extra
-     */
-    protected function createLanguageRule(
-        string $expression,
-        ?int $priority = null,
-        ?string $name = null,
-        ?array $extra = null,
-    ): RuleInterface {
-        return $this->getLanguageRuleFactory()
-            ->create($expression, $priority, $name, $extra);
     }
 
     protected function createTrueRule(string $name, ?int $priority = null): RuleInterface
@@ -79,24 +81,12 @@ abstract class AbstractTestCase extends TestCase
         $decision->setExpressionLanguage($this->createExpressionLanguage());
     }
 
-    protected function tearDown(): void
+    private static function getLanguageRuleFactory(): ExpressionLanguageRuleFactoryInterface
     {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
+        if (self::$languageRuleFactory !== null) {
+            return self::$languageRuleFactory;
         }
 
-        parent::tearDown();
-    }
-
-    private function getLanguageRuleFactory(): ExpressionLanguageRuleFactoryInterface
-    {
-        if ($this->languageRuleFactory !== null) {
-            return $this->languageRuleFactory;
-        }
-
-        return $this->languageRuleFactory = new ExpressionLanguageRuleFactory();
+        return self::$languageRuleFactory = new ExpressionLanguageRuleFactory();
     }
 }

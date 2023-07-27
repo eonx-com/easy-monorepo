@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -17,8 +16,8 @@ final class ResetStoreMiddlewareTest extends AbstractMiddlewareTestCase
     {
         $webhook = Webhook::fromArray([]);
         $result = new WebhookResult($webhook);
-        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
-        $resultStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
+        $resultStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
 
         $store->store($webhook);
         $resultStore->store($result);

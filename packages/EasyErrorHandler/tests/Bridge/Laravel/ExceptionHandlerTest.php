@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Laravel;
@@ -93,9 +92,6 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
     }
 
     /**
-     * @param null|mixed[] $config
-     * @param null|mixed[] $translations
-     *
      * @dataProvider providerTestRenderWithDefaultBuilders
      */
     public function testRenderWithDefaultBuilders(

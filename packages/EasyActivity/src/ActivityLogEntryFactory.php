@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity;
@@ -12,29 +11,11 @@ use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 
 final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActorResolverInterface
-     */
-    private $actorResolver;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface
-     */
-    private $subjectDataResolver;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface
-     */
-    private $subjectResolver;
-
     public function __construct(
-        ActorResolverInterface $actorResolver,
-        ActivitySubjectResolverInterface $subjectResolver,
-        ActivitySubjectDataResolverInterface $subjectDataResolver,
+        private ActorResolverInterface $actorResolver,
+        private ActivitySubjectResolverInterface $subjectResolver,
+        private ActivitySubjectDataResolverInterface $subjectDataResolver,
     ) {
-        $this->actorResolver = $actorResolver;
-        $this->subjectResolver = $subjectResolver;
-        $this->subjectDataResolver = $subjectDataResolver;
     }
 
     /**

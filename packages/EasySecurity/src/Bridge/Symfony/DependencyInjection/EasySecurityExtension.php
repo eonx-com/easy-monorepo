@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DependencyInjection;
@@ -20,18 +19,12 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasySecurityExtension extends Extension
 {
-    /**
-     * @var string[]
-     */
     private const AUTO_CONFIG_TAGS = [
-        RolesProviderInterface::class => BridgeConstantsInterface::TAG_ROLES_PROVIDER,
         PermissionsProviderInterface::class => BridgeConstantsInterface::TAG_PERMISSIONS_PROVIDER,
+        RolesProviderInterface::class => BridgeConstantsInterface::TAG_ROLES_PROVIDER,
         SecurityContextConfiguratorInterface::class => BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR,
     ];
 
-    /**
-     * @var string[]
-     */
     private const VOTERS = [
         'permission' => PermissionVoter::class,
         'provider' => ProviderVoter::class,
@@ -39,8 +32,6 @@ final class EasySecurityExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
@@ -50,13 +41,11 @@ final class EasySecurityExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.php');
 
-        $contextServiceId = $config['context_service_id'];
         $permissionsLocations = $config['permissions_locations'] ?? [];
         $rolesLocations = $config['roles_locations'] ?? [];
 
         $container->setParameter(BridgeConstantsInterface::PARAM_PERMISSIONS_LOCATIONS, $permissionsLocations);
         $container->setParameter(BridgeConstantsInterface::PARAM_ROLES_LOCATIONS, $rolesLocations);
-        $container->setParameter(BridgeConstantsInterface::PARAM_CONTEXT_SERVICE_ID, $contextServiceId);
         $container->setParameter(BridgeConstantsInterface::PARAM_TOKEN_DECODER, $config['token_decoder'] ?? null);
 
         foreach (self::AUTO_CONFIG_TAGS as $interface => $tag) {

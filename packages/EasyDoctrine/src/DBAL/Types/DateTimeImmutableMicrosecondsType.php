@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\DBAL\Types;
@@ -15,39 +14,22 @@ use Doctrine\DBAL\Types\DateTimeImmutableType;
 
 final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
 {
+    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
+
+    public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+
+    public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
+
+    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+
+    public const TYPE_NAME = 'datetime';
+
     private static ?DateTimeZone $utc = null;
 
     /**
-     * @var string
-     */
-    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
-
-    /**
-     * @var string
-     */
-    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
-
-    /**
-     * @var string
-     */
-    public const TYPE_NAME = 'datetime';
-
-    /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return $value;
@@ -61,14 +43,16 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateTimeImmutable
     {
-        if ($value === null || $value instanceof DateTimeInterface) {
-            return $value;
+        if ($value === null) {
+            return null;
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            return DateTimeImmutable::createFromInterface($value);
         }
 
         $val = DateTimeImmutable::createFromFormat(self::FORMAT_PHP_DATETIME, $value, self::getUtc())
@@ -90,9 +74,6 @@ final class DateTimeImmutableMicrosecondsType extends DateTimeImmutableType
         return self::TYPE_NAME;
     }
 
-    /**
-     * @param mixed[] $fieldDeclaration
-     */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         if ($platform instanceof PostgreSQL94Platform) {

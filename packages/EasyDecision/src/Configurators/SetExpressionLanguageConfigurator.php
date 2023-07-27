@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Configurators;
@@ -9,15 +8,10 @@ use EonX\EasyDecision\Interfaces\DecisionInterface;
 
 final class SetExpressionLanguageConfigurator extends AbstractConfigurator
 {
-    /**
-     * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageFactoryInterface
-     */
-    private $exprLangFactory;
-
-    public function __construct(ExpressionLanguageFactoryInterface $exprLangFactory, ?int $priority = null)
-    {
-        $this->exprLangFactory = $exprLangFactory;
-
+    public function __construct(
+        private ExpressionLanguageFactoryInterface $exprLangFactory,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

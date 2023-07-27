@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -10,10 +9,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class EventHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var string
-     */
-    private $eventHeader;
+    private string $eventHeader;
 
     public function __construct(?string $eventHeader = null, ?int $priority = null)
     {
@@ -24,8 +20,10 @@ final class EventHeaderMiddleware extends AbstractConfigureOnceMiddleware
 
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if (empty($webhook->getEvent()) === false) {
-            $webhook->header($this->eventHeader, $webhook->getEvent());
+        $event = $webhook->getEvent() ?? '';
+
+        if ($event !== '') {
+            $webhook->header($this->eventHeader, $event);
         }
 
         return $stack

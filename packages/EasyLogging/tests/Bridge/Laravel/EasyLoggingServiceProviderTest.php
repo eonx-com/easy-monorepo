@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Bridge\Laravel;
@@ -12,9 +11,9 @@ use Psr\Log\LoggerInterface;
 final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testChannelParameterOnMake
      */
-    public function providerTestChannelParameterOnMake(): iterable
+    public static function providerTestChannelParameterOnMake(): iterable
     {
         yield 'Default' => [null];
         yield 'App' => ['app'];

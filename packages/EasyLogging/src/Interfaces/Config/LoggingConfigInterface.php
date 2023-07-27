@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Interfaces\Config;
@@ -9,22 +8,22 @@ use EonX\EasyUtils\Interfaces\HasPriorityInterface;
 interface LoggingConfigInterface extends HasPriorityInterface
 {
     /**
-     * @param null|string[] $channels
+     * @param string[]|null $channels
      */
     public function channels(?array $channels = null): self;
 
     /**
-     * @param null|string[] $exceptChannels
+     * @param string[]|null $exceptChannels
      */
     public function exceptChannels(?array $exceptChannels = null): self;
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getChannels(): ?array;
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getExceptChannels(): ?array;
 

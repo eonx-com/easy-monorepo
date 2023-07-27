@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony;
@@ -17,9 +16,6 @@ final class Translator implements TranslatorInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
         $translation = $this->decorated->trans($message, $parameters, $this->domain, $locale);

@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Stores;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
@@ -42,7 +42,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
     public function findDueWebhooks(
         PaginationInterface $pagination,
-        ?\DateTimeInterface $sendAfter = null,
+        ?DateTimeInterface $sendAfter = null,
         ?string $timezone = null,
     ): LengthAwarePaginatorInterface {
         $sendAfter = $sendAfter !== null
@@ -64,34 +64,32 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                 $queryBuilder
                     ->where('status = :status AND send_after < :sendAfter')
                     ->setParameters([
-                        'status' => WebhookInterface::STATUS_PENDING,
                         'sendAfter' => $sendAfter->format(self::DATETIME_FORMAT),
+                        'status' => WebhookInterface::STATUS_PENDING,
                     ])
                     ->orderBy('created_at');
             })
-            ->setTransformer(function (array $item): WebhookInterface {
-                return $this->instantiateWebhook($item)
-                    ->bypassSendAfter(true);
-            });
+            ->setTransformer(fn (array $item): WebhookInterface => $this->instantiateWebhook($item)
+                ->bypassSendAfter(true));
 
         return $paginator;
     }
 
     public function generateWebhookId(): string
     {
-        return $this->random->uuidV4();
+        return $this->random->uuid();
     }
 
     public function store(WebhookInterface $webhook): WebhookInterface
     {
         $now = Carbon::now('UTC');
         $data = \array_merge($webhook->getExtra() ?? [], $webhook->toArray());
-        $data['class'] = \get_class($webhook);
+        $data['class'] = $webhook::class;
         $data['updated_at'] = $now;
 
         // New result with no id
         if ($webhook->getId() === null) {
-            $webhook->id($this->random->uuidV4());
+            $webhook->id($this->random->uuid());
 
             $data['id'] = $webhook->getId();
             $data['created_at'] = $now;
@@ -120,8 +118,6 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
     }
 
     /**
-     * @param mixed[] $data
-     *
      * @return \EonX\EasyWebhook\Interfaces\WebhookInterface
      */
     private function instantiateWebhook(array $data): WebhookInterface

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -14,24 +13,16 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class EventsMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var string[]
-     */
     private const EVENT_CLASSES = [
         WebhookInterface::STATUS_FAILED => FinalFailedWebhookEvent::class,
         WebhookInterface::STATUS_FAILED_PENDING_RETRY => FailedWebhookEvent::class,
         WebhookInterface::STATUS_SUCCESS => SuccessWebhookEvent::class,
     ];
 
-    /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher, ?int $priority = null)
-    {
-        $this->dispatcher = $dispatcher;
-
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 

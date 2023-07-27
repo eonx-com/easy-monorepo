@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Exceptions;
@@ -11,11 +10,9 @@ use Monolog\Logger;
 final class BaseExceptionTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testLogLevelConvenientMethods
      */
-    public function providerTestLogLevelConvenientMethods(): iterable
+    public static function providerTestLogLevelConvenientMethods(): iterable
     {
         yield 'critical' => [
             'method' => 'setCriticalLogLevel',

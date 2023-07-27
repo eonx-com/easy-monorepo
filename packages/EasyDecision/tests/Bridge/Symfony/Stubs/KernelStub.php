@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Bridge\Symfony\Stubs;
@@ -13,17 +12,11 @@ use Symfony\Component\HttpKernel\Kernel;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
-     * @var null|string[]
+     * @param string[]|null $configPaths
      */
-    private $configPaths;
-
-    /**
-     * @param null|string[] $configPaths
-     */
-    public function __construct(?array $configPaths = null)
-    {
-        $this->configPaths = $configPaths;
-
+    public function __construct(
+        private ?array $configPaths = null,
+    ) {
         parent::__construct('test', true);
     }
 

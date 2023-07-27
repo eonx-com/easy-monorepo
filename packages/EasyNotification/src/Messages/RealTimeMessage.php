@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Messages;
@@ -8,59 +7,36 @@ use EonX\EasyNotification\Exceptions\InvalidRealTimeMessageTypeException;
 
 final class RealTimeMessage extends AbstractMessage
 {
-    /**
-     * @var string[]
-     */
     public const REAL_TIME_TYPES = [self::TYPE_FLASH, self::TYPE_REAL_TIME];
 
-    /**
-     * @var string[]
-     */
     public const STATUSES = [self::STATUS_ON_FLY, self::STATUS_READ, self::STATUS_RECEIVED];
 
-    /**
-     * @var string
-     */
     public const STATUS_ON_FLY = 'on_fly';
 
-    /**
-     * @var string
-     */
     public const STATUS_READ = 'read';
 
-    /**
-     * @var string
-     */
     public const STATUS_RECEIVED = 'received';
 
     /**
      * @var string[]
      */
-    private $topics;
+    private array $topics;
+
+    private string $type;
 
     /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @param null|mixed[] $body
-     * @param null|string[] $topics
+     * @param string[]|null $topics
      */
     public function __construct(?array $body = null, ?array $topics = null, ?string $type = null)
     {
         $this->type($type ?? self::TYPE_REAL_TIME);
-
-        if ($topics !== null) {
-            $this->topics = $topics;
-        }
+        $this->topics = $topics ?? [];
 
         parent::__construct($body);
     }
 
     /**
-     * @param null|mixed[] $body
-     * @param null|string[] $topics
+     * @param string[]|null $topics
      */
     public static function create(?array $body = null, ?array $topics = null, ?string $type = null): self
     {

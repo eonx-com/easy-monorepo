@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Formatters;
@@ -10,8 +9,6 @@ use Nette\Utils\Json;
 final class JsonFormatter implements WebhookBodyFormatterInterface
 {
     /**
-     * @param mixed[] $body
-     *
      * @throws \Nette\Utils\JsonException
      */
     public function format(array $body): string
