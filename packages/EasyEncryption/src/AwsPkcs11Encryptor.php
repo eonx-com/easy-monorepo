@@ -232,10 +232,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     {
         return \is_string($string) && $string !== '';
     }
-
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
+    
     private function validateKey(
         EncryptionKey|EncryptionKeyPair|array|string|null $key = null,
     ): void {
