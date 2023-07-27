@@ -20,6 +20,7 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
@@ -52,8 +53,12 @@ return static function (ECSConfig $ecsConfig): void {
         // Skip rules
         SingleSpaceAfterConstructFixer::class => null,
         AlphabeticallySortedArrayKeysSniff::class => [
-            'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
+            'packages/*/src/Bridge/Laravel/config/*',
             'packages/*/tests/*',
+            'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
+            'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
+            'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
+            'quality/rector.php',
         ],
         AvoidPublicPropertiesSniff::class => null,
         BlankLineAfterOpeningTagFixer::class => null,
@@ -62,14 +67,18 @@ return static function (ECSConfig $ecsConfig): void {
         DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [
             'packages/*/src/Bridge/Symfony/Resources/config/*',
+            'packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
             'packages/*/src/Bridge/BridgeConstantsInterface.php',
             'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
         ],
         MethodChainingNewlineFixer::class => [
-            // Bug, to be fixed in symplify
             'packages/*/src/Bridge/Symfony/DependencyInjection/Configuration.php',
+        ],
+        PhpdocAlignFixer::class => [
+            'packages/EasyUtils/src/Interfaces/MathInterface.php',
+            'packages/EasyUtils/src/Math/Math.php',
         ],
         PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
             'packages/*/src/Bridge/Symfony/Validator/Constraints/*',

@@ -35,12 +35,12 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     }
 
     /**
+     * @template TKey of array-key
+     * @template T
+     *
      * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
      *
      * @return array<string, array<mixed>>
-     *
-     * @template TKey of array-key
-     * @template T
      */
     public function computeCollectionsChangeSet(
         array $collections,
@@ -164,12 +164,12 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     }
 
     /**
+     * @template TKey of array-key
+     * @template T
+     *
      * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
      *
      * @return list<\Doctrine\ORM\PersistentCollection<TKey, T>>
-     *
-     * @template TKey of array-key
-     * @template T
      */
     private function filterCollections(array $collections): array
     {

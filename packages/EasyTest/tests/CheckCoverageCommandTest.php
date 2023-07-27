@@ -110,9 +110,9 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     /**
      * @param mixed[] $inputs
      *
-     * @throws \Exception
-     *
      * @phpstan-param class-string<\Throwable> $expectedException
+     *
+     * @throws \Exception
      *
      * @dataProvider providerCheckCoverageExceptions
      */

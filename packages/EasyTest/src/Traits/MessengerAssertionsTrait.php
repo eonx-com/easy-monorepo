@@ -143,11 +143,11 @@ trait MessengerAssertionsTrait
     /**
      * Returns dispatched messages by the message bus to async transport.
      *
+     * @template TMessageClass
+     *
      * @param class-string<TMessageClass>|null $messageClass
      *
      * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
-     *
-     * @template TMessageClass
      */
     public static function getMessagesSentToAsyncTransport(?string $messageClass = null): array
     {
@@ -157,11 +157,11 @@ trait MessengerAssertionsTrait
     /**
      * Returns dispatched messages by the message bus to failed transport.
      *
+     * @template TMessageClass
+     *
      * @param class-string<TMessageClass>|null $messageClass
      *
      * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
-     *
-     * @template TMessageClass
      */
     public static function getMessagesSentToFailedTransport(?string $messageClass = null): array
     {
@@ -171,11 +171,11 @@ trait MessengerAssertionsTrait
     /**
      * Returns dispatched messages by the message bus to async transport.
      *
+     * @template TMessageClass
+     *
      * @param class-string<TMessageClass>|null $messageClass
      *
      * @return ($messageClass is null ? array<int, object> : array<int, TMessageClass>)
-     *
-     * @template TMessageClass
      */
     public static function getMessagesSentToTransport(string $transportName, ?string $messageClass = null): array
     {

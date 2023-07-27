@@ -98,11 +98,11 @@ abstract class AbstractEncryptor implements EncryptorInterface
     ): string;
 
     /**
-     * @throws T
+     * @phpstan-template T of \Throwable
      *
      * @phpstan-param class-string<T> $throwableClass
      *
-     * @phpstan-template T of \Throwable
+     * @throws T
      */
     protected function execSafely(string $throwableClass, callable $func): mixed
     {
