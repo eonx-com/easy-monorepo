@@ -10,9 +10,6 @@ final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuild
 {
     public const DEFAULT_KEY = 'code';
 
-    /**
-     * @param mixed[] $data
-     */
     protected function doBuildValue(Throwable $throwable, array $data): int
     {
         return $throwable->getCode();

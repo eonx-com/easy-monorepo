@@ -27,17 +27,11 @@ class RuleStub implements RuleInterface
         return $this->priority;
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function proceed(array $input): mixed
     {
         return $this->output;
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function supports(array $input): bool
     {
         return $this->supports;

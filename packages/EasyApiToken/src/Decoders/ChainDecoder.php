@@ -16,9 +16,6 @@ final class ChainDecoder extends AbstractApiTokenDecoder
      */
     private array $decoders;
 
-    /**
-     * @param iterable<mixed> $decoders
-     */
     public function __construct(iterable $decoders, ?string $name = null)
     {
         /** @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[] $filteredDecoders */

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 return [
     'math' => [
-        'round_precision' => null,
-        'round_mode' => null,
-        'scale' => null,
         'format_decimal_separator' => null,
         'format_thousands_separator' => null,
+        'round_mode' => null,
+        'round_precision' => null,
+        'scale' => null,
     ],
     'sensitive_data' => [
         'enabled' => \env('EASY_UTILS_SENSITIVE_DATA_ENABLED', true),

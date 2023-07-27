@@ -13,7 +13,7 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
     private ?KernelInterface $kernel = null;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {

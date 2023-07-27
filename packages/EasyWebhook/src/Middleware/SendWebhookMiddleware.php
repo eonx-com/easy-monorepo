@@ -25,9 +25,9 @@ final class SendWebhookMiddleware extends AbstractMiddleware
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
         $method = $webhook->getMethod() ?? WebhookInterface::DEFAULT_METHOD;
-        $url = $webhook->getUrl();
+        $url = $webhook->getUrl() ?? '';
 
-        if (empty($url)) {
+        if ($url === '') {
             throw new InvalidWebhookUrlException('Webhook URL required');
         }
 

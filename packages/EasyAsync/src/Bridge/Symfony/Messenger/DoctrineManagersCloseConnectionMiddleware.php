@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 final class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
 {
     /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      */
     public function __construct(
         private readonly ManagersCloser $managersCloser,

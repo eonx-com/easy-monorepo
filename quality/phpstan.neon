@@ -41,6 +41,11 @@ parameters:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
+        - '#Method .* return type has no value type specified in iterable type (array|iterable).#'
+        - '#Method .* has parameter .* with no value type specified in iterable type (array|iterable).#'
+        - '#PHPDoc tag @var for variable .* contains generic class .* but does not specify its types\: T#'
+        - '#PHPDoc tag @var for variable .* has no value type specified in iterable type array#'
+        - '#Property .* type has no value type specified in iterable type (array|iterable).#'
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
@@ -105,6 +110,11 @@ parameters:
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
 
+        - message: '#Property .*\:\:\$id is never written, only read#'
+          paths:
+            - %currentWorkingDirectory%/packages/EasyPagination/tests/Stubs/Entity/ChildItem.php
+            - %currentWorkingDirectory%/packages/EasyPagination/tests/Stubs/Entity/Item.php
+
         # ---- EasyPipeline ----
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
           path: %currentWorkingDirectory%/packages/EasyPipeline/src/Bridge/Laravel
@@ -148,6 +158,9 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
+        - message: "#Offset 'extra' on array{message: string, context: array, level: 100|200|250|300|400|500|550|600, level_name: 'ALERT'|'CRITICAL'|'DEBUG'|'EMERGENCY'|'ERROR'|'INFO'|'NOTICE'|'WARNING', channel: string, datetime: DateTimeImmutable, extra: array} on left side of ?? always exists and is not nullable#"
+          path: %currentWorkingDirectory%/packages/EasyRequestId/src/Bridge/EasyLogging/RequestIdProcessor.php
+
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
           path: %currentWorkingDirectory%/packages/EasySchedule/src/Command/ScheduleRunCommand.php

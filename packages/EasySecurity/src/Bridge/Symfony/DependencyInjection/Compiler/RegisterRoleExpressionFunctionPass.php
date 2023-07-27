@@ -15,10 +15,10 @@ final class RegisterRoleExpressionFunctionPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $locations = $container->getParameter(BridgeConstantsInterface::PARAM_ROLES_LOCATIONS);
+        $locations = (array)$container->getParameter(BridgeConstantsInterface::PARAM_ROLES_LOCATIONS);
         $exprLangId = 'security.expression_language';
 
-        if (empty($locations) || $container->has($exprLangId) === false) {
+        if (\count($locations) === 0 || $container->has($exprLangId) === false) {
             return;
         }
 

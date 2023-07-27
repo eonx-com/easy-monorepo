@@ -27,9 +27,6 @@ final class WebhookDataCollector extends DataCollector
         $this->setResults();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getMiddleware(): array
     {
         return $this->data['webhook_middleware'] ?? [];
@@ -81,10 +78,10 @@ final class WebhookDataCollector extends DataCollector
         }
 
         $map = static fn (WebhookResultInterface $result): array => [
-            'webhook' => $result->getWebhook(),
             'response' => $result->getResponse() !== null ? $result->getResponse()
                 ->getInfo() : null,
             'throwable' => $result->getThrowable(),
+            'webhook' => $result->getWebhook(),
         ];
 
         $this->data['webhook_results'] = \array_map($map, $this->webhookClient->getResults());

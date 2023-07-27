@@ -18,8 +18,6 @@ use Throwable;
 final class SecurityContextAuthenticatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testAuthenticateThrowsCorrectException
      */
     public static function provideExceptions(): iterable
@@ -41,9 +39,9 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider provideExceptions
-     *
      * @psalm-param class-string<\Throwable> $expectedExceptionClass
+     *
+     * @dataProvider provideExceptions
      */
     public function testAuthenticateThrowsCorrectException(
         Throwable $thrownException,

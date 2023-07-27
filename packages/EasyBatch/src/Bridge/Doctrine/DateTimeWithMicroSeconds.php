@@ -17,8 +17,6 @@ final class DateTimeWithMicroSeconds extends Type
     }
 
     /**
-     * @param mixed[] $column
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string

@@ -21,7 +21,7 @@ final class ManagersSanityChecker
     }
 
     /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      *
      * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
      * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException

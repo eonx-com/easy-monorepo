@@ -8,9 +8,6 @@ use EonX\EasyDecision\Interfaces\DecisionOutputForRuleAwareInterface;
 
 final class RuleWithExtraOutputStub extends RuleStub implements DecisionOutputForRuleAwareInterface
 {
-    /**
-     * @param null|mixed[] $extra
-     */
     public function __construct(
         string $name,
         mixed $output,

@@ -6,9 +6,6 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface ActivitySubjectDataResolverInterface
 {
-    /**
-     * @param array<string, mixed> $changeSet
-     */
     public function resolve(
         string $action,
         ActivitySubjectInterface $subject,

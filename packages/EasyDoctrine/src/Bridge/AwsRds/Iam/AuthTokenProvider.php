@@ -27,8 +27,6 @@ final class AuthTokenProvider
     }
 
     /**
-     * @param mixed[] $params
-     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getAuthToken(array $params): string

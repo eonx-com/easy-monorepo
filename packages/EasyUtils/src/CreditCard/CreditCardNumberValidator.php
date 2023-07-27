@@ -26,10 +26,6 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
 
     private const MIR = 'MIR';
 
-    private const UATP = 'UATP';
-
-    private const VISA = 'VISA';
-
     private const SCHEMES = [
         // American Express card numbers start with 34 or 37 and have 15 digits
         self::AMEX => [
@@ -94,6 +90,10 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
             '/^4([0-9]{12}|[0-9]{15}|[0-9]{18})$/',
         ],
     ];
+
+    private const UATP = 'UATP';
+
+    private const VISA = 'VISA';
 
     public function isCreditCardNumberValid(string $number): bool
     {

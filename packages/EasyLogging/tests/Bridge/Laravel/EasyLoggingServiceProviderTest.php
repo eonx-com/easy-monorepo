@@ -12,8 +12,6 @@ use Psr\Log\LoggerInterface;
 final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testChannelParameterOnMake
      */
     public static function providerTestChannelParameterOnMake(): iterable

@@ -11,8 +11,8 @@ final class OptionHelper
     private const DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
 
     private const DEFAULT_OPTIONS = [
-        'cache_tables' => [],
         'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
+        'cache_tables' => [],
         'callbacks' => [],
         'env_var_output_enabled' => true,
         'host' => '0.0.0.0',
@@ -40,14 +40,8 @@ final class OptionHelper
 
     private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
 
-    /**
-     * @var mixed[]
-     */
     private static array $options = [];
 
-    /**
-     * @return mixed[]
-     */
     public static function getArray(string $option, ?string $env = null): array
     {
         $value = self::getOption($option, $env);
@@ -79,9 +73,6 @@ final class OptionHelper
         return (int)self::getOption($option, $env);
     }
 
-    /**
-     * @return mixed[]
-     */
     public static function getOptions(): array
     {
         return self::$options;
@@ -109,9 +100,6 @@ final class OptionHelper
         self::$options[$name] = $value;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public static function setOptions(array $options): void
     {
         self::$options = $options;

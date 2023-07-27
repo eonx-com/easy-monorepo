@@ -16,7 +16,6 @@ final class BatchTransformer extends AbstractBatchObjectTransformer
 
     /**
      * @param \EonX\EasyBatch\Interfaces\BatchInterface $batchObject
-     * @param mixed[] $data
      */
     protected function hydrateBatchObject(BatchObjectInterface $batchObject, array $data): void
     {

@@ -32,8 +32,6 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testInvalidEasyActivityConfig
      */
     public static function providerInvalidEasyConfigs(): iterable
@@ -55,8 +53,6 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidEasyActivityConfig
      */
     public static function providerValidEasyConfigs(): iterable
@@ -131,8 +127,6 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param array<mixed> $subjects
-     *
      * @dataProvider providerValidEasyConfigs
      */
     public function testValidEasyActivityConfig(string $configName, array $subjects): void

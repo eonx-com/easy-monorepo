@@ -21,7 +21,6 @@ final class EventDispatcherStub implements EventDispatcherInterface
 
     /**
      * @param class-string $class
-     * @param \Closure(mixed ): void $callback
      */
     public function addDispatchCallback(string $class, Closure $callback): void
     {

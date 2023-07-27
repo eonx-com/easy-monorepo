@@ -10,14 +10,8 @@ use EonX\EasyPagination\Interfaces\PaginatorInterface;
 
 abstract class AbstractPaginator implements PaginatorInterface
 {
-    /**
-     * @var null|mixed[]
-     */
     private ?array $items = null;
 
-    /**
-     * @var null|mixed[]
-     */
     private ?array $transformedItems = null;
 
     private ?Closure $transformer = null;
@@ -38,9 +32,6 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->pagination->getPage();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getItems(): array
     {
         if ($this->transformedItems !== null) {
@@ -76,9 +67,6 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->getPageUrl($this->getCurrentPage() - 1);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
@@ -92,9 +80,6 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return [
@@ -108,8 +93,5 @@ abstract class AbstractPaginator implements PaginatorInterface
         ];
     }
 
-    /**
-     * @return mixed[]
-     */
     abstract protected function doGetItems(): array;
 }

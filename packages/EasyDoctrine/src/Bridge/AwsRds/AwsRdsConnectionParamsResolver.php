@@ -18,10 +18,6 @@ final class AwsRdsConnectionParamsResolver
     }
 
     /**
-     * @param mixed[] $params
-     *
-     * @return mixed[]
-     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getParams(array $params): array

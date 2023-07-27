@@ -18,10 +18,6 @@ final class TokenGenerator implements TokenGeneratorInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $scopes
-     * @param null|mixed[] $roles
-     */
     public function generate(
         array $scopes,
         ?array $roles = null,
@@ -34,10 +30,10 @@ final class TokenGenerator implements TokenGeneratorInterface
 
         $time = \time();
         $payload = [
+            'aud' => $this->audience,
+            'exp' => $time + $lifetime,
             'iat' => $time,
             'scopes' => $scopes,
-            'exp' => $time + $lifetime,
-            'aud' => $this->audience,
         ];
 
         if ($subject !== null) {

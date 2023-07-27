@@ -24,9 +24,6 @@ final class Event extends AbstractEvent
 
     private float $maxLockTime = 60.0;
 
-    /**
-     * @var mixed[]
-     */
     private array $params;
 
     /**
@@ -34,9 +31,6 @@ final class Event extends AbstractEvent
      */
     private array $then = [];
 
-    /**
-     * @param null|mixed[] $params
-     */
     public function __construct(
         private string $command,
         ?array $params = null,

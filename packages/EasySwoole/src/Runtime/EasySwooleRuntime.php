@@ -21,9 +21,6 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRuntime extends SymfonyRuntime
 {
-    /**
-     * @param mixed[]|null $options
-     */
     public function __construct(?array $options = null)
     {
         // If dotenv_path is not set, set it to "envs/$env.env" if file exists
@@ -64,8 +61,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 'group' => 'www-data',
                 'user' => 'www-data',
                 // Static Handler
-                'enable_static_handler' => true,
                 'document_root' => '/var/www/public',
+                'enable_static_handler' => true,
                 // Processes number
                 'reactor_num' => FunctionHelper::countCpu() * 2,
                 'worker_num' => FunctionHelper::countCpu() * 2,
@@ -88,10 +85,6 @@ final class EasySwooleRuntime extends SymfonyRuntime
      * Allows application to define individual Swoole settings using env variables.
      * Any option defined on \Swoole\Constant as a constant can be set using an env variable.
      * Simply replace the OPTION_ from the constant name with SWOOLE_SETTING_ in the env variable name.
-     *
-     * @param mixed[] $settings
-     *
-     * @return mixed[]
      */
     private function resolveSwooleSettings(array $settings): array
     {

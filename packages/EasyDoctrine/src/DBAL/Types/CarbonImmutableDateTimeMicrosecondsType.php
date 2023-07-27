@@ -69,9 +69,6 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
         throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
     }
 
-    /**
-     * @param mixed[] $fieldDeclaration
-     */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         $platformClassNameDbal2 = PostgreSQL94Platform::class;

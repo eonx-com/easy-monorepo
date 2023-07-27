@@ -15,7 +15,7 @@ final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
     private readonly array $exceptionToStatusCode;
 
     /**
-     * @param null|array<class-string, int> $exceptionToStatusCode
+     * @param array<class-string, int>|null $exceptionToStatusCode
      */
     public function __construct(
         ?array $exceptionToStatusCode = null,

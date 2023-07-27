@@ -11,14 +11,8 @@ use Throwable;
 
 final class HttpRequestSentEvent
 {
-    /**
-     * @var mixed[]
-     */
     private array $extra;
 
-    /**
-     * @param null|mixed[] $extra
-     */
     public function __construct(
         private RequestDataInterface $requestData,
         private ?ResponseDataInterface $responseData = null,
@@ -29,9 +23,6 @@ final class HttpRequestSentEvent
         $this->extra = $extra ?? [];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getExtra(): array
     {
         return $this->extra;

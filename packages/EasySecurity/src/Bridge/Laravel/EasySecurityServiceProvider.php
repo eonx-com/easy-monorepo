@@ -137,14 +137,12 @@ final class EasySecurityServiceProvider extends ServiceProvider
         if ($this->app instanceof LumenApplication) {
             $this->app->singleton(
                 FromRequestSecurityContextConfiguratorMiddleware::class,
-                static function (Container $app): FromRequestSecurityContextConfiguratorMiddleware {
-                    $middleware = new FromRequestSecurityContextConfiguratorMiddleware(
-                        $app->make(SecurityContextResolverInterface::class),
-                        $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)
-                    );
-
-                    return $middleware;
-                }
+                static fn (
+                    Container $app
+                ): FromRequestSecurityContextConfiguratorMiddleware => new FromRequestSecurityContextConfiguratorMiddleware(
+                    $app->make(SecurityContextResolverInterface::class),
+                    $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)
+                )
             );
             $this->app->middleware([FromRequestSecurityContextConfiguratorMiddleware::class]);
 

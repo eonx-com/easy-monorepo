@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'token_decoder' => null,
     'easy_bugsnag' => true,
+    'token_decoder' => null,
     'use_default_configurators' => true,
 ];

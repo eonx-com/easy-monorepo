@@ -123,10 +123,10 @@ final class Parser extends AbstractLineByLineParser
         return new Header([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
             'description' => $description === false ? null : \trim($description),
+            'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
             'userFinancialInstitution' => $userFinancialInstitution === false ? null : $userFinancialInstitution,
             'userIdSupplyingFile' => $userIdSupplyingFile === false ? null : $userIdSupplyingFile,
             'userSupplyingFile' => $userSupplyingFile === false ? null : \trim($userSupplyingFile),
-            'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
         ]);
     }
 
@@ -149,9 +149,9 @@ final class Parser extends AbstractLineByLineParser
         return new Trailer([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
             'numberPayments' => $numberPayments === false ? null : $this->trimLeftZeros($numberPayments),
-            'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
             'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
+            'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
         ]);
     }
 

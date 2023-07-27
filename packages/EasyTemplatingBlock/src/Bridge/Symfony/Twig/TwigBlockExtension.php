@@ -25,9 +25,6 @@ final class TwigBlockExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param null|mixed[] $context
-     */
     public function render(string $event, ?array $context = null): string
     {
         return $this->templatingEventRenderer->renderEvent($event, $context);

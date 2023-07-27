@@ -15,8 +15,6 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class TrimStringsNormalizerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDenormalizeSucceedsWithTrimValue
      */
     public static function provideDataForDenormalize(): iterable
@@ -26,8 +24,6 @@ final class TrimStringsNormalizerTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testSupportsDenormalizationReturnsExpectedResult
      */
     public static function provideDataForSupportsDenormalization(): iterable
@@ -125,8 +121,6 @@ final class TrimStringsNormalizerTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[]|null $context
-     *
      * @dataProvider provideDataForSupportsDenormalization
      */
     public function testSupportsDenormalizationReturnsExpectedResult(

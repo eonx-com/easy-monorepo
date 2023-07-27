@@ -52,9 +52,6 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
         $this->dispatchLogEntry(ActivityLogEntry::ACTION_UPDATE, $event->getEntity(), $event->getChangeSet());
     }
 
-    /**
-     * @param array<string, array<string, mixed>> $changeSet
-     */
     private function dispatchLogEntry(string $action, object $object, array $changeSet): void
     {
         if ($this->enabled === false) {

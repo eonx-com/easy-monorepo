@@ -8,10 +8,6 @@ use EonX\EasyAsync\Bridge\Symfony\Messenger\Serializer\Interfaces\QueueEnvelopeI
 
 final class QueueEnvelope implements QueueEnvelopeInterface
 {
-    /**
-     * @param mixed[] $headers
-     * @param null|mixed[] $body
-     */
     public function __construct(
         private string $originalBody,
         private array $headers,
@@ -19,10 +15,6 @@ final class QueueEnvelope implements QueueEnvelopeInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $headers
-     * @param null|mixed[] $body
-     */
     public static function create(string $originalBody, array $headers, ?array $body = null): QueueEnvelopeInterface
     {
         return new self($originalBody, $headers, $body);
@@ -38,9 +30,6 @@ final class QueueEnvelope implements QueueEnvelopeInterface
         return $this->headers[$header] ?? $default;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getHeaders(): array
     {
         return $this->headers;

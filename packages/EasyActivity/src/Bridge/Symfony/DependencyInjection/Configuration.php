@@ -66,6 +66,7 @@ final class Configuration implements ConfigurationInterface
                                         foreach ($properties as $key => $property) {
                                             if (\is_string($key) === true && \is_array($property) === false) {
                                                 $errorMessage = 'Value of named property should be an array type.';
+
                                                 throw new InvalidTypeException($errorMessage);
                                             }
                                         }
@@ -84,6 +85,7 @@ final class Configuration implements ConfigurationInterface
                                         ->then(static function ($property): array {
                                             if (\is_array($property) === false) {
                                                 $errorMessage = 'Property should be an array type';
+
                                                 throw new InvalidTypeException($errorMessage);
                                             }
 

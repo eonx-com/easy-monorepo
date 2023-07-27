@@ -11,9 +11,6 @@ use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
 
 final class ValueExpressionFunctionProvider
 {
-    /**
-     * @return mixed[]
-     */
     public function getFunctions(): array
     {
         return [$this->add(), $this->divide(), $this->equal(), $this->if(), $this->multiply(), $this->subtract()];
@@ -45,7 +42,7 @@ final class ValueExpressionFunctionProvider
     {
         return new ExpressionFunction(
             'equal',
-            fn ($arguments, $target, $value): bool => $target === $value,
+            static fn ($arguments, $target, $value): bool => $target === $value,
             'Check if the 2 given arguments are equal'
         );
     }
@@ -89,9 +86,6 @@ final class ValueExpressionFunctionProvider
         );
     }
 
-    /**
-     * @param mixed[] $arguments
-     */
     private function validateArguments(array $arguments): void
     {
         if (isset($arguments['value']) === false) {

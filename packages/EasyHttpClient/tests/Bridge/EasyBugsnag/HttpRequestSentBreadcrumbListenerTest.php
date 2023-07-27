@@ -18,8 +18,6 @@ use Mockery\MockInterface;
 final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPrepareMetadataSucceeds
      */
     public static function provideEvents(): iterable
@@ -227,8 +225,6 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
     }
 
     /**
-     * @param array<string, mixed> $expectedMetadata
-     *
      * @dataProvider provideEvents
      */
     public function testPrepareMetadataSucceeds(HttpRequestSentEvent $event, array $expectedMetadata): void
@@ -239,9 +235,6 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
         $sut($event);
     }
 
-    /**
-     * @param array<string, mixed> $expectedMetadata
-     */
     private function mockBugsnagClient(array $expectedMetadata): Client
     {
         /** @var \Bugsnag\Client $bugsnagClient */

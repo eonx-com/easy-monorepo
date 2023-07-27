@@ -48,12 +48,8 @@ final class TrimStrings
         }
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\ParameterBag<string, mixed> $bag
-     */
     private function cleanParameterBag(ParameterBag $bag): void
     {
-        /** @var array<string, mixed> $trimmedBag */
         $trimmedBag = $this->trimmer->trim($bag->all(), $this->exceptKeys);
 
         $bag->replace($trimmedBag);

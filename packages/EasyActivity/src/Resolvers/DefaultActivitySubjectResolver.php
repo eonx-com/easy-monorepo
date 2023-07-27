@@ -12,9 +12,6 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
 
 final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
-    /**
-     * @param array<string, mixed> $subjects
-     */
     public function __construct(
         private array $subjects,
     ) {

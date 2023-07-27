@@ -13,8 +13,6 @@ use EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto;
 abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSanitize
      */
     public static function providerTestSanitize(): iterable
@@ -207,8 +205,6 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $input
-     * @param mixed[] $expectedOutput
      * @param string[]|null $keysToMask
      *
      * @dataProvider providerTestSanitize
@@ -220,8 +216,5 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         self::assertEquals($expectedOutput, $sanitizer->sanitize($input));
     }
 
-    /**
-     * @param mixed[]|null $keysToMask
-     */
     abstract protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface;
 }

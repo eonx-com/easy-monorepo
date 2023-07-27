@@ -42,8 +42,8 @@ final class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            WorkerStartedEvent::class => 'onWorkerStarted',
             WorkerRunningEvent::class => 'onWorkerRunning',
+            WorkerStartedEvent::class => 'onWorkerStarted',
         ];
     }
 

@@ -27,9 +27,6 @@ final class DecisionDataCollector extends DataCollector
         $this->data['decisions'] = $this->mapDecisions();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getDecisions(): array
     {
         return $this->data['decisions'] ?? [];
@@ -45,9 +42,6 @@ final class DecisionDataCollector extends DataCollector
         $this->data = [];
     }
 
-    /**
-     * @return mixed[]
-     */
     private function mapConfigurators(DecisionInterface $decision): array
     {
         $configurators = [];
@@ -56,18 +50,15 @@ final class DecisionDataCollector extends DataCollector
             $reflection = new ReflectionClass($configurator);
 
             $configurators[] = [
-                'priority' => $configurator->getPriority(),
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
+                'priority' => $configurator->getPriority(),
             ];
         }
 
         return $configurators;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function mapDecisions(): array
     {
         $decisions = [];
@@ -80,13 +71,13 @@ final class DecisionDataCollector extends DataCollector
             }
 
             $decisions[] = [
-                'name' => $decision->getName(),
+                'configurators' => $this->mapConfigurators($decision),
                 'context' => [
                     'decision_type' => $context !== null ? $context->getDecisionType() : $decision::class,
                     'original_input' => $context !== null ? $context->getOriginalInput() : 'Decision not made...',
                     'rule_output' => $context !== null ? $context->getRuleOutputs() : [],
                 ],
-                'configurators' => $this->mapConfigurators($decision),
+                'name' => $decision->getName(),
             ];
         }
 

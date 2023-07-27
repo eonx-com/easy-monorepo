@@ -47,12 +47,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         return $this;
     }
 
-    /**
-     * @param null|mixed[] $arguments
-     *
-     * @return mixed
-     */
-    public function evaluate(string $expression, ?array $arguments = null)
+    public function evaluate(string $expression, ?array $arguments = null): mixed
     {
         return $this->getExpressionLanguage()
             ->evaluate($expression, $arguments ?? []);
@@ -97,7 +92,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * @param null|string[] $names
+     * @param string[]|null $names
      *
      * @throws \EonX\EasyDecision\Exceptions\InvalidExpressionException
      */

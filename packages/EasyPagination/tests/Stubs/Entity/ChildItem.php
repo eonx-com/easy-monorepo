@@ -14,11 +14,36 @@ class ChildItem
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]
     #[ORM\Id]
-    public int $id;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: Item::class)]
-    public Item $item;
+    private Item $item;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    public ?string $title = null;
+    private ?string $title = null;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getItem(): Item
+    {
+        return $this->item;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setItem(Item $item): void
+    {
+        $this->item = $item;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
+    }
 }

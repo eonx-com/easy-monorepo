@@ -17,8 +17,6 @@ final class ArrayTemplatingBlockProvider implements TemplatingBlockProviderInter
     }
 
     /**
-     * @param null|mixed[] $context
-     *
      * @return iterable<\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface>
      */
     public function getBlocksForEvent(string $event, ?array $context = null): iterable

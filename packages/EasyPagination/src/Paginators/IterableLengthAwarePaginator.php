@@ -9,9 +9,6 @@ use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
-    /**
-     * @param iterable<mixed> $iterable
-     */
     public function __construct(
         PaginationInterface $pagination,
         private readonly iterable $iterable,
@@ -25,9 +22,6 @@ final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
         return $this->total;
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function doGetItems(): array
     {
         return CollectorHelper::convertToArray($this->iterable);

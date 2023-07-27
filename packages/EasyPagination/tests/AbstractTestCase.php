@@ -15,6 +15,18 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
+    }
+
     protected function createConfig(
         ?string $pageAttr = null,
         ?int $pageDefault = null,
@@ -29,9 +41,6 @@ abstract class AbstractTestCase extends TestCase
         );
     }
 
-    /**
-     * @param null|mixed[] $query
-     */
     protected function createServerRequest(?array $query = null): Request
     {
         $server = [
@@ -39,17 +48,5 @@ abstract class AbstractTestCase extends TestCase
         ];
 
         return new Request($query ?? [], [], [], [], [], $server);
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 }

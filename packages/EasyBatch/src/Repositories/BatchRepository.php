@@ -30,7 +30,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             return $this->cache[$id];
         }
 
-        /** @var null|\EonX\EasyBatch\Interfaces\BatchInterface $batch */
+        /** @var \EonX\EasyBatch\Interfaces\BatchInterface|null $batch */
         $batch = $this->doFind($id);
 
         if ($batch !== null) {
@@ -38,21 +38,6 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         }
 
         return $batch;
-    }
-
-    /**
-     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
-     * @throws \Doctrine\DBAL\Exception
-     */
-    public function findOrFail(int|string $id): BatchInterface
-    {
-        $batch = $this->find($id);
-
-        if ($batch !== null) {
-            return $batch;
-        }
-
-        throw new BatchNotFoundException(\sprintf('Batch for id "%s" not found', $id));
     }
 
     /**
@@ -75,6 +60,21 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
             'Batch for parent_batch_item_id "%s" not found',
             $parentBatchItemId
         ));
+    }
+
+    /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function findOrFail(int|string $id): BatchInterface
+    {
+        $batch = $this->find($id);
+
+        if ($batch !== null) {
+            return $batch;
+        }
+
+        throw new BatchNotFoundException(\sprintf('Batch for id "%s" not found', $id));
     }
 
     public function reset(): BatchRepositoryInterface

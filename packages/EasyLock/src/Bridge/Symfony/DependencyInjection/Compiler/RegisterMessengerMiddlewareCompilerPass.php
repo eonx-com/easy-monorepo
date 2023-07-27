@@ -52,6 +52,7 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
             }
 
             // Remove easy lock middleware if added in the app config
+            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
             $existingMiddlewareList = \array_filter(
                 $middleware->getValues(),
                 static fn (
@@ -61,8 +62,6 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
 
             // Add reference to easy lock middleware at the start of existing list
             \array_unshift($existingMiddlewareList, ...$easyLockMiddlewareList);
-
-            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
 
             // Replace middleware list in bus argument
             $middleware->setValues($existingMiddlewareList);

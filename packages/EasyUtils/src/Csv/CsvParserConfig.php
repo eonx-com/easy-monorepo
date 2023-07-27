@@ -7,9 +7,9 @@ namespace EonX\EasyUtils\Csv;
 final class CsvParserConfig implements CsvParserConfigInterface
 {
     /**
-     * @param null|string[] $requiredHeaders
-     * @param null|string[] $groupPrefixes
-     * @param null|callable[] $recordTransformers
+     * @param string[]|null $requiredHeaders
+     * @param string[]|null $groupPrefixes
+     * @param callable[]|null $recordTransformers
      */
     public function __construct(
         private readonly ?array $requiredHeaders = null,
@@ -20,9 +20,9 @@ final class CsvParserConfig implements CsvParserConfigInterface
     }
 
     /**
-     * @param null|string[] $requiredHeaders
-     * @param null|string[] $groupPrefixes
-     * @param null|callable[] $recordTransformers
+     * @param string[]|null $requiredHeaders
+     * @param string[]|null $groupPrefixes
+     * @param callable[]|null $recordTransformers
      */
     public static function create(
         ?array $requiredHeaders = null,
@@ -34,7 +34,7 @@ final class CsvParserConfig implements CsvParserConfigInterface
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getGroupPrefixes(): ?array
     {
@@ -50,7 +50,7 @@ final class CsvParserConfig implements CsvParserConfigInterface
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getRequiredHeaders(): ?array
     {
@@ -72,9 +72,6 @@ final class CsvParserConfig implements CsvParserConfigInterface
         return $this->ignoreEmptyRecords ?? false;
     }
 
-    /**
-     * @param null|mixed[] $array
-     */
     private function hasValuesInArray(?array $array = null): bool
     {
         return \is_array($array) && \count($array) > 0;

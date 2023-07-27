@@ -31,6 +31,7 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
             }
 
             // Remove easy batch middleware if added in the app config
+            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
             $existingMiddlewareList = \array_filter(
                 $middleware->getValues(),
                 static fn (
@@ -46,8 +47,6 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
 
             // Add reference to easy batch middleware at the start of existing list
             \array_unshift($existingMiddlewareList, ...$easyBatchMiddlewareList);
-
-            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
 
             // Replace middleware list in bus argument
             $middleware->setValues($existingMiddlewareList);

@@ -11,9 +11,6 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
 {
     use HasPriorityTrait;
 
-    /**
-     * @var null|mixed[]
-     */
     private ?array $context = null;
 
     public function __construct(
@@ -21,9 +18,6 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
     ) {
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getContext(): ?array
     {
         return $this->context;
@@ -34,9 +28,6 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
         return $this->name;
     }
 
-    /**
-     * @param null|mixed[] $context
-     */
     public function setContext(?array $context = null): TemplatingBlockInterface
     {
         $this->context = $context;

@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 final class EloquentPaginatorTest extends AbstractEloquentTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
@@ -193,9 +191,9 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
     }
 
     /**
-     * @dataProvider providerTestPaginator
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestPaginator
      */
     public function testPaginator(
         PaginationInterface $pagination,

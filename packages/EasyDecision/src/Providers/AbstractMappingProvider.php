@@ -16,7 +16,7 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
 
     public function getDecisionType(string $name): string
     {
-        if (empty($this->typesMapping[$name]) === true) {
+        if (($this->typesMapping[$name] ?? '') === '') {
             throw new InvalidMappingException(\sprintf('Decision for name "%s" is not configured', $name));
         }
 

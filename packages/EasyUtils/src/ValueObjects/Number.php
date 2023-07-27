@@ -32,6 +32,11 @@ final class Number implements Stringable
         $this->precision = $precision ?? self::DEFAULT_PRECISION;
     }
 
+    public function __toString(): string
+    {
+        return $this->round($this->value);
+    }
+
     public static function max(?self ...$values): ?self
     {
         return \array_reduce(
@@ -64,11 +69,6 @@ final class Number implements Stringable
                 return $leftOperand->isLessThan($rightOperand) ? $leftOperand : $rightOperand;
             }
         );
-    }
-
-    public function __toString(): string
-    {
-        return $this->round($this->value);
     }
 
     public function abs(): self

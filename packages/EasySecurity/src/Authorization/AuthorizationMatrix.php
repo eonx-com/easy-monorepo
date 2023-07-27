@@ -10,7 +10,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 final class AuthorizationMatrix implements AuthorizationMatrixInterface
 {
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $cachePermissions = null;
 

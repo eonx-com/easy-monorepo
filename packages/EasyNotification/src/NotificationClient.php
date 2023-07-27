@@ -30,9 +30,6 @@ final class NotificationClient implements NotificationClientInterface
 
     private HttpClientInterface $httpClient;
 
-    /**
-     * @param iterable<mixed> $configurators
-     */
     public function __construct(
         iterable $configurators,
         private QueueTransportFactoryInterface $transportFactory,
@@ -58,9 +55,7 @@ final class NotificationClient implements NotificationClientInterface
 
     /**
      * @param string[] $topics
-     * @param null|mixed[] $options HTTP Client options
-     *
-     * @return mixed[]
+     * @param array|null $options HTTP Client options
      */
     public function getMessages(array $topics, ?array $options = null): array
     {
@@ -125,11 +120,6 @@ final class NotificationClient implements NotificationClientInterface
         return $this;
     }
 
-    /**
-     * @param null|mixed[] $options
-     *
-     * @return mixed[]
-     */
     private function sendApiRequest(string $method, string $path, ?array $options = null): array
     {
         if ($this->config === null) {

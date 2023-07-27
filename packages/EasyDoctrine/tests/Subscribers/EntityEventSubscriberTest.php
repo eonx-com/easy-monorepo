@@ -145,11 +145,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
+
             try {
                 $entityManager->wrapInTransaction(function () use ($entityManager, $product): never {
                     $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
+
                     throw new RuntimeException('Test', 1);
                 });
             } catch (RuntimeException) {
@@ -407,6 +409,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
+
                     throw new RuntimeException('Test', 1);
                 });
             });

@@ -74,10 +74,29 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             ->flush();
     }
 
+    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface
+    {
+        return $this->createLengthAwarePaginator(null, null, $pagination);
+    }
+
+    public function rollback(): void
+    {
+        $this->getManager()
+            ->rollback();
+    }
+
     /**
-     * @phpstan-return class-string
+     * @param object|object[] $object
      */
-    abstract protected function getEntityClass(): string;
+    public function save(object|array $object): void
+    {
+        $this->callManagerMethodForObjects('persist', $object);
+    }
+
+    public function setPagination(PaginationInterface $pagination): void
+    {
+        $this->pagination = $pagination;
+    }
 
     /**
      * @throws \Throwable
@@ -104,29 +123,10 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         }
     }
 
-    public function rollback(): void
-    {
-        $this->getManager()
-            ->rollback();
-    }
-
     /**
-     * @param object|object[] $object
+     * @phpstan-return class-string
      */
-    public function save(object|array $object): void
-    {
-        $this->callManagerMethodForObjects('persist', $object);
-    }
-
-    public function setPagination(PaginationInterface $pagination): void
-    {
-        $this->pagination = $pagination;
-    }
-
-    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface
-    {
-        return $this->createLengthAwarePaginator(null, null, $pagination);
-    }
+    abstract protected function getEntityClass(): string;
 
     protected function createLengthAwarePaginator(
         ?string $from = null,
@@ -147,17 +147,17 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             ->createQueryBuilder($alias ?? $this->getEntityAlias(), $indexBy);
     }
 
+    protected function getClassMetadata(): ClassMetadata
+    {
+        return $this->getManager()
+            ->getClassMetadata($this->getRepository()->getClassName());
+    }
+
     protected function getEntityAlias(): string
     {
         $exploded = \explode('\\', $this->getRepository()->getClassName());
 
         return \strtolower(\substr($exploded[\count($exploded) - 1], 0, 1));
-    }
-
-    protected function getClassMetadata(): ClassMetadata
-    {
-        return $this->getManager()
-            ->getClassMetadata($this->getRepository()->getClassName());
     }
 
     protected function getManager(): EntityManagerInterface

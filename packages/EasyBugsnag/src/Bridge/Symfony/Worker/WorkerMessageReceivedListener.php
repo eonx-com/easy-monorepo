@@ -47,8 +47,8 @@ final class WorkerMessageReceivedListener
             $report->addMetaData([
                 'worker' => [
                     'Message' => $this->dump($envelope->getMessage()),
-                    'Receiver Name' => $this->event->getReceiverName(),
                     'Received At' => $this->receivedAt->format('Y-m-d H:i:s.u'),
+                    'Receiver Name' => $this->event->getReceiverName(),
                     'Stamps' => $this->dump($envelope->all()),
                 ],
             ]);

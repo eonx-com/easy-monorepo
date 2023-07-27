@@ -12,8 +12,6 @@ use EonX\EasySecurity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 final class EnableVotersTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testVotersEnabled
      */
     public static function providerTestVotersEnabled(): iterable
@@ -66,7 +64,6 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[] $configs
-     * @param mixed[] $assertions
      *
      * @dataProvider providerTestVotersEnabled
      */

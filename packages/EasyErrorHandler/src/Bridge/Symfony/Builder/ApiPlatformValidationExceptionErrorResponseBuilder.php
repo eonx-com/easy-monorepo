@@ -26,14 +26,8 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
 
     private const MESSAGE_NOT_VALID = 'exceptions.not_valid';
 
-    /**
-     * @var mixed[]
-     */
     private readonly array $keys;
 
-    /**
-     * @param null|mixed[] $keys
-     */
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
@@ -44,12 +38,6 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
         parent::__construct($priority);
     }
 
-    /**
-     * @param \ApiPlatform\Symfony\Validator\Exception\ValidationException $throwable
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     public function buildData(Throwable $throwable, array $data): array
     {
         if ($throwable instanceof ValidationException) {
@@ -91,9 +79,6 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractE
         return parent::buildStatusCode($throwable, $statusCode);
     }
 
-    /**
-     * @param mixed[]|null $keys
-     */
     private function getKey(string $name, ?array $keys = null): string
     {
         $keys ??= $this->keys;

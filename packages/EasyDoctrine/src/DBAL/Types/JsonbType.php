@@ -62,19 +62,11 @@ final class JsonbType extends Type
         return self::JSONB;
     }
 
-    /**
-     * @param mixed[] $column
-     */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return self::FORMAT_DB_JSONB;
     }
 
-    /**
-     * @param mixed[] $array
-     *
-     * @return mixed[]
-     */
     private function sortByKey(array $array): array
     {
         \ksort($array);

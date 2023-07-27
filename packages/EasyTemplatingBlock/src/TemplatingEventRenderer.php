@@ -38,9 +38,6 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
         $this->isDebug = $isDebug ?? true;
     }
 
-    /**
-     * @param null|mixed[] $context
-     */
     public function renderEvent(string $event, ?array $context = null): string
     {
         return $this->renderBlocks($event, $this->resolveBlocksForEvent($event, $context));
@@ -93,8 +90,6 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     }
 
     /**
-     * @param null|mixed[] $context
-     *
      * @return \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface[]
      */
     private function resolveBlocksForEvent(string $event, ?array $context = null): array

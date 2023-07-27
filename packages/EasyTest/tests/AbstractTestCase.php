@@ -15,8 +15,6 @@ abstract class AbstractTestCase extends TestCase
     private ?Application $app = null;
 
     /**
-     * @param null|mixed[] $inputs
-     *
      * @throws \Exception
      */
     protected function executeCommand(string $command, ?array $inputs = null): string

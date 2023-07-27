@@ -16,9 +16,6 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 {
     private bool $enabled;
 
-    /**
-     * @var array<int, array<string, array<string, array<mixed, mixed>>>>
-     */
     private array $entityChangeSets = [];
 
     /**
@@ -135,6 +132,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $events = [];
+
         try {
             $mergedEntityChangeSets = [];
             foreach ($this->entityChangeSets as $levelChangeSets) {
@@ -146,6 +144,10 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
                 }
             }
 
+            /**
+             * @var string $oid
+             * @var array $entityChangeSet
+             */
             foreach ($mergedEntityChangeSets as $oid => $entityChangeSet) {
                 $event = $this->createEntityEvent($oid, $entityChangeSet);
 
@@ -165,9 +167,6 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         $this->enabled = true;
     }
 
-    /**
-     * @param array<string, array<mixed, mixed>> $entityChangeSet
-     */
     private function createEntityEvent(string $oid, array $entityChangeSet): EntityActionEventInterface
     {
         if (isset($this->entityInsertions[$oid]) !== false) {
@@ -187,17 +186,12 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * @param array<string, array<mixed, mixed>> $array1
-     * @param array<string, array<mixed, mixed>> $array2
-     *
-     * @return array<string, array<mixed, mixed>>
-     */
     private function mergeChangeSet(array $array1, array $array2): array
     {
         foreach ($array2 as $key => [$old, $new]) {
             if (isset($array1[$key]) === false) {
                 $array1[$key] = [$old, $new];
+
                 continue;
             }
             $array1[$key][1] = $new;

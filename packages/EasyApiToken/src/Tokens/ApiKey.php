@@ -23,9 +23,6 @@ final class ApiKey implements ApiKeyInterface
         return $this->apiKey;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return [

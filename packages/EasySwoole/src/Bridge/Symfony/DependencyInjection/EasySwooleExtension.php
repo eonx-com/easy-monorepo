@@ -32,8 +32,8 @@ final class EasySwooleExtension extends Extension
     ];
 
     private const REQUEST_LIMITS_CONFIG = [
-        'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
         'max' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MAX,
+        'min' => BridgeConstantsInterface::PARAM_REQUEST_LIMITS_MIN,
     ];
 
     private const STATIC_PHP_FILES_CONFIG = [
@@ -42,8 +42,6 @@ final class EasySwooleExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

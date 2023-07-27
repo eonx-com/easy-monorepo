@@ -20,9 +20,6 @@ final class PipelineNameAwareMiddlewareProviderStub implements MiddlewareProvide
         return $next($input);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getMiddlewareList(): array
     {
         return [$this->actAsMiddleware(...)];

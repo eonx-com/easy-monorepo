@@ -13,9 +13,9 @@ interface BatchObjectInterface
 
     public const DATE_TIMES = [
         'cancelled_at' => 'setCancelledAt',
+        'created_at' => 'setCreatedAt',
         'finished_at' => 'setFinishedAt',
         'started_at' => 'setStartedAt',
-        'created_at' => 'setCreatedAt',
         'updated_at' => 'setUpdatedAt',
     ];
 
@@ -52,9 +52,6 @@ interface BatchObjectInterface
      */
     public function getIdOrFail(): int|string;
 
-    /**
-     * @return null|mixed[]
-     */
     public function getMetadata(): ?array;
 
     public function getName(): ?string;
@@ -65,9 +62,6 @@ interface BatchObjectInterface
 
     public function getThrowable(): ?Throwable;
 
-    /**
-     * @return null|mixed[]
-     */
     public function getThrowableDetails(): ?array;
 
     public function getType(): ?string;
@@ -96,9 +90,6 @@ interface BatchObjectInterface
 
     public function setId(int|string $id): self;
 
-    /**
-     * @param mixed[] $metadata
-     */
     public function setMetadata(array $metadata): self;
 
     public function setName(?string $name = null): self;
@@ -109,17 +100,11 @@ interface BatchObjectInterface
 
     public function setThrowable(Throwable $throwable): self;
 
-    /**
-     * @param mixed[] $throwableDetails
-     */
     public function setThrowableDetails(array $throwableDetails): self;
 
     public function setType(string $type): self;
 
     public function setUpdatedAt(DateTimeInterface $updatedAt): self;
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array;
 }

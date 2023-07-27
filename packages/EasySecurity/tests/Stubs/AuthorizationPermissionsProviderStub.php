@@ -9,7 +9,7 @@ use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 final class AuthorizationPermissionsProviderStub implements PermissionsProviderInterface
 {
     /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
      */
     public function __construct(
         private ?array $permissions = null,

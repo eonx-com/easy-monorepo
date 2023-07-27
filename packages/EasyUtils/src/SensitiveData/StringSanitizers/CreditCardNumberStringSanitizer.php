@@ -15,9 +15,6 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         parent::__construct($priority);
     }
 
-    /**
-     * @param mixed[] $keysToMask
-     */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         $matches = [];
@@ -28,7 +25,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         }
 
         // Mask potentially unmasked credit card numbers anywhere else
-        /** @var string[] $matches */
+        /** @var string[] $match */
         foreach ($matches as $match) {
             if ($this->creditCardNumberValidator->isCreditCardNumberValid($match[0]) === false) {
                 continue;

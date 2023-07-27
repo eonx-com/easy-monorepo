@@ -28,9 +28,6 @@ final class DecisionFactory implements DecisionFactoryInterface
      */
     private array $decisionConfigurators = [];
 
-    /**
-     * @param null|iterable<mixed> $configurators
-     */
     public function __construct(
         private MappingProviderInterface $mappingProvider,
         ?iterable $configurators = null,

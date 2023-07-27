@@ -22,8 +22,6 @@ use Symfony\Component\Uid\NilUuid;
 final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSerializeSucceeds
      */
     public static function provideDataForSerializeSucceeds(): iterable
@@ -208,9 +206,6 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
     }
 
     /**
-     * @param array<mixed> $data
-     * @param array<mixed>|null $disallowedProperties
-     *
      * @dataProvider provideDataForSerializeSucceeds
      */
     public function testSerializeSucceeds(

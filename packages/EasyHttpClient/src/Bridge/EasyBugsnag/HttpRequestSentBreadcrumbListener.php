@@ -87,9 +87,6 @@ final class HttpRequestSentBreadcrumbListener
         );
     }
 
-    /**
-     * @param array<string, mixed> $metadata
-     */
     private function calculateBreadcrumbSize(array $metadata): int
     {
         $breadcrumb = new Breadcrumb(self::BREADCRUMB_NAME, Breadcrumb::REQUEST_TYPE, $metadata);
@@ -125,11 +122,6 @@ final class HttpRequestSentBreadcrumbListener
         );
     }
 
-    /**
-     * @param array<string, mixed> $metadata
-     *
-     * @return array<string, mixed>
-     */
     private function prepareMetadata(array $metadata): array
     {
         $metadataAttributes = self::METADATA_ATTRIBUTES_PRIORITY_LIST;

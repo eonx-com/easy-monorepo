@@ -17,8 +17,6 @@ use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testUuidGeneratorInstance
      */
     public static function provideConfigsForUuidGenerator(): iterable
@@ -81,9 +79,9 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
     /**
      * @param string[] $config
      *
-     * @dataProvider provideConfigsForUuidGenerator
-     *
      * @psalm-param class-string $expectedUuidGeneratorClass
+     *
+     * @dataProvider provideConfigsForUuidGenerator
      */
     public function testUuidGeneratorInstance(array $config, string $expectedUuidGeneratorClass): void
     {

@@ -37,9 +37,6 @@ abstract class AbstractTestCase extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @param null|mixed[] $extra
-     */
     protected static function createLanguageRule(
         string $expression,
         ?int $priority = null,

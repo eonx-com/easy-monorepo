@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testMessengerConfig
      */
     public static function providerTestMessengerConfig(): iterable
@@ -56,9 +54,9 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @dataProvider providerTestMessengerConfig
+     * @param string[]|null $configs
      *
-     * @param null|string[] $configs
+     * @dataProvider providerTestMessengerConfig
      */
     public function testMessengerConfig(callable $assert, ?array $configs = null): void
     {

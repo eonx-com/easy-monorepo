@@ -72,10 +72,7 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
     }
 
     /**
-     * @param iterable<mixed> $providers
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     private function filterProviders(iterable $providers, string $class): array
     {

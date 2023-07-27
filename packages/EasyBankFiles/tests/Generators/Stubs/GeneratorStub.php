@@ -8,15 +8,9 @@ use EonX\EasyBankFiles\Generators\BaseGenerator;
 
 final class GeneratorStub extends BaseGenerator
 {
-    /**
-     * @var mixed[]
-     */
     private array $transactions;
 
     /**
-     * @param mixed[] $descriptiveRecord
-     * @param mixed[] $transactions
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException

@@ -24,7 +24,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
 
     public function decrypt(string $text): DecryptedStringInterface
     {
-        $toDecrypt = $this->execSafely(CouldNotDecryptException::class, function () use ($text): array {
+        $toDecrypt = $this->execSafely(CouldNotDecryptException::class, static function () use ($text): array {
             $toDecryptArray = \json_decode(Encoding::base64Decode($text), true);
 
             return \is_array($toDecryptArray) ? $toDecryptArray : [];
@@ -47,9 +47,6 @@ abstract class AbstractEncryptor implements EncryptorInterface
         );
     }
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     public function decryptRaw(
         string $text,
         null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
@@ -69,9 +66,6 @@ abstract class AbstractEncryptor implements EncryptorInterface
         });
     }
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     public function encryptRaw(
         string $text,
         null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
@@ -79,18 +73,12 @@ abstract class AbstractEncryptor implements EncryptorInterface
         return $this->execSafely(CouldNotEncryptException::class, fn (): string => $this->doEncrypt($text, $key, true));
     }
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     abstract protected function doDecrypt(
         string $text,
         null|array|string|EncryptionKey|EncryptionKeyPair $key,
         bool $raw,
     ): string;
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     abstract protected function doEncrypt(
         string $text,
         null|array|string|EncryptionKey|EncryptionKeyPair $key,
@@ -98,9 +86,9 @@ abstract class AbstractEncryptor implements EncryptorInterface
     ): string;
 
     /**
-     * @phpstan-param class-string<T> $throwableClass
-     *
      * @phpstan-template T of \Throwable
+     *
+     * @phpstan-param class-string<T> $throwableClass
      *
      * @throws T
      */

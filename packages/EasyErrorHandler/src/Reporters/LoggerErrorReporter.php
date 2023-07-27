@@ -17,7 +17,7 @@ final class LoggerErrorReporter extends AbstractErrorReporter
     private readonly array $ignoreExceptions;
 
     /**
-     * @param null|class-string[] $ignoreExceptions
+     * @param class-string[]|null $ignoreExceptions
      */
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,

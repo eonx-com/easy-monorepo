@@ -14,7 +14,7 @@ use Symfony\Component\String\UnicodeString;
 final class RandomString implements RandomStringInterface
 {
     /**
-     * @var null|\EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]
+     * @var \EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]|null
      */
     private ?array $constraints = [];
 

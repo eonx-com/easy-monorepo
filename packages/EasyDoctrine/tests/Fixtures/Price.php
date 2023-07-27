@@ -28,16 +28,16 @@ final class Price implements Stringable
         return $this->amount;
     }
 
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
     public function setAmount(string $amount): self
     {
         $this->amount = $amount;
 
         return $this;
-    }
-
-    public function getCurrency(): string
-    {
-        return $this->currency;
     }
 
     public function setCurrency(string $currency): self

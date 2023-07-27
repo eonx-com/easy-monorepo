@@ -19,8 +19,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCoreLogic
      */
     public static function providerTestCoreLogic(): iterable
@@ -86,8 +84,6 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testRestoreBatchState
      */
     public static function providerTestRestoreBatchState(): iterable

@@ -11,9 +11,6 @@ trait SymfonyTestCaseTrait
 {
     private ?KernelInterface $kernel = null;
 
-    /**
-     * @param null|mixed[] $configs
-     */
     protected function getKernel(?array $configs = null): KernelInterface
     {
         if ($this->kernel !== null) {

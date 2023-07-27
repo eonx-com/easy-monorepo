@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {

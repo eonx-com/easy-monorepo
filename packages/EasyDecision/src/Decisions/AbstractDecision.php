@@ -24,9 +24,6 @@ abstract class AbstractDecision implements DecisionInterface
 {
     protected ?ContextInterface $context = null;
 
-    /**
-     * @var mixed[]
-     */
     protected array $input;
 
     private mixed $defaultOutput;
@@ -88,8 +85,6 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * @param mixed[] $input
-     *
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */
@@ -127,10 +122,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
     }
 
-    /**
-     * @param null|mixed $defaultOutput
-     */
-    public function setDefaultOutput($defaultOutput = null): DecisionInterface
+    public function setDefaultOutput(mixed $defaultOutput = null): DecisionInterface
     {
         $this->defaultOutput = $defaultOutput;
 
@@ -222,12 +214,14 @@ abstract class AbstractDecision implements DecisionInterface
                 }
 
                 $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_SKIPPED);
+
                 continue;
             }
 
             // If rule doesn't support the input
             if ($rule->supports($this->input) === false) {
                 $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_UNSUPPORTED);
+
                 continue;
             }
 

@@ -34,8 +34,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class WebhookClientTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSend
      */
     public static function providerTestSend(): iterable
@@ -157,8 +155,7 @@ final class WebhookClientTest extends AbstractTestCase
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
-     * @param mixed[] $httpClientOptions
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      *
      * @dataProvider providerTestSend
      */
@@ -193,7 +190,7 @@ final class WebhookClientTest extends AbstractTestCase
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      */
     private function getStack(
         HttpClientInterface $httpClient,

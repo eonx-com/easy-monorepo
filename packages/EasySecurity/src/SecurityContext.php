@@ -23,24 +23,24 @@ class SecurityContext implements SecurityContextInterface
     private AuthorizationMatrixInterface $authorizationMatrix;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $cachePermissions = null;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $overridePermissions = null;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $permissions = null;
 
     private ?ProviderInterface $provider = null;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null
      */
     private ?array $roles = null;
 

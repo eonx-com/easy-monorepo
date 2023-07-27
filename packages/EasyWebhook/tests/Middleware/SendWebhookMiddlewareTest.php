@@ -19,8 +19,6 @@ use Throwable;
 final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testProcess
      */
     public static function providerTestProcess(): iterable
@@ -56,7 +54,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
     }
 
     /**
-     * @phpstan-param null|class-string<\Throwable> $expectedException
+     * @phpstan-param class-string<\Throwable>|null $expectedException
      *
      * @dataProvider providerTestProcess
      */

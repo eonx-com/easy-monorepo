@@ -20,9 +20,6 @@ final class ErrorCodesDto
         return $this->nextGroupErrorCode;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getNextGroupedErrorCodesAsArray(): array
     {
         return \array_map(

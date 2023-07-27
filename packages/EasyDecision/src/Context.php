@@ -10,14 +10,8 @@ final class Context implements ContextInterface
 {
     private bool $propagationStopped = false;
 
-    /**
-     * @var mixed[]
-     */
     private array $ruleOutputs = [];
 
-    /**
-     * @param mixed[] $input
-     */
     public function __construct(
         private string $decisionType,
         private array $input,
@@ -36,17 +30,11 @@ final class Context implements ContextInterface
         return $this->decisionType;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOriginalInput(): array
     {
         return $this->input;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getRuleOutputs(): array
     {
         return $this->ruleOutputs;

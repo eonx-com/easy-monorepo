@@ -37,9 +37,6 @@ abstract class AbstractTestCase extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public static function providerTestRenderWithDefaultBuilders(): iterable
     {
         yield 'Returns default user message' => [

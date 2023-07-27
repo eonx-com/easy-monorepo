@@ -59,9 +59,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
     }
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
@@ -73,10 +71,10 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         $throwable = $result->getThrowable();
 
         $data = [
-            'method' => $webhook->getMethod(),
-            'url' => $webhook->getUrl(),
             'http_options' => $webhook->getHttpClientOptions(),
+            'method' => $webhook->getMethod(),
             'updated_at' => $now,
+            'url' => $webhook->getUrl(),
             'webhook_class' => $webhook::class,
             'webhook_id' => $webhook->getId(),
         ];

@@ -15,11 +15,6 @@ final class SensitiveDataSanitizerProcessor extends AbstractSelfProcessorConfigP
     ) {
     }
 
-    /**
-     * @param mixed[] $record
-     *
-     * @return mixed[]
-     */
     public function __invoke(array $record): array
     {
         return $this->sensitiveDataSanitizer->sanitize($record);

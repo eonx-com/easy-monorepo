@@ -21,8 +21,6 @@ final class EasyActivityExtension extends Extension implements PrependExtensionI
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

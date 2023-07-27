@@ -49,11 +49,13 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
                 && isset($allowedProperties[$key]) === false
             ) {
                 unset($data[$key]);
+
                 continue;
             }
 
             if ($disallowedProperties !== null && \in_array($key, $disallowedProperties, true) === true) {
                 unset($data[$key]);
+
                 continue;
             }
 

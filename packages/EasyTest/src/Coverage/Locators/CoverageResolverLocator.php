@@ -12,7 +12,7 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class CoverageResolverLocator implements CoverageResolverLocatorInterface
 {
     /**
-     * @param \Symfony\Contracts\Service\ServiceProviderInterface<mixed> $serviceLocator
+     * @param \Symfony\Contracts\Service\ServiceProviderInterface<\EonX\EasyTest\Interfaces\CoverageResolverInterface> $serviceLocator
      */
     public function __construct(
         private ServiceProviderInterface $serviceLocator,

@@ -12,8 +12,6 @@ use UnexpectedValueException;
 final class NumberTest extends TestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testMathOperationSucceeds
      */
     public static function provideFunctionData(): iterable
@@ -276,8 +274,6 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConstructorThrowsExceptionWithInvalidValue
      */
     public static function provideInvalidData(): iterable
@@ -291,8 +287,6 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testMaxSucceeds
      */
     public static function provideMaxData(): iterable
@@ -316,8 +310,6 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testMinSucceeds
      */
     public static function provideMinData(): iterable
@@ -341,8 +333,6 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testToStringSucceedsAndDoesCorrectRounding
      */
     public static function provideRoundData(): iterable
@@ -480,8 +470,6 @@ final class NumberTest extends TestCase
     }
 
     /**
-     * @param mixed[] $args
-     *
      * @dataProvider provideFunctionData
      */
     public function testMathOperationSucceeds(string $function, int $input, array $args, int|bool $expectedResult): void

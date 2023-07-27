@@ -27,8 +27,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToDatabaseValueSucceeds
      */
     public static function provideConvertToDatabaseValues(): iterable
@@ -39,8 +37,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPHPValueSucceeds
      */
     public static function provideConvertToPHPValues(): iterable
@@ -60,8 +56,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetSqlDeclarationSucceeds
      */
     public static function provideFieldDeclarationValues(): iterable
@@ -104,6 +98,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToDatabaseValues
      */
     public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
@@ -134,6 +129,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToPHPValues
      */
     public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
@@ -176,8 +172,6 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $fieldDeclaration
-     *
      * @dataProvider provideFieldDeclarationValues
      */
     public function testGetSqlDeclarationSucceeds(

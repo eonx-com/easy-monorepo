@@ -15,9 +15,6 @@ final class IriConverter implements IriConverterInterface
     ) {
     }
 
-    /**
-     * @param array<string, mixed>|null $context
-     */
     public function getIriFromResource(
         mixed $resource,
         ?int $referenceType = null,
@@ -40,9 +37,6 @@ final class IriConverter implements IriConverterInterface
         );
     }
 
-    /**
-     * @param array<string, mixed>|null $context
-     */
     public function getResourceFromIri(string $iri, ?array $context = null, ?Operation $operation = null): object
     {
         return $this->decorated->getResourceFromIri($iri, $context ?? [], $operation);

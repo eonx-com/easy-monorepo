@@ -12,9 +12,6 @@ final class ErrorCodeCategoryDto
     ) {
     }
 
-    /**
-     * @return mixed[]
-     */
     public function asArray(): array
     {
         return [

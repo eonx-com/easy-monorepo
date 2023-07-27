@@ -13,14 +13,8 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
-    /**
-     * @var mixed[]
-     */
     private array $configs;
 
-    /**
-     * @param null|mixed[] $configs
-     */
     public function __construct(?array $configs = null)
     {
         $this->configs = $configs ?? [];

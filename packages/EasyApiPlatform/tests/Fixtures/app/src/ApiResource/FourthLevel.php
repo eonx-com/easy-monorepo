@@ -17,12 +17,12 @@ class FourthLevel
     private ThirdLevel $badThirdLevel;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
-    #[ORM\Column(type: Types::INTEGER)]
     #[Groups(['barcelona', 'chicago'])]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $level = 4;
 
     public function getBadThirdLevel(): ThirdLevel

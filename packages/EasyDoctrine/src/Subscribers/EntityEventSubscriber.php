@@ -35,6 +35,37 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     }
 
     /**
+     * @template TKey of array-key
+     * @template T
+     *
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
+     */
+    public function computeCollectionsChangeSet(
+        array $collections,
+        EntityManagerInterface $entityManager,
+    ): array {
+        $changeSet = [];
+        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
+            $identifierName = \current($entityManager->getClassMetadata($entity::class)->getIdentifier());
+
+            return (string)$entityManager->getUnitOfWork()
+                ->getEntityIdentifier($entity)[$identifierName];
+        };
+        foreach ($collections as $collection) {
+            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
+            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
+            $diff = \array_diff($snapshotIds, $actualIds);
+            if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
+                /** @var array{fieldName: string} $mapping */
+                $mapping = $collection->getMapping();
+                $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
+            }
+        }
+
+        return $changeSet;
+    }
+
+    /**
      * @return string[]
      */
     public function getSubscribedEvents(): array
@@ -66,7 +97,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
 
         foreach ($scheduledEntityInsertions as $object) {
-            /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $unitOfWork->getEntityChangeSet($object);
 
             if ($collectionsMapping->contains($object)) {
@@ -75,7 +105,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                     $entityManager
                 );
                 $collectionsMapping->detach($object);
-                /** @var array<string, array{mixed, mixed}> $changeSet */
                 $changeSet = [...$changeSet, ...$collectionsChangeSet];
             }
 
@@ -83,7 +112,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
 
         foreach ($scheduledEntityUpdates as $object) {
-            /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = $this->getClearedChangeSet($unitOfWork->getEntityChangeSet($object));
             if ($collectionsMapping->contains($object)) {
                 $collectionsChangeSet = $this->computeCollectionsChangeSet(
@@ -91,7 +119,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                     $entityManager
                 );
                 $collectionsMapping->detach($object);
-                /** @var array<string, array{mixed, mixed}> $changeSet */
                 $changeSet = [...$changeSet, ...$collectionsChangeSet];
             }
 
@@ -101,7 +128,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
 
         foreach ($scheduledEntityDeletions as $object) {
-            /** @var array<string, array{mixed, mixed}> $changeSet */
             $changeSet = [];
             $originalEntityData = $unitOfWork->getOriginalEntityData($object);
             foreach ($originalEntityData as $attribute => $value) {
@@ -112,45 +138,12 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
         $collectionsMapping->rewind();
         foreach ($collectionsMapping as $object) {
-            /** @var array<string, array{mixed, mixed}> $collectionsChangeSet */
             $collectionsChangeSet = $this->computeCollectionsChangeSet(
                 $collectionsMapping->offsetGet($object),
                 $entityManager
             );
             $this->eventDispatcher->deferUpdate($transactionNestingLevel, $object, $collectionsChangeSet);
         }
-    }
-
-    /**
-     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
-     *
-     * @template TKey of array-key
-     * @template T
-     *
-     * @return array<string, array<mixed>>
-     */
-    public function computeCollectionsChangeSet(
-        array $collections,
-        EntityManagerInterface $entityManager,
-    ): array {
-        $changeSet = [];
-        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $identifierName = \current($entityManager->getClassMetadata($entity::class)->getIdentifier());
-            return (string)$entityManager->getUnitOfWork()
-                ->getEntityIdentifier($entity)[$identifierName];
-        };
-        foreach ($collections as $collection) {
-            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
-            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
-            $diff = \array_diff($snapshotIds, $actualIds);
-            if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
-                /** @var array{fieldName: string} $mapping */
-                $mapping = $collection->getMapping();
-                $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
-            }
-        }
-
-        return $changeSet;
     }
 
     public function postFlush(PostFlushEventArgs $eventArgs): void
@@ -163,10 +156,10 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     }
 
     /**
-     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
-     *
      * @template TKey of array-key
      * @template T
+     *
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
      *
      * @return list<\Doctrine\ORM\PersistentCollection<TKey, T>>
      */
@@ -208,11 +201,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         });
     }
 
-    /**
-     * @param mixed[] $changeSet
-     *
-     * @return mixed[]
-     */
     private function getClearedChangeSet(array $changeSet): array
     {
         return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {

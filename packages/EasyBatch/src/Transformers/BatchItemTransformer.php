@@ -31,8 +31,6 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     /**
      * @param \EonX\EasyBatch\Interfaces\BatchItemInterface $batchObject
      *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemCannotBeEncryptedException
      */
     protected function doTransformToArray(BatchObjectInterface $batchObject): array
@@ -55,7 +53,6 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
 
     /**
      * @param \EonX\EasyBatch\Interfaces\BatchItemInterface $batchObject
-     * @param mixed[] $data
      *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemCannotBeEncryptedException
      */

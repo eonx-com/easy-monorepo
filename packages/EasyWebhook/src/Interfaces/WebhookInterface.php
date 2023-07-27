@@ -74,11 +74,10 @@ interface WebhookInterface
 
     public const STATUS_SUCCESS = 'success';
 
+    public static function fromArray(array $data): self;
+
     public function allowRerun(?bool $allowRerun = null): self;
 
-    /**
-     * @param mixed[] $body
-     */
     public function body(array $body): self;
 
     public function bodyAsString(string $body): self;
@@ -91,19 +90,8 @@ interface WebhookInterface
 
     public function event(string $event): self;
 
-    /**
-     * @param mixed[] $extra
-     */
     public function extra(array $extra): self;
 
-    /**
-     * @param mixed[] $data
-     */
-    public static function fromArray(array $data): self;
-
-    /**
-     * @return null|mixed[]
-     */
     public function getBody(): ?array;
 
     public function getBodyAsString(): ?string;
@@ -112,14 +100,8 @@ interface WebhookInterface
 
     public function getEvent(): ?string;
 
-    /**
-     * @return null|mixed[]
-     */
     public function getExtra(): ?array;
 
-    /**
-     * @return null|mixed[]
-     */
     public function getHttpClientOptions(): ?array;
 
     public function getId(): ?string;
@@ -138,14 +120,8 @@ interface WebhookInterface
 
     public function header(string $name, mixed $value): self;
 
-    /**
-     * @param mixed[] $headers
-     */
     public function headers(array $headers): self;
 
-    /**
-     * @param mixed[] $options
-     */
     public function httpClientOptions(array $options): self;
 
     public function id(string $id): self;
@@ -160,21 +136,12 @@ interface WebhookInterface
 
     public function maxAttempt(int $maxAttempt): self;
 
-    /**
-     * @param mixed[] $extra
-     */
     public function mergeExtra(array $extra): self;
 
-    /**
-     * @param mixed[] $options
-     */
     public function mergeHttpClientOptions(array $options): self;
 
     public function method(string $method): self;
 
-    /**
-     * @param mixed[] $queries
-     */
     public function queries(array $queries): self;
 
     public function query(string $name, mixed $value): self;
@@ -187,9 +154,6 @@ interface WebhookInterface
 
     public function status(string $status): self;
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array;
 
     public function url(string $url): self;

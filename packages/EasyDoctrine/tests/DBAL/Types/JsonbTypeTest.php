@@ -25,8 +25,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToDatabaseValueSucceeds
      */
     public static function provideConvertToDatabaseValues(): iterable
@@ -65,8 +63,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPhpValueSucceeds
      */
     public static function provideConvertToPhpValues(): iterable
@@ -115,6 +111,7 @@ final class JsonbTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToDatabaseValues
      */
     public function testConvertToDatabaseValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
@@ -150,6 +147,7 @@ final class JsonbTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
+     *
      * @dataProvider provideConvertToPhpValues
      */
     public function testConvertToPhpValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void

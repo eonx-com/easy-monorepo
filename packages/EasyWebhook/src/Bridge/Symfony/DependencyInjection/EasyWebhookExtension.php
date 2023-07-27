@@ -15,13 +15,10 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 final class EasyWebhookExtension extends Extension
 {
     private const SIGNATURE_PARAMS = [
-        BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
         BridgeConstantsInterface::PARAM_SECRET => 'secret',
+        BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
     ];
 
-    /**
-     * @var mixed[]
-     */
     private array $config;
 
     private ContainerBuilder $container;
@@ -29,8 +26,6 @@ final class EasyWebhookExtension extends Extension
     private PhpFileLoader $loader;
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

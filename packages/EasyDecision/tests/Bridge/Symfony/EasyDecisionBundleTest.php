@@ -20,8 +20,6 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 final class EasyDecisionBundleTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDecisions
      */
     public static function providerCreateDecision(): iterable
@@ -195,7 +193,7 @@ final class EasyDecisionBundleTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[] $configPaths
+     * @param string[]|null $configPaths
      *
      * @dataProvider providerCreateDecision
      */

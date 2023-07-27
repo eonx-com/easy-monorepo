@@ -15,9 +15,6 @@ final class HttpClientStub implements HttpClientInterface
 {
     private string $method;
 
-    /**
-     * @var null|mixed[]
-     */
     private ?array $options = null;
 
     private string $url;
@@ -27,9 +24,6 @@ final class HttpClientStub implements HttpClientInterface
         return $this->method;
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getOptions(): ?array
     {
         return $this->options;
@@ -40,9 +34,6 @@ final class HttpClientStub implements HttpClientInterface
         return $this->url;
     }
 
-    /**
-     * @param null|mixed[] $options
-     */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         $this->method = $method;
@@ -63,9 +54,6 @@ final class HttpClientStub implements HttpClientInterface
         return new ResponseStream($this->getGenerator());
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function withOptions(array $options): static
     {
         $this->options = $options;

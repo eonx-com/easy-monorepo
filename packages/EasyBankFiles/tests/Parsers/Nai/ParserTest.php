@@ -285,7 +285,7 @@ final class ParserTest extends TestCase
 
     /**
      * @param \EonX\EasyBankFiles\Parsers\Nai\Results\Account[] $accounts
-     * @param null|string[] $filter The account numbers to filter on
+     * @param string[]|null $filter The account numbers to filter on
      *
      * @return array<string, \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]>
      */

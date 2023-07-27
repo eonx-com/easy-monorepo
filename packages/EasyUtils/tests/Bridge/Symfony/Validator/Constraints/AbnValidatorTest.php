@@ -18,8 +18,6 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class AbnValidatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateFailsWithInvalidCharactersError
      */
     public static function provideAbnWithInvalidCharacters(): iterable
@@ -29,8 +27,6 @@ final class AbnValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateFailsWithModulusCalculationFailedError
      */
     public static function provideInvalidAbnValues(): iterable
@@ -42,8 +38,6 @@ final class AbnValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateThrowsUnexpectedValueException
      */
     public static function provideUnexpectedValues(): iterable
@@ -53,8 +47,6 @@ final class AbnValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsWithValidAbn
      */
     public static function provideValidAbnValues(): iterable

@@ -62,9 +62,6 @@ final class DateTimeMicrosecondsType extends DateTimeType
         return self::TYPE_NAME;
     }
 
-    /**
-     * @param mixed[] $fieldDeclaration
-     */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         if ($platform instanceof PostgreSQL94Platform) {

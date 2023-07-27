@@ -9,11 +9,6 @@ use Throwable;
 
 final class ValidationFailedException extends ValidationException
 {
-    /**
-     * ValidationFailedException constructor.
-     *
-     * @param mixed[] $errors
-     */
     public function __construct(array $errors, ?string $message = null, ?int $code = null, ?Throwable $previous = null)
     {
         $message = \sprintf('%s. %s', $message ?? '', $this->getErrorsToString($errors));
@@ -25,8 +20,6 @@ final class ValidationFailedException extends ValidationException
 
     /**
      * Get validation errors as string representation.
-     *
-     * @param mixed[]|null $errors
      */
     public function getErrorsToString(?array $errors = null): string
     {

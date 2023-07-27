@@ -12,8 +12,6 @@ use stdClass;
 final class RecursiveStringTrimmerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCleanSucceeds
      */
     public static function provideDataForClean(): iterable

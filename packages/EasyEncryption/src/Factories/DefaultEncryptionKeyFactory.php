@@ -58,8 +58,6 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     }
 
     /**
-     * @param mixed[] $key
-     *
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \ParagonIE\Halite\Alerts\InvalidSalt
      * @throws \ParagonIE\Halite\Alerts\InvalidType

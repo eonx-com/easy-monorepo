@@ -17,12 +17,12 @@ final class BpbParser extends Parser
 
         $this->acknowledgement = new PaymentAcknowledgement([
             'attributes' => $result['@attributes'] ?? null,
-            'originalMessageId' => $result['MessageDetails']['OriginalMessageId'] ?? null,
-            'dateTime' => $result['DateTime'] ?? null,
-            'customerId' => $result['CustomerId'] ?? null,
             'companyName' => $result['CompanyName'] ?? null,
-            'originalFilename' => $result['MessageDetails']['OriginalFilename'] ?? null,
+            'customerId' => $result['CustomerId'] ?? null,
+            'dateTime' => $result['DateTime'] ?? null,
             'issues' => $this->extractIssues($result['Issues']['Issue'] ?? null),
+            'originalFilename' => $result['MessageDetails']['OriginalFilename'] ?? null,
+            'originalMessageId' => $result['MessageDetails']['OriginalMessageId'] ?? null,
         ]);
     }
 }

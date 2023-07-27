@@ -19,9 +19,6 @@ final class Stack implements StackInterface
      */
     private array $middleware;
 
-    /**
-     * @param iterable<mixed> $middleware
-     */
     public function __construct(iterable $middleware)
     {
         $this->middleware = CollectorHelper::orderLowerPriorityFirstAsArray(

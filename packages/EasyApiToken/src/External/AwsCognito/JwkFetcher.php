@@ -30,8 +30,6 @@ final class JwkFetcher implements JwkFetcherInterface
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getJwks(UserPoolConfigInterface $userPoolConfig): array
@@ -46,9 +44,6 @@ final class JwkFetcher implements JwkFetcherInterface
         );
     }
 
-    /**
-     * @param mixed[] $jwk
-     */
     private function convertJwkToPem(array $jwk): string
     {
         return (string)PublicKeyLoader::load([
@@ -58,8 +53,6 @@ final class JwkFetcher implements JwkFetcherInterface
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface

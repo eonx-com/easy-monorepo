@@ -5,60 +5,6 @@ declare(strict_types=1);
 return [
     /*
     |--------------------------------------------------------------------------
-    | Use Expression Language
-    |--------------------------------------------------------------------------
-    |
-    | ExpressionLanguage will automatically be injected in all decisions when true.
-    |
-    */
-    'use_expression_language' => true,
-    /*
-    |--------------------------------------------------------------------------
-    | Expression Language
-    |--------------------------------------------------------------------------
-    |
-    | ExpressionLanguage can be used to implement your business rules.
-    |
-    */
-    'expressions' => [
-        /*
-        |--------------------------------------------------------------------------
-        | Global Expression Functions List
-        |--------------------------------------------------------------------------
-        |
-        | Here you will define all the expression functions you want to share across
-        | all the decisions instances. The expression functions defined here can be
-        | under each format accepted by the ExpressionFunctionFactory.
-        |
-        | Example:
-        | new \App\Decisions\Expressions\MyOwnFunction('myOwn', function () {}), -> Function instance
-        | ['name' => 'myOwn', 'evaluator' => function () {}], -> Associative array
-        | ['myOwn', function () {}] -> Simple array
-        |
-        */
-        'functions' => [],
-        /*
-        |--------------------------------------------------------------------------
-        | Global Expression Functions Providers List
-        |--------------------------------------------------------------------------
-        |
-        | Here you will define all the expression functions providers you want to
-        | share across all the decisions instances. The providers will be instantiated
-        | using the service container which means you can either return an instance
-        | directly from here or return the service locator of your provider.
-        |
-        | Your providers must implement:
-        | \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface
-        |
-        | Example:
-        | \App\Decisions\Expressions\MyOwnFunctionsProvider::class, -> Instantiate from container
-        | new \App\Decisions\Expressions\MyOwnFunctionsProvider()
-        |
-        */
-        'providers' => [],
-    ],
-    /*
-    |--------------------------------------------------------------------------
     | Decisions
     |--------------------------------------------------------------------------
     |
@@ -91,25 +37,55 @@ return [
     | 'my-other-decision' => new \App\Decisions\MyOtherDecisionConfigProvider()
     |
     */
-    'decisions' => [
-        // Your decisions here...
-    ],
+    'decisions' => [],
+
     /*
     |--------------------------------------------------------------------------
-    | Decision type mapping
+    | Expression Language
     |--------------------------------------------------------------------------
     |
-    | Here you will define your decision type mapping to be able to use
-    | \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName
-    |
-    | Example:
-    |
-    | 'my-decision' => \EonX\EasyDecision\Decisions\UnanimousDecision::class
+    | ExpressionLanguage can be used to implement your business rules.
     |
     */
-    'type_mapping' => [
-        // Your decision type mapping here...
+    'expressions' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Global Expression Functions List
+        |--------------------------------------------------------------------------
+        |
+        | Here you will define all the expression functions you want to share across
+        | all the decisions instances. The expression functions defined here can be
+        | under each format accepted by the ExpressionFunctionFactory.
+        |
+        | Example:
+        | new \App\Decisions\Expressions\MyOwnFunction('myOwn', function () {}), -> Function instance
+        | ['name' => 'myOwn', 'evaluator' => function () {}], -> Associative array
+        | ['myOwn', function () {}] -> Simple array
+        |
+        */
+        'functions' => [],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Global Expression Functions Providers List
+        |--------------------------------------------------------------------------
+        |
+        | Here you will define all the expression functions providers you want to
+        | share across all the decisions instances. The providers will be instantiated
+        | using the service container which means you can either return an instance
+        | directly from here or return the service locator of your provider.
+        |
+        | Your providers must implement:
+        | \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionProviderInterface
+        |
+        | Example:
+        | \App\Decisions\Expressions\MyOwnFunctionsProvider::class, -> Instantiate from container
+        | new \App\Decisions\Expressions\MyOwnFunctionsProvider()
+        |
+        */
+        'providers' => [],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | Decision Rules
@@ -126,7 +102,30 @@ return [
     | \EonX\EasyDecision\Rules\MyRuleForAnyDecision::class
     |
     */
-    'rules' => [
-        // Your rules here...
-    ],
+    'rules' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Decision type mapping
+    |--------------------------------------------------------------------------
+    |
+    | Here you will define your decision type mapping to be able to use
+    | \EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName
+    |
+    | Example:
+    |
+    | 'my-decision' => \EonX\EasyDecision\Decisions\UnanimousDecision::class
+    |
+    */
+    'type_mapping' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Use Expression Language
+    |--------------------------------------------------------------------------
+    |
+    | ExpressionLanguage will automatically be injected in all decisions when true.
+    |
+    */
+    'use_expression_language' => true,
 ];

@@ -15,8 +15,6 @@ use stdClass;
 final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
@@ -352,9 +350,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalTes
     }
 
     /**
-     * @dataProvider providerTestPaginator
-     *
      * @throws \Doctrine\DBAL\Exception
+     *
+     * @dataProvider providerTestPaginator
      */
     public function testPaginator(
         PaginationInterface $pagination,

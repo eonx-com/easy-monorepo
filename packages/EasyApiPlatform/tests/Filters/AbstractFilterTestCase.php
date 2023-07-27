@@ -48,16 +48,11 @@ abstract class AbstractFilterTestCase extends KernelTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testApply
      */
     abstract public static function provideApplyTestData(): iterable;
 
     /**
-     * @param mixed[]|null $properties
-     * @param mixed[] $filterParameters
-     * @param mixed[] $expectedParameters
      * @param class-string<\stdClass>|null $resourceClass
      *
      * @dataProvider provideApplyTestData
@@ -66,12 +61,12 @@ abstract class AbstractFilterTestCase extends KernelTestCase
         ?array $properties,
         array $filterParameters,
         string $expectedDql,
-        array $expectedParameters = null,
-        callable $filterFactory = null,
-        string $resourceClass = null,
+        ?array $expectedParameters = null,
+        ?callable $filterFactory = null,
+        ?string $resourceClass = null,
     ): void {
         if ($filterFactory === null) {
-            $filterFactory = function (ManagerRegistry $managerRegistry, array $properties = null): FilterInterface {
+            $filterFactory = function (ManagerRegistry $managerRegistry, ?array $properties = null): FilterInterface {
                 $filterClass = $this->filterClass;
 
                 return new $filterClass($managerRegistry, null, $properties);
@@ -120,9 +115,6 @@ abstract class AbstractFilterTestCase extends KernelTestCase
         }
     }
 
-    /**
-     * @param mixed[] $options
-     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new ApplicationKernel('test', false);

@@ -10,9 +10,6 @@ interface ResponseDataInterface
 {
     public function getContent(): string;
 
-    /**
-     * @return mixed[]
-     */
     public function getHeaders(): array;
 
     public function getReceivedAt(): DateTimeInterface;

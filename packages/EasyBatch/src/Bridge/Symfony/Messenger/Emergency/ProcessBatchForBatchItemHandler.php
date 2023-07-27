@@ -49,8 +49,8 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
             }
 
             $internal['process_batch_emergency'][] = [
-                'triggered_at' => $now,
                 'error_details' => $message->getErrorDetails(),
+                'triggered_at' => $now,
             ];
 
             $metadata['_internal'] = $internal;

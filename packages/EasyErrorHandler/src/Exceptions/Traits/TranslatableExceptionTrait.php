@@ -10,16 +10,10 @@ trait TranslatableExceptionTrait
 {
     protected ?string $domain = null;
 
-    /**
-     * @var mixed[]
-     */
     protected array $messageParams = [];
 
     protected string $userMessage = TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
 
-    /**
-     * @var mixed[]
-     */
     protected array $userMessageParams = [];
 
     public function getDomain(): ?string
@@ -54,8 +48,6 @@ trait TranslatableExceptionTrait
 
     /**
      * Sets the exception message parameters.
-     *
-     * @param mixed[] $messageParams
      */
     public function setMessageParams(array $messageParams): self
     {
@@ -76,8 +68,6 @@ trait TranslatableExceptionTrait
 
     /**
      * Sets the user-friendly message parameters.
-     *
-     * @param mixed[] $userMessageParams
      */
     public function setUserMessageParams(array $userMessageParams): self
     {

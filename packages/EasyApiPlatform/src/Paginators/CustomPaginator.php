@@ -14,8 +14,6 @@ final class CustomPaginator implements CustomPaginatorInterface
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Exception
      */
     public function getItems(): array
@@ -23,9 +21,6 @@ final class CustomPaginator implements CustomPaginatorInterface
         return \iterator_to_array($this->decorated->getIterator());
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPagination(): array
     {
         $hasNextPage = $this->decorated->getCurrentPage() < $this->decorated->getLastPage();

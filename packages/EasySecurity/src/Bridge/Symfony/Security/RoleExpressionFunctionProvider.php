@@ -35,7 +35,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
         return [
             new ExpressionFunction(
                 'role',
-                function (): void {
+                static function (): void {
                 },
                 function ($params, string $role): string {
                     if (isset($this->cached[$role])) {
@@ -47,6 +47,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
 
                         try {
                             $this->cached[$role] = \constant($constant);
+
                             return $this->cached[$role];
                         } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));

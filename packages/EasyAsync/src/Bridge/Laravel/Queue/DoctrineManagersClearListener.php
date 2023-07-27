@@ -12,7 +12,7 @@ use Psr\Log\NullLogger;
 final class DoctrineManagersClearListener
 {
     /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      */
     public function __construct(
         private ManagersClearer $managersClearer,

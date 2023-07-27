@@ -17,8 +17,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 final class ProviderVoterTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testVoter
      */
     public static function providerTestVoter(): iterable

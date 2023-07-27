@@ -14,8 +14,6 @@ final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\InvalidCsvFilenameException
      */
     public function getContents(): iterable

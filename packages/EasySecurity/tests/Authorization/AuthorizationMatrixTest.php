@@ -15,8 +15,6 @@ use EonX\EasySecurity\Tests\Stubs\AuthorizationRolesProviderStub;
 final class AuthorizationMatrixTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testMatrix
      */
     public static function providerTestMatrix(): iterable
@@ -62,8 +60,8 @@ final class AuthorizationMatrixTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null $roles
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
      *
      * @dataProvider providerTestMatrix
      */

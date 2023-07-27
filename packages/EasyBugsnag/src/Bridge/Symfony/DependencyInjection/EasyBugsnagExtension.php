@@ -14,8 +14,8 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class EasyBugsnagExtension extends Extension
 {
     private const AWS_ECS_FARGATE_CONFIG = [
-        'meta_url' => BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_URL,
         'meta_storage_filename' => BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_STORAGE_FILENAME,
+        'meta_url' => BridgeConstantsInterface::PARAM_AWS_ECS_FARGATE_META_URL,
     ];
 
     private const BASICS_CONFIG = [
@@ -35,8 +35,6 @@ final class EasyBugsnagExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

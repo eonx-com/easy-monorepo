@@ -31,8 +31,6 @@ final class TrimStringsNormalizer implements ContextAwareDenormalizerInterface, 
     }
 
     /**
-     * @param mixed[]|null $context
-     *
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, ?array $context = null): mixed
@@ -45,9 +43,6 @@ final class TrimStringsNormalizer implements ContextAwareDenormalizerInterface, 
         return $this->denormalizer->denormalize($data, $type, $format, $context);
     }
 
-    /**
-     * @param mixed[]|null $context
-     */
     public function supportsDenormalization(
         mixed $data,
         string $type,

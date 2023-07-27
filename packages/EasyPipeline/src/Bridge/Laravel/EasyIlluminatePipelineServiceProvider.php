@@ -43,9 +43,9 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
 
     private function registerPipelines(): void
     {
-        $pipelines = \config('easy-pipeline.pipelines', []);
+        $pipelines = (array)\config('easy-pipeline.pipelines', []);
 
-        if (empty($pipelines)) {
+        if (\count($pipelines) === 0) {
             throw new EmptyPipelinesListException(
                 'No pipelines to register. Please make sure your application has the expected configuration'
             );

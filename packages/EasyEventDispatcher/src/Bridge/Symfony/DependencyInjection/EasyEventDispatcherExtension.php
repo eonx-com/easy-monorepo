@@ -12,8 +12,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class EasyEventDispatcherExtension extends Extension
 {
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

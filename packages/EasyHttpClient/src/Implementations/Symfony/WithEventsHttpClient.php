@@ -30,8 +30,8 @@ final class WithEventsHttpClient implements HttpClientInterface
     use AsyncDecoratorTrait;
 
     /**
-     * @param null|iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface> $modifiers
-     * @param null|string[] $modifiersWhitelist
+     * @param iterable<\EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface>|null $modifiers
+     * @param string[]|null $modifiersWhitelist
      */
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -44,8 +44,6 @@ final class WithEventsHttpClient implements HttpClientInterface
     }
 
     /**
-     * @param null|mixed[] $options
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -159,9 +157,6 @@ final class WithEventsHttpClient implements HttpClientInterface
         return $data;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     private function resolveConfigFromHttpOptions(array $options): Config
     {
         $extra = $options[HttpOptionsInterface::REQUEST_DATA_EXTRA] ?? null;

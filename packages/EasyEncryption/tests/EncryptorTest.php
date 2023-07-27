@@ -16,8 +16,6 @@ use ParagonIE\Halite\KeyFactory;
 final class EncryptorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
@@ -65,8 +63,6 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
@@ -124,7 +120,8 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @param null|\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $resolvers
+     * @param \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]|null $resolvers
+     *
      * @dataProvider providerTestEncrypt
      */
     public function testEncrypt(string $text, mixed $key = null, ?array $resolvers = null): void
@@ -139,7 +136,8 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @param null|\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $resolvers
+     * @param \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]|null $resolvers
+     *
      * @dataProvider providerTestEncryptRaw
      */
     public function testEncryptRaw(string $text, mixed $key = null, ?array $resolvers = null): void

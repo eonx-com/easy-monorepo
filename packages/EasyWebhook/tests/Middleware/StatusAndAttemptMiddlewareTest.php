@@ -16,8 +16,6 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testProcess
      */
     public static function providerTestProcess(): iterable

@@ -22,8 +22,6 @@ interface DecisionInterface
     public function getName(): string;
 
     /**
-     * @param mixed[] $input
-     *
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */

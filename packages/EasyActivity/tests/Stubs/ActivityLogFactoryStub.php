@@ -25,7 +25,6 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
     private ActivityLogEntryFactoryInterface $factory;
 
     /**
-     * @param array<string, mixed> $subjects
      * @param string[] $globalDisallowedProperties
      */
     public function __construct(

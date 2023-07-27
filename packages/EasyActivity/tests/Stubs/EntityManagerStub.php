@@ -45,6 +45,7 @@ final class EntityManagerStub
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
@@ -67,10 +68,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param array<string, mixed> $easyActivityConfig
      * @param string[]|null $fixtures
-     *
-     * @return \Doctrine\ORM\EntityManagerInterface
      */
     public static function createFromEasyActivityConfig(
         array $easyActivityConfig,
@@ -129,6 +127,7 @@ final class EntityManagerStub
      * @param string[] $fixtures
      *
      * @return \Doctrine\ORM\EntityManager
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */

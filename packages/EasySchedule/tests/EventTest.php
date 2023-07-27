@@ -21,8 +21,6 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testFiltersPass
      */
     public static function providerTestFiltersPass(): iterable
@@ -41,8 +39,6 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testNoArgsMethods
      */
     public static function providerTestNoArgsMethods(): iterable
@@ -83,9 +79,6 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $filters
-     * @param mixed[] $rejects
-     *
      * @dataProvider providerTestFiltersPass
      */
     public function testFiltersPass(array $filters, array $rejects, bool $expected): void
@@ -123,8 +116,6 @@ final class EventTest extends AbstractTestCase
     }
 
     /**
-     * @param null|mixed[] $params
-     *
      * @dataProvider providerTestNoArgsMethods
      */
     public function testNoArgsMethods(string $expression, string $method, ?array $params = null): void

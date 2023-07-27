@@ -17,8 +17,6 @@ use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
 final class DecisionsTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDecisions
      */
     public static function providerTestDecisions(): iterable
@@ -123,8 +121,7 @@ final class DecisionsTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     * @param mixed[] $input
-     * @param mixed[] $expectedRulesOutput
+     *
      * @dataProvider providerTestDecisions
      */
     public function testDecisions(

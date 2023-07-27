@@ -17,7 +17,6 @@ final class IntegerNumberNormalizer implements
 {
     /**
      * @param string|null $data
-     * @param array<string, mixed> $context
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, ?array $context = null): ?Number
     {
@@ -35,7 +34,6 @@ final class IntegerNumberNormalizer implements
 
     /**
      * @param \EonX\EasyUtils\ValueObjects\Number|null $object
-     * @param array<string, mixed>|null $context
      */
     public function normalize(mixed $object, ?string $format = null, ?array $context = null): string
     {

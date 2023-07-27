@@ -18,16 +18,14 @@ final class SqsQueueTransport implements QueueTransportInterface
     public function send(QueueMessageInterface $queueMessage): void
     {
         $this->sqs->sendMessage([
-            'QueueUrl' => $queueMessage->getQueueUrl(),
             'MessageAttributes' => $this->formatHeaders($queueMessage->getHeaders()),
             'MessageBody' => $queueMessage->getBody(),
+            'QueueUrl' => $queueMessage->getQueueUrl(),
         ]);
     }
 
     /**
      * @param string[] $headers
-     *
-     * @return mixed[]
      */
     private function formatHeaders(array $headers): array
     {

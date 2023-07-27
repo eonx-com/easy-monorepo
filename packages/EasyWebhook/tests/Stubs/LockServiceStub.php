@@ -31,9 +31,6 @@ final class LockServiceStub implements LockServiceInterface
         return $this->lockData;
     }
 
-    /**
-     * @return null|mixed
-     */
     public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
     {
         $this->lockData = $lockData;

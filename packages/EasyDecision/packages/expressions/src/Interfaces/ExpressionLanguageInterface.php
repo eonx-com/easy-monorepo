@@ -15,12 +15,7 @@ interface ExpressionLanguageInterface
      */
     public function addFunctions(array $functions): self;
 
-    /**
-     * @param null|mixed[] $arguments
-     *
-     * @return mixed
-     */
-    public function evaluate(string $expression, ?array $arguments = null);
+    public function evaluate(string $expression, ?array $arguments = null): mixed;
 
     /**
      * @return \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]
@@ -37,7 +32,7 @@ interface ExpressionLanguageInterface
     public function setCache(CacheItemPoolInterface $cache): self;
 
     /**
-     * @param null|string[] $names
+     * @param string[]|null $names
      */
     public function validate(string $expression, ?array $names = null): bool;
 }

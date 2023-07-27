@@ -10,7 +10,7 @@ use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
 final class JsonFormatter extends BaseJsonFormatter
 {
     /**
-     * @param null|int $depth
+     * @param int|null $depth
      */
     protected function normalize(mixed $data, mixed $depth = null): mixed
     {

@@ -10,14 +10,8 @@ interface ContextInterface
 
     public function getDecisionType(): string;
 
-    /**
-     * @return mixed[]
-     */
     public function getOriginalInput(): array;
 
-    /**
-     * @return mixed[]
-     */
     public function getRuleOutputs(): array;
 
     public function isPropagationStopped(): bool;

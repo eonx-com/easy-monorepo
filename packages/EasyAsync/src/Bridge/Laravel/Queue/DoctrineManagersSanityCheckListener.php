@@ -14,7 +14,7 @@ use Throwable;
 final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
 {
     /**
-     * @param null|string[] $managers
+     * @param string[]|null $managers
      */
     public function __construct(
         Cache $cache,

@@ -76,6 +76,7 @@ final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterfac
         foreach ($errorCodes as $errorCodeDto) {
             $maxCode = \max($maxCode, $errorCodeDto->getErrorCode());
         }
+
         return $maxCode;
     }
 

@@ -24,9 +24,6 @@ final class ResultsContext implements ResultsContextInterface
      */
     private array $accounts = [];
 
-    /**
-     * @var mixed[]
-     */
     private array $caching = [];
 
     /**
@@ -48,15 +45,6 @@ final class ResultsContext implements ResultsContextInterface
      */
     private array $transactions = [];
 
-    /**
-     * ResultsContext constructor.
-     *
-     * @param mixed[] $accounts
-     * @param mixed[] $errors
-     * @param mixed[] $file
-     * @param mixed[] $groups
-     * @param mixed[] $transactions
-     */
     public function __construct(array $accounts, array $errors, array $file, array $groups, array $transactions)
     {
         // Not proud of that, but the order matters, DO NOT change it
@@ -151,10 +139,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Format account identifier transactions and add code summary.
-     *
-     * @param mixed[] $transactionCodes
-     *
-     * @return mixed[]
      */
     private function formatTransactionCodes(array $transactionCodes): array
     {
@@ -163,9 +147,9 @@ final class ResultsContext implements ResultsContextInterface
             $amount = $this->removeTrailingSlash($codes[1] ?? '');
 
             $transactionCodes[$key] = [
+                'amount' => $amount,
                 'code' => $code,
                 'description' => $this->getCodeSummary($code),
-                'amount' => $amount,
             ];
         }
 
@@ -175,9 +159,7 @@ final class ResultsContext implements ResultsContextInterface
     /**
      * Get data from line as an associative array using given attributes. If line structure invalid, return null.
      *
-     * @param string[] $attributes
-     *
-     * @return mixed[]|null
+     * @param string[] $attributes |null
      */
     private function getDataFromLine(array $attributes, string $line, int $lineNumber): ?array
     {
@@ -203,8 +185,6 @@ final class ResultsContext implements ResultsContextInterface
      * Get transaction data from line as an associative array using given attributes.
      * If line structure invalid, return null. If the last element in data is missing,
      * its alright as transaction might not have a text.
-     *
-     * @return mixed[]|null
      */
     private function getTransactionDataFromLine(string $line, int $lineNumber): ?array
     {
@@ -263,8 +243,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate account identifier.
-     *
-     * @param mixed[] $identifier
      */
     private function initAccountIdentifier(array $identifier): ?AccountIdentifier
     {
@@ -293,8 +271,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate account trailer.
-     *
-     * @param mixed[] $trailer
      */
     private function initAccountTrailer(array $trailer): ?AccountTrailer
     {
@@ -307,8 +283,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate accounts.
-     *
-     * @param mixed[] $accounts
      *
      * @return \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
      */
@@ -336,8 +310,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate errors.
-     *
-     * @param mixed[] $errors
      */
     private function initErrors(array $errors): self
     {
@@ -350,8 +322,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate file.
-     *
-     * @param mixed[] $file
      */
     private function initFile(array $file): self
     {
@@ -369,8 +339,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate file header.
-     *
-     * @param mixed[] $header
      */
     private function initFileHeader(array $header): ?FilerHeader
     {
@@ -388,8 +356,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate file trailer.
-     *
-     * @param mixed[] $trailer
      */
     private function initFileTrailer(array $trailer): ?FileTrailer
     {
@@ -405,8 +371,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate group header.
-     *
-     * @param mixed[] $header
      */
     private function initGroupHeader(array $header): ?GroupHeader
     {
@@ -422,8 +386,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate group trailer.
-     *
-     * @param mixed[] $trailer
      */
     private function initGroupTrailer(array $trailer): ?GroupTrailer
     {
@@ -437,8 +399,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate groups.
-     *
-     * @param mixed[] $groups
      */
     private function initGroups(array $groups): self
     {
@@ -459,8 +419,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate transactions.
-     *
-     * @param mixed[] $transactions
      */
     private function initTransactions(array $transactions): self
     {
@@ -486,12 +444,8 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate Nai result object and pass the context as parameter.
-     *
-     * @param mixed[] $data
-     *
-     * @return mixed
      */
-    private function instantiateNaiResult(string $resultClass, array $data)
+    private function instantiateNaiResult(string $resultClass, array $data): mixed
     {
         return new $resultClass($this, $data);
     }
@@ -500,11 +454,8 @@ final class ResultsContext implements ResultsContextInterface
      * Instantiate simple item for given attributes, class and array.
      *
      * @param string[] $attributes
-     * @param mixed[] $item
-     *
-     * @return mixed
      */
-    private function instantiateSimpleItem(array $attributes, string $class, array $item)
+    private function instantiateSimpleItem(array $attributes, string $class, array $item): mixed
     {
         $data = $this->getDataFromLine($attributes, $item['line'], $item['line_number']);
 

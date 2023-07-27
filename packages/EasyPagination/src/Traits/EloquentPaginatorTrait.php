@@ -16,9 +16,6 @@ trait EloquentPaginatorTrait
 
     private ?int $totalItems = null;
 
-    /**
-     * @return mixed[]
-     */
     protected function doGetItems(): array
     {
         return $this->fetchItems();
@@ -50,9 +47,6 @@ trait EloquentPaginatorTrait
         return $this->totalItems;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function fetchItems(): array
     {
         $queryBuilder = $this->createQueryBuilder();
@@ -70,9 +64,6 @@ trait EloquentPaginatorTrait
             : $this->fetchItemsUsingPrimaryKeys($queryBuilder);
     }
 
-    /**
-     * @return mixed[]
-     */
     private function fetchItemsUsingPrimaryKeys(EloquentBuilder $queryBuilder): array
     {
         $primaryKeyQueryBuilder = $this->createQueryBuilder();
@@ -106,9 +97,6 @@ trait EloquentPaginatorTrait
         return $this->fetchResults($queryBuilder);
     }
 
-    /**
-     * @return mixed[]
-     */
     private function fetchItemsUsingQuery(EloquentBuilder $queryBuilder): array
     {
         $this->applyFilterCriteria($queryBuilder);
@@ -117,9 +105,6 @@ trait EloquentPaginatorTrait
         return $this->fetchResults($queryBuilder);
     }
 
-    /**
-     * @return mixed[]
-     */
     private function fetchResults(EloquentBuilder $queryBuilder): array
     {
         /** @var \Illuminate\Database\Eloquent\Collection<array-key, \Illuminate\Database\Eloquent\Model> $collection */

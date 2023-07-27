@@ -17,8 +17,6 @@ use Symfony\Component\Uid\Uuid;
 final class RequestIdServiceTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetIds
      */
     public static function providerTestGetIds(): iterable

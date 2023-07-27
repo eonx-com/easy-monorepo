@@ -24,8 +24,6 @@ final class Encryptor extends AbstractEncryptor
     }
 
     /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidDigestLength
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
@@ -58,8 +56,6 @@ final class Encryptor extends AbstractEncryptor
     }
 
     /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidDigestLength
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
@@ -91,9 +87,6 @@ final class Encryptor extends AbstractEncryptor
         ));
     }
 
-    /**
-     * @param mixed[]|string|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair|null $key
-     */
     private function getKey(
         null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
         ?bool $forceKeyName = null,

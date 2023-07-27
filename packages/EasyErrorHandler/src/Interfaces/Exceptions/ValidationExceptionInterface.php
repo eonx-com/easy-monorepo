@@ -8,8 +8,6 @@ interface ValidationExceptionInterface
 {
     /**
      * Returns validation errors.
-     *
-     * @return mixed[]
      */
     public function getErrors(): array;
 }

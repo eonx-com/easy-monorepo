@@ -29,6 +29,7 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
         switch ($webhookResult->isSuccessful()) {
             case true:
                 $webhook->status(WebhookInterface::STATUS_SUCCESS);
+
                 break;
             case false:
                 $webhook->status(

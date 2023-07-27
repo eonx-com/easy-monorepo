@@ -9,9 +9,6 @@ use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
 
 final class ResponseData implements ResponseDataInterface
 {
-    /**
-     * @param mixed[] $headers
-     */
     public function __construct(
         private string $content,
         private array $headers,
@@ -25,9 +22,6 @@ final class ResponseData implements ResponseDataInterface
         return $this->content;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getHeaders(): array
     {
         return $this->headers;

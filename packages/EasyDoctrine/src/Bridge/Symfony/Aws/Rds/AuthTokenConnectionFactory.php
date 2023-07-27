@@ -20,7 +20,6 @@ final class AuthTokenConnectionFactory
     }
 
     /**
-     * @param mixed[] $params
      * @param array<string, string>|null $mappingTypes
      *
      * @throws \Doctrine\DBAL\Exception

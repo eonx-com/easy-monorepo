@@ -20,8 +20,6 @@ use stdClass;
 final class SecurityContextTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testContextGetters
      */
     public static function gettersDataProvider(): iterable
@@ -55,8 +53,6 @@ final class SecurityContextTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testContextHas
      */
     public static function hasDataProvider(): iterable
@@ -117,8 +113,6 @@ final class SecurityContextTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $roles
-     *
      * @dataProvider gettersDataProvider
      */
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
@@ -151,8 +145,6 @@ final class SecurityContextTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $roles
-     *
      * @dataProvider hasDataProvider
      */
     public function testContextHas(

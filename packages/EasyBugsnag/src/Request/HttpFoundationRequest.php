@@ -19,17 +19,11 @@ final class HttpFoundationRequest implements RequestInterface
         return \sprintf('%s %s', $this->request->getMethod(), $this->request->getPathInfo());
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getCookies(): array
     {
         return $this->request->cookies->all();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getMetaData(): array
     {
         /** @var string $content */
@@ -41,11 +35,11 @@ final class HttpFoundationRequest implements RequestInterface
 
         $request = [
             'client_ip' => $this->request->getClientIp(),
-            'url' => $this->request->getUri(),
-            'method' => $this->request->getMethod(),
-            'headers' => $this->formatHeaders($this->request),
-            'query' => $this->request->query->all(),
             'content' => $content,
+            'headers' => $this->formatHeaders($this->request),
+            'method' => $this->request->getMethod(),
+            'query' => $this->request->query->all(),
+            'url' => $this->request->getUri(),
         ];
 
         if (\count($this->request->request->all()) > 0) {
@@ -57,9 +51,6 @@ final class HttpFoundationRequest implements RequestInterface
         ];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getSession(): array
     {
         if ($this->request->hasSession() === false) {
@@ -84,9 +75,6 @@ final class HttpFoundationRequest implements RequestInterface
         return true;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function formatHeaders(Request $request): array
     {
         return \array_map(static function (array $header) {

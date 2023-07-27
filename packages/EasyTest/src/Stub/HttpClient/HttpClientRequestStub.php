@@ -11,9 +11,6 @@ final class HttpClientRequestStub
 {
     private ?string $hash = null;
 
-    /**
-     * @param mixed[]|null $options
-     */
     public function __construct(
         private Closure $addResponseClosure,
         private string $method,
@@ -22,10 +19,6 @@ final class HttpClientRequestStub
     ) {
     }
 
-    /**
-     * @param mixed[]|string $data
-     * @param mixed[]|null $info
-     */
     public function addResponse(array|string $data, ?array $info = null, ?int $count = null): HttpClientStub
     {
         $addResponseClosure = $this->addResponseClosure;

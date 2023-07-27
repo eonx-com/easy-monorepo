@@ -11,14 +11,8 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
 {
     private const KEY_MESSAGE = 'message';
 
-    /**
-     * @var mixed[]
-     */
     private readonly array $keys;
 
-    /**
-     * @param null|mixed[] $keys
-     */
     public function __construct(
         ?array $keys = null,
         ?int $priority = null,
@@ -28,11 +22,6 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
         parent::__construct($priority);
     }
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     public function buildData(Throwable $throwable, array $data): array
     {
         if ($throwable instanceof HttpExceptionInterface) {

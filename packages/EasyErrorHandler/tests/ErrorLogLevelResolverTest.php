@@ -14,8 +14,6 @@ use Throwable;
 final class ErrorLogLevelResolverTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetErrorLogLevel
      */
     public static function providerTestGetErrorLogLevel(): iterable

@@ -17,11 +17,6 @@ final class SslCertificateHelper
 
     private const DEFAULT_FILENAME_KEY = '/var/www/var/tmp/key.pem';
 
-    /**
-     * @param mixed[] $options
-     *
-     * @return mixed[]
-     */
     public static function loadSslCertificates(array $options): array
     {
         $filesystem = new Filesystem();

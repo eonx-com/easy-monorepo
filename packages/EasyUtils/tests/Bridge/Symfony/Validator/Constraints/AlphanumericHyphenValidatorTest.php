@@ -18,8 +18,6 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class AlphanumericHyphenValidatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateFailsWithRegexFailedError
      */
     public static function provideInvalidValues(): iterable
@@ -31,8 +29,6 @@ final class AlphanumericHyphenValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsWithValidValue
      */
     public static function provideValidValues(): iterable

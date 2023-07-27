@@ -11,8 +11,6 @@ use EonX\EasyPagination\Tests\AbstractTestCase;
 final class IterableLengthAwarePaginatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testUrls
      */
     public static function providerTestUrls(): iterable

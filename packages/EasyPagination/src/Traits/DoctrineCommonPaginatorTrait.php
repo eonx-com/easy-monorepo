@@ -18,9 +18,7 @@ trait DoctrineCommonPaginatorTrait
     private ?int $totalItems = null;
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
+     @throws \Doctrine\DBAL\Exception
      */
     protected function doGetItems(): array
     {
@@ -62,9 +60,7 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
+     @throws \Doctrine\DBAL\Exception
      */
     private function fetchItems(): array
     {
@@ -81,9 +77,7 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
+     @throws \Doctrine\DBAL\Exception
      */
     private function fetchItemsUsingPrimaryKeys(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
     {
@@ -117,9 +111,7 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
+     @throws \Doctrine\DBAL\Exception
      */
     private function fetchItemsUsingQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
     {

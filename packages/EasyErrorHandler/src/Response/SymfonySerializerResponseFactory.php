@@ -13,14 +13,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class SymfonySerializerResponseFactory implements ErrorResponseFactoryInterface
 {
-    /**
-     * @var mixed[]
-     */
     private readonly array $errorFormats;
 
-    /**
-     * @param null|mixed[] $errorFormats
-     */
     public function __construct(
         private readonly SerializerInterface $serializer,
         ?array $errorFormats = null,

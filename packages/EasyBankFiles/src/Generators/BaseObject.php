@@ -8,11 +8,6 @@ use EonX\EasyBankFiles\AbstractDataBag;
 
 abstract class BaseObject extends AbstractDataBag
 {
-    /**
-     * BaseResult constructor.
-     *
-     * @param mixed[]|null $data
-     */
     public function __construct(?array $data = null)
     {
         parent::__construct(\array_merge([
@@ -22,15 +17,11 @@ abstract class BaseObject extends AbstractDataBag
 
     /**
      * Get validation rules.
-     *
-     * @return mixed[]
      */
     abstract public function getValidationRules(): array;
 
     /**
      * Return all the attributes.
-     *
-     * @return mixed[]
      */
     public function getAttributes(): array
     {
@@ -82,8 +73,6 @@ abstract class BaseObject extends AbstractDataBag
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
      * @see http://php.net/manual/en/function.str-pad.php
-     *
-     * @return mixed[]
      */
     abstract protected function getAttributesPaddingRules(): array;
 

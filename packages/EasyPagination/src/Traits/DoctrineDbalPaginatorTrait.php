@@ -20,9 +20,7 @@ trait DoctrineDbalPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Doctrine\DBAL\Exception
+     @throws \Doctrine\DBAL\Exception
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {

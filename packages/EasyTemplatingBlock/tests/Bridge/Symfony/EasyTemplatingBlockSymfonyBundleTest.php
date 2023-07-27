@@ -9,8 +9,6 @@ use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
 final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testRenderEvent
      */
     public static function providerTestRenderEvent(): iterable
@@ -46,9 +44,7 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param mixed[] $events
-     * @param null|mixed[] $context
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      *
      * @dataProvider providerTestRenderEvent
      */

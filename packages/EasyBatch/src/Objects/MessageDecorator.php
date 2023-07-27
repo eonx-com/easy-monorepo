@@ -16,9 +16,6 @@ final class MessageDecorator
 
     private int $maxAttempts = 1;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $metadata = null;
 
     private ?string $name = null;
@@ -60,9 +57,6 @@ final class MessageDecorator
         return $this->message;
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getMetadata(): ?array
     {
         return $this->metadata;
@@ -126,8 +120,6 @@ final class MessageDecorator
     }
 
     /**
-     * @param mixed[] $metadata
-     *
      * @return $this
      */
     public function setMetadata(array $metadata): self

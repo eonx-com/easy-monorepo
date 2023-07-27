@@ -10,9 +10,6 @@ use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
 
 final class IriConverterStub implements IriConverterInterface
 {
-    /**
-     * @param mixed[]|null $context
-     */
     public function getIriFromResource(
         object|string $resource,
         ?int $referenceType = null,
@@ -22,9 +19,6 @@ final class IriConverterStub implements IriConverterInterface
         return 'some-iri';
     }
 
-    /**
-     * @param mixed[]|null $context
-     */
     public function getResourceFromIri(string $iri, ?array $context = null, ?Operation $operation = null): object
     {
         return new Dummy();

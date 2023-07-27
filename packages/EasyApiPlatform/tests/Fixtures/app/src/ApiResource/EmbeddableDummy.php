@@ -23,15 +23,15 @@ class EmbeddableDummy
     #[Orm\Column(type: Types::FLOAT, nullable: true)]
     private ?float $dummyFloat = null;
 
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[Groups(['embed'])]
+    #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $dummyName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $dummyPrice = null;
 
-    #[Orm\Column(type: Types::STRING, nullable: true)]
     #[Groups(['barcelona', 'chicago'])]
+    #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $symfony = null;
 
     public function __construct()

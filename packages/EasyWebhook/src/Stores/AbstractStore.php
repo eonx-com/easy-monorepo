@@ -19,10 +19,6 @@ abstract class AbstractStore
     }
 
     /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     *
      * @throws \Nette\Utils\JsonException
      */
     protected function formatData(array $data): array

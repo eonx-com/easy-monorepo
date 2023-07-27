@@ -17,8 +17,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCreate
      */
     public static function providerTestCreate(): iterable
@@ -46,8 +44,6 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $errorFormats
-     *
      * @dataProvider providerTestCreate
      */
     public function testCreate(

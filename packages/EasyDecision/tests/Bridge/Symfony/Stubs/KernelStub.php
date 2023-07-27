@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Kernel;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
-     * @param null|string[] $configPaths
+     * @param string[]|null $configPaths
      */
     public function __construct(
         private ?array $configPaths = null,

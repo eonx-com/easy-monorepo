@@ -17,11 +17,6 @@ final class JwtClaimFetcher implements JwtClaimFetcherInterface
     ) {
     }
 
-    /**
-     * @param null|mixed[] $default
-     *
-     * @return mixed[]
-     */
     public function getArrayClaim(JwtInterface $token, string $claim, ?array $default = null): array
     {
         return $this->doGetClaim($token, $claim, $default ?? []);

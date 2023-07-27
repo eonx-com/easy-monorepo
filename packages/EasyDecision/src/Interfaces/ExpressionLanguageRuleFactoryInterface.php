@@ -8,9 +8,6 @@ use EonX\EasyDecision\Rules\ExpressionLanguageRule;
 
 interface ExpressionLanguageRuleFactoryInterface
 {
-    /**
-     * @param null|mixed[] $extra
-     */
     public function create(
         string $expression,
         ?int $priority = null,

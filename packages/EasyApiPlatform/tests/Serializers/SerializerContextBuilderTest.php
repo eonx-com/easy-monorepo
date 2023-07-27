@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class SerializerContextBuilderTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCreateFromRequest
      */
     public static function providerTestCreateFromRequest(): iterable
@@ -38,8 +36,6 @@ final class SerializerContextBuilderTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $contextFromDecorated
-     *
      * @dataProvider providerTestCreateFromRequest
      */
     public function testCreateFromRequest(array $contextFromDecorated, bool $isGroupAdded): void
@@ -57,9 +53,6 @@ final class SerializerContextBuilderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @param mixed[] $contextFromDecorated
-     */
     private function mockDecoratedSerializerContextBuilder(
         array $contextFromDecorated,
     ): SerializerContextBuilderInterface {

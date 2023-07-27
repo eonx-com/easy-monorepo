@@ -12,9 +12,6 @@ final class TranslatorStub implements TranslatorInterface
 {
     private const LOCALE = 'en';
 
-    /**
-     * @var null|mixed[]
-     */
     private ?array $translations = null;
 
     private ?Translator $translator = null;
@@ -24,24 +21,18 @@ final class TranslatorStub implements TranslatorInterface
         return self::LOCALE;
     }
 
-    /**
-     * @param mixed[] $translations
-     */
     public function setTranslations(array $translations): void
     {
         $this->translations = $translations;
     }
 
-    /**
-     * @param null|mixed[] $parameters
-     */
-    public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
+    public function trans(string $id, ?array $parameters = null, ?string $domain = null, ?string $locale = null): string
     {
         $translated = $this->getTranslator()
             ->trans($id, $parameters ?? [], $domain, $locale);
 
         // TODO - That's cheating... Translations need to be reworked completely
-        if (empty($parameters) === false) {
+        if (\count($parameters ?? []) > 0) {
             $translated = \str_replace(':', '', $translated);
         }
 

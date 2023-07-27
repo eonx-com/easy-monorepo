@@ -14,11 +14,6 @@ final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider
     ) {
     }
 
-    /**
-     * @param mixed[] $records
-     *
-     * @return mixed[]
-     */
     public function __invoke(array $records): array
     {
         $extra = $records['extra'] ?? [];

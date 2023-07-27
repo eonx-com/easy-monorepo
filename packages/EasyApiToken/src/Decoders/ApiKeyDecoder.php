@@ -24,13 +24,15 @@ final class ApiKeyDecoder extends AbstractApiTokenDecoder
         }
 
         $authorization = \explode(':', (string)\base64_decode($authorization, true));
+        $username = \trim($authorization[0] ?? '');
+        $password = \trim($authorization[1] ?? '');
 
-        if (empty(\trim($authorization[0] ?? '')) === true || empty(\trim($authorization[1] ?? '')) === false) {
+        if ($username === '' || $password !== '') {
             // If Authorization doesn't contain ONLY a username, return null
             return null;
         }
 
-        $originalToken = \trim($authorization[0]);
+        $originalToken = $username;
 
         return $this->hashedApiKeyDriver?->decode($originalToken) ?? new ApiKey($originalToken);
     }

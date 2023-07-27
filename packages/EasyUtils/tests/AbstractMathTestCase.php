@@ -9,8 +9,6 @@ use EonX\EasyUtils\Interfaces\MathInterface;
 abstract class AbstractMathTestCase extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testAbsSucceeds
      */
     public static function provideAbsData(): iterable
@@ -41,8 +39,6 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testCompareThatSucceeds
      */
     public static function provideCompareThatData(): iterable
@@ -146,8 +142,6 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testDivideSucceeds
      */
     public static function provideDivideData(): iterable
@@ -167,8 +161,6 @@ abstract class AbstractMathTestCase extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testRoundSucceeds
      */
     public static function provideRoundData(): iterable

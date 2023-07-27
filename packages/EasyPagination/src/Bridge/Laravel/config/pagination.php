@@ -29,9 +29,9 @@ return [
     |
     */
     'start_size' => [
-        'start_attribute' => \env('PAGINATION_PAGE_START_ATTRIBUTE', 'page'),
-        'start_default' => \env('PAGINATION_PAGE_START_DEFAULT', 1),
         'size_attribute' => \env('PAGINATION_PAGE_SIZE_ATTRIBUTE', 'perPage'),
         'size_default' => \env('PAGINATION_PAGE_SIZE_DEFAULT', 15),
+        'start_attribute' => \env('PAGINATION_PAGE_START_ATTRIBUTE', 'page'),
+        'start_default' => \env('PAGINATION_PAGE_START_DEFAULT', 1),
     ],
 ];

@@ -11,10 +11,7 @@ final class SessionTrackingMiddleware
 {
     use TracksSessionTrait;
 
-    /**
-     * @return mixed
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $this->trackSession($request);
 

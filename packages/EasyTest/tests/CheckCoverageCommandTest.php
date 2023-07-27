@@ -10,8 +10,6 @@ use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
 final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCheckCoverage
      */
     public static function providerCheckCoverage(): iterable
@@ -58,8 +56,6 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testCheckCoverageExceptions
      */
     public static function providerCheckCoverageExceptions(): iterable
@@ -94,8 +90,6 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $inputs
-     *
      * @throws \Exception
      *
      * @dataProvider providerCheckCoverage
@@ -108,13 +102,11 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $inputs
+     * @phpstan-param class-string<\Throwable> $expectedException
      *
      * @throws \Exception
      *
      * @dataProvider providerCheckCoverageExceptions
-     *
-     * @phpstan-param class-string<\Throwable> $expectedException
      */
     public function testCheckCoverageExceptions(array $inputs, string $expectedException): void
     {

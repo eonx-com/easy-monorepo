@@ -8,9 +8,6 @@ use EonX\EasyDecision\Exceptions\MissingValueIndexException;
 
 final class ValueDecision extends AbstractDecision
 {
-    /**
-     * @param mixed[] $input
-     */
     public function make(array $input): mixed
     {
         if (isset($input['value']) === false) {

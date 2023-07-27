@@ -45,10 +45,6 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         return $newDateTime;
     }
 
-    /**
-     * @param mixed[] $data
-     * @param mixed[]|null $errorDetails
-     */
     private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem
@@ -66,8 +62,8 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         }
 
         $internal['update_batch_item_emergency'][] = [
-            'triggered_at' => $now,
             'error_details' => $errorDetails,
+            'triggered_at' => $now,
         ];
 
         $metadata['_internal'] = $internal;

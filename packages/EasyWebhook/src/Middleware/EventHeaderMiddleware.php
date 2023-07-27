@@ -21,8 +21,10 @@ final class EventHeaderMiddleware extends AbstractConfigureOnceMiddleware
 
     protected function doProcess(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        if (empty($webhook->getEvent()) === false) {
-            $webhook->header($this->eventHeader, $webhook->getEvent());
+        $event = $webhook->getEvent() ?? '';
+
+        if ($event !== '') {
+            $webhook->header($this->eventHeader, $event);
         }
 
         return $stack
