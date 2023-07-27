@@ -232,7 +232,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     {
         return \is_string($string) && $string !== '';
     }
-    
+
     private function validateKey(
         EncryptionKey|EncryptionKeyPair|array|string|null $key = null,
     ): void {
