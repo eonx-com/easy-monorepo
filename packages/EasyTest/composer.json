@@ -20,7 +20,6 @@
         "symfony/http-client": "^6.3",
         "symfony/http-kernel": "^6.3",
         "symfony/intl": "^6.3",
-        "symfony/mailer": "^6.3",
         "symfony/messenger": "^6.3",
         "symfony/property-access": "^6.3",
         "symfony/translation": "^6.3",
