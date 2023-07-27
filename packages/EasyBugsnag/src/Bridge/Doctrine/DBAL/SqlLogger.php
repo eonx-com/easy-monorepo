@@ -11,18 +11,12 @@ use Doctrine\DBAL\Logging\SQLLogger as BaseSqlLoggerInterface;
 
 final class SqlLogger implements BaseSqlLoggerInterface
 {
-    /**
-     * @var mixed[]|null
-     */
     private ?array $params = null;
 
     private ?string $sql = null;
 
     private ?float $start = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $types = null;
 
     public function __construct(
@@ -40,7 +34,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
 
     /**
      * @param string $sql
-     * @param mixed[]|null $params The SQL parameters.
+     * @param array|null $params The SQL parameters.
      * @param int[]|string[]|null $types The SQL parameter types.
      */
     public function startQuery($sql, ?array $params = null, ?array $types = null): void

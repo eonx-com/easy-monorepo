@@ -25,8 +25,6 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
     protected string $resourceClass = Dummy::class;
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testApply
      */
     public static function provideApplyTestData(): iterable
@@ -1308,9 +1306,6 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
         $this->assertEquals($actual, $expected);
     }
 
-    /**
-     * @param mixed[]|null $properties
-     */
     protected static function buildAdvancedSearchFilter(
         ManagerRegistry $managerRegistry,
         ?array $properties = null,

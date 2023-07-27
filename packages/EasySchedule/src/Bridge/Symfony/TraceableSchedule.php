@@ -43,9 +43,6 @@ final class TraceableSchedule implements TraceableScheduleInterface
         return $this;
     }
 
-    /**
-     * @param mixed[]|null $parameters
-     */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
         $event = $this->decorated->command($command, $parameters);

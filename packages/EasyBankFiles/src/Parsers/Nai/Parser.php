@@ -26,9 +26,6 @@ final class Parser extends AbstractLineByLineParser
 
     private const TRANSACTION_DETAIL = '16';
 
-    /**
-     * @var mixed[]
-     */
     private array $accounts = [];
 
     private ?int $currentAccount = null;
@@ -39,19 +36,10 @@ final class Parser extends AbstractLineByLineParser
 
     private ?int $currentTransaction = null;
 
-    /**
-     * @var mixed[]
-     */
     private array $errors = [];
 
-    /**
-     * @var mixed[]
-     */
     private array $file = [];
 
-    /**
-     * @var mixed[]
-     */
     private array $groups = [];
 
     private string $previousCode;
@@ -60,9 +48,6 @@ final class Parser extends AbstractLineByLineParser
 
     private ResultsContext $resultsContext;
 
-    /**
-     * @var mixed[]
-     */
     private array $transactions = [];
 
     /**
@@ -423,8 +408,6 @@ final class Parser extends AbstractLineByLineParser
 
     /**
      * Structure item content with line number.
-     *
-     * @return mixed[]
      */
     private function setItem(string $line): array
     {

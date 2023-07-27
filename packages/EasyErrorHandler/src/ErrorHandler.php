@@ -39,8 +39,6 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     private array $reporters;
 
     /**
-     * @param iterable<mixed> $builderProviders
-     * @param iterable<mixed> $reporterProviders
      * @param class-string[]|null $ignoredExceptionsForReport
      */
     public function __construct(
@@ -138,10 +136,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     }
 
     /**
-     * @param iterable<mixed> $items
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     private function filterIterable(iterable $items, string $class): array
     {
@@ -156,9 +151,6 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         return $items;
     }
 
-    /**
-     * @param iterable<mixed> $builderProviders
-     */
     private function setBuilders(iterable $builderProviders): void
     {
         /** @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface[] $providers */
@@ -176,9 +168,6 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         $this->builders = CollectorHelper::orderLowerPriorityFirstAsArray($builders);
     }
 
-    /**
-     * @param iterable<mixed> $reporterProviders
-     */
     private function setReporters(iterable $reporterProviders): void
     {
         /** @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface[] $providers */

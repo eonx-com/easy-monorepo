@@ -10,8 +10,5 @@ interface ObjectTransformerInterface extends HasPriorityInterface
 {
     public function supports(object $object): bool;
 
-    /**
-     * @return mixed[]
-     */
     public function transform(object $object): array;
 }

@@ -8,9 +8,6 @@ use Aws\Sqs\SqsClient;
 
 final class SqsClientStub extends SqsClient
 {
-    /**
-     * @var mixed[]
-     */
     private array $calls = [];
 
     public function __construct()
@@ -22,17 +19,11 @@ final class SqsClientStub extends SqsClient
         ]);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getCalls(): array
     {
         return $this->calls;
     }
 
-    /**
-     * @param mixed[]|null $args
-     */
     public function sendMessage(?array $args = null): void
     {
         $this->calls[] = $args ?? [];

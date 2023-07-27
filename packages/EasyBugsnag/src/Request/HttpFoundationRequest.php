@@ -19,17 +19,11 @@ final class HttpFoundationRequest implements RequestInterface
         return \sprintf('%s %s', $this->request->getMethod(), $this->request->getPathInfo());
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getCookies(): array
     {
         return $this->request->cookies->all();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getMetaData(): array
     {
         /** @var string $content */
@@ -57,9 +51,6 @@ final class HttpFoundationRequest implements RequestInterface
         ];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getSession(): array
     {
         if ($this->request->hasSession() === false) {
@@ -84,9 +75,6 @@ final class HttpFoundationRequest implements RequestInterface
         return true;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function formatHeaders(Request $request): array
     {
         return \array_map(static function (array $header) {

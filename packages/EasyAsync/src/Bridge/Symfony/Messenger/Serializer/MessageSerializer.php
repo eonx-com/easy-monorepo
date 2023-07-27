@@ -26,9 +26,6 @@ final class MessageSerializer implements SerializerInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $encodedEnvelope
-     */
     public function decode(array $encodedEnvelope): Envelope
     {
         $originalBody = $encodedEnvelope[self::KEY_BODY] ?? '';
@@ -50,9 +47,6 @@ final class MessageSerializer implements SerializerInterface
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function encode(Envelope $envelope): array
     {
         $originalStamp = $envelope->last(OriginalMessageStamp::class);

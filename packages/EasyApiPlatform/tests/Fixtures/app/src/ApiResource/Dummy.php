@@ -24,9 +24,6 @@ class Dummy
     #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $alias = null;
 
-    /**
-     * @var mixed[]|null
-     */
     #[Orm\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private ?array $arrayData;
 
@@ -53,9 +50,6 @@ class Dummy
     #[ORM\Column(type: Types::INTEGER)]
     private int $entityId;
 
-    /**
-     * @var mixed[]
-     */
     private array $foo;
 
     #[ORM\Column(type: Types::INTEGER)]
@@ -63,9 +57,6 @@ class Dummy
     #[ORM\Id]
     private int $id;
 
-    /**
-     * @var mixed[]|null
-     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $jsonData;
 
@@ -118,9 +109,6 @@ class Dummy
         return $this->alias;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getArrayData(): ?array
     {
         return $this->arrayData;
@@ -156,9 +144,6 @@ class Dummy
         return $this->entityId;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getFoo(): array
     {
         return $this->foo;
@@ -169,9 +154,6 @@ class Dummy
         return $this->id;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getJsonData(): ?array
     {
         return $this->jsonData;
@@ -220,9 +202,6 @@ class Dummy
         $this->alias = $alias;
     }
 
-    /**
-     * @param mixed[]|null $arrayData
-     */
     public function setArrayData(?array $arrayData = null): void
     {
         $this->arrayData = $arrayData;
@@ -263,9 +242,6 @@ class Dummy
         $this->entityId = $entityId;
     }
 
-    /**
-     * @param mixed[] $foo
-     */
     public function setFoo(array $foo): void
     {
         $this->foo = $foo;
@@ -276,9 +252,6 @@ class Dummy
         $this->id = $id;
     }
 
-    /**
-     * @param mixed[]|null $jsonData
-     */
     public function setJsonData(?array $jsonData = null): void
     {
         $this->jsonData = $jsonData;

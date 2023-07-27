@@ -17,8 +17,6 @@ use Exception;
 final class ValueDecisionTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDecisionEntirely
      */
     public static function decisionEntirelyProvider(): iterable
@@ -45,10 +43,6 @@ final class ValueDecisionTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $rules
-     * @param mixed[] $input
-     * @param mixed[] $expectedRulesOutput
-     *
      * @dataProvider decisionEntirelyProvider
      */
     public function testDecisionEntirely(
@@ -156,17 +150,11 @@ final class ValueDecisionTest extends AbstractTestCase
                 return 0;
             }
 
-            /**
-             * @param mixed[] $input
-             */
             public function proceed(array $input): never
             {
                 throw new Exception('');
             }
 
-            /**
-             * @param mixed[] $input
-             */
             public function supports(array $input): bool
             {
                 return true;
@@ -187,17 +175,11 @@ final class ValueDecisionTest extends AbstractTestCase
                 return 0;
             }
 
-            /**
-             * @param mixed[] $input
-             */
             public function proceed(array $input): mixed
             {
                 return $input['value'] + 10;
             }
 
-            /**
-             * @param mixed[] $input
-             */
             public function supports(array $input): bool
             {
                 return isset($input['value']);

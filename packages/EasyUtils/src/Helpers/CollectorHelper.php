@@ -10,21 +10,12 @@ use Traversable;
 
 final class CollectorHelper
 {
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     */
     public static function convertToArray(iterable $items): array
     {
         return $items instanceof Traversable ? \iterator_to_array($items) : $items;
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     *
      * @throws \EonX\EasyUtils\Exceptions\InvalidArgumentException
      */
     public static function ensureClass(iterable $items, string $class): iterable
@@ -43,10 +34,6 @@ final class CollectorHelper
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyUtils\Exceptions\InvalidArgumentException
      */
     public static function ensureClassAsArray(iterable $items, string $class): array
@@ -54,11 +41,6 @@ final class CollectorHelper
         return self::convertToArray(self::ensureClass($items, $class));
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     */
     public static function filterByClass(iterable $items, string $class): iterable
     {
         foreach ($items as $item) {
@@ -69,21 +51,13 @@ final class CollectorHelper
     }
 
     /**
-     * @param iterable<mixed> $items
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     public static function filterByClassAsArray(iterable $items, string $class): array
     {
         return self::convertToArray(self::filterByClass($items, $class));
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     */
     public static function orderHigherPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
@@ -104,21 +78,11 @@ final class CollectorHelper
         }
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     */
     public static function orderHigherPriorityFirstAsArray(iterable $items): array
     {
         return self::convertToArray(self::orderHigherPriorityFirst($items));
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     */
     public static function orderLowerPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
@@ -139,11 +103,6 @@ final class CollectorHelper
         }
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     */
     public static function orderLowerPriorityFirstAsArray(iterable $items): array
     {
         return self::convertToArray(self::orderLowerPriorityFirst($items));

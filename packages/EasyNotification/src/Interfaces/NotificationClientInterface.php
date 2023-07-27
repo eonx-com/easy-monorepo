@@ -10,9 +10,7 @@ interface NotificationClientInterface
 
     /**
      * @param string[] $topics
-     * @param mixed[]|null $options HTTP Client options
-     *
-     * @return mixed[]
+     * @param array|null $options HTTP Client options
      */
     public function getMessages(array $topics, ?array $options = null): array;
 

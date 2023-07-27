@@ -39,9 +39,6 @@ use Symfony\Component\Validator\Constraints\Uuid;
  */
 class InvalidDataMaker extends AbstractInvalidDataMaker
 {
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldArrayCollectionWithFewerItems(int $minElements): iterable
     {
         $value = new ArrayCollection(\array_fill(0, $minElements - 1, null));
@@ -56,9 +53,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too few elements in the collection", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldArrayCollectionWithMoreItems(int $maxElements): iterable
     {
         $value = new ArrayCollection(\array_fill(0, $maxElements - 1, null));
@@ -73,9 +67,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too many elements in the collection", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldArrayWithFewerItems(int $minElements): iterable
     {
         $value = \array_fill(0, $minElements - 1, null);
@@ -90,9 +81,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too few elements in the array", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldArrayWithMoreItems(int $maxElements, mixed $itemValue = null): iterable
     {
         $value = \array_fill(0, $maxElements + 1, $itemValue);
@@ -107,9 +95,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too many elements in the array", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldBlankString(): iterable
     {
         $value = '';
@@ -118,9 +103,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is blank", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldDateTimeLessThanOrEqualRelatedProperty(string $relatedProperty): iterable
     {
         $dateTime = Carbon::now();
@@ -140,9 +122,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has less datetime than {$this->relatedProperty}", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldDateTimeLessThanOrEqualToNow(): iterable
     {
         $dateTime = Carbon::now();
@@ -164,9 +143,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has equal datetime", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldDateTimeLessThanRelatedProperty(string $relatedProperty): iterable
     {
         $dateTime = Carbon::now();
@@ -186,25 +162,16 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has less datetime than {$this->relatedProperty}", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldEmptyArray(): iterable
     {
         yield from $this->yieldArrayWithFewerItems(1);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldEmptyArrayCollection(): iterable
     {
         yield from $this->yieldArrayCollectionWithFewerItems(1);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldIntegerGreaterThanGiven(int $lessThanOrEqualValue): iterable
     {
         $value = $lessThanOrEqualValue + 1;
@@ -218,9 +185,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has greater value", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldIntegerGreaterThanOrEqualToGiven(int $lessThanValue): iterable
     {
         $value = $lessThanValue + 1;
@@ -244,9 +208,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has equal value", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidAlphanumeric(): iterable
     {
         $value = 'invalid alphanumeric value';
@@ -255,9 +216,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid alphanumeric value", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidAlphanumericHyphen(): iterable
     {
         $value = 'invalid alphanumeric-hyphen value';
@@ -266,9 +224,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid alphanumeric hyphen value", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidChoice(): iterable
     {
         $value = 'invalid-choice';
@@ -277,9 +232,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is not a valid choice", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidCountry(): iterable
     {
         $value = 'invalid-country';
@@ -288,9 +240,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid country", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidCreditCardNumber(): iterable
     {
         $value = '1111222233334444';
@@ -299,9 +248,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is not a valid credit card number", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidCurrencyCode(): iterable
     {
         $value = 'invalid-currency-code';
@@ -310,9 +256,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid currency", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidDate(): iterable
     {
         $value = 'invalid-date';
@@ -321,9 +264,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid date", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidDateInterval(): iterable
     {
         $value = 'invalid-date-interval';
@@ -332,9 +272,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid date interval", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidDateTime(): iterable
     {
         $value = 'invalid-datetime';
@@ -343,9 +280,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid datetime", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidEmail(): iterable
     {
         $value = 'invalid-email';
@@ -354,9 +288,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid email", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidExactLengthString(int $exactLength): iterable
     {
         $message = $this->translateMessage(
@@ -377,9 +308,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has length less than expected", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidFloat(int $minPrecision, int $maxPrecision, ?int $integerPart = null): iterable
     {
         /*
@@ -413,9 +341,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         }
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidTimezone(): iterable
     {
         $value = 'invalid-timezone';
@@ -424,9 +349,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid timezone", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidUrl(): iterable
     {
         $value = 'some invalid url';
@@ -435,9 +357,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid url", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldInvalidUuid(): iterable
     {
         $value = 'some-invalid-uuid';
@@ -446,9 +365,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid uuid", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldNegativeNumber(): iterable
     {
         $value = -1;
@@ -457,9 +373,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has negative value", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldNegativeOrZeroNumber(): iterable
     {
         $message = $this->translateMessage((new Positive())->message);
@@ -473,9 +386,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has zero value", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldNonDigitSymbols(): iterable
     {
         $value = '111-aaa';
@@ -489,9 +399,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has non-digit symbols", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldNonLuhnCreditCardNumber(): iterable
     {
         $value = '4388576018402626';
@@ -500,9 +407,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} do not pass the Luhn algorithm", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldNotEqualTo(string $value): iterable
     {
         $message = $this->translateMessage(
@@ -519,9 +423,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         );
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldOutOfRangeNumber(int $min, int $max): iterable
     {
         $message = $this->translateMessage(
@@ -541,9 +442,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is out of range (below)", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldTooLongString(int $maxLength): iterable
     {
         $value = \str_pad('g', $maxLength + 1, 'g');
@@ -558,9 +456,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is too long", $value, $message);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     public function yieldTooShortString(int $minLength): iterable
     {
         $value = $minLength > 1 ? \str_pad('g', $minLength - 1, 'g') : '';

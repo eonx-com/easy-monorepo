@@ -14,8 +14,6 @@ use EonX\EasyWebhook\Webhook;
 final class DoctrineDbalStoreTest extends AbstractStoreTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testFindDueWebhooks
      */
     public static function providerTestFindDueWebhooks(): iterable

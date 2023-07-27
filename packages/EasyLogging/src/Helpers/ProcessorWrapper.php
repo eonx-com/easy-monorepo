@@ -16,11 +16,6 @@ final class ProcessorWrapper implements ProcessorInterface
         $this->wrapped = $wrapped(...);
     }
 
-    /**
-     * @param mixed[] $record
-     *
-     * @return mixed[]
-     */
     public function __invoke(array $record): array
     {
         $wrapped = $this->wrapped;

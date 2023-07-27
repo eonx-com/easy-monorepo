@@ -29,9 +29,6 @@ final class SecurityContextDataCollector extends DataCollector
      */
     private array $configurators;
 
-    /**
-     * @param iterable<mixed> $configurators
-     */
     public function __construct(
         private AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
         private SecurityContextResolverInterface $securityContextResolver,
@@ -75,9 +72,6 @@ final class SecurityContextDataCollector extends DataCollector
         return $this->data['permissions'] ?? [];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPermissionsProviders(): array
     {
         return $this->data['permissions_providers'];
@@ -96,17 +90,11 @@ final class SecurityContextDataCollector extends DataCollector
         return $this->data['roles'] ?? [];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getRolesProviders(): array
     {
         return $this->data['roles_providers'];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getSecurityContextConfigurators(): array
     {
         return $this->data['context_configurators'] ?? [];

@@ -15,9 +15,6 @@ final class Translator implements TranslatorInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
         $translation = $this->doTranslate($message, $parameters, $locale);
@@ -33,9 +30,6 @@ final class Translator implements TranslatorInterface
         return $translation !== $namespacedMessage ? $translation : $message;
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     private function doTranslate(string $message, array $parameters, ?string $locale = null): string
     {
         $method = \method_exists($this->decorated, 'lang') ? 'lang' : 'get';

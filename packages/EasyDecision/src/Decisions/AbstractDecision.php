@@ -24,9 +24,6 @@ abstract class AbstractDecision implements DecisionInterface
 {
     protected ?ContextInterface $context = null;
 
-    /**
-     * @var mixed[]
-     */
     protected array $input;
 
     private mixed $defaultOutput;
@@ -88,8 +85,6 @@ abstract class AbstractDecision implements DecisionInterface
     }
 
     /**
-     * @param mixed[] $input
-     *
      * @throws \EonX\EasyDecision\Exceptions\InvalidArgumentException
      * @throws \EonX\EasyDecision\Exceptions\UnableToMakeDecisionException
      */

@@ -11,19 +11,10 @@ use Illuminate\Database\Query\Builder as IlluminateQueryBuilder;
 
 trait DatabaseCommonPaginatorTrait
 {
-    /**
-     * @var mixed[]
-     */
     private array $commonCriteria = [];
 
-    /**
-     * @var mixed[]
-     */
     private array $filterCriteria = [];
 
-    /**
-     * @var mixed[]
-     */
     private array $getItemsCriteria = [];
 
     private bool $hasJoinsInQuery = false;
@@ -134,11 +125,6 @@ trait DatabaseCommonPaginatorTrait
         $this->doApplyCriteria($this->getItemsCriteria, $queryBuilder);
     }
 
-    /**
-     * @param mixed[] $originalCriteria
-     *
-     * @return mixed[]
-     */
     private function doAddCriteria(array $originalCriteria, callable $criteria, ?string $name = null): array
     {
         $originalCriteria[] = [$criteria, $name];
@@ -146,9 +132,6 @@ trait DatabaseCommonPaginatorTrait
         return $originalCriteria;
     }
 
-    /**
-     * @param mixed[] $criteria
-     */
     private function doApplyCriteria(
         array $criteria,
         OrmQueryBuilder|DbalQueryBuilder|EloquentBuilder|IlluminateQueryBuilder $queryBuilder,
@@ -158,19 +141,11 @@ trait DatabaseCommonPaginatorTrait
         }
     }
 
-    /**
-     * @param mixed[] $criteria
-     *
-     * @return mixed[]
-     */
     private function doRemoveCriteriaByName(array $criteria, string $name): array
     {
         return \array_filter($criteria, static fn (array $current): bool => $current[1] !== $name);
     }
 
-    /**
-     * @return mixed[]
-     */
     private function doSetCriteria(?callable $criteria = null, ?string $name = null): array
     {
         return $criteria !== null ? [[$criteria, $name]] : [];

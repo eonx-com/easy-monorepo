@@ -40,14 +40,8 @@ final class OptionHelper
 
     private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
 
-    /**
-     * @var mixed[]
-     */
     private static array $options = [];
 
-    /**
-     * @return mixed[]
-     */
     public static function getArray(string $option, ?string $env = null): array
     {
         $value = self::getOption($option, $env);
@@ -79,9 +73,6 @@ final class OptionHelper
         return (int)self::getOption($option, $env);
     }
 
-    /**
-     * @return mixed[]
-     */
     public static function getOptions(): array
     {
         return self::$options;
@@ -109,9 +100,6 @@ final class OptionHelper
         self::$options[$name] = $value;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public static function setOptions(array $options): void
     {
         self::$options = $options;

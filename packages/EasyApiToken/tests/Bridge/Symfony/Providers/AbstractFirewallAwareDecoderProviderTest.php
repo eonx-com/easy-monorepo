@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDecoderProvider
      */
     public static function providerTestDecoderProvider(): iterable

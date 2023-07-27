@@ -39,9 +39,6 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
         return $this->getCurrentPage() > 1;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return \array_merge_recursive(parent::toArray(), [

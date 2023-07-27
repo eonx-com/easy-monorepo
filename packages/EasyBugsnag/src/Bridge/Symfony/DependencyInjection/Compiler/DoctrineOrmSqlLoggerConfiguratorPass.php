@@ -87,9 +87,6 @@ final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterfac
         }
     }
 
-    /**
-     * @return mixed[]|null
-     */
     private function getMethodCall(Definition $definition): ?array
     {
         foreach ($definition->getMethodCalls() as $call) {

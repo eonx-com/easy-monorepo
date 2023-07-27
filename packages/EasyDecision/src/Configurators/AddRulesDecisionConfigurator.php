@@ -16,9 +16,6 @@ final class AddRulesDecisionConfigurator extends AbstractConfigurator
      */
     private array $rules;
 
-    /**
-     * @param iterable<mixed> $rules
-     */
     public function __construct(iterable $rules, ?int $priority = null)
     {
         parent::__construct($priority);

@@ -26,9 +26,6 @@ final class HashedApiKey implements HashedApiKeyInterface
         return $this->original;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return [

@@ -106,9 +106,6 @@ abstract class AbstractInvalidDataMaker
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     final protected function create(string $caseName, mixed $value, ?string $message = null): array
     {
         if ($this->asString === true) {
@@ -142,9 +139,6 @@ abstract class AbstractInvalidDataMaker
         ];
     }
 
-    /**
-     * @param mixed[]|null $params
-     */
     final protected function translateMessage(string $messageKey, ?array $params = null, ?int $plural = null): string
     {
         $params[self::PLURAL_PARAM] = $plural;
@@ -188,8 +182,6 @@ abstract class AbstractInvalidDataMaker
     }
 
     /**
-     * @param mixed[] $invalidData
-     *
      * @noinspection MultipleReturnStatementsInspection
      */
     private function resolvePropertyPath(array $invalidData): string

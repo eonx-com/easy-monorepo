@@ -12,8 +12,6 @@ use stdClass;
 final class CollectorHelperTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testEnsureClass
      */
     public static function providerTestEnsureClass(): iterable
@@ -26,8 +24,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testFilterByClass
      */
     public static function providerTestFilterByClass(): iterable
@@ -40,8 +36,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testOrderHigherPriorityFirst
      */
     public static function providerTestOrderHigherPriorityFirst(): iterable
@@ -60,8 +54,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testOrderLowerPriorityFirst
      */
     public static function providerTestOrderLowerPriorityFirst(): iterable
@@ -80,8 +72,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
      * @dataProvider providerTestEnsureClass
      */
     public function testEnsureClass(iterable $items, bool $expectException, ?string $class = null): void
@@ -98,7 +88,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param iterable<mixed> $items
      * @param class-string|null $class
      *
      * @dataProvider providerTestFilterByClass
@@ -116,9 +105,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param iterable<mixed> $items
-     * @param mixed[] $expected
-     *
      * @dataProvider providerTestOrderHigherPriorityFirst
      */
     public function testOrderHigherPriorityFirst(iterable $items, array $expected): void
@@ -127,9 +113,6 @@ final class CollectorHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param iterable<mixed> $items
-     * @param mixed[] $expected
-     *
      * @dataProvider providerTestOrderLowerPriorityFirst
      */
     public function testOrderLowerPriorityFirst(iterable $items, array $expected): void

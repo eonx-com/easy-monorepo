@@ -34,8 +34,6 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToDatabaseValueSucceeds
      */
     public static function provideConvertToDatabaseValues(): iterable
@@ -54,8 +52,6 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPHPValueSucceeds
      */
     public static function provideConvertToPHPValues(): iterable
@@ -84,8 +80,6 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetSqlDeclarationSucceeds
      */
     public static function provideFieldDeclarationValues(): iterable
@@ -204,8 +198,6 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $fieldDeclaration
-     *
      * @dataProvider provideFieldDeclarationValues
      */
     public function testGetSqlDeclarationSucceeds(

@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testMessengerConfig
      */
     public static function providerTestMessengerConfig(): iterable

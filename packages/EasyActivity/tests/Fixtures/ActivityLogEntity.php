@@ -8,9 +8,6 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 
 final class ActivityLogEntity implements ActivitySubjectInterface
 {
-    /**
-     * @param array<string>|array<string, mixed> $allowedProperties
-     */
     public function __construct(
         private string $id,
         private string $subjectType,

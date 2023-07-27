@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class SessionTrackerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testExclude
      */
     public static function providerTestExclude(): iterable

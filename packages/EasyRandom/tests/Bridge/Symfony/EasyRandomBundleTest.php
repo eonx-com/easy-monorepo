@@ -17,8 +17,6 @@ use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 final class EasyRandomBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testUuidGeneratorInstance
      */
     public static function provideConfigsForUuidGenerator(): iterable

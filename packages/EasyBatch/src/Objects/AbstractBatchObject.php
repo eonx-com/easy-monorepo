@@ -21,9 +21,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     private int|string|null $id = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $metadata = null;
 
     private ?string $name = null;
@@ -34,9 +31,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     private ?Throwable $throwable = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $throwableDetails = null;
 
     private ?string $type = null;
@@ -75,9 +69,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         throw new BatchObjectIdRequiredException(\sprintf('ID not set on batchObject "%s"', static::class));
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getMetadata(): ?array
     {
         return $this->metadata;
@@ -103,9 +94,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->throwable;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getThrowableDetails(): ?array
     {
         return $this->throwableDetails;
@@ -190,9 +178,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $metadata
-     */
     public function setMetadata(array $metadata): BatchObjectInterface
     {
         $this->metadata = $metadata;
@@ -228,9 +213,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $throwableDetails
-     */
     public function setThrowableDetails(array $throwableDetails): BatchObjectInterface
     {
         $this->throwableDetails = $throwableDetails;
@@ -252,9 +234,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return [

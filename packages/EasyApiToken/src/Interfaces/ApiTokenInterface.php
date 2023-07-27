@@ -8,8 +8,5 @@ interface ApiTokenInterface
 {
     public function getOriginalToken(): string;
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array;
 }

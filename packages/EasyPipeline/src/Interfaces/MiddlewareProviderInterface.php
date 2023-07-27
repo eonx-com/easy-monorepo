@@ -6,8 +6,5 @@ namespace EonX\EasyPipeline\Interfaces;
 
 interface MiddlewareProviderInterface
 {
-    /**
-     * @return mixed[]
-     */
     public function getMiddlewareList(): array;
 }

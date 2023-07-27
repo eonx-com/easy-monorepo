@@ -85,8 +85,6 @@ abstract class AbstractBatchObjectRepository
     }
 
     /**
-     * @return mixed[]|null
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     private function fetchData(int|string $id): ?array

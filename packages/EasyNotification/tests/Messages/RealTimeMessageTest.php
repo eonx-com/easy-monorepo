@@ -12,9 +12,6 @@ use Nette\Utils\Json;
 
 final class RealTimeMessageTest extends AbstractTestCase
 {
-    /**
-     * @var mixed[]
-     */
     protected static array $body = [
         'message' => 'hey there',
     ];
@@ -25,8 +22,6 @@ final class RealTimeMessageTest extends AbstractTestCase
     protected static array $topics = ['nathan', 'pavel'];
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetters
      */
     public static function providerTestGetters(): iterable
@@ -62,7 +57,6 @@ final class RealTimeMessageTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $body
      * @param string[] $topics
      *
      * @throws \Nette\Utils\JsonException

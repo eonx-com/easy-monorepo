@@ -43,8 +43,6 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     ];
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfiguration
      */
     public static function providerTestConfiguration(): iterable
@@ -190,9 +188,6 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param mixed[] $configs
-     * @param mixed[] $expectedConfig
-     *
      * @dataProvider providerTestConfiguration
      */
     public function testConfiguration(array $configs, array $expectedConfig): void

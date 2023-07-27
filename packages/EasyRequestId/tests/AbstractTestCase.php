@@ -26,9 +26,6 @@ abstract class AbstractTestCase extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @param mixed[]|null $headers
-     */
     protected static function getRequestWithHeaders(?array $headers = null): Request
     {
         $formatted = [];

@@ -13,8 +13,6 @@ use EonX\EasyPagination\Tests\AbstractTestCase;
 final class IterablePaginatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginatorGetItems
      */
     public static function providerTestPaginatorGetItems(): iterable
@@ -43,8 +41,6 @@ final class IterablePaginatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginatorPageMethods
      */
     public static function providerTestPaginatorPageMethods(): iterable
@@ -79,8 +75,6 @@ final class IterablePaginatorTest extends AbstractTestCase
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
      * @dataProvider providerTestPaginatorGetItems
      */
     public function testPaginatorGetItems(iterable $items, callable $assert, ?callable $transformer = null): void
@@ -92,8 +86,6 @@ final class IterablePaginatorTest extends AbstractTestCase
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
      * @dataProvider providerTestPaginatorPageMethods
      */
     public function testPaginatorPageMethods(

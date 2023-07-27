@@ -14,11 +14,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ThirdLevel
 {
     #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
-    public ?FourthLevel $badFourthLevel = null;
+    private ?FourthLevel $badFourthLevel = null;
 
     #[Groups(['barcelona', 'chicago', 'friends'])]
     #[ORM\ManyToOne(targetEntity: FourthLevel::class, cascade: ['persist'])]
-    public ?FourthLevel $fourthLevel = null;
+    private ?FourthLevel $fourthLevel = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
@@ -31,6 +31,11 @@ class ThirdLevel
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $test = true;
+
+    public function getBadFourthLevel(): ?FourthLevel
+    {
+        return $this->badFourthLevel;
+    }
 
     public function getFourthLevel(): ?FourthLevel
     {
@@ -50,6 +55,11 @@ class ThirdLevel
     public function isTest(): bool
     {
         return $this->test;
+    }
+
+    public function setBadFourthLevel(?FourthLevel $badFourthLevel = null): void
+    {
+        $this->badFourthLevel = $badFourthLevel;
     }
 
     public function setFourthLevel(?FourthLevel $fourthLevel = null): void

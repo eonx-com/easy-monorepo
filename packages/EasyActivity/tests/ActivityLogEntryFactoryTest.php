@@ -16,8 +16,6 @@ use Symfony\Component\Uid\NilUuid;
 final class ActivityLogEntryFactoryTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPropertyFilters
      */
     public static function providerProperties(): iterable

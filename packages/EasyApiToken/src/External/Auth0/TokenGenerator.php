@@ -18,10 +18,6 @@ final class TokenGenerator implements TokenGeneratorInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $scopes
-     * @param mixed[]|null $roles
-     */
     public function generate(
         array $scopes,
         ?array $roles = null,

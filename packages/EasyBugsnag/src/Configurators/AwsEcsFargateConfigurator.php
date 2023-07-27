@@ -56,9 +56,6 @@ final class AwsEcsFargateConfigurator extends AbstractClientConfigurator
             }));
     }
 
-    /**
-     * @return mixed[]|null
-     */
     private function getAwsFargateTaskData(): ?array
     {
         try {

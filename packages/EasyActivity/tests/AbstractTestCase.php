@@ -20,9 +20,6 @@ abstract class AbstractTestCase extends TestCase
 {
     protected ?Throwable $thrownException = null;
 
-    /**
-     * @param array<int, array<string, mixed>> $expectedLogEntries
-     */
     protected function assertLogEntries(EntityManagerInterface $entityManager, array $expectedLogEntries): void
     {
         $logEntries = $this->getLogEntries($entityManager);
@@ -55,9 +52,6 @@ abstract class AbstractTestCase extends TestCase
         }
     }
 
-    /**
-     * @return array<int, array<string, mixed>>
-     */
     protected function getLogEntries(EntityManagerInterface $entityManager): array
     {
         $sql = \sprintf('SELECT * FROM %s', EntityManagerStub::ACTIVITY_TABLE_NAME);

@@ -6,8 +6,5 @@ namespace EonX\EasyUtils\SensitiveData;
 
 interface ObjectHydratorInterface
 {
-    /**
-     * @param mixed[] $sanitizedData
-     */
     public function hydrate(object $object, array $sanitizedData): object;
 }

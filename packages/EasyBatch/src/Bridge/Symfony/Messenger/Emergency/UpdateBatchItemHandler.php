@@ -45,10 +45,6 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         return $newDateTime;
     }
 
-    /**
-     * @param mixed[] $data
-     * @param mixed[]|null $errorDetails
-     */
     private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem

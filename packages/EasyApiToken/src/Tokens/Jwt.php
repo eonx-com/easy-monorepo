@@ -11,9 +11,6 @@ use stdClass;
 
 final class Jwt implements JwtInterface
 {
-    /**
-     * @param mixed[] $payload
-     */
     public function __construct(
         private array $payload,
         private string $original,
@@ -54,9 +51,6 @@ final class Jwt implements JwtInterface
         return $this->original;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return $this->payload;

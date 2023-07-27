@@ -13,8 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigAndDependenciesSanity
      */
     public static function providerTestConfigAndDependenciesSanity(): iterable

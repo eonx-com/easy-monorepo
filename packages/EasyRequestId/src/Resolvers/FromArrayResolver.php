@@ -8,9 +8,6 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 
 final class FromArrayResolver
 {
-    /**
-     * @param mixed[] $array
-     */
     public function __construct(
         private array $array,
         private RequestIdServiceInterface $requestIdService,

@@ -56,7 +56,6 @@ trait MessengerAssertionsTrait
      * Asserts that the given message class was dispatched by the message bus to async transport.
      *
      * @param class-string $messageClass
-     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToAsyncTransport(
         string $messageClass,
@@ -70,7 +69,6 @@ trait MessengerAssertionsTrait
      * Asserts that the given message class was dispatched by the message bus to failed transport.
      *
      * @param class-string $messageClass
-     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToFailedTransport(
         string $messageClass,
@@ -84,7 +82,6 @@ trait MessengerAssertionsTrait
      * Asserts that the given message class was dispatched by the message bus.
      *
      * @param class-string $messageClass
-     * @param array<string, mixed> $expectedProperties
      */
     public static function assertMessageSentToTransport(
         string $messageClass,

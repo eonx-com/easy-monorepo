@@ -21,9 +21,6 @@ trait DoctrineOrmPaginatorTrait
             ->from($this->from, $this->fromAlias, $this->indexBy);
     }
 
-    /**
-     * @return mixed[]
-     */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
         return $queryBuilder->getQuery()

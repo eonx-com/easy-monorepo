@@ -12,8 +12,6 @@ use EonX\EasyTemplatingBlock\TemplatingEventRenderer;
 final class TemplatingEventRendererTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testRenderEvent
      */
     public static function providerTestRenderEvent(): iterable
@@ -59,8 +57,6 @@ final class TemplatingEventRendererTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $events
-     * @param mixed[]|null $context
      * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface[] $providers
      * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface[]|null $renderers
      *

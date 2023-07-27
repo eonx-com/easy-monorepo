@@ -11,11 +11,6 @@ final class ViolationsErrorResponseBuilder extends AbstractSingleKeyErrorRespons
 {
     public const DEFAULT_KEY = 'violations';
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]|null
-     */
     protected function doBuildValue(Throwable $throwable, array $data): ?array
     {
         if (($throwable instanceof ValidationExceptionInterface) === false) {

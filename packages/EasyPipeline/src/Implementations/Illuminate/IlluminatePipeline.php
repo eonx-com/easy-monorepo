@@ -12,14 +12,9 @@ use Illuminate\Contracts\Pipeline\Pipeline as IlluminatePipelineContract;
 
 final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInterface
 {
-    /**
-     * @var mixed[]
-     */
     private array $logs = [];
 
     /**
-     * @param mixed[] $middlewareList
-     *
      * @throws \EonX\EasyPipeline\Exceptions\EmptyMiddlewareListException
      */
     public function __construct(
@@ -34,9 +29,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getLogs(): array
     {
         return $this->logs;

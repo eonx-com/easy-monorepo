@@ -13,8 +13,6 @@ use Monolog\Logger;
 final class JsonFormatterTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCreateLogFormat
      */
     public static function providerTestCreateLogFormat(): iterable

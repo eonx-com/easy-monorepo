@@ -17,8 +17,6 @@ use stdClass;
 final class BatchItemTransformerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testEncryptedBatchItem
      */
     public static function providerTestEncryptedBatchItem(): iterable

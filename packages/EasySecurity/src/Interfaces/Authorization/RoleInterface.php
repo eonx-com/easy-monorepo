@@ -25,8 +25,5 @@ interface RoleInterface extends Stringable
 
     public function removeMetadata(string $name): self;
 
-    /**
-     * @param mixed[] $metadata
-     */
     public function setMetadata(array $metadata): self;
 }

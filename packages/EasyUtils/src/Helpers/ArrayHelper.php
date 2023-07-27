@@ -6,11 +6,6 @@ namespace EonX\EasyUtils\Helpers;
 
 final class ArrayHelper
 {
-    /**
-     * @param mixed[] $array
-     *
-     * @return mixed[]
-     */
     public static function flatten(array $array, ?string $prepend = null): array
     {
         $flattened = [];
@@ -33,9 +28,6 @@ final class ArrayHelper
         return \count($flattened) ? \array_merge(...$flattened) : [];
     }
 
-    /**
-     * @param mixed[] $array
-     */
     public static function set(array &$array, mixed $key, mixed $value): void
     {
         $keys = \explode('/', (string)$key);
@@ -59,12 +51,6 @@ final class ArrayHelper
         $array[\array_shift($keys)] = $value;
     }
 
-    /**
-     * @param mixed[] $array
-     * @param mixed[] ...$replacements
-     *
-     * @return mixed[]
-     */
     public static function smartReplace(array $array, array ...$replacements): array
     {
         $flattenArray = self::flatten($array);
@@ -76,11 +62,6 @@ final class ArrayHelper
         return self::unflatten($flattenArray);
     }
 
-    /**
-     * @param mixed[] $array
-     *
-     * @return mixed[]
-     */
     public static function unflatten(array $array): array
     {
         $unpacked = [];

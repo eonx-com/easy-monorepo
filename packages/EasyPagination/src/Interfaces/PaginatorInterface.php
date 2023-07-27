@@ -10,9 +10,6 @@ interface PaginatorInterface extends JsonSerializable
 {
     public function getCurrentPage(): int;
 
-    /**
-     * @return mixed[]
-     */
     public function getItems(): array;
 
     public function getItemsPerPage(): int;
@@ -25,8 +22,5 @@ interface PaginatorInterface extends JsonSerializable
 
     public function setTransformer(?callable $transformer = null): self;
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array;
 }

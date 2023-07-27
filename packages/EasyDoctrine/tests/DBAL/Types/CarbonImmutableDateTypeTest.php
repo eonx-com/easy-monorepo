@@ -24,8 +24,6 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPhpValueSucceeds
      */
     public static function provideConvertToPhpValues(): iterable

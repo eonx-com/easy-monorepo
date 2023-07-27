@@ -19,9 +19,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
 
     private int $priority;
 
-    /**
-     * @param mixed[]|null $extra
-     */
     public function __construct(
         private string $expression,
         ?int $priority = null,
@@ -47,9 +44,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
         return $this->priority;
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function proceed(array $input): mixed
     {
         $input['context'] = $this->context;
@@ -57,9 +51,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
         return $this->getOutput($input);
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function supports(array $input): bool
     {
         return true;
@@ -70,9 +61,6 @@ final class ExpressionLanguageRule implements RuleInterface, ContextAwareInterfa
         return $this->name ?? $this->expression;
     }
 
-    /**
-     * @param mixed[] $input
-     */
     private function getOutput(array $input): mixed
     {
         $output = $this->expressionLanguage->evaluate($this->expression, $input);

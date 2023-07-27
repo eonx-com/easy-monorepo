@@ -15,8 +15,6 @@ use Traversable;
 final class CsvWithHeadersParserTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testFromFile
      */
     public static function providerTestFromFile(): iterable
@@ -110,8 +108,6 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testFromFileForException
      */
     public static function providerTestFromFileForException(): iterable
@@ -124,8 +120,6 @@ final class CsvWithHeadersParserTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $expected
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      *

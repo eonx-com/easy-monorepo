@@ -26,10 +26,6 @@ abstract class AbstractTestCase extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @param mixed[]|null $server
-     * @param mixed[]|null $query
-     */
     protected function createRequest(?array $server = null, ?array $query = null): Request
     {
         return new Request($query ?? [], [], [], [], [], $server ?? []);

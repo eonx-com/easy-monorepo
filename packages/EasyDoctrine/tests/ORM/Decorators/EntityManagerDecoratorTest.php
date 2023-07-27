@@ -24,8 +24,6 @@ use Throwable;
 final class EntityManagerDecoratorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
      */
     public static function provideDoctrineExceptionClasses(): iterable
@@ -35,8 +33,6 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testWrapInTransactionSucceeds
      */
     public static function provideReturnValuesData(): iterable

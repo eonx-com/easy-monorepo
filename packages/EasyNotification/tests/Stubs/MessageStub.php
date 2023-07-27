@@ -8,9 +8,6 @@ use EonX\EasyNotification\Messages\AbstractMessage;
 
 final class MessageStub extends AbstractMessage
 {
-    /**
-     * @param mixed[] $body
-     */
     public function __construct(
         array $body,
         private ?string $type = null,

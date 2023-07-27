@@ -15,7 +15,6 @@ final class LaravelEventDispatcherStub implements Dispatcher
 
     /**
      * @param object $event
-     * @param mixed[]|null $payload
      * @param bool|null $halt
      *
      * @return array<int, object>
@@ -66,7 +65,6 @@ final class LaravelEventDispatcherStub implements Dispatcher
 
     /**
      * @param string|string[] $events
-     * @param mixed $listener
      */
     public function listen(mixed $events, mixed $listener = null): void
     {
@@ -75,7 +73,6 @@ final class LaravelEventDispatcherStub implements Dispatcher
 
     /**
      * @param string $event
-     * @param mixed[] $payload
      */
     public function push(mixed $event, mixed $payload = null): void
     {
@@ -92,9 +89,6 @@ final class LaravelEventDispatcherStub implements Dispatcher
 
     /**
      * @param string|object $event
-     * @param mixed $payload
-     *
-     * @return mixed|null
      */
     public function until(mixed $event, mixed $payload = null)
     {

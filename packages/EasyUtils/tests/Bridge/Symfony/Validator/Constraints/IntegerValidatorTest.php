@@ -19,8 +19,6 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class IntegerValidatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsAndDoesNothing
      */
     public static function provideEmptyValues(): iterable
@@ -30,8 +28,6 @@ final class IntegerValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsWithInvalidValue
      */
     public static function provideInvalidValues(): iterable
@@ -42,8 +38,6 @@ final class IntegerValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsWithValidValue
      */
     public static function provideValidValues(): iterable

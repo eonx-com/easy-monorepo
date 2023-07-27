@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigure
      */
     public static function providerTestConfigure(): iterable
@@ -62,7 +60,6 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $authorizationRoles
-     * @param mixed[]|null $roles
      *
      * @dataProvider providerTestConfigure
      */

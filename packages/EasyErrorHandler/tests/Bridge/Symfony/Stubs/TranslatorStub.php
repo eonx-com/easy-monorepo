@@ -12,9 +12,6 @@ final class TranslatorStub implements TranslatorInterface
 {
     private const LOCALE = 'en';
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $translations = null;
 
     private ?Translator $translator = null;
@@ -24,17 +21,11 @@ final class TranslatorStub implements TranslatorInterface
         return self::LOCALE;
     }
 
-    /**
-     * @param mixed[] $translations
-     */
     public function setTranslations(array $translations): void
     {
         $this->translations = $translations;
     }
 
-    /**
-     * @param mixed[]|null $parameters
-     */
     public function trans(string $id, ?array $parameters = null, ?string $domain = null, ?string $locale = null): string
     {
         $translated = $this->getTranslator()

@@ -13,9 +13,6 @@ final class DefaultObjectTransformer extends AbstractObjectTransformer
         return $object instanceof DateTimeInterface === false;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function transform(object $object): array
     {
         return (array)\json_decode((string)\json_encode($object), true);

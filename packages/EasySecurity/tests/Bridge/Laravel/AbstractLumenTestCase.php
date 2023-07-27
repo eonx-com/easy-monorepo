@@ -17,7 +17,6 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
 
     /**
      * @param string[]|null $providers
-     * @param mixed[]|null $config
      */
     protected function getApplication(?array $providers = null, ?array $config = null): Application
     {

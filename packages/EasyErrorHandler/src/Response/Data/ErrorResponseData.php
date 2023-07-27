@@ -9,17 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ErrorResponseData implements ErrorResponseDataInterface
 {
-    /**
-     * @var mixed[]
-     */
     private readonly array $headers;
 
     private readonly int $statusCode;
 
-    /**
-     * @param mixed[] $rawData
-     * @param mixed[]|null $headers
-     */
     public function __construct(
         private readonly array $rawData,
         ?int $statusCode = null,
@@ -29,26 +22,16 @@ final class ErrorResponseData implements ErrorResponseDataInterface
         $this->headers = $headers ?? [];
     }
 
-    /**
-     * @param mixed[] $rawData
-     * @param mixed[]|null $headers
-     */
     public static function create(array $rawData, ?int $statusCode = null, ?array $headers = null): self
     {
         return new self($rawData, $statusCode, $headers);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getRawData(): array
     {
         return $this->rawData;

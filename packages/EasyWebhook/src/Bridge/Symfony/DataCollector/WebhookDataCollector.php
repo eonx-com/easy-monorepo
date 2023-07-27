@@ -27,9 +27,6 @@ final class WebhookDataCollector extends DataCollector
         $this->setResults();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getMiddleware(): array
     {
         return $this->data['webhook_middleware'] ?? [];

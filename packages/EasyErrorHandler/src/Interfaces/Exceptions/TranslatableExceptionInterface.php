@@ -27,8 +27,6 @@ interface TranslatableExceptionInterface
 
     /**
      * Returns the exception message parameters.
-     *
-     * @return mixed[]
      */
     public function getMessageParams(): array;
 
@@ -39,8 +37,6 @@ interface TranslatableExceptionInterface
 
     /**
      * Returns the user-friendly message parameters.
-     *
-     * @return mixed[]
      */
     public function getUserMessageParams(): array;
 }

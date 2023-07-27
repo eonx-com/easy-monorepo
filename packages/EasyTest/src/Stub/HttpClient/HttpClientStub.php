@@ -35,11 +35,6 @@ final class HttpClientStub extends MockHttpClient
         );
     }
 
-    /**
-     * @param mixed[] $headers
-     * @param mixed[] $body
-     * @param mixed[] $queryParams
-     */
     public function forRequest(
         string $method,
         string $url,
@@ -107,9 +102,6 @@ final class HttpClientStub extends MockHttpClient
         return $this->defaultResponse ?? new MockResponse('');
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function getResponse(string $method, string $url, ?array $options = null): MockResponse
     {
         $url = $this->normalizeUrl($url);
@@ -144,9 +136,6 @@ final class HttpClientStub extends MockHttpClient
         return false;
     }
 
-    /**
-     * @param mixed[]|null $options
-     */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         if ($this->expectedException !== null) {
@@ -158,9 +147,6 @@ final class HttpClientStub extends MockHttpClient
         return parent::request($method, $url, $options ?? []);
     }
 
-    /**
-     * @param mixed[] $body
-     */
     public function setDefaultResponse(array $body): void
     {
         $this->defaultResponse = new MockResponse((string)\json_encode($body));

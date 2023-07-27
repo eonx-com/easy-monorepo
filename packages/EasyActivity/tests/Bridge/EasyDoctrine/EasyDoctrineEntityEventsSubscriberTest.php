@@ -18,8 +18,6 @@ use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPropertyFilters
      */
     public static function provideProperties(): iterable

@@ -11,8 +11,6 @@ use Monolog\Logger;
 final class BaseExceptionTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testLogLevelConvenientMethods
      */
     public static function providerTestLogLevelConvenientMethods(): iterable

@@ -15,8 +15,6 @@ use EonX\EasySecurity\Tests\Stubs\AuthorizationRolesProviderStub;
 final class AuthorizationMatrixTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testMatrix
      */
     public static function providerTestMatrix(): iterable

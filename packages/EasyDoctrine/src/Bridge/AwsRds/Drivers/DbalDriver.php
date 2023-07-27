@@ -14,8 +14,6 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 final class DbalDriver extends AbstractAwsRdsDriver implements Driver
 {
     /**
-     * @param mixed[] $params
-     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Psr\Cache\InvalidArgumentException
      */

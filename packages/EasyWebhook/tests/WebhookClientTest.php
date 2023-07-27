@@ -34,8 +34,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class WebhookClientTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSend
      */
     public static function providerTestSend(): iterable
@@ -158,7 +156,6 @@ final class WebhookClientTest extends AbstractTestCase
 
     /**
      * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
-     * @param mixed[] $httpClientOptions
      *
      * @dataProvider providerTestSend
      */

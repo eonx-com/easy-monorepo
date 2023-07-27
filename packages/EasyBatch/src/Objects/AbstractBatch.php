@@ -120,9 +120,6 @@ abstract class AbstractBatch extends AbstractBatchObject implements BatchInterfa
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return \array_merge(parent::toArray(), [

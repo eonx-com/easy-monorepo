@@ -13,8 +13,6 @@ use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 final class Generator extends BaseGenerator
 {
     /**
-     * @param mixed[] $transactions
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
     public function __construct(

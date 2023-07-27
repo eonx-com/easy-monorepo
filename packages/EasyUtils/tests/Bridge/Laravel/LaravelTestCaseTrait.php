@@ -11,9 +11,6 @@ trait LaravelTestCaseTrait
 {
     private ?Application $app = null;
 
-    /**
-     * @param mixed[]|null $config
-     */
     protected function getApplication(?array $config = null): Application
     {
         if ($this->app !== null) {

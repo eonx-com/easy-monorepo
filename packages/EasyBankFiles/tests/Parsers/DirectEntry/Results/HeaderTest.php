@@ -14,9 +14,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class HeaderTest extends TestCase
 {
     /**
-     * @return mixed[]
-     *
-     * @see testGetDateProcessedShouldReturnNull
+     @see testGetDateProcessedShouldReturnNull
      */
     public static function provideInvalidDateProcessedValues(): iterable
     {
@@ -48,8 +46,6 @@ final class HeaderTest extends TestCase
 
     /**
      * Should return processing date as a null when date string is invalid.
-     *
-     * @param mixed[] $dateProcessed
      *
      * @dataProvider provideInvalidDateProcessedValues
      */

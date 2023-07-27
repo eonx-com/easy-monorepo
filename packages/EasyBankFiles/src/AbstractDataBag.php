@@ -13,16 +13,8 @@ abstract class AbstractDataBag
      */
     protected array $attributes;
 
-    /**
-     * @var mixed[]
-     */
     protected array $data = [];
 
-    /**
-     * BaseResult constructor.
-     *
-     * @param mixed[]|null $data
-     */
     public function __construct(?array $data = null)
     {
         $this->attributes = $this->initAttributes();
@@ -36,12 +28,8 @@ abstract class AbstractDataBag
 
     /**
      * Return attribute's value.
-     *
-     * @param mixed[] $parameters
-     *
-     * @return mixed|null
      */
-    public function __call(string $method, array $parameters)
+    public function __call(string $method, array $parameters): mixed
     {
         $type = \strtolower(\substr($method, 0, 3));
         $attribute = Strings::firstLower(\substr($method, 3));

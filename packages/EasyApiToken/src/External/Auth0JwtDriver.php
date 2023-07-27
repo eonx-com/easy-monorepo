@@ -46,9 +46,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
     }
 
     /**
-     * @return mixed[]
-     *
-     * @throws \Auth0\SDK\Exception\ConfigurationException
+     @throws \Auth0\SDK\Exception\ConfigurationException
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidEasyApiTokenFromRequestException

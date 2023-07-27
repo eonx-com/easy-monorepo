@@ -21,8 +21,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 final class HttpKernelViewEventListenerTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testListener
      */
     public static function providerTestListener(): iterable
@@ -71,7 +69,7 @@ final class HttpKernelViewEventListenerTest extends AbstractSymfonyTestCase
         $query->setFirstResult(1)
             ->setMaxResults(15);
 
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
         $doctrinePaginator = self::mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {

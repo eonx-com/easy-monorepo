@@ -49,11 +49,6 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
             ->getClaim($token, $claim, $default);
     }
 
-    /**
-     * @param mixed[]|null $default
-     *
-     * @return mixed[]
-     */
     protected function getMainClaim(JwtInterface $token, ?array $default = null): array
     {
         return $this->getJwtClaimFetcher()

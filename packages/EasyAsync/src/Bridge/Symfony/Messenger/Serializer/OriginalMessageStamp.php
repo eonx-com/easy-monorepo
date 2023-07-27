@@ -8,18 +8,12 @@ use Symfony\Component\Messenger\Stamp\NonSendableStampInterface;
 
 final class OriginalMessageStamp implements NonSendableStampInterface
 {
-    /**
-     * @param mixed[] $headers
-     */
     public function __construct(
         private string $body,
         private array $headers,
     ) {
     }
 
-    /**
-     * @param mixed[] $headers
-     */
     public static function create(string $body, array $headers): self
     {
         return new self($body, $headers);
@@ -30,9 +24,6 @@ final class OriginalMessageStamp implements NonSendableStampInterface
         return $this->body;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getHeaders(): array
     {
         return $this->headers;

@@ -10,8 +10,6 @@ use EonX\EasySwoole\Tests\AbstractTestCase;
 final class OptionHelperTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetBoolean
      */
     public static function providerTestGetBoolean(): iterable
@@ -102,8 +100,6 @@ final class OptionHelperTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testIsset
      */
     public static function providerTestIsset(): iterable
@@ -122,8 +118,6 @@ final class OptionHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $options
-     *
      * @dataProvider providerTestGetBoolean
      */
     public function testGetBoolean(array $options, string $key, bool $expected): void
@@ -134,8 +128,6 @@ final class OptionHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $options
-     *
      * @dataProvider providerTestIsset
      */
     public function testIsset(array $options, string $issetKey, bool $expected): void

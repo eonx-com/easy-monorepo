@@ -17,8 +17,6 @@ use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testUuidGeneratorInstance
      */
     public static function provideConfigsForUuidGenerator(): iterable

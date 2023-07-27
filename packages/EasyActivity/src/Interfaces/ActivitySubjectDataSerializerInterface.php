@@ -6,8 +6,5 @@ namespace EonX\EasyActivity\Interfaces;
 
 interface ActivitySubjectDataSerializerInterface
 {
-    /**
-     * @param array<string, mixed> $data
-     */
     public function serialize(array $data, ActivitySubjectInterface $subject): ?string;
 }

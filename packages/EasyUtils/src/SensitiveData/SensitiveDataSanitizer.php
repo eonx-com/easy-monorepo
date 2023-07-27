@@ -27,8 +27,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 
     /**
      * @param string[]|null $keysToMask
-     * @param iterable<mixed>|null $objectTransformers
-     * @param iterable<mixed>|null $stringSanitizers
      */
     public function __construct(
         ?bool $useDefaultKeysToMask = null,
@@ -76,11 +74,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         return $data;
     }
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     private function sanitizeArray(array $data): array
     {
         foreach ($data as $key => $value) {
@@ -92,9 +85,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
         return $data;
     }
 
-    /**
-     * @return mixed[]|object
-     */
     private function sanitizeObject(object $object): array|object
     {
         foreach ($this->objectTransformers as $objectTransformer) {

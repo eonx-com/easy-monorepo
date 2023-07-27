@@ -25,10 +25,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
         $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
     }
 
-    /**
-     * @return array<mixed>
-     */
-    public function locateErrorCodesEnums()
+    public function locateErrorCodesEnums(): array
     {
         $files = (new Finder())
             ->in($this->projectDir)

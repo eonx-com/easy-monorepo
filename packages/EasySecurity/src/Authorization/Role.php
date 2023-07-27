@@ -16,7 +16,6 @@ final class Role implements RoleInterface
 
     /**
      * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
-     * @param mixed[]|null $metadata
      */
     public function __construct(
         private readonly string $identifier,
@@ -80,9 +79,6 @@ final class Role implements RoleInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $metadata
-     */
     public function setMetadata(array $metadata): RoleInterface
     {
         $this->metadata = $metadata;

@@ -18,9 +18,6 @@ final class SubscribeInfo implements SubscribeInfoInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $info
-     */
     public static function fromArray(array $info): SubscribeInfoInterface
     {
         return new self($info['jwt'], $info['topics'], $info['url']);

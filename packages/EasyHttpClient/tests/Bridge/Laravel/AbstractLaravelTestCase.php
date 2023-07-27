@@ -13,7 +13,6 @@ abstract class AbstractLaravelTestCase extends AbstractTestCase
     private ?Application $app = null;
 
     /**
-     * @param mixed[]|null $config
      * @param string[]|null $providers
      */
     protected function getApp(?array $config = null, ?array $providers = null): Application

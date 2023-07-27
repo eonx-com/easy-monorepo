@@ -29,9 +29,6 @@ final class Schedule implements ScheduleInterface
         return $this;
     }
 
-    /**
-     * @param mixed[]|null $parameters
-     */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
         $event = new Event($command, $parameters);

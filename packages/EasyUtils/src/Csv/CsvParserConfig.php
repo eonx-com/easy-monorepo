@@ -72,9 +72,6 @@ final class CsvParserConfig implements CsvParserConfigInterface
         return $this->ignoreEmptyRecords ?? false;
     }
 
-    /**
-     * @param mixed[]|null $array
-     */
     private function hasValuesInArray(?array $array = null): bool
     {
         return \is_array($array) && \count($array) > 0;

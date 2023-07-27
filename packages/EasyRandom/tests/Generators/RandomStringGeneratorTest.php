@@ -17,8 +17,6 @@ use Symfony\Component\String\UnicodeString;
 final class RandomStringGeneratorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testRandomString
      */
     public static function providerTestRandomString(): iterable

@@ -40,8 +40,6 @@ abstract class Parser extends BaseParser
 
     /**
      * Attempts to convert the provided XML string to an array.
-     *
-     * @return mixed[]
      */
     protected function convertXmlToArray(string $xml): array
     {

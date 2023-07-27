@@ -10,8 +10,6 @@ use EonX\EasyLock\LockService;
 final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSanity
      */
     public static function providerTestSanity(): iterable

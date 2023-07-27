@@ -8,11 +8,12 @@ use EonX\EasyLogging\Helpers\ProcessorWrapper;
 use EonX\EasyLogging\Tests\AbstractTestCase;
 use EonX\EasyLogging\Tests\Stubs\InvokableStub;
 
+/**
+ * @phpstan-import-type Record from \Monolog\Logger
+ */
 final class ProcessorWrapperTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testInvoke
      */
     public static function providerTestInvoke(): iterable
@@ -30,6 +31,7 @@ final class ProcessorWrapperTest extends AbstractTestCase
     public function testInvoke(callable $wrapped): void
     {
         $wrapper = ProcessorWrapper::wrap($wrapped);
+        /** @phpstan-var Record $array */
         $array = [
             'key' => 'value',
         ];

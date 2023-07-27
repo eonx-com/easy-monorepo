@@ -17,8 +17,6 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class DateIntervalValidatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateFailsWithInvalidDateIntervalValues
      */
     public static function provideInvalidDateIntervalValues(): iterable
@@ -30,8 +28,6 @@ final class DateIntervalValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsWithValidDateInterval
      */
     public static function provideValidDateIntervalValues(): iterable

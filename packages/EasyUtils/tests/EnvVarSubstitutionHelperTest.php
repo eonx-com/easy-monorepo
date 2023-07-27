@@ -9,8 +9,6 @@ use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
 final class EnvVarSubstitutionHelperTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testResolveVariables
      */
     public static function providerTestResolveVariables(): iterable
@@ -22,9 +20,6 @@ final class EnvVarSubstitutionHelperTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $input
-     * @param mixed[] $expected
-     *
      * @dataProvider providerTestResolveVariables
      */
     public function testResolveVariables(array $input, array $expected): void

@@ -21,9 +21,6 @@ final class AmazonSqsTransportFactory extends BaseAmazonSqsTransportFactory
         parent::__construct();
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
         unset($options['transport_name']);

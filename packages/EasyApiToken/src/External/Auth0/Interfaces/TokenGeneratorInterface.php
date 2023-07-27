@@ -6,10 +6,6 @@ namespace EonX\EasyApiToken\External\Auth0\Interfaces;
 
 interface TokenGeneratorInterface
 {
-    /**
-     * @param mixed[] $scopes
-     * @param mixed[]|null $roles
-     */
     public function generate(
         array $scopes,
         ?array $roles = null,

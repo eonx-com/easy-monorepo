@@ -14,8 +14,6 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 final class TransactionTest extends TestCase
 {
     /**
-     * @return mixed[]
-     *
      * @see testGetDateObjectShouldReturnNull
      */
     public static function provideInvalidDates(): iterable
@@ -48,8 +46,6 @@ final class TransactionTest extends TestCase
 
     /**
      * Should return date as a null when date string is invalid.
-     *
-     * @param mixed[] $date
      *
      * @group Brf-Transaction
      *

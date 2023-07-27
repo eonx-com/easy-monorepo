@@ -19,9 +19,6 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 
     protected static string $key = 'key';
 
-    /**
-     * @var mixed[]
-     */
     protected static array $tokenPayload = [
         'iss' => 'stepthefkup.com',
         'aud' => 'stepthefkup.com.au',

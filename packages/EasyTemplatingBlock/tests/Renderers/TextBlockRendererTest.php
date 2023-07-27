@@ -13,8 +13,6 @@ use EonX\EasyTemplatingBlock\Tests\AbstractTestCase;
 final class TextBlockRendererTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testRenderBlock
      */
     public static function providerTestRenderBlock(): iterable
@@ -26,8 +24,6 @@ final class TextBlockRendererTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testSupports
      */
     public static function providerTestSupports(): iterable

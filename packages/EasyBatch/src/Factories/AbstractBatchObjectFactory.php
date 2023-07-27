@@ -17,9 +17,6 @@ abstract class AbstractBatchObjectFactory
     ) {
     }
 
-    /**
-     * @param mixed[] $data
-     */
     public function createFromArray(array $data): BatchObjectInterface
     {
         $batchObject = $this->transformer->transformToObject($data);

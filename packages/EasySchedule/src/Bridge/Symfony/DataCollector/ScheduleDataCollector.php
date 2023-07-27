@@ -57,9 +57,6 @@ final class ScheduleDataCollector extends DataCollector
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getEvents(): array
     {
         return $this->data['events'] ?? [];

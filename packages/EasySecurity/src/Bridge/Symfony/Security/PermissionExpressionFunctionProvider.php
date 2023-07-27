@@ -13,9 +13,6 @@ use Throwable;
 
 final class PermissionExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
-    /**
-     * @var mixed[]
-     */
     private array $cached = [];
 
     /**

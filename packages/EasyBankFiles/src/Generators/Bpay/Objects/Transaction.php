@@ -35,9 +35,7 @@ final class Transaction extends BaseObject
     /**
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
-     * @return mixed[]
-     *
-     * @see http://php.net/manual/en/function.str-pad.php
+     @see http://php.net/manual/en/function.str-pad.php
      */
     protected function getAttributesPaddingRules(): array
     {

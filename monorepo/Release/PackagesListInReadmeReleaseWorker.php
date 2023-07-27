@@ -44,9 +44,6 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
         $this->replaceContentsInReadme($contents);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     private function getPackagesList(): iterable
     {
         $composerFiles = (new Finder())

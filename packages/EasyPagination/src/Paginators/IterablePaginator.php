@@ -9,9 +9,6 @@ use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class IterablePaginator extends AbstractPaginator
 {
-    /**
-     * @param iterable<mixed> $iterable
-     */
     public function __construct(
         PaginationInterface $pagination,
         private readonly iterable $iterable,
@@ -19,9 +16,6 @@ final class IterablePaginator extends AbstractPaginator
         parent::__construct($pagination);
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function doGetItems(): array
     {
         return CollectorHelper::convertToArray($this->iterable);

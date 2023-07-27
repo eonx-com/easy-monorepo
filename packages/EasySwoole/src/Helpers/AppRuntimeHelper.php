@@ -13,9 +13,6 @@ final class AppRuntimeHelper
 
     private const APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
 
-    /**
-     * @param mixed[] $options
-     */
     public static function addOptions(array $options): void
     {
         $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge(
@@ -44,9 +41,6 @@ final class AppRuntimeHelper
         self::addOptions(['cache_clear_after_tick_count' => $cacheClearAfterTickCount]);
     }
 
-    /**
-     * @param mixed[] $cacheTables
-     */
     public static function setCacheTables(array $cacheTables): void
     {
         self::addOptions(['cache_tables' => $cacheTables]);
@@ -119,9 +113,6 @@ final class AppRuntimeHelper
         $_SERVER[self::APP_RUNTIME] = $runtime;
     }
 
-    /**
-     * @param mixed[] $settings
-     */
     public static function setSettings(array $settings): void
     {
         self::addOptions(['settings' => $settings]);

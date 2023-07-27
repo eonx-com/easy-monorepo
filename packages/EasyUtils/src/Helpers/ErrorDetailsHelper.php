@@ -8,9 +8,6 @@ use Throwable;
 
 final class ErrorDetailsHelper
 {
-    /**
-     * @return mixed[]
-     */
     public static function resolveSimpleDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         $details = [

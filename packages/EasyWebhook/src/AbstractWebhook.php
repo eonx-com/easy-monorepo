@@ -40,9 +40,6 @@ abstract class AbstractWebhook implements WebhookInterface
 
     private ?bool $allowRerun = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $body = null;
 
     private ?string $bodyAsString = null;
@@ -55,19 +52,10 @@ abstract class AbstractWebhook implements WebhookInterface
 
     private ?string $event = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $extra = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $headers = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $httpClientOptions = null;
 
     private ?string $id = null;
@@ -76,9 +64,6 @@ abstract class AbstractWebhook implements WebhookInterface
 
     private ?string $method = null;
 
-    /**
-     * @var mixed[]
-     */
     private ?array $queries = null;
 
     private ?string $secret = null;
@@ -91,9 +76,6 @@ abstract class AbstractWebhook implements WebhookInterface
 
     private ?string $url = null;
 
-    /**
-     * @param mixed[]|null $body
-     */
     public static function create(string $url, ?array $body = null, ?string $method = null): WebhookInterface
     {
         $webhook = (new static())->url($url)
@@ -106,9 +88,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $webhook;
     }
 
-    /**
-     * @param mixed[] $data
-     */
     public static function fromArray(array $data): WebhookInterface
     {
         $webhook = new static();
@@ -139,9 +118,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $body
-     */
     public function body(array $body): WebhookInterface
     {
         $this->body = $body;
@@ -184,9 +160,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $extra
-     */
     public function extra(array $extra): WebhookInterface
     {
         $this->extra = $extra;
@@ -194,9 +167,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getBody(): ?array
     {
         return $this->body;
@@ -217,17 +187,11 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->event;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getExtra(): ?array
     {
         return $this->extra;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getHttpClientOptions(): ?array
     {
         if ($this->headers === null && $this->queries === null && $this->httpClientOptions === null) {
@@ -293,9 +257,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $headers
-     */
     public function headers(array $headers): WebhookInterface
     {
         $this->headers = $headers;
@@ -303,9 +264,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function httpClientOptions(array $options): WebhookInterface
     {
         $this->httpClientOptions = $options;
@@ -347,9 +305,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $extra
-     */
     public function mergeExtra(array $extra): WebhookInterface
     {
         $this->extra = \array_merge_recursive($this->extra ?? [], $extra);
@@ -357,9 +312,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function mergeHttpClientOptions(array $options): WebhookInterface
     {
         $this->httpClientOptions = \array_merge_recursive($this->httpClientOptions ?? [], $options);
@@ -374,9 +326,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $queries
-     */
     public function queries(array $queries): WebhookInterface
     {
         $this->queries = $queries;
@@ -423,9 +372,6 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return [

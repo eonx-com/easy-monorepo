@@ -30,11 +30,6 @@ final class EnvVarSubstitutionHelper
      */
     private static array $values = [];
 
-    /**
-     * @param array<string, mixed> $envs
-     *
-     * @return array<string, mixed>
-     */
     public static function resolveVariables(array $envs): array
     {
         \ksort($envs);

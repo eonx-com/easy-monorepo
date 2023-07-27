@@ -48,7 +48,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     /**
-     * @param mixed[] $properties
      * @param string[] $iriFields
      */
     public function __construct(
@@ -66,9 +65,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getDescription(string $resourceClass): array
     {
         $description = [];
@@ -237,11 +233,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         };
     }
 
-    /**
-     * @param mixed[] $context
-     *
-     * {@inheritDoc}
-     */
     protected function filterProperty(
         string $property,
         mixed $value,

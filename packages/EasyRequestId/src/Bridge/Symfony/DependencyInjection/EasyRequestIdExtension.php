@@ -17,16 +17,11 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class EasyRequestIdExtension extends Extension
 {
-    /**
-     * @var mixed[]
-     */
     private array $config;
 
     private LoaderInterface $loader;
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

@@ -24,8 +24,6 @@ final class EasyDoctrineExtension extends Extension
     ];
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
@@ -60,8 +58,6 @@ final class EasyDoctrineExtension extends Extension
     }
 
     /**
-     * @param mixed[] $config
-     *
      * @throws \Exception
      */
     private function loadAwsRdsIam(ContainerBuilder $container, PhpFileLoader $loader, array $config): bool
@@ -93,8 +89,6 @@ final class EasyDoctrineExtension extends Extension
     }
 
     /**
-     * @param mixed[] $config
-     *
      * @throws \Exception
      */
     private function loadAwsRdsSsl(ContainerBuilder $container, PhpFileLoader $loader, array $config): bool

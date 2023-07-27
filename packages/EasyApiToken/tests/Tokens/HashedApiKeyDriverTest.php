@@ -11,8 +11,6 @@ use EonX\EasyApiToken\Tokens\HashedApiKeyDriver;
 final class HashedApiKeyDriverTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDriver
      */
     public static function providerTestDriver(): iterable

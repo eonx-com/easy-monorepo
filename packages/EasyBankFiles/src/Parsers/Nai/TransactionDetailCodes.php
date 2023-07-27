@@ -8,9 +8,6 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details;
 
 trait TransactionDetailCodes
 {
-    /**
-     * @var mixed[] $transactionCodes
-     */
     private static array $transactionCodes = [
         108 => [
             'cdrd' => 'CR',

@@ -119,8 +119,6 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
     }
 
     /**
-     * @param mixed[] $data
-     *
      * @return \EonX\EasyWebhook\Interfaces\WebhookInterface
      */
     private function instantiateWebhook(array $data): WebhookInterface

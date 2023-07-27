@@ -8,11 +8,6 @@ use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 
 final class NullDataCleaner implements DataCleanerInterface
 {
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     public function cleanUpData(array $data): array
     {
         return $data;

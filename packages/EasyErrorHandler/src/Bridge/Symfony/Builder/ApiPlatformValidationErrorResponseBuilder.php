@@ -54,14 +54,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const VIOLATION_VALUE_SHOULD_BE_PRESENT = 'This value should be present.';
 
-    /**
-     * @var mixed[]
-     */
     private readonly array $keys;
 
-    /**
-     * @param mixed[]|null $keys
-     */
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?array $keys = null,
@@ -93,13 +87,6 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         };
     }
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) We have many exceptions
-     */
     public function buildData(Throwable $throwable, array $data): array
     {
         if (self::supports($throwable) === false) {

@@ -58,8 +58,6 @@ final class SwooleTableAdapter extends AbstractAdapter
     /**
      * @param string[] $ids
      *
-     * @return mixed[]
-     *
      * @throws \Exception
      */
     protected function doFetch(array $ids): array

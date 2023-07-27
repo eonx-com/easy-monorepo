@@ -25,8 +25,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToDatabaseValueSucceeds
      */
     public static function provideConvertToDatabaseValues(): iterable
@@ -65,8 +63,6 @@ final class JsonbTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPhpValueSucceeds
      */
     public static function provideConvertToPhpValues(): iterable

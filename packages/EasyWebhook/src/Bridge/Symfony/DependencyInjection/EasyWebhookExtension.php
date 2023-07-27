@@ -19,9 +19,6 @@ final class EasyWebhookExtension extends Extension
         BridgeConstantsInterface::PARAM_SIGNATURE_HEADER => 'signature_header',
     ];
 
-    /**
-     * @var mixed[]
-     */
     private array $config;
 
     private ContainerBuilder $container;
@@ -29,8 +26,6 @@ final class EasyWebhookExtension extends Extension
     private PhpFileLoader $loader;
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

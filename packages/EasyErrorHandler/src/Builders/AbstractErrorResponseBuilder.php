@@ -17,21 +17,11 @@ abstract class AbstractErrorResponseBuilder implements ErrorResponseBuilderInter
         $this->doSetPriority($priority);
     }
 
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     public function buildData(Throwable $throwable, array $data): array
     {
         return $data;
     }
 
-    /**
-     * @param mixed[]|null $headers
-     *
-     * @return mixed[]|null
-     */
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array
     {
         return $headers;

@@ -14,9 +14,6 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
 {
     private ?PdoSessionHandler $decorated = null;
 
-    /**
-     * @param mixed[]|null $options
-     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ?array $options = null,

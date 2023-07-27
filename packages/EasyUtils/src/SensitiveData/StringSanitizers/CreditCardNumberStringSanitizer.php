@@ -15,9 +15,6 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         parent::__construct($priority);
     }
 
-    /**
-     * @param mixed[] $keysToMask
-     */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         $matches = [];

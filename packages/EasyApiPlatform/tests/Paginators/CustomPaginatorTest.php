@@ -34,7 +34,7 @@ final class CustomPaginatorTest extends AbstractTestCase
     }
 
     /**
-     * @return \ApiPlatform\Doctrine\Orm\Paginator<mixed>
+     * @return \ApiPlatform\Doctrine\Orm\Paginator
      */
     private function getApiPlatformPaginator(): Paginator
     {
@@ -51,7 +51,7 @@ final class CustomPaginatorTest extends AbstractTestCase
         $query->setFirstResult(1)
             ->setMaxResults(15);
 
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $doctrinePaginator */
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
         $doctrinePaginator = self::mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {

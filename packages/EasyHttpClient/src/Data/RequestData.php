@@ -9,9 +9,6 @@ use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
 
 final class RequestData implements RequestDataInterface
 {
-    /**
-     * @param mixed[] $options
-     */
     public function __construct(
         private string $method,
         private array $options,
@@ -25,9 +22,6 @@ final class RequestData implements RequestDataInterface
         return $this->method;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOptions(): array
     {
         return $this->options;
@@ -43,9 +37,6 @@ final class RequestData implements RequestDataInterface
         return $this->url;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function setOptions(array $options): RequestDataInterface
     {
         $this->options = $options;

@@ -18,8 +18,6 @@ use Throwable;
 final class BugsnagReporterTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testReportWithIgnoredExceptionsResolver
      */
     public static function provideDataForReportWithIgnoredExceptionsResolver(): iterable
@@ -36,8 +34,6 @@ final class BugsnagReporterTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testReport
      */
     public static function providerTestReport(): iterable

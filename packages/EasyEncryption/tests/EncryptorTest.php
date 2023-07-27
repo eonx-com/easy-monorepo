@@ -16,8 +16,6 @@ use ParagonIE\Halite\KeyFactory;
 final class EncryptorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
@@ -65,8 +63,6 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException

@@ -77,8 +77,6 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 
     /**
      * @param \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
-     *
-     * @return mixed[]
      */
     private function formatPermissions(array $permissions): array
     {
@@ -87,9 +85,6 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
         return \array_values(\array_map($map, $permissions));
     }
 
-    /**
-     * @return mixed[]
-     */
     private function formatProvider(ProviderInterface $provider): array
     {
         return [
@@ -100,8 +95,6 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
 
     /**
      * @param \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
-     *
-     * @return mixed[]
      */
     private function formatRoles(array $roles): array
     {
@@ -110,9 +103,6 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
         return \array_values(\array_map($map, $roles));
     }
 
-    /**
-     * @return mixed[]
-     */
     private function formatToken(ApiTokenInterface $apiToken): array
     {
         return [
@@ -121,9 +111,6 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
         ];
     }
 
-    /**
-     * @return mixed[]
-     */
     private function formatUser(UserInterface $user): array
     {
         return [

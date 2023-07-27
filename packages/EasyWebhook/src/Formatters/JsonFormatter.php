@@ -10,8 +10,6 @@ use Nette\Utils\Json;
 final class JsonFormatter implements WebhookBodyFormatterInterface
 {
     /**
-     * @param mixed[] $body
-     *
      * @throws \Nette\Utils\JsonException
      */
     public function format(array $body): string

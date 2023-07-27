@@ -21,7 +21,6 @@ use PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
-use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
@@ -51,7 +50,6 @@ return static function (ECSConfig $ecsConfig): void {
         'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
 
         // Skip rules
-        SingleSpaceAfterConstructFixer::class => null,
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
             'packages/*/tests/*',
@@ -61,10 +59,16 @@ return static function (ECSConfig $ecsConfig): void {
             'quality/ecs.php',
             'quality/rector.php',
         ],
-        AvoidPublicPropertiesSniff::class => null,
-        BlankLineAfterOpeningTagFixer::class => null,
+        AvoidPublicPropertiesSniff::class => [
+            'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
+            'packages/*/tests/Stubs/Model/*',
+            'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
+        ],
         DateTimeImmutableFixer::class => null,
-        DisallowMixedTypeHintSniff::class => null,
+        DisallowMixedTypeHintSniff::class => [
+            'packages/EasyBankFiles/src/Generators/BaseGenerator.php',
+            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',
+        ],
         DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [
             'packages/*/src/Bridge/Symfony/Resources/config/*',
@@ -88,6 +92,13 @@ return static function (ECSConfig $ecsConfig): void {
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         PropertyTypeHintSniff::class . '.UselessAnnotation' => [
             'packages/*/tests/Stubs/Model/*',
+        ],
+        SingleSpaceAfterConstructFixer::class => [
+            'packages/EasyAsync/src/Doctrine/Exceptions/DoctrineConnectionNotOkException.php',
+            'packages/EasyAsync/src/Doctrine/Exceptions/DoctrineManagerClosedException.php',
+            'packages/EasyErrorHandler/src/Builders/ExtendedExceptionErrorResponseBuilder.php',
+            'packages/EasyPagination/src/Exceptions/AbstractEasyPaginationException.php',
+            'packages/EasyRequestId/src/Bridge/EasyErrorHandler/RequestIdErrorResponseBuilder.php',
         ],
         StaticClosureSniff::class => [
             'packages/*/tests/*',
@@ -136,6 +147,8 @@ return static function (ECSConfig $ecsConfig): void {
             '@var',
             '@phpstan-var',
             '@author',
+            '@group',
+            '@dataProvider',
         ],
         'linesCountBetweenAnnotationsGroups' => 1,
     ]);

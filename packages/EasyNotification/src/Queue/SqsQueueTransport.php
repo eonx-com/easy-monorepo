@@ -26,8 +26,6 @@ final class SqsQueueTransport implements QueueTransportInterface
 
     /**
      * @param string[] $headers
-     *
-     * @return mixed[]
      */
     private function formatHeaders(array $headers): array
     {

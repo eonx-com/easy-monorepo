@@ -24,8 +24,6 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
     private static array $iteratedItems = [];
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testIterateThroughItems
      */
     public static function providerTestIterateThroughItems(): iterable

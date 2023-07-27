@@ -10,14 +10,8 @@ use ParagonIE\Halite\Symmetric\EncryptionKey;
 
 final class EncryptionKeyResolverStub extends AbstractEncryptionKeyResolver
 {
-    /**
-     * @var mixed[]
-     */
     private array $config;
 
-    /**
-     * @param mixed[]|callable $config
-     */
     public function __construct(array|callable $config)
     {
         $this->config = \is_array($config) ? $config : $config();
@@ -28,9 +22,6 @@ final class EncryptionKeyResolverStub extends AbstractEncryptionKeyResolver
         return isset($this->config[$keyName]);
     }
 
-    /**
-     * @return string|mixed[]|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
-     */
     protected function doResolveKey(string $keyName): string|array|EncryptionKey|EncryptionKeyPair
     {
         return $this->config[$keyName];

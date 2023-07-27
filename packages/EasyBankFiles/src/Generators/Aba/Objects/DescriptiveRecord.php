@@ -21,11 +21,6 @@ use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
  */
 final class DescriptiveRecord extends BaseObject
 {
-    /**
-     * BaseResult constructor.
-     *
-     * @param mixed[]|null $data
-     */
     public function __construct(?array $data = null)
     {
         parent::__construct(\array_merge([
@@ -50,8 +45,6 @@ final class DescriptiveRecord extends BaseObject
 
     /**
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
-     *
-     * @return mixed[]
      *
      * @see http://php.net/manual/en/function.str-pad.php
      */

@@ -15,12 +15,7 @@ interface ExpressionLanguageInterface
      */
     public function addFunctions(array $functions): self;
 
-    /**
-     * @param mixed[]|null $arguments
-     *
-     * @return mixed
-     */
-    public function evaluate(string $expression, ?array $arguments = null);
+    public function evaluate(string $expression, ?array $arguments = null): mixed;
 
     /**
      * @return \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]

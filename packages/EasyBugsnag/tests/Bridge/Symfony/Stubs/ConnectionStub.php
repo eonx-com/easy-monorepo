@@ -25,9 +25,6 @@ final class ConnectionStub implements Connection
         return 'errorCode';
     }
 
-    /**
-     * @return mixed[]
-     */
     public function errorInfo(): array
     {
         return [];
@@ -57,7 +54,6 @@ final class ConnectionStub implements Connection
     }
 
     /**
-     * @param mixed $value
      * @param int $type
      */
     public function quote(mixed $value, mixed $type = null): void

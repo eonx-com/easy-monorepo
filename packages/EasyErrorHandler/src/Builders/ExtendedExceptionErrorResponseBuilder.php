@@ -48,9 +48,6 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
         parent::__construct($key, $priority);
     }
 
-    /**
-     * @return mixed[]|null
-     */
     protected function doBuildValue(Throwable $throwable, array $data): ?array
     {
         // Skip if not verbose

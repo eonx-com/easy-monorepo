@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 final class EloquentLengthAwarePaginatorTest extends AbstractEloquentTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginator
      */
     public static function providerTestPaginator(): iterable

@@ -10,15 +10,9 @@ interface CustomPaginatorInterface
 {
     public const SERIALIZER_GROUP = 'resource:pagination';
 
-    /**
-     * @return mixed[]
-     */
     #[Groups([self::SERIALIZER_GROUP])]
     public function getItems(): array;
 
-    /**
-     * @return mixed[]
-     */
     #[Groups([self::SERIALIZER_GROUP])]
     public function getPagination(): array;
 }

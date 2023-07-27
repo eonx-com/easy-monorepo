@@ -10,8 +10,6 @@ use EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException;
 final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
 {
     /**
-     * @return iterable<mixed>
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
@@ -60,11 +58,6 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
         }
     }
 
-    /**
-     * @param mixed[] $record
-     *
-     * @return mixed[]
-     */
     private function handlePrefixes(array $record, CsvParserConfigInterface $config): array
     {
         if ($config->hasGroupPrefixes() === false) {
@@ -115,10 +108,6 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     }
 
     /**
-     * @param mixed[] $headers
-     *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingRequiredHeadersException
      */
     private function resolveHeaders(array $headers, CsvParserConfigInterface $config): array
@@ -147,8 +136,6 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     }
 
     /**
-     * @param mixed[] $record
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\MissingValueForRequiredHeadersException
      */
     private function validateMissingValues(array $record, int $index, CsvParserConfigInterface $config): void

@@ -25,9 +25,6 @@ final class BasicAuth implements BasicAuthInterface
         return $this->password;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPayload(): array
     {
         return [

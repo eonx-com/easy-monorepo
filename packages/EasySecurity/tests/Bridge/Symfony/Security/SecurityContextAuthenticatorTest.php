@@ -18,8 +18,6 @@ use Throwable;
 final class SecurityContextAuthenticatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testAuthenticateThrowsCorrectException
      */
     public static function provideExceptions(): iterable

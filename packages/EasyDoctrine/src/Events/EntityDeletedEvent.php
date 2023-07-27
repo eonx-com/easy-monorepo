@@ -6,9 +6,6 @@ namespace EonX\EasyDoctrine\Events;
 
 final class EntityDeletedEvent implements EntityActionEventInterface
 {
-    /**
-     * @param array<string, mixed> $changeSet
-     */
     public function __construct(
         private object $entity,
         private array $changeSet,

@@ -93,9 +93,6 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
     }
 
     /**
-     * @param mixed[]|null $config
-     * @param mixed[]|null $translations
-     *
      * @dataProvider providerTestRenderWithDefaultBuilders
      */
     public function testRenderWithDefaultBuilders(

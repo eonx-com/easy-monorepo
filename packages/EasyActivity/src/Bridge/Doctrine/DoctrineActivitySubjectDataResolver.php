@@ -38,11 +38,6 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
         return new ActivitySubjectData($serializedData, $serializedOldData);
     }
 
-    /**
-     * @param array<string, mixed> $changeSet
-     *
-     * @return mixed[]
-     */
     private function resolveChangeData(string $action, array $changeSet): array
     {
         $oldData = [];

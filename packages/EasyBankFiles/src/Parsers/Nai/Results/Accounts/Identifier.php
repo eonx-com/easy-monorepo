@@ -10,7 +10,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string getCode()
  * @method string getCommercialAccountNumber()
  * @method string getCurrencyCode()
- * @method mixed[] getTransactionCodes()
+ * @method array getTransactionCodes()
  */
 final class Identifier extends BaseResult
 {

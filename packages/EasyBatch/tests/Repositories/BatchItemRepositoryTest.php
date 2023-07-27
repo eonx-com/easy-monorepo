@@ -18,8 +18,6 @@ use stdClass;
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testFindForDispatch
      */
     public static function providerTestFindForDispatch(): iterable

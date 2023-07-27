@@ -21,8 +21,6 @@ final class SlackMessageTest extends AbstractTestCase
     ];
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetters
      */
     public static function providerTestGetters(): iterable
@@ -55,8 +53,6 @@ final class SlackMessageTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $body
-     *
      * @throws \Nette\Utils\JsonException
      *
      * @dataProvider providerTestGetters

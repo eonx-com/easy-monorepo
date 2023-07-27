@@ -27,8 +27,5 @@ abstract class AbstractEncryptionKeyResolver implements EncryptionKeyResolverInt
         return $this->doResolveKey($keyName);
     }
 
-    /**
-     * @return string|mixed[]|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
-     */
     abstract protected function doResolveKey(string $keyName): string|array|EncryptionKey|EncryptionKeyPair;
 }

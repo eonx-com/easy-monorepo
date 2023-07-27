@@ -9,9 +9,6 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 final class CarbonImmutableNormalizer extends DateTimeNormalizer
 {
-    /**
-     * @param mixed[]|null $context
-     */
     public function denormalize(
         mixed $data,
         string $type,

@@ -15,8 +15,6 @@ use EonX\EasyWebhook\WebhookResult;
 final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testProcess
      */
     public static function providerTestProcess(): iterable

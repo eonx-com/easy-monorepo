@@ -89,9 +89,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers could be any type of iterable, convert it to array
@@ -127,9 +124,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
@@ -164,9 +158,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
@@ -194,9 +185,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances

@@ -26,7 +26,6 @@ final class RealTimeMessage extends AbstractMessage
     private string $type;
 
     /**
-     * @param mixed[]|null $body
      * @param string[]|null $topics
      */
     public function __construct(?array $body = null, ?array $topics = null, ?string $type = null)
@@ -38,7 +37,6 @@ final class RealTimeMessage extends AbstractMessage
     }
 
     /**
-     * @param mixed[]|null $body
      * @param string[]|null $topics
      */
     public static function create(?array $body = null, ?array $topics = null, ?string $type = null): self

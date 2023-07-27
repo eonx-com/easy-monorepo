@@ -12,8 +12,6 @@ use EonX\EasyWebhook\Webhook;
 final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testProcess
      */
     public static function providerTestProcess(): iterable

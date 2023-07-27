@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 final class EasyPaginationBundleTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginationResolver
      */
     public static function providerTestPaginationResolver(): iterable
@@ -82,9 +80,6 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         self::assertInstanceOf(PaginationInterface::class, $container->get(PaginationInterface::class));
     }
 
-    /**
-     * @param mixed[]|null $query
-     */
     private static function createRequest(?array $query = null): Request
     {
         return new Request($query ?? [], [], [], [], [], [

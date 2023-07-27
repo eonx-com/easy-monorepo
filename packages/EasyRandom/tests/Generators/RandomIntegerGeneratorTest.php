@@ -10,8 +10,6 @@ use EonX\EasyRandom\Tests\AbstractTestCase;
 final class RandomIntegerGeneratorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testGenerateSucceeds
      */
     public static function provideMinAndMaxValues(): iterable

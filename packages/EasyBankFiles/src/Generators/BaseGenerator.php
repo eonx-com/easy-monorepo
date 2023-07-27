@@ -76,11 +76,7 @@ abstract class BaseGenerator implements GeneratorInterface
     /**
      * Validate object attributes.
      *
-     * @param mixed[]|null $rules
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     protected function validateAttributes(BaseObject $object, ?array $rules = null): void
     {
@@ -109,8 +105,6 @@ abstract class BaseGenerator implements GeneratorInterface
     /**
      * Add lines for given objects.
      *
-     * @param mixed[] $objects
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
@@ -134,7 +128,7 @@ abstract class BaseGenerator implements GeneratorInterface
     /**
      * Process rule against a value.
      *
-     * @param mixed[] $errors The errors array to set errors to
+     * @param array $errors The errors array to set errors to
      * @param string $rule The rule to process
      * @param string $attribute The attribute the value relates to
      * @param mixed $value The value from the attribute

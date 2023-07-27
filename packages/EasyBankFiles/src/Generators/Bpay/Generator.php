@@ -15,8 +15,6 @@ final class Generator extends BaseGenerator
     /**
      * Generator constructor.
      *
-     * @param mixed[] $transactions
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
     public function __construct(

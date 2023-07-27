@@ -26,8 +26,6 @@ use PHPUnit\Framework\TestCase;
 final class ConfiguratorsTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigure
      */
     public static function providerTestConfigure(): iterable

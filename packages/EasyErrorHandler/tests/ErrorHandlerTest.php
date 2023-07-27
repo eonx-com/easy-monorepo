@@ -18,8 +18,6 @@ use Throwable;
 final class ErrorHandlerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testReport
      */
     public static function providerTestReport(): iterable

@@ -15,9 +15,6 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
         return 0;
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function proceed(array $input): never
     {
         throw new class() extends Exception implements NonBlockingRuleErrorInterface {
@@ -31,9 +28,6 @@ final class RuleWithNonBlockingErrorStub implements RuleInterface
         };
     }
 
-    /**
-     * @param mixed[] $input
-     */
     public function supports(array $input): bool
     {
         return true;

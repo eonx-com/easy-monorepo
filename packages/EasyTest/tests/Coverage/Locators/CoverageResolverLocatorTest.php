@@ -14,8 +14,6 @@ use PHPUnit\Framework\TestCase;
 final class CoverageResolverLocatorTest extends TestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCreateResolverSucceeds
      */
     public static function provideSupportedFilepath(): iterable

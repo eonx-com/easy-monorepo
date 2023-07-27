@@ -69,9 +69,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         return $this->loggers[$channel] = $logger;
     }
 
-    /**
-     * @param iterable<mixed> $handlerConfigProviders
-     */
     public function setHandlerConfigProviders(iterable $handlerConfigProviders): LoggerFactoryInterface
     {
         foreach ($this->filterIterable($handlerConfigProviders, HandlerConfigProviderInterface::class) as $provider) {
@@ -85,9 +82,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         return $this;
     }
 
-    /**
-     * @param iterable<mixed> $loggerConfigurators
-     */
     public function setLoggerConfigurators(iterable $loggerConfigurators): LoggerFactoryInterface
     {
         $this->loggerConfigurators = $this->filterIterable($loggerConfigurators, LoggerConfiguratorInterface::class);
@@ -95,9 +89,6 @@ final class LoggerFactory implements LoggerFactoryInterface
         return $this;
     }
 
-    /**
-     * @param iterable<mixed>|null $processorConfigProviders
-     */
     public function setProcessorConfigProviders(?iterable $processorConfigProviders = null): LoggerFactoryInterface
     {
         if ($processorConfigProviders === null) {
@@ -137,10 +128,7 @@ final class LoggerFactory implements LoggerFactoryInterface
     }
 
     /**
-     * @param iterable<mixed> $iterable
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     private function filterIterable(iterable $iterable, string $class): array
     {

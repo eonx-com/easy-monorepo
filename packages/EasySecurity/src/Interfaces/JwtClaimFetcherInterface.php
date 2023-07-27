@@ -8,11 +8,6 @@ use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
 
 interface JwtClaimFetcherInterface
 {
-    /**
-     * @param mixed[]|null $default
-     *
-     * @return mixed[]
-     */
     public function getArrayClaim(JwtInterface $token, string $claim, ?array $default = null): array;
 
     public function getClaim(JwtInterface $token, string $claim, mixed $default = null): mixed;

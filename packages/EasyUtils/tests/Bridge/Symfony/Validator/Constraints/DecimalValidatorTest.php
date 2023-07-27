@@ -19,8 +19,6 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 final class DecimalValidatorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateFailsWithInvalidValue
      */
     public static function provideInvalidValues(): iterable
@@ -41,8 +39,6 @@ final class DecimalValidatorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidateSucceedsWithValidValue
      */
     public static function provideValidValues(): iterable

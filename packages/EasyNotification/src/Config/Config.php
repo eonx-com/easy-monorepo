@@ -20,9 +20,6 @@ final class Config implements ConfigInterface
     ) {
     }
 
-    /**
-     * @param mixed[] $config
-     */
     public static function fromArray(array $config): ConfigInterface
     {
         return new self(

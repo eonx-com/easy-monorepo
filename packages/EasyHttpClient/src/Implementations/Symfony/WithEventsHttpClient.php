@@ -44,8 +44,6 @@ final class WithEventsHttpClient implements HttpClientInterface
     }
 
     /**
-     * @param mixed[]|null $options
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -159,9 +157,6 @@ final class WithEventsHttpClient implements HttpClientInterface
         return $data;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     private function resolveConfigFromHttpOptions(array $options): Config
     {
         $extra = $options[HttpOptionsInterface::REQUEST_DATA_EXTRA] ?? null;

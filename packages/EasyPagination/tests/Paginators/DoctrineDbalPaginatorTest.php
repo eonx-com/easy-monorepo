@@ -15,8 +15,6 @@ use stdClass;
 final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginator
      */
     public static function providerTestPaginator(): iterable

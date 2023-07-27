@@ -13,8 +13,6 @@ use Throwable;
 final class ErrorDetailsResolverTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testResolveExtendedDetails
      */
     public static function providerTestResolveExtendedDetails(): iterable

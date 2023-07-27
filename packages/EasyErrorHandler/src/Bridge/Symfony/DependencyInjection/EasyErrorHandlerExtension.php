@@ -20,8 +20,6 @@ final class EasyErrorHandlerExtension extends Extension
     private const DEFAULT_LOCALE = 'en';
 
     /**
-     * @param mixed[] $configs
-     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void

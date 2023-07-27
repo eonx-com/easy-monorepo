@@ -9,18 +9,8 @@ use Throwable;
 
 interface ErrorResponseBuilderInterface extends HasPriorityInterface
 {
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
     public function buildData(Throwable $throwable, array $data): array;
 
-    /**
-     * @param mixed[]|null $headers
-     *
-     * @return mixed[]|null
-     */
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array;
 
     public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int;

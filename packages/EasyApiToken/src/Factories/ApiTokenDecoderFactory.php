@@ -27,9 +27,6 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 
     private ?string $defaultDecoder = null;
 
-    /**
-     * @param iterable<mixed> $decoderProviders
-     */
     public function __construct(
         iterable $decoderProviders,
         private readonly HashedApiKeyDriverInterface $hashedApiKeyDriver,
@@ -82,11 +79,6 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         }
     }
 
-    /**
-     * @param iterable<mixed> $collection
-     *
-     * @return mixed[]
-     */
     private function filter(iterable $collection, string $class): array
     {
         return CollectorHelper::orderLowerPriorityFirstAsArray(CollectorHelper::filterByClass($collection, $class));

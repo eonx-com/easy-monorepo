@@ -16,8 +16,6 @@ use EonX\EasyPagination\Tests\Stubs\Entity\Item;
 final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPaginator
      */
     public static function providerTestPaginator(): iterable
@@ -102,8 +100,8 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestC
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertInstanceOf(Item::class, $item);
-                self::assertEquals(1, $item->id);
-                self::assertEquals('my-title', $item->title);
+                self::assertEquals(1, $item->getId());
+                self::assertEquals('my-title', $item->getTitle());
             },
         ];
 
@@ -124,8 +122,8 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestC
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertInstanceOf(Item::class, $item);
-                self::assertEquals(1, $item->id);
-                self::assertEquals('my-title', $item->title);
+                self::assertEquals(1, $item->getId());
+                self::assertEquals('my-title', $item->getTitle());
             },
         ];
 
@@ -161,8 +159,8 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestC
                 self::addItemToTable($manager, 'my-title');
 
                 $paginator->setTransformer(static fn (Item $item): array => [
-                    'id' => $item->id,
-                    'title' => $item->title,
+                    'id' => $item->getId(),
+                    'title' => $item->getTitle(),
                 ]);
             },
             static function (DoctrineOrmLengthAwarePaginator $paginator): void {
@@ -203,11 +201,11 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestC
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertInstanceOf(ChildItem::class, $childItem);
-                self::assertInstanceOf(Item::class, $childItem->item);
-                self::assertEquals(1, $childItem->id);
-                self::assertEquals(1, $childItem->item->id);
-                self::assertEquals('my-parent', $childItem->item->title);
-                self::assertEquals('my-child', $childItem->title);
+                self::assertInstanceOf(Item::class, $childItem->getItem());
+                self::assertEquals(1, $childItem->getId());
+                self::assertEquals(1, $childItem->getItem()->getId());
+                self::assertEquals('my-parent', $childItem->getItem()->getTitle());
+                self::assertEquals('my-child', $childItem->getTitle());
             },
         ];
 

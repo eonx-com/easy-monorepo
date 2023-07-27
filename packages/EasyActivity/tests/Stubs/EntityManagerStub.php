@@ -68,10 +68,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param array<string, mixed> $easyActivityConfig
      * @param string[]|null $fixtures
-     *
-     * @return \Doctrine\ORM\EntityManagerInterface
      */
     public static function createFromEasyActivityConfig(
         array $easyActivityConfig,
