@@ -18,7 +18,6 @@ final class Number extends Composite
     /**
      * @param \Symfony\Component\Validator\Constraint[]|null $constraints
      * @param string[]|null $groups
-     * @param mixed|null $payload
      */
     public function __construct(?array $constraints = null, ?array $groups = null, mixed $payload = null)
     {

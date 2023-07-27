@@ -34,11 +34,8 @@ final class TranslatorStub implements TranslatorInterface
 
     /**
      * @param mixed[]|null $parameters
-     * @param mixed $id
-     * @param mixed|null $domain
-     * @param mixed|null $locale
      */
-    public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
+    public function trans(string $id, ?array $parameters = null, ?string $domain = null, ?string $locale = null): string
     {
         $translated = $this->getTranslator()
             ->trans($id, $parameters ?? [], $domain, $locale);

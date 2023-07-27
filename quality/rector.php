@@ -49,28 +49,23 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->skip([
         // Skip entire files or directories
-        'packages/*/tests/var/*',
-        // Symfony cache files
-        'packages/*/var/*',
-        // Symfony cache files
-        'packages/EasyApiPlatform/tests/Fixtures/app/var',
-        // It is an Api Platform test app
-        'packages/EasyEncryption/src/AwsPkcs11Encryptor.php',
-        ClassPropertyAssignToConstructorPromotionRector::class,
-        CountOnNullRector::class,
-        FinalizePublicClassConstantRector::class,
-        JsonThrowOnErrorRector::class,
-        ReadOnlyPropertyRector::class,
-        // Because of Pkcs11
+        'packages/*/tests/var/*', // Symfony cache files
+        'packages/*/var/*', // Symfony cache files
+        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
+        'packages/EasyEncryption/src/AwsPkcs11Encryptor.php', // Because of Pkcs11
+
         // Skip rules
         AddLiteralSeparatorToNumberRector::class => [
             'packages/EasyApiToken/tests/AbstractFirebaseJwtTokenTestCase.php',
             'packages/EasyUtils/tests/Bridge/Symfony/Validator/Constraints/AbnValidatorTest.php',
         ],
+        ClassPropertyAssignToConstructorPromotionRector::class,
+        CountOnNullRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
             'packages/EasySecurity/src/SecurityContext.php',
             'packages/EasyTest/src/InvalidDataMaker/InvalidDataMaker.php',
         ],
+        FinalizePublicClassConstantRector::class,
         FirstClassCallableRector::class => [
             'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyBatch/tests/Bridge/Symfony/Stubs/KernelStub.php',
@@ -79,9 +74,11 @@ return static function (RectorConfig $rectorConfig): void {
             'packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Compiler/RegisterLockStoreServicePass.php',
             'packages/EasyPagination/tests/Bridge/Symfony/Stubs/KernelStub.php',
         ],
+        JsonThrowOnErrorRector::class,
         PhpDocCommentRector::class => [
             'packages/EasyApiPlatform/src/Filters/AdvancedSearchFilter.php',
         ],
+        ReadOnlyPropertyRector::class,
     ]);
 
     $rectorConfig->rule(AddSeeAnnotationRector::class);

@@ -48,7 +48,6 @@ final class ValueDecisionTest extends AbstractTestCase
      * @param mixed[] $rules
      * @param mixed[] $input
      * @param mixed[] $expectedRulesOutput
-     * @param mixed|null $defaultOutput
      *
      * @dataProvider decisionEntirelyProvider
      */
@@ -58,7 +57,7 @@ final class ValueDecisionTest extends AbstractTestCase
         mixed $expectedOutput,
         array $expectedRulesOutput,
         ?string $name = null,
-        $defaultOutput = null,
+        mixed $defaultOutput = null,
     ): void {
         $decision = (new ValueDecision($name))
             ->addRules($rules)

@@ -127,10 +127,7 @@ abstract class AbstractDecision implements DecisionInterface
         }
     }
 
-    /**
-     * @param mixed|null $defaultOutput
-     */
-    public function setDefaultOutput($defaultOutput = null): DecisionInterface
+    public function setDefaultOutput(mixed $defaultOutput = null): DecisionInterface
     {
         $this->defaultOutput = $defaultOutput;
 

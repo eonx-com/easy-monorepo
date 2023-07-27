@@ -91,11 +91,9 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     }
 
     /**
-     * @param mixed|null $itemValue
-     *
      * @return iterable<mixed>
      */
-    public function yieldArrayWithMoreItems(int $maxElements, $itemValue = null): iterable
+    public function yieldArrayWithMoreItems(int $maxElements, mixed $itemValue = null): iterable
     {
         $value = \array_fill(0, $maxElements + 1, $itemValue);
         $message = $this->translateMessage(

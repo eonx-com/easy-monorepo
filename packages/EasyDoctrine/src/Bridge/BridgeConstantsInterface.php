@@ -6,8 +6,7 @@ namespace EonX\EasyDoctrine\Bridge;
 
 interface BridgeConstantsInterface
 {
-    public const PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES
-        = 'easy_doctrine.aws_rds.iam.auth_token_lifetime_in_minutes';
+    public const PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES = 'easy_doctrine.aws_rds.iam.auth_token_lifetime_in_minutes';
 
     public const PARAM_AWS_RDS_IAM_AWS_REGION = 'easy_doctrine.aws_rds.iam.aws_region';
 
