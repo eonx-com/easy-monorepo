@@ -65,6 +65,7 @@
         "league/flysystem": "^1.1",
         "mikey179/vfsstream": "^1.6",
         "mockery/mockery": "^1.6",
+        "natepage/php-pkcs11-ide-helper": "^1.0",
         "openswoole/ide-helper": "^22.0",
         "phpseclib/phpseclib": "^3.0",
         "phpspec/prophecy": "^1.0",
