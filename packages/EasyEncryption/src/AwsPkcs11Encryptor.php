@@ -9,7 +9,7 @@ use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
-use Pkcs11\AwsGcmParams;
+use Pkcs11\GcmParams;
 use Pkcs11\Mechanism;
 use Pkcs11\Module;
 use Pkcs11\Session;
@@ -205,7 +205,10 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
 
     private function getMechanism(): Mechanism
     {
-        return new Mechanism(\Pkcs11\CKM_AES_GCM, new AwsGcmParams($this->aad, self::AWS_GCM_TAG_LENGTH));
+        return new Mechanism(
+            \Pkcs11\CKM_VENDOR_DEFINED | \Pkcs11\CKM_AES_GCM,
+            new GcmParams('', $this->aad, self::AWS_GCM_TAG_LENGTH)
+        );
     }
 
     private function init(): void
