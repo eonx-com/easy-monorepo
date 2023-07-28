@@ -53,7 +53,7 @@ jobs:
                 uses: ramsey/composer-install@v2
 
             -   name: Install Composer dependencies for Quality Tools
-            -   uses: ramsey/composer-install@v2
+                uses: ramsey/composer-install@v2
                 with:
                     working-directory: quality
 
