@@ -63,6 +63,7 @@
         "laravel/lumen-framework": "^9.1",
         "league/flysystem": "^1.1",
         "mikey179/vfsstream": "^1.6",
+        "natepage/php-pkcs11-ide-helper": "^1.0",
         "mockery/mockery": "^1.6",
         "phpseclib/phpseclib": "^3.0",
         "phpspec/prophecy": "^1.0",
@@ -82,8 +83,7 @@
         "symplify/phpstan-extensions": "^11.0",
         "symplify/smart-file-system": "^11.0",
         "tracy/tracy": "^2.10",
-        "vlucas/phpdotenv": "^5.5",
-        "natepage/php-pkcs11-ide-helper": "^1.0"
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
