@@ -223,22 +223,23 @@
         },
         {
             "name": "eonx-com/easy-quality",
-            "version": "3.3.4",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eonx-com/easy-quality.git",
-                "reference": "5934577f9286132e3ec0da7af048a729c5c5d016"
+                "reference": "7da71648e66a69c199306d3f33629c77a218f169"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eonx-com/easy-quality/zipball/5934577f9286132e3ec0da7af048a729c5c5d016",
-                "reference": "5934577f9286132e3ec0da7af048a729c5c5d016",
+                "url": "https://api.github.com/repos/eonx-com/easy-quality/zipball/7da71648e66a69c199306d3f33629c77a218f169",
+                "reference": "7da71648e66a69c199306d3f33629c77a218f169",
                 "shasum": ""
             },
             "require": {
                 "jangregor/phpstan-prophecy": "1.0.0",
                 "php": "~8.1",
                 "phpmd/phpmd": "2.13.0",
+                "phpmetrics/phpmetrics": "^2.8",
                 "phpstan/phpdoc-parser": "1.22.1",
                 "phpstan/phpstan": "1.10.22",
                 "rector/rector": "0.17.2",
@@ -250,6 +251,9 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
             },
+            "bin": [
+                "bin/pmc"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -263,9 +267,9 @@
             "description": "Makes using of code quality tools for PHP projects of EonX easier",
             "support": {
                 "issues": "https://github.com/eonx-com/easy-quality/issues",
-                "source": "https://github.com/eonx-com/easy-quality/tree/3.3.4"
+                "source": "https://github.com/eonx-com/easy-quality/tree/3.4.0"
             },
-            "time": "2023-07-11T08:09:37+00:00"
+            "time": "2023-07-18T11:17:42+00:00"
         },
         {
             "name": "jangregor/phpstan-prophecy",
@@ -620,6 +624,74 @@
                 }
             ],
             "time": "2022-09-10T08:44:15+00:00"
+        },
+        {
+            "name": "phpmetrics/phpmetrics",
+            "version": "v2.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpmetrics/PhpMetrics.git",
+                "reference": "4b77140a11452e63c7a9b98e0648320bf6710090"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpmetrics/PhpMetrics/zipball/4b77140a11452e63c7a9b98e0648320bf6710090",
+                "reference": "4b77140a11452e63c7a9b98e0648320bf6710090",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-tokenizer": "*",
+                "nikic/php-parser": "^3|^4",
+                "php": ">=5.5"
+            },
+            "replace": {
+                "halleck45/php-metrics": "*",
+                "halleck45/phpmetrics": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36 || ^5.7.27 || ^6.5.14",
+                "sebastian/comparator": ">=1.2.3",
+                "squizlabs/php_codesniffer": "^3.5",
+                "symfony/dom-crawler": "^3.0 || ^4.0 || ^5.0"
+            },
+            "bin": [
+                "bin/phpmetrics"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "./src/functions.php"
+                ],
+                "psr-0": {
+                    "Hal\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jean-François Lépine",
+                    "email": "lepinejeanfrancois@yahoo.fr",
+                    "homepage": "http://www.lepine.pro",
+                    "role": "Copyright Holder"
+                }
+            ],
+            "description": "Static analyzer tool for PHP : Coupling, Cyclomatic complexity, Maintainability Index, Halstead's metrics... and more !",
+            "homepage": "http://www.phpmetrics.org",
+            "keywords": [
+                "analysis",
+                "qa",
+                "quality",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/PhpMetrics/PhpMetrics/issues",
+                "source": "https://github.com/phpmetrics/PhpMetrics/tree/v2.8.2"
+            },
+            "time": "2023-03-08T15:03:36+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",

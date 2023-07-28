@@ -20,7 +20,7 @@ final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
     {
         $versionInString = $this->getVersionDev($version);
 
-        return sprintf('Push "%s" open to remote repository', $versionInString);
+        return \sprintf('Push "%s" open to remote repository', $versionInString);
     }
 
     public function work(Version $version): void

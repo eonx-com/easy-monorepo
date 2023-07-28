@@ -18,8 +18,9 @@ use Symplify\SmartFileSystem\SmartFileInfo;
 )]
 final class LocalizePackageRepositoriesCommand extends Command
 {
-    public function __construct(private GitManager $gitManager)
-    {
+    public function __construct(
+        private GitManager $gitManager,
+    ) {
         parent::__construct();
     }
 
@@ -59,7 +60,7 @@ final class LocalizePackageRepositoriesCommand extends Command
                 'symfony/dependency-injection' => '5.3.7',
             ];
 
-            $filesystem->dumpFile($filename, \json_encode($composerJsonFileContents));
+            $filesystem->dumpFile($filename, (string)\json_encode($composerJsonFileContents));
 
             $output->writeln(\sprintf('Successfully updated %s', $filename));
         }

@@ -11,7 +11,7 @@ use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 /**
  * @covers \EonX\EasyBankFiles\Tests\Generators\Aba\TestCase
  */
-class TestCase extends GeneratorTestCase
+abstract class TestCase extends GeneratorTestCase
 {
     /**
      * Create a DescriptiveRecord object with default attributes.
