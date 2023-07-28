@@ -106,7 +106,7 @@ final class CacheTableHelper
     public static function get(
         string $name,
         #[Deprecated(reason: 'It has to be removed in 6.0 in favour of returning null.')]
-        ?bool $throwOnNull = null
+        ?bool $throwOnNull = null,
     ): SwooleTable|OpenSwooleTable|null {
         $tableClass = SwooleTableHelper::getTableClass();
         $table = $_SERVER[self::getServerTableName($name)] ?? null;

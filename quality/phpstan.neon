@@ -26,8 +26,7 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/*/config/*
-        - %currentWorkingDirectory%/packages/EasyEncryption/src/AwsPkcs11Encryptor.php
+        - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
