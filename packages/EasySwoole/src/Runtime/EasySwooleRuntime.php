@@ -49,11 +49,13 @@ final class EasySwooleRuntime extends SymfonyRuntime
             OptionHelper::getBoolean('env_var_output_enabled'),
         );
 
-        if ($application instanceof Application && OptionHelper::isset(EasyScheduleSwooleRunner::ENABLED)) {
+        if (\class_exists(Application::class)
+            && $application instanceof Application
+            && OptionHelper::isset(EasyScheduleSwooleRunner::ENABLED)) {
             return new EasyScheduleSwooleRunner($application);
         }
 
-        if ($application instanceof HttpKernelInterface) {
+        if (\interface_exists(HttpKernelInterface::class) && $application instanceof HttpKernelInterface) {
             OptionHelper::setOption('settings', $this->resolveSwooleSettings(\array_merge([
                 // Process
                 'daemonize' => 0,
