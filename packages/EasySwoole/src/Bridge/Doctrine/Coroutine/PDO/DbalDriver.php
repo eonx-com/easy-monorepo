@@ -28,9 +28,9 @@ final class DbalDriver implements Driver
     public function connect(#[SensitiveParameter] array $params): DriverConnection
     {
         $poolName = \sprintf(self::POOL_NAME_PATTERN, $this->getOption(ValueOptionInterface::POOL_NAME, $params));
-        $poolSize = $this->getOption(ValueOptionInterface::POOL_SIZE, $params) ?? $this->defaultPoolSize;
-        $poolHeartbeat = $this->getOption(ValueOptionInterface::POOL_HEARTBEAT, $params) ?? $this->defaultHeartbeat;
-        $poolMaxIdleTime = $this->getOption(ValueOptionInterface::POOL_MAX_IDLE_TIME, $params) ?? $this->defaultMaxIdleTime;
+        $poolSize = $this->getOption(ValueOptionInterface::POOL_SIZE, $params);
+        $poolHeartbeat = $this->getOption(ValueOptionInterface::POOL_HEARTBEAT, $params);
+        $poolMaxIdleTime = $this->getOption(ValueOptionInterface::POOL_MAX_IDLE_TIME, $params);
 
         unset(
             $params['driverOptions'][ValueOptionInterface::POOL_HEARTBEAT],
@@ -42,11 +42,11 @@ final class DbalDriver implements Driver
         $pool = $_SERVER[$poolName] ?? null;
         if ($pool === null) {
             $pool = new PDOClientPool(
-                new PDOClientFactory(),
-                new PDOClientConfig($params, $this->connectionParamsResolver),
-                $poolSize,
-                $poolHeartbeat,
-                $poolMaxIdleTime,
+                factory: new PDOClientFactory(),
+                config: new PDOClientConfig($params, $this->connectionParamsResolver),
+                size: $poolSize ?? $this->defaultPoolSize,
+                heartbeat: $poolHeartbeat ?? $this->defaultHeartbeat,
+                maxIdleTime: $poolMaxIdleTime ?? $this->defaultMaxIdleTime,
             );
 
             // Set pool for new requests

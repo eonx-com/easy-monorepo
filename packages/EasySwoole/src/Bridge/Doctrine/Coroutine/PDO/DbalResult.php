@@ -70,8 +70,6 @@ final class DbalResult implements Result
     }
 
     /**
-     * @psalm-param \PDO::FETCH_* $mode
-     *
      * @throws \Doctrine\DBAL\Driver\PDO\Exception
      */
     private function fetch(int $mode): mixed
@@ -84,10 +82,6 @@ final class DbalResult implements Result
     }
 
     /**
-     * @psalm-param \PDO::FETCH_* $mode
-     *
-     * @return list<mixed>
-     *
      * @throws \Doctrine\DBAL\Driver\PDO\Exception
      */
     private function fetchAll(int $mode): array

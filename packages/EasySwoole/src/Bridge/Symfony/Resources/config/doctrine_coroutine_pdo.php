@@ -18,7 +18,10 @@ return static function (ContainerConfigurator $container): void {
         ->decorate('doctrine.dbal.connection_factory')
         ->arg('$defaultPoolSize', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE))
         ->arg('$defaultHeartbeat', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT))
-        ->arg('$defaultMaxIdleTime', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME))
+        ->arg(
+            '$defaultMaxIdleTime',
+            param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME)
+        )
         ->arg('$factory', service('.inner'))
         ->arg('$connectionParamsResolver', service(AwsRdsConnectionParamsResolver::class)->nullOnInvalid());
 };

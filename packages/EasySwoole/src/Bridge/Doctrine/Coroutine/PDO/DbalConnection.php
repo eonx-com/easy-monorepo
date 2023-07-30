@@ -100,10 +100,10 @@ final class DbalConnection implements Connection
     }
 
     /**
-     * @throws \Doctrine\DBAL\Driver\Exception\UnknownParameterType
+     * @param string $value
+     * @param int $type
      *
-     * @param mixed $value
-     * @param mixed $type
+     * @throws \Doctrine\DBAL\Driver\Exception\UnknownParameterType
      */
     public function quote($value, $type = ParameterType::STRING): mixed
     {

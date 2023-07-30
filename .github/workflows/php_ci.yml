@@ -26,11 +26,12 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage || 'none' }}
-                    extensions: pdo_sqlite, openswoole
+                    extensions: pdo_sqlite
 
             -   uses: ramsey/composer-install@v2
             -   uses: ramsey/composer-install@v2
                 with:
+                    composer-options: --ignore-platform-reqs
                     working-directory: quality
 
             -   if: matrix.actions.cache
