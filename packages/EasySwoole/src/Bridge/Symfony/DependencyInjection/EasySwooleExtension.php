@@ -26,6 +26,12 @@ final class EasySwooleExtension extends Extension
         'reset_dbal_connections' => BridgeConstantsInterface::PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS,
     ];
 
+    private const DOCTRINE_COROUTINE_PDO_CONFIG = [
+        'default_heartbeat' => BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT,
+        'default_max_idle_time' => BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME,
+        'default_pool_size' => BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE,
+    ];
+
     private const EASY_BATCH_CONFIG = [
         'reset_batch_processor' => BridgeConstantsInterface::PARAM_RESET_EASY_BATCH_PROCESSOR,
     ];
@@ -76,6 +82,14 @@ final class EasySwooleExtension extends Extension
             }
 
             $loader->load('doctrine.php');
+
+            if ($config['doctrine']['coroutine_pdo']['enabled'] ?? false) {
+                foreach (self::DOCTRINE_COROUTINE_PDO_CONFIG as $configName => $param) {
+                    $container->setParameter($param, $config['doctrine']['coroutine_pdo'][$configName]);
+                }
+
+                $loader->load('doctrine_coroutine_pdo.php');
+            }
         }
 
         if (($config['easy_admin']['enabled'] ?? true) && \class_exists(EA::class)) {

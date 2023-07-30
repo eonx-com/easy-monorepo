@@ -15,6 +15,12 @@ interface BridgeConstantsInterface
 
     public const PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS = 'easy_swoole.reset_doctrine_dbal_connections';
 
+    public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT = 'easy_swoole.doctrine_coroutine_pdo_default_heartbeat';
+
+    public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME = 'easy_swoole.doctrine_coroutine_pdo_default_max_idle_time';
+
+    public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE = 'easy_swoole.doctrine_coroutine_pdo_default_pool_size';
+
     public const PARAM_RESET_EASY_BATCH_PROCESSOR = 'easy_swoole.reset_easy_batch_processor';
 
     public const PARAM_STATIC_PHP_FILES_ALLOWED_DIRS = 'easy_swoole.static_php_files_allowed_dirs';

@@ -5,9 +5,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-bugsnag": "^5.1",
-        "eonx-com/easy-utils": "^5.1",
+        "eonx-com/easy-bugsnag": "^5.0",
+        "eonx-com/easy-utils": "^5.0",
         "monolog/monolog": "^2.9",
+        "openswoole/core": "^22.1",
         "psr/log": "^3.0",
         "symfony/console": "^6.3",
         "symfony/filesystem": "^6.3",
@@ -19,6 +20,7 @@
         "symfony/var-dumper": "^6.3"
     },
     "require-dev": {
+        "openswoole/ide-helper": "^22.0",
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3"
     },

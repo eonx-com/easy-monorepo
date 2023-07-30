@@ -8,6 +8,7 @@ use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
 use EonX\EasySwoole\Helpers\FunctionHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
+use EonX\EasySwoole\Helpers\OutputHelper;
 use EonX\EasySwoole\Helpers\SslCertificateHelper;
 use ReflectionClass;
 use Swoole\Constant;
