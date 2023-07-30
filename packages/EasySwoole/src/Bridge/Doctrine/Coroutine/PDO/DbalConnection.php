@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
@@ -13,14 +12,16 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
 use OpenSwoole\Core\Coroutine\Client\PDOClient;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
+use PDO;
 use PDOException;
 
 final class DbalConnection implements Connection
 {
     private ?PDOClient $pdo = null;
 
-    public function __construct(private readonly ClientPool $pool)
-    {
+    public function __construct(
+        private readonly ClientPool $pool
+    ) {
     }
 
     public function __destruct()
@@ -30,13 +31,54 @@ final class DbalConnection implements Connection
         }
     }
 
+    public function beginTransaction(): bool
+    {
+        try {
+            return $this->getPdo()
+                ->beginTransaction();
+        } catch (PDOException $exception) {
+            throw DriverPDOException::new($exception);
+        }
+    }
+
+    public function commit(): bool
+    {
+        try {
+            return $this->getPdo()
+                ->commit();
+        } catch (PDOException $exception) {
+            throw DriverPDOException::new($exception);
+        }
+    }
+
+    public function exec(string $sql): int
+    {
+        return $this->getPdo()
+            ->exec($sql);
+    }
+
     public function getNativeConnection(): object
     {
         /** @var \PDO $basePdo */
-        $basePdo = $this->getPdo()->__getObject();
-        $basePdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $basePdo = $this->getPdo()
+            ->__getObject();
+
+        $basePdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $basePdo;
+    }
+
+    public function lastInsertId($name = null)
+    {
+        try {
+            return $name === null
+                ? $this->getPdo()
+                    ->lastInsertId()
+                : $this->getPdo()
+                    ->lastInsertId($name);
+        } catch (PDOException $exception) {
+            throw Exception::new($exception);
+        }
     }
 
     public function prepare(string $sql): Statement
@@ -59,50 +101,21 @@ final class DbalConnection implements Connection
 
     /**
      * @throws \Doctrine\DBAL\Driver\Exception\UnknownParameterType
+     *
+     * @param mixed $value
+     * @param mixed $type
      */
     public function quote($value, $type = ParameterType::STRING): mixed
     {
-        return $this->getPdo()->quote($value, ParameterTypeMap::convertParamType($type));
-    }
-
-    public function exec(string $sql): int
-    {
-        return $this->getPdo()->exec($sql);
-    }
-
-    public function lastInsertId($name = null)
-    {
-        try {
-            return $name === null
-                ? $this->getPdo()->lastInsertId()
-                : $this->getPdo()->lastInsertId($name);
-        } catch (PDOException $exception) {
-            throw Exception::new($exception);
-        }
-    }
-
-    public function beginTransaction(): bool
-    {
-        try {
-            return $this->getPdo()->beginTransaction();
-        } catch (PDOException $exception) {
-            throw DriverPDOException::new($exception);
-        }
-    }
-
-    public function commit(): bool
-    {
-        try {
-            return $this->getPdo()->commit();
-        } catch (PDOException $exception) {
-            throw DriverPDOException::new($exception);
-        }
+        return $this->getPdo()
+            ->quote($value, ParameterTypeMap::convertParamType($type));
     }
 
     public function rollBack(): bool
     {
         try {
-            return $this->getPdo()->rollBack();
+            return $this->getPdo()
+                ->rollBack();
         } catch (PDOException $exception) {
             throw DriverPDOException::new($exception);
         }

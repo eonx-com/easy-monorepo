@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
@@ -14,8 +13,9 @@ use PDOException;
 
 final class DbalStatement implements Statement
 {
-    public function __construct(private readonly PDOStatementProxy $pdoStatement)
-    {
+    public function __construct(
+        private readonly PDOStatementProxy $pdoStatement
+    ) {
     }
 
     public function bindParam(
@@ -31,7 +31,7 @@ final class DbalStatement implements Statement
                 $variable,
                 ParameterTypeMap::convertParamType($type),
                 $length ?? 0,
-                ...array_slice(func_get_args(), 4),
+                ...\array_slice(\func_get_args(), 4),
             );
         } catch (PDOException $exception) {
             throw Exception::new($exception);

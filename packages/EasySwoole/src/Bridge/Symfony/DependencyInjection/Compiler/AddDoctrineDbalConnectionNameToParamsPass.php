@@ -1,14 +1,13 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\CoroutineConnectionFactory;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\ValueOptionInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use function Symfony\Component\String\u;
 
 final class AddDoctrineDbalConnectionNameToParamsPass implements CompilerPassInterface
@@ -22,7 +21,8 @@ final class AddDoctrineDbalConnectionNameToParamsPass implements CompilerPassInt
         }
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            $matches = u($id)->match(self::CONNECTION_REGEX);
+            $matches = u($id)
+                ->match(self::CONNECTION_REGEX);
 
             if (\is_string($matches[1] ?? null) && ($matches[0] ?? null) === $id) {
                 $params = $definition->getArguments()[0];

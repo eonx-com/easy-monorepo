@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
@@ -12,47 +11,9 @@ use PDOException;
 
 final class DbalResult implements Result
 {
-    public function __construct(private readonly PDOStatementProxy $pdoStatement)
-    {
-    }
-
-    public function fetchNumeric()
-    {
-        return $this->fetch(PDO::FETCH_NUM);
-    }
-
-    public function fetchAssociative()
-    {
-        return $this->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function fetchOne()
-    {
-        return $this->fetch(PDO::FETCH_COLUMN);
-    }
-
-    public function fetchAllNumeric(): array
-    {
-        return $this->fetchAll(PDO::FETCH_NUM);
-    }
-
-    public function fetchAllAssociative(): array
-    {
-        return $this->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function fetchFirstColumn(): array
-    {
-        return $this->fetchAll(PDO::FETCH_COLUMN);
-    }
-
-    public function rowCount(): int
-    {
-        try {
-            return $this->pdoStatement->rowCount();
-        } catch (PDOException $exception) {
-            throw Exception::new($exception);
-        }
+    public function __construct(
+        private readonly PDOStatementProxy $pdoStatement
+    ) {
     }
 
     public function columnCount(): int
@@ -64,15 +25,54 @@ final class DbalResult implements Result
         }
     }
 
+    public function fetchAllAssociative(): array
+    {
+        return $this->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function fetchAllNumeric(): array
+    {
+        return $this->fetchAll(PDO::FETCH_NUM);
+    }
+
+    public function fetchAssociative()
+    {
+        return $this->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function fetchFirstColumn(): array
+    {
+        return $this->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function fetchNumeric()
+    {
+        return $this->fetch(PDO::FETCH_NUM);
+    }
+
+    public function fetchOne()
+    {
+        return $this->fetch(PDO::FETCH_COLUMN);
+    }
+
     public function free(): void
     {
         $this->pdoStatement->closeCursor();
     }
 
+    public function rowCount(): int
+    {
+        try {
+            return $this->pdoStatement->rowCount();
+        } catch (PDOException $exception) {
+            throw Exception::new($exception);
+        }
+    }
+
     /**
-     * @psalm-param PDO::FETCH_* $mode
+     * @psalm-param \PDO::FETCH_* $mode
      *
-     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\PDO\Exception
      */
     private function fetch(int $mode): mixed
     {
@@ -84,11 +84,11 @@ final class DbalResult implements Result
     }
 
     /**
-     * @psalm-param PDO::FETCH_* $mode
+     * @psalm-param \PDO::FETCH_* $mode
      *
      * @return list<mixed>
      *
-     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\PDO\Exception
      */
     private function fetchAll(int $mode): array
     {

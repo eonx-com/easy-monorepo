@@ -9,17 +9,17 @@ interface BridgeConstantsInterface
 
     public const PARAM_ACCESS_LOG_TIMEZONE = 'easy_swoole.access_log_timezone';
 
-    public const PARAM_REQUEST_LIMITS_MAX = 'easy_swoole.request_limits.max';
-
-    public const PARAM_REQUEST_LIMITS_MIN = 'easy_swoole.request_limits.min';
-
-    public const PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS = 'easy_swoole.reset_doctrine_dbal_connections';
-
     public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT = 'easy_swoole.doctrine_coroutine_pdo_default_heartbeat';
 
     public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME = 'easy_swoole.doctrine_coroutine_pdo_default_max_idle_time';
 
     public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE = 'easy_swoole.doctrine_coroutine_pdo_default_pool_size';
+
+    public const PARAM_REQUEST_LIMITS_MAX = 'easy_swoole.request_limits.max';
+
+    public const PARAM_REQUEST_LIMITS_MIN = 'easy_swoole.request_limits.min';
+
+    public const PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS = 'easy_swoole.reset_doctrine_dbal_connections';
 
     public const PARAM_RESET_EASY_BATCH_PROCESSOR = 'easy_swoole.reset_easy_batch_processor';
 

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
@@ -7,6 +6,7 @@ namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
 use co;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use OpenSwoole\Coroutine;
+use ReflectionClass;
 
 final class PDOClientPool extends ClientPool
 {
@@ -25,14 +25,14 @@ final class PDOClientPool extends ClientPool
      */
     protected function heartbeat(): void
     {
-        $poolProperty = (new \ReflectionClass($this))
+        $poolProperty = (new ReflectionClass($this))
             ->getParentClass()
             ->getProperty('pool');
 
         /** @var \OpenSwoole\Coroutine\Channel $pool */
         $pool = $poolProperty->getValue($this);
 
-        Coroutine::create(function () use ($pool) {
+        Coroutine::create(function () use ($pool): void {
             while (true) {
                 co::sleep(3);
 
