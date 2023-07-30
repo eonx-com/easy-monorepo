@@ -53,7 +53,7 @@ final class PDOClient extends BasePDOClient
 
         $driverClass = self::DRIVER_MAPPING[$params['driver']] ?? null;
         if ($driverClass === null) {
-            throw new RuntimeException(\sprintf('Driver "%s" not supported', $config['driver']));
+            throw new RuntimeException(\sprintf('Driver "%s" not supported', $params['driver']));
         }
 
         $pdoDsnFactory = new ReflectionMethod($driverClass, 'constructPdoDsn');

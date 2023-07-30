@@ -32,6 +32,10 @@ parameters:
         - %currentWorkingDirectory%/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
         - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
         - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/DbalConnection.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/DbalResult.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/DbalStatement.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/PDOClientPool.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Symfony/Cache/SwooleTableAdapter.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/CacheTableHelper.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/FunctionHelper.php

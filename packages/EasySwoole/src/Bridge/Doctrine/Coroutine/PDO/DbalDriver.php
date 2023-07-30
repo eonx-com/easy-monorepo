@@ -66,6 +66,9 @@ final class DbalDriver implements Driver
         return $this->decorated->getExceptionConverter();
     }
 
+    /**
+     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager<\Doctrine\DBAL\Platforms\AbstractPlatform>
+     */
     public function getSchemaManager(Connection $conn, AbstractPlatform $platform): AbstractSchemaManager
     {
         return $this->decorated->getSchemaManager($conn, $platform);
