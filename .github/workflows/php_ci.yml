@@ -32,8 +32,8 @@ jobs:
                 uses: shivammathur/cache-extensions@v1
                 with:
                     php-version: ${{ matrix.php }}
-                    extensions: $PHP_EXTENSIONS
-                    key: PHP_EXTENSIONS_CACHE_KEY
+                    extensions: ${{ env.PHP_EXTENSIONS }}
+                    key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
 
             -   name: Cache extensions
                 uses: actions/cache@v3
@@ -47,7 +47,7 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage || 'none' }}
-                    extensions: $PHP_EXTENSIONS
+                    extensions: ${{ env.PHP_EXTENSIONS }}
 
             -   name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
