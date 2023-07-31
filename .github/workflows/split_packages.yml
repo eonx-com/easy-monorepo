@@ -2,8 +2,8 @@ name: 'Split Packages'
 on:
     push:
         branches:
-            - master
             - 4.x
+            - master
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
