@@ -11,7 +11,7 @@
     "require-dev": {
         "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
-        "doctrine/orm": "^2.6",
+        "doctrine/orm": "<=2.14.3",
         "eonx-com/easy-doctrine": "^4.5",
         "eonx-com/easy-lock": "^4.5",
         "phpunit/phpunit": "^9.5 || ^10.0",
