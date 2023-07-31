@@ -12,13 +12,14 @@ use Symfony\Component\Cache\Exception\CacheException;
 use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\Marshaller\MarshallerInterface;
 use Throwable;
+use UnexpectedValueException;
 
 final class SwooleTableAdapter extends AbstractAdapter
 {
     public function __construct(
         private readonly string $tableName,
         ?int $defaultLifetime = null,
-        private ?MarshallerInterface $marshaller = new DefaultMarshaller(),
+        private MarshallerInterface $marshaller = new DefaultMarshaller(),
     ) {
         if (CacheTableHelper::exists($this->tableName) === false) {
             throw new InvalidArgumentException(\sprintf(
@@ -116,6 +117,7 @@ final class SwooleTableAdapter extends AbstractAdapter
 
     private function getSwooleTable(): SwooleTable|OpenSwooleTable
     {
-        return CacheTableHelper::get($this->tableName, true);
+        return CacheTableHelper::get($this->tableName)
+            ?? throw new UnexpectedValueException(\sprintf('Cache table "%s" does not exist.', $this->tableName));
     }
 }

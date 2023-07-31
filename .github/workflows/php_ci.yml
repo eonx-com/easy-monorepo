@@ -19,17 +19,41 @@ jobs:
 
         name: ${{ matrix.actions.name }} (${{ matrix.php }})
 
-        steps:
-            -   uses: actions/checkout@v3
+        env:
+            PHP_EXTENSIONS: pdo_sqlite, openswoole, pkcs11
+            PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
 
-            -   uses: shivammathur/setup-php@v2
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup cache environment
+                id: cache-extensions
+                uses: shivammathur/cache-extensions@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: ${{ env.PHP_EXTENSIONS }}
+                    key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
+
+            -   name: Cache extensions
+                uses: actions/cache@v3
+                with:
+                    path: ${{ steps.cache-extensions.outputs.dir }}
+                    key: ${{ steps.cache-extensions.outputs.key }}
+                    restore-keys: ${{ steps.cache-extensions.outputs.key }}
+
+            -   name: Setup PHP ${{ matrix.php }}
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage || 'none' }}
-                    extensions: pdo_sqlite
+                    extensions: ${{ env.PHP_EXTENSIONS }}
 
-            -   uses: ramsey/composer-install@v2
-            -   uses: ramsey/composer-install@v2
+            -   name: Install Composer dependencies
+                uses: ramsey/composer-install@v2
+
+            -   name: Install Composer dependencies for Quality Tools
+                uses: ramsey/composer-install@v2
                 with:
                     working-directory: quality
 

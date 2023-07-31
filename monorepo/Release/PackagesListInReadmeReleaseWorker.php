@@ -15,8 +15,9 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 
     private Filesystem $filesystem;
 
-    public function __construct(private FinderSanitizer $finderSanitizer)
-    {
+    public function __construct(
+        private FinderSanitizer $finderSanitizer,
+    ) {
         $this->filesystem = new Filesystem();
     }
 
@@ -55,8 +56,8 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
             $json = \json_decode($composerFile->getContents(), true);
 
             yield $packageName => [
-                'name' => $json['name'],
                 'description' => $json['description'],
+                'name' => $json['name'],
             ];
         }
     }

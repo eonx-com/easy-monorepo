@@ -40,6 +40,10 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
 
     $rectorConfig->paths([
+        __DIR__ . '/../bin',
+        __DIR__ . '/../config',
+        __DIR__ . '/../monorepo',
+        __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
         __DIR__ . '/../tests',
         __DIR__ . '/ecs.php',

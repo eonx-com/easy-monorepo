@@ -7,35 +7,26 @@ services:
 
 parameters:
     tmpDir: var/cache/phpstan
-    parallel:
-        jobSize: 20
-        maximumNumberOfProcesses: 32
-        minimumNumberOfJobsPerProcess: 2
 
-    paths:
-        - %currentWorkingDirectory%/packages
+    parallel:
+        maximumNumberOfProcesses: 2
 
     level: 8
 
     bootstrapFiles:
-        - %currentWorkingDirectory%/tests/bootstrap.php
-        - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
+        - %currentWorkingDirectory%/vendor/autoload.php
+
+    paths:
+        - %currentWorkingDirectory%/bin
+        - %currentWorkingDirectory%/config
+        - %currentWorkingDirectory%/monorepo
+        - %currentWorkingDirectory%/packages
+        - %currentWorkingDirectory%/tests
 
     excludePaths:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/*/config/*
-        - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
-        - %currentWorkingDirectory%/packages/EasyApiToken/src/Interfaces/*
-        - %currentWorkingDirectory%/packages/EasyApiToken/tests/Bridge/Symfony/*
-        - %currentWorkingDirectory%/packages/EasyEncryption/src/AwsPkcs11Encryptor.php
-        - %currentWorkingDirectory%/packages/EasyErrorHandler/src/Bridge/Laravel/ExceptionHandler.php
-        - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Resources/config/services.php
-        - %currentWorkingDirectory%/packages/EasySecurity/src/Bridge/Symfony/Security/SecurityContextAuthenticator.php
-        - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Symfony/Cache/SwooleTableAdapter.php
-        - %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/CacheTableHelper.php
-        - %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/FunctionHelper.php
-        - %currentWorkingDirectory%/packages/EasyTest/src/Bridge/PhpUnit/Extension/MailerMessageLoggerListenerPhpUnitExtension.php
+        - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -57,6 +48,12 @@ parameters:
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+
+        - message: '#Method EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
+
+        - message: '#Method EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
@@ -173,22 +170,17 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySecurity/tests/Authorization/RoleTest.php
 
         # ---- EasySwoole ----
-        - '#Call to method (.*) on an unknown class OpenSwoole\\Table#'
-
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
-        - message: '#Method EonX\\EasySwoole\\Helpers\\SwooleTableHelper\:\:create\(\) has invalid return type OpenSwoole\\Table#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
-
-        - message: '#PHPDoc tag @var for variable \$table contains unknown class OpenSwoole\\Table#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
-
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+
+        - message: '#Access to undefined constant OpenSwoole\\Constant\:\:SSL#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SslCertificateHelper.php
 
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----

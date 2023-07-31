@@ -64,6 +64,6 @@ final class ExportPackagesAsJsonCommand extends Command
     {
         $json = \json_decode($composerJson->getContents(), true);
 
-        return \str_replace('eonx-com/', '', $json['name']);
+        return \str_replace('eonx-com/', '', (string)$json['name']);
     }
 }

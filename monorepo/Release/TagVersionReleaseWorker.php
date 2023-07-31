@@ -15,13 +15,13 @@ final class TagVersionReleaseWorker implements ReleaseWorkerInterface
     public function __construct(
         private readonly GitManager $gitManager,
         private readonly ClientInterface $httpClient,
-        private readonly ProcessRunner $processRunner
+        private readonly ProcessRunner $processRunner,
     ) {
     }
 
     public function getDescription(Version $version): string
     {
-        return sprintf('Add local tag "%s"', $version->getVersionString());
+        return \sprintf('Add local tag "%s"', $version->getVersionString());
     }
 
     /**
@@ -38,26 +38,26 @@ final class TagVersionReleaseWorker implements ReleaseWorkerInterface
 
         try {
             $this->processRunner->run($cmd);
-        } catch (Throwable $throwable) {
-            // nothing to commit
+        } catch (Throwable) {
+            // Nothing to commit
         }
 
         // Create Release in GitHub
         $url = 'https://api.github.com/repos/eonx-com/easy-monorepo/releases';
         $options = [
+            'body' => \json_encode([
+                'draft' => false,
+                'generate_release_notes' => true,
+                'make_latest' => 'legacy',
+                'name' => $version->getVersionString(),
+                'prerelease' => false,
+                'tag_name' => $version->getVersionString(),
+                'target_commitish' => $this->gitManager->getCurrentBranch(),
+            ]),
             'headers' => [
                 'accept' => 'application/vnd.github.v3+json',
                 'authorization' => \sprintf('Token %s', \getenv('GITHUB_TOKEN')),
             ],
-            'body' => \json_encode([
-                'name' => $version->getVersionString(),
-                'draft' => false,
-                'prerelease' => false,
-                'generate_release_notes' => true,
-                'make_latest' => 'legacy',
-                'tag_name' => $version->getVersionString(),
-                'target_commitish' => $this->gitManager->getCurrentBranch(),
-            ]),
         ];
 
         $this->httpClient->request('POST', $url, $options);

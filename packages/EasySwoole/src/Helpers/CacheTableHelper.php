@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Helpers;
 
 use EonX\EasySwoole\Enums\SwooleTableColumnType;
 use EonX\EasySwoole\ValueObjects\SwooleTableColumnDefinition;
+use JetBrains\PhpStorm\Deprecated;
 use OpenSwoole\Table as OpenSwooleTable;
 use Swoole\Table as SwooleTable;
 use UnexpectedValueException;
@@ -102,8 +103,11 @@ final class CacheTableHelper
         return self::get($name) !== null;
     }
 
-    public static function get(string $name, ?bool $throwOnNull = null): SwooleTable|OpenSwooleTable|null
-    {
+    public static function get(
+        string $name,
+        #[Deprecated(reason: 'It has to be removed in 6.0 in favour of returning null.')]
+        ?bool $throwOnNull = null,
+    ): SwooleTable|OpenSwooleTable|null {
         $tableClass = SwooleTableHelper::getTableClass();
         $table = $_SERVER[self::getServerTableName($name)] ?? null;
         $table = $table instanceof $tableClass ? $table : null;
