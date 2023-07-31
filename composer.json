@@ -23,6 +23,7 @@
         "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "nyholm/psr7": "^1.8",
+        "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^4.7",
@@ -45,8 +46,7 @@
         "symfony/var-dumper": "^6.3",
         "symfony/yaml": "^6.3",
         "symplify/autowire-array-parameter": "^11.0",
-        "symplify/package-builder": "^11.0",
-        "openswoole/core": "^22.1"
+        "symplify/package-builder": "^11.0"
     },
     "require-dev": {
         "api-platform/core": "^3.1",
@@ -66,6 +66,7 @@
         "mikey179/vfsstream": "^1.6",
         "mockery/mockery": "^1.6",
         "natepage/php-pkcs11-ide-helper": "^1.0",
+        "openswoole/ide-helper": "^22.0",
         "phpseclib/phpseclib": "^3.0",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
@@ -84,8 +85,7 @@
         "symplify/phpstan-extensions": "^11.0",
         "symplify/smart-file-system": "^11.0",
         "tracy/tracy": "^2.10",
-        "vlucas/phpdotenv": "^5.5",
-        "openswoole/ide-helper": "^22.0"
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
@@ -198,7 +198,7 @@
         "check-phpstan": "quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.neon",
         "check-rector": "quality/vendor/bin/rector process --ansi --config=quality/rector.php --dry-run",
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
-        "fix-ecs": "quality/vendor/bin/ecs check --fix --ansi --config=quality/ecs.php --memory-limit=-1",
+        "fix-ecs": "quality/vendor/bin/ecs check --fix --ansi --config=quality/ecs.php",
         "fix-rector": "quality/vendor/bin/rector process --ansi --config=quality/rector.php",
         "merge": "vendor/bin/monorepo-builder merge --ansi",
         "post-install-cmd": [
