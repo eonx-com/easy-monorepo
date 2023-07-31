@@ -118,6 +118,6 @@ final class SwooleTableAdapter extends AbstractAdapter
     private function getSwooleTable(): SwooleTable|OpenSwooleTable
     {
         return CacheTableHelper::get($this->tableName)
-            ?? throw new UnexpectedValueException(\sprintf('Cache table "%s" does not exist', $this->tableName));
+            ?? throw new UnexpectedValueException(\sprintf('Cache table "%s" does not exist.', $this->tableName));
     }
 }
