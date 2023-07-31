@@ -18,6 +18,8 @@ jobs:
                     coverage: none
 
             -   uses: ramsey/composer-install@v2
+                with:
+                    composer-options: --ignore-platform-reqs
 
             -   id: output_data
                 run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
@@ -46,7 +48,9 @@ jobs:
                     extensions: pdo_sqlite
 
             -   uses: ramsey/composer-install@v2
+                with:
+                    composer-options: --ignore-platform-reqs
 
             -   run: bin/monorepo localize-monorepo-packages
-            -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
+            -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi --ignore-platform-reqs
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
