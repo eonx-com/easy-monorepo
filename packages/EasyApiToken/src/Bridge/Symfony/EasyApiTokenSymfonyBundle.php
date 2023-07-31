@@ -3,14 +3,22 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Bridge\Symfony;
 
-use EonX\EasyApiToken\Bridge\Symfony\DependencyInjection\EasyApiTokenExtension;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use EonX\EasyApiToken\Bridge\BridgeConstantsInterface;
+use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-final class EasyApiTokenSymfonyBundle extends Bundle
+final class EasyApiTokenSymfonyBundle extends AbstractBundle
 {
-    public function getContainerExtension(): ExtensionInterface
+    protected string $extensionAlias = 'easy_api_token';
+
+    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        return new EasyApiTokenExtension();
+        $container->import(__DIR__ . '/Resources/config/services.php');
+
+        $builder
+            ->registerForAutoconfiguration(ApiTokenDecoderProviderInterface::class)
+            ->addTag(BridgeConstantsInterface::TAG_DECODER_PROVIDER);
     }
 }
