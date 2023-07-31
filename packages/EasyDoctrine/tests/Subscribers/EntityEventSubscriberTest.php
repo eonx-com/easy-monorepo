@@ -128,6 +128,75 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         self::assertCount(1, $events);
     }
 
+    public function testEventsAreDispatchedForDeletedCollectionItem(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class, Tag::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag */
+        $tag = $entityManager->getRepository(Tag::class)->find(1);
+
+        $product->getTags()->toArray();
+        $entityManager->remove($tag);
+        $entityManager->flush();
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(2, $events);
+        self::assertInstanceOf(EntityDeletedEvent::class, $events[0]);
+        self::assertEquals($events[0]->getChangeSet(), [
+            'id' => [1, null],
+            'name' => ['Tag 1', null],
+            'product_id' => [1, null],
+            'product' => [$product, null],
+        ]);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'tags' => [
+                        ['', '2'],
+                        ['2'],
+                    ],
+                ]
+            ),
+            $events[1]
+        );
+    }
+
     public function testEventsAreDispatchedWhenExceptionIsThrownAndCatched(): void
     {
         $eventDispatcher = new EventDispatcherStub();

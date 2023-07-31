@@ -130,38 +130,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
-    /**
-     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
-     *
-     * @template TKey of array-key
-     * @template T
-     *
-     * @return array<string, array<mixed>>
-     */
-    public function computeCollectionsChangeSet(
-        array $collections,
-        EntityManagerInterface $entityManager,
-    ): array {
-        $changeSet = [];
-        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            $identifierName = \current($entityManager->getClassMetadata(\get_class($entity))->getIdentifier());
-            return (string)$entityManager->getUnitOfWork()
-                ->getEntityIdentifier($entity)[$identifierName];
-        };
-        foreach ($collections as $collection) {
-            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
-            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
-            $diff = \array_diff($snapshotIds, $actualIds);
-            if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
-                /** @var array{fieldName: string} $mapping */
-                $mapping = $collection->getMapping();
-                $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
-            }
-        }
-
-        return $changeSet;
-    }
-
     public function postFlush(PostFlushEventArgs $eventArgs): void
     {
         $entityManager = $eventArgs->getEntityManager();
@@ -177,16 +145,42 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      * @template TKey of array-key
      * @template T
      *
+     * @return array<string, array<mixed>>
+     */
+    private function computeCollectionsChangeSet(
+        array $collections,
+        EntityManagerInterface $entityManager,
+    ): array {
+        $changeSet = [];
+        $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
+            return (string)$entityManager->getUnitOfWork()->getSingleIdentifierValue($entity);
+        };
+
+        foreach ($collections as $collection) {
+            $snapshotIds = \array_map($mappingIdsFunction, $collection->getSnapshot());
+            $actualIds = \array_map($mappingIdsFunction, $collection->toArray());
+            $diff = \array_diff($snapshotIds, $actualIds);
+            if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
+                /** @var array{fieldName: string} $mapping */
+                $mapping = $collection->getMapping();
+                $changeSet[$mapping['fieldName']] = [\array_values($snapshotIds), \array_values($actualIds)];
+            }
+        }
+
+        return $changeSet;
+    }
+
+    /**
+     * @param list<\Doctrine\ORM\PersistentCollection<TKey, T>> $collections
+     *
+     * @template TKey of array-key
+     * @template T
+     *
      * @return list<\Doctrine\ORM\PersistentCollection<TKey, T>>
      */
     private function filterCollections(array $collections): array
     {
         return \array_filter($collections, function (PersistentCollection $collection): bool {
-            $typeClass = $collection->getTypeClass();
-            if ($typeClass->idGenerator->isPostInsertGenerator()) {
-                return false;
-            }
-
             /** @var object $owner */
             $owner = $collection->getOwner();
             foreach ($this->acceptableEntities as $acceptableEntityClass) {
