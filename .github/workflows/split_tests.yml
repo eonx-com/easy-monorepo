@@ -81,7 +81,7 @@ jobs:
                     key: ${{ steps.cache-extensions.outputs.key }}
                     restore-keys: ${{ steps.cache-extensions.outputs.key }}
 
-            -   name: Setup PHP 8.2
+            -   name: Setup PHP ${{ matrix.php }}
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
