@@ -169,7 +169,8 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag */
         $tag = $entityManager->getRepository(Tag::class)->find(1);
 
-        $product->getTags()->toArray();
+        $product->getTags()
+            ->toArray();
         $entityManager->remove($tag);
         $entityManager->flush();
         $entityManager->flush();

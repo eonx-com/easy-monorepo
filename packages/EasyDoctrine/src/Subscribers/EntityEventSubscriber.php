@@ -153,7 +153,8 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     ): array {
         $changeSet = [];
         $mappingIdsFunction = static function (object $entity) use ($entityManager): string {
-            return (string)$entityManager->getUnitOfWork()->getSingleIdentifierValue($entity);
+            return (string)$entityManager->getUnitOfWork()
+                ->getSingleIdentifierValue($entity);
         };
 
         foreach ($collections as $collection) {
