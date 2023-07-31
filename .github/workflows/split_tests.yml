@@ -9,15 +9,40 @@ on:
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v3
 
-            -   uses: shivammathur/setup-php@v2
+        env:
+            PHP_EXTENSIONS: pdo_sqlite, openswoole, pkcs11
+            PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup cache environment
+                id: cache-extensions
+                uses: shivammathur/cache-extensions@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: ${{ env.PHP_EXTENSIONS }}
+                    key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
+
+            -   name: Cache extensions
+                uses: actions/cache@v3
+                with:
+                    path: ${{ steps.cache-extensions.outputs.dir }}
+                    key: ${{ steps.cache-extensions.outputs.key }}
+                    restore-keys: ${{ steps.cache-extensions.outputs.key }}
+
+            -   name: Setup PHP 8.2
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.2
                     coverage: none
+                    extensions:
+                        ${{ env.PHP_EXTENSIONS }}
 
-            -   uses: ramsey/composer-install@v2
+            -   name: Install Composer dependencies
+                uses: ramsey/composer-install@v2
 
             -   id: output_data
                 run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
@@ -28,6 +53,7 @@ jobs:
     after_split_testing:
         needs: provide_packages_json
         runs-on: ubuntu-latest
+
         strategy:
             fail-fast: false
             matrix:
@@ -48,5 +74,7 @@ jobs:
             -   uses: ramsey/composer-install@v2
 
             -   run: bin/monorepo localize-monorepo-packages
+
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
+
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
