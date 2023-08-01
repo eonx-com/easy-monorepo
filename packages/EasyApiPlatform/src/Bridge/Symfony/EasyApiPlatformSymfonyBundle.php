@@ -12,11 +12,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyApiPlatformSymfonyBundle extends AbstractBundle
 {
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new ReadListenerCompilerPass());
-    }
-
     private const EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG = [
         'iri_fields' => BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
     ];
@@ -25,7 +20,10 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
         'custom_paginator_enabled' => BridgeConstantsInterface::PARAM_CUSTOM_PAGINATOR_ENABLED,
     ];
 
-    protected string $extensionAlias = 'easy_api_platform';
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new ReadListenerCompilerPass());
+    }
 
     public function configure(DefinitionConfigurator $definition): void
     {
@@ -35,11 +33,15 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         foreach (self::EASY_API_PLATFORM_BASE_CONFIG as $name => $param) {
-            $builder->setParameter($param, $config[$name]);
+            $container
+                ->parameters()
+                ->set($param, $config[$name]);
         }
 
         foreach (self::EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
-            $builder->setParameter($param, $config['advanced_search_filter'][$name]);
+            $container
+                ->parameters()
+                ->set($param, $config['advanced_search_filter'][$name]);
         }
 
         $container->import(__DIR__ . '/Resources/config/services.php');
