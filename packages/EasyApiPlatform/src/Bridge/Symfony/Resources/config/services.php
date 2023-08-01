@@ -18,9 +18,9 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$decorated', service('.inner'));
 
     $services->set(ReadListener::class)
+        ->arg('$resourceMetadataCollectionFactory', 'api_platform.metadata.resource.metadata_collection_factory')
         ->tag('kernel.event_listener', [
             'event' => 'kernel.request',
-            'method' => 'onKernelRequest',
             'priority' => 4,
         ]);
 };

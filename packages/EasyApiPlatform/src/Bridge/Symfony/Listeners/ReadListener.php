@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Bridge\Symfony\Listeners;
 
 use ApiPlatform\Metadata\HttpOperation;
+use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Util\OperationRequestInitiatorTrait;
 use ApiPlatform\Util\RequestAttributesExtractor;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -13,7 +14,12 @@ final class ReadListener
 {
     use OperationRequestInitiatorTrait;
 
-    public function onKernelRequest(RequestEvent $event): void
+    public function __construct(?ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory = null)
+    {
+        $this->resourceMetadataCollectionFactory = $resourceMetadataCollectionFactory;
+    }
+
+    public function __invoke(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $operation = $this->initializeOperation($request);
@@ -24,7 +30,7 @@ final class ReadListener
         }
 
         if (
-            isset($attributes['receive']) === false ||
+            (bool)($attributes['receive'] ?? false) === false ||
             $operation === null ||
             ($operation->canRead() ?? true) === false ||
             (\count((array)($operation->getUriVariables() ?? null)) === 0 && $request->isMethodSafe() === false)) {
