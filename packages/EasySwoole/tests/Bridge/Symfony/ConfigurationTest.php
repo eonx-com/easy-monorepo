@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Tests\Bridge\Symfony;
 
-use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Configuration;
+use EonX\EasySwoole\Bridge\Symfony\EasySwooleSymfonyBundle;
 use EonX\EasyUtils\Helpers\ArrayHelper;
+use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends AbstractSymfonyTestCase
@@ -191,7 +192,10 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
      */
     public function testConfiguration(array $configs, array $expectedConfig): void
     {
-        $config = (new Processor())->processConfiguration(new Configuration(), $configs);
+        $config = (new Processor())->processConfiguration(
+            new Configuration(subject: new EasySwooleSymfonyBundle(), container: null, alias: 'easy_swoole'),
+            $configs
+        );
 
         self::assertEquals($expectedConfig, $config);
     }
