@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 final class EntityManagerStub
 {
     /**
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -87,7 +87,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator

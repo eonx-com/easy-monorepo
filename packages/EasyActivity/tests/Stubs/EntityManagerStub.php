@@ -40,7 +40,7 @@ final class EntityManagerStub
     public const ACTIVITY_TABLE_NAME = 'test_easy_activity_logs';
 
     /**
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -77,7 +77,7 @@ final class EntityManagerStub
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
         $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
-        /** @var string[] $subscribedEntities */
+        /** @var class-string[] $subscribedEntities */
         $subscribedEntities = \array_keys($easyActivityConfig['subjects'] ?? []);
         $entityManager = self::createFromSymfonyEventDispatcher(
             $eventDispatcher,
@@ -157,7 +157,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
