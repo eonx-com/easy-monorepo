@@ -83,6 +83,8 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             }
         }
 
+        $context['iri'] = 'not-needed-for-activity-log';
+
         $context[AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER] = $this->circularReferenceHandler;
 
         if (\count($data) === 0) {
