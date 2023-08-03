@@ -83,7 +83,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             }
         }
 
-        // Workaround for \ApiPlatform\Serializer\AbstractItemNormalizer
+        // Workaround for \ApiPlatform\Serializer\AbstractItemNormalizer for API Resource deletion case
         $context['iri'] = 'not-needed-for-activity-log';
 
         $context[AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER] = $this->circularReferenceHandler;
