@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
+        "doctrine/orm": "<=2.14.3",
         "mockery/mockery": "^1.4",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
