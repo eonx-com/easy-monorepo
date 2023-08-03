@@ -25,6 +25,11 @@ class Offer
     #[ORM\Column(type: Types::STRING, length: 128)]
     private string $name;
 
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
     public function addProduct(Product $product): self
     {
         if ($this->products->contains($product) === false) {
@@ -67,9 +72,5 @@ class Offer
         $this->name = $name;
 
         return $this;
-    }
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
     }
 }
