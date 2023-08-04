@@ -102,7 +102,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
         /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
         $subscriber = $container->get(EntityEventSubscriberInterface::class);
-        $entities = $this->getPrivatePropertyValue($subscriber, 'acceptableEntities');
+        $entities = $this->getPrivatePropertyValue($subscriber, 'subscribedEntities');
         self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $entities);
         self::assertInstanceOf(EntityEventSubscriber::class, $subscriber);
     }

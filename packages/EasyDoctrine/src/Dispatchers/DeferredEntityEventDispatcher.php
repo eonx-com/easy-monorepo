@@ -14,31 +14,36 @@ use LogicException;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
 {
+    /**
+     * @var mixed[]
+     */
+    private array $collectionChangeSets = [];
+
+    /**
+     * @var array<int, object>
+     */
+    private array $createdEntities = [];
+
+    /**
+     * @var array<int, object>
+     */
+    private array $deletedEntities = [];
+
     private bool $enabled;
 
     /**
-     * @var array<int, array<string, array<string, array{mixed, mixed}>>>
+     * @var mixed[]
      */
     private array $entityChangeSets = [];
 
     /**
-     * @var array<string, object>
+     * @var array<int, object>
      */
-    private array $entityDeletions = [];
-
-    /**
-     * @var array<string, object>
-     */
-    private array $entityInsertions = [];
-
-    /**
-     * @var array<string, object>
-     */
-    private array $entityUpdates = [];
+    private array $updatedEntities = [];
 
     public function __construct(
-        private EventDispatcherInterface $eventDispatcher,
-        private ObjectCopierInterface $objectCopier,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ObjectCopierInterface $objectCopier,
     ) {
         $this->enabled = true;
     }
@@ -52,22 +57,35 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
                 }
             }
 
-            $activeOids = [];
+            foreach (\array_keys($this->collectionChangeSets) as $level) {
+                if ($level >= $transactionNestingLevel) {
+                    $this->collectionChangeSets[$level] = [];
+                }
+            }
+
+            $activeEntityHashes = [];
+
             foreach ($this->entityChangeSets as $levelEntityChangeSets) {
-                foreach ($levelEntityChangeSets as $oid => $changeSet) {
-                    $activeOids[$oid] = true;
+                foreach ($levelEntityChangeSets as $entityHash => $changeSet) {
+                    $activeEntityHashes[$entityHash] = true;
                 }
             }
 
-            foreach ($this->entityInsertions as $oid => $value) {
-                if (isset($activeOids[$oid]) === false) {
-                    unset($this->entityInsertions[$oid]);
+            foreach ($this->collectionChangeSets as $levelEntityChangeSets) {
+                foreach ($levelEntityChangeSets as $entityHash => $changeSet) {
+                    $activeEntityHashes[$entityHash] = true;
                 }
             }
 
-            foreach ($this->entityUpdates as $oid => $value) {
-                if (isset($activeOids[$oid]) === false) {
-                    unset($this->entityUpdates[$oid]);
+            foreach ($this->createdEntities as $entityHash => $value) {
+                if (isset($activeEntityHashes[$entityHash]) === false) {
+                    unset($this->createdEntities[$entityHash]);
+                }
+            }
+
+            foreach ($this->updatedEntities as $entityHash => $value) {
+                if (isset($activeEntityHashes[$entityHash]) === false) {
+                    unset($this->updatedEntities[$entityHash]);
                 }
             }
 
@@ -75,52 +93,63 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $this->entityChangeSets = [];
-        $this->entityDeletions = [];
-        $this->entityInsertions = [];
-        $this->entityUpdates = [];
+        $this->collectionChangeSets = [];
+        $this->deletedEntities = [];
+        $this->createdEntities = [];
+        $this->updatedEntities = [];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deferDelete(int $transactionNestingLevel, object $object, array $entityChangeSet): void
+    public function deferCollectionUpdate(
+        int $transactionNestingLevel,
+        object $entity,
+        string $fieldName,
+        array $oldIds,
+        array $newsIds,
+    ): void {
+        if ($this->enabled === false) {
+            return;
+        }
+
+        $entityObjectId = \spl_object_id($entity);
+        $this->updatedEntities[$entityObjectId] = $entity;
+        $this->collectionChangeSets[$transactionNestingLevel][$entityObjectId][$fieldName] = [
+            'new' => $newsIds,
+            'old' => $oldIds,
+        ];
+    }
+
+    public function deferDelete(int $transactionNestingLevel, object $entity, array $entityChangeSet): void
     {
         if ($this->enabled === false) {
             return;
         }
 
-        $oid = \spl_object_hash($object);
+        $entityObjectId = \spl_object_id($entity);
         // `clone` is used to preserve the identifier that is removed after deleting entity
-        $this->entityDeletions[$oid] = $this->objectCopier->copy($object);
-        $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
+        $this->deletedEntities[$entityObjectId] = $this->objectCopier->copy($entity);
+        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deferInsert(int $transactionNestingLevel, object $object, array $entityChangeSet): void
+    public function deferInsert(int $transactionNestingLevel, object $entity, array $entityChangeSet): void
     {
         if ($this->enabled === false) {
             return;
         }
 
-        $oid = \spl_object_hash($object);
-        $this->entityInsertions[$oid] = $object;
-        $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
+        $entityObjectId = \spl_object_id($entity);
+        $this->createdEntities[$entityObjectId] = $entity;
+        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void
+    public function deferUpdate(int $transactionNestingLevel, object $entity, array $entityChangeSet): void
     {
         if ($this->enabled === false) {
             return;
         }
 
-        $oid = \spl_object_hash($object);
-        $this->entityUpdates[$oid] = $object;
-        $this->entityChangeSets[$transactionNestingLevel][$oid] = $entityChangeSet;
+        $entityObjectId = \spl_object_id($entity);
+        $this->updatedEntities[$entityObjectId] = $entity;
+        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
     }
 
     public function disable(): void
@@ -135,19 +164,42 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $events = [];
+
         try {
             $mergedEntityChangeSets = [];
             foreach ($this->entityChangeSets as $levelChangeSets) {
-                foreach ($levelChangeSets as $oid => $changeSet) {
-                    $mergedEntityChangeSets[$oid] = $this->mergeChangeSet(
-                        $mergedEntityChangeSets[$oid] ?? [],
+                foreach ($levelChangeSets as $entityObjectId => $changeSet) {
+                    $mergedEntityChangeSets[$entityObjectId] = $this->mergeChangeSet(
+                        $mergedEntityChangeSets[$entityObjectId] ?? [],
                         $changeSet
                     );
                 }
             }
 
-            foreach ($mergedEntityChangeSets as $oid => $entityChangeSet) {
-                $event = $this->createEntityEvent($oid, $entityChangeSet);
+            foreach ($this->collectionChangeSets as $levelChangeSets) {
+                foreach ($levelChangeSets as $entityObjectId => $entityCollectionChangeSets) {
+                    foreach ($entityCollectionChangeSets as $associationName => $changeSet) {
+                        $computedChangeSet = [[], []];
+
+                        foreach ($changeSet['old'] as $id) {
+                            $computedChangeSet[0][] = \is_callable($id) ? $id() : $id;
+                        }
+
+                        foreach ($changeSet['new'] as $id) {
+                            $computedChangeSet[1][] = \is_callable($id) ? $id() : $id;
+                        }
+
+                        $mergedEntityChangeSets[$entityObjectId] = $this->mergeChangeSet(
+                            $mergedEntityChangeSets[$entityObjectId] ?? [],
+                            [$associationName => $computedChangeSet]
+                        );
+                    }
+                }
+            }
+
+            /** @var int $entityObjectId */
+            foreach ($mergedEntityChangeSets as $entityObjectId => $entityChangeSet) {
+                $event = $this->createEntityEvent($entityObjectId, $entityChangeSet);
 
                 $events[] = $event;
             }
@@ -166,20 +218,20 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     }
 
     /**
-     * @param array<string, array{mixed, mixed}> $entityChangeSet
+     * @param mixed[] $entityChangeSet
      */
-    private function createEntityEvent(string $oid, array $entityChangeSet): EntityActionEventInterface
+    private function createEntityEvent(int $entityObjectId, array $entityChangeSet): EntityActionEventInterface
     {
-        if (isset($this->entityInsertions[$oid]) !== false) {
-            return new EntityCreatedEvent($this->entityInsertions[$oid], $entityChangeSet);
+        if (isset($this->createdEntities[$entityObjectId]) !== false) {
+            return new EntityCreatedEvent($this->createdEntities[$entityObjectId], $entityChangeSet);
         }
 
-        if (isset($this->entityUpdates[$oid]) !== false) {
-            return new EntityUpdatedEvent($this->entityUpdates[$oid], $entityChangeSet);
+        if (isset($this->updatedEntities[$entityObjectId]) !== false) {
+            return new EntityUpdatedEvent($this->updatedEntities[$entityObjectId], $entityChangeSet);
         }
 
-        if (isset($this->entityDeletions[$oid]) !== false) {
-            return new EntityDeletedEvent($this->entityDeletions[$oid], $entityChangeSet);
+        if (isset($this->deletedEntities[$entityObjectId]) !== false) {
+            return new EntityDeletedEvent($this->deletedEntities[$entityObjectId], $entityChangeSet);
         }
 
         // @codeCoverageIgnoreStart
@@ -188,21 +240,23 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     }
 
     /**
-     * @param array<string, array{mixed, mixed}> $array1
-     * @param array<string, array{mixed, mixed}> $array2
+     * @param mixed[] $currentChangeSet
+     * @param mixed[] $newChangeSet
      *
-     * @return array<string, array{mixed, mixed}>
+     * @return mixed[]
      */
-    private function mergeChangeSet(array $array1, array $array2): array
+    private function mergeChangeSet(array $currentChangeSet, array $newChangeSet): array
     {
-        foreach ($array2 as $key => [$old, $new]) {
-            if (isset($array1[$key]) === false) {
-                $array1[$key] = [$old, $new];
+        foreach ($newChangeSet as $key => [$old, $new]) {
+            if (isset($currentChangeSet[$key]) === false) {
+                $currentChangeSet[$key] = [$old, $new];
+
                 continue;
             }
-            $array1[$key][1] = $new;
+
+            $currentChangeSet[$key][1] = $new;
         }
 
-        return $array1;
+        return $currentChangeSet;
     }
 }
