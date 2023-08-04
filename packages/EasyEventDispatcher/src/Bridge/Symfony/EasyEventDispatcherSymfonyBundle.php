@@ -3,14 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyEventDispatcher\Bridge\Symfony;
 
-use EonX\EasyEventDispatcher\Bridge\Symfony\DependencyInjection\EasyEventDispatcherExtension;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-final class EasyEventDispatcherSymfonyBundle extends Bundle
+final class EasyEventDispatcherSymfonyBundle extends AbstractBundle
 {
-    public function getContainerExtension(): ExtensionInterface
+    protected string $extensionAlias = 'easy_event_dispatcher';
+
+    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        return new EasyEventDispatcherExtension();
+        $container->import(__DIR__ . '/Resources/config/services.php');
     }
 }
