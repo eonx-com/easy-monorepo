@@ -4,13 +4,8 @@ declare(strict_types=1);
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
-    if (defined('DEFAULT_LOCALE') === false) {
-        define('DEFAULT_LOCALE', 'en');
-    }
-
-    if (defined('DEFAULT_ERROR_CODES_CATEGORY_SIZE') === false) {
-        define('DEFAULT_ERROR_CODES_CATEGORY_SIZE', 100);
-    }
+    $defaultLocale = 'en';
+    $defaultErrorCodesCategorySize = 100;
 
     $definition->rootNode()
         ->children()
@@ -69,10 +64,10 @@ return static function (DefinitionConfigurator $definition) {
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->booleanNode('enabled')->defaultFalse()->end()
-                    ->scalarNode('locale')->defaultValue(DEFAULT_LOCALE)->end()
+                    ->scalarNode('locale')->defaultValue($defaultLocale)->end()
                 ->end()
             ->end()
             ->scalarNode('error_codes_interface')->defaultNull()->end()
-            ->scalarNode('error_codes_category_size')->defaultValue(DEFAULT_ERROR_CODES_CATEGORY_SIZE)->end()
+            ->scalarNode('error_codes_category_size')->defaultValue($defaultErrorCodesCategorySize)->end()
         ->end();
 };
