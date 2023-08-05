@@ -14,9 +14,6 @@ final class EasyNotificationSymfonyBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'easy_notification';
 
-    /**
- * @var string[]
- */
     private static array $configToParam = [
         'api_url' => BridgeConstantsInterface::PARAM_API_URL,
         'config_expires_after' => BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER,
