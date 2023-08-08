@@ -16,6 +16,7 @@ use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
+use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
@@ -36,6 +37,9 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
 
     $ecsConfig->paths([
+        __DIR__ . '/../bin',
+        __DIR__ . '/../config',
+        __DIR__ . '/../monorepo',
         __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
         __DIR__ . '/ecs.php',
@@ -71,6 +75,7 @@ return static function (ECSConfig $ecsConfig): void {
         ],
         DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [
+            'config/monorepo_services.php',
             'packages/*/src/Bridge/Symfony/Resources/config/*',
             'packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*',
         ],
@@ -158,6 +163,12 @@ return static function (ECSConfig $ecsConfig): void {
                     '/.*TestCase$/',
                 ],
             ],
+        ],
+    ]);
+    $ecsConfig->ruleWithConfiguration(TrailingCommaInMultilineFixer::class, [
+        'elements' => [
+            TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS,
+            TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS,
         ],
     ]);
     $ecsConfig->ruleWithConfiguration(UseSpacingSniff::class, [

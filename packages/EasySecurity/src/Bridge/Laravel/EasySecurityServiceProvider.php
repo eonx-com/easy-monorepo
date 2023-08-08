@@ -137,7 +137,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             $this->app->singleton(
                 FromRequestSecurityContextConfiguratorMiddleware::class,
                 static fn (
-                    Container $app
+                    Container $app,
                 ): FromRequestSecurityContextConfiguratorMiddleware => new FromRequestSecurityContextConfiguratorMiddleware(
                     $app->make(SecurityContextResolverInterface::class),
                     $app->tagged(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR)

@@ -10,6 +10,9 @@ use UnexpectedValueException;
 
 final class SwooleTableHelper
 {
+    /**
+     * @var class-string<\OpenSwoole\Table|\Swoole\Table>|null
+     */
     private static ?string $tableClass = null;
 
     /**
@@ -41,6 +44,9 @@ final class SwooleTableHelper
         return $table;
     }
 
+    /**
+     * @return class-string<\OpenSwoole\Table|\Swoole\Table>
+     */
     public static function getTableClass(): string
     {
         return self::$tableClass ??= \class_exists(OpenSwooleTable::class)

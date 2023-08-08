@@ -61,6 +61,7 @@
         "guzzlehttp/psr7": "^2.5",
         "illuminate/database": "^9.52",
         "illuminate/routing": "^9.52",
+        "jetbrains/phpstorm-attributes": "^1.0",
         "laravel/lumen-framework": "^9.1",
         "league/flysystem": "^1.1",
         "mikey179/vfsstream": "^1.6",

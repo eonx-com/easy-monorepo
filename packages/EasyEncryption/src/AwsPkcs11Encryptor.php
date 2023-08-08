@@ -28,7 +28,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     private bool $awsCloudHsmConfigured = false;
 
     /**
-     * @var object[]
+     * @var \Pkcs11\Key[]
      */
     private array $keys = [];
 
@@ -60,7 +60,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
 
         $this->keys = [];
         $this->session->logout();
-        $this->module->C_CloseSession($this->session);
+        $this->module?->C_CloseSession($this->session);
         $this->session = null;
     }
 
@@ -72,9 +72,12 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $this->validateKey($key);
         $this->init();
 
+        /** @var string|null $keyAsString */
+        $keyAsString = $key;
+
         return $this
-            ->findKey($this->getKeyName($key))
-            ->decrypt($this->getMechanism(), \hex2bin($text));
+            ->findKey($this->getKeyName($keyAsString))
+            ->decrypt($this->getMechanism(), (string)\hex2bin($text));
     }
 
     protected function doEncrypt(
@@ -85,8 +88,11 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $this->validateKey($key);
         $this->init();
 
+        /** @var string|null $keyAsString */
+        $keyAsString = $key;
+
         $encrypted = $this
-            ->findKey($this->getKeyName($key))
+            ->findKey($this->getKeyName($keyAsString))
             ->encrypt($this->getMechanism(), $text);
 
         return \bin2hex((string)$encrypted);
@@ -139,6 +145,8 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             '--server-client-cert-file' => $this->serverClientCertFile,
             '--server-client-key-file' => $this->serverClientKeyFile,
         ];
+
+        /** @var string $filename */
         foreach ($sslFiles as $option => $filename) {
             if ($filesystem->exists($filename) === false) {
                 throw new InvalidConfigurationException(\sprintf(
@@ -181,6 +189,9 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         }
     }
 
+    /**
+     * @return \Pkcs11\Key
+     */
     private function findKey(?string $keyName = null): object
     {
         $keyName = $this->getKeyName($keyName);
@@ -189,9 +200,9 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             return $this->keys[$keyName];
         }
 
-        $objects = $this->session->findObjects([
+        $objects = $this->session?->findObjects([
             \Pkcs11\CKA_LABEL => $keyName,
-        ]);
+        ]) ?? [];
 
         if (\is_array($objects) || \count($objects) > 0) {
             return $this->keys[$keyName] = $objects[0];
