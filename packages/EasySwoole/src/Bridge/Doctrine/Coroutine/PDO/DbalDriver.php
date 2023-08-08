@@ -10,6 +10,7 @@ use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
+use EonX\EasySwoole\Bridge\Doctrine\Coroutine\Enum\CoroutinePdoDriverOption;
 use SensitiveParameter;
 
 final class DbalDriver implements Driver
@@ -27,16 +28,16 @@ final class DbalDriver implements Driver
 
     public function connect(#[SensitiveParameter] array $params): DriverConnection
     {
-        $poolName = \sprintf(self::POOL_NAME_PATTERN, $this->getOption(ValueOptionInterface::POOL_NAME, $params));
-        $poolSize = $this->getOption(ValueOptionInterface::POOL_SIZE, $params);
-        $poolHeartbeat = $this->getOption(ValueOptionInterface::POOL_HEARTBEAT, $params);
-        $poolMaxIdleTime = $this->getOption(ValueOptionInterface::POOL_MAX_IDLE_TIME, $params);
+        $poolName = \sprintf(self::POOL_NAME_PATTERN, $this->getOption(CoroutinePdoDriverOption::PoolName, $params));
+        $poolSize = $this->getOption(CoroutinePdoDriverOption::PoolSize, $params);
+        $poolHeartbeat = $this->getOption(CoroutinePdoDriverOption::PoolHeartbeat, $params);
+        $poolMaxIdleTime = $this->getOption(CoroutinePdoDriverOption::PoolMaxIdleTime, $params);
 
         unset(
-            $params['driverOptions'][ValueOptionInterface::POOL_HEARTBEAT],
-            $params['driverOptions'][ValueOptionInterface::POOL_MAX_IDLE_TIME],
-            $params['driverOptions'][ValueOptionInterface::POOL_NAME],
-            $params['driverOptions'][ValueOptionInterface::POOL_SIZE],
+            $params['driverOptions'][CoroutinePdoDriverOption::PoolHeartbeat->value],
+            $params['driverOptions'][CoroutinePdoDriverOption::PoolMaxIdleTime->value],
+            $params['driverOptions'][CoroutinePdoDriverOption::PoolName->value],
+            $params['driverOptions'][CoroutinePdoDriverOption::PoolSize->value],
         );
 
         $pool = $_SERVER[$poolName] ?? null;
@@ -74,8 +75,8 @@ final class DbalDriver implements Driver
         return $this->decorated->getSchemaManager($conn, $platform);
     }
 
-    private function getOption(string $name, array $params): mixed
+    private function getOption(CoroutinePdoDriverOption $driverOption, array $params): mixed
     {
-        return $params['driverOptions'][$name] ?? null;
+        return $params['driverOptions'][$driverOption->value] ?? null;
     }
 }

@@ -7,6 +7,7 @@ use co;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use OpenSwoole\Coroutine;
 use ReflectionClass;
+use UnexpectedValueException;
 
 final class PDOClientPool extends ClientPool
 {
@@ -25,9 +26,13 @@ final class PDOClientPool extends ClientPool
      */
     protected function heartbeat(): void
     {
-        $poolProperty = (new ReflectionClass($this))
-            ->getParentClass()
-            ->getProperty('pool');
+        $reflectionParentClass = (new ReflectionClass($this))->getParentClass();
+
+        if ($reflectionParentClass === false) {
+            throw new UnexpectedValueException('Unable to get the parent class.');
+        }
+
+        $poolProperty = $reflectionParentClass->getProperty('pool');
 
         /** @var \OpenSwoole\Coroutine\Channel $pool */
         $pool = $poolProperty->getValue($this);

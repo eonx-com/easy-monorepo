@@ -20,7 +20,7 @@ final class DbalConnection implements Connection
     private ?PDOClient $pdo = null;
 
     public function __construct(
-        private readonly ClientPool $pool
+        private readonly ClientPool $pool,
     ) {
     }
 

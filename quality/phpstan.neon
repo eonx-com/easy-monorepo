@@ -27,10 +27,6 @@ parameters:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
         - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*
-        # - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/DbalConnection.php
-        # - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/DbalResult.php
-        # - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/DbalStatement.php
-        # - %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/PDOClientPool.php
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
@@ -185,6 +181,15 @@ parameters:
 
         - message: '#Access to undefined constant OpenSwoole\\Constant\:\:SSL#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SslCertificateHelper.php
+
+        - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
+
+        - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOClient\:\:.*\(\)#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
+
+        - message: '#While loop condition is always true#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/PDOClientPool.php
 
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----

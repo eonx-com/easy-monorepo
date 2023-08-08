@@ -12,7 +12,7 @@ use PDOException;
 final class DbalResult implements Result
 {
     public function __construct(
-        private readonly PDOStatementProxy $pdoStatement
+        private readonly PDOStatementProxy $pdoStatement,
     ) {
     }
 

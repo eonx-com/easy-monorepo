@@ -14,7 +14,7 @@ use PDOException;
 final class DbalStatement implements Statement
 {
     public function __construct(
-        private readonly PDOStatementProxy $pdoStatement
+        private readonly PDOStatementProxy $pdoStatement,
     ) {
     }
 
@@ -23,7 +23,7 @@ final class DbalStatement implements Statement
         &$variable,
         $type = ParameterType::STRING,
         $length = null,
-        $driverOptions = null,
+        ?array $driverOptions = null,
     ): bool {
         try {
             return $this->pdoStatement->bindParam(

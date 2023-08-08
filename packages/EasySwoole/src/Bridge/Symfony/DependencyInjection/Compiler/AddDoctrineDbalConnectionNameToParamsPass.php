@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler;
 
+use EonX\EasySwoole\Bridge\Doctrine\Coroutine\Enum\CoroutinePdoDriverOption;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\CoroutineConnectionFactory;
-use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\ValueOptionInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -27,7 +27,7 @@ final class AddDoctrineDbalConnectionNameToParamsPass implements CompilerPassInt
             if (\is_string($matches[1] ?? null) && ($matches[0] ?? null) === $id) {
                 $params = $definition->getArguments()[0];
                 $params['driverOptions'] = \array_merge([
-                    ValueOptionInterface::POOL_NAME => $matches[1],
+                    CoroutinePdoDriverOption::PoolName->value => $matches[1],
                 ], $params['driverOptions'] ?? []);
 
                 $definition->replaceArgument(0, $params);
