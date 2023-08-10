@@ -16,6 +16,7 @@ use EonX\EasyWebhook\Tests\Stubs\MiddlewareStub;
 use EonX\EasyWebhook\Tests\Stubs\StackStub;
 use EonX\EasyWebhook\Webhook;
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -29,9 +30,7 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
         yield 'max attempt is one' => [false, 1];
     }
 
-    /**
-     * @dataProvider providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt
-     */
+    #[DataProvider('providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt')]
     public function testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne(bool $asyncEnabled, int $maxAttempt): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt($maxAttempt);

@@ -8,6 +8,7 @@ use EonX\EasyTemplatingBlock\Blocks\TextBlock;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Renderers\TextBlockRenderer;
 use EonX\EasyTemplatingBlock\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TextBlockRendererTest extends AbstractTestCase
 {
@@ -38,9 +39,7 @@ final class TextBlockRendererTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestRenderBlock
-     */
+    #[DataProvider('providerTestRenderBlock')]
     public function testRenderBlock(TextBlock $block, string $expected): void
     {
         $renderer = new TextBlockRenderer();
@@ -48,9 +47,7 @@ final class TextBlockRendererTest extends AbstractTestCase
         self::assertEquals($expected, $renderer->renderBlock($block));
     }
 
-    /**
-     * @dataProvider providerTestSupports
-     */
+    #[DataProvider('providerTestSupports')]
     public function testSupports(TemplatingBlockInterface $block, bool $expected): void
     {
         $renderer = new TextBlockRenderer();

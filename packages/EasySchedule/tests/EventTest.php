@@ -5,6 +5,7 @@ namespace EonX\EasySchedule\Tests;
 
 use DateTimeZone;
 use EonX\EasySchedule\Event;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EventTest extends AbstractTestCase
 {
@@ -77,9 +78,7 @@ final class EventTest extends AbstractTestCase
         self::assertTrue($this->event->setAllowOverlapping(true)->allowsOverlapping());
     }
 
-    /**
-     * @dataProvider providerTestFiltersPass
-     */
+    #[DataProvider('providerTestFiltersPass')]
     public function testFiltersPass(array $filters, array $rejects, bool $expected): void
     {
         $event = new Event('command:foo', [
@@ -114,9 +113,7 @@ final class EventTest extends AbstractTestCase
         self::assertSame(30.0, $this->event->setMaxLockTime(30.0)->getMaxLockTime());
     }
 
-    /**
-     * @dataProvider providerTestNoArgsMethods
-     */
+    #[DataProvider('providerTestNoArgsMethods')]
     public function testNoArgsMethods(string $expression, string $method, ?array $params = null): void
     {
         $event = new Event('command:foo', [

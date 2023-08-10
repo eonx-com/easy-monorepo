@@ -9,6 +9,7 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\DoctrineDbalPaginator;
 use EonX\EasyPagination\Tests\AbstractDoctrineDbalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
@@ -299,9 +300,8 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalTestCase
 
     /**
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @dataProvider providerTestPaginator
      */
+    #[DataProvider('providerTestPaginator')]
     public function testPaginator(
         PaginationInterface $pagination,
         string $from,

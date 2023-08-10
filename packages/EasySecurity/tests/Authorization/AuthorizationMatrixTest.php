@@ -10,6 +10,7 @@ use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationPermissionsProviderStub;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationRolesProviderStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AuthorizationMatrixTest extends AbstractTestCase
 {
@@ -61,9 +62,8 @@ final class AuthorizationMatrixTest extends AbstractTestCase
     /**
      * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null $roles
      * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
-     *
-     * @dataProvider providerTestMatrix
      */
+    #[DataProvider('providerTestMatrix')]
     public function testMatrix(callable $test, ?array $roles = null, ?array $permissions = null): void
     {
         $factory = new AuthorizationMatrixFactory(

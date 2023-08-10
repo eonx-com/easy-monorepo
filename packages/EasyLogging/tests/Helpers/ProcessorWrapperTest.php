@@ -6,6 +6,7 @@ namespace EonX\EasyLogging\Tests\Helpers;
 use EonX\EasyLogging\Helpers\ProcessorWrapper;
 use EonX\EasyLogging\Tests\AbstractTestCase;
 use EonX\EasyLogging\Tests\Stubs\InvokableStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @phpstan-import-type Record from \Monolog\Logger
@@ -24,9 +25,7 @@ final class ProcessorWrapperTest extends AbstractTestCase
         yield 'Using object with __invoke method' => [new InvokableStub()];
     }
 
-    /**
-     * @dataProvider providerTestInvoke
-     */
+    #[DataProvider('providerTestInvoke')]
     public function testInvoke(callable $wrapped): void
     {
         $wrapper = ProcessorWrapper::wrap($wrapped);

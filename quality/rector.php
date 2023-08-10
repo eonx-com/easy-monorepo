@@ -18,14 +18,18 @@ use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Set\ValueObject\LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->import(EasyQualitySetList::RECTOR);
-    $rectorConfig->import(LevelSetList::UP_TO_PHP_81);
-
     $rectorConfig->phpVersion(PhpVersion::PHP_81);
+
+    $rectorConfig->sets([
+        EasyQualitySetList::RECTOR,
+        LevelSetList::UP_TO_PHP_81,
+        PHPUnitSetList::PHPUNIT_100,
+    ]);
 
     $rectorConfig->autoloadPaths([__DIR__ . '/../vendor']);
 

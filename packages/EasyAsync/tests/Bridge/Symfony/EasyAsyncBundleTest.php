@@ -5,6 +5,7 @@ namespace EonX\EasyAsync\Tests\Bridge\Symfony;
 
 use EonX\EasyAsync\Bridge\Symfony\Messenger\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\StopWorkerOnTimeLimitSubscriber;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
@@ -54,9 +55,8 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[]|null $configs
-     *
-     * @dataProvider providerTestMessengerConfig
      */
+    #[DataProvider('providerTestMessengerConfig')]
     public function testMessengerConfig(callable $assert, ?array $configs = null): void
     {
         $container = $this->getKernel($configs)

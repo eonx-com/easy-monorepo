@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Tests\Helpers;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EnvVarHelperTest extends AbstractTestCase
 {
@@ -58,9 +59,8 @@ final class EnvVarHelperTest extends AbstractTestCase
 
     /**
      * @param string[]|null $jsonSecrets
-     *
-     * @dataProvider providerTestLoadEnvVars
      */
+    #[DataProvider('providerTestLoadEnvVars')]
     public function testLoadEnvVars(array $secrets, array $expected, ?array $jsonSecrets = null): void
     {
         foreach ($secrets as $name => $value) {

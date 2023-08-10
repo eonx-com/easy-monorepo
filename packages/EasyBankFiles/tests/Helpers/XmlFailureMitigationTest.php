@@ -5,10 +5,10 @@ namespace EonX\EasyBankFiles\Tests\Helpers;
 
 use EonX\EasyBankFiles\Helpers\XmlFailureMitigation;
 use EonX\EasyBankFiles\Tests\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyBankFiles\Helpers\XmlFailureMitigation
- */
+#[CoversClass(XmlFailureMitigation::class)]
 final class XmlFailureMitigationTest extends TestCase
 {
     /**
@@ -71,9 +71,8 @@ XML;
 
     /**
      * Tests that the helper method successfully handles the provided scenarios.
-     *
-     * @dataProvider getXmlScenarios
      */
+    #[DataProvider('getXmlScenarios')]
     public function testMitigationReplacesInvalidLines(string $input, string $expected): void
     {
         $result = XmlFailureMitigation::tryMitigateParseFailures(\trim($input));

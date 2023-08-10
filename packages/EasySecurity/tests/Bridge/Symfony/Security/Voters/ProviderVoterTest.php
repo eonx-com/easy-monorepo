@@ -10,6 +10,7 @@ use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\ProviderRestrictedStub;
 use EonX\EasySecurity\Tests\Stubs\SecurityContextResolverStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -42,9 +43,7 @@ final class ProviderVoterTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestVoter
-     */
+    #[DataProvider('providerTestVoter')]
     public function testVoter(SecurityContextInterface $securityContext, mixed $subject, int $expectedVote): void
     {
         $voter = new ProviderVoter(new SecurityContextResolverStub($securityContext));

@@ -10,6 +10,7 @@ use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
 use EonX\EasyApiPlatform\Serializers\SerializerContextBuilder;
 use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SerializerContextBuilderTest extends AbstractTestCase
@@ -34,9 +35,7 @@ final class SerializerContextBuilderTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestCreateFromRequest
-     */
+    #[DataProvider('providerTestCreateFromRequest')]
     public function testCreateFromRequest(array $contextFromDecorated, bool $isGroupAdded): void
     {
         $request = new Request();

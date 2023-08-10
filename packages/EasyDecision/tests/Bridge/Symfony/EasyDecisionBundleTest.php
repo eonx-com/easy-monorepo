@@ -14,6 +14,7 @@ use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Bridge\Symfony\Stubs\KernelStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 final class EasyDecisionBundleTest extends AbstractTestCase
@@ -193,9 +194,8 @@ final class EasyDecisionBundleTest extends AbstractTestCase
 
     /**
      * @param string[]|null $configPaths
-     *
-     * @dataProvider providerCreateDecision
      */
+    #[DataProvider('providerCreateDecision')]
     public function testDecisions(callable $create, callable $assert, ?array $configPaths = null): void
     {
         $kernel = new KernelStub($configPaths);

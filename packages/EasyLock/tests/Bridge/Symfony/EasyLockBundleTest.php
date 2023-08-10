@@ -5,6 +5,7 @@ namespace EonX\EasyLock\Tests\Bridge\Symfony;
 
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
@@ -20,9 +21,8 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[]|null $configs
-     *
-     * @dataProvider providerTestSanity
      */
+    #[DataProvider('providerTestSanity')]
     public function testSanity(?array $configs = null): void
     {
         $container = $this->getKernel($configs)

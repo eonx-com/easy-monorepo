@@ -7,10 +7,9 @@ use EonX\EasyBankFiles\Generators\Aba\Objects\DescriptiveRecord;
 use EonX\EasyBankFiles\Generators\Aba\Objects\FileTotalRecord;
 use EonX\EasyBankFiles\Generators\Aba\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Generators\Aba\TestCase
- */
+#[CoversClass(\EonX\EasyBankFiles\Tests\Generators\Aba\TestCase::class)]
 abstract class TestCase extends GeneratorTestCase
 {
     /**

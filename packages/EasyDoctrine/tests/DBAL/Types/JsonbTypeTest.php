@@ -8,10 +8,10 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyDoctrine\DBAL\Types\JsonbType;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyDoctrine\DBAL\Types\JsonbType
- */
+#[CoversClass(JsonbType::class)]
 final class JsonbTypeTest extends AbstractTestCase
 {
     protected function setUp(): void
@@ -110,9 +110,8 @@ final class JsonbTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
-     *
-     * @dataProvider provideConvertToDatabaseValues
      */
+    #[DataProvider('provideConvertToDatabaseValues')]
     public function testConvertToDatabaseValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
@@ -146,9 +145,8 @@ final class JsonbTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
-     *
-     * @dataProvider provideConvertToPhpValues
      */
+    #[DataProvider('provideConvertToPhpValues')]
     public function testConvertToPhpValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */

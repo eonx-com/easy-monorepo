@@ -10,6 +10,7 @@ use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
 use EonX\EasyDoctrine\Tests\Fixtures\Price;
@@ -17,12 +18,11 @@ use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Fixtures\Tag;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
+use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
-/**
- * @covers \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber
- * @covers \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher
- */
+#[CoversClass(DeferredEntityEventDispatcher::class)]
+#[CoversClass(EntityEventSubscriber::class)]
 final class EntityEventSubscriberTest extends AbstractTestCase
 {
     public function testEventIsDispatchedIfTimezoneWasChanged(): void

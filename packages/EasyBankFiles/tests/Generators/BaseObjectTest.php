@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Generators;
 
 use EonX\EasyBankFiles\Tests\Generators\Stubs\ObjectStub;
+use PHPUnit\Framework\Attributes\Group;
 
 final class BaseObjectTest extends TestCase
 {
     /**
      * Should return all attributes.
-     *
-     * @group Generator-BaseObject
      */
+    #[Group('Generator-BaseObject')]
     public function testShouldReturnAttributes(): void
     {
         $data = [

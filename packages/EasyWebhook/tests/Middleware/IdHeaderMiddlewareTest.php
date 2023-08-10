@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\ArrayStoreStub;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -57,9 +58,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         callable $test,

@@ -13,6 +13,7 @@ use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Tests\AbstractTestCase;
 use Exception;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
 {
@@ -223,9 +224,7 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideEvents
-     */
+    #[DataProvider('provideEvents')]
     public function testPrepareMetadataSucceeds(HttpRequestSentEvent $event, array $expectedMetadata): void
     {
         $bugsnagClient = $this->mockBugsnagClient($expectedMetadata);

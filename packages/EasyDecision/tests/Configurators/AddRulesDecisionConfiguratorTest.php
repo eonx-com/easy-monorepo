@@ -8,10 +8,9 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\DecisionStub;
 use EonX\EasyDecision\Tests\Stubs\RestrictedRuleStub;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyDecision\Configurators\AddRulesDecisionConfigurator
- */
+#[CoversClass(AddRulesDecisionConfigurator::class)]
 final class AddRulesDecisionConfiguratorTest extends AbstractTestCase
 {
     public function testAddNonRestrictedRule(): void

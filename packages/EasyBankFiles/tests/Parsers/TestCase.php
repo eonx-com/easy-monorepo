@@ -6,13 +6,12 @@ namespace EonX\EasyBankFiles\Tests\Parsers;
 use EonX\EasyBankFiles\Tests\TestCases\TestCase as BaseTestCase;
 use Mockery;
 use Mockery\LegacyMockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Parsers\TestCase
- */
+#[CoversClass(\EonX\EasyBankFiles\Tests\Parsers\TestCase::class)]
 class TestCase extends BaseTestCase
 {
     /**

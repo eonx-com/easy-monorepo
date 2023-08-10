@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\LockServiceStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -45,9 +46,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(WebhookInterface $webhook, bool $shouldLock, ?bool $canProcess = null): void
     {
         $canProcess ??= true;

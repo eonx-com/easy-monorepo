@@ -6,10 +6,9 @@ namespace EonX\EasyBankFiles\Tests\Generators\Bpay;
 use EonX\EasyBankFiles\Generators\Bpay\Objects\Header;
 use EonX\EasyBankFiles\Generators\Bpay\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Generators\Bpay\TestCase
- */
+#[CoversClass(\EonX\EasyBankFiles\Tests\Generators\Bpay\TestCase::class)]
 abstract class TestCase extends GeneratorTestCase
 {
     /**

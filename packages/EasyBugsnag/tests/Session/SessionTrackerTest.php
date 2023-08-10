@@ -7,6 +7,7 @@ use Bugsnag\Client;
 use Bugsnag\Configuration;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SessionTrackerTest extends AbstractTestCase
@@ -36,9 +37,8 @@ final class SessionTrackerTest extends AbstractTestCase
 
     /**
      * @param string[]|null $exclude
-     *
-     * @dataProvider providerTestExclude
      */
+    #[DataProvider('providerTestExclude')]
     public function testExclude(
         bool $trackSession,
         string $uri,

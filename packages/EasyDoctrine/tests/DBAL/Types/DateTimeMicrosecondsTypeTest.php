@@ -12,10 +12,10 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType
- */
+#[CoversClass(DateTimeMicrosecondsType::class)]
 final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 {
     protected function setUp(): void
@@ -97,9 +97,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
-     *
-     * @dataProvider provideConvertToDatabaseValues
      */
+    #[DataProvider('provideConvertToDatabaseValues')]
     public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
@@ -128,9 +127,8 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
-     *
-     * @dataProvider provideConvertToPHPValues
      */
+    #[DataProvider('provideConvertToPHPValues')]
     public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeMicrosecondsType $type */
@@ -170,9 +168,7 @@ final class DateTimeMicrosecondsTypeTest extends AbstractTestCase
         self::assertSame(DateTimeMicrosecondsType::TYPE_NAME, $name);
     }
 
-    /**
-     * @dataProvider provideFieldDeclarationValues
-     */
+    #[DataProvider('provideFieldDeclarationValues')]
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,

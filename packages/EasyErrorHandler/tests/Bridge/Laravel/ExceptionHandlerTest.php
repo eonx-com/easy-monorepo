@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 final class ExceptionHandlerTest extends AbstractLaravelTestCase
@@ -91,9 +92,7 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
         self::assertStringContainsString('No validation errors in exception', $result);
     }
 
-    /**
-     * @dataProvider providerTestRenderWithDefaultBuilders
-     */
+    #[DataProvider('providerTestRenderWithDefaultBuilders')]
     public function testRenderWithDefaultBuilders(
         Request $request,
         Exception $exception,

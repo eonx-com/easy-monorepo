@@ -8,10 +8,9 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Transaction;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction
- */
+#[CoversClass(Transaction::class)]
 final class TransactionTest extends TestCase
 {
     /**

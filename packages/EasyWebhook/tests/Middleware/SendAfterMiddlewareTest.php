@@ -9,6 +9,7 @@ use EonX\EasyWebhook\Middleware\SendAfterMiddleware;
 use EonX\EasyWebhook\Stores\ArrayStore;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -34,9 +35,7 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestProcess
-     */
+    #[DataProvider('provideTestProcess')]
     public function testProcess(WebhookInterface $webhook, bool $shouldSend): void
     {
         $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());

@@ -9,6 +9,7 @@ use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -50,9 +51,7 @@ final class ErrorHandlerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestReport
-     */
+    #[DataProvider('providerTestReport')]
     public function testReport(Throwable $throwable, callable $assertions): void
     {
         $reporter = new ErrorReporterStub();
