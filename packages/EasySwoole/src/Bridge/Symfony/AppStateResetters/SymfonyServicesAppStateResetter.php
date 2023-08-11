@@ -55,6 +55,9 @@ final class SymfonyServicesAppStateResetter extends ServicesResetter implements 
 
     protected function shouldReset(string $service): bool
     {
-        return u($service)->containsAny('cache') === false;
+        return \str_starts_with($service, 'cache.') === false
+            && \str_starts_with($service, 'cache_') === false
+            && \str_ends_with($service, '.cache') === false
+            && \str_ends_with($service, '_cache') === false;
     }
 }
