@@ -9,7 +9,7 @@ use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversClass(\EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header::class)]
+#[CoversClass(Header::class)]
 final class HeaderTest extends TestCase
 {
     /**

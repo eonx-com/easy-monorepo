@@ -6,13 +6,11 @@ namespace EonX\EasyBankFiles\Tests\Parsers;
 use EonX\EasyBankFiles\Tests\TestCases\TestCase as BaseTestCase;
 use Mockery;
 use Mockery\LegacyMockInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-#[CoversClass(\EonX\EasyBankFiles\Tests\Parsers\TestCase::class)]
-class TestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * Get mock for given class and set expectations based on given callable.

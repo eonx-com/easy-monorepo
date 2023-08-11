@@ -9,8 +9,10 @@ use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 use EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException;
 use EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException;
 use EonX\EasyBankFiles\Tests\Generators\Aba\TestCase as AbaTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
+#[CoversClass(Generator::class)]
 final class GeneratorTest extends AbaTestCase
 {
     /**

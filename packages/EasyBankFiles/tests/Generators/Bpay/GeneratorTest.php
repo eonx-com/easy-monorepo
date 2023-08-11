@@ -6,8 +6,10 @@ namespace EonX\EasyBankFiles\Tests\Generators\Bpay;
 use EonX\EasyBankFiles\Generators\Bpay\Generator;
 use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
+#[CoversClass(Generator::class)]
 final class GeneratorTest extends TestCase
 {
     /**

@@ -8,7 +8,6 @@ use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
 use Exception;
 use Illuminate\Http\Request;
 use LogicException;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,7 +18,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * This class has for objective to provide common features to all tests without having to update
  * the class they all extend.
  */
-#[CoversClass(\EonX\EasyErrorHandler\Tests\AbstractTestCase::class)]
 abstract class AbstractTestCase extends TestCase
 {
     protected function tearDown(): void
