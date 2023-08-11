@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests\ValueObjects;
 
 use EonX\EasyUtils\ValueObjects\Number;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 use UnexpectedValueException;
@@ -453,9 +454,7 @@ final class NumberTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideInvalidData
-     */
+    #[DataProvider('provideInvalidData')]
     public function testConstructorThrowsExceptionWithInvalidValue(string $value): void
     {
         $exception = null;
@@ -468,9 +467,7 @@ final class NumberTest extends TestCase
         self::assertInstanceOf(UnexpectedValueException::class, $exception);
     }
 
-    /**
-     * @dataProvider provideFunctionData
-     */
+    #[DataProvider('provideFunctionData')]
     public function testMathOperationSucceeds(string $function, int $input, array $args, int|bool $expectedResult): void
     {
         $constructorValueCastFunctions = [
@@ -495,9 +492,8 @@ final class NumberTest extends TestCase
 
     /**
      * @param \EonX\EasyUtils\ValueObjects\Number[] $values
-     *
-     * @dataProvider provideMaxData
      */
+    #[DataProvider('provideMaxData')]
     public function testMaxSucceeds(array $values, ?int $expectedValue = null): void
     {
         $result = Number::max(...$values);
@@ -507,9 +503,8 @@ final class NumberTest extends TestCase
 
     /**
      * @param \EonX\EasyUtils\ValueObjects\Number[] $values
-     *
-     * @dataProvider provideMinData
      */
+    #[DataProvider('provideMinData')]
     public function testMinSucceeds(array $values, ?int $expectedValue = null): void
     {
         $result = Number::min(...$values);
@@ -517,9 +512,7 @@ final class NumberTest extends TestCase
         self::assertSame((string)$expectedValue, (string)$result);
     }
 
-    /**
-     * @dataProvider provideRoundData
-     */
+    #[DataProvider('provideRoundData')]
     public function testToStringSucceedsAndDoesCorrectRounding(
         string $value,
         int $precision,

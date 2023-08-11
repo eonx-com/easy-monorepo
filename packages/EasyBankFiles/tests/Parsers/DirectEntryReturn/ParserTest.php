@@ -8,10 +8,9 @@ use EonX\EasyBankFiles\Parsers\DirectEntryReturn\Parser;
 use EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header;
 use EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Trailer;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Parser
- */
+#[CoversClass(Parser::class)]
 final class ParserTest extends TestCase
 {
     /**

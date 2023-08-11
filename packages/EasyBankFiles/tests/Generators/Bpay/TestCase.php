@@ -7,9 +7,6 @@ use EonX\EasyBankFiles\Generators\Bpay\Objects\Header;
 use EonX\EasyBankFiles\Generators\Bpay\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Generators\Bpay\TestCase
- */
 abstract class TestCase extends GeneratorTestCase
 {
     /**

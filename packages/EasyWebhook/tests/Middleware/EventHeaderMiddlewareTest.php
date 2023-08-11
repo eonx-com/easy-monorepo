@@ -8,6 +8,7 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -51,9 +52,7 @@ final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(WebhookInterface $webhook, callable $test, ?string $eventHeader = null): void
     {
         $middleware = new EventHeaderMiddleware($eventHeader);

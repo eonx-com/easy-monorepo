@@ -7,6 +7,7 @@ use EonX\EasyTemplatingBlock\Blocks\TextBlock;
 use EonX\EasyTemplatingBlock\Providers\ArrayTemplatingBlockProvider;
 use EonX\EasyTemplatingBlock\Renderers\TextBlockRenderer;
 use EonX\EasyTemplatingBlock\TemplatingEventRenderer;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TemplatingEventRendererTest extends AbstractTestCase
 {
@@ -58,9 +59,8 @@ final class TemplatingEventRendererTest extends AbstractTestCase
     /**
      * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface[] $providers
      * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface[]|null $renderers
-     *
-     * @dataProvider providerTestRenderEvent
      */
+    #[DataProvider('providerTestRenderEvent')]
     public function testRenderEvent(
         array $events,
         ?array $context,

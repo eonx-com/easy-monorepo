@@ -11,6 +11,7 @@ use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class BatchItemTransformerTest extends AbstractTestCase
@@ -24,9 +25,7 @@ final class BatchItemTransformerTest extends AbstractTestCase
         yield 'Not Encrypted' => [false];
     }
 
-    /**
-     * @dataProvider providerTestEncryptedBatchItem
-     */
+    #[DataProvider('providerTestEncryptedBatchItem')]
     public function testEncryptedBatchItem(bool $encrypted): void
     {
         $message = new stdClass();

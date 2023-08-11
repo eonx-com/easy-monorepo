@@ -5,6 +5,7 @@ namespace EonX\EasyApiToken\Tests\Bridge\Symfony\Providers;
 
 use EonX\EasyApiToken\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyApiToken\Tests\Bridge\Symfony\Stubs\FirewallAwareDecoderProviderStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,9 +37,8 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
     /**
      * @param string[]|null $configs
      * @param string[]|null $firewallMap
-     *
-     * @dataProvider providerTestDecoderProvider
      */
+    #[DataProvider('providerTestDecoderProvider')]
     public function testDecoderProvider(
         ?string $expectedFirewall,
         ?array $configs = null,

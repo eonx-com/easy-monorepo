@@ -6,6 +6,7 @@ namespace EonX\EasyPagination\Tests\Paginators;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\IterableLengthAwarePaginator;
 use EonX\EasyPagination\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IterableLengthAwarePaginatorTest extends AbstractTestCase
 {
@@ -62,9 +63,7 @@ final class IterableLengthAwarePaginatorTest extends AbstractTestCase
         self::assertFalse($paginator->hasNextPage());
     }
 
-    /**
-     * @dataProvider providerTestUrls
-     */
+    #[DataProvider('providerTestUrls')]
     public function testUrls(
         int $total,
         Pagination $pagination,

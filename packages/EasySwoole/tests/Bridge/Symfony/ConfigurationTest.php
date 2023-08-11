@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Tests\Bridge\Symfony;
 
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Configuration;
 use EonX\EasyUtils\Helpers\ArrayHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends AbstractSymfonyTestCase
@@ -186,9 +187,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestConfiguration
-     */
+    #[DataProvider('providerTestConfiguration')]
     public function testConfiguration(array $configs, array $expectedConfig): void
     {
         $config = (new Processor())->processConfiguration(new Configuration(), $configs);

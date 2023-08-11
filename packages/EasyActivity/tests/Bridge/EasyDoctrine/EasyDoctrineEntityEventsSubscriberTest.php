@@ -13,6 +13,7 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCase
 {
@@ -358,9 +359,8 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      * @param string[] $allowedProperties
      * @param string[] $disallowedProperties
      * @param string[] $expectedDataProperties
-     *
-     * @dataProvider provideProperties
      */
+    #[DataProvider('provideProperties')]
     public function testPropertyFilters(
         ?array $globalDisallowedProperties = null,
         ?array $allowedProperties = null,

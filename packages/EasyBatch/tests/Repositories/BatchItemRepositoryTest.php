@@ -12,6 +12,7 @@ use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Pagination;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
@@ -89,9 +90,8 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 
     /**
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @dataProvider providerTestFindForDispatch
      */
+    #[DataProvider('providerTestFindForDispatch')]
     public function testFindForDispatch(callable $setup, callable $test, ?string $dependsOnName = null): void
     {
         $factory = $this->getBatchItemFactory();

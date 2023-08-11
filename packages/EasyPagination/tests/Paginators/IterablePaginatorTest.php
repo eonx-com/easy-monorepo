@@ -8,6 +8,7 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Pagination;
 use EonX\EasyPagination\Paginators\IterablePaginator;
 use EonX\EasyPagination\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IterablePaginatorTest extends AbstractTestCase
 {
@@ -73,9 +74,7 @@ final class IterablePaginatorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestPaginatorGetItems
-     */
+    #[DataProvider('providerTestPaginatorGetItems')]
     public function testPaginatorGetItems(iterable $items, callable $assert, ?callable $transformer = null): void
     {
         $paginator = new IterablePaginator(Pagination::create(1, 15), $items);
@@ -84,9 +83,7 @@ final class IterablePaginatorTest extends AbstractTestCase
         $assert($paginator->getItems());
     }
 
-    /**
-     * @dataProvider providerTestPaginatorPageMethods
-     */
+    #[DataProvider('providerTestPaginatorPageMethods')]
     public function testPaginatorPageMethods(
         iterable $items,
         PaginationInterface $pagination,

@@ -12,6 +12,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Objects\Batch;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -147,9 +148,7 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestCoreLogic
-     */
+    #[DataProvider('providerTestCoreLogic')]
     public function testCoreLogic(callable $setup, callable $runTest, callable $assert): void
     {
         $context = new EasyBatchTestContext($this->getContainer());
@@ -159,9 +158,7 @@ final class EasyBatchSymfonyBundleTest extends AbstractSymfonyTestCase
         \call_user_func($assert, $context);
     }
 
-    /**
-     * @dataProvider providerTestRestoreBatchState
-     */
+    #[DataProvider('providerTestRestoreBatchState')]
     public function testRestoreBatchState(callable $setupFunc, callable $assert, ?string $batchId = null): void
     {
         $container = $this->getContainer();

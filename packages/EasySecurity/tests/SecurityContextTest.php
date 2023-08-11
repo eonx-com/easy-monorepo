@@ -14,6 +14,7 @@ use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class SecurityContextTest extends AbstractTestCase
@@ -111,9 +112,7 @@ final class SecurityContextTest extends AbstractTestCase
         (new SecurityContext())->getUserOrFail();
     }
 
-    /**
-     * @dataProvider gettersDataProvider
-     */
+    #[DataProvider('gettersDataProvider')]
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
     {
         $token = new ApiKey('api-key');
@@ -143,9 +142,7 @@ final class SecurityContextTest extends AbstractTestCase
         self::assertEquals($user, $context->getUserOrFail());
     }
 
-    /**
-     * @dataProvider hasDataProvider
-     */
+    #[DataProvider('hasDataProvider')]
     public function testContextHas(
         array $roles,
         string $role,

@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\SignerStub;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -107,9 +108,8 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 
     /**
      * @phpstan-param class-string<\Throwable>|null $exceptedException
-     *
-     * @dataProvider providerTestProcess
      */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,

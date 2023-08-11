@@ -6,6 +6,7 @@ namespace EonX\EasyUtils\Tests\StringTrimmers;
 use EonX\EasyUtils\StringTrimmers\RecursiveStringTrimmer;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use EonX\EasyUtils\Tests\Stubs\ToStringStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class RecursiveStringTrimmerTest extends AbstractTestCase
@@ -152,9 +153,8 @@ final class RecursiveStringTrimmerTest extends AbstractTestCase
 
     /**
      * @param string[] $exceptKeys
-     *
-     * @dataProvider provideDataForClean
      */
+    #[DataProvider('provideDataForClean')]
     public function testCleanSucceeds(mixed $data, array $exceptKeys, mixed $expectedResult): void
     {
         $cleaner = new RecursiveStringTrimmer();

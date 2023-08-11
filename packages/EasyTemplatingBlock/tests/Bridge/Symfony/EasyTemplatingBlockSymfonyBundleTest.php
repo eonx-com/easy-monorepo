@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTemplatingBlock\Tests\Bridge\Symfony;
 
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 {
@@ -44,9 +45,8 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[]|null $configs
-     *
-     * @dataProvider providerTestRenderEvent
      */
+    #[DataProvider('providerTestRenderEvent')]
     public function testRenderEvent(array $events, ?array $context, ?array $configs = null): void
     {
         $kernel = $this->getKernel($configs);

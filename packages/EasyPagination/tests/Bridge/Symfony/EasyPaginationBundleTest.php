@@ -10,6 +10,7 @@ use EonX\EasyPagination\Resolvers\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolvers\FromHttpFoundationRequestResolver;
 use EonX\EasyPagination\Tests\AbstractTestCase;
 use EonX\EasyPagination\Tests\Bridge\Symfony\Stubs\KernelStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class EasyPaginationBundleTest extends AbstractTestCase
@@ -37,9 +38,7 @@ final class EasyPaginationBundleTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestPaginationResolver
-     */
+    #[DataProvider('providerTestPaginationResolver')]
     public function testPaginationResolver(string $config, Request $request, int $page, int $perPage): void
     {
         $kernel = new KernelStub($config);

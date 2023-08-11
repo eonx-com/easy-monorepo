@@ -10,6 +10,7 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryTest extends AbstractTestCase
@@ -228,9 +229,8 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
      * @param string[]|null $allowedProperties
      * @param string[] $disallowedProperties
      * @param string[]|null $expectedDataProperties
-     *
-     * @dataProvider providerProperties
      */
+    #[DataProvider('providerProperties')]
     public function testPropertyFilters(
         array $globalDisallowedProperties,
         ?array $allowedProperties,

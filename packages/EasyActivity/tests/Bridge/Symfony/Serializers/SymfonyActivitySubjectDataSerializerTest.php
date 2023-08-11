@@ -15,6 +15,7 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\NilUuid;
 
@@ -204,9 +205,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ];
     }
 
-    /**
-     * @dataProvider provideDataForSerializeSucceeds
-     */
+    #[DataProvider('provideDataForSerializeSucceeds')]
     public function testSerializeSucceeds(
         array $data,
         ActivitySubjectInterface $subject,

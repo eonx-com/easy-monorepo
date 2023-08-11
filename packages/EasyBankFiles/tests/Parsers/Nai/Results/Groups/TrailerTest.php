@@ -5,10 +5,9 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results\Groups;
 
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer
- */
+#[CoversClass(Trailer::class)]
 final class TrailerTest extends TestCase
 {
     /**

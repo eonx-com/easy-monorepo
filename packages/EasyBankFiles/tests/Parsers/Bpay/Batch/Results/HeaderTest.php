@@ -6,10 +6,11 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Batch\Results;
 use DateTime;
 use EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Bpay\Batch\Results\Header
- */
+#[CoversClass(Header::class)]
 final class HeaderTest extends TestCase
 {
     /**
@@ -31,11 +32,9 @@ final class HeaderTest extends TestCase
 
     /**
      * Should return processing date as a null when date string is invalid.
-     *
-     * @group Batch-Header
-     *
-     * @dataProvider provideInvalidDateProcessedValues
      */
+    #[DataProvider('provideInvalidDateProcessedValues')]
+    #[Group('Batch-Header')]
     public function testGetDateProcessedShouldReturnNull(array $dateProcessed): void
     {
         $header = new Header($dateProcessed);
@@ -45,9 +44,8 @@ final class HeaderTest extends TestCase
 
     /**
      * Should return date as an DateTime object.
-     *
-     * @group Batch-Header
      */
+    #[Group('Batch-Header')]
     public function testShouldReturnDateProcessedObject(): void
     {
         $header = new Header([

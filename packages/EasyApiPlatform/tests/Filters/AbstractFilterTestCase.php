@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\ApplicationKernel;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -53,9 +54,8 @@ abstract class AbstractFilterTestCase extends KernelTestCase
 
     /**
      * @param class-string<\stdClass>|null $resourceClass
-     *
-     * @dataProvider provideApplyTestData
      */
+    #[DataProvider('provideApplyTestData')]
     public function testApply(
         ?array $properties,
         array $filterParameters,

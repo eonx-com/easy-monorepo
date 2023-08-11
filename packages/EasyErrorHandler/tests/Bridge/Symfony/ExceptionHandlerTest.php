@@ -5,6 +5,7 @@ namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -12,9 +13,7 @@ use Throwable;
 
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
-    /**
-     * @dataProvider providerTestRenderWithDefaultBuilders
-     */
+    #[DataProvider('providerTestRenderWithDefaultBuilders')]
     public function testRenderWithDefaultBuilders(
         Request $request,
         Throwable $exception,

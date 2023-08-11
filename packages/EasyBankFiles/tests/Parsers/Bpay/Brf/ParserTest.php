@@ -5,17 +5,16 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Brf;
 
 use EonX\EasyBankFiles\Parsers\Bpay\Brf\Parser;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Bpay\Brf\Parser
- */
+#[CoversClass(Parser::class)]
 final class ParserTest extends TestCase
 {
     /**
      * Should return error from the content.
-     *
-     * @group Brf-Parser-Error
      */
+    #[Group('Brf-Parser-Error')]
     public function testShouldReturnErrors(): void
     {
         $invalidLine = 'invalid';
@@ -29,9 +28,8 @@ final class ParserTest extends TestCase
 
     /**
      * Should return Header object.
-     *
-     * @group Brf-Parser-Header
      */
+    #[Group('Brf-Parser-Header')]
     public function testShouldReturnHeader(): void
     {
         $brfParser = new Parser($this->getSampleFileContents('sample.BRF'));
@@ -48,9 +46,8 @@ final class ParserTest extends TestCase
 
     /**
      * Should return trailer from the content.
-     *
-     * @group Brf-Parser-Trailer
      */
+    #[Group('Brf-Parser-Trailer')]
     public function testShouldReturnTrailer(): void
     {
         $brfParser = new Parser($this->getSampleFileContents('sample.BRF'));
@@ -90,9 +87,8 @@ final class ParserTest extends TestCase
 
     /**
      * Should return array of Transaction classes.
-     *
-     * @group Brf-Parser-Transaction
      */
+    #[Group('Brf-Parser-Transaction')]
     public function testShouldReturnTransaction(): void
     {
         $brfParser = new Parser($this->getSampleFileContents('sample.BRF'));

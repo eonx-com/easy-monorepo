@@ -6,7 +6,10 @@ namespace EonX\EasyBankFiles\Tests\Generators\Bpay;
 use EonX\EasyBankFiles\Generators\Bpay\Generator;
 use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
+#[CoversClass(Generator::class)]
 final class GeneratorTest extends TestCase
 {
     /**
@@ -25,9 +28,8 @@ final class GeneratorTest extends TestCase
      * Generated data should be present in the content.
      *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
-     *
-     * @group Generator-Bpay
      */
+    #[Group('Generator-Bpay')]
     public function testGeneratedDataShouldBeInTheContent(): void
     {
         $header = $this->createHeader();

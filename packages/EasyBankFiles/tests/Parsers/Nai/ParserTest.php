@@ -3,20 +3,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai;
 
+use EonX\EasyBankFiles\Parsers\Nai\AccountSummaryCodes;
 use EonX\EasyBankFiles\Parsers\Nai\ControlTotal;
 use EonX\EasyBankFiles\Parsers\Nai\Parser;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Account;
 use EonX\EasyBankFiles\Parsers\Nai\Results\File;
+use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
- * @covers \EonX\EasyBankFiles\Parsers\Nai\AccountSummaryCodes
- * @covers \EonX\EasyBankFiles\Parsers\Nai\ControlTotal
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Parser
- * @covers \EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes
- */
+#[CoversClass(AccountSummaryCodes::class)]
+#[CoversClass(ControlTotal::class)]
+#[CoversClass(Parser::class)]
+#[CoversClass(ResultsContext::class)]
+#[CoversClass(TransactionDetailCodes::class)]
 final class ParserTest extends TestCase
 {
     /**

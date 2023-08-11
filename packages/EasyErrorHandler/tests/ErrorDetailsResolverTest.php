@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Tests;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\Tests\Stubs\TranslatorStub;
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 use Throwable;
 
@@ -48,9 +49,7 @@ final class ErrorDetailsResolverTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestResolveExtendedDetails
-     */
+    #[DataProvider('providerTestResolveExtendedDetails')]
     public function testResolveExtendedDetails(
         Throwable $throwable,
         ?callable $assertions = null,

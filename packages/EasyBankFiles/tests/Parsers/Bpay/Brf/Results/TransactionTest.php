@@ -6,10 +6,11 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Brf\Results;
 use DateTime;
 use EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Transaction;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Transaction
- */
+#[CoversClass(Transaction::class)]
 final class TransactionTest extends TestCase
 {
     /**
@@ -45,11 +46,9 @@ final class TransactionTest extends TestCase
 
     /**
      * Should return date as a null when date string is invalid.
-     *
-     * @group Brf-Transaction
-     *
-     * @dataProvider provideInvalidDates
      */
+    #[DataProvider('provideInvalidDates')]
+    #[Group('Brf-Transaction')]
     public function testGetDateObjectShouldReturnNull(array $date, string $dateGetter): void
     {
         $transaction = new Transaction($date);
@@ -59,9 +58,8 @@ final class TransactionTest extends TestCase
 
     /**
      * Should return payment date as DateTime object.
-     *
-     * @group Brf-Transaction
      */
+    #[Group('Brf-Transaction')]
     public function testShouldReturnPaymentDate(): void
     {
         $transaction = new Transaction([
@@ -73,9 +71,8 @@ final class TransactionTest extends TestCase
 
     /**
      * Should return settlement date as DateTime object.
-     *
-     * @group Brf-Transaction
      */
+    #[Group('Brf-Transaction')]
     public function testShouldReturnSettlementDate(): void
     {
         $transaction = new Transaction([
