@@ -22,13 +22,9 @@ final class CarbonImmutableNormalizer extends DateTimeNormalizer
         return true;
     }
 
-    public function supportsDenormalization(
-        mixed $data,
-        string $type,
-        ?string $format = null,
-        ?array $context = null
-    ): bool {
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
+    {
         return $type === CarbonImmutable::class
-            || parent::supportsDenormalization($data, $type, $format, $context ?? []);
+            || parent::supportsDenormalization($data, $type, $format);
     }
 }
