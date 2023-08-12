@@ -14,11 +14,21 @@ final class CarbonImmutableNormalizer extends DateTimeNormalizer
         ?string $format = null,
         ?array $context = null,
     ): CarbonImmutable {
-        return CarbonImmutable::parse(parent::denormalize($data, $type, $format, $context ?? []));
+        return new CarbonImmutable(parent::denormalize($data, $type, $format, $context ?? []));
     }
 
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    public function supportsDenormalization(
+        mixed $data,
+        string $type,
+        ?string $format = null,
+        ?array $context = null
+    ): bool {
+        return $type === CarbonImmutable::class
+            || parent::supportsDenormalization($data, $type, $format, $context ?? []);
     }
 }
