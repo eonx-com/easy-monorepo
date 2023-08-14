@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Faker\Provider;
 
-use Faker\Provider\Text as BaseProvider;
-use LogicException;
 use EonX\EasyTest\Faker\Generator\UniqueGroupGenerator;
 use EonX\EasyTest\Faker\Generator\UniqueGroupPropertyValueGenerator;
+use Faker\Provider\Text as BaseProvider;
+use LogicException;
 
 final class UniqueGroupProvider extends BaseProvider
 {

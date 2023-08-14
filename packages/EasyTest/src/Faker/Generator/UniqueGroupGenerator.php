@@ -9,7 +9,7 @@ final class UniqueGroupGenerator
 {
     public function __construct(
         protected Generator $generator,
-        protected string $groupName
+        protected string $groupName,
     ) {
     }
 
