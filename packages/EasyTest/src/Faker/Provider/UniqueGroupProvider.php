@@ -43,7 +43,7 @@ final class UniqueGroupProvider extends BaseProvider
      *
      * <code>
      * $faker->uniqueGroup('group-name')->randomElement(array(1, 2, 3));
-     * </code>
+     * </code>.
      */
     public function uniqueGroup(string $groupName): UniqueGroupGenerator
     {
@@ -57,7 +57,7 @@ final class UniqueGroupProvider extends BaseProvider
         string $factoryFqcn,
         array $attributes,
         string $groupName,
-        array $groupAttributes
+        array $groupAttributes,
     ): array {
         $found = false;
         $uniqueParams = [];

@@ -13,7 +13,7 @@ final class UniqueGroupPropertyValueGenerator
         private Generator $generator,
         private mixed $arguments,
         private string $name,
-        private string $uniqueGroupName
+        private string $uniqueGroupName,
     ) {
     }
 
