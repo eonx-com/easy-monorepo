@@ -10,20 +10,24 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 final class CarbonImmutableNormalizer extends DateTimeNormalizer
 {
     /**
-     * @param mixed $data
      * @param mixed[]|null $context
      */
     public function denormalize(
-        $data,
+        mixed $data,
         string $type,
         ?string $format = null,
         ?array $context = null,
     ): CarbonImmutable {
-        return CarbonImmutable::parse(parent::denormalize($data, $type, $format, $context ?? []));
+        return new CarbonImmutable(parent::denormalize($data, $type, $format, $context ?? []));
     }
 
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
+    {
+        return $type === CarbonImmutable::class || parent::supportsDenormalization($data, $type, $format);
     }
 }
