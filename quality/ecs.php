@@ -50,9 +50,8 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->skip([
         // Skip entire files or directories
-        'packages/*/tests/var/*', // Symfony cache files
-        'packages/*/var/*', // Symfony cache files
-        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
+        'packages/*/var/*', // Cache files
+        'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
 
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
