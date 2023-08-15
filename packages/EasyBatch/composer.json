@@ -6,15 +6,15 @@
     "require": {
         "php": "^8.1",
         "doctrine/dbal": "^3.0",
-        "eonx-com/easy-encryption": "^5.1",
-        "eonx-com/easy-event-dispatcher": "^5.1",
-        "eonx-com/easy-pagination": "^5.1",
-        "eonx-com/easy-random": "^5.1",
-        "eonx-com/easy-utils": "^5.1",
+        "eonx-com/easy-encryption": "^5.2",
+        "eonx-com/easy-event-dispatcher": "^5.2",
+        "eonx-com/easy-pagination": "^5.2",
+        "eonx-com/easy-random": "^5.2",
+        "eonx-com/easy-utils": "^5.2",
         "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "eonx-com/easy-lock": "^5.1",
+        "eonx-com/easy-lock": "^5.2",
         "phpunit/phpunit": "^10.2",
         "psr/container": "^2.0",
         "symfony/symfony": "^6.3"
@@ -39,7 +39,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.1-dev"
+            "dev-master": "5.2-dev"
         }
     }
 }

@@ -7,7 +7,7 @@
         "php": "^8.1",
         "ext-simplexml": "*",
         "doctrine/collections": "^2.0",
-        "eonx-com/easy-utils": "^5.1",
+        "eonx-com/easy-utils": "^5.2",
         "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "phpunit/phpunit": "^10.2",
@@ -41,7 +41,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "5.1-dev"
+            "dev-master": "5.2-dev"
         }
     }
 }
