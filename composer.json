@@ -23,6 +23,7 @@
         "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "nyholm/psr7": "^1.8",
+        "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^4.7",

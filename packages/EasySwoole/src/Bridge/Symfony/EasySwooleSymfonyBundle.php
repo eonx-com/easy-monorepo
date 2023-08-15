@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony;
 
+use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\AddDoctrineDbalConnectionNameToParamsPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\ResetEasyBatchProcessorPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\SymfonyServicesResetPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\EasySwooleExtension;
@@ -15,6 +16,7 @@ final class EasySwooleSymfonyBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $container
+            ->addCompilerPass(new AddDoctrineDbalConnectionNameToParamsPass())
             ->addCompilerPass(new ResetEasyBatchProcessorPass())
             ->addCompilerPass(new SymfonyServicesResetPass(), priority: -33);
     }

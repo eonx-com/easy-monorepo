@@ -19,6 +19,12 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         'doctrine' => [
             'enabled' => true,
             'reset_dbal_connections' => true,
+            'coroutine_pdo' => [
+                'enabled' => false,
+                'default_heartbeat' => true,
+                'default_max_idle_time' => 60.0,
+                'default_pool_size' => 10,
+            ],
         ],
         'easy_admin' => [
             'enabled' => true,
