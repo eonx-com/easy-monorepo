@@ -12,6 +12,7 @@ use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
 use Exception;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
 
 final class BugsnagReporterTest extends AbstractTestCase
@@ -75,9 +76,8 @@ final class BugsnagReporterTest extends AbstractTestCase
 
     /**
      * @param class-string[]|null $ignoredExceptions
-     *
-     * @dataProvider providerTestReport
      */
+    #[DataProvider('providerTestReport')]
     public function testReport(
         bool $shouldReport,
         Throwable $throwable,
@@ -98,9 +98,7 @@ final class BugsnagReporterTest extends AbstractTestCase
         self::assertEquals($shouldReport, \count($stub->getCalls()) > 0);
     }
 
-    /**
-     * @dataProvider provideDataForReportWithIgnoredExceptionsResolver
-     */
+    #[DataProvider('provideDataForReportWithIgnoredExceptionsResolver')]
     public function testReportWithIgnoredExceptionsResolver(bool $shouldIgnore, Throwable $throwable): void
     {
         $ignoreExceptionsResolver = new class() implements BugsnagIgnoreExceptionsResolverInterface {

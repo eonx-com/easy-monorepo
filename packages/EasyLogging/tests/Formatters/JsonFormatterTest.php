@@ -8,6 +8,7 @@ use EonX\EasyLogging\Formatters\JsonFormatter;
 use EonX\EasyLogging\Tests\AbstractTestCase;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class JsonFormatterTest extends AbstractTestCase
 {
@@ -37,9 +38,8 @@ final class JsonFormatterTest extends AbstractTestCase
 
     /**
      * @throws \Exception
-     *
-     * @dataProvider providerTestCreateLogFormat
      */
+    #[DataProvider('providerTestCreateLogFormat')]
     public function testCreateLogFormat(callable $log, callable $assert): void
     {
         $stream = \fopen('php://memory', 'rw+');

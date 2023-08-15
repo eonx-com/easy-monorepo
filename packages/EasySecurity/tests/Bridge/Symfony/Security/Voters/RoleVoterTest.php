@@ -10,6 +10,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\SecurityContextResolverStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -47,9 +48,7 @@ final class RoleVoterTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestVoter
-     */
+    #[DataProvider('providerTestVoter')]
     public function testVoter(
         AuthorizationMatrixInterface $authorizationMatrix,
         SecurityContextInterface $securityContext,

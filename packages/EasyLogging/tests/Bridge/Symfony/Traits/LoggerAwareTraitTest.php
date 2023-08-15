@@ -5,11 +5,10 @@ namespace EonX\EasyLogging\Tests\Bridge\Symfony\Traits;
 
 use EonX\EasyLogging\Bridge\Symfony\Traits\LoggerAwareTrait;
 use EonX\EasyLogging\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\LoggerInterface;
 
-/**
- * @covers \EonX\EasyLogging\Bridge\Symfony\Traits\LoggerAwareTrait
- */
+#[CoversClass(LoggerAwareTrait::class)]
 final class LoggerAwareTraitTest extends AbstractTestCase
 {
     public function testSetLoggerSucceeds(): void

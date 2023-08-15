@@ -13,6 +13,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\JwtClaimFetcher;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RolesFromJwtConfiguratorTest extends AbstractTestCase
@@ -59,9 +60,8 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $authorizationRoles
-     *
-     * @dataProvider providerTestConfigure
      */
+    #[DataProvider('providerTestConfigure')]
     public function testConfigure(
         array $authorizationRoles,
         ?SecurityContextInterface $context = null,

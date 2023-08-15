@@ -8,6 +8,7 @@ use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RealTimeMessageTest extends AbstractTestCase
 {
@@ -59,9 +60,8 @@ final class RealTimeMessageTest extends AbstractTestCase
      * @param string[] $topics
      *
      * @throws \Nette\Utils\JsonException
-     *
-     * @dataProvider providerTestGetters
      */
+    #[DataProvider('providerTestGetters')]
     public function testGetters(callable $getMessage, array $body, array $topics): void
     {
         // Trick for coverage

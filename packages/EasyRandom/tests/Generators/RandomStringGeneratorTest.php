@@ -11,6 +11,7 @@ use EonX\EasyRandom\Generators\RandomStringGenerator;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\Tests\AbstractTestCase;
 use EonX\EasyRandom\Tests\Stubs\AlwaysValidRandomStringConstraintStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\String\UnicodeString;
 
 final class RandomStringGeneratorTest extends AbstractTestCase
@@ -150,9 +151,7 @@ final class RandomStringGeneratorTest extends AbstractTestCase
         $sut->__toString();
     }
 
-    /**
-     * @dataProvider providerTestRandomString
-     */
+    #[DataProvider('providerTestRandomString')]
     public function testRandomString(callable $configure, callable $assert, ?int $length = null): void
     {
         $length ??= 100;

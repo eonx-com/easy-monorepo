@@ -5,6 +5,7 @@ namespace EonX\EasyUtils\Tests\CreditCard;
 
 use EonX\EasyUtils\CreditCard\CreditCardNumberValidator;
 use EonX\EasyUtils\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class CreditCardNumberValidatorTest extends AbstractTestCase
 {
@@ -94,9 +95,7 @@ final class CreditCardNumberValidatorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCardNumbers
-     */
+    #[DataProvider('provideCardNumbers')]
     public function testIsCreditCardNumberValidSucceeds(string $number, bool $expectedResult): void
     {
         $validator = new CreditCardNumberValidator();

@@ -28,6 +28,7 @@ use EonX\EasyWebhook\Tests\Stubs\AsyncDispatcherStub;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class WebhookClientTest extends AbstractTestCase
@@ -155,9 +156,8 @@ final class WebhookClientTest extends AbstractTestCase
 
     /**
      * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
-     *
-     * @dataProvider providerTestSend
      */
+    #[DataProvider('providerTestSend')]
     public function testSend(
         WebhookInterface $webhook,
         string $method,

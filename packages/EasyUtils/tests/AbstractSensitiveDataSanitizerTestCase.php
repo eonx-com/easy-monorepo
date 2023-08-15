@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
@@ -205,9 +206,8 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 
     /**
      * @param string[]|null $keysToMask
-     *
-     * @dataProvider providerTestSanitize
      */
+    #[DataProvider('providerTestSanitize')]
     public function testSanitize(array $input, array $expectedOutput, ?array $keysToMask = null): void
     {
         $sanitizer = $this->getSanitizer($keysToMask);

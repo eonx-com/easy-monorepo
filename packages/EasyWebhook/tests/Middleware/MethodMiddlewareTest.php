@@ -7,6 +7,7 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -27,9 +28,7 @@ final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(WebhookInterface $webhook, string $expectedMethod, ?string $defaultMethod = null): void
     {
         $middleware = new MethodMiddleware($defaultMethod);

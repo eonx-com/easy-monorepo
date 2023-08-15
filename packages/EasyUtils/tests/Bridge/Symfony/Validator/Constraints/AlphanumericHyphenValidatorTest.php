@@ -7,6 +7,7 @@ use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\AlphanumericHyphen;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\AlphanumericHyphenValidator;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -40,9 +41,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractTestCase
         yield 'Null value' => [null];
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
+    #[DataProvider('provideInvalidValues')]
     public function testValidateFailsWithRegexFailedError(string $value): void
     {
         $validator = new AlphanumericHyphenValidator();
@@ -77,9 +76,7 @@ final class AlphanumericHyphenValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideValidValues
-     */
+    #[DataProvider('provideValidValues')]
     public function testValidateSucceedsWithValidValue(mixed $value): void
     {
         $validator = new AlphanumericHyphenValidator();

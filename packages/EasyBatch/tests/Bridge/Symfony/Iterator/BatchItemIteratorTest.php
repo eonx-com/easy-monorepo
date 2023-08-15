@@ -11,6 +11,7 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Iterator\BatchItemIterator;
 use EonX\EasyBatch\Iterator\IteratorConfig;
 use EonX\EasyBatch\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class BatchItemIteratorTest extends AbstractSymfonyTestCase
@@ -126,9 +127,8 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 
     /**
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @dataProvider providerTestIterateThroughItems
      */
+    #[DataProvider('providerTestIterateThroughItems')]
     public function testIterateThroughItems(
         callable $setup,
         callable $assert,

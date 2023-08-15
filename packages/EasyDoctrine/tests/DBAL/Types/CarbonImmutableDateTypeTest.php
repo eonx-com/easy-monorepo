@@ -9,10 +9,10 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType
- */
+#[CoversClass(CarbonImmutableDateType::class)]
 final class CarbonImmutableDateTypeTest extends AbstractTestCase
 {
     protected function setUp(): void
@@ -43,9 +43,7 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideConvertToPhpValues
-     */
+    #[DataProvider('provideConvertToPhpValues')]
     public function testConvertToPhpValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType $type */

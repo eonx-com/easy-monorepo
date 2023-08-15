@@ -12,6 +12,7 @@ use EonX\EasyPagination\Tests\Stubs\Model\ItemModel;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EloquentPaginatorTest extends AbstractEloquentTestCase
 {
@@ -191,9 +192,8 @@ final class EloquentPaginatorTest extends AbstractEloquentTestCase
 
     /**
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @dataProvider providerTestPaginator
      */
+    #[DataProvider('providerTestPaginator')]
     public function testPaginator(
         PaginationInterface $pagination,
         Model $model,

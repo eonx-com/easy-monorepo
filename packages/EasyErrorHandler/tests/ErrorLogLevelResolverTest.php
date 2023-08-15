@@ -7,6 +7,7 @@ use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use InvalidArgumentException;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -46,9 +47,8 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
 
     /**
      * @param array<class-string, int> $exceptionLogLevels
-     *
-     * @dataProvider providerTestGetErrorLogLevel
      */
+    #[DataProvider('providerTestGetErrorLogLevel')]
     public function testGetErrorLogLevel(
         Throwable $throwable,
         int $expectedLogLevel,

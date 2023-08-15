@@ -10,10 +10,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Parsers\TestCase
- */
-class TestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * Get mock for given class and set expectations based on given callable.

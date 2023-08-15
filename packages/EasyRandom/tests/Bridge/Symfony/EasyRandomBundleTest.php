@@ -12,6 +12,7 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyRandomBundleTest extends AbstractSymfonyTestCase
 {
@@ -74,9 +75,8 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
      * @param string[] $configs
      *
      * @psalm-param class-string $expectedUuidGeneratorClass
-     *
-     * @dataProvider provideConfigsForUuidGenerator
      */
+    #[DataProvider('provideConfigsForUuidGenerator')]
     public function testUuidGeneratorInstance(array $configs, string $expectedUuidGeneratorClass): void
     {
         $sut = $this->getKernel($configs)

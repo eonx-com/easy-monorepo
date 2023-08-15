@@ -12,6 +12,7 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -44,9 +45,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(?WebhookInterface $webhook = null, ?string $eventClass = null): void
     {
         $dispatcher = new EventDispatcherStub();

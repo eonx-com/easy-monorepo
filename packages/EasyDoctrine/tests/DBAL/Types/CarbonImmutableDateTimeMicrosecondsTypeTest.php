@@ -16,10 +16,10 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType
- */
+#[CoversClass(CarbonImmutableDateTimeMicrosecondsType::class)]
 final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
 {
     protected function setUp(): void
@@ -128,9 +128,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideConvertToDatabaseValues
-     */
+    #[DataProvider('provideConvertToDatabaseValues')]
     public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
@@ -157,9 +155,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         $type->convertToDatabaseValue($value, $platform);
     }
 
-    /**
-     * @dataProvider provideConvertToPHPValues
-     */
+    #[DataProvider('provideConvertToPHPValues')]
     public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType $type */
@@ -196,9 +192,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractTestCase
         self::assertSame(Types::DATETIME_IMMUTABLE, $name);
     }
 
-    /**
-     * @dataProvider provideFieldDeclarationValues
-     */
+    #[DataProvider('provideFieldDeclarationValues')]
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,

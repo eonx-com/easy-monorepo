@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests;
 
 use EonX\EasyUtils\Interfaces\MathInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractMathTestCase extends AbstractTestCase
 {
@@ -190,9 +191,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAbsData
-     */
+    #[DataProvider('provideAbsData')]
     public function testAbsSucceeds(string $value, string $result, ?int $precision = null): void
     {
         $math = $this->getMath();
@@ -209,9 +208,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         self::assertSame('20000000000000000000', $actual);
     }
 
-    /**
-     * @dataProvider provideCompareThatData
-     */
+    #[DataProvider('provideCompareThatData')]
     public function testCompareThatSucceeds(
         string $leftOperand,
         string $rightOperand,
@@ -227,9 +224,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         self::assertSame($result, $actual);
     }
 
-    /**
-     * @dataProvider provideDivideData
-     */
+    #[DataProvider('provideDivideData')]
     public function testDivideSucceeds(
         string $expected,
         string $dividend,
@@ -250,9 +245,7 @@ abstract class AbstractMathTestCase extends AbstractTestCase
         self::assertSame('50000000000000000000', $actual);
     }
 
-    /**
-     * @dataProvider provideRoundData
-     */
+    #[DataProvider('provideRoundData')]
     public function testRoundSucceeds(string $value, string $expected): void
     {
         $math = $this->getMath();

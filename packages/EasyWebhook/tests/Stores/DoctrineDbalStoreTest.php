@@ -9,6 +9,7 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class DoctrineDbalStoreTest extends AbstractStoreTestCase
 {
@@ -40,9 +41,8 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
      * @param \EonX\EasyWebhook\Interfaces\WebhookInterface[] $webhooks
      *
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @dataProvider providerTestFindDueWebhooks
      */
+    #[DataProvider('providerTestFindDueWebhooks')]
     public function testFindDueWebhooks(array $webhooks, int $expectedDue): void
     {
         $store = $this->getStore();

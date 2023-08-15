@@ -7,6 +7,7 @@ use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Abn;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\AbnValidator;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -58,9 +59,7 @@ final class AbnValidatorTest extends AbstractTestCase
         yield 'Null value' => [null];
     }
 
-    /**
-     * @dataProvider provideAbnWithInvalidCharacters
-     */
+    #[DataProvider('provideAbnWithInvalidCharacters')]
     public function testValidateFailsWithInvalidCharactersError(string $abn): void
     {
         $validator = new AbnValidator();
@@ -102,9 +101,7 @@ final class AbnValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideInvalidAbnValues
-     */
+    #[DataProvider('provideInvalidAbnValues')]
     public function testValidateFailsWithModulusCalculationFailedError(string $abn): void
     {
         $validator = new AbnValidator();
@@ -137,9 +134,7 @@ final class AbnValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideValidAbnValues
-     */
+    #[DataProvider('provideValidAbnValues')]
     public function testValidateSucceedsWithValidAbn(mixed $abn): void
     {
         $validator = new AbnValidator();
@@ -166,9 +161,7 @@ final class AbnValidatorTest extends AbstractTestCase
         $validator->validate($abn, $constraint);
     }
 
-    /**
-     * @dataProvider provideUnexpectedValues
-     */
+    #[DataProvider('provideUnexpectedValues')]
     public function testValidateThrowsUnexpectedValueException(mixed $abn, string $message): void
     {
         $validator = new AbnValidator();

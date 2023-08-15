@@ -5,6 +5,7 @@ namespace EonX\EasyTest\Tests;
 
 use EonX\EasyTest\Exceptions\UnableToLoadCoverageException;
 use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class CheckCoverageCommandTest extends AbstractTestCase
 {
@@ -90,9 +91,8 @@ final class CheckCoverageCommandTest extends AbstractTestCase
 
     /**
      * @throws \Exception
-     *
-     * @dataProvider providerCheckCoverage
      */
+    #[DataProvider('providerCheckCoverage')]
     public function testCheckCoverage(array $inputs, string $expectedOutput): void
     {
         $output = $this->executeCommand('easy-test:check-coverage', $inputs);
@@ -104,9 +104,8 @@ final class CheckCoverageCommandTest extends AbstractTestCase
      * @phpstan-param class-string<\Throwable> $expectedException
      *
      * @throws \Exception
-     *
-     * @dataProvider providerCheckCoverageExceptions
      */
+    #[DataProvider('providerCheckCoverageExceptions')]
     public function testCheckCoverageExceptions(array $inputs, string $expectedException): void
     {
         $this->expectException($expectedException);

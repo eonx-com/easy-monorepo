@@ -7,6 +7,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseDataInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyErrorHandler\Response\SymfonySerializerResponseFactory;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -42,9 +43,7 @@ final class SymfonySerializerResponseFactoryTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestCreate
-     */
+    #[DataProvider('providerTestCreate')]
     public function testCreate(
         Request $request,
         ErrorResponseDataInterface $errorResponseData,

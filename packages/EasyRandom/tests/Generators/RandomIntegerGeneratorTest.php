@@ -5,6 +5,7 @@ namespace EonX\EasyRandom\Tests\Generators;
 
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;
 use EonX\EasyRandom\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RandomIntegerGeneratorTest extends AbstractTestCase
 {
@@ -29,9 +30,7 @@ final class RandomIntegerGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideMinAndMaxValues
-     */
+    #[DataProvider('provideMinAndMaxValues')]
     public function testGenerateSucceeds(?int $min = null, ?int $max = null): void
     {
         $sut = new RandomIntegerGenerator();
