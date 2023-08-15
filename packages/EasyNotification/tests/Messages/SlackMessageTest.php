@@ -7,6 +7,7 @@ use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Messages\SlackMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SlackMessageTest extends AbstractTestCase
 {
@@ -53,9 +54,8 @@ final class SlackMessageTest extends AbstractTestCase
 
     /**
      * @throws \Nette\Utils\JsonException
-     *
-     * @dataProvider providerTestGetters
      */
+    #[DataProvider('providerTestGetters')]
     public function testGetters(callable $getMessage, array $body): void
     {
         // Trick for coverage

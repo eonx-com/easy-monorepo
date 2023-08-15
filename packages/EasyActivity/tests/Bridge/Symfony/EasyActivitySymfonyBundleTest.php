@@ -12,6 +12,7 @@ use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -113,9 +114,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         self::assertInstanceOf(EntityEventSubscriber::class, $subscriber);
     }
 
-    /**
-     * @dataProvider providerInvalidEasyConfigs
-     */
+    #[DataProvider('providerInvalidEasyConfigs')]
     public function testInvalidEasyActivityConfig(string $configName, string $expectedExceptionClass): void
     {
         $this->safeCall(function () use ($configName): void {
@@ -125,9 +124,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         $this->assertThrownException($expectedExceptionClass, 0);
     }
 
-    /**
-     * @dataProvider providerValidEasyConfigs
-     */
+    #[DataProvider('providerValidEasyConfigs')]
     public function testValidEasyActivityConfig(string $configName, array $subjects): void
     {
         $container = $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();

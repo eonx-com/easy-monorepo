@@ -12,6 +12,7 @@ use EonX\EasyApiPlatform\Bridge\Symfony\Listeners\HttpKernelViewEventListener;
 use EonX\EasyApiPlatform\Paginators\CustomPaginatorInterface;
 use EonX\EasyApiPlatform\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -35,9 +36,7 @@ final class HttpKernelViewEventListenerTest extends AbstractSymfonyTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestListener
-     */
+    #[DataProvider('providerTestListener')]
     public function testListener(object $controllerResult, bool $isCustomPaginator): void
     {
         $event = new ViewEvent(

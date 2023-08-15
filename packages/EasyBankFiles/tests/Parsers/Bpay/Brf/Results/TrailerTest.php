@@ -6,19 +6,18 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Brf\Results;
 use EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException;
 use EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
- */
+#[CoversClass(Trailer::class)]
 final class TrailerTest extends TestCase
 {
     /**
      * Should return amount of error corrections.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnAmountOfErrorCorrections(): void
     {
         $expected = [
@@ -38,9 +37,8 @@ final class TrailerTest extends TestCase
      * Should return amount of payments.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnAmountOfPayments(): void
     {
         $expected = [
@@ -60,9 +58,8 @@ final class TrailerTest extends TestCase
      * Should return amount of payments.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnAmountOfReversals(): void
     {
         $expected = [
@@ -82,9 +79,8 @@ final class TrailerTest extends TestCase
      * Should return number of error corrections.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnNumberOfErrorCorrections(): void
     {
         $expected = [
@@ -104,9 +100,8 @@ final class TrailerTest extends TestCase
      * Should return number of payments.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnNumberOfPayments(): void
     {
         $expected = [
@@ -126,9 +121,8 @@ final class TrailerTest extends TestCase
      * Should return number of reversals.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnNumberOfReversals(): void
     {
         $expected = [
@@ -148,9 +142,8 @@ final class TrailerTest extends TestCase
      * Should return settlement amount.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldReturnSettlementAmount(): void
     {
         $expected = [
@@ -170,9 +163,8 @@ final class TrailerTest extends TestCase
      * Should throw exception if sign field is not found.
      *
      * @throws \EonX\EasyBankFiles\Parsers\Bpay\Brf\Exceptions\InvalidSignFieldException
-     *
-     * @group Brf-Trailer
      */
+    #[Group('Brf-Trailer')]
     public function testShouldThrowExceptionIfSignedFileNotFound(): void
     {
         $this->expectException(InvalidSignFieldException::class);

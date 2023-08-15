@@ -9,10 +9,9 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Files\Trailer;
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\File
- */
+#[CoversClass(File::class)]
 final class FileTest extends TestCase
 {
     /**

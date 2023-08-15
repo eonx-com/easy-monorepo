@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Tests\Exceptions;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class BaseExceptionTest extends AbstractTestCase
 {
@@ -110,9 +111,7 @@ final class BaseExceptionTest extends AbstractTestCase
         self::assertSame($userMessageParams, $result);
     }
 
-    /**
-     * @dataProvider providerTestLogLevelConvenientMethods
-     */
+    #[DataProvider('providerTestLogLevelConvenientMethods')]
     public function testLogLevelConvenientMethods(string $method, int $expectedLogLevel): void
     {
         $exception = new BaseExceptionStub();

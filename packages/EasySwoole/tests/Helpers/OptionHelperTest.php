@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Tests\Helpers;
 
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class OptionHelperTest extends AbstractTestCase
 {
@@ -116,9 +117,7 @@ final class OptionHelperTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestGetBoolean
-     */
+    #[DataProvider('providerTestGetBoolean')]
     public function testGetBoolean(array $options, string $key, bool $expected): void
     {
         OptionHelper::setOptions($options);
@@ -126,9 +125,7 @@ final class OptionHelperTest extends AbstractTestCase
         self::assertSame($expected, OptionHelper::getBoolean($key));
     }
 
-    /**
-     * @dataProvider providerTestIsset
-     */
+    #[DataProvider('providerTestIsset')]
     public function testIsset(array $options, string $issetKey, bool $expected): void
     {
         OptionHelper::setOptions($options);

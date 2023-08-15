@@ -9,6 +9,7 @@ use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Bridge\Symfony\Stubs\CustomAuthenticationException;
 use LogicException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -39,9 +40,8 @@ final class SecurityContextAuthenticatorTest extends AbstractTestCase
 
     /**
      * @psalm-param class-string<\Throwable> $expectedExceptionClass
-     *
-     * @dataProvider provideExceptions
      */
+    #[DataProvider('provideExceptions')]
     public function testAuthenticateThrowsCorrectException(
         Throwable $thrownException,
         string $expectedExceptionClass,

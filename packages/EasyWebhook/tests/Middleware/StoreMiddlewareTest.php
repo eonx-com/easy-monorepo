@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Stores\ArrayResultStore;
 use EonX\EasyWebhook\Stores\ArrayStore;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -26,9 +27,7 @@ final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(int $resultsCount, ?WebhookResultInterface $webhookResult = null): void
     {
         $webhook = new Webhook();

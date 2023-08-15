@@ -11,6 +11,7 @@ use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Tests\Stubs\EncryptionKeyResolverStub;
 use ParagonIE\Halite\KeyFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EncryptorTest extends AbstractTestCase
 {
@@ -120,9 +121,8 @@ final class EncryptorTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]|null $resolvers
-     *
-     * @dataProvider providerTestEncrypt
      */
+    #[DataProvider('providerTestEncrypt')]
     public function testEncrypt(string $text, mixed $key = null, ?array $resolvers = null): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
@@ -136,9 +136,8 @@ final class EncryptorTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]|null $resolvers
-     *
-     * @dataProvider providerTestEncryptRaw
      */
+    #[DataProvider('providerTestEncryptRaw')]
     public function testEncryptRaw(string $text, mixed $key = null, ?array $resolvers = null): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();

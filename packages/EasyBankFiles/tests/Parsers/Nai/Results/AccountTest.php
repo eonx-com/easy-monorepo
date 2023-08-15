@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
 
+use EonX\EasyBankFiles\Parsers\Nai\Results\AbstractNaiResult;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Account;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Trailer;
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\AbstractNaiResult
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\Account
- */
+#[CoversClass(AbstractNaiResult::class)]
+#[CoversClass(Account::class)]
 final class AccountTest extends TestCase
 {
     /**

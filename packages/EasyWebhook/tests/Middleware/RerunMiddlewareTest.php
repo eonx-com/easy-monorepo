@@ -8,6 +8,7 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\RerunMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -45,9 +46,8 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
 
     /**
      * @phpstan-param class-string<\Throwable>|null $exceptedException
-     *
-     * @dataProvider providerTestProcess
      */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         ?string $expectedStatus = null,

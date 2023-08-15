@@ -12,6 +12,7 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
@@ -79,9 +80,8 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
      * @param string[] $config
      *
      * @psalm-param class-string $expectedUuidGeneratorClass
-     *
-     * @dataProvider provideConfigsForUuidGenerator
      */
+    #[DataProvider('provideConfigsForUuidGenerator')]
     public function testUuidGeneratorInstance(array $config, string $expectedUuidGeneratorClass): void
     {
         $sut = $this->getApp($config);

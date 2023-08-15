@@ -10,14 +10,14 @@ use EonX\EasyBankFiles\Parsers\Ack\BpbParser;
 use EonX\EasyBankFiles\Parsers\Ack\Results\Issue;
 use EonX\EasyBankFiles\Parsers\Ack\Results\PaymentAcknowledgement;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 final class ParserTest extends TestCase
 {
     /**
      * Test aba ack processing.
-     *
-     * @group Ack-Parser
      */
+    #[Group('Ack-Parser')]
     public function testAbaAckProcessing(): void
     {
         $filename = \realpath(__DIR__ . '/data/sample.txt.ENC.PROCESSED.ACK');
@@ -158,9 +158,8 @@ final class ParserTest extends TestCase
 
     /**
      * Test bpay batch ack processing.
-     *
-     * @group Ack-Parser
      */
+    #[Group('Ack-Parser')]
     public function testBpayBatchAckProcessing(): void
     {
         $filename = \realpath(__DIR__ . '/data/bpay_batch_sample.txt.ENC.RECEIVED.ACK');
@@ -202,9 +201,8 @@ final class ParserTest extends TestCase
 
     /**
      * Test issues are correctly processed regardless of formatting.
-     *
-     * @group Ack-Parser
      */
+    #[Group('Ack-Parser')]
     public function testIssueProcessing(): void
     {
         $converter = new XmlConverter();
@@ -322,9 +320,8 @@ XML;
     /**
      * Should return empty collection if no issue
      * and an empty array if attribute is not found in the xml.
-     *
-     * @group Ack-Parser
      */
+    #[Group('Ack-Parser')]
     public function testShouldReturnIfNoIssues(): void
     {
         $filename = \realpath(__DIR__ . '/data/no_issues_sample.txt.ENC.PROCESSED.ACK');
@@ -340,9 +337,8 @@ XML;
 
     /**
      * Should return PaymentAcknowledgement, Issues collection and Issue object.
-     *
-     * @group Ack-Parser
      */
+    #[Group('Ack-Parser')]
     public function testShouldReturnIssues(): void
     {
         $filename = \realpath(__DIR__ . '/data/sample.txt.ENC.PROCESSED.ACK');

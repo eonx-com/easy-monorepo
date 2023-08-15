@@ -12,6 +12,7 @@ use EonX\EasyWebhook\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\ArrayStoreStub;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -48,9 +49,8 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
 
     /**
      * @phpstan-param class-string<\Throwable> $expectedException
-     *
-     * @dataProvider providerTestProcess
      */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,

@@ -7,6 +7,7 @@ use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\DateInterval;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\DateIntervalValidator;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -38,9 +39,7 @@ final class DateIntervalValidatorTest extends AbstractTestCase
         yield 'Null value' => [null];
     }
 
-    /**
-     * @dataProvider provideInvalidDateIntervalValues
-     */
+    #[DataProvider('provideInvalidDateIntervalValues')]
     public function testValidateFailsWithInvalidDateIntervalValues(string $dateInterval): void
     {
         $validator = new DateIntervalValidator();
@@ -54,9 +53,7 @@ final class DateIntervalValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideValidDateIntervalValues
-     */
+    #[DataProvider('provideValidDateIntervalValues')]
     public function testValidateSucceedsWithValidDateInterval(mixed $dateInterval): void
     {
         $validator = new DateIntervalValidator();

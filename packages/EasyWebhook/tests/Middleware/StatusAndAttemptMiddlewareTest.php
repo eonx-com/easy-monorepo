@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
@@ -36,9 +37,7 @@ final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(WebhookResultInterface $webhookResult, string $status): void
     {
         $middleware = new StatusAndAttemptMiddleware();

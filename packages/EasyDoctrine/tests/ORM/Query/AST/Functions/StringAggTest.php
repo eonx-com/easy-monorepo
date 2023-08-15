@@ -11,10 +11,9 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use EonX\EasyDoctrine\ORM\Query\AST\Functions\StringAgg;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyDoctrine\ORM\Query\AST\Functions\StringAgg
- */
+#[CoversClass(StringAgg::class)]
 final class StringAggTest extends AbstractTestCase
 {
     /**

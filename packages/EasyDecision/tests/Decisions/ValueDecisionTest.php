@@ -12,6 +12,7 @@ use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
@@ -41,9 +42,7 @@ final class ValueDecisionTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider decisionEntirelyProvider
-     */
+    #[DataProvider('decisionEntirelyProvider')]
     public function testDecisionEntirely(
         array $rules,
         array $input,

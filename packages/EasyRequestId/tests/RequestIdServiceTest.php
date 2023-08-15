@@ -10,6 +10,7 @@ use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\Resolvers\HttpFoundationRequestResolver;
 use EonX\EasyRequestId\UuidFallbackResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Uuid;
 
@@ -40,9 +41,7 @@ final class RequestIdServiceTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestGetIds
-     */
+    #[DataProvider('providerTestGetIds')]
     public function testGetIds(
         Request $request,
         ?string $requestId = null,

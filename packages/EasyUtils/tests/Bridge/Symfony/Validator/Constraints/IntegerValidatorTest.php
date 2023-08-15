@@ -7,14 +7,14 @@ use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Integer;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-/**
- * @covers \EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\IntegerValidator
- */
+#[CoversClass(IntegerValidator::class)]
 final class IntegerValidatorTest extends AbstractTestCase
 {
     /**
@@ -47,9 +47,7 @@ final class IntegerValidatorTest extends AbstractTestCase
         yield 'Valid value #4' => ['-123'];
     }
 
-    /**
-     * @dataProvider provideEmptyValues
-     */
+    #[DataProvider('provideEmptyValues')]
     public function testValidateSucceedsAndDoesNothing(mixed $value): void
     {
         $validator = new IntegerValidator();
@@ -62,9 +60,7 @@ final class IntegerValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
+    #[DataProvider('provideInvalidValues')]
     public function testValidateSucceedsWithInvalidValue(mixed $value): void
     {
         $validator = new IntegerValidator();
@@ -78,9 +74,7 @@ final class IntegerValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideValidValues
-     */
+    #[DataProvider('provideValidValues')]
     public function testValidateSucceedsWithValidValue(mixed $value): void
     {
         $validator = new IntegerValidator();

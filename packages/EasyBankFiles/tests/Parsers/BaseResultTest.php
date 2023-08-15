@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Parsers;
 
 use EonX\EasyBankFiles\Tests\Parsers\Stubs\ResultStub;
+use PHPUnit\Framework\Attributes\Group;
 
 final class BaseResultTest extends TestCase
 {
     /**
      * Should return company name as biller.
-     *
-     * @group Base-Result
      */
+    #[Group('Base-Result')]
     public function testShouldReturnBiller(): void
     {
         $data = [
@@ -25,9 +25,8 @@ final class BaseResultTest extends TestCase
 
     /**
      * Should return null if attribute does not exist.
-     *
-     * @group Base-Result
      */
+    #[Group('Base-Result')]
     public function testShouldReturnNull(): void
     {
         $data = [

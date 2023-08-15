@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Bridge\Symfony;
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
+use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\AddDoctrineDbalConnectionNameToParamsPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\ResetEasyBatchProcessorPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\SymfonyServicesResetPass;
 use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
@@ -28,6 +29,12 @@ final class EasySwooleSymfonyBundle extends AbstractBundle
         'reset_dbal_connections' => BridgeConstantsInterface::PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS,
     ];
 
+    private const DOCTRINE_COROUTINE_PDO_CONFIG = [
+        'default_heartbeat' => BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT,
+        'default_max_idle_time' => BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME,
+        'default_pool_size' => BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE,
+    ];
+
     private const EASY_BATCH_CONFIG = [
         'reset_batch_processor' => BridgeConstantsInterface::PARAM_RESET_EASY_BATCH_PROCESSOR,
     ];
@@ -47,6 +54,7 @@ final class EasySwooleSymfonyBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
+            ->addCompilerPass(new AddDoctrineDbalConnectionNameToParamsPass())
             ->addCompilerPass(new ResetEasyBatchProcessorPass())
             ->addCompilerPass(new SymfonyServicesResetPass(), priority: -33);
     }
@@ -87,6 +95,16 @@ final class EasySwooleSymfonyBundle extends AbstractBundle
                 $container
                     ->parameters()
                     ->set($param, $config['doctrine'][$configName]);
+            }
+
+            if ($config['doctrine']['coroutine_pdo']['enabled'] ?? false) {
+                foreach (self::DOCTRINE_COROUTINE_PDO_CONFIG as $configName => $param) {
+                    $container
+                        ->parameters()
+                        ->set($param, $config['doctrine']['coroutine_pdo'][$configName]);
+                }
+
+                $container->import(__DIR__ . '/Resources/config/doctrine_coroutine_pdo.php');
             }
 
             $container->import(__DIR__ . '/Resources/config/doctrine.php');

@@ -8,9 +8,6 @@ use EonX\EasyBankFiles\Generators\Aba\Objects\FileTotalRecord;
 use EonX\EasyBankFiles\Generators\Aba\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Generators\Aba\TestCase
- */
 abstract class TestCase extends GeneratorTestCase
 {
     /**

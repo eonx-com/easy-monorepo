@@ -12,6 +12,7 @@ use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\RuleStopPropagationStub;
 use EonX\EasyDecision\Tests\Stubs\RuleStub;
 use EonX\EasyDecision\Tests\Stubs\RuleWithExtraOutputStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class DecisionsTest extends AbstractTestCase
 {
@@ -120,9 +121,8 @@ final class DecisionsTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasyDecision\Interfaces\RuleInterface[] $rules
-     *
-     * @dataProvider providerTestDecisions
      */
+    #[DataProvider('providerTestDecisions')]
     public function testDecisions(
         DecisionInterface $decision,
         array $rules,

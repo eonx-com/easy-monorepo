@@ -7,6 +7,7 @@ use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Decimal;
 use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\DecimalValidator;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -65,9 +66,7 @@ final class DecimalValidatorTest extends AbstractTestCase
         yield 'Null value' => [null, 1, 3];
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
+    #[DataProvider('provideInvalidValues')]
     public function testValidateFailsWithInvalidValue(mixed $value, int $minPrecision, int $maxPrecision): void
     {
         $validator = new DecimalValidator();
@@ -106,9 +105,7 @@ final class DecimalValidatorTest extends AbstractTestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @dataProvider provideValidValues
-     */
+    #[DataProvider('provideValidValues')]
     public function testValidateSucceedsWithValidValue(mixed $value, int $minPrecision, int $maxPrecision): void
     {
         $validator = new DecimalValidator();

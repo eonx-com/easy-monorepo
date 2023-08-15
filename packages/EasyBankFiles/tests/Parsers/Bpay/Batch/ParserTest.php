@@ -5,17 +5,16 @@ namespace EonX\EasyBankFiles\Tests\Parsers\Bpay\Batch;
 
 use EonX\EasyBankFiles\Parsers\Bpay\Batch\Parser;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Bpay\Batch\Parser
- */
+#[CoversClass(Parser::class)]
 final class ParserTest extends TestCase
 {
     /**
      * Should return error from the content.
-     *
-     * @group Batch-Parser-Error
      */
+    #[Group('Batch-Parser-Error')]
     public function testShouldReturnErrors(): void
     {
         $invalidLine = 'invalid';
@@ -29,9 +28,8 @@ final class ParserTest extends TestCase
 
     /**
      * Should return Header object.
-     *
-     * @group Batch-Parser-Header
      */
+    #[Group('Batch-Parser-Header')]
     public function testShouldReturnHeader(): void
     {
         $batchParser = new Parser($this->getSampleFileContents('sample.BPB'));
@@ -45,9 +43,8 @@ final class ParserTest extends TestCase
 
     /**
      * Should return trailer from the content.
-     *
-     * @group Batch-Parser-Trailer
      */
+    #[Group('Batch-Parser-Trailer')]
     public function testShouldReturnTrailer(): void
     {
         $batchParser = new Parser($this->getSampleFileContents('sample.BPB'));
@@ -64,9 +61,8 @@ final class ParserTest extends TestCase
 
     /**
      * Should return array of Transaction classes.
-     *
-     * @group Batch-Parser-Transaction
      */
+    #[Group('Batch-Parser-Transaction')]
     public function testShouldReturnTransaction(): void
     {
         $batchParser = new Parser($this->getSampleFileContents('sample.BPB'));

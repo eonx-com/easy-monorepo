@@ -10,10 +10,9 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use EonX\EasyDoctrine\ORM\Query\AST\Functions\Cast;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyDoctrine\ORM\Query\AST\Functions\Cast
- */
+#[CoversClass(Cast::class)]
 final class CastTest extends AbstractTestCase
 {
     /**

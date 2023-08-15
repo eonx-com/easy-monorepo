@@ -17,8 +17,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * This class has for objective to provide common features to all tests without having to update
  * the class they all extend.
- *
- * @covers \EonX\EasyErrorHandler\Tests\AbstractTestCase
  */
 abstract class AbstractTestCase extends TestCase
 {

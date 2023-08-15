@@ -10,6 +10,7 @@ use EonX\EasyWebhook\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -54,9 +55,8 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
 
     /**
      * @phpstan-param class-string<\Throwable>|null $expectedException
-     *
-     * @dataProvider providerTestProcess
      */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,

@@ -20,6 +20,7 @@ use EonX\EasyNotification\Queue\QueueMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use EonX\EasyNotification\Tests\Stubs\MessageStub;
 use Error;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ConfiguratorsTest extends AbstractTestCase
@@ -133,9 +134,7 @@ final class ConfiguratorsTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestConfigure
-     */
+    #[DataProvider('providerTestConfigure')]
     public function testConfigure(
         QueueMessageConfiguratorInterface $configurator,
         ConfigInterface $config,

@@ -14,15 +14,12 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
      * @param string[] $disallowedProperties
      */
     public function __construct(
-        private SymfonySerializerInterface $serializer,
-        private CircularReferenceHandlerInterface $circularReferenceHandler,
-        private array $disallowedProperties,
+        private readonly SymfonySerializerInterface $serializer,
+        private readonly CircularReferenceHandlerInterface $circularReferenceHandler,
+        private readonly array $disallowedProperties,
     ) {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serialize(array $data, ActivitySubjectInterface $subject): ?string
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
@@ -65,6 +62,9 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
                     ?? $allowedProperties[$key] ?? ['id'];
             }
         }
+
+        // Workaround for \ApiPlatform\Serializer\AbstractItemNormalizer for the case of deleting an API resource
+        $context['iri'] = 'not-needed-for-activity-log';
 
         $context[AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER] = $this->circularReferenceHandler;
 

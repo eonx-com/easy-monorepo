@@ -8,6 +8,7 @@ use EonX\EasySwoole\AccessLog\MonologLoggerFactory;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\AccessLogListener;
 use EonX\EasySwoole\Interfaces\HttpFoundationAccessLogFormatterInterface;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -20,18 +21,24 @@ return static function (ContainerConfigurator $container): void {
     $services->set(HttpFoundationAccessLogFormatterInterface::class, HttpFoundationAccessLogFormatter::class);
 
     // Logger
-    $services
-        ->set(MonologLoggerFactory::class)
-        ->arg('$timezone', param(BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE));
+    $loggerServiceId = LoggerInterface::class;
 
-    $services
-        ->set(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER, LoggerInterface::class)
-        ->factory([service(MonologLoggerFactory::class), 'create']);
+    if (\class_exists(Logger::class)) {
+        $loggerServiceId = BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER;
+
+        $services
+            ->set(MonologLoggerFactory::class)
+            ->arg('$timezone', param(BridgeConstantsInterface::PARAM_ACCESS_LOG_TIMEZONE));
+
+        $services
+            ->set(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER, LoggerInterface::class)
+            ->factory([service(MonologLoggerFactory::class), 'create']);
+    }
 
     // Listener
     $services
         ->set(AccessLogListener::class)
-        ->arg('$logger', service(BridgeConstantsInterface::SERVICE_ACCESS_LOG_LOGGER))
+        ->arg('$logger', service($loggerServiceId))
         ->arg('$doNotLogPaths', param(BridgeConstantsInterface::PARAM_ACCESS_LOG_DO_NOT_LOG_PATHS))
         ->tag('kernel.event_listener');
 };

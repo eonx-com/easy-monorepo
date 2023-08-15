@@ -6,6 +6,7 @@ namespace EonX\EasyUtils\Tests;
 use EonX\EasyUtils\Exceptions\InvalidArgumentException;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use EonX\EasyUtils\Tests\Stubs\HasPriorityStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 final class CollectorHelperTest extends AbstractTestCase
@@ -70,9 +71,7 @@ final class CollectorHelperTest extends AbstractTestCase
         yield 'same order when no priority' => [[$noPriority1, $noPriority2], [$noPriority1, $noPriority2]];
     }
 
-    /**
-     * @dataProvider providerTestEnsureClass
-     */
+    #[DataProvider('providerTestEnsureClass')]
     public function testEnsureClass(iterable $items, bool $expectException, ?string $class = null): void
     {
         if ($expectException) {
@@ -88,9 +87,8 @@ final class CollectorHelperTest extends AbstractTestCase
 
     /**
      * @param class-string|null $class
-     *
-     * @dataProvider providerTestFilterByClass
      */
+    #[DataProvider('providerTestFilterByClass')]
     public function testFilterByClass(iterable $items, int $expectedCount, ?string $class = null): void
     {
         $class ??= stdClass::class;
@@ -103,17 +101,13 @@ final class CollectorHelperTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @dataProvider providerTestOrderHigherPriorityFirst
-     */
+    #[DataProvider('providerTestOrderHigherPriorityFirst')]
     public function testOrderHigherPriorityFirst(iterable $items, array $expected): void
     {
         self::assertEquals($expected, CollectorHelper::orderHigherPriorityFirstAsArray($items));
     }
 
-    /**
-     * @dataProvider providerTestOrderLowerPriorityFirst
-     */
+    #[DataProvider('providerTestOrderLowerPriorityFirst')]
     public function testOrderLowerPriorityFirst(iterable $items, array $expected): void
     {
         self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirstAsArray($items));

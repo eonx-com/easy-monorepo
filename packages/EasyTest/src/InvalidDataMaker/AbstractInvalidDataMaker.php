@@ -11,9 +11,6 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @codeCoverageIgnore
- */
 abstract class AbstractInvalidDataMaker
 {
     private const PLURAL_PARAM = '%count%';

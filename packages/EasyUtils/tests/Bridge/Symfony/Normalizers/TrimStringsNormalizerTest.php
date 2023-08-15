@@ -8,6 +8,7 @@ use EonX\EasyUtils\StringTrimmers\RecursiveStringTrimmer;
 use EonX\EasyUtils\StringTrimmers\StringTrimmerInterface;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -84,9 +85,7 @@ final class TrimStringsNormalizerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideDataForDenormalize
-     */
+    #[DataProvider('provideDataForDenormalize')]
     public function testDenormalizeSucceedsWithTrimValue(mixed $data, mixed $expectedResult): void
     {
         $type = 'no-matter';
@@ -119,9 +118,7 @@ final class TrimStringsNormalizerTest extends AbstractTestCase
         self::assertSame($expectedResult, $result);
     }
 
-    /**
-     * @dataProvider provideDataForSupportsDenormalization
-     */
+    #[DataProvider('provideDataForSupportsDenormalization')]
     public function testSupportsDenormalizationReturnsExpectedResult(
         bool $expected,
         mixed $data,

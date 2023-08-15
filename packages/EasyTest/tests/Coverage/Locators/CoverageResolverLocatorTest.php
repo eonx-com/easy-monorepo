@@ -8,6 +8,7 @@ use EonX\EasyTest\Coverage\Resolvers\CloverCoverageResolver;
 use EonX\EasyTest\Coverage\Resolvers\TextCoverageResolver;
 use EonX\EasyTest\HttpKernel\EasyTestKernel;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CoverageResolverLocatorTest extends TestCase
@@ -29,9 +30,8 @@ final class CoverageResolverLocatorTest extends TestCase
 
     /**
      * @param class-string $expectedResolverClass
-     *
-     * @dataProvider provideSupportedFilepath
      */
+    #[DataProvider('provideSupportedFilepath')]
     public function testCreateResolverSucceeds(string $filePath, string $expectedResolverClass): void
     {
         $kernel = new EasyTestKernel('test', true);

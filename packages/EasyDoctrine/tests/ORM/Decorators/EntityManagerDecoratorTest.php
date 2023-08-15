@@ -13,13 +13,13 @@ use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use stdClass;
 use Throwable;
 
-/**
- * @covers \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
- */
+#[CoversClass(EntityManagerDecorator::class)]
 final class EntityManagerDecoratorTest extends AbstractTestCase
 {
     /**
@@ -188,9 +188,8 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
 
     /**
      * @throws \Throwable
-     *
-     * @dataProvider provideReturnValuesData
      */
+    #[DataProvider('provideReturnValuesData')]
     public function testWrapInTransactionSucceeds(mixed $callableReturns, mixed $transactionalReturns): void
     {
         $spyForCallable = new stdClass();
@@ -298,9 +297,8 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      * @param \Doctrine\DBAL\Exception|\Doctrine\ORM\ORMException $doctrineException
      *
      * @throws \Exception
-     *
-     * @dataProvider provideDoctrineExceptionClasses
      */
+    #[DataProvider('provideDoctrineExceptionClasses')]
     public function testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions(
         $doctrineException,
     ): void {

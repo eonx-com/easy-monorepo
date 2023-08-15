@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests;
 
 use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EnvVarSubstitutionHelperTest extends AbstractTestCase
 {
@@ -18,9 +19,7 @@ final class EnvVarSubstitutionHelperTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestResolveVariables
-     */
+    #[DataProvider('providerTestResolveVariables')]
     public function testResolveVariables(array $input, array $expected): void
     {
         self::assertEquals($expected, EnvVarSubstitutionHelper::resolveVariables($input));

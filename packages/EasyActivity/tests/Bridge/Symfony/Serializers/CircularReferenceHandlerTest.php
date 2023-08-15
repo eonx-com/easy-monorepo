@@ -7,12 +7,11 @@ use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
 use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 use Symfony\Component\Uid\NilUuid;
 
-/**
- * @covers \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler
- */
+#[CoversClass(CircularReferenceHandler::class)]
 final class CircularReferenceHandlerTest extends AbstractSymfonyTestCase
 {
     public function testInvokeSucceedsWithId(): void
