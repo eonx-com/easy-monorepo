@@ -92,9 +92,6 @@ parameters:
         # ---- EasyHttpClient ----
         # ---- EasyLock ----
         # ---- EasyLogging ----
-        - message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyLogging/src/Bridge/Symfony/DependencyInjection/Configuration.php
-
         - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
           path: %currentWorkingDirectory%/packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
 

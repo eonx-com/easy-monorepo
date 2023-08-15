@@ -86,6 +86,7 @@ return static function (ECSConfig $ecsConfig): void {
         ],
         MethodChainingNewlineFixer::class => [
             'packages/*/src/Bridge/Symfony/DependencyInjection/Configuration.php',
+            'packages/*/src/Bridge/Symfony/Resources/config/definition.php',
         ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Interfaces/MathInterface.php',
