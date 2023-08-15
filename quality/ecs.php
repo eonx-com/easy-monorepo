@@ -32,6 +32,8 @@ use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
+
     $ecsConfig->import(EasyQualitySetList::ECS);
 
     $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
