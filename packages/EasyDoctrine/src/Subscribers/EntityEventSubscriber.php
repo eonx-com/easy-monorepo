@@ -81,14 +81,12 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $scheduledCollectionUpdates = [];
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
-            if (
-                $collection->getOwner() !== null
-                && \in_array($collection->getOwner()::class, $this->subscribedEntities, true)
-            ) {
+            if ($this->isEntitySubscribed($collection->getOwner())) {
                 $scheduledCollectionUpdates[\spl_object_id($collection)] = $collection;
             }
         }
 
+        // Handle collection deletions when ManyToMany is the owning side
         if (\property_exists($unitOfWork, 'pendingCollectionElementRemovals')) {
             $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
                 $unitOfWork::class,
@@ -108,10 +106,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 }
 
                 $collection = $visitedCollections[$collectionObjectId];
-                if (
-                    $collection->getOwner() !== null
-                    && \in_array($collection->getOwner()::class, $this->subscribedEntities, true)
-                ) {
+                if ($this->isEntitySubscribed($collection->getOwner())) {
                     $scheduledCollectionUpdates[$collectionObjectId] = $collection;
                 }
             }
@@ -156,10 +151,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
-            if (
-                $collection->getOwner() !== null
-                && \in_array($collection->getOwner()::class, $this->subscribedEntities, true)
-            ) {
+            if ($this->isEntitySubscribed($collection->getOwner())) {
                 /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
 
@@ -176,7 +168,11 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
     private function dispatchDeferredDeletions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
-        foreach ($this->filterEntities($unitOfWork->getScheduledEntityDeletions()) as $entity) {
+        foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
+            if ($this->isEntitySubscribed($entity) === false) {
+                continue;
+            }
+
             $changeSet = [];
             foreach ($unitOfWork->getOriginalEntityData($entity) as $attribute => $value) {
                 $changeSet[$attribute] = [$value, null];
@@ -188,7 +184,11 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
     private function dispatchDeferredInsert(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
-        foreach ($this->filterEntities($unitOfWork->getScheduledEntityInsertions()) as $entity) {
+        foreach ($unitOfWork->getScheduledEntityInsertions() as $entity) {
+            if ($this->isEntitySubscribed($entity) === false) {
+                continue;
+            }
+
             $changeSet = $unitOfWork->getEntityChangeSet($entity);
 
             $this->eventDispatcher->deferInsert($transactionNestingLevel, $entity, $changeSet);
@@ -197,31 +197,17 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
     private function dispatchDeferredUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
-        foreach ($this->filterEntities($unitOfWork->getScheduledEntityUpdates()) as $entity) {
+        foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
+            if ($this->isEntitySubscribed($entity) === false) {
+                continue;
+            }
+
             $changeSet = $this->getClearedChangeSet($unitOfWork->getEntityChangeSet($entity));
 
             if (\count($changeSet) > 0) {
                 $this->eventDispatcher->deferUpdate($transactionNestingLevel, $entity, $changeSet);
             }
         }
-    }
-
-    /**
-     * @param object[] $entities
-     *
-     * @return object[]
-     */
-    private function filterEntities(array $entities): array
-    {
-        return \array_filter($entities, function (object $entity): bool {
-            foreach ($this->subscribedEntities as $subscribedEntity) {
-                if (\is_a($entity, $subscribedEntity)) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
     }
 
     /**
@@ -245,5 +231,20 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
             return true;
         });
+    }
+
+    private function isEntitySubscribed(?object $entity): bool
+    {
+        if ($entity === null) {
+            return false;
+        }
+
+        foreach ($this->subscribedEntities as $subscribedEntity) {
+            if (\is_a($entity, $subscribedEntity)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
