@@ -42,6 +42,7 @@ final class CoroutineConnectionFactory
         }
 
         $connectionClass = $connection::class;
+
         return new $connectionClass(
             $connection->getParams(),
             new DbalDriver(
