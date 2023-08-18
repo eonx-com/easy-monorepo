@@ -8,10 +8,13 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
+use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CoroutineConnectionFactory
 {
     public function __construct(
+        private readonly RequestStack $requestStack,
         private readonly ConnectionFactory $factory,
         private readonly int $defaultPoolSize,
         private readonly bool $defaultHeartbeat,
@@ -32,8 +35,13 @@ final class CoroutineConnectionFactory
         ?array $mappingTypes = null,
     ): Connection {
         $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
-        $connectionClass = $connection::class;
 
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true) {
+            return $connection;
+        }
+
+        $connectionClass = $connection::class;
         return new $connectionClass(
             $connection->getParams(),
             new DbalDriver(
