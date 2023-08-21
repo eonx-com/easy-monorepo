@@ -22,9 +22,6 @@ final class AppRuntimeHelper
 
     public static function enableEasyScheduleRunner(): void
     {
-        // Allow application to easily understand it runs within easy-schedule context
-        $_SERVER[EasyScheduleSwooleRunner::ENABLED] = true;
-
         self::addOptions([EasyScheduleSwooleRunner::ENABLED => true]);
     }
 

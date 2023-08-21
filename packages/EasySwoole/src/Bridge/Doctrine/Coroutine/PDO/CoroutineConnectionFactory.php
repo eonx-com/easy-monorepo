@@ -8,7 +8,6 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
-use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -38,8 +37,7 @@ final class CoroutineConnectionFactory
         $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
 
         $request = $this->requestStack->getCurrentRequest();
-        if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true
-            && isset($_SERVER[EasyScheduleSwooleRunner::ENABLED]) === false) {
+        if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true) {
             return $connection;
         }
 
