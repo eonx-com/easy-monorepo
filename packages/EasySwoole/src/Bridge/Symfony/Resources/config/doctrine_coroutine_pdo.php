@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\CoroutineConnectionFactory;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -16,6 +17,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(CoroutineConnectionFactory::class)
         ->decorate('doctrine.dbal.connection_factory')
+        ->arg('$requestStack', service(RequestStack::class))
         ->arg('$defaultPoolSize', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE))
         ->arg('$defaultHeartbeat', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT))
         ->arg(
