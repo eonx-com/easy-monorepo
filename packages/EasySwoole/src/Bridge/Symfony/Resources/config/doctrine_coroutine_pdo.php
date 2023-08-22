@@ -16,7 +16,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(CoroutineConnectionFactory::class)
-        ->decorate('doctrine.dbal.connection_factory')
+        ->decorate('doctrine.dbal.connection_factory', priority: -1000) // Make sure it's the last decoration
         ->arg('$requestStack', service(RequestStack::class))
         ->arg('$defaultPoolSize', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE))
         ->arg('$defaultHeartbeat', param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT))

@@ -11,7 +11,7 @@ use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class CoroutineConnectionFactory
+final class CoroutineConnectionFactory extends ConnectionFactory
 {
     public function __construct(
         private readonly RequestStack $requestStack,
@@ -21,6 +21,10 @@ final class CoroutineConnectionFactory
         private readonly float $defaultMaxIdleTime,
         private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
     ) {
+        // Call parent constructor with empty values as we only extend the factory from
+        // doctrine bundle as it does not implement an interface allowing us to have multiple decoration
+        // and inject the inner connection in the decorator
+        parent::__construct([], null);
     }
 
     /**
