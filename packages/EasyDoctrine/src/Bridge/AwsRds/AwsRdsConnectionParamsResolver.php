@@ -39,12 +39,20 @@ final class AwsRdsConnectionParamsResolver
         if ($rdsSslEnabled
             && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_SSL_ENABLED')
             && $this->certificateAuthorityProvider !== null) {
-            $sslMode = $driverOptions[AwsRdsOptionsInterface::SSL_MODE] ?? $this->sslMode;
-            if ($sslMode !== null) {
-                $params['sslmode'] = $sslMode;
+            $caPath = $this->certificateAuthorityProvider->getCertificateAuthorityPath();
+
+            if ($params['driver'] === 'pdo_mysql') {
+                $params['driverOptions'][\PDO::MYSQL_ATTR_SSL_CA] = $caPath;
             }
 
-            $params['sslrootcert'] = $this->certificateAuthorityProvider->getCertificateAuthorityPath();
+            if ($params['driver'] === 'pdo_pgsql') {
+                $sslMode = $driverOptions[AwsRdsOptionsInterface::SSL_MODE] ?? $this->sslMode;
+                if ($sslMode !== null) {
+                    $params['sslmode'] = $sslMode;
+                }
+
+                $params['sslrootcert'] = $caPath;
+            }
         }
 
         foreach (AwsRdsOptionsInterface::ALL_OPTIONS as $option) {
