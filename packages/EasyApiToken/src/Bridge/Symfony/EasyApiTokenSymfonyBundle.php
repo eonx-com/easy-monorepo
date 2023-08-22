@@ -13,6 +13,11 @@ final class EasyApiTokenSymfonyBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'easy_api_token';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->import(__DIR__ . '/Resources/config/services.php');
