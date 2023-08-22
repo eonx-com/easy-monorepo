@@ -35,6 +35,11 @@ final class EasySecuritySymfonyBundle extends AbstractBundle
 
     protected string $extensionAlias = 'easy_security';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

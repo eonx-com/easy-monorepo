@@ -14,6 +14,11 @@ final class EasyRepositorySymfonyBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'easy_repository';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new SetPaginationOnRepositoryPass());

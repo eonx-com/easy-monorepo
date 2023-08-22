@@ -26,6 +26,11 @@ final class EasyWebhookSymfonyBundle extends AbstractBundle
 
     private array $config;
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

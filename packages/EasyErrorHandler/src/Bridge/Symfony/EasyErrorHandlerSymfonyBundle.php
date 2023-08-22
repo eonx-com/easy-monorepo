@@ -23,6 +23,11 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
     protected string $extensionAlias = 'easy_error_handler';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

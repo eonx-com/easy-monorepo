@@ -26,6 +26,11 @@ final class EasyBatchSymfonyBundle extends AbstractBundle
 
     protected string $extensionAlias = 'easy_batch';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container
