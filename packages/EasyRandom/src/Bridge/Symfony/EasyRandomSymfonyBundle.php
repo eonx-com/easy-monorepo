@@ -25,6 +25,11 @@ final class EasyRandomSymfonyBundle extends AbstractBundle
 
     protected string $extensionAlias = 'easy_random';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import(__DIR__ . '/Resources/config/definition.php');

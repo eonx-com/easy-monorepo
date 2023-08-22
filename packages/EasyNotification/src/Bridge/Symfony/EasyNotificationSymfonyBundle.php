@@ -19,6 +19,11 @@ final class EasyNotificationSymfonyBundle extends AbstractBundle
         'config_expires_after' => BridgeConstantsInterface::PARAM_CONFIG_CACHE_EXPIRES_AFTER,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import(__DIR__ . '/Resources/config/definition.php');

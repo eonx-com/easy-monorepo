@@ -37,6 +37,11 @@ final class EasyBugsnagSymfonyBundle extends AbstractBundle
 
     protected string $extensionAlias = 'easy_bugsnag';
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container
