@@ -45,17 +45,23 @@ final class CoroutineConnectionFactory extends ConnectionFactory
             return $connection;
         }
 
+        $driver = new DbalDriver(
+            $connection->getDriver(),
+            $this->defaultPoolSize,
+            $this->defaultHeartbeat,
+            $this->defaultMaxIdleTime,
+            $this->connectionParamsResolver,
+        );
+
+        foreach ($config?->getMiddlewares() ?? [] as $middleware) {
+            $driver = $middleware->wrap($driver);
+        }
+
         $connectionClass = $connection::class;
 
         return new $connectionClass(
             $connection->getParams(),
-            new DbalDriver(
-                $connection->getDriver(),
-                $this->defaultPoolSize,
-                $this->defaultHeartbeat,
-                $this->defaultMaxIdleTime,
-                $this->connectionParamsResolver,
-            ),
+            $driver,
             $connection->getConfiguration(),
             $connection->getEventManager()
         );
