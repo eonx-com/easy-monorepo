@@ -53,7 +53,7 @@ final class CoroutineConnectionFactory extends ConnectionFactory
             $this->connectionParamsResolver,
         );
 
-        foreach ($config?->getMiddlewares() as $middleware) {
+        foreach ($config?->getMiddlewares() ?? [] as $middleware) {
             $driver = $middleware->wrap($driver);
         }
 
