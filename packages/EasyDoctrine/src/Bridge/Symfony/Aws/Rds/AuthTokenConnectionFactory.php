@@ -18,7 +18,7 @@ final class AuthTokenConnectionFactory extends ConnectionFactory
     ) {
         // Call parent constructor with empty values as we only extend the factory from
         // doctrine bundle as it does not implement an interface allowing us to have multiple decoration
-        // and inject the inner connection in the decorator.
+        // and inject the inner connection in the decorator
         parent::__construct([], null);
     }
 
