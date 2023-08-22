@@ -5,6 +5,7 @@ namespace EonX\EasyDoctrine\Bridge\AwsRds;
 
 use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
 use EonX\EasyDoctrine\Bridge\AwsRds\Ssl\CertificateAuthorityProvider;
+use PDO;
 
 final class AwsRdsConnectionParamsResolver
 {
@@ -42,7 +43,7 @@ final class AwsRdsConnectionParamsResolver
             $caPath = $this->certificateAuthorityProvider->getCertificateAuthorityPath();
 
             if ($params['driver'] === 'pdo_mysql') {
-                $params['driverOptions'][\PDO::MYSQL_ATTR_SSL_CA] = $caPath;
+                $params['driverOptions'][PDO::MYSQL_ATTR_SSL_CA] = $caPath;
             }
 
             if ($params['driver'] === 'pdo_pgsql') {
