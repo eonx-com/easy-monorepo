@@ -125,7 +125,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         }
 
         $entityObjectId = \spl_object_id($entity);
-        // `clone` is used to preserve the identifier that is removed after deleting entity
+        // \EonX\EasyDoctrine\Interfaces\ObjectCopierInterface is used to preserve the identifier that is removed after deleting entity
         $this->deletedEntities[$entityObjectId] = $this->objectCopier->copy($entity);
         $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
     }
