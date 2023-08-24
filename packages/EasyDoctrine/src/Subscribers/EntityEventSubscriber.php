@@ -58,13 +58,13 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $transactionNestingLevel = $entityManager->getConnection()
             ->getTransactionNestingLevel();
 
-        $this->dispatchDeferredDeletions($transactionNestingLevel, $unitOfWork);
+        $this->prepareDeferredDeletions($transactionNestingLevel, $unitOfWork);
 
-        $this->dispatchDeferredInsertions($transactionNestingLevel, $unitOfWork);
+        $this->prepareDeferredInsertions($transactionNestingLevel, $unitOfWork);
 
-        $this->dispatchDeferredUpdates($transactionNestingLevel, $unitOfWork);
+        $this->prepareDeferredUpdates($transactionNestingLevel, $unitOfWork);
 
-        $this->dispatchDeferredCollectionUpdates($transactionNestingLevel, $unitOfWork);
+        $this->prepareDeferredCollectionUpdates($transactionNestingLevel, $unitOfWork);
     }
 
     public function postFlush(PostFlushEventArgs $eventArgs): void
@@ -76,7 +76,41 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
-    private function dispatchDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
+    /**
+     * @param mixed[] $changeSet
+     *
+     * @return mixed[]
+     */
+    private function getClearedChangeSet(array $changeSet): array
+    {
+        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
+            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
+                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
+                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
+                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            }
+
+            if (($changeSetItem[0] ?? null) instanceof Stringable &&
+                ($changeSetItem[1] ?? null) instanceof Stringable) {
+                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
+            }
+
+            return true;
+        });
+    }
+
+    private function isEntitySubscribed(object $entity): bool
+    {
+        foreach ($this->subscribedEntities as $subscribedEntity) {
+            if (\is_a($entity, $subscribedEntity)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function prepareDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         $scheduledCollectionUpdates = [];
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
@@ -167,7 +201,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
-    private function dispatchDeferredDeletions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
+    private function prepareDeferredDeletions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
             if ($this->isEntitySubscribed($entity)) {
@@ -181,7 +215,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
-    private function dispatchDeferredInsertions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
+    private function prepareDeferredInsertions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityInsertions() as $entity) {
             if ($this->isEntitySubscribed($entity)) {
@@ -191,7 +225,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
-    private function dispatchDeferredUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
+    private function prepareDeferredUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
             if ($this->isEntitySubscribed($entity)) {
@@ -202,39 +236,5 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 }
             }
         }
-    }
-
-    /**
-     * @param mixed[] $changeSet
-     *
-     * @return mixed[]
-     */
-    private function getClearedChangeSet(array $changeSet): array
-    {
-        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
-            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
-                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
-                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
-                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
-            }
-
-            if (($changeSetItem[0] ?? null) instanceof Stringable &&
-                ($changeSetItem[1] ?? null) instanceof Stringable) {
-                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
-            }
-
-            return true;
-        });
-    }
-
-    private function isEntitySubscribed(object $entity): bool
-    {
-        foreach ($this->subscribedEntities as $subscribedEntity) {
-            if (\is_a($entity, $subscribedEntity)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
