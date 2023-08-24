@@ -60,7 +60,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
 
         $this->dispatchDeferredDeletions($transactionNestingLevel, $unitOfWork);
 
-        $this->dispatchDeferredInsert($transactionNestingLevel, $unitOfWork);
+        $this->dispatchDeferredInsertions($transactionNestingLevel, $unitOfWork);
 
         $this->dispatchDeferredUpdates($transactionNestingLevel, $unitOfWork);
 
@@ -87,6 +87,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
 
         // Handle collection deletions when ManyToMany is the owning side
+        // See https://github.com/doctrine/orm/pull/10763
         if (\property_exists($unitOfWork, 'pendingCollectionElementRemovals')) {
             $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
                 $unitOfWork::class,
@@ -180,7 +181,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         }
     }
 
-    private function dispatchDeferredInsert(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
+    private function dispatchDeferredInsertions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityInsertions() as $entity) {
             if ($this->isEntitySubscribed($entity)) {

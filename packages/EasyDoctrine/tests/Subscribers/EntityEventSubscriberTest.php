@@ -403,7 +403,6 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $product = $entityManager->getRepository(Product::class)->find(1);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
         $tag2 = $entityManager->getRepository(Tag::class)->find(2);
-
         $product->getTags()
             ->toArray();
         $tag2->setName('New Tag 2 Name');
@@ -758,7 +757,6 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $product = $entityManager->getRepository(Product::class)->find(1);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
         $tag2 = $entityManager->getRepository(Tag::class)->find(2);
-
         $product->getTags()
             ->toArray();
         $entityManager->remove($tag2);
@@ -835,7 +833,6 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
-
         $product->getOffers()
             ->clear();
         $entityManager->flush();
@@ -896,7 +893,6 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $product = $entityManager->getRepository(Product::class)->find(1);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
         $tag2 = $entityManager->getRepository(Tag::class)->find(2);
-
         $product->getTags()
             ->toArray();
         $entityManager->wrapInTransaction(function () use ($entityManager, $product, $tag2): void {
