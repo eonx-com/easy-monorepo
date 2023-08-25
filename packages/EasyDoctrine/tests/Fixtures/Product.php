@@ -23,6 +23,17 @@ class Product
     #[ORM\Column(type: Types::STRING, length: 128)]
     private string $name;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Offer>
+     */
+    #[ORM\JoinTable(name: 'product_offer')]
+    #[ORM\ManyToMany(
+        targetEntity: Offer::class,
+        inversedBy: 'products',
+        cascade: ['persist'],
+    )]
+    private Collection $offers;
+
     #[ORM\Column(type: PriceType::NAME)]
     private Price $price;
 
@@ -39,7 +50,18 @@ class Product
 
     public function __construct()
     {
+        $this->offers = new ArrayCollection();
         $this->tags = new ArrayCollection();
+    }
+
+    public function addOffer(Offer $offer): self
+    {
+        if ($this->offers->contains($offer) === false) {
+            $this->offers->add($offer);
+            $offer->addProduct($this);
+        }
+
+        return $this;
     }
 
     public function addTag(Tag $tag): self
@@ -67,6 +89,14 @@ class Product
         return $this->name;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Offer>
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
     public function getPrice(): Price
     {
         return $this->price;
@@ -78,6 +108,14 @@ class Product
     public function getTags(): Collection
     {
         return $this->tags;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        $this->offers->removeElement($offer);
+        $offer->removeProduct($this);
+
+        return $this;
     }
 
     public function setCategory(?Category $category): self

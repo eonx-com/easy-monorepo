@@ -42,7 +42,7 @@ final class EntityManagerStub
 
     /**
      * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -82,7 +82,7 @@ final class EntityManagerStub
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
         $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
-        /** @var string[] $subscribedEntities */
+        /** @var class-string[] $subscribedEntities */
         $subscribedEntities = \array_keys($easyActivityConfig['subjects'] ?? []);
         $entityManager = self::createFromSymfonyEventDispatcher(
             $eventDispatcher,
@@ -165,7 +165,7 @@ final class EntityManagerStub
 
     /**
      * @param \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator

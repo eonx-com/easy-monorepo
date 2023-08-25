@@ -18,6 +18,7 @@ use EonX\EasyActivity\Resolvers\DefaultActorResolver;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
@@ -43,7 +44,7 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
         }
         if ($subjectDataResolver === null) {
             $serializer = new Serializer(
-                [new DateTimeNormalizer(), new ObjectNormalizer()],
+                [new DateTimeNormalizer(), new UidNormalizer(), new ObjectNormalizer()],
                 [new JsonEncoder()]
             );
             $subjectDataResolver = new DoctrineActivitySubjectDataResolver(

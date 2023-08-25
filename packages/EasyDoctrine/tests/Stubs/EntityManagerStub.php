@@ -23,7 +23,7 @@ final class EntityManagerStub
 {
     /**
      * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -89,7 +89,7 @@ final class EntityManagerStub
 
     /**
      * @param \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
