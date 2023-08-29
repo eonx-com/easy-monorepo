@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Throwable;
@@ -70,13 +71,12 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         $message = $throwable->getMessage();
 
         return match ($throwable::class) {
-            InvalidArgumentException::class =>
+            InvalidArgumentException::class, NotNormalizableValueException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $message) === 1,
             UnexpectedValueException::class =>
-                \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_DATE, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INVALID_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
@@ -97,7 +97,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
         $data[$messageKey] = $this->translator->trans(self::MESSAGE_NOT_VALID, []);
 
-        if ($throwable instanceof InvalidArgumentException) {
+        if ($throwable instanceof InvalidArgumentException || $throwable instanceof NotNormalizableValueException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data[$violationsKey] = [
