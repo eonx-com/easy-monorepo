@@ -26,12 +26,37 @@ final class AddDoctrineDbalConnectionNameToParamsPass implements CompilerPassInt
 
             if (\is_string($matches[1] ?? null) && ($matches[0] ?? null) === $id) {
                 $params = $definition->getArguments()[0];
-                $params['driverOptions'] = \array_merge([
-                    CoroutinePdoDriverOption::PoolName->value => $matches[1],
-                ], $params['driverOptions'] ?? []);
+
+                // Support primary + read replica feature
+                if (\is_array($params['primary'] ?? null)) {
+                    $params['primary'] = $this->setPoolName($params['primary'], $matches[1]);
+                }
+
+                if (\is_array($params['replica'] ?? null)) {
+                    foreach (\array_keys($params['replica']) as $replicaName) {
+                        $params['replica'][$replicaName] = $this->setPoolName(
+                            $params['replica'][$replicaName],
+                            \sprintf('%s_replica_%s', $matches[1], $replicaName)
+                        );
+                    }
+                }
+
+                // Support simple connection
+                if (\is_array($params['primary'] ?? null) === false) {
+                    $params = $this->setPoolName($params, $matches[1]);
+                }
 
                 $definition->replaceArgument(0, $params);
             }
         }
+    }
+
+    private function setPoolName(array $params, string $poolName): array
+    {
+        $params['driverOptions'] = \array_merge([
+            CoroutinePdoDriverOption::PoolName->value => $poolName,
+        ], $params['driverOptions'] ?? []);
+
+        return $params;
     }
 }
