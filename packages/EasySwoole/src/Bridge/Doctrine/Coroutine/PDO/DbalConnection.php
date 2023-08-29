@@ -61,7 +61,7 @@ final class DbalConnection implements Connection
         $pdo = $this->getPdo();
         // Because this function returns an instance of the base \PDO class,
         // consumers will not trigger the last used time on the PDOClient instance.
-        // So we need to trigger it explicitly to allow PDOClientPool to close it once it reaches idle max time.
+        // So we need to trigger it explicitly to allow PDOClientPool to close it once it reaches idle max time
         $pdo->triggerLastUsedTime();
 
         /** @var \PDO $basePdo */
