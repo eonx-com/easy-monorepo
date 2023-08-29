@@ -10,7 +10,6 @@ use Doctrine\DBAL\Driver\PDO\PDOException as DriverPDOException;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
-use OpenSwoole\Core\Coroutine\Client\PDOClient;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use PDO;
 use PDOException;
@@ -59,10 +58,14 @@ final class DbalConnection implements Connection
 
     public function getNativeConnection(): object
     {
-        /** @var \PDO $basePdo */
-        $basePdo = $this->getPdo()
-            ->__getObject();
+        $pdo = $this->getPdo();
+        // Because this function returns an instance of the base \PDO class,
+        // consumers will not trigger the last used time on the PDOClient instance.
+        // So we need to trigger it explicitly to allow PDOClientPool to close it once it reaches idle max time
+        $pdo->triggerLastUsedTime();
 
+        /** @var \PDO $basePdo */
+        $basePdo = $pdo->__getObject();
         $basePdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $basePdo;

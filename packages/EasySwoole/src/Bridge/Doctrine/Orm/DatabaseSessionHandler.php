@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\EntityManagerInterface;
 use SessionHandlerInterface;
 use SessionUpdateTimestampHandlerInterface as SessionUpdateTimestampHandler;
@@ -79,10 +80,24 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
         }
 
         $conn = $this->entityManager->getConnection();
+
+        // The PdoSessionHandler is executing raw SQL queries,
+        // so we need to ensure we are using the primary connection
+        if ($conn instanceof PrimaryReadReplicaConnection) {
+            $conn->ensureConnectedToPrimary();
+        }
+
         $nativeConnGetter = \method_exists($conn, 'getNativeConnection')
             ? 'getNativeConnection'
             : 'getWrappedConnection';
 
-        return $this->decorated = new PdoSessionHandler($conn->{$nativeConnGetter}(), $this->options ?? []);
+        $this->decorated = new PdoSessionHandler($conn->{$nativeConnGetter}(), $this->options ?? []);
+
+        // Restore replica connection once PdoSessionHandler instantiated for the rest of the app
+        if ($conn instanceof PrimaryReadReplicaConnection) {
+            $conn->ensureConnectedToReplica();
+        }
+
+        return $this->decorated;
     }
 }

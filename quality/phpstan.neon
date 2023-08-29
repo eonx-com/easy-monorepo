@@ -182,7 +182,7 @@ parameters:
         - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
 
-        - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOClient\:\:.*\(\)#'
+        - message: '#Call to an undefined method EonX\\EasySwoole\\Bridge\\Doctrine\\Coroutine\\PDO\\PDOClient\:\:.*\(\)#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
 
         - message: '#While loop condition is always true#'
