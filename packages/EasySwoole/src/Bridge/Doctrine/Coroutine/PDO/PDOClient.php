@@ -21,7 +21,7 @@ final class PDOClient extends BasePDOClient
 
     public function __call(string $name, array $arguments): mixed
     {
-        $this->lastUsedTime = \microtime(true);
+        $this->triggerLastUsedTime();
 
         // Openswoole package explicitly sets PDO error mode to ERRMODE_SILENT,
         // but other parts of the application expects ERRMODE_EXCEPTION (e.g. PdoSessionHandler).
@@ -39,6 +39,11 @@ final class PDOClient extends BasePDOClient
     public function getLastUsedTime(): ?float
     {
         return $this->lastUsedTime;
+    }
+
+    public function triggerLastUsedTime(): void
+    {
+        $this->lastUsedTime = \microtime(true);
     }
 
     /**
