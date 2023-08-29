@@ -10,6 +10,7 @@ use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Throwable;
@@ -84,7 +85,9 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         }
 
         return match ($throwable::class) {
-            $invalidArgumentExceptionClass, LegacyInvalidArgumentException::class =>
+            $invalidArgumentExceptionClass,
+            LegacyInvalidArgumentException::class,
+            NotNormalizableValueException::class =>
                 \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $message) === 1,
             MissingConstructorArgumentsException::class =>
                 \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $message) === 1 ||
@@ -129,7 +132,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             $isInvalidArgumentException = $throwable instanceof LegacyInvalidArgumentException;
         }
 
-        if ($isInvalidArgumentException) {
+        if ($isInvalidArgumentException || $throwable instanceof NotNormalizableValueException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $data[$violationsKey] = [
