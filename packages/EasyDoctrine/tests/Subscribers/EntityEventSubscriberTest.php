@@ -13,6 +13,7 @@ use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
+use EonX\EasyDoctrine\Tests\Fixtures\Offer;
 use EonX\EasyDoctrine\Tests\Fixtures\Price;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Fixtures\Tag;
@@ -364,6 +365,64 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
     }
 
+    public function testEventsAreNotDispatchedForCollectionWhenItemUpdated(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class, Tag::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $entityManager->getRepository(Tag::class)->find(2);
+        $product->getTags()
+            ->toArray();
+        $tag2->setName('New Tag 2 Name');
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $tag2,
+                [
+                    'name' => ['Tag 2', 'New Tag 2 Name'],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
     public function testEventsAreNotDispatchedWhenDispatcherIsDisabled(): void
     {
         $eventDispatcher = new EventDispatcherStub();
@@ -498,7 +557,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class, Tag::class]
+            [Product::class, Category::class, Tag::class, Offer::class]
         );
         $entityManager->getConnection()
             ->insert(
@@ -555,6 +614,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
             'tags' => [$product->getTags(), null],
+            'offers' => [$product->getOffers(), null],
         ]);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $actualEvent->getEntity();
@@ -654,6 +714,212 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'description' => [null, 'Description 1'],
                     'price' => [null, new Price('2000', 'USD')],
                     'category' => [null, null],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForUpdatedCollection(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $entityManager->getRepository(Tag::class)->find(2);
+        $product->getTags()
+            ->toArray();
+        $entityManager->remove($tag2);
+        $tag3 = (new Tag())
+            ->setName('Tag 3');
+        $product->addTag($tag3);
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'tags' => [
+                        [1, 2],
+                        [1, 3],
+                    ],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForUpdatedCollectionWhenManyToMany(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Offer::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'offer',
+                [
+                    'id' => 1,
+                    'name' => 'Offer 1',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'offer',
+                [
+                    'id' => 2,
+                    'name' => 'Offer 2',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product_offer',
+                [
+                    'product_id' => 1,
+                    'offer_id' => 1,
+                ],
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product_offer',
+                [
+                    'product_id' => 1,
+                    'offer_id' => 2,
+                ],
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $product->getOffers()
+            ->clear();
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'offers' => [
+                        ['Not available'],
+                        ['Collection was cleared'],
+                    ],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForUpdatedCollectionWhenTransactional(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $entityManager->getRepository(Tag::class)->find(2);
+        $product->getTags()
+            ->toArray();
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product, $tag2): void {
+            $entityManager->remove($tag2);
+            $entityManager->flush();
+
+            $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
+                $tag3 = (new Tag())
+                    ->setName('Tag 3');
+                $product->addTag($tag3);
+                $entityManager->flush();
+            });
+        });
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'tags' => [
+                        [1, 2],
+                        [1, 3],
+                    ],
                 ]
             ),
             $events[0]
