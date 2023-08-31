@@ -30,7 +30,7 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
      */
     public function __construct(
         private readonly DeferredEntityEventDispatcherInterface $eventDispatcher,
-        // @deprecated Since 4.0, will be removed in 6.0. Use $subscribedEntities instead
+        // @deprecated Since 4.5, will be removed in 6.0. Use $subscribedEntities instead
         ?array $entities = null,
         ?array $subscribedEntities = null,
     ) {
