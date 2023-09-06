@@ -29,11 +29,11 @@ return static function (DefinitionConfigurator $definition) {
                     ->end()
                 ->end()
             ->end()
-            // Deprecated since 5.3. Has to be removed in 6.0
+            // Deprecated since 5.2.1. Has to be removed in 6.0
             ->arrayNode('aws_rds_iam')
                 ->setDeprecated(
                     'EasyDoctrine',
-                    '5.3.0',
+                    '5.2.1',
                     'The "%node%" node is deprecated, use "aws_rds.iam" and "aws_rds.ssl" instead.'
                 )
                 ->addDefaultsIfNotSet()
