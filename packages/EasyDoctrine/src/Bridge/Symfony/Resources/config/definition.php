@@ -32,7 +32,7 @@ return static function (DefinitionConfigurator $definition) {
             // Deprecated since 5.2.1. Has to be removed in 6.0
             ->arrayNode('aws_rds_iam')
                 ->setDeprecated(
-                    'EasyDoctrine',
+                    'eonx-com/easy-doctrine',
                     '5.2.1',
                     'The "%node%" node is deprecated, use "aws_rds.iam" and "aws_rds.ssl" instead.'
                 )
