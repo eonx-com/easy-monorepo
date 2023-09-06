@@ -31,11 +31,6 @@ final class Number implements Stringable
         $this->precision = $precision ?? self::DEFAULT_PRECISION;
     }
 
-    public function __toString(): string
-    {
-        return $this->round($this->value);
-    }
-
     public static function max(?self ...$values): ?self
     {
         return \array_reduce(
@@ -68,6 +63,11 @@ final class Number implements Stringable
                 return $leftOperand->isLessThan($rightOperand) ? $leftOperand : $rightOperand;
             }
         );
+    }
+
+    public function __toString(): string
+    {
+        return $this->round($this->value);
     }
 
     public function abs(): self
@@ -164,11 +164,11 @@ final class Number implements Stringable
         return new self($difference, $this->precision);
     }
 
-    public function toMoneyString(): string
+    public function toMoneyString(?bool $saveZeroMinorUnits = null): string
     {
         $value = (string)(new self($this->value, 2))->divide(100);
 
-        return \str_ends_with($value, '.00') ? (string)(int)$value : $value;
+        return $saveZeroMinorUnits !== true && \str_ends_with($value, '.00') ? (string)(int)$value : $value;
     }
 
     /**
