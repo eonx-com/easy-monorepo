@@ -9,6 +9,7 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('aws_rds')
                 ->addDefaultsIfNotSet()
                 ->children()
+                    // TODO: Set default values from "aws_rds_iam" in 6.0
                     ->arrayNode('iam')
                         ->addDefaultsIfNotSet()
                         ->children()
@@ -21,16 +22,20 @@ return static function (DefinitionConfigurator $definition) {
                     ->arrayNode('ssl')
                         ->addDefaultsIfNotSet()
                         ->children()
-                            ->booleanNode('enabled')->defaultFalse()->end()
-                            ->scalarNode('ca_path')
-                                ->defaultValue('%kernel.cache_dir%/rds-combined-ca-bundle.pem')
-                                ->end()
-                            ->scalarNode('mode')->defaultValue('verify-full')->end()
+                            ->booleanNode('enabled')->defaultNull()->end()
+                            ->scalarNode('ca_path')->defaultNull()->end()
+                            ->scalarNode('mode')->defaultNull()->end()
                         ->end()
                     ->end()
                 ->end()
             ->end()
+            // Deprecated since 5.3. Has to be removed in 6.0
             ->arrayNode('aws_rds_iam')
+                ->setDeprecated(
+                    'EasyDoctrine',
+                    '5.3.0',
+                    'The "%node%" node is deprecated, use "aws_rds.iam" and "aws_rds.ssl" instead.'
+                )
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->booleanNode('enabled')->defaultFalse()->end()
