@@ -87,7 +87,7 @@ final class EasyDoctrineSymfonyBundle extends AbstractBundle
                     ?? null;
 
                 if ($configName === 'auth_token_lifetime_in_minutes') {
-                    $value ??= ($config['aws_rds_iam']['cache_expiry_in_seconds'] ?? 15) / 60;
+                    $value ??= (int)$config['aws_rds_iam']['cache_expiry_in_seconds'] / 60;
                 }
 
                 $container
@@ -117,8 +117,9 @@ final class EasyDoctrineSymfonyBundle extends AbstractBundle
                 if ($configName === 'ca_path') {
                     $value ??= $config['aws_rds_iam']['ssl_cert_dir'] . '/rds-combined-ca-bundle.pem';
                 }
+
                 if ($configName === 'mode') {
-                    $value ??= $config['aws_rds_iam']['ssl_mode'] ?? null;
+                    $value ??= $config['aws_rds_iam']['ssl_mode'];
                 }
 
                 $container
