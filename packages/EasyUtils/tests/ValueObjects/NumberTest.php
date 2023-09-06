@@ -538,7 +538,7 @@ final class NumberTest extends TestCase
     public function testToMoneyStringSucceeds(
         string $value,
         string $expectedResult,
-        ?bool $saveZeroMinorUnits = null
+        ?bool $saveZeroMinorUnits = null,
     ): void {
         $number = new Number($value);
 
