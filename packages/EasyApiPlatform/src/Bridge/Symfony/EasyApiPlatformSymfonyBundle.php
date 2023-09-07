@@ -20,6 +20,8 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
         'custom_paginator_enabled' => BridgeConstantsInterface::PARAM_CUSTOM_PAGINATOR_ENABLED,
     ];
 
+    protected string $extensionAlias = 'easy_api_platform';
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
