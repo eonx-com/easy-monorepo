@@ -168,7 +168,11 @@ final class Number implements Stringable
     {
         $value = (string)(new self($this->value, 2))->divide(100);
 
-        return $saveZeroMinorUnits !== true && \str_ends_with($value, '.00') ? (string)(int)$value : $value;
+        if ($saveZeroMinorUnits !== true && \str_ends_with($value, '.00')) {
+            return (string)(int)$value;
+        }
+
+        return $value;
     }
 
     /**

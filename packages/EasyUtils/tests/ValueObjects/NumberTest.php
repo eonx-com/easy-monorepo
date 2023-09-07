@@ -474,6 +474,11 @@ final class NumberTest extends TestCase
             'expectedResult' => '1.00',
             'saveZeroMinorUnits' => true,
         ];
+        yield [
+            'value' => '123',
+            'expectedResult' => '1.23',
+            'saveZeroMinorUnits' => null,
+        ];
     }
 
     #[DataProvider('provideInvalidData')]
