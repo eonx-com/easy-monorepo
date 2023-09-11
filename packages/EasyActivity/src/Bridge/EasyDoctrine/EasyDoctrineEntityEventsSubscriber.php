@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\EasyDoctrine;
@@ -12,20 +11,10 @@ use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 
 final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivityLoggerInterface
-     */
-    private $activityLogger;
-
-    /**
-     * @var bool
-     */
-    private $enabled;
-
-    public function __construct(ActivityLoggerInterface $activityLogger, bool $enabled)
-    {
-        $this->activityLogger = $activityLogger;
-        $this->enabled = $enabled;
+    public function __construct(
+        private ActivityLoggerInterface $activityLogger,
+        private bool $enabled,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -62,9 +51,6 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
         $this->dispatchLogEntry(ActivityLogEntry::ACTION_UPDATE, $event->getEntity(), $event->getChangeSet());
     }
 
-    /**
-     * @param array<string, array<string, mixed>> $changeSet
-     */
     private function dispatchLogEntry(string $action, object $object, array $changeSet): void
     {
         if ($this->enabled === false) {

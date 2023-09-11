@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
@@ -15,15 +14,15 @@ use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\Stubs\ProviderInterfaceStub;
 use EonX\EasySecurity\Tests\Stubs\UserInterfaceStub;
+use PHPUnit\Framework\Attributes\DataProvider;
+use stdClass;
 
 final class SecurityContextTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testContextGetters
      */
-    public function gettersDataProvider(): iterable
+    public static function gettersDataProvider(): iterable
     {
         yield '1 role 2 permissions' => [
             [new Role('app:role', [new Permission('perm1'), new Permission('perm2')])],
@@ -41,7 +40,7 @@ final class SecurityContextTest extends AbstractTestCase
         ];
 
         yield '1 role 1 permission because non role given' => [
-            [new Role('app:role', [new Permission('perm1')]), new \stdClass()],
+            [new Role('app:role', [new Permission('perm1')]), new stdClass()],
             1,
             1,
         ];
@@ -54,11 +53,9 @@ final class SecurityContextTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testContextHas
      */
-    public function hasDataProvider(): iterable
+    public static function hasDataProvider(): iterable
     {
         yield 'No role No permission' => [
             [new Role('app:role', [new Permission('perm1')])],
@@ -115,11 +112,7 @@ final class SecurityContextTest extends AbstractTestCase
         (new SecurityContext())->getUserOrFail();
     }
 
-    /**
-     * @param mixed[] $roles
-     *
-     * @dataProvider gettersDataProvider
-     */
+    #[DataProvider('gettersDataProvider')]
     public function testContextGetters(array $roles, int $countRoles, int $countPermissions): void
     {
         $token = new ApiKey('api-key');
@@ -149,17 +142,13 @@ final class SecurityContextTest extends AbstractTestCase
         self::assertEquals($user, $context->getUserOrFail());
     }
 
-    /**
-     * @param mixed[] $roles
-     *
-     * @dataProvider hasDataProvider
-     */
+    #[DataProvider('hasDataProvider')]
     public function testContextHas(
         array $roles,
         string $role,
         string $permission,
         bool $hasRole,
-        bool $hasPermission
+        bool $hasPermission,
     ): void {
         $authorizationMatrix = new AuthorizationMatrix($roles, []);
 

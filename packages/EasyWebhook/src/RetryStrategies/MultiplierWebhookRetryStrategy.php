@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\RetryStrategies;
@@ -13,40 +12,26 @@ use EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface;
  * For example, if $delayMilliseconds=10000 & $multiplier=1 (default),
  * each retry will wait exactly 10 seconds.
  *
- * But if $delayMilliseconds=10000 & $multiplier=2:.
- *      * Retry 1: 10 second delay.
- *      * Retry 2: 20 second delay (10000 * 2 = 20000).
- *      * Retry 3: 40 second delay (20000 * 2 = 40000).
+ * But if $delayMilliseconds=10000 & $multiplier=2:
+ * - Retry 1: 10 second delay.
+ * - Retry 2: 20 second delay (10000 * 2 = 20000).
+ * - Retry 3: 40 second delay (20000 * 2 = 40000).
  *
  * @author Ryan Weaver <ryan@symfonycasts.com>
- *
- * @final
  */
 final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
 {
-    /**
-     * @var int
-     */
-    private $delayMilliseconds;
+    private int $delayMilliseconds;
 
-    /**
-     * @var null|int
-     */
-    private $maxDelayMilliseconds;
-
-    /**
-     * @var float
-     */
-    private $multiplier;
+    private float $multiplier;
 
     public function __construct(
         ?int $delayMilliseconds = null,
         ?float $multiplier = null,
-        ?int $maxDelayMilliseconds = null
+        private ?int $maxDelayMilliseconds = null,
     ) {
         $this->delayMilliseconds = $delayMilliseconds ?? 1000;
         $this->multiplier = $multiplier ?? 1.0;
-        $this->maxDelayMilliseconds = $maxDelayMilliseconds;
     }
 
     /**
@@ -54,7 +39,7 @@ final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterf
      */
     public function getWaitingTime(WebhookInterface $webhook): int
     {
-        $delay = (int)($this->delayMilliseconds * \pow($this->multiplier, $webhook->getCurrentAttempt()));
+        $delay = (int)($this->delayMilliseconds * $this->multiplier ** $webhook->getCurrentAttempt());
 
         return $this->maxDelayMilliseconds !== null && $delay > $this->maxDelayMilliseconds
             ? $this->maxDelayMilliseconds

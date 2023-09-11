@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Tests\Bridge\Symfony\Stubs;
@@ -10,6 +9,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -19,7 +20,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     private array $configs;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     public function __construct(?array $configs = null)
     {
@@ -31,6 +32,9 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $container->setDefinition('services_resetter', new Definition(ServicesResetterStub::class));
+        $container->setDefinition(Environment::class, new Definition(Environment::class, [
+            '$loader' => new Definition(ArrayLoader::class),
+        ]));
 
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);

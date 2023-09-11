@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stubs;
@@ -8,20 +7,11 @@ use EonX\EasyWebhook\Interfaces\WebhookSignerInterface;
 
 final class SignerStub implements WebhookSignerInterface
 {
-    /**
-     * @var string
-     */
-    private $payload;
+    private ?string $payload = null;
 
-    /**
-     * @var string
-     */
-    private $secret;
+    private ?string $secret = null;
 
-    /**
-     * @var string
-     */
-    private $signature;
+    private string $signature;
 
     public function __construct(?string $signature = null)
     {

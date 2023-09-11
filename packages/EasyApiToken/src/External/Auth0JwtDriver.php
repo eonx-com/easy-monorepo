@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
@@ -12,85 +11,40 @@ use EonX\EasyApiToken\External\Auth0\TokenGenerator;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use EonX\EasyApiToken\Interfaces\AlgorithmsInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Throwable;
 
 final class Auth0JwtDriver implements JwtDriverInterface
 {
     /**
      * @var string[]
      */
-    private $allowedAlgos;
+    private array $allowedAlgos;
+
+    private string $audienceForEncode;
+
+    private string $issuerForEncode;
 
     /**
-     * @var string
-     */
-    private $audienceForEncode;
-
-    /**
-     * @var string[]
-     */
-    private $authorizedIss;
-
-    /**
-     * @var null|\Psr\Cache\CacheItemPoolInterface
-     */
-    private $cache;
-
-    /**
-     * @var null|int
-     */
-    private $cacheTtl;
-
-    /**
-     * @var string
-     */
-    private $domain;
-
-    /**
-     * @var string
-     */
-    private $issuerForEncode;
-
-    /**
-     * @var null|string
-     */
-    private $privateKey;
-
-    /**
-     * @var string[]
-     */
-    private $validAudiences;
-
-    /**
-     * Auth0JwtDriver constructor.
-     *
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
-     * @param null|string[] $allowedAlgos
+     * @param string[]|null $allowedAlgos
      */
     public function __construct(
-        array $validAudiences,
-        array $authorizedIss,
-        string $domain,
-        ?string $privateKey = null,
+        private array $validAudiences,
+        private array $authorizedIss,
+        private string $domain,
+        private ?string $privateKey = null,
         ?string $audienceForEncode = null,
         ?array $allowedAlgos = null,
-        ?CacheItemPoolInterface $cache = null,
-        ?int $cacheTtl = null
+        private ?CacheItemPoolInterface $cache = null,
+        private ?int $cacheTtl = null,
     ) {
-        $this->validAudiences = $validAudiences;
-        $this->authorizedIss = $authorizedIss;
-        $this->domain = $domain;
-        $this->privateKey = $privateKey;
+        $this->allowedAlgos = $allowedAlgos ?? AlgorithmsInterface::ALL;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->issuerForEncode = (string)\reset($authorizedIss);
-        $this->allowedAlgos = $allowedAlgos ?? AlgorithmsInterface::ALL;
-        $this->cache = $cache;
-        $this->cacheTtl = $cacheTtl;
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Auth0\SDK\Exception\ConfigurationException
      * @throws \Auth0\SDK\Exception\InvalidTokenException
      * @throws \EonX\EasyApiToken\Exceptions\InvalidConfigurationException
@@ -104,8 +58,10 @@ final class Auth0JwtDriver implements JwtDriverInterface
 
         // Had to fake clientId to work as it is automatically added to audience
         $config = new Auth0V8SdkConfiguration([
-            'domain' => $this->domain,
+            'audience' => [$this->audienceForEncode],
             'clientId' => 'client_id',
+            'domain' => $this->domain,
+            'strategy' => Auth0V8SdkConfiguration::STRATEGY_API,
         ]);
         $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
         $exceptions = [];
@@ -124,7 +80,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
                 return $verifier
                     ->validate($tokenIssuer, $this->validAudiences)
                     ->toArray();
-            } catch (\Throwable $throwable) {
+            } catch (Throwable $throwable) {
                 $exceptions[] = $throwable->getMessage();
             }
         }

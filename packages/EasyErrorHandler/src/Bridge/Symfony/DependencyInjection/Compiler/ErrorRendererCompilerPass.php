@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler;
@@ -13,9 +12,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ErrorRendererCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const ERROR_RENDERER_ID = 'error_renderer';
 
     public function process(ContainerBuilder $container): void

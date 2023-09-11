@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -29,6 +28,7 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
         switch ($webhookResult->isSuccessful()) {
             case true:
                 $webhook->status(WebhookInterface::STATUS_SUCCESS);
+
                 break;
             case false:
                 $webhook->status(

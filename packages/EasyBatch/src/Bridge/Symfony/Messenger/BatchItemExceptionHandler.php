@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
@@ -20,6 +19,7 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use Throwable;
 
 final class BatchItemExceptionHandler
 {
@@ -28,7 +28,7 @@ final class BatchItemExceptionHandler
     public function __construct(
         private readonly BatchItemTransformer $batchItemTransformer,
         private readonly ContainerInterface $container,
-        private readonly string $emergencyTransportName = 'async'
+        private readonly string $emergencyTransportName = 'async',
     ) {
     }
 
@@ -36,7 +36,7 @@ final class BatchItemExceptionHandler
      * @throws \Symfony\Component\Messenger\Exception\ExceptionInterface
      * @throws \Throwable
      */
-    public function handleException(\Throwable $throwable, Envelope $envelope): Envelope
+    public function handleException(Throwable $throwable, Envelope $envelope): Envelope
     {
         // Prevent process exceptions are simply not to proceed, return envelope
         if ($throwable instanceof EasyBatchPreventProcessExceptionInterface) {
@@ -71,10 +71,10 @@ final class BatchItemExceptionHandler
      */
     private function doHandleEmergencyException(
         EasyBatchEmergencyExceptionInterface $exception,
-        Envelope $envelope
+        Envelope $envelope,
     ): Envelope {
         $message = null;
-        $errorDetails = $exception->getPrevious()
+        $errorDetails = $exception->getPrevious() !== null
             ? ErrorDetailsHelper::resolveSimpleDetails($exception->getPrevious())
             : null;
 

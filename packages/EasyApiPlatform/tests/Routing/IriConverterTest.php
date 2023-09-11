@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Routing;
@@ -10,6 +9,7 @@ use EonX\EasyApiPlatform\Routing\IriConverter;
 use EonX\EasyApiPlatform\Routing\NoIriItemInterface;
 use EonX\EasyApiPlatform\Routing\SelfProvidedIriItemInterface;
 use EonX\EasyApiPlatform\Tests\AbstractTestCase;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
 use Mockery\MockInterface;
 
 final class IriConverterTest extends AbstractTestCase
@@ -20,7 +20,7 @@ final class IriConverterTest extends AbstractTestCase
             // Just an object
         };
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(IriConverterInterface::class);
+        $decoratedIriConverter = self::mock(IriConverterInterface::class);
         $iriConverter = new IriConverter($decoratedIriConverter);
 
         $result = $iriConverter->getIriFromResource($resource);
@@ -37,7 +37,7 @@ final class IriConverterTest extends AbstractTestCase
             }
         };
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(IriConverterInterface::class);
+        $decoratedIriConverter = self::mock(IriConverterInterface::class);
         $iriConverter = new IriConverter($decoratedIriConverter);
 
         $result = $iriConverter->getIriFromResource($resource);
@@ -51,7 +51,7 @@ final class IriConverterTest extends AbstractTestCase
             // Just an object
         };
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(
+        $decoratedIriConverter = self::mock(
             IriConverterInterface::class,
             static function (MockInterface $mock) use ($resource): void {
                 $mock->expects('getIriFromResource')
@@ -68,16 +68,20 @@ final class IriConverterTest extends AbstractTestCase
 
     public function testGetResourceFromIriSucceeds(): void
     {
+        $expectedResult = new Dummy();
         /** @var \ApiPlatform\Api\IriConverterInterface $decoratedIriConverter */
-        $decoratedIriConverter = $this->mock(IriConverterInterface::class, static function (MockInterface $mock): void {
-            $mock->expects('getResourceFromIri')
-                ->with('some-iri', [], null)
-                ->andReturnNull();
-        });
+        $decoratedIriConverter = self::mock(
+            IriConverterInterface::class,
+            static function (MockInterface $mock) use ($expectedResult): void {
+                $mock->expects('getResourceFromIri')
+                    ->with('some-iri', [], null)
+                    ->andReturn($expectedResult);
+            }
+        );
         $iriConverter = new IriConverter($decoratedIriConverter);
 
-        $result = $iriConverter->getResourceFromIri('some-iri');
+        $actualResult = $iriConverter->getResourceFromIri('some-iri');
 
-        self::assertNull($result);
+        self::assertSame($expectedResult, $actualResult);
     }
 }

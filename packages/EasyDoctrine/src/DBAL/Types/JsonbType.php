@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\DBAL\Types;
@@ -11,22 +10,14 @@ use JsonException;
 
 final class JsonbType extends Type
 {
-    /**
-     * @var string
-     */
     public const FORMAT_DB_JSONB = 'JSONB';
 
-    /**
-     * @var string
-     */
     public const JSONB = 'jsonb';
 
     /**
-     * @param mixed $value
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return null;
@@ -44,13 +35,9 @@ final class JsonbType extends Type
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return mixed
-     *
      * @throws \Doctrine\DBAL\Types\ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value === '') {
             return null;
@@ -61,7 +48,7 @@ final class JsonbType extends Type
         }
 
         try {
-            $decodedValue = \json_decode($value, true, 512, \JSON_THROW_ON_ERROR);
+            $decodedValue = \json_decode((string)$value, true, 512, \JSON_THROW_ON_ERROR);
 
             return \is_array($decodedValue) ? $this->sortByKey($decodedValue) : $decodedValue;
         } catch (JsonException $exception) {
@@ -74,21 +61,11 @@ final class JsonbType extends Type
         return self::JSONB;
     }
 
-    /**
-     * @param mixed[] $column
-     *
-     * @throws \Doctrine\DBAL\Exception
-     */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return self::FORMAT_DB_JSONB;
     }
 
-    /**
-     * @param mixed[] $array
-     *
-     * @return mixed[]
-     */
     private function sortByKey(array $array): array
     {
         \ksort($array);

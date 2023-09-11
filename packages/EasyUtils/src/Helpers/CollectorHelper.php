@@ -1,39 +1,30 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Helpers;
 
 use EonX\EasyUtils\Exceptions\InvalidArgumentException;
 use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+use Traversable;
 
-class CollectorHelper
+final class CollectorHelper
 {
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     */
     public static function convertToArray(iterable $items): array
     {
-        return $items instanceof \Traversable ? \iterator_to_array($items) : $items;
+        return $items instanceof Traversable ? \iterator_to_array($items) : $items;
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     *
      * @throws \EonX\EasyUtils\Exceptions\InvalidArgumentException
      */
     public static function ensureClass(iterable $items, string $class): iterable
     {
         foreach ($items as $item) {
-            if (($item instanceof $class) === false) {
+            if ($item instanceof $class === false) {
                 throw new InvalidArgumentException(\sprintf(
                     'Instance of %s expected, %s given',
                     $class,
-                    \is_object($item) === false ? \gettype($item) : \get_class($item)
+                    \get_debug_type($item)
                 ));
             }
 
@@ -42,10 +33,6 @@ class CollectorHelper
     }
 
     /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     *
      * @throws \EonX\EasyUtils\Exceptions\InvalidArgumentException
      */
     public static function ensureClassAsArray(iterable $items, string $class): array
@@ -53,11 +40,6 @@ class CollectorHelper
         return self::convertToArray(self::ensureClass($items, $class));
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     */
     public static function filterByClass(iterable $items, string $class): iterable
     {
         foreach ($items as $item) {
@@ -68,21 +50,13 @@ class CollectorHelper
     }
 
     /**
-     * @param iterable<mixed> $items
      * @param class-string $class
-     *
-     * @return mixed[]
      */
     public static function filterByClassAsArray(iterable $items, string $class): array
     {
         return self::convertToArray(self::filterByClass($items, $class));
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     */
     public static function orderHigherPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
@@ -103,21 +77,11 @@ class CollectorHelper
         }
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     */
     public static function orderHigherPriorityFirstAsArray(iterable $items): array
     {
         return self::convertToArray(self::orderHigherPriorityFirst($items));
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return iterable<mixed>
-     */
     public static function orderLowerPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
@@ -138,11 +102,6 @@ class CollectorHelper
         }
     }
 
-    /**
-     * @param iterable<mixed> $items
-     *
-     * @return mixed[]
-     */
     public static function orderLowerPriorityFirstAsArray(iterable $items): array
     {
         return self::convertToArray(self::orderLowerPriorityFirst($items));

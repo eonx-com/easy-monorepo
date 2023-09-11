@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Bridge\Laravel;
@@ -12,9 +11,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
 {
-    /**
-     * @var string
-     */
     public const PIPELINES_PREFIX = 'pipeline.';
 
     public function boot(): void
@@ -36,21 +32,19 @@ final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PipelineFactoryInterface::class,
-            static function (Container $app): IlluminatePipelineFactory {
-                return new IlluminatePipelineFactory(
-                    $app,
-                    \array_keys(\config('easy-pipeline.pipelines', [])),
-                    self::PIPELINES_PREFIX
-                );
-            }
+            static fn (Container $app): IlluminatePipelineFactory => new IlluminatePipelineFactory(
+                $app,
+                \array_keys(\config('easy-pipeline.pipelines', [])),
+                self::PIPELINES_PREFIX
+            )
         );
     }
 
     private function registerPipelines(): void
     {
-        $pipelines = \config('easy-pipeline.pipelines', []);
+        $pipelines = (array)\config('easy-pipeline.pipelines', []);
 
-        if (empty($pipelines)) {
+        if (\count($pipelines) === 0) {
             throw new EmptyPipelinesListException(
                 'No pipelines to register. Please make sure your application has the expected configuration'
             );

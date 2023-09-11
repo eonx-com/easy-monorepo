@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Commands;
@@ -18,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class AnalyzeErrorCodesCommand extends Command
 {
     public function __construct(
-        private ErrorCodesGroupProcessorInterface $errorCodesGroupProcessor
+        private readonly ErrorCodesGroupProcessorInterface $errorCodesGroupProcessor,
     ) {
         parent::__construct();
     }

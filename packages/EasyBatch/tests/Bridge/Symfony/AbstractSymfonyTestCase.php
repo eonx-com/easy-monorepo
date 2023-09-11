@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony;
@@ -14,26 +13,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
     private ?KernelInterface $kernel = null;
-
-    protected function getContainer(): ContainerInterface
-    {
-        return $this->getKernel()
-            ->getContainer();
-    }
-
-    protected function getKernel(): KernelInterface
-    {
-        if ($this->kernel !== null) {
-            return $this->kernel;
-        }
-
-        $_SERVER['APP_SECRET'] = 'my-secret';
-
-        $kernel = new KernelStub('test', true);
-        $kernel->boot();
-
-        return $this->kernel = $kernel;
-    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -69,5 +48,25 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
         }
 
         parent::setUp();
+    }
+
+    protected function getContainer(): ContainerInterface
+    {
+        return $this->getKernel()
+            ->getContainer();
+    }
+
+    protected function getKernel(): KernelInterface
+    {
+        if ($this->kernel !== null) {
+            return $this->kernel;
+        }
+
+        $_SERVER['APP_SECRET'] = 'my-secret';
+
+        $this->kernel = new KernelStub('test', true);
+        $this->kernel->boot();
+
+        return $this->kernel;
     }
 }

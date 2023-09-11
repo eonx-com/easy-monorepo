@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Transformers;
@@ -18,7 +17,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     public function __construct(
         private readonly MessageSerializerInterface $messageSerializer,
         ?string $class = null,
-        ?string $datetimeFormat = null
+        ?string $datetimeFormat = null,
     ) {
         parent::__construct($class ?? BatchItem::class, $datetimeFormat);
     }
@@ -30,8 +29,6 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
 
     /**
      * @param \EonX\EasyBatch\Interfaces\BatchItemInterface $batchObject
-     *
-     * @return mixed[]
      *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemCannotBeEncryptedException
      */
@@ -55,7 +52,6 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
 
     /**
      * @param \EonX\EasyBatch\Interfaces\BatchItemInterface $batchObject
-     * @param mixed[] $data
      *
      * @throws \EonX\EasyBatch\Exceptions\BatchItemCannotBeEncryptedException
      */

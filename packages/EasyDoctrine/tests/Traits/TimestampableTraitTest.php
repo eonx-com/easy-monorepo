@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Traits;
@@ -8,11 +7,15 @@ use Carbon\CarbonImmutable;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Traits\TimestampableTrait;
 
-/**
- * @covers \EonX\EasyDoctrine\Traits\TimestampableTrait
- */
 final class TimestampableTraitTest extends AbstractTestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        CarbonImmutable::setTestNow();
+    }
+
     public function testGetCreatedAtSucceeds(): void
     {
         $now = CarbonImmutable::now();
@@ -52,12 +55,5 @@ final class TimestampableTraitTest extends AbstractTestCase
 
         self::assertEquals(CarbonImmutable::getTestNow(), $object->getCreatedAt());
         self::assertEquals(CarbonImmutable::getTestNow(), $object->getUpdatedAt());
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        CarbonImmutable::setTestNow();
     }
 }

@@ -1,16 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Interfaces;
 
-interface PaginatorInterface extends \JsonSerializable
+use JsonSerializable;
+
+interface PaginatorInterface extends JsonSerializable
 {
     public function getCurrentPage(): int;
 
-    /**
-     * @return mixed[]
-     */
     public function getItems(): array;
 
     public function getItemsPerPage(): int;
@@ -23,8 +21,5 @@ interface PaginatorInterface extends \JsonSerializable
 
     public function setTransformer(?callable $transformer = null): self;
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array;
 }

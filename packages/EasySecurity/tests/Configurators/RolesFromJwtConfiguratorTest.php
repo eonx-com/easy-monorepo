@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Configurators;
@@ -14,16 +13,15 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\JwtClaimFetcher;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigure
      */
-    public function providerTestConfigure(): iterable
+    public static function providerTestConfigure(): iterable
     {
         yield 'No role resolved because not token' => [[]];
 
@@ -62,17 +60,15 @@ final class RolesFromJwtConfiguratorTest extends AbstractTestCase
 
     /**
      * @param \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $authorizationRoles
-     * @param null|mixed[] $roles
-     *
-     * @dataProvider providerTestConfigure
      */
+    #[DataProvider('providerTestConfigure')]
     public function testConfigure(
         array $authorizationRoles,
         ?SecurityContextInterface $context = null,
         ?array $roles = null,
-        ?JwtClaimFetcherInterface $jwtClaimFetcher = null
+        ?JwtClaimFetcherInterface $jwtClaimFetcher = null,
     ): void {
-        $context = $context ?? new SecurityContext();
+        $context ??= new SecurityContext();
         $context->setAuthorizationMatrix(new AuthorizationMatrix($authorizationRoles, []));
         $configurator = new RolesFromJwtConfigurator(static::$mainJwtClaim);
 

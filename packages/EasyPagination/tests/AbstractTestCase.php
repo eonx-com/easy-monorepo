@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
@@ -15,32 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    protected function createConfig(
-        ?string $pageAttr = null,
-        ?int $pageDefault = null,
-        ?string $perPageAttr = null,
-        ?int $perPageDefault = null
-    ): PaginationConfig {
-        return new PaginationConfig(
-            $pageAttr ?? 'page',
-            $pageDefault ?? 1,
-            $perPageAttr ?? 'perPage',
-            $perPageDefault ?? 15
-        );
-    }
-
-    /**
-     * @param null|mixed[] $query
-     */
-    protected function createServerRequest(?array $query = null): Request
-    {
-        $server = [
-            'HTTP_HOST' => 'eonx.com',
-        ];
-
-        return new Request($query ?? [], [], [], [], [], $server);
-    }
-
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -51,5 +24,28 @@ abstract class AbstractTestCase extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    protected function createConfig(
+        ?string $pageAttr = null,
+        ?int $pageDefault = null,
+        ?string $perPageAttr = null,
+        ?int $perPageDefault = null,
+    ): PaginationConfig {
+        return new PaginationConfig(
+            $pageAttr ?? 'page',
+            $pageDefault ?? 1,
+            $perPageAttr ?? 'perPage',
+            $perPageDefault ?? 15
+        );
+    }
+
+    protected function createServerRequest(?array $query = null): Request
+    {
+        $server = [
+            'HTTP_HOST' => 'eonx.com',
+        ];
+
+        return new Request($query ?? [], [], [], [], [], $server);
     }
 }

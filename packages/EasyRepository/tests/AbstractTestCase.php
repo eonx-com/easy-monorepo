@@ -1,17 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Tests;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectRepository;
 use Mockery;
 use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use stdClass;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -28,12 +28,9 @@ abstract class AbstractTestCase extends TestCase
         return $method;
     }
 
-    /**
-     * @param string|object $class
-     */
-    protected function mock($class, ?callable $expectations = null): LegacyMockInterface
+    protected function mock(mixed $target, ?callable $expectations = null): LegacyMockInterface
     {
-        $mock = Mockery::mock($class);
+        $mock = Mockery::mock($target);
 
         if ($expectations !== null) {
             $expectations($mock);
@@ -44,21 +41,21 @@ abstract class AbstractTestCase extends TestCase
 
     protected function mockRegistry(
         ?callable $managerExpectations = null,
-        ?callable $repositoryExpectations = null
+        ?callable $repositoryExpectations = null,
     ): LegacyMockInterface {
         return $this->mock(
             ManagerRegistry::class,
             function (LegacyMockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {
                 $manager = $this->mock(EntityManagerInterface::class, $managerExpectations);
-                $repository = $this->mock(ObjectRepository::class, $repositoryExpectations);
+                $repository = $this->mock(EntityRepository::class, $repositoryExpectations);
 
                 $manager->shouldReceive('getRepository')
                     ->once()
-                    ->with('my-entity-class')
+                    ->with(stdClass::class)
                     ->andReturn($repository);
                 $registry->shouldReceive('getManagerForClass')
                     ->once()
-                    ->with('my-entity-class')
+                    ->with(stdClass::class)
                     ->andReturn($manager);
             }
         );

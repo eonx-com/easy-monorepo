@@ -80,7 +80,7 @@ guarantee you will receive an `array`. So use the `convertToArray()` method!
 
 ```php
 use App\Domain\WorkerInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class MyClass
 {
@@ -89,9 +89,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers could be any type of iterable, convert it to array
@@ -118,7 +115,7 @@ ensure each item is an instance of a specific class/interface, use the `filterBy
 
 ```php
 use App\Domain\WorkerInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class MyClass
 {
@@ -127,9 +124,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
@@ -155,7 +149,7 @@ to make sure each item is an instance of a specific class/interface, but you nee
 
 ```php
 use App\Domain\WorkerInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class MyClass
 {
@@ -164,9 +158,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
@@ -185,7 +176,7 @@ exception if at least of the items is not an instance of the given class.
 
 ```php
 use App\Domain\WorkerInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 
 final class MyClass
 {
@@ -194,9 +185,6 @@ final class MyClass
      */
     private array $workers;
 
-    /**
-     * @param iterable<mixed> $workers
-     */
     public function __construct(iterable $workers)
     {
         // $workers now contains only WorkerInterface instances
@@ -278,8 +266,13 @@ The Math helper provides the following methods:
 - `sub:` subs tow numbers and returns the result
 
 [1]: https://getcomposer.org/
+
 [2]: https://tomasvotruba.com/blog/2018/06/14/collector-pattern-for-dummies/
+
 [3]: https://book.cakephp.org/4.next/en/development/dependency-injection.html#tagging-services
+
 [4]: https://symfony.com/doc/current/service_container/tags.html
+
 [5]: https://laravel.com/docs/8.x/container#tagging
+
 [6]: https://symfony.com/blog/new-in-symfony-3-3-simpler-service-configuration#interface-based-service-configuration

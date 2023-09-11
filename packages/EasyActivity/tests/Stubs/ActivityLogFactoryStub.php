@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Stubs;
@@ -18,17 +17,14 @@ use EonX\EasyActivity\Resolvers\DefaultActorResolver;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\UidNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface
-     */
-    private $factory;
+    private ActivityLogEntryFactoryInterface $factory;
 
     /**
-     * @param array<string, mixed> $subjects
      * @param string[] $globalDisallowedProperties
      */
     public function __construct(
@@ -36,14 +32,14 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
         array $globalDisallowedProperties,
         ?ActorResolverInterface $actorResolver = null,
         ?ActivitySubjectResolverInterface $subjectResolver = null,
-        ?ActivitySubjectDataResolverInterface $subjectDataResolver = null
+        ?ActivitySubjectDataResolverInterface $subjectDataResolver = null,
     ) {
         if ($subjectResolver === null) {
             $subjectResolver = new DefaultActivitySubjectResolver($subjects);
         }
         if ($subjectDataResolver === null) {
             $serializer = new Serializer(
-                [new DateTimeNormalizer(), new ObjectNormalizer()],
+                [new DateTimeNormalizer(), new UidNormalizer(), new ObjectNormalizer()],
                 [new JsonEncoder()]
             );
             $subjectDataResolver = new DoctrineActivitySubjectDataResolver(
@@ -67,7 +63,7 @@ final class ActivityLogFactoryStub implements ActivityLogEntryFactoryInterface
     public function create(
         string $action,
         object $object,
-        array $changeSet
+        array $changeSet,
     ): ?ActivityLogEntry {
         return $this->factory->create($action, $object, $changeSet);
     }

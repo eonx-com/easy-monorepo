@@ -1,19 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
 
 trait ValidationExceptionTrait
 {
-    /**
-     * @var mixed[]
-     */
-    protected $errors = [];
+    protected array $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function getErrors(): array
     {
         return $this->errors;
@@ -21,8 +14,6 @@ trait ValidationExceptionTrait
 
     /**
      * Sets validation errors.
-     *
-     * @param mixed[] $errors
      */
     public function setErrors(array $errors): self
     {

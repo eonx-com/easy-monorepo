@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization;
@@ -15,14 +14,13 @@ final class Role implements RoleInterface
     private array $permissions;
 
     /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
-     * @param null|mixed[] $metadata
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
      */
     public function __construct(
         private readonly string $identifier,
         ?array $permissions = null,
         private readonly ?string $name = null,
-        private ?array $metadata = null
+        private ?array $metadata = null,
     ) {
         $this->permissions = AuthorizationMatrixFormatter::formatPermissions($permissions ?? []);
     }
@@ -30,6 +28,17 @@ final class Role implements RoleInterface
     public function __toString(): string
     {
         return $this->identifier;
+    }
+
+    public function addMetadata(string $name, mixed $value): RoleInterface
+    {
+        if ($this->metadata === null) {
+            $this->metadata = [];
+        }
+
+        $this->metadata[$name] = $value;
+
+        return $this;
     }
 
     public function getIdentifier(): string
@@ -55,17 +64,6 @@ final class Role implements RoleInterface
         return $this->permissions;
     }
 
-    public function addMetadata(string $name, mixed $value): RoleInterface
-    {
-        if ($this->metadata === null) {
-            $this->metadata = [];
-        }
-
-        $this->metadata[$name] = $value;
-
-        return $this;
-    }
-
     public function hasMetadata(string $name): bool
     {
         return \is_array($this->metadata) && isset($this->metadata[$name]);
@@ -80,9 +78,6 @@ final class Role implements RoleInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $metadata
-     */
     public function setMetadata(array $metadata): RoleInterface
     {
         $this->metadata = $metadata;

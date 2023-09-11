@@ -5,19 +5,19 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-event-dispatcher": "^4.4",
-        "eonx-com/easy-lock": "^4.4",
-        "eonx-com/easy-pagination": "^4.4",
-        "eonx-com/easy-random": "^4.4",
-        "eonx-com/easy-utils": "^4.4",
-        "nesbot/carbon": "^2.22"
+        "doctrine/dbal": "^3.0",
+        "eonx-com/easy-encryption": "^5.3",
+        "eonx-com/easy-event-dispatcher": "^5.3",
+        "eonx-com/easy-pagination": "^5.3",
+        "eonx-com/easy-random": "^5.3",
+        "eonx-com/easy-utils": "^5.3",
+        "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "eonx-com/easy-encryption": "^4.4",
-        "ramsey/uuid": "^3.9 || ^4.0",
-        "doctrine/orm": "^2.6",
-        "phpunit/phpunit": "^9.5",
-        "symfony/symfony": "^5.4 || ^6.0"
+        "eonx-com/easy-lock": "^5.3",
+        "phpunit/phpunit": "^10.2",
+        "psr/container": "^2.0",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -30,9 +30,16 @@
             "EonX\\EasyBatch\\Tests\\": "tests"
         }
     },
+    "suggest": {
+        "eonx-com/easy-lock": "To lock async messages",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony",
+        "symfony/messenger": "To use this package with Symfony"
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.3-dev"
         }
     }
 }

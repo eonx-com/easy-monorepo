@@ -1,15 +1,13 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
 
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
- */
+#[CoversClass(ResultsContext::class)]
 final class ResultsContextTest extends TestCase
 {
     /**

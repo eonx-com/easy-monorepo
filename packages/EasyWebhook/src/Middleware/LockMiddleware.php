@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -14,27 +13,15 @@ use EonX\EasyWebhook\WebhookResult;
 
 final class LockMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var string
-     */
     private const DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
 
-    /**
-     * @var \EonX\EasyLock\Interfaces\LockServiceInterface
-     */
-    private $lockService;
-
-    /**
-     * @var string
-     */
-    private $resourcePattern;
+    private string $resourcePattern;
 
     public function __construct(
-        LockServiceInterface $lockService,
+        private LockServiceInterface $lockService,
         ?string $lockResourcePattern = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
-        $this->lockService = $lockService;
         $this->resourcePattern = $lockResourcePattern ?? self::DEFAULT_LOCK_RESOURCE_PATTERN;
 
         parent::__construct($priority);
@@ -42,9 +29,7 @@ final class LockMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $func = function () use ($webhook, $stack): WebhookResultInterface {
-            return $this->passOn($webhook, $stack);
-        };
+        $func = fn (): WebhookResultInterface => $this->passOn($webhook, $stack);
 
         $result = $webhook->getId() !== null && $webhook->isSendNow()
             ? $this->lockService->processWithLock($this->getLockData($webhook), $func)

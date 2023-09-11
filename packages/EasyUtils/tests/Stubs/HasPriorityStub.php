@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Stubs;
@@ -13,8 +12,6 @@ final class HasPriorityStub implements HasPriorityInterface
 
     public function __construct(?int $priority = null)
     {
-        if ($priority !== null) {
-            $this->priority = $priority;
-        }
+        $this->doSetPriority($priority);
     }
 }

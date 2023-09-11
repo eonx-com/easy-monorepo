@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Messages;
@@ -8,40 +7,35 @@ use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Messages\SlackMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SlackMessageTest extends AbstractTestCase
 {
     /**
      * @var string[]
      */
-    protected static $body = [
+    protected static array $body = [
         'option' => 'value',
         'channel' => 'channel',
         'text' => 'text',
     ];
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetters
      */
-    public function providerTestGetters(): iterable
+    public static function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
-            static function (): SlackMessage {
-                return new SlackMessage('channel', 'text', [
-                    'option' => 'value',
-                ]);
-            },
+            static fn (): SlackMessage => new SlackMessage('channel', 'text', [
+                'option' => 'value',
+            ]),
             static::$body,
         ];
 
         yield 'Create method' => [
-            static function (): SlackMessage {
-                return SlackMessage::create('channel', 'text', [
-                    'option' => 'value',
-                ]);
-            },
+            static fn (): SlackMessage => SlackMessage::create('channel', 'text', [
+                'option' => 'value',
+            ]),
             static::$body,
         ];
 
@@ -59,19 +53,16 @@ final class SlackMessageTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $body
-     *
-     * @dataProvider providerTestGetters
-     *
      * @throws \Nette\Utils\JsonException
      */
+    #[DataProvider('providerTestGetters')]
     public function testGetters(callable $getMessage, array $body): void
     {
-        /** @var \EonX\EasyNotification\Messages\SlackMessage $message */
         // Trick for coverage
+        /** @var \EonX\EasyNotification\Messages\SlackMessage $message */
         $message = $getMessage();
 
-        self::assertEquals(MessageInterface::TYPE_SLACK, $message->getType());
-        self::assertEquals(Json::encode($body), $message->getBody());
+        self::assertSame(MessageInterface::TYPE_SLACK, $message->getType());
+        self::assertSame(Json::encode($body), $message->getBody());
     }
 }

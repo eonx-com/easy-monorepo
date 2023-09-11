@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\Symfony\Subscribers;
@@ -12,8 +11,9 @@ use Symfony\Component\Lock\Store\DoctrineDbalStore;
 
 final class EasyLockDoctrineSchemaSubscriber implements EventSubscriber
 {
-    public function __construct(private PersistingStoreInterface $persistingStore)
-    {
+    public function __construct(
+        private PersistingStoreInterface $persistingStore,
+    ) {
     }
 
     public function getSubscribedEvents(): array

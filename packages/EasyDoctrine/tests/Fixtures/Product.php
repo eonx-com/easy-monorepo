@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Fixtures;
@@ -15,16 +14,27 @@ class Product
     #[ORM\ManyToOne(targetEntity: Category::class)]
     private ?Category $category = null;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 128)]
     private string $name;
 
-    #[ORM\Column(type: Types::BIGINT)]
-    private string $price;
+    /**
+     * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Offer>
+     */
+    #[ORM\JoinTable(name: 'product_offer')]
+    #[ORM\ManyToMany(
+        targetEntity: Offer::class,
+        inversedBy: 'products',
+        cascade: ['persist'],
+    )]
+    private Collection $offers;
+
+    #[ORM\Column(type: PriceType::NAME)]
+    private Price $price;
 
     /**
      * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Tag>
@@ -39,7 +49,18 @@ class Product
 
     public function __construct()
     {
+        $this->offers = new ArrayCollection();
         $this->tags = new ArrayCollection();
+    }
+
+    public function addOffer(Offer $offer): self
+    {
+        if ($this->offers->contains($offer) === false) {
+            $this->offers->add($offer);
+            $offer->addProduct($this);
+        }
+
+        return $this;
     }
 
     public function addTag(Tag $tag): self
@@ -67,7 +88,15 @@ class Product
         return $this->name;
     }
 
-    public function getPrice(): string
+    /**
+     * @return \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyDoctrine\Tests\Fixtures\Offer>
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function getPrice(): Price
     {
         return $this->price;
     }
@@ -78,6 +107,14 @@ class Product
     public function getTags(): Collection
     {
         return $this->tags;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        $this->offers->removeElement($offer);
+        $offer->removeProduct($this);
+
+        return $this;
     }
 
     public function setCategory(?Category $category): self
@@ -101,7 +138,7 @@ class Product
         return $this;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(Price $price): self
     {
         $this->price = $price;
 

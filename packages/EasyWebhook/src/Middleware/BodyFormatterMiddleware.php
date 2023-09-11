@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -12,19 +11,12 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface
-     */
-    private $bodyFormatter;
+    private JsonFormatter $jsonFormatter;
 
-    /**
-     * @var \EonX\EasyWebhook\Formatters\JsonFormatter
-     */
-    private $jsonFormatter;
-
-    public function __construct(WebhookBodyFormatterInterface $bodyFormatter, ?int $priority = null)
-    {
-        $this->bodyFormatter = $bodyFormatter;
+    public function __construct(
+        private WebhookBodyFormatterInterface $bodyFormatter,
+        ?int $priority = null,
+    ) {
         $this->jsonFormatter = new JsonFormatter();
 
         parent::__construct($priority);
@@ -44,11 +36,14 @@ final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
             );
         }
 
+        $bodyAsString = $webhook->getBodyAsString() ?? '';
+        $body = $webhook->getBody() ?? [];
+
         // Body set as string has priority
-        if (empty($webhook->getBodyAsString()) && empty($webhook->getBody()) === false) {
+        if ($bodyAsString === '' && \count($body) > 0) {
             $this->updateWebhook(
                 $webhook,
-                $this->bodyFormatter->format($webhook->getBody()),
+                $this->bodyFormatter->format($body),
                 $this->bodyFormatter->getContentTypeHeader()
             );
         }
@@ -63,10 +58,10 @@ final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
         $webhook->bodyAsString($formatted);
 
         $webhook->mergeHttpClientOptions([
+            'body' => $formatted,
             'headers' => [
                 'Content-Type' => $header,
             ],
-            'body' => $formatted,
         ]);
     }
 }

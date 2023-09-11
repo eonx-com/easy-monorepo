@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Bridge\PsrLogger;
@@ -10,14 +9,9 @@ use Psr\Log\LoggerInterface;
 
 final class LogHttpRequestSentListener
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(HttpRequestSentEvent $event): void
@@ -55,7 +49,7 @@ final class LogHttpRequestSentListener
         if ($throwable !== null) {
             $throwableMessage = \sprintf('Throwable: "%s"', $request->getUrl());
             $throwableContext = [
-                'class' => \get_class($throwable),
+                'class' => $throwable::class,
                 'message' => $throwable->getMessage(),
             ];
 

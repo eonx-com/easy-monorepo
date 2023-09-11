@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Listener;
@@ -10,20 +9,26 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 final class ExceptionEventListener
 {
-    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
-    {
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler,
+    ) {
     }
 
     public function __invoke(ExceptionEvent $event): void
     {
-        $this->errorHandler->report($event->getThrowable());
+        $request = $event->getRequest();
+        $throwable = $event->getThrowable();
+
+        $this->errorHandler->report($throwable);
 
         // Skip if format not supported
-        if ($this->errorHandler instanceof FormatAwareInterface
-            && $this->errorHandler->supportsFormat($event->getRequest()) === false) {
+        if ($this->errorHandler instanceof FormatAwareInterface &&
+            $this->errorHandler->supportsFormat($request) === false
+        ) {
             return;
         }
 
-        $event->setResponse($this->errorHandler->render($event->getRequest(), $event->getThrowable()));
+        $event->allowCustomResponseCode();
+        $event->setResponse($this->errorHandler->render($request, $throwable));
     }
 }

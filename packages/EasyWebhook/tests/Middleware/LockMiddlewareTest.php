@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -11,13 +10,14 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\LockServiceStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'should not lock (no id, not send now) -> return result from stack' => [Webhook::fromArray([]), false];
 
@@ -46,25 +46,24 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(WebhookInterface $webhook, bool $shouldLock, ?bool $canProcess = null): void
     {
-        $canProcess = $canProcess ?? true;
+        $canProcess ??= true;
         $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId());
         $expectedResult = new WebhookResult($webhook);
         $lockService = new LockServiceStub($canProcess);
         $middleware = new LockMiddleware($lockService);
 
         $result = $this->process($middleware, $webhook, $expectedResult);
+        /** @var \EonX\EasyLock\Interfaces\LockDataInterface $lockData */
         $lockData = $lockService->getLockData();
 
         switch ($shouldLock) {
             case true:
                 self::assertInstanceOf(LockDataInterface::class, $lockData);
-                /** @var \EonX\EasyLock\Interfaces\LockDataInterface $lockData */
-                self::assertEquals($expectedResource, $lockData->getResource());
+                self::assertSame($expectedResource, $lockData->getResource());
+
                 break;
             case false:
                 self::assertNull($lockService->getLockData());

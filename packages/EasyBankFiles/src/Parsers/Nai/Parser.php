@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai;
@@ -7,109 +6,48 @@ namespace EonX\EasyBankFiles\Parsers\Nai;
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsers\Nai\Results\File;
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
-use Nette\Utils\Strings;
 
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string
-     */
     private const ACCOUNT_IDENTIFIER = '03';
 
-    /**
-     * @var string
-     */
     private const ACCOUNT_TRAILER = '49';
 
-    /**
-     * @var string
-     */
     private const CONTINUATION = '88';
 
-    /**
-     * @var string
-     */
     private const FILE_HEADER = '01';
 
-    /**
-     * @var string
-     */
     private const FILE_TRAILER = '99';
 
-    /**
-     * @var string
-     */
     private const GROUP_HEADER = '02';
 
-    /**
-     * @var string
-     */
     private const GROUP_TRAILER = '98';
 
-    /**
-     * @var string
-     */
     private const TRANSACTION_DETAIL = '16';
 
-    /**
-     * @var mixed[]
-     */
-    private $accounts = [];
+    private array $accounts = [];
 
-    /**
-     * @var int|null
-     */
-    private $currentAccount;
+    private ?int $currentAccount = null;
 
-    /**
-     * @var int|null
-     */
-    private $currentGroup;
+    private ?int $currentGroup = null;
 
-    /**
-     * @var int
-     */
-    private $currentLineNumber;
+    private int $currentLineNumber;
 
-    /**
-     * @var int|null
-     */
-    private $currentTransaction;
+    private ?int $currentTransaction = null;
 
-    /**
-     * @var mixed[]
-     */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var mixed[]
-     */
-    private $file = [];
+    private array $file = [];
 
-    /**
-     * @var mixed[]
-     */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var string
-     */
-    private $previousCode;
+    private string $previousCode;
 
-    /**
-     * @var bool
-     */
-    private $previousFull = true;
+    private bool $previousFull = true;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
-     */
-    private $resultsContext;
+    private ResultsContext $resultsContext;
 
-    /**
-     * @var mixed[]
-     */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * Get accounts.
@@ -192,47 +130,53 @@ final class Parser extends AbstractLineByLineParser
             return;
         }
 
+        // Sanitize full lines
+        $currentLineIsFull = $this->checkFullLine($line);
+        $line = $this->sanitizeFullLine($line);
+
         // If continuation, update previous and skip to next line
         if ($code === self::CONTINUATION) {
             $this->continuePrevious($line);
-            // Handle continuation line with trailing slash
-            $this->checkFullLine($line);
+            $this->previousFull = $currentLineIsFull;
 
             return;
         }
 
-        // Check if line fits in only one line, remove trailing sash if one
-        $line = $this->checkFullLine($line);
-
         // Current code becomes then previous one for next continuation
         $this->previousCode = $code;
+        $this->previousFull = $currentLineIsFull;
 
         switch ($code) {
             case self::ACCOUNT_IDENTIFIER:
                 $this->currentAccount = ($this->currentAccount ?? 0) + 1;
                 $this->addAccountIdentifier($this->currentAccount, $line);
+
                 break;
             case self::ACCOUNT_TRAILER:
                 $this->addAccountTrailer($this->currentAccount ?? 0, $line);
+
                 break;
             case self::FILE_HEADER:
                 $this->file['header'] = $this->setItem($line);
+
                 break;
             case self::FILE_TRAILER:
                 $this->file['trailer'] = $this->setItem($line);
+
                 break;
             case self::GROUP_HEADER:
-                // Reset current account for new group
-                $this->currentAccount = null;
                 $this->currentGroup = \count($this->groups) + 1;
                 $this->addGroupHeader($this->currentGroup, $line);
+
                 break;
             case self::GROUP_TRAILER:
                 $this->addGroupTrailer($this->currentGroup ?? 0, $line);
+
                 break;
             case self::TRANSACTION_DETAIL:
                 $this->currentTransaction = ($this->currentTransaction ?? 0) + 1;
                 $this->addTransaction($line);
+
                 break;
         }
     }
@@ -329,23 +273,12 @@ final class Parser extends AbstractLineByLineParser
 
     /**
      * Check if this line has full contents in it. If the line ends with a /
-     * it means its a full line.
+     * it means it's a full line.
      */
-    private function checkFullLine(string $line): string
+    private function checkFullLine(string $line): bool
     {
-        $this->previousFull = false;
-
-        if (Strings::endsWith($line, '/')) {
-            // Prevent logic to add extra coma on continuation logic if already there
-            if (Strings::endsWith($line, ',/') === false) {
-                $this->previousFull = true;
-            }
-
-            // Remove trailing slash
-            $line = \substr($line, 0, -1);
-        }
-
-        return $line;
+        // Prevent logic to add extra coma on continuation logic if already there
+        return \str_ends_with($line, '/') && \str_ends_with($line, ',/') === false;
     }
 
     /**
@@ -391,6 +324,7 @@ final class Parser extends AbstractLineByLineParser
     {
         // Remove 88, from the current line
         $line = \substr($line, 3);
+
         // Add coma at the start of the line if previous record fits completely on the line
         if ($this->previousFull) {
             $line = ',' . $line;
@@ -399,24 +333,31 @@ final class Parser extends AbstractLineByLineParser
         switch ($this->previousCode) {
             case self::ACCOUNT_IDENTIFIER:
                 $this->continueAccount('identifier', $line);
+
                 break;
             case self::ACCOUNT_TRAILER:
                 $this->continueAccount('trailer', $line);
+
                 break;
             case self::FILE_HEADER:
                 $this->continueFile('header', $line);
+
                 break;
             case self::FILE_TRAILER:
                 $this->continueFile('trailer', $line);
+
                 break;
             case self::GROUP_HEADER:
                 $this->continueGroup('header', $line);
+
                 break;
             case self::GROUP_TRAILER:
                 $this->continueGroup('trailer', $line);
+
                 break;
             case self::TRANSACTION_DETAIL:
                 $this->continueTransaction($line);
+
                 break;
         }
     }
@@ -454,10 +395,18 @@ final class Parser extends AbstractLineByLineParser
         return \in_array($code, $codes, true);
     }
 
+    private function sanitizeFullLine(string $line): string
+    {
+        // Remove trailing slash
+        if (\str_ends_with($line, '/')) {
+            $line = \substr($line, 0, -1);
+        }
+
+        return $line;
+    }
+
     /**
      * Structure item content with line number.
-     *
-     * @return mixed[]
      */
     private function setItem(string $line): array
     {

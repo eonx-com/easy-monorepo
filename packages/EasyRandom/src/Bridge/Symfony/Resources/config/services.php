@@ -1,13 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\RandomIntegerGenerator;
+use EonX\EasyRandom\Generators\RandomStringGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
-use EonX\EasyRandom\UuidV4\SymfonyUidUuidV4Generator;
+use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
+use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -16,13 +17,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(SymfonyUidUuidV4Generator::class);
-
-    $services->set(RamseyUuidV4Generator::class);
-
-    $services->alias('easy_random.symfony_uuid4', SymfonyUidUuidV4Generator::class);
-
-    $services->alias('easy_random.ramsey_uuid4', RamseyUuidV4Generator::class);
-
+    $services->set(RandomIntegerGeneratorInterface::class, RandomIntegerGenerator::class);
+    $services->set(RandomStringGeneratorInterface::class, RandomStringGenerator::class);
     $services->set(RandomGeneratorInterface::class, RandomGenerator::class);
 };

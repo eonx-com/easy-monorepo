@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
@@ -13,15 +12,16 @@ use Throwable;
 final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
 {
     /**
-     * @var int[]
+     * @var array<class-string, int>
      */
-    private $exceptionLogLevels;
+    private readonly array $exceptionLogLevels;
 
     /**
-     * @param null|int[] $exceptionLogLevels
+     * @param array<class-string, int>|null $exceptionLogLevels
      */
-    public function __construct(?array $exceptionLogLevels = null)
-    {
+    public function __construct(
+        ?array $exceptionLogLevels = null,
+    ) {
         $this->exceptionLogLevels = $exceptionLogLevels ?? [HttpExceptionInterface::class => Logger::DEBUG];
     }
 

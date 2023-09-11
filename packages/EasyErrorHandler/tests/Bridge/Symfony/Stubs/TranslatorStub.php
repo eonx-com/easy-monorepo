@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
@@ -10,37 +9,29 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TranslatorStub implements TranslatorInterface
 {
-    /**
-     * @var mixed[]
-     */
-    private $translations;
+    private const LOCALE = 'en';
 
-    /**
-     * @var \Symfony\Component\Translation\Translator
-     */
-    private $translator;
+    private ?array $translations = null;
 
-    /**
-     * @param mixed[] $translations
-     */
+    private ?Translator $translator = null;
+
+    public function getLocale(): string
+    {
+        return self::LOCALE;
+    }
+
     public function setTranslations(array $translations): void
     {
         $this->translations = $translations;
     }
 
-    /**
-     * @param string $id
-     * @param null|mixed[] $parameters
-     * @param null|string $domain
-     * @param null|string $locale
-     */
-    public function trans($id, ?array $parameters = null, $domain = null, $locale = null): string
+    public function trans(string $id, ?array $parameters = null, ?string $domain = null, ?string $locale = null): string
     {
         $translated = $this->getTranslator()
             ->trans($id, $parameters ?? [], $domain, $locale);
 
         // TODO - That's cheating... Translations need to be reworked completely
-        if (empty($parameters) === false) {
+        if (\count($parameters ?? []) > 0) {
             $translated = \str_replace(':', '', $translated);
         }
 
@@ -53,13 +44,15 @@ final class TranslatorStub implements TranslatorInterface
             return $this->translator;
         }
 
-        $translator = new Translator('en');
+        $translator = new Translator(self::LOCALE);
         $translator->addLoader('array', new ArrayLoader());
 
         if ($this->translations !== null) {
-            $translator->addResource('array', $this->translations, 'en', 'EasyErrorHandlerBundle');
+            $translator->addResource('array', $this->translations, self::LOCALE, 'EasyErrorHandlerBundle');
         }
 
-        return $this->translator = $translator;
+        $this->translator = $translator;
+
+        return $this->translator;
     }
 }

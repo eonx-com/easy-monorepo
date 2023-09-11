@@ -1,11 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Builders\DefaultBuilderProvider;
+use EonX\EasyErrorHandler\Providers\DefaultErrorResponseBuilderProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -13,7 +12,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services
-        ->set(DefaultBuilderProvider::class)
-        ->arg('$keys', '%' . BridgeConstantsInterface::PARAM_RESPONSE_KEYS . '%');
+    $services->set(DefaultErrorResponseBuilderProvider::class)
+        ->arg('$keys', param(BridgeConstantsInterface::PARAM_RESPONSE_KEYS));
 };

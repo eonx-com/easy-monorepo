@@ -1,0 +1,19 @@
+{
+    "name": "eonx-com/quality-tools",
+    "description": "Necessary quality tools for the project",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "eonx-com/easy-quality": "^3.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "eonx_docs": {
+            "ignore": true
+        }
+    }
+}

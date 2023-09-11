@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\ORM\Decorators;
@@ -7,50 +6,43 @@ namespace EonX\EasyDoctrine\Tests\ORM\Decorators;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Exception;
-use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Prophecy\Argument;
 use stdClass;
+use Throwable;
 
-/**
- * @covers \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
- */
+#[CoversClass(EntityManagerDecorator::class)]
 final class EntityManagerDecoratorTest extends AbstractTestCase
 {
     /**
-     * @return mixed[]
-     *
-     * @see testTransactionalThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
+     * @see testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions
      */
-    public function provideDoctrineExceptionClasses(): array
+    public static function provideDoctrineExceptionClasses(): iterable
     {
-        return [
-            'DBAL exception' => [new DBALException()],
-            'ORM exception' => [new ORMException()],
-        ];
+        yield 'DBAL exception' => [new DBALException()];
+        yield 'ORM exception' => [new ORMException()];
     }
 
     /**
-     * @return mixed[]
-     *
-     * @see testTransactionalSucceeds
+     * @see testWrapInTransactionSucceeds
      */
-    public function provideReturnValuesData(): array
+    public static function provideReturnValuesData(): iterable
     {
-        return [
-            'callable returns not null' => [
-                'callableReturns' => 'some-value',
-                'transactionalReturns' => 'some-value',
-            ],
-            'callable returns null' => [
-                'callableReturns' => null,
-                'transactionalReturns' => null,
-            ],
+        yield 'callable returns not null' => [
+            'callableReturns' => 'some-value',
+            'transactionalReturns' => 'some-value',
+        ];
+        yield 'callable returns null' => [
+            'callableReturns' => null,
+            'transactionalReturns' => null,
         ];
     }
 
@@ -195,14 +187,10 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $callableReturns
-     * @param mixed $transactionalReturns
-     *
      * @throws \Throwable
-     *
-     * @dataProvider provideReturnValuesData
      */
-    public function testTransactionalSucceeds($callableReturns, $transactionalReturns): void
+    #[DataProvider('provideReturnValuesData')]
+    public function testWrapInTransactionSucceeds(mixed $callableReturns, mixed $transactionalReturns): void
     {
         $spyForCallable = new stdClass();
         $spyForCallable->wasCalled = false;
@@ -232,7 +220,7 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             $entityManagerReveal
         );
 
-        $result = $entityManagerDecorator->transactional($callableArgument);
+        $result = $entityManagerDecorator->wrapInTransaction($callableArgument);
 
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
@@ -255,10 +243,10 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
     /**
      * @throws \Exception
      */
-    public function testTransactionalThrowsException(): void
+    public function testWrapInTransactionThrowsException(): void
     {
         $exception = new Exception('some-exception-message');
-        $callableArgument = static function () use ($exception): void {
+        $callableArgument = static function () use ($exception): never {
             throw $exception;
         };
         $connection = $this->prophesize(Connection::class);
@@ -274,6 +262,8 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
         $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::type(TransactionalExceptionEvent::class))
+            ->willReturnArgument();
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
@@ -283,10 +273,10 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
-            $entityManagerDecorator->transactional($callableArgument);
+            $entityManagerDecorator->wrapInTransaction($callableArgument);
         });
 
-        $this->assertThrownException(\Throwable::class, 0);
+        $this->assertThrownException(Throwable::class, 0);
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
@@ -307,12 +297,12 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
      * @param \Doctrine\DBAL\Exception|\Doctrine\ORM\ORMException $doctrineException
      *
      * @throws \Exception
-     *
-     * @dataProvider provideDoctrineExceptionClasses
      */
-    public function testTransactionalThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions($doctrineException): void
-    {
-        $callableArgument = static function () use ($doctrineException): void {
+    #[DataProvider('provideDoctrineExceptionClasses')]
+    public function testWrapInTransactionThrowsExceptionAndClosesEntityManagerOnDoctrineExceptions(
+        $doctrineException,
+    ): void {
+        $callableArgument = static function () use ($doctrineException): never {
             throw $doctrineException;
         };
         $connection = $this->prophesize(Connection::class);
@@ -328,6 +318,8 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
         $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::type(TransactionalExceptionEvent::class))
+            ->willReturnArgument();
         /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new EntityManagerDecorator(
@@ -337,10 +329,10 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
         );
 
         $this->safeCall(static function () use ($entityManagerDecorator, $callableArgument): void {
-            $entityManagerDecorator->transactional($callableArgument);
+            $entityManagerDecorator->wrapInTransaction($callableArgument);
         });
 
-        $this->assertThrownException(\get_class($doctrineException), 0);
+        $this->assertThrownException($doctrineException::class, 0);
         $entityManager->beginTransaction()
             ->shouldHaveBeenCalledOnce();
         $entityManager->close()
@@ -355,34 +347,5 @@ final class EntityManagerDecoratorTest extends AbstractTestCase
             ->shouldHaveBeenCalledOnce();
         $deferredEntityEventDispatcher->clear($transactionNestingLevel)
             ->shouldHaveBeenCalledOnce();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testTransactionalThrowsExceptionWhenArgumentNotCallable(): void
-    {
-        $entityManager = $this->prophesize(EntityManagerInterface::class);
-        /** @var \Doctrine\ORM\EntityManagerInterface $entityManagerReveal */
-        $entityManagerReveal = $entityManager->reveal();
-        $deferredEntityEventDispatcher = $this->prophesize(DeferredEntityEventDispatcherInterface::class);
-        /** @var \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
-        $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
-        $eventDispatcherReveal = $eventDispatcher->reveal();
-        $entityManagerDecorator = new EntityManagerDecorator(
-            $deferredDispatcherReveal,
-            $eventDispatcherReveal,
-            $entityManagerReveal
-        );
-
-        $this->safeCall(static function () use ($entityManagerDecorator): void {
-            /** @var callable $callableFake */
-            $callableFake = 'non-callable-argument';
-            $entityManagerDecorator->transactional($callableFake);
-        });
-
-        $this->assertThrownException(InvalidArgumentException::class, 0);
     }
 }

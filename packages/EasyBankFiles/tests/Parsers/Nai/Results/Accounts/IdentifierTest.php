@@ -1,15 +1,13 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results\Accounts;
 
 use EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\Accounts\Identifier
- */
+#[CoversClass(Identifier::class)]
 final class IdentifierTest extends TestCase
 {
     /**

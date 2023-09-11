@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -13,13 +12,14 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'No event for pending' => [];
 
@@ -45,9 +45,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(?WebhookInterface $webhook = null, ?string $eventClass = null): void
     {
         $dispatcher = new EventDispatcherStub();
@@ -58,7 +56,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 
         if ($eventClass !== null) {
             self::assertCount(1, $dispatched);
-            self::assertEquals($eventClass, \get_class($dispatched[0]));
+            self::assertEquals($eventClass, $dispatched[0]::class);
 
             return;
         }

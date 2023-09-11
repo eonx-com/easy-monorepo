@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\Loaders;
@@ -15,6 +14,6 @@ final class FilesystemCoverageLoader implements CoverageLoaderInterface
             return \file_get_contents($path) ?: '';
         }
 
-        throw new UnableToLoadCoverageException(\sprintf('[%s] Given path "%s" not found', static::class, $path));
+        throw new UnableToLoadCoverageException(\sprintf('[%s] Given path "%s" not found', self::class, $path));
     }
 }

@@ -1,10 +1,7 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai\Results;
-
-use EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details;
 
 /**
  * @method string getAmount()
@@ -13,7 +10,7 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details;
  * @method string getReferenceNumber()
  * @method string getText()
  * @method string getTransactionCode()
- * @method Details getTransactionDetails()
+ * @method \EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details getTransactionDetails()
  */
 final class Transaction extends AbstractNaiResult
 {

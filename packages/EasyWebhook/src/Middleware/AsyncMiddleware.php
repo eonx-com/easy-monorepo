@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -14,29 +13,14 @@ use EonX\EasyWebhook\ShouldNotBeStoredWebhookResult;
 
 final class AsyncMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\AsyncDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var bool
-     */
-    private $enabled;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
-     */
-    private $store;
+    private bool $enabled;
 
     public function __construct(
-        AsyncDispatcherInterface $dispatcher,
-        StoreInterface $store,
+        private AsyncDispatcherInterface $dispatcher,
+        private StoreInterface $store,
         ?bool $enabled = null,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->store = $store;
         $this->enabled = $enabled ?? true;
 
         parent::__construct($priority);

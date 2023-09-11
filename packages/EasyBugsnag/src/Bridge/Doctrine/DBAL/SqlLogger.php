@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\Doctrine\DBAL;
@@ -11,56 +10,20 @@ use Doctrine\DBAL\Logging\SQLLogger as BaseSqlLoggerInterface;
 
 final class SqlLogger implements BaseSqlLoggerInterface
 {
-    /**
-     * @var \Bugsnag\Client
-     */
-    private $client;
+    private ?array $params = null;
 
-    /**
-     * @var \Doctrine\DBAL\Driver\Connection
-     */
-    private $conn;
+    private ?string $sql = null;
 
-    /**
-     * @var null|string
-     */
-    private $connName;
+    private ?float $start = null;
 
-    /**
-     * @var null|\Doctrine\DBAL\Logging\SQLLogger
-     */
-    private $decorated;
-
-    /**
-     * @var null|mixed[]
-     */
-    private $params;
-
-    /**
-     * @var null|string
-     */
-    private $sql;
-
-    /**
-     * @var null|float
-     */
-    private $start;
-
-    /**
-     * @var null|mixed[]
-     */
-    private $types;
+    private ?array $types = null;
 
     public function __construct(
-        Client $client,
-        Connection $conn,
-        ?string $connName = null,
-        ?BaseSqlLoggerInterface $decorated = null
+        private Client $client,
+        private Connection $conn,
+        private ?string $connName = null,
+        private ?BaseSqlLoggerInterface $decorated = null,
     ) {
-        $this->client = $client;
-        $this->conn = $conn;
-        $this->connName = $connName;
-        $this->decorated = $decorated;
     }
 
     public function getDecorated(): ?BaseSqlLoggerInterface
@@ -70,7 +33,7 @@ final class SqlLogger implements BaseSqlLoggerInterface
 
     /**
      * @param string $sql
-     * @param mixed[]|null $params The SQL parameters.
+     * @param array|null $params The SQL parameters.
      * @param int[]|string[]|null $types The SQL parameter types.
      */
     public function startQuery($sql, ?array $params = null, ?array $types = null): void
@@ -94,10 +57,10 @@ final class SqlLogger implements BaseSqlLoggerInterface
         }
 
         $metadata = [
-            'SQL' => $this->sql,
             'Params' => \json_encode($this->params),
-            'Types' => \json_encode($this->types),
+            'SQL' => $this->sql,
             'Time (ms)' => \number_format((\microtime(true) - $this->start) * 1000, 2),
+            'Types' => \json_encode($this->types),
         ];
 
         if (\method_exists($this->conn, 'getDatabase')) {

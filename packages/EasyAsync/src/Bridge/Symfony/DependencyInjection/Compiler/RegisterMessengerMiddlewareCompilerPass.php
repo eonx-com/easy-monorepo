@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyAsync\Bridge\BridgeConstantsInterface;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\DoctrineManagersClearMiddleware;
+use EonX\EasyAsync\Bridge\Symfony\Messenger\DoctrineManagersCloseConnectionMiddleware;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\DoctrineManagersSanityCheckMiddleware;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -17,6 +17,7 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
     private const EASY_ASYNC_MIDDLEWARE_LIST = [
         DoctrineManagersSanityCheckMiddleware::class,
         DoctrineManagersClearMiddleware::class,
+        DoctrineManagersCloseConnectionMiddleware::class,
     ];
 
     private const MESSENGER_BUS_TAG = 'messenger.bus';
@@ -40,9 +41,10 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
         }
 
         // Convert easy async middleware classes to reference
-        $easyAsyncMiddlewareList = \array_map(static function (string $class): Reference {
-            return new Reference($class);
-        }, $enabledMiddlewareList);
+        $easyAsyncMiddlewareList = \array_map(
+            static fn (string $class): Reference => new Reference($class),
+            $enabledMiddlewareList
+        );
 
         foreach (\array_keys($container->findTaggedServiceIds(self::MESSENGER_BUS_TAG)) as $busId) {
             $busDef = $container->getDefinition($busId);
@@ -53,14 +55,16 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
             }
 
             // Remove easy async middleware if added in the app config
-            $existingMiddlewareList = \array_filter($middleware->getValues(), static function (Reference $ref): bool {
-                return \in_array((string)$ref, self::EASY_ASYNC_MIDDLEWARE_LIST, true) === false;
-            });
+            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
+            $existingMiddlewareList = \array_filter(
+                $middleware->getValues(),
+                static fn (
+                    Reference $ref,
+                ): bool => \in_array((string)$ref, self::EASY_ASYNC_MIDDLEWARE_LIST, true) === false
+            );
 
             // Add reference to easy async middleware at the start of existing list
             \array_unshift($existingMiddlewareList, ...$easyAsyncMiddlewareList);
-
-            /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
 
             // Replace middleware list in bus argument
             $middleware->setValues($existingMiddlewareList);

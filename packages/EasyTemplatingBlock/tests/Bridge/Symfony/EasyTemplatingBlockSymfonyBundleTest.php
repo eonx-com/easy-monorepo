@@ -1,17 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Tests\Bridge\Symfony;
 
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testRenderEvent
      */
-    public function providerTestRenderEvent(): iterable
+    public static function providerTestRenderEvent(): iterable
     {
         yield 'No block provider for event' => [
             [
@@ -44,12 +44,9 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param mixed[] $events
-     * @param null|mixed[] $context
-     * @param null|string[] $configs
-     *
-     * @dataProvider providerTestRenderEvent
+     * @param string[]|null $configs
      */
+    #[DataProvider('providerTestRenderEvent')]
     public function testRenderEvent(array $events, ?array $context, ?array $configs = null): void
     {
         $kernel = $this->getKernel($configs);

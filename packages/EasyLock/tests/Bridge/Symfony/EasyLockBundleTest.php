@@ -1,18 +1,18 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Bridge\Symfony;
 
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testSanity
      */
-    public function providerTestSanity(): iterable
+    public static function providerTestSanity(): iterable
     {
         yield 'default config, no connection' => [null];
 
@@ -20,10 +20,9 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @param null|string[] $configs
-     *
-     * @dataProvider providerTestSanity
+     * @param string[]|null $configs
      */
+    #[DataProvider('providerTestSanity')]
     public function testSanity(?array $configs = null): void
     {
         $container = $this->getKernel($configs)

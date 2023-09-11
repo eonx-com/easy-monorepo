@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
@@ -24,6 +23,6 @@ abstract class AbstractFromHashedApiKeyConfigurator extends AbstractSecurityCont
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        HashedApiKeyInterface $apiKey
+        HashedApiKeyInterface $apiKey,
     ): void;
 }

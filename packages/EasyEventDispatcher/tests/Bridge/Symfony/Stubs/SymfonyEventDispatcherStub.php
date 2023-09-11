@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs;
@@ -11,7 +10,7 @@ final class SymfonyEventDispatcherStub implements EventDispatcherInterface
     /**
      * @var object[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
     /**
      * @param object $event The event to pass to the event handlers/listeners

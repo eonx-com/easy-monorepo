@@ -1,26 +1,16 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Interfaces;
 
 interface ContextInterface
 {
-    /**
-     * @param mixed $output
-     */
-    public function addRuleOutput(string $rule, $output): self;
+    public function addRuleOutput(string $rule, mixed $output): self;
 
     public function getDecisionType(): string;
 
-    /**
-     * @return mixed[]
-     */
     public function getOriginalInput(): array;
 
-    /**
-     * @return mixed[]
-     */
     public function getRuleOutputs(): array;
 
     public function isPropagationStopped(): bool;

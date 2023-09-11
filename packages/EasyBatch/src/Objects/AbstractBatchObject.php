@@ -1,57 +1,52 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Objects;
 
+use DateTimeInterface;
 use EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use Throwable;
 
 abstract class AbstractBatchObject implements BatchObjectInterface
 {
     private bool $approvalRequired = false;
 
-    private ?\DateTimeInterface $cancelledAt = null;
+    private ?DateTimeInterface $cancelledAt = null;
 
-    private ?\DateTimeInterface $createdAt = null;
+    private ?DateTimeInterface $createdAt = null;
 
-    private ?\DateTimeInterface $finishedAt = null;
+    private ?DateTimeInterface $finishedAt = null;
 
     private int|string|null $id = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $metadata = null;
 
     private ?string $name = null;
 
-    private ?\DateTimeInterface $startedAt = null;
+    private ?DateTimeInterface $startedAt = null;
 
     private string $status = self::STATUS_PENDING;
 
-    private ?\Throwable $throwable = null;
+    private ?Throwable $throwable = null;
 
-    /**
-     * @var mixed[]|null
-     */
     private ?array $throwableDetails = null;
 
     private ?string $type = null;
 
-    private ?\DateTimeInterface $updatedAt = null;
+    private ?DateTimeInterface $updatedAt = null;
 
-    public function getCancelledAt(): ?\DateTimeInterface
+    public function getCancelledAt(): ?DateTimeInterface
     {
         return $this->cancelledAt;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function getFinishedAt(): ?\DateTimeInterface
+    public function getFinishedAt(): ?DateTimeInterface
     {
         return $this->finishedAt;
     }
@@ -73,9 +68,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         throw new BatchObjectIdRequiredException(\sprintf('ID not set on batchObject "%s"', static::class));
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getMetadata(): ?array
     {
         return $this->metadata;
@@ -86,7 +78,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->name;
     }
 
-    public function getStartedAt(): ?\DateTimeInterface
+    public function getStartedAt(): ?DateTimeInterface
     {
         return $this->startedAt;
     }
@@ -96,14 +88,11 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->status;
     }
 
-    public function getThrowable(): ?\Throwable
+    public function getThrowable(): ?Throwable
     {
         return $this->throwable;
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getThrowableDetails(): ?array
     {
         return $this->throwableDetails;
@@ -114,7 +103,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->type;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -160,21 +149,21 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setCancelledAt(\DateTimeInterface $cancelledAt): BatchObjectInterface
+    public function setCancelledAt(DateTimeInterface $cancelledAt): BatchObjectInterface
     {
         $this->cancelledAt = $cancelledAt;
 
         return $this;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): BatchObjectInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): BatchObjectInterface
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function setFinishedAt(\DateTimeInterface $finishedAt): BatchObjectInterface
+    public function setFinishedAt(DateTimeInterface $finishedAt): BatchObjectInterface
     {
         $this->finishedAt = $finishedAt;
 
@@ -188,9 +177,6 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    /**
-     * @param mixed[] $metadata
-     */
     public function setMetadata(array $metadata): BatchObjectInterface
     {
         $this->metadata = $metadata;
@@ -205,7 +191,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setStartedAt(\DateTimeInterface $startedAt): BatchObjectInterface
+    public function setStartedAt(DateTimeInterface $startedAt): BatchObjectInterface
     {
         $this->startedAt = $startedAt;
 
@@ -219,16 +205,13 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setThrowable(\Throwable $throwable): BatchObjectInterface
+    public function setThrowable(Throwable $throwable): BatchObjectInterface
     {
         $this->throwable = $throwable;
 
         return $this;
     }
 
-    /**
-     * @param mixed[] $throwableDetails
-     */
     public function setThrowableDetails(array $throwableDetails): BatchObjectInterface
     {
         $this->throwableDetails = $throwableDetails;
@@ -243,26 +226,23 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): BatchObjectInterface
+    public function setUpdatedAt(DateTimeInterface $updatedAt): BatchObjectInterface
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return [
-            'class' => static::class,
             'cancelled_at' => $this->getCancelledAt(),
+            'class' => static::class,
             'created_at' => $this->getCreatedAt(),
+            'finished_at' => $this->getFinishedAt(),
             'id' => $this->getId(),
             'metadata' => $this->getMetadata(),
             'name' => $this->getName(),
-            'finished_at' => $this->getFinishedAt(),
             'requires_approval' => $this->isApprovalRequired() ? 1 : 0,
             'started_at' => $this->getStartedAt(),
             'status' => $this->getStatus(),

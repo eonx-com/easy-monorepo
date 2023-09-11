@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Bridge\EasyErrorHandler;
@@ -10,8 +9,9 @@ use Illuminate\Queue\Events\WorkerStopping;
 
 final class WorkerStoppingListener
 {
-    public function __construct(private readonly ErrorHandlerInterface $errorHandler)
-    {
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler,
+    ) {
     }
 
     public function handle(WorkerStopping $event): void

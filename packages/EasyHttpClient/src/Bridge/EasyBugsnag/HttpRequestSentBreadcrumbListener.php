@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Bridge\EasyBugsnag;
@@ -17,7 +16,7 @@ final class HttpRequestSentBreadcrumbListener
 
     public const DEFAULT_TIMING_MESSAGE = 'No timing available';
 
-    // The metadata attributes priority list (low to high).
+    // The metadata attributes priority list (low to high)
     private const METADATA_ATTRIBUTES_PRIORITY_LIST = [
         self::METADATA_ATTRIBUTE_RESPONSE_HEADERS,
         self::METADATA_ATTRIBUTE_REQUEST_OPTIONS,
@@ -45,8 +44,9 @@ final class HttpRequestSentBreadcrumbListener
 
     private const METADATA_ATTRIBUTE_TIMING = 'Timing';
 
-    public function __construct(private Client $client)
-    {
+    public function __construct(
+        private Client $client,
+    ) {
         // The body is not required
     }
 
@@ -86,9 +86,6 @@ final class HttpRequestSentBreadcrumbListener
         );
     }
 
-    /**
-     * @param array<string, mixed> $metadata
-     */
     private function calculateBreadcrumbSize(array $metadata): int
     {
         $breadcrumb = new Breadcrumb(self::BREADCRUMB_NAME, Breadcrumb::REQUEST_TYPE, $metadata);
@@ -124,11 +121,6 @@ final class HttpRequestSentBreadcrumbListener
         );
     }
 
-    /**
-     * @param array<string, mixed> $metadata
-     *
-     * @return array<string, mixed>
-     */
     private function prepareMetadata(array $metadata): array
     {
         $metadataAttributes = self::METADATA_ATTRIBUTES_PRIORITY_LIST;

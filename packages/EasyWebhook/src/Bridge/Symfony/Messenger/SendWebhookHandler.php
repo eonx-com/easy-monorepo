@@ -1,29 +1,20 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
 
+use EonX\EasyWebhook\Bridge\Symfony\Exceptions\UnrecoverableWebhookMessageException;
+use EonX\EasyWebhook\Exceptions\CannotRerunWebhookException;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class SendWebhookHandler implements MessageHandlerInterface
 {
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\WebhookClientInterface
-     */
-    private $client;
-
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
-     */
-    private $store;
-
-    public function __construct(WebhookClientInterface $client, StoreInterface $store)
-    {
-        $this->client = $client;
-        $this->store = $store;
+    public function __construct(
+        private readonly WebhookClientInterface $client,
+        private readonly StoreInterface $store,
+    ) {
     }
 
     public function __invoke(SendWebhookMessage $message): void
@@ -35,6 +26,10 @@ final class SendWebhookHandler implements MessageHandlerInterface
         }
 
         // Once here, webhooks are already configured and should be sent synchronously
-        $message->setResult($this->client->sendWebhook($webhook->sendNow(true)));
+        try {
+            $message->setResult($this->client->sendWebhook($webhook->sendNow(true)));
+        } catch (CannotRerunWebhookException $e) {
+            throw new UnrecoverableWebhookMessageException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Listener;
@@ -9,14 +8,9 @@ use Symfony\Component\Console\Event\ConsoleErrorEvent;
 
 final class ConsoleErrorEventListener
 {
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-     */
-    private $errorHandler;
-
-    public function __construct(ErrorHandlerInterface $errorHandler)
-    {
-        $this->errorHandler = $errorHandler;
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler,
+    ) {
     }
 
     public function __invoke(ConsoleErrorEvent $event): void

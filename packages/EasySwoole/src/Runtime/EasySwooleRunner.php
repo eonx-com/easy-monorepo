@@ -1,13 +1,13 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Runtime;
 
+use EonX\EasySwoole\Helpers\CacheTableHelper;
 use EonX\EasySwoole\Helpers\HttpFoundationHelper;
+use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\OutputHelper;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
-use Swoole\Constant;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
@@ -21,38 +21,8 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
-    private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
-
-    private const DEFAULT_OPTIONS = [
-        'callbacks' => [],
-        'host' => '0.0.0.0',
-        'hot_reload_dirs' => [
-            self::DEFAULT_PUBLIC_DIR . 'config',
-            self::DEFAULT_PUBLIC_DIR . 'public',
-            self::DEFAULT_PUBLIC_DIR . 'src',
-            self::DEFAULT_PUBLIC_DIR . 'translations',
-            self::DEFAULT_PUBLIC_DIR . 'vendor',
-        ],
-        'hot_reload_enabled' => false,
-        'hot_reload_extensions' => [
-            '.php',
-            '.yaml',
-            '.xml',
-        ],
-        'mode' => \SWOOLE_BASE,
-        'port' => 8080,
-        'response_chunk_size' => 1048576,
-        'settings' => [],
-        'sock_type' => \SWOOLE_SOCK_TCP,
-        'use_default_callbacks' => true,
-    ];
-
-    /**
-     * @param mixed[] $options
-     */
     public function __construct(
         private readonly HttpKernelInterface $app,
-        private readonly array $options
     ) {
     }
 
@@ -60,10 +30,15 @@ final class EasySwooleRunner implements RunnerInterface
     {
         $app = $this->app;
         $server = $this->createSwooleHttpServer();
-        $responseChunkSize = (int)$this->getOption('response_chunk_size', 'SWOOLE_RESPONSE_CHUNK_SIZE');
+        $responseChunkSize = OptionHelper::getInteger('response_chunk_size');
+
+        CacheTableHelper::createCacheTables(
+            OptionHelper::getArray('cache_tables'),
+            OptionHelper::getInteger('cache_clear_after_tick_count'),
+        );
 
         $server->on(
-            Constant::EVENT_REQUEST,
+            'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
@@ -89,6 +64,8 @@ final class EasySwooleRunner implements RunnerInterface
                 if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
                     $server->stop($server->getWorkerId(), true);
                 }
+
+                CacheTableHelper::tick();
             }
         );
 
@@ -99,62 +76,40 @@ final class EasySwooleRunner implements RunnerInterface
 
     private function createSwooleHttpServer(): Server
     {
-        $server = new Server(
-            $this->getOption('host', 'SWOOLE_HOST'),
-            (int)$this->getOption('port', 'SWOOLE_PORT'),
-            (int)$this->getOption('mode', 'SWOOLE_MODE'),
-            (int)$this->getOption('sock_type', 'SWOOLE_SOCK_TYPE')
-        );
+        $host = OptionHelper::getString('host');
+        $port = OptionHelper::getInteger('port');
+        $mode = OptionHelper::getInteger('mode');
+        $sockType = OptionHelper::getInteger('sock_type');
+        $settings = OptionHelper::getArray('settings');
 
-        $server->set($this->getOption('settings', 'SWOOLE_SETTINGS'));
+        OutputHelper::writeln(\sprintf('Starting server with following config: %s', \print_r([
+            'host' => $host,
+            'mode' => $mode,
+            'port' => $port,
+            'settings' => $settings,
+            'sock_type' => $sockType,
+        ], true)));
 
-        if ($this->getOption('use_default_callbacks', 'SWOOLE_USE_DEFAULT_CALLBACKS')) {
+        $server = new Server($host, $port, $mode, $sockType);
+        $server->set($settings);
+
+        if (OptionHelper::getBoolean('use_default_callbacks')) {
             $this->registerDefaultCallbacks($server);
         }
 
-        foreach ($this->getOption('callbacks', 'SWOOLE_CALLBACKS') as $event => $fn) {
+        foreach (OptionHelper::getArray('callbacks') as $event => $fn) {
             $server->on($event, $fn);
         }
 
-        if ($this->getOptionAsBoolean('hot_reload_enabled', 'SWOOLE_HOT_RELOAD_ENABLED')) {
+        if (OptionHelper::getBoolean('hot_reload_enabled')) {
             $this->hotReload(
                 $server,
-                $this->getOptionAsArray('hot_reload_dirs', 'SWOOLE_HOT_RELOAD_DIRS'),
-                $this->getOptionAsArray('hot_reload_extensions', 'SWOOLE_HOT_RELOAD_EXTENSIONS')
+                OptionHelper::getArray('hot_reload_dirs'),
+                OptionHelper::getArray('hot_reload_extensions')
             );
         }
 
         return $server;
-    }
-
-    private function getOption(string $option, string $env): mixed
-    {
-        return $this->options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? self::DEFAULT_OPTIONS[$option];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    private function getOptionAsArray(string $option, string $env): array
-    {
-        $value = $this->getOption($option, $env);
-
-        if (\is_string($value)) {
-            return \explode(',', $value);
-        }
-
-        return \array_filter(\is_array($value) ? $value : [$value]);
-    }
-
-    private function getOptionAsBoolean(string $option, string $env): bool
-    {
-        $value = $this->getOption($option, $env);
-
-        if (\is_string($value)) {
-            return \in_array($value, ['false', '0'], true) === false;
-        }
-
-        return (bool)$value;
     }
 
     /**
@@ -224,14 +179,14 @@ final class EasySwooleRunner implements RunnerInterface
     private function registerDefaultCallbacks(Server $server): void
     {
         $server->on(
-            Constant::EVENT_WORKER_START,
+            'workerStart',
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
             }
         );
 
         $server->on(
-            Constant::EVENT_WORKER_STOP,
+            'workerStop',
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
             }

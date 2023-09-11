@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Bridge\Laravel\Providers;
@@ -48,9 +47,9 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         if ($this->app instanceof LumenApplication) {
             $this->app->singleton(
                 PaginationFromRequestMiddleware::class,
-                static function (Container $app): PaginationFromRequestMiddleware {
-                    return new PaginationFromRequestMiddleware($app->make(PaginationProviderInterface::class));
-                }
+                static fn (Container $app): PaginationFromRequestMiddleware => new PaginationFromRequestMiddleware(
+                    $app->make(PaginationProviderInterface::class)
+                )
             );
             $this->app->middleware([PaginationFromRequestMiddleware::class]);
 
@@ -60,9 +59,9 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         // Laravel
         $this->app->singleton(
             FromRequestPaginationListener::class,
-            static function (Container $app): FromRequestPaginationListener {
-                return new FromRequestPaginationListener($app->make(PaginationProviderInterface::class));
-            }
+            static fn (Container $app): FromRequestPaginationListener => new FromRequestPaginationListener(
+                $app->make(PaginationProviderInterface::class)
+            )
         );
         $this->app->make('events')
             ->listen(RouteMatched::class, FromRequestPaginationListener::class);
@@ -84,8 +83,10 @@ final class EasyPaginationServiceProvider extends ServiceProvider
             }
         );
 
-        $this->app->singleton(PaginationInterface::class, static function (Container $app): PaginationInterface {
-            return $app->make(PaginationProviderInterface::class)->getPagination();
-        });
+        $this->app->singleton(
+            PaginationInterface::class,
+            static fn (Container $app): PaginationInterface => $app->make(PaginationProviderInterface::class)
+                ->getPagination()
+        );
     }
 }

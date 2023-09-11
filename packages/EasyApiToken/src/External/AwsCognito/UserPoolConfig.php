@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External\AwsCognito;
@@ -8,26 +7,11 @@ use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
 
 final class UserPoolConfig implements UserPoolConfigInterface
 {
-    /**
-     * @var string
-     */
-    private $appClientId;
-
-    /**
-     * @var string
-     */
-    private $region;
-
-    /**
-     * @var string
-     */
-    private $userPoolId;
-
-    public function __construct(string $appClientId, string $region, string $userPoolId)
-    {
-        $this->appClientId = $appClientId;
-        $this->region = $region;
-        $this->userPoolId = $userPoolId;
+    public function __construct(
+        private string $appClientId,
+        private string $region,
+        private string $userPoolId,
+    ) {
     }
 
     public function getAppClientId(): string

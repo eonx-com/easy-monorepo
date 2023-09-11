@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Messages;
@@ -9,22 +8,11 @@ use Nette\Utils\Json;
 
 abstract class AbstractMessage implements MessageInterface
 {
-    /**
-     * @var null|mixed[]
-     */
-    private $body;
-
-    /**
-     * @param null|string[] $body
-     */
-    public function __construct(?array $body = null)
-    {
-        $this->body = $body;
+    public function __construct(
+        private ?array $body = null,
+    ) {
     }
 
-    /**
-     * @param mixed[] $body
-     */
     public function body(array $body): self
     {
         $this->body = $body;
@@ -37,9 +25,6 @@ abstract class AbstractMessage implements MessageInterface
         return Json::encode($this->body);
     }
 
-    /**
-     * @param mixed[] $body
-     */
     public function mergeBody(array $body): self
     {
         $this->body = \array_merge($this->body ?? [], $body);

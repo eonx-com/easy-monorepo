@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Laravel\Jobs;
@@ -16,26 +15,19 @@ final class SendWebhookJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    /**
-     * @var int
-     */
-    public $tries;
+    public int $tries;
 
-    /**
-     * @var string
-     */
-    private $webhookId;
-
-    public function __construct(string $webhookId, ?int $tries = null)
-    {
-        $this->webhookId = $webhookId;
+    public function __construct(
+        private string $webhookId,
+        ?int $tries = null,
+    ) {
         $this->tries = $tries ?? 1;
     }
 
     public function handle(
         WebhookClientInterface $client,
         WebhookRetryStrategyInterface $retryStrategy,
-        StoreInterface $store
+        StoreInterface $store,
     ): void {
         $webhook = $store->find($this->webhookId);
 

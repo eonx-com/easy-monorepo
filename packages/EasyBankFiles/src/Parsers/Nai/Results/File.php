@@ -1,15 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai\Results;
 
-use EonX\EasyBankFiles\Parsers\Nai\Results\Files\Header;
-use EonX\EasyBankFiles\Parsers\Nai\Results\Files\Trailer;
-
 /**
- * @method Header getHeader()
- * @method Trailer getTrailer()
+ * @method \EonX\EasyBankFiles\Parsers\Nai\Results\Files\Header getHeader()
+ * @method \EonX\EasyBankFiles\Parsers\Nai\Results\Files\Trailer getTrailer()
  */
 final class File extends AbstractNaiResult
 {

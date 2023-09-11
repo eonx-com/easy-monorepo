@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Stubs;
@@ -8,9 +7,9 @@ use EonX\EasyDecision\Decisions\AbstractDecision;
 
 final class DecisionStub extends AbstractDecision
 {
-    protected function doHandleRuleOutput($output): void
+    protected function doHandleRuleOutput(mixed $output): void
     {
-        // No body needed.
+        // No body needed
     }
 
     protected function doMake(): bool
@@ -25,6 +24,6 @@ final class DecisionStub extends AbstractDecision
 
     protected function reset(): void
     {
-        // No body needed.
+        // No body needed
     }
 }

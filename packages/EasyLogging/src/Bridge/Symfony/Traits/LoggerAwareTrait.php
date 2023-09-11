@@ -1,21 +1,16 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bridge\Symfony\Traits;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait LoggerAwareTrait
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;

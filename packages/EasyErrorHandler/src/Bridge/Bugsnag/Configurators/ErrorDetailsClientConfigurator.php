@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators;
@@ -9,12 +8,13 @@ use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
+use Throwable;
 
 final class ErrorDetailsClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }
@@ -26,7 +26,7 @@ final class ErrorDetailsClientConfigurator extends AbstractClientConfigurator
             ->pipe(new CallbackBridge(function (Report $report): void {
                 $throwable = $report->getOriginalError();
 
-                if ($throwable instanceof \Throwable === false) {
+                if ($throwable instanceof Throwable === false) {
                     return;
                 }
 

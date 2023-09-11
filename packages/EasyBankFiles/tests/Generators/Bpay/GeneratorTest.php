@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Generators\Bpay;
@@ -7,7 +6,10 @@ namespace EonX\EasyBankFiles\Tests\Generators\Bpay;
 use EonX\EasyBankFiles\Generators\Bpay\Generator;
 use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 use EonX\EasyBankFiles\Generators\Interfaces\GeneratorInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
+#[CoversClass(Generator::class)]
 final class GeneratorTest extends TestCase
 {
     /**
@@ -25,15 +27,14 @@ final class GeneratorTest extends TestCase
     /**
      * Generated data should be present in the content.
      *
-     * @group Generator-Bpay
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Bpay')]
     public function testGeneratedDataShouldBeInTheContent(): void
     {
         $header = $this->createHeader();
 
-        // create a transaction and set it's values
+        // Create a transaction and set it's values
         $trans1 = $this->createTransaction();
         $trans1
             ->setAttribute('billerCode', '11133')

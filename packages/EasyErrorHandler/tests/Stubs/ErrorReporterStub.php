@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Stubs;
@@ -12,16 +11,11 @@ final class ErrorReporterStub implements ErrorReporterInterface
     /**
      * @var \Throwable[]
      */
-    private $reported = [];
+    private array $reported = [];
 
     public function getPriority(): int
     {
         return 0;
-    }
-
-    public function report(Throwable $throwable): void
-    {
-        $this->reported[] = $throwable;
     }
 
     /**
@@ -30,5 +24,10 @@ final class ErrorReporterStub implements ErrorReporterInterface
     public function getReportedErrors(): array
     {
         return $this->reported;
+    }
+
+    public function report(Throwable $throwable): void
+    {
+        $this->reported[] = $throwable;
     }
 }

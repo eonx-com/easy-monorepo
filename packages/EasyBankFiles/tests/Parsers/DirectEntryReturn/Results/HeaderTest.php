@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryReturn\Results;
@@ -7,18 +6,16 @@ namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryReturn\Results;
 use DateTime;
 use EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header
- */
+#[CoversClass(Header::class)]
 final class HeaderTest extends TestCase
 {
     /**
-     * @return mixed[]
-     *
      * @see testGetDateProcessedShouldReturnNull
      */
-    public function provideInvalidDateProcessedValues(): iterable
+    public static function provideInvalidDateProcessedValues(): iterable
     {
         yield 'null dateProcessed' => [
             'dateProcessed' => [
@@ -48,11 +45,8 @@ final class HeaderTest extends TestCase
 
     /**
      * Should return processing date as a null when date string is invalid.
-     *
-     * @param mixed[] $dateProcessed
-     *
-     * @dataProvider provideInvalidDateProcessedValues
      */
+    #[DataProvider('provideInvalidDateProcessedValues')]
     public function testGetDateProcessedShouldReturnNull(array $dateProcessed): void
     {
         $header = new Header($dateProcessed);

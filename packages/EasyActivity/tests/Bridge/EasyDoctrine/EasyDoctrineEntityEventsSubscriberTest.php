@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\EasyDoctrine;
@@ -14,15 +13,14 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPropertyFilters
      */
-    public function provideProperties(): iterable
+    public static function provideProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowedProperties' => null,
@@ -42,13 +40,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'globalDisallowedProperties' => null,
             'allowedProperties' => [],
             'disallowedProperties' => ['createdAt'],
-            'expectedDataProperties' => ['title', 'author', 'content'],
+            'expectedDataProperties' => ['title', 'author', 'id', 'content'],
         ];
 
         yield 'all properties are disallowed' => [
             'globalDisallowedProperties' => null,
             'allowedProperties' => [],
-            'disallowedProperties' => ['title', 'createdAt', 'author', 'content'],
+            'disallowedProperties' => ['title', 'createdAt', 'author', 'content', 'id'],
             'expectedDataProperties' => null,
         ];
 
@@ -63,7 +61,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'globalDisallowedProperties' => ['createdAt'],
             'allowedProperties' => [],
             'disallowedProperties' => ['title', 'author'],
-            'expectedDataProperties' => ['content'],
+            'expectedDataProperties' => ['content', 'id'],
         ];
     }
 
@@ -107,6 +105,8 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $article->setAuthor($author);
         $entityManager->persist($article);
         $entityManager->flush();
+        $articleId = $article->getId();
+        $authorId = $author->getId();
 
         $entityManager->remove($article);
         $entityManager->flush();
@@ -119,17 +119,18 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_DELETE,
             'subject_type' => 'article',
-            'subject_id' => '1',
+            'subject_id' => $articleId,
             'subject_data' => null,
             'subject_old_data' => \json_encode([
                 'content' => 'Content',
                 'createdAt' => '2021-10-10T10:00:00+00:00',
+                'id' => $articleId,
                 'title' => 'Title 1',
                 'author' => [
-                    'id' => 1,
+                    'id' => $authorId,
                 ],
                 'comments' => [],
-                'id' => 1,
+
             ]),
             'created_at' => '2021-10-10 10:00:00.001001',
             'updated_at' => '2021-10-10 10:00:00.001001',
@@ -169,7 +170,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_CREATE,
             'subject_type' => 'article',
-            'subject_id' => '1',
+            'subject_id' => $article->getId(),
             'subject_data' => \json_encode([
                 'content' => 'Content',
                 'title' => 'Title 1',
@@ -184,7 +185,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
             'actor_name' => null,
             'action' => ActivityLogEntry::ACTION_UPDATE,
             'subject_type' => 'article',
-            'subject_id' => '1',
+            'subject_id' => $article->getId(),
             'subject_data' => \json_encode([
                 'title' => 'Title 2',
             ]),
@@ -217,17 +218,81 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $article = new Article();
         $article->setTitle('Test collections');
         $article->setContent('Content');
-        $article->addComment((new Comment())->setMessage('comment 1'));
-        $article->addComment((new Comment())->setMessage('comment 2'));
+        $commentA = (new Comment())->setMessage('comment 1');
+        $commentB = (new Comment())->setMessage('comment 2');
+        $commentC = (new Comment())->setMessage('comment 3');
+        $commentD = (new Comment())->setMessage('comment 4');
+        $article->addComment($commentA);
+        $article->addComment($commentB);
+        $article->addComment($commentC);
+        $article->addComment($commentD);
 
         $entityManager->persist($article);
         $entityManager->flush();
+        $article->getComments()
+            ->removeElement($commentC);
+        $entityManager->flush();
+        $commentDId = $commentD->getId();
+        $entityManager->remove($commentD);
+        $entityManager->flush();
+        $commentA->setMessage('comment 1 updated');
+        $entityManager->flush();
+        $commentE = (new Comment())->setMessage('comment 5');
+        $article->addComment($commentE);
+        $entityManager->flush();
 
         $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(1, $logEntries);
+        self::assertCount(4, $logEntries);
+        // Create an article
+        self::assertSame('create', $logEntries[0]['action']);
         self::assertSame(
-            ['title' => 'Test collections'],
-            \json_decode($logEntries[0]['subject_data'], true)
+            [
+                'title' => 'Test collections',
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
+            ],
+            \json_decode((string)$logEntries[0]['subject_data'], true)
+        );
+        // Remove the comment C from collection
+        self::assertSame('update', $logEntries[1]['action']);
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
+            ],
+            \json_decode((string)$logEntries[1]['subject_data'], true)
+        );
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
+            ],
+            \json_decode((string)$logEntries[1]['subject_old_data'], true)
+        );
+        // Remove the comment D entity
+        self::assertSame('update', $logEntries[2]['action']);
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId()],
+            ],
+            \json_decode((string)$logEntries[2]['subject_data'], true)
+        );
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
+            ],
+            \json_decode((string)$logEntries[2]['subject_old_data'], true)
+        );
+        // Add a new comment E to the collection
+        self::assertSame('update', $logEntries[3]['action']);
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentE->getId()],
+            ],
+            \json_decode((string)$logEntries[3]['subject_data'], true)
+        );
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId()],
+            ],
+            \json_decode((string)$logEntries[3]['subject_old_data'], true)
         );
     }
 
@@ -293,17 +358,18 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(2, $logEntries);
         self::assertSame(
             [
+                'id' => $author->getId(),
                 'name' => 'John',
                 'position' => 1,
             ],
-            \json_decode($logEntries[0]['subject_data'], true)
+            \json_decode((string)$logEntries[0]['subject_data'], true)
         );
         self::assertSame(
             [
                 'title' => 'Resolver',
-                'author' => ['id' => 1],
+                'author' => ['id' => $author->getId()],
             ],
-            \json_decode($logEntries[1]['subject_data'], true)
+            \json_decode((string)$logEntries[1]['subject_data'], true)
         );
     }
 
@@ -312,14 +378,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      * @param string[] $allowedProperties
      * @param string[] $disallowedProperties
      * @param string[] $expectedDataProperties
-     *
-     * @dataProvider provideProperties
      */
+    #[DataProvider('provideProperties')]
     public function testPropertyFilters(
         ?array $globalDisallowedProperties = null,
         ?array $allowedProperties = null,
         ?array $disallowedProperties = null,
-        ?array $expectedDataProperties = null
+        ?array $expectedDataProperties = null,
     ): void {
         $entityManager = EntityManagerStub::createFromEasyActivityConfig(
             [
@@ -349,7 +414,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         self::assertCount(1, $logEntries);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,
-            \array_keys(\json_decode($logEntries[0]['subject_data'], true))
+            \array_keys(\json_decode((string)$logEntries[0]['subject_data'], true))
         );
     }
 }

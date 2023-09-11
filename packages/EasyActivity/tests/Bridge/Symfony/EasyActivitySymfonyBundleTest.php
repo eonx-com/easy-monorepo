@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony;
@@ -13,18 +12,29 @@ use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 {
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../../../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
+    }
+
     /**
-     * @return iterable<mixed>
-     *
      * @see testInvalidEasyActivityConfig
      */
-    public function providerInvalidEasyConfigs(): iterable
+    public static function providerInvalidEasyConfigs(): iterable
     {
         yield 'invalid allowed_properties setting' => [
             'configName' => 'easy_activity_invalid_allowed_properties_setting.yaml',
@@ -43,11 +53,9 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testValidEasyActivityConfig
      */
-    public function providerValidEasyConfigs(): iterable
+    public static function providerValidEasyConfigs(): iterable
     {
         yield 'default config' => [
             'configName' => 'easy_activity_valid_default.yaml',
@@ -96,38 +104,31 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
     public function testEasyDoctrineEntitiesOverride(): void
     {
-        $container = $this->getKernel(
-            [__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml']
-        )->getContainer();
+        $container = $this->getKernel([__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml'])
+            ->getContainer();
 
         /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
         $subscriber = $container->get(EntityEventSubscriberInterface::class);
-        $entities = $this->getPrivatePropertyValue($subscriber, 'acceptableEntities');
+        $entities = $this->getPrivatePropertyValue($subscriber, 'subscribedEntities');
         self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $entities);
         self::assertInstanceOf(EntityEventSubscriber::class, $subscriber);
     }
 
-    /**
-     * @dataProvider providerInvalidEasyConfigs
-     */
+    #[DataProvider('providerInvalidEasyConfigs')]
     public function testInvalidEasyActivityConfig(string $configName, string $expectedExceptionClass): void
     {
-        $this->safeCall(function () use ($configName) {
+        $this->safeCall(function () use ($configName): void {
             $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
         });
 
         $this->assertThrownException($expectedExceptionClass, 0);
     }
 
-    /**
-     * @param array<mixed> $subjects
-     *
-     * @dataProvider providerValidEasyConfigs
-     */
+    #[DataProvider('providerValidEasyConfigs')]
     public function testValidEasyActivityConfig(string $configName, array $subjects): void
     {
         $container = $this->getKernel([__DIR__ . '/Fixtures/' . $configName])->getContainer();
-        /** @var ActivitySubjectResolverInterface $subjectResolver */
+        /** @var \EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface $subjectResolver */
         $subjectResolver = $container->get(ActivitySubjectResolverInterface::class);
 
         self::assertInstanceOf(
@@ -136,17 +137,5 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         );
         self::assertTrue($container->has(DeferredEntityEventDispatcherInterface::class));
         self::assertEquals($subjects, $this->getPrivatePropertyValue($subjectResolver, 'subjects'));
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../../../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 }

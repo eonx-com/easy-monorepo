@@ -1,80 +1,45 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\InvalidDataMaker;
 
 use LogicException;
+use RuntimeException;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @codeCoverageIgnore
- */
 abstract class AbstractInvalidDataMaker
 {
-    /**
-     * @var string
-     */
     private const PLURAL_PARAM = '%count%';
 
     /**
      * @var string[]
      */
-    protected static $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
+    protected static array $translations = ['vendor/symfony/validator/Resources/translations/validators.en.xlf'];
 
-    /**
-     * @var string
-     */
-    protected $property;
+    protected ?string $relatedProperty = null;
 
-    /**
-     * @var string
-     */
-    protected $relatedProperty;
+    protected ?string $relatedPropertyValue = null;
 
-    /**
-     * @var string
-     */
-    protected $relatedPropertyValue;
+    private static ?TranslatorInterface $translator = null;
 
-    /**
-     * @var \Symfony\Contracts\Translation\TranslatorInterface
-     */
-    private static $translator;
+    private bool $asArrayElement = false;
 
-    /**
-     * @var bool
-     */
-    private $asArrayElement = false;
+    private bool $asString = false;
 
-    /**
-     * @var bool
-     */
-    private $asString = false;
+    private ?string $message = null;
 
-    /**
-     * @var string|null
-     */
-    private $message;
+    private ?string $propertyPath = null;
 
-    /**
-     * @var string
-     */
-    private $propertyPath;
+    private ?string $wrapWith = null;
 
-    /**
-     * @var string
-     */
-    private $wrapWith;
-
-    final public function __construct(string $property)
-    {
+    final public function __construct(
+        protected string $property,
+    ) {
         self::initTranslator();
-
-        $this->property = $property;
     }
 
     final public static function addTranslations(string $translations): void
@@ -85,116 +50,6 @@ abstract class AbstractInvalidDataMaker
     public static function make(string $property): static
     {
         return new static($property);
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return mixed[]
-     */
-    final protected function create(string $caseName, $value, ?string $message = null): array
-    {
-        if ($this->asString === true) {
-            $value = (string)$value;
-        }
-
-        if ($this->asArrayElement === true) {
-            $value = [$value];
-        }
-
-        $invalidData = [$this->property => $value];
-
-        if ($this->relatedProperty !== null && $this->relatedPropertyValue !== null) {
-            $invalidData[$this->relatedProperty] = $this->relatedPropertyValue;
-        }
-
-        $propertyPath = $this->resolvePropertyPath($invalidData);
-
-        if ($this->wrapWith !== null) {
-            $propertyPath = $this->wrapWith . '.' . $propertyPath;
-            $caseName = \str_replace($this->property, $propertyPath, $caseName);
-            $invalidData = [$this->wrapWith => $invalidData];
-        }
-
-        return [
-            $caseName => [
-                'data' => $invalidData,
-                'propertyPath' => $this->resolvePropertyPath($invalidData),
-                'validationErrorMessage' => (string)($this->message ?? $message),
-            ],
-        ];
-    }
-
-    /**
-     * @param mixed[]|null $params
-     */
-    final protected function translateMessage(string $messageKey, ?array $params = null, ?int $plural = null): string
-    {
-        $params[self::PLURAL_PARAM] = $plural;
-
-        return self::$translator->trans($messageKey, $params);
-    }
-
-    private static function createTranslationLoader(string $extension): LoaderInterface
-    {
-        if (\in_array($extension, ['yaml', 'yml'], true)) {
-            return new YamlFileLoader();
-        }
-
-        if ($extension === 'xlf') {
-            return new XliffFileLoader();
-        }
-
-        throw new LogicException('Only YAML and XLF translation formats are supported.');
-    }
-
-    private static function initTranslator(): void
-    {
-        if (self::$translator !== null) {
-            return;
-        }
-
-        $locale = 'en';
-        $translator = new Translator($locale);
-
-        foreach (self::$translations as $translation) {
-            $extension = \strtolower(\pathinfo($translation, \PATHINFO_EXTENSION));
-            $translator->addLoader($extension, self::createTranslationLoader($extension));
-            $translator->addResource($extension, $translation, $locale);
-        }
-
-        self::$translator = $translator;
-    }
-
-    /**
-     * @param mixed[] $invalidData
-     *
-     * @noinspection MultipleReturnStatementsInspection
-     */
-    private function resolvePropertyPath(array $invalidData): string
-    {
-        if ($this->propertyPath !== null) {
-            return $this->propertyPath;
-        }
-
-        $propertyName = (string)\array_key_first($invalidData);
-
-        if (\is_array($invalidData[$propertyName]) && \count($invalidData[$propertyName]) > 0) {
-            // The case of stubs collection ('prop' => [ [], [], [], [] ])
-            if (($invalidData[$propertyName][0] ?? null) === []) {
-                return $propertyName;
-            }
-
-            $currentProperty = \current(\array_keys($invalidData[$propertyName]));
-
-            if ($currentProperty === 0) {
-                return $propertyName . '[0]';
-            }
-
-            return $propertyName . '.' . $this->resolvePropertyPath($invalidData[$propertyName]);
-        }
-
-        return $propertyName;
     }
 
     /**
@@ -245,5 +100,109 @@ abstract class AbstractInvalidDataMaker
         $this->wrapWith = $wrapWith;
 
         return $this;
+    }
+
+    final protected function create(string $caseName, mixed $value, ?string $message = null): array
+    {
+        if ($this->asString === true) {
+            $value = (string)$value;
+        }
+
+        if ($this->asArrayElement === true) {
+            $value = [$value];
+        }
+
+        $invalidData = [$this->property => $value];
+
+        if ($this->relatedProperty !== null && $this->relatedPropertyValue !== null) {
+            $invalidData[$this->relatedProperty] = $this->relatedPropertyValue;
+        }
+
+        $propertyPath = $this->resolvePropertyPath($invalidData);
+
+        if ($this->wrapWith !== null) {
+            $propertyPath = $this->wrapWith . '.' . $propertyPath;
+            $caseName = \str_replace($this->property, $propertyPath, $caseName);
+            $invalidData = [$this->wrapWith => $invalidData];
+        }
+
+        return [
+            $caseName => [
+                'data' => $invalidData,
+                'propertyPath' => $this->resolvePropertyPath($invalidData),
+                'validationErrorMessage' => (string)($this->message ?? $message),
+            ],
+        ];
+    }
+
+    final protected function translateMessage(string $messageKey, ?array $params = null, ?int $plural = null): string
+    {
+        $params[self::PLURAL_PARAM] = $plural;
+
+        if (self::$translator === null) {
+            throw new RuntimeException('Translator not initialized.');
+        }
+
+        return self::$translator->trans($messageKey, $params);
+    }
+
+    private static function createTranslationLoader(string $extension): LoaderInterface
+    {
+        if (\in_array($extension, ['yaml', 'yml'], true)) {
+            return new YamlFileLoader();
+        }
+
+        if ($extension === 'xlf') {
+            return new XliffFileLoader();
+        }
+
+        throw new LogicException('Only YAML and XLF translation formats are supported.');
+    }
+
+    private static function initTranslator(): void
+    {
+        if (self::$translator !== null) {
+            return;
+        }
+
+        $locale = 'en';
+        $translator = new Translator($locale);
+
+        foreach (self::$translations as $translation) {
+            $extension = \strtolower(\pathinfo($translation, \PATHINFO_EXTENSION));
+            $translator->addLoader($extension, self::createTranslationLoader($extension));
+            $translator->addResource($extension, $translation, $locale);
+        }
+
+        self::$translator = $translator;
+    }
+
+    /**
+     * @noinspection MultipleReturnStatementsInspection
+     */
+    private function resolvePropertyPath(array $invalidData): string
+    {
+        if ($this->propertyPath !== null) {
+            return $this->propertyPath;
+        }
+
+        $propertyName = (string)\array_key_first($invalidData);
+
+        if (\is_array($invalidData[$propertyName]) && \count($invalidData[$propertyName]) > 0) {
+            // The case of stubs collection ('prop' => [ [], [], [], [] ])
+            if (($invalidData[$propertyName][0] ?? null) === []) {
+                return $propertyName;
+            }
+
+            $currentProperty = \current(\array_keys($invalidData[$propertyName]));
+
+            if ($currentProperty === 0) {
+                return $propertyName . '[0]';
+            }
+
+            return $propertyName . '.' . $this->resolvePropertyPath($invalidData[$propertyName]);
+        }
+
+        return $propertyName;
     }
 }

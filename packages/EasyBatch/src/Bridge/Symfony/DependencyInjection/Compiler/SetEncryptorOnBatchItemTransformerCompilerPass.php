@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\DependencyInjection\Compiler;
@@ -12,9 +11,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class SetEncryptorOnBatchItemTransformerCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const ENCRYPTOR_SETTER = 'setEncryptor';
 
     /**

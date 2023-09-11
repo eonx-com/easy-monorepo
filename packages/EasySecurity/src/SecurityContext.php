@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity;
@@ -16,31 +15,31 @@ use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
 
 /**
- * Class not final to allow apps to extend it.
+ * This class is not final to allow apps to extend it.
  */
 class SecurityContext implements SecurityContextInterface
 {
     private AuthorizationMatrixInterface $authorizationMatrix;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $cachePermissions = null;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $overridePermissions = null;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null
      */
     private ?array $permissions = null;
 
     private ?ProviderInterface $provider = null;
 
     /**
-     * @var null|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
+     * @var \EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null
      */
     private ?array $roles = null;
 
@@ -112,7 +111,9 @@ class SecurityContext implements SecurityContextInterface
             $cachePermissions[$permission->getIdentifier()] = $permission;
         }
 
-        return $this->cachePermissions = $cachePermissions;
+        $this->cachePermissions = $cachePermissions;
+
+        return $this->cachePermissions;
     }
 
     public function getProvider(): ?ProviderInterface

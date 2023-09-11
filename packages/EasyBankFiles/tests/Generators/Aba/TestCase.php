@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Generators\Aba;
@@ -9,10 +8,7 @@ use EonX\EasyBankFiles\Generators\Aba\Objects\FileTotalRecord;
 use EonX\EasyBankFiles\Generators\Aba\Objects\Transaction;
 use EonX\EasyBankFiles\Tests\Generators\TestCase as GeneratorTestCase;
 
-/**
- * @covers \EonX\EasyBankFiles\Tests\Generators\Aba\TestCase
- */
-class TestCase extends GeneratorTestCase
+abstract class TestCase extends GeneratorTestCase
 {
     /**
      * Create a DescriptiveRecord object with default attributes.

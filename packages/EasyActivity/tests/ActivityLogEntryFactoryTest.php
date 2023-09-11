@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests;
@@ -11,15 +10,15 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPropertyFilters
      */
-    public function providerProperties(): iterable
+    public static function providerProperties(): iterable
     {
         yield 'only allowed properties' => [
             'globalDisallowProperties' => [],
@@ -88,7 +87,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_CREATE,
-            (new Article())->setId(2),
+            (new Article())->setId((string)(new NilUuid())),
             ['title' => [null, 'New Title']]
         );
 
@@ -103,7 +102,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertSame(ActivityLogEntry::DEFAULT_ACTOR_TYPE, $result->getActorType());
         self::assertSame(ActivityLogEntry::ACTION_CREATE, $result->getAction());
         self::assertNull($result->getActorName());
-        self::assertSame('2', $result->getSubjectId());
+        self::assertSame((string)(new NilUuid()), $result->getSubjectId());
         self::assertSame(Article::class, $result->getSubjectType());
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getCreatedAt());
         self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getUpdatedAt());
@@ -113,12 +112,13 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $comment1 = (new Comment())
-            ->setId(1)
+            ->setId((string)(new NilUuid()))
             ->setMessage('Test 1');
         $comment2 = (new Comment())
-            ->setId(2)
+            ->setId('00000000-0000-0000-0000-000000000001')
             ->setMessage('Test 2');
         $article = (new Article())
+            ->setId('00000000-0000-0000-0000-000000000002')
             ->setTitle('Related objects')
             ->setContent('Content')
             ->addComment($comment1)
@@ -138,7 +138,10 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertEquals(
             [
                 'content' => 'Content',
-                'comments' => [['id' => 1], ['id' => 2]],
+                'comments' => [
+                    ['id' => (string)(new NilUuid())],
+                    ['id' => '00000000-0000-0000-0000-000000000001'],
+                ],
             ],
             \json_decode((string)$result->getSubjectData(), true)
         );
@@ -148,10 +151,11 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     {
         $factory = new ActivityLogFactoryStub([Article::class => []], []);
         $author = new Author();
-        $author->setId(2);
+        $author->setId((string)(new NilUuid()));
         $author->setName('John');
         $author->setPosition(1);
         $article = new Article();
+        $article->setId('00000000-0000-0000-0000-000000000001');
         $article->setTitle('Related objects');
         $article->setAuthor($author);
 
@@ -169,7 +173,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertEquals(
             [
                 'title' => 'Related objects',
-                'author' => ['id' => 2],
+                'author' => ['id' => (string)(new NilUuid())],
             ],
             \json_decode((string)$result->getSubjectData(), true)
         );
@@ -189,10 +193,11 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             []
         );
         $author = new Author();
-        $author->setId(2);
+        $author->setId((string)(new NilUuid()));
         $author->setName('John');
         $author->setPosition(1);
         $article = new Article();
+        $article->setId('00000000-0000-0000-0000-000000000001');
         $article->setTitle('Related objects');
         $article->setAuthor($author);
 
@@ -224,29 +229,34 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
      * @param string[]|null $allowedProperties
      * @param string[] $disallowedProperties
      * @param string[]|null $expectedDataProperties
-     *
-     * @dataProvider providerProperties
      */
+    #[DataProvider('providerProperties')]
     public function testPropertyFilters(
         array $globalDisallowedProperties,
         ?array $allowedProperties,
         array $disallowedProperties,
-        ?array $expectedDataProperties = null
+        ?array $expectedDataProperties = null,
     ): void {
-        $factory = new ActivityLogFactoryStub([
-            Article::class => [
-                'allowed_properties' => $allowedProperties,
-                'disallowed_properties' => $disallowedProperties,
+        $factory = new ActivityLogFactoryStub(
+            [
+                Article::class => [
+                    'allowed_properties' => $allowedProperties,
+                    'disallowed_properties' => $disallowedProperties,
+                ],
             ],
-        ], $globalDisallowedProperties);
+            $globalDisallowedProperties
+        );
         $author = new Author();
         $author->setName('John');
         $author->setPosition(1);
-        $author->setId(1);
+        $author->setId((string)(new NilUuid()));
+        $article = new Article();
+        $article->setId('00000000-0000-0000-0000-000000000001');
 
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
-            new Article(),
+            $article,
             [
                 'title' => ['Title 2', 'Title'],
                 'content' => ['Content 2', 'Content'],
@@ -263,7 +273,6 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
             return;
         }
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
         self::assertEqualsCanonicalizing(
             $expectedDataProperties,

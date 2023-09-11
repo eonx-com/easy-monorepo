@@ -1,35 +1,30 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\TraceableErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-final class TraceableErrorHandler implements TraceableErrorHandlerInterface
+final class TraceableErrorHandler implements TraceableErrorHandlerInterface, FormatAwareInterface
 {
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-     */
-    private $decorated;
-
     /**
      * @var \Symfony\Component\HttpFoundation\Response[]
      */
-    private $renderedErrors = [];
+    private array $renderedErrors = [];
 
     /**
      * @var \Throwable[]
      */
-    private $reportedErrors = [];
+    private array $reportedErrors = [];
 
-    public function __construct(ErrorHandlerInterface $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private readonly ErrorHandlerInterface $decorated,
+    ) {
     }
 
     public function getBuilders(): array
@@ -71,5 +66,14 @@ final class TraceableErrorHandler implements TraceableErrorHandlerInterface
         $this->reportedErrors[] = $throwable;
 
         $this->decorated->report($throwable);
+    }
+
+    public function supportsFormat(Request $request): bool
+    {
+        if ($this->decorated instanceof FormatAwareInterface) {
+            return $this->decorated->supportsFormat($request);
+        }
+
+        return false;
     }
 }

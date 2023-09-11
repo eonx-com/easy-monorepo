@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
@@ -19,7 +18,7 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchObjectManagerInterface $batchObjectManager,
         private readonly BatchProcessor $batchProcessor,
-        private readonly BatchRepositoryInterface $batchRepository
+        private readonly BatchRepositoryInterface $batchRepository,
     ) {
     }
 
@@ -33,6 +32,11 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
         $batchItem = $this->batchItemRepository->findOrFail($message->getBatchItemId());
         $batch = $this->batchRepository->findOrFail($batchItem->getBatchId());
 
+        // Prevent running logic on already completed batch
+        if ($batch->isCompleted()) {
+            return;
+        }
+
         // Update batch metadata to reflect emergency flow triggered
         $updateFreshBatch = static function (BatchInterface $freshBatch) use ($message): void {
             $metadata = $freshBatch->getMetadata() ?? [];
@@ -44,8 +48,8 @@ final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
             }
 
             $internal['process_batch_emergency'][] = [
-                'triggered_at' => $now,
                 'error_details' => $message->getErrorDetails(),
+                'triggered_at' => $now,
             ];
 
             $metadata['_internal'] = $internal;

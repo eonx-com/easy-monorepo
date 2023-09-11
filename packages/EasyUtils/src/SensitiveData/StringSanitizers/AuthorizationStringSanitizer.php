@@ -1,14 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData\StringSanitizers;
 
 final class AuthorizationStringSanitizer extends AbstractStringSanitizer
 {
-    /**
-     * @param mixed[] $keysToMask
-     */
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         return (string)\preg_replace(

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Interfaces;
@@ -11,6 +10,6 @@ interface QueueMessageConfiguratorInterface extends HasPriorityInterface
     public function configure(
         ConfigInterface $config,
         QueueMessageInterface $queueMessage,
-        MessageInterface $message
+        MessageInterface $message,
     ): QueueMessageInterface;
 }

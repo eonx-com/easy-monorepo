@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Bridge\Symfony;
@@ -8,16 +7,15 @@ use EonX\EasyWebhook\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Middleware\MethodMiddleware;
 use EonX\EasyWebhook\Signers\Rs256Signer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigAndDependenciesSanity
      */
-    public function providerTestConfigAndDependenciesSanity(): iterable
+    public static function providerTestConfigAndDependenciesSanity(): iterable
     {
         yield 'Defaults' => [
             [],
@@ -63,9 +61,8 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[] $configs
-     *
-     * @dataProvider providerTestConfigAndDependenciesSanity
      */
+    #[DataProvider('providerTestConfigAndDependenciesSanity')]
     public function testConfigAndDependenciesSanity(array $configs, callable $tests): void
     {
         $tests($this->getKernel($configs)->getContainer());

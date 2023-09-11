@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Implementations\Doctrine\ORM;
@@ -29,7 +28,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
 
     protected function addPaginationToQuery(Query $query, ?PaginationInterface $pagination = null): void
     {
-        $pagination = $pagination ?? $this->pagination;
+        $pagination ??= $this->pagination;
 
         $page = $pagination->getPage();
         $perPage = $pagination->getPerPage();
@@ -42,7 +41,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?PaginationInterface $pagination = null
+        ?PaginationInterface $pagination = null,
     ): DoctrineOrmLengthAwarePaginator {
         return new DoctrineOrmLengthAwarePaginator(
             $pagination ?? $this->pagination,

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule\Tests;
@@ -27,7 +26,7 @@ final class ScheduleTest extends AbstractTestCase
             '--foo' => 'bar',
         ]);
 
-        self::assertSame('\'command:foo\' --foo=bar', $event->getDescription());
+        self::assertSame("'command:foo' --foo=bar", $event->getDescription());
     }
 
     public function testGetDueEvents(): void

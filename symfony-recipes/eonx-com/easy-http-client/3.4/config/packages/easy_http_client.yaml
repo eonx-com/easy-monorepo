@@ -1,3 +1,0 @@
-easy_http_client:
-    decorate_default_client: true
-    decorate_easy_webhook_client: true

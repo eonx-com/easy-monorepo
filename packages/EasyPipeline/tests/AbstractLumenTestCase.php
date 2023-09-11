@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Tests;
@@ -8,10 +7,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApplication(): Application
     {
@@ -19,6 +15,8 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        return $this->app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
+
+        return $this->app;
     }
 }

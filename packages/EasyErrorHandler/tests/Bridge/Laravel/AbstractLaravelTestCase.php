@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Laravel;
@@ -12,29 +11,23 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
-    /**
-     * @param null|mixed[] $config
-     */
     protected function getApplication(?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
         }
 
-        $app->register(EasyErrorHandlerServiceProvider::class);
-        $app->instance(Client::class, new BugsnagClientStub());
+        $this->app->register(EasyErrorHandlerServiceProvider::class);
+        $this->app->instance(Client::class, new BugsnagClientStub());
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

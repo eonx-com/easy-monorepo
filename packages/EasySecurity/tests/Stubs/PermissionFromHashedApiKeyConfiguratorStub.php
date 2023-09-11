@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
@@ -13,7 +12,7 @@ final class PermissionFromHashedApiKeyConfiguratorStub extends AbstractFromHashe
 {
     public function __construct(
         private string $permission,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }
@@ -21,7 +20,7 @@ final class PermissionFromHashedApiKeyConfiguratorStub extends AbstractFromHashe
     protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        HashedApiKeyInterface $apiKey
+        HashedApiKeyInterface $apiKey,
     ): void {
         $context->addPermissions($this->permission);
     }

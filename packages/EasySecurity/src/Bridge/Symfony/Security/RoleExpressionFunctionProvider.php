@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
@@ -9,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Throwable;
 
 final class RoleExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -22,7 +22,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
      */
     public function __construct(
         private array $locations,
-        private LoggerInterface $logger = new NullLogger()
+        private LoggerInterface $logger = new NullLogger(),
     ) {
     }
 
@@ -34,7 +34,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
         return [
             new ExpressionFunction(
                 'role',
-                function (): void {
+                static function (): void {
                 },
                 function ($params, string $role): string {
                     if (isset($this->cached[$role])) {
@@ -46,8 +46,9 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
 
                         try {
                             $this->cached[$role] = \constant($constant);
+
                             return $this->cached[$role];
-                        } catch (\Throwable) {
+                        } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
                     }

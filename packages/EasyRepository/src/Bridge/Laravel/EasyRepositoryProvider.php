@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bridge\Laravel;
@@ -20,8 +19,8 @@ final class EasyRepositoryProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-repository.php', 'easy-repository');
 
-        $repositories = \config('easy-repository.repositories', []);
-        if (empty($repositories)) {
+        $repositories = (array)\config('easy-repository.repositories', []);
+        if (\count($repositories) === 0) {
             throw new EmptyRepositoriesListException(
                 'No repositories to register. Please make sure your application has the expected configuration'
             );

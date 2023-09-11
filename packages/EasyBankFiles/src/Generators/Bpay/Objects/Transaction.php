@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators\Bpay\Objects;
@@ -24,11 +23,11 @@ final class Transaction extends BaseObject
     public function getValidationRules(): array
     {
         return [
+            'amount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
             'billerCode' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'customerReferenceNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
             'paymentAccountBSB' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
             'paymentAccountNumber' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'customerReferenceNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'amount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
         ];
     }
 
@@ -36,15 +35,13 @@ final class Transaction extends BaseObject
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
      * @see http://php.net/manual/en/function.str-pad.php
-     *
-     * @return mixed[]
      */
     protected function getAttributesPaddingRules(): array
     {
         return [
+            'amount' => [13, '0', \STR_PAD_LEFT],
             'billerCode' => [10, '0', \STR_PAD_LEFT],
             'customerReferenceNumber' => [20],
-            'amount' => [13, '0', \STR_PAD_LEFT],
             'lodgementReference1' => [10],
             'lodgementReference2' => [20],
             'lodgementReference3' => [50],

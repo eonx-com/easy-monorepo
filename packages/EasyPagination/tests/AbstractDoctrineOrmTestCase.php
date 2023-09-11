@@ -1,29 +1,34 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
+use EonX\EasyPagination\Tests\Stubs\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stubs\Entity\Item;
-use EonX\EasyPagination\Tests\Stubs\Entity\ParentEntity;
 
 abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    private $manager;
+    private ?EntityManagerInterface $manager = null;
 
-    protected function addItemToTable(EntityManagerInterface $manager, string $title): Item
+    protected static function addChildItemToTable(EntityManagerInterface $manager, string $title, Item $item): void
+    {
+        $childItem = new ChildItem();
+        $childItem->setTitle($title);
+        $childItem->setItem($item);
+
+        $manager->persist($childItem);
+        $manager->flush();
+    }
+
+    protected static function addItemToTable(EntityManagerInterface $manager, string $title): Item
     {
         $item = new Item();
-        $item->title = $title;
+        $item->setTitle($title);
 
         $manager->persist($item);
         $manager->flush();
@@ -31,32 +36,22 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         return $item;
     }
 
-    protected function addParentToTable(EntityManagerInterface $manager, string $title, Item $item): void
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\ORM\ORMException
+     */
+    protected static function createItemsTable(EntityManagerInterface $manager): void
     {
-        $parent = new ParentEntity();
-        $parent->title = $title;
-        $parent->item = $item;
-
-        $manager->persist($parent);
-        $manager->flush();
+        self::createEntityTable($manager, Item::class);
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\ORM\ORMException
      */
-    protected function createItemsTable(EntityManagerInterface $manager): void
+    protected static function createParentsTable(EntityManagerInterface $manager): void
     {
-        $this->createEntityTable($manager, Item::class);
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\ORMException
-     */
-    protected function createParentsTable(EntityManagerInterface $manager): void
-    {
-        $this->createEntityTable($manager, ParentEntity::class);
+        self::createEntityTable($manager, ChildItem::class);
     }
 
     /**
@@ -73,18 +68,20 @@ abstract class AbstractDoctrineOrmTestCase extends AbstractTestCase
         ];
 
         $config = new Configuration();
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
-        return $this->manager = EntityManager::create($conn, $config);
+        $this->manager = EntityManager::create($conn, $config);
+
+        return $this->manager;
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\ORM\ORMException
      */
-    private function createEntityTable(EntityManagerInterface $manager, string $entity): void
+    private static function createEntityTable(EntityManagerInterface $manager, string $entity): void
     {
         $schemaTool = new SchemaTool($manager);
         $schema = $schemaTool->getSchemaFromMetadata([$manager->getClassMetadata($entity)]);

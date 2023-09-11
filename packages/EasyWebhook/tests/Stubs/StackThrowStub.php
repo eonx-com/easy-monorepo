@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stubs;
@@ -10,19 +9,11 @@ use Throwable;
 
 final class StackThrowStub implements StackInterface
 {
-    /**
-     * @var int
-     */
-    private $index = 0;
+    private int $index = 0;
 
-    /**
-     * @var \Throwable
-     */
-    private $throwable;
-
-    public function __construct(Throwable $throwable)
-    {
-        $this->throwable = $throwable;
+    public function __construct(
+        private Throwable $throwable,
+    ) {
     }
 
     public function getCurrentIndex(): int

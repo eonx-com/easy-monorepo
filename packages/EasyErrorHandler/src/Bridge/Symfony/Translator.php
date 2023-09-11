@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony;
@@ -9,15 +8,14 @@ use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterf
 
 final class Translator implements TranslatorInterface
 {
+    private const DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
+
     public function __construct(
         private readonly SymfonyTranslatorInterface $decorated,
-        private readonly ?string $domain = null
+        private readonly ?string $domain = null,
     ) {
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
         $translation = $this->decorated->trans($message, $parameters, $this->domain, $locale);
@@ -26,6 +24,6 @@ final class Translator implements TranslatorInterface
             return $translation;
         }
 
-        return $this->decorated->trans($message, $parameters, 'EasyErrorHandlerBundle', $locale);
+        return $this->decorated->trans($message, $parameters, self::DEFAULT_DOMAIN, $locale);
     }
 }

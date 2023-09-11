@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions\Traits;
@@ -8,53 +7,29 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 
 trait TranslatableExceptionTrait
 {
-    /**
-     * @var null|string
-     */
-    protected $domain;
+    protected ?string $domain = null;
 
-    /**
-     * @var mixed[]
-     */
-    protected $messageParams = [];
+    protected array $messageParams = [];
 
-    /**
-     * @var string|null
-     */
-    protected $userMessage = TranslatableExceptionInterface::DEFAULT_USER_MESSAGE;
+    protected string $userMessage = TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
 
-    /**
-     * @var mixed[]
-     */
-    protected $userMessageParams = [];
+    protected array $userMessageParams = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDomain(): ?string
     {
         return $this->domain;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMessageParams(): array
     {
         return $this->messageParams;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getUserMessage(): ?string
+    public function getUserMessage(): string
     {
         return $this->userMessage;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUserMessageParams(): array
     {
         return $this->userMessageParams;
@@ -72,8 +47,6 @@ trait TranslatableExceptionTrait
 
     /**
      * Sets the exception message parameters.
-     *
-     * @param mixed[] $messageParams
      */
     public function setMessageParams(array $messageParams): self
     {
@@ -87,15 +60,13 @@ trait TranslatableExceptionTrait
      */
     public function setUserMessage(?string $userMessage = null): self
     {
-        $this->userMessage = $userMessage;
+        $this->userMessage = $userMessage ?? TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
 
         return $this;
     }
 
     /**
      * Sets the user-friendly message parameters.
-     *
-     * @param mixed[] $userMessageParams
      */
     public function setUserMessageParams(array $userMessageParams): self
     {

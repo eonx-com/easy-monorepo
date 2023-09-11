@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Fixtures;
@@ -10,13 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Tag
 {
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'tags')]
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'tags')]
     protected Product $product;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 128)]

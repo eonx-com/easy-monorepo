@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Interfaces;
@@ -9,8 +8,5 @@ use Throwable;
 
 interface ErrorReporterInterface extends HasPriorityInterface
 {
-    /**
-     * @return void|bool
-     */
-    public function report(Throwable $throwable);
+    public function report(Throwable $throwable): void;
 }

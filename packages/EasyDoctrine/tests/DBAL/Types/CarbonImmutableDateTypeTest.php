@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\DBAL\Types;
@@ -10,18 +9,23 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType
- */
+#[CoversClass(CarbonImmutableDateType::class)]
 final class CarbonImmutableDateTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
+    }
+
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPhpValueSucceeds
      */
-    public function provideConvertToPhpValues(): iterable
+    public static function provideConvertToPhpValues(): iterable
     {
         $datetime = new DateTimeImmutable();
         $datetime = $datetime->setTime(0, 0, 0, 0);
@@ -39,12 +43,8 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @dataProvider provideConvertToPhpValues
-     */
-    public function testConvertToPhpValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    #[DataProvider('provideConvertToPhpValues')]
+    public function testConvertToPhpValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateType $type */
         $type = Type::getType((new CarbonImmutableDateType())->getName());
@@ -57,12 +57,5 @@ final class CarbonImmutableDateTypeTest extends AbstractTestCase
         $phpValue = $type->convertToPHPValue($value, $platform);
 
         self::assertEquals($expectedValue, $phpValue);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
     }
 }

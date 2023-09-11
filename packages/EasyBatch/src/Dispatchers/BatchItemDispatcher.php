@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Dispatchers;
@@ -19,13 +18,13 @@ final class BatchItemDispatcher
         private readonly AsyncDispatcherInterface $asyncDispatcher,
         private readonly BatchItemIterator $batchItemIterator,
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchRepositoryInterface $batchRepository
+        private readonly BatchRepositoryInterface $batchRepository,
     ) {
     }
 
     public function dispatchDependItems(
         BatchObjectManagerInterface $batchObjectManager,
-        BatchItemInterface $batchItem
+        BatchItemInterface $batchItem,
     ): void {
         $this->doDispatch($batchObjectManager, $batchItem->getBatchId(), $batchItem->getName());
     }
@@ -41,7 +40,7 @@ final class BatchItemDispatcher
     private function doDispatch(
         BatchObjectManagerInterface $batchObjectManager,
         int|string $batchId,
-        ?string $dependsOnName = null
+        ?string $dependsOnName = null,
     ): void {
         // Update batchItems to status pending after current page is dispatched
         $currentPageCallback = function (array $items): void {

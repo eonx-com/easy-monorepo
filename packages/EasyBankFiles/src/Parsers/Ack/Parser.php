@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Ack;
@@ -13,10 +12,7 @@ use EonX\EasyBankFiles\Parsers\BaseParser;
 
 abstract class Parser extends BaseParser
 {
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Ack\Results\PaymentAcknowledgement
-     */
-    protected $acknowledgement;
+    protected PaymentAcknowledgement $acknowledgement;
 
     public function __construct(string $contents)
     {
@@ -43,8 +39,6 @@ abstract class Parser extends BaseParser
 
     /**
      * Attempts to convert the provided XML string to an array.
-     *
-     * @return mixed[]
      */
     protected function convertXmlToArray(string $xml): array
     {
@@ -54,7 +48,7 @@ abstract class Parser extends BaseParser
             $result = $xmlConverter->xmlToArray($xml, XmlConverter::XML_INCLUDE_ATTRIBUTES);
         } catch (InvalidXmlException $exception) {
             // When an exception is thrown, let's attempt to mitigate the issue by cleaning up some common
-            // inconsistencies from the bank's side.
+            // inconsistencies from the bank's side
             $fixedContents = XmlFailureMitigation::tryMitigateParseFailures($xml);
 
             // If the content back from mitigation is empty, throw the initial exception
@@ -73,11 +67,9 @@ abstract class Parser extends BaseParser
      * Determine how to process issues, this array can change depending on whether there
      * are one or many issues to be stored.
      *
-     * @param mixed $issues
-     *
      * @return \EonX\EasyBankFiles\Parsers\Ack\Results\Issue[]
      */
-    protected function extractIssues($issues): array
+    protected function extractIssues(mixed $issues): array
     {
         // If there are no issues, return
         if ($issues === null) {
@@ -93,8 +85,8 @@ abstract class Parser extends BaseParser
         $objects = [];
         foreach ($issues as $issue) {
             $objects[] = new Issue([
-                'value' => $issue['@value'] ?? null,
                 'attributes' => $issue['@attributes'] ?? null,
+                'value' => $issue['@value'] ?? null,
             ]);
         }
 

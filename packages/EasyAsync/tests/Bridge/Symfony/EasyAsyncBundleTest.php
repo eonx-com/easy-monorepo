@@ -1,19 +1,19 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Bridge\Symfony;
 
 use EonX\EasyAsync\Bridge\Symfony\Messenger\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Bridge\Symfony\Messenger\StopWorkerOnTimeLimitSubscriber;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testMessengerConfig
      */
-    public function providerTestMessengerConfig(): iterable
+    public static function providerTestMessengerConfig(): iterable
     {
         yield 'no config - no subscribers' => [
             static function (ContainerInterface $container): void {
@@ -54,10 +54,9 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
-     * @dataProvider providerTestMessengerConfig
-     *
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
+    #[DataProvider('providerTestMessengerConfig')]
     public function testMessengerConfig(callable $assert, ?array $configs = null): void
     {
         $container = $this->getKernel($configs)

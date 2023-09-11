@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntry;
@@ -9,10 +8,9 @@ use EonX\EasyBankFiles\Parsers\DirectEntry\Parser;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Header;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Trailer;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntry\Parser
- */
+#[CoversClass(Parser::class)]
 final class ParserTest extends TestCase
 {
     /**

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Interfaces;
@@ -10,9 +9,6 @@ use EonX\EasyPagination\Interfaces\PaginationInterface;
 
 interface BatchItemRepositoryInterface
 {
-    /**
-     * @var string
-     */
     public const DEFAULT_TABLE = 'easy_batch_items';
 
     public function findCountsForBatch(int|string $batchId): BatchCountsDto;
@@ -30,7 +26,7 @@ interface BatchItemRepositoryInterface
     public function paginateItems(
         PaginationInterface $pagination,
         int|string $batchId,
-        ?string $dependsOnName = null
+        ?string $dependsOnName = null,
     ): LengthAwarePaginatorInterface;
 
     public function save(BatchItemInterface $batchItem): BatchItemInterface;

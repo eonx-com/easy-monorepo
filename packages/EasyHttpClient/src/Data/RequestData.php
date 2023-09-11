@@ -1,42 +1,19 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Data;
 
+use DateTimeInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
 
 final class RequestData implements RequestDataInterface
 {
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var mixed[]
-     */
-    private $options;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $sentAt;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @param mixed[] $options
-     */
-    public function __construct(string $method, array $options, \DateTimeInterface $sentAt, string $url)
-    {
-        $this->method = $method;
-        $this->options = $options;
-        $this->sentAt = $sentAt;
-        $this->url = $url;
+    public function __construct(
+        private string $method,
+        private array $options,
+        private DateTimeInterface $sentAt,
+        private string $url,
+    ) {
     }
 
     public function getMethod(): string
@@ -44,15 +21,12 @@ final class RequestData implements RequestDataInterface
         return $this->method;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
-    public function getSentAt(): \DateTimeInterface
+    public function getSentAt(): DateTimeInterface
     {
         return $this->sentAt;
     }
@@ -62,9 +36,6 @@ final class RequestData implements RequestDataInterface
         return $this->url;
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function setOptions(array $options): RequestDataInterface
     {
         $this->options = $options;

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External;
@@ -11,31 +10,22 @@ use EonX\EasyApiToken\External\AwsCognito\Interfaces\UserPoolConfigInterface;
 use EonX\EasyApiToken\External\AwsCognito\JwkFetcher;
 use EonX\EasyApiToken\External\Interfaces\JwtDriverInterface;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 final class AwsCognitoJwtDriver implements JwtDriverInterface
 {
+    private const DEFAULT_JWK_ALGO = 'RS256';
+
     private const TOKEN_TYPE_ACCESS = 'access';
 
     private const TOKEN_TYPE_ID = 'id';
 
-    /**
-     * @var string[]
-     */
-    private array $allowedAlgos;
-
-    private JwkFetcherInterface $jwkFetcher;
-
-    /**
-     * @param null|string[] $allowedAlgos
-     */
     public function __construct(
-        private UserPoolConfigInterface $userPoolConfig,
-        ?JwkFetcherInterface $jwkFetcher = null,
-        ?array $allowedAlgos = null,
-        private ?int $leeway = null
+        private readonly UserPoolConfigInterface $userPoolConfig,
+        private JwkFetcherInterface $jwkFetcher = new JwkFetcher(),
+        private readonly ?int $leeway = null,
+        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
     ) {
-        $this->jwkFetcher = $jwkFetcher ?? new JwkFetcher();
-        $this->allowedAlgos = $allowedAlgos ?? [];
     }
 
     /**
@@ -48,8 +38,13 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
             JWT::$leeway = $this->leeway;
         }
 
-        /** @var \stdClass $decodedToken */
-        $decodedToken = JWT::decode($token, $this->jwkFetcher->getJwks($this->userPoolConfig), $this->allowedAlgos);
+        $jwks = $this->jwkFetcher->getJwks($this->userPoolConfig);
+
+        foreach ($jwks as $keyId => $key) {
+            $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo);
+        }
+
+        $decodedToken = JWT::decode($token, $jwks);
         $tokenType = $decodedToken->token_use ?? null;
 
         // Validate audience

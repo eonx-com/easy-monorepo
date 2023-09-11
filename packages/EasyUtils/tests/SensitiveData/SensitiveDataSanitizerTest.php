@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\SensitiveData;
 
+use EonX\EasyUtils\CreditCard\CreditCardNumberValidator;
 use EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizer;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
@@ -28,7 +28,7 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
             new UrlStringSanitizer(),
             new JsonStringSanitizer(),
             new AuthorizationStringSanitizer(),
-            new CreditCardNumberStringSanitizer(),
+            new CreditCardNumberStringSanitizer(new CreditCardNumberValidator()),
         ];
 
         return new SensitiveDataSanitizer(null, $keysToMask, null, $objectTransformers, $stringSanitizers);

@@ -1,14 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers;
 
 use EonX\EasyBankFiles\Parsers\Error;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Error
- */
+#[CoversClass(Error::class)]
 final class ErrorTest extends TestCase
 {
     /**

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
@@ -18,14 +17,12 @@ abstract class AbstractFromApiKeyConfigurator extends AbstractSecurityContextCon
             return;
         }
 
-        /** @var \EonX\EasyApiToken\Interfaces\Tokens\ApiKeyInterface $token */
-
         $this->doConfigure($context, $request, $token);
     }
 
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        ApiKeyInterface $apiKey
+        ApiKeyInterface $apiKey,
     ): void;
 }

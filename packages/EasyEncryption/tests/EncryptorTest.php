@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Tests;
@@ -12,17 +11,18 @@ use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Tests\Stubs\EncryptionKeyResolverStub;
 use ParagonIE\Halite\KeyFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EncryptorTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
+     *
+     * @see testEncrypt
      */
-    public function providerTestEncrypt(): iterable
+    public static function providerTestEncrypt(): iterable
     {
         $message = 'My message';
 
@@ -63,13 +63,13 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @throws \ParagonIE\Halite\Alerts\CannotPerformOperation
      * @throws \ParagonIE\Halite\Alerts\InvalidKey
      * @throws \SodiumException
+     *
+     * @see testEncryptRaw
      */
-    public function providerTestEncryptRaw(): iterable
+    public static function providerTestEncryptRaw(): iterable
     {
         $message = 'My message';
 
@@ -120,12 +120,10 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $key
-     * @param null|\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $resolvers
-     *
-     * @dataProvider providerTestEncrypt
+     * @param \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]|null $resolvers
      */
-    public function testEncrypt(string $text, $key = null, ?array $resolvers = null): void
+    #[DataProvider('providerTestEncrypt')]
+    public function testEncrypt(string $text, mixed $key = null, ?array $resolvers = null): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);
@@ -137,12 +135,10 @@ final class EncryptorTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed $key
-     * @param null|\EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[] $resolvers
-     *
-     * @dataProvider providerTestEncryptRaw
+     * @param \EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface[]|null $resolvers
      */
-    public function testEncryptRaw(string $text, $key = null, ?array $resolvers = null): void
+    #[DataProvider('providerTestEncryptRaw')]
+    public function testEncryptRaw(string $text, mixed $key = null, ?array $resolvers = null): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);

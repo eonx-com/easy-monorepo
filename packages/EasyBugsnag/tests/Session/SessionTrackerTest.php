@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Tests\Session;
@@ -8,14 +7,15 @@ use Bugsnag\Client;
 use Bugsnag\Configuration;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class SessionTrackerTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testExclude
      */
-    public function providerTestExclude(): iterable
+    public static function providerTestExclude(): iterable
     {
         yield 'Track' => [
             true,
@@ -36,15 +36,14 @@ final class SessionTrackerTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[] $exclude
-     *
-     * @dataProvider providerTestExclude
+     * @param string[]|null $exclude
      */
+    #[DataProvider('providerTestExclude')]
     public function testExclude(
         bool $trackSession,
         string $uri,
         ?array $exclude = null,
-        ?string $excludeDelimiter = null
+        ?string $excludeDelimiter = null,
     ): void {
         $bugsnag = new Client(new Configuration('my-api-key'));
         $request = new Request([], [], [], [], [], [

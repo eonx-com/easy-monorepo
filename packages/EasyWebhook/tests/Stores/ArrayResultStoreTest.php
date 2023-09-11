@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stores;
@@ -13,7 +12,7 @@ final class ArrayResultStoreTest extends AbstractTestCase
 {
     public function testSanity(): void
     {
-        $resultStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $resultStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
         $result = $resultStore->store(new WebhookResult(Webhook::fromArray([])));
         $results = $resultStore->getResults();
         $resultStore->reset();

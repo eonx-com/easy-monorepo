@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai\Results;
@@ -13,7 +12,6 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Files\Trailer as FileTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Header as GroupHeader;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer as GroupTrailer;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
-use Nette\Utils\Strings;
 
 final class ResultsContext implements ResultsContextInterface
 {
@@ -23,50 +21,32 @@ final class ResultsContext implements ResultsContextInterface
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Account[]
      */
-    private $accounts = [];
+    private array $accounts = [];
 
-    /**
-     * @var mixed[]
-     */
-    private $caching = [];
+    private array $caching = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Error[]
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Nai\Results\File
-     */
-    private $file;
+    private ?File $file = null;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Group[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var bool
-     */
-    private $isBai = false;
+    private bool $isBai = false;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
-    /**
-     * ResultsContext constructor.
-     *
-     * @param mixed[] $accounts
-     * @param mixed[] $errors
-     * @param mixed[] $file
-     * @param mixed[] $groups
-     * @param mixed[] $transactions
-     */
     public function __construct(array $accounts, array $errors, array $file, array $groups, array $transactions)
     {
-        // Not proud of that, but the order matters, DO NOT change it...
+        // Not proud of that, but the order matters, DO NOT change it
         $this
             ->initTransactions($transactions)
             ->initAccounts($accounts)
@@ -138,10 +118,8 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Cache result for given key.
-     *
-     * @param mixed $result
      */
-    private function cacheResult(string $key, $result): void
+    private function cacheResult(string $key, mixed $result): void
     {
         if (isset($this->caching[$key]) === false) {
             $this->caching[$key] = [];
@@ -160,10 +138,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Format account identifier transactions and add code summary.
-     *
-     * @param mixed[] $transactionCodes
-     *
-     * @return mixed[]
      */
     private function formatTransactionCodes(array $transactionCodes): array
     {
@@ -172,9 +146,9 @@ final class ResultsContext implements ResultsContextInterface
             $amount = $this->removeTrailingSlash($codes[1] ?? '');
 
             $transactionCodes[$key] = [
+                'amount' => $amount,
                 'code' => $code,
                 'description' => $this->getCodeSummary($code),
-                'amount' => $amount,
             ];
         }
 
@@ -184,9 +158,7 @@ final class ResultsContext implements ResultsContextInterface
     /**
      * Get data from line as an associative array using given attributes. If line structure invalid, return null.
      *
-     * @param string[] $attributes
-     *
-     * @return mixed[]|null
+     * @param string[] $attributes |null
      */
     private function getDataFromLine(array $attributes, string $line, int $lineNumber): ?array
     {
@@ -212,8 +184,6 @@ final class ResultsContext implements ResultsContextInterface
      * Get transaction data from line as an associative array using given attributes.
      * If line structure invalid, return null. If the last element in data is missing,
      * its alright as transaction might not have a text.
-     *
-     * @return mixed[]|null
      */
     private function getTransactionDataFromLine(string $line, int $lineNumber): ?array
     {
@@ -223,7 +193,7 @@ final class ResultsContext implements ResultsContextInterface
         $data = [];
         /** @var string[] $lineArray */
         $lineArray = \explode(',', $line);
-        $attributes = \array_merge($required, $optional);
+        $attributes = [...$required, ...$optional];
 
         // Remove CustomerReferenceNumber for BAI because always empty
         if (\strtolower($lineArray[3] ?? '') === 'z') {
@@ -236,7 +206,7 @@ final class ResultsContext implements ResultsContextInterface
 
         foreach ($attributes as $index => $attribute) {
             $value = $lineArray[$index] ?? '';
-            $endsWithSlash = Strings::endsWith($value, '/');
+            $endsWithSlash = \str_ends_with($value, '/');
             $data[$attribute] = $endsWithSlash ? \substr($value, 0, -1) : $value;
 
             // If attribute ends with slash, it's the last one of line, exit
@@ -251,16 +221,16 @@ final class ResultsContext implements ResultsContextInterface
                 continue;
             }
 
-            // if this is a required attribute fail and return.
+            // If this is a required attribute fail and return
             if (\in_array($attribute, $required, true)) {
                 // Add error if data is either null or empty string
                 $this->addError($line, $lineNumber);
 
-                // stop processing this line.
+                // Stop processing this line
                 return null;
             }
 
-            // otherwise set a default value to it.
+            // Otherwise set a default value to it
             $data[$attribute] = '';
         }
 
@@ -272,8 +242,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate account identifier.
-     *
-     * @param mixed[] $identifier
      */
     private function initAccountIdentifier(array $identifier): ?AccountIdentifier
     {
@@ -290,9 +258,9 @@ final class ResultsContext implements ResultsContextInterface
          * So from 4th item onwards are Transaction code and Amount
          * We can group them in pairs [transactionCode, Amount]
          *
-         * But first let remove the first 3 elements
+         * But first let remove the first 3 elements.
          */
-        $transactionCodes = \array_slice(\explode(',', $identifier['line']), 3);
+        $transactionCodes = \array_slice(\explode(',', (string)$identifier['line']), 3);
         $transactionCodes = $this->formatTransactionCodes(\array_chunk($transactionCodes, 2));
 
         return new AccountIdentifier(\array_merge($data, [
@@ -302,8 +270,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate account trailer.
-     *
-     * @param mixed[] $trailer
      */
     private function initAccountTrailer(array $trailer): ?AccountTrailer
     {
@@ -316,8 +282,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate accounts.
-     *
-     * @param mixed[] $accounts
      *
      * @return \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
      */
@@ -345,8 +309,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate errors.
-     *
-     * @param mixed[] $errors
      */
     private function initErrors(array $errors): self
     {
@@ -359,8 +321,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate file.
-     *
-     * @param mixed[] $file
      */
     private function initFile(array $file): self
     {
@@ -378,8 +338,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate file header.
-     *
-     * @param mixed[] $header
      */
     private function initFileHeader(array $header): ?FilerHeader
     {
@@ -397,8 +355,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate file trailer.
-     *
-     * @param mixed[] $trailer
      */
     private function initFileTrailer(array $trailer): ?FileTrailer
     {
@@ -414,8 +370,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate group header.
-     *
-     * @param mixed[] $header
      */
     private function initGroupHeader(array $header): ?GroupHeader
     {
@@ -431,8 +385,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate group trailer.
-     *
-     * @param mixed[] $trailer
      */
     private function initGroupTrailer(array $trailer): ?GroupTrailer
     {
@@ -446,8 +398,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate groups.
-     *
-     * @param mixed[] $groups
      */
     private function initGroups(array $groups): self
     {
@@ -468,8 +418,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate transactions.
-     *
-     * @param mixed[] $transactions
      */
     private function initTransactions(array $transactions): self
     {
@@ -495,12 +443,8 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate Nai result object and pass the context as parameter.
-     *
-     * @param mixed[] $data
-     *
-     * @return mixed
      */
-    private function instantiateNaiResult(string $resultClass, array $data)
+    private function instantiateNaiResult(string $resultClass, array $data): mixed
     {
         return new $resultClass($this, $data);
     }
@@ -509,11 +453,8 @@ final class ResultsContext implements ResultsContextInterface
      * Instantiate simple item for given attributes, class and array.
      *
      * @param string[] $attributes
-     * @param mixed[] $item
-     *
-     * @return mixed
      */
-    private function instantiateSimpleItem(array $attributes, string $class, array $item)
+    private function instantiateSimpleItem(array $attributes, string $class, array $item): mixed
     {
         $data = $this->getDataFromLine($attributes, $item['line'], $item['line_number']);
 

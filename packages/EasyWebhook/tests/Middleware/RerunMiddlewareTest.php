@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -9,13 +8,14 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\RerunMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'Cannot rerun exception' => [
             Webhook::fromArray([
@@ -45,15 +45,14 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     }
 
     /**
-     * @phpstan-param null|class-string<\Throwable> $exceptedException
-     *
-     * @dataProvider providerTestProcess
+     * @phpstan-param class-string<\Throwable>|null $exceptedException
      */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         ?string $expectedStatus = null,
         ?int $expectedCurrentAttempt = null,
-        ?string $exceptedException = null
+        ?string $exceptedException = null,
     ): void {
         if ($exceptedException !== null) {
             $this->expectException($exceptedException);

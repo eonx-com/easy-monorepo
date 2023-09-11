@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Tests\Bridge\Laravel;
@@ -16,9 +15,9 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
     {
         $this->expectException(EmptyPipelinesListException::class);
 
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $serviceProvider = new EasyIlluminatePipelineServiceProvider($app);
 
         $serviceProvider->boot();
@@ -27,13 +26,13 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
 
     public function testRegisterPipelineFactorySuccess(): void
     {
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
         \config()
             ->set('easy-pipeline.pipelines', [
                 'pipeline-1' => 'provider-1',
             ]);
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
 
         self::assertInstanceOf(PipelineFactoryInterface::class, $app->get(PipelineFactoryInterface::class));
@@ -41,13 +40,13 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
 
     public function testRegisterProviderSuccess(): void
     {
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
         \config()
             ->set('easy-pipeline.pipelines', [
                 'pipeline-1' => MiddlewareProviderStub::class,
             ]);
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new EasyIlluminatePipelineServiceProvider($app))->register();
 
         self::assertInstanceOf(

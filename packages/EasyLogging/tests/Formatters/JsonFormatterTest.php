@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Formatters;
@@ -9,13 +8,14 @@ use EonX\EasyLogging\Formatters\JsonFormatter;
 use EonX\EasyLogging\Tests\AbstractTestCase;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class JsonFormatterTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testCreateLogFormat
      */
-    public function providerTestCreateLogFormat(): iterable
+    public static function providerTestCreateLogFormat(): iterable
     {
         yield 'DateTime format' => [
             static function (Logger $logger): void {
@@ -37,10 +37,9 @@ final class JsonFormatterTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerTestCreateLogFormat
-     *
      * @throws \Exception
      */
+    #[DataProvider('providerTestCreateLogFormat')]
     public function testCreateLogFormat(callable $log, callable $assert): void
     {
         $stream = \fopen('php://memory', 'rw+');

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
@@ -13,7 +12,7 @@ final class ManagersResetter extends AbstractAppStateResetter
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
         private readonly bool $resetDbalConnections,
-        ?int $priority = null
+        ?int $priority = null,
     ) {
         parent::__construct($priority);
     }

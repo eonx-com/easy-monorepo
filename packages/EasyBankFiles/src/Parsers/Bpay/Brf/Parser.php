@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Bpay\Brf;
@@ -12,40 +11,25 @@ use EonX\EasyBankFiles\Parsers\Error;
 
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string
-     */
     private const HEADER = '00';
 
-    /**
-     * @var string
-     */
     private const TRAILER = '99';
 
-    /**
-     * @var string
-     */
     private const TRANSACTION = '50';
 
     /**
-     * @var mixed[] $errors
+     * @var \EonX\EasyBankFiles\Parsers\Error[] $errors
      */
-    protected $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Header
-     */
-    protected $header;
+    private Header $header;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Trailer
-     */
-    protected $trailer;
+    private Trailer $trailer;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\Bpay\Brf\Results\Transaction[] $transactions
      */
-    protected $transactions = [];
+    private array $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]
@@ -89,18 +73,22 @@ final class Parser extends AbstractLineByLineParser
         switch ($code) {
             case self::HEADER:
                 $this->header = $this->processHeader($line);
+
                 break;
 
             case self::TRANSACTION:
                 $this->transactions[] = $this->processTransaction($line);
+
                 break;
 
             case self::TRAILER:
                 $this->trailer = $this->processTrailer($line);
+
                 break;
 
             default:
                 $this->errors[] = new Error(\compact('line', 'lineNumber'));
+
                 break;
         }
     }
@@ -127,9 +115,9 @@ final class Parser extends AbstractLineByLineParser
 
         return new Header([
             'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
-            'billerShortName' => $billerShortName === false ? null : \trim($billerShortName),
-            'billerCreditBSB' => $billerCreditBSB === false ? null : $billerCreditBSB,
             'billerCreditAccount' => $billerCreditAccount === false ? null : $billerCreditAccount,
+            'billerCreditBSB' => $billerCreditBSB === false ? null : $billerCreditBSB,
+            'billerShortName' => $billerShortName === false ? null : \trim($billerShortName),
             'fileCreationDate' => $fileCreationDate === false ? null : $fileCreationDate,
             'fileCreationTime' => $fileCreationTime === false ? null : $fileCreationTime,
             'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
@@ -161,19 +149,19 @@ final class Parser extends AbstractLineByLineParser
         $restOfRecord = \substr($line, 99, 120);
 
         return new Trailer([
-            'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
-            'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
+            'amountOfErrorCorrections' => $amountOfErrorCorrections === false
+                ? null
+                : $this->trimLeftZeros($amountOfErrorCorrections),
             'amountOfPayments' => $amountOfPayments === false ? null : $this->trimLeftZeros($amountOfPayments),
-            'numberOfErrorCorrections' => $numberOfErrorCorrections === false ? null : $this->trimLeftZeros(
-                $numberOfErrorCorrections
-            ),
-            'amountOfErrorCorrections' => $amountOfErrorCorrections === false ? null : $this->trimLeftZeros(
-                $amountOfErrorCorrections
-            ),
-            'numberOfReversals' => $numberOfReversals === false ? null : $this->trimLeftZeros($numberOfReversals),
             'amountOfReversals' => $amountOfReversals === false ? null : $this->trimLeftZeros($amountOfReversals),
-            'settlementAmount' => $settlementAmount === false ? null : $this->trimLeftZeros($settlementAmount),
+            'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
+            'numberOfErrorCorrections' => $numberOfErrorCorrections === false
+                ? null
+                : $this->trimLeftZeros($numberOfErrorCorrections),
+            'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
+            'numberOfReversals' => $numberOfReversals === false ? null : $this->trimLeftZeros($numberOfReversals),
             'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
+            'settlementAmount' => $settlementAmount === false ? null : $this->trimLeftZeros($settlementAmount),
         ]);
     }
 
@@ -206,19 +194,19 @@ final class Parser extends AbstractLineByLineParser
         $restOfRecord = \substr($line, 113, 106);
 
         return new Transaction([
+            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
             'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
             'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
-            'paymentInstructionType' => $paymentInstructionType === false ? null : $paymentInstructionType,
-            'transactionReferenceNumber' => $transactionReferenceNumber === false ? null : \trim(
-                $transactionReferenceNumber
-            ),
-            'originalReferenceNumber' => $originalReferenceNumber === false ? null : \trim($originalReferenceNumber),
             'errorCorrectionReason' => $errorCorrectionReason === false ? null : $errorCorrectionReason,
-            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
+            'originalReferenceNumber' => $originalReferenceNumber === false ? null : \trim($originalReferenceNumber),
             'paymentDate' => $paymentDate === false ? null : $paymentDate,
+            'paymentInstructionType' => $paymentInstructionType === false ? null : $paymentInstructionType,
             'paymentTime' => $paymentTime === false ? null : $paymentTime,
-            'settlementDate' => $settlementDate === false ? null : $settlementDate,
             'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
+            'settlementDate' => $settlementDate === false ? null : $settlementDate,
+            'transactionReferenceNumber' => $transactionReferenceNumber === false
+                ? null
+                : \trim($transactionReferenceNumber),
         ]);
     }
 }

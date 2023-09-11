@@ -1,34 +1,18 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Interfaces;
 
 interface MathInterface
 {
-    /**
-     * @var string
-     */
     public const ROUND_DECIMAL_SEPARATOR = '.';
 
-    /**
-     * @var int
-     */
     public const ROUND_MODE = \PHP_ROUND_HALF_EVEN;
 
-    /**
-     * @var int
-     */
     public const ROUND_PRECISION = 0;
 
-    /**
-     * @var string
-     */
     public const ROUND_THOUSANDS_SEPARATOR = '';
 
-    /**
-     * @var int
-     */
     public const SCALE = 99;
 
     /**
@@ -77,7 +61,7 @@ interface MathInterface
         string $multiplicand,
         string $multiplier,
         ?int $precision = null,
-        ?int $mode = null
+        ?int $mode = null,
     ): string;
 
     /**

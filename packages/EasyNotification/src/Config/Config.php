@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Config;
@@ -9,72 +8,27 @@ use EonX\EasyNotification\Interfaces\ConfigInterface;
 
 final class Config implements ConfigInterface
 {
-    /**
-     * @var string
-     */
-    private $algorithm;
-
-    /**
-     * @var string
-     */
-    private $apiKey;
-
-    /**
-     * @var string
-     */
-    private $apiUrl;
-
-    /**
-     * @var string
-     */
-    private $providerExternalId;
-
-    /**
-     * @var string
-     */
-    private $queueRegion;
-
-    /**
-     * @var string
-     */
-    private $queueUrl;
-
-    /**
-     * @var string
-     */
-    private $secret;
-
     public function __construct(
-        string $algorithm,
-        string $apiKey,
-        string $apiUrl,
-        string $providerExternalId,
-        string $queueRegion,
-        string $queueUrl,
-        string $secret
+        private string $algorithm,
+        private string $apiKey,
+        private string $apiUrl,
+        private string $providerExternalId,
+        private string $queueRegion,
+        private string $queueUrl,
+        private string $secret,
     ) {
-        $this->algorithm = $algorithm;
-        $this->apiKey = $apiKey;
-        $this->apiUrl = $apiUrl;
-        $this->providerExternalId = $providerExternalId;
-        $this->queueRegion = $queueRegion;
-        $this->queueUrl = $queueUrl;
-        $this->secret = $secret;
     }
 
-    /**
-     * @param mixed[] $config
-     */
     public static function fromArray(array $config): ConfigInterface
     {
         return new self(
-            $config['algorithm'],
-            $config['apiKey'],
-            $config['apiUrl'],
-            $config['externalId'],
-            $config['queueRegion'],
-            $config['queueUrl'],
-            $config['secret']
+            algorithm: $config['algorithm'],
+            apiKey: $config['apiKey'],
+            apiUrl: $config['apiUrl'],
+            providerExternalId: $config['externalId'],
+            queueRegion: $config['queueRegion'],
+            queueUrl: $config['queueUrl'],
+            secret: $config['secret']
         );
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\External\Auth0;
@@ -9,52 +8,31 @@ use Firebase\JWT\JWT;
 
 final class TokenGenerator implements TokenGeneratorInterface
 {
-    /**
-     * Audience for the ID token.
-     *
-     * @var string|null
-     */
-    private $audience;
+    private const DEFAULT_ALGO = 'HS256';
 
-    /**
-     * @var null|string
-     */
-    private $issuer;
-
-    /**
-     * Secret used to encode the token.
-     *
-     * @var string|null
-     */
-    private $secret;
-
-    public function __construct(?string $audience = null, ?string $secret = null, ?string $issuer = null)
-    {
-        $this->audience = $audience;
-        $this->secret = $secret;
-        $this->issuer = $issuer;
+    public function __construct(
+        private readonly ?string $audience = null,
+        private readonly ?string $secret = null,
+        private readonly ?string $issuer = null,
+    ) {
     }
 
-    /**
-     * @param mixed[] $scopes
-     * @param null|mixed[] $roles
-     */
     public function generate(
         array $scopes,
         ?array $roles = null,
         ?string $subject = null,
         ?int $lifetime = null,
-        ?bool $secretEncoded = null
+        ?bool $secretEncoded = null,
     ): string {
-        $secretEncoded = $secretEncoded ?? true;
-        $lifetime = $lifetime ?? 3600;
+        $secretEncoded ??= true;
+        $lifetime ??= 3600;
 
         $time = \time();
         $payload = [
+            'aud' => $this->audience,
+            'exp' => $time + $lifetime,
             'iat' => $time,
             'scopes' => $scopes,
-            'exp' => $time + $lifetime,
-            'aud' => $this->audience,
         ];
 
         if ($subject !== null) {
@@ -76,6 +54,6 @@ final class TokenGenerator implements TokenGeneratorInterface
             true
         ) : $this->secret;
 
-        return JWT::encode($payload, (string)$secret);
+        return JWT::encode($payload, (string)$secret, self::DEFAULT_ALGO);
     }
 }

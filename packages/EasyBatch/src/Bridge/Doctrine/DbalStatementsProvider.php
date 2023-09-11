@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Doctrine;
 
+use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
@@ -13,15 +13,9 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 
 final class DbalStatementsProvider
 {
-    /**
-     * @var callable
-     */
-    private $extendBatchItemsTable;
+    private ?Closure $extendBatchItemsTable = null;
 
-    /**
-     * @var callable
-     */
-    private $extendBatchesTable;
+    private ?Closure $extendBatchesTable = null;
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -29,7 +23,7 @@ final class DbalStatementsProvider
     public function __construct(
         private readonly Connection $conn,
         private readonly string $batchesTable = BatchRepositoryInterface::DEFAULT_TABLE,
-        private readonly string $batchItemsTable = BatchItemRepositoryInterface::DEFAULT_TABLE
+        private readonly string $batchItemsTable = BatchItemRepositoryInterface::DEFAULT_TABLE,
     ) {
         // Register types
         if (Type::hasType(DateTimeWithMicroSeconds::NAME) === false) {
@@ -39,14 +33,14 @@ final class DbalStatementsProvider
 
     public function extendBatchItemsTable(callable $callable): self
     {
-        $this->extendBatchItemsTable = $callable;
+        $this->extendBatchItemsTable = $callable(...);
 
         return $this;
     }
 
     public function extendBatchesTable(callable $callable): self
     {
-        $this->extendBatchesTable = $callable;
+        $this->extendBatchesTable = $callable(...);
 
         return $this;
     }

@@ -1,29 +1,25 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
-    /**
-     * @param null|mixed[] $config
-     * @param null|mixed[] $translations
-     *
-     * @dataProvider providerTestRenderWithDefaultBuilders
-     */
+    #[DataProvider('providerTestRenderWithDefaultBuilders')]
     public function testRenderWithDefaultBuilders(
         Request $request,
-        \Throwable $exception,
+        Throwable $exception,
         callable $assertResponse,
         ?array $config = null,
-        ?array $translations = null
+        ?array $translations = null,
     ): void {
         // Convert array config to yaml file for symfony to load
         if ($config !== null) {
@@ -60,9 +56,6 @@ final class ExceptionHandlerTest extends AbstractSymfonyTestCase
         }
     }
 
-    /**
-     * @param mixed[] $config
-     */
     private function dumpConfigFile(array $config): string
     {
         $filename = __DIR__ . '/tmp_config.yaml';

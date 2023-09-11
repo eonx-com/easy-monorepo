@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
@@ -21,7 +20,7 @@ final class FromRequestConfigurator
      */
     public function __construct(
         private readonly Request $request,
-        iterable $configurators
+        iterable $configurators,
     ) {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($configurators, SecurityContextConfiguratorInterface::class)

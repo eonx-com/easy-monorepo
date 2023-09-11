@@ -1,8 +1,0 @@
-{
-    "bundles": {
-        "EonX\\EasyWebhook\\Bridge\\Symfony\\EasyWebhookSymfonyBundle": ["all"]
-    },
-    "copy-from-recipe": {
-        "config/": "%CONFIG_DIR%/"
-    }
-}

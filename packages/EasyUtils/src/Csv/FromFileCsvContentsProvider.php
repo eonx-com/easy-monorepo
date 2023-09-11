@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Csv;
@@ -8,13 +7,12 @@ use EonX\EasyUtils\Csv\Exceptions\InvalidCsvFilenameException;
 
 final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
 {
-    public function __construct(private readonly string $filename)
-    {
+    public function __construct(
+        private readonly string $filename,
+    ) {
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @throws \EonX\EasyUtils\Csv\Exceptions\InvalidCsvFilenameException
      */
     public function getContents(): iterable

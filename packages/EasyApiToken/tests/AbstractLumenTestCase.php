@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests;
@@ -8,10 +7,7 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     protected function getApplication(): Application
     {
@@ -19,9 +15,9 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->boot();
+        $this->app = new Application(__DIR__);
+        $this->app->boot();
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

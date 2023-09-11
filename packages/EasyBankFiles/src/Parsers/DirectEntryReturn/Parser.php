@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryReturn;
@@ -12,60 +11,33 @@ use EonX\EasyBankFiles\Parsers\Error;
 
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string Code for header line
-     */
     private const HEADER = '0';
 
-    /**
-     * @var int Minimal header line length (calculated from maximum substr arguments)
-     */
     private const MIN_HEADER_LINE_LENGTH = 80;
 
-    /**
-     * @var int Minimal trailer line length (calculated from maximum substr arguments)
-     */
     private const MIN_TRAILER_LINE_LENGTH = 80;
 
-    /**
-     * @var int Minimal transaction line length (calculated from maximum substr arguments)
-     */
     private const MIN_TRANSACTION_LINE_LENGTH = 120;
 
-    /**
-     * @var string Code for trailer line
-     */
     private const TRAILER = '7';
 
-    /**
-     * @var string Code for transaction
-     */
     private const TRANSACTION_1 = '1';
 
-    /**
-     * @var string Code for transaction
-     */
     private const TRANSACTION_2 = '2';
 
     /**
-     * @var mixed[] $errors
+     * @var \EonX\EasyBankFiles\Parsers\Error[] $errors
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Header
-     */
-    private $header;
+    private Header $header;
 
-    /**
-     * @var \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Trailer
-     */
-    private $trailer;
+    private Trailer $trailer;
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\DirectEntryReturn\Results\Transaction[]
      */
-    private $transactions = [];
+    private array $transactions = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsers\Error[]
@@ -99,12 +71,9 @@ final class Parser extends AbstractLineByLineParser
         return $this->transactions;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function processLine(int $lineNumber, string $line): void
     {
-        // code is the first character in line
+        // Code is the first character in line
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
         $lineLength = \strlen($line);
 
@@ -153,10 +122,10 @@ final class Parser extends AbstractLineByLineParser
         return new Header([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
             'description' => $description === false ? null : \trim($description),
+            'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
             'userFinancialInstitution' => $userFinancialInstitution === false ? null : $userFinancialInstitution,
             'userIdSupplyingFile' => $userIdSupplyingFile === false ? null : $userIdSupplyingFile,
             'userSupplyingFile' => $userSupplyingFile === false ? null : \trim($userSupplyingFile),
-            'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
         ]);
     }
 
@@ -179,9 +148,9 @@ final class Parser extends AbstractLineByLineParser
         return new Trailer([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
             'numberPayments' => $numberPayments === false ? null : $this->trimLeftZeros($numberPayments),
-            'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
             'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
+            'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
         ]);
     }
 

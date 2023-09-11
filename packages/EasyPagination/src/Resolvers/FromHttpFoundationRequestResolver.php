@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Resolvers;
@@ -13,9 +12,9 @@ final class FromHttpFoundationRequestResolver
 {
     public function __construct(
         private PaginationConfigInterface $config,
-        private Request $request
+        private Request $request,
     ) {
-        // No body needed.
+        // No body needed
     }
 
     public function __invoke(): PaginationInterface

@@ -1,20 +1,18 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Tests;
 
 use EonX\EasyTest\Exceptions\UnableToLoadCoverageException;
 use EonX\EasyTest\Exceptions\UnableToResolveCoverageException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class CheckCoverageCommandTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testCheckCoverage
      */
-    public function providerCheckCoverage(): iterable
+    public static function providerCheckCoverage(): iterable
     {
         yield 'Txt file but coverage too low' => [
             [
@@ -58,11 +56,9 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testCheckCoverageExceptions
      */
-    public function providerCheckCoverageExceptions(): iterable
+    public static function providerCheckCoverageExceptions(): iterable
     {
         yield 'File not found' => [
             [
@@ -94,32 +90,26 @@ final class CheckCoverageCommandTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $inputs
-     *
      * @throws \Exception
-     *
-     * @dataProvider providerCheckCoverage
      */
+    #[DataProvider('providerCheckCoverage')]
     public function testCheckCoverage(array $inputs, string $expectedOutput): void
     {
-        $output = $this->executeCommand('check-coverage', $inputs);
+        $output = $this->executeCommand('easy-test:check-coverage', $inputs);
 
         self::assertStringContainsString($expectedOutput, $output);
     }
 
     /**
-     * @param mixed[] $inputs
+     * @phpstan-param class-string<\Throwable> $expectedException
      *
      * @throws \Exception
-     *
-     * @dataProvider providerCheckCoverageExceptions
-     *
-     * @phpstan-param class-string<\Throwable> $expectedException
      */
+    #[DataProvider('providerCheckCoverageExceptions')]
     public function testCheckCoverageExceptions(array $inputs, string $expectedException): void
     {
         $this->expectException($expectedException);
 
-        $this->executeCommand('check-coverage', $inputs);
+        $this->executeCommand('easy-test:check-coverage', $inputs);
     }
 }

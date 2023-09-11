@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
@@ -9,16 +8,11 @@ use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
 final class AuthorizationRolesProviderStub implements RolesProviderInterface
 {
     /**
-     * @var null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null $roles
      */
-    private $roles;
-
-    /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
-     */
-    public function __construct(?array $roles = null)
-    {
-        $this->roles = $roles;
+    public function __construct(
+        private ?array $roles = null,
+    ) {
     }
 
     /**

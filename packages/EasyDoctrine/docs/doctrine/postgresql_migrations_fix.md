@@ -1,4 +1,8 @@
----eonx_docs--- title: PostgreSQL migrations fix weight: 3000 is_section: true ---eonx_docs---
+---eonx_docs---
+title: PostgreSQL migrations fix
+weight: 3000
+is_section: true
+---eonx_docs---
 
 ### Issue description
 

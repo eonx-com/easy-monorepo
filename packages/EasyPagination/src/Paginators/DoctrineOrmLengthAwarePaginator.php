@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginators;
@@ -18,7 +17,7 @@ final class DoctrineOrmLengthAwarePaginator extends AbstractLengthAwarePaginator
         EntityManagerInterface $manager,
         string $from,
         string $fromAlias,
-        ?string $indexBy = null
+        ?string $indexBy = null,
     ) {
         $this->manager = $manager;
         $this->from = $from;

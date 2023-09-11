@@ -1,23 +1,23 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai;
 
+use EonX\EasyBankFiles\Parsers\Nai\AccountSummaryCodes;
 use EonX\EasyBankFiles\Parsers\Nai\ControlTotal;
 use EonX\EasyBankFiles\Parsers\Nai\Parser;
 use EonX\EasyBankFiles\Parsers\Nai\Results\Account;
 use EonX\EasyBankFiles\Parsers\Nai\Results\File;
+use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext;
 use EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
- * @covers \EonX\EasyBankFiles\Parsers\Nai\AccountSummaryCodes
- * @covers \EonX\EasyBankFiles\Parsers\Nai\ControlTotal
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Parser
- * @covers \EonX\EasyBankFiles\Parsers\Nai\TransactionDetailCodes
- */
+#[CoversClass(AccountSummaryCodes::class)]
+#[CoversClass(ControlTotal::class)]
+#[CoversClass(Parser::class)]
+#[CoversClass(ResultsContext::class)]
+#[CoversClass(TransactionDetailCodes::class)]
 final class ParserTest extends TestCase
 {
     /**
@@ -28,7 +28,7 @@ final class ParserTest extends TestCase
     public function testControlTotalTraitReturnFormattedAmount(): void
     {
         $trait = $this->getObjectForTrait(ControlTotal::class);
-        $formatAmount = $this->getProtectedMethod(\get_class($trait), 'formatAmount');
+        $formatAmount = $this->getProtectedMethod($trait::class, 'formatAmount');
 
         self::assertIsFloat($formatAmount->invokeArgs($trait, ['100000']));
         self::assertSame((float)100, $formatAmount->invokeArgs($trait, ['10000']));
@@ -67,7 +67,7 @@ final class ParserTest extends TestCase
 
                 // Assert fixed values
                 self::assertEquals('0', $transaction->getFundsType());
-                self::assertEquals('z', \strtolower($baiTransaction->getFundsType()));
+                self::assertEquals('z', \strtolower((string)$baiTransaction->getFundsType()));
 
                 self::assertEquals($transaction->getAmount(), $baiTransaction->getAmount(), 'mismatch amount');
                 self::assertEquals($transaction->getCode(), $baiTransaction->getCode(), 'mismatch code');
@@ -151,7 +151,7 @@ final class ParserTest extends TestCase
         self::assertCount(1, $parser->getGroups());
         self::assertCount(4, $parser->getAccounts());
         self::assertCount(10, $parser->getTransactions());
-        // one error line, 16,475,330/ .. because its missing required fundType
+        // One error line, 16,475,330/ .. because its missing required fundType
         self::assertCount(1, $parser->getErrors());
 
         $transactions = $parser->getTransactions();
@@ -285,17 +285,18 @@ final class ParserTest extends TestCase
 
     /**
      * @param \EonX\EasyBankFiles\Parsers\Nai\Results\Account[] $accounts
-     * @param null|string[] $filter The account numbers to filter on
+     * @param string[]|null $filter The account numbers to filter on
      *
      * @return array<string, \EonX\EasyBankFiles\Parsers\Nai\Results\Transaction[]>
      */
     private function getTransactionsForAccounts(array $accounts, ?array $filter = null): array
     {
         $return = [];
-        $filter = $filter ?? \array_map(static function (Account $account): string {
-            return $account->getIdentifier()
-                ->getCommercialAccountNumber();
-        }, $accounts);
+        $filter ??= \array_map(
+            static fn (Account $account): string => $account->getIdentifier()
+                ->getCommercialAccountNumber(),
+            $accounts
+        );
 
         foreach ($accounts as $account) {
             $accountNumber = $account->getIdentifier()

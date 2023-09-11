@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule;
@@ -10,15 +9,12 @@ use Symfony\Component\Console\Application;
 
 final class Schedule implements ScheduleInterface
 {
-    /**
-     * @var \Symfony\Component\Console\Application
-     */
-    private $app;
+    private Application $app;
 
     /**
      * @var \EonX\EasySchedule\Interfaces\EventInterface[]
      */
-    private $events = [];
+    private array $events = [];
 
     /**
      * @param \EonX\EasySchedule\Interfaces\ScheduleProviderInterface[] $providers
@@ -32,12 +28,10 @@ final class Schedule implements ScheduleInterface
         return $this;
     }
 
-    /**
-     * @param null|mixed[] $parameters
-     */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
-        $this->events[] = $event = new Event($command, $parameters);
+        $event = new Event($command, $parameters);
+        $this->events[] = $event;
 
         return $event;
     }
@@ -52,9 +46,7 @@ final class Schedule implements ScheduleInterface
      */
     public function getDueEvents(): array
     {
-        return \array_filter($this->events, static function (EventInterface $event): bool {
-            return $event->isDue();
-        });
+        return \array_filter($this->events, static fn (EventInterface $event): bool => $event->isDue());
     }
 
     public function setApplication(Application $app): ScheduleInterface

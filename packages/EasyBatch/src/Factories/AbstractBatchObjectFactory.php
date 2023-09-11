@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Factories;
@@ -13,13 +12,10 @@ abstract class AbstractBatchObjectFactory
 {
     public function __construct(
         protected readonly BatchObjectTransformerInterface $transformer,
-        private readonly ?EventDispatcherInterface $dispatcher = null
+        private readonly ?EventDispatcherInterface $dispatcher = null,
     ) {
     }
 
-    /**
-     * @param mixed[] $data
-     */
     public function createFromArray(array $data): BatchObjectInterface
     {
         $batchObject = $this->transformer->transformToObject($data);

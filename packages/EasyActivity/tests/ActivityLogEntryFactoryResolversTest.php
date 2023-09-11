@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests;
@@ -15,6 +14,7 @@ use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 use EonX\EasyActivity\Tests\Fixtures\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
+use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 {
@@ -37,15 +37,15 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId(1);
+        $author->setId((string)(new NilUuid()));
 
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $author,
             ['change' => [null, 1]]
         );
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
         self::assertSame('custom-actor-id', $result->getActorId());
         self::assertSame('custom-actor-type', $result->getActorType());
@@ -65,7 +65,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
                 public function resolve(
                     string $action,
                     ActivitySubjectInterface $subject,
-                    array $changeSet
+                    array $changeSet,
                 ): ?ActivitySubjectDataInterface {
                     $data = [];
                     $oldData = [];
@@ -79,15 +79,15 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             }
         );
         $author = new Author();
-        $author->setId(1);
+        $author->setId((string)(new NilUuid()));
 
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $author,
             ['field' => [1, 2]]
         );
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
         self::assertSame('a:1:{s:5:"field";i:1;}', $result->getSubjectData());
         self::assertSame('a:1:{s:5:"field";i:2;}', $result->getSubjectOldData());
@@ -100,6 +100,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         $subjectType = 'subject-type';
         $activityLogEntity = new ActivityLogEntity($subjectId, $subjectType, ['field1']);
 
+        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         $result = $factory->create(
             ActivityLogEntry::ACTION_UPDATE,
             $activityLogEntity,
@@ -109,7 +110,6 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
             ]
         );
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
         self::assertNotNull($result);
         self::assertSame($subjectId, $result->getSubjectId());
         self::assertSame($subjectType, $result->getSubjectType());

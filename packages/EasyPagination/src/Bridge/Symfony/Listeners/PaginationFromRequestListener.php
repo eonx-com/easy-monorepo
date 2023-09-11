@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Bridge\Symfony\Listeners;
@@ -10,14 +9,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class PaginationFromRequestListener
 {
-    /**
-     * @var \EonX\EasyPagination\Interfaces\PaginationProviderInterface
-     */
-    private $paginationProvider;
-
-    public function __construct(PaginationProviderInterface $paginationProvider)
-    {
-        $this->paginationProvider = $paginationProvider;
+    public function __construct(
+        private PaginationProviderInterface $paginationProvider,
+    ) {
     }
 
     public function __invoke(RequestEvent $event): void

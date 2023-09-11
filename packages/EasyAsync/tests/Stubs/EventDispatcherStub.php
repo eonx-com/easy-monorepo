@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Stubs;
 
-use EonX\EasyAsync\Interfaces\EasyAsyncEventInterface;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class EventDispatcherStub implements EventDispatcherInterface
@@ -12,9 +10,9 @@ final class EventDispatcherStub implements EventDispatcherInterface
     /**
      * @var object[]|\EonX\EasyAsync\Interfaces\EasyAsyncEventInterface[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
-    public function dispatch($event): EasyAsyncEventInterface
+    public function dispatch(object $event): object
     {
         $this->dispatched[] = $event;
 
@@ -22,7 +20,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     }
 
     /**
-     * @return object[]|EasyAsyncEventInterface[]
+     * @return object[]|\EonX\EasyAsync\Interfaces\EasyAsyncEventInterface[]
      */
     public function getDispatchedEvents(): array
     {

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Bridge\Laravel;
@@ -7,23 +6,22 @@ namespace EonX\EasyLogging\Tests\Bridge\Laravel;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use Illuminate\Container\EntryNotFoundException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 
 final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testChannelParameterOnMake
      */
-    public function providerTestChannelParameterOnMake(): iterable
+    public static function providerTestChannelParameterOnMake(): iterable
     {
         yield 'Default' => [null];
         yield 'App' => ['app'];
         yield 'Custom' => ['custom'];
     }
 
-    /**
-     * @dataProvider providerTestChannelParameterOnMake
-     */
+    #[DataProvider('providerTestChannelParameterOnMake')]
     public function testChannelParameterOnMake(?string $channel): void
     {
         $logger = $this->getApp()

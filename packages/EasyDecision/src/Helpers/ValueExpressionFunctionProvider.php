@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Helpers;
@@ -11,9 +10,6 @@ use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
 
 final class ValueExpressionFunctionProvider
 {
-    /**
-     * @return mixed[]
-     */
     public function getFunctions(): array
     {
         return [$this->add(), $this->divide(), $this->equal(), $this->if(), $this->multiply(), $this->subtract()];
@@ -21,7 +17,7 @@ final class ValueExpressionFunctionProvider
 
     private function add(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('add', function ($arguments, $value) {
+        return new ExpressionFunction('add', function ($arguments, $value): int|float {
             $this->validateArguments($arguments);
 
             return $arguments['value'] + $value;
@@ -30,7 +26,7 @@ final class ValueExpressionFunctionProvider
 
     private function divide(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('divide', function ($arguments, $value) {
+        return new ExpressionFunction('divide', function ($arguments, $value): int|float {
             $this->validateArguments($arguments);
 
             if ($value === 0) {
@@ -43,41 +39,52 @@ final class ValueExpressionFunctionProvider
 
     private function equal(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('equal', function ($arguments, $target, $value) {
-            return $target === $value;
-        }, 'Check if the 2 given arguments are equal');
+        return new ExpressionFunction(
+            'equal',
+            static fn ($arguments, $target, $value): bool => $target === $value,
+            'Check if the 2 given arguments are equal'
+        );
     }
 
     private function if(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('if', function ($arguments, $condition) {
-            $this->validateArguments($arguments);
+        return new ExpressionFunction(
+            'if',
+            function ($arguments, $condition): IfConditionForValue {
+                $this->validateArguments($arguments);
 
-            return new IfConditionForValue((bool)$condition, $arguments['value']);
-        }, 'Create if condition allowing usage of ".then()" and/or "else()"');
+                return new IfConditionForValue((bool)$condition, $arguments['value']);
+            },
+            'Create if condition allowing usage of ".then()" and/or "else()"'
+        );
     }
 
     private function multiply(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('multiply', function ($arguments, $value) {
-            $this->validateArguments($arguments);
+        return new ExpressionFunction(
+            'multiply',
+            function ($arguments, $value): int|float {
+                $this->validateArguments($arguments);
 
-            return $arguments['value'] * $value;
-        }, 'Multiply value from input by the given argument');
+                return $arguments['value'] * $value;
+            },
+            'Multiply value from input by the given argument'
+        );
     }
 
     private function subtract(): ExpressionFunctionInterface
     {
-        return new ExpressionFunction('subtract', function ($arguments, $value) {
-            $this->validateArguments($arguments);
+        return new ExpressionFunction(
+            'subtract',
+            function ($arguments, $value): int|float {
+                $this->validateArguments($arguments);
 
-            return $arguments['value'] - $value;
-        }, 'Subtract given argument from value from input');
+                return $arguments['value'] - $value;
+            },
+            'Subtract given argument from value from input'
+        );
     }
 
-    /**
-     * @param mixed[] $arguments
-     */
     private function validateArguments(array $arguments): void
     {
         if (isset($arguments['value']) === false) {

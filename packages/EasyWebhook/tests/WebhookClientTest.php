@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
+use EmptyIterator;
 use EonX\EasyWebhook\Formatters\JsonFormatter;
 use EonX\EasyWebhook\Interfaces\MiddlewareInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
@@ -28,16 +28,15 @@ use EonX\EasyWebhook\Tests\Stubs\AsyncDispatcherStub;
 use EonX\EasyWebhook\Tests\Stubs\HttpClientStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookClient;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class WebhookClientTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testSend
      */
-    public function providerTestSend(): iterable
+    public static function providerTestSend(): iterable
     {
         yield 'Simple URL' => [
             (new Webhook())->url('https://eonx.com'),
@@ -86,7 +85,7 @@ final class WebhookClientTest extends AbstractTestCase
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
-            new \EmptyIterator(),
+            new EmptyIterator(),
         ];
 
         yield 'RS256 Signature' => [
@@ -135,7 +134,7 @@ final class WebhookClientTest extends AbstractTestCase
             ],
             [
                 new IdHeaderMiddleware(new ArrayStoreStub(
-                    $this->getRandomGenerator(),
+                    self::getRandomGenerator(),
                     '78981b69-535d-4483-8d94-2ef7cbdb07c8'
                 )),
             ],
@@ -156,17 +155,15 @@ final class WebhookClientTest extends AbstractTestCase
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
-     * @param mixed[] $httpClientOptions
-     *
-     * @dataProvider providerTestSend
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      */
+    #[DataProvider('providerTestSend')]
     public function testSend(
         WebhookInterface $webhook,
         string $method,
         string $url,
         array $httpClientOptions,
-        ?iterable $middleware = null
+        ?iterable $middleware = null,
     ): void {
         $httpClient = new HttpClientStub();
         $store = $this->getArrayStore();
@@ -183,22 +180,22 @@ final class WebhookClientTest extends AbstractTestCase
 
     private function getArrayResultStore(): ArrayResultStore
     {
-        return new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        return new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
     }
 
     private function getArrayStore(): ArrayStore
     {
-        return new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
+        return new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
     }
 
     /**
-     * @param null|iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface> $middleware
+     * @param iterable<\EonX\EasyWebhook\Interfaces\MiddlewareInterface>|null $middleware
      */
     private function getStack(
         HttpClientInterface $httpClient,
         StoreInterface $store,
         ResultStoreInterface $resultStore,
-        ?iterable $middleware = null
+        ?iterable $middleware = null,
     ): StackInterface {
         $middlewareArray = [
             new StoreMiddleware($store, $resultStore, MiddlewareInterface::PRIORITY_CORE_AFTER),

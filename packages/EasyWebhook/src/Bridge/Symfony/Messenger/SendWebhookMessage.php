@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Symfony\Messenger;
@@ -8,19 +7,11 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class SendWebhookMessage
 {
-    /**
-     * @var null|\EonX\EasyWebhook\Interfaces\WebhookResultInterface
-     */
-    private $result;
+    private ?WebhookResultInterface $result = null;
 
-    /**
-     * @var string
-     */
-    private $webhookId;
-
-    public function __construct(string $webhookId)
-    {
-        $this->webhookId = $webhookId;
+    public function __construct(
+        private string $webhookId,
+    ) {
     }
 
     public function getResult(): ?WebhookResultInterface

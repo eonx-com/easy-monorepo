@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\Nai\Results;
@@ -10,10 +9,9 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Groups\Trailer;
 use EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\Nai\Results\Group
- */
+#[CoversClass(Group::class)]
 final class GroupTest extends TestCase
 {
     /**

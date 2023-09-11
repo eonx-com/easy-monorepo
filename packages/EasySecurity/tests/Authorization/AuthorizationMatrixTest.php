@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Authorization;
@@ -11,15 +10,14 @@ use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationPermissionsProviderStub;
 use EonX\EasySecurity\Tests\Stubs\AuthorizationRolesProviderStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AuthorizationMatrixTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testMatrix
      */
-    public function providerTestMatrix(): iterable
+    public static function providerTestMatrix(): iterable
     {
         yield 'Empty roles and permissions' => [
             static function (AuthorizationMatrix $matrix): void {
@@ -62,11 +60,10 @@ final class AuthorizationMatrixTest extends AbstractTestCase
     }
 
     /**
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
-     *
-     * @dataProvider providerTestMatrix
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null $roles
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
      */
+    #[DataProvider('providerTestMatrix')]
     public function testMatrix(callable $test, ?array $roles = null, ?array $permissions = null): void
     {
         $factory = new AuthorizationMatrixFactory(

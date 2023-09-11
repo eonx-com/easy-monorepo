@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel\Fixtures\Providers;
@@ -16,9 +15,10 @@ final class RolesAndPermissionsServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             RolesAndPermissionsProviderStub::class,
-            static function (): RolesAndPermissionsProviderStub {
-                return new RolesAndPermissionsProviderStub([new Role('role')], [new Permission('permission')]);
-            }
+            static fn (): RolesAndPermissionsProviderStub => new RolesAndPermissionsProviderStub(
+                [new Role('role')],
+                [new Permission('permission')]
+            )
         );
 
         $this->app->tag([RolesAndPermissionsProviderStub::class], [

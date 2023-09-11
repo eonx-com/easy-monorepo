@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stores;
@@ -10,28 +9,29 @@ use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class DoctrineDbalStoreTest extends AbstractStoreTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testFindDueWebhooks
      */
-    public function providerTestFindDueWebhooks(): iterable
+    public static function providerTestFindDueWebhooks(): iterable
     {
         yield '0 webhook in store' => [[], 0];
 
-        yield '1 webhook in store but not sendAfter' => [[$this->createWebhookForSendAfter()], 0];
+        yield '1 webhook in store but not sendAfter' => [[self::createWebhookForSendAfter()], 0];
 
         yield '1 webhook in store and is sendAfter' => [
-            [$this->createWebhookForSendAfter(Carbon::now('UTC')->subDay())],
+            [self::createWebhookForSendAfter(Carbon::now('UTC')->subDay())],
             1,
         ];
 
         yield 'webhooks in store but only 1 is sendAfter' => [
             [
-                $this->createWebhookForSendAfter(Carbon::now('UTC')->subDay()),
-                $this->createWebhookForSendAfter(Carbon::now('UTC')->subDay(), WebhookInterface::STATUS_SUCCESS),
-                $this->createWebhookForSendAfter(Carbon::now('UTC')->addDay()),
+                self::createWebhookForSendAfter(Carbon::now('UTC')->subDay()),
+                self::createWebhookForSendAfter(Carbon::now('UTC')->subDay(), WebhookInterface::STATUS_SUCCESS),
+                self::createWebhookForSendAfter(Carbon::now('UTC')->addDay()),
             ],
             1,
         ];
@@ -39,12 +39,10 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
 
     /**
      * @param \EonX\EasyWebhook\Interfaces\WebhookInterface[] $webhooks
-     * @param int $expectedDue
      *
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @dataProvider providerTestFindDueWebhooks
      */
+    #[DataProvider('providerTestFindDueWebhooks')]
     public function testFindDueWebhooks(array $webhooks, int $expectedDue): void
     {
         $store = $this->getStore();
@@ -103,7 +101,7 @@ final class DoctrineDbalStoreTest extends AbstractStoreTestCase
     private function getStore(): DoctrineDbalStore
     {
         return new DoctrineDbalStore(
-            $this->getRandomGenerator(),
+            self::getRandomGenerator(),
             $this->getDoctrineDbalConnection(),
             $this->getDataCleaner()
         );

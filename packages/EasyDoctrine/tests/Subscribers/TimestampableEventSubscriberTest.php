@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Subscribers;
@@ -14,12 +13,11 @@ use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Traits\TimestampableTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionClass;
 use stdClass;
 
-/**
- * @covers \EonX\EasyDoctrine\Subscribers\TimestampableEventSubscriber
- */
+#[CoversClass(TimestampableEventSubscriber::class)]
 final class TimestampableEventSubscriberTest extends AbstractTestCase
 {
     public function testGetSubscribedEventsSucceeds(): void

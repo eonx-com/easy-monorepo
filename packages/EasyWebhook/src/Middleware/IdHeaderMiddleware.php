@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
@@ -11,19 +10,13 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 
 final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    /**
-     * @var string
-     */
-    private $idHeader;
+    private string $idHeader;
 
-    /**
-     * @var \EonX\EasyWebhook\Interfaces\Stores\StoreInterface
-     */
-    private $store;
-
-    public function __construct(StoreInterface $store, ?string $idHeader = null, ?int $priority = null)
-    {
-        $this->store = $store;
+    public function __construct(
+        private StoreInterface $store,
+        ?string $idHeader = null,
+        ?int $priority = null,
+    ) {
         $this->idHeader = $idHeader ?? WebhookInterface::HEADER_ID;
 
         parent::__construct($priority);

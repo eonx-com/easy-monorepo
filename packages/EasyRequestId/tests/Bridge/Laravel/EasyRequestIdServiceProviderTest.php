@@ -1,11 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Bridge\Laravel;
 
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class EasyRequestIdServiceProviderTest extends AbstractLumenTestCase
 {

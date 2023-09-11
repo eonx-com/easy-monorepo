@@ -1,16 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Events;
 
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-/**
- * @covers \EonX\EasyDoctrine\Events\EntityUpdatedEvent
- */
+#[CoversClass(EntityUpdatedEvent::class)]
 final class EntityUpdatedEventTest extends AbstractTestCase
 {
     public function testGetChangeSetSucceeds(): void

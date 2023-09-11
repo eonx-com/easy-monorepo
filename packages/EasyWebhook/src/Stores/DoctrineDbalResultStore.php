@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Stores;
@@ -7,7 +6,7 @@ namespace EonX\EasyWebhook\Stores;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
-use EonX\EasyUtils\ErrorDetailsHelper;
+use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Interfaces\Stores\ResultStoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
@@ -18,7 +17,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         RandomGeneratorInterface $random,
         Connection $conn,
         DataCleanerInterface $dataCleaner,
-        ?string $table = null
+        ?string $table = null,
     ) {
         parent::__construct($random, $conn, $dataCleaner, $table ?? 'easy_webhook_results');
     }
@@ -30,7 +29,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
 
         // New result with no id
         if ($result->getId() === null) {
-            $result->setId($this->random->uuidV4());
+            $result->setId($this->random->uuid());
 
             $data['id'] = $result->getId();
             $data['created_at'] = $now;
@@ -59,8 +58,6 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -73,11 +70,11 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         $throwable = $result->getThrowable();
 
         $data = [
-            'method' => $webhook->getMethod(),
-            'url' => $webhook->getUrl(),
             'http_options' => $webhook->getHttpClientOptions(),
+            'method' => $webhook->getMethod(),
             'updated_at' => $now,
-            'webhook_class' => \get_class($webhook),
+            'url' => $webhook->getUrl(),
+            'webhook_class' => $webhook::class,
             'webhook_id' => $webhook->getId(),
         ];
 

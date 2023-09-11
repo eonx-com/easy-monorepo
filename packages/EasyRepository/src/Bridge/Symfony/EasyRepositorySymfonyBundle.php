@@ -1,24 +1,33 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bridge\Symfony;
 
+use EonX\EasyRepository\Bridge\BridgeConstantsInterface;
 use EonX\EasyRepository\Bridge\Symfony\DependencyInjection\Compiler\SetPaginationOnRepositoryPass;
-use EonX\EasyRepository\Bridge\Symfony\DependencyInjection\EasyRepositoryExtension;
+use EonX\EasyRepository\Interfaces\PaginatedObjectRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-final class EasyRepositorySymfonyBundle extends Bundle
+final class EasyRepositorySymfonyBundle extends AbstractBundle
 {
+    protected string $extensionAlias = 'easy_repository';
+
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new SetPaginationOnRepositoryPass());
     }
 
-    public function getContainerExtension(): ExtensionInterface
+    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        return new EasyRepositoryExtension();
+        $builder
+            ->registerForAutoconfiguration(PaginatedObjectRepositoryInterface::class)
+            ->addTag(BridgeConstantsInterface::TAG_PAGINATED_REPOSITORY);
     }
 }

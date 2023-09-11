@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Release;
@@ -16,8 +15,9 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 
     private Filesystem $filesystem;
 
-    public function __construct(private FinderSanitizer $finderSanitizer)
-    {
+    public function __construct(
+        private FinderSanitizer $finderSanitizer,
+    ) {
         $this->filesystem = new Filesystem();
     }
 
@@ -44,9 +44,6 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
         $this->replaceContentsInReadme($contents);
     }
 
-    /**
-     * @return iterable<mixed>
-     */
     private function getPackagesList(): iterable
     {
         $composerFiles = (new Finder())
@@ -59,8 +56,8 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
             $json = \json_decode($composerFile->getContents(), true);
 
             yield $packageName => [
-                'name' => $json['name'],
                 'description' => $json['description'],
+                'name' => $json['name'],
             ];
         }
     }

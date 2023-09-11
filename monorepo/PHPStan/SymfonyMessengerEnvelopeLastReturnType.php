@@ -1,9 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\PHPStan;
 
+use InvalidArgumentException;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
@@ -27,12 +28,17 @@ final class SymfonyMessengerEnvelopeLastReturnType implements DynamicMethodRetur
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        Scope $scope
+        Scope $scope,
     ): Type {
-        $arg = $methodCall->args[0]->value;
-        $classname = $this->resolveClassName($arg);
+        $arg = $methodCall->args[0] ?? null;
 
-        $secondType = \is_string($classname) ? new ObjectType($classname) : $scope->getType($arg);
+        if ($arg instanceof Arg === false) {
+            throw new InvalidArgumentException('Argument not found.');
+        }
+
+        $classname = $this->resolveClassName($arg->value);
+
+        $secondType = \is_string($classname) ? new ObjectType($classname) : $scope->getType($arg->value);
 
         return new UnionType([new NullType(), $secondType]);
     }

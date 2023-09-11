@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Resolvers;
@@ -7,15 +6,14 @@ namespace EonX\EasyEncryption\Resolvers;
 use EonX\EasyEncryption\Exceptions\CouldNotResolveEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface;
 use EonX\EasyUtils\Traits\HasPriorityTrait;
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
 
 abstract class AbstractEncryptionKeyResolver implements EncryptionKeyResolverInterface
 {
     use HasPriorityTrait;
 
-    /**
-     * @return string|mixed[]|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
-     */
-    public function resolveKey(string $keyName)
+    public function resolveKey(string $keyName): string|array|EncryptionKey|EncryptionKeyPair
     {
         if ($this->supportsKey($keyName) === false) {
             throw new CouldNotResolveEncryptionKeyException(\sprintf(
@@ -28,8 +26,5 @@ abstract class AbstractEncryptionKeyResolver implements EncryptionKeyResolverInt
         return $this->doResolveKey($keyName);
     }
 
-    /**
-     * @return string|mixed[]|\ParagonIE\Halite\Symmetric\EncryptionKey|\ParagonIE\Halite\EncryptionKeyPair
-     */
-    abstract protected function doResolveKey(string $keyName);
+    abstract protected function doResolveKey(string $keyName): string|array|EncryptionKey|EncryptionKeyPair;
 }

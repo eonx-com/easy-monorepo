@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Stubs;
 
+use Generator;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -12,29 +12,17 @@ use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 final class HttpClientStub implements HttpClientInterface
 {
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
-    /**
-     * @var null|mixed[]
-     */
-    private $options;
+    private ?array $options = null;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
     public function getMethod(): ?string
     {
         return $this->method;
     }
 
-    /**
-     * @return null|mixed[]
-     */
     public function getOptions(): ?array
     {
         return $this->options;
@@ -45,9 +33,6 @@ final class HttpClientStub implements HttpClientInterface
         return $this->url;
     }
 
-    /**
-     * @param null|mixed[] $options
-     */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         $this->method = $method;
@@ -60,8 +45,7 @@ final class HttpClientStub implements HttpClientInterface
     /**
      * Yields responses chunk by chunk as they complete.
      *
-     * @param ResponseInterface|ResponseInterface[]|iterable $responses One or more responses created by the current
-     *     HTTP client
+     * @param \Symfony\Contracts\HttpClient\ResponseInterface|\Symfony\Contracts\HttpClient\ResponseInterface[]|iterable $responses One or more responses created by the current HTTP client
      * @param float|null $timeout The idle timeout before yielding timeout chunks
      */
     public function stream($responses, ?float $timeout = null): ResponseStreamInterface
@@ -69,10 +53,17 @@ final class HttpClientStub implements HttpClientInterface
         return new ResponseStream($this->getGenerator());
     }
 
+    public function withOptions(array $options): static
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
     /**
      * @return \Generator<string>
      */
-    private function getGenerator(): \Generator
+    private function getGenerator(): Generator
     {
         yield 'stream';
     }

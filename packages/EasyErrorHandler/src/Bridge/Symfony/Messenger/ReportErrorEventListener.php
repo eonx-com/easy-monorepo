@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Messenger;
@@ -12,7 +11,7 @@ final class ReportErrorEventListener
 {
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorHandlerInterface $errorHandler
+        private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
 

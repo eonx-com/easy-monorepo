@@ -1,14 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
 
 final class UpdateBatchItemMessage
 {
-    /**
-     * @var string[]
-     */
     private const ONLY = [
         'attempts',
         'finished_at',
@@ -16,19 +12,12 @@ final class UpdateBatchItemMessage
         'status',
     ];
 
-    /**
-     * @var mixed[]
-     */
     private array $data = [];
 
-    /**
-     * @param mixed[] $data
-     * @param mixed[]|null $errorDetails
-     */
     public function __construct(
         private readonly int|string $batchItemId,
         array $data,
-        private readonly ?array $errorDetails = null
+        private readonly ?array $errorDetails = null,
     ) {
         foreach ($data as $name => $value) {
             if (\in_array($name, self::ONLY, true)) {
@@ -42,17 +31,11 @@ final class UpdateBatchItemMessage
         return $this->batchItemId;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getData(): array
     {
         return $this->data;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getErrorDetails(): ?array
     {
         return $this->errorDetails;

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySchedule\Bridge\Symfony;
@@ -11,29 +10,21 @@ use Symfony\Component\Console\Application;
 
 final class TraceableSchedule implements TraceableScheduleInterface
 {
-    /**
-     * @var string
-     */
-    private $currentProvider;
-
-    /**
-     * @var \EonX\EasySchedule\Interfaces\ScheduleInterface
-     */
-    private $decorated;
+    private string $currentProvider;
 
     /**
      * @var array<string, \EonX\EasySchedule\Interfaces\EventInterface[]>
      */
-    private $events = [];
+    private array $events = [];
 
     /**
      * @var \EonX\EasySchedule\Interfaces\ScheduleProviderInterface[]
      */
-    private $providers = [];
+    private array $providers = [];
 
-    public function __construct(ScheduleInterface $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private ScheduleInterface $decorated,
+    ) {
     }
 
     /**
@@ -42,7 +33,7 @@ final class TraceableSchedule implements TraceableScheduleInterface
     public function addProviders(array $providers): ScheduleInterface
     {
         foreach ($providers as $provider) {
-            $this->currentProvider = \get_class($provider);
+            $this->currentProvider = $provider::class;
             $this->providers[] = $provider;
 
             $provider->schedule($this);
@@ -51,9 +42,6 @@ final class TraceableSchedule implements TraceableScheduleInterface
         return $this;
     }
 
-    /**
-     * @param null|mixed[] $parameters
-     */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
         $event = $this->decorated->command($command, $parameters);

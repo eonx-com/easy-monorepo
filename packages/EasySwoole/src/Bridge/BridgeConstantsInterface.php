@@ -1,68 +1,39 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge;
 
 interface BridgeConstantsInterface
 {
-    /**
-     * @var string
-     */
+    public const PARAM_ACCESS_LOG_DO_NOT_LOG_PATHS = 'easy_swoole.access_log_do_not_log_paths';
+
     public const PARAM_ACCESS_LOG_TIMEZONE = 'easy_swoole.access_log_timezone';
 
-    /**
-     * @var string
-     */
+    public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_HEARTBEAT = 'easy_swoole.doctrine.coroutine_pdo.default_heartbeat';
+
+    public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME = 'easy_swoole.doctrine.coroutine_pdo.default_max_idle_time';
+
+    public const PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_POOL_SIZE = 'easy_swoole.doctrine.coroutine_pdo.default_pool_size';
+
     public const PARAM_REQUEST_LIMITS_MAX = 'easy_swoole.request_limits.max';
 
-    /**
-     * @var string
-     */
     public const PARAM_REQUEST_LIMITS_MIN = 'easy_swoole.request_limits.min';
 
-    /**
-     * @var string
-     */
-    public const PARAM_RESET_EASY_BATCH_PROCESSOR = 'easy_swoole.reset_easy_batch_processor';
-
-    /**
-     * @var string
-     */
     public const PARAM_RESET_DOCTRINE_DBAL_CONNECTIONS = 'easy_swoole.reset_doctrine_dbal_connections';
 
-    /**
-     * @var string
-     */
+    public const PARAM_RESET_EASY_BATCH_PROCESSOR = 'easy_swoole.reset_easy_batch_processor';
+
     public const PARAM_STATIC_PHP_FILES_ALLOWED_DIRS = 'easy_swoole.static_php_files_allowed_dirs';
 
-    /**
-     * @var string
-     */
     public const PARAM_STATIC_PHP_FILES_ALLOWED_FILENAMES = 'easy_swoole.static_php_files_allowed_filenames';
 
-    /**
-     * @var string
-     */
     public const SERVICE_ACCESS_LOG_LOGGER = 'easy_swoole.access_log_logger';
 
-    /**
-     * @var string
-     */
     public const SERVICE_FILESYSTEM = 'easy_swoole.filesystem';
 
-    /**
-     * @var string
-     */
     public const TAG_APP_STATE_CHECKER = 'easy_swoole.app_state_checker';
 
-    /**
-     * @var string
-     */
     public const TAG_APP_STATE_INITIALIZER = 'easy_swoole.app_state_initializer';
 
-    /**
-     * @var string
-     */
     public const TAG_APP_STATE_RESETTER = 'easy_swoole.app_state_resetter';
 }

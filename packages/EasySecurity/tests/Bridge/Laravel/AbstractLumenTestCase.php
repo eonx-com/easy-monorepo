@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel;
@@ -13,14 +12,10 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLumenTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
     /**
-     * @param null|string[] $providers
-     * @param null|mixed[] $config
+     * @param string[]|null $providers
      */
     protected function getApplication(?array $providers = null, ?array $config = null): Application
     {
@@ -28,7 +23,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
@@ -40,12 +35,12 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         ]);
 
         foreach ($providers as $provider) {
-            $app->register($provider);
+            $this->app->register($provider);
         }
 
-        $app->singleton(ApiTokenDecoderProviderStub::class);
-        $app->tag(ApiTokenDecoderProviderStub::class, [EasyApiTokenConstantsInterface::TAG_DECODER_PROVIDER]);
+        $this->app->singleton(ApiTokenDecoderProviderStub::class);
+        $this->app->tag(ApiTokenDecoderProviderStub::class, [EasyApiTokenConstantsInterface::TAG_DECODER_PROVIDER]);
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

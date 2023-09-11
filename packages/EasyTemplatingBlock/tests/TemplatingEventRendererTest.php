@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Tests;
@@ -8,13 +7,14 @@ use EonX\EasyTemplatingBlock\Blocks\TextBlock;
 use EonX\EasyTemplatingBlock\Providers\ArrayTemplatingBlockProvider;
 use EonX\EasyTemplatingBlock\Renderers\TextBlockRenderer;
 use EonX\EasyTemplatingBlock\TemplatingEventRenderer;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TemplatingEventRendererTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testRenderEvent
      */
-    public function providerTestRenderEvent(): iterable
+    public static function providerTestRenderEvent(): iterable
     {
         yield 'No block for event' => [
             [
@@ -57,21 +57,18 @@ final class TemplatingEventRendererTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $events
-     * @param null|mixed[] $context
      * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface[] $providers
-     * @param null|\EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface[] $renderers
-     *
-     * @dataProvider providerTestRenderEvent
+     * @param \EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface[]|null $renderers
      */
+    #[DataProvider('providerTestRenderEvent')]
     public function testRenderEvent(
         array $events,
         ?array $context,
         array $providers,
         ?array $renderers = null,
-        ?bool $isDebug = null
+        ?bool $isDebug = null,
     ): void {
-        $renderers = $renderers ?? [new TextBlockRenderer()];
+        $renderers ??= [new TextBlockRenderer()];
         $eventRenderer = new TemplatingEventRenderer($providers, $renderers, $isDebug ?? false);
 
         foreach ($events as $event => $expectedRendered) {

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -9,13 +8,14 @@ use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\Middleware\EventHeaderMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'no event' => [
             Webhook::fromArray([]),
@@ -52,9 +52,7 @@ final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(WebhookInterface $webhook, callable $test, ?string $eventHeader = null): void
     {
         $middleware = new EventHeaderMiddleware($eventHeader);

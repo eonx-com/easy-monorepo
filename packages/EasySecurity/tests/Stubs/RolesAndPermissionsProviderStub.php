@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
@@ -12,18 +11,16 @@ final class RolesAndPermissionsProviderStub implements RolesProviderInterface, P
     /**
      * @var string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]
      */
-    private $permissions;
+    private array $permissions;
 
     /**
      * @var string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]
      */
-    private $roles;
+    private array $roles;
 
     /**
-     * RolesAndPermissionsProviderStub constructor.
-     *
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[] $roles
-     * @param null|string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\RoleInterface[]|null $roles
+     * @param string[]|\EonX\EasySecurity\Interfaces\Authorization\PermissionInterface[]|null $permissions
      */
     public function __construct(?array $roles = null, ?array $permissions = null)
     {

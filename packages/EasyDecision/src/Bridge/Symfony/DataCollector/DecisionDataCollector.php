@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Bridge\Symfony\DataCollector;
@@ -7,35 +6,26 @@ namespace EonX\EasyDecision\Bridge\Symfony\DataCollector;
 use EonX\EasyDecision\Exceptions\ContextNotSetException;
 use EonX\EasyDecision\Interfaces\DecisionFactoryInterface;
 use EonX\EasyDecision\Interfaces\DecisionInterface;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class DecisionDataCollector extends DataCollector
 {
-    /**
-     * @var string
-     */
     public const NAME = 'easy_decision.decision_collector';
 
-    /**
-     * @var \EonX\EasyDecision\Interfaces\DecisionFactoryInterface
-     */
-    private $decisionFactory;
-
-    public function __construct(DecisionFactoryInterface $decisionFactory)
-    {
-        $this->decisionFactory = $decisionFactory;
+    public function __construct(
+        private DecisionFactoryInterface $decisionFactory,
+    ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         $this->data['decisions'] = $this->mapDecisions();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getDecisions(): array
     {
         return $this->data['decisions'] ?? [];
@@ -51,29 +41,23 @@ final class DecisionDataCollector extends DataCollector
         $this->data = [];
     }
 
-    /**
-     * @return mixed[]
-     */
     private function mapConfigurators(DecisionInterface $decision): array
     {
         $configurators = [];
 
         foreach ($this->decisionFactory->getConfiguratorsByDecision($decision) as $configurator) {
-            $reflection = new \ReflectionClass($configurator);
+            $reflection = new ReflectionClass($configurator);
 
             $configurators[] = [
-                'priority' => $configurator->getPriority(),
                 'class' => $reflection->getName(),
                 'filename' => $reflection->getFileName(),
+                'priority' => $configurator->getPriority(),
             ];
         }
 
         return $configurators;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function mapDecisions(): array
     {
         $decisions = [];
@@ -81,18 +65,18 @@ final class DecisionDataCollector extends DataCollector
         foreach ($this->decisionFactory->getConfiguredDecisions() as $decision) {
             try {
                 $context = $decision->getContext();
-            } catch (ContextNotSetException $exception) {
+            } catch (ContextNotSetException) {
                 $context = null;
             }
 
             $decisions[] = [
-                'name' => $decision->getName(),
-                'context' => [
-                    'decision_type' => $context ? $context->getDecisionType() : \get_class($decision),
-                    'original_input' => $context ? $context->getOriginalInput() : 'Decision not made...',
-                    'rule_output' => $context ? $context->getRuleOutputs() : [],
-                ],
                 'configurators' => $this->mapConfigurators($decision),
+                'context' => [
+                    'decision_type' => $context !== null ? $context->getDecisionType() : $decision::class,
+                    'original_input' => $context !== null ? $context->getOriginalInput() : 'Decision not made...',
+                    'rule_output' => $context !== null ? $context->getRuleOutputs() : [],
+                ],
+                'name' => $decision->getName(),
             ];
         }
 

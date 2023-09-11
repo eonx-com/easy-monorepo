@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony\DataCollector;
@@ -10,32 +9,25 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 final class ErrorHandlerDataCollector extends DataCollector
 {
-    /**
-     * @var string
-     */
     public const NAME = 'error_handler.error_handler_collector';
 
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-     */
-    private $errorHandler;
-
-    public function __construct(ErrorHandlerInterface $errorHandler)
-    {
-        $this->errorHandler = $errorHandler;
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler,
+    ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $throwable = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         if (($this->errorHandler instanceof TraceableErrorHandlerInterface) === false) {
             return;
         }
 
         foreach ($this->errorHandler->getBuilders() as $builder) {
-            $class = \get_class($builder);
+            $class = $builder::class;
 
             $this->data['builders'][$class] = [
                 'class' => $class,
@@ -44,7 +36,7 @@ final class ErrorHandlerDataCollector extends DataCollector
         }
 
         foreach ($this->errorHandler->getReporters() as $reporter) {
-            $class = \get_class($reporter);
+            $class = $reporter::class;
 
             $this->data['reporters'][$class] = [
                 'class' => $class,
@@ -53,7 +45,7 @@ final class ErrorHandlerDataCollector extends DataCollector
         }
 
         foreach ($this->errorHandler->getReportedErrors() as $reportedError) {
-            $class = \get_class($reportedError);
+            $class = $reportedError::class;
 
             $reportedErrorData = [
                 'class' => $class,

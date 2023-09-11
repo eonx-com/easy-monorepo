@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -11,13 +10,14 @@ use EonX\EasyWebhook\Stores\ArrayResultStore;
 use EonX\EasyWebhook\Stores\ArrayStore;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'Should store' => [1];
 
@@ -27,14 +27,12 @@ final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(int $resultsCount, ?WebhookResultInterface $webhookResult = null): void
     {
         $webhook = new Webhook();
-        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
-        $resultStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
+        $resultStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
         $middleware = new StoreMiddleware($store, $resultStore);
 
         $result = $this->process($middleware, $webhook, $webhookResult);

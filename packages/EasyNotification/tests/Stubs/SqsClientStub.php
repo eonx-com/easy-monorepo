@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Stubs;
@@ -8,10 +7,7 @@ use Aws\Sqs\SqsClient;
 
 final class SqsClientStub extends SqsClient
 {
-    /**
-     * @var mixed[]
-     */
-    private $calls = [];
+    private array $calls = [];
 
     public function __construct()
     {
@@ -22,17 +18,11 @@ final class SqsClientStub extends SqsClient
         ]);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getCalls(): array
     {
         return $this->calls;
     }
 
-    /**
-     * @param null|mixed[] $args
-     */
     public function sendMessage(?array $args = null): void
     {
         $this->calls[] = $args ?? [];

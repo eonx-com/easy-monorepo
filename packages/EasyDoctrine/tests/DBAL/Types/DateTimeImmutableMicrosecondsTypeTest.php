@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\DBAL\Types;
@@ -8,24 +7,29 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType
- */
+#[CoversClass(DateTimeImmutableMicrosecondsType::class)]
 final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Type::overrideType(DateTimeImmutableMicrosecondsType::TYPE_NAME, DateTimeImmutableMicrosecondsType::class);
+    }
+
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToDatabaseValueSucceeds
      */
-    public function provideConvertToDatabaseValues(): iterable
+    public static function provideConvertToDatabaseValues(): iterable
     {
         yield 'null value' => [null, null];
 
@@ -41,11 +45,9 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testConvertToPHPValueSucceeds
      */
-    public function provideConvertToPHPValues(): iterable
+    public static function provideConvertToPHPValues(): iterable
     {
         yield 'null value' => [null, null];
 
@@ -71,16 +73,14 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetSqlDeclarationSucceeds
      */
-    public function provideFieldDeclarationValues(): iterable
+    public static function provideFieldDeclarationValues(): iterable
     {
-        yield 'mysql' => [MySqlPlatform::class, [], 'DATETIME(6)'];
+        yield 'mysql' => [MySQLPlatform::class, [], 'DATETIME(6)'];
 
         yield 'mysql, with version = true' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => true,
             ],
@@ -88,7 +88,7 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         ];
 
         yield 'mysql, with version = false' => [
-            MySqlPlatform::class,
+            MySQLPlatform::class,
             [
                 'version' => false,
             ],
@@ -118,12 +118,8 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @dataProvider provideConvertToDatabaseValues
-     */
-    public function testConvertToDatabaseValueSucceeds($value, ?string $expectedValue = null): void
+    #[DataProvider('provideConvertToDatabaseValues')]
+    public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);
@@ -144,18 +140,13 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            "of type 'string' to type 'datetime'. " .
-            'Expected one of the following types: null, DateTimeImmutable');
+            'to type datetime. Expected one of the following types: null, DateTimeImmutable');
 
         $type->convertToDatabaseValue($value, $platform);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @dataProvider provideConvertToPHPValues
-     */
-    public function testConvertToPHPValueSucceeds($value, ?DateTimeInterface $expectedValue = null): void
+    #[DataProvider('provideConvertToPHPValues')]
+    public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);
@@ -191,15 +182,11 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         self::assertSame(DateTimeImmutableMicrosecondsType::TYPE_NAME, $name);
     }
 
-    /**
-     * @param mixed[] $fieldDeclaration
-     *
-     * @dataProvider provideFieldDeclarationValues
-     */
+    #[DataProvider('provideFieldDeclarationValues')]
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,
-        string $declaration
+        string $declaration,
     ): void {
         /** @var \EonX\EasyDoctrine\DBAL\Types\DateTimeImmutableMicrosecondsType $type */
         $type = Type::getType(DateTimeImmutableMicrosecondsType::TYPE_NAME);
@@ -209,12 +196,5 @@ final class DateTimeImmutableMicrosecondsTypeTest extends AbstractTestCase
         $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);
 
         self::assertSame($declaration, $actualDeclaration);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType(DateTimeImmutableMicrosecondsType::TYPE_NAME, DateTimeImmutableMicrosecondsType::class);
     }
 }

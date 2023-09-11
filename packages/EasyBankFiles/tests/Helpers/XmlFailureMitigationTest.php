@@ -1,25 +1,22 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Helpers;
 
 use EonX\EasyBankFiles\Helpers\XmlFailureMitigation;
 use EonX\EasyBankFiles\Tests\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \EonX\EasyBankFiles\Helpers\XmlFailureMitigation
- */
+#[CoversClass(XmlFailureMitigation::class)]
 final class XmlFailureMitigationTest extends TestCase
 {
     /**
      * Gets the XML scenarios for testing.
      *
-     * @return mixed[]
-     *
      * @see testMitigationReplacesInvalidLines
      */
-    public function getXmlScenarios(): iterable
+    public static function getXmlScenarios(): iterable
     {
         yield 'HTML-like characters in node value' => [
             'input' => '
@@ -43,7 +40,7 @@ final class XmlFailureMitigationTest extends TestCase
     public function testMitigationLeavesValidXmlAlone(): void
     {
         // phpcs:disable
-        // Disabled to ignore long lines in XML sample.
+        // Disabled to ignore long lines in XML sample
         $xml = <<<'XML'
 <PaymentsAcknowledgement type="info">
 <PaymentId>94829970</PaymentId>
@@ -74,9 +71,8 @@ XML;
 
     /**
      * Tests that the helper method successfully handles the provided scenarios.
-     *
-     * @dataProvider getXmlScenarios
      */
+    #[DataProvider('getXmlScenarios')]
     public function testMitigationReplacesInvalidLines(string $input, string $expected): void
     {
         $result = XmlFailureMitigation::tryMitigateParseFailures(\trim($input));

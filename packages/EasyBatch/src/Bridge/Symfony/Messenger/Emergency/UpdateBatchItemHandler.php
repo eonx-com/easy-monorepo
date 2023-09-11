@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
@@ -14,7 +14,7 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly ProcessBatchForBatchItemHandler $processBatchForBatchItemHandler
+        private readonly ProcessBatchForBatchItemHandler $processBatchForBatchItemHandler,
     ) {
     }
 
@@ -36,7 +36,7 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         $processBatchForBatchItemHandler(new ProcessBatchForBatchItemMessage($message->getBatchItemId()));
     }
 
-    private function createDateTimeFromFormat(string $dateTime): \DateTimeInterface
+    private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
         /** @var \DateTimeInterface $newDateTime */
         $newDateTime = Carbon::createFromFormat(BatchObjectInterface::DATETIME_FORMAT, $dateTime, 'UTC');
@@ -44,10 +44,6 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         return $newDateTime;
     }
 
-    /**
-     * @param mixed[] $data
-     * @param mixed[]|null $errorDetails
-     */
     private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem
@@ -65,8 +61,8 @@ final class UpdateBatchItemHandler implements MessageHandlerInterface
         }
 
         $internal['update_batch_item_emergency'][] = [
-            'triggered_at' => $now,
             'error_details' => $errorDetails,
+            'triggered_at' => $now,
         ];
 
         $metadata['_internal'] = $internal;

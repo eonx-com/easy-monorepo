@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Csv;
@@ -7,34 +6,34 @@ namespace EonX\EasyUtils\Csv;
 final class CsvParserConfig implements CsvParserConfigInterface
 {
     /**
-     * @param null|string[] $requiredHeaders
-     * @param null|string[] $groupPrefixes
-     * @param null|callable[] $recordTransformers
+     * @param string[]|null $requiredHeaders
+     * @param string[]|null $groupPrefixes
+     * @param callable[]|null $recordTransformers
      */
     public function __construct(
         private readonly ?array $requiredHeaders = null,
         private readonly ?array $groupPrefixes = null,
         private readonly ?bool $ignoreEmptyRecords = null,
-        private readonly ?array $recordTransformers = null
+        private readonly ?array $recordTransformers = null,
     ) {
     }
 
     /**
-     * @param null|string[] $requiredHeaders
-     * @param null|string[] $groupPrefixes
-     * @param null|callable[] $recordTransformers
+     * @param string[]|null $requiredHeaders
+     * @param string[]|null $groupPrefixes
+     * @param callable[]|null $recordTransformers
      */
     public static function create(
         ?array $requiredHeaders = null,
         ?array $groupPrefixes = null,
         ?bool $ignoreEmptyRecords = null,
-        ?array $recordTransformers = null
+        ?array $recordTransformers = null,
     ): self {
         return new self($requiredHeaders, $groupPrefixes, $ignoreEmptyRecords, $recordTransformers);
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getGroupPrefixes(): ?array
     {
@@ -50,7 +49,7 @@ final class CsvParserConfig implements CsvParserConfigInterface
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getRequiredHeaders(): ?array
     {
@@ -72,9 +71,6 @@ final class CsvParserConfig implements CsvParserConfigInterface
         return $this->ignoreEmptyRecords ?? false;
     }
 
-    /**
-     * @param null|mixed[] $array
-     */
     private function hasValuesInArray(?array $array = null): bool
     {
         return \is_array($array) && \count($array) > 0;

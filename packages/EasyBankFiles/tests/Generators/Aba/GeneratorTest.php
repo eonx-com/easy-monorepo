@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Generators\Aba;
@@ -10,7 +9,10 @@ use EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException;
 use EonX\EasyBankFiles\Generators\Exceptions\LengthMismatchesException;
 use EonX\EasyBankFiles\Generators\Exceptions\ValidationFailedException;
 use EonX\EasyBankFiles\Tests\Generators\Aba\TestCase as AbaTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
+#[CoversClass(Generator::class)]
 final class GeneratorTest extends AbaTestCase
 {
     /**
@@ -55,10 +57,9 @@ final class GeneratorTest extends AbaTestCase
     /**
      * Should return contents as string with descriptive record in it.
      *
-     * @group Generator-Aba
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Aba')]
     public function testShouldReturnContents(): void
     {
         $descriptiveRecord = $this->createDescriptiveRecord();
@@ -71,10 +72,9 @@ final class GeneratorTest extends AbaTestCase
     /**
      * Should trow exception if DescriptiveRecord's length is greater than 120.
      *
-     * @group Generator-Aba
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Aba')]
     public function testShouldThrowExceptionIfDescriptiveRecordLineExceeds(): void
     {
         $this->expectException(LengthMismatchesException::class);
@@ -88,10 +88,9 @@ final class GeneratorTest extends AbaTestCase
     /**
      * Should trow exception if transaction length is greater than 120.
      *
-     * @group Generator-Aba
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Aba')]
     public function testShouldThrowExceptionIfTransactionLineExceeds(): void
     {
         $this->expectException(LengthMismatchesException::class);
@@ -105,10 +104,9 @@ final class GeneratorTest extends AbaTestCase
     /**
      * Should throw exception if validation fails.
      *
-     * @group Generator-Aba
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Aba')]
     public function testShouldThrowExceptionIfValidationFails(): void
     {
         $this->expectException(ValidationFailedException::class);
@@ -124,10 +122,9 @@ final class GeneratorTest extends AbaTestCase
     /**
      * Should thrown validation exception if BSB format is invalid.
      *
-     * @group Generator-Aba
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Aba')]
     public function testShouldThrowValidationExceptionIfWrongBSBFormat(): void
     {
         $expected = [
@@ -137,7 +134,7 @@ final class GeneratorTest extends AbaTestCase
         ];
 
         $trans = $this->createTransaction();
-        // without '-'
+        // Without '-'
         $trans->setAttribute('bsbNumber', '1112333');
 
         try {
@@ -155,12 +152,12 @@ final class GeneratorTest extends AbaTestCase
     /**
      * Descriptive record, transactions and file total record should be present on the contents.
      *
-     * @group Generator-Aba
-     *
      * @throws \EonX\EasyBankFiles\Generators\Exceptions\InvalidArgumentException
      */
+    #[Group('Generator-Aba')]
     public function testValuesShouldBePresentInTheContent(): void
     {
+        $transactions = [];
         $descriptiveRecord = $this->createDescriptiveRecord();
 
         $transactions[] = $this->createTransaction();

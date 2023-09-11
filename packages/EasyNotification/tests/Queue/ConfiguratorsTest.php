@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Queue;
@@ -20,17 +19,16 @@ use EonX\EasyNotification\Queue\Configurators\TypeConfigurator;
 use EonX\EasyNotification\Queue\QueueMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use EonX\EasyNotification\Tests\Stubs\MessageStub;
+use Error;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 final class ConfiguratorsTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testConfigure
      */
-    public function providerTestConfigure(): iterable
+    public static function providerTestConfigure(): iterable
     {
         yield 'Provider Header' => [
             new ProviderHeaderConfigurator(),
@@ -60,7 +58,7 @@ final class ConfiguratorsTest extends AbstractTestCase
             Config::fromArray(static::$defaultConfig),
             new MessageStub([]),
             static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
-                $testCase->expectException(TypeError::class);
+                $testCase->expectException(Error::class);
                 $queueMessage->getBody();
             },
         ];
@@ -119,7 +117,7 @@ final class ConfiguratorsTest extends AbstractTestCase
             Config::fromArray(static::$defaultConfig),
             new MessageStub([]),
             static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
-                $testCase->expectException(TypeError::class);
+                $testCase->expectException(Error::class);
                 $queueMessage->getBody();
             },
         ];
@@ -136,15 +134,13 @@ final class ConfiguratorsTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestConfigure
-     */
+    #[DataProvider('providerTestConfigure')]
     public function testConfigure(
         QueueMessageConfiguratorInterface $configurator,
         ConfigInterface $config,
         MessageInterface $message,
         callable $test,
-        ?QueueMessageInterface $queueMessage = null
+        ?QueueMessageInterface $queueMessage = null,
     ): void {
         $test($configurator->configure($config, $queueMessage ?? new QueueMessage(), $message), $this);
     }

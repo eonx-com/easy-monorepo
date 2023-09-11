@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -11,13 +10,14 @@ use EonX\EasyWebhook\Middleware\SignatureHeaderMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\SignerStub;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'Invalid secret' => [
             Webhook::fromArray([
@@ -107,17 +107,16 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     }
 
     /**
-     * @phpstan-param null|class-string<\Throwable> $exceptedException
-     *
-     * @dataProvider providerTestProcess
+     * @phpstan-param class-string<\Throwable>|null $exceptedException
      */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,
         ?string $signature = null,
         ?string $defaultSecret = null,
         ?string $defaultHeader = null,
-        ?string $exceptedException = null
+        ?string $exceptedException = null,
     ): void {
         if ($exceptedException !== null) {
             $this->expectException($exceptedException);

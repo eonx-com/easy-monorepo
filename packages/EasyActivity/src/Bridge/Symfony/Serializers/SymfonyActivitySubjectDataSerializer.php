@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Symfony\Serializers;
@@ -12,36 +11,15 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
 final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
-     * @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface
-     */
-    private $circularReferenceHandler;
-
-    /**
-     * @var string[]
-     */
-    private $disallowedProperties;
-
-    /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @param string[] $disallowedProperties
      */
     public function __construct(
-        SymfonySerializerInterface $serializer,
-        CircularReferenceHandlerInterface $circularReferenceHandler,
-        array $disallowedProperties
+        private readonly SymfonySerializerInterface $serializer,
+        private readonly CircularReferenceHandlerInterface $circularReferenceHandler,
+        private readonly array $disallowedProperties,
     ) {
-        $this->serializer = $serializer;
-        $this->circularReferenceHandler = $circularReferenceHandler;
-        $this->disallowedProperties = $disallowedProperties;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function serialize(array $data, ActivitySubjectInterface $subject): ?string
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
@@ -67,21 +45,26 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
                 && isset($allowedProperties[$key]) === false
             ) {
                 unset($data[$key]);
+
                 continue;
             }
 
             if ($disallowedProperties !== null && \in_array($key, $disallowedProperties, true) === true) {
                 unset($data[$key]);
+
                 continue;
             }
 
             if (\is_object($value)) {
-                $objectClass = \get_class($value);
+                $objectClass = $value::class;
 
                 $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
                     ?? $allowedProperties[$key] ?? ['id'];
             }
         }
+
+        // Workaround for \ApiPlatform\Serializer\AbstractItemNormalizer for the case of deleting an API resource
+        $context['iri'] = 'not-needed-for-activity-log';
 
         $context[AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER] = $this->circularReferenceHandler;
 

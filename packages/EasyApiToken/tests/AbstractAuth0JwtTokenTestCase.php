@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests;
@@ -12,17 +11,11 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $authorizedIss = ['http://localhost'];
+    protected static array $authorizedIss = ['http://localhost'];
 
-    /**
-     * @var string
-     */
-    protected static $key = 'key';
+    protected static string $key = 'key';
 
-    /**
-     * @var mixed[]
-     */
-    protected static $tokenPayload = [
+    protected static array $tokenPayload = [
         'scopes' => [],
         'aud' => 'my-identifier',
     ];
@@ -30,31 +23,28 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
     /**
      * @var string[]
      */
-    protected static $validAudiences = ['my-identifier'];
+    protected static array $validAudiences = ['my-identifier'];
 
     /**
-     * @param null|string[] $validAudiences
-     * @param null|string[] $authorizedIss
-     * @param null|string $key
-     * @param null|string[] $allowedAlgos
+     * @param string[]|null $validAudiences
+     * @param string[]|null $authorizedIss
+     * @param string[]|null $allowedAlgos
      */
     protected function createAuth0JwtDriver(
         ?array $validAudiences = null,
         ?array $authorizedIss = null,
         ?string $key = null,
         ?string $audienceForEncode = null,
-        ?array $allowedAlgos = null
+        ?array $allowedAlgos = null,
     ): JwtDriverInterface {
-        $auth0Driver = new Auth0JwtDriver(
+        return new Auth0JwtDriver(
             $validAudiences ?? static::$validAudiences,
             $authorizedIss ?? static::$authorizedIss,
-            'localhost',
+            'example.com',
             $key ?? static::$key,
             $audienceForEncode,
             $allowedAlgos
         );
-
-        return $auth0Driver;
     }
 
     protected function createToken(): string

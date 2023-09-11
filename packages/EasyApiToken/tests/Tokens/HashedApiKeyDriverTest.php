@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Tokens;
@@ -7,13 +6,14 @@ namespace EonX\EasyApiToken\Tests\Tokens;
 use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyInterface;
 use EonX\EasyApiToken\Tests\AbstractTestCase;
 use EonX\EasyApiToken\Tokens\HashedApiKeyDriver;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class HashedApiKeyDriverTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testDriver
      */
-    public function providerTestDriver(): iterable
+    public static function providerTestDriver(): iterable
     {
         yield 'Int id' => [1, 'secret'];
 
@@ -22,9 +22,7 @@ final class HashedApiKeyDriverTest extends AbstractTestCase
         yield 'Custom version' => ['id', 'secret', 'my-version'];
     }
 
-    /**
-     * @dataProvider providerTestDriver
-     */
+    #[DataProvider('providerTestDriver')]
     public function testDriver(int|string $id, string $secret, ?string $version = null): void
     {
         $driver = new HashedApiKeyDriver();

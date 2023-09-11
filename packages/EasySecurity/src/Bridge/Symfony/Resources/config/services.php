@@ -1,11 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface;
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
@@ -29,12 +26,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    // ApiTokenDecoder (Deprecated since 4.1, will be removed in 5.0. Use ApiTokenDecoderFactoryInterface instead)
-    $services
-        ->set(BridgeConstantsInterface::SERVICE_API_TOKEN_DECODER, ApiTokenDecoderInterface::class)
-        ->factory([service(ApiTokenDecoderFactoryInterface::class), 'build'])
-        ->args(['%' . BridgeConstantsInterface::PARAM_TOKEN_DECODER . '%']);
-
     // Authorization
     $services->set(BridgeConstantsInterface::SERVICE_AUTHORIZATION_MATRIX_CACHE, ArrayAdapter::class);
 
@@ -53,8 +44,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(SecurityContextDataCollector::class)
         ->arg('$configurators', tagged_iterator(BridgeConstantsInterface::TAG_CONTEXT_CONFIGURATOR))
         ->tag('data_collector', [
-            'template' => '@EasySecuritySymfony/Collector/security_context_collector.html.twig',
             'id' => SecurityContextDataCollector::NAME,
+            'template' => '@EasySecuritySymfony/Collector/security_context_collector.html.twig',
         ]);
 
     // Request

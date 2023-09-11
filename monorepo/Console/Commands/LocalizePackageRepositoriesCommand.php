@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyMonorepo\Console\Commands;
 
 use EonX\EasyMonorepo\Git\GitManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,12 +13,14 @@ use Symfony\Component\Finder\Finder;
 use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+#[AsCommand(
+    name: 'localize-monorepo-packages'
+)]
 final class LocalizePackageRepositoriesCommand extends Command
 {
-    protected static $defaultName = 'localize-monorepo-packages';
-
-    public function __construct(private GitManager $gitManager)
-    {
+    public function __construct(
+        private GitManager $gitManager,
+    ) {
         parent::__construct();
     }
 
@@ -43,7 +46,7 @@ final class LocalizePackageRepositoriesCommand extends Command
 
             // Replace monorepo packages version with dev one
             foreach (['require', 'require-dev'] as $section) {
-                foreach (\array_keys($composerJsonFileContents[$section]) as $package) {
+                foreach (\array_keys($composerJsonFileContents[$section] ?? []) as $package) {
                     if (\in_array($package, $monorepoPackageNames, true)) {
                         $composerJsonFileContents[$section][$package] = $devVersion;
                     }
@@ -57,7 +60,7 @@ final class LocalizePackageRepositoriesCommand extends Command
                 'symfony/dependency-injection' => '5.3.7',
             ];
 
-            $filesystem->dumpFile($filename, \json_encode($composerJsonFileContents));
+            $filesystem->dumpFile($filename, (string)\json_encode($composerJsonFileContents));
 
             $output->writeln(\sprintf('Successfully updated %s', $filename));
         }

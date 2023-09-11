@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Stubs;
@@ -10,19 +9,14 @@ use EonX\EasyDecision\Interfaces\RestrictedDecisionConfiguratorInterface;
 
 final class DecisionConfiguratorStub implements DecisionConfiguratorInterface, RestrictedDecisionConfiguratorInterface
 {
-    /**
-     * @var string
-     */
-    private $decisionName;
-
-    public function __construct(string $decisionName)
-    {
-        $this->decisionName = $decisionName;
+    public function __construct(
+        private string $decisionName,
+    ) {
     }
 
     public function configure(DecisionInterface $decision): void
     {
-        // No body needed.
+        // No body needed
     }
 
     public function getPriority(): int

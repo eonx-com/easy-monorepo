@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony;
@@ -13,12 +12,13 @@ final class EasySecurityBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void
     {
-        $container = $this->getKernel([__DIR__ . '/Fixtures/config/default.yaml'])->getContainer();
+        $container = $this->getKernel([])->getContainer();
 
-        $container->get(SecurityContextResolverInterface::class)
+        /** @var \EonX\EasySecurity\Interfaces\SecurityContextResolverInterface $result */
+        $result = $container->get(SecurityContextResolverInterface::class)
             ->setConfigurator(new DefaultSecurityContextConfigurator());
 
-        self::assertInstanceOf(SecurityContextInterface::class, $container->get('service-id'));
+        self::assertInstanceOf(SecurityContextInterface::class, $result->resolveContext());
         self::assertTrue($container->has(SecurityContextClientConfigurator::class));
     }
 }

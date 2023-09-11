@@ -1,15 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Stubs;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStatementsProvider;
 use EonX\EasyActivity\Bridge\Doctrine\DoctrineDbalStore;
@@ -41,18 +40,18 @@ final class EntityManagerStub
     public const ACTIVITY_TABLE_NAME = 'test_easy_activity_logs';
 
     /**
-     * @param \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher $dispatcher
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
     public static function createFromDeferredEntityEventDispatcher(
         DeferredEntityEventDispatcher $dispatcher,
         array $subscribedEntities = [],
-        array $fixtures = []
+        array $fixtures = [],
     ) {
         $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
         $eventManager = new EventManager();
@@ -68,21 +67,17 @@ final class EntityManagerStub
     }
 
     /**
-     * @param array<string, mixed> $easyActivityConfig
-     * @param \EonX\EasyActivity\Interfaces\ActorResolverInterface|null $actorResolver
      * @param string[]|null $fixtures
-     *
-     * @return \Doctrine\ORM\EntityManagerInterface
      */
     public static function createFromEasyActivityConfig(
         array $easyActivityConfig,
         ?ActorResolverInterface $actorResolver = null,
         ?ActivitySubjectResolverInterface $subjectResolver = null,
-        ?array $fixtures = null
+        ?array $fixtures = null,
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
         $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
-        /** @var string[] $subscribedEntities */
+        /** @var class-string[] $subscribedEntities */
         $subscribedEntities = \array_keys($easyActivityConfig['subjects'] ?? []);
         $entityManager = self::createFromSymfonyEventDispatcher(
             $eventDispatcher,
@@ -128,10 +123,10 @@ final class EntityManagerStub
     }
 
     /**
-     * @param \Doctrine\Common\EventManager|null $eventManager
      * @param string[] $fixtures
      *
      * @return \Doctrine\ORM\EntityManager
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
@@ -146,12 +141,10 @@ final class EntityManagerStub
         $config->setProxyDir(__DIR__ . '/../var');
         $config->setProxyNamespace('Proxy');
 
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->setMetadataDriverImpl(new AttributeDriver([]));
 
         $entityManager = EntityManager::create($conn, $config, $eventManager);
-        $schema = \array_map(function ($class) use ($entityManager) {
-            return $entityManager->getClassMetadata($class);
-        }, $fixtures);
+        $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
 
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema([]);
@@ -164,8 +157,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string[] $subscribedEntities
+     * @param class-string[] $subscribedEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -173,7 +165,7 @@ final class EntityManagerStub
     public static function createFromSymfonyEventDispatcher(
         EventDispatcherInterface $eventDispatcher,
         array $subscribedEntities = [],
-        array $fixtures = []
+        array $fixtures = [],
     ) {
         $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 

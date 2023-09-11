@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Tests\Bridge\EasyBugsnag;
@@ -14,28 +13,14 @@ use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Tests\AbstractTestCase;
 use Exception;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
 {
     /**
-     * @param array<string, mixed> $expectedMetadata
-     *
-     * @dataProvider provideEvents
+     * @see testPrepareMetadataSucceeds
      */
-    public function testPrepareMetadataSucceeds(HttpRequestSentEvent $event, array $expectedMetadata): void
-    {
-        $bugsnagClient = $this->mockBugsnagClient($expectedMetadata);
-        $sut = new HttpRequestSentBreadcrumbListener($bugsnagClient);
-
-        $sut($event);
-    }
-
-    /**
-     * @return iterable<mixed>
-     *
-     * @see testItSucceeds
-     */
-    protected function provideEvents(): iterable
+    public static function provideEvents(): iterable
     {
         yield 'an event with response data' => [
             'event' => new HttpRequestSentEvent(
@@ -239,9 +224,15 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param array<string, mixed> $expectedMetadata
-     */
+    #[DataProvider('provideEvents')]
+    public function testPrepareMetadataSucceeds(HttpRequestSentEvent $event, array $expectedMetadata): void
+    {
+        $bugsnagClient = $this->mockBugsnagClient($expectedMetadata);
+        $sut = new HttpRequestSentBreadcrumbListener($bugsnagClient);
+
+        $sut($event);
+    }
+
     private function mockBugsnagClient(array $expectedMetadata): Client
     {
         /** @var \Bugsnag\Client $bugsnagClient */

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
@@ -18,8 +17,6 @@ trait DoctrineCommonPaginatorTrait
     private ?int $totalItems = null;
 
     /**
-     * @return mixed[]
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function doGetItems(): array
@@ -62,8 +59,6 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     private function fetchItems(): array
@@ -81,8 +76,6 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     private function fetchItemsUsingPrimaryKeys(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array
@@ -100,9 +93,7 @@ trait DoctrineCommonPaginatorTrait
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
-        $primaryKeysMap = static function (array $row) use ($primaryKeyIndex) {
-            return $row[$primaryKeyIndex];
-        };
+        $primaryKeysMap = static fn (array $row) => $row[$primaryKeyIndex];
 
         /** @var string[] $primaryKeys */
         $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));
@@ -119,8 +110,6 @@ trait DoctrineCommonPaginatorTrait
     }
 
     /**
-     * @return mixed[]
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     private function fetchItemsUsingQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): array

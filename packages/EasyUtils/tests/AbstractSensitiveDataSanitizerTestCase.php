@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests;
@@ -9,13 +8,14 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testSanitize
      */
-    public function providerTestSanitize(): iterable
+    public static function providerTestSanitize(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
@@ -111,6 +111,17 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"token-to-be-masked\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"token-to-be-masked\"}',
                 'maskPhoneNumber' => '{"phoneNumber":"token-to-be-masked"}',
+                'maskArray' => '{"auth":["test",null]}',
+                'maskArrayWithEscaping' => '{\"auth\":[\"test\"]}',
+                'maskArraySpaceBeforeValue' => '{"auth": ["test"]}',
+                'maskArraySpaceAfterKey' => '{"auth" :["test"]}',
+                'maskArrayWithBothSpaces' => '{"auth" : ["test"]}',
+                'maskArrayWithDoubleSpaces' => '{"auth"  :  ["test"]}',
+                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [\"test\"]}',
+                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[\"test\"]}',
+                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [\"test\"]}',
+                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [\"test\"]}',
+
             ],
             'expectedOutput' => [
                 'maskToken' => '{"token":"*REDACTED*"}',
@@ -124,10 +135,21 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"*REDACTED*\"}',
                 'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"*REDACTED*\"}',
                 'maskPhoneNumber' => '{"phoneNumber":"*REDACTED*"}',
+                'maskArray' => '{"auth":[*REDACTED*]}',
+                'maskArrayWithEscaping' => '{\"auth\":[*REDACTED*]}',
+                'maskArraySpaceBeforeValue' => '{"auth": [*REDACTED*]}',
+                'maskArraySpaceAfterKey' => '{"auth" :[*REDACTED*]}',
+                'maskArrayWithBothSpaces' => '{"auth" : [*REDACTED*]}',
+                'maskArrayWithDoubleSpaces' => '{"auth"  :  [*REDACTED*]}',
+                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [*REDACTED*]}',
+                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[*REDACTED*]}',
+                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [*REDACTED*]}',
+                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [*REDACTED*]}',
             ],
             'maskKeys' => [
                 'token',
                 'phonenumber',
+                'auth',
             ],
         ];
         yield 'Mask card numbers' => [
@@ -153,6 +175,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'inJsonWithBothSpacesAndEscaping' => '{\"card\" : \"4005 5500 0000 0001\"}',
                 'inJsonWithDoubleSpacesAndEscaping' => '{\"card\"  :  \"4005 5500 0000 0001\"}',
                 'inUrl' => 'https://eonx.com/page?card=4005 5500 0000 0001',
+                'nonCardNumber' => '1234567890123456',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -176,17 +199,15 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'inJsonWithBothSpacesAndEscaping' => '{\"card\" : \"400555*REDACTED*0001\"}',
                 'inJsonWithDoubleSpacesAndEscaping' => '{\"card\"  :  \"400555*REDACTED*0001\"}',
                 'inUrl' => 'https://eonx.com/page?card=400555*REDACTED*0001',
+                'nonCardNumber' => '1234567890123456',
             ],
         ];
     }
 
     /**
-     * @param mixed[] $input
-     * @param mixed[] $expectedOutput
      * @param string[]|null $keysToMask
-     *
-     * @dataProvider providerTestSanitize
      */
+    #[DataProvider('providerTestSanitize')]
     public function testSanitize(array $input, array $expectedOutput, ?array $keysToMask = null): void
     {
         $sanitizer = $this->getSanitizer($keysToMask);
@@ -194,8 +215,5 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         self::assertEquals($expectedOutput, $sanitizer->sanitize($input));
     }
 
-    /**
-     * @param mixed[]|null $keysToMask
-     */
     abstract protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface;
 }

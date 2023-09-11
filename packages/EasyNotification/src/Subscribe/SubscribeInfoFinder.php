@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Subscribe;
@@ -12,19 +11,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class SubscribeInfoFinder implements SubscribeInfoFinderInterface
 {
-    /**
-     * @var string
-     */
-    private $apiUrl;
+    private HttpClientInterface $httpClient;
 
-    /**
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
-     */
-    private $httpClient;
-
-    public function __construct(string $apiUrl, ?HttpClientInterface $httpClient = null)
-    {
-        $this->apiUrl = $apiUrl;
+    public function __construct(
+        private string $apiUrl,
+        ?HttpClientInterface $httpClient = null,
+    ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 

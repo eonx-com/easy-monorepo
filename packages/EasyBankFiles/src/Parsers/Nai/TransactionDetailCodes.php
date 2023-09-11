@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\Nai;
@@ -8,10 +7,7 @@ use EonX\EasyBankFiles\Parsers\Nai\Results\Transactions\Details;
 
 trait TransactionDetailCodes
 {
-    /**
-     * @var mixed[] $transactionCodes
-     */
-    private static $transactionCodes = [
+    private static array $transactionCodes = [
         108 => [
             'cdrd' => 'CR',
             'description' => 'Deposit',

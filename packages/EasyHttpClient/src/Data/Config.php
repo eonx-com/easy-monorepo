@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Data;
@@ -7,8 +6,6 @@ namespace EonX\EasyHttpClient\Data;
 final class Config
 {
     /**
-     * @param mixed[] $httpClientOptions
-     * @param mixed[]|null $requestDataExtra
      * @param \EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface[]|null $requestDataModifiers
      * @param string[]|null $requestDataModifiersWhitelist
      */
@@ -18,21 +15,15 @@ final class Config
         private readonly ?array $requestDataModifiers = null,
         private readonly ?array $requestDataModifiersWhitelist = null,
         private readonly ?bool $isRequestDataModifiersEnabled = null,
-        private readonly ?bool $isEventsEnabled = null
+        private readonly ?bool $isEventsEnabled = null,
     ) {
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getHttpClientOptions(): array
     {
         return $this->httpClientOptions;
     }
 
-    /**
-     * @return mixed[]|null
-     */
     public function getRequestDataExtra(): ?array
     {
         return $this->requestDataExtra;

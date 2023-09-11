@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Messages;
@@ -9,48 +8,38 @@ use EonX\EasyNotification\Interfaces\MessageInterface;
 use EonX\EasyNotification\Messages\RealTimeMessage;
 use EonX\EasyNotification\Tests\AbstractTestCase;
 use Nette\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RealTimeMessageTest extends AbstractTestCase
 {
-    /**
-     * @var mixed[]
-     */
-    protected static $body = [
+    protected static array $body = [
         'message' => 'hey there',
     ];
 
     /**
      * @var string[]
      */
-    protected static $topics = ['nathan', 'pavel'];
+    protected static array $topics = ['nathan', 'pavel'];
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetters
      */
-    public function providerTestGetters(): iterable
+    public static function providerTestGetters(): iterable
     {
         yield 'Constructor' => [
-            function (): RealTimeMessage {
-                return new RealTimeMessage(static::$body, static::$topics);
-            },
+            fn (): RealTimeMessage => new RealTimeMessage(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method' => [
-            function (): RealTimeMessage {
-                return RealTimeMessage::create(static::$body, static::$topics);
-            },
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method + topics' => [
-            function (): RealTimeMessage {
-                return RealTimeMessage::create(static::$body)->topics(static::$topics);
-            },
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body)->topics(static::$topics),
             static::$body,
             static::$topics,
         ];
@@ -68,22 +57,20 @@ final class RealTimeMessageTest extends AbstractTestCase
     }
 
     /**
-     * @param mixed[] $body
      * @param string[] $topics
-     *
-     * @dataProvider providerTestGetters
      *
      * @throws \Nette\Utils\JsonException
      */
+    #[DataProvider('providerTestGetters')]
     public function testGetters(callable $getMessage, array $body, array $topics): void
     {
-        /** @var \EonX\EasyNotification\Messages\RealTimeMessage $message */
         // Trick for coverage
+        /** @var \EonX\EasyNotification\Messages\RealTimeMessage $message */
         $message = $getMessage();
 
-        self::assertEquals(MessageInterface::TYPE_REAL_TIME, $message->getType());
-        self::assertEquals(Json::encode($body), $message->getBody());
-        self::assertEquals($topics, $message->getTopics());
+        self::assertSame(MessageInterface::TYPE_REAL_TIME, $message->getType());
+        self::assertSame(Json::encode($body), $message->getBody());
+        self::assertSame($topics, $message->getTopics());
     }
 
     public function testInvalidTypeException(): void

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Stub\HttpClient;
@@ -26,35 +25,30 @@ final class HttpClientStub extends MockHttpClient
 
     private ?Throwable $expectedException = null;
 
-    public function __construct(?string $baseUri = null)
-    {
+    public function __construct(
+        protected string $baseUri = 'https://example.com',
+    ) {
         parent::__construct(
-            function ($method, $url, $options): ResponseInterface {
-                return $this->getResponse($method, $url, $options);
-            },
+            fn ($method, $url, $options): ResponseInterface => $this->getResponse($method, $url, $options),
             $baseUri
         );
     }
 
-    /**
-     * @param mixed[] $headers
-     * @param mixed[] $body
-     * @param mixed[] $queryParams
-     */
     public function forRequest(
         string $method,
         string $url,
         ?array $headers = null,
         ?array $body = null,
-        ?array $queryParams = null
+        ?array $queryParams = null,
     ): HttpClientRequestStub {
+        $url = $this->normalizeUrl($url);
         $options = [];
         $options['headers'] = \array_unique(\array_merge($headers ?? [], self::DEFAULT_REQUEST_HEADERS));
         if ($body !== null) {
             $contentType = null;
             foreach ($options['headers'] as $header) {
-                if (\str_starts_with($header, 'Content-Type')) {
-                    $contentType = \str_replace('Content-Type: ', '', $header);
+                if (\str_starts_with((string)$header, 'Content-Type')) {
+                    $contentType = \str_replace('Content-Type: ', '', (string)$header);
 
                     break;
                 }
@@ -88,6 +82,8 @@ final class HttpClientStub extends MockHttpClient
 
     public function forRequestWithAnyOptions(string $method, string $url): HttpClientRequestStub
     {
+        $url = $this->normalizeUrl($url);
+
         return new HttpClientRequestStub(
             function (MockResponse $response, string $requestHash): self {
                 $this->responses[$requestHash] ??= [];
@@ -105,11 +101,9 @@ final class HttpClientStub extends MockHttpClient
         return $this->defaultResponse ?? new MockResponse('');
     }
 
-    /**
-     * @param mixed[] $options
-     */
     public function getResponse(string $method, string $url, ?array $options = null): MockResponse
     {
+        $url = $this->normalizeUrl($url);
         $request = new HttpClientRequestStub(fn (): self => $this, $method, $url, $options);
 
         if (\count($this->responses[$request->getHash()] ?? []) > 0) {
@@ -141,21 +135,17 @@ final class HttpClientStub extends MockHttpClient
         return false;
     }
 
-    /**
-     * @param mixed[]|null $options
-     */
     public function request(string $method, string $url, ?array $options = null): ResponseInterface
     {
         if ($this->expectedException !== null) {
             throw $this->expectedException;
         }
 
+        $url = $this->normalizeUrl($url);
+
         return parent::request($method, $url, $options ?? []);
     }
 
-    /**
-     * @param mixed[] $body
-     */
     public function setDefaultResponse(array $body): void
     {
         $this->defaultResponse = new MockResponse((string)\json_encode($body));
@@ -167,5 +157,16 @@ final class HttpClientStub extends MockHttpClient
             ?? new TransportException('This is an expected exception.');
 
         return $this;
+    }
+
+    protected function normalizeUrl(string $url): string
+    {
+        $urlInfo = \parse_url($url);
+
+        if (\is_array($urlInfo) && isset($urlInfo['host'])) {
+            return $url;
+        }
+
+        return \rtrim($this->baseUri, '/') . '/' . \ltrim($url, '/');
     }
 }

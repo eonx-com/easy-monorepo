@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Symfony;
@@ -10,13 +9,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface
-     */
-    private $kernel;
+    private ?KernelInterface $kernel = null;
 
     /**
-     * @param null|string[] $configs
+     * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {
@@ -24,9 +20,9 @@ abstract class AbstractSymfonyTestCase extends AbstractTestCase
             return $this->kernel;
         }
 
-        $kernel = new KernelStub('test', true, $configs);
-        $kernel->boot();
+        $this->kernel = new KernelStub('test', true, $configs);
+        $this->kernel->boot();
 
-        return $this->kernel = $kernel;
+        return $this->kernel;
     }
 }

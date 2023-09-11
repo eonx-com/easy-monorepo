@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stubs;
@@ -12,7 +11,7 @@ final class AsyncDispatcherStub implements AsyncDispatcherInterface
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookInterface[]
      */
-    private $dispatched = [];
+    private array $dispatched = [];
 
     public function dispatch(WebhookInterface $webhook): void
     {

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -11,13 +10,14 @@ use EonX\EasyWebhook\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\ArrayStoreStub;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function providerTestProcess(): iterable
+    public static function providerTestProcess(): iterable
     {
         yield 'id from store' => [
             Webhook::fromArray([]),
@@ -58,17 +58,15 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestProcess
-     */
+    #[DataProvider('providerTestProcess')]
     public function testProcess(
         WebhookInterface $webhook,
         callable $test,
         ?string $idHeader = null,
-        ?StoreInterface $store = null
+        ?StoreInterface $store = null,
     ): void {
         // Fix webhook id
-        $store = $store ?? new ArrayStoreStub($this->getRandomGenerator(), 'not-default-webhook-id');
+        $store ??= new ArrayStoreStub(self::getRandomGenerator(), 'not-default-webhook-id');
         $middleware = new IdHeaderMiddleware($store, $idHeader);
 
         $test($this->process($middleware, $webhook));

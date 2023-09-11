@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use EonX\EasySwoole\Exceptions\SwooleDdException;
@@ -15,7 +14,7 @@ if (\function_exists('swoole_dump') === false) {
 }
 
 if (\function_exists('swoole_dd') === false) {
-    function swoole_dd(...$vars): void
+    function swoole_dd(...$vars): never
     {
         swoole_dump($vars);
 

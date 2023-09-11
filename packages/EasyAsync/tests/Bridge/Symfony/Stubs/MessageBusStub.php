@@ -1,25 +1,22 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Bridge\Symfony\Stubs;
 
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 final class MessageBusStub implements MessageBusInterface
 {
     /**
-     * @var mixed[]
+     * @var \Symfony\Component\Messenger\Envelope[]
      */
-    private $envelopes = [];
+    private array $envelopes = [];
 
     /**
-     * @param object|Envelope $message The message or the message pre-wrapped in an envelope
-     * @param StampInterface[] $stamps
+     * @param \Symfony\Component\Messenger\Stamp\StampInterface[] $stamps
      */
-    public function dispatch($message, ?array $stamps = null): Envelope
+    public function dispatch(object $message, ?array $stamps = null): Envelope
     {
         $envelope = Envelope::wrap($message, $stamps ?? []);
 

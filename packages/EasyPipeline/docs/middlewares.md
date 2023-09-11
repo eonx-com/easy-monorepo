@@ -29,15 +29,12 @@ final class MyMiddleware implements MiddlewareInterface
     /**
      * Handle given input and pass return through next.
      *
-     * @param mixed $input
      * @param callable $next
-     *
-     * @return mixed
      */
      public function handle($input, callable $next)
      {
         // Do stuff here...
-        
+
         return $next($input); // Return the output of the next middleware for the given input
      }
 }
@@ -52,7 +49,6 @@ can be really handy for debugging purposes. In order to allow your middleware to
 the `EonX\EasyPipeline\Interfaces\MiddlewareLoggerAwareInterface` so that the pipeline know your middleware
 requires the `EonX\EasyPipeline\Interfaces\MiddlewareLoggerInterface` instance.
 
-
 The `MiddlewareLoggerInterface` defines one method `log(string $middleware, $content): void`, the first `$middleware`
 parameter is to categorise the `$content` under a single identifier, it can be any string you want.
 
@@ -61,7 +57,6 @@ for the `MiddlewareLoggerInterface` and also the `log($content, ?string $middlew
 The `$middleware` parameter is optional, when it is not set the trait will default it to your middleware class name.
 The trait is a convenient way of allowing your middleware to log content but if you do not like using traits you're free
 to implement the logging logic yourself.
-
 
 Here is the minimum required code for your middleware to log content:
 
@@ -73,11 +68,11 @@ use EonX\EasyPipeline\Traits\MiddlewareLoggerAwareTrait;
 final class MyMiddlewareWithLog implements MiddlewareInterface, MiddlewareLoggerAwareInterface
 {
     use MiddlewareLoggerAwareTrait; // Will handle the setter for the MiddlewareLoggerInterface
-    
+
     /**
      * Handle given input and pass return through next.
      *
-     * @param mixed $input
+     * @param $input
      * @param callable $next
      *
      * @return mixed
@@ -85,9 +80,9 @@ final class MyMiddlewareWithLog implements MiddlewareInterface, MiddlewareLogger
      public function handle($input, callable $next)
      {
         // Do stuff here...
-        
+
         $this->log('Content to log');
-        
+
         return $next($input); // Return the output of the next middleware for the given input
      }
 }

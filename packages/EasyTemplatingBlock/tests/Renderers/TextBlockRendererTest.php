@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Tests\Renderers;
@@ -9,13 +8,14 @@ use EonX\EasyTemplatingBlock\Blocks\TextBlock;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Renderers\TextBlockRenderer;
 use EonX\EasyTemplatingBlock\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TextBlockRendererTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testRenderBlock
      */
-    public function providerTestRenderBlock(): iterable
+    public static function providerTestRenderBlock(): iterable
     {
         yield 'Simple text' => [
             (new TextBlock('my-text-block'))->setContents('my simple contents'),
@@ -24,9 +24,9 @@ final class TextBlockRendererTest extends AbstractTestCase
     }
 
     /**
-     * @return iterable<mixed>
+     * @see testSupports
      */
-    public function providerTestSupports(): iterable
+    public static function providerTestSupports(): iterable
     {
         yield 'Supported' => [
             new TextBlock('my-text-block'),
@@ -39,9 +39,7 @@ final class TextBlockRendererTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestRenderBlock
-     */
+    #[DataProvider('providerTestRenderBlock')]
     public function testRenderBlock(TextBlock $block, string $expected): void
     {
         $renderer = new TextBlockRenderer();
@@ -49,9 +47,7 @@ final class TextBlockRendererTest extends AbstractTestCase
         self::assertEquals($expected, $renderer->renderBlock($block));
     }
 
-    /**
-     * @dataProvider providerTestSupports
-     */
+    #[DataProvider('providerTestSupports')]
     public function testSupports(TemplatingBlockInterface $block, bool $expected): void
     {
         $renderer = new TextBlockRenderer();

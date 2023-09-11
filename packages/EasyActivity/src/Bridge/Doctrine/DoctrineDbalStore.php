@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Doctrine;
@@ -11,47 +10,29 @@ use EonX\EasyActivity\Interfaces\StoreInterface;
 
 final class DoctrineDbalStore implements StoreInterface
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $connection;
-
-    /**
-     * @var \EonX\EasyActivity\Interfaces\IdFactoryInterface
-     */
-    private $idFactory;
-
-    /**
-     * @var string
-     */
-    private $table;
-
     public function __construct(
-        IdFactoryInterface $idFactory,
-        Connection $connection,
-        string $table
+        private IdFactoryInterface $idFactory,
+        private Connection $connection,
+        private string $table,
     ) {
-        $this->connection = $connection;
-        $this->idFactory = $idFactory;
-        $this->table = $table;
     }
 
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry
     {
         $data = [
-            'id' => $this->idFactory->create(),
-            'created_at' => $logEntry->getCreatedAt()
-                ->format('Y-m-d H:i:s.u'),
-            'updated_at' => $logEntry->getUpdatedAt()
-                ->format('Y-m-d H:i:s.u'),
-            'actor_type' => $logEntry->getActorType(),
+            'action' => $logEntry->getAction(),
             'actor_id' => $logEntry->getActorId(),
             'actor_name' => $logEntry->getActorName(),
-            'action' => $logEntry->getAction(),
-            'subject_type' => $logEntry->getSubjectType(),
-            'subject_id' => $logEntry->getSubjectId(),
+            'actor_type' => $logEntry->getActorType(),
+            'created_at' => $logEntry->getCreatedAt()
+                ->format('Y-m-d H:i:s.u'),
+            'id' => $this->idFactory->create(),
             'subject_data' => $logEntry->getSubjectData(),
+            'subject_id' => $logEntry->getSubjectId(),
             'subject_old_data' => $logEntry->getSubjectOldData(),
+            'subject_type' => $logEntry->getSubjectType(),
+            'updated_at' => $logEntry->getUpdatedAt()
+                ->format('Y-m-d H:i:s.u'),
         ];
 
         $this->connection->insert($this->table, $data);

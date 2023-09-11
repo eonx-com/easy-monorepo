@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\Symfony\Request;
@@ -12,24 +11,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class SymfonyRequestResolver extends AbstractRequestResolver
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\RequestStack
-     */
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private RequestStack $requestStack,
+    ) {
     }
 
     protected function doResolve(): RequestInterface
     {
-        $requestGetter = \method_exists($this->requestStack, 'getMainRequest')
-            ? 'getMainRequest'
-            : 'getMasterRequest';
+        $request = $this->requestStack->getMainRequest();
 
-        $request = $this->requestStack->{$requestGetter}();
-
-        return $request ? new HttpFoundationRequest($request) : new NullRequest();
+        return $request !== null ? new HttpFoundationRequest($request) : new NullRequest();
     }
 }

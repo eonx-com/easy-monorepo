@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Factories;
@@ -16,23 +15,20 @@ use EonX\EasyUtils\Helpers\CollectorHelper;
 final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {
     /**
-     * @var null|\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]
-     */
-    private ?array $decoders = null;
-
-    /**
      * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface[]
      */
     private array $decoderProviders;
 
+    /**
+     * @var \EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface[]|null
+     */
+    private ?array $decoders = null;
+
     private ?string $defaultDecoder = null;
 
-    /**
-     * @param iterable<mixed> $decoderProviders
-     */
     public function __construct(
         iterable $decoderProviders,
-        private readonly HashedApiKeyDriverInterface $hashedApiKeyDriver
+        private readonly HashedApiKeyDriverInterface $hashedApiKeyDriver,
     ) {
         $this->decoderProviders = $this->filter($decoderProviders, ApiTokenDecoderProviderInterface::class);
     }
@@ -82,11 +78,6 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
         }
     }
 
-    /**
-     * @param iterable<mixed> $collection
-     *
-     * @return mixed[]
-     */
     private function filter(iterable $collection, string $class): array
     {
         return CollectorHelper::orderLowerPriorityFirstAsArray(CollectorHelper::filterByClass($collection, $class));

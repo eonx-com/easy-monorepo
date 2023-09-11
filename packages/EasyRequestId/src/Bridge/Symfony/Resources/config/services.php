@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -12,7 +11,7 @@ use EonX\EasyRequestId\Bridge\Symfony\Twig\RequestIdTwigExtension;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
-use EonX\EasyRequestId\UuidV4FallbackResolver;
+use EonX\EasyRequestId\UuidFallbackResolver;
 use Twig\Extension\AbstractExtension;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -22,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     // Fallback
-    $services->set(FallbackResolverInterface::class, UuidV4FallbackResolver::class);
+    $services->set(FallbackResolverInterface::class, UuidFallbackResolver::class);
 
     // RequestIdService
     $services

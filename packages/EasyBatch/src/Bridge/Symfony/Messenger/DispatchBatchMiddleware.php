@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger;
@@ -13,8 +12,9 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
 final class DispatchBatchMiddleware implements MiddlewareInterface
 {
-    public function __construct(private readonly BatchObjectManagerInterface $batchObjectManager)
-    {
+    public function __construct(
+        private readonly BatchObjectManagerInterface $batchObjectManager,
+    ) {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

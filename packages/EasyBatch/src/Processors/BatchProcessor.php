@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Processors;
@@ -27,7 +26,7 @@ final class BatchProcessor
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchRepositoryInterface $batchRepository,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -39,7 +38,7 @@ final class BatchProcessor
         BatchObjectManagerInterface $batchObjectManager,
         BatchInterface $batch,
         BatchItemInterface $batchItem,
-        ?callable $updateFreshBatch = null
+        ?callable $updateFreshBatch = null,
     ): BatchInterface {
         // Prevent same batchItem to be process twice within the same message lifecycle
         if (isset($this->cache[$batchItem->getIdOrFail()])) {
@@ -86,6 +85,13 @@ final class BatchProcessor
         return $freshBatch;
     }
 
+    public function reset(): self
+    {
+        $this->cache = [];
+
+        return $this;
+    }
+
     /**
      * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
@@ -115,13 +121,6 @@ final class BatchProcessor
         }
 
         return $freshBatch;
-    }
-
-    public function reset(): self
-    {
-        $this->cache = [];
-
-        return $this;
     }
 
     private function areBatchesIdentical(BatchInterface $batch1, BatchInterface $batch2): bool
@@ -163,7 +162,7 @@ final class BatchProcessor
 
     private function handleBatchItemDependentObjects(
         BatchObjectManagerInterface $batchObjectManager,
-        BatchItemInterface $batchItem
+        BatchItemInterface $batchItem,
     ): void {
         $currentStatus = $batchItem->getStatus();
         $toCancelStatuses = [

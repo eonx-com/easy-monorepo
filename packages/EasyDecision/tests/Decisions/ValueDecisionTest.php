@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Tests\Decisions;
@@ -12,15 +11,15 @@ use EonX\EasyDecision\Exceptions\UnableToMakeDecisionException;
 use EonX\EasyDecision\Interfaces\RuleInterface;
 use EonX\EasyDecision\Tests\AbstractTestCase;
 use EonX\EasyDecision\Tests\Stubs\RuleWithNonBlockingErrorStub;
+use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ValueDecisionTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testDecisionEntirely
      */
-    public function decisionEntirelyProvider(): iterable
+    public static function decisionEntirelyProvider(): iterable
     {
         yield 'No rules, no default output' => [
             [],
@@ -43,22 +42,14 @@ final class ValueDecisionTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param mixed[] $rules
-     * @param mixed[] $input
-     * @param mixed $expectedOutput
-     * @param mixed[] $expectedRulesOutput
-     * @param null|mixed $defaultOutput
-     *
-     * @dataProvider decisionEntirelyProvider
-     */
+    #[DataProvider('decisionEntirelyProvider')]
     public function testDecisionEntirely(
         array $rules,
         array $input,
-        $expectedOutput,
+        mixed $expectedOutput,
         array $expectedRulesOutput,
         ?string $name = null,
-        $defaultOutput = null
+        mixed $defaultOutput = null,
     ): void {
         $decision = (new ValueDecision($name))
             ->addRules($rules)
@@ -157,19 +148,11 @@ final class ValueDecisionTest extends AbstractTestCase
                 return 0;
             }
 
-            /**
-             * @param mixed[] $input
-             *
-             * @return mixed
-             */
-            public function proceed(array $input)
+            public function proceed(array $input): never
             {
-                throw new \Exception('');
+                throw new Exception('');
             }
 
-            /**
-             * @param mixed[] $input
-             */
             public function supports(array $input): bool
             {
                 return true;
@@ -190,19 +173,11 @@ final class ValueDecisionTest extends AbstractTestCase
                 return 0;
             }
 
-            /**
-             * @param mixed[] $input
-             *
-             * @return mixed
-             */
-            public function proceed(array $input)
+            public function proceed(array $input): mixed
             {
                 return $input['value'] + 10;
             }
 
-            /**
-             * @param mixed[] $input
-             */
             public function supports(array $input): bool
             {
                 return isset($input['value']);

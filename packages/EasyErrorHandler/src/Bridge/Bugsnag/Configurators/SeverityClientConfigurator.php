@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators;
@@ -11,29 +10,20 @@ use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\SeverityAwareExceptionInterface;
 use Monolog\Logger;
+use Throwable;
 
 final class SeverityClientConfigurator extends AbstractClientConfigurator
 {
-    /**
-     * @var string[]
-     */
     private const MAPPING = [
+        Logger::ERROR => SeverityAwareExceptionInterface::SEVERITY_ERROR,
         Logger::INFO => SeverityAwareExceptionInterface::SEVERITY_INFO,
         Logger::WARNING => SeverityAwareExceptionInterface::SEVERITY_WARNING,
-        Logger::ERROR => SeverityAwareExceptionInterface::SEVERITY_ERROR,
     ];
 
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface
-     */
-    private $errorLogLevelResolver;
-
     public function __construct(
-        ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        ?int $priority = null
+        private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        ?int $priority = null,
     ) {
-        $this->errorLogLevelResolver = $errorLogLevelResolver;
-
         parent::__construct($priority);
     }
 
@@ -44,13 +34,13 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
             ->pipe(new CallbackBridge(function (Report $report): void {
                 $throwable = $report->getOriginalError();
 
-                if ($throwable instanceof \Throwable) {
+                if ($throwable instanceof Throwable) {
                     $report->setSeverity($this->getSeverity($throwable));
                 }
             }));
     }
 
-    private function getSeverity(\Throwable $throwable): ?string
+    private function getSeverity(Throwable $throwable): ?string
     {
         // Allow to explicitly define the severity
         $severity = $throwable instanceof SeverityAwareExceptionInterface ? $throwable->getSeverity() : null;

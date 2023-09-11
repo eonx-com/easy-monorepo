@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
@@ -12,9 +11,12 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
 {
+    private const DEFAULT_INTERNAL_MESSAGES_LOCALE = 'en';
+
     /**
      * @var string[]
      */
@@ -29,7 +31,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         private readonly LoggerInterface $logger,
         private readonly TranslatorInterface $translator,
         private readonly bool $translateInternalMessages = false,
-        private readonly string $internalMessagesLocale = 'en'
+        private readonly string $internalMessagesLocale = self::DEFAULT_INTERNAL_MESSAGES_LOCALE,
     ) {
     }
 
@@ -38,10 +40,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         $this->internalMessages = [];
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function resolveExtendedDetails(\Throwable $throwable, ?int $maxDepth = null): array
+    public function resolveExtendedDetails(Throwable $throwable, ?int $maxDepth = null): array
     {
         // Reset throwable chain
         $this->chain = [];
@@ -54,7 +53,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         );
     }
 
-    public function resolveInternalMessage(\Throwable $throwable): string
+    public function resolveInternalMessage(Throwable $throwable): string
     {
         $errorIdentifier = $this->resolveErrorIdentifier($throwable);
 
@@ -74,15 +73,12 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $this->internalMessages[$errorIdentifier] = $message;
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function resolveSimpleDetails(\Throwable $throwable, ?bool $withTrace = null): array
+    public function resolveSimpleDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         return ErrorDetailsHelper::resolveSimpleDetails($throwable, $withTrace);
     }
 
-    private function canResolvePrevious(\Throwable $previous, int $maxDepth, int $depth): bool
+    private function canResolvePrevious(Throwable $previous, int $maxDepth, int $depth): bool
     {
         if (\in_array($this->resolveErrorIdentifier($previous), $this->chain, true)) {
             $this->logger->info('Circular reference detected in throwable chain', [
@@ -95,10 +91,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $maxDepth === -1 || $depth < $maxDepth;
     }
 
-    /**
-     * @return mixed[]
-     */
-    private function doResolveExtendedDetails(\Throwable $throwable, ?bool $withTrace = null): array
+    private function doResolveExtendedDetails(Throwable $throwable, ?bool $withTrace = null): array
     {
         $details = $this->resolveSimpleDetails($throwable, $withTrace);
 
@@ -123,19 +116,11 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $details;
     }
 
-    /**
-     * @param mixed[] $previousDetails
-     * @param \Throwable $throwable
-     * @param int $depth
-     * @param int $maxDepth
-     *
-     * @return mixed[]
-     */
     private function doResolvePreviousDetails(
         array $previousDetails,
-        \Throwable $throwable,
+        Throwable $throwable,
         int $depth,
-        int $maxDepth
+        int $maxDepth,
     ): array {
         $this->chain[] = $this->resolveErrorIdentifier($throwable);
 
@@ -149,7 +134,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         return $previousDetails;
     }
 
-    private function resolveErrorIdentifier(\Throwable $throwable): string
+    private function resolveErrorIdentifier(Throwable $throwable): string
     {
         return \spl_object_hash($throwable);
     }

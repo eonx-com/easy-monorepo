@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\ORM\Query\AST\Functions;
@@ -12,10 +11,9 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use EonX\EasyDoctrine\ORM\Query\AST\Functions\StringAgg;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyDoctrine\ORM\Query\AST\Functions\StringAgg
- */
+#[CoversClass(StringAgg::class)]
 final class StringAggTest extends AbstractTestCase
 {
     /**
@@ -25,6 +23,21 @@ final class StringAggTest extends AbstractTestCase
     {
         $delimiterValue = 'some-delimiter-value';
         $expressionValue = 'some-value';
+        $expression = new PathExpression(PathExpression::TYPE_STATE_FIELD, 'no-matter');
+        $delimiter = new Literal(Literal::STRING, 'no-matter');
+        $sqlWalker = $this->prophesize(SqlWalker::class);
+        $sqlWalker->walkPathExpression($expression)
+            ->willReturn($expressionValue);
+        $sqlWalker->walkStringPrimary($delimiter)
+            ->willReturn($delimiterValue);
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $stringAgg = new StringAgg('no-matter');
+        $this->setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
+        $this->setPrivatePropertyValue($stringAgg, 'expression', $expression);
+
+        $result = $stringAgg->getSql($sqlWalkerReveal);
+
         $expectedSql = \sprintf(
             'STRING_AGG(%s%s::CHARACTER VARYING, %s%s)',
             '',
@@ -32,17 +45,6 @@ final class StringAggTest extends AbstractTestCase
             $delimiterValue,
             ''
         );
-        $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)
-            ->willReturn($expressionValue);
-        $sqlWalker->walkStringPrimary(null)
-            ->willReturn($delimiterValue);
-        $stringAgg = new StringAgg('no-matter');
-
-        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
-        $sqlWalkerReveal = $sqlWalker->reveal();
-        $result = $stringAgg->getSql($sqlWalkerReveal);
-
         self::assertSame($expectedSql, $result);
     }
 
@@ -53,6 +55,22 @@ final class StringAggTest extends AbstractTestCase
     {
         $delimiterValue = 'some-delimiter-value';
         $expressionValue = 'some-value';
+        $expression = new PathExpression(PathExpression::TYPE_STATE_FIELD, 'no-matter');
+        $delimiter = new Literal(Literal::STRING, 'no-matter');
+        $sqlWalker = $this->prophesize(SqlWalker::class);
+        $sqlWalker->walkPathExpression($expression)
+            ->willReturn($expressionValue);
+        $sqlWalker->walkStringPrimary($delimiter)
+            ->willReturn($delimiterValue);
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $stringAgg = new StringAgg('no-matter');
+        $this->setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
+        $this->setPrivatePropertyValue($stringAgg, 'expression', $expression);
+        $this->setPrivatePropertyValue($stringAgg, 'isDistinct', true);
+
+        $result = $stringAgg->getSql($sqlWalkerReveal);
+
         $expectedSql = \sprintf(
             'STRING_AGG(%s%s::CHARACTER VARYING, %s%s)',
             'DISTINCT ',
@@ -60,18 +78,6 @@ final class StringAggTest extends AbstractTestCase
             $delimiterValue,
             ''
         );
-        $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)
-            ->willReturn($expressionValue);
-        $sqlWalker->walkStringPrimary(null)
-            ->willReturn($delimiterValue);
-        $stringAgg = new StringAgg('no-matter');
-        $this->setPrivatePropertyValue($stringAgg, 'isDistinct', true);
-
-        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
-        $sqlWalkerReveal = $sqlWalker->reveal();
-        $result = $stringAgg->getSql($sqlWalkerReveal);
-
         self::assertSame($expectedSql, $result);
     }
 
@@ -84,6 +90,24 @@ final class StringAggTest extends AbstractTestCase
         $expressionValue = 'some-value';
         $orderByValue = 'some-value';
         $orderBy = new OrderByClause([]);
+        $expression = new PathExpression(PathExpression::TYPE_STATE_FIELD, 'no-matter');
+        $delimiter = new Literal(Literal::STRING, 'no-matter');
+        $sqlWalker = $this->prophesize(SqlWalker::class);
+        $sqlWalker->walkPathExpression($expression)
+            ->willReturn($expressionValue);
+        $sqlWalker->walkStringPrimary($delimiter)
+            ->willReturn($delimiterValue);
+        $sqlWalker->walkOrderByClause($orderBy)
+            ->willReturn($orderByValue);
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
+        $stringAgg = new StringAgg('no-matter');
+        $this->setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
+        $this->setPrivatePropertyValue($stringAgg, 'expression', $expression);
+        $this->setPrivatePropertyValue($stringAgg, 'orderBy', $orderBy);
+
+        $result = $stringAgg->getSql($sqlWalkerReveal);
+
         $expectedSql = \sprintf(
             'STRING_AGG(%s%s::CHARACTER VARYING, %s%s)',
             '',
@@ -91,20 +115,6 @@ final class StringAggTest extends AbstractTestCase
             $delimiterValue,
             $orderByValue
         );
-        $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression(null)
-            ->willReturn($expressionValue);
-        $sqlWalker->walkStringPrimary(null)
-            ->willReturn($delimiterValue);
-        $sqlWalker->walkOrderByClause($orderBy)
-            ->willReturn($orderByValue);
-        $stringAgg = new StringAgg('no-matter');
-        $this->setPrivatePropertyValue($stringAgg, 'orderBy', $orderBy);
-
-        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
-        $sqlWalkerReveal = $sqlWalker->reveal();
-        $result = $stringAgg->getSql($sqlWalkerReveal);
-
         self::assertSame($expectedSql, $result);
     }
 

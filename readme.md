@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Documentation
+title: Monorepo Documentation
 weight: 0
 ---eonx_docs---
 
@@ -16,11 +16,9 @@ you can look [there][1].
 - [EasyApiPlatform](https://github.com/eonx-com/easy-api-platform): Provides features for API Platform applications
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Make your API accept multiple authentication strategies in a convenient way (Basic, ApiKey, JWT, ...)
 - [EasyAsync](https://github.com/eonx-com/easy-async): Makes dealing with async processes easier
-- [EasyAwsCredentialsFinder](https://github.com/eonx-com/easy-aws-credentials-finder): Tool to ease finding aws credentials in project/machine
 - [EasyBankFiles](https://github.com/eonx-com/easy-bank-files): Parsers/Generators for common bank files
 - [EasyBatch](https://github.com/eonx-com/easy-batch): Batching async processes made easy
 - [EasyBugsnag](https://github.com/eonx-com/easy-bugsnag): Ease integrating bugsnag in your PHP projects
-- [EasyCore](https://github.com/eonx-com/easy-core): Provides core features for Lumen applications
 - [EasyDecision](https://github.com/eonx-com/easy-decision): Your most complex decisions taken the easiest way
 - [EasyDoctrine](https://github.com/eonx-com/easy-doctrine): Provides functionalities to enhance Doctrine integration in your project
 - [EasyEncryption](https://github.com/eonx-com/easy-encryption): Encryption made easy
@@ -32,13 +30,11 @@ you can look [there][1].
 - [EasyNotification](https://github.com/eonx-com/easy-notification): Client for dispatching notifications at EonX
 - [EasyPagination](https://github.com/eonx-com/easy-pagination): Provides a generic way to handle pagination data from clients
 - [EasyPipeline](https://github.com/eonx-com/easy-pipeline): Provides an easy and powerful way to implement pipelines for anything
-- [EasyPsr7Factory](https://github.com/eonx-com/easy-psr7-factory): Provides an easy way to create PSR7 Request/Response from Symfony Request/Response
 - [EasyRandom](https://github.com/eonx-com/easy-random): Provides easy way to generate random values (string, int, uuids, ...)
 - [EasyRepository](https://github.com/eonx-com/easy-repository): Provides an easy way to implement the Repository Design Pattern in your applications
 - [EasyRequestId](https://github.com/eonx-com/easy-request-id): Uniquely identify each request across multiple projects
 - [EasySchedule](https://github.com/eonx-com/easy-schedule): Provides the Command Scheduling logic of Laravel in a Symfony Console application
 - [EasySecurity](https://github.com/eonx-com/easy-security): Provides security features to be generic across applications
-- [EasySsm](https://github.com/eonx-com/easy-ssm): CLI tool to interact with AWS ParameterStore in a convenient way
 - [EasySwoole](https://github.com/eonx-com/easy-swoole): Ease running app with Open Swoole
 - [EasyTemplatingBlock](https://github.com/eonx-com/easy-templating-block): Allow to dynamically render blocks in templating engines
 - [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier

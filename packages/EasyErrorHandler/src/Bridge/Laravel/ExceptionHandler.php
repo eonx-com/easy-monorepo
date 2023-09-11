@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Laravel;
@@ -8,46 +7,31 @@ use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
-use Exception;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 final class ExceptionHandler implements IlluminateExceptionHandlerInterface
 {
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
-     */
-    private $errorHandler;
-
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(ErrorHandlerInterface $errorHandler, TranslatorInterface $translator)
-    {
-        $this->errorHandler = $errorHandler;
-        $this->translator = $translator;
+    public function __construct(
+        private readonly ErrorHandlerInterface $errorHandler,
+        private readonly TranslatorInterface $translator,
+    ) {
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception|\Throwable $exception
-     */
-    public function render($request, $exception): Response
+    public function render(mixed $request, Throwable $exception): Response
     {
         return $this->errorHandler->render($request, $exception);
     }
 
     /**
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception|\Throwable $exception
      */
-    public function renderForConsole($output, $exception): void
+    public function renderForConsole(mixed $output, Throwable $exception): void
     {
         (new Application())->renderThrowable($exception, $output);
 
@@ -55,18 +39,12 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
         $this->renderValidationFailuresToConsoleIfNeeded($output, $exception);
     }
 
-    /**
-     * @param \Exception|\Throwable $exception
-     */
-    public function report($exception): void
+    public function report(Throwable $exception): void
     {
         $this->errorHandler->report($exception);
     }
 
-    /**
-     * @param \Exception|\Throwable $exception
-     */
-    public function shouldReport($exception): bool
+    public function shouldReport(Throwable $exception): bool
     {
         // Delegate decision to error reporters
         return true;
@@ -74,10 +52,8 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
 
     /**
      * Returns a determined exception message.
-     *
-     * @param \Exception|\Throwable $exception
      */
-    private function determineExceptionMessage($exception): string
+    private function determineExceptionMessage(Throwable $exception): string
     {
         if ($exception instanceof TranslatableExceptionInterface === false) {
             return $exception->getMessage();
@@ -88,10 +64,8 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
 
     /**
      * Renders a block with an exception message translation to the console if needed.
-     *
-     * @param \Exception|\Throwable $exception
      */
-    private function renderTranslationToConsoleIfNeeded(OutputInterface $output, $exception): void
+    private function renderTranslationToConsoleIfNeeded(OutputInterface $output, Throwable $exception): void
     {
         $exceptionMessage = $this->determineExceptionMessage($exception);
 
@@ -107,10 +81,8 @@ final class ExceptionHandler implements IlluminateExceptionHandlerInterface
 
     /**
      * Renders a block with an exception validation failures to the console if needed.
-     *
-     * @param \Exception|\Throwable $exception
      */
-    private function renderValidationFailuresToConsoleIfNeeded(OutputInterface $output, $exception): void
+    private function renderValidationFailuresToConsoleIfNeeded(OutputInterface $output, Throwable $exception): void
     {
         if ($exception instanceof ValidationExceptionInterface === false) {
             return;

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Bridge\Laravel;
@@ -12,28 +11,22 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
-    /**
-     * @param null|mixed[] $config
-     */
     protected function getApp(?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
-        $app->register(EasyNotificationServiceProvider::class);
-        $app->boot();
+        $this->app = new Application(__DIR__);
+        $this->app->register(EasyNotificationServiceProvider::class);
+        $this->app->boot();
 
         if ($config !== null) {
-            $app->instance(ConfigFinderInterface::class, new ConfigFinderStub($config));
+            $this->app->instance(ConfigFinderInterface::class, new ConfigFinderStub($config));
         }
 
-        return $this->app = $app;
+        return $this->app;
     }
 }

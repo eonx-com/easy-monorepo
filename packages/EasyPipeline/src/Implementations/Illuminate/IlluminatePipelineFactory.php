@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyPipeline\Implementations\Illuminate;
@@ -16,33 +15,18 @@ use Illuminate\Pipeline\Pipeline;
 final class IlluminatePipelineFactory implements PipelineFactoryInterface
 {
     /**
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    private $container;
-
-    /**
-     * @var string[]
-     */
-    private $pipelines;
-
-    /**
-     * @var null|string
-     */
-    private $prefix;
-
-    /**
      * @var \EonX\EasyPipeline\Interfaces\PipelineInterface[]
      */
-    private $resolved = [];
+    private array $resolved = [];
 
     /**
      * @param string[] $pipelines
      */
-    public function __construct(ContainerInterface $container, array $pipelines, ?string $prefix = null)
-    {
-        $this->container = $container;
-        $this->pipelines = $pipelines;
-        $this->prefix = $prefix;
+    public function __construct(
+        private ContainerInterface $container,
+        private array $pipelines,
+        private ?string $prefix = null,
+    ) {
     }
 
     public function create(string $pipeline): PipelineInterface
@@ -68,7 +52,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         if (\in_array($pipeline, $this->pipelines, true) === false) {
             throw new PipelineNotFoundException(\sprintf(
                 'In %s, no middleware provider configured for pipeline "%s"',
-                static::class,
+                self::class,
                 $pipeline
             ));
         }
@@ -81,8 +65,8 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
 
         throw new InvalidMiddlewareProviderException(\sprintf(
             'In %s, middleware provider "%s" does not implement %s',
-            static::class,
-            \get_class($provider),
+            self::class,
+            $provider::class,
             MiddlewareProviderInterface::class
         ));
     }

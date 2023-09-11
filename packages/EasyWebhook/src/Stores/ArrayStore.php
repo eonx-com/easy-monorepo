@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Stores;
@@ -13,7 +12,7 @@ final class ArrayStore extends AbstractStore implements StoreInterface, ResetSto
     /**
      * @var \EonX\EasyWebhook\Interfaces\WebhookInterface[]
      */
-    private $webhooks = [];
+    private array $webhooks = [];
 
     public function find(string $id): ?WebhookInterface
     {
@@ -22,7 +21,7 @@ final class ArrayStore extends AbstractStore implements StoreInterface, ResetSto
 
     public function generateWebhookId(): string
     {
-        return $this->random->uuidV4();
+        return $this->random->uuid();
     }
 
     /**

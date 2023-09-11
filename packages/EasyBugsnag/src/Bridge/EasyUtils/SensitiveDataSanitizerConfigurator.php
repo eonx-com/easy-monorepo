@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bridge\EasyUtils;
@@ -11,8 +10,9 @@ use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 
 final class SensitiveDataSanitizerConfigurator extends AbstractClientConfigurator
 {
-    public function __construct(private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer)
-    {
+    public function __construct(
+        private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
+    ) {
         parent::__construct(\PHP_INT_MAX);
     }
 

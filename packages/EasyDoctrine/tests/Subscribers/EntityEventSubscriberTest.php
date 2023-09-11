@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Subscribers;
@@ -11,17 +10,20 @@ use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Events\EntityCreatedEvent;
 use EonX\EasyDoctrine\Events\EntityDeletedEvent;
 use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Category;
+use EonX\EasyDoctrine\Tests\Fixtures\Offer;
+use EonX\EasyDoctrine\Tests\Fixtures\Price;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Fixtures\Tag;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
 use EonX\EasyDoctrine\Tests\Stubs\EventDispatcherStub;
+use PHPUnit\Framework\Attributes\CoversClass;
+use RuntimeException;
 
-/**
- * @covers \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber
- * @covers \EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher
- */
+#[CoversClass(DeferredEntityEventDispatcher::class)]
+#[CoversClass(EntityEventSubscriber::class)]
 final class EntityEventSubscriberTest extends AbstractTestCase
 {
     public function testEventIsDispatchedIfTimezoneWasChanged(): void
@@ -41,7 +43,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'activeTill' => '2022-12-20 16:23:52',
                 ]
             );
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
         /** @var \DateTime $activeTill */
         $activeTill = $category->getActiveTill();
@@ -64,13 +66,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
     }
 
-    public function testEventIsNotDispatchedForEqualDates(): void
+    public function testEventIsNotDispatchedForEqualObjects(): void
     {
         $eventDispatcher = new EventDispatcherStub();
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
-            [Category::class],
-            [Category::class]
+            [Category::class, Product::class],
+            [Category::class, Product::class]
         );
         $activeTill = '2022-12-20 16:23:52';
         $entityManager->getConnection()
@@ -82,11 +84,22 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                     'activeTill' => $activeTill,
                 ]
             );
-        /** @var Category $category */
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Laptop',
+                    'price' => '1000 USD',
+                ]
+            );
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
         $category->setActiveTill(new DateTimeImmutable($activeTill));
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $product->setPrice(new Price('1000', 'USD'));
 
-        $entityManager->persist($category);
         $entityManager->flush();
 
         $events = $eventDispatcher->getDispatchedEvents();
@@ -107,7 +120,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $dispatcher->enable();
         $product = new Product();
         $product->setName('Description 1');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $entityManager->persist($product);
 
         $entityManager->flush();
@@ -127,19 +140,21 @@ final class EntityEventSubscriberTest extends AbstractTestCase
 
         $product = new Product();
 
-        $entityManager->transactional(function () use ($entityManager, $product) {
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
-            $product->setPrice('1000');
+            $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
+
             try {
-                $entityManager->transactional(function () use ($entityManager, $product) {
-                    $product->setPrice('2000');
+                $entityManager->wrapInTransaction(function () use ($entityManager, $product): never {
+                    $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
-                    throw new \RuntimeException('Test', 1);
+
+                    throw new RuntimeException('Test', 1);
                 });
-            } catch (\RuntimeException $exception) {
+            } catch (RuntimeException) {
             }
         });
 
@@ -151,7 +166,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'category' => [null, null],
                     'name' => [null, 'Description 1'],
-                    'price' => [null, '1000'],
+                    'price' => [null, new Price('1000', 'USD')],
                 ]
             ),
             $events[0]
@@ -171,7 +186,8 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager->persist($category);
         $product = new Product();
         $product->setName('Keyboard');
-        $product->setPrice('1000');
+        $price = new Price('1000', 'USD');
+        $product->setPrice($price);
         $entityManager->persist($product);
 
         $entityManager->flush();
@@ -193,7 +209,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
-                    'price' => [null, '1000'],
+                    'price' => [null, $price],
                     'category' => [null, null],
                 ]
             ),
@@ -223,15 +239,15 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                 ]
             );
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $entityManager->getRepository(Category::class)->find(1);
-        /** @var Product $product */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
         $category->setName('Computer Peripherals');
-        $product->setPrice('2000');
+        $product->setPrice(new Price('2000', 'USD'));
 
         $entityManager->persist($category);
         $entityManager->persist($product);
@@ -252,7 +268,62 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             new EntityUpdatedEvent(
                 $product,
                 [
-                    'price' => ['1000', '2000'],
+                    'price' => [new Price('1000', 'USD'), new Price('2000', 'USD')],
+                ]
+            ),
+            $events[1]
+        );
+    }
+
+    public function testEventsAreDispatchedWithFlushInEmbeddedEventHandler(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Category::class, Product::class],
+            [Category::class, Product::class]
+        );
+        $eventDispatcher->addDispatchCallback(
+            class: EntityCreatedEvent::class,
+            callback: static function (EntityCreatedEvent $event) use ($entityManager): void {
+                if ($event->getEntity() instanceof Category === false) {
+                    return;
+                }
+                $product = new Product();
+                $product->setName('Keyboard');
+                $product->setPrice(new Price('100', 'USD'));
+
+                $entityManager->persist($product);
+                $entityManager->flush();
+            }
+        );
+        $category = new Category();
+        $category->setName('Computer');
+        $entityManager->persist($category);
+
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(2, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $category,
+                [
+                    'activeTill' => [null, null],
+                    'name' => [null, 'Computer'],
+                ]
+            ),
+            $events[0]
+        );
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->findOneBy(['name' => 'Keyboard']);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'name' => [null, 'Keyboard'],
+                    'price' => [null, new Price('100', 'USD')],
+                    'category' => [null, null],
                 ]
             ),
             $events[1]
@@ -273,7 +344,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager->persist($category);
         $product = new Product();
         $product->setName('Keyboard');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $product->setCategory($category);
         $entityManager->persist($product);
 
@@ -286,8 +357,66 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'name' => [null, 'Keyboard'],
-                    'price' => [null, '1000'],
+                    'price' => [null, new Price('1000', 'USD')],
                     'category' => [null, $category],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testEventsAreNotDispatchedForCollectionWhenItemUpdated(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class, Tag::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $entityManager->getRepository(Tag::class)->find(2);
+        $product->getTags()
+            ->toArray();
+        $tag2->setName('New Tag 2 Name');
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $tag2,
+                [
+                    'name' => ['Tag 2', 'New Tag 2 Name'],
                 ]
             ),
             $events[0]
@@ -307,10 +436,10 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $dispatcher->disable();
         $product = new Product();
         $product->setName('Description 1');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $entityManager->persist($product);
         $entityManager->flush();
-        $product->setPrice('2000');
+        $product->setPrice(new Price('2000', 'USD'));
         $entityManager->flush();
 
         $events = $eventDispatcher->getDispatchedEvents();
@@ -326,26 +455,27 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             [Product::class]
         );
 
-        $this->safeCall(function () use ($entityManager) {
+        $this->safeCall(function () use ($entityManager): void {
             $product = new Product();
 
-            $entityManager->transactional(function () use ($entityManager, $product) {
+            $entityManager->transactional(function () use ($entityManager, $product): void {
                 $product->setName('Description 1');
-                $product->setPrice('1000');
+                $product->setPrice(new Price('1000', 'USD'));
                 $entityManager->persist($product);
                 $entityManager->flush();
-                $entityManager->transactional(function () use ($entityManager, $product) {
-                    $product->setPrice('2000');
+                $entityManager->transactional(function () use ($entityManager, $product): never {
+                    $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
-                    throw new \RuntimeException('Test', 1);
+
+                    throw new RuntimeException('Test', 1);
                 });
             });
 
             $entityManager->flush();
         });
 
-        $this->assertThrownException(\RuntimeException::class, 1);
+        $this->assertThrownException(RuntimeException::class, 1);
         $events = $eventDispatcher->getDispatchedEvents();
         self::assertCount(0, $events);
     }
@@ -386,14 +516,14 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                     'category_id' => 1,
                 ]
             );
 
-        /** @var Product $product */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
-        /** @var Category $category */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $product->getCategory();
         $category->setName('Computer Peripherals');
 
@@ -413,7 +543,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
         $product = new Product();
         $product->setName('Product 1');
-        $product->setPrice('1000');
+        $product->setPrice(new Price('1000', 'USD'));
         $entityManager->persist($product);
 
         $entityManager->flush();
@@ -427,7 +557,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
             $eventDispatcher,
             [Product::class],
-            [Product::class, Category::class, Tag::class]
+            [Product::class, Category::class, Tag::class, Offer::class]
         );
         $entityManager->getConnection()
             ->insert(
@@ -443,7 +573,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                     'category_id' => 1,
                 ]
             );
@@ -477,20 +607,21 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Events\EntityDeletedEvent $actualEvent */
         $actualEvent = $events[0];
         self::assertInstanceOf(EntityDeletedEvent::class, $actualEvent);
-        self::assertSame($actualEvent->getChangeSet(), [
+        self::assertEquals($actualEvent->getChangeSet(), [
             'id' => [1, null],
             'name' => ['Keyboard', null],
-            'price' => ['1000', null],
+            'price' => [new Price('1000', 'USD'), null],
             'category_id' => [1, null],
             'category' => [$product->getCategory(), null],
             'tags' => [$product->getTags(), null],
+            'offers' => [$product->getOffers(), null],
         ]);
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $actualEvent->getEntity();
         self::assertInstanceOf(Product::class, $product);
         self::assertSame(1, $product->getId());
         self::assertSame('Keyboard', $product->getName());
-        self::assertSame('1000', $product->getPrice());
+        self::assertEquals(new Price('1000', 'USD'), $product->getPrice());
         self::assertNotNull($product->getCategory());
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Category $category */
         $category = $product->getCategory();
@@ -520,18 +651,18 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'name' => 'Keyboard',
-                    'price' => '1000',
+                    'price' => '1000 USD',
                 ]
             );
-        /** @var Product $product */
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
 
-        $entityManager->transactional(function () use ($entityManager, $product) {
-            $product->setPrice('2000');
+        $entityManager->transactional(function () use ($entityManager, $product): void {
+            $product->setPrice(new Price('2000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
-            $entityManager->transactional(function () use ($entityManager, $product) {
-                $product->setPrice('3000');
+            $entityManager->transactional(function () use ($entityManager, $product): void {
+                $product->setPrice(new Price('3000', 'USD'));
                 $product->setName('Keyboard 2');
                 $entityManager->flush();
             });
@@ -544,7 +675,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
             new EntityUpdatedEvent(
                 $product,
                 [
-                    'price' => ['1000', '3000'],
+                    'price' => [new Price('1000', 'USD'), new Price('3000', 'USD')],
                     'name' => ['Keyboard', 'Keyboard 2'],
                 ]
             ),
@@ -562,13 +693,13 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
 
         $product = new Product();
-        $entityManager->transactional(function () use ($entityManager, $product) {
+        $entityManager->transactional(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
-            $product->setPrice('1000');
+            $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
-            $entityManager->transactional(function () use ($entityManager, $product) {
-                $product->setPrice('2000');
+            $entityManager->transactional(function () use ($entityManager, $product): void {
+                $product->setPrice(new Price('2000', 'USD'));
                 $entityManager->flush();
             });
         });
@@ -581,8 +712,214 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 $product,
                 [
                     'description' => [null, 'Description 1'],
-                    'price' => [null, '2000'],
+                    'price' => [null, new Price('2000', 'USD')],
                     'category' => [null, null],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForUpdatedCollection(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $entityManager->getRepository(Tag::class)->find(2);
+        $product->getTags()
+            ->toArray();
+        $entityManager->remove($tag2);
+        $tag3 = (new Tag())
+            ->setName('Tag 3');
+        $product->addTag($tag3);
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'tags' => [
+                        [1, 2],
+                        [1, 3],
+                    ],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForUpdatedCollectionWhenManyToMany(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Offer::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'offer',
+                [
+                    'id' => 1,
+                    'name' => 'Offer 1',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'offer',
+                [
+                    'id' => 2,
+                    'name' => 'Offer 2',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product_offer',
+                [
+                    'product_id' => 1,
+                    'offer_id' => 1,
+                ],
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product_offer',
+                [
+                    'product_id' => 1,
+                    'offer_id' => 2,
+                ],
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $product->getOffers()
+            ->clear();
+        $entityManager->flush();
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'offers' => [
+                        ['Not available'],
+                        ['Collection was cleared'],
+                    ],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForUpdatedCollectionWhenTransactional(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class, Tag::class]
+        );
+        $entityManager->getConnection()
+            ->insert(
+                'product',
+                [
+                    'id' => 1,
+                    'name' => 'Keyboard',
+                    'price' => '1000 USD',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 1,
+                    'name' => 'Tag 1',
+                    'product_id' => 1,
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'tag',
+                [
+                    'id' => 2,
+                    'name' => 'Tag 2',
+                    'product_id' => 1,
+                ]
+            );
+
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        /** @var \EonX\EasyDoctrine\Tests\Fixtures\Tag $tag2 */
+        $tag2 = $entityManager->getRepository(Tag::class)->find(2);
+        $product->getTags()
+            ->toArray();
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product, $tag2): void {
+            $entityManager->remove($tag2);
+            $entityManager->flush();
+
+            $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
+                $tag3 = (new Tag())
+                    ->setName('Tag 3');
+                $product->addTag($tag3);
+                $entityManager->flush();
+            });
+        });
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityUpdatedEvent(
+                $product,
+                [
+                    'tags' => [
+                        [1, 2],
+                        [1, 3],
+                    ],
                 ]
             ),
             $events[0]

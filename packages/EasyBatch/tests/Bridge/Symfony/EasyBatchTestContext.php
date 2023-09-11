@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Bridge\Symfony;
@@ -15,8 +14,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EasyBatchTestContext
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
+    public function __construct(
+        private readonly ContainerInterface $container,
+    ) {
     }
 
     public function getBatchItemFactory(): BatchItemFactoryInterface
@@ -29,14 +29,14 @@ final class EasyBatchTestContext
         return $this->container->get(BatchItemRepositoryInterface::class);
     }
 
-    public function getBatchRepository(): BatchRepositoryInterface
-    {
-        return $this->container->get(BatchRepositoryInterface::class);
-    }
-
     public function getBatchObjectManager(): BatchObjectManagerInterface
     {
         return $this->container->get(BatchObjectManagerInterface::class);
+    }
+
+    public function getBatchRepository(): BatchRepositoryInterface
+    {
+        return $this->container->get(BatchRepositoryInterface::class);
     }
 
     public function getConnection(): Connection

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\ORM\Query\AST\Functions;
@@ -10,10 +9,9 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use EonX\EasyDoctrine\ORM\Query\AST\Functions\Contains;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \EonX\EasyDoctrine\ORM\Query\AST\Functions\Contains
- */
+#[CoversClass(Contains::class)]
 final class ContainsTest extends AbstractTestCase
 {
     /**
@@ -30,12 +28,11 @@ final class ContainsTest extends AbstractTestCase
             ->willReturn($parameter);
         $sqlWalker->walkInputParameter($inputParameter)
             ->willReturn($parameterValue);
-
+        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
+        $sqlWalkerReveal = $sqlWalker->reveal();
         $parser = $this->mockParser($contains, $inputParameter);
         $contains->parse($parser);
 
-        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
-        $sqlWalkerReveal = $sqlWalker->reveal();
         $result = $contains->getSql($sqlWalkerReveal);
 
         self::assertSame(\sprintf('(%s @> %s)', $parameter, $parameterValue), $result);

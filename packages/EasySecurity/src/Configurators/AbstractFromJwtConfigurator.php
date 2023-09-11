@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
@@ -12,20 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfigurator
 {
-    /**
-     * @var string
-     */
-    private $jwtClaim;
+    private ?JwtClaimFetcherInterface $jwtClaimFetcher = null;
 
-    /**
-     * @var \EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface
-     */
-    private $jwtClaimFetcher;
-
-    public function __construct(string $jwtClaim, ?int $priority = null)
-    {
-        $this->jwtClaim = $jwtClaim;
-
+    public function __construct(
+        private string $jwtClaim,
+        ?int $priority = null,
+    ) {
         parent::__construct($priority);
     }
 
@@ -36,8 +27,6 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
         if ($token instanceof JwtInterface === false) {
             return;
         }
-
-        /** @var \EonX\EasyApiToken\Interfaces\Tokens\JwtInterface $token */
 
         $this->doConfigure($context, $request, $token);
     }
@@ -50,25 +39,15 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        JwtInterface $token
+        JwtInterface $token,
     ): void;
 
-    /**
-     * @param null|mixed $default
-     *
-     * @return mixed
-     */
-    protected function getClaim(JwtInterface $token, string $claim, $default = null)
+    protected function getClaim(JwtInterface $token, string $claim, mixed $default = null): mixed
     {
         return $this->getJwtClaimFetcher()
             ->getClaim($token, $claim, $default);
     }
 
-    /**
-     * @param null|mixed[] $default
-     *
-     * @return mixed[]
-     */
     protected function getMainClaim(JwtInterface $token, ?array $default = null): array
     {
         return $this->getJwtClaimFetcher()

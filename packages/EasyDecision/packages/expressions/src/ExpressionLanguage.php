@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision\Expressions;
@@ -8,32 +7,23 @@ use EonX\EasyDecision\Exceptions\InvalidExpressionException;
 use EonX\EasyDecision\Expressions\Exceptions\ExpressionLanguageLockedException;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface;
 use EonX\EasyDecision\Expressions\Interfaces\ExpressionLanguageInterface;
-use EonX\EasyUtils\CollectorHelper;
+use EonX\EasyUtils\Helpers\CollectorHelper;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 final class ExpressionLanguage implements ExpressionLanguageInterface
 {
-    /**
-     * @var \Psr\Cache\CacheItemPoolInterface
-     */
-    private $cache;
+    private ?CacheItemPoolInterface $cache = null;
 
-    /**
-     * @var \Symfony\Component\ExpressionLanguage\ExpressionLanguage
-     */
-    private $expressionLanguage;
+    private BaseExpressionLanguage $expressionLanguage;
 
     /**
      * @var \EonX\EasyDecision\Expressions\Interfaces\ExpressionFunctionInterface[]
      */
-    private $functions = [];
+    private array $functions = [];
 
-    /**
-     * @var bool
-     */
-    private $locked = false;
+    private bool $locked = false;
 
     public function addFunction(ExpressionFunctionInterface $function): ExpressionLanguageInterface
     {
@@ -56,12 +46,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         return $this;
     }
 
-    /**
-     * @param null|mixed[] $arguments
-     *
-     * @return mixed
-     */
-    public function evaluate(string $expression, ?array $arguments = null)
+    public function evaluate(string $expression, ?array $arguments = null): mixed
     {
         return $this->getExpressionLanguage()
             ->evaluate($expression, $arguments ?? []);
@@ -106,7 +91,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
     }
 
     /**
-     * @param null|string[] $names
+     * @param string[]|null $names
      *
      * @throws \EonX\EasyDecision\Exceptions\InvalidExpressionException
      */

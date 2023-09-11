@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -16,30 +15,30 @@ use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Tests\Stubs\MiddlewareStub;
 use EonX\EasyWebhook\Tests\Stubs\StackStub;
 use EonX\EasyWebhook\Webhook;
+use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne
      */
-    public function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
+    public static function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
     {
         yield 'async enabled' => [true, 3];
 
         yield 'max attempt is one' => [false, 1];
     }
 
-    /**
-     * @dataProvider providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt
-     */
+    #[DataProvider('providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt')]
     public function testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne(bool $asyncEnabled, int $maxAttempt): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt($maxAttempt);
-        $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $resultsStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
             new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), $asyncEnabled),
-            new MiddlewareStub(null, new \Exception('my-message')),
+            new MiddlewareStub(null, new Exception('my-message')),
         ]));
 
         $result = $stack
@@ -58,15 +57,15 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     public function testRetryWhenResultNotSuccessful(): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt(3);
-        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
-        $resultsStore = new ArrayResultStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
+        $resultsStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
 
         $stack = new StackStub(new Stack([
             new StoreMiddleware($store, $resultsStore),
             new StatusAndAttemptMiddleware(),
             new MethodMiddleware('POST'),
             new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), false),
-            new MiddlewareStub(null, new \Exception('my-message')),
+            new MiddlewareStub(null, new Exception('my-message')),
         ]));
 
         $result = $stack

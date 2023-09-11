@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\DataTransferObjects;
@@ -7,22 +6,18 @@ namespace EonX\EasyTest\Coverage\DataTransferObjects;
 final class CoverageReportDto
 {
     /**
-     * @var float
-     */
-    private $coverage;
-
-    /**
      * @var string[]
      */
-    private $violations;
+    private array $violations;
 
     /**
      * @param string[] $violations
      */
-    public function __construct(float $coverage, array $violations = [])
-    {
-        $this->coverage = $coverage;
-        $this->violations = $violations;
+    public function __construct(
+        private float $coverage,
+        ?array $violations = null,
+    ) {
+        $this->violations = $violations ?? [];
     }
 
     public function getCoverage(): float
@@ -40,6 +35,6 @@ final class CoverageReportDto
 
     public function hasViolations(): bool
     {
-        return empty($this->violations) === false;
+        return \count($this->violations) !== 0;
     }
 }

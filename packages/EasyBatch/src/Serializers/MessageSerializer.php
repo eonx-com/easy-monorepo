@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Serializers;
@@ -21,7 +20,7 @@ final class MessageSerializer implements MessageSerializerInterface
 
     public function unserialize(string $message): object
     {
-        if (\strpos($message, '}', -1) === false) {
+        if (\str_ends_with($message, '}') === false) {
             /** @var string $message */
             $message = \base64_decode($message, true);
         }

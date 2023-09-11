@@ -5,19 +5,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^4.4",
-        "laminas/laminas-uri": "^2.8"
+        "eonx-com/easy-utils": "^5.3",
+        "spatie/url": "^2.2"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.13",
-        "doctrine/dbal": "^2.6",
-        "doctrine/orm": "^2.6",
-        "eonx-com/easy-psr7-factory": "^4.4",
-        "phpunit/phpunit": "^9.5",
-        "laravel/lumen-framework": "^5.8 || ^6.0 || ^8.0",
-        "vlucas/phpdotenv": "^3.3 || ^5.2",
-        "symfony/symfony": "^5.4 || ^6.0",
-        "mockery/mockery": "^1.4"
+        "doctrine/annotations": "^1.14",
+        "doctrine/dbal": "^3.0",
+        "doctrine/orm": "^2.14",
+        "laravel/lumen-framework": "^9.1",
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^10.2",
+        "symfony/symfony": "^6.3",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
@@ -32,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.4-dev"
+            "dev-master": "5.3-dev"
         }
     }
 }

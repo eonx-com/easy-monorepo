@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyDecision;
@@ -8,39 +7,17 @@ use EonX\EasyDecision\Interfaces\ContextInterface;
 
 final class Context implements ContextInterface
 {
-    /**
-     * @var string
-     */
-    private $decisionType;
+    private bool $propagationStopped = false;
 
-    /**
-     * @var mixed[]
-     */
-    private $originalInput;
+    private array $ruleOutputs = [];
 
-    /**
-     * @var bool
-     */
-    private $propagationStopped = false;
-
-    /**
-     * @var mixed[]
-     */
-    private $ruleOutputs = [];
-
-    /**
-     * @param mixed[] $input
-     */
-    public function __construct(string $decisionType, array $input)
-    {
-        $this->decisionType = $decisionType;
-        $this->originalInput = $input;
+    public function __construct(
+        private string $decisionType,
+        private array $input,
+    ) {
     }
 
-    /**
-     * @param mixed $output
-     */
-    public function addRuleOutput(string $rule, $output): ContextInterface
+    public function addRuleOutput(string $rule, mixed $output): ContextInterface
     {
         $this->ruleOutputs[$rule] = $output;
 
@@ -52,17 +29,11 @@ final class Context implements ContextInterface
         return $this->decisionType;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOriginalInput(): array
     {
-        return $this->originalInput;
+        return $this->input;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getRuleOutputs(): array
     {
         return $this->ruleOutputs;

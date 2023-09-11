@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Doctrine;
@@ -9,9 +8,6 @@ use Doctrine\DBAL\Types\Type;
 
 final class DateTimeWithMicroSeconds extends Type
 {
-    /**
-     * @var string
-     */
     public const NAME = 'datetime_with_microseconds';
 
     public function getName(): string
@@ -20,8 +16,6 @@ final class DateTimeWithMicroSeconds extends Type
     }
 
     /**
-     * @param mixed[] $column
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string

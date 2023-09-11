@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Verbose;
@@ -13,8 +12,6 @@ abstract class AbstractVerboseStrategyDriver implements VerboseStrategyDriverInt
 
     public function __construct(?int $priority = null)
     {
-        if ($priority !== null) {
-            $this->priority = $priority;
-        }
+        $this->doSetPriority($priority);
     }
 }

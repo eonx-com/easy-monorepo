@@ -1,0 +1,6 @@
+# Composer
+/cache
+/vendor
+
+# Cache
+/var

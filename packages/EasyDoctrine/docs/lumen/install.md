@@ -1,4 +1,9 @@
----eonx_docs--- title: Laravel/Lumen weight: 2000 is_section: true section_icon: fab fa-laravel ---eonx_docs---
+---eonx_docs---
+title: Laravel/Lumen
+weight: 2000
+is_section: true
+section_icon: fab fa-laravel
+---eonx_docs---
 
 ### Package Service Provider
 

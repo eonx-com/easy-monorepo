@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        colors="true"
-        bootstrap="tests/bootstrap.php"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd"
+    colors="true"
+    bootstrap="tests/bootstrap.php"
 >
     <testsuites>
         <testsuite name="EonX EasyMonorepo Test Suite">
@@ -9,16 +11,16 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <coverage/>
+
+    <source>
+        <include>
             <directory>packages/*/src</directory>
-            <directory>packages/*/packages/*/src</directory>
-            <exclude>
-                <directory>packages/*/src/Bridge/Laravel/config</directory>
-                <directory>packages/EasyCore/src/Bridge/Symfony/Resources/skeleton</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <directory>packages/*/src/Bridge/Laravel/config</directory>
+        </exclude>
+    </source>
 
     <php>
         <env name="APP_ENV" value="test"/>

@@ -20,31 +20,31 @@ For Symfony applications, the EasyWebhook configuration file can be a YAML, XML 
 
 The common configuration options for Laravel and Symfony are as follows:
 
-| Configuration | Default | Description |
-| ------------- | ------- | ----------- |
-| `event.enabled` | `true` | Whether the EventHeaderMiddleware is enabled to send an Event header with webhook HTTP requests |
-| `event.event_header` | `X-Webhook-Event` | Name of the Event header |
-| `id.enabled` | `true` | Whether the IdHeaderMiddleware is enabled to send an ID header with webhook HTTP requests |
-| `id.id_header` | `X-Webhook-Id` | Name of the ID header |
-| `method` | `POST` | Method to use when sending webhook HTTP requests |
-| `signature.enabled` | `false` | Whether the SignatureHeaderMiddleware is enabled to send a Signature header with webhook HTTP requests |
-| `signature.signature_header` | `X-Webhook-Signature` | Name of the Signature header |
-| `signature.signer` | `Rs256Signer:class` | Class to use for signing the webhook HTTP request body |
-| `signature.secret` | N/A | Secret to use when signing the webhook HTTP request body |
-| `use_default_middleware` | `true` | Whether to use the default middleware (currently, BodyFormatterMiddleware) |
+| Configuration                | Default               | Description                                                                                            |
+|------------------------------|-----------------------|--------------------------------------------------------------------------------------------------------|
+| `event.enabled`              | `true`                | Whether the EventHeaderMiddleware is enabled to send an Event header with webhook HTTP requests        |
+| `event.event_header`         | `X-Webhook-Event`     | Name of the Event header                                                                               |
+| `id.enabled`                 | `true`                | Whether the IdHeaderMiddleware is enabled to send an ID header with webhook HTTP requests              |
+| `id.id_header`               | `X-Webhook-Id`        | Name of the ID header                                                                                  |
+| `method`                     | `POST`                | Method to use when sending webhook HTTP requests                                                       |
+| `signature.enabled`          | `false`               | Whether the SignatureHeaderMiddleware is enabled to send a Signature header with webhook HTTP requests |
+| `signature.signature_header` | `X-Webhook-Signature` | Name of the Signature header                                                                           |
+| `signature.signer`           | `Rs256Signer:class`   | Class to use for signing the webhook HTTP request body                                                 |
+| `signature.secret`           | N/A                   | Secret to use when signing the webhook HTTP request body                                               |
+| `use_default_middleware`     | `true`                | Whether to use the default middleware (currently, BodyFormatterMiddleware)                             |
 
 Laravel has the following additional configuration option:
 
-| Configuration | Default | Description |
-| ------------- | ------- | ----------- |
-| `send_async` | `true` | Whether to send webhook HTTP requests asynchronously. |
+| Configuration | Default | Description                                           |
+|---------------|---------|-------------------------------------------------------|
+| `send_async`  | `true`  | Whether to send webhook HTTP requests asynchronously. |
 
 Symfony has the following additional configuration options:
 
-| Configuration | Default | Description |
-| ------------- | ------- | ----------- |
-| `async.enabled` | `true` | Whether to send webhook HTTP requests asynchronously. |
-| `async.bus` | `messenger.bus.default` | Bus to use for asynchronously sending webhook HTTP requests. |
+| Configuration   | Default                 | Description                                                  |
+|-----------------|-------------------------|--------------------------------------------------------------|
+| `async.enabled` | `true`                  | Whether to send webhook HTTP requests asynchronously.        |
+| `async.bus`     | `messenger.bus.default` | Bus to use for asynchronously sending webhook HTTP requests. |
 
 ## Example configuration files
 
@@ -78,7 +78,6 @@ In Laravel, the `easy-webhook.php` configuration file could look like the follow
 
 ``` php
 <?php
-
 declare(strict_types=1);
 
 return [

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bridge\Doctrine;
@@ -13,14 +12,9 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 
 final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
-    /**
-     * @var \EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface
-     */
-    private $serializer;
-
-    public function __construct(ActivitySubjectDataSerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        private ActivitySubjectDataSerializerInterface $serializer,
+    ) {
     }
 
     /**
@@ -29,7 +23,7 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
     public function resolve(
         string $action,
         ActivitySubjectInterface $subject,
-        array $changeSet
+        array $changeSet,
     ): ?ActivitySubjectDataInterface {
         [$oldData, $data] = $this->resolveChangeData($action, $changeSet);
 
@@ -43,11 +37,6 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
         return new ActivitySubjectData($serializedData, $serializedOldData);
     }
 
-    /**
-     * @param array<string, mixed> $changeSet
-     *
-     * @return mixed[]
-     */
     private function resolveChangeData(string $action, array $changeSet): array
     {
         $oldData = [];

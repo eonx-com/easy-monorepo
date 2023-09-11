@@ -1,27 +1,25 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests;
 
-use EonX\EasyRandom\RandomGenerator;
-use EonX\EasyRandom\UuidV4\RamseyUuidV4Generator;
+use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
+use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\Resolvers\HttpFoundationRequestResolver;
-use EonX\EasyRequestId\UuidV4FallbackResolver;
-use Ramsey\Uuid\Uuid;
+use EonX\EasyRequestId\UuidFallbackResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Uuid;
 
 final class RequestIdServiceTest extends AbstractTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testGetIds
      */
-    public function providerTestGetIds(): iterable
+    public static function providerTestGetIds(): iterable
     {
         yield 'Default fallback to UUID' => [
             new Request(),
@@ -34,7 +32,7 @@ final class RequestIdServiceTest extends AbstractTestCase
         ];
 
         yield 'Default resolver with default values' => [
-            $this->getRequestWithHeaders([
+            self::getRequestWithHeaders([
                 RequestIdServiceInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
                 RequestIdServiceInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
             ]),
@@ -43,17 +41,15 @@ final class RequestIdServiceTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerTestGetIds
-     */
+    #[DataProvider('providerTestGetIds')]
     public function testGetIds(
         Request $request,
         ?string $requestId = null,
         ?string $correlationId = null,
         ?callable $assert = null,
-        ?FallbackResolverInterface $fallbackResolver = null
+        ?FallbackResolverInterface $fallbackResolver = null,
     ): void {
-        $fallbackResolver = $fallbackResolver ?? $this->defaultFallbackResolver();
+        $fallbackResolver ??= $this->defaultFallbackResolver();
         $service = new RequestIdService($fallbackResolver);
         $service->setResolver(new HttpFoundationRequestResolver($request, $service));
 
@@ -62,11 +58,11 @@ final class RequestIdServiceTest extends AbstractTestCase
         $service->getRequestId();
 
         if ($requestId !== null) {
-            self::assertEquals($requestId, $service->getRequestId());
+            self::assertSame($requestId, $service->getRequestId());
         }
 
         if ($correlationId !== null) {
-            self::assertEquals($correlationId, $service->getCorrelationId());
+            self::assertSame($correlationId, $service->getCorrelationId());
         }
 
         if ($assert !== null) {
@@ -76,6 +72,8 @@ final class RequestIdServiceTest extends AbstractTestCase
 
     private function defaultFallbackResolver(): FallbackResolverInterface
     {
-        return new UuidV4FallbackResolver((new RandomGenerator())->setUuidV4Generator(new RamseyUuidV4Generator()));
+        return new UuidFallbackResolver(
+            new RandomGenerator(new SymfonyUuidV6Generator())
+        );
     }
 }

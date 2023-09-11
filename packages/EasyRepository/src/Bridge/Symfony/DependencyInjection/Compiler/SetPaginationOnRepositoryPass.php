@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bridge\Symfony\DependencyInjection\Compiler;
@@ -12,9 +11,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class SetPaginationOnRepositoryPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private const PAGINATION_SETTER = 'setPagination';
 
     /**

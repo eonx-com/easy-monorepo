@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyTest\Tests\Coverage\Locators;
@@ -9,32 +8,30 @@ use EonX\EasyTest\Coverage\Resolvers\CloverCoverageResolver;
 use EonX\EasyTest\Coverage\Resolvers\TextCoverageResolver;
 use EonX\EasyTest\HttpKernel\EasyTestKernel;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class CoverageResolverLocatorTest extends TestCase
+final class CoverageResolverLocatorTest extends TestCase
 {
     /**
-     * @return mixed[]
+     * @see testCreateResolverSucceeds
      */
-    public function provideSupportedFilepath(): array
+    public static function provideSupportedFilepath(): iterable
     {
-        return [
-            [
-                '/foo/bar/report.txt',
-                TextCoverageResolver::class,
-            ],
-            [
-                '/foo/bar/report.clover',
-                CloverCoverageResolver::class,
-            ],
+        yield [
+            '/foo/bar/report.txt',
+            TextCoverageResolver::class,
+        ];
+        yield [
+            '/foo/bar/report.clover',
+            CloverCoverageResolver::class,
         ];
     }
 
     /**
      * @param class-string $expectedResolverClass
-     *
-     * @dataProvider provideSupportedFilepath
      */
+    #[DataProvider('provideSupportedFilepath')]
     public function testCreateResolverSucceeds(string $filePath, string $expectedResolverClass): void
     {
         $kernel = new EasyTestKernel('test', true);

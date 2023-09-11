@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Middleware;
@@ -10,13 +9,14 @@ use EonX\EasyWebhook\Middleware\SendAfterMiddleware;
 use EonX\EasyWebhook\Stores\ArrayStore;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
 use EonX\EasyWebhook\Webhook;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @see testProcess
      */
-    public function provideTestProcess(): iterable
+    public static function provideTestProcess(): iterable
     {
         yield 'No send after -> should send' => [Webhook::fromArray([]), true];
 
@@ -35,12 +35,10 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestProcess
-     */
+    #[DataProvider('provideTestProcess')]
     public function testProcess(WebhookInterface $webhook, bool $shouldSend): void
     {
-        $store = new ArrayStore($this->getRandomGenerator(), $this->getDataCleaner());
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
         $middleware = new SendAfterMiddleware($store);
 
         $this->process($middleware, $webhook);

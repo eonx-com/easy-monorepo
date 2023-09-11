@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Exceptions;
@@ -11,23 +10,23 @@ final class ValidationExceptionTest extends AbstractTestCase
 {
     public function testGetErrors(): void
     {
-        $errors = [
-            'foo' => 'bar',
-        ];
-        $exception = (new ValidationExceptionStub())->setErrors($errors);
+        $errors = ['foo' => 'bar'];
+        $exception = new ValidationExceptionStub();
+        $this->setPrivatePropertyValue($exception, 'errors', $errors);
 
-        self::assertSame($errors, $exception->getErrors());
+        $result = $exception->getErrors();
+
+        self::assertSame($errors, $result);
     }
 
     public function testSetErrors(): void
     {
-        $errors = [
-            'foo' => 'bar',
-        ];
+        $errors = ['foo' => 'bar'];
+        $exception = new ValidationExceptionStub();
 
-        $exception = (new ValidationExceptionStub())->setErrors($errors);
+        $result = $exception->setErrors($errors);
 
-        $property = $this->getPropertyAsPublic(ValidationExceptionStub::class, 'errors');
-        self::assertSame($errors, $property->getValue($exception));
+        self::assertSame($exception, $result);
+        self::assertSame($errors, $this->getPrivatePropertyValue($result, 'errors'));
     }
 }

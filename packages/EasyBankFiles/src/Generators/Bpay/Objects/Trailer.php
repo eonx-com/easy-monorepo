@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generators\Bpay\Objects;
@@ -23,8 +22,8 @@ final class Trailer extends BaseObject
     public function getValidationRules(): array
     {
         return [
-            'totalNumberOfPayments' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
             'totalFileValue' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'totalNumberOfPayments' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
         ];
     }
 
@@ -32,15 +31,13 @@ final class Trailer extends BaseObject
      * Get attributes padding configuration as [<attribute> => [<length>, <string>, <type>]].
      *
      * @see http://php.net/manual/en/function.str-pad.php
-     *
-     * @return mixed[]
      */
     protected function getAttributesPaddingRules(): array
     {
         return [
-            'totalNumberOfPayments' => [10, '0', \STR_PAD_LEFT],
-            'totalFileValue' => [13, '0', \STR_PAD_LEFT],
             'restOfRecord' => [120],
+            'totalFileValue' => [13, '0', \STR_PAD_LEFT],
+            'totalNumberOfPayments' => [10, '0', \STR_PAD_LEFT],
         ];
     }
 

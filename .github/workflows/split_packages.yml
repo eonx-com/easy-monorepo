@@ -6,19 +6,41 @@ on:
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
+        env:
+            PHP_EXTENSIONS: 'pdo_sqlite, openswoole, pkcs11'
+            PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
         steps:
             -
-                uses: eonx-com/actions-checkout@v2
+                name: Checkout
+                uses: actions/checkout@v3
             -
-                uses: eonx-com/actions-setup-php@v2
+                name: 'Setup cache environment'
+                id: cache-extensions
+                uses: shivammathur/cache-extensions@v1
+                with:
+                    php-version: '${{ matrix.php }}'
+                    extensions: '${{ env.PHP_EXTENSIONS }}'
+                    key: '${{ env.PHP_EXTENSIONS_CACHE_KEY }}'
+            -
+                name: 'Cache extensions'
+                uses: actions/cache@v3
+                with:
+                    path: '${{ steps.cache-extensions.outputs.dir }}'
+                    key: '${{ steps.cache-extensions.outputs.key }}'
+                    restore-keys: '${{ steps.cache-extensions.outputs.key }}'
+            -
+                name: 'Setup PHP 8.1'
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.1
                     coverage: none
+                    extensions: '${{ env.PHP_EXTENSIONS }}'
             -
-                uses: eonx-com/actions-composer-install@v1
+                name: 'Install Composer dependencies'
+                uses: ramsey/composer-install@v2
             -
                 id: output_data
-                run: 'echo "::set-output name=matrix::$(bin/monorepo export-packages)"'
+                run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
         outputs:
             matrix: '${{ steps.output_data.outputs.matrix }}'
     split_packages:
@@ -29,14 +51,14 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 4.3.4
+                    - 5.2.2
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'
             TAG: '${{ matrix.tag }}'
         steps:
             -
-                uses: eonx-com/actions-checkout@v2
+                uses: actions/checkout@v3
             -
                 run: 'git fetch --prune --unshallow'
             -

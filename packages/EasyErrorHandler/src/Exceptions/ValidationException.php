@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions;
@@ -11,8 +10,5 @@ abstract class ValidationException extends BadRequestException implements Valida
 {
     use ValidationExceptionTrait;
 
-    /**
-     * @var string
-     */
-    protected $userMessage = 'exceptions.not_valid';
+    protected string $userMessage = self::USER_MESSAGE_NOT_VALID;
 }

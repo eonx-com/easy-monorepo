@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Tests\Bridge\Laravel;
@@ -11,30 +10,24 @@ use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase
 {
-    /**
-     * @var \Laravel\Lumen\Application
-     */
-    private $app;
+    private ?Application $app = null;
 
-    /**
-     * @param null|mixed[] $config
-     */
     protected function getApp(?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
-        $app = new Application(__DIR__);
+        $this->app = new Application(__DIR__);
 
         if ($config !== null) {
             \config($config);
         }
 
-        $app->register(EasyUtilsServiceProvider::class);
-        $app->register(EasyBugsnagServiceProvider::class);
-        $app->boot();
+        $this->app->register(EasyUtilsServiceProvider::class);
+        $this->app->register(EasyBugsnagServiceProvider::class);
+        $this->app->boot();
 
-        return $this->app = $app;
+        return $this->app;
     }
 }
