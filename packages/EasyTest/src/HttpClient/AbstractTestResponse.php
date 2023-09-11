@@ -39,10 +39,10 @@ abstract class AbstractTestResponse
         protected readonly ?int $responseCode = null,
     ) {
         if (\is_array($queryData)) {
-            $queryString = \http_build_query($queryData ?? [], '', '&', \PHP_QUERY_RFC3986);
+            $queryString = \http_build_query($queryData, '', '&', \PHP_QUERY_RFC3986);
 
-            if (str_contains($queryString, '%')) {
-                $queryString = strtr($queryString, [
+            if (\str_contains($queryString, '%')) {
+                $queryString = \strtr($queryString, [
                     '%21' => '!',
                     '%24' => '$',
                     '%28' => '(',

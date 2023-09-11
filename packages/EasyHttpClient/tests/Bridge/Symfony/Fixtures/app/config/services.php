@@ -20,7 +20,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(SomeClient::class)
         ->public();
-
-//    $services->alias('test.property_accessor', 'property_accessor')
-//        ->public();
 };

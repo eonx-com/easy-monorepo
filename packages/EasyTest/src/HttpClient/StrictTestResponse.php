@@ -41,9 +41,9 @@ final class StrictTestResponse extends AbstractTestResponse
 
         $this->checkMethod($method);
 
-        $this->checkOptions($options);
+        $this->checkOptions($options ?? []);
 
-        return $this->createResponse($method, $url, $options);
+        return $this->createResponse($method, $url, $options ?? []);
     }
 
     private function checkMethod(string $method): void
@@ -84,7 +84,7 @@ final class StrictTestResponse extends AbstractTestResponse
             switch ($contentTypeHeader) {
                 case self::CONTENT_TYPE_FORM:
                     \parse_str((string)$options['body'], $actualRequestData);
-                    $requestBody = \http_build_query($this->requestData);
+                    $requestBody = \http_build_query($this->requestData ?? []);
 
                     break;
                 case self::CONTENT_TYPE_JSON:

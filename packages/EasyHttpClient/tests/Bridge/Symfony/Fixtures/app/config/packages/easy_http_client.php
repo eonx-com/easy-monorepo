@@ -12,4 +12,3 @@ return static function (EasyHttpClientConfig $easyHttpClientConfig): void {
         ->easyBugsnagEnabled(false)
         ->psrLoggerEnabled(false);
 };
-

@@ -14,6 +14,6 @@ final class SimpleTestResponse extends AbstractTestResponse
     {
         $this->checkUrl($url);
 
-        return $this->createResponse($method, $url, $options);
+        return $this->createResponse($method, $url, $options ?? []);
     }
 }

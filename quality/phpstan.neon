@@ -26,17 +26,16 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*
+        - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
+
+    checkMissingIterableValueType: false
 
     ignoreErrors:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-        - '#Method .* return type has no value type specified in iterable type (array|iterable).#'
-        - '#Method .* has parameter .* with no value type specified in iterable type (array|iterable).#'
-        - '#PHPDoc tag @var for variable .* contains generic class .* but does not specify its types\: T#'
-        - '#PHPDoc tag @var for variable .* has no value type specified in iterable type array#'
-        - '#Property .* type has no value type specified in iterable type (array|iterable).#'
+        - '#Method EonX\\.*\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
+        - '#Method EonX\\.*\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
@@ -48,12 +47,6 @@ parameters:
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
-
-        - message: '#Method EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
-
-        - message: '#Method EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Fixtures/app/src/Kernel/ApplicationKernel.php
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
