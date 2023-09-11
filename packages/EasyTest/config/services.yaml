@@ -13,6 +13,7 @@ services:
         exclude:
             - '../src/Coverage/DataTransferObjects/*'
             - '../src/Functions/*'
+            - '../src/HttpClient/*'
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
             - '../src/Stub/HttpClient/*'
