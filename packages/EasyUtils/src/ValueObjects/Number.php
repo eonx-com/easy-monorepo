@@ -100,6 +100,11 @@ final class Number implements Stringable
         return new self($quotient, $this->precision);
     }
 
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
     public function isEqualTo(int|string|float|self $operand): bool
     {
         return $this->compare($operand) === 0;
