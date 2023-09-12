@@ -462,22 +462,22 @@ final class NumberTest extends TestCase
         yield [
             'value' => '100',
             'expectedResult' => '1',
-            'saveZeroMinorUnits' => null,
-        ];
-        yield [
-            'value' => '100',
-            'expectedResult' => '1',
-            'saveZeroMinorUnits' => false,
+            'trimTrailingZero' => false,
         ];
         yield [
             'value' => '100',
             'expectedResult' => '1.00',
-            'saveZeroMinorUnits' => true,
+            'trimTrailingZero' => true,
         ];
         yield [
             'value' => '123',
             'expectedResult' => '1.23',
-            'saveZeroMinorUnits' => null,
+            'saveZeroMinorUnits' => false,
+        ];
+        yield [
+            'value' => '123',
+            'expectedResult' => '1.23',
+            'saveZeroMinorUnits' => true,
         ];
     }
 
@@ -540,14 +540,11 @@ final class NumberTest extends TestCase
     }
 
     #[DataProvider('provideToMoneyStringData')]
-    public function testToMoneyStringSucceeds(
-        string $value,
-        string $expectedResult,
-        ?bool $saveZeroMinorUnits = null,
-    ): void {
+    public function testToMoneyStringSucceeds(string $value, string $expectedResult, bool $trimTrailingZero): void
+    {
         $number = new Number($value);
 
-        $result = $number->toMoneyString($saveZeroMinorUnits);
+        $result = $number->toMoneyString($trimTrailingZero);
 
         self::assertSame($expectedResult, $result);
     }
