@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
@@ -12,14 +11,11 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getDescription()
  * @method string|null getReelSequenceNumber()
  * @method string|null getUserFinancialInstitution()
- * @method string|null getUserIdSupplyingFile()
- * @method string|null getUserSupplyingFile()
+ * @method string|null getNumberOfUserSupplyingFile()
+ * @method string|null getNameOfUFserSupplyingFile()
  */
-final class Header extends BaseResult
+final class DescriptiveRecord extends BaseResult
 {
-    /**
-     * @var string Date in string representation pattern
-     */
     private const DATE_STRING_PATTERN = 'dmy';
 
     /**
@@ -51,11 +47,11 @@ final class Header extends BaseResult
     {
         return [
             'dateProcessed',
-            'description',
+            'descriptionOfEntries',
             'reelSequenceNumber',
             'userFinancialInstitution',
-            'userIdSupplyingFile',
-            'userSupplyingFile',
+            'numberOfUserSupplyingFile',
+            'nameOfUserSupplyingFile',
         ];
     }
 }

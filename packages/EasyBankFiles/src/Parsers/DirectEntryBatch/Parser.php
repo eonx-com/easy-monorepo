@@ -1,16 +1,15 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch;
 
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Header;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Trailer;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypePayment;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeRefusal;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeReturn;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\FileTotalRecordRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord;
 use EonX\EasyBankFiles\Parsers\Error;
 
 /**
@@ -18,14 +17,8 @@ use EonX\EasyBankFiles\Parsers\Error;
  */
 final class Parser extends AbstractLineByLineParser
 {
-    /**
-     * @var string
-     */
     private const FINAL_LINE = 'End-Of-File';
 
-    /**
-     * @var array<mixed>
-     */
     private const MIN_RECORD_LENGTH = [
         self::RECORD_TYPE_HEADER => 80,
         self::RECORD_TYPE_TRAILER => 80,
@@ -34,29 +27,14 @@ final class Parser extends AbstractLineByLineParser
         self::RECORD_TYPE_TRANSACTION_RETURN => 120,
     ];
 
-    /**
-     * @var string
-     */
     private const RECORD_TYPE_HEADER = '0';
 
-    /**
-     * @var string
-     */
     private const RECORD_TYPE_TRAILER = '7';
 
-    /**
-     * @var string
-     */
     private const RECORD_TYPE_TRANSACTION_PAYMENT = '1';
 
-    /**
-     * @var string
-     */
     private const RECORD_TYPE_TRANSACTION_REFUSAL = '3';
 
-    /**
-     * @var string
-     */
     private const RECORD_TYPE_TRANSACTION_RETURN = '2';
 
     /**
@@ -66,9 +44,6 @@ final class Parser extends AbstractLineByLineParser
 
     private ?Batch $currentBatch = null;
 
-    /**
-     * @var mixed[] $errors
-     */
     private array $errors = [];
 
     /**
@@ -129,15 +104,15 @@ final class Parser extends AbstractLineByLineParser
         $this->errors[] = new Error(\compact('line', 'lineNumber'));
     }
 
-    private function addTransactionToCurrentBatch(
-        TransactionTypePayment|TransactionTypeReturn|TransactionTypeRefusal $transaction
+    private function addRecordToCurrentBatch(
+        PaymentDetailRecord|ReturnDetailRecord|RefusalDetailRecord $record,
     ): bool {
         if (isset($this->currentBatch) === false || $this->currentBatch->hasTrailer()) {
             $this->currentBatch = null;
 
             return false;
         }
-        $this->currentBatch->addTransaction($transaction);
+        $this->currentBatch->addRecord($record);
 
         return true;
     }
@@ -155,8 +130,6 @@ final class Parser extends AbstractLineByLineParser
 
     /**
      * Parse transaction attributes are the same for each transaction type.
-     *
-     * @return array<mixed>
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -205,22 +178,22 @@ final class Parser extends AbstractLineByLineParser
         $reelSequenceNumber = \substr($line, 18, 2);
         /** @var string|false $userFinancialInstitution */
         $userFinancialInstitution = \substr($line, 20, 3);
-        /** @var string|false $userSupplyingFile */
-        $userSupplyingFile = \substr($line, 30, 26);
-        /** @var string|false $userIdSupplyingFile */
-        $userIdSupplyingFile = \substr($line, 56, 6);
-        /** @var string|false $description */
-        $description = \substr($line, 62, 12);
+        /** @var string|false $nameOfUserSupplyingFile */
+        $nameOfUserSupplyingFile = \substr($line, 30, 26);
+        /** @var string|false $numberOfUserSupplyingFile */
+        $numberOfUserSupplyingFile = \substr($line, 56, 6);
+        /** @var string|false $descriptionOfEntries */
+        $descriptionOfEntries = \substr($line, 62, 12);
         /** @var string|false $dateProcessed */
         $dateProcessed = \substr($line, 74, 6);
 
-        return $this->setHeaderToCurrentBatch(new Header([
+        return $this->setHeaderToCurrentBatch(new DescriptiveRecord([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
-            'description' => $description === false ? null : \trim($description),
+            'descriptionOfEntries' => $descriptionOfEntries === false ? null : \trim($descriptionOfEntries),
             'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
             'userFinancialInstitution' => $userFinancialInstitution === false ? null : $userFinancialInstitution,
-            'userIdSupplyingFile' => $userIdSupplyingFile === false ? null : $userIdSupplyingFile,
-            'userSupplyingFile' => $userSupplyingFile === false ? null : \trim($userSupplyingFile),
+            'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile === false ? null : $numberOfUserSupplyingFile,
+            'nameOfUserSupplyingFile' => $nameOfUserSupplyingFile === false ? null : \trim($nameOfUserSupplyingFile),
         ]));
     }
 
@@ -240,7 +213,7 @@ final class Parser extends AbstractLineByLineParser
         /** @var string|false $numberPayments */
         $numberPayments = \substr($line, 74, 6);
 
-        return $this->setTrailerToCurrentBatch(new Trailer([
+        return $this->setTrailerToCurrentBatch(new FileTotalRecordRecord([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
             'numberPayments' => $numberPayments === false ? null : $this->trimLeftZeros($numberPayments),
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
@@ -257,7 +230,7 @@ final class Parser extends AbstractLineByLineParser
         /** @var string|false $withholdingTax */
         $withholdingTax = \substr($line, 112, 8);
 
-        return $this->addTransactionToCurrentBatch(new TransactionTypePayment(\array_merge(
+        return $this->addRecordToCurrentBatch(new PaymentDetailRecord(\array_merge(
             [
                 'withholdingTax' => $withholdingTax === false ? null : $this->trimLeftZeros($withholdingTax),
             ],
@@ -275,7 +248,7 @@ final class Parser extends AbstractLineByLineParser
         /** @var string|false $originalUserIdNumber */
         $originalUserIdNumber = \substr($line, 114, 6);
 
-        return $this->addTransactionToCurrentBatch(new TransactionTypeRefusal(\array_merge(
+        return $this->addRecordToCurrentBatch(new RefusalDetailRecord(\array_merge(
             [
                 'originalDayOfReturn' => $originalDayOfReturn === false ? null : $originalDayOfReturn,
                 'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
@@ -294,7 +267,7 @@ final class Parser extends AbstractLineByLineParser
         /** @var string|false $originalUserIdNumber */
         $originalUserIdNumber = \substr($line, 114, 6);
 
-        return $this->addTransactionToCurrentBatch(new TransactionTypeReturn(\array_merge(
+        return $this->addRecordToCurrentBatch(new ReturnDetailRecord(\array_merge(
             [
                 'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : $originalDayOfProcessing,
                 'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
@@ -303,22 +276,22 @@ final class Parser extends AbstractLineByLineParser
         )));
     }
 
-    private function setHeaderToCurrentBatch(Header $header): bool
+    private function setHeaderToCurrentBatch(DescriptiveRecord $header): bool
     {
         $recordProcessed = $this->currentBatch === null;
-        $this->currentBatch = (new Batch())->setHeader($header);
+        $this->currentBatch = (new Batch())->setDescriptiveRecord($header);
 
         return $recordProcessed;
     }
 
-    private function setTrailerToCurrentBatch(Trailer $trailer): bool
+    private function setTrailerToCurrentBatch(FileTotalRecordRecord $trailer): bool
     {
         if (isset($this->currentBatch) === false || $this->currentBatch->hasTransaction() === false) {
             $this->currentBatch = null;
 
             return false;
         }
-        $this->batches[] = $this->currentBatch->setTrailer($trailer);
+        $this->batches[] = $this->currentBatch->setFileTotalRecordRecord($trailer);
         $this->currentBatch = null;
 
         return true;

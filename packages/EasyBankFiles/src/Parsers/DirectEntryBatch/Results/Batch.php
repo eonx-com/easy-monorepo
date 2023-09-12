@@ -1,72 +1,65 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results;
 
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Header;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Trailer;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypePayment;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeRefusal;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeReturn;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\FileTotalRecordRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord;
 
 final class Batch
 {
-    private Header $header;
+    private DescriptiveRecord $descriptiveRecord;
 
-    private Trailer $trailer;
+    private FileTotalRecordRecord $fileTotalRecordRecord;
 
-    /**
-     * @var array<mixed>
-     */
-    private array $transactions = [];
+    private array $records = [];
 
-    public function addTransaction(
-        TransactionTypePayment|TransactionTypeReturn|TransactionTypeRefusal $transaction
+    public function addRecord(
+        PaymentDetailRecord|ReturnDetailRecord|RefusalDetailRecord $transaction,
     ): self {
-        $this->transactions[] = $transaction;
+        $this->records[] = $transaction;
 
         return $this;
     }
 
-    public function getHeader(): Header
+    public function getDescriptiveRecord(): DescriptiveRecord
     {
-        return $this->header;
+        return $this->descriptiveRecord;
     }
 
-    public function getTrailer(): Trailer
+    public function getFileTotalRecordRecord(): FileTotalRecordRecord
     {
-        return $this->trailer;
+        return $this->fileTotalRecordRecord;
     }
 
-    /**
-     * @return array<mixed>
-     */
-    public function getTransactions(): array
+    public function getRecords(): array
     {
-        return $this->transactions;
+        return $this->records;
     }
 
     public function hasTrailer(): bool
     {
-        return isset($this->trailer) === true;
+        return isset($this->fileTotalRecordRecord) === true;
     }
 
     public function hasTransaction(): bool
     {
-        return \count($this->transactions) > 0;
+        return \count($this->records) > 0;
     }
 
-    public function setHeader(Header $header): self
+    public function setDescriptiveRecord(DescriptiveRecord $descriptiveRecord): self
     {
-        $this->header = $header;
+        $this->descriptiveRecord = $descriptiveRecord;
 
         return $this;
     }
 
-    public function setTrailer(Trailer $trailer): self
+    public function setFileTotalRecordRecord(FileTotalRecordRecord $fileTotalRecordRecord): self
     {
-        $this->trailer = $trailer;
+        $this->fileTotalRecordRecord = $fileTotalRecordRecord;
 
         return $this;
     }

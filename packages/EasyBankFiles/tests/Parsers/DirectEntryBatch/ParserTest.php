@@ -1,27 +1,24 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryBatch;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTime;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypePayment;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeRefusal;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\TransactionTypeReturn;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser
- */
+#[CoversClass(\EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser::class)]
 final class ParserTest extends TestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testProcessSucceeds
      */
-    public function provideCorrectFile(): iterable
+    public static function provideCorrectFile(): iterable
     {
         yield 'Nines, empty line, End-of-File' => [
             'fileName' => 'correct.one-batch.nde',
@@ -41,11 +38,9 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testProcessReturnsErrors
      */
-    public function provideFileWithErrors(): iterable
+    public static function provideFileWithErrors(): iterable
     {
         yield 'Incorrect data' => [
             'fileName' => 'incorrect.incorrect-data.nde',
@@ -74,9 +69,7 @@ final class ParserTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideFileWithErrors
-     */
+    #[DataProvider('provideFileWithErrors')]
     public function testProcessReturnsErrors(string $fileName, int $expectedErrorsCount, string $invalidLine): void
     {
         $parser = new Parser($this->getSampleFileContents($fileName));
@@ -93,9 +86,9 @@ final class ParserTest extends TestCase
 
         $batches = $parser->getBatches();
         self::assertCount(3, $batches);
-        self::assertCount(5, $batches[0]->getTransactions());
-        self::assertCount(3, $batches[1]->getTransactions());
-        self::assertCount(1, $batches[2]->getTransactions());
+        self::assertCount(5, $batches[0]->getRecords());
+        self::assertCount(3, $batches[1]->getRecords());
+        self::assertCount(1, $batches[2]->getRecords());
         self::assertCount(10, $parser->getErrors());
     }
 
@@ -119,15 +112,15 @@ final class ParserTest extends TestCase
 
         $batches = $parser->getBatches();
         self::assertCount(1, $batches);
-        $header = $batches[0]->getHeader();
+        $header = $batches[0]->getDescriptiveRecord();
         self::assertSame('261119', $header->getDateProcessed());
-        self::assertSame('TEST', $header->getDescription());
+        self::assertSame('TEST', $header->getDescriptionOfEntries());
         self::assertSame('01', $header->getReelSequenceNumber());
         self::assertSame('CRU', $header->getUserFinancialInstitution());
-        self::assertSame('123456', $header->getUserIdSupplyingFile());
-        self::assertSame('TEST', $header->getUserSupplyingFile());
-        $transactionTypePayment = $batches[0]->getTransactions()[0];
-        self::assertInstanceOf(TransactionTypePayment::class, $transactionTypePayment);
+        self::assertSame('123456', $header->getNumberOfUserSupplyingFile());
+        self::assertSame('TEST', $header->getNameOfUserSupplyingFile());
+        $transactionTypePayment = $batches[0]->getRecords()[0];
+        self::assertInstanceOf(PaymentDetailRecord::class, $transactionTypePayment);
         self::assertSame('100000', $transactionTypePayment->getAmount());
         self::assertSame('TEST 1', $transactionTypePayment->getAccountName());
         self::assertSame('123456789', $transactionTypePayment->getAccountNumber());
@@ -141,8 +134,8 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transactionTypePayment->getTxnCode());
         self::assertSame('0', $transactionTypePayment->getWithholdingTax());
         self::assertCount(0, $parser->getErrors());
-        $transactionTypeReturn = $batches[0]->getTransactions()[1];
-        self::assertInstanceOf(TransactionTypeReturn::class, $transactionTypeReturn);
+        $transactionTypeReturn = $batches[0]->getRecords()[1];
+        self::assertInstanceOf(ReturnDetailRecord::class, $transactionTypeReturn);
         self::assertSame('100000', $transactionTypeReturn->getAmount());
         self::assertSame('TEST 2', $transactionTypeReturn->getAccountName());
         self::assertSame('123456789', $transactionTypeReturn->getAccountNumber());
@@ -156,8 +149,8 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transactionTypeReturn->getTxnCode());
         self::assertSame('01', $transactionTypeReturn->getOriginalDayOfProcessing());
         self::assertSame('101', $transactionTypeReturn->getOriginalUserIdNumber());
-        $transactionTypeRefusal = $batches[0]->getTransactions()[2];
-        self::assertInstanceOf(TransactionTypeRefusal::class, $transactionTypeRefusal);
+        $transactionTypeRefusal = $batches[0]->getRecords()[2];
+        self::assertInstanceOf(RefusalDetailRecord::class, $transactionTypeRefusal);
         self::assertSame('100000', $transactionTypeRefusal->getAmount());
         self::assertSame('TEST 2', $transactionTypeRefusal->getAccountName());
         self::assertSame('123456789', $transactionTypeRefusal->getAccountNumber());
@@ -171,7 +164,7 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transactionTypeRefusal->getTxnCode());
         self::assertSame('02', $transactionTypeRefusal->getOriginalDayOfReturn());
         self::assertSame('102', $transactionTypeRefusal->getOriginalUserIdNumber());
-        $trailer = $batches[0]->getTrailer();
+        $trailer = $batches[0]->getFileTotalRecordRecord();
         self::assertSame('999999', $trailer->getBsb());
         self::assertSame('2', $trailer->getNumberPayments());
         self::assertSame('200000', $trailer->getTotalCreditAmount());
@@ -186,15 +179,15 @@ final class ParserTest extends TestCase
 
         $batches = $parser->getBatches();
         self::assertCount(1, $batches);
-        $header = $batches[0]->getHeader();
+        $header = $batches[0]->getDescriptiveRecord();
         self::assertSame('070905', $header->getDateProcessed());
-        self::assertSame('DE Returns', $header->getDescription());
+        self::assertSame('DE Returns', $header->getDescriptionOfEntries());
         self::assertSame('01', $header->getReelSequenceNumber());
         self::assertSame('NAB', $header->getUserFinancialInstitution());
-        self::assertSame('012345', $header->getUserIdSupplyingFile());
-        self::assertSame('NAB', $header->getUserSupplyingFile());
-        self::assertEquals(new DateTime('2005-09-07'), $batches[0]->getHeader()->getDateProcessedObject());
-        $transactions = $batches[0]->getTransactions();
+        self::assertSame('012345', $header->getNumberOfUserSupplyingFile());
+        self::assertSame('NAB', $header->getNameOfUserSupplyingFile());
+        self::assertEquals(new DateTime('2005-09-07'), $batches[0]->getDescriptiveRecord()->getDateProcessedObject());
+        $transactions = $batches[0]->getRecords();
         self::assertCount(10, $transactions);
         $firstTransactionItem = $transactions[0];
         self::assertSame('18622', $firstTransactionItem->getAmount());
@@ -210,7 +203,7 @@ final class ParserTest extends TestCase
         self::assertSame('13', $firstTransactionItem->getTxnCode());
         self::assertSame('06', $firstTransactionItem->getOriginalDayOfProcessing());
         self::assertSame('337999', $firstTransactionItem->getOriginalUserIdNumber());
-        $trailer = $batches[0]->getTrailer();
+        $trailer = $batches[0]->getFileTotalRecordRecord();
         self::assertSame('999999', $trailer->getBsb());
         self::assertSame('10', $trailer->getNumberPayments());
         self::assertSame('0', $trailer->getTotalCreditAmount());
@@ -224,14 +217,14 @@ final class ParserTest extends TestCase
 
         $batches = $parser->getBatches();
         self::assertCount(2, $batches);
-        $header = $batches[0]->getHeader();
+        $header = $batches[0]->getDescriptiveRecord();
         self::assertSame('261119', $header->getDateProcessed());
-        self::assertSame('TEST', $header->getDescription());
+        self::assertSame('TEST', $header->getDescriptionOfEntries());
         self::assertSame('01', $header->getReelSequenceNumber());
         self::assertSame('CRU', $header->getUserFinancialInstitution());
-        self::assertSame('123456', $header->getUserIdSupplyingFile());
-        self::assertSame('TEST', $header->getUserSupplyingFile());
-        $transaction = $batches[0]->getTransactions()[0];
+        self::assertSame('123456', $header->getNumberOfUserSupplyingFile());
+        self::assertSame('TEST', $header->getNameOfUserSupplyingFile());
+        $transaction = $batches[0]->getRecords()[0];
         self::assertSame('100000', $transaction->getAmount());
         self::assertSame('TEST 1', $transaction->getAccountName());
         self::assertSame('123456789', $transaction->getAccountNumber());
@@ -245,20 +238,20 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transaction->getTxnCode());
         self::assertSame('0', $transaction->getWithholdingTax());
         self::assertCount(0, $parser->getErrors());
-        $trailer = $batches[0]->getTrailer();
+        $trailer = $batches[0]->getFileTotalRecordRecord();
         self::assertSame('999999', $trailer->getBsb());
         self::assertSame('2', $trailer->getNumberPayments());
         self::assertSame('200000', $trailer->getTotalCreditAmount());
         self::assertSame('0', $trailer->getTotalDebitAmount());
         self::assertSame('200000', $trailer->getTotalNetAmount());
-        $header = $batches[1]->getHeader();
+        $header = $batches[1]->getDescriptiveRecord();
         self::assertSame('261119', $header->getDateProcessed());
-        self::assertSame('TEST', $header->getDescription());
+        self::assertSame('TEST', $header->getDescriptionOfEntries());
         self::assertSame('01', $header->getReelSequenceNumber());
         self::assertSame('CRU', $header->getUserFinancialInstitution());
-        self::assertSame('123456', $header->getUserIdSupplyingFile());
-        self::assertSame('TEST2', $header->getUserSupplyingFile());
-        $transaction = $batches[1]->getTransactions()[0];
+        self::assertSame('123456', $header->getNumberOfUserSupplyingFile());
+        self::assertSame('TEST2', $header->getNameOfUserSupplyingFile());
+        $transaction = $batches[1]->getRecords()[0];
         self::assertSame('100000', $transaction->getAmount());
         self::assertSame('TEST 2', $transaction->getAccountName());
         self::assertSame('123456789', $transaction->getAccountNumber());
@@ -272,7 +265,7 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transaction->getTxnCode());
         self::assertSame('0', $transaction->getWithholdingTax());
         self::assertCount(0, $parser->getErrors());
-        $trailer = $batches[1]->getTrailer();
+        $trailer = $batches[1]->getFileTotalRecordRecord();
         self::assertSame('999997', $trailer->getBsb());
         self::assertSame('2', $trailer->getNumberPayments());
         self::assertSame('200000', $trailer->getTotalCreditAmount());

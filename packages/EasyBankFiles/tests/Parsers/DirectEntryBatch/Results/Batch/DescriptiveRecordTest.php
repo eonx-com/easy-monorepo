@@ -1,24 +1,22 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryBatch\Results\Batch;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTime;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\Header;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
 
-/**
- * @covers \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Header
- */
-final class HeaderTest extends TestCase
+
+#[CoversClass(\EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord::class)]
+final class DescriptiveRecordTest extends TestCase
 {
     /**
-     * @return mixed[]
-     *
      * @see testGetDateProcessedShouldReturnNull
      */
-    public function provideInvalidDateProcessedValues(): iterable
+    public static function provideInvalidDateProcessedValues(): iterable
     {
         yield 'null dateProcessed' => [
             'dateProcessed' => [
@@ -37,7 +35,7 @@ final class HeaderTest extends TestCase
      */
     public function testDateConversion(): void
     {
-        $header = new Header([
+        $header = new DescriptiveRecord([
             'dateProcessed' => '070904',
         ]);
 
@@ -48,14 +46,11 @@ final class HeaderTest extends TestCase
 
     /**
      * Should return processing date as a null when date string is invalid.
-     *
-     * @param mixed[] $dateProcessed
-     *
-     * @dataProvider provideInvalidDateProcessedValues
      */
+    #[DataProvider('provideInvalidDateProcessedValues')]
     public function testGetDateProcessedShouldReturnNull(array $dateProcessed): void
     {
-        $header = new Header($dateProcessed);
+        $header = new DescriptiveRecord($dateProcessed);
 
         self::assertNull($header->getDateProcessedObject());
     }

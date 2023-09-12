@@ -76,7 +76,7 @@ final class Parser extends AbstractLineByLineParser
 
     protected function processLine(int $lineNumber, string $line): void
     {
-        // Code is the first character in line.
+        // Code is the first character in line
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
         $lineLength = \strlen($line);
 

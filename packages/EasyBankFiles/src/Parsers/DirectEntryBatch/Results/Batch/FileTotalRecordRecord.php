@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
@@ -13,7 +12,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getTotalDebitAmount()
  * @method string|null getTotalNetAmount()
  */
-final class Trailer extends BaseResult
+final class FileTotalRecordRecord extends BaseResult
 {
     /**
      * Return object attributes.

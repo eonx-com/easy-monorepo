@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
@@ -13,7 +12,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getBsb()
  * @method string getIndicator()
  * @method string|null getLodgmentReference()
- * @method string|null getOriginalDayOfProcessing()
+ * @method string|null getOriginalDayOfReturn()
  * @method string|null getOriginalUserIdNumber()
  * @method string getRecordType()
  * @method string|null getRemitterName()
@@ -21,7 +20,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getTraceBsb()
  * @method string|null getTxnCode()
  */
-final class TransactionTypeReturn extends BaseResult
+final class RefusalDetailRecord extends BaseResult
 {
     /**
      * Return object attributes.
@@ -37,7 +36,7 @@ final class TransactionTypeReturn extends BaseResult
             'bsb',
             'indicator',
             'lodgmentReference',
-            'originalDayOfProcessing',
+            'originalDayOfReturn',
             'originalUserIdNumber',
             'recordType',
             'remitterName',
