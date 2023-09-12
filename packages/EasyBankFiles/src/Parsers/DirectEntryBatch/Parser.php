@@ -20,22 +20,22 @@ final class Parser extends AbstractLineByLineParser
     private const FINAL_LINE = 'End-Of-File';
 
     private const MIN_RECORD_LENGTH = [
-        self::RECORD_TYPE_HEADER => 80,
-        self::RECORD_TYPE_TRAILER => 80,
-        self::RECORD_TYPE_TRANSACTION_PAYMENT => 120,
-        self::RECORD_TYPE_TRANSACTION_REFUSAL => 120,
-        self::RECORD_TYPE_TRANSACTION_RETURN => 120,
+        self::RECORD_TYPE_DISCRIPTIVE => 80,
+        self::RECORD_TYPE_FILE_TOTAL_RECORD => 80,
+        self::RECORD_TYPE_PAYMENT => 120,
+        self::RECORD_TYPE_REFUSAL => 120,
+        self::RECORD_TYPE_RETURN => 120,
     ];
 
-    private const RECORD_TYPE_HEADER = '0';
+    private const RECORD_TYPE_DISCRIPTIVE = '0';
 
-    private const RECORD_TYPE_TRAILER = '7';
+    private const RECORD_TYPE_FILE_TOTAL_RECORD = '7';
 
-    private const RECORD_TYPE_TRANSACTION_PAYMENT = '1';
+    private const RECORD_TYPE_PAYMENT = '1';
 
-    private const RECORD_TYPE_TRANSACTION_REFUSAL = '3';
+    private const RECORD_TYPE_REFUSAL = '3';
 
-    private const RECORD_TYPE_TRANSACTION_RETURN = '2';
+    private const RECORD_TYPE_RETURN = '2';
 
     /**
      * @var \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch[]
@@ -88,11 +88,11 @@ final class Parser extends AbstractLineByLineParser
 
         if ($this->checkMinLength($line, $code)) {
             $lineProcessingResult = match ($code) {
-                self::RECORD_TYPE_HEADER => $this->processHeader($line),
-                self::RECORD_TYPE_TRAILER => $this->processTrailer($line),
-                self::RECORD_TYPE_TRANSACTION_PAYMENT => $this->processTransactionTypePayment($line),
-                self::RECORD_TYPE_TRANSACTION_RETURN => $this->processTransactionTypeReturn($line),
-                self::RECORD_TYPE_TRANSACTION_REFUSAL => $this->processTransactionTypeRefusal($line),
+                self::RECORD_TYPE_DISCRIPTIVE => $this->processDiscriptiveRecord($line),
+                self::RECORD_TYPE_FILE_TOTAL_RECORD => $this->processFileTotalRecordRecord($line),
+                self::RECORD_TYPE_PAYMENT => $this->processPaymentDetailRecord($line),
+                self::RECORD_TYPE_RETURN => $this->processReturnDetailRecord($line),
+                self::RECORD_TYPE_REFUSAL => $this->processRefusalDetailRecord($line),
                 default => $this->isFinalLine($line)
             };
 
@@ -107,7 +107,7 @@ final class Parser extends AbstractLineByLineParser
     private function addRecordToCurrentBatch(
         PaymentDetailRecord|ReturnDetailRecord|RefusalDetailRecord $record,
     ): bool {
-        if (isset($this->currentBatch) === false || $this->currentBatch->hasTrailer()) {
+        if (isset($this->currentBatch) === false || $this->currentBatch->hasFileTotalRecordRecord()) {
             $this->currentBatch = null;
 
             return false;
@@ -125,7 +125,7 @@ final class Parser extends AbstractLineByLineParser
     private function isFinalLine(string $line): bool
     {
         return (\trim($line) === self::FINAL_LINE || \trim($line, '9') === '') &&
-            ($this->currentBatch === null || $this->currentBatch->hasTrailer());
+            ($this->currentBatch === null || $this->currentBatch->hasFileTotalRecordRecord());
     }
 
     /**
@@ -139,8 +139,8 @@ final class Parser extends AbstractLineByLineParser
         $bsb = \substr($line, 1, 7);
         /** @var string|false $accountNumber */
         $accountNumber = \substr($line, 8, 9);
-        /** @var string|false $txnCode */
-        $txnCode = \substr($line, 18, 2);
+        /** @var string|false $transactionCode */
+        $transactionCode = \substr($line, 18, 2);
         /** @var string|false $amount */
         $amount = \substr($line, 20, 10);
         /** @var string|false $accountName */
@@ -165,14 +165,14 @@ final class Parser extends AbstractLineByLineParser
             'remitterName' => $remitterName === false ? null : \trim($remitterName),
             'traceAccountNumber' => $traceAccountNumber === false ? null : $traceAccountNumber,
             'traceBsb' => $traceBsb === false ? null : \str_replace('-', '', $traceBsb),
-            'txnCode' => $txnCode === false ? null : $txnCode,
+            'transactionCode' => $transactionCode === false ? null : $transactionCode,
         ];
     }
 
     /**
      * Process header block of line.
      */
-    private function processHeader(string $line): bool
+    private function processDiscriptiveRecord(string $line): bool
     {
         /** @var string|false $reelSequenceNumber */
         $reelSequenceNumber = \substr($line, 18, 2);
@@ -200,7 +200,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * Process trailer block of line.
      */
-    private function processTrailer(string $line): bool
+    private function processFileTotalRecordRecord(string $line): bool
     {
         /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
@@ -225,14 +225,16 @@ final class Parser extends AbstractLineByLineParser
     /**
      * Process transaction block of line (transaction type payment = 1).
      */
-    private function processTransactionTypePayment(string $line): bool
+    private function processPaymentDetailRecord(string $line): bool
     {
-        /** @var string|false $withholdingTax */
-        $withholdingTax = \substr($line, 112, 8);
+        /** @var string|false $amountOfWithholdingTax */
+        $amountOfWithholdingTax = \substr($line, 112, 8);
 
         return $this->addRecordToCurrentBatch(new PaymentDetailRecord(\array_merge(
             [
-                'withholdingTax' => $withholdingTax === false ? null : $this->trimLeftZeros($withholdingTax),
+                'amountOfWithholdingTax' => $amountOfWithholdingTax === false
+                    ? null
+                    : $this->trimLeftZeros($amountOfWithholdingTax),
             ],
             $this->parseCommonTransactionAttributes($line)
         )));
@@ -241,7 +243,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * Process transaction block of line (transaction type refusal = 3).
      */
-    private function processTransactionTypeRefusal(string $line): bool
+    private function processRefusalDetailRecord(string $line): bool
     {
         /** @var string|false $originalDayOfReturn */
         $originalDayOfReturn = \substr($line, 112, 2);
@@ -260,7 +262,7 @@ final class Parser extends AbstractLineByLineParser
     /**
      * Process transaction block of line (transaction type return = 2).
      */
-    private function processTransactionTypeReturn(string $line): bool
+    private function processReturnDetailRecord(string $line): bool
     {
         /** @var string|false $originalDayOfProcessing */
         $originalDayOfProcessing = \substr($line, 112, 2);
@@ -286,7 +288,7 @@ final class Parser extends AbstractLineByLineParser
 
     private function setTrailerToCurrentBatch(FileTotalRecordRecord $trailer): bool
     {
-        if (isset($this->currentBatch) === false || $this->currentBatch->hasTransaction() === false) {
+        if (isset($this->currentBatch) === false || $this->currentBatch->hasRecord() === false) {
             $this->currentBatch = null;
 
             return false;

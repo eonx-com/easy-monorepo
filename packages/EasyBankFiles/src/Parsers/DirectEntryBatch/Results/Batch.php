@@ -40,12 +40,12 @@ final class Batch
         return $this->records;
     }
 
-    public function hasTrailer(): bool
+    public function hasFileTotalRecordRecord(): bool
     {
         return isset($this->fileTotalRecordRecord) === true;
     }
 
-    public function hasTransaction(): bool
+    public function hasRecord(): bool
     {
         return \count($this->records) > 0;
     }

@@ -131,8 +131,8 @@ final class ParserTest extends TestCase
         self::assertSame('TEST', $transactionTypePayment->getRemitterName());
         self::assertSame('987654321', $transactionTypePayment->getTraceAccountNumber());
         self::assertSame('987654', $transactionTypePayment->getTraceBsb());
-        self::assertSame('50', $transactionTypePayment->getTxnCode());
-        self::assertSame('0', $transactionTypePayment->getWithholdingTax());
+        self::assertSame('50', $transactionTypePayment->getTransactionCode());
+        self::assertSame('0', $transactionTypePayment->getAmountOfWithholdingTax());
         self::assertCount(0, $parser->getErrors());
         $transactionTypeReturn = $batches[0]->getRecords()[1];
         self::assertInstanceOf(ReturnDetailRecord::class, $transactionTypeReturn);
@@ -146,7 +146,7 @@ final class ParserTest extends TestCase
         self::assertSame('TEST', $transactionTypeReturn->getRemitterName());
         self::assertSame('987654321', $transactionTypeReturn->getTraceAccountNumber());
         self::assertSame('988654', $transactionTypeReturn->getTraceBsb());
-        self::assertSame('50', $transactionTypeReturn->getTxnCode());
+        self::assertSame('50', $transactionTypeReturn->getTransactionCode());
         self::assertSame('01', $transactionTypeReturn->getOriginalDayOfProcessing());
         self::assertSame('101', $transactionTypeReturn->getOriginalUserIdNumber());
         $transactionTypeRefusal = $batches[0]->getRecords()[2];
@@ -161,7 +161,7 @@ final class ParserTest extends TestCase
         self::assertSame('TEST', $transactionTypeRefusal->getRemitterName());
         self::assertSame('987654321', $transactionTypeRefusal->getTraceAccountNumber());
         self::assertSame('988654', $transactionTypeRefusal->getTraceBsb());
-        self::assertSame('50', $transactionTypeRefusal->getTxnCode());
+        self::assertSame('50', $transactionTypeRefusal->getTransactionCode());
         self::assertSame('02', $transactionTypeRefusal->getOriginalDayOfReturn());
         self::assertSame('102', $transactionTypeRefusal->getOriginalUserIdNumber());
         $trailer = $batches[0]->getFileTotalRecordRecord();
@@ -200,7 +200,7 @@ final class ParserTest extends TestCase
         self::assertSame('SUNNY-PEOPLE', $firstTransactionItem->getRemitterName());
         self::assertSame('010479999', $firstTransactionItem->getTraceAccountNumber());
         self::assertSame('062184', $firstTransactionItem->getTraceBsb());
-        self::assertSame('13', $firstTransactionItem->getTxnCode());
+        self::assertSame('13', $firstTransactionItem->getTransactionCode());
         self::assertSame('06', $firstTransactionItem->getOriginalDayOfProcessing());
         self::assertSame('337999', $firstTransactionItem->getOriginalUserIdNumber());
         $trailer = $batches[0]->getFileTotalRecordRecord();
@@ -235,8 +235,8 @@ final class ParserTest extends TestCase
         self::assertSame('TEST', $transaction->getRemitterName());
         self::assertSame('987654321', $transaction->getTraceAccountNumber());
         self::assertSame('987654', $transaction->getTraceBsb());
-        self::assertSame('50', $transaction->getTxnCode());
-        self::assertSame('0', $transaction->getWithholdingTax());
+        self::assertSame('50', $transaction->getTransactionCode());
+        self::assertSame('0', $transaction->getAmountOfWithholdingTax());
         self::assertCount(0, $parser->getErrors());
         $trailer = $batches[0]->getFileTotalRecordRecord();
         self::assertSame('999999', $trailer->getBsb());
@@ -262,8 +262,8 @@ final class ParserTest extends TestCase
         self::assertSame('TEST', $transaction->getRemitterName());
         self::assertSame('987654321', $transaction->getTraceAccountNumber());
         self::assertSame('987654', $transaction->getTraceBsb());
-        self::assertSame('50', $transaction->getTxnCode());
-        self::assertSame('0', $transaction->getWithholdingTax());
+        self::assertSame('50', $transaction->getTransactionCode());
+        self::assertSame('0', $transaction->getAmountOfWithholdingTax());
         self::assertCount(0, $parser->getErrors());
         $trailer = $batches[1]->getFileTotalRecordRecord();
         self::assertSame('999997', $trailer->getBsb());

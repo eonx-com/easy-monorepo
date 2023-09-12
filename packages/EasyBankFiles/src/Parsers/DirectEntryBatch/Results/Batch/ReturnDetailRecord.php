@@ -18,7 +18,7 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
  * @method string|null getRemitterName()
  * @method string|null getTraceAccountNumber()
  * @method string|null getTraceBsb()
- * @method string|null getTxnCode()
+ * @method string|null getTransactionCode()
  */
 final class ReturnDetailRecord extends BaseResult
 {
@@ -42,7 +42,7 @@ final class ReturnDetailRecord extends BaseResult
             'remitterName',
             'traceAccountNumber',
             'traceBsb',
-            'txnCode',
+            'transactionCode',
         ];
     }
 }
