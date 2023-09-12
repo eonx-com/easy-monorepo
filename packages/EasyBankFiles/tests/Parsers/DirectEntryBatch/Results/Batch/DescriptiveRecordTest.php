@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryBatch\Results\Batch;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use DateTime;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-
-#[CoversClass(\EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord::class)]
+#[CoversClass(DescriptiveRecord::class)]
 final class DescriptiveRecordTest extends TestCase
 {
     /**

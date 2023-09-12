@@ -190,10 +190,10 @@ final class Parser extends AbstractLineByLineParser
         return $this->setHeaderToCurrentBatch(new DescriptiveRecord([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
             'descriptionOfEntries' => $descriptionOfEntries === false ? null : \trim($descriptionOfEntries),
+            'nameOfUserSupplyingFile' => $nameOfUserSupplyingFile === false ? null : \trim($nameOfUserSupplyingFile),
+            'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile === false ? null : $numberOfUserSupplyingFile,
             'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
             'userFinancialInstitution' => $userFinancialInstitution === false ? null : $userFinancialInstitution,
-            'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile === false ? null : $numberOfUserSupplyingFile,
-            'nameOfUserSupplyingFile' => $nameOfUserSupplyingFile === false ? null : \trim($nameOfUserSupplyingFile),
         ]));
     }
 

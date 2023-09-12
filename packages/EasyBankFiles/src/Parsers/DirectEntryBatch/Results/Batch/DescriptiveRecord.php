@@ -8,11 +8,11 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 
 /**
  * @method string|null getDateProcessed()
- * @method string|null getDescription()
+ * @method string|null getDescriptionOfEntries()
  * @method string|null getReelSequenceNumber()
  * @method string|null getUserFinancialInstitution()
  * @method string|null getNumberOfUserSupplyingFile()
- * @method string|null getNameOfUFserSupplyingFile()
+ * @method string|null getNameOfUserSupplyingFile()
  */
 final class DescriptiveRecord extends BaseResult
 {

@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Parsers\DirectEntryBatch;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use DateTime;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord;
 use EonX\EasyBankFiles\Tests\Parsers\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversClass(\EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser::class)]
+#[CoversClass(Parser::class)]
 final class ParserTest extends TestCase
 {
     /**
