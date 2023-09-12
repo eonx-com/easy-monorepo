@@ -28,6 +28,6 @@ final class NumberValidator extends ConstraintValidator
         $validator = $this->context->getValidator()
             ->inContext($this->context);
 
-        $validator->validate((string)$value, $constraint->constraints);
+        $validator->validate($value->getRawValue(), $constraint->constraints);
     }
 }

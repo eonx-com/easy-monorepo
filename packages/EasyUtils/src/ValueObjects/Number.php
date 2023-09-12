@@ -100,7 +100,7 @@ final class Number implements Stringable
         return new self($quotient, $this->precision);
     }
 
-    public function getValue(): string
+    public function getRawValue(): string
     {
         return $this->value;
     }
