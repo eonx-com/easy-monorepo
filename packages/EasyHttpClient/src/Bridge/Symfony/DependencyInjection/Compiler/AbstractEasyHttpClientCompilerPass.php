@@ -31,7 +31,7 @@ abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterfa
             ->setAutowired(true)
             ->setAutoconfigured(true)
             // lower priority than MockHttpClient (-10)
-            ->setDecoratedService($decorated, null, -11);
+            ->setDecoratedService($decorated, priority: -11);
 
         $container->setDefinition($definitionId, $def);
     }
