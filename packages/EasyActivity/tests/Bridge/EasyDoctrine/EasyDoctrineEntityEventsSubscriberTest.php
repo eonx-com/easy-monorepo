@@ -221,59 +221,78 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $commentA = (new Comment())->setMessage('comment 1');
         $commentB = (new Comment())->setMessage('comment 2');
         $commentC = (new Comment())->setMessage('comment 3');
+        $commentD = (new Comment())->setMessage('comment 4');
         $article->addComment($commentA);
         $article->addComment($commentB);
         $article->addComment($commentC);
+        $article->addComment($commentD);
 
         $entityManager->persist($article);
         $entityManager->flush();
         $article->getComments()
             ->removeElement($commentC);
         $entityManager->flush();
+        $commentDId = $commentD->getId();
+        $entityManager->remove($commentD);
+        $entityManager->flush();
         $commentA->setMessage('comment 1 updated');
         $entityManager->flush();
-        $commentD = (new Comment())->setMessage('comment 4');
-        $article->addComment($commentD);
+        $commentE = (new Comment())->setMessage('comment 5');
+        $article->addComment($commentE);
         $entityManager->flush();
 
         $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(3, $logEntries);
+        self::assertCount(4, $logEntries);
         // Create an article
         self::assertSame('create', $logEntries[0]['action']);
         self::assertSame(
             [
                 'title' => 'Test collections',
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
             ],
             \json_decode((string)$logEntries[0]['subject_data'], true)
         );
-        // Delete the comment C of the article
+        // Remove the comment C from collection
         self::assertSame('update', $logEntries[1]['action']);
         self::assertSame(
             [
-                'comments' => [$commentA->getId(), $commentB->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
             ],
             \json_decode((string)$logEntries[1]['subject_data'], true)
         );
         self::assertSame(
             [
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
             ],
             \json_decode((string)$logEntries[1]['subject_old_data'], true)
         );
-        // Add a new comment D to the article
+        // Remove the comment D entity
         self::assertSame('update', $logEntries[2]['action']);
         self::assertSame(
             [
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentD->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId()],
             ],
             \json_decode((string)$logEntries[2]['subject_data'], true)
         );
         self::assertSame(
             [
-                'comments' => [$commentA->getId(), $commentB->getId()],
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
             ],
             \json_decode((string)$logEntries[2]['subject_old_data'], true)
+        );
+        // Add a new comment E to the collection
+        self::assertSame('update', $logEntries[3]['action']);
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId(), $commentE->getId()],
+            ],
+            \json_decode((string)$logEntries[3]['subject_data'], true)
+        );
+        self::assertSame(
+            [
+                'comments' => [$commentA->getId(), $commentB->getId()],
+            ],
+            \json_decode((string)$logEntries[3]['subject_old_data'], true)
         );
     }
 

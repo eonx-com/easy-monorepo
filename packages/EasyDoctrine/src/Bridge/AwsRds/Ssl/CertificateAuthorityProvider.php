@@ -7,7 +7,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class CertificateAuthorityProvider
 {
-    private const RDS_COMBINED_CA_URL = 'https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem';
+    /**
+     * @see https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/UsingWithRDS.SSL.html
+     */
+    private const RDS_COMBINED_CA_URL = 'https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem';
 
     private Filesystem $filesystem;
 

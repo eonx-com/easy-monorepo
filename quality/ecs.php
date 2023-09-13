@@ -32,6 +32,8 @@ use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
+
     $ecsConfig->import(EasyQualitySetList::ECS);
 
     $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
@@ -48,9 +50,8 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->skip([
         // Skip entire files or directories
-        'packages/*/tests/var/*', // Symfony cache files
-        'packages/*/var/*', // Symfony cache files
-        'packages/EasyApiPlatform/tests/Fixtures/app/var', // It is an Api Platform test app
+        'packages/*/var/*', // Cache files
+        'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
 
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
@@ -85,6 +86,7 @@ return static function (ECSConfig $ecsConfig): void {
         ],
         MethodChainingNewlineFixer::class => [
             'packages/*/src/Bridge/Symfony/DependencyInjection/Configuration.php',
+            'packages/*/src/Bridge/Symfony/Resources/config/definition.php',
         ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Interfaces/MathInterface.php',
