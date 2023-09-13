@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Tests\Functions;
 
+use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \ksort_recursive
- */
+#[CoversFunction('ksort_recursive')]
 final class ksort_recursiveTest extends TestCase
 {
     /**
