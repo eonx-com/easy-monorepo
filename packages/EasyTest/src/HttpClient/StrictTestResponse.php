@@ -100,8 +100,8 @@ final class StrictTestResponse extends AbstractTestResponse
             }
 
             $expectedRequestData = $this->requestData;
-            \ksort_recursive($expectedRequestData);
-            \ksort_recursive($actualRequestData);
+            $this->sortArray($expectedRequestData);
+            $this->sortArray($actualRequestData);
 
             try {
                 Assert::assertSame(
@@ -133,5 +133,16 @@ final class StrictTestResponse extends AbstractTestResponse
         } catch (Throwable $exception) {
             TestResponseFactory::throwException($exception);
         }
+    }
+
+    private function sortArray(array &$array): void
+    {
+        foreach ($array as &$value) {
+            if (\is_array($value)) {
+                $this->sortArray($value);
+            }
+        }
+
+        $this->sortArray($array);
     }
 }

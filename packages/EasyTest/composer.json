@@ -29,10 +29,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyTest\\": "src"
-        },
-        "files": [
-            "src/Functions/ksort_recursive.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

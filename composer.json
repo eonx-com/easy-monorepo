@@ -120,10 +120,7 @@
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
-        },
-        "files": [
-            "packages/EasyTest/src/Functions/ksort_recursive.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
