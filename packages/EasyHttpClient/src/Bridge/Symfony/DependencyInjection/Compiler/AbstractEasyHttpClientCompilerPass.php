@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterface
 {
-    protected const DEFAULT_CLIENT_ID = 'http_client';
+    protected const DEFAULT_CLIENT_ID = 'http_client.transport';
 
     public function process(ContainerBuilder $container): void
     {
@@ -30,7 +30,8 @@ abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterfa
         $def = (new Definition(WithEventsHttpClient::class))
             ->setAutowired(true)
             ->setAutoconfigured(true)
-            ->setDecoratedService($decorated);
+            // lower priority than MockHttpClient (-10)
+            ->setDecoratedService(id: $decorated, priority: -11);
 
         $container->setDefinition($definitionId, $def);
     }

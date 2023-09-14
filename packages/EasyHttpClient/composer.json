@@ -12,8 +12,11 @@
     "require-dev": {
         "bugsnag/bugsnag": "^3.29",
         "doctrine/dbal": "^3.0",
+        "doctrine/orm": "^2.14",
+        "doctrine/doctrine-bundle": "^2.7",
         "eonx-com/easy-lock": "^5.4",
         "eonx-com/easy-webhook": "^5.4",
+        "eonx-com/easy-test": "^5.4",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
@@ -29,7 +32,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyHttpClient\\Tests\\": "tests"
+            "EonX\\EasyHttpClient\\Tests\\": "tests",
+            "EonX\\EasyHttpClient\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
         }
     },
     "extra": {

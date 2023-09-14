@@ -6,15 +6,17 @@ services:
 
     _instanceof:
         Symfony\Component\Console\Command\Command:
-            tags: ['app.console_command']
+            tags: [ 'app.console_command' ]
 
     EonX\EasyTest\:
         resource: '../src'
         exclude:
-            - '../src/Stub/HttpClient/*'
+            - '../src/Coverage/DataTransferObjects/*'
+            - '../src/Functions/*'
+            - '../src/HttpClient/*'
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
-            - '../src/Coverage/DataTransferObjects/*'
+            - '../src/Stub/HttpClient/*'
 
     EonX\EasyTest\Console\EasyTestApplication:
         arguments:
@@ -22,12 +24,12 @@ services:
 
     EonX\EasyTest\Coverage\Resolvers\CloverCoverageResolver:
         tags:
-            - {name: 'app.easy_test.coverage_resolver', key: 'clover'}
+            - { name: 'app.easy_test.coverage_resolver', key: 'clover' }
 
     EonX\EasyTest\Coverage\Resolvers\TextCoverageResolver:
         tags:
-            - {name: 'app.easy_test.coverage_resolver', key: 'txt'}
+            - { name: 'app.easy_test.coverage_resolver', key: 'txt' }
 
     EonX\EasyTest\Coverage\Locators\CoverageResolverLocator:
         arguments:
-            - !tagged_locator {tag: 'app.easy_test.coverage_resolver', index_by: 'key'}
+            - !tagged_locator { tag: 'app.easy_test.coverage_resolver', index_by: 'key' }
