@@ -15,6 +15,7 @@ services:
             - '../src/HttpKernel/*'
             - '../src/InvalidDataMaker/*'
             - '../src/Coverage/DataTransferObjects/*'
+            - '../src/Faker/*'
 
     EonX\EasyTest\Console\EasyTestApplication:
         arguments:
