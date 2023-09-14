@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^5.3",
+        "eonx-com/easy-utils": "^5.4",
         "psr/cache": "^3.0",
         "symfony/expression-language": "^6.3"
     },
@@ -38,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.3-dev"
+            "dev-master": "5.4-dev"
         }
     }
 }
