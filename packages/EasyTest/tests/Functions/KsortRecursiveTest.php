@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversFunction('ksort_recursive')]
-final class ksort_recursiveTest extends TestCase
+final class KsortRecursiveTest extends TestCase
 {
     /**
      * @see testKsortRecursive
