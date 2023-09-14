@@ -5,13 +5,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-logging": "^5.3",
-        "eonx-com/easy-utils": "^5.3",
+        "eonx-com/easy-logging": "^5.4",
+        "eonx-com/easy-utils": "^5.4",
         "nesbot/carbon": "^2.67",
         "nikic/php-parser": "^4.15"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^5.3",
+        "eonx-com/easy-bugsnag": "^5.4",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3"
@@ -31,7 +31,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "5.3-dev"
+            "dev-master": "5.4-dev"
         }
     }
 }

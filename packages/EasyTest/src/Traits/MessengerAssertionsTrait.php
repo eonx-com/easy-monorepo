@@ -5,6 +5,7 @@ namespace EonX\EasyTest\Traits;
 
 use PHPUnit\Framework\Constraint\IsEqual;
 use RuntimeException;
+use Symfony\Component\Clock\Clock;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
@@ -115,8 +116,9 @@ trait MessengerAssertionsTrait
 
     /**
      * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int> $expectedDelays Expected delays in seconds between worker runs
      */
-    public static function consumeAsyncMessages(array $expectedExceptions = []): void
+    public static function consumeAsyncMessages(array $expectedExceptions = [], array $expectedDelays = []): void
     {
         /**
          * If some exception occurs during message handling, it will be caught by Symfony Messenger Worker,
@@ -133,7 +135,7 @@ trait MessengerAssertionsTrait
             );
         }
 
-        self::runMessengerWorker('async', 'default', $expectedExceptions);
+        self::runMessengerWorker('async', 'default', $expectedExceptions, $expectedDelays);
     }
 
     /**
@@ -213,6 +215,7 @@ trait MessengerAssertionsTrait
         string $transportName,
         string $busName,
         array $expectedExceptions = [],
+        array $expectedDelays = [],
     ): void {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
         $transport = self::getContainer()->get('messenger.transport.' . $transportName);
@@ -242,9 +245,14 @@ trait MessengerAssertionsTrait
 
             $messageLimitListener = new StopWorkerOnMessageLimitListener($messagesCount);
             $eventDispatcher->addSubscriber($messageLimitListener);
+            $clock = Clock::get();
 
-            $worker = new Worker(['async' => $transport], $messageBus, $eventDispatcher);
+            $worker = new Worker(['async' => $transport], $messageBus, $eventDispatcher, clock: $clock);
             $worker->run();
+
+            if (isset($expectedDelays[$tries - 1])) {
+                $clock->sleep($expectedDelays[$tries - 1]);
+            }
         }
 
         // Message handler may dispatch new messages to async transport and this can happen multiple times.
