@@ -140,6 +140,7 @@
             "EonX\\EasyErrorHandler\\Tests\\": "packages/EasyErrorHandler/tests",
             "EonX\\EasyEventDispatcher\\Tests\\": "packages/EasyEventDispatcher/tests",
             "EonX\\EasyHttpClient\\Tests\\": "packages/EasyHttpClient/tests",
+            "EonX\\EasyHttpClient\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "packages/EasyHttpClient/tests/Bridge/Symfony/Fixtures/app/src",
             "EonX\\EasyLock\\Tests\\": "packages/EasyLock/tests",
             "EonX\\EasyLogging\\Tests\\": "packages/EasyLogging/tests",
             "EonX\\EasyNotification\\Tests\\": "packages/EasyNotification/tests",

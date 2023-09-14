@@ -169,11 +169,15 @@ final class Number implements Stringable
         return new self($difference, $this->precision);
     }
 
-    public function toMoneyString(): string
+    public function toMoneyString(bool $truncateZeroCents = true): string
     {
         $value = (string)(new self($this->value, 2))->divide(100);
 
-        return \str_ends_with($value, '.00') ? (string)(int)$value : $value;
+        if ($truncateZeroCents === true && \str_ends_with($value, '.00')) {
+            return (string)(int)$value;
+        }
+
+        return $value;
     }
 
     /**

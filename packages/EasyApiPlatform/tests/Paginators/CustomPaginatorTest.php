@@ -50,7 +50,7 @@ final class CustomPaginatorTest extends AbstractTestCase
         $query->setFirstResult(1)
             ->setMaxResults(15);
 
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $doctrinePaginator */
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<object> $doctrinePaginator */
         $doctrinePaginator = self::mock(
             DoctrinePaginator::class,
             static function (MockInterface $mock) use ($query): void {

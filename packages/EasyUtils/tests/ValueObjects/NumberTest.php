@@ -454,6 +454,33 @@ final class NumberTest extends TestCase
         ];
     }
 
+    /**
+     * @see testToMoneyStringSucceeds
+     */
+    public static function provideToMoneyStringData(): iterable
+    {
+        yield [
+            'value' => '100',
+            'expectedResult' => '1',
+            'truncateZeroCents' => true,
+        ];
+        yield [
+            'value' => '100',
+            'expectedResult' => '1.00',
+            'truncateZeroCents' => false,
+        ];
+        yield [
+            'value' => '123',
+            'expectedResult' => '1.23',
+            'truncateZeroCents' => false,
+        ];
+        yield [
+            'value' => '123',
+            'expectedResult' => '1.23',
+            'truncateZeroCents' => true,
+        ];
+    }
+
     #[DataProvider('provideInvalidData')]
     public function testConstructorThrowsExceptionWithInvalidValue(string $value): void
     {
@@ -510,6 +537,16 @@ final class NumberTest extends TestCase
         $result = Number::min(...$values);
 
         self::assertSame((string)$expectedValue, (string)$result);
+    }
+
+    #[DataProvider('provideToMoneyStringData')]
+    public function testToMoneyStringSucceeds(string $value, string $expectedResult, bool $trimTrailingZero): void
+    {
+        $number = new Number($value);
+
+        $result = $number->toMoneyString($trimTrailingZero);
+
+        self::assertSame($expectedResult, $result);
     }
 
     #[DataProvider('provideRoundData')]

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Orm;
 
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasySwoole\AppStateInitializers\AbstractAppStateInitializer;
@@ -31,6 +32,14 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
                 // If connection is not connected, nothing to do
                 if ($conn->isConnected() === false) {
                     continue;
+                }
+
+                // Ensure connection is using replica before each request because if app is setting
+                // keepReplica: true, the connection will stay connected to the last one used which could be the primary
+                // In most cases, applications will first read data from the database before writing, so it makes sense
+                // to ensure it uses replica
+                if ($conn instanceof PrimaryReadReplicaConnection) {
+                    $conn->ensureConnectedToReplica();
                 }
 
                 try {

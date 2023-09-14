@@ -4,36 +4,27 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Tests\Implementations\Symfony;
 
 use DateTimeInterface;
+use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
-use EonX\EasyHttpClient\Implementations\Symfony\WithEventsHttpClient;
 use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
-use EonX\EasyHttpClient\Tests\AbstractTestCase;
-use EonX\EasyHttpClient\Tests\Stubs\EventDispatcherStub;
+use EonX\EasyHttpClient\Tests\AbstractSymfonyTestCase;
+use EonX\EasyHttpClient\Tests\Bridge\Symfony\Fixtures\App\Client\SomeClient;
+use EonX\EasyTest\HttpClient\SimpleTestResponse;
+use EonX\EasyTest\HttpClient\TestResponseFactory;
 use Symfony\Component\HttpClient\Exception\TransportException;
-use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-final class WithEventsHttpClientTest extends AbstractTestCase
+final class WithEventsHttpClientTest extends AbstractSymfonyTestCase
 {
-    /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     * @throws \Throwable
-     */
     public function testRequestReturnsResponse(): void
     {
-        $eventDispatcher = new EventDispatcherStub();
-        $httpClient = new MockHttpClient(new MockResponse(''));
-        $withEventsHttpClient = new WithEventsHttpClient($eventDispatcher, $httpClient);
+        TestResponseFactory::addResponse(new SimpleTestResponse('https://eonx.com/'));
+        $sut = self::getContainer()->get(SomeClient::class);
 
-        $response = $withEventsHttpClient->request('POST', 'https://eonx.com');
-        $response->getContent(false);
+        $sut->makeRequest();
 
-        self::assertInstanceOf(ResponseInterface::class, $response);
+        /** @var \EonX\EasyHttpClient\Tests\Stubs\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
         self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]);
 
@@ -47,17 +38,21 @@ final class WithEventsHttpClientTest extends AbstractTestCase
 
     public function testRequestThrowsException(): void
     {
-        $eventDispatcher = new EventDispatcherStub();
-        $httpClient = new MockHttpClient(fn (): string => 'invalid');
-        $withEventsHttpClient = new WithEventsHttpClient($eventDispatcher, $httpClient);
+        TestResponseFactory::addResponse(new SimpleTestResponse(
+            url: 'https://eonx.com/',
+            responseData: new TransportException(),
+        ));
+        $sut = self::getContainer()->get(SomeClient::class);
         $throwable = null;
 
         try {
-            $withEventsHttpClient->request('POST', 'https://eonx.com');
+            $sut->makeRequest();
         } catch (Throwable $throwable) {
             self::assertInstanceOf(TransportException::class, $throwable);
         }
 
+        /** @var \EonX\EasyHttpClient\Tests\Stubs\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
         self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]);
 
