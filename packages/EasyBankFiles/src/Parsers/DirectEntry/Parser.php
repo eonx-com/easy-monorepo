@@ -10,7 +10,7 @@ use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Transaction;
 use EonX\EasyBankFiles\Parsers\Error;
 
 /**
- * @deprecated Please use DirectEntryBatch instead.
+ * @deprecated Please use DirectEntryBatch instead. Will be removed in EasyBankFiles 6.0.
  */
 final class Parser extends AbstractLineByLineParser
 {

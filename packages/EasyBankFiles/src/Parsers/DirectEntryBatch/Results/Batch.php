@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results;
 
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\FileTotalRecordRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\FileTotalRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord;
@@ -13,7 +13,7 @@ final class Batch
 {
     private DescriptiveRecord $descriptiveRecord;
 
-    private FileTotalRecordRecord $fileTotalRecordRecord;
+    private FileTotalRecord $fileTotalRecord;
 
     private array $records = [];
 
@@ -30,9 +30,9 @@ final class Batch
         return $this->descriptiveRecord;
     }
 
-    public function getFileTotalRecordRecord(): FileTotalRecordRecord
+    public function getFileTotalRecord(): FileTotalRecord
     {
-        return $this->fileTotalRecordRecord;
+        return $this->fileTotalRecord;
     }
 
     public function getRecords(): array
@@ -40,9 +40,9 @@ final class Batch
         return $this->records;
     }
 
-    public function hasFileTotalRecordRecord(): bool
+    public function hasFileTotalRecord(): bool
     {
-        return isset($this->fileTotalRecordRecord) === true;
+        return isset($this->fileTotalRecord) === true;
     }
 
     public function hasRecord(): bool
@@ -57,9 +57,9 @@ final class Batch
         return $this;
     }
 
-    public function setFileTotalRecordRecord(FileTotalRecordRecord $fileTotalRecordRecord): self
+    public function setFileTotalRecord(FileTotalRecord $fileTotalRecord): self
     {
-        $this->fileTotalRecordRecord = $fileTotalRecordRecord;
+        $this->fileTotalRecord = $fileTotalRecord;
 
         return $this;
     }

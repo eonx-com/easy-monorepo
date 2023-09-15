@@ -49,20 +49,20 @@ final class ParserTest extends TestCase
         ];
 
         yield 'Partial data, missed transaction' => [
-            'fileName' => 'incorrect.missed-transaction.nde',
+            'fileName' => 'incorrect.missed-payment-detail-record.nde',
             'expectedErrorsCount' => 1,
             'invalidLine' => '7999-999            000020000000002000000000000000                        000002',
         ];
 
         yield 'Partial data, missed trailer' => [
-            'fileName' => 'incorrect.missed-trailer.nde',
+            'fileName' => 'incorrect.missed-file-total-record.nde',
             'expectedErrorsCount' => 3,
             'invalidLine' => '0502027019.39.52  01CRU       TEST                      123456TEST        ' .
                 '261119027019.39.52                  CUSCAL-NDE',
         ];
 
         yield 'Partial data, missed header' => [
-            'fileName' => 'incorrect.missed-header.nde',
+            'fileName' => 'incorrect.missed-descriptive-record.nde',
             'expectedErrorsCount' => 2,
             'invalidLine' => '2123-456123456789 130000080000SAMPLE                          SAMPLE' .
                 '            987-654987654321SAMPLE          00000000',
@@ -164,9 +164,9 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transactionTypeRefusal->getTransactionCode());
         self::assertSame('02', $transactionTypeRefusal->getOriginalDayOfReturn());
         self::assertSame('102', $transactionTypeRefusal->getOriginalUserIdNumber());
-        $trailer = $batches[0]->getFileTotalRecordRecord();
+        $trailer = $batches[0]->getFileTotalRecord();
         self::assertSame('999999', $trailer->getBsb());
-        self::assertSame('2', $trailer->getNumberPayments());
+        self::assertSame('2', $trailer->getTotalRecordCount());
         self::assertSame('200000', $trailer->getTotalCreditAmount());
         self::assertSame('0', $trailer->getTotalDebitAmount());
         self::assertSame('200000', $trailer->getTotalNetAmount());
@@ -203,9 +203,9 @@ final class ParserTest extends TestCase
         self::assertSame('13', $firstTransactionItem->getTransactionCode());
         self::assertSame('06', $firstTransactionItem->getOriginalDayOfProcessing());
         self::assertSame('337999', $firstTransactionItem->getOriginalUserIdNumber());
-        $trailer = $batches[0]->getFileTotalRecordRecord();
+        $trailer = $batches[0]->getFileTotalRecord();
         self::assertSame('999999', $trailer->getBsb());
-        self::assertSame('10', $trailer->getNumberPayments());
+        self::assertSame('10', $trailer->getTotalRecordCount());
         self::assertSame('0', $trailer->getTotalCreditAmount());
         self::assertSame('296782', $trailer->getTotalDebitAmount());
         self::assertSame('296782', $trailer->getTotalNetAmount());
@@ -238,9 +238,9 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transaction->getTransactionCode());
         self::assertSame('0', $transaction->getAmountOfWithholdingTax());
         self::assertCount(0, $parser->getErrors());
-        $trailer = $batches[0]->getFileTotalRecordRecord();
+        $trailer = $batches[0]->getFileTotalRecord();
         self::assertSame('999999', $trailer->getBsb());
-        self::assertSame('2', $trailer->getNumberPayments());
+        self::assertSame('2', $trailer->getTotalRecordCount());
         self::assertSame('200000', $trailer->getTotalCreditAmount());
         self::assertSame('0', $trailer->getTotalDebitAmount());
         self::assertSame('200000', $trailer->getTotalNetAmount());
@@ -265,9 +265,9 @@ final class ParserTest extends TestCase
         self::assertSame('50', $transaction->getTransactionCode());
         self::assertSame('0', $transaction->getAmountOfWithholdingTax());
         self::assertCount(0, $parser->getErrors());
-        $trailer = $batches[1]->getFileTotalRecordRecord();
+        $trailer = $batches[1]->getFileTotalRecord();
         self::assertSame('999997', $trailer->getBsb());
-        self::assertSame('2', $trailer->getNumberPayments());
+        self::assertSame('2', $trailer->getTotalRecordCount());
         self::assertSame('200000', $trailer->getTotalCreditAmount());
         self::assertSame('0', $trailer->getTotalDebitAmount());
         self::assertSame('200000', $trailer->getTotalNetAmount());

@@ -6,30 +6,27 @@ namespace EonX\EasyBankFiles\Parsers\DirectEntryBatch;
 use EonX\EasyBankFiles\Parsers\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\DescriptiveRecord;
-use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\FileTotalRecordRecord;
+use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\FileTotalRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord;
 use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord;
 use EonX\EasyBankFiles\Parsers\Error;
 
-/**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) We can't reduce the overall complexity
- */
 final class Parser extends AbstractLineByLineParser
 {
     private const FINAL_LINE = 'End-Of-File';
 
     private const MIN_RECORD_LENGTH = [
-        self::RECORD_TYPE_DISCRIPTIVE => 80,
-        self::RECORD_TYPE_FILE_TOTAL_RECORD => 80,
+        self::RECORD_TYPE_DESCRIPTIVE => 80,
+        self::RECORD_TYPE_FILE_TOTAL => 80,
         self::RECORD_TYPE_PAYMENT => 120,
         self::RECORD_TYPE_REFUSAL => 120,
         self::RECORD_TYPE_RETURN => 120,
     ];
 
-    private const RECORD_TYPE_DISCRIPTIVE = '0';
+    private const RECORD_TYPE_DESCRIPTIVE = '0';
 
-    private const RECORD_TYPE_FILE_TOTAL_RECORD = '7';
+    private const RECORD_TYPE_FILE_TOTAL = '7';
 
     private const RECORD_TYPE_PAYMENT = '1';
 
@@ -79,17 +76,14 @@ final class Parser extends AbstractLineByLineParser
         }
     }
 
-    /**
-     * Process one line from file.
-     */
     protected function processLine(int $lineNumber, string $line): void
     {
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
 
         if ($this->checkMinLength($line, $code)) {
             $lineProcessingResult = match ($code) {
-                self::RECORD_TYPE_DISCRIPTIVE => $this->processDiscriptiveRecord($line),
-                self::RECORD_TYPE_FILE_TOTAL_RECORD => $this->processFileTotalRecordRecord($line),
+                self::RECORD_TYPE_DESCRIPTIVE => $this->processDescriptiveRecord($line),
+                self::RECORD_TYPE_FILE_TOTAL => $this->processFileTotalRecord($line),
                 self::RECORD_TYPE_PAYMENT => $this->processPaymentDetailRecord($line),
                 self::RECORD_TYPE_RETURN => $this->processReturnDetailRecord($line),
                 self::RECORD_TYPE_REFUSAL => $this->processRefusalDetailRecord($line),
@@ -107,7 +101,7 @@ final class Parser extends AbstractLineByLineParser
     private function addRecordToCurrentBatch(
         PaymentDetailRecord|ReturnDetailRecord|RefusalDetailRecord $record,
     ): bool {
-        if (isset($this->currentBatch) === false || $this->currentBatch->hasFileTotalRecordRecord()) {
+        if (isset($this->currentBatch) === false || $this->currentBatch->hasFileTotalRecord()) {
             $this->currentBatch = null;
 
             return false;
@@ -125,15 +119,10 @@ final class Parser extends AbstractLineByLineParser
     private function isFinalLine(string $line): bool
     {
         return (\trim($line) === self::FINAL_LINE || \trim($line, '9') === '') &&
-            ($this->currentBatch === null || $this->currentBatch->hasFileTotalRecordRecord());
+            ($this->currentBatch === null || $this->currentBatch->hasFileTotalRecord());
     }
 
-    /**
-     * Parse transaction attributes are the same for each transaction type.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    private function parseCommonTransactionAttributes(string $line): array
+    private function parseCommonRecordAttributes(string $line): array
     {
         /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
@@ -169,10 +158,7 @@ final class Parser extends AbstractLineByLineParser
         ];
     }
 
-    /**
-     * Process header block of line.
-     */
-    private function processDiscriptiveRecord(string $line): bool
+    private function processDescriptiveRecord(string $line): bool
     {
         /** @var string|false $reelSequenceNumber */
         $reelSequenceNumber = \substr($line, 18, 2);
@@ -187,7 +173,7 @@ final class Parser extends AbstractLineByLineParser
         /** @var string|false $dateProcessed */
         $dateProcessed = \substr($line, 74, 6);
 
-        return $this->setHeaderToCurrentBatch(new DescriptiveRecord([
+        return $this->setDescriptiveRecordToCurrentBatch(new DescriptiveRecord([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
             'descriptionOfEntries' => $descriptionOfEntries === false ? null : \trim($descriptionOfEntries),
             'nameOfUserSupplyingFile' => $nameOfUserSupplyingFile === false ? null : \trim($nameOfUserSupplyingFile),
@@ -197,10 +183,7 @@ final class Parser extends AbstractLineByLineParser
         ]));
     }
 
-    /**
-     * Process trailer block of line.
-     */
-    private function processFileTotalRecordRecord(string $line): bool
+    private function processFileTotalRecord(string $line): bool
     {
         /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
@@ -210,21 +193,18 @@ final class Parser extends AbstractLineByLineParser
         $totalCreditAmount = \substr($line, 30, 10);
         /** @var string|false $totalDebitAmount */
         $totalDebitAmount = \substr($line, 40, 10);
-        /** @var string|false $numberPayments */
-        $numberPayments = \substr($line, 74, 6);
+        /** @var string|false $totalRecordCount */
+        $totalRecordCount = \substr($line, 74, 6);
 
-        return $this->setTrailerToCurrentBatch(new FileTotalRecordRecord([
+        return $this->setFileTotalRecordToCurrentBatch(new FileTotalRecord([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'numberPayments' => $numberPayments === false ? null : $this->trimLeftZeros($numberPayments),
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
             'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
             'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
+            'totalRecordCount' => $totalRecordCount === false ? null : $this->trimLeftZeros($totalRecordCount),
         ]));
     }
 
-    /**
-     * Process transaction block of line (transaction type payment = 1).
-     */
     private function processPaymentDetailRecord(string $line): bool
     {
         /** @var string|false $amountOfWithholdingTax */
@@ -236,13 +216,10 @@ final class Parser extends AbstractLineByLineParser
                     ? null
                     : $this->trimLeftZeros($amountOfWithholdingTax),
             ],
-            $this->parseCommonTransactionAttributes($line)
+            $this->parseCommonRecordAttributes($line)
         )));
     }
 
-    /**
-     * Process transaction block of line (transaction type refusal = 3).
-     */
     private function processRefusalDetailRecord(string $line): bool
     {
         /** @var string|false $originalDayOfReturn */
@@ -255,13 +232,10 @@ final class Parser extends AbstractLineByLineParser
                 'originalDayOfReturn' => $originalDayOfReturn === false ? null : $originalDayOfReturn,
                 'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
             ],
-            $this->parseCommonTransactionAttributes($line)
+            $this->parseCommonRecordAttributes($line)
         )));
     }
 
-    /**
-     * Process transaction block of line (transaction type return = 2).
-     */
     private function processReturnDetailRecord(string $line): bool
     {
         /** @var string|false $originalDayOfProcessing */
@@ -274,11 +248,11 @@ final class Parser extends AbstractLineByLineParser
                 'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : $originalDayOfProcessing,
                 'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
             ],
-            $this->parseCommonTransactionAttributes($line)
+            $this->parseCommonRecordAttributes($line)
         )));
     }
 
-    private function setHeaderToCurrentBatch(DescriptiveRecord $header): bool
+    private function setDescriptiveRecordToCurrentBatch(DescriptiveRecord $header): bool
     {
         $recordProcessed = $this->currentBatch === null;
         $this->currentBatch = (new Batch())->setDescriptiveRecord($header);
@@ -286,14 +260,14 @@ final class Parser extends AbstractLineByLineParser
         return $recordProcessed;
     }
 
-    private function setTrailerToCurrentBatch(FileTotalRecordRecord $trailer): bool
+    private function setFileTotalRecordToCurrentBatch(FileTotalRecord $trailer): bool
     {
         if (isset($this->currentBatch) === false || $this->currentBatch->hasRecord() === false) {
             $this->currentBatch = null;
 
             return false;
         }
-        $this->batches[] = $this->currentBatch->setFileTotalRecordRecord($trailer);
+        $this->batches[] = $this->currentBatch->setFileTotalRecord($trailer);
         $this->currentBatch = null;
 
         return true;

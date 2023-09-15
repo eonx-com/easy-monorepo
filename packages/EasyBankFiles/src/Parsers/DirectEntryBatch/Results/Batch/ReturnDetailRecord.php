@@ -23,8 +23,6 @@ use EonX\EasyBankFiles\Parsers\BaseResult;
 final class ReturnDetailRecord extends BaseResult
 {
     /**
-     * Return object attributes.
-     *
      * @return string[]
      */
     protected function initAttributes(): array

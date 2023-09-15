@@ -18,9 +18,6 @@ final class DescriptiveRecord extends BaseResult
 {
     private const DATE_STRING_PATTERN = 'dmy';
 
-    /**
-     * Return processed date as a DateTimeImmutable object.
-     */
     public function getDateProcessedObject(): ?DateTimeImmutable
     {
         $value = $this->data['dateProcessed'];
@@ -39,8 +36,6 @@ final class DescriptiveRecord extends BaseResult
     }
 
     /**
-     * Return object attributes.
-     *
      * @return string[]
      */
     protected function initAttributes(): array
