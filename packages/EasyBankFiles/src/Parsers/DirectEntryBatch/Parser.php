@@ -148,7 +148,6 @@ final class Parser extends AbstractLineByLineParser
             'accountNumber' => $accountNumber === false ? null : $accountNumber,
             'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'indicator' => $line[17] ?? '',
             'lodgmentReference' => $lodgmentReference === false ? null : \trim($lodgmentReference),
             'recordType' => $line[0] ?? '',
             'remitterName' => $remitterName === false ? null : \trim($remitterName),
@@ -176,6 +175,7 @@ final class Parser extends AbstractLineByLineParser
         return $this->setDescriptiveRecordToCurrentBatch(new DescriptiveRecord([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
             'descriptionOfEntries' => $descriptionOfEntries === false ? null : \trim($descriptionOfEntries),
+            'indicator' => $line[17] ?? '',
             'nameOfUserSupplyingFile' => $nameOfUserSupplyingFile === false ? null : \trim($nameOfUserSupplyingFile),
             'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile === false ? null : $numberOfUserSupplyingFile,
             'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
@@ -198,6 +198,7 @@ final class Parser extends AbstractLineByLineParser
 
         return $this->setFileTotalRecordToCurrentBatch(new FileTotalRecord([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
+            'indicator' => $line[17] ?? '',
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
             'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
             'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
@@ -215,6 +216,7 @@ final class Parser extends AbstractLineByLineParser
                 'amountOfWithholdingTax' => $amountOfWithholdingTax === false
                     ? null
                     : $this->trimLeftZeros($amountOfWithholdingTax),
+                'indicator' => $line[17] ?? '',
             ],
             $this->parseCommonRecordAttributes($line)
         )));
@@ -231,6 +233,7 @@ final class Parser extends AbstractLineByLineParser
             [
                 'originalDayOfReturn' => $originalDayOfReturn === false ? null : $originalDayOfReturn,
                 'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
+                'refusalCode' => $line[17] ?? '',
             ],
             $this->parseCommonRecordAttributes($line)
         )));
@@ -247,6 +250,7 @@ final class Parser extends AbstractLineByLineParser
             [
                 'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : $originalDayOfProcessing,
                 'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
+                'returnCode' => $line[17] ?? '',
             ],
             $this->parseCommonRecordAttributes($line)
         )));
