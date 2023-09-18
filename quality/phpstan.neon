@@ -18,7 +18,7 @@ parameters:
     level: 8
 
     bootstrapFiles:
-        - %currentWorkingDirectory%/tests/bootstrap.php
+        - %currentWorkingDirectory%/tests/phpstan_bootstrap.php
         - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
 
     excludePaths:
@@ -241,10 +241,6 @@ parameters:
 
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
-
-        # ---- EasyTest ----
-        - message: '#Unsafe usage of new static\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
