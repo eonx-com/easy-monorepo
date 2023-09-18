@@ -57,7 +57,7 @@ final class EasyAsyncSymfonyBundle extends AbstractBundle
                         $config['doctrine']['persistent_connections_max_idle_time'] ?? 10.0
                     );
 
-                $container->import(__DIR__ . '/Resources/config/messenger_doctrine_persistent_connections.php');
+                $container->import(__DIR__ . '/Resources/config/doctrine_persistent_connections.php');
             }
         }
 
