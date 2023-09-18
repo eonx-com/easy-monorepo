@@ -19,7 +19,7 @@ final class JsonStringSanitizer extends AbstractStringSanitizer
     private function maskNonStringValuesInEscapedJsonString(
         string $escapedJsonString,
         string $key,
-        string $maskPattern
+        string $maskPattern,
     ): string {
         return (string)\preg_replace(
             \sprintf('/(\\\"%s\\\"\s*:\s*(?!\s*("|\\\"))(\[)?)(?(?<=\[)([^\]]+)|([^,}]+[}]?))(\]|,|})/i', $key),
