@@ -25,6 +25,7 @@ final class EntityManagerForSanityStub extends EntityManagerDecorator
         $eventManager = new EventManager();
 
         $connectionClass ??= Connection::class;
+        /** @var \Doctrine\DBAL\Connection $conn */
         $conn = new $connectionClass([], new Driver(), null, $eventManager);
 
         parent::__construct(
