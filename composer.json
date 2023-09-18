@@ -202,7 +202,10 @@
         "check-ecs": "quality/vendor/bin/ecs check --ansi --config=quality/ecs.php",
         "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
         "check-composer": "@composer validate --strict",
-        "check-phpstan": "quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.neon",
+        "check-phpstan": [
+            "quality/vendor/bin/phpstan --version",
+            "quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.neon"
+        ],
         "check-tests": "vendor/bin/phpunit packages --coverage-text",
         "check-rector": "quality/vendor/bin/rector process --ansi --config=quality/rector.php --dry-run",
         "fix-ecs": "quality/vendor/bin/ecs check --fix --ansi --config=quality/ecs.php",
