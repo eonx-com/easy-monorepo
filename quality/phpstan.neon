@@ -242,6 +242,10 @@ parameters:
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 
+        # ---- EasyTest ----
+        - message: '#Unsafe usage of new static\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/InvalidDataMaker/AbstractInvalidDataMaker.php
+
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
