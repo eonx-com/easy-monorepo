@@ -13,7 +13,7 @@ jobs:
                     - { name: ecs, run: composer check-ecs, cache: ecs }
                     - { name: monorepo, run: composer check-monorepo }
                     - { name: composer, run: composer check-composer }
-                    - { name: phpstan, run: composer check-phpstan, cache: phpstan }
+                    - { name: phpstan, run: composer check-phpstan }
                     - { name: composer-audit, run: composer audit }
                     #- { name: rector, coverage: none, run: composer check-rector }
 
