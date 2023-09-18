@@ -18,7 +18,7 @@ parameters:
     level: 8
 
     bootstrapFiles:
-        - %currentWorkingDirectory%/tests/phpstan_bootstrap.php
+        - %currentWorkingDirectory%/tests/bootstrap.php
         - %currentWorkingDirectory%/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/Configurator/ContainerConfigurator.php
 
     excludePaths:
