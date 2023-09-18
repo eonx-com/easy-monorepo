@@ -19,20 +19,39 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
-                'maskMe' => 'will be masked',
+                'ignoreBool' => true,
+                'ignoreDouble' => 1.23,
+                'ignoreInteger' => 1,
+                'ignoreNull' => null,
+                'ignoreString' => 'will not be masked',
+                'maskBoolean' => true,
+                'maskDouble' => 1.23,
+                'maskInteger' => 1,
+                'maskNull' => null,
+                'maskString' => 'will be masked',
                 'a sub-array' => [
-                    'maskMeToo' => 'will be masked',
-                    'ignoreNull' => null,
-                    'ignoreTrue' => true,
-                    'ignoreFalse' => false,
+                    'ignoreBool' => true,
+                    'ignoreDouble' => 1.23,
                     'ignoreInteger' => 1,
+                    'ignoreNull' => null,
+                    'ignoreString' => 'will not be masked',
+                    'maskBoolean' => true,
+                    'maskDouble' => 1.23,
+                    'maskInteger' => 1,
+                    'maskNull' => null,
+                    'maskString' => 'will be masked',
                 ],
                 'a sub-object (instance of \stdClass)' => \json_decode((string)\json_encode([
-                    'maskMeToo' => 'will be masked',
-                    'ignoreNull' => null,
-                    'ignoreTrue' => true,
-                    'ignoreFalse' => false,
+                    'ignoreBool' => true,
+                    'ignoreDouble' => 1.23,
                     'ignoreInteger' => 1,
+                    'ignoreNull' => null,
+                    'ignoreString' => 'will not be masked',
+                    'maskBoolean' => true,
+                    'maskDouble' => 1.23,
+                    'maskInteger' => 1,
+                    'maskNull' => null,
+                    'maskString' => 'will be masked',
                 ])),
                 'a sub-object (instance of \DateTimeImmutable)' => new DateTimeImmutable('1970-01-23 01:23:45.123456'),
                 'a sub-object (instance of \Carbon\Carbon)' => Carbon::parse(
@@ -43,27 +62,47 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     '1970-01-23 01:23:45.123456',
                     'UTC'
                 ),
-                'a sub-object (instance of \BpayBillerInfoDto)' => new ObjectDto(
-                    'some-biller-code',
-                    'some-long-name',
-                    'some-short-name'
-                ),
+                'a sub-object (instance of \EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto)' =>
+                    new ObjectDto(
+                        prop1: 'some-biller-code',
+                        prop2: 'some-long-name',
+                        prop3: 'some-short-name'
+                    ),
             ],
             'expectedOutput' => [
-                'maskMe' => '*REDACTED*',
+                'ignoreBool' => true,
+                'ignoreDouble' => 1.23,
+                'ignoreInteger' => 1,
+                'ignoreNull' => null,
+                'ignoreString' => 'will not be masked',
+                'maskBoolean' => '*REDACTED*',
+                'maskDouble' => '*REDACTED*',
+                'maskInteger' => '*REDACTED*',
+                'maskNull' => '*REDACTED*',
+                'maskString' => '*REDACTED*',
                 'a sub-array' => [
-                    'maskMeToo' => '*REDACTED*',
-                    'ignoreNull' => null,
-                    'ignoreTrue' => true,
-                    'ignoreFalse' => false,
+                    'ignoreBool' => true,
+                    'ignoreDouble' => 1.23,
                     'ignoreInteger' => 1,
+                    'ignoreNull' => null,
+                    'ignoreString' => 'will not be masked',
+                    'maskBoolean' => '*REDACTED*',
+                    'maskDouble' => '*REDACTED*',
+                    'maskInteger' => '*REDACTED*',
+                    'maskNull' => '*REDACTED*',
+                    'maskString' => '*REDACTED*',
                 ],
                 'a sub-object (instance of \stdClass)' => [
-                    'maskMeToo' => '*REDACTED*',
-                    'ignoreNull' => null,
-                    'ignoreTrue' => true,
-                    'ignoreFalse' => false,
+                    'ignoreBool' => true,
+                    'ignoreDouble' => 1.23,
                     'ignoreInteger' => 1,
+                    'ignoreNull' => null,
+                    'ignoreString' => 'will not be masked',
+                    'maskBoolean' => '*REDACTED*',
+                    'maskDouble' => '*REDACTED*',
+                    'maskInteger' => '*REDACTED*',
+                    'maskNull' => '*REDACTED*',
+                    'maskString' => '*REDACTED*',
                 ],
                 'a sub-object (instance of \DateTimeImmutable)' => new DateTimeImmutable('1970-01-23 01:23:45.123456'),
                 'a sub-object (instance of \Carbon\Carbon)' => Carbon::parse(
@@ -74,16 +113,19 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     '1970-01-23 01:23:45.123456',
                     'UTC'
                 ),
-                'a sub-object (instance of \BpayBillerInfoDto)' => [
+                'a sub-object (instance of \EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto)' => [
                     'prop1' => '*REDACTED*',
                     'prop2' => 'some-long-name',
                     'prop3' => 'some-short-name',
                 ],
             ],
             'maskKeys' => [
+                'maskboolean',
+                'maskdouble',
+                'maskinteger',
+                'masknull',
+                'maskstring',
                 'prop1',
-                'maskme',
-                'maskmetoo',
             ],
         ];
         yield 'Mask keys in URL' => [
@@ -100,56 +142,277 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         ];
         yield 'Mask keys in JSON' => [
             'input' => [
-                'maskToken' => '{"token":"token-to-be-masked"}',
-                'maskTokenWithEscaping' => '{\"token\":\"token-to-be-masked\"}',
-                'maskTokenSpaceBeforeValue' => '{"token": "token-to-be-masked"}',
-                'maskTokenSpaceAfterKey' => '{"token" :"token-to-be-masked"}',
-                'maskTokenWithBothSpaces' => '{"token" : "token-to-be-masked"}',
-                'maskTokenWithDoubleSpaces' => '{"token"  :  "token-to-be-masked"}',
-                'maskTokenSpaceBeforeValueAndEscaping' => '{\"token\": \"token-to-be-masked\"}',
-                'maskTokenSpaceAfterKeyAndEscaping' => '{\"token\" :\"token-to-be-masked\"}',
-                'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"token-to-be-masked\"}',
-                'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"token-to-be-masked\"}',
-                'maskPhoneNumber' => '{"phoneNumber":"token-to-be-masked"}',
-                'maskArray' => '{"auth":["test",null]}',
-                'maskArrayWithEscaping' => '{\"auth\":[\"test\"]}',
-                'maskArraySpaceBeforeValue' => '{"auth": ["test"]}',
-                'maskArraySpaceAfterKey' => '{"auth" :["test"]}',
-                'maskArrayWithBothSpaces' => '{"auth" : ["test"]}',
-                'maskArrayWithDoubleSpaces' => '{"auth"  :  ["test"]}',
-                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [\"test\"]}',
-                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[\"test\"]}',
-                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [\"test\"]}',
-                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [\"test\"]}',
-
+                // String
+                'maskString' => '{"stringValue":"will be masked","anotherStringValue":"will not be masked"}',
+                'maskStringWithOneKey' => '{"stringValue":"will be masked"}',
+                'maskStringWithSpaceBeforeValue' =>
+                    '{"stringValue": "will be masked","anotherStringValue": "will not be masked"}',
+                'maskStringWithSpaceAfterKey' =>
+                    '{"stringValue" :"will be masked","anotherStringValue" :"will not be masked"}',
+                'maskStringWithBothSpaces' =>
+                    '{"stringValue" : "will be masked","anotherStringValue" : "will not be masked"}',
+                'maskStringWithDoubleSpaces' =>
+                    '{"stringValue"  :  "will be masked","anotherStringValue"  :  "will not be masked"}',
+                'maskStringWithEscaping' =>
+                    '{\"stringValue\":\"will be masked\",\"anotherStringValue\":\"will not be masked\"}',
+                'maskStringWithOneKeyAndEscaping' => '{\"stringValue\":\"will be masked\"}',
+                'maskStringWithSpaceBeforeValueAndEscaping' =>
+                    '{\"stringValue\": \"will be masked\",\"anotherStringValue\": \"will not be masked\"}',
+                'maskStringWithSpaceAfterKeyAndEscaping' =>
+                    '{\"stringValue\" :\"will be masked\",\"anotherStringValue\" :\"will not be masked\"}',
+                'maskStringWithBothSpacesAndEscaping' =>
+                    '{\"stringValue\" : \"will be masked\",\"anotherStringValue\" : \"will not be masked\"}',
+                'maskStringWithDoubleSpacesAndEscaping' =>
+                    '{\"stringValue\"  :  \"will be masked\",\"anotherStringValue\"  :  \"will not be masked\"}',
+                // Integer
+                'maskInteger' => '{"integerValue":123,"anotherIntegerValue":123}',
+                'maskIntegerWithOneKey' => '{"integerValue":123}',
+                'maskIntegerSpaceBeforeValue' => '{"integerValue": 123,"anotherIntegerValue": 123}',
+                'maskIntegerSpaceAfterKey' => '{"integerValue" :123,"anotherIntegerValue" :123}',
+                'maskIntegerWithBothSpaces' => '{"integerValue" : 123,"anotherIntegerValue" : 123}',
+                'maskIntegerWithDoubleSpaces' => '{"integerValue"  :  123,"anotherIntegerValue"  :  123}',
+                'maskIntegerWithEscaping' => '{\"integerValue\":123,\"anotherIntegerValue\":123}',
+                'maskIntegerWithOneKeyAndEscaping' => '{\"integerValue\":123}',
+                'maskIntegerSpaceBeforeValueAndEscaping' => '{\"integerValue\": 123,\"anotherIntegerValue\": 123}',
+                'maskIntegerSpaceAfterKeyAndEscaping' => '{\"integerValue\" :123,\"anotherIntegerValue\" :123}',
+                'maskIntegerWithBothSpacesAndEscaping' => '{\"integerValue\" : 123,\"anotherIntegerValue\" : 123}',
+                'maskIntegerWithDoubleSpacesAndEscaping' =>
+                    '{\"integerValue\"  :  123,\"anotherIntegerValue\"  :  123}',
+                // Double
+                'maskDouble' => '{"doubleValue":123.45,"anotherDoubleValue":123.45}',
+                'maskDoubleWithOneKey' => '{"doubleValue":123.45}',
+                'maskDoubleSpaceBeforeValue' => '{"doubleValue": 123.45,"anotherDoubleValue": 123.45}',
+                'maskDoubleSpaceAfterKey' => '{"doubleValue" :123.45,"anotherDoubleValue" :123.45}',
+                'maskDoubleWithBothSpaces' => '{"doubleValue" : 123.45,"anotherDoubleValue" : 123.45}',
+                'maskDoubleWithDoubleSpaces' => '{"doubleValue"  :  123.45,"anotherDoubleValue"  :  123.45}',
+                'maskDoubleWithEscaping' => '{\"doubleValue\":123.45,\"anotherDoubleValue\":123.45}',
+                'maskDoubleWithOneKeyAndEscaping' => '{\"doubleValue\":123.45}',
+                'maskDoubleSpaceBeforeValueAndEscaping' => '{\"doubleValue\": 123.45,\"anotherDoubleValue\": 123.45}',
+                'maskDoubleSpaceAfterKeyAndEscaping' => '{\"doubleValue\" :123.45,\"anotherDoubleValue\" :123.45}',
+                'maskDoubleWithBothSpacesAndEscaping' => '{\"doubleValue\" : 123.45,\"anotherDoubleValue\" : 123.45}',
+                'maskDoubleWithDoubleSpacesAndEscaping' =>
+                    '{\"doubleValue\"  :  123.45,\"anotherDoubleValue\"  :  123.45}',
+                // Boolean
+                'maskBoolean' => '{"booleanValue":true,"anotherBooleanValue":false}',
+                'maskBooleanWithOneKey' => '{"booleanValue":true}',
+                'maskBooleanSpaceBeforeValue' => '{"booleanValue": true,"anotherBooleanValue": false}',
+                'maskBooleanSpaceAfterKey' => '{"booleanValue" :true,"anotherBooleanValue" :false}',
+                'maskBooleanWithBothSpaces' => '{"booleanValue" : true,"anotherBooleanValue" : false}',
+                'maskBooleanWithDoubleSpaces' => '{"booleanValue"  :  true,"anotherBooleanValue"  :  false}',
+                'maskBooleanWithEscaping' => '{\"booleanValue\":true,\"anotherBooleanValue\":false}',
+                'maskBooleanWithOneKeyAndEscaping' => '{\"booleanValue\":true}',
+                'maskBooleanSpaceBeforeValueAndEscaping' => '{\"booleanValue\": true,\"anotherBooleanValue\": false}',
+                'maskBooleanSpaceAfterKeyAndEscaping' => '{\"booleanValue\" :true,\"anotherBooleanValue\" :false}',
+                'maskBooleanWithBothSpacesAndEscaping' => '{\"booleanValue\" : true,\"anotherBooleanValue\" : false}',
+                'maskBooleanWithDoubleSpacesAndEscaping' =>
+                    '{\"booleanValue\"  :  true,\"anotherBooleanValue\"  :  false}',
+                // Null
+                'maskNull' => '{"nullValue":null,"anotherNullValue":null}',
+                'maskNullWithOneKey' => '{"nullValue":null}',
+                'maskNullSpaceBeforeValue' => '{"nullValue": null,"anotherNullValue": null}',
+                'maskNullSpaceAfterKey' => '{"nullValue" :null,"anotherNullValue" :null}',
+                'maskNullWithBothSpaces' => '{"nullValue" : null,"anotherNullValue" : null}',
+                'maskNullWithDoubleSpaces' => '{"nullValue"  :  null,"anotherNullValue"  :  null}',
+                'maskNullWithEscaping' => '{\"nullValue\":null,\"anotherNullValue\":null}',
+                'maskNullWithOneKeyAndEscaping' => '{\"nullValue\":null}',
+                'maskNullSpaceBeforeValueAndEscaping' => '{\"nullValue\": null,\"anotherNullValue\": null}',
+                'maskNullSpaceAfterKeyAndEscaping' => '{\"nullValue\" :null,\"anotherNullValue\" :null}',
+                'maskNullWithBothSpacesAndEscaping' => '{\"nullValue\" : null,\"anotherNullValue\" : null}',
+                'maskNullWithDoubleSpacesAndEscaping' => '{\"nullValue\"  :  null,\"anotherNullValue\"  :  null}',
+                // Array
+                'maskArray' => '{"arrayValue":["test",1,1.23,true,null],"anotherArrayValue":["test"]}',
+                'maskArrayWithOneKey' => '{"arrayValue":["test",1,1.23,true,null]}',
+                'maskArrayWithSpaceBeforeValue' =>
+                    '{"arrayValue": ["test",1,1.23,true,null],"anotherArrayValue": ["test"]}',
+                'maskArrayWithSpaceAfterKey' =>
+                    '{"arrayValue" :["test",1,1.23,true,null],"anotherArrayValue" :["test"]}',
+                'maskArrayWithBothSpaces' =>
+                    '{"arrayValue" : ["test",1,1.23,true,null],"anotherArrayValue" : ["test"]}',
+                'maskArrayWithDoubleSpaces' =>
+                    '{"arrayValue"  :  ["test",1,1.23,true,null],"anotherArrayValue"  :  ["test"]}',
+                'maskArrayWithEscaping' =>
+                    '{\"arrayValue\":[\"test\",1,1.23,true,null],\"anotherArrayValue\":[\"test\"]}',
+                'maskArrayWithOneKeyAndEscaping' =>
+                    '{\"arrayValue\":[\"test\",1,1.23,true,null],\"anotherArrayValue\":[\"test\"]}',
+                'maskArrayWithSpaceBeforeValueAndEscaping' =>
+                    '{\"arrayValue\": [\"test\",1,1.23,true,null],\"anotherArrayValue\": [\"test\"]}',
+                'maskArrayWithSpaceAfterKeyAndEscaping' =>
+                    '{\"arrayValue\" :[\"test\",1,1.23,true,null],\"anotherArrayValue\" :[\"test\"]}',
+                'maskArrayWithBothSpacesAndEscaping' =>
+                    '{\"arrayValue\" : [\"test\",1,1.23,true,null],\"anotherArrayValue\" : [\"test\"]}',
+                'maskArrayWithDoubleSpacesAndEscaping' =>
+                    '{\"arrayValue\"  :  [\"test\",1,1.23,true,null],\"anotherArrayValue\"  :  [\"test\"]}',
+                // Object
+                'maskObject' => '{"objectValue":{"foo":"bar"},"anotherObjectValue":{"foo":"bar"}}',
+                'maskObjectWithOneKey' => '{"objectValue":{"foo":"bar"}}',
+                'maskObjectSpaceBeforeValue' => '{"objectValue": {"foo":"bar"},"anotherObjectValue": {"foo":"bar"}}',
+                'maskObjectSpaceAfterKey' => '{"objectValue" :{"foo":"bar"},"anotherObjectValue" :{"foo":"bar"}}',
+                'maskObjectWithBothSpaces' => '{"objectValue" : {"foo":"bar"},"anotherObjectValue" : {"foo":"bar"}}',
+                'maskObjectWithDoubleSpaces' =>
+                    '{"objectValue"  :  {"foo":"bar"},"anotherObjectValue"  :  {"foo":"bar"}}',
+                'maskObjectWithEscaping' =>
+                    '{\"objectValue\":{\"foo\":\"bar\"},\"anotherObjectValue\":{\"foo\":\"bar\"}}',
+                'maskObjectWithOneKeyAndEscaping' => '{\"objectValue\":{\"foo\":\"bar\"}}',
+                'maskObjectSpaceBeforeValueAndEscaping' =>
+                    '{\"objectValue\": {\"foo\":\"bar\"},\"anotherObjectValue\": {\"foo\":\"bar\"}}',
+                'maskObjectSpaceAfterKeyAndEscaping' =>
+                    '{\"objectValue\" :{\"foo\":\"bar\"},\"anotherObjectValue\" :{\"foo\":\"bar\"}}',
+                'maskObjectWithBothSpacesAndEscaping' =>
+                    '{\"objectValue\" : {\"foo\":\"bar\"},\"anotherObjectValue\" : {\"foo\":\"bar\"}}',
+                'maskObjectWithDoubleSpacesAndEscaping' =>
+                    '{\"objectValue\"  :  {\"foo\":\"bar\"},\"anotherObjectValue\"  :  {\"foo\":\"bar\"}}',
+                // Nested
+                'maskNested' =>
+                    '{"test":{"stringValue":"will be masked","integerValue":123,"doubleValue":123.45,' .
+                    '"booleanValue":true,"nullValue":null,"arrayValue":["test",1,1.23,true,null],' .
+                    '"objectValue":{"foo":"bar"}}}',
+                'maskNestedWithEscaping' =>
+                    '{\"test\":{\"stringValue\":\"will be masked\",\"integerValue\":123,\"doubleValue\":123.45,' .
+                    '\"booleanValue\":true,\"nullValue\":null,\"arrayValue\":[\"test\",1,1.23,true,null],' .
+                    '\"objectValue\":{\"foo\":\"bar\"}}}',
             ],
             'expectedOutput' => [
-                'maskToken' => '{"token":"*REDACTED*"}',
-                'maskTokenWithEscaping' => '{\"token\":\"*REDACTED*\"}',
-                'maskTokenSpaceBeforeValue' => '{"token": "*REDACTED*"}',
-                'maskTokenSpaceAfterKey' => '{"token" :"*REDACTED*"}',
-                'maskTokenWithBothSpaces' => '{"token" : "*REDACTED*"}',
-                'maskTokenWithDoubleSpaces' => '{"token"  :  "*REDACTED*"}',
-                'maskTokenSpaceBeforeValueAndEscaping' => '{\"token\": \"*REDACTED*\"}',
-                'maskTokenSpaceAfterKeyAndEscaping' => '{\"token\" :\"*REDACTED*\"}',
-                'maskTokenWithBothSpacesAndEscaping' => '{\"token\" : \"*REDACTED*\"}',
-                'maskTokenWithDoubleSpacesAndEscaping' => '{\"token\"  :  \"*REDACTED*\"}',
-                'maskPhoneNumber' => '{"phoneNumber":"*REDACTED*"}',
-                'maskArray' => '{"auth":[*REDACTED*]}',
-                'maskArrayWithEscaping' => '{\"auth\":[*REDACTED*]}',
-                'maskArraySpaceBeforeValue' => '{"auth": [*REDACTED*]}',
-                'maskArraySpaceAfterKey' => '{"auth" :[*REDACTED*]}',
-                'maskArrayWithBothSpaces' => '{"auth" : [*REDACTED*]}',
-                'maskArrayWithDoubleSpaces' => '{"auth"  :  [*REDACTED*]}',
-                'maskArraySpaceBeforeValueAndEscaping' => '{\"auth\": [*REDACTED*]}',
-                'maskArraySpaceAfterKeyAndEscaping' => '{\"auth\" :[*REDACTED*]}',
-                'maskArrayWithBothSpacesAndEscaping' => '{\"auth\" : [*REDACTED*]}',
-                'maskArrayWithDoubleSpacesAndEscaping' => '{\"auth\"  :  [*REDACTED*]}',
+                // String
+                'maskString' => '{"stringValue":"*REDACTED*","anotherStringValue":"will not be masked"}',
+                'maskStringWithOneKey' => '{"stringValue":"*REDACTED*"}',
+                'maskStringWithSpaceBeforeValue' =>
+                    '{"stringValue": "*REDACTED*","anotherStringValue": "will not be masked"}',
+                'maskStringWithSpaceAfterKey' =>
+                    '{"stringValue" :"*REDACTED*","anotherStringValue" :"will not be masked"}',
+                'maskStringWithBothSpaces' =>
+                    '{"stringValue" : "*REDACTED*","anotherStringValue" : "will not be masked"}',
+                'maskStringWithDoubleSpaces' =>
+                    '{"stringValue"  :  "*REDACTED*","anotherStringValue"  :  "will not be masked"}',
+                'maskStringWithEscaping' =>
+                    '{\"stringValue\":\"*REDACTED*\",\"anotherStringValue\":\"will not be masked\"}',
+                'maskStringWithOneKeyAndEscaping' => '{\"stringValue\":\"*REDACTED*\"}',
+                'maskStringWithSpaceBeforeValueAndEscaping' =>
+                    '{\"stringValue\": \"*REDACTED*\",\"anotherStringValue\": \"will not be masked\"}',
+                'maskStringWithSpaceAfterKeyAndEscaping' =>
+                    '{\"stringValue\" :\"*REDACTED*\",\"anotherStringValue\" :\"will not be masked\"}',
+                'maskStringWithBothSpacesAndEscaping' =>
+                    '{\"stringValue\" : \"*REDACTED*\",\"anotherStringValue\" : \"will not be masked\"}',
+                'maskStringWithDoubleSpacesAndEscaping' =>
+                    '{\"stringValue\"  :  \"*REDACTED*\",\"anotherStringValue\"  :  \"will not be masked\"}',
+                // Integer
+                'maskInteger' => '{"integerValue":"*REDACTED*","anotherIntegerValue":123}',
+                'maskIntegerWithOneKey' => '{"integerValue":"*REDACTED*"}',
+                'maskIntegerSpaceBeforeValue' => '{"integerValue": "*REDACTED*","anotherIntegerValue": 123}',
+                'maskIntegerSpaceAfterKey' => '{"integerValue" :"*REDACTED*","anotherIntegerValue" :123}',
+                'maskIntegerWithBothSpaces' => '{"integerValue" : "*REDACTED*","anotherIntegerValue" : 123}',
+                'maskIntegerWithDoubleSpaces' => '{"integerValue"  :  "*REDACTED*","anotherIntegerValue"  :  123}',
+                'maskIntegerWithEscaping' => '{\"integerValue\":\"*REDACTED*\",\"anotherIntegerValue\":123}',
+                'maskIntegerWithOneKeyAndEscaping' => '{\"integerValue\":\"*REDACTED*\"}',
+                'maskIntegerSpaceBeforeValueAndEscaping' =>
+                    '{\"integerValue\": \"*REDACTED*\",\"anotherIntegerValue\": 123}',
+                'maskIntegerSpaceAfterKeyAndEscaping' =>
+                    '{\"integerValue\" :\"*REDACTED*\",\"anotherIntegerValue\" :123}',
+                'maskIntegerWithBothSpacesAndEscaping' =>
+                    '{\"integerValue\" : \"*REDACTED*\",\"anotherIntegerValue\" : 123}',
+                'maskIntegerWithDoubleSpacesAndEscaping' =>
+                    '{\"integerValue\"  :  \"*REDACTED*\",\"anotherIntegerValue\"  :  123}',
+                // Double
+                'maskDouble' => '{"doubleValue":"*REDACTED*","anotherDoubleValue":123.45}',
+                'maskDoubleWithOneKey' => '{"doubleValue":"*REDACTED*"}',
+                'maskDoubleSpaceBeforeValue' => '{"doubleValue": "*REDACTED*","anotherDoubleValue": 123.45}',
+                'maskDoubleSpaceAfterKey' => '{"doubleValue" :"*REDACTED*","anotherDoubleValue" :123.45}',
+                'maskDoubleWithBothSpaces' => '{"doubleValue" : "*REDACTED*","anotherDoubleValue" : 123.45}',
+                'maskDoubleWithDoubleSpaces' => '{"doubleValue"  :  "*REDACTED*","anotherDoubleValue"  :  123.45}',
+                'maskDoubleWithEscaping' => '{\"doubleValue\":\"*REDACTED*\",\"anotherDoubleValue\":123.45}',
+                'maskDoubleWithOneKeyAndEscaping' => '{\"doubleValue\":\"*REDACTED*\"}',
+                'maskDoubleSpaceBeforeValueAndEscaping' =>
+                    '{\"doubleValue\": \"*REDACTED*\",\"anotherDoubleValue\": 123.45}',
+                'maskDoubleSpaceAfterKeyAndEscaping' =>
+                    '{\"doubleValue\" :\"*REDACTED*\",\"anotherDoubleValue\" :123.45}',
+                'maskDoubleWithBothSpacesAndEscaping' =>
+                    '{\"doubleValue\" : \"*REDACTED*\",\"anotherDoubleValue\" : 123.45}',
+                'maskDoubleWithDoubleSpacesAndEscaping' =>
+                    '{\"doubleValue\"  :  \"*REDACTED*\",\"anotherDoubleValue\"  :  123.45}',
+                // Boolean
+                'maskBoolean' => '{"booleanValue":"*REDACTED*","anotherBooleanValue":false}',
+                'maskBooleanWithOneKey' => '{"booleanValue":"*REDACTED*"}',
+                'maskBooleanSpaceBeforeValue' => '{"booleanValue": "*REDACTED*","anotherBooleanValue": false}',
+                'maskBooleanSpaceAfterKey' => '{"booleanValue" :"*REDACTED*","anotherBooleanValue" :false}',
+                'maskBooleanWithBothSpaces' => '{"booleanValue" : "*REDACTED*","anotherBooleanValue" : false}',
+                'maskBooleanWithDoubleSpaces' => '{"booleanValue"  :  "*REDACTED*","anotherBooleanValue"  :  false}',
+                'maskBooleanWithEscaping' => '{\"booleanValue\":\"*REDACTED*\",\"anotherBooleanValue\":false}',
+                'maskBooleanWithOneKeyAndEscaping' => '{\"booleanValue\":\"*REDACTED*\"}',
+                'maskBooleanSpaceBeforeValueAndEscaping' =>
+                    '{\"booleanValue\": \"*REDACTED*\",\"anotherBooleanValue\": false}',
+                'maskBooleanSpaceAfterKeyAndEscaping' =>
+                    '{\"booleanValue\" :\"*REDACTED*\",\"anotherBooleanValue\" :false}',
+                'maskBooleanWithBothSpacesAndEscaping' =>
+                    '{\"booleanValue\" : \"*REDACTED*\",\"anotherBooleanValue\" : false}',
+                'maskBooleanWithDoubleSpacesAndEscaping' =>
+                    '{\"booleanValue\"  :  \"*REDACTED*\",\"anotherBooleanValue\"  :  false}',
+                // Null
+                'maskNull' => '{"nullValue":"*REDACTED*","anotherNullValue":null}',
+                'maskNullWithOneKey' => '{"nullValue":"*REDACTED*"}',
+                'maskNullSpaceBeforeValue' => '{"nullValue": "*REDACTED*","anotherNullValue": null}',
+                'maskNullSpaceAfterKey' => '{"nullValue" :"*REDACTED*","anotherNullValue" :null}',
+                'maskNullWithBothSpaces' => '{"nullValue" : "*REDACTED*","anotherNullValue" : null}',
+                'maskNullWithDoubleSpaces' => '{"nullValue"  :  "*REDACTED*","anotherNullValue"  :  null}',
+                'maskNullWithEscaping' => '{\"nullValue\":\"*REDACTED*\",\"anotherNullValue\":null}',
+                'maskNullWithOneKeyAndEscaping' => '{\"nullValue\":\"*REDACTED*\"}',
+                'maskNullSpaceBeforeValueAndEscaping' => '{\"nullValue\": \"*REDACTED*\",\"anotherNullValue\": null}',
+                'maskNullSpaceAfterKeyAndEscaping' => '{\"nullValue\" :\"*REDACTED*\",\"anotherNullValue\" :null}',
+                'maskNullWithBothSpacesAndEscaping' => '{\"nullValue\" : \"*REDACTED*\",\"anotherNullValue\" : null}',
+                'maskNullWithDoubleSpacesAndEscaping' =>
+                    '{\"nullValue\"  :  \"*REDACTED*\",\"anotherNullValue\"  :  null}',
+                // Array
+                'maskArray' => '{"arrayValue":["*REDACTED*"],"anotherArrayValue":["test"]}',
+                'maskArrayWithOneKey' => '{"arrayValue":["*REDACTED*"]}',
+                'maskArrayWithSpaceBeforeValue' => '{"arrayValue": ["*REDACTED*"],"anotherArrayValue": ["test"]}',
+                'maskArrayWithSpaceAfterKey' => '{"arrayValue" :["*REDACTED*"],"anotherArrayValue" :["test"]}',
+                'maskArrayWithBothSpaces' => '{"arrayValue" : ["*REDACTED*"],"anotherArrayValue" : ["test"]}',
+                'maskArrayWithDoubleSpaces' => '{"arrayValue"  :  ["*REDACTED*"],"anotherArrayValue"  :  ["test"]}',
+                'maskArrayWithEscaping' => '{\"arrayValue\":[\"*REDACTED*\"],\"anotherArrayValue\":[\"test\"]}',
+                'maskArrayWithOneKeyAndEscaping' =>
+                    '{\"arrayValue\":[\"*REDACTED*\"],\"anotherArrayValue\":[\"test\"]}',
+                'maskArrayWithSpaceBeforeValueAndEscaping' =>
+                    '{\"arrayValue\": [\"*REDACTED*\"],\"anotherArrayValue\": [\"test\"]}',
+                'maskArrayWithSpaceAfterKeyAndEscaping' =>
+                    '{\"arrayValue\" :[\"*REDACTED*\"],\"anotherArrayValue\" :[\"test\"]}',
+                'maskArrayWithBothSpacesAndEscaping' =>
+                    '{\"arrayValue\" : [\"*REDACTED*\"],\"anotherArrayValue\" : [\"test\"]}',
+                'maskArrayWithDoubleSpacesAndEscaping' =>
+                    '{\"arrayValue\"  :  [\"*REDACTED*\"],\"anotherArrayValue\"  :  [\"test\"]}',
+                // Object
+                'maskObject' => '{"objectValue":"*REDACTED*","anotherObjectValue":{"foo":"bar"}}',
+                'maskObjectWithOneKey' => '{"objectValue":"*REDACTED*"}',
+                'maskObjectSpaceBeforeValue' => '{"objectValue": "*REDACTED*","anotherObjectValue": {"foo":"bar"}}',
+                'maskObjectSpaceAfterKey' => '{"objectValue" :"*REDACTED*","anotherObjectValue" :{"foo":"bar"}}',
+                'maskObjectWithBothSpaces' => '{"objectValue" : "*REDACTED*","anotherObjectValue" : {"foo":"bar"}}',
+                'maskObjectWithDoubleSpaces' =>
+                    '{"objectValue"  :  "*REDACTED*","anotherObjectValue"  :  {"foo":"bar"}}',
+                'maskObjectWithEscaping' => '{\"objectValue\":\"*REDACTED*\",\"anotherObjectValue\":{\"foo\":\"bar\"}}',
+                'maskObjectWithOneKeyAndEscaping' => '{\"objectValue\":\"*REDACTED*\"}',
+                'maskObjectSpaceBeforeValueAndEscaping' =>
+                    '{\"objectValue\": \"*REDACTED*\",\"anotherObjectValue\": {\"foo\":\"bar\"}}',
+                'maskObjectSpaceAfterKeyAndEscaping' =>
+                    '{\"objectValue\" :\"*REDACTED*\",\"anotherObjectValue\" :{\"foo\":\"bar\"}}',
+                'maskObjectWithBothSpacesAndEscaping' =>
+                    '{\"objectValue\" : \"*REDACTED*\",\"anotherObjectValue\" : {\"foo\":\"bar\"}}',
+                'maskObjectWithDoubleSpacesAndEscaping' =>
+                    '{\"objectValue\"  :  \"*REDACTED*\",\"anotherObjectValue\"  :  {\"foo\":\"bar\"}}',
+                // Nested
+                'maskNested' =>
+                    '{"test":{"stringValue":"*REDACTED*","integerValue":"*REDACTED*","doubleValue":"*REDACTED*",' .
+                    '"booleanValue":"*REDACTED*","nullValue":"*REDACTED*","arrayValue":["*REDACTED*"],' .
+                    '"objectValue":"*REDACTED*"}}',
+                'maskNestedWithEscaping' =>
+                    '{\"test\":{\"stringValue\":\"*REDACTED*\",\"integerValue\":\"*REDACTED*\",' .
+                    '\"doubleValue\":\"*REDACTED*\",\"booleanValue\":\"*REDACTED*\",' .
+                    '\"nullValue\":\"*REDACTED*\",\"arrayValue\":[\"*REDACTED*\"],\"objectValue\":\"*REDACTED*\"}}',
             ],
             'maskKeys' => [
-                'token',
-                'phonenumber',
-                'auth',
+                'arrayvalue',
+                'booleanvalue',
+                'doublevalue',
+                'integervalue',
+                'nullvalue',
+                'objectvalue',
+                'stringvalue',
             ],
         ];
         yield 'Mask card numbers' => [
