@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Faker\Provider;
+namespace EonX\EasyTest\Faker\Providers;
 
-use EonX\EasyTest\Faker\Generator\UniqueGroupGenerator;
-use EonX\EasyTest\Faker\Generator\UniqueGroupPropertyValueGenerator;
+use EonX\EasyTest\Faker\Generators\UniqueGroupGenerator;
+use EonX\EasyTest\Faker\Generators\UniqueGroupPropertyValueGenerator;
 use Faker\Provider\Text as BaseProvider;
 use LogicException;
 
@@ -15,7 +15,7 @@ final class UniqueGroupProvider extends BaseProvider
     private array $generatedUniqueGroupsValues = [];
 
     /**
-     * @var array<string, \EonX\EasyTest\Faker\Generator\UniqueGroupGenerator> $uniqueGroupGenerators
+     * @var array<string, \EonX\EasyTest\Faker\Generators\UniqueGroupGenerator> $uniqueGroupGenerators
      */
     private array $uniqueGroupGenerators = [];
 

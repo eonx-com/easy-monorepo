@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Faker\Generator;
+namespace EonX\EasyTest\Faker\Generators;
 
 use Faker\Generator;
 
