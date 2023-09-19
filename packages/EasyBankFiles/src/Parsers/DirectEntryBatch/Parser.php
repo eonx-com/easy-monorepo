@@ -41,6 +41,9 @@ final class Parser extends AbstractLineByLineParser
 
     private ?Batch $currentBatch = null;
 
+    /**
+     * @var \EonX\EasyBankFiles\Parsers\Error[]
+     */
     private array $errors = [];
 
     /**
@@ -101,7 +104,7 @@ final class Parser extends AbstractLineByLineParser
     private function addRecordToCurrentBatch(
         PaymentDetailRecord|ReturnDetailRecord|RefusalDetailRecord $record,
     ): bool {
-        if (isset($this->currentBatch) === false || $this->currentBatch->hasFileTotalRecord()) {
+        if ($this->currentBatch === null || $this->currentBatch->hasFileTotalRecord()) {
             $this->currentBatch = null;
 
             return false;
@@ -266,7 +269,7 @@ final class Parser extends AbstractLineByLineParser
 
     private function setFileTotalRecordToCurrentBatch(FileTotalRecord $trailer): bool
     {
-        if (isset($this->currentBatch) === false || $this->currentBatch->hasRecord() === false) {
+        if ($this->currentBatch === null || $this->currentBatch->hasRecords() === false) {
             $this->currentBatch = null;
 
             return false;

@@ -15,6 +15,9 @@ final class Batch
 
     private FileTotalRecord $fileTotalRecord;
 
+    /**
+     * @var array<int, \EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\PaymentDetailRecord|\EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\ReturnDetailRecord|\EonX\EasyBankFiles\Parsers\DirectEntryBatch\Results\Batch\RefusalDetailRecord>
+     */
     private array $records = [];
 
     public function addRecord(
@@ -45,7 +48,7 @@ final class Batch
         return isset($this->fileTotalRecord) === true;
     }
 
-    public function hasRecord(): bool
+    public function hasRecords(): bool
     {
         return \count($this->records) > 0;
     }

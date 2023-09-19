@@ -51,6 +51,8 @@ final class DescriptiveRecordTest extends TestCase
     {
         $header = new DescriptiveRecord($dateProcessed);
 
-        self::assertNull($header->getDateProcessedObject());
+        $result = $header->getDateProcessedObject();
+
+        self::assertNull($result);
     }
 }
