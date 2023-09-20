@@ -9,6 +9,9 @@ use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Trailer;
 use EonX\EasyBankFiles\Parsers\DirectEntry\Results\Transaction;
 use EonX\EasyBankFiles\Parsers\Error;
 
+/**
+ * @deprecated Please use EonX\EasyBankFiles\Parsers\DirectEntryBatch\Parser instead. Will be removed in EasyBankFiles 6.0.
+ */
 final class Parser extends AbstractLineByLineParser
 {
     private const HEADER = '0';
