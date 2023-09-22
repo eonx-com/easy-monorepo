@@ -188,30 +188,9 @@
         "eonx-com/easy-webhook": "self.version"
     },
     "scripts": {
-        "check-all": [
-            "@check-ecs",
-            "@check-rector",
-            "@check-phpstan",
-            "@check-tests"
-        ],
-        "check-composer": "@composer validate --strict",
-        "check-ecs": "quality/vendor/bin/ecs check --ansi --config=quality/ecs.php",
-        "check-monorepo": "vendor/bin/monorepo-builder validate --ansi",
-        "check-phpstan": "quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.neon",
-        "check-rector": "quality/vendor/bin/rector process --ansi --config=quality/rector.php --dry-run",
-        "check-tests": "vendor/bin/phpunit packages --coverage-text",
-        "fix-ecs": "quality/vendor/bin/ecs check --fix --ansi --config=quality/ecs.php",
-        "fix-rector": "quality/vendor/bin/rector process --ansi --config=quality/rector.php",
-        "merge": "vendor/bin/monorepo-builder merge --ansi",
         "post-install-cmd": [
             "@composer install --working-dir quality --no-dev"
-        ],
-        "propagate": "vendor/bin/monorepo-builder propagate --ansi",
-        "release": [
-            "bin/monorepo clean-up-packages-vendor-dirs",
-            "vendor/bin/monorepo-builder release"
-        ],
-        "split": "vendor/bin/monorepo-builder split --ansi"
+        ]
     },
     "config": {
         "allow-plugins": {
