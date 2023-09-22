@@ -27,18 +27,6 @@ abstract class AbstractTestCase extends TestCase
         self::assertEquals($expectedLogEntries, $logEntries);
     }
 
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -90,6 +78,18 @@ abstract class AbstractTestCase extends TestCase
         } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
+    }
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 
     private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
