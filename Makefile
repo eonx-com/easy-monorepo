@@ -5,7 +5,7 @@ env ?= local
 command ?= /bin/sh
 
 check-all: ## Check codebase with all checkers
-	@$(MAKE) --jobs=2 --keep-going --output-sync check-composer check-ecs check-monorepo check-phpstan check-rector
+	@$(MAKE) --jobs=2 --keep-going --output-sync check-composer check-ecs check-monorepo check-phpstan check-rector check-security
 
 check-composer: ## Validate composer.json
 	composer validate --strict
@@ -21,6 +21,9 @@ check-phpstan: ## Check App with PHPStan
 
 check-rector: ## Check App with Rector
 	quality/vendor/bin/rector process --ansi --config=quality/rector.php --dry-run
+
+check-security: ## Check packages for known vulnerabilities
+	composer audit
 
 fix-ecs: ## Fix issues found by ECS
 	quality/vendor/bin/ecs check --fix --ansi --config=quality/ecs.php --memory-limit=2000M
