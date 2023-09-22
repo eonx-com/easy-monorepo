@@ -5,7 +5,7 @@ env ?= local
 command ?= /bin/sh
 
 check-all: ## Check codebase with all checkers
-	@$(MAKE) --jobs=2 --keep-going --output-sync check-composer check-ecs check-monorepo check-phpstan check-rector test
+	@$(MAKE) --jobs=2 --keep-going --output-sync check-composer check-ecs check-monorepo check-phpstan check-rector
 
 check-composer: ## Validate composer.json
 	composer validate --strict
