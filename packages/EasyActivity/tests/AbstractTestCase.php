@@ -20,6 +20,18 @@ abstract class AbstractTestCase extends TestCase
 {
     protected ?Throwable $thrownException = null;
 
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
+    }
+
     protected function assertLogEntries(EntityManagerInterface $entityManager, array $expectedLogEntries): void
     {
         $logEntries = $this->getLogEntries($entityManager);
@@ -78,18 +90,6 @@ abstract class AbstractTestCase extends TestCase
         } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 
     private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
