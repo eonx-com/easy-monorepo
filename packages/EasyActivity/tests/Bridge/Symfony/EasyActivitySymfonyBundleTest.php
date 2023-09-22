@@ -19,18 +19,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 {
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../../../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @see testInvalidEasyActivityConfig
      */

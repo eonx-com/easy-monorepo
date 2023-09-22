@@ -9,6 +9,7 @@ use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
+use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
 /**
@@ -24,6 +25,18 @@ abstract class AbstractTestCase extends TestCase
         $logEntries = $this->getLogEntries($entityManager);
 
         self::assertEquals($expectedLogEntries, $logEntries);
+    }
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 
     /**
