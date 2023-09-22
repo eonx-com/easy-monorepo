@@ -1,8 +1,5 @@
 .DEFAULT_GOAL := help
 MAKEFLAGS += --no-print-directory
-SCRIPTS_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/../scripts)
-env ?= local
-command ?= /bin/sh
 
 check-all: ## Check codebase with all checkers
 	@$(MAKE) --jobs=2 --keep-going --output-sync check-composer check-ecs check-monorepo check-phpstan check-rector check-security
@@ -48,7 +45,7 @@ test: ## Execute the tests
 	vendor/bin/phpunit packages --coverage-text
 
 test-package: ## Execute the tests for a package (use `package=<packageName>` as argument to execute it)
-	vendor/bin/phpunit packages/$(package)/tests --coverage-text
+	vendor/bin/phpunit packages/$(package)/tests
 
 help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
