@@ -44,6 +44,9 @@ split: ## Split all packages
 test: ## Execute the tests
 	vendor/bin/phpunit packages --coverage-text
 
+test-package: ## Execute the tests for a package (use `package=<packageName>` as argument to execute it)
+	vendor/bin/phpunit packages/$(package)/tests --coverage-text
+
 help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 	| sed -n 's/^\(.*\):.*##\(.*\)/$(shell tput setaf 2)  \1  :::  $(shell tput sgr0)\2/p' \
