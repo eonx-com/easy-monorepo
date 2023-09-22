@@ -42,7 +42,7 @@ split: ## Split all packages
 	vendor/bin/monorepo-builder split --ansi
 
 test: ## Execute the tests
-	bash bin/runTests.sh
+	bash bin/run_tests.sh
 
 test-package: ## Execute the tests for a package (use `package=<packageName>` as argument to execute it)
 	vendor/bin/phpunit packages/$(package)/tests
