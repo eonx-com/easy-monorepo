@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Throwable;
+use TypeError;
 
 final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
@@ -23,6 +24,9 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR = '/The type of the "(\w+)" attribute for class "(.*)" must be' .
     ' one of "(\w+)" \("(\w+)" given\)\./';
+
+    private const MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR = '/[\"]?([\w\\\\]+)\:\:__construct\(\): Argument' .
+    ' #[\d]+ \(\$(\w+)\) must be of type [\"]?([\w\\\\]+), [\"]?([\w\\\\]+) given/';
 
     private const MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED = '/The input data is misformatted\./';
 
@@ -83,6 +87,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                 \preg_match(self::MESSAGE_PATTERN_NESTED_DOCUMENTS_NOT_ALLOWED, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_NOT_IRI, $message) === 1 ||
                 \preg_match(self::MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED, $message) === 1,
+            TypeError::class =>
+                \preg_match(self::MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR, $message) === 1,
             default => false
         };
     }
@@ -191,6 +197,18 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
                     break;
             }
+        }
+
+        if ($throwable instanceof TypeError) {
+            $matches = [];
+            \preg_match(self::MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR, $throwable->getMessage(), $matches);
+            $data[$violationsKey] = [
+                $matches[2] => [
+                    $matches[4] === self::VALUE_NULL
+                        ? (new NotNull())->message
+                        : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[3], $matches[4]),
+                ],
+            ];
         }
 
         return parent::buildData($throwable, $data);
