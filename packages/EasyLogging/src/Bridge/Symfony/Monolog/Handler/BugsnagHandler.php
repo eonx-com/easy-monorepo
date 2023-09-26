@@ -32,14 +32,15 @@ final class BugsnagHandler extends AbstractProcessingHandler implements ServiceS
 
     protected function write(array $record): void
     {
-        $this->getBugsnagClient()->notifyError(
-            (string)$record['message'],
-            (string)$record['formatted'],
-            static function (Report $report) use ($record): void {
-                $report->setSeverity(self::mapMonologSeverityToBugsnagSeverity((int)$record['level']));
-                $report->setMetaData(['context' => $record['context'], 'extra' => $record['extra']]);
-            }
-        );
+        $this->getBugsnagClient()
+            ->notifyError(
+                (string)$record['message'],
+                (string)$record['formatted'],
+                static function (Report $report) use ($record): void {
+                    $report->setSeverity(self::mapMonologSeverityToBugsnagSeverity((int)$record['level']));
+                    $report->setMetaData(['context' => $record['context'], 'extra' => $record['extra']]);
+                }
+            );
     }
 
     private static function mapMonologSeverityToBugsnagSeverity(int $level): string

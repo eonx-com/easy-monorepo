@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bridge\Symfony\Monolog\Handler;
+namespace EonX\EasyLogging\Tests\Bridge\Symfony\Monolog\Handler;
 
 use Bugsnag\Client;
 use Bugsnag\Configuration;
