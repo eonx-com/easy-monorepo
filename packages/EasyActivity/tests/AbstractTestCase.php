@@ -8,6 +8,7 @@ use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class has for objective to provide common features to all tests without having to update
@@ -100,5 +101,19 @@ abstract class AbstractTestCase extends TestCase
         } catch (\Throwable $exception) {
             $this->thrownException = $exception;
         }
+    }
+
+    protected function tearDown(): void
+    {
+        $fs = new Filesystem();
+        $files = [__DIR__ . '/../var'];
+
+        foreach ($files as $file) {
+            if ($fs->exists($file)) {
+                $fs->remove($file);
+            }
+        }
+
+        parent::tearDown();
     }
 }
