@@ -34,9 +34,9 @@ merge: ## Merge all packages
 propagate: ## Propagate all packages
 	vendor/bin/monorepo-builder propagate --ansi
 
-release: ## Release all packages
+release: ## Release all packages (use `version=<version>` as argument to release it with mentioned version)
 	bin/monorepo clean-up-packages-vendor-dirs
-	vendor/bin/monorepo-builder release
+	vendor/bin/monorepo-builder release $(version)
 
 split: ## Split all packages
 	vendor/bin/monorepo-builder split --ansi
