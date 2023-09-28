@@ -29,12 +29,15 @@ protected function getDefaults(): array
 Please note that we use the same group name for both fields. It means that the combination of `code` and `status` fields will be unique among this group.
 
 ### Usage notes
+
 Don't forget to add `UniqueGroupProvider` to the Faker's provider collection so that it can be used:
+
 ```php
 $faker->addProvider(new UniqueGroupProvider($faker));
 ```
 
 Also, you should clear unique groups after each test using `UniqueGroupProvider::clearUniqueGroups` method, e.g in `tearDown` method of your test case:
+
 ```php
 foreach (AbstractFactory::faker()->getProviders() as $provider) {
     if ($provider instanceof UniqueGroupProvider) {
