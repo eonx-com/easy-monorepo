@@ -25,8 +25,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     private const MESSAGE_PATTERN_ATTRIBUTE_TYPE_ERROR = '/The type of the "(\w+)" attribute for class "(.*)" must be' .
     ' one of "(\w+)" \("(\w+)" given\)\./';
 
-    private const MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR = '/[\"]?([\w\\\\]+)\:\:__construct\(\): Argument' .
-    ' #[\d]+ \(\$(\w+)\) must be of type [\"]?([\w\\\\]+), [\"]?([\w\\\\]+) given/';
+    private const MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR = '/(.+)Argument .+' .
+    '\(\$(\w+)\) must be of type ([\w\\\\]+), ([\w\\\\]+) given/';
 
     private const MESSAGE_PATTERN_INPUT_DATA_MISFORMATTED = '/The input data is misformatted\./';
 
