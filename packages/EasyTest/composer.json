@@ -8,6 +8,7 @@
         "ext-simplexml": "*",
         "doctrine/collections": "^2.0",
         "eonx-com/easy-utils": "^5.4",
+        "fakerphp/faker": "^1.19.0",
         "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "phpunit/phpunit": "^10.2",
