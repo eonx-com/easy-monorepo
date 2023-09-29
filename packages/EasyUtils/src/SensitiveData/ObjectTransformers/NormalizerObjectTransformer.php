@@ -30,7 +30,7 @@ final class NormalizerObjectTransformer extends AbstractObjectTransformer implem
     {
         try {
             $normalized = $this->getNormalizer()
-->normalize($object);
+                ->normalize($object);
         } catch (Throwable) {
             return [];
         }
