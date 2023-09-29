@@ -64,7 +64,7 @@ final class EntityManagerStub
         ];
 
         $config = new Configuration();
-        $config->setProxyDir(__DIR__ . '/../var');
+        $config->setProxyDir(__DIR__ . '/../../var');
         $config->setProxyNamespace('Proxy');
 
         $config->setMetadataDriverImpl(new AttributeDriver([]));

@@ -34,9 +34,14 @@ abstract class AbstractTestCase extends TestCase
     {
         $fs = new Filesystem();
         $var = __DIR__ . '/../var';
+        $fixturesVar = __DIR__ . '/Fixtures/app/var';
 
         if ($fs->exists($var)) {
             $fs->remove($var);
+        }
+
+        if ($fs->exists($fixturesVar)) {
+            $fs->remove($fixturesVar);
         }
 
         parent::tearDown();

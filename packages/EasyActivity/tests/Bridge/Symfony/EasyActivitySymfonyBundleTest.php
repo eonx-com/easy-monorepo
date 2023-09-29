@@ -15,7 +15,6 @@ use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
-use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 {
@@ -136,17 +135,5 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         );
         self::assertTrue($container->has(DeferredEntityEventDispatcherInterface::class));
         self::assertEquals($subjects, $this->getPrivatePropertyValue($subjectResolver, 'subjects'));
-    }
-
-    protected function tearDown(): void
-    {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../../../var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
-
-        parent::tearDown();
     }
 }
