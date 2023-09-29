@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyLogging\Tests\Bridge\Symfony\Monolog\Handler;
+namespace EonX\EasyLogging\Tests\Bridge\Symfony\Monolog\Handlers;
 
 use Bugsnag\Client;
 use Bugsnag\Configuration;
 use DateTimeImmutable;
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Handler\BugsnagHandler;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagHandler;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolver;
 use EonX\EasyLogging\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Monolog\Formatter\LineFormatter;
 use Symfony\Component\DependencyInjection\Container;
@@ -18,7 +19,7 @@ final class BugsnagHandlerTest extends AbstractSymfonyTestCase
         $client = new Client(new Configuration('some-api-key'));
         $container = new Container();
         $container->set(Client::class, $client);
-        $sut = new BugsnagHandler();
+        $sut = new BugsnagHandler(new DefaultBugsnagSeverityResolver());
         $sut->setContainer($container);
         $sut->setFormatter(new LineFormatter('formatted'));
 
@@ -40,7 +41,7 @@ final class BugsnagHandlerTest extends AbstractSymfonyTestCase
         self::assertCount(1, $reports);
         /** @var \Bugsnag\Report $report */
         $report = $reports[0];
-        self::assertSame('info', $report->getSeverity());
+        self::assertSame('warning', $report->getSeverity());
         self::assertSame('message', $report->getName());
         self::assertSame('formatted', $report->getMessage());
     }

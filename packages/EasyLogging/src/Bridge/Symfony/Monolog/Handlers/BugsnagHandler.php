@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyLogging\Bridge\Symfony\Monolog\Handler;
+namespace EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers;
 
 use Bugsnag\Client;
 use Bugsnag\Report;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\SeverityAwareExceptionInterface;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
@@ -19,8 +19,11 @@ final class BugsnagHandler extends AbstractProcessingHandler implements ServiceS
     /**
      * @inheritdoc
      */
-    public function __construct($level = null, ?bool $bubble = null)
-    {
+    public function __construct(
+        private DefaultBugsnagSeverityResolverInterface $bugsnagSeverityResolver,
+        $level = null,
+        ?bool $bubble = null,
+    ) {
         parent::__construct($level ?? Logger::WARNING, $bubble ?? true);
     }
 
@@ -32,23 +35,15 @@ final class BugsnagHandler extends AbstractProcessingHandler implements ServiceS
 
     protected function write(array $record): void
     {
+        $severity = $this->bugsnagSeverityResolver->resolve((int)$record['level']);
         $this->getBugsnagClient()
             ->notifyError(
                 (string)$record['message'],
                 (string)$record['formatted'],
-                static function (Report $report) use ($record): void {
-                    $report->setSeverity(self::mapMonologSeverityToBugsnagSeverity((int)$record['level']));
+                static function (Report $report) use ($record, $severity): void {
+                    $report->setSeverity($severity);
                     $report->setMetaData(['context' => $record['context'], 'extra' => $record['extra']]);
                 }
             );
-    }
-
-    private static function mapMonologSeverityToBugsnagSeverity(int $level): string
-    {
-        return match (true) {
-            $level >= Logger::CRITICAL => SeverityAwareExceptionInterface::SEVERITY_ERROR,
-            $level >= Logger::ERROR => SeverityAwareExceptionInterface::SEVERITY_WARNING,
-            default => SeverityAwareExceptionInterface::SEVERITY_INFO
-        };
     }
 }
