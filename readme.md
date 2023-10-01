@@ -59,15 +59,17 @@ you can look [there][1].
 
 ### Release New Version
 
-The release of a new version MUST be done from the `master` branch.
+The release of a new version MUST be done from the `4.х` branch.
 
 ```bash
 # 1. Make sure to pull the latest version of master in your local copy of the repository
-$ git checkout master && git pull
+$ git checkout 4.х && git pull
 
 # Release the new version
 # Split new version to each package
-$ composer release vX.X.X
+$ make release version=4.X.X
 ```
+_Note for MacOS users: you should update the `make` utility to 4.0 or higher.
+Do not forget to export new path in `.bashrc` or `.zshrc` file._
 
 [1]: https://en.wikipedia.org/wiki/Monorepo
