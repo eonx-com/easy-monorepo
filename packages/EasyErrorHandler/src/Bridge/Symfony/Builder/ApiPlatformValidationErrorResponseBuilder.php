@@ -49,6 +49,8 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     private const VALUE_NULL = 'NULL';
 
+    private const VIOLATION_PATTERN_INVALID_IRI_ERROR = 'This value should be %s IRI.';
+
     private const VIOLATION_PATTERN_TYPE_ERROR = 'The type of the value should be "%s", "%s" given.';
 
     private const VIOLATION_VALUE_SHOULD_BE_IRI = 'This value should be an IRI.';
@@ -202,11 +204,12 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         if ($throwable instanceof TypeError) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR, $throwable->getMessage(), $matches);
+            $explodedIri = \explode('\\', $matches[3]);
             $data[$violationsKey] = [
                 $matches[2] => [
                     $matches[4] === self::VALUE_NULL
                         ? (new NotNull())->message
-                        : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[3], $matches[4]),
+                        : \sprintf(self::VIOLATION_PATTERN_INVALID_IRI_ERROR, \end($explodedIri)),
                 ],
             ];
         }
