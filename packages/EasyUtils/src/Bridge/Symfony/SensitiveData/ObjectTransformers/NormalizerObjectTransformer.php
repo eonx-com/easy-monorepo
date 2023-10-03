@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\SensitiveData\ObjectTransformers;
+namespace EonX\EasyUtils\Bridge\Symfony\SensitiveData\ObjectTransformers;
 
 use DateTimeInterface;
+use EonX\EasyUtils\SensitiveData\ObjectTransformers\AbstractObjectTransformer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Uid\AbstractUid;
 use Symfony\Contracts\Service\Attribute\SubscribedService;

@@ -19,6 +19,7 @@ $ composer require eonx-com/easy-utils
 
 - `CollectorHelper`: provides methods to facilitate implementation of the [Collector Design Pattern][2]
 - `Math`: provides methods to facilitate numbers manipulation
+- `SensitiveDataSanitizer`: helps you sanitize sensitive data
 
 ## CollectorHelper
 
@@ -264,6 +265,28 @@ The Math helper provides the following methods:
 - `multiply:` multiplies one number by the other and returns the result
 - `round:` rounds the given number and returns the result
 - `sub:` subs tow numbers and returns the result
+
+## SensitiveDataSanitizer
+
+There are two types of object transformers:
+
+- `EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer`: this is the default object transformer
+  that simply transforms the given object to an array using json_encode/json_decode hack. It will not transform private
+  properties of given object
+- `EonX\EasyUtils\SensitiveData\ObjectTransformers\NormalizerObjectTransformer`: this object transformer uses Symfony's
+  Serializer component to transform given object to array. It will transform private properties of given object
+
+By default `DefaultObjectTransformer` has higher priority (10000) than `NormalizerObjectTransformer` (20000).
+If you want to change the priority of object transformers, you should set it in your DI configuration.
+For example:
+
+```php
+$services
+    ->set(NormalizerObjectTransformer::class)
+    ->arg('$priority', 100);
+```
+
+To set priority of object transformers, you can use `EonX\EasyUtils\SensitiveData\ObjectTransformerPriorities` class.
 
 [1]: https://getcomposer.org/
 

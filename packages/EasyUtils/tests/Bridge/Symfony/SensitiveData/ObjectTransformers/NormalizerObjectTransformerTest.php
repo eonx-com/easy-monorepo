@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyUtils\Tests\SensitiveData\ObjectTransformer;
+namespace EonX\EasyUtils\Tests\Bridge\Symfony\SensitiveData\ObjectTransformers;
+
 
 use DateTime;
-use EonX\EasyUtils\SensitiveData\ObjectTransformers\NormalizerObjectTransformer;
+use EonX\EasyUtils\Bridge\Symfony\SensitiveData\ObjectTransformers\NormalizerObjectTransformer;
 use EonX\EasyUtils\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
