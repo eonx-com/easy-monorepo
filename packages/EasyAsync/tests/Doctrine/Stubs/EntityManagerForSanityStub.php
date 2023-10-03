@@ -14,7 +14,8 @@ use Doctrine\Persistence\Mapping\Driver\StaticPHPDriver;
 final class EntityManagerForSanityStub extends EntityManagerDecorator
 {
     public function __construct(
-        private bool $isOpen,
+        private readonly bool $isOpen,
+        ?string $connectionClass = null,
     ) {
         $config = new Configuration();
         $config->setMetadataDriverImpl(new StaticPHPDriver([]));
@@ -23,8 +24,12 @@ final class EntityManagerForSanityStub extends EntityManagerDecorator
 
         $eventManager = new EventManager();
 
+        $connectionClass ??= Connection::class;
+        /** @var \Doctrine\DBAL\Connection $conn */
+        $conn = new $connectionClass([], new Driver(), null, $eventManager);
+
         parent::__construct(
-            EntityManager::create(new Connection([], new Driver(), null, $eventManager), $config, $eventManager)
+            EntityManager::create($conn, $config, $eventManager)
         );
     }
 

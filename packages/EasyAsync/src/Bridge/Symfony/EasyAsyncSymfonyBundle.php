@@ -42,13 +42,23 @@ final class EasyAsyncSymfonyBundle extends AbstractBundle
         $container->parameters()
             ->set(
                 BridgeConstantsInterface::PARAM_MESSENGER_MIDDLEWARE_AUTO_REGISTER,
-                $this->config['messenger_middleware_auto_register'] ?? true
+                $config['messenger_middleware_auto_register'] ?? true
             );
 
         $container->import(__DIR__ . '/Resources/config/messenger.php');
 
-        if (\interface_exists(EntityManagerInterface::class)) {
+        if (($config['doctrine']['enabled'] ?? true) && \interface_exists(EntityManagerInterface::class)) {
             $container->import(__DIR__ . '/Resources/config/messenger_doctrine.php');
+
+            if ($config['doctrine']['close_persistent_connections'] ?? true) {
+                $container->parameters()
+                    ->set(
+                        BridgeConstantsInterface::PARAM_DOCTRINE_PERSISTENT_CONNECTIONS_MAX_IDLE_TIME,
+                        $config['doctrine']['persistent_connections_max_idle_time'] ?? 10.0
+                    );
+
+                $container->import(__DIR__ . '/Resources/config/doctrine_persistent_connections.php');
+            }
         }
 
         // Stop Worker On Messages

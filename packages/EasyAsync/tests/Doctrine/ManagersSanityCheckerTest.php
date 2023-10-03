@@ -10,6 +10,7 @@ use EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException;
 use EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException;
 use EonX\EasyAsync\Doctrine\ManagersSanityChecker;
 use EonX\EasyAsync\Tests\AbstractStoreTestCase;
+use EonX\EasyAsync\Tests\Doctrine\Stubs\ConnectionStub;
 use EonX\EasyAsync\Tests\Doctrine\Stubs\EntityManagerForSanityStub;
 use EonX\EasyAsync\Tests\Doctrine\Stubs\ManagerRegistryStub;
 
@@ -31,7 +32,7 @@ final class ManagersSanityCheckerTest extends AbstractStoreTestCase
         $this->expectException(DoctrineConnectionNotOkException::class);
 
         $registry = new ManagerRegistryStub([
-            'default' => new EntityManagerForSanityStub(true),
+            'default' => new EntityManagerForSanityStub(true, ConnectionStub::class),
         ]);
 
         (new ManagersSanityChecker($registry))->checkSanity();

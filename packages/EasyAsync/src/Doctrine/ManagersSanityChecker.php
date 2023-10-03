@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Doctrine;
 
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException;
@@ -58,9 +59,23 @@ final class ManagersSanityChecker
             throw new DoctrineManagerClosedException(\sprintf('Manager "%s" closed', $name));
         }
 
+        $conn = $entityManager->getConnection();
+
+        // No need to check connection if not connected
+        if ($conn->isConnected() === false) {
+            return;
+        }
+
+        // Ensure connection is using replica before each message because if app is setting
+        // keepReplica: true, the connection will stay connected to the last one used which could be the primary
+        // In most cases, applications will first read data from the database before writing, so it makes sense
+        // to ensure it uses replica
+        if ($conn instanceof PrimaryReadReplicaConnection) {
+            $conn->ensureConnectedToReplica();
+        }
+
         // Check connection ok
         try {
-            $conn = $entityManager->getConnection();
             $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());
         } catch (Throwable $throwable) {
             throw new DoctrineConnectionNotOkException(
