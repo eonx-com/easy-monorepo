@@ -58,7 +58,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
      */
     public function delete(object|array $object): void
     {
-        $this->callManagerMethodForObjects('delete', $object);
+        $this->callManagerMethodForObjects('remove', $object);
     }
 
     public function find(int|string $identifier): ?object
