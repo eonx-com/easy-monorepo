@@ -273,7 +273,7 @@ There are two types of object transformers:
 - `EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer`: this is the default object transformer
   that simply transforms the given object to an array using json_encode/json_decode hack. It will not transform private
   properties of given object
-- `EonX\EasyUtils\SensitiveData\ObjectTransformers\NormalizerObjectTransformer`: this object transformer uses Symfony's
+- `EonX\EasyUtils\Bridge\Symfony\SensitiveData\ObjectTransformers\NormalizerObjectTransformer`: this object transformer uses Symfony's
   Serializer component to transform given object to array. It will transform private properties of given object
 
 By default `DefaultObjectTransformer` has higher priority (10000) than `NormalizerObjectTransformer` (20000).
