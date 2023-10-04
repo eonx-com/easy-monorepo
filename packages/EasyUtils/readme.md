@@ -276,8 +276,9 @@ There are two types of object transformers:
 - `EonX\EasyUtils\Bridge\Symfony\SensitiveData\ObjectTransformers\NormalizerObjectTransformer`: this object transformer uses Symfony's
   Serializer component to transform given object to array. It will transform private properties of given object
 
-By default `DefaultObjectTransformer` has higher priority (10000) than `NormalizerObjectTransformer` (20000).
-If you want to change the priority of object transformers, you should set it in your DI configuration.
+By default, the `DefaultObjectTransformer` is used, and it has priority 10000
+If you want to use `NormalizerObjectTransformer` or change the priority of object transformers, you should set it in your DI configuration.
+Transformer with the lowest priority will be used first
 For example:
 
 ```php

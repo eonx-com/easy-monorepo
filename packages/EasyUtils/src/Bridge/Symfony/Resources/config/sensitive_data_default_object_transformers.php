@@ -15,8 +15,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(DefaultObjectTransformer::class)
         ->arg('$priority', 10000);
-
-    $services
-        ->set(NormalizerObjectTransformer::class)
-        ->arg('$priority', 20000);
 };
