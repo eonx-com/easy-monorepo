@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto;
 use PHPUnit\Framework\Attributes\DataProvider;
+use RuntimeException;
 
 abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
@@ -504,7 +505,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     public function testSanitizeException(array $keysToMask, string $message, string $expectedMessage): void
     {
         $sanitizer = $this->getSanitizer($keysToMask);
-        $exception = new \RuntimeException($message);
+        $exception = new RuntimeException($message);
 
         $sanitizedException = $sanitizer->sanitize($exception);
 
