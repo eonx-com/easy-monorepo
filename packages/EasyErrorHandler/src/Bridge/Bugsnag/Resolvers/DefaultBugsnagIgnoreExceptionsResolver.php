@@ -4,28 +4,20 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
+use EonX\EasyErrorHandler\Bridge\Symfony\Provider\ApiPlatformErrorResponseBuilderProvider;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExceptionsResolverInterface
 {
-    private readonly bool $ignoreValidationErrors;
-
-    /**
-     * @var class-string[]
-     */
-    private readonly array $ignoredExceptions;
-
     /**
      * @param class-string[] $ignoredExceptions
      */
     public function __construct(
-        ?array $ignoredExceptions = null,
-        ?bool $ignoreValidationErrors = null,
+        private readonly array $ignoredExceptions = [HttpExceptionInterface::class, RequestExceptionInterface::class],
+        private readonly bool $ignoreApiPlatformBuilderErrors = true,
+        private readonly ?ApiPlatformErrorResponseBuilderProvider $apiPlatformErrorResponseBuilderProvider = null,
     ) {
-        $this->ignoredExceptions = $ignoredExceptions ?? [HttpExceptionInterface::class];
-        $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;
     }
 
     public function shouldIgnore(Throwable $throwable): bool
@@ -36,8 +28,15 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
             }
         }
 
-        if ($this->ignoreValidationErrors) {
-            return ApiPlatformValidationErrorResponseBuilder::supports($throwable);
+        if (
+            $this->ignoreApiPlatformBuilderErrors
+            && $this->apiPlatformErrorResponseBuilderProvider instanceof ApiPlatformErrorResponseBuilderProvider
+        ) {
+            foreach ($this->apiPlatformErrorResponseBuilderProvider->getBuilders() as $builder) {
+                if ($builder->supports($throwable)) {
+                    return true;
+                }
+            }
         }
 
         return false;

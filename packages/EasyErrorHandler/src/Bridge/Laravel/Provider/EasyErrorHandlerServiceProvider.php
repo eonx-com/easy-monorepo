@@ -160,7 +160,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(
             BugsnagIgnoreExceptionsResolverInterface::class,
             static fn (): BugsnagIgnoreExceptionsResolverInterface => new DefaultBugsnagIgnoreExceptionsResolver(
-                \config('easy-error-handler.bugsnag_ignored_exceptions'),
+                \config('easy-error-handler.bugsnag_ignored_exceptions', []),
                 false
             )
         );

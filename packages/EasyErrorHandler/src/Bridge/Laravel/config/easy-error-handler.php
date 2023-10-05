@@ -35,7 +35,7 @@ return [
     /**
      * List of Ignored Exceptions that'll not be reported to bugsnag.
      */
-    'bugsnag_ignored_exceptions' => null,
+    'bugsnag_ignored_exceptions' => [],
 
     /**
      * List of Ignored Exceptions that'll not be reported to any reporter.

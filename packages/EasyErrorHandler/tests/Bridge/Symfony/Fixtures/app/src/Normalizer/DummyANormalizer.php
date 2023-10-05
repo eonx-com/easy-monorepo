@@ -11,8 +11,8 @@ final class DummyANormalizer implements DenormalizerInterface
 {
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
     {
-        throw new UnexpectedValueException('This exception will be handled by API Platform error builders, ' .
-            'but default error will be shown.');
+        throw new UnexpectedValueException('This exception will NOT be handled by API Platform error' .
+            ' builders, because its message is not supported by them.');
     }
 
     public function getSupportedTypes(?string $format): array

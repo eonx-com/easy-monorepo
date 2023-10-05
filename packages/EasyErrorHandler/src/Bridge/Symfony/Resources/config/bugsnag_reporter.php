@@ -10,6 +10,7 @@ use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\UnhandledClientConfigurat
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Providers\BugsnagErrorReporterProvider;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
+use EonX\EasyErrorHandler\Bridge\Symfony\Provider\ApiPlatformErrorResponseBuilderProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -22,7 +23,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(BugsnagIgnoreExceptionsResolverInterface::class, DefaultBugsnagIgnoreExceptionsResolver::class)
         ->arg('$ignoredExceptions', param(BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS))
-        ->arg('$ignoreValidationErrors', param(BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_VALIDATION_ERRORS));
+        ->arg(
+            '$ignoreApiPlatformBuilderErrors',
+            param(BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_API_PLATFORM_BUILDER_ERRORS)
+        )
+        ->arg(
+            '$apiPlatformErrorResponseBuilderProvider',
+            service(ApiPlatformErrorResponseBuilderProvider::class)->nullOnInvalid()
+        );
 
     $services->set(ErrorDetailsClientConfigurator::class);
 

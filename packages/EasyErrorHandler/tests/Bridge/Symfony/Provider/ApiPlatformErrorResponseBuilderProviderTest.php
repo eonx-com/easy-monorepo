@@ -103,7 +103,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
             ],
             'violations' => [
                 'pageCount' => [
-                    'This value should not be null.',
+                    'The type of the value should be "int", "null" given.',
                 ],
             ],
             'exceptionMessage' => 'The type of the "pageCount" attribute must be "int", "NULL" given.',
@@ -235,32 +235,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\ApiResource\\PrintingHouse, ' .
                 'EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\ApiResource\\PublishingHouse given',
         ];
-    }
 
-    /**
-     * @see testDoNotBuildErrorResponse
-     * @see testDoNotBuildExtendedErrorResponse
-     */
-    public static function provideDataForDoNotBuildErrorResponse(): iterable
-    {
-        yield 'exception not supported by builders' => [
-            'url' => '/dummies',
-            'json' => [
-                'dummyB' => 'some string',
-            ],
-            'exceptionClass' => DummyBException::class,
-            'exceptionMessage' => 'This exception will NOT be handled by API Platform error builders',
-        ];
-
-        yield 'exception throw outside API Platform denormalizer' => [
-            'url' => '/dummy-action',
-            'json' => [],
-            'exceptionClass' => NotNormalizableValueException::class,
-            'exceptionMessage' => 'Exception supported by API Platform Builders, but thrown ' .
-                'outside API Platform denormalization logic.',
-        ];
-
-        // @todo Cases below should be supported by API Platform error builders
         yield 'date is empty string' => [
             'url' => '/books',
             'json' => [
@@ -269,7 +244,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'publishedAt' => '',
                 'printingHouse' => '/printing-houses/1',
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'publishedAt' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
             'exceptionMessage' => 'The data is either not an string, an empty string, or null; you should pass a' .
                 ' string that can be parsed with the passed format or a valid DateTime string.',
         ];
@@ -282,7 +261,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'publishedAt' => null,
                 'printingHouse' => '/printing-houses/1',
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'publishedAt' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
             'exceptionMessage' => 'The data is either not an string, an empty string, or null; you should pass a' .
                 ' string that can be parsed with the passed format or a valid DateTime string.',
         ];
@@ -295,7 +278,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'publishedAt' => 'some invalid date',
                 'printingHouse' => '/printing-houses/1',
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'publishedAt' => [
+                    'Some custom violation message for datetime parsing error.',
+                ],
+            ],
             'exceptionMessage' => 'Failed to parse time string (some invalid date) at position 0 (s):' .
                 ' The timezone could not be found in the database',
         ];
@@ -311,7 +298,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                     'age' => 'some string',
                 ],
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'author.age' => [
+                    'The type of the value should be "int", "string" given.',
+                ],
+            ],
             'exceptionMessage' => 'The type of the "age" attribute for class ' .
                 '"EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\DataTransferObject\\Author"' .
                 ' must be one of "int" ("string" given).',
@@ -326,7 +317,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'category' => 123,
                 'printingHouse' => '/printing-houses/1',
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'category' => [
+                    'The type of the value should be "array|string", "int" given.',
+                ],
+            ],
             'exceptionMessage' => 'The type of the "category" attribute must be "array" (nested document) or "string"' .
                 ' (IRI), "integer" given.',
         ];
@@ -339,7 +334,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'weight' => 11,
                 'printingHouse' => null,
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'printingHouse' => [
+                    'The type of the value should be "array|string", "null" given.',
+                ],
+            ],
             'exceptionMessage' => 'The type of the "printingHouse" attribute must be "array" (nested document)' .
                 ' or "string" (IRI), "NULL" given.',
         ];
@@ -356,18 +355,46 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 ],
                 'printingHouse' => '/printing-houses/1',
             ],
-            'exceptionClass' => NotNormalizableValueException::class,
+            'violations' => [
+                'category' => [
+                    'This value should be an IRI.',
+                ],
+            ],
             'exceptionMessage' => 'Nested documents for attribute "category" are not allowed. Use IRIs instead.',
         ];
+    }
 
-        yield 'default error when supported exception and unknown exception message' => [
+    /**
+     * @see testDoNotBuildErrorResponse
+     * @see testDoNotBuildExtendedErrorResponse
+     */
+    public static function provideDataForDoNotBuildErrorResponse(): iterable
+    {
+        yield 'supported exception and unknown exception message' => [
             'url' => '/dummies',
             'json' => [
                 'dummyA' => 'some string',
             ],
             'exceptionClass' => UnexpectedValueException::class,
-            'exceptionMessage' => 'This exception will be handled by API Platform error builders,' .
-                ' but default error will be shown.',
+            'exceptionMessage' => 'This exception will NOT be handled by API Platform error builders,' .
+                ' because it message is not supported by them.',
+        ];
+
+        yield 'exception not supported by builders' => [
+            'url' => '/dummies',
+            'json' => [
+                'dummyB' => 'some string',
+            ],
+            'exceptionClass' => DummyBException::class,
+            'exceptionMessage' => 'This exception will NOT be handled by API Platform error builders.',
+        ];
+
+        yield 'exception throw outside API Platform denormalizer' => [
+            'url' => '/dummy-action',
+            'json' => [],
+            'exceptionClass' => NotNormalizableValueException::class,
+            'exceptionMessage' => 'Exception supported by API Platform Builders, but thrown ' .
+                'outside API Platform denormalization logic.',
         ];
     }
 

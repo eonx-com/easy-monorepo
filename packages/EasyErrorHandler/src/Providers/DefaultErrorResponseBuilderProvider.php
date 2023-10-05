@@ -20,14 +20,11 @@ final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderP
 {
     private const KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
 
-    private readonly array $keys;
-
     public function __construct(
         private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
         private readonly TranslatorInterface $translator,
-        ?array $keys = null,
+        private readonly array $keys,
     ) {
-        $this->keys = $keys ?? [];
     }
 
     /**

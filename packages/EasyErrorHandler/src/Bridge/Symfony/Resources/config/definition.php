@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ApiPlatformErrorResponseBuilderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -20,9 +21,43 @@ return static function (DefinitionConfigurator $definition) {
                 ->beforeNormalization()->castToArray()->end()
                 ->scalarPrototype()->end()
             ->end()
-            ->booleanNode('bugsnag_ignore_validation_errors')->defaultTrue()->end()
-            ->booleanNode('transform_validation_errors')->defaultTrue()->end()
+            ->booleanNode('bugsnag_ignore_validation_errors')
+                ->setDeprecated(
+                    'eonx-com/easy-error-handler',
+                    '5.8',
+                    'This option is deprecated and will be removed in 6.0.' .
+                    ' Use "bugsnag_ignore_api_platform_builder_errors" instead.'
+                )
+                ->defaultTrue()
+            ->end()
+            ->booleanNode('bugsnag_ignore_api_platform_builder_errors')
+                ->info('If true, errors handled by ' . ApiPlatformErrorResponseBuilderInterface::class
+                    . ' will be ignored')
+                ->defaultTrue()
+            ->end()
+            ->booleanNode('transform_validation_errors')
+                ->setDeprecated(
+                    'eonx-com/easy-error-handler',
+                    '5.8',
+                    'This option is deprecated and will be removed in 6.0.' .
+                    ' Use "use_api_platform_builders" instead.'
+                )
+                ->defaultTrue()
+            ->end()
+            ->booleanNode('use_api_platform_builders')->defaultTrue()->end()
+            ->arrayNode('api_platform_custom_serializer_exceptions')
+                ->info('Custom serializer exceptions to be handled by '
+                    . ApiPlatformErrorResponseBuilderInterface::class)
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('class')->isRequired()->end()
+                        ->scalarNode('message_pattern')->isRequired()->end()
+                        ->scalarNode('violation_message')->isRequired()->end()
+                    ->end()
+                ->end()
+            ->end()
             ->arrayNode('logger_exception_log_levels')
+                ->useAttributeAsKey('class')
                 ->beforeNormalization()->castToArray()->end()
                 ->integerPrototype()->end()
             ->end()
@@ -36,7 +71,15 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             ->booleanNode('report_retryable_exception_attempts')->defaultFalse()->end()
             ->booleanNode('verbose')->defaultFalse()->end()
-            ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
+            ->booleanNode('override_api_platform_listener')
+                ->setDeprecated(
+                    'eonx-com/easy-error-handler',
+                    '5.8',
+                    'This option is deprecated and will be removed in 6.0.' .
+                    ' Use "use_api_platform_builders" instead.'
+                )
+                ->defaultTrue()
+            ->end()
             ->booleanNode('use_default_builders')->defaultTrue()->end()
             ->booleanNode('use_default_reporters')->defaultTrue()->end()
             ->scalarNode('translation_domain')->defaultValue('messages')->end()
