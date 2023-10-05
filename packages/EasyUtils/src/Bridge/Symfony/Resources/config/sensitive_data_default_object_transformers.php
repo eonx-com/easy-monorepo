@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer;
-use EonX\EasyUtils\SensitiveData\ObjectTransformers\ExceptionObjectTransformer;
+use EonX\EasyUtils\SensitiveData\ObjectTransformers\ThrowableObjectTransformer;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -13,7 +13,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services
-        ->set(ExceptionObjectTransformer::class)
+        ->set(ThrowableObjectTransformer::class)
         ->arg('$priority', 100);
 
     $services

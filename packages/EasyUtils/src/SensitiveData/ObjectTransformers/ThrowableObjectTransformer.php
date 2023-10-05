@@ -6,7 +6,7 @@ namespace EonX\EasyUtils\SensitiveData\ObjectTransformers;
 use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
 use Throwable;
 
-final class ExceptionObjectTransformer extends AbstractObjectTransformer
+final class ThrowableObjectTransformer extends AbstractObjectTransformer
 {
     public function supports(object $object): bool
     {
