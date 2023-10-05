@@ -467,6 +467,25 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         ];
     }
 
+    public static function providerTestSanitizeException(): iterable
+    {
+        yield 'Mask value if key explicitly provided' => [
+            'keysToMask' => ['message'],
+            'message' => 'This is a test message',
+            'expectedMessage' => '*REDACTED*',
+        ];
+        yield 'Mask key in JSON' => [
+            'keysToMask' => ['keyToMask'],
+            'message' => '{"keyToMask":"This is a test message"}',
+            'expectedMessage' => '{"keyToMask":"*REDACTED*"}',
+        ];
+        yield 'Mask card number' => [
+            'keysToMask' => ['card'],
+            'message' => 'This is a test message with card number 4242 4242 4242 4242',
+            'expectedMessage' => 'This is a test message with card number 424242*REDACTED*4242',
+        ];
+    }
+
     /**
      * @param string[]|null $keysToMask
      */
@@ -476,6 +495,20 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         $sanitizer = $this->getSanitizer($keysToMask);
 
         self::assertEquals($expectedOutput, $sanitizer->sanitize($input));
+    }
+
+    /**
+     * @param string[] $keysToMask
+     */
+    #[DataProvider('providerTestSanitizeException')]
+    public function testSanitizeException(array $keysToMask, string $message, string $expectedMessage): void
+    {
+        $sanitizer = $this->getSanitizer($keysToMask);
+        $exception = new \RuntimeException($message);
+
+        $sanitizedException = $sanitizer->sanitize($exception);
+
+        self::assertSame($expectedMessage, $sanitizedException['message']);
     }
 
     abstract protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface;
