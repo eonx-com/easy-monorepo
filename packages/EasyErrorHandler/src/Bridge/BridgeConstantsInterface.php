@@ -27,6 +27,8 @@ interface BridgeConstantsInterface
 
     public const PARAM_OVERRIDE_API_PLATFORM_LISTENER = 'easy_error_handler.param_override_api_platform_listener';
 
+    public const PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS = 'easy_error_handler.param_report_retryable_exception_attempts';
+
     public const PARAM_RESPONSE_KEYS = 'easy_error_handler.param_response_keys';
 
     public const PARAM_TRANSFORM_VALIDATION_ERRORS = 'easy_error_handler.param_transform_validation_errors';

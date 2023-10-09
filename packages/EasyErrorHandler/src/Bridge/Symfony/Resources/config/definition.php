@@ -34,6 +34,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->beforeNormalization()->castToArray()->end()
                 ->scalarPrototype()->end()
             ->end()
+            ->booleanNode('report_retryable_exception_attempts')->defaultFalse()->end()
             ->booleanNode('verbose')->defaultFalse()->end()
             ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
             ->booleanNode('use_default_builders')->defaultTrue()->end()

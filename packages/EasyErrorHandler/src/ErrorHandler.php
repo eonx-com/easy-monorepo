@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
 
+use EonX\EasyErrorHandler\Exceptions\RetryableException;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface;
@@ -37,6 +38,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
      */
     private array $reporters;
 
+    private bool $reportRetryableExceptionAttempts;
+
     /**
      * @param class-string[]|null $ignoredExceptionsForReport
      */
@@ -46,10 +49,12 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         iterable $reporterProviders,
         private readonly VerboseStrategyInterface $verboseStrategy,
         ?array $ignoredExceptionsForReport = null,
+        ?bool $reportRetryableExceptionAttempts = null,
     ) {
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
         $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
+        $this->reportRetryableExceptionAttempts = $reportRetryableExceptionAttempts ?? false;
     }
 
     /**
@@ -91,6 +96,14 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
     public function report(Throwable $throwable): void
     {
+        if ($throwable instanceof RetryableException) {
+            if ($throwable->willRetry() && $this->reportRetryableExceptionAttempts === false) {
+                return;
+            }
+
+            $throwable = $throwable->getPrevious();
+        }
+
         // Symfony Messenger HandlerFailedException
         if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
             foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
@@ -105,9 +118,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             && $throwable instanceof UnrecoverableMessageHandlingException
             && $throwable->getPrevious() instanceof Throwable
         ) {
-            $this->report($throwable->getPrevious());
-
-            return;
+            $throwable = $throwable->getPrevious();
         }
 
         foreach ($this->ignoredExceptionsForReport as $class) {

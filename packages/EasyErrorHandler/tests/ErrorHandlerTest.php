@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests;
 
 use EonX\EasyErrorHandler\ErrorHandler;
+use EonX\EasyErrorHandler\Exceptions\RetryableException;
 use EonX\EasyErrorHandler\Providers\FromIterableErrorReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
@@ -49,11 +50,38 @@ final class ErrorHandlerTest extends AbstractTestCase
                 self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[1]);
             },
         ];
+
+        yield 'Retryable Exception attempt not reported' => [
+            'throwable' => RetryableException::fromThrowable(new Exception(), true),
+            'assertions' => static function (ErrorReporterStub $reporter): void {
+                self::assertCount(0, $reporter->getReportedErrors());
+            },
+        ];
+
+        yield 'Retryable Exception reported as it will not retry' => [
+            'throwable' => RetryableException::fromThrowable(new Exception(), false),
+            'assertions' => static function (ErrorReporterStub $reporter): void {
+                self::assertCount(1, $reporter->getReportedErrors());
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
+            },
+        ];
+
+        yield 'Retryable Exception attempt reported as configured' => [
+            'throwable' => RetryableException::fromThrowable(new Exception(), true),
+            'assertions' => static function (ErrorReporterStub $reporter): void {
+                self::assertCount(1, $reporter->getReportedErrors());
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
+            },
+            'reportRetryableExceptionAttempts' => true
+        ];
     }
 
     #[DataProvider('providerTestReport')]
-    public function testReport(Throwable $throwable, callable $assertions): void
-    {
+    public function testReport(
+        Throwable $throwable,
+        callable $assertions,
+        ?bool $reportRetryableExceptionAttempts = null
+    ): void {
         $reporter = new ErrorReporterStub();
         $reporterProviders = [new FromIterableErrorReporterProvider([$reporter])];
         $verboseStrategy = new ChainVerboseStrategy([], false);
@@ -61,7 +89,8 @@ final class ErrorHandlerTest extends AbstractTestCase
             new ErrorResponseFactory(),
             [],
             $reporterProviders,
-            $verboseStrategy
+            $verboseStrategy,
+            reportRetryableExceptionAttempts: $reportRetryableExceptionAttempts
         );
 
         $errorHandler->report($throwable);
