@@ -142,7 +142,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         $entityObjectId = \spl_object_id($entity);
         $this->updatedEntities[$entityObjectId] = $entity;
-        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = \array_merge(
+        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $this->mergeChangeSet(
             $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] ?? [],
             $entityChangeSet
         );
@@ -216,12 +216,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     private function createEntityEvent(int $entityObjectId, array $entityChangeSet): EntityActionEventInterface
     {
         if (isset($this->createdEntities[$entityObjectId]) !== false) {
-            $clearedChangeSet = \array_map(
-                static fn (array $attributeChangeSet): array => [null, $attributeChangeSet[1] ?? null],
-                $entityChangeSet
-            );
-
-            return new EntityCreatedEvent($this->createdEntities[$entityObjectId], $clearedChangeSet);
+            return new EntityCreatedEvent($this->createdEntities[$entityObjectId], $entityChangeSet);
         }
 
         if (isset($this->updatedEntities[$entityObjectId]) !== false) {
