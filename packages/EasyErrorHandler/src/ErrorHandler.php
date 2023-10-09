@@ -33,12 +33,12 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
      */
     private readonly array $ignoredExceptionsForReport;
 
+    private bool $reportRetryableExceptionAttempts;
+
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
      */
     private array $reporters;
-
-    private bool $reportRetryableExceptionAttempts;
 
     /**
      * @param class-string[]|null $ignoredExceptionsForReport
@@ -120,6 +120,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         ) {
             $throwable = $throwable->getPrevious();
         }
+
+        /** @var \Throwable $throwable */
 
         foreach ($this->ignoredExceptionsForReport as $class) {
             if (\is_a($throwable, $class)) {

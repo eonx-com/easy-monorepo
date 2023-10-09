@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Exceptions;
@@ -9,8 +8,10 @@ use Throwable;
 
 final class RetryableException extends Exception
 {
-    public function __construct(Throwable $previous, private readonly bool $willRetry)
-    {
+    public function __construct(
+        Throwable $previous,
+        private readonly bool $willRetry
+    ) {
         parent::__construct(previous: $previous);
     }
 

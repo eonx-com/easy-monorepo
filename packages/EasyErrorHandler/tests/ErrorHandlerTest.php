@@ -72,7 +72,7 @@ final class ErrorHandlerTest extends AbstractTestCase
                 self::assertCount(1, $reporter->getReportedErrors());
                 self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
-            'reportRetryableExceptionAttempts' => true
+            'reportRetryableExceptionAttempts' => true,
         ];
     }
 
@@ -80,7 +80,7 @@ final class ErrorHandlerTest extends AbstractTestCase
     public function testReport(
         Throwable $throwable,
         callable $assertions,
-        ?bool $reportRetryableExceptionAttempts = null
+        ?bool $reportRetryableExceptionAttempts = null,
     ): void {
         $reporter = new ErrorReporterStub();
         $reporterProviders = [new FromIterableErrorReporterProvider([$reporter])];
