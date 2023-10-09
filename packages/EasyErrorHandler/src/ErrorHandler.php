@@ -121,7 +121,10 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             $throwable = $throwable->getPrevious();
         }
 
-        /** @var \Throwable $throwable */
+        // Sanity check because getPrevious() signature can return null
+        if ($throwable instanceof Throwable === false) {
+            return;
+        }
 
         foreach ($this->ignoredExceptionsForReport as $class) {
             if (\is_a($throwable, $class)) {

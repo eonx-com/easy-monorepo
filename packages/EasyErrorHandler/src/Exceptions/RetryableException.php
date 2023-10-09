@@ -10,7 +10,7 @@ final class RetryableException extends Exception
 {
     public function __construct(
         Throwable $previous,
-        private readonly bool $willRetry
+        private readonly bool $willRetry,
     ) {
         parent::__construct(previous: $previous);
     }
