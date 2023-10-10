@@ -129,7 +129,7 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         self::assertCount(1, $events);
     }
 
-    public function testEventsAreDispatchedWhenExceptionIsThrownAndCatched(): void
+    public function testEventsAreDispatchedWhenExceptionIsThrownAndCaught(): void
     {
         $eventDispatcher = new EventDispatcherStub();
         $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
@@ -458,12 +458,12 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         $this->safeCall(function () use ($entityManager): void {
             $product = new Product();
 
-            $entityManager->transactional(function () use ($entityManager, $product): void {
+            $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
                 $product->setName('Description 1');
                 $product->setPrice(new Price('1000', 'USD'));
                 $entityManager->persist($product);
                 $entityManager->flush();
-                $entityManager->transactional(function () use ($entityManager, $product): never {
+                $entityManager->wrapInTransaction(function () use ($entityManager, $product): never {
                     $product->setPrice(new Price('2000', 'USD'));
                     $entityManager->persist($product);
                     $entityManager->flush();
@@ -657,11 +657,11 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         /** @var \EonX\EasyDoctrine\Tests\Fixtures\Product $product */
         $product = $entityManager->getRepository(Product::class)->find(1);
 
-        $entityManager->transactional(function () use ($entityManager, $product): void {
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
             $product->setPrice(new Price('2000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
-            $entityManager->transactional(function () use ($entityManager, $product): void {
+            $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
                 $product->setPrice(new Price('3000', 'USD'));
                 $product->setName('Keyboard 2');
                 $entityManager->flush();
@@ -693,12 +693,12 @@ final class EntityEventSubscriberTest extends AbstractTestCase
         );
 
         $product = new Product();
-        $entityManager->transactional(function () use ($entityManager, $product): void {
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
             $product->setName('Description 1');
             $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
-            $entityManager->transactional(function () use ($entityManager, $product): void {
+            $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
                 $product->setPrice(new Price('2000', 'USD'));
                 $entityManager->flush();
             });
@@ -713,6 +713,46 @@ final class EntityEventSubscriberTest extends AbstractTestCase
                 [
                     'description' => [null, 'Description 1'],
                     'price' => [null, new Price('2000', 'USD')],
+                    'category' => [null, null],
+                ]
+            ),
+            $events[0]
+        );
+    }
+
+    public function testOneEventIsDispatchedForNewEntityCreatedAndUpdatedInTransaction(): void
+    {
+        $eventDispatcher = new EventDispatcherStub();
+        $entityManager = EntityManagerStub::createFromSymfonyEventDispatcher(
+            $eventDispatcher,
+            [Product::class],
+            [Product::class]
+        );
+        $product = new Product();
+        $product->setName('Description 1');
+        $product->setPrice(new Price('1000', 'USD'));
+
+        $entityManager->persist($product);
+        $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
+            $product->setName('Description 2');
+
+            $entityManager->flush();
+
+            $product->setName('Description 3');
+
+            $entityManager->flush();
+
+            $product->setPrice(new Price('2000', 'AUD'));
+        });
+
+        $events = $eventDispatcher->getDispatchedEvents();
+        self::assertCount(1, $events);
+        self::assertEqualsCanonicalizing(
+            new EntityCreatedEvent(
+                $product,
+                [
+                    'description' => [null, 'Description 3'],
+                    'price' => [null, new Price('2000', 'AUD')],
                     'category' => [null, null],
                 ]
             ),

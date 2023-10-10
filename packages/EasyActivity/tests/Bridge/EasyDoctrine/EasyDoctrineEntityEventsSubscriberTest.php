@@ -137,6 +137,55 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         ], $logEntries[1]);
     }
 
+    public function testLoggerSucceedsForSubjectsCreatedInTransaction(): void
+    {
+        Carbon::setTestNow('2021-10-10 10:00:00.899933');
+        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
+            [
+                'subjects' => [
+                    Article::class => [
+                        'type' => 'article',
+                        'allowed_properties' => ['title', 'content'],
+                    ],
+                ],
+            ]
+        );
+        $article = new Article();
+        $article->setTitle('Title 1');
+        $article->setContent('Content 1');
+
+        $entityManager->persist($article);
+        $entityManager->wrapInTransaction(function () use ($entityManager, $article): void {
+            $article->setTitle('Title 2');
+
+            $entityManager->flush();
+
+            $article->setTitle('Title 3');
+
+            $entityManager->flush();
+
+            $article->setContent('Content 2');
+        });
+
+        $logEntries = $this->getLogEntries($entityManager);
+        self::assertCount(1, $logEntries);
+        self::assertEquals([
+            'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+            'actor_id' => null,
+            'actor_name' => null,
+            'action' => ActivityLogEntry::ACTION_CREATE,
+            'subject_type' => 'article',
+            'subject_id' => $article->getId(),
+            'subject_data' => \json_encode([
+                'content' => 'Content 2',
+                'title' => 'Title 3',
+            ]),
+            'subject_old_data' => null,
+            'created_at' => '2021-10-10 10:00:00.899933',
+            'updated_at' => '2021-10-10 10:00:00.899933',
+        ], $logEntries[0]);
+    }
+
     public function testLoggerSucceedsForUpdatedSubjects(): void
     {
         Carbon::setTestNow('2021-10-10 10:00:00.899933');

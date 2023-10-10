@@ -142,7 +142,10 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         $entityObjectId = \spl_object_id($entity);
         $this->updatedEntities[$entityObjectId] = $entity;
-        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
+        $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $this->mergeChangeSet(
+            $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] ?? [],
+            $entityChangeSet
+        );
     }
 
     public function disable(): void
