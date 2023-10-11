@@ -5,6 +5,7 @@ namespace EonX\EasyUtils\Tests\SensitiveData;
 
 use EonX\EasyUtils\CreditCard\CreditCardNumberValidator;
 use EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer;
+use EonX\EasyUtils\SensitiveData\ObjectTransformers\ThrowableObjectTransformer;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizer;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\SensitiveData\StringSanitizers\AuthorizationStringSanitizer;
@@ -21,6 +22,7 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
     protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface
     {
         $objectTransformers = [
+            new ThrowableObjectTransformer(),
             new DefaultObjectTransformer(),
         ];
 

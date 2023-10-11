@@ -12,6 +12,7 @@ use EonX\EasyUtils\Csv\CsvWithHeadersParserInterface;
 use EonX\EasyUtils\Interfaces\MathInterface;
 use EonX\EasyUtils\Math\Math;
 use EonX\EasyUtils\SensitiveData\ObjectTransformers\DefaultObjectTransformer;
+use EonX\EasyUtils\SensitiveData\ObjectTransformers\ThrowableObjectTransformer;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizer;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\SensitiveData\StringSanitizerInterface;
@@ -68,6 +69,15 @@ final class EasyUtilsServiceProvider extends ServiceProvider
         }
 
         if (\config('easy-utils.sensitive_data.use_default_object_transformers', true)) {
+            $this->app->singleton(
+                ThrowableObjectTransformer::class,
+                static fn (): ThrowableObjectTransformer => new ThrowableObjectTransformer(100)
+            );
+            $this->app->tag(
+                ThrowableObjectTransformer::class,
+                [BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER]
+            );
+
             $this->app->singleton(
                 DefaultObjectTransformer::class,
                 static fn (): DefaultObjectTransformer => new DefaultObjectTransformer(10000)

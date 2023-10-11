@@ -9,13 +9,14 @@ use DateTimeImmutable;
 use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto;
 use PHPUnit\Framework\Attributes\DataProvider;
+use RuntimeException;
 
 abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 {
     /**
      * @see testSanitize
      */
-    public static function providerTestSanitize(): iterable
+    public static function provideAbstractDataForSanitizing(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
@@ -467,15 +468,48 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         ];
     }
 
+    public static function provideExceptionDataForSanitizing(): iterable
+    {
+        yield 'Mask value if key explicitly provided' => [
+            'keysToMask' => ['message'],
+            'message' => 'This is a test message',
+            'expectedMessage' => '*REDACTED*',
+        ];
+        yield 'Mask key in JSON' => [
+            'keysToMask' => ['keyToMask'],
+            'message' => '{"keyToMask":"This is a test message"}',
+            'expectedMessage' => '{"keyToMask":"*REDACTED*"}',
+        ];
+        yield 'Mask card number' => [
+            'keysToMask' => ['card'],
+            'message' => 'This is a test message with card number 4242 4242 4242 4242',
+            'expectedMessage' => 'This is a test message with card number 424242*REDACTED*4242',
+        ];
+    }
+
     /**
      * @param string[]|null $keysToMask
      */
-    #[DataProvider('providerTestSanitize')]
+    #[DataProvider('provideAbstractDataForSanitizing')]
     public function testSanitize(array $input, array $expectedOutput, ?array $keysToMask = null): void
     {
         $sanitizer = $this->getSanitizer($keysToMask);
 
         self::assertEquals($expectedOutput, $sanitizer->sanitize($input));
+    }
+
+    /**
+     * @param string[] $keysToMask
+     */
+    #[DataProvider('provideExceptionDataForSanitizing')]
+    public function testSanitizeException(array $keysToMask, string $message, string $expectedMessage): void
+    {
+        $sanitizer = $this->getSanitizer($keysToMask);
+        $exception = new RuntimeException($message);
+
+        $sanitizedException = $sanitizer->sanitize($exception);
+
+        self::assertSame($expectedMessage, $sanitizedException['message']);
     }
 
     abstract protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface;
