@@ -70,6 +70,10 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS,
             \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null
         );
+        $parameters->set(
+            BridgeConstantsInterface::PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS,
+            $config['report_retryable_exception_attempts'] ?? false
+        );
 
         $parameters->set(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
 
