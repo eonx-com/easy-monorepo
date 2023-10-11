@@ -16,7 +16,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     /**
      * @see testSanitize
      */
-    public static function providerTestSanitize(): iterable
+    public static function provideAbstractDataForSanitizing(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
@@ -468,7 +468,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         ];
     }
 
-    public static function providerTestSanitizeException(): iterable
+    public static function provideExceptionDataForSanitizing(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'keysToMask' => ['message'],
@@ -490,7 +490,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     /**
      * @param string[]|null $keysToMask
      */
-    #[DataProvider('providerTestSanitize')]
+    #[DataProvider('provideAbstractDataForSanitizing')]
     public function testSanitize(array $input, array $expectedOutput, ?array $keysToMask = null): void
     {
         $sanitizer = $this->getSanitizer($keysToMask);
@@ -501,7 +501,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     /**
      * @param string[] $keysToMask
      */
-    #[DataProvider('providerTestSanitizeException')]
+    #[DataProvider('provideExceptionDataForSanitizing')]
     public function testSanitizeException(array $keysToMask, string $message, string $expectedMessage): void
     {
         $sanitizer = $this->getSanitizer($keysToMask);
