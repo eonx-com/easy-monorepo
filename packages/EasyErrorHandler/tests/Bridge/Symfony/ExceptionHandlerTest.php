@@ -4,71 +4,59 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
+use EonX\EasyErrorHandler\Tests\TestRenderWithDefaultBuildersDataProvider;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 final class ExceptionHandlerTest extends AbstractSymfonyTestCase
 {
-    #[DataProvider('providerTestRenderWithDefaultBuilders')]
+    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provide')]
     public function testRenderWithDefaultBuilders(
         Request $request,
         Throwable $exception,
         callable $assertResponse,
-        ?array $config = null,
         ?array $translations = null,
     ): void {
-        // Convert array config to yaml file for symfony to load
-        if ($config !== null) {
-            $config = [$this->dumpConfigFile($config)];
-        }
+        /** @var \Symfony\Bundle\FrameworkBundle\Translation\Translator $translator */
+        $translator = self::getService(TranslatorInterface::class);
+        $translator->addLoader('array', new ArrayLoader());
+        $translator->addResource('array', $this->prepareTranslations($translations), 'en', 'violations');
 
-        $container = $this->getKernel($config)
-            ->getContainer();
-        $handler = $container->get(ErrorHandlerInterface::class);
+        $sut = self::getService(ErrorHandlerInterface::class);
 
-        if ($translations !== null) {
-            /** @var \EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs\TranslatorStub $translator */
-            $translator = $container->get(TranslatorInterface::class);
-            $translator->setTranslations($translations);
-        }
-
-        // Delete tmp config file
-        if ($config !== null) {
-            $this->cleanUpConfigFile($config);
-        }
-
-        $assertResponse($handler->render($request, $exception));
+        $assertResponse($sut->render($request, $exception));
     }
 
-    /**
-     * @param string[] $files
-     */
-    private function cleanUpConfigFile(array $files): void
-    {
-        $filesystem = new Filesystem();
+    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provideWithExtendedResponse')]
+    public function testRenderWithDefaultBuildersAndExtendedResponse(
+        Request $request,
+        Throwable $exception,
+        callable $assertResponse,
+        ?array $translations = null,
+    ): void {
+        /** @var \Symfony\Bundle\FrameworkBundle\Translation\Translator $translator */
+        $translator = self::getService(TranslatorInterface::class);
+        $translator->addLoader('array', new ArrayLoader());
+        $translator->addResource('array', $this->prepareTranslations($translations), 'en', 'violations');
+        $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
+        self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
 
-        foreach ($files as $filename) {
-            $filesystem->remove($filename);
-        }
+        $sut = self::getService(ErrorHandlerInterface::class);
+
+        $assertResponse($sut->render($request, $exception));
     }
 
-    private function dumpConfigFile(array $config): string
+    private function prepareTranslations(?array $translations = null): array
     {
-        $filename = __DIR__ . '/tmp_config.yaml';
+        $result = [];
+        foreach ($translations ?? [] as $key => $value) {
+            $result[$key] = \str_replace('$', '', (string)$value);
+        }
 
-        $config = $config['easy-error-handler'];
-        $config['verbose'] = $config['use_extended_response'] ?? false;
-
-        unset($config['use_extended_response']);
-
-        \file_put_contents($filename, Yaml::dump([
-            'easy_error_handler' => $config,
-        ]));
-
-        return $filename;
+        return $result;
     }
 }

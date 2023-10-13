@@ -5,10 +5,11 @@ namespace EonX\EasyErrorHandler\Tests\Bridge\Laravel;
 
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
+use EonX\EasyErrorHandler\Tests\TestRenderWithDefaultBuildersDataProvider;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 final class ExceptionHandlerTest extends AbstractLaravelTestCase
@@ -92,26 +93,57 @@ final class ExceptionHandlerTest extends AbstractLaravelTestCase
         self::assertStringContainsString('No validation errors in exception', $result);
     }
 
-    #[DataProvider('providerTestRenderWithDefaultBuilders')]
+    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provide')]
     public function testRenderWithDefaultBuilders(
         Request $request,
         Exception $exception,
         callable $assertResponse,
-        ?array $config = null,
         ?array $translations = null,
     ): void {
-        $app = $this->getApplication($config);
+        $app = $this->getApplication();
         /** @var \Illuminate\Contracts\Debug\ExceptionHandler $handler */
         $handler = $app->make(ExceptionHandler::class);
 
-        if ($translations !== null) {
-            /** @var \Illuminate\Translation\Translator $translator */
-            $translator = $app->make('translator');
-            $translator->addLines($translations, $translator->getLocale());
-        }
+        /** @var \Illuminate\Translation\Translator $translator */
+        $translator = $app->make('translator');
+        $translator->addLines($this->prepareTranslations($translations), $translator->getLocale());
 
         $result = $handler->render($request, $exception);
 
         $assertResponse($result);
+    }
+
+    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provideWithExtendedResponse')]
+    public function testRenderWithDefaultBuildersAndExtendedResponse(
+        Request $request,
+        Exception $exception,
+        callable $assertResponse,
+        ?array $translations = null,
+    ): void {
+        $app = $this->getApplication([
+            'easy-error-handler' => [
+                'use_extended_response' => true,
+            ],
+        ]);
+        /** @var \Illuminate\Contracts\Debug\ExceptionHandler $handler */
+        $handler = $app->make(ExceptionHandler::class);
+
+        /** @var \Illuminate\Translation\Translator $translator */
+        $translator = $app->make('translator');
+        $translator->addLines($this->prepareTranslations($translations), $translator->getLocale());
+
+        $result = $handler->render($request, $exception);
+
+        $assertResponse($result);
+    }
+
+    private function prepareTranslations(?array $translations = null): array
+    {
+        $result = [];
+        foreach ($translations ?? [] as $key => $value) {
+            $result[$key] = \str_replace('$', ':', (string)$value);
+        }
+
+        return $result;
     }
 }

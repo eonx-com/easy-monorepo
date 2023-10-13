@@ -96,7 +96,7 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
         /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
         $subscriber = $container->get(EntityEventSubscriberInterface::class);
-        $entities = $this->getPrivatePropertyValue($subscriber, 'subscribedEntities');
+        $entities = self::getPrivatePropertyValue($subscriber, 'subscribedEntities');
         self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $entities);
         self::assertInstanceOf(EntityEventSubscriber::class, $subscriber);
     }
@@ -123,6 +123,6 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
             $container->get(ActorResolverInterface::class)
         );
         self::assertTrue($container->has(DeferredEntityEventDispatcherInterface::class));
-        self::assertEquals($subjects, $this->getPrivatePropertyValue($subjectResolver, 'subjects'));
+        self::assertEquals($subjects, self::getPrivatePropertyValue($subjectResolver, 'subjects'));
     }
 }

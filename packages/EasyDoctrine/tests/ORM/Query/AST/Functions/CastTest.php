@@ -30,8 +30,8 @@ final class CastTest extends AbstractTestCase
         /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
         $sqlWalkerReveal = $sqlWalker->reveal();
         $cast = new Cast('no-matter');
-        $this->setPrivatePropertyValue($cast, 'expression', $expression);
-        $this->setPrivatePropertyValue($cast, 'type', $type);
+        self::setPrivatePropertyValue($cast, 'expression', $expression);
+        self::setPrivatePropertyValue($cast, 'type', $type);
 
         $result = $cast->getSql($sqlWalkerReveal);
 
@@ -59,7 +59,7 @@ final class CastTest extends AbstractTestCase
         $parserReveal = $parser->reveal();
         $cast->parse($parserReveal);
 
-        self::assertSame($type, $this->getPrivatePropertyValue($cast, 'type'));
-        self::assertSame($pathExpression, $this->getPrivatePropertyValue($cast, 'expression'));
+        self::assertSame($type, self::getPrivatePropertyValue($cast, 'type'));
+        self::assertSame($pathExpression, self::getPrivatePropertyValue($cast, 'expression'));
     }
 }

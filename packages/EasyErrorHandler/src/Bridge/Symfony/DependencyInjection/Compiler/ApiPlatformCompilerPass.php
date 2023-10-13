@@ -16,5 +16,9 @@ final class ApiPlatformCompilerPass implements CompilerPassInterface
         }
 
         $container->removeDefinition('api_platform.listener.exception.validation');
+
+        // See \Symfony\Component\HttpKernel\HttpKernel
+        $container->getDefinition('http_kernel')
+            ->replaceArgument(4, true);
     }
 }

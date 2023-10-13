@@ -49,13 +49,13 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
         self::assertInstanceOf(RandomGenerator::class, $result);
         self::assertInstanceOf(
             RandomStringGenerator::class,
-            $this->getPrivatePropertyValue($result, 'randomStringGenerator')
+            self::getPrivatePropertyValue($result, 'randomStringGenerator')
         );
         self::assertInstanceOf(
             RandomIntegerGenerator::class,
-            $this->getPrivatePropertyValue($result, 'randomIntegerGenerator')
+            self::getPrivatePropertyValue($result, 'randomIntegerGenerator')
         );
-        self::assertInstanceOf(RamseyUuidV6Generator::class, $this->getPrivatePropertyValue($result, 'uuidGenerator'));
+        self::assertInstanceOf(RamseyUuidV6Generator::class, self::getPrivatePropertyValue($result, 'uuidGenerator'));
     }
 
     public function testRandomIntegerGeneratorInstance(): void

@@ -19,6 +19,6 @@ final class TranslatorAwareTraitTest extends AbstractTestCase
 
         $abstractClass->setTranslator($translator);
 
-        self::assertSame($translator, $this->getPrivatePropertyValue($abstractClass, 'translator'));
+        self::assertSame($translator, self::getPrivatePropertyValue($abstractClass, 'translator'));
     }
 }

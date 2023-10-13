@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests;
 
 use Closure;
-use LogicException;
+use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
@@ -19,6 +18,7 @@ use Throwable;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    use PrivatePropertyAccessTrait;
     use ProphecyTrait;
 
     protected ?Throwable $thrownException = null;
@@ -60,12 +60,6 @@ abstract class AbstractTestCase extends TestCase
         }
     }
 
-    protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
-    {
-        return $this->resolvePropertyReflection($object, $propertyName)
-            ->getValue($object);
-    }
-
     protected function mock(mixed $target, ?callable $expectations = null): MockInterface
     {
         /** @var \Mockery\MockInterface $mock */
@@ -85,24 +79,5 @@ abstract class AbstractTestCase extends TestCase
         } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
-    }
-
-    protected function setPrivatePropertyValue(object $object, string $propertyName, mixed $value): void
-    {
-        $this->resolvePropertyReflection($object, $propertyName)
-            ->setValue($object, $value);
-    }
-
-    private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
-    {
-        while (\property_exists($object, $propertyName) === false) {
-            $object = \get_parent_class($object);
-
-            if ($object === false) {
-                throw new LogicException(\sprintf('The $%s property does not exist.', $propertyName));
-            }
-        }
-
-        return new ReflectionProperty($object, $propertyName);
     }
 }

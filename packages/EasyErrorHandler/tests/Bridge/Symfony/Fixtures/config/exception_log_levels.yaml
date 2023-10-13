@@ -1,4 +1,0 @@
-easy_error_handler:
-    logger_exception_log_levels:
-        InvalidArgumentException: 200
-        Symfony\Component\HttpKernel\Exception\HttpExceptionInterface: 300

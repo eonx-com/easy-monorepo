@@ -12,7 +12,7 @@ final class ValidationExceptionTest extends AbstractTestCase
     {
         $errors = ['foo' => 'bar'];
         $exception = new ValidationExceptionStub();
-        $this->setPrivatePropertyValue($exception, 'errors', $errors);
+        self::setPrivatePropertyValue($exception, 'errors', $errors);
 
         $result = $exception->getErrors();
 
@@ -27,6 +27,6 @@ final class ValidationExceptionTest extends AbstractTestCase
         $result = $exception->setErrors($errors);
 
         self::assertSame($exception, $result);
-        self::assertSame($errors, $this->getPrivatePropertyValue($result, 'errors'));
+        self::assertSame($errors, self::getPrivatePropertyValue($result, 'errors'));
     }
 }

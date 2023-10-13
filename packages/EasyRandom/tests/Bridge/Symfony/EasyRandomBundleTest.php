@@ -42,13 +42,13 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
         self::assertInstanceOf(RandomGenerator::class, $result);
         self::assertInstanceOf(
             RandomStringGenerator::class,
-            $this->getPrivatePropertyValue($result, 'randomStringGenerator')
+            self::getPrivatePropertyValue($result, 'randomStringGenerator')
         );
         self::assertInstanceOf(
             RandomIntegerGenerator::class,
-            $this->getPrivatePropertyValue($result, 'randomIntegerGenerator')
+            self::getPrivatePropertyValue($result, 'randomIntegerGenerator')
         );
-        self::assertInstanceOf(SymfonyUuidV6Generator::class, $this->getPrivatePropertyValue($result, 'uuidGenerator'));
+        self::assertInstanceOf(SymfonyUuidV6Generator::class, self::getPrivatePropertyValue($result, 'uuidGenerator'));
     }
 
     public function testRandomIntegerGeneratorInstance(): void

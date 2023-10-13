@@ -20,6 +20,6 @@ final class LoggerAwareTraitTest extends AbstractTestCase
 
         $abstractClass->setLogger($logger);
 
-        self::assertSame($logger, $this->getPrivatePropertyValue($abstractClass, 'logger'));
+        self::assertSame($logger, self::getPrivatePropertyValue($abstractClass, 'logger'));
     }
 }

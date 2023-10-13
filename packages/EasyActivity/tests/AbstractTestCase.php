@@ -6,9 +6,8 @@ namespace EonX\EasyActivity\Tests;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
-use LogicException;
+use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
@@ -18,6 +17,8 @@ use Throwable;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    use PrivatePropertyAccessTrait;
+
     protected ?Throwable $thrownException = null;
 
     protected function tearDown(): void
@@ -77,12 +78,6 @@ abstract class AbstractTestCase extends TestCase
         return $logEntries;
     }
 
-    protected function getPrivatePropertyValue(object $object, string $propertyName): mixed
-    {
-        return $this->resolvePropertyReflection($object, $propertyName)
-            ->getValue($object);
-    }
-
     protected function safeCall(Closure $func): void
     {
         try {
@@ -90,18 +85,5 @@ abstract class AbstractTestCase extends TestCase
         } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
-    }
-
-    private function resolvePropertyReflection(object $object, string $propertyName): ReflectionProperty
-    {
-        while (\property_exists($object, $propertyName) === false) {
-            $object = \get_parent_class($object);
-
-            if ($object === false) {
-                throw new LogicException(\sprintf('The $%s property does not exist.', $propertyName));
-            }
-        }
-
-        return new ReflectionProperty($object, $propertyName);
     }
 }

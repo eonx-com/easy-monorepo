@@ -11,8 +11,6 @@
         </testsuite>
     </testsuites>
 
-    <coverage/>
-
     <source>
         <include>
             <directory>src</directory>
