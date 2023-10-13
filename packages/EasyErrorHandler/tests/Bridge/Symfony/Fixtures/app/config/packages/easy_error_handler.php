@@ -10,15 +10,6 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
         ->translationDomain('violations')
         ->bugsnagEnabled(false);
 
-    // $easyErrorHandlerConfig->apiPlatformDenormalizationExceptions()
-    // ->class(UnexpectedValueException::class)
-    // ->messagePattern('/This value is not a valid date\/time\./')
-    // ->violationMessage('violations.invalid_datetime');
-    //
-    // $easyErrorHandlerConfig->apiPlatformDenormalizationExceptions()
-    // ->class(NotNormalizableValueException::class)
-    // ->messagePattern('/Failed to parse time string \(.*\) at position .* \(.*\): .*/')
-    // ->violationMessage('Some custom violation message for datetime parsing error.');
     $response = $easyErrorHandlerConfig->response();
     $response
         ->code('custom_code')
