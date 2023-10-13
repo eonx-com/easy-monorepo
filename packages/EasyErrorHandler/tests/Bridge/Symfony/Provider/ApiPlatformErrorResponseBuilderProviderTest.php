@@ -280,7 +280,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 'outside API Platform denormalization logic.',
         ];
 
-        // @todo Cases below should be supported by API Platform error builders.
+        // @todo Cases below should be supported by API Platform error builders
         yield 'date is empty string' => [
             'url' => '/books',
             'json' => [

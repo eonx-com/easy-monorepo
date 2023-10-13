@@ -11,7 +11,7 @@
         "nikic/php-parser": "^4.15"
     },
     "require-dev": {
-        "api-platform/core": "^3.1",
+        "api-platform/core": "~3.1.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-bugsnag": "^5.7",
