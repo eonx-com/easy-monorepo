@@ -5,25 +5,17 @@ namespace EonX\EasyErrorHandler\Bridge;
 
 interface BridgeConstantsInterface
 {
-    public const PARAM_BUGSNAG_HANDLED_EXCEPTIONS = 'easy_error_handler.param_bugsnag_handled_exceptions';
-
-    public const PARAM_BUGSNAG_IGNORED_EXCEPTIONS = 'easy_error_handler.param_bugsnag_ignored_exceptions';
-
-    public const PARAM_BUGSNAG_IGNORE_VALIDATION_ERRORS = 'easy_error_handler.param_bugsnag_ignore_validation_errors';
-
-    public const PARAM_BUGSNAG_THRESHOLD = 'easy_error_handler.param_bugsnag_threshold';
-
     public const PARAM_ERROR_CODES_CATEGORY_SIZE = 'easy_error_handler.param_error_codes_category_size';
 
     public const PARAM_ERROR_CODES_INTERFACE = 'easy_error_handler.param_error_codes_interface';
 
     public const PARAM_IGNORED_EXCEPTIONS = 'easy_error_handler.param_ignored_exceptions';
 
+    public const PARAM_IGNORE_VALIDATION_ERRORS = 'easy_error_handler.param_ignore_validation_errors';
+
     public const PARAM_IS_VERBOSE = 'easy_error_handler.param_is_verbose';
 
     public const PARAM_LOGGER_EXCEPTION_LOG_LEVELS = 'easy_error_handler.param_logger_exception_log_levels';
-
-    public const PARAM_LOGGER_IGNORED_EXCEPTIONS = 'easy_error_handler.param_logger_ignored_exceptions';
 
     public const PARAM_OVERRIDE_API_PLATFORM_LISTENER = 'easy_error_handler.param_override_api_platform_listener';
 

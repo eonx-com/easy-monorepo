@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Tests;
+namespace EonX\EasyErrorHandler\Tests\Resolvers;
 
-use EonX\EasyErrorHandler\ErrorDetailsResolver;
+use EonX\EasyErrorHandler\Resolvers\ErrorDetailsResolver;
+use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\TranslatorStub;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;

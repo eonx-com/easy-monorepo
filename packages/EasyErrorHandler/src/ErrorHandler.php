@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
 
+use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface;
-use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
+use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
@@ -14,6 +15,7 @@ use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\Helpers\CollectorHelper;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -27,29 +29,16 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
      */
     private array $builders;
 
-    /**
-     * @var class-string[]
-     */
-    private readonly array $ignoredExceptionsForReport;
-
-    /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
-     */
-    private array $reporters;
-
-    /**
-     * @param class-string[]|null $ignoredExceptionsForReport
-     */
     public function __construct(
         private readonly ErrorResponseFactoryInterface $errorResponseFactory,
-        iterable $builderProviders,
-        iterable $reporterProviders,
+        private readonly LoggerInterface $logger,
         private readonly VerboseStrategyInterface $verboseStrategy,
-        ?array $ignoredExceptionsForReport = null,
+        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
+        private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        private readonly IgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
+        iterable $builderProviders,
     ) {
         $this->setBuilders($builderProviders);
-        $this->setReporters($reporterProviders);
-        $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
     }
 
     /**
@@ -58,14 +47,6 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     public function getBuilders(): array
     {
         return $this->builders;
-    }
-
-    /**
-     * @return \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
-     */
-    public function getReporters(): array
-    {
-        return $this->reporters;
     }
 
     public function isVerbose(): bool
@@ -91,6 +72,10 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
     public function report(Throwable $throwable): void
     {
+        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable)) {
+            return;
+        }
+
         // Symfony Messenger HandlerFailedException
         if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
             foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
@@ -110,17 +95,13 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             return;
         }
 
-        foreach ($this->ignoredExceptionsForReport as $class) {
-            if (\is_a($throwable, $class)) {
-                return;
-            }
-        }
-
         $this->verboseStrategy->setThrowable($throwable);
 
-        foreach ($this->reporters as $reporter) {
-            $reporter->report($throwable);
-        }
+        $this->logger->log(
+            $this->errorLogLevelResolver->getLogLevel($throwable),
+            $this->errorDetailsResolver->resolveInternalMessage($throwable),
+            ['exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable)]
+        );
     }
 
     public function supportsFormat(Request $request): bool
@@ -165,23 +146,6 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         }
 
         $this->builders = CollectorHelper::orderLowerPriorityFirstAsArray($builders);
-    }
-
-    private function setReporters(iterable $reporterProviders): void
-    {
-        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface[] $providers */
-        $providers = $this->filterIterable($reporterProviders, ErrorReporterProviderInterface::class);
-        $reporters = [];
-
-        foreach ($providers as $provider) {
-            $providerReporters = $this->filterIterable($provider->getReporters(), ErrorReporterInterface::class);
-
-            foreach ($providerReporters as $reporter) {
-                $reporters[] = $reporter;
-            }
-        }
-
-        $this->reporters = CollectorHelper::orderLowerPriorityFirstAsArray($reporters);
     }
 
     private function sortRecursive(mixed $items): mixed

@@ -42,11 +42,6 @@ final class TraceableErrorHandler implements TraceableErrorHandlerInterface, For
         return $this->reportedErrors;
     }
 
-    public function getReporters(): array
-    {
-        return $this->decorated->getReporters();
-    }
-
     public function isVerbose(): bool
     {
         return $this->decorated->isVerbose();

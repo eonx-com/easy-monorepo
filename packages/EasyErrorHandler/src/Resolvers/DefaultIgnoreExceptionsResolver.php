@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers;
+namespace EonX\EasyErrorHandler\Resolvers;
 
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
+use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
-final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExceptionsResolverInterface
+final class DefaultIgnoreExceptionsResolver implements IgnoreExceptionsResolverInterface
 {
     private readonly bool $ignoreValidationErrors;
 

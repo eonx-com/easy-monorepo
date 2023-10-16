@@ -35,15 +35,6 @@ final class ErrorHandlerDataCollector extends DataCollector
             ];
         }
 
-        foreach ($this->errorHandler->getReporters() as $reporter) {
-            $class = $reporter::class;
-
-            $this->data['reporters'][$class] = [
-                'class' => $class,
-                'priority' => $reporter->getPriority(),
-            ];
-        }
-
         foreach ($this->errorHandler->getReportedErrors() as $reportedError) {
             $class = $reportedError::class;
 
@@ -91,14 +82,6 @@ final class ErrorHandlerDataCollector extends DataCollector
     public function getReportedErrors(): array
     {
         return $this->data['reported_errors'] ?? [];
-    }
-
-    /**
-     * @return \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
-     */
-    public function getReporters(): array
-    {
-        return $this->data['reporters'] ?? [];
     }
 
     public function reset(): void

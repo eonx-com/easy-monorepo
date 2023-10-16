@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Bugsnag;
+namespace EonX\EasyBugsnag\Configurators;
 
 use Bugsnag\Report;
 use Closure;

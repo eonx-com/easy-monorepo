@@ -68,6 +68,13 @@ final class EasyBugsnagSymfonyBundle extends AbstractBundle
                 ->set($param, $config[$name]);
         }
 
+        $container
+            ->parameters()
+            ->set(
+                BridgeConstantsInterface::PARAM_HANDLED_EXCEPTIONS,
+                \count($config['handled_exceptions']) > 0 ? $config['handled_exceptions'] : null
+            );
+
         $container->import(__DIR__ . '/Resources/config/services.php');
 
         // Default configurators

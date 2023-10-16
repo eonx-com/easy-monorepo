@@ -12,7 +12,7 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
-final class BugsnagHandler extends AbstractProcessingHandler implements ServiceSubscriberInterface
+final class BugsnagMonologHandler extends AbstractProcessingHandler implements ServiceSubscriberInterface
 {
     use ServiceSubscriberTrait;
 
@@ -20,7 +20,7 @@ final class BugsnagHandler extends AbstractProcessingHandler implements ServiceS
      * @inheritdoc
      */
     public function __construct(
-        private DefaultBugsnagSeverityResolverInterface $bugsnagSeverityResolver,
+        private readonly DefaultBugsnagSeverityResolverInterface $bugsnagSeverityResolver,
         $level = null,
         ?bool $bubble = null,
     ) {

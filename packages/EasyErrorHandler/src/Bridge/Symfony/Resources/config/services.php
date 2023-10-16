@@ -10,19 +10,21 @@ use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
-use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
-use EonX\EasyErrorHandler\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
+use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Processors\ErrorCodesGroupProcessor;
 use EonX\EasyErrorHandler\Providers\ErrorCodesFromEnumProvider;
 use EonX\EasyErrorHandler\Providers\ErrorCodesFromInterfaceProvider;
+use EonX\EasyErrorHandler\Resolvers\DefaultIgnoreExceptionsResolver;
+use EonX\EasyErrorHandler\Resolvers\ErrorDetailsResolver;
+use EonX\EasyErrorHandler\Resolvers\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
 
@@ -52,9 +54,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // ErrorHandler
     $services
         ->set(ErrorHandlerInterface::class, ErrorHandler::class)
-        ->arg('$builderProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER))
-        ->arg('$reporterProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER))
-        ->arg('$ignoredExceptionsForReport', param(BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS));
+        ->arg('$builderProviders', tagged_iterator(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER));
 
     $services->set(ErrorHandlerDataCollector::class)
         ->tag('data_collector', [
@@ -110,4 +110,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(AnalyzeErrorCodesCommand::class)
         ->tag('console.command');
+
+    // Ignore exception resolver
+    $services->set(IgnoreExceptionsResolverInterface::class, DefaultIgnoreExceptionsResolver::class)
+        ->arg('$ignoredExceptions', param(BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS))
+        ->arg('$ignoreValidationErrors', param(BridgeConstantsInterface::PARAM_IGNORE_VALIDATION_ERRORS));
 };

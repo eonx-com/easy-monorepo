@@ -21,9 +21,4 @@ interface TraceableErrorHandlerInterface extends ErrorHandlerInterface
      * @return \Throwable[]
      */
     public function getReportedErrors(): array;
-
-    /**
-     * @return \EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface[]
-     */
-    public function getReporters(): array;
 }

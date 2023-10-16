@@ -8,6 +8,7 @@ use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface;
 use EonX\EasyBugsnag\Bridge\Symfony\Request\SymfonyRequestResolver;
 use EonX\EasyBugsnag\Bridge\Symfony\Shutdown\ShutdownStrategyListener;
 use EonX\EasyBugsnag\ClientFactory;
+use EonX\EasyBugsnag\Configurators\UnhandledClientConfigurator;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
@@ -50,4 +51,7 @@ return static function (ContainerConfigurator $container): void {
         ->tag('kernel.event_listener', [
             'event' => WorkerRunningEvent::class,
         ]);
+
+    $services->set(UnhandledClientConfigurator::class)
+        ->arg('$handledExceptionClasses', param(BridgeConstantsInterface::PARAM_HANDLED_EXCEPTIONS));
 };

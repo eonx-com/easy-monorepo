@@ -17,6 +17,8 @@ interface BridgeConstantsInterface
 
     public const PARAM_DOCTRINE_DBAL_ENABLED = 'easy_bugsnag.doctrine_dbal.enabled';
 
+    public const PARAM_HANDLED_EXCEPTIONS = 'easy_bugsnag.handled_exceptions';
+
     public const PARAM_PROJECT_ROOT = 'easy_bugsnag.project_root';
 
     public const PARAM_RELEASE_STAGE = 'easy_bugsnag.release_stage';

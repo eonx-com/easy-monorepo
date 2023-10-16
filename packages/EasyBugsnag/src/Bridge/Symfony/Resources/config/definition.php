@@ -39,6 +39,10 @@ return static function (DefinitionConfigurator $definition) {
             ->scalarNode('strip_path')
                 ->defaultValue('%kernel.project_dir%')
             ->end()
+            ->arrayNode('handled_exceptions')
+                ->beforeNormalization()->castToArray()->end()
+                ->scalarPrototype()->end()
+            ->end()
             // AWS ECS FARGATE
             ->arrayNode('aws_ecs_fargate')
                 ->addDefaultsIfNotSet()

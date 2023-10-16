@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Tests;
+namespace EonX\EasyErrorHandler\Tests\Resolvers;
 
-use EonX\EasyErrorHandler\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Resolvers\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use InvalidArgumentException;
 use Monolog\Logger;

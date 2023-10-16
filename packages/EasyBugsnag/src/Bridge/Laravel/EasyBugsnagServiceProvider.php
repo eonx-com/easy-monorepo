@@ -17,6 +17,7 @@ use EonX\EasyBugsnag\Configurators\AppNameConfigurator;
 use EonX\EasyBugsnag\Configurators\AwsEcsFargateConfigurator;
 use EonX\EasyBugsnag\Configurators\BasicsConfigurator;
 use EonX\EasyBugsnag\Configurators\RuntimeVersionConfigurator;
+use EonX\EasyBugsnag\Configurators\UnhandledClientConfigurator;
 use EonX\EasyBugsnag\Interfaces\AppNameResolverInterface;
 use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Resolvers\DefaultAppNameResolver;
@@ -140,6 +141,14 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             }
         );
         $this->app->tag(RuntimeVersionConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+
+        $this->app->singleton(
+            UnhandledClientConfigurator::class,
+            static fn (): UnhandledClientConfigurator => new UnhandledClientConfigurator(
+                \config('easy-bugsnag.handled_exceptions')
+            )
+        );
+        $this->app->tag(UnhandledClientConfigurator::class, [BridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
     }
 
     private function registerRequestResolver(): void

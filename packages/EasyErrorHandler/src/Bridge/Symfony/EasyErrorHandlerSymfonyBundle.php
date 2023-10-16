@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Symfony;
 
-use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformCompilerPass;
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorHandlerCompilerPass;
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorRendererCompilerPass;
-use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
@@ -47,20 +45,6 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
     {
         $parameters = $container->parameters();
 
-        $parameters->set(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold']);
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
-            \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_VALIDATION_ERRORS,
-            $config['bugsnag_ignore_validation_errors']
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_HANDLED_EXCEPTIONS,
-            \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
-        );
-
         $parameters->set(
             BridgeConstantsInterface::PARAM_TRANSFORM_VALIDATION_ERRORS,
             $config['transform_validation_errors']
@@ -70,16 +54,16 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS,
             \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null
         );
+        $parameters->set(
+            BridgeConstantsInterface::PARAM_IGNORE_VALIDATION_ERRORS,
+            $config['ignore_validation_errors']
+        );
 
         $parameters->set(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
 
         $parameters->set(
             BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS,
             \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS,
-            \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null
         );
 
         $parameters->set(
@@ -107,10 +91,6 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
         );
 
         $builder
-            ->registerForAutoconfiguration(ErrorReporterProviderInterface::class)
-            ->addTag(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER);
-
-        $builder
             ->registerForAutoconfiguration(ErrorResponseBuilderProviderInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER);
 
@@ -126,14 +106,6 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
         if ($config['override_api_platform_listener'] ?? true) {
             $container->import(__DIR__ . '/Resources/config/api_platform_builders.php');
-        }
-
-        if ($config['use_default_reporters'] ?? true) {
-            $container->import(__DIR__ . '/Resources/config/default_reporters.php');
-        }
-
-        if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
-            $container->import(__DIR__ . '/Resources/config/bugsnag_reporter.php');
         }
 
         // EasyWebhook Bridge

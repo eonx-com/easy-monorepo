@@ -42,6 +42,11 @@ return [
     'enabled' => true,
 
     /**
+     * List of handled exceptions that will set the bugsnag report as handled.
+     */
+    'handled_exceptions' => null,
+
+    /**
      * Project root.
      */
     'project_root' => \base_path('app'),
