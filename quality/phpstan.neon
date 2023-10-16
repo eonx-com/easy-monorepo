@@ -27,6 +27,7 @@ parameters:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
         - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
+        - %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/OperationRequestInitiatorTrait.php
 
     checkMissingIterableValueType: false
 
@@ -48,17 +49,14 @@ parameters:
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
 
-        - message: '#Trait EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\OperationRequestInitiatorTrait uses unknown trait ApiPlatform\\Util\\OperationRequestInitiatorTrait#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/OperationRequestInitiatorTrait.php
-
         - message: '#Access to an undefined property EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\ReadListener\:\:\$resourceMetadataCollectionFactory#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php:18
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php
 
         - message: '#Call to an undefined method EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\ReadListener\:\:initializeOperation\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php:24
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php
 
         - message: '#Method EonX\\EasyApiPlatform\\Filters\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Api\\IriConverterInterface but returns ApiPlatform\\Metadata\\IriConverterInterface#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filters/AdvancedSearchFilter.php:385
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filters/AdvancedSearchFilter.php
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
