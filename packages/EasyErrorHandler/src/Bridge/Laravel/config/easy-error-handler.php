@@ -8,9 +8,9 @@ return [
     'use_extended_response' => \env('EASY_ERROR_HANDLER_USE_EXTENDED_RESPONSE', false),
 
     /**
-     * Use default set of error reporters.
+     * Use default set of error response builders.
      */
-    'use_default_reporters' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_REPORTERS', true),
+    'use_default_builders' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_BUILDERS', true),
 
     /**
      * List of Ignored Exceptions that'll not be reported to any reporter.

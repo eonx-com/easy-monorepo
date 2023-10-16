@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagMonologHandler;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolver;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
 
@@ -28,4 +31,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('easy_logging.logger', '%' . BridgeConstantsInterface::PARAM_LOGGER_CLASS . '%')
         ->factory([service(LoggerFactoryInterface::class), 'create'])
         ->args(['%' . BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL . '%']);
+
+    $services->set(BugsnagMonologHandler::class);
+
+    $services->set(DefaultBugsnagSeverityResolverInterface::class, DefaultBugsnagSeverityResolver::class);
 };

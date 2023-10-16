@@ -29,8 +29,6 @@ interface BridgeConstantsInterface
 
     public const PARAM_TRANSLATION_DOMAIN = 'easy_error_handler.param_translation_domain';
 
-    public const TAG_ERROR_REPORTER_PROVIDER = 'easy_error_handler.error_reporter_provider';
-
     public const TAG_ERROR_RESPONSE_BUILDER_PROVIDER = 'easy_error_handler.error_response_builder_provider';
 
     public const TAG_VERBOSE_STRATEGY_DRIVER = 'easy_error_handler.verbose_strategy_driver';
