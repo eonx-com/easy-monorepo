@@ -152,7 +152,8 @@ trait DoctrineCommonPaginatorTrait
         $paramTypes = [];
 
         if ($queryBuilder instanceof OrmQueryBuilder) {
-            $sql = $queryBuilder->getQuery()->getSQL();
+            $sql = $queryBuilder->getQuery()
+                ->getSQL();
 
             foreach ($queryBuilder->getParameters() as $param) {
                 $params[] = $param->getValue();
@@ -164,6 +165,10 @@ trait DoctrineCommonPaginatorTrait
             $sql = $queryBuilder->getSQL();
             $params = $queryBuilder->getParameters();
             $paramTypes = $queryBuilder->getParameterTypes();
+        }
+
+        if (\is_string($sql) === false) {
+            return null;
         }
 
         if ($platform instanceof PostgreSQLPlatform) {
