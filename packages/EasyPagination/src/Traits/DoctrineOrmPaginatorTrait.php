@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
@@ -24,6 +25,11 @@ trait DoctrineOrmPaginatorTrait
     {
         return $queryBuilder->getQuery()
             ->getResult();
+    }
+
+    private function getConnection(): Connection
+    {
+        return $this->manager->getConnection();
     }
 
     private function resolveSelect(): mixed

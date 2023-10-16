@@ -30,6 +30,11 @@ trait DoctrineDbalPaginatorTrait
         );
     }
 
+    private function getConnection(): Connection
+    {
+        return $this->conn;
+    }
+
     private function resolveSelect(): mixed
     {
         if ($this->select !== null) {
