@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Bridge\Laravel;
 
+use EonX\EasyErrorHandler\Tests\DataProviders\TestRenderWithDefaultBuildersDataProvider;
 use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stubs\ValidationExceptionStub;
-use EonX\EasyErrorHandler\Tests\TestRenderWithDefaultBuildersDataProvider;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-final class ExceptionHandlerTest extends AbstractLaravelTestCase
+final class ErrorHandlerTest extends AbstractLaravelTestCase
 {
     public function testRenderForConsoleDoesNotShowTranslationIfItEqualsToOriginalMessage(): void
     {

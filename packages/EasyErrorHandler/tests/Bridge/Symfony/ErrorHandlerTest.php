@@ -5,14 +5,14 @@ namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
-use EonX\EasyErrorHandler\Tests\TestRenderWithDefaultBuildersDataProvider;
+use EonX\EasyErrorHandler\Tests\DataProviders\TestRenderWithDefaultBuildersDataProvider;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
-final class ExceptionHandlerTest extends AbstractSymfonyTestCase
+final class ErrorHandlerTest extends AbstractSymfonyTestCase
 {
     #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provide')]
     public function testRenderWithDefaultBuilders(
