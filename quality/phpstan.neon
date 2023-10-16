@@ -96,6 +96,7 @@ parameters:
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmPaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Call to an undefined method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)Paginator\:\:isLargeDatasetEnabled\(\)#'
 
         - message: '#Property .*\:\:\$id is never written, only read#'
           paths:
