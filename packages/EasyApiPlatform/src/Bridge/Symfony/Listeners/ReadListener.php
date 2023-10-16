@@ -22,6 +22,14 @@ final class ReadListener
     {
         $request = $event->getRequest();
         $operation = $this->initializeOperation($request);
+
+        if (
+            $operation?->getController() === 'api_platform.symfony.main_controller'
+            || $request->attributes->get('_api_platform_disable_listeners')
+        ) {
+            return;
+        }
+
         $attributes = RequestAttributesExtractor::extractAttributes($request);
 
         if (\count($attributes) === 0) {
