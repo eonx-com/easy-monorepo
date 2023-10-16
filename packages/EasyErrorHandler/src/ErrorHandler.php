@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
 
-use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
@@ -12,6 +11,7 @@ use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseFactoryInterface;
 use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
+use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\Helpers\CollectorHelper;

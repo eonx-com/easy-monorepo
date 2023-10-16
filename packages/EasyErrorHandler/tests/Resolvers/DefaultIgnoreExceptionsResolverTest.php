@@ -6,9 +6,9 @@ namespace EonX\EasyErrorHandler\Tests\Resolvers;
 use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Resolvers\DefaultIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
+use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
-use Exception;
 
 final class DefaultIgnoreExceptionsResolverTest extends AbstractTestCase
 {
@@ -45,10 +45,10 @@ final class DefaultIgnoreExceptionsResolverTest extends AbstractTestCase
 
     #[DataProvider('provideExceptions')]
     public function testShouldIgnore(
-        array     $ignoredExceptions,
-        bool      $ignoreValidationErrors,
+        array $ignoredExceptions,
+        bool $ignoreValidationErrors,
         Throwable $exception,
-        bool      $expectedResult
+        bool $expectedResult,
     ): void {
         $resolver = new DefaultIgnoreExceptionsResolver($ignoredExceptions, $ignoreValidationErrors);
 

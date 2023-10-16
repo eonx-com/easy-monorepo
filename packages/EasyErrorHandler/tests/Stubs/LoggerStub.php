@@ -8,10 +8,12 @@ use Stringable;
 
 final class LoggerStub extends AbstractLogger
 {
-    /**
-     * @var list<array<string, mixed>>
-     */
     private array $records;
+
+    public function getRecords(): array
+    {
+        return $this->records;
+    }
 
     public function log($level, string|Stringable $message, array $context = []): void
     {
@@ -20,10 +22,5 @@ final class LoggerStub extends AbstractLogger
             'message' => $message,
             'context' => $context,
         ];
-    }
-
-    public function getRecords(): array
-    {
-        return $this->records;
     }
 }

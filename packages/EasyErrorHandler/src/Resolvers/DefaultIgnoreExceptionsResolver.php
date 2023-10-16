@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Resolvers;
 
-use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
+use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
