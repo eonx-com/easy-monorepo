@@ -240,6 +240,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmTestC
     ): void {
         $entityManager = $this->getEntityManager();
         $paginator = new DoctrineOrmLengthAwarePaginator($pagination, $entityManager, $from, $fromAlias, $indexBy);
+        $paginator->setLargeDatasetEnabled();
 
         $setup($entityManager, $paginator);
         $assert($paginator);

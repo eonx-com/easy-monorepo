@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Traits;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
+use function Symfony\Component\String\u;
 
 trait DoctrineCommonPaginatorTrait
 {
@@ -40,6 +43,19 @@ trait DoctrineCommonPaginatorTrait
             return $this->totalItems;
         }
 
+        $queryBuilder = $this->createQueryBuilder();
+
+        $this->applyCommonCriteria($queryBuilder);
+        $this->applyFilterCriteria($queryBuilder);
+
+        if ($this->isLargeDatasetEnabled()) {
+            $totalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
+
+            if ($totalItems !== null) {
+                return $this->totalItems = $totalItems;
+            }
+        }
+
         $countAlias = \sprintf('_count_%s', $this->fromAlias ?? '1');
         $countSelect = '1';
 
@@ -47,11 +63,7 @@ trait DoctrineCommonPaginatorTrait
             $countSelect = \sprintf('DISTINCT %s.%s', $this->fromAlias, $this->primaryKeyIndex);
         }
 
-        $queryBuilder = $this->createQueryBuilder()
-            ->select(\sprintf('COUNT(%s) as %s', $countSelect, $countAlias));
-
-        $this->applyCommonCriteria($queryBuilder);
-        $this->applyFilterCriteria($queryBuilder);
+        $queryBuilder = $queryBuilder->select(\sprintf('COUNT(%s) as %s', $countSelect, $countAlias));
 
         $results = $this->fetchResults($queryBuilder);
 
@@ -118,6 +130,59 @@ trait DoctrineCommonPaginatorTrait
         $this->applyPagination($queryBuilder);
 
         return $this->fetchResults($queryBuilder);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function getTotalItemsForLargeDataset(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): ?int
+    {
+        $conn = $this->getConnection();
+        $platform = $conn->getDatabasePlatform();
+
+        if ($platform instanceof PostgreSQLPlatform === false
+            && $platform instanceof SqlitePlatform === false) {
+            return null;
+        }
+
+        $queryBuilder->select('1');
+
+        $sql = null;
+        $params = [];
+        $paramTypes = [];
+
+        if ($queryBuilder instanceof OrmQueryBuilder) {
+            $sql = $queryBuilder->getQuery()->getSQL();
+
+            foreach ($queryBuilder->getParameters() as $param) {
+                $params[] = $param->getValue();
+                $paramTypes[] = $param->getType();
+            }
+        }
+
+        if ($queryBuilder instanceof DbalQueryBuilder) {
+            $sql = $queryBuilder->getSQL();
+            $params = $queryBuilder->getParameters();
+            $paramTypes = $queryBuilder->getParameterTypes();
+        }
+
+        if ($platform instanceof PostgreSQLPlatform) {
+            $sql = \sprintf('EXPLAIN %s', $sql);
+        }
+        if ($platform instanceof SqlitePlatform) {
+            $sql = \sprintf('EXPLAIN QUERY PLAN %s', $sql);
+        }
+
+        $result = $conn->executeQuery($sql, $params, $paramTypes)
+            ->fetchAssociative();
+
+        if (\is_array($result) && isset($result['QUERY PLAN'])) {
+            $matches = u($result['QUERY PLAN'])->match('/rows=(\d+)/');
+
+            return isset($matches[1]) ? (int)$matches[1] : null;
+        }
+
+        return null;
     }
 
     private function hasJoinInQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): bool
