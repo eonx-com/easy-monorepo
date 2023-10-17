@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Resolvers;
 
-use ApiPlatform\Exception\InvalidArgumentException;
 use EonX\EasyErrorHandler\Resolvers\DefaultIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Tests\AbstractTestCase;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
+use TypeError;
 
 final class DefaultIgnoreExceptionsResolverTest extends AbstractTestCase
 {
@@ -31,14 +31,14 @@ final class DefaultIgnoreExceptionsResolverTest extends AbstractTestCase
         yield 'Not ignored validation exception' => [
             'ignoredExceptions' => [],
             'ignoreValidationErrors' => false,
-            'exception' => new InvalidArgumentException('The type of the "foo" attribute must be "bar", "baz" given'),
+            'exception' => new TypeError(' Argument  ($foo) must be of type A\\B, B\\C given'),
             'expectedResult' => false,
         ];
 
         yield 'Ignored validation exception' => [
             'ignoredExceptions' => [],
             'ignoreValidationErrors' => true,
-            'exception' => new InvalidArgumentException('The type of the "foo" attribute must be "bar", "baz" given'),
+            'exception' => new TypeError(' Argument  ($foo) must be of type A\\B, B\\C given'),
             'expectedResult' => true,
         ];
     }
