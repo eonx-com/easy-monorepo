@@ -8,7 +8,7 @@ use Stringable;
 
 final class LoggerStub extends AbstractLogger
 {
-    private array $records;
+    private array $records = [];
 
     public function getRecords(): array
     {

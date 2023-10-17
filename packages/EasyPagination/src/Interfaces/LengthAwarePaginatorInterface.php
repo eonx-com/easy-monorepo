@@ -16,4 +16,8 @@ interface LengthAwarePaginatorInterface extends PaginatorInterface
     public function hasNextPage(): bool;
 
     public function hasPreviousPage(): bool;
+
+    public function isLargeDatasetEnabled(): bool;
+
+    public function setLargeDatasetEnabled(?bool $largeDatasetEnabled = null): self;
 }

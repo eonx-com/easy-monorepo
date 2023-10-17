@@ -15,6 +15,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->booleanNode('stream_handler')->defaultTrue()->end()
+            ->booleanNode('bugsnag_handler')->defaultFalse()->end()
             ->integerNode('stream_handler_level')->defaultNull()->end()
         ->end();
 };

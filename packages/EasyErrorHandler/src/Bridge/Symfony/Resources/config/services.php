@@ -114,5 +114,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Ignore exception resolver
     $services->set(IgnoreExceptionsResolverInterface::class, DefaultIgnoreExceptionsResolver::class)
         ->arg('$ignoredExceptions', param(BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS))
-        ->arg('$ignoreValidationErrors', param(BridgeConstantsInterface::PARAM_IGNORE_VALIDATION_ERRORS));
+        ->arg('$ignoreValidationErrors', param(BridgeConstantsInterface::PARAM_IGNORE_VALIDATION_ERRORS))
+        ->arg(
+            '$reportRetryableExceptionAttempts',
+            param(BridgeConstantsInterface::PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS)
+        );
 };

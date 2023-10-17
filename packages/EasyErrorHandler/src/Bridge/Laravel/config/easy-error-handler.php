@@ -37,6 +37,11 @@ return [
      */
     'error_codes_category_size' => 100,
 
+    /**
+     * Report exceptions that will be retried by the application.
+     */
+    'report_retryable_exception_attempts' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Error response

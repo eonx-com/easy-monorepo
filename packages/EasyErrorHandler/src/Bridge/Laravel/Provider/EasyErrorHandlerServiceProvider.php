@@ -134,7 +134,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             IgnoreExceptionsResolverInterface::class,
             static fn (): IgnoreExceptionsResolverInterface => new DefaultIgnoreExceptionsResolver(
                 \config('easy-error-handler.ignored_exceptions'),
-                false
+                false,
+                (bool)\config('easy-error-handler.report_retryable_exception_attempts', false)
             )
         );
 

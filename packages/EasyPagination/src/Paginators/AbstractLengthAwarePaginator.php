@@ -7,6 +7,8 @@ use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 
 abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements LengthAwarePaginatorInterface
 {
+    private bool $largeDatasetEnabled = false;
+
     private ?int $totalPages = null;
 
     public function getFirstPageUrl(): string
@@ -36,6 +38,18 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
     public function hasPreviousPage(): bool
     {
         return $this->getCurrentPage() > 1;
+    }
+
+    public function isLargeDatasetEnabled(): bool
+    {
+        return $this->largeDatasetEnabled;
+    }
+
+    public function setLargeDatasetEnabled(?bool $largeDatasetEnabled = null): self
+    {
+        $this->largeDatasetEnabled = $largeDatasetEnabled ?? true;
+
+        return $this;
     }
 
     public function toArray(): array

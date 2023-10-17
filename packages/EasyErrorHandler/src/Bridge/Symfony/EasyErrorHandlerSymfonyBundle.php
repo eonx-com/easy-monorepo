@@ -58,6 +58,10 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             BridgeConstantsInterface::PARAM_IGNORE_VALIDATION_ERRORS,
             $config['ignore_validation_errors']
         );
+        $parameters->set(
+            BridgeConstantsInterface::PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS,
+            $config['report_retryable_exception_attempts'] ?? false
+        );
 
         $parameters->set(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
 

@@ -16,7 +16,7 @@ if (\function_exists('swoole_dump') === false) {
 if (\function_exists('swoole_dd') === false) {
     function swoole_dd(...$vars): never
     {
-        swoole_dump($vars);
+        swoole_dump(...$vars);
 
         throw new SwooleDdException('swoole_dd');
     }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler;
 
+use EonX\EasyErrorHandler\Exceptions\RetryableException;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
@@ -86,12 +87,16 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         }
 
         // Symfony Messenger UnrecoverableMessageHandlingException
-        if (\class_exists(UnrecoverableMessageHandlingException::class)
-            && $throwable instanceof UnrecoverableMessageHandlingException
-            && $throwable->getPrevious() instanceof Throwable
+        if (
+            (\class_exists(UnrecoverableMessageHandlingException::class)
+            && $throwable instanceof UnrecoverableMessageHandlingException)
+            || $throwable instanceof RetryableException
         ) {
-            $this->report($throwable->getPrevious());
+            $throwable = $throwable->getPrevious();
+        }
 
+        // Sanity check because getPrevious() signature can return null
+        if ($throwable instanceof Throwable === false) {
             return;
         }
 

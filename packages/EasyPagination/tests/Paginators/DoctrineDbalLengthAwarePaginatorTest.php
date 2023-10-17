@@ -362,6 +362,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalTes
     ): void {
         $conn = $this->getDoctrineDbalConnection();
         $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $conn, $from, $fromAlias);
+        $paginator->setLargeDatasetEnabled();
 
         $setup($conn, $paginator);
         $assert($paginator);

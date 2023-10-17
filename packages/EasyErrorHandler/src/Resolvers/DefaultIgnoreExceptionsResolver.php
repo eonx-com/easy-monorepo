@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Resolvers;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
+use EonX\EasyErrorHandler\Exceptions\RetryableException;
 use EonX\EasyErrorHandler\Interfaces\IgnoreExceptionsResolverInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
@@ -17,19 +18,31 @@ final class DefaultIgnoreExceptionsResolver implements IgnoreExceptionsResolverI
      */
     private readonly array $ignoredExceptions;
 
+    private bool $reportRetryableExceptionAttempts;
+
     /**
      * @param class-string[] $ignoredExceptions
      */
     public function __construct(
         ?array $ignoredExceptions = null,
         ?bool $ignoreValidationErrors = null,
+        ?bool $reportRetryableExceptionAttempts = null,
     ) {
         $this->ignoredExceptions = $ignoredExceptions ?? [HttpExceptionInterface::class];
         $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;
+        $this->reportRetryableExceptionAttempts = $reportRetryableExceptionAttempts ?? false;
     }
 
     public function shouldIgnore(Throwable $throwable): bool
     {
+        if (
+            $throwable instanceof RetryableException
+            && $this->reportRetryableExceptionAttempts === false
+            && $throwable->willRetry()
+        ) {
+            return true;
+        }
+
         foreach ($this->ignoredExceptions as $ignoreClass) {
             if (\is_a($throwable, $ignoreClass)) {
                 return true;
