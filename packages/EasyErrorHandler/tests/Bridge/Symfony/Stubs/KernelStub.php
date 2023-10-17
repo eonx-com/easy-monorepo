@@ -6,8 +6,10 @@ namespace EonX\EasyErrorHandler\Tests\Bridge\Symfony\Stubs;
 use ApiPlatform\Symfony\Validator\EventListener\ValidationExceptionListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle;
 use EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
@@ -26,6 +28,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->setDefinition(ContainerInterface::class, new Definition(Container::class));
         $container->setDefinition(TranslatorInterface::class, new Definition(TranslatorStub::class));
         $container->setDefinition(ValidationExceptionListener::class, new Definition(SerializerStub::class, [
             new Definition(SerializerStub::class),

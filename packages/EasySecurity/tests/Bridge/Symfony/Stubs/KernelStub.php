@@ -8,8 +8,10 @@ use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle;
 use EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle;
 use EonX\EasySecurity\Bridge\Symfony\EasySecuritySymfonyBundle;
 use EonX\EasySecurity\Tests\Stubs\ApiTokenDecoderProviderStub;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +58,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
         }
+
+        $container->setDefinition(ContainerInterface::class, new Definition(Container::class));
     }
 
     /**

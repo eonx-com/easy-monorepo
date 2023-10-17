@@ -5,9 +5,12 @@ namespace EonX\EasyLogging\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle;
 use EonX\EasyUtils\Bridge\Symfony\EasyUtilsSymfonyBundle;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
@@ -29,6 +32,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->setDefinition(ContainerInterface::class, new Definition(Container::class));
+
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);
         }
