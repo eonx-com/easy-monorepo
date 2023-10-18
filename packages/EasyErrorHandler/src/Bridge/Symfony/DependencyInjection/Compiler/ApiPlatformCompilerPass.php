@@ -17,10 +17,9 @@ final class ApiPlatformCompilerPass implements CompilerPassInterface
 
         $container->removeDefinition('api_platform.listener.exception.validation');
 
-        // Set `handle_all_throwables` to `true`
         // We need this to handle \TypeError in \EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder
-        // See \Symfony\Component\HttpKernel\HttpKernel
-        // See https://symfony.com/doc/current/reference/configuration/framework.html#handle-all-throwables
+        // @see \Symfony\Component\HttpKernel\HttpKernel
+        // @see https://symfony.com/doc/current/reference/configuration/framework.html#handle-all-throwables
         $container->getDefinition('http_kernel')
             ->setArgument('$handleAllThrowables', true);
     }
