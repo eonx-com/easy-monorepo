@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers;
 
 use Bugsnag\Client;
-use Bugsnag\Report;
+use EonX\EasyBugsnag\Bridge\Monolog\Report\MonologReport;
 use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -36,14 +36,9 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler implements S
     protected function write(array $record): void
     {
         $severity = $this->bugsnagSeverityResolver->resolve((int)$record['level']);
+
         $this->getBugsnagClient()
-            ->notifyError(
-                (string)$record['message'],
-                (string)$record['formatted'],
-                static function (Report $report) use ($record, $severity): void {
-                    $report->setSeverity($severity);
-                    $report->setMetaData(['context' => $record['context'], 'extra' => $record['extra']]);
-                }
-            );
+            ->setSendCode(false)
+            ->notify(MonologReport::fromMonologRecord($this->getBugsnagClient()->getConfig(), $record, $severity));
     }
 }
