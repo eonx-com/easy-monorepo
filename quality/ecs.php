@@ -22,6 +22,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
+use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
@@ -66,6 +67,8 @@ return static function (ECSConfig $ecsConfig): void {
         AvoidPublicPropertiesSniff::class => [
             'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
             'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/*/Fixtures/*/ApiResource/*',
+            'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
@@ -78,7 +81,11 @@ return static function (ECSConfig $ecsConfig): void {
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
             'packages/*/src/Bridge/Symfony/Resources/config/*',
-            'packages/EasyApiPlatform/tests/Fixtures/app/config/packages/*',
+            'packages/*/tests/Fixtures/app/config/packages/*',
+            'packages/*/tests/Bridge/Symfony/Fixtures/app/config/packages/*',
+        ],
+        FullyQualifiedClassNameInAnnotationSniff::class => [
+            'packages/EasyTest/src/Traits/ContainerServiceTrait.php',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
             'packages/*/src/Bridge/BridgeConstantsInterface.php',
@@ -100,13 +107,7 @@ return static function (ECSConfig $ecsConfig): void {
         PropertyTypeHintSniff::class . '.UselessAnnotation' => [
             'packages/*/tests/Stubs/Model/*',
         ],
-        SingleSpaceAfterConstructFixer::class => [
-            'packages/EasyAsync/src/Doctrine/Exceptions/DoctrineConnectionNotOkException.php',
-            'packages/EasyAsync/src/Doctrine/Exceptions/DoctrineManagerClosedException.php',
-            'packages/EasyErrorHandler/src/Builders/ExtendedExceptionErrorResponseBuilder.php',
-            'packages/EasyPagination/src/Exceptions/AbstractEasyPaginationException.php',
-            'packages/EasyRequestId/src/Bridge/EasyErrorHandler/RequestIdErrorResponseBuilder.php',
-        ],
+        SingleSpaceAfterConstructFixer::class => null,
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],

@@ -18,6 +18,6 @@ final class ErrorHandlerAwareTraitTest extends AbstractTestCase
 
         $abstractClass->setErrorHandler($errorHandler);
 
-        self::assertSame($errorHandler, $this->getPrivatePropertyValue($abstractClass, 'errorHandler'));
+        self::assertSame($errorHandler, self::getPrivatePropertyValue($abstractClass, 'errorHandler'));
     }
 }

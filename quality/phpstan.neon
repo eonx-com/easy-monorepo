@@ -36,6 +36,8 @@ parameters:
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
         - '#Method EonX\\.*\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
         - '#Method EonX\\.*\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
+        - message: '#Class .* implements generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types: T#'
+          path: %currentWorkingDirectory%/packages/*/tests/Bridge/Symfony/Fixtures/app/src/StateProvider/*
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----

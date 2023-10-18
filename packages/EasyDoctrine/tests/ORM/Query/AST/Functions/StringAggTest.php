@@ -33,8 +33,8 @@ final class StringAggTest extends AbstractTestCase
         /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
         $sqlWalkerReveal = $sqlWalker->reveal();
         $stringAgg = new StringAgg('no-matter');
-        $this->setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
-        $this->setPrivatePropertyValue($stringAgg, 'expression', $expression);
+        self::setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
+        self::setPrivatePropertyValue($stringAgg, 'expression', $expression);
 
         $result = $stringAgg->getSql($sqlWalkerReveal);
 
@@ -65,9 +65,9 @@ final class StringAggTest extends AbstractTestCase
         /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
         $sqlWalkerReveal = $sqlWalker->reveal();
         $stringAgg = new StringAgg('no-matter');
-        $this->setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
-        $this->setPrivatePropertyValue($stringAgg, 'expression', $expression);
-        $this->setPrivatePropertyValue($stringAgg, 'isDistinct', true);
+        self::setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
+        self::setPrivatePropertyValue($stringAgg, 'expression', $expression);
+        self::setPrivatePropertyValue($stringAgg, 'isDistinct', true);
 
         $result = $stringAgg->getSql($sqlWalkerReveal);
 
@@ -102,9 +102,9 @@ final class StringAggTest extends AbstractTestCase
         /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
         $sqlWalkerReveal = $sqlWalker->reveal();
         $stringAgg = new StringAgg('no-matter');
-        $this->setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
-        $this->setPrivatePropertyValue($stringAgg, 'expression', $expression);
-        $this->setPrivatePropertyValue($stringAgg, 'orderBy', $orderBy);
+        self::setPrivatePropertyValue($stringAgg, 'delimiter', $delimiter);
+        self::setPrivatePropertyValue($stringAgg, 'expression', $expression);
+        self::setPrivatePropertyValue($stringAgg, 'orderBy', $orderBy);
 
         $result = $stringAgg->getSql($sqlWalkerReveal);
 
@@ -144,9 +144,9 @@ final class StringAggTest extends AbstractTestCase
         $parserReveal = $parser->reveal();
         $stringAgg->parse($parserReveal);
 
-        self::assertSame($delimiter, $this->getPrivatePropertyValue($stringAgg, 'delimiter'));
-        self::assertFalse($this->getPrivatePropertyValue($stringAgg, 'isDistinct'));
-        self::assertNull($this->getPrivatePropertyValue($stringAgg, 'orderBy'));
+        self::assertSame($delimiter, self::getPrivatePropertyValue($stringAgg, 'delimiter'));
+        self::assertFalse(self::getPrivatePropertyValue($stringAgg, 'isDistinct'));
+        self::assertNull(self::getPrivatePropertyValue($stringAgg, 'orderBy'));
     }
 
     /**
@@ -176,7 +176,7 @@ final class StringAggTest extends AbstractTestCase
         $parserReveal = $parser->reveal();
         $stringAgg->parse($parserReveal);
 
-        self::assertTrue($this->getPrivatePropertyValue($stringAgg, 'isDistinct'));
+        self::assertTrue(self::getPrivatePropertyValue($stringAgg, 'isDistinct'));
     }
 
     /**
@@ -208,6 +208,6 @@ final class StringAggTest extends AbstractTestCase
         $parserReveal = $parser->reveal();
         $stringAgg->parse($parserReveal);
 
-        self::assertSame($orderBy, $this->getPrivatePropertyValue($stringAgg, 'orderBy'));
+        self::assertSame($orderBy, self::getPrivatePropertyValue($stringAgg, 'orderBy'));
     }
 }

@@ -15,6 +15,7 @@
         "eonx-com/easy-doctrine": "^5.7",
         "eonx-com/easy-event-dispatcher": "^5.7",
         "eonx-com/easy-lock": "^5.7",
+        "eonx-com/easy-test": "^5.7",
         "eonx-com/easy-webhook": "^5.7",
         "phpunit/phpunit": "^10.2",
         "psr/log": "^3.0",

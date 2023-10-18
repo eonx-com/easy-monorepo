@@ -19,6 +19,6 @@ final class EntityManagerAwareTraitTest extends AbstractTestCase
 
         $abstractClass->setEntityManager($entityManager);
 
-        self::assertSame($entityManager, $this->getPrivatePropertyValue($abstractClass, 'entityManager'));
+        self::assertSame($entityManager, self::getPrivatePropertyValue($abstractClass, 'entityManager'));
     }
 }

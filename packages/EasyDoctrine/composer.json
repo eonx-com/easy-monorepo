@@ -20,6 +20,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-error-handler": "^5.7",
+        "eonx-com/easy-test": "^5.7",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
