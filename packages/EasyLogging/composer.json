@@ -13,7 +13,8 @@
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3",
         "bugsnag/bugsnag": "^3.29",
-        "eonx-com/easy-error-handler": "^5.7"
+        "eonx-com/easy-error-handler": "^5.7",
+        "eonx-com/easy-bugsnag": "^5.7"
     },
     "autoload": {
         "psr-4": {
