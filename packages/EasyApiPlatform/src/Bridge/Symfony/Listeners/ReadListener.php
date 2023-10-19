@@ -5,7 +5,6 @@ namespace EonX\EasyApiPlatform\Bridge\Symfony\Listeners;
 
 use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
-use ApiPlatform\Util\OperationRequestInitiatorTrait;
 use ApiPlatform\Util\RequestAttributesExtractor;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,6 +22,14 @@ final class ReadListener
     {
         $request = $event->getRequest();
         $operation = $this->initializeOperation($request);
+
+        if (
+            $operation?->getController() === 'api_platform.symfony.main_controller'
+            || $request->attributes->get('_api_platform_disable_listeners')
+        ) {
+            return;
+        }
+
         $attributes = RequestAttributesExtractor::extractAttributes($request);
 
         if (\count($attributes) === 0) {

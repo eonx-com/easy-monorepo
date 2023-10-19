@@ -50,7 +50,7 @@
         "symplify/package-builder": "^11.0"
     },
     "require-dev": {
-        "api-platform/core": "~3.1.0",
+        "api-platform/core": "^3.1",
         "auth0/auth0-php": "^8.6",
         "bugsnag/bugsnag-laravel": "^2.26",
         "dg/bypass-finals": "^1.4",
