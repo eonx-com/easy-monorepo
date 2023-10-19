@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Traits;
 
 use Closure;
+use PHPUnit\Util\Color;
 use RuntimeException;
 use Throwable;
 
@@ -32,6 +33,13 @@ trait ExceptionTrait
         self::assertNotNull($this->thrownException);
 
         if ($this->thrownException instanceof $expectedException === false) {
+            echo \PHP_EOL;
+            echo Color::colorize(
+                'fg-red',
+                'Expected ' . $expectedException . ' but got ' . $this->thrownException::class
+            );
+            echo \PHP_EOL;
+
             throw $this->thrownException;
         }
 
