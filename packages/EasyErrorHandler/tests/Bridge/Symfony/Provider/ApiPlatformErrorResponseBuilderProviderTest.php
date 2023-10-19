@@ -411,7 +411,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
         $response = self::$client->request('POST', $url, ['json' => $json]);
 
         $responseData = $response->toArray(false);
-        dump($responseData);
         self::assertSame(400, $response->getStatusCode());
         self::assertArrayStructure(
             [
