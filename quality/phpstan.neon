@@ -57,9 +57,6 @@ parameters:
         - message: '#Call to an undefined method EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\ReadListener\:\:initializeOperation\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php
 
-        - message: '#Method EonX\\EasyApiPlatform\\Filters\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Api\\IriConverterInterface but returns ApiPlatform\\Metadata\\IriConverterInterface#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filters/AdvancedSearchFilter.php
-
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
           path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
