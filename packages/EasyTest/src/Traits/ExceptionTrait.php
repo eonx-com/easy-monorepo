@@ -36,7 +36,7 @@ trait ExceptionTrait
             echo \PHP_EOL;
             echo Color::colorize(
                 'fg-red',
-                'Expected ' . $expectedException . ' but got ' . \get_class($this->thrownException)
+                'Expected ' . $expectedException . ' but got ' . $this->thrownException::class
             );
             echo \PHP_EOL;
 
