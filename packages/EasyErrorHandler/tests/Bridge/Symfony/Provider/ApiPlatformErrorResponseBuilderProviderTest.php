@@ -203,26 +203,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
             'exceptionMessage' => 'Invalid IRI "some invalid IRI".',
         ];
 
-        yield 'nested document' => [
-            'url' => '/books',
-            'json' => [
-                'title' => 'some title',
-                'description' => 'some description',
-                'weight' => 11,
-                'category' => [
-                    'name' => 'some name',
-                    'rank' => 10,
-                ],
-                'printingHouse' => '/printing-houses/1',
-            ],
-            'violations' => [
-                'category' => [
-                    'This value should be an IRI.',
-                ],
-            ],
-            'exceptionMessage' => 'Nested documents for attribute "category" are not allowed. Use IRIs instead.',
-        ];
-
         yield 'invalid IRI type when constructor parameter' => [
             'url' => '/books',
             'json' => [
@@ -362,6 +342,22 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
             'exceptionClass' => NotNormalizableValueException::class,
             'exceptionMessage' => 'The type of the "printingHouse" attribute must be "array" (nested document)' .
                 ' or "string" (IRI), "NULL" given.',
+        ];
+
+        yield 'nested document' => [
+            'url' => '/books',
+            'json' => [
+                'title' => 'some title',
+                'description' => 'some description',
+                'weight' => 11,
+                'category' => [
+                    'name' => 'some name',
+                    'rank' => 10,
+                ],
+                'printingHouse' => '/printing-houses/1',
+            ],
+            'exceptionClass' => NotNormalizableValueException::class,
+            'exceptionMessage' => 'Nested documents for attribute "category" are not allowed. Use IRIs instead.',
         ];
 
         yield 'default error when supported exception and unknown exception message' => [

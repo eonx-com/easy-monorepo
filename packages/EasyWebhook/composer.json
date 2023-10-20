@@ -19,8 +19,9 @@
         "illuminate/database": "^9.52",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3",
-        "symfony/uid": "^6.3"
+        "symfony/framework-bundle": "^6.3",
+        "symfony/uid": "^6.3",
+        "symfony/yaml": "^6.3"
     },
     "autoload": {
         "psr-4": {
