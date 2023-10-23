@@ -59,7 +59,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
         $this->loggerClass = $loggerClass ?? Logger::class;
 
         foreach ($lazyLoggers ?? [] as $channel) {
-            $this->lazyLoggers[$channel] = true;
+            $this->lazyLoggers[(string)$channel] = true;
         }
     }
 
@@ -160,11 +160,6 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
         return CollectorHelper::filterByClassAsArray($iterable, $class);
     }
 
-    private function isLazy(string $channel): bool
-    {
-        return (bool)($this->lazyLoggers['*'] ?? $this->lazyLoggers[$channel] ?? false);
-    }
-
     /**
      * @return \Monolog\Handler\HandlerInterface[]
      */
@@ -201,6 +196,11 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
             static fn (ProcessorConfigInterface $config): ProcessorInterface => $config->processor(),
             $configs
         );
+    }
+
+    private function isLazy(string $channel): bool
+    {
+        return $this->lazyLoggers['*'] ?? $this->lazyLoggers[$channel] ?? false;
     }
 
     /**

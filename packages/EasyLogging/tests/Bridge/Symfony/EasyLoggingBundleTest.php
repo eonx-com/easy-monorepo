@@ -5,13 +5,16 @@ namespace EonX\EasyLogging\Tests\Bridge\Symfony;
 
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LazyLoggerProxy;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
 {
     /**
-     * @return iterable<mixed>
+     * @return iterable<array>
+     *
+     * @see testSymfonyBundle
      */
     public static function providerTestSymfonyBundle(): iterable
     {
@@ -53,9 +56,8 @@ final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[]|null $configs
-     *
-     * @dataProvider providerTestSymfonyBundle
      */
+    #[DataProvider('providerTestSymfonyBundle')]
     public function testSymfonyBundle(callable $assertion, ?array $configs = null): void
     {
         $container = $this->getKernel($configs)

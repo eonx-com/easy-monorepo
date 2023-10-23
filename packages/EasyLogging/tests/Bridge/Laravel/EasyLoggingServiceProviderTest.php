@@ -42,17 +42,6 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
         $app->get(LoggerInterface::class);
     }
 
-    public function testLazyLoggersWildcard(): void
-    {
-        $app = $this->getApp([
-            'easy-logging.lazy_loggers' => ['*'],
-        ]);
-
-        $loggerFactory = $app->get(LoggerFactoryInterface::class);
-
-        self::assertInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('any'));
-    }
-
     public function testLazyLogger(): void
     {
         $app = $this->getApp([
@@ -63,6 +52,17 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 
         self::assertInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('lazy'));
         self::assertNotInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('any'));
+    }
+
+    public function testLazyLoggersWildcard(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.lazy_loggers' => ['*'],
+        ]);
+
+        $loggerFactory = $app->get(LoggerFactoryInterface::class);
+
+        self::assertInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('any'));
     }
 
     public function testSanity(): void

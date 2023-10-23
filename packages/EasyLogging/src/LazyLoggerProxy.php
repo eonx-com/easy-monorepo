@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyLogging;
@@ -7,6 +6,7 @@ namespace EonX\EasyLogging;
 use EonX\EasyLogging\Interfaces\LazyLoggerFactoryInterface;
 use Monolog\ResettableInterface;
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 final class LazyLoggerProxy implements LoggerInterface, ResettableInterface
 {
@@ -18,49 +18,49 @@ final class LazyLoggerProxy implements LoggerInterface, ResettableInterface
     ) {
     }
 
-    public function alert(string|\Stringable $message, ?array $context = null): void
+    public function alert(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->alert($message, $context ?? []);
     }
 
-    public function critical(string|\Stringable $message, ?array $context = null): void
+    public function critical(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->critical($message, $context ?? []);
     }
 
-    public function debug(string|\Stringable $message, ?array $context = null): void
+    public function debug(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->debug($message, $context ?? []);
     }
 
-    public function info(string|\Stringable $message, ?array $context = null): void
-    {
-        $this->getLogger()
-            ->info($message, $context ?? []);
-    }
-
-    public function emergency(string|\Stringable $message, ?array $context = null): void
+    public function emergency(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->emergency($message, $context ?? []);
     }
 
-    public function error(string|\Stringable $message, ?array $context = null): void
+    public function error(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->error($message, $context ?? []);
     }
 
-    public function log(mixed $level, string|\Stringable $message, ?array $context = null): void
+    public function info(string|Stringable $message, ?array $context = null): void
+    {
+        $this->getLogger()
+            ->info($message, $context ?? []);
+    }
+
+    public function log(mixed $level, string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->log($level, $message, $context ?? []);
     }
 
-    public function notice(string|\Stringable $message, ?array $context = null): void
+    public function notice(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->notice($message, $context ?? []);
@@ -70,7 +70,7 @@ final class LazyLoggerProxy implements LoggerInterface, ResettableInterface
     {
     }
 
-    public function warning(string|\Stringable $message, ?array $context = null): void
+    public function warning(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
             ->warning($message, $context ?? []);

@@ -68,7 +68,6 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
 
-
         foreach (self::AUTO_CONFIGS as $interface => $tag) {
             $builder->registerForAutoconfiguration($interface)
                 ->addTag($tag);
