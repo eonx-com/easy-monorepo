@@ -9,6 +9,8 @@ interface BridgeConstantsInterface
 
     public const PARAM_DEFAULT_CHANNEL = 'easy_logging.default_channel';
 
+    public const PARAM_LAZY_LOGGERS = 'easy_logging.lazy_loggers';
+
     public const PARAM_LOGGER_CLASS = 'easy_logging.logger_class';
 
     public const PARAM_SENSITIVE_DATA_SANITIZER_ENABLED = 'easy_logging.sensitive_data_sanitizer_enabled';

@@ -10,6 +10,11 @@ return [
     'default_channel' => LoggerFactoryInterface::DEFAULT_CHANNEL,
 
     /**
+     * Identify channels for lazy creation. "*" means all.
+     */
+    'lazy_loggers' => [],
+
+    /**
      * Enable/Disable the override of the default logger.
      */
     'override_default_logger' => true,

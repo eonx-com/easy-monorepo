@@ -5,6 +5,7 @@ namespace EonX\EasyLogging\Tests\Bridge\Laravel;
 
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use EonX\EasyLogging\LazyLoggerProxy;
 use Illuminate\Container\EntryNotFoundException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
@@ -39,6 +40,29 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
         ]);
 
         $app->get(LoggerInterface::class);
+    }
+
+    public function testLazyLoggersWildcard(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.lazy_loggers' => ['*'],
+        ]);
+
+        $loggerFactory = $app->get(LoggerFactoryInterface::class);
+
+        self::assertInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('any'));
+    }
+
+    public function testLazyLogger(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.lazy_loggers' => ['lazy'],
+        ]);
+
+        $loggerFactory = $app->get(LoggerFactoryInterface::class);
+
+        self::assertInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('lazy'));
+        self::assertNotInstanceOf(LazyLoggerProxy::class, $loggerFactory->create('any'));
     }
 
     public function testSanity(): void
