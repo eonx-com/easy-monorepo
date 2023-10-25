@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Bridge\Symfony;
 
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
+use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\AddDoctrineDbalConnectionNameToParamsPass;
@@ -127,7 +128,12 @@ final class EasySwooleSymfonyBundle extends AbstractBundle
                     ->set($param, $config['easy_batch'][$configName]);
             }
         }
-
+        
+        if (($config['easy_bugsnag']['enabled'] ?? true)
+            && \interface_exists(ClientConfiguratorInterface::class)) {
+            $container->import(__DIR__ . '/Resources/config/easy_bugsnag.php');
+        }
+      
         if (($config['easy_logging']['enabled'] ?? true)
             && \interface_exists(ProcessorConfigProviderInterface::class)) {
             $container->import(__DIR__ . '/Resources/config/easy_logging.php');
