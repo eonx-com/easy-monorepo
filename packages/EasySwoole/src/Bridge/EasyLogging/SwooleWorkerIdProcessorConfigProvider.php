@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class SwooleWorkerIdProcessorConfigProvider extends AbstractSelfProcessorConfigProvider
 {
     public function __construct(
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
     ) {
     }
 
