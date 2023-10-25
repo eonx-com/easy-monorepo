@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Runtime;
 
+use Carbon\CarbonImmutable;
 use EonX\EasySwoole\Helpers\CacheTableHelper;
 use EonX\EasySwoole\Helpers\HttpFoundationHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
@@ -42,6 +43,11 @@ final class EasySwooleRunner implements RunnerInterface
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
+                $hfRequest->attributes->set(
+                    RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME,
+                    CarbonImmutable::now('UTC')
+                );
+                $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID, $server->getWorkerId());
 
                 // Surround handle with output buffering to support echo, var_dump, etc
                 \ob_start();
