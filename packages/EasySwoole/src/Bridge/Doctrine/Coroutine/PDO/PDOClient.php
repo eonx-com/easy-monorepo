@@ -61,6 +61,8 @@ final class PDOClient extends BasePDOClient
             throw new RuntimeException(\sprintf('Driver "%s" not supported', $params['driver']));
         }
 
+        $config->getLogger()?->debug('Making new Coroutine PDO Client', ['params' => $params]);
+
         $pdoDsnFactory = new ReflectionMethod($driverClass, 'constructPdoDsn');
         $pdoDsn = $pdoDsnFactory->invoke(new $driverClass(), $params);
 

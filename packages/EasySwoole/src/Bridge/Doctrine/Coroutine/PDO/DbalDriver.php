@@ -11,6 +11,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\Enum\CoroutinePdoDriverOption;
+use Psr\Log\LoggerInterface;
 use SensitiveParameter;
 
 final class DbalDriver implements Driver
@@ -23,6 +24,7 @@ final class DbalDriver implements Driver
         private readonly bool $defaultHeartbeat,
         private readonly float $defaultMaxIdleTime,
         private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
+        private readonly ?LoggerInterface $logger = null,
     ) {
     }
 
@@ -42,9 +44,11 @@ final class DbalDriver implements Driver
 
         $pool = $_SERVER[$poolName] ?? null;
         if ($pool === null) {
+            $this->logger?->debug(\sprintf('Coroutine PDO Pool "%s" not found, instantiating new one', $poolName));
+
             $pool = new PDOClientPool(
                 factory: new PDOClientFactory(),
-                config: new PDOClientConfig($params, $this->connectionParamsResolver),
+                config: new PDOClientConfig($params, $this->connectionParamsResolver, $this->logger),
                 size: $poolSize ?? $this->defaultPoolSize,
                 heartbeat: $poolHeartbeat ?? $this->defaultHeartbeat,
                 maxIdleTime: $poolMaxIdleTime ?? $this->defaultMaxIdleTime,
