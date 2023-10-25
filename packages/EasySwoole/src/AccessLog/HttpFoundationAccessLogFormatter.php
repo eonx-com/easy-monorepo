@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\AccessLog;
 
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use EonX\EasySwoole\Interfaces\HttpFoundationAccessLogFormatterInterface;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +28,7 @@ final class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogF
         if ($startTime instanceof CarbonImmutable) {
             $accessLog .= \sprintf(
                 ' - ReceivedAt: %s (%sms)',
-                $startTime->format(DateTimeInterface::RFC3339),
+                $startTime->toRfc3339String(),
                 $startTime->diffInMilliseconds(CarbonImmutable::now('UTC'))
             );
         }
