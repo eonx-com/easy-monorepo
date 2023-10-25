@@ -47,6 +47,7 @@ final class EasySwooleRunner implements RunnerInterface
                     RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME,
                     CarbonImmutable::now('UTC')
                 );
+                $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID, $server->getWorkerId());
 
                 // Surround handle with output buffering to support echo, var_dump, etc
                 \ob_start();

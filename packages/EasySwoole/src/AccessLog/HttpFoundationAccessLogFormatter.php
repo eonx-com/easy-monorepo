@@ -14,19 +14,8 @@ final class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogF
 {
     public function formatAccessLog(Request $request, Response $response): string
     {
-        $durationInMs = '';
-        $startTime = $request->attributes->get(RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME);
-
-        if ($startTime instanceof CarbonImmutable) {
-            $durationInMs = \sprintf(
-                ' - ReceivedAt: %s (%sms)',
-                $startTime->format(DateTimeInterface::RFC3339),
-                $startTime->diffInMilliseconds(CarbonImmutable::now('UTC'))
-            );
-        }
-
-        return \sprintf(
-            '%s - "%s %s%s %s" %d "%s"%s',
+        $accessLog = \sprintf(
+            '%s - "%s %s%s %s" %d "%s"',
             $request->getClientIp(),
             $request->getMethod(),
             $request->getPathInfo(),
@@ -34,7 +23,22 @@ final class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogF
             $request->getProtocolVersion(),
             $response->getStatusCode(),
             $request->headers->get('user-agent', '<no_user_agent>'),
-            $durationInMs
         );
+
+        $startTime = $request->attributes->get(RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME);
+        if ($startTime instanceof CarbonImmutable) {
+            $accessLog .= \sprintf(
+                ' - ReceivedAt: %s (%sms)',
+                $startTime->format(DateTimeInterface::RFC3339),
+                $startTime->diffInMilliseconds(CarbonImmutable::now('UTC'))
+            );
+        }
+
+        $workerId = $request->attributes->get(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID);
+        if (\is_int($workerId)) {
+            $accessLog .= \sprintf(' | SwooleWorker: %d', $workerId);
+        }
+
+        return $accessLog;
     }
 }
