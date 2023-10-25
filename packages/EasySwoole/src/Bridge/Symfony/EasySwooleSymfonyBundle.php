@@ -128,12 +128,12 @@ final class EasySwooleSymfonyBundle extends AbstractBundle
                     ->set($param, $config['easy_batch'][$configName]);
             }
         }
-        
+
         if (($config['easy_bugsnag']['enabled'] ?? true)
             && \interface_exists(ClientConfiguratorInterface::class)) {
             $container->import(__DIR__ . '/Resources/config/easy_bugsnag.php');
         }
-      
+
         if (($config['easy_logging']['enabled'] ?? true)
             && \interface_exists(ProcessorConfigProviderInterface::class)) {
             $container->import(__DIR__ . '/Resources/config/easy_logging.php');
