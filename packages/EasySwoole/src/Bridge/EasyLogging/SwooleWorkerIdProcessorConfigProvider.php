@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\EasyLogging;
@@ -10,8 +9,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class SwooleWorkerIdProcessorConfigProvider extends AbstractSelfProcessorConfigProvider
 {
-    public function __construct(private readonly RequestStack $requestStack)
-    {
+    public function __construct(
+        private readonly RequestStack $requestStack
+    ) {
     }
 
     /**
