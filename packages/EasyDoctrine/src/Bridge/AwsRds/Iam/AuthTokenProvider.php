@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\Bridge\AwsRds\Iam;
 use Aws\Credentials\CredentialProvider;
 use Aws\Rds\AuthTokenGenerator;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsOptionsInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -21,6 +22,7 @@ final class AuthTokenProvider
         private readonly string $awsRegion,
         private readonly int $authTokenLifetimeInMinutes,
         private readonly CacheInterface $cache,
+        private readonly ?LoggerInterface $logger = null,
     ) {
         $this->authTokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
     }
@@ -40,14 +42,24 @@ final class AuthTokenProvider
         )));
 
         return $this->cache->get($key, function (ItemInterface $item) use ($params, $region): string {
-            $item->expiresAfter(($this->authTokenLifetimeInMinutes * 60) - 30);
+            $expiresAfter = ($this->authTokenLifetimeInMinutes * 60) - 30;
 
-            return $this->authTokenGenerator->createToken(
+            $this->logger?->debug('Generating a new AWS RDS IAM auth token', [
+                'expiresAfter' => $expiresAfter,
+            ]);
+
+            $item->expiresAfter($expiresAfter);
+
+            $authToken = $this->authTokenGenerator->createToken(
                 \sprintf('%s:%s', $params['host'], $params['port']),
                 $region,
                 $params['user'],
                 $this->authTokenLifetimeInMinutes
             );
+
+            $this->logger?->debug('The new AWS RDS IAM auth token has been generated');
+
+            return $authToken;
         });
     }
 }

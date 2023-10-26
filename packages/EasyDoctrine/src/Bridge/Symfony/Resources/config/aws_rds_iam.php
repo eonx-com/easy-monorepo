@@ -5,6 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
 use EonX\EasyDoctrine\Bridge\BridgeConstantsInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -23,5 +24,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '$authTokenLifetimeInMinutes',
             param(BridgeConstantsInterface::PARAM_AWS_RDS_IAM_AUTH_TOKEN_LIFETIME_IN_MINUTES)
         )
-        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AWS_RDS_IAM_CACHE));
+        ->arg('$cache', service(BridgeConstantsInterface::SERVICE_AWS_RDS_IAM_CACHE))
+        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
 };
