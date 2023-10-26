@@ -8,6 +8,7 @@ use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
+use EonX\EasyLogging\Interfaces\LazyLoggerFactoryInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyUtils\Helpers\CollectorHelper;
 use Monolog\Handler\HandlerInterface;
@@ -16,7 +17,7 @@ use Monolog\Logger;
 use Monolog\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 
-final class LoggerFactory implements LoggerFactoryInterface
+final class LoggerFactory implements LazyLoggerFactoryInterface
 {
     private string $defaultChannel;
 
@@ -24,6 +25,16 @@ final class LoggerFactory implements LoggerFactoryInterface
      * @var \EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface[]
      */
     private array $handlerConfigs = [];
+
+    /**
+     * @var array<string, bool>
+     */
+    private array $initiatedLazyLoggers = [];
+
+    /**
+     * @var array<string, bool>
+     */
+    private array $lazyLoggers = [];
 
     private string $loggerClass;
 
@@ -42,10 +53,14 @@ final class LoggerFactory implements LoggerFactoryInterface
      */
     private array $processorConfigs = [];
 
-    public function __construct(?string $defaultChannel = null, ?string $loggerClass = null)
+    public function __construct(?string $defaultChannel = null, ?string $loggerClass = null, ?array $lazyLoggers = null)
     {
         $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
         $this->loggerClass = $loggerClass ?? Logger::class;
+
+        foreach ($lazyLoggers ?? [] as $channel) {
+            $this->lazyLoggers[(string)$channel] = true;
+        }
     }
 
     public function create(?string $channel = null): LoggerInterface
@@ -54,6 +69,10 @@ final class LoggerFactory implements LoggerFactoryInterface
 
         if (isset($this->loggers[$channel])) {
             return $this->loggers[$channel];
+        }
+
+        if ($this->isLazy($channel) && isset($this->initiatedLazyLoggers[$channel]) === false) {
+            return new LazyLoggerProxy($this, $channel);
         }
 
         $loggerClass = $this->loggerClass;
@@ -66,6 +85,13 @@ final class LoggerFactory implements LoggerFactoryInterface
         }
 
         return $this->loggers[$channel] = $logger;
+    }
+
+    public function initLazyLogger(string $channel): LazyLoggerFactoryInterface
+    {
+        $this->initiatedLazyLoggers[$channel] = true;
+
+        return $this;
     }
 
     public function setHandlerConfigProviders(iterable $handlerConfigProviders): LoggerFactoryInterface
@@ -170,6 +196,11 @@ final class LoggerFactory implements LoggerFactoryInterface
             static fn (ProcessorConfigInterface $config): ProcessorInterface => $config->processor(),
             $configs
         );
+    }
+
+    private function isLazy(string $channel): bool
+    {
+        return $this->lazyLoggers['*'] ?? $this->lazyLoggers[$channel] ?? false;
     }
 
     /**

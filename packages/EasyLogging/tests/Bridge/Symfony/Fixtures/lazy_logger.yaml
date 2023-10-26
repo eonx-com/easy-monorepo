@@ -1,0 +1,3 @@
+easy_logging:
+    lazy_loggers:
+        - 'lazy'
