@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^5.7",
+        "eonx-com/easy-logging": "^5.7",
         "monolog/monolog": "^2.9",
         "openswoole/ide-helper": "^22.0",
         "phpunit/phpunit": "^10.2",
