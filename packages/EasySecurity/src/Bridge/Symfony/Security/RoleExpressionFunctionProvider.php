@@ -9,6 +9,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Throwable;
+use UnitEnum;
 
 final class RoleExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -45,7 +46,13 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                         $constant = \sprintf('%s::%s', $location, $role);
 
                         try {
-                            $this->cached[$role] = \constant($constant);
+                            $value = \constant($constant);
+
+                            if ($value instanceof UnitEnum) {
+                                $value = $value->value;
+                            }
+
+                            $this->cached[$role] = $value;
 
                             return $this->cached[$role];
                         } catch (Throwable) {

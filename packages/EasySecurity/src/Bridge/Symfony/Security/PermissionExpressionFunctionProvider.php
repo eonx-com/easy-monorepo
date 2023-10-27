@@ -9,6 +9,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Throwable;
+use UnitEnum;
 
 final class PermissionExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -42,7 +43,13 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                         $constant = \sprintf('%s::%s', $location, $permission);
 
                         try {
-                            return \constant($constant);
+                            $value = \constant($constant);
+
+                            if ($value instanceof UnitEnum) {
+                                return $value->value;
+                            }
+
+                            return $value;
                         } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
