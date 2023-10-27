@@ -24,8 +24,6 @@ final class PermissionExpressionFunctionProviderTest extends AbstractTestCase
     {
         $function = (new PermissionExpressionFunctionProvider([PermissionEnum::class]))->getFunctions()[0];
 
-        $enum = PermissionEnum::PermissionValid;
-
         self::assertSame(PermissionEnum::PermissionValid->value, $function->getEvaluator()([], 'PermissionValid'));
         // Using cached permission
         self::assertSame(PermissionEnum::PermissionValid->value, $function->getEvaluator()([], 'PermissionValid'));
