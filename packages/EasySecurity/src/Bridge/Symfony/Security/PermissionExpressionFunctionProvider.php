@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
+use BackedEnum;
 use EonX\EasySecurity\Bridge\Symfony\Exceptions\PermissionConstantNotFoundException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Throwable;
-use UnitEnum;
 
 final class PermissionExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -45,11 +45,13 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                         try {
                             $value = \constant($constant);
 
-                            if ($value instanceof UnitEnum) {
-                                return $value->value;
+                            if ($value instanceof BackedEnum) {
+                                $value = $value->value;
                             }
 
-                            return $value;
+                            $this->cached[$permission] = $value;
+
+                            return $this->cached[$permission];
                         } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }

@@ -11,20 +11,44 @@ final class PermissionExpressionFunctionProviderTest extends AbstractTestCase
 {
     public const PERMISSION_VALID = 'permission';
 
-    public function testPermissionExpressionFunctionFound(): void
+    public function testPermissionExpressionFunctionFoundWithConstant(): void
     {
         $function = (new PermissionExpressionFunctionProvider([self::class]))->getFunctions()[0];
 
-        self::assertEquals(self::PERMISSION_VALID, $function->getEvaluator()([], 'PERMISSION_VALID'));
+        self::assertSame(self::PERMISSION_VALID, $function->getEvaluator()([], 'PERMISSION_VALID'));
         // Using cached permission
-        self::assertEquals(self::PERMISSION_VALID, $function->getEvaluator()([], 'PERMISSION_VALID'));
+        self::assertSame(self::PERMISSION_VALID, $function->getEvaluator()([], 'PERMISSION_VALID'));
     }
 
-    public function testPermissionExpressionFunctionNotFound(): void
+    public function testPermissionExpressionFunctionNotFoundWithConstant(): void
     {
         $this->expectException(PermissionConstantNotFoundException::class);
 
         $function = (new PermissionExpressionFunctionProvider([self::class]))->getFunctions()[0];
         $function->getEvaluator()([], 'PERMISSION_INVALID');
     }
+
+    public function testPermissionExpressionFunctionFoundWithEnum(): void
+    {
+        $function = (new PermissionExpressionFunctionProvider([PermissionEnum::class]))->getFunctions()[0];
+
+        $enum = PermissionEnum::PermissionValid;
+
+        self::assertSame(PermissionEnum::PermissionValid->value, $function->getEvaluator()([], 'PermissionValid'));
+        // Using cached permission
+        self::assertSame(PermissionEnum::PermissionValid->value, $function->getEvaluator()([], 'PermissionValid'));
+    }
+
+    public function testPermissionExpressionFunctionNotFoundWithEnum(): void
+    {
+        $this->expectException(PermissionConstantNotFoundException::class);
+
+        $function = (new PermissionExpressionFunctionProvider([PermissionEnum::class]))->getFunctions()[0];
+        $function->getEvaluator()([], 'PermissionInvalid');
+    }
+}
+
+enum PermissionEnum: string
+{
+    case PermissionValid = 'permission';
 }

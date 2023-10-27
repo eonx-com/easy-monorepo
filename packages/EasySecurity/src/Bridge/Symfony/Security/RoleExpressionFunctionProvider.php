@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
+use BackedEnum;
 use EonX\EasySecurity\Bridge\Symfony\Exceptions\RoleConstantNotFoundException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Throwable;
-use UnitEnum;
 
 final class RoleExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
@@ -48,7 +48,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                         try {
                             $value = \constant($constant);
 
-                            if ($value instanceof UnitEnum) {
+                            if ($value instanceof BackedEnum) {
                                 $value = $value->value;
                             }
 
