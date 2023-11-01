@@ -8,8 +8,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-event-dispatcher": "^5.6.6",
-        "eonx-com/easy-utils": "^5.6.6",
+        "eonx-com/easy-event-dispatcher": "^5.7",
+        "eonx-com/easy-utils": "^5.7",
         "myclabs/deep-copy": "^1.11",
         "nesbot/carbon": "^2.67"
     },
@@ -19,8 +19,8 @@
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-error-handler": "^5.6.6",
-        "eonx-com/easy-test": "^5.6.6",
+        "eonx-com/easy-error-handler": "^5.7",
+        "eonx-com/easy-test": "^5.7",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
