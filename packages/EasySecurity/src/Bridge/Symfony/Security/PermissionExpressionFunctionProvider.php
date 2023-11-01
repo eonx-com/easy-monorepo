@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\Security;
 
+use BackedEnum;
 use EonX\EasySecurity\Bridge\Symfony\Exceptions\PermissionConstantNotFoundException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -42,7 +43,15 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                         $constant = \sprintf('%s::%s', $location, $permission);
 
                         try {
-                            return \constant($constant);
+                            $value = \constant($constant);
+
+                            if ($value instanceof BackedEnum) {
+                                $value = $value->value;
+                            }
+
+                            $this->cached[$permission] = $value;
+
+                            return $this->cached[$permission];
                         } catch (Throwable) {
                             $this->logger->info(\sprintf('Constant "%s" not found', $constant));
                         }
