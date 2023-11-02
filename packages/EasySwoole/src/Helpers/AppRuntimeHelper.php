@@ -20,6 +20,11 @@ final class AppRuntimeHelper
         );
     }
 
+    public static function enableAppCacheWarmup(): void
+    {
+        self::addOptions(['app_cache_warmup_enabled' => true]);
+    }
+
     public static function enableEasyScheduleRunner(): void
     {
         self::addOptions([EasyScheduleSwooleRunner::ENABLED => true]);
