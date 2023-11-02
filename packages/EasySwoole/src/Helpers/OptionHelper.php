@@ -10,6 +10,7 @@ final class OptionHelper
     private const DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
 
     private const DEFAULT_OPTIONS = [
+        'app_cache_warmup_enabled' => false,
         'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
         'cache_tables' => [],
         'callbacks' => [],
