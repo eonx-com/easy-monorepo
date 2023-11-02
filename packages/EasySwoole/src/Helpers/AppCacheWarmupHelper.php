@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasySwoole\Helpers;
@@ -7,6 +6,7 @@ namespace EonX\EasySwoole\Helpers;
 use Symfony\Bundle\FrameworkBundle\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Throwable;
 
 final class AppCacheWarmupHelper
 {
@@ -14,7 +14,7 @@ final class AppCacheWarmupHelper
     {
         try {
             self::doWarmupCache($application);
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             OutputHelper::writeln(\sprintf('Cache warmup failed: %s', $throwable->getMessage()));
         }
     }
