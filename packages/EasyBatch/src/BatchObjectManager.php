@@ -202,7 +202,10 @@ final class BatchObjectManager implements BatchObjectManagerInterface
     }
 
     /**
+     * @throws \EonX\EasyBatch\Exceptions\BatchItemNotFoundException
+     * @throws \EonX\EasyBatch\Exceptions\BatchNotFoundException
      * @throws \EonX\EasyBatch\Exceptions\BatchObjectIdRequiredException
+     * @throws \EonX\EasyBatch\Exceptions\BatchObjectNotSupportedException
      */
     public function dispatchBatch(BatchInterface $batch, ?callable $beforeFirstDispatch = null): BatchInterface
     {
@@ -216,6 +219,11 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         // Dispatch each item individually
         $this->batchItemDispatcher->dispatchItemsForBatch($this, $batch);
+
+        // Allow to dispatch a batch with no item, and trigger all completed logic as expected
+        if ($batch->countTotal() === 0) {
+            $batch = $this->approve($batch);
+        }
 
         return $batch;
     }
