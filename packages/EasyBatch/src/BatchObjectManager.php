@@ -222,6 +222,7 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         // Allow to dispatch a batch with no item, and trigger all completed logic as expected
         if ($batch->countTotal() === 0) {
+            /** @var \EonX\EasyBatch\Interfaces\BatchInterface $batch */
             $batch = $this->approve($batch);
         }
 
