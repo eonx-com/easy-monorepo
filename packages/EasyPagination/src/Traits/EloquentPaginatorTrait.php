@@ -85,7 +85,6 @@ trait EloquentPaginatorTrait
         // Apply pagination and criteria to get primary keys only for current page, and criteria
         $this->applyCommonCriteria($primaryKeyQueryBuilder);
         $this->applyFilterCriteria($primaryKeyQueryBuilder);
-        $this->applyGetItemsCriteria($primaryKeyQueryBuilder);
         $this->applyPagination($primaryKeyQueryBuilder);
 
         $primaryKeyIndex = $this->getPrimaryKeyIndexWithDefault();

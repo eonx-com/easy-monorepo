@@ -92,7 +92,6 @@ trait DoctrineCommonPaginatorTrait
         // Fetch PrimaryKey for current page, and all criteria
         $this->applyCommonCriteria($fetchPrimaryKeysQueryBuilder);
         $this->applyFilterCriteria($fetchPrimaryKeysQueryBuilder);
-        $this->applyGetItemsCriteria($fetchPrimaryKeysQueryBuilder);
         $this->applyPagination($fetchPrimaryKeysQueryBuilder);
 
         // Override select to fetch only primary key
