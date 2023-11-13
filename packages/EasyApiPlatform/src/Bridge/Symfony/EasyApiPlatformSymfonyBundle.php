@@ -6,6 +6,7 @@ namespace EonX\EasyApiPlatform\Bridge\Symfony;
 use EonX\EasyApiPlatform\Bridge\BridgeConstantsInterface;
 use EonX\EasyApiPlatform\Bridge\Symfony\DependencyInjection\Compiler\ReadListenerCompilerPass;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -57,5 +58,16 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
         if ($config['custom_paginator_enabled'] ?? true) {
             $container->import(__DIR__ . '/Resources/config/pagination.php');
         }
+    }
+
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        $viewFileLocator = (new FileLocator(__DIR__ . '/Resources/views/bundles'));
+
+        $builder->prependExtensionConfig('twig', [
+            'paths' => [
+                $viewFileLocator->locate('ApiPlatformBundle') => 'ApiPlatform',
+            ],
+        ]);
     }
 }
