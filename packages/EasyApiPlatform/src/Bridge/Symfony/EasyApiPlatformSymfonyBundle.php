@@ -62,12 +62,12 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $viewFileLocator = (new FileLocator(__DIR__ . '/Resources/views/bundles'));
+        /** @var string $apiPlatformBundleViewsFolder */
+        $apiPlatformBundleViewsFolder = (new FileLocator(__DIR__ . '/Resources/views/bundles'))
+            ->locate('ApiPlatformBundle');
 
         $builder->prependExtensionConfig('twig', [
-            'paths' => [
-                $viewFileLocator->locate('ApiPlatformBundle') => 'ApiPlatform',
-            ],
+            'paths' => [$apiPlatformBundleViewsFolder => 'ApiPlatform'],
         ]);
     }
 }

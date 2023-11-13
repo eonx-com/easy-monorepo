@@ -3,5 +3,5 @@
 {% set showWebby = false %}
 
 {% block title %}
-    <title>{% if title %}{{ title }}{% elseif %}OpenAPI Documentation{% endif %}</title>
+    <title>{% if title %}{{ title }}{% else %}OpenAPI Documentation{% endif %}</title>
 {% endblock %}
