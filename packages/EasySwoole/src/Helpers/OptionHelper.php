@@ -33,6 +33,7 @@ final class OptionHelper
         'mode' => 1,
         'port' => 8080,
         'response_chunk_size' => 1_048_576,
+        'schedule_sleep' => 30,
         'settings' => [],
         'sock_type' => 1,
         'use_default_callbacks' => true,
