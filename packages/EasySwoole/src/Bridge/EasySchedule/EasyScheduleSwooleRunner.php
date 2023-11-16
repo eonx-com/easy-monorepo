@@ -56,6 +56,8 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
 
             // Run schedule only once per minute
             if ($lastRun === $now) {
+                sleep(50);
+
                 return;
             }
 
