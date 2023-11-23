@@ -7,6 +7,8 @@ use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler\DefaultStreamHandlerPass;
 use EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler\ReplaceChannelsDefinitionPass;
 use EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler\SensitiveDataSanitizerCompilerPass;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagMonologHandler;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
 use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
@@ -18,6 +20,8 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 final class EasyLoggingSymfonyBundle extends AbstractBundle
 {
@@ -83,5 +87,13 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
                 BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
                 $config['sensitive_data_sanitizer']['enabled'] ?? false
             );
+
+        if ($config['bugsnag_handler'] ?? false) {
+            $container
+                ->services()
+                ->set(BugsnagMonologHandler::class)
+                    ->arg('$bugsnagSeverityResolver', service(DefaultBugsnagSeverityResolverInterface::class))
+                    ->arg('$level', $config['bugsnag_handler_level']);
+        }
     }
 }

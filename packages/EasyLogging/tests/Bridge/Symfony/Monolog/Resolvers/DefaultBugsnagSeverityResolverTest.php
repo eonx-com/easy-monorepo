@@ -12,11 +12,11 @@ final class DefaultBugsnagSeverityResolverTest extends AbstractSymfonyTestCase
 {
     public static function provideLevels(): iterable
     {
-        yield 'debug' => [Logger::DEBUG, 'warning'];
-        yield 'info' => [Logger::INFO, 'warning'];
-        yield 'notice' => [Logger::NOTICE, 'warning'];
-        yield 'warning' => [Logger::WARNING, 'warning'];
-        yield 'error' => [Logger::ERROR, 'error'];
+        yield 'debug' => [Logger::DEBUG, 'info'];
+        yield 'info' => [Logger::INFO, 'info'];
+        yield 'notice' => [Logger::NOTICE, 'info'];
+        yield 'warning' => [Logger::WARNING, 'info'];
+        yield 'error' => [Logger::ERROR, 'warning'];
         yield 'critical' => [Logger::CRITICAL, 'error'];
         yield 'alert' => [Logger::ALERT, 'error'];
         yield 'emergency' => [Logger::EMERGENCY, 'error'];

@@ -10,8 +10,9 @@ final class DefaultBugsnagSeverityResolver implements DefaultBugsnagSeverityReso
     public function resolve(int $level): string
     {
         return match (true) {
-            $level >= Logger::ERROR => self::SEVERITY_ERROR,
-            default => self::SEVERITY_WARNING
+            $level >= Logger::CRITICAL => self::SEVERITY_ERROR,
+            $level >= Logger::ERROR => self::SEVERITY_WARNING,
+            default => self::SEVERITY_INFO
         };
     }
 }

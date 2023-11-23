@@ -6,21 +6,17 @@ namespace EonX\EasyLogging\Tests\Bridge\Symfony\Monolog\Handlers;
 use Bugsnag\Client;
 use Bugsnag\Configuration;
 use DateTimeImmutable;
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagHandler;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagMonologHandler;
 use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolver;
 use EonX\EasyLogging\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Monolog\Formatter\LineFormatter;
-use Symfony\Component\DependencyInjection\Container;
 
 final class BugsnagHandlerTest extends AbstractSymfonyTestCase
 {
     public function testItSucceeds(): void
     {
         $client = new Client(new Configuration('some-api-key'));
-        $container = new Container();
-        $container->set(Client::class, $client);
-        $sut = new BugsnagHandler(new DefaultBugsnagSeverityResolver());
-        $sut->setContainer($container);
+        $sut = new BugsnagMonologHandler(new DefaultBugsnagSeverityResolver(), $client);
         $sut->setFormatter(new LineFormatter('formatted'));
 
         $sut->handle([
@@ -34,15 +30,41 @@ final class BugsnagHandlerTest extends AbstractSymfonyTestCase
             'message' => 'message',
         ]);
 
-        $reports = $this->getPrivatePropertyValue(
-            $this->getPrivatePropertyValue($client, 'http'),
+        $reports = self::getPrivatePropertyValue(
+            self::getPrivatePropertyValue($client, 'http'),
             'queue'
         );
         self::assertCount(1, $reports);
         /** @var \Bugsnag\Report $report */
         $report = $reports[0];
-        self::assertSame('warning', $report->getSeverity());
+        self::assertSame('info', $report->getSeverity());
         self::assertSame('message', $report->getName());
         self::assertSame('formatted', $report->getMessage());
+    }
+
+    public function testItSucceedsAndDoNothingWithExceptionHandledByEasyErrorHandler(): void
+    {
+        $client = new Client(new Configuration('some-api-key'));
+        $sut = new BugsnagMonologHandler(new DefaultBugsnagSeverityResolver(), $client);
+        $sut->setFormatter(new LineFormatter('formatted'));
+
+        $sut->handle([
+            'channel' => 'app',
+            'context' => [
+                'exception_handled_by_easy_error_handler' => ['foo' => 'bar'],
+            ],
+            'datetime' => new DateTimeImmutable(),
+            'extra' => [],
+            'formatted' => 'formatted',
+            'level' => 300,
+            'level_name' => 'WARNING',
+            'message' => 'message',
+        ]);
+
+        $reports = self::getPrivatePropertyValue(
+            self::getPrivatePropertyValue($client, 'http'),
+            'queue'
+        );
+        self::assertEmpty($reports);
     }
 }

@@ -8,11 +8,9 @@ use Bugsnag\Report;
 use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
-final class BugsnagHandler extends AbstractProcessingHandler implements ServiceSubscriberInterface
+final class BugsnagMonologHandler extends AbstractProcessingHandler
 {
     use ServiceSubscriberTrait;
 
@@ -21,22 +19,21 @@ final class BugsnagHandler extends AbstractProcessingHandler implements ServiceS
      */
     public function __construct(
         private DefaultBugsnagSeverityResolverInterface $bugsnagSeverityResolver,
+        private Client $bugsnagClient,
         $level = null,
         ?bool $bubble = null,
     ) {
         parent::__construct($level ?? Logger::WARNING, $bubble ?? true);
     }
 
-    #[SubscribedService(key: Client::class)]
-    public function getBugsnagClient(): Client
-    {
-        return $this->container->get(Client::class);
-    }
-
     protected function write(array $record): void
     {
+        if (isset($record['context']['exception_handled_by_easy_error_handler'])) {
+            return;
+        }
+
         $severity = $this->bugsnagSeverityResolver->resolve((int)$record['level']);
-        $this->getBugsnagClient()
+        $this->bugsnagClient
             ->notifyError(
                 (string)$record['message'],
                 (string)$record['formatted'],
