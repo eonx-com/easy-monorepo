@@ -11,8 +11,10 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\Enum\CoroutinePdoDriverOption;
+use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Psr\Log\LoggerInterface;
 use SensitiveParameter;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class DbalDriver implements Driver
 {
@@ -23,6 +25,7 @@ final class DbalDriver implements Driver
         private readonly int $defaultPoolSize,
         private readonly bool $defaultHeartbeat,
         private readonly float $defaultMaxIdleTime,
+        private readonly RequestStack $requestStack,
         private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
         private readonly ?LoggerInterface $logger = null,
     ) {
@@ -30,6 +33,13 @@ final class DbalDriver implements Driver
 
     public function connect(#[SensitiveParameter] array $params): DriverConnection
     {
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true) {
+            $params = $this->connectionParamsResolver?->getParams($params) ?? $params;
+
+            return $this->decorated->connect($params);
+        }
+
         $poolName = \sprintf(self::POOL_NAME_PATTERN, $this->getOption(CoroutinePdoDriverOption::PoolName, $params));
         $poolSize = $this->getOption(CoroutinePdoDriverOption::PoolSize, $params);
         $poolHeartbeat = $this->getOption(CoroutinePdoDriverOption::PoolHeartbeat, $params);
