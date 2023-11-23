@@ -8,12 +8,9 @@ use Bugsnag\Report;
 use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 final class BugsnagMonologHandler extends AbstractProcessingHandler
 {
-    use ServiceSubscriberTrait;
-
     /**
      * @inheritdoc
      */
