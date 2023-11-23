@@ -8,7 +8,6 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
-use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -42,16 +41,12 @@ final class CoroutineConnectionFactory extends ConnectionFactory
     ): Connection {
         $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
 
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true) {
-            return $connection;
-        }
-
         $driver = new DbalDriver(
             $connection->getDriver(),
             $this->defaultPoolSize,
             $this->defaultHeartbeat,
             $this->defaultMaxIdleTime,
+            $this->requestStack,
             $this->connectionParamsResolver,
             $this->logger
         );
