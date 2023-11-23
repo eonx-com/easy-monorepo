@@ -8,6 +8,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
@@ -35,6 +36,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(Environment::class, new Definition(Environment::class, [
             '$loader' => new Definition(ArrayLoader::class),
         ]));
+        $container->setDefinition(RequestStack::class, new Definition(RequestStack::class));
 
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);

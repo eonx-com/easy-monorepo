@@ -8,7 +8,7 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
-use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CoroutineConnectionFactory extends ConnectionFactory
@@ -20,6 +20,7 @@ final class CoroutineConnectionFactory extends ConnectionFactory
         private readonly bool $defaultHeartbeat,
         private readonly float $defaultMaxIdleTime,
         private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
+        private readonly ?LoggerInterface $logger = null,
     ) {
         // Call parent constructor with empty values as we only extend the factory from
         // doctrine bundle as it does not implement an interface allowing us to have multiple decoration
@@ -40,17 +41,14 @@ final class CoroutineConnectionFactory extends ConnectionFactory
     ): Connection {
         $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
 
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true) {
-            return $connection;
-        }
-
         $driver = new DbalDriver(
             $connection->getDriver(),
             $this->defaultPoolSize,
             $this->defaultHeartbeat,
             $this->defaultMaxIdleTime,
+            $this->requestStack,
             $this->connectionParamsResolver,
+            $this->logger
         );
 
         foreach ($config?->getMiddlewares() ?? [] as $middleware) {

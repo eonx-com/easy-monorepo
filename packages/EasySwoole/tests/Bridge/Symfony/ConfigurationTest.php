@@ -34,6 +34,12 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
             'enabled' => true,
             'reset_batch_processor' => true,
         ],
+        'easy_bugsnag' => [
+            'enabled' => true,
+        ],
+        'easy_logging' => [
+            'enabled' => true,
+        ],
         'request_limits' => [
             'enabled' => true,
             'min' => 5000,

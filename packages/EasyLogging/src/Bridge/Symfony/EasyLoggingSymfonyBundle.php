@@ -55,38 +55,32 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
     {
         $container->import(__DIR__ . '/Resources/config/services.php');
 
-        $container
-            ->parameters()
-            ->set(
-                BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL,
-                $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
-            );
+        $params = $container->parameters();
 
-        $container
-            ->parameters()
-            ->set(
-                BridgeConstantsInterface::PARAM_LOGGER_CLASS,
-                \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class
-            );
+        $params->set(BridgeConstantsInterface::PARAM_LAZY_LOGGERS, $config['lazy_loggers'] ?? []);
 
-        $container
-            ->parameters()
-            ->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
-        $container
-            ->parameters()
-            ->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
+        $params->set(
+            BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL,
+            $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
+        );
+
+        $params->set(
+            BridgeConstantsInterface::PARAM_LOGGER_CLASS,
+            \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class
+        );
+
+        $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
+        $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
 
         foreach (self::AUTO_CONFIGS as $interface => $tag) {
             $builder->registerForAutoconfiguration($interface)
                 ->addTag($tag);
         }
 
-        $container
-            ->parameters()
-            ->set(
-                BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
-                $config['sensitive_data_sanitizer']['enabled'] ?? false
-            );
+        $params->set(
+            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
+            $config['sensitive_data_sanitizer']['enabled'] ?? false
+        );
 
         if ($config['bugsnag_handler'] ?? false) {
             $container

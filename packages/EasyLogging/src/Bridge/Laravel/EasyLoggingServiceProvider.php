@@ -31,7 +31,10 @@ final class EasyLoggingServiceProvider extends ServiceProvider
         $this->app->singleton(
             LoggerFactoryInterface::class,
             static function (Container $app): LoggerFactoryInterface {
-                $factory = new LoggerFactory(\config('easy-logging.default_channel'));
+                $factory = new LoggerFactory(
+                    defaultChannel: \config('easy-logging.default_channel'),
+                    lazyLoggers: (array)\config('easy-logging.lazy_loggers', []),
+                );
 
                 // Add default stream handler only if no handler config providers
                 $handlerConfigProviders = $app->tagged(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER);

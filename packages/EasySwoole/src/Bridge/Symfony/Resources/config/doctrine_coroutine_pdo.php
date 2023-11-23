@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\CoroutineConnectionFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 return static function (ContainerConfigurator $container): void {
@@ -25,5 +26,6 @@ return static function (ContainerConfigurator $container): void {
             param(BridgeConstantsInterface::PARAM_DOCTRINE_COROUTINE_PDO_DEFAULT_MAX_IDLE_TIME)
         )
         ->arg('$factory', service('.inner'))
-        ->arg('$connectionParamsResolver', service(AwsRdsConnectionParamsResolver::class)->nullOnInvalid());
+        ->arg('$connectionParamsResolver', service(AwsRdsConnectionParamsResolver::class)->nullOnInvalid())
+        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
 };
