@@ -20,7 +20,6 @@ return static function (DefinitionConfigurator $definition) {
             ->booleanNode('stream_handler')->defaultTrue()->end()
             ->integerNode('stream_handler_level')->defaultNull()->end()
             ->booleanNode('bugsnag_handler')->defaultFalse()->end()
-            ->booleanNode('bugsnag_handler_level')->defaultNull()->end()
-
+            ->integerNode('bugsnag_handler_level')->defaultNull()->end()
         ->end();
 };
