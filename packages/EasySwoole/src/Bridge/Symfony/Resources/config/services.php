@@ -10,6 +10,7 @@ use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateInitListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\ApplicationStateResetListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\SwooleDdListener;
 use EonX\EasySwoole\Bridge\Symfony\Listeners\TrustedProxiesListener;
+use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -30,6 +31,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(ApplicationStateCheckListener::class)
         ->arg('$appStateCheckers', tagged_iterator(BridgeConstantsInterface::TAG_APP_STATE_CHECKER))
+        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid())
         ->tag('kernel.event_listener', ['priority' => -10001]);
 
     $services
