@@ -51,7 +51,7 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
         $sut->handle([
             'channel' => 'app',
             'context' => [
-                'exception_reported_by_error_handler'  => true,
+                'exception_reported_by_error_handler' => true,
             ],
             'datetime' => new DateTimeImmutable(),
             'extra' => [],
