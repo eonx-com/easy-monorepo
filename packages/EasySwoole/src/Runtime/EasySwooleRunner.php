@@ -68,7 +68,7 @@ final class EasySwooleRunner implements RunnerInterface
 
                 // Stop worker if app state compromised
                 if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
-                    $server->stop($server->getWorkerId(), true);
+                    $server->stop($server->getWorkerId(), OptionHelper::getBoolean('worker_stop_wait_event'));
                 }
 
                 CacheTableHelper::tick();

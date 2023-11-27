@@ -141,4 +141,9 @@ final class AppRuntimeHelper
     {
         self::addOptions(['use_default_callbacks' => $useDefaultCallbacks]);
     }
+
+    public static function setWorkerStopWaitEvent(bool $workerStopWaitEvent): void
+    {
+        self::addOptions(['worker_stop_wait_event' => $workerStopWaitEvent]);
+    }
 }
