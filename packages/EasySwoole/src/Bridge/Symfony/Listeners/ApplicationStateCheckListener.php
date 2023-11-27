@@ -33,13 +33,13 @@ final class ApplicationStateCheckListener extends AbstractTerminateEventListener
         $request = $event->getRequest();
 
         foreach ($this->appStateCheckers as $appStateChecker) {
-            $this->logger?->debug(\sprintf('Checking application state with "%s"', $appStateChecker::class));
-
             if ($appStateChecker->isApplicationStateCompromised()) {
                 $request->attributes->set(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, true);
 
                 // If at least one check says the state is compromised, it's enough
-                $this->logger?->debug('Application state compromised, stopping checks');
+                $this->logger?->debug('Application state compromised, stopping checks', [
+                    'appStateChecker' => $appStateChecker::class,
+                ]);
 
                 return;
             }
