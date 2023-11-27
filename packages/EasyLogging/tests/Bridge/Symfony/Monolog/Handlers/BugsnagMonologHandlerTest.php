@@ -11,7 +11,7 @@ use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityReso
 use EonX\EasyLogging\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Monolog\Formatter\LineFormatter;
 
-final class BugsnagHandlerTest extends AbstractSymfonyTestCase
+final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
 {
     public function testItSucceeds(): void
     {
@@ -51,7 +51,7 @@ final class BugsnagHandlerTest extends AbstractSymfonyTestCase
         $sut->handle([
             'channel' => 'app',
             'context' => [
-                'exception_handled_by_easy_error_handler' => ['foo' => 'bar'],
+                'exception_reported_by_error_handler'  => true,
             ],
             'datetime' => new DateTimeImmutable(),
             'extra' => [],

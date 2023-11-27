@@ -25,7 +25,10 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
 
     protected function write(array $record): void
     {
-        if (isset($record['context']['exception_handled_by_easy_error_handler'])) {
+        if (
+            isset($record['context']['exception_reported_by_error_handler'])
+            && $record['context']['exception_reported_by_error_handler'] === true
+        ) {
             return;
         }
 
