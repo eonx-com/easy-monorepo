@@ -12,6 +12,9 @@ use EonX\EasyApiPlatform\Tests\AbstractTestCase;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
 use Mockery\MockInterface;
 
+/**
+ * @deprecated Since 5.6, will be removed in 6.0. Not needed anymore since ApiPlatform 3
+ */
 final class IriConverterTest extends AbstractTestCase
 {
     public function testGetIriFromResourceSucceedsWhenResourceImplementsNoIriItemInterface(): void
