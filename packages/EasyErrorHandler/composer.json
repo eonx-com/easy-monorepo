@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-logging": "^5.6.13",
-        "eonx-com/easy-utils": "^5.6.13",
+        "eonx-com/easy-logging": "^5.7",
+        "eonx-com/easy-utils": "^5.7",
         "nesbot/carbon": "^2.67",
         "nikic/php-parser": "^4.15"
     },
@@ -14,8 +14,8 @@
         "api-platform/core": "^3.1",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-bugsnag": "^5.6.13",
-        "eonx-com/easy-test": "^5.6.13",
+        "eonx-com/easy-bugsnag": "^5.7",
+        "eonx-com/easy-test": "^5.7",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
         "symfony/browser-kit": "^6.3",
