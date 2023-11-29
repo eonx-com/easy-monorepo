@@ -37,6 +37,7 @@ final class OptionHelper
         'settings' => [],
         'sock_type' => 1,
         'use_default_callbacks' => true,
+        'worker_stop_wait_event' => true,
     ];
 
     private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
