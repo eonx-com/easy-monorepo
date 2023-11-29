@@ -30,7 +30,7 @@ final class OptionHelper
             '.xml',
         ],
         'json_secrets' => ['SECRET_.+'],
-        'mode' => 1,
+        'mode' => 2,
         'port' => 8080,
         'response_chunk_size' => 1_048_576,
         'schedule_sleep' => 30,
