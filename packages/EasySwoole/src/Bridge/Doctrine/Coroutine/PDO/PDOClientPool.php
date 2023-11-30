@@ -7,10 +7,16 @@ use co;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use OpenSwoole\Coroutine;
 use ReflectionClass;
+use Throwable;
 use UnexpectedValueException;
 
 final class PDOClientPool extends ClientPool
 {
+    /**
+     * @var \ReflectionClass<\OpenSwoole\Core\Coroutine\Pool\ClientPool>|null
+     */
+    private ?ReflectionClass $parentReflection = null;
+
     public function __construct(
         PDOClientFactory $factory,
         PDOClientConfig $config,
@@ -26,13 +32,8 @@ final class PDOClientPool extends ClientPool
      */
     protected function heartbeat(): void
     {
-        $reflectionParentClass = (new ReflectionClass($this))->getParentClass();
-
-        if ($reflectionParentClass === false) {
-            throw new UnexpectedValueException('Unable to get the parent class.');
-        }
-
-        $poolProperty = $reflectionParentClass->getProperty('pool');
+        $poolProperty = $this->getParentReflectionClass()
+            ->getProperty('pool');
 
         /** @var \OpenSwoole\Coroutine\Channel $pool */
         $pool = $poolProperty->getValue($this);
@@ -61,5 +62,49 @@ final class PDOClientPool extends ClientPool
                 $this->put($client);
             }
         });
+    }
+
+    /**
+     * @throws \ReflectionException
+     * @throws \Throwable
+     */
+    protected function make(): void
+    {
+        $numProperty = $this->getParentReflectionClass()
+            ->getProperty('num');
+
+        $originalNumValue = $numProperty->getValue($this);
+
+        try {
+            parent::make();
+        } catch (Throwable $throwable) {
+            $newNumValue = $numProperty->getValue($this);
+
+            // If num value was increased and not decreased again because of the exception
+            // then decrease it to keep the pool state correct, looks like a bug in openswoole
+            if ($newNumValue > 0 && $newNumValue > $originalNumValue) {
+                $numProperty->setValue($newNumValue - 1);
+            }
+
+            throw $throwable;
+        }
+    }
+
+    /**
+     * @return \ReflectionClass<\OpenSwoole\Core\Coroutine\Pool\ClientPool>
+     */
+    private function getParentReflectionClass(): ReflectionClass
+    {
+        if ($this->parentReflection !== null) {
+            return $this->parentReflection;
+        }
+
+        $reflectionParentClass = (new ReflectionClass($this))->getParentClass();
+
+        if ($reflectionParentClass === false) {
+            throw new UnexpectedValueException('Unable to get the parent class.');
+        }
+
+        return $this->parentReflection = $reflectionParentClass;
     }
 }
