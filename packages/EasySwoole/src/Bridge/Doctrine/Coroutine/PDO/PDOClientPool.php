@@ -12,6 +12,9 @@ use UnexpectedValueException;
 
 final class PDOClientPool extends ClientPool
 {
+    /**
+     * @var null|\ReflectionClass<\OpenSwoole\Core\Coroutine\Pool\ClientPool>
+     */
     private ?ReflectionClass $parentReflection = null;
 
     public function __construct(
@@ -84,6 +87,9 @@ final class PDOClientPool extends ClientPool
         }
     }
 
+    /**
+     * @return \ReflectionClass<\OpenSwoole\Core\Coroutine\Pool\ClientPool>
+     */
     private function getParentReflectionClass(): ReflectionClass
     {
         if ($this->parentReflection !== null) {
