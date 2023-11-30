@@ -70,12 +70,14 @@ final class EasySwooleRuntime extends SymfonyRuntime
                 'document_root' => '/var/www/public',
                 'enable_static_handler' => true,
                 // Server
-                'reactor_num' => FunctionHelper::countCpu() * 2,
-                'worker_num' => FunctionHelper::countCpu() * 2,
+                'reactor_num' => FunctionHelper::countCpu(),
+                'worker_num' => FunctionHelper::countCpu(),
                 // Worker
                 'max_request' => 500,
                 // HTTP Server max execution time
                 'max_request_execution_time' => 30,
+                // Logging
+                'log_level' => 4,
             ], OptionHelper::getArray('settings'))));
 
             OptionHelper::setOptions(SslCertificateHelper::loadSslCertificates(OptionHelper::getOptions()));
