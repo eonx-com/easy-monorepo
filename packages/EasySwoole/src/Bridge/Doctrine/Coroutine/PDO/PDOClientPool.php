@@ -26,30 +26,6 @@ final class PDOClientPool extends ClientPool
 
     /**
      * @throws \ReflectionException
-     * @throws Throwable
-     */
-    protected function make(): void
-    {
-        $numProperty = $this->getParentReflectionClass()->getProperty('num');
-        $originalNumValue = $numProperty->getValue($this);
-
-        try {
-            parent::make();
-        } catch (Throwable $throwable) {
-            $newNumValue = $numProperty->getValue($this);
-
-            // If num value was increased and not decreased again because of the exception
-            // then decrease it to keep the pool state correct, looks like a bug in openswoole
-            if ($newNumValue > 0 && $newNumValue > $originalNumValue) {
-                $numProperty->setValue($newNumValue - 1);
-            }
-
-            throw $throwable;
-        }
-    }
-
-    /**
-     * @throws \ReflectionException
      */
     protected function heartbeat(): void
     {
@@ -82,6 +58,30 @@ final class PDOClientPool extends ClientPool
                 $this->put($client);
             }
         });
+    }
+
+    /**
+     * @throws \ReflectionException
+     * @throws Throwable
+     */
+    protected function make(): void
+    {
+        $numProperty = $this->getParentReflectionClass()->getProperty('num');
+        $originalNumValue = $numProperty->getValue($this);
+
+        try {
+            parent::make();
+        } catch (Throwable $throwable) {
+            $newNumValue = $numProperty->getValue($this);
+
+            // If num value was increased and not decreased again because of the exception
+            // then decrease it to keep the pool state correct, looks like a bug in openswoole
+            if ($newNumValue > 0 && $newNumValue > $originalNumValue) {
+                $numProperty->setValue($newNumValue - 1);
+            }
+
+            throw $throwable;
+        }
     }
 
     private function getParentReflectionClass(): ReflectionClass
