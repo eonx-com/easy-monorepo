@@ -32,7 +32,8 @@ final class PDOClientPool extends ClientPool
      */
     protected function heartbeat(): void
     {
-        $poolProperty = $this->getParentReflectionClass()->getProperty('pool');
+        $poolProperty = $this->getParentReflectionClass()
+            ->getProperty('pool');
 
         /** @var \OpenSwoole\Coroutine\Channel $pool */
         $pool = $poolProperty->getValue($this);
@@ -69,7 +70,9 @@ final class PDOClientPool extends ClientPool
      */
     protected function make(): void
     {
-        $numProperty = $this->getParentReflectionClass()->getProperty('num');
+        $numProperty = $this->getParentReflectionClass()
+            ->getProperty('num');
+
         $originalNumValue = $numProperty->getValue($this);
 
         try {
