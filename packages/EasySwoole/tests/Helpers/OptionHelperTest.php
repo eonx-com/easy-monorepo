@@ -10,6 +10,26 @@ use PHPUnit\Framework\Attributes\DataProvider;
 final class OptionHelperTest extends AbstractTestCase
 {
     /**
+     * @see testGetArray
+     */
+    public static function providerTestGetArray(): iterable
+    {
+        yield 'Empty values preserved' => [
+            [
+                'settings' => [
+                    'max_request' => 0,
+                    'empty_string' => '',
+                ],
+            ],
+            'settings',
+            [
+                'max_request' => 0,
+                'empty_string' => '',
+            ],
+        ];
+    }
+
+    /**
      * @see testGetBoolean
      */
     public static function providerTestGetBoolean(): iterable
@@ -115,6 +135,14 @@ final class OptionHelperTest extends AbstractTestCase
             'invalid',
             false,
         ];
+    }
+
+    #[DataProvider('providerTestGetArray')]
+    public function testGetArray(array $options, string $key, array $expected): void
+    {
+        OptionHelper::setOptions($options);
+
+        self::assertSame($expected, OptionHelper::getArray($key));
     }
 
     #[DataProvider('providerTestGetBoolean')]

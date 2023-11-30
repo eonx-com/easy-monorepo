@@ -52,7 +52,7 @@ final class OptionHelper
             return \explode(',', $value);
         }
 
-        return \array_filter(\is_array($value) ? $value : [$value]);
+        return \array_filter(\is_array($value) ? $value : [$value], static fn (mixed $value): bool => $value !== null);
     }
 
     public static function getBoolean(string $option, ?string $env = null): bool
