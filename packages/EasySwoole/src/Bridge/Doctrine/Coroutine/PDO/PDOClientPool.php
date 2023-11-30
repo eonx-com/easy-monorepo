@@ -13,7 +13,7 @@ use UnexpectedValueException;
 final class PDOClientPool extends ClientPool
 {
     /**
-     * @var null|\ReflectionClass<\OpenSwoole\Core\Coroutine\Pool\ClientPool>
+     * @var \ReflectionClass<\OpenSwoole\Core\Coroutine\Pool\ClientPool>|null
      */
     private ?ReflectionClass $parentReflection = null;
 
@@ -66,7 +66,7 @@ final class PDOClientPool extends ClientPool
 
     /**
      * @throws \ReflectionException
-     * @throws Throwable
+     * @throws \Throwable
      */
     protected function make(): void
     {
