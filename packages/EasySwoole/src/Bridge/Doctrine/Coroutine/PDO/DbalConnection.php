@@ -134,6 +134,8 @@ final class DbalConnection implements Connection
                     'DbalConnection::query() - Throwable: ' . $throwable->getMessage()
                 )
             );
+
+            throw $throwable;
         }
     }
 
