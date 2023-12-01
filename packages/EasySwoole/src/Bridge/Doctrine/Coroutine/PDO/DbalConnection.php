@@ -113,7 +113,7 @@ final class DbalConnection implements Connection
             OutputHelper::writeln(
                 \sprintf(
                     EasySwooleRunner::LOG_PATTERN,
-                    'DbalConnection::query() - already have pdo set - ' . (\is_object($result) ? \get_class($result) : \gettype($result))
+                    'DbalConnection::query() - after $pdo->query() - ' . (\is_object($result) ? \get_class($result) : \gettype($result))
                 )
             );
 
