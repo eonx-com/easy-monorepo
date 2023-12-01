@@ -113,7 +113,7 @@ final class DbalConnection implements Connection
             OutputHelper::writeln(
                 \sprintf(
                     EasySwooleRunner::LOG_PATTERN,
-                    'DbalConnection::query() - already have pdo set - ' . \is_object($result) ? \get_class($result) : \gettype($result)
+                    'DbalConnection::query() - already have pdo set - ' . (\is_object($result) ? \get_class($result) : \gettype($result))
                 )
             );
 
@@ -169,7 +169,7 @@ final class DbalConnection implements Connection
             OutputHelper::writeln(
                 \sprintf(
                     EasySwooleRunner::LOG_PATTERN,
-                    'DbalConnection::getPdo() - already have pdo set - ' . \is_object($this->pdo) ? \get_class($this->pdo) : \gettype($this->pdo)
+                    'DbalConnection::getPdo() - already have pdo set - ' . (\is_object($this->pdo) ? \get_class($this->pdo) : \gettype($this->pdo))
                 )
             );
 
@@ -181,7 +181,7 @@ final class DbalConnection implements Connection
         OutputHelper::writeln(
             \sprintf(
                 EasySwooleRunner::LOG_PATTERN,
-                'DbalConnection::getPdo() - got pdo from pool - ' . \is_object($pdo) ? \get_class($pdo) : \gettype($pdo)
+                'DbalConnection::getPdo() - got pdo from pool - ' . (\is_object($pdo) ? \get_class($pdo) : \gettype($pdo))
             )
         );
 
