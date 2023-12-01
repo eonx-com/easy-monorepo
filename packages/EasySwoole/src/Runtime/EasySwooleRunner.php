@@ -48,8 +48,8 @@ final class EasySwooleRunner implements RunnerInterface
                 OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'Memory: ' . $memoryUsage));
 
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
-
                 OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After $hfRequest'));
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'Received: ' . $hfRequest->getPathInfo()));
 
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
                 OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After swoole enable attribute'));
