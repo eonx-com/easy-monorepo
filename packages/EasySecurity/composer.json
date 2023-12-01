@@ -16,7 +16,7 @@
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3 || <7.0"
+        "symfony/symfony": "^6.3|^6.4"
     },
     "autoload": {
         "psr-4": {

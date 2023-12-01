@@ -18,8 +18,9 @@
         "eonx-com/easy-test": "^5.7",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/browser-kit": "^6.3 || <7.0",
-        "symfony/framework-bundle": "^6.3 || <7.0"
+        "symfony/browser-kit": "^6.3|^6.4",
+        "symfony/framework-bundle": "^6.3|^6.4",
+        "symfony/serializer": "^6.3|^6.4"
     },
     "autoload": {
         "psr-4": {

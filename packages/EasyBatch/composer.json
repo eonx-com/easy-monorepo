@@ -17,7 +17,7 @@
         "eonx-com/easy-lock": "^5.7",
         "phpunit/phpunit": "^10.2",
         "psr/container": "^2.0",
-        "symfony/symfony": "^6.3 || <7.0"
+        "symfony/symfony": "^6.3|^6.4"
     },
     "autoload": {
         "psr-4": {

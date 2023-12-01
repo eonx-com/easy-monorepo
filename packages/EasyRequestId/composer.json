@@ -11,9 +11,9 @@
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/framework-bundle": "^6.3 || <7.0",
-        "symfony/uid": "^6.3 || <7.0",
-        "symfony/yaml": "^6.3 || <7.0"
+        "symfony/framework-bundle": "^6.3|^6.4",
+        "symfony/uid": "^6.3|^6.4",
+        "symfony/yaml": "^6.3|^6.4"
     },
     "autoload": {
         "psr-4": {
