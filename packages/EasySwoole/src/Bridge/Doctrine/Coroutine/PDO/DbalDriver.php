@@ -11,7 +11,9 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\Enum\CoroutinePdoDriverOption;
+use EonX\EasySwoole\Helpers\OutputHelper;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
+use EonX\EasySwoole\Runtime\EasySwooleRunner;
 use Psr\Log\LoggerInterface;
 use SensitiveParameter;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -33,8 +35,16 @@ final class DbalDriver implements Driver
 
     public function connect(#[SensitiveParameter] array $params): DriverConnection
     {
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'Driver::connect() - start')
+        );
+
         $request = $this->requestStack->getCurrentRequest();
         if ($request?->attributes->get(RequestAttributesInterface::EASY_SWOOLE_ENABLED) !== true) {
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'Driver::connect() - in swoole disabled statement')
+            );
+
             $params = $this->connectionParamsResolver?->getParams($params) ?? $params;
 
             return $this->decorated->connect($params);
@@ -54,6 +64,10 @@ final class DbalDriver implements Driver
 
         $pool = $_SERVER[$poolName] ?? null;
         if ($pool === null) {
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'Driver::connect() - creating pool')
+            );
+
             $this->logger?->debug(\sprintf('Coroutine PDO Pool "%s" not found, instantiating new one', $poolName));
 
             $pool = new PDOClientPool(
@@ -67,6 +81,10 @@ final class DbalDriver implements Driver
             // Set pool for new requests
             $_SERVER[$poolName] = $pool;
         }
+
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'Driver::connect() - before return')
+        );
 
         return new DbalConnection($pool);
     }

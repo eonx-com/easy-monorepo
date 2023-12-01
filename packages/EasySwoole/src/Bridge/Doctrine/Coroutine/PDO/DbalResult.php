@@ -5,6 +5,8 @@ namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
 
 use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\DBAL\Driver\Result;
+use EonX\EasySwoole\Helpers\OutputHelper;
+use EonX\EasySwoole\Runtime\EasySwooleRunner;
 use OpenSwoole\Core\Coroutine\Client\PDOStatementProxy;
 use PDO;
 use PDOException;
@@ -57,7 +59,15 @@ final class DbalResult implements Result
 
     public function free(): void
     {
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'DbalConnection::free() - start')
+        );
+
         $this->pdoStatement->closeCursor();
+
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'DbalConnection::free() - after closeCursor')
+        );
     }
 
     public function rowCount(): int

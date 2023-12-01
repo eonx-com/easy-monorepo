@@ -10,6 +10,8 @@ use Doctrine\DBAL\Driver\PDO\PDOException as DriverPDOException;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
+use EonX\EasySwoole\Helpers\OutputHelper;
+use EonX\EasySwoole\Runtime\EasySwooleRunner;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use PDO;
 use PDOException;
@@ -95,10 +97,43 @@ final class DbalConnection implements Connection
 
     public function query(string $sql): Result
     {
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'DbalConnection::query() - start')
+        );
+
         try {
-            return new DbalResult($this->getPdo()->query($sql));
+            $pdo = $this->getPdo();
+
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'DbalConnection::query() - after getPdo()')
+            );
+
+            $result = $pdo->query($sql);
+
+            OutputHelper::writeln(
+                \sprintf(
+                    EasySwooleRunner::LOG_PATTERN,
+                    'DbalConnection::query() - already have pdo set - ' . \is_object($result) ? \get_class($result) : \gettype($result)
+                )
+            );
+
+            return new DbalResult($result);
         } catch (PDOException $exception) {
+            OutputHelper::writeln(
+                \sprintf(
+                    EasySwooleRunner::LOG_PATTERN,
+                    'DbalConnection::query() - PDOException: ' . $exception->getMessage()
+                )
+            );
+
             throw Exception::new($exception);
+        } catch (\Throwable $throwable) {
+            OutputHelper::writeln(
+                \sprintf(
+                    EasySwooleRunner::LOG_PATTERN,
+                    'DbalConnection::query() - Throwable: ' . $throwable->getMessage()
+                )
+            );
         }
     }
 
@@ -126,6 +161,30 @@ final class DbalConnection implements Connection
 
     private function getPdo(): PDOClient
     {
-        return $this->pdo ??= $this->pool->get();
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'DbalConnection::getPdo() - start')
+        );
+
+        if ($this->pdo !== null) {
+            OutputHelper::writeln(
+                \sprintf(
+                    EasySwooleRunner::LOG_PATTERN,
+                    'DbalConnection::getPdo() - already have pdo set - ' . \is_object($this->pdo) ? \get_class($this->pdo) : \gettype($this->pdo)
+                )
+            );
+
+            return $this->pdo;
+        }
+
+        $pdo = $this->pool->get();
+
+        OutputHelper::writeln(
+            \sprintf(
+                EasySwooleRunner::LOG_PATTERN,
+                'DbalConnection::getPdo() - got pdo from pool - ' . \is_object($pdo) ? \get_class($pdo) : \gettype($pdo)
+            )
+        );
+
+        return $this->pdo = $pdo;
     }
 }
