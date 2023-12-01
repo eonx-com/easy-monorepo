@@ -41,14 +41,14 @@
         "symfony/lock": "^6.3",
         "symfony/process": "^6.3",
         "symfony/psr-http-message-bridge": "^2.2",
+        "symfony/serializer": "^6.3",
         "symfony/string": "^6.3",
         "symfony/uid": "^6.3",
         "symfony/validator": "^6.3",
         "symfony/var-dumper": "^6.3",
         "symfony/yaml": "^6.3",
         "symplify/autowire-array-parameter": "^11.0",
-        "symplify/package-builder": "^11.0",
-        "symfony/serializer": "^6.3"
+        "symplify/package-builder": "^11.0"
     },
     "require-dev": {
         "api-platform/core": "^3.1",
