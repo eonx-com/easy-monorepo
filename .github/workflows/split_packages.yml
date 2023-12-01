@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - master
+            - np/investigate-swoole-errors-in-aws
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest

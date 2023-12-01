@@ -22,6 +22,8 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
+    private const LOG_PATTERN = "\n---- PAGEY ----\n%s\n---- PAGEY ----\n";
+
     public function __construct(
         private readonly HttpKernelInterface $app,
     ) {
@@ -41,19 +43,38 @@ final class EasySwooleRunner implements RunnerInterface
         $server->on(
             'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
+                $memoryUsage = \memory_get_usage(true) / 1024 / 1024;
+
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'Memory: ' . $memoryUsage));
+
                 $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
+
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After $hfRequest'));
+
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After swoole enable attribute'));
+
                 $hfRequest->attributes->set(
                     RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME,
                     CarbonImmutable::now('UTC')
                 );
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After request start time attribute'));
+
                 $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID, $server->getWorkerId());
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After worker id attribute'));
 
                 // Surround handle with output buffering to support echo, var_dump, etc
                 \ob_start();
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After ob_start()'));
+
                 $hfResponse = $app->handle($hfRequest);
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After $app->handle()'));
+
                 $bufferedOutput = \ob_get_contents();
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After ob_get_contents'));
+
                 \ob_end_clean();
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After ob_end_clean'));
 
                 HttpFoundationHelper::reflectHttpFoundationResponse(
                     $hfResponse,
@@ -62,16 +83,23 @@ final class EasySwooleRunner implements RunnerInterface
                     \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
                 );
 
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After HttpFoundationHelper::reflectHttpFoundationResponse()'));
+
                 if ($app instanceof TerminableInterface) {
                     $app->terminate($hfRequest, $hfResponse);
                 }
+
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After $app->terminate'));
 
                 // Stop worker if app state compromised
                 if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
                     $server->stop($server->getWorkerId(), OptionHelper::getBoolean('worker_stop_wait_event'));
                 }
 
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After state compromised'));
+
                 CacheTableHelper::tick();
+                OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After CacheTableHelper::tick()'));
             }
         );
 
