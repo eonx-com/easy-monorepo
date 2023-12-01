@@ -67,7 +67,15 @@ final class EasySwooleRunner implements RunnerInterface
                 \ob_start();
                 OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After ob_start()'));
 
-                $hfResponse = $app->handle($hfRequest);
+                try {
+                    $hfResponse = $app->handle($hfRequest);
+                } catch (\Throwable $throwable) {
+                    OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'Throwable from $app->handle()'));
+                    OutputHelper::writeln(\sprintf(self::LOG_PATTERN, $throwable->getMessage()));
+
+                    throw $throwable;
+                }
+
                 OutputHelper::writeln(\sprintf(self::LOG_PATTERN, 'After $app->handle()'));
 
                 $bufferedOutput = \ob_get_contents();
