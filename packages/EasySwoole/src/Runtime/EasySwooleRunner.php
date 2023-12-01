@@ -22,7 +22,7 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
-    private const LOG_PATTERN = "| ---- PAGEY ---- | %s | ---- PAGEY ---- |";
+    public const LOG_PATTERN = "| ---- PAGEY ---- | %s | ---- PAGEY ---- |";
 
     public function __construct(
         private readonly HttpKernelInterface $app,
