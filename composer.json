@@ -47,7 +47,8 @@
         "symfony/var-dumper": "^6.3",
         "symfony/yaml": "^6.3",
         "symplify/autowire-array-parameter": "^11.0",
-        "symplify/package-builder": "^11.0"
+        "symplify/package-builder": "^11.0",
+        "symfony/serializer": "^6.3"
     },
     "require-dev": {
         "api-platform/core": "^3.1",
