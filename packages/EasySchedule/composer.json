@@ -9,12 +9,12 @@
         "eonx-com/easy-event-dispatcher": "^5.7",
         "eonx-com/easy-lock": "^5.7",
         "nesbot/carbon": "^2.67",
-        "symfony/console": "^6.3"
+        "symfony/console": "^6.3 || <7.0"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3"
+        "symfony/symfony": "^6.3 || <7.0"
     },
     "autoload": {
         "psr-4": {
