@@ -96,13 +96,14 @@ final class PDOClientPool extends ClientPool
      */
     protected function heartbeat(): void
     {
-        $poolProperty = $this->getParentReflectionClass()
-            ->getProperty('pool');
+        $parentClassReflection = $this->getParentReflectionClass();
 
         /** @var \OpenSwoole\Coroutine\Channel $pool */
-        $pool = $poolProperty->getValue($this);
+        $pool = $parentClassReflection
+            ->getProperty('pool')
+            ->getValue($this);
 
-        Coroutine::create(function () use ($pool): void {
+        Coroutine::create(function () use ($pool, $parentClassReflection): void {
             while (true) {
                 co::sleep(3);
 
@@ -126,6 +127,17 @@ final class PDOClientPool extends ClientPool
                     OutputHelper::writeln(
                         \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - closing DB client - after unset')
                     );
+
+                    // We need to manually update num and active counters otherwise the parent class still believes
+                    // the connection is there...
+                    foreach (['active', 'num'] as $propertyName) {
+                        $propertyReflection = $parentClassReflection->getProperty($propertyName);
+                        $propertyValue = $propertyReflection->getValue($this);
+
+                        if ($propertyValue > 0) {
+                            $propertyReflection->setValue($this, $propertyValue - 1);
+                        }
+                    }
 
                     continue;
                 }
