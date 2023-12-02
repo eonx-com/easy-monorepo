@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
 
 use co;
+use EonX\EasySwoole\Helpers\OutputHelper;
+use EonX\EasySwoole\Runtime\EasySwooleRunner;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use OpenSwoole\Coroutine;
 use ReflectionClass;
@@ -25,6 +27,68 @@ final class PDOClientPool extends ClientPool
         private readonly float $maxIdleTime,
     ) {
         parent::__construct($factory, $config, $size, $heartbeat);
+    }
+
+    public function get(?float $timeout = null): mixed
+    {
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::get() - start')
+        );
+
+        $parentClassReflection = $this->getParentReflectionClass();
+        foreach (['num', 'active'] as $propertyName) {
+            $propertyValue = $parentClassReflection->getProperty($propertyName)->getValue($this);
+
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::get() - ' . $propertyName . ': ' . $propertyValue)
+            );
+        }
+
+        $return = parent::get($timeout ?? -1);
+
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::get() - after parent::get()')
+        );
+
+        foreach (['num', 'active'] as $propertyName) {
+            $propertyValue = $parentClassReflection->getProperty($propertyName)->getValue($this);
+
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::get() - ' . $propertyName . ': ' . $propertyValue)
+            );
+        }
+
+        return $return;
+    }
+
+    public function put($connection, $isNew = false): void
+    {
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::put() - start')
+        );
+
+        $parentClassReflection = $this->getParentReflectionClass();
+        foreach (['num', 'active'] as $propertyName) {
+            $propertyValue = $parentClassReflection->getProperty($propertyName)->getValue($this);
+
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::put() - ' . $propertyName . ': ' . $propertyValue)
+            );
+        }
+
+        parent::put($connection, $isNew);
+
+        OutputHelper::writeln(
+            \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::put() - after parent::put()')
+        );
+
+        foreach (['num', 'active'] as $propertyName) {
+            $propertyValue = $parentClassReflection->getProperty($propertyName)->getValue($this);
+
+            OutputHelper::writeln(
+                \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::put() - ' . $propertyName . ': ' . $propertyValue)
+            );
+        }
     }
 
     /**
@@ -53,13 +117,42 @@ final class PDOClientPool extends ClientPool
                     && $client->getLastUsedTime() + $this->maxIdleTime < \microtime(true);
 
                 if ($shouldClose) {
+                    OutputHelper::writeln(
+                        \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - closing DB client - before unset')
+                    );
+
                     unset($client);
+
+                    OutputHelper::writeln(
+                        \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - closing DB client - after unset')
+                    );
 
                     continue;
                 }
 
-                $client->heartbeat();
-                $this->put($client);
+                try {
+                    OutputHelper::writeln(
+                        \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - before $client->heartbeat()')
+                    );
+
+                    $client->heartbeat();
+
+                    OutputHelper::writeln(
+                        \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - after $client->heartbeat()')
+                    );
+
+                    $this->put($client);
+
+                    OutputHelper::writeln(
+                        \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - after $this->put()')
+                    );
+                } catch (\Throwable $throwable) {
+                    OutputHelper::writeln(
+                        \sprintf(EasySwooleRunner::LOG_PATTERN, 'PDOClientPool::heartbeat() - throwable during heartbeat and put - ' . $throwable->getMessage())
+                    );
+
+                    throw $throwable;
+                }
             }
         });
     }
