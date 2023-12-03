@@ -10,7 +10,6 @@ use Doctrine\DBAL\Driver\PDO\PDOException as DriverPDOException;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
-use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 use PDO;
 use PDOException;
 
@@ -19,7 +18,7 @@ final class DbalConnection implements Connection
     private ?PDOClient $pdo = null;
 
     public function __construct(
-        private readonly ClientPool $pool,
+        private readonly PDOClientPool $pool,
     ) {
     }
 
