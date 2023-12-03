@@ -16,10 +16,10 @@ final class PDOClientPool
 
     public function __construct(
         private readonly PDOClientFactory $factory,
-        private readonly PDOClientConfig  $config,
+        private readonly PDOClientConfig $config,
         private readonly int $size,
         bool $heartbeat,
-        private readonly float$maxIdleTime,
+        private readonly float $maxIdleTime,
     ) {
         $this->pool = new Channel($this->size);
 
@@ -85,7 +85,7 @@ final class PDOClientPool
 
                 try {
                     $pdo->heartbeat();
-                } catch (Throwable $throwable) {
+                } catch (Throwable) {
                     // If the PDOClient is compromised, close the connection
                     unset($pdo);
 
