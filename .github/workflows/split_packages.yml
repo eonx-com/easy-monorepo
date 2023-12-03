@@ -3,7 +3,6 @@ on:
     push:
         branches:
             - master
-            - hotfix/swoole-pdo-client-pool-own-implementation
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
@@ -68,7 +67,7 @@ jobs:
             -
                 name: 'Resolve current branch'
                 id: branch_name
-                run: 'echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"'
+                run: 'echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT'
             -
                 name: 'Add Repo Remote'
                 run: 'git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git'
