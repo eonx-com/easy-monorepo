@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
 use co;
 use OpenSwoole\Coroutine;
 use OpenSwoole\Coroutine\Channel;
+use Throwable;
 
 final class PDOClientPool
 {
@@ -16,11 +17,10 @@ final class PDOClientPool
     public function __construct(
         private readonly PDOClientFactory $factory,
         private readonly PDOClientConfig  $config,
-        private readonly int              $size,
-        bool                              $heartbeat,
-        private readonly float            $maxIdleTime,
-    )
-    {
+        private readonly int $size,
+        bool $heartbeat,
+        private readonly float$maxIdleTime,
+    ) {
         $this->pool = new Channel($this->size);
 
         if ($heartbeat) {
@@ -37,7 +37,7 @@ final class PDOClientPool
             $pdo = $this->factory::make($this->config);
 
             // Increment count of connections only after make(), so we are sure we have successfully created
-            // the new PDOClient.
+            // the new PDOClient
             $this->connectionCount++;
         }
 
@@ -85,7 +85,7 @@ final class PDOClientPool
 
                 try {
                     $pdo->heartbeat();
-                } catch (\Throwable $throwable) {
+                } catch (Throwable $throwable) {
                     // If the PDOClient is compromised, close the connection
                     unset($pdo);
 
