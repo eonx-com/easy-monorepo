@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - master
+            - hotfix/swoole-pdo-client-pool-own-implementation
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
