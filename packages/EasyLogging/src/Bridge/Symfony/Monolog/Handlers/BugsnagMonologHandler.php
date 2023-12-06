@@ -5,7 +5,7 @@ namespace EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers;
 
 use Bugsnag\Client;
 use Bugsnag\Report;
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\BugsnagSeverityResolverInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 
@@ -15,7 +15,7 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
      * @inheritdoc
      */
     public function __construct(
-        private DefaultBugsnagSeverityResolverInterface $bugsnagSeverityResolver,
+        private BugsnagSeverityResolverInterface $bugsnagSeverityResolver,
         private Client $bugsnagClient,
         $level = null,
         ?bool $bubble = null,

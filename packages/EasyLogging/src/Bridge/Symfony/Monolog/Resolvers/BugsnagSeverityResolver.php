@@ -5,7 +5,7 @@ namespace EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers;
 
 use Monolog\Logger;
 
-final class DefaultBugsnagSeverityResolver implements DefaultBugsnagSeverityResolverInterface
+final class BugsnagSeverityResolver implements BugsnagSeverityResolverInterface
 {
     public function resolve(int $level): string
     {

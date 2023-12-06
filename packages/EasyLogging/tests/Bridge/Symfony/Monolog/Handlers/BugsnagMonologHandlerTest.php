@@ -7,7 +7,7 @@ use Bugsnag\Client;
 use Bugsnag\Configuration;
 use DateTimeImmutable;
 use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagMonologHandler;
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolver;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\BugsnagSeverityResolver;
 use EonX\EasyLogging\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Monolog\Formatter\LineFormatter;
 
@@ -16,7 +16,7 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
     public function testItSucceeds(): void
     {
         $client = new Client(new Configuration('some-api-key'));
-        $sut = new BugsnagMonologHandler(new DefaultBugsnagSeverityResolver(), $client);
+        $sut = new BugsnagMonologHandler(new BugsnagSeverityResolver(), $client);
         $sut->setFormatter(new LineFormatter('formatted'));
 
         $sut->handle([
@@ -45,7 +45,7 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
     public function testItSucceedsAndDoNothingWithExceptionHandledByEasyErrorHandler(): void
     {
         $client = new Client(new Configuration('some-api-key'));
-        $sut = new BugsnagMonologHandler(new DefaultBugsnagSeverityResolver(), $client);
+        $sut = new BugsnagMonologHandler(new BugsnagSeverityResolver(), $client);
         $sut->setFormatter(new LineFormatter('formatted'));
 
         $sut->handle([

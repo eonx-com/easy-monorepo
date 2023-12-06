@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers;
 
-interface DefaultBugsnagSeverityResolverInterface
+interface BugsnagSeverityResolverInterface
 {
     public const SEVERITY_ERROR = 'error';
 

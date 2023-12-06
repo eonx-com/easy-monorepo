@@ -5,8 +5,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Bridge\Symfony\Monolog\Handlers\BugsnagMonologHandler;
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolver;
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolverInterface;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\BugsnagSeverityResolver;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\BugsnagSeverityResolverInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -14,9 +14,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(DefaultBugsnagSeverityResolverInterface::class, DefaultBugsnagSeverityResolver::class);
+    $services->set(BugsnagSeverityResolverInterface::class, BugsnagSeverityResolver::class);
 
     $services->set(BugsnagMonologHandler::class)
-        ->arg('$bugsnagSeverityResolver', service(DefaultBugsnagSeverityResolverInterface::class))
-        ->arg('$level', '%' . BridgeConstantsInterface::PARAM_BUGSNAG_HANDLER_LEVEL . '%');
+        ->arg('$bugsnagSeverityResolver', service(BugsnagSeverityResolverInterface::class))
+        ->arg('$level', param(BridgeConstantsInterface::PARAM_BUGSNAG_HANDLER_LEVEL));
 };

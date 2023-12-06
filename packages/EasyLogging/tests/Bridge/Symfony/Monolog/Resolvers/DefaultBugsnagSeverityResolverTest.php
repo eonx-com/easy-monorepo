@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Bridge\Symfony\Monolog\Resolvers;
 
-use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\DefaultBugsnagSeverityResolver;
+use EonX\EasyLogging\Bridge\Symfony\Monolog\Resolvers\BugsnagSeverityResolver;
 use EonX\EasyLogging\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -25,7 +25,7 @@ final class DefaultBugsnagSeverityResolverTest extends AbstractSymfonyTestCase
     #[DataProvider('provideLevels')]
     public function testItSucceeds(int $level, string $expected): void
     {
-        $sut = new DefaultBugsnagSeverityResolver();
+        $sut = new BugsnagSeverityResolver();
 
         self::assertSame($expected, $sut->resolve($level));
     }
