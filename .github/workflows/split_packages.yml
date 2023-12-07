@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - master
+            - feature/swoole-error-response
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest

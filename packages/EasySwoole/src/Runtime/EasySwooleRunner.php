@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Runtime;
 
 use Carbon\CarbonImmutable;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasySwoole\Helpers\CacheTableHelper;
+use EonX\EasySwoole\Helpers\ErrorResponseHelper;
 use EonX\EasySwoole\Helpers\HttpFoundationHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\OutputHelper;
@@ -14,6 +16,7 @@ use Swoole\Http\Response;
 use Swoole\Http\Server;
 use Swoole\Process as SwooleProcess;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Symfony\Component\Runtime\RunnerInterface;
@@ -41,37 +44,56 @@ final class EasySwooleRunner implements RunnerInterface
         $server->on(
             'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
-                $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
-                $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
-                $hfRequest->attributes->set(
-                    RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME,
-                    CarbonImmutable::now('UTC')
-                );
-                $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID, $server->getWorkerId());
+                $responded = false;
 
-                // Surround handle with output buffering to support echo, var_dump, etc
-                \ob_start();
-                $hfResponse = $app->handle($hfRequest);
-                $bufferedOutput = \ob_get_contents();
-                \ob_end_clean();
+                try {
+                    $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
+                    $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_ENABLED, true);
+                    $hfRequest->attributes->set(
+                        RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME,
+                        CarbonImmutable::now('UTC')
+                    );
+                    $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID, $server->getWorkerId());
 
-                HttpFoundationHelper::reflectHttpFoundationResponse(
-                    $hfResponse,
-                    $response,
-                    $responseChunkSize,
-                    \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
-                );
+                    // Surround handle with output buffering to support echo, var_dump, etc
+                    \ob_start();
+                    $hfResponse = $app->handle($hfRequest);
+                    $bufferedOutput = \ob_get_contents();
+                    \ob_end_clean();
 
-                if ($app instanceof TerminableInterface) {
-                    $app->terminate($hfRequest, $hfResponse);
+                    HttpFoundationHelper::reflectHttpFoundationResponse(
+                        $hfResponse,
+                        $response,
+                        $responseChunkSize,
+                        \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
+                    );
+
+                    $responded = true;
+
+                    if ($app instanceof TerminableInterface) {
+                        $app->terminate($hfRequest, $hfResponse);
+                    }
+
+                    // Stop worker if app state compromised
+                    if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
+                        $server->stop($server->getWorkerId(), OptionHelper::getBoolean('worker_stop_wait_event'));
+                    }
+
+                    CacheTableHelper::tick();
+                } catch (\Throwable $throwable) {
+                    // If something happens before the response was sent, we must respond not to let the client hang
+                    if ($responded === false) {
+                        ErrorResponseHelper::sendErrorResponse($throwable, $response);
+                    }
+
+                    // If eonx-com/easy-error-handler is installed and configured, let's report the error
+                    if ($app instanceof KernelInterface
+                        && (\interface_exists(ErrorHandlerInterface::class) && $app->getContainer()->has(ErrorHandlerInterface::class))) {
+                        $errorHandler = $app->getContainer()->get(ErrorHandlerInterface::class);
+
+                        $errorHandler->report($throwable);
+                    }
                 }
-
-                // Stop worker if app state compromised
-                if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
-                    $server->stop($server->getWorkerId(), OptionHelper::getBoolean('worker_stop_wait_event'));
-                }
-
-                CacheTableHelper::tick();
             }
         );
 

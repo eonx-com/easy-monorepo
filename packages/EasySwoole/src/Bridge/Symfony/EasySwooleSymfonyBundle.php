@@ -9,6 +9,7 @@ use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\AddDoctrineDbalConnectionNameToParamsPass;
+use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\EasyErrorHandlerPublicPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\ResetEasyBatchProcessorPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\SymfonyServicesResetPass;
 use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
@@ -62,6 +63,7 @@ final class EasySwooleSymfonyBundle extends AbstractBundle
     {
         $container
             ->addCompilerPass(new AddDoctrineDbalConnectionNameToParamsPass())
+            ->addCompilerPass(new EasyErrorHandlerPublicPass())
             ->addCompilerPass(new ResetEasyBatchProcessorPass())
             ->addCompilerPass(new SymfonyServicesResetPass(), priority: -33);
     }
