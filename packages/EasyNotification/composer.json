@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "aws/aws-sdk-php": "^3.269",
-        "eonx-com/easy-utils": "^5.7",
+        "eonx-com/easy-utils": "^5.8",
         "nette/utils": "^3.2",
         "symfony/http-client": "^6.3"
     },
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.7-dev"
+            "dev-master": "5.8-dev"
         }
     }
 }
