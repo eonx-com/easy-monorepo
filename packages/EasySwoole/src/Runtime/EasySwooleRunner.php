@@ -44,6 +44,7 @@ final class EasySwooleRunner implements RunnerInterface
         $server->on(
             'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
+                OutputHelper::writeln(\sprintf('Swoole request received'));
                 $responded = false;
 
                 try {
@@ -53,7 +54,18 @@ final class EasySwooleRunner implements RunnerInterface
                         RequestAttributesInterface::EASY_SWOOLE_REQUEST_START_TIME,
                         CarbonImmutable::now('UTC')
                     );
-                    $hfRequest->attributes->set(RequestAttributesInterface::EASY_SWOOLE_WORKER_ID, $server->getWorkerId());
+                    $hfRequest->attributes->set(
+                        RequestAttributesInterface::EASY_SWOOLE_WORKER_ID,
+                        $server->getWorkerId()
+                    );
+
+                    OutputHelper::writeln(
+                        \sprintf(
+                            'Swoole request received: %s | Worker ID: %s',
+                            $hfRequest->getPathInfo(),
+                            $server->getWorkerId()
+                        )
+                    );
 
                     // Surround handle with output buffering to support echo, var_dump, etc
                     \ob_start();
@@ -75,7 +87,8 @@ final class EasySwooleRunner implements RunnerInterface
                     }
 
                     // Stop worker if app state compromised
-                    if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED, false)) {
+                    if ($hfRequest->attributes->get(RequestAttributesInterface::EASY_SWOOLE_APP_STATE_COMPROMISED,
+                        false)) {
                         $server->stop($server->getWorkerId(), OptionHelper::getBoolean('worker_stop_wait_event'));
                     }
 
