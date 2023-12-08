@@ -7,6 +7,9 @@ use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
 
+/**
+ * @deprecated Since 5.7, will be removed in 6.0. Not needed anymore since ApiPlatform 3
+ */
 final class IriConverterStub implements IriConverterInterface
 {
     public function getIriFromResource(
