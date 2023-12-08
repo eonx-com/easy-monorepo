@@ -7,6 +7,8 @@ interface BridgeConstantsInterface
 {
     public const KEY_CHANNEL = 'easy_logging_channel';
 
+    public const PARAM_BUGSNAG_HANDLER_LEVEL = 'easy_logging.bugsnag_handler_level';
+
     public const PARAM_DEFAULT_CHANNEL = 'easy_logging.default_channel';
 
     public const PARAM_LAZY_LOGGERS = 'easy_logging.lazy_loggers';

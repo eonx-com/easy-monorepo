@@ -77,5 +77,14 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
             BridgeConstantsInterface::PARAM_SENSITIVE_DATA_SANITIZER_ENABLED,
             $config['sensitive_data_sanitizer']['enabled'] ?? false
         );
+
+        if ($config['bugsnag_handler'] ?? false) {
+            $params->set(
+                BridgeConstantsInterface::PARAM_BUGSNAG_HANDLER_LEVEL,
+                $config['bugsnag_handler_level'] ?? null
+            );
+
+            $container->import(__DIR__ . '/Resources/config/bugsnag_handler.php');
+        }
     }
 }

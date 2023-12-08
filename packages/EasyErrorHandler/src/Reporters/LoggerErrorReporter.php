@@ -41,7 +41,10 @@ final class LoggerErrorReporter extends AbstractErrorReporter
         $this->logger->log(
             $this->errorLogLevelResolver->getLogLevel($throwable),
             $this->errorDetailsResolver->resolveInternalMessage($throwable),
-            ['exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable)]
+            [
+                'exception' => $this->errorDetailsResolver->resolveExtendedDetails($throwable),
+                'exception_reported_by_error_handler' => true,
+            ]
         );
     }
 }
