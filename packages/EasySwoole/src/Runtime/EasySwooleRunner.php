@@ -45,8 +45,13 @@ final class EasySwooleRunner implements RunnerInterface
         $server->on(
             'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
-                OutputHelper::writeln(\sprintf('RAW Swoole request received'));
                 $responded = false;
+                $requestId = Uuid::v6();
+                $workerId = $server->getWorkerId();
+
+                OutputHelper::writeln(
+                    \sprintf('RAW Swoole request received | Request ID: %s | Worker ID: %s', $requestId, $workerId)
+                );
 
                 try {
                     $hfRequest = HttpFoundationHelper::fromSwooleRequest($request);
@@ -61,8 +66,6 @@ final class EasySwooleRunner implements RunnerInterface
                     );
 
                     $pathInfo = $hfRequest->getPathInfo();
-                    $requestId = Uuid::v6();
-                    $workerId = $server->getWorkerId();
 
                     OutputHelper::writeln(
                         \sprintf(
