@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Symfony\Component\Runtime\RunnerInterface;
+use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
 
@@ -44,7 +45,7 @@ final class EasySwooleRunner implements RunnerInterface
         $server->on(
             'request',
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
-                OutputHelper::writeln(\sprintf('Swoole request received'));
+                OutputHelper::writeln(\sprintf('RAW Swoole request received'));
                 $responded = false;
 
                 try {
@@ -59,11 +60,16 @@ final class EasySwooleRunner implements RunnerInterface
                         $server->getWorkerId()
                     );
 
+                    $pathInfo = $hfRequest->getPathInfo();
+                    $requestId = Uuid::v6();
+                    $workerId = $server->getWorkerId();
+
                     OutputHelper::writeln(
                         \sprintf(
-                            'Swoole request received: %s | Worker ID: %s',
-                            $hfRequest->getPathInfo(),
-                            $server->getWorkerId()
+                            'Swoole request received: %s | Request ID: %s | Worker ID: %s',
+                            $pathInfo,
+                            $requestId,
+                            $workerId
                         )
                     );
 
@@ -81,6 +87,15 @@ final class EasySwooleRunner implements RunnerInterface
                     );
 
                     $responded = true;
+
+                    OutputHelper::writeln(
+                        \sprintf(
+                            'Swoole request responded: %s | Request ID: %s | Worker ID: %s',
+                            $pathInfo,
+                            $requestId,
+                            $workerId
+                        )
+                    );
 
                     if ($app instanceof TerminableInterface) {
                         $app->terminate($hfRequest, $hfResponse);
