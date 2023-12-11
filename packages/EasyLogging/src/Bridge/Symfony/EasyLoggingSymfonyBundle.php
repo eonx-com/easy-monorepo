@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\HttpKernel\Log\DebugLoggerConfigurator;
 
 final class EasyLoggingSymfonyBundle extends AbstractBundle
 {
@@ -60,10 +59,7 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
             $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
         );
 
-        $params->set(
-            BridgeConstantsInterface::PARAM_LOGGER_CLASS,
-            \class_exists(DebugLoggerConfigurator::class) ? DebugLoggerConfigurator::class : Logger::class
-        );
+        $params->set(BridgeConstantsInterface::PARAM_LOGGER_CLASS, Logger::class);
 
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
