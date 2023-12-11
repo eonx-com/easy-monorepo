@@ -5,7 +5,6 @@ namespace EonX\EasyUtils\Bridge\Symfony\Normalizers;
 
 use EonX\EasyUtils\ValueObjects\Number;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

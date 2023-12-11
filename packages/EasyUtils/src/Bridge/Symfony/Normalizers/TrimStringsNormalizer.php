@@ -28,14 +28,6 @@ final class TrimStringsNormalizer implements DenormalizerInterface
         $this->exceptKeys = $exceptKeys ?? [];
     }
 
-    public function getSupportedTypes(?string $format = null): array
-    {
-        return [
-            'array' => true,
-            'string' => true,
-        ];
-    }
-
     /**
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
@@ -47,6 +39,14 @@ final class TrimStringsNormalizer implements DenormalizerInterface
         $context[self::ALREADY_CALLED] = true;
 
         return $this->denormalizer->denormalize($data, $type, $format, $context);
+    }
+
+    public function getSupportedTypes(?string $format = null): array
+    {
+        return [
+            'array' => true,
+            'string' => true,
+        ];
     }
 
     public function supportsDenormalization(
