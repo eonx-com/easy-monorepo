@@ -52,6 +52,35 @@ final class EntityOnFlushEventListener
         $this->prepareDeferredCollectionUpdates($transactionNestingLevel, $unitOfWork);
     }
 
+    private function getClearedChangeSet(array $changeSet): array
+    {
+        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
+            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
+                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
+                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
+                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            }
+
+            if (($changeSetItem[0] ?? null) instanceof Stringable &&
+                ($changeSetItem[1] ?? null) instanceof Stringable) {
+                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
+            }
+
+            return true;
+        });
+    }
+
+    private function isEntitySubscribed(object $entity): bool
+    {
+        foreach ($this->subscribedEntities as $subscribedEntity) {
+            if (\is_a($entity, $subscribedEntity)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function prepareDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         $scheduledCollectionUpdates = [];
@@ -178,34 +207,5 @@ final class EntityOnFlushEventListener
                 }
             }
         }
-    }
-
-    private function getClearedChangeSet(array $changeSet): array
-    {
-        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
-            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
-                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
-                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
-                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
-            }
-
-            if (($changeSetItem[0] ?? null) instanceof Stringable &&
-                ($changeSetItem[1] ?? null) instanceof Stringable) {
-                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
-            }
-
-            return true;
-        });
-    }
-
-    private function isEntitySubscribed(object $entity): bool
-    {
-        foreach ($this->subscribedEntities as $subscribedEntity) {
-            if (\is_a($entity, $subscribedEntity)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
