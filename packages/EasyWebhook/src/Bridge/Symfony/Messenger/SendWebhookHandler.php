@@ -7,9 +7,11 @@ use EonX\EasyWebhook\Bridge\Symfony\Exceptions\UnrecoverableWebhookMessageExcept
 use EonX\EasyWebhook\Exceptions\CannotRerunWebhookException;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;
 use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class SendWebhookHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendWebhookHandler
 {
     public function __construct(
         private readonly WebhookClientInterface $client,

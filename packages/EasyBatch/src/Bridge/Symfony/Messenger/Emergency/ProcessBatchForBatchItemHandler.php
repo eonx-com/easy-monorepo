@@ -10,9 +10,11 @@ use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectManagerInterface;
 use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Processors\BatchProcessor;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class ProcessBatchForBatchItemHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ProcessBatchForBatchItemHandler
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,

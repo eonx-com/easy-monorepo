@@ -8,9 +8,11 @@ use DateTimeInterface;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class UpdateBatchItemHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class UpdateBatchItemHandler
 {
     public function __construct(
         private readonly BatchItemRepositoryInterface $batchItemRepository,
