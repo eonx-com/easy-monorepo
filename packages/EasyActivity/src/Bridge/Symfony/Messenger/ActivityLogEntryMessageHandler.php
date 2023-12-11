@@ -5,7 +5,6 @@ namespace EonX\EasyActivity\Bridge\Symfony\Messenger;
 
 use EonX\EasyActivity\Interfaces\StoreInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 #[AsMessageHandler]
 final class ActivityLogEntryMessageHandler
