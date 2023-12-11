@@ -7,6 +7,7 @@ use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -25,8 +26,9 @@ use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
+use EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener;
+use EonX\EasyDoctrine\Listeners\EntityPostFlushEventListener;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
-use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
@@ -53,9 +55,11 @@ final class EntityManagerStub
         array $subscribedEntities = [],
         array $fixtures = [],
     ) {
-        $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
+        $onFlushEventListener = new EntityOnFlushEventListener($dispatcher, $subscribedEntities);
+        $postFlushEventListener = new EntityPostFlushEventListener($dispatcher);
         $eventManager = new EventManager();
-        $eventManager->addEventSubscriber($eventSubscriber);
+        $eventManager->addEventListener(Events::onFlush, $onFlushEventListener);
+        $eventManager->addEventListener(Events::postFlush, $postFlushEventListener);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
         $eventDispatcher = new EventDispatcher(new SymfonyEventDispatcher());
 

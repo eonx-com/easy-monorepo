@@ -1,24 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Subscribers;
+namespace EonX\EasyDoctrine\Listeners;
 
 use Carbon\CarbonImmutable;
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyDoctrine\Interfaces\TimestampableInterface;
 
-final class TimestampableEventSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
+final class TimestampableEventListener
 {
-    /**
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [Events::loadClassMetadata];
-    }
-
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {
         $classMetadata = $loadClassMetadataEventArgs->getClassMetadata();

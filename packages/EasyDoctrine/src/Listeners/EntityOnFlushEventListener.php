@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Subscribers;
+namespace EonX\EasyDoctrine\Listeners;
 
 use DateTimeInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
 use InvalidArgumentException;
 use ReflectionProperty;
 use Stringable;
 
-final class EntityEventSubscriber implements EntityEventSubscriberInterface
+#[AsDoctrineListener(event: Events::onFlush)]
+final class EntityOnFlushEventListener
 {
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
@@ -25,36 +25,22 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     private array $subscribedEntities;
 
     /**
-     * @param class-string[]|null $entities
      * @param class-string[]|null $subscribedEntities
      */
     public function __construct(
         private readonly DeferredEntityEventDispatcherInterface $eventDispatcher,
-        // @deprecated Since 4.5, will be removed in 6.0. Use $subscribedEntities instead
-        ?array $entities = null,
         ?array $subscribedEntities = null,
     ) {
-        $this->subscribedEntities = $entities ?? $subscribedEntities ?? throw new InvalidArgumentException(
+        $this->subscribedEntities = $subscribedEntities ?? throw new InvalidArgumentException(
             'You must provide at least one entity to subscribe to'
         );
     }
 
-    /**
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::onFlush,
-            Events::postFlush,
-        ];
-    }
-
     public function onFlush(OnFlushEventArgs $eventArgs): void
     {
-        $entityManager = $eventArgs->getEntityManager();
-        $unitOfWork = $entityManager->getUnitOfWork();
-        $transactionNestingLevel = $entityManager->getConnection()
+        $objectManager = $eventArgs->getObjectManager();
+        $unitOfWork = $objectManager->getUnitOfWork();
+        $transactionNestingLevel = $objectManager->getConnection()
             ->getTransactionNestingLevel();
 
         $this->prepareDeferredDeletions($transactionNestingLevel, $unitOfWork);
@@ -64,44 +50,6 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
         $this->prepareDeferredUpdates($transactionNestingLevel, $unitOfWork);
 
         $this->prepareDeferredCollectionUpdates($transactionNestingLevel, $unitOfWork);
-    }
-
-    public function postFlush(PostFlushEventArgs $eventArgs): void
-    {
-        $entityManager = $eventArgs->getEntityManager();
-
-        if ($entityManager->getConnection()->getTransactionNestingLevel() === 0) {
-            $this->eventDispatcher->dispatch();
-        }
-    }
-
-    private function getClearedChangeSet(array $changeSet): array
-    {
-        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
-            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
-                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
-                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
-                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
-            }
-
-            if (($changeSetItem[0] ?? null) instanceof Stringable &&
-                ($changeSetItem[1] ?? null) instanceof Stringable) {
-                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
-            }
-
-            return true;
-        });
-    }
-
-    private function isEntitySubscribed(object $entity): bool
-    {
-        foreach ($this->subscribedEntities as $subscribedEntity) {
-            if (\is_a($entity, $subscribedEntity)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function prepareDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
@@ -230,5 +178,34 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
                 }
             }
         }
+    }
+
+    private function getClearedChangeSet(array $changeSet): array
+    {
+        return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
+            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
+                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
+                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
+                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            }
+
+            if (($changeSetItem[0] ?? null) instanceof Stringable &&
+                ($changeSetItem[1] ?? null) instanceof Stringable) {
+                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
+            }
+
+            return true;
+        });
+    }
+
+    private function isEntitySubscribed(object $entity): bool
+    {
+        foreach ($this->subscribedEntities as $subscribedEntity) {
+            if (\is_a($entity, $subscribedEntity)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

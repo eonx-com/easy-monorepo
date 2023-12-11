@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Tests\Subscribers;
+namespace EonX\EasyDoctrine\Tests\Listeners;
 
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use EonX\EasyDoctrine\Interfaces\TimestampableInterface;
-use EonX\EasyDoctrine\Subscribers\TimestampableEventSubscriber;
+use EonX\EasyDoctrine\Listeners\TimestampableEventListener;
 use EonX\EasyDoctrine\Tests\AbstractTestCase;
 use EonX\EasyDoctrine\Tests\Fixtures\Product;
 use EonX\EasyDoctrine\Tests\Stubs\EntityManagerStub;
@@ -17,18 +17,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionClass;
 use stdClass;
 
-#[CoversClass(TimestampableEventSubscriber::class)]
-final class TimestampableEventSubscriberTest extends AbstractTestCase
+#[CoversClass(TimestampableEventListener::class)]
+final class TimestampableEventListenerTest extends AbstractTestCase
 {
-    public function testGetSubscribedEventsSucceeds(): void
-    {
-        $subscriber = new TimestampableEventSubscriber();
-
-        $result = $subscriber->getSubscribedEvents();
-
-        self::assertSame([Events::loadClassMetadata], $result);
-    }
-
     /**
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\Tools\ToolsException
@@ -40,7 +31,7 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
             $classMetadata,
             EntityManagerStub::createFromEventManager()
         );
-        $subscriber = new TimestampableEventSubscriber();
+        $subscriber = new TimestampableEventListener();
 
         $subscriber->loadClassMetadata($metadataEventArgs);
 
@@ -64,9 +55,9 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
             $classMetadata,
             EntityManagerStub::createFromEventManager()
         );
-        $subscriber = new TimestampableEventSubscriber();
+        $listener = new TimestampableEventListener();
 
-        $subscriber->loadClassMetadata($metadataEventArgs);
+        $listener->loadClassMetadata($metadataEventArgs);
 
         self::assertCount(0, $classMetadata->getLifecycleCallbacks(Events::prePersist));
         self::assertCount(0, $classMetadata->getLifecycleCallbacks(Events::preUpdate));
@@ -84,9 +75,9 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
             $classMetadata,
             EntityManagerStub::createFromEventManager()
         );
-        $subscriber = new TimestampableEventSubscriber();
+        $listener = new TimestampableEventListener();
 
-        $subscriber->loadClassMetadata($metadataEventArgs);
+        $listener->loadClassMetadata($metadataEventArgs);
 
         self::assertCount(0, $classMetadata->getLifecycleCallbacks(Events::prePersist));
         self::assertCount(0, $classMetadata->getLifecycleCallbacks(Events::preUpdate));
@@ -108,9 +99,9 @@ final class TimestampableEventSubscriberTest extends AbstractTestCase
             $classMetadata,
             EntityManagerStub::createFromEventManager()
         );
-        $subscriber = new TimestampableEventSubscriber();
+        $listener = new TimestampableEventListener();
 
-        $subscriber->loadClassMetadata($metadataEventArgs);
+        $listener->loadClassMetadata($metadataEventArgs);
 
         self::assertCount(1, $classMetadata->getLifecycleCallbacks(Events::prePersist));
         self::assertCount(1, $classMetadata->getLifecycleCallbacks(Events::preUpdate));
