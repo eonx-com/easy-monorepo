@@ -82,7 +82,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         );
         $container->setDefinition(
             EntityPostFlushEventListener::class,
-            new Definition(EntityPostFlushEventListener::class)
+            new Definition(EntityPostFlushEventListener::class, [$deferredEntityDefinition])
         );
         $objectNormalizerDefinition = new Definition(ObjectNormalizer::class);
         $dateTimeNormalizerDefinition = new Definition(DateTimeNormalizer::class);
