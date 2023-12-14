@@ -222,6 +222,9 @@ final class BatchObjectManager implements BatchObjectManagerInterface
 
         // Allow to dispatch a batch with no item, and trigger all completed logic as expected
         if ($batch->countTotal() === 0) {
+            // Explicitly set the batch status to pending approval
+            $batch->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
+
             /** @var \EonX\EasyBatch\Interfaces\BatchInterface $batch */
             $batch = $this->approve($batch);
         }
