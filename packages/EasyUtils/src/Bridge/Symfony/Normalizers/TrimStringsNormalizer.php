@@ -43,10 +43,7 @@ final class TrimStringsNormalizer implements DenormalizerInterface
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [
-            'array' => true,
-            'string' => true,
-        ];
+        return [];
     }
 
     public function supportsDenormalization(
