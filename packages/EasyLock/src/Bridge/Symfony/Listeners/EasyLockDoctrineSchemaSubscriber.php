@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyLock\Bridge\Symfony\Subscribers;
+namespace EonX\EasyLock\Bridge\Symfony\Listeners;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
@@ -10,7 +10,7 @@ use Symfony\Component\Lock\PersistingStoreInterface;
 use Symfony\Component\Lock\Store\DoctrineDbalStore;
 
 #[AsDoctrineListener(event: ToolEvents::postGenerateSchema)]
-final class EasyLockDoctrineSchemaSubscriber
+final class EasyLockDoctrineSchemaListener
 {
     public function __construct(
         private PersistingStoreInterface $persistingStore,
