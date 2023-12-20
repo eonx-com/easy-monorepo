@@ -151,6 +151,9 @@ final class HttpClientStub extends MockHttpClient
         $this->defaultResponse = new MockResponse((string)\json_encode($body));
     }
 
+    /**
+     * @deprecated Since 5.7.2, will be removed in 6.0.0. Use addResponse() with proper HTTP status code instead.
+     */
     public function willThrowException(?Throwable $expectedException = null): self
     {
         $this->expectedException = $expectedException
