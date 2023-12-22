@@ -31,9 +31,9 @@ final class TimestampableEventListenerTest extends AbstractTestCase
             $classMetadata,
             EntityManagerStub::createFromEventManager()
         );
-        $subscriber = new TimestampableEventListener();
+        $listener = new TimestampableEventListener();
 
-        $subscriber->loadClassMetadata($metadataEventArgs);
+        $listener->loadClassMetadata($metadataEventArgs);
 
         self::assertCount(0, $classMetadata->getLifecycleCallbacks(Events::prePersist));
         self::assertCount(0, $classMetadata->getLifecycleCallbacks(Events::preUpdate));
