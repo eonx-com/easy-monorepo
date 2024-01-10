@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
 use InvalidArgumentException;
 use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -26,6 +27,12 @@ final class ErrorLogLevelResolverTest extends AbstractTestCase
 
         yield 'Debug default Symfony HTTP exception' => [
             'throwable' => new NotFoundHttpException(),
+            'expectedLogLevel' => Logger::DEBUG,
+            'exceptionLogLevels' => null,
+        ];
+
+        yield 'Debug default Symfony request exception' => [
+            'throwable' => new SuspiciousOperationException(),
             'expectedLogLevel' => Logger::DEBUG,
             'exceptionLogLevels' => null,
         ];
