@@ -5,6 +5,7 @@ namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
+use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
@@ -24,7 +25,10 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
         ?array $ignoredExceptions = null,
         ?bool $ignoreValidationErrors = null,
     ) {
-        $this->ignoredExceptions = $ignoredExceptions ?? [HttpExceptionInterface::class];
+        $this->ignoredExceptions = $ignoredExceptions ?? [
+            HttpExceptionInterface::class,
+            RequestExceptionInterface::class,
+        ];
         $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;
     }
 
