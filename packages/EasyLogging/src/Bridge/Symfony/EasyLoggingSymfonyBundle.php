@@ -11,7 +11,6 @@ use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
-use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

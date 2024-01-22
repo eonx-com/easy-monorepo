@@ -180,7 +180,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
     }
 
     /**
-     * @return \Monolog\Processor\ProcessorInterface[]
+     * @return \Monolog\Processor\ProcessorInterface[]|callable[]
      */
     private function getProcessors(string $channel): array
     {
