@@ -59,8 +59,6 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
             $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
         );
 
-        $params->set(BridgeConstantsInterface::PARAM_LOGGER_CLASS, Logger::class);
-
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);
 
