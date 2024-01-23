@@ -149,7 +149,7 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
             }
 
             $checkSum = $checkSum + \intdiv($current, 10) + $current % 10;
-            $isSecond = !$isSecond;
+            $isSecond = $isSecond === false;
         }
 
         return $checkSum !== 0 && $checkSum % 10 === 0;
