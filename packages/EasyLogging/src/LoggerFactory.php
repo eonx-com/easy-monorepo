@@ -51,6 +51,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
      */
     private array $processorConfigs = [];
 
+    /** @phpstan-ignore-next-line Ignore unused parameter. To be fixed then. */
     public function __construct(?string $defaultChannel = null, ?string $loggerClass = null, ?array $lazyLoggers = null)
     {
         $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
