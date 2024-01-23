@@ -51,7 +51,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
      */
     private array $processorConfigs = [];
 
-    public function __construct(?string $defaultChannel = null, ?array $lazyLoggers = null)
+    public function __construct(?string $defaultChannel = null, ?string $loggerClass = null, ?array $lazyLoggers = null)
     {
         $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
 
