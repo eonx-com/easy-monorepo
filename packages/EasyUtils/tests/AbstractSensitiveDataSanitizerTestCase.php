@@ -487,6 +487,15 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         ];
     }
 
+    public function testDoNotSanitizeCardLikeValuesThatAreNotLuhnValid(): void
+    {
+        $sanitizer = $this->getSanitizer();
+
+        $result = $sanitizer->sanitize(['uuid' => '{"uuid":"ba7e6152-1756-4391-bbe6-3bbc5057eb3d"}']);
+
+        self::assertEquals(['uuid' => '{"uuid":"ba7e6152-1756-4391-bbe6-3bbc5057eb3d"}'], $result);
+    }
+
     /**
      * @param string[]|null $keysToMask
      */
