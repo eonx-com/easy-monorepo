@@ -30,7 +30,7 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
         self::AMEX => [
             '/^3[47][0-9]{13}$/',
         ],
-        // China UnionPay cards start with 62 and have between 16 and 19 digits.
+        // China UnionPay cards start with 62 and have between 16 and 19 digits
         self::CHINA_UNIONPAY => [
             '/^62[0-9]{14,17}$/',
         ],
