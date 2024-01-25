@@ -122,10 +122,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
                 'Both HSM IP address and CloudHSM cluster id options cannot be set at the same time'
             );
         }
-        if (
-            ($isSetServerClientCertFile && $isSetServerClientKeyFile === false) ||
-            ($isSetServerClientCertFile === false && $isSetServerClientKeyFile)
-        ) {
+        if ($isSetServerClientCertFile !== $isSetServerClientKeyFile) {
             throw new InvalidConfigurationException('Both Server Client Cert and Key must be set at the same time');
         }
 
