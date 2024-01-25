@@ -20,19 +20,19 @@ final class EntityOnFlushEventListener
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**
-     * @var class-string[] $subscribedEntities
+     * @var class-string[] $trackableEntities
      */
-    private array $subscribedEntities;
+    private array $trackableEntities;
 
     /**
-     * @param class-string[]|null $subscribedEntities
+     * @param class-string[]|null $trackableEntities
      */
     public function __construct(
         private readonly DeferredEntityEventDispatcherInterface $eventDispatcher,
-        ?array $subscribedEntities = null,
+        ?array $trackableEntities = null,
     ) {
-        $this->subscribedEntities = $subscribedEntities ?? throw new InvalidArgumentException(
-            'You must provide at least one entity to subscribe to'
+        $this->trackableEntities = $trackableEntities ?? throw new InvalidArgumentException(
+            'You must provide at least one trackable entity.'
         );
     }
 
@@ -70,10 +70,10 @@ final class EntityOnFlushEventListener
         });
     }
 
-    private function isEntitySubscribed(object $entity): bool
+    private function isEntityTrackable(object $entity): bool
     {
-        foreach ($this->subscribedEntities as $subscribedEntity) {
-            if (\is_a($entity, $subscribedEntity)) {
+        foreach ($this->trackableEntities as $trackableEntity) {
+            if (\is_a($entity, $trackableEntity)) {
                 return true;
             }
         }
@@ -86,7 +86,7 @@ final class EntityOnFlushEventListener
         $scheduledCollectionUpdates = [];
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionUpdates() as $collection) {
-            if ($collection->getOwner() !== null && $this->isEntitySubscribed($collection->getOwner())) {
+            if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
                 $scheduledCollectionUpdates[\spl_object_id($collection)] = $collection;
             }
         }
@@ -112,7 +112,7 @@ final class EntityOnFlushEventListener
                 }
 
                 $collection = $visitedCollections[$collectionObjectId];
-                if ($collection->getOwner() !== null && $this->isEntitySubscribed($collection->getOwner())) {
+                if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
                     $scheduledCollectionUpdates[$collectionObjectId] = $collection;
                 }
             }
@@ -157,7 +157,7 @@ final class EntityOnFlushEventListener
 
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
-            if ($collection->getOwner() !== null && $this->isEntitySubscribed($collection->getOwner())) {
+            if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
                 /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
 
@@ -175,7 +175,7 @@ final class EntityOnFlushEventListener
     private function prepareDeferredDeletions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
-            if ($this->isEntitySubscribed($entity)) {
+            if ($this->isEntityTrackable($entity)) {
                 $changeSet = [];
                 foreach ($unitOfWork->getOriginalEntityData($entity) as $attribute => $value) {
                     $changeSet[$attribute] = [$value, null];
@@ -189,7 +189,7 @@ final class EntityOnFlushEventListener
     private function prepareDeferredInsertions(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityInsertions() as $entity) {
-            if ($this->isEntitySubscribed($entity)) {
+            if ($this->isEntityTrackable($entity)) {
                 $changeSet = $unitOfWork->getEntityChangeSet($entity);
                 $this->eventDispatcher->deferInsert($transactionNestingLevel, $entity, $changeSet);
             }
@@ -199,7 +199,7 @@ final class EntityOnFlushEventListener
     private function prepareDeferredUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
     {
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
-            if ($this->isEntitySubscribed($entity)) {
+            if ($this->isEntityTrackable($entity)) {
                 $changeSet = $this->getClearedChangeSet($unitOfWork->getEntityChangeSet($entity));
 
                 if (\count($changeSet) > 0) {

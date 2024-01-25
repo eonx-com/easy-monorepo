@@ -48,7 +48,7 @@ easy_doctrine:
 services:
     EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener:
         arguments:
-            $subscribedEntities: '%easy_doctrine.entities%'
+            $trackableEntities: '%easy_doctrine.entities%'
 ```
 
 #### Events
