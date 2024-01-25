@@ -96,8 +96,8 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
 
         $onFlushListener = $container->get(EntityOnFlushEventListener::class);
         $postFlushListener = $container->get(EntityPostFlushEventListener::class);
-        $subscribedEntities = self::getPrivatePropertyValue($onFlushListener, 'subscribedEntities');
-        self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $subscribedEntities);
+        $trackableEntities = self::getPrivatePropertyValue($onFlushListener, 'trackableEntities');
+        self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $trackableEntities);
         self::assertInstanceOf(EntityOnFlushEventListener::class, $onFlushListener);
         self::assertInstanceOf(EntityPostFlushEventListener::class, $postFlushListener);
     }
