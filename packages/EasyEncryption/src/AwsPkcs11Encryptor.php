@@ -15,9 +15,10 @@ use Pkcs11\Module;
 use Pkcs11\Session;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use Symfony\Contracts\Service\ResetInterface;
 use Throwable;
 
-final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11EncryptorInterface
+final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11EncryptorInterface, ResetInterface
 {
     private const AWS_CLOUDHSM_CONFIGURE_TOOL = '/opt/cloudhsm/bin/configure-pkcs11';
 
@@ -101,8 +102,6 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
     private function configureAwsCloudHsmSdk(): void
     {
         $filesystem = new Filesystem();
-        $cmd = [self::AWS_CLOUDHSM_CONFIGURE_TOOL];
-        $options = $this->awsCloudHsmSdkOptions ?? [];
         $isSetHsmIpAddress = $this->isNonEmptyString($this->hsmIpAddress);
         $isSetCloudHsmClusterId = $this->isNonEmptyString($this->cloudHsmClusterId);
         $isSetServerClientCertFile = $this->isNonEmptyString($this->serverClientCertFile);
@@ -114,7 +113,6 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
                 $this->hsmCaCert
             ));
         }
-
         if ($isSetHsmIpAddress === false && $isSetCloudHsmClusterId === false) {
             throw new InvalidConfigurationException(
                 'At least HSM IP address or CloudHSM cluster id has to be set'
@@ -125,6 +123,14 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
                 'Both HSM IP address and CloudHSM cluster id options cannot be set at the same time'
             );
         }
+        if (
+            ($isSetServerClientCertFile && $isSetServerClientKeyFile === false) ||
+            ($isSetServerClientCertFile === false && $isSetServerClientKeyFile)
+        ) {
+            throw new InvalidConfigurationException('Both Server Client Cert and Key must be set at the same time');
+        }
+
+        $options = $this->awsCloudHsmSdkOptions ?? [];
 
         if ($isSetHsmIpAddress) {
             $options['-a'] = $this->hsmIpAddress;
@@ -136,32 +142,31 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $options['--hsm-ca-cert'] = $this->hsmCaCert;
         $options['--region'] = $this->awsRegion;
 
-        if (($isSetServerClientCertFile && $isSetServerClientKeyFile === false)
-            || ($isSetServerClientKeyFile && $isSetServerClientCertFile === false)) {
-            throw new InvalidConfigurationException('Both Server Client Cert and Key must be set at the same time');
-        }
+        if ($isSetServerClientCertFile && $isSetServerClientKeyFile) {
+            $sslFiles = [
+                '--server-client-cert-file' => $this->serverClientCertFile,
+                '--server-client-key-file' => $this->serverClientKeyFile,
+            ];
 
-        $sslFiles = [
-            '--server-client-cert-file' => $this->serverClientCertFile,
-            '--server-client-key-file' => $this->serverClientKeyFile,
-        ];
+            /** @var string $filename */
+            foreach ($sslFiles as $option => $filename) {
+                if ($filesystem->exists($filename) === false) {
+                    throw new InvalidConfigurationException(\sprintf(
+                        'Filename "%s" for option "%s" does not exist',
+                        $filename,
+                        $option
+                    ));
+                }
 
-        /** @var string $filename */
-        foreach ($sslFiles as $option => $filename) {
-            if ($filesystem->exists($filename) === false) {
-                throw new InvalidConfigurationException(\sprintf(
-                    'Filename "%s" for option "%s" does not exist',
-                    $filename,
-                    $option
-                ));
+                $options[$option] = $filename;
             }
-
-            $options[$option] = $filename;
         }
 
         if ($this->disableKeyAvailabilityCheck) {
             $options[] = '--disable-key-availability-check';
         }
+
+        $cmd = [self::AWS_CLOUDHSM_CONFIGURE_TOOL];
 
         foreach ($options as $option => $value) {
             \is_string($option)
@@ -204,7 +209,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             \Pkcs11\CKA_LABEL => $keyName,
         ]) ?? [];
 
-        if (\is_array($objects) || \count($objects) > 0) {
+        if (\is_array($objects) && \count($objects) > 0) {
             return $this->keys[$keyName] = $objects[0];
         }
 
@@ -235,8 +240,10 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
 
         $this->module ??= new Module(self::AWS_CLOUDHSM_EXTENSION);
 
-        $this->session = $this->module->openSession($this->module->getSlotList()[0], \Pkcs11\CKF_RW_SESSION);
-        $this->session->login(\Pkcs11\CKU_USER, $this->userPin);
+        $session = $this->module->openSession($this->module->getSlotList()[0], \Pkcs11\CKF_RW_SESSION);
+        $session->login(\Pkcs11\CKU_USER, $this->userPin);
+
+        $this->session = $session;
     }
 
     private function isNonEmptyString(mixed $string): bool
@@ -244,9 +251,8 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         return \is_string($string) && $string !== '';
     }
 
-    private function validateKey(
-        EncryptionKey|EncryptionKeyPair|array|string|null $key = null,
-    ): void {
+    private function validateKey(EncryptionKey|EncryptionKeyPair|array|string|null $key = null): void
+    {
         if ($key !== null && $this->isNonEmptyString($key) === false) {
             throw new InvalidEncryptionKeyException(\sprintf(
                 'Encryption key must be either null or string for %s',
