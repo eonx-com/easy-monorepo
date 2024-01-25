@@ -15,10 +15,9 @@ use Pkcs11\Module;
 use Pkcs11\Session;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
-use Symfony\Contracts\Service\ResetInterface;
 use Throwable;
 
-final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11EncryptorInterface, ResetInterface
+final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11EncryptorInterface
 {
     private const AWS_CLOUDHSM_CONFIGURE_TOOL = '/opt/cloudhsm/bin/configure-pkcs11';
 
