@@ -15,8 +15,8 @@ use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFac
 use EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
-use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener;
+use EonX\EasyDoctrine\Listeners\EntityPostFlushEventListener;
 use EonX\EasyDoctrine\Utils\ObjectCopier;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs\MessageBusStub;
@@ -74,11 +74,15 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
         $container->setDefinition(
-            EntityEventSubscriberInterface::class,
+            EntityOnFlushEventListener::class,
             new Definition(
-                EntityEventSubscriber::class,
+                EntityOnFlushEventListener::class,
                 [$deferredEntityDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%']
             )
+        );
+        $container->setDefinition(
+            EntityPostFlushEventListener::class,
+            new Definition(EntityPostFlushEventListener::class, [$deferredEntityDefinition])
         );
         $objectNormalizerDefinition = new Definition(ObjectNormalizer::class);
         $dateTimeNormalizerDefinition = new Definition(DateTimeNormalizer::class);

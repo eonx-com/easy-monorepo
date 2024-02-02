@@ -7,13 +7,15 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
+use EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener;
+use EonX\EasyDoctrine\Listeners\EntityPostFlushEventListener;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
-use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyDoctrine\Tests\Fixtures\PriceType;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
@@ -22,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 final class EntityManagerStub
 {
     /**
-     * @param class-string[] $subscribedEntities
+     * @param class-string[] $trackableEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -32,12 +34,14 @@ final class EntityManagerStub
      */
     public static function createFromDeferredEntityEventDispatcher(
         DeferredEntityEventDispatcher $dispatcher,
-        array $subscribedEntities = [],
+        array $trackableEntities = [],
         array $fixtures = [],
     ) {
-        $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
+        $onFlushEventListener = new EntityOnFlushEventListener($dispatcher, $trackableEntities);
+        $postFlushEventListener = new EntityPostFlushEventListener($dispatcher);
         $eventManager = new EventManager();
-        $eventManager->addEventSubscriber($eventSubscriber);
+        $eventManager->addEventListener(Events::onFlush, $onFlushEventListener);
+        $eventManager->addEventListener(Events::postFlush, $postFlushEventListener);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
         $eventDispatcher = new EventDispatcher(new SymfonyEventDispatcher());
 
@@ -87,7 +91,7 @@ final class EntityManagerStub
     }
 
     /**
-     * @param class-string[] $subscribedEntities
+     * @param class-string[] $trackableEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -97,14 +101,14 @@ final class EntityManagerStub
      */
     public static function createFromSymfonyEventDispatcher(
         EventDispatcherInterface $eventDispatcher,
-        array $subscribedEntities = [],
+        array $trackableEntities = [],
         array $fixtures = [],
     ) {
         $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
-            $subscribedEntities,
+            $trackableEntities,
             $fixtures
         );
     }

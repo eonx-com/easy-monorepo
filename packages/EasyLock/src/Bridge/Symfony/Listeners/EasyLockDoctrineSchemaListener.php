@@ -1,26 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyLock\Bridge\Symfony\Subscribers;
+namespace EonX\EasyLock\Bridge\Symfony\Listeners;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\ORM\Tools\ToolEvents;
 use Symfony\Component\Lock\PersistingStoreInterface;
 use Symfony\Component\Lock\Store\DoctrineDbalStore;
 
-final class EasyLockDoctrineSchemaSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: ToolEvents::postGenerateSchema)]
+final class EasyLockDoctrineSchemaListener
 {
     public function __construct(
         private PersistingStoreInterface $persistingStore,
     ) {
-    }
-
-    public function getSubscribedEvents(): array
-    {
-        return [
-            ToolEvents::postGenerateSchema,
-        ];
     }
 
     public function postGenerateSchema(GenerateSchemaEventArgs $event): void

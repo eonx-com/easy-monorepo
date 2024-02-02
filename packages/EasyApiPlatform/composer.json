@@ -18,7 +18,7 @@
     "require-dev": {
         "doctrine/common": "^3.0",
         "doctrine/annotations": "^1.14",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-bundle": "^2.8",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",

@@ -10,8 +10,8 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
-use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
+use EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener;
+use EonX\EasyDoctrine\Listeners\EntityPostFlushEventListener;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
@@ -94,11 +94,12 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel([__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml'])
             ->getContainer();
 
-        /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
-        $subscriber = $container->get(EntityEventSubscriberInterface::class);
-        $entities = self::getPrivatePropertyValue($subscriber, 'subscribedEntities');
-        self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $entities);
-        self::assertInstanceOf(EntityEventSubscriber::class, $subscriber);
+        $onFlushListener = $container->get(EntityOnFlushEventListener::class);
+        $postFlushListener = $container->get(EntityPostFlushEventListener::class);
+        $trackableEntities = self::getPrivatePropertyValue($onFlushListener, 'trackableEntities');
+        self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $trackableEntities);
+        self::assertInstanceOf(EntityOnFlushEventListener::class, $onFlushListener);
+        self::assertInstanceOf(EntityPostFlushEventListener::class, $postFlushListener);
     }
 
     #[DataProvider('providerInvalidEasyConfigs')]
