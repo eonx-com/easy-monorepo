@@ -28,7 +28,6 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
 
             if (\preg_match($exception['message_pattern'], $throwable->getMessage()) === 1) {
                 $violation = $this->translator->trans($exception['violation_message'], []);
-                
                 if ($throwable instanceof NotNormalizableValueException) {
                     return [
                         $throwable->getPath() => [
