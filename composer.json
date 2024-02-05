@@ -198,6 +198,9 @@
             "php-http/discovery": true,
             "symfony/runtime": true
         },
+        "platform": {
+            "ext-openswoole": "22.0"
+        },
         "process-timeout": 0
     },
     "extra": {

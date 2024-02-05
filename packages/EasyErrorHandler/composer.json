@@ -8,11 +8,11 @@
         "eonx-com/easy-logging": "^5.8",
         "eonx-com/easy-utils": "^5.8",
         "nesbot/carbon": "^2.67",
-        "nikic/php-parser": "^5.0"
+        "nikic/php-parser": "4.18.*"
     },
     "require-dev": {
         "api-platform/core": "^3.1",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-bugsnag": "^5.8",
         "eonx-com/easy-test": "^5.8",
