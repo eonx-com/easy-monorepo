@@ -12,7 +12,7 @@ jobs:
         steps:
             -
                 name: Checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
             -
                 name: 'Setup cache environment'
                 id: cache-extensions
@@ -23,7 +23,7 @@ jobs:
                     key: '${{ env.PHP_EXTENSIONS_CACHE_KEY }}'
             -
                 name: 'Cache extensions'
-                uses: actions/cache@v3
+                uses: actions/cache@v4
                 with:
                     path: '${{ steps.cache-extensions.outputs.dir }}'
                     key: '${{ steps.cache-extensions.outputs.key }}'
@@ -58,7 +58,7 @@ jobs:
             TAG: '${{ matrix.tag }}'
         steps:
             -
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
             -
                 run: 'git fetch --prune --unshallow'
             -
