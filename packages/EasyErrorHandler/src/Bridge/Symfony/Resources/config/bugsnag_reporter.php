@@ -24,8 +24,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(BugsnagIgnoreExceptionsResolverInterface::class, DefaultBugsnagIgnoreExceptionsResolver::class)
         ->arg('$ignoredExceptions', param(BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS))
         ->arg(
-            '$ignoreApiPlatformBuilderErrors',
-            param(BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_API_PLATFORM_BUILDER_ERRORS)
+            '$ignoreExceptionsHandledByApiPlatformBuilders',
+            param(BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_EXCEPTIONS_HANDLED_BY_API_PLATFORM_BUILDERS)
         )
         ->arg(
             '$apiPlatformErrorResponseBuilderProvider',

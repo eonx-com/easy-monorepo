@@ -53,18 +53,16 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
         );
         $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_API_PLATFORM_BUILDER_ERRORS,
-            $config['bugsnag_ignore_validation_errors'] && $config['bugsnag_ignore_api_platform_builder_errors']
+            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_EXCEPTIONS_HANDLED_BY_API_PLATFORM_BUILDERS,
+            $config['bugsnag_ignore_exceptions_handled_by_api_platform_builders']
         );
         $parameters->set(
             BridgeConstantsInterface::PARAM_BUGSNAG_HANDLED_EXCEPTIONS,
             \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
         );
 
-        $useApiPlatformBuilders = $config['transform_validation_errors']
-            && $config['override_api_platform_listener']
-            && $config['use_api_platform_builders'];
-        $parameters->set(BridgeConstantsInterface::PARAM_USE_API_PLATFORM_BUILDERS, $useApiPlatformBuilders);
+        $useApiPlatformBuilders = $config['api_platform_builders'] ?? true;
+        $parameters->set(BridgeConstantsInterface::PARAM_API_PLATFORM_BUILDERS, $useApiPlatformBuilders);
 
         $parameters->set(
             BridgeConstantsInterface::PARAM_API_PLATFORM_CUSTOM_SERIALIZER_EXCEPTIONS,
@@ -125,7 +123,7 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
         $container->import(__DIR__ . '/Resources/config/services.php');
 
-        if ($config['use_default_builders'] ?? true) {
+        if ($config['default_builders'] ?? true) {
             $container->import(__DIR__ . '/Resources/config/default_builders.php');
         }
 

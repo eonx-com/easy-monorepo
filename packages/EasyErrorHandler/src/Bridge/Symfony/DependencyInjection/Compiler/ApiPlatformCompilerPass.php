@@ -11,7 +11,7 @@ final class ApiPlatformCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->getParameter(BridgeConstantsInterface::PARAM_USE_API_PLATFORM_BUILDERS) === false) {
+        if ($container->getParameter(BridgeConstantsInterface::PARAM_API_PLATFORM_BUILDERS) === false) {
             return;
         }
 

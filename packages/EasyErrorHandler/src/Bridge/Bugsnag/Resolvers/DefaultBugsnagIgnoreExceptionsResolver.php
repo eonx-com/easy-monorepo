@@ -12,13 +12,22 @@ use Throwable;
 final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExceptionsResolverInterface
 {
     /**
+     * @var class-string[]
+     */
+    private readonly array $ignoredExceptions;
+
+    /**
      * @param class-string[] $ignoredExceptions
      */
     public function __construct(
-        private readonly array $ignoredExceptions = [HttpExceptionInterface::class, RequestExceptionInterface::class],
-        private readonly bool $ignoreApiPlatformBuilderErrors = true,
+        ?array $ignoredExceptions = null,
+        private readonly bool $ignoreExceptionsHandledByApiPlatformBuilders = true,
         private readonly ?ApiPlatformErrorResponseBuilderProvider $apiPlatformErrorResponseBuilderProvider = null,
     ) {
+        $this->ignoredExceptions = $ignoredExceptions ?? [
+            HttpExceptionInterface::class,
+            RequestExceptionInterface::class,
+        ];
     }
 
     public function shouldIgnore(Throwable $throwable): bool
@@ -30,7 +39,7 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
         }
 
         if (
-            $this->ignoreApiPlatformBuilderErrors
+            $this->ignoreExceptionsHandledByApiPlatformBuilders
             && $this->apiPlatformErrorResponseBuilderProvider instanceof ApiPlatformErrorResponseBuilderProvider
         ) {
             foreach ($this->apiPlatformErrorResponseBuilderProvider->getBuilders() as $builder) {
