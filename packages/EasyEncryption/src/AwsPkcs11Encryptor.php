@@ -77,7 +77,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
 
             return $this
                 ->findKey($keyAsString)
-                ->sign(new Mechanism(\Pkcs11\CKM_SHA512_HMAC), $text);
+                ->sign(new Mechanism(\Pkcs11\CKM_SHA512_HMAC, null), $text);
         });
     }
 
