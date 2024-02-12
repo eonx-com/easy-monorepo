@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption;
 
 use EonX\EasyEncryption\Exceptions\CouldNotConfigureAwsCloudHsmSdkException;
+use EonX\EasyEncryption\Exceptions\CouldNotEncryptException;
 use EonX\EasyEncryption\Exceptions\InvalidConfigurationException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
@@ -62,6 +63,22 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $this->session->logout();
         $this->module?->C_CloseSession($this->session);
         $this->session = null;
+    }
+
+    public function sign(string $text, ?string $keyName = null): string
+    {
+        return $this->execSafely(CouldNotEncryptException::class, function () use ($text, $keyName): string {
+            $keyName = $this->getKeyName($keyName);
+            $this->validateKey($keyName);
+            $this->init();
+
+            /** @var string|null $keyAsString */
+            $keyAsString = $keyName;
+
+            return $this
+                ->findKey($keyAsString)
+                ->sign(new Mechanism(\Pkcs11\CKM_SHA512_HMAC), $text);
+        });
     }
 
     protected function doDecrypt(
