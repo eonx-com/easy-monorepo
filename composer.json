@@ -199,6 +199,9 @@
             "php-http/discovery": true,
             "symfony/runtime": true
         },
+        "audit": {
+            "abandoned": "report"
+        },
         "platform": {
             "ext-openswoole": "22.0"
         },
