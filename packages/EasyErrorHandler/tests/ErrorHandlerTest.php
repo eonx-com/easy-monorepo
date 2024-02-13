@@ -76,6 +76,15 @@ final class ErrorHandlerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @see testRepeatedExceptionReport
+     */
+    public static function providerTestRepeatedExceptionReport(): iterable
+    {
+        yield 'Skip reported exceptions' => [true, 1];
+        yield 'Report all exceptions' => [false, 2];
+    }
+
     #[DataProvider('providerTestReport')]
     public function testReport(
         Throwable $throwable,
@@ -96,5 +105,26 @@ final class ErrorHandlerTest extends AbstractTestCase
         $errorHandler->report($throwable);
 
         $assertions($reporter);
+    }
+
+    #[DataProvider('providerTestRepeatedExceptionReport')]
+    public function testRepeatedExceptionReport(bool $skipReportedExceptions, int $expectedReportedErrorsCount): void
+    {
+        $throwable = new Exception('message');
+        $reporter = new ErrorReporterStub();
+        $reporterProviders = [new FromIterableErrorReporterProvider([$reporter])];
+        $verboseStrategy = new ChainVerboseStrategy([], false);
+        $errorHandler = new ErrorHandler(
+            new ErrorResponseFactory(),
+            [],
+            $reporterProviders,
+            $verboseStrategy,
+            skipReportedExceptions: $skipReportedExceptions,
+        );
+
+        $errorHandler->report($throwable);
+        $errorHandler->report($throwable);
+
+        self::assertCount($expectedReportedErrorsCount, $reporter->getReportedErrors());
     }
 }
