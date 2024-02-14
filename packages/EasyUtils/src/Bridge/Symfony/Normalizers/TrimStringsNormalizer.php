@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Bridge\Symfony\Normalizers;
 
 use EonX\EasyUtils\StringTrimmers\StringTrimmerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class TrimStringsNormalizer implements DenormalizerInterface
+final class TrimStringsNormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
 
@@ -43,7 +44,7 @@ final class TrimStringsNormalizer implements DenormalizerInterface
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [];
+        return ['*' => true];
     }
 
     public function supportsDenormalization(
