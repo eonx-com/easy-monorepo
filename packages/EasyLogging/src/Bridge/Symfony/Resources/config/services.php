@@ -6,7 +6,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use EonX\EasyLogging\LoggerFactory;
-use Monolog\Logger;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
