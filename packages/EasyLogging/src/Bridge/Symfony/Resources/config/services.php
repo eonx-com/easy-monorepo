@@ -17,6 +17,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(LoggerFactoryInterface::class, LoggerFactory::class)
         ->arg('$defaultChannel', '%' . BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL . '%')
+        ->arg('$loggerClass', '%' . BridgeConstantsInterface::PARAM_LOGGER_CLASS . '%')
         ->arg('$lazyLoggers', '%' . BridgeConstantsInterface::PARAM_LAZY_LOGGERS . '%')
         ->call('setHandlerConfigProviders', [tagged_iterator(BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER)])
         ->call('setLoggerConfigurators', [tagged_iterator(BridgeConstantsInterface::TAG_LOGGER_CONFIGURATOR)])
@@ -26,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         );
 
     $services
-        ->set('easy_logging.logger', Logger::class)
+        ->set('easy_logging.logger', '%' . BridgeConstantsInterface::PARAM_LOGGER_CLASS . '%')
         ->factory([service(LoggerFactoryInterface::class), 'create'])
         ->args(['%' . BridgeConstantsInterface::PARAM_DEFAULT_CHANNEL . '%']);
 };

@@ -36,6 +36,8 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
      */
     private array $lazyLoggers = [];
 
+    private string $loggerClass;
+
     /**
      * @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface[]
      */
@@ -51,9 +53,10 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
      */
     private array $processorConfigs = [];
 
-    public function __construct(?string $defaultChannel = null, ?array $lazyLoggers = null)
+    public function __construct(?string $defaultChannel = null, ?string $loggerClass = null, ?array $lazyLoggers = null)
     {
         $this->defaultChannel = $defaultChannel ?? self::DEFAULT_CHANNEL;
+        $this->loggerClass = $loggerClass ?? Logger::class;
 
         foreach ($lazyLoggers ?? [] as $channel) {
             $this->lazyLoggers[(string)$channel] = true;
@@ -72,7 +75,9 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
             return new LazyLoggerProxy($this, $channel);
         }
 
-        $logger = new Logger($channel, $this->getHandlers($channel), $this->getProcessors($channel));
+        $loggerClass = $this->loggerClass;
+        /** @var \Monolog\Logger $logger */
+        $logger = new $loggerClass($channel, $this->getHandlers($channel), $this->getProcessors($channel));
 
         /** @var \EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface $configurator */
         foreach ($this->getLoggerConfigurators($channel) as $configurator) {
