@@ -69,7 +69,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         private readonly string $aad = '',
         private readonly ?string $serverClientCertFile = null,
         private readonly ?string $serverClientKeyFile = null,
-        private readonly ?array $cloudHsmConfigureToolOptions = null,
+        private readonly ?array $cloudHsmOptions = null,
         private readonly bool $useCloudHsmConfigureTool = true,
         ?string $defaultKeyName = null,
     ) {
@@ -173,7 +173,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
             throw new InvalidConfigurationException('Both Server Client Cert and Key must be set at the same time');
         }
 
-        $options = $this->cloudHsmConfigureToolOptions ?? [];
+        $options = $this->cloudHsmOptions ?? [];
 
         if ($isSetHsmIpAddress) {
             $options['-a'] = $this->hsmIpAddress;

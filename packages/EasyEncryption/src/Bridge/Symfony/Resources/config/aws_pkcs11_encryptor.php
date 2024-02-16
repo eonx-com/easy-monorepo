@@ -28,10 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$aad', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AAD))
         ->arg('$serverClientCertFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE))
         ->arg('$serverClientKeyFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_KEY_FILE))
-        ->arg(
-            '$cloudHsmConfigureToolOptions',
-            param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_CONFIGURE_TOOL_OPTIONS)
-        )
+        ->arg('$cloudHsmOptions', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_OPTIONS))
         ->arg(
             '$useCloudHsmConfigureTool',
             param(BridgeConstantsInterface::PARAM_AWS_PKCS11_USE_CLOUD_HSM_CONFIGURE_TOOL)

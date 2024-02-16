@@ -16,7 +16,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->children()
                     ->booleanNode('enabled')->defaultFalse()->end()
                     ->scalarNode('aad')->defaultValue('')->end()
-                    ->arrayNode('aws_cloud_hsm_configure_tool_options')
+                    ->arrayNode('aws_cloud_hsm_options')
                         ->defaultValue([])
                         ->normalizeKeys(false)
                         ->prototype('scalar')->end()
@@ -26,7 +26,7 @@ return static function (DefinitionConfigurator $definition) {
                             'eonx-com/easy-encryption',
                             '5.8.0',
                             'The "%node%" node is deprecated and will be removed in 6.0. ' .
-                                    'Use "aws_cloud_hsm_configure_tool_options" instead.'
+                                    'Use "aws_cloud_hsm_options" instead.'
                         )
                         ->defaultValue([])
                         ->normalizeKeys(false)
