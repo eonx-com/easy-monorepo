@@ -9,6 +9,7 @@
         "paragonie/halite": "^5.1"
     },
     "require-dev": {
+        "aws/aws-sdk-php": "^3.269",
         "laravel/lumen-framework": "^9.1",
         "natepage/php-pkcs11-ide-helper": "^1.0",
         "phpunit/phpunit": "^10.2",

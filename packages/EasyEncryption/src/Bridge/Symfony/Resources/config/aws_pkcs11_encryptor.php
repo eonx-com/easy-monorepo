@@ -24,9 +24,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$hsmIpAddress', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_HSM_IP_ADDRESS))
         ->arg('$cloudHsmClusterId', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_CLUSTER_ID))
         ->arg('$awsRegion', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AWS_REGION))
+        ->arg('$awsRoleArn', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AWS_ROLE_ARN))
         ->arg('$aad', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AAD))
         ->arg('$serverClientCertFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE))
         ->arg('$serverClientKeyFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_KEY_FILE))
-        ->arg('$awsCloudHsmSdkOptions', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_HSM_SDK_OPTIONS))
+        ->arg(
+            '$cloudHsmConfigureToolOptions',
+            param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_CONFIGURE_TOOL_OPTIONS)
+        )
+        ->arg(
+            '$useCloudHsmConfigureTool',
+            param(BridgeConstantsInterface::PARAM_AWS_PKCS11_USE_CLOUD_HSM_CONFIGURE_TOOL)
+        )
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 };
