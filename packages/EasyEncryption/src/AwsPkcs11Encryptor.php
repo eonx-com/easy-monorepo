@@ -329,7 +329,7 @@ final class AwsPkcs11Encryptor extends AbstractEncryptor implements AwsPkcs11Enc
         $filesystem = new Filesystem();
         $filesystem->dumpFile(
             self::AWS_CLOUDHSM_CONFIG_FILE,
-            \json_encode($config, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
+            (string)\json_encode($config, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
         );
     }
 
