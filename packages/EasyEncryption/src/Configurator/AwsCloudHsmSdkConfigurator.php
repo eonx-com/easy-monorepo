@@ -107,17 +107,17 @@ final class AwsCloudHsmSdkConfigurator
                 }
             }
 
-            $cloudHSMV2ClientOptions = [
+            $cloudHsmV2ClientOptions = [
                 'region' => $options['--region'],
                 'version' => self::AWS_CLOUDHSM_API_VERSION,
             ];
             if ($awsCredentials !== null) {
-                $cloudHSMV2ClientOptions['credentials'] = $awsCredentials;
+                $cloudHsmV2ClientOptions['credentials'] = $awsCredentials;
             }
-            $cloudHSMV2Client = new CloudHSMV2Client($cloudHSMV2ClientOptions);
+            $cloudHsmV2Client = new CloudHSMV2Client($cloudHsmV2ClientOptions);
 
             try {
-                $awsResult = $cloudHSMV2Client->describeClusters([
+                $awsResult = $cloudHsmV2Client->describeClusters([
                     'Filter' => [
                         'clusterIds' => [$options['--cluster-id']],
                     ],
