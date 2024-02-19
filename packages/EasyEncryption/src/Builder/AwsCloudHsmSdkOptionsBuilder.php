@@ -18,7 +18,7 @@ final class AwsCloudHsmSdkOptionsBuilder
         private readonly string $awsRegion = self::DEFAULT_AWS_REGION,
         private readonly ?string $serverClientCertFile = null,
         private readonly ?string $serverClientKeyFile = null,
-        private readonly ?array $cloudHsmOptions = null,
+        private readonly ?array $cloudHsmSdkOptions = null,
     ) {
     }
 
@@ -50,7 +50,7 @@ final class AwsCloudHsmSdkOptionsBuilder
             throw new InvalidConfigurationException('Both Server Client Cert and Key must be set at the same time');
         }
 
-        $options = $this->cloudHsmOptions ?? [];
+        $options = $this->cloudHsmSdkOptions ?? [];
 
         if ($isSetHsmIpAddress) {
             $options['-a'] = $this->hsmIpAddress;

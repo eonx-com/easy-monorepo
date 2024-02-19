@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$awsRegion', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AWS_REGION))
         ->arg('$serverClientCertFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE))
         ->arg('$serverClientKeyFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_KEY_FILE))
-        ->arg('$cloudHsmOptions', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_OPTIONS));
+        ->arg('$cloudHsmSdkOptions', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_SDK_OPTIONS));
 
     $services
         ->set(AwsCloudHsmSdkConfigurator::class)

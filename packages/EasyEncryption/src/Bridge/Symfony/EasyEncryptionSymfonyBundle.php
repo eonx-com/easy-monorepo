@@ -14,7 +14,7 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
 {
     private const AWS_PKCS11_CONFIGS_TO_PARAMS = [
         'aad' => BridgeConstantsInterface::PARAM_AWS_PKCS11_AAD,
-        'aws_cloud_hsm_options' => BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_OPTIONS,
+        'aws_cloud_hsm_sdk_options' => BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_SDK_OPTIONS,
         'aws_region' => BridgeConstantsInterface::PARAM_AWS_PKCS11_AWS_REGION,
         'aws_role_arn' => BridgeConstantsInterface::PARAM_AWS_PKCS11_AWS_ROLE_ARN,
         'cloud_hsm_cluster_id' => BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_CLUSTER_ID,
@@ -56,20 +56,6 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         }
 
         foreach (self::AWS_PKCS11_CONFIGS_TO_PARAMS as $configName => $param) {
-            // @deprecated Delete this condition in 6.0 and delete the "aws_cloud_hsm_sdk_options" option
-            if ($configName === 'aws_cloud_hsm_options') {
-                $value = [
-                    ...$config['aws_pkcs11_encryptor']['aws_cloud_hsm_sdk_options'],
-                    ...$config['aws_pkcs11_encryptor'][$configName],
-                ];
-
-                $container
-                    ->parameters()
-                    ->set($param, $value);
-
-                continue;
-            }
-
             $container
                 ->parameters()
                 ->set($param, $config['aws_pkcs11_encryptor'][$configName]);

@@ -13,7 +13,7 @@ interface BridgeConstantsInterface
 
     public const PARAM_AWS_PKCS11_CLOUD_HSM_CLUSTER_ID = 'easy_encryption.aws_pkcs11_cloud_hsm_cluster_id';
 
-    public const PARAM_AWS_PKCS11_CLOUD_HSM_OPTIONS = 'easy_encryption.aws_pkcs11_cloud_hsm_options';
+    public const PARAM_AWS_PKCS11_CLOUD_HSM_SDK_OPTIONS = 'easy_encryption.aws_pkcs11_cloud_hsm_sdk_options';
 
     public const PARAM_AWS_PKCS11_DISABLE_KEY_AVAILABILITY_CHECK = 'easy_encryption.aws_pkcs11_disable_key_availability_check';
 
