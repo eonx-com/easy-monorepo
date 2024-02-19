@@ -18,7 +18,7 @@ final class AwsCloudHsmSdkOptionsBuilder
         private readonly string $awsRegion = self::DEFAULT_AWS_REGION,
         private readonly ?string $serverClientCertFile = null,
         private readonly ?string $serverClientKeyFile = null,
-        private readonly ?array $cloudHsmOptions = null
+        private readonly ?array $cloudHsmOptions = null,
     ) {
     }
 
