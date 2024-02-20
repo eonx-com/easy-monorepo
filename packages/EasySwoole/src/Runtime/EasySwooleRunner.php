@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Symfony\Component\Runtime\RunnerInterface;
 use Throwable;
+
 use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
