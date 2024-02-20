@@ -16,11 +16,12 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
 use Symfony\Component\Runtime\SymfonyRuntime;
-
 use function Symfony\Component\String\u;
 
 final class EasySwooleRuntime extends SymfonyRuntime
 {
+    private const EVENT_ENV_VARS_LOADED = 'envVarsLoaded';
+
     public function __construct(?array $options = null)
     {
         // If dotenv_path is not set, set it to "envs/$env.env" if file exists
@@ -49,6 +50,12 @@ final class EasySwooleRuntime extends SymfonyRuntime
             OptionHelper::getStringNullable('dotenv_path'),
             OptionHelper::getBoolean('env_var_output_enabled'),
         );
+
+        $callbacks = OptionHelper::getArray('callbacks');
+
+        if (\array_key_exists(self::EVENT_ENV_VARS_LOADED, $callbacks)) {
+            $callbacks[self::EVENT_ENV_VARS_LOADED]($application);
+        }
 
         if (OptionHelper::getBoolean('app_cache_warmup_enabled')) {
             AppCacheWarmupHelper::warmupCache($application);
