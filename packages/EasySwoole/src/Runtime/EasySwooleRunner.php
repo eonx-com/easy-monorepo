@@ -26,6 +26,10 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRunner implements RunnerInterface
 {
+    private const EVENT_WORKER_START = 'workerStart';
+
+    private const EVENT_WORKER_STOP = 'workerStop';
+
     public function __construct(
         private readonly HttpKernelInterface $app,
     ) {
@@ -233,14 +237,14 @@ final class EasySwooleRunner implements RunnerInterface
     private function registerDefaultCallbacks(Server $server): void
     {
         $server->on(
-            'workerStart',
+            self::EVENT_WORKER_START,
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
             }
         );
 
         $server->on(
-            'workerStop',
+            self::EVENT_WORKER_STOP,
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
             }
