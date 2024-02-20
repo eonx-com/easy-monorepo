@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\Symfony\Subscribers;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\ORM\Tools\ToolEvents;
 use Symfony\Component\Lock\PersistingStoreInterface;
 use Symfony\Component\Lock\Store\DoctrineDbalStore;
 
+#[AsDoctrineListener(event: ToolEvents::postGenerateSchema)]
 final class EasyLockDoctrineSchemaSubscriber implements EventSubscriber
 {
     public function __construct(

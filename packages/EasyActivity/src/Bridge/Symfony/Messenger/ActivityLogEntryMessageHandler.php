@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bridge\Symfony\Messenger;
 
 use EonX\EasyActivity\Interfaces\StoreInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class ActivityLogEntryMessageHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ActivityLogEntryMessageHandler
 {
     public function __construct(
         private StoreInterface $store,

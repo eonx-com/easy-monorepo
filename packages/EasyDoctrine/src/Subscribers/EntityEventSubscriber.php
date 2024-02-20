@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Subscribers;
 
 use DateTimeInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -15,6 +16,8 @@ use InvalidArgumentException;
 use ReflectionProperty;
 use Stringable;
 
+#[AsDoctrineListener(Events::onFlush)]
+#[AsDoctrineListener(Events::postFlush)]
 final class EntityEventSubscriber implements EntityEventSubscriberInterface
 {
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
