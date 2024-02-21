@@ -32,7 +32,6 @@ final class EasySwooleRunner implements RunnerInterface
         AppRuntimeHelper::EVENT_BEFORE_RELOAD,
         AppRuntimeHelper::EVENT_CLOSE,
         AppRuntimeHelper::EVENT_CONNECT,
-        AppRuntimeHelper::EVENT_ENV_VARS_LOADED,
         AppRuntimeHelper::EVENT_FINISH,
         AppRuntimeHelper::EVENT_MANAGER_START,
         AppRuntimeHelper::EVENT_MANAGER_STOP,
