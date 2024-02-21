@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Bridge\EasySchedule;
 
 use Carbon\Carbon;
 use EonX\EasySwoole\Enums\SwooleTableColumnType;
+use EonX\EasySwoole\Helpers\AppRuntimeHelper;
 use EonX\EasySwoole\Helpers\CacheTableHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
 use EonX\EasySwoole\Helpers\SwooleTableHelper;
@@ -36,7 +37,7 @@ final class EasyScheduleSwooleRunner implements RunnerInterface
             OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
         );
 
-        $server->on('request', static function (): void {
+        $server->on(AppRuntimeHelper::EVENT_REQUEST, static function (): void {
         });
 
         $table = SwooleTableHelper::create(
