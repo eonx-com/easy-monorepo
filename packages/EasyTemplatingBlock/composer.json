@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^5.9.3"
+        "eonx-com/easy-utils": "^5.10"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
