@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-utils": "^5.10",
+        "eonx-com/easy-utils": "^5.9.2",
         "psr/cache": "^3.0",
         "symfony/expression-language": "^6.3"
     },
