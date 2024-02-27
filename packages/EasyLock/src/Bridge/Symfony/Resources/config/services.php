@@ -18,5 +18,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(EasyLockDoctrineSchemaSubscriber::class)
-        ->arg('$persistingStore', service(BridgeConstantsInterface::SERVICE_STORE));
+        ->arg('$persistingStore', service(BridgeConstantsInterface::SERVICE_STORE))
+        ->tag('doctrine.event_subscriber');
 };
