@@ -24,12 +24,15 @@ use Throwable;
 
 final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 {
-    private SplObjectStorage $handledExceptions;
-
     /**
      * @var \EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface[]
      */
     private array $builders;
+
+    /**
+     * @var SplObjectStorage<Throwable, null>
+     */
+    private SplObjectStorage $handledExceptions;
 
     /**
      * @var class-string[]
