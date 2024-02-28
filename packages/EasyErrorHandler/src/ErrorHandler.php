@@ -30,7 +30,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     private array $builders;
 
     /**
-     * @var SplObjectStorage<Throwable, null>
+     * @var \SplObjectStorage<\Throwable, null>
      */
     private SplObjectStorage $handledExceptions;
 
