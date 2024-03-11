@@ -69,6 +69,7 @@
         "mikey179/vfsstream": "^1.6",
         "mockery/mockery": "^1.6",
         "natepage/php-pkcs11-ide-helper": "^1.0",
+        "nikic/php-parser": "^4.18",
         "openswoole/ide-helper": "^22.0",
         "phpseclib/phpseclib": "^3.0",
         "phpspec/prophecy": "^1.0",
@@ -197,6 +198,9 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/runtime": true
+        },
+        "audit": {
+            "abandoned": "report"
         },
         "platform": {
             "ext-openswoole": "22.0"
