@@ -28,7 +28,7 @@ class EntityEventListener
      */
     public function __construct(
         private readonly DeferredEntityEventDispatcherInterface $eventDispatcher,
-        private array $subscribedEntities = [],
+        private array $subscribedEntities,
     ) {
     }
 
