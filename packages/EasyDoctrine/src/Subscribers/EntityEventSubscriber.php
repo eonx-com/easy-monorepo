@@ -27,8 +27,9 @@ final class EntityEventSubscriber implements EntityEventSubscriberInterface
     ) {
         $this->entityEventListener->setSubscribedEntities(
             $entities ?? $subscribedEntities ?? throw new InvalidArgumentException(
-            'You must provide at least one entity to subscribe to'
-        ));
+                'You must provide at least one entity to subscribe to'
+            )
+        );
     }
 
     /**

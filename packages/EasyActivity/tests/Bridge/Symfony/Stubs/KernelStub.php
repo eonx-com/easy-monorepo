@@ -75,14 +75,17 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
         $entityEventListenerDefinition = new Definition(EntityEventListener::class, [
-            $deferredEntityDefinition
+            $deferredEntityDefinition,
         ]);
         $container->setDefinition(EntityEventListener::class, $entityEventListenerDefinition);
         $container->setDefinition(
             EntityEventSubscriberInterface::class,
             new Definition(
                 EntityEventSubscriber::class,
-                [$entityEventListenerDefinition, '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%']
+                [
+                    $entityEventListenerDefinition,
+                    '%' . BridgeConstantsInterface::PARAM_DEFERRED_DISPATCHER_ENTITIES . '%',
+                ]
             )
         );
         $objectNormalizerDefinition = new Definition(ObjectNormalizer::class);

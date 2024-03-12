@@ -15,7 +15,7 @@ use ReflectionProperty;
 use Stringable;
 
 /**
- * @todo Make this class final in 6.0
+ * @todo Make this class final in 6.0 and remove from quality/rector.php
  */
 #[AsDoctrineListener(event: Events::onFlush)]
 #[AsDoctrineListener(event: Events::postFlush)]

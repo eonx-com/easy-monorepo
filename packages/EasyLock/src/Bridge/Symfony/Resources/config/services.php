@@ -21,6 +21,6 @@ return static function (ContainerConfigurator $container): void {
         ->set(EasyLockDoctrineSchemaListener::class)
         ->arg('$persistingStore', service(BridgeConstantsInterface::SERVICE_STORE))
         ->tag('doctrine.event_listener', [
-            'event' => ToolEvents::postGenerateSchema
+            'event' => ToolEvents::postGenerateSchema,
         ]);
 };
