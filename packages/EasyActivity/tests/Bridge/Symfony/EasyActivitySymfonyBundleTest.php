@@ -11,6 +11,7 @@ use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\Interfaces\EntityEventSubscriberInterface;
+use EonX\EasyDoctrine\Listeners\EntityEventListener;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -94,11 +95,12 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel([__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml'])
             ->getContainer();
 
-        /** @var \EonX\EasyDoctrine\Subscribers\EntityEventSubscriber $subscriber */
         $subscriber = $container->get(EntityEventSubscriberInterface::class);
-        $entities = self::getPrivatePropertyValue($subscriber, 'subscribedEntities');
+        $listener = self::getPrivatePropertyValue($subscriber, 'entityEventListener');
+        $entities = self::getPrivatePropertyValue($listener, 'subscribedEntities');
         self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $entities);
         self::assertInstanceOf(EntityEventSubscriber::class, $subscriber);
+        self::assertInstanceOf(EntityEventListener::class, $listener);
     }
 
     #[DataProvider('providerInvalidEasyConfigs')]

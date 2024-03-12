@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Doctrine\ORM\Tools\ToolEvents;
 use EonX\EasyLock\Bridge\BridgeConstantsInterface;
-use EonX\EasyLock\Bridge\Symfony\Subscribers\EasyLockDoctrineSchemaSubscriber;
+use EonX\EasyLock\Bridge\Symfony\Listeners\EasyLockDoctrineSchemaListener;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLock\LockService;
 
@@ -17,7 +18,9 @@ return static function (ContainerConfigurator $container): void {
         ->tag('monolog.logger', ['channel' => BridgeConstantsInterface::LOG_CHANNEL]);
 
     $services
-        ->set(EasyLockDoctrineSchemaSubscriber::class)
+        ->set(EasyLockDoctrineSchemaListener::class)
         ->arg('$persistingStore', service(BridgeConstantsInterface::SERVICE_STORE))
-        ->tag('doctrine.event_subscriber');
+        ->tag('doctrine.event_listener', [
+            'event' => ToolEvents::postGenerateSchema
+        ]);
 };

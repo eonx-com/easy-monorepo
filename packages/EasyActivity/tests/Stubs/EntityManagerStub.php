@@ -25,6 +25,7 @@ use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
+use EonX\EasyDoctrine\Listeners\EntityEventListener;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Subscribers\EntityEventSubscriber;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
@@ -53,7 +54,8 @@ final class EntityManagerStub
         array $subscribedEntities = [],
         array $fixtures = [],
     ) {
-        $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
+        $eventListener = new EntityEventListener($dispatcher);
+        $eventSubscriber = new EntityEventSubscriber($eventListener, $subscribedEntities);
         $eventManager = new EventManager();
         $eventManager->addEventSubscriber($eventSubscriber);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
