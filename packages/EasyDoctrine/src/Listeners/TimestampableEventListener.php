@@ -8,10 +8,7 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyDoctrine\Interfaces\TimestampableInterface;
 
-/**
- * @todo Make this class final in 6.0 and remove from quality/rector.php
- */
-class TimestampableEventListener
+final class TimestampableEventListener
 {
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {

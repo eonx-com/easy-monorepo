@@ -14,12 +14,9 @@ use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
 use ReflectionProperty;
 use Stringable;
 
-/**
- * @todo Make this class final in 6.0 and remove from quality/rector.php
- */
 #[AsDoctrineListener(event: Events::onFlush)]
 #[AsDoctrineListener(event: Events::postFlush)]
-class EntityEventListener
+final class EntityEventListener
 {
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
@@ -55,14 +52,6 @@ class EntityEventListener
         if ($entityManager->getConnection()->getTransactionNestingLevel() === 0) {
             $this->eventDispatcher->dispatch();
         }
-    }
-
-    /**
-     * @deprecated BC layer for 5.11, will be removed in 6.0
-     */
-    public function setSubscribedEntities(array $subscribedEntities): void
-    {
-        $this->subscribedEntities = $subscribedEntities;
     }
 
     private function getClearedChangeSet(array $changeSet): array

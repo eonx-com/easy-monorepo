@@ -72,8 +72,6 @@ return static function (RectorConfig $rectorConfig): void {
         ClassPropertyAssignToConstructorPromotionRector::class,
         CountOnNullRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
-            'packages/EasyDoctrine/src/Listeners/EntityEventListener.php',
-            'packages/EasyDoctrine/src/Listeners/TimestampableEventListener.php',
             'packages/EasySecurity/src/SecurityContext.php',
             'packages/EasyTest/src/InvalidDataMaker/InvalidDataMaker.php',
         ],
