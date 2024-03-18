@@ -40,7 +40,7 @@ final class EntityManagerStub
     public const ACTIVITY_TABLE_NAME = 'test_easy_activity_logs';
 
     /**
-     * @param class-string[] $subscribedEntities
+     * @param class-string[] $trackableEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
@@ -50,10 +50,10 @@ final class EntityManagerStub
      */
     public static function createFromDeferredEntityEventDispatcher(
         DeferredEntityEventDispatcher $dispatcher,
-        array $subscribedEntities = [],
+        array $trackableEntities = [],
         array $fixtures = [],
     ) {
-        $eventSubscriber = new EntityEventSubscriber($dispatcher, $subscribedEntities);
+        $eventSubscriber = new EntityEventSubscriber($dispatcher, $trackableEntities);
         $eventManager = new EventManager();
         $eventManager->addEventSubscriber($eventSubscriber);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
@@ -77,11 +77,11 @@ final class EntityManagerStub
     ): EntityManagerInterface {
         $symfonyEventDispatcher = new SymfonyEventDispatcher();
         $eventDispatcher = new EventDispatcher($symfonyEventDispatcher);
-        /** @var class-string[] $subscribedEntities */
-        $subscribedEntities = \array_keys($easyActivityConfig['subjects'] ?? []);
+        /** @var class-string[] $trackableEntities */
+        $trackableEntities = \array_keys($easyActivityConfig['subjects'] ?? []);
         $entityManager = self::createFromSymfonyEventDispatcher(
             $eventDispatcher,
-            $subscribedEntities,
+            $trackableEntities,
             $fixtures ?? [Article::class, Comment::class, Author::class]
         );
         $dbalStatementsProvider = new DoctrineDbalStatementsProvider(
@@ -157,21 +157,21 @@ final class EntityManagerStub
     }
 
     /**
-     * @param class-string[] $subscribedEntities
+     * @param class-string[] $trackableEntities
      * @param string[] $fixtures
      *
      * @return \EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator
      */
     public static function createFromSymfonyEventDispatcher(
         EventDispatcherInterface $eventDispatcher,
-        array $subscribedEntities = [],
+        array $trackableEntities = [],
         array $fixtures = [],
     ) {
         $dispatcher = new DeferredEntityEventDispatcher($eventDispatcher, ObjectCopierFactory::create());
 
         return self::createFromDeferredEntityEventDispatcher(
             $dispatcher,
-            $subscribedEntities,
+            $trackableEntities,
             $fixtures
         );
     }

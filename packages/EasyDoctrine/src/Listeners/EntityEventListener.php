@@ -21,11 +21,11 @@ final class EntityEventListener
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**
-     * @param class-string[] $subscribedEntities
+     * @param class-string[] $trackableEntities
      */
     public function __construct(
         private readonly DeferredEntityEventDispatcherInterface $eventDispatcher,
-        private array $subscribedEntities,
+        private array $trackableEntities,
     ) {
     }
 
@@ -74,7 +74,7 @@ final class EntityEventListener
 
     private function isEntitySubscribed(object $entity): bool
     {
-        foreach ($this->subscribedEntities as $subscribedEntity) {
+        foreach ($this->trackableEntities as $subscribedEntity) {
             if (\is_a($entity, $subscribedEntity)) {
                 return true;
             }

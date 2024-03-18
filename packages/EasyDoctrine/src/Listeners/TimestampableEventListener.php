@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Listeners;
 
 use Carbon\CarbonImmutable;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyDoctrine\Interfaces\TimestampableInterface;
 
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class TimestampableEventListener
 {
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
