@@ -95,7 +95,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             VerboseStrategyInterface::class,
             static fn (Container $app): VerboseStrategyInterface => new ChainVerboseStrategy(
                 $app->tagged(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER),
-                (bool)\config('easy-error-handler.extended_response', false)
+                (bool)\config('easy-error-handler.use_extended_response', false)
             )
         );
 
@@ -124,7 +124,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static fn (Container $app): TranslatorInterface => new Translator($app->make('translator'))
         );
 
-        if ((bool)\config('easy-error-handler.default_builders', true)) {
+        if ((bool)\config('easy-error-handler.use_default_builders', true)) {
             $this->app->singleton(
                 DefaultErrorResponseBuilderProvider::class,
                 static fn (

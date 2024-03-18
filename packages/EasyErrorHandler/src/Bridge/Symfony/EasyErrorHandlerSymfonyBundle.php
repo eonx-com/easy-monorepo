@@ -123,7 +123,7 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
         $container->import(__DIR__ . '/Resources/config/services.php');
 
-        if ($config['default_builders'] ?? true) {
+        if ($config['use_default_builders'] ?? true) {
             $container->import(__DIR__ . '/Resources/config/default_builders.php');
         }
 

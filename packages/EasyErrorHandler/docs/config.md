@@ -36,14 +36,14 @@ The common configuration options for Laravel and Symfony are as follows:
 | `response.sub_code`                        | `sub_code`   | Attribute name for exception sub-code.                                  |
 | `response.time`                            | `time`       | Attribute name for exception timestamp.                                 |
 | `response.violations`                      | `violations` | Attribute name for exception violations.                                |
-| `default_builders`                         | `true`       | Use the default set of [error response builders](response-builders.md). |
-| `default_reporters`                        | `true`       | Use the default set of [error reporters](reporters.md).                 |
+| `use_default_builders`                     | `true`       | Use the default set of [error response builders](response-builders.md). |
+| `use_default_reporters`                    | `true`       | Use the default set of [error reporters](reporters.md).                 |
 
 Laravel has the following additional configuration option:
 
-| Configuration        | Default | Description                                                           |
-|----------------------|---------|-----------------------------------------------------------------------|
-| `extended_response`  | `false` | Use extended error response containing exception message, trace, etc. |
+| Configuration           | Default | Description                                                           |
+|-------------------------|---------|-----------------------------------------------------------------------|
+| `use_extended_response` | `false` | Use extended error response containing exception message, trace, etc. |
 
 Symfony has the following additional configuration options:
 
@@ -148,8 +148,8 @@ return [
         'time' => 'time',
         'violations' => 'violations',
     ],
-    'default_builders' => true,
-    'default_reporters' => true,
-    'extended_response' => false,
+    'use_default_builders' => true,
+    'use_default_reporters' => true,
+    'use_extended_response' => false,
 ];
 ```

@@ -122,7 +122,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
     ): void {
         $app = $this->getApplication([
             'easy-error-handler' => [
-                'extended_response' => true,
+                'use_extended_response' => true,
             ],
         ]);
         /** @var \Illuminate\Contracts\Debug\ExceptionHandler $handler */
