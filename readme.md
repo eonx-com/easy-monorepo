@@ -2,7 +2,7 @@
 title: Monorepo Documentation
 weight: 0
 ---eonx_docs---
-bla
+
 This repository is a mono-repository, it contains the code of many packages. For more information about this concept
 you can look [there][1].
 
