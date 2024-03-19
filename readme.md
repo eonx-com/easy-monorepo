@@ -2,7 +2,7 @@
 title: Monorepo Documentation
 weight: 0
 ---eonx_docs---
-
+bla
 This repository is a mono-repository, it contains the code of many packages. For more information about this concept
 you can look [there][1].
 
@@ -12,6 +12,7 @@ you can look [there][1].
 ### Packages
 
 <!-- monorepo-packages -->
+
 - [EasyActivity](https://github.com/eonx-com/easy-activity): Tracking your record changes.
 - [EasyApiPlatform](https://github.com/eonx-com/easy-api-platform): Provides features for API Platform applications
 - [EasyApiToken](https://github.com/eonx-com/easy-api-token): Make your API accept multiple authentication strategies in a convenient way (Basic, ApiKey, JWT, ...)
@@ -40,6 +41,7 @@ you can look [there][1].
 - [EasyTest](https://github.com/eonx-com/easy-test): Makes testing easier
 - [EasyUtils](https://github.com/eonx-com/easy-utils): EonX packages utils
 - [EasyWebhook](https://github.com/eonx-com/easy-webhook): Sending webhooks has never been so easy (persistence, retry, async)
+
 <!-- end-monorepo-packages -->
 
 <br>
@@ -65,6 +67,7 @@ $ git checkout master && git pull
 # Split new version to each package
 $ make release version=X.X.X
 ```
+
 _Note for MacOS users: you should update the `make` utility to 4.0 or higher.
 Do not forget to export new path in `.bashrc` or `.zshrc` file._
 
