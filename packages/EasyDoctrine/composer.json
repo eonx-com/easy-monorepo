@@ -24,7 +24,7 @@
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3"
+        "symfony/symfony": "^6.4"
     },
     "autoload": {
         "psr-4": {
