@@ -61,8 +61,8 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
         );
 
-        $useApiPlatformBuilders = $config['api_platform_builders'] ?? true;
-        $parameters->set(BridgeConstantsInterface::PARAM_API_PLATFORM_BUILDERS, $useApiPlatformBuilders);
+        $useApiPlatformBuilders = $config['use_api_platform_builders'] ?? true;
+        $parameters->set(BridgeConstantsInterface::PARAM_USE_API_PLATFORM_BUILDERS, $useApiPlatformBuilders);
 
         $parameters->set(
             BridgeConstantsInterface::PARAM_API_PLATFORM_CUSTOM_SERIALIZER_EXCEPTIONS,

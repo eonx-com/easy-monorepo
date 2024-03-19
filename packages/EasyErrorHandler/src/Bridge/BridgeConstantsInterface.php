@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Bridge;
 
 interface BridgeConstantsInterface
 {
-    public const PARAM_API_PLATFORM_BUILDERS = 'easy_error_handler.param_api_platform_builders';
+    public const PARAM_USE_API_PLATFORM_BUILDERS = 'easy_error_handler.param_use_api_platform_builders';
 
     public const PARAM_API_PLATFORM_CUSTOM_SERIALIZER_EXCEPTIONS = 'easy_error_handler.param_api_platform_custom_serializer_exceptions';
 

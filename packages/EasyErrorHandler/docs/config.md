@@ -50,7 +50,7 @@ Symfony has the following additional configuration options:
 | Configuration                                                | Default    | Description                                                                                                                      |
 |--------------------------------------------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------|
 | `bugsnag_ignore_exceptions_handled_by_api_platform_builders` | `true`     | Ignore validation errors handled by `\EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ApiPlatformErrorResponseBuilderInterface`  |
-| `api_platform_builders`                                      | `true`     | If using [API Platform](https://api-platform.com/), override its inbuilt exception handling to use the EasyErrorHandler package. |
+| `use_api_platform_builders`                                  | `true`     | If using [API Platform](https://api-platform.com/), override its inbuilt exception handling to use the EasyErrorHandler package. |
 | `translation_domain`                                         | `messages` | Symfony translation domain.                                                                                                      |
 | `verbose`                                                    | `false`    | Use extended error response containing exception message, trace, etc.                                                            |
 
