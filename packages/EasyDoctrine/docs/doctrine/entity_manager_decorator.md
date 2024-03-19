@@ -46,7 +46,7 @@ easy_doctrine:
 
 ```yaml
 services:
-    EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener:
+    EonX\EasyDoctrine\Listeners\EntityEventListener:
         arguments:
             $trackableEntities: '%easy_doctrine.entities%'
 ```
