@@ -46,9 +46,7 @@
         "symfony/uid": "^6.3",
         "symfony/validator": "^6.3",
         "symfony/var-dumper": "^6.3",
-        "symfony/yaml": "^6.3",
-        "symplify/autowire-array-parameter": "^11.0",
-        "symplify/package-builder": "^11.0"
+        "symfony/yaml": "^6.3"
     },
     "require-dev": {
         "api-platform/core": "^3.1",
@@ -85,7 +83,6 @@
         "symfony/runtime": "^6.3",
         "symplify/monorepo-builder": "^11.0",
         "symplify/phpstan-extensions": "^11.0",
-        "symplify/smart-file-system": "^11.0",
         "tracy/tracy": "^2.10",
         "vlucas/phpdotenv": "^5.5"
     },

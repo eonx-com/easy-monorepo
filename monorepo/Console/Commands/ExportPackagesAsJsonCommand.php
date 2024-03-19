@@ -8,8 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Symplify\SmartFileSystem\Finder\FinderSanitizer;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 
 #[AsCommand(
     name: 'export-packages'
@@ -43,24 +42,19 @@ final class ExportPackagesAsJsonCommand extends Command
         return 0;
     }
 
-    /**
-     * @return \Symplify\SmartFileSystem\SmartFileInfo[]
-     */
-    private function getComposerJsonFiles(): array
+    private function getComposerJsonFiles(): Finder
     {
-        $finder = (new Finder())
+        return (new Finder())
             ->in([__DIR__ . '/../../../packages'])
             ->name('composer.json');
-
-        return (new FinderSanitizer())->sanitize($finder);
     }
 
-    private function getDir(SmartFileInfo $composerJson): string
+    private function getDir(SplFileInfo $composerJson): string
     {
-        return \last(\explode('/', $composerJson->getRelativeDirectoryPath()));
+        return \last(\explode('/', $composerJson->getRelativePath()));
     }
 
-    private function getRepoShortname(SmartFileInfo $composerJson): string
+    private function getRepoShortname(SplFileInfo $composerJson): string
     {
         $json = \json_decode($composerJson->getContents(), true);
 
