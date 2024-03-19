@@ -11,9 +11,9 @@
         "doctrine/persistence": "^3.0",
         "nesbot/carbon": "^2.67",
         "psr/log": "^3.0",
-        "symfony/http-foundation": "^6.3",
-        "symfony/property-access": "^6.3",
-        "symfony/serializer": "^6.3"
+        "symfony/http-foundation": "^6.4",
+        "symfony/property-access": "^6.4",
+        "symfony/serializer": "^6.4"
     },
     "require-dev": {
         "doctrine/common": "^3.0",
@@ -23,7 +23,7 @@
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3"
+        "symfony/symfony": "^6.4"
     },
     "autoload": {
         "psr-4": {
