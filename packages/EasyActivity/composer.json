@@ -19,7 +19,7 @@
         "eonx-com/easy-webhook": "^5.8",
         "phpunit/phpunit": "^10.2",
         "psr/log": "^3.0",
-        "symfony/symfony": "^6.3"
+        "symfony/symfony": "^6.4"
     },
     "autoload": {
         "psr-4": {
