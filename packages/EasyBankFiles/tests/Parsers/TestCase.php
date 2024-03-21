@@ -18,8 +18,6 @@ abstract class TestCase extends BaseTestCase
      * @param class-string<T> $class
      *
      * @template T of object
-     *
-     * @return LegacyMockInterface&T
      */
     protected function getMockWithExpectations(string $class, callable $setExpectations): LegacyMockInterface
     {

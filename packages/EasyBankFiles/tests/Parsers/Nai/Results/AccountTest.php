@@ -41,6 +41,7 @@ final class AccountTest extends TestCase
                 ->andReturn([]);
         };
 
+        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
         $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
 
         $account = new Account($context, $data);

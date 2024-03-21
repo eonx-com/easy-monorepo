@@ -24,6 +24,7 @@ final class FileTest extends TestCase
             'trailer' => new Trailer(),
         ];
 
+        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
         $context = $this->getMockWithExpectations(
             ResultsContextInterface::class,
             static function (MockInterface $context): void {

@@ -36,7 +36,8 @@ final class TransactionTest extends TestCase
                 ->withArgs([$data['account']])
                 ->andReturn(null);
         };
-        
+
+        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
         $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
 
         $transaction = new Transaction($context, $data);
