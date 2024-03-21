@@ -31,6 +31,8 @@ interface BridgeConstantsInterface
 
     public const PARAM_RESPONSE_KEYS = 'easy_error_handler.param_response_keys';
 
+    public const PARAM_SKIP_REPORTED_EXCEPTIONS = 'easy_error_handler.param_skip_reported_exceptions';
+
     public const PARAM_TRANSFORM_VALIDATION_ERRORS = 'easy_error_handler.param_transform_validation_errors';
 
     public const PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED = 'easy_error_handler.translate_internal_error_messages_enabled';

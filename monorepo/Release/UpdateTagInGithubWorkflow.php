@@ -4,17 +4,19 @@ declare(strict_types=1);
 namespace EonX\EasyMonorepo\Release;
 
 use PharIo\Version\Version;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
-use Symplify\SmartFileSystem\SmartFileSystem;
 
 final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
 {
     private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 
-    public function __construct(
-        private SmartFileSystem $smartFileSystem,
-    ) {
+    private Filesystem $filesystem;
+
+    public function __construct()
+    {
+        $this->filesystem = new Filesystem();
     }
 
     public function getDescription(Version $version): string
@@ -36,6 +38,6 @@ final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
 
         $newWorkflowContent = \str_replace("'on':", 'on:', $newWorkflowContent);
 
-        $this->smartFileSystem->dumpFile(self::WORKFLOW_FILENAME, $newWorkflowContent);
+        $this->filesystem->dumpFile(self::WORKFLOW_FILENAME, $newWorkflowContent);
     }
 }

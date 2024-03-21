@@ -9,7 +9,11 @@ interface BridgeConstantsInterface
 
     public const PARAM_AWS_PKCS11_AWS_REGION = 'easy_encryption.aws_pkcs11_aws_region';
 
+    public const PARAM_AWS_PKCS11_AWS_ROLE_ARN = 'easy_encryption.aws_pkcs11_aws_role_arn';
+
     public const PARAM_AWS_PKCS11_CLOUD_HSM_CLUSTER_ID = 'easy_encryption.aws_pkcs11_cloud_hsm_cluster_id';
+
+    public const PARAM_AWS_PKCS11_CLOUD_HSM_SDK_OPTIONS = 'easy_encryption.aws_pkcs11_cloud_hsm_sdk_options';
 
     public const PARAM_AWS_PKCS11_DISABLE_KEY_AVAILABILITY_CHECK = 'easy_encryption.aws_pkcs11_disable_key_availability_check';
 
@@ -17,13 +21,13 @@ interface BridgeConstantsInterface
 
     public const PARAM_AWS_PKCS11_HSM_IP_ADDRESS = 'easy_encryption.aws_pkcs11_hsm_ip_address';
 
-    public const PARAM_AWS_PKCS11_HSM_SDK_OPTIONS = 'easy_encryption.aws_pkcs11_hsm_sdk_options';
-
     public const PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE = 'easy_encryption.aws_pkcs11_server_client_cert_file';
 
     public const PARAM_AWS_PKCS11_SERVER_CLIENT_KEY_FILE = 'easy_encryption.aws_pkcs11_server_client_key_file';
 
     public const PARAM_AWS_PKCS11_USER_PIN = 'easy_encryption.aws_pkcs11_user_pin';
+
+    public const PARAM_AWS_PKCS11_USE_CLOUD_HSM_CONFIGURE_TOOL = 'easy_encryption.aws_pkcs11_use_cloud_hsm_configure_tool';
 
     public const PARAM_DEFAULT_ENCRYPTION_KEY = 'easy_encryption.default_encryption_key';
 

@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 
 #[AsCommand(
     name: 'clean-up-packages-vendor-dirs'
@@ -25,44 +24,26 @@ final class CleanUpPackagesVendorDirsCommand extends Command
     {
         $filesystem = new Filesystem();
 
-        foreach ($this->getComposerLockFiles() as $composerLockFile) {
-            $filesystem->remove($composerLockFile->getRealPath());
+        $filesystem->remove($this->getComposerLockFiles());
 
-            $output->writeln(\sprintf('Deleted %s', $composerLockFile->getRealPath()));
-        }
-
-        foreach ($this->getVendorDirs() as $vendorDir) {
-            $filesystem->remove($vendorDir->getRealPath());
-
-            $output->writeln(\sprintf('Deleted %s', $vendorDir->getRealPath()));
-        }
+        $filesystem->remove($this->getVendorDirs());
 
         return self::SUCCESS;
     }
 
-    /**
-     * @return \Symplify\SmartFileSystem\SmartFileInfo[]
-     */
-    private function getComposerLockFiles(): array
+    private function getComposerLockFiles(): Finder
     {
-        $finder = (new Finder())
+        return (new Finder())
             ->in([__DIR__ . '/../../../packages'])
             ->files()
             ->name('composer.lock');
-
-        return (new FinderSanitizer())->sanitize($finder);
     }
 
-    /**
-     * @return \Symplify\SmartFileSystem\SmartFileInfo[]
-     */
-    private function getVendorDirs(): array
+    private function getVendorDirs(): Finder
     {
-        $finder = (new Finder())
+        return (new Finder())
             ->in([__DIR__ . '/../../../packages'])
             ->directories()
             ->name('vendor');
-
-        return (new FinderSanitizer())->sanitize($finder);
     }
 }

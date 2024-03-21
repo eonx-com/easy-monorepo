@@ -107,7 +107,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 $app->tagged(BridgeConstantsInterface::TAG_ERROR_REPORTER_PROVIDER),
                 $app->make(VerboseStrategyInterface::class),
                 \config('easy-error-handler.ignored_exceptions'),
-                (bool)\config('easy-error-handler.report_retryable_exception_attempts', false)
+                (bool)\config('easy-error-handler.report_retryable_exception_attempts', false),
+                (bool)\config('easy-error-handler.skip_reported_exceptions', false)
             )
         );
 
