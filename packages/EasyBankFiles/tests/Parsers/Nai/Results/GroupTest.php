@@ -38,7 +38,6 @@ final class GroupTest extends TestCase
                 ->andReturn([]);
         };
 
-        /** @var \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContextInterface $context */
         $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
 
         $group = new Group($context, $data);
