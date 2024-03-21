@@ -13,8 +13,7 @@ use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Bridge\Symfony\DependencyInjection\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcher;
-use EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener;
-use EonX\EasyDoctrine\Listeners\EntityPostFlushEventListener;
+use EonX\EasyDoctrine\Listeners\EntityEventListener;
 use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
 use EonX\EasyDoctrine\Tests\Fixtures\PriceType;
 use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
@@ -37,11 +36,9 @@ final class EntityManagerStub
         array $trackableEntities = [],
         array $fixtures = [],
     ) {
-        $onFlushEventListener = new EntityOnFlushEventListener($dispatcher, $trackableEntities);
-        $postFlushEventListener = new EntityPostFlushEventListener($dispatcher);
+        $eventListener = new EntityEventListener($dispatcher, $trackableEntities);
         $eventManager = new EventManager();
-        $eventManager->addEventListener(Events::onFlush, $onFlushEventListener);
-        $eventManager->addEventListener(Events::postFlush, $postFlushEventListener);
+        $eventManager->addEventListener([Events::onFlush, Events::postFlush], $eventListener);
         $entityManagerStub = self::createFromEventManager($eventManager, $fixtures);
         $eventDispatcher = new EventDispatcher(new SymfonyEventDispatcher());
 

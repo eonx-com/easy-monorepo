@@ -10,8 +10,7 @@ use EonX\EasyActivity\Tests\Fixtures\Article;
 use EonX\EasyActivity\Tests\Fixtures\Author;
 use EonX\EasyActivity\Tests\Fixtures\Comment;
 use EonX\EasyDoctrine\Dispatchers\DeferredEntityEventDispatcherInterface;
-use EonX\EasyDoctrine\Listeners\EntityOnFlushEventListener;
-use EonX\EasyDoctrine\Listeners\EntityPostFlushEventListener;
+use EonX\EasyDoctrine\Listeners\EntityEventListener;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
@@ -94,12 +93,10 @@ final class EasyActivitySymfonyBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel([__DIR__ . '/Fixtures/easy_activity_with_doctrine_entities.yaml'])
             ->getContainer();
 
-        $onFlushListener = $container->get(EntityOnFlushEventListener::class);
-        $postFlushListener = $container->get(EntityPostFlushEventListener::class);
-        $trackableEntities = self::getPrivatePropertyValue($onFlushListener, 'trackableEntities');
+        $eventListener = $container->get(EntityEventListener::class);
+        $trackableEntities = self::getPrivatePropertyValue($eventListener, 'trackableEntities');
         self::assertEqualsCanonicalizing([Author::class, Comment::class, Article::class], $trackableEntities);
-        self::assertInstanceOf(EntityOnFlushEventListener::class, $onFlushListener);
-        self::assertInstanceOf(EntityPostFlushEventListener::class, $postFlushListener);
+        self::assertInstanceOf(EntityEventListener::class, $eventListener);
     }
 
     #[DataProvider('providerInvalidEasyConfigs')]
