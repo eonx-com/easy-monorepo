@@ -15,9 +15,9 @@ abstract class TestCase extends BaseTestCase
     /**
      * Get mock for given class and set expectations based on given callable.
      *
-     * @param class-string<T> $class
-     *
      * @template T of object
+     *
+     * @param class-string<T> $class
      */
     protected function getMockWithExpectations(string $class, callable $setExpectations): LegacyMockInterface
     {
