@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "ext-openssl": "*",
-        "eonx-com/easy-utils": "^5.8",
+        "eonx-com/easy-utils": "^5.11",
         "nette/utils": "^3.2",
         "psr/log": "^3.0",
         "symfony/http-foundation": "^6.4"
@@ -53,7 +53,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.8-dev"
+            "dev-master": "5.11-dev"
         }
     },
     "minimum-stability": "dev",

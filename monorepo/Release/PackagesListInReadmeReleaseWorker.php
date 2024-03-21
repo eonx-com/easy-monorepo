@@ -7,7 +7,6 @@ use PharIo\Version\Version;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
-use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 
 final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {
@@ -15,9 +14,8 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 
     private Filesystem $filesystem;
 
-    public function __construct(
-        private FinderSanitizer $finderSanitizer,
-    ) {
+    public function __construct()
+    {
         $this->filesystem = new Filesystem();
     }
 
@@ -51,7 +49,7 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
             ->name('composer.json')
             ->sortByName();
 
-        foreach ($this->finderSanitizer->sanitize($composerFiles) as $composerFile) {
+        foreach ($composerFiles as $composerFile) {
             $packageName = \last(\explode('/', $composerFile->getPath()));
             $json = \json_decode($composerFile->getContents(), true);
 

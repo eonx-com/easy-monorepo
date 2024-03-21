@@ -10,8 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symplify\SmartFileSystem\Finder\FinderSanitizer;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 
 #[AsCommand(
     name: 'localize-monorepo-packages'
@@ -68,34 +67,27 @@ final class LocalizePackageRepositoriesCommand extends Command
         return self::SUCCESS;
     }
 
-    private function getComposerJsonFileContents(SmartFileInfo $composerJsonFile): array
+    private function getComposerJsonFileContents(SplFileInfo $composerJsonFile): array
     {
         return \json_decode($composerJsonFile->getContents(), true);
     }
 
-    /**
-     * @return \Symplify\SmartFileSystem\SmartFileInfo[]
-     */
-    private function getComposerJsonFiles(): array
+    private function getComposerJsonFiles(): Finder
     {
-        $finder = (new Finder())
+        return (new Finder())
             ->in([__DIR__ . '/../../../packages'])
             ->name('composer.json');
-
-        return (new FinderSanitizer())->sanitize($finder);
     }
 
-    private function getDir(SmartFileInfo $composerJson): string
+    private function getDir(SplFileInfo $composerJson): string
     {
-        return \last(\explode('/', $composerJson->getRelativeDirectoryPath()));
+        return \last(\explode('/', $composerJson->getRelativePath()));
     }
 
     /**
-     * @param \Symplify\SmartFileSystem\SmartFileInfo[] $composerJsonFiles
-     *
      * @return string[]
      */
-    private function getMonorepoPackages(array $composerJsonFiles): array
+    private function getMonorepoPackages(Finder $composerJsonFiles): array
     {
         $packages = [];
 

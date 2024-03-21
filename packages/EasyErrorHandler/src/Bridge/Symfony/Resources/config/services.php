@@ -58,7 +58,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg(
             '$reportRetryableExceptionAttempts',
             param(BridgeConstantsInterface::PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS)
-        );
+        )
+        ->arg('$skipReportedExceptions', param(BridgeConstantsInterface::PARAM_SKIP_REPORTED_EXCEPTIONS));
 
     $services->set(ErrorHandlerDataCollector::class)
         ->tag('data_collector', [

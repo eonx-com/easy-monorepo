@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Runtime;
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
 use EonX\EasySwoole\Bridge\EasySchedule\EasyScheduleSwooleRunner;
 use EonX\EasySwoole\Helpers\AppCacheWarmupHelper;
+use EonX\EasySwoole\Helpers\AppRuntimeHelper;
 use EonX\EasySwoole\Helpers\EnvVarHelper;
 use EonX\EasySwoole\Helpers\FunctionHelper;
 use EonX\EasySwoole\Helpers\OptionHelper;
@@ -49,6 +50,12 @@ final class EasySwooleRuntime extends SymfonyRuntime
             OptionHelper::getStringNullable('dotenv_path'),
             OptionHelper::getBoolean('env_var_output_enabled'),
         );
+
+        $callbacks = OptionHelper::getArray('callbacks');
+
+        if (\array_key_exists(AppRuntimeHelper::EVENT_ENV_VARS_LOADED, $callbacks)) {
+            $callbacks[AppRuntimeHelper::EVENT_ENV_VARS_LOADED]($_SERVER, $application);
+        }
 
         if (OptionHelper::getBoolean('app_cache_warmup_enabled')) {
             AppCacheWarmupHelper::warmupCache($application);
