@@ -62,8 +62,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
         # ---- EasyAsync ----
-        - message: '#Method EonX\\EasyAsync\\Tests\\AbstractTestCase::mock\(\) should return Mockery\\MockInterface but returns Mockery\\LegacyMockInterface.#'
-          path: %currentWorkingDirectory%/packages/EasyAsync/tests
 
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
@@ -123,9 +121,6 @@ parameters:
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Illuminate
-
-        - message: '#Method EonX\\EasyRepository\\Tests\\Implementation\\Illuminate\\EloquentRepositoryStub::getModel\(\) should return Illuminate\\Database\\Eloquent\\Model but returns Mockery\\LegacyMockInterface.#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/tests/Implementation/Illuminate
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
