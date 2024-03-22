@@ -40,7 +40,7 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
 
         if (
             $this->ignoreExceptionsHandledByApiPlatformBuilders
-            && $this->apiPlatformErrorResponseBuilderProvider instanceof ApiPlatformErrorResponseBuilderProvider
+            && $this->apiPlatformErrorResponseBuilderProvider !== null
         ) {
             foreach ($this->apiPlatformErrorResponseBuilderProvider->getBuilders() as $builder) {
                 if ($builder->supports($throwable)) {
