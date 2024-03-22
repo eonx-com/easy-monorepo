@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-logging": "^5.8",
-        "eonx-com/easy-utils": "^5.8",
+        "eonx-com/easy-logging": "^5.11",
+        "eonx-com/easy-utils": "^5.11",
         "nesbot/carbon": "^2.67",
         "nikic/php-parser": "^5.0"
     },
@@ -14,14 +14,14 @@
         "api-platform/core": "^3.1",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-bugsnag": "^5.8",
-        "eonx-com/easy-test": "^5.8",
+        "eonx-com/easy-bugsnag": "^5.11",
+        "eonx-com/easy-test": "^5.11",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/browser-kit": "^6.3",
-        "symfony/framework-bundle": "^6.3",
-        "symfony/routing": "^6.3",
-        "symfony/serializer": "^6.3"
+        "symfony/browser-kit": "^6.4",
+        "symfony/framework-bundle": "^6.4",
+        "symfony/routing": "^6.4",
+        "symfony/serializer": "^6.4"
     },
     "autoload": {
         "psr-4": {
@@ -39,7 +39,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "5.8-dev"
+            "dev-master": "5.11-dev"
         }
     }
 }

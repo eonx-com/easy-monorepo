@@ -30,8 +30,7 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
         self::AMEX => [
             '/^3[47][0-9]{13}$/',
         ],
-        // China UnionPay cards start with 62 and have between 16 and 19 digits.
-        // Please note that these cards do not follow Luhn Algorithm as a checksum
+        // China UnionPay cards start with 62 and have between 16 and 19 digits
         self::CHINA_UNIONPAY => [
             '/^62[0-9]{14,17}$/',
         ],
@@ -105,12 +104,32 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
 
         foreach (self::SCHEMES as $regexes) {
             foreach ($regexes as $regex) {
-                if (\preg_match($regex, $number) === 1) {
+                if (\preg_match($regex, $number) === 1 && $this->isLuhnValid($number)) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    private function isLuhnValid(string $number): bool
+    {
+        $checkSum = 0;
+        $length = \strlen($number);
+        $isSecond = false;
+
+        for ($i = $length - 1; $i >= 0; $i--) {
+            $current = (int)$number[$i];
+
+            if ($isSecond) {
+                $current *= 2;
+            }
+
+            $checkSum = $checkSum + \intdiv($current, 10) + $current % 10;
+            $isSecond = $isSecond === false;
+        }
+
+        return $checkSum !== 0 && $checkSum % 10 === 0;
     }
 }

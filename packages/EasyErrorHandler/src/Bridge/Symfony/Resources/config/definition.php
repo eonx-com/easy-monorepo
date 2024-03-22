@@ -52,6 +52,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->scalarPrototype()->end()
             ->end()
             ->booleanNode('report_retryable_exception_attempts')->defaultFalse()->end()
+            ->booleanNode('skip_reported_exceptions')->defaultFalse()->end()
             ->booleanNode('verbose')->defaultFalse()->end()
             ->booleanNode('use_default_builders')->defaultTrue()->end()
             ->booleanNode('use_default_reporters')->defaultTrue()->end()

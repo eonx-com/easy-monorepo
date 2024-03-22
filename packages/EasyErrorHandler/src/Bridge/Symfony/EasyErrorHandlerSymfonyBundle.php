@@ -78,6 +78,11 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             $config['report_retryable_exception_attempts'] ?? false
         );
 
+        $parameters->set(
+            BridgeConstantsInterface::PARAM_SKIP_REPORTED_EXCEPTIONS,
+            $config['skip_reported_exceptions'] ?? false
+        );
+
         $parameters->set(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
 
         $parameters->set(

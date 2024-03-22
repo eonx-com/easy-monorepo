@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\Listeners;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
@@ -15,7 +16,8 @@ use ReflectionProperty;
 use Stringable;
 
 #[AsDoctrineListener(event: Events::onFlush)]
-final class EntityOnFlushEventListener
+#[AsDoctrineListener(event: Events::postFlush)]
+final class EntityEventListener
 {
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
@@ -50,6 +52,15 @@ final class EntityOnFlushEventListener
         $this->prepareDeferredUpdates($transactionNestingLevel, $unitOfWork);
 
         $this->prepareDeferredCollectionUpdates($transactionNestingLevel, $unitOfWork);
+    }
+
+    public function postFlush(PostFlushEventArgs $eventArgs): void
+    {
+        $objectManager = $eventArgs->getObjectManager();
+
+        if ($objectManager->getConnection()->getTransactionNestingLevel() === 0) {
+            $this->eventDispatcher->dispatch();
+        }
     }
 
     private function getClearedChangeSet(array $changeSet): array

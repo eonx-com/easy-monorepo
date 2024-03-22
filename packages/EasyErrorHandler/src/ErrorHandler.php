@@ -15,6 +15,7 @@ use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Response\Data\ErrorResponseData;
 use EonX\EasyUtils\Helpers\CollectorHelper;
+use SplObjectStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -29,6 +30,11 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     private array $builders;
 
     /**
+     * @var \SplObjectStorage<\Throwable, null>
+     */
+    private SplObjectStorage $handledExceptions;
+
+    /**
      * @var class-string[]
      */
     private readonly array $ignoredExceptionsForReport;
@@ -40,6 +46,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
      */
     private array $reporters;
 
+    private bool $skipReportedExceptions;
+
     /**
      * @param class-string[]|null $ignoredExceptionsForReport
      */
@@ -50,11 +58,14 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         private readonly VerboseStrategyInterface $verboseStrategy,
         ?array $ignoredExceptionsForReport = null,
         ?bool $reportRetryableExceptionAttempts = null,
+        ?bool $skipReportedExceptions = null,
     ) {
         $this->setBuilders($builderProviders);
         $this->setReporters($reporterProviders);
         $this->ignoredExceptionsForReport = $ignoredExceptionsForReport ?? [];
         $this->reportRetryableExceptionAttempts = $reportRetryableExceptionAttempts ?? false;
+        $this->skipReportedExceptions = $skipReportedExceptions ?? false;
+        $this->handledExceptions = new SplObjectStorage();
     }
 
     /**
@@ -96,6 +107,10 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
     public function report(Throwable $throwable): void
     {
+        if ($this->skipReportedExceptions && $this->handledExceptions->contains($throwable)) {
+            return;
+        }
+
         if ($throwable instanceof RetryableException) {
             if ($throwable->willRetry() && $this->reportRetryableExceptionAttempts === false) {
                 return;
@@ -106,8 +121,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
         // Symfony Messenger HandlerFailedException
         if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
-            foreach ($throwable->getNestedExceptions() as $nestedThrowable) {
-                $this->report($nestedThrowable);
+            foreach ($throwable->getWrappedExceptions() as $wrappedException) {
+                $this->report($wrappedException);
             }
 
             return;
@@ -137,6 +152,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         foreach ($this->reporters as $reporter) {
             $reporter->report($throwable);
         }
+
+        $this->handledExceptions->attach($throwable);
     }
 
     public function supportsFormat(Request $request): bool

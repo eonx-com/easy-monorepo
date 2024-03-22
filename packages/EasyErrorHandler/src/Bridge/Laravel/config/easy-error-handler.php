@@ -67,6 +67,11 @@ return [
      */
     'report_retryable_exception_attempts' => false,
 
+    /**
+     * Skip already reported exceptions.
+     */
+    'skip_reported_exceptions' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Error response
