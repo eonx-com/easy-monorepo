@@ -30,9 +30,4 @@ abstract class AbstractErrorResponseBuilder implements ErrorResponseBuilderInter
     {
         return $statusCode;
     }
-
-    public function getPriority(): int
-    {
-        return $this->priority;
-    }
 }

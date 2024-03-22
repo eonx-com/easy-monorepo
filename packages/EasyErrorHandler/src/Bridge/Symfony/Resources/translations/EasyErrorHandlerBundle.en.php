@@ -12,4 +12,11 @@ return [
         'not_valid' => 'Validation failed.',
         'unauthorized' => 'Unauthorized.',
     ],
+    'violations' => [
+        'another_iri' => 'This value should be %iri% IRI.',
+        'invalid_datetime' => 'This value is not a valid date/time.',
+        'invalid_iri' => 'This value should be an IRI.',
+        'invalid_type' => 'The type of the value should be "%expected_types%", "%current_type%" given.',
+        'missing_constructor_argument' => 'This value should be present.',
+    ],
 ];
