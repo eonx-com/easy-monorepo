@@ -7,8 +7,9 @@ use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
 final class UuidProvider
 {
-    public function __construct(private readonly RandomGeneratorInterface $randomGenerator)
-    {
+    public function __construct(
+        private readonly RandomGeneratorInterface $randomGenerator,
+    ) {
     }
 
     public function provide(): string

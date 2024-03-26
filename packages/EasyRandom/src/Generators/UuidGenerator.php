@@ -8,8 +8,9 @@ use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class UuidGenerator implements UuidGeneratorInterface
 {
-    public function __construct(private UuidFactory $uuidFactory)
-    {
+    public function __construct(
+        private UuidFactory $uuidFactory,
+    ) {
     }
 
     public function generate(): string

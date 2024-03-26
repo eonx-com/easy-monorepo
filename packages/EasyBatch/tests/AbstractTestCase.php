@@ -12,10 +12,11 @@ use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
-use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\UuidGenerator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Uid\Factory\UuidFactory;
 
 abstract class AbstractTestCase extends TestCase
 {
@@ -68,7 +69,7 @@ abstract class AbstractTestCase extends TestCase
         }
 
         $this->batchObjectIdStrategy = new UuidStrategy(
-            new RandomGenerator(new SymfonyUuidV6Generator())
+            new RandomGenerator(new UuidGenerator(new UuidFactory()))
         );
 
         return $this->batchObjectIdStrategy;

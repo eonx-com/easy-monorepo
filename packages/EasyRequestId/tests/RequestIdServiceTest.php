@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests;
 
-use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\UuidGenerator;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
@@ -12,6 +12,7 @@ use EonX\EasyRequestId\Resolvers\HttpFoundationRequestResolver;
 use EonX\EasyRequestId\UuidFallbackResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Component\Uid\Uuid;
 
 final class RequestIdServiceTest extends AbstractTestCase
@@ -73,7 +74,7 @@ final class RequestIdServiceTest extends AbstractTestCase
     private function defaultFallbackResolver(): FallbackResolverInterface
     {
         return new UuidFallbackResolver(
-            new RandomGenerator(new SymfonyUuidV6Generator())
+            new RandomGenerator(new UuidGenerator(new UuidFactory()))
         );
     }
 }
