@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -32,6 +33,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $container->setDefinition(RequestStack::class, new Definition(RequestStack::class));
+
+        $container->setDefinition(UuidFactory::class, new Definition(UuidFactory::class));
 
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);

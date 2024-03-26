@@ -10,7 +10,7 @@ final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void
     {
-        $container = $this->getKernel([__DIR__ . '/Fixtures/config/default.yaml'])->getContainer();
+        $container = $this->getKernel([])->getContainer();
         $requestIdService = $container->get(RequestIdServiceInterface::class);
 
         self::assertTrue(Uuid::isValid($requestIdService->getCorrelationId()));
