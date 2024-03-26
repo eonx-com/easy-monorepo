@@ -8,7 +8,7 @@ section_icon: fab fa-laravel
 ### Package Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
-not familiar with this concept make sure to have a look at the [documentation][1].
+not familiar with this concept make sure to have a look at the [documentation](https://laravel.com/docs/5.8/providers).
 
 ```php
 // config/app.php
@@ -55,16 +55,9 @@ return [
 ```
 
 You can configure the UUID version to use for the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` service.
-The default value is `6`. The possible values are `4` and `6`.
+The default value is `6`. The possible values are `1`, `4`, `6`, `7`.
 
-The following classes will be used depending on the version you choose:
-
-- Version 4: `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator` (the `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator` class if the "ramsey/uuid" package is not installed)
-- Version 6: `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator` (the `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator` class if the "ramsey/uuid" package is not installed)
+`\Symfony\Component\Uid\Factory\UuidFactory` uses for generating UUIDs.
 
 Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
 and register it in your service provider.
-
-<br>
-
-[1]: https://laravel.com/docs/5.8/providers

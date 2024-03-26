@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Generators;
 
-use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generators\UuidGenerator;
 use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use EonX\EasyRandom\Tests\AbstractTestCase;
 use EonX\EasyRandom\ValueObject\RandomString;
+use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class RandomGeneratorTest extends AbstractTestCase
 {
@@ -23,7 +24,7 @@ final class RandomGeneratorTest extends AbstractTestCase
             }
         };
         $sut = new RandomGenerator(
-            uuidGenerator: new SymfonyUuidV6Generator(),
+            uuidGenerator: new UuidGenerator(new UuidFactory()),
             randomIntegerGenerator: $randomIntegerGenerator
         );
 
@@ -41,7 +42,7 @@ final class RandomGeneratorTest extends AbstractTestCase
             }
         };
         $sut = new RandomGenerator(
-            uuidGenerator: new SymfonyUuidV6Generator(),
+            uuidGenerator: new UuidGenerator(new UuidFactory()),
             randomStringGenerator: $randomStringGenerator
         );
 

@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Laravel;
 
-use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator;
-use EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;
 use EonX\EasyRandom\Generators\RandomStringGenerator;
+use EonX\EasyRandom\Generators\UuidGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Uid\UuidV4;
+use Symfony\Component\Uid\UuidV6;
 
 final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 {
@@ -27,7 +28,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
                     'uuid_version' => 4,
                 ],
             ],
-            'expectedUuidGeneratorClass' => RamseyUuidV4Generator::class,
+            'expectedUuidClass' => UuidV4::class,
         ];
 
         yield 'UUID v6' => [
@@ -36,7 +37,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
                     'uuid_version' => 6,
                 ],
             ],
-            'expectedUuidGeneratorClass' => RamseyUuidV6Generator::class,
+            'expectedUuidClass' => UuidV6::class,
         ];
     }
 
@@ -55,7 +56,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
             RandomIntegerGenerator::class,
             self::getPrivatePropertyValue($result, 'randomIntegerGenerator')
         );
-        self::assertInstanceOf(RamseyUuidV6Generator::class, self::getPrivatePropertyValue($result, 'uuidGenerator'));
+        self::assertInstanceOf(UuidGenerator::class, self::getPrivatePropertyValue($result, 'uuidGenerator'));
     }
 
     public function testRandomIntegerGeneratorInstance(): void
@@ -78,16 +79,16 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 
     /**
      * @param string[] $config
-     *
-     * @psalm-param class-string $expectedUuidGeneratorClass
+     * @param class-string $expectedUuidClass
      */
     #[DataProvider('provideConfigsForUuidGenerator')]
-    public function testUuidGeneratorInstance(array $config, string $expectedUuidGeneratorClass): void
+    public function testUuidGeneratorInstance(array $config, string $expectedUuidClass): void
     {
         $sut = $this->getApp($config);
 
         $result = $sut->get(UuidGeneratorInterface::class);
 
-        self::assertInstanceOf($expectedUuidGeneratorClass, $result);
+        $uuidFactory = self::getPrivatePropertyValue($result, 'uuidFactory');
+        self::assertSame($expectedUuidClass, self::getPrivatePropertyValue($uuidFactory, 'defaultClass'));
     }
 }

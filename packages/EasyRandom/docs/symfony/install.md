@@ -20,29 +20,11 @@ return [
 ];
 ```
 
-<br>
-
 ### Configuration
 
-```yaml
-# config/packages/easy_random.yaml
-
-easy_random:
-    uuid_version: 6 # Default value
-
-```
-
-You can configure the UUID version to use for the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` service.
-The default value is `6`. The possible values are `4` and `6`.
-
-The following classes will be used depending on the version you choose:
-
-- Version 4: `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV4Generator` (the `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV4Generator` class if the "symfony/uid" package is not installed)
-- Version 6: `EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator` (the `EonX\EasyRandom\Bridge\Ramsey\Generators\RamseyUuidV6Generator` class if the "symfony/uid" package is not installed)
+To configure UUID version use the [Symfony configuration](https://symfony.com/blog/new-in-symfony-5-3-uid-improvements)
 
 Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
 and register it in your container.
-
-<br>
 
 [1]: https://flex.symfony.com/
