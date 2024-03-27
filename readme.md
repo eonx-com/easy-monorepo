@@ -6,9 +6,6 @@ weight: 0
 This repository is a mono-repository, it contains the code of many packages. For more information about this concept
 you can look [there][1].
 
-
-<br>
-
 ### Packages
 
 <!-- monorepo-packages -->
