@@ -49,7 +49,7 @@
         "symfony/yaml": "^6.4"
     },
     "require-dev": {
-        "api-platform/core": "^3.1",
+        "api-platform/core": "^3.2",
         "auth0/auth0-php": "^8.6",
         "bugsnag/bugsnag-laravel": "^2.26",
         "dg/bypass-finals": "^1.4",
