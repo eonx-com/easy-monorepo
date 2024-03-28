@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -46,8 +45,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
         $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
-
-        $container->setDefinition(UuidFactory::class, new Definition(UuidFactory::class));
 
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);

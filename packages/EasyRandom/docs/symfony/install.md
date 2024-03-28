@@ -22,6 +22,7 @@ return [
 
 ### Configuration
 
+If the [UID Component](https://symfony.com/doc/current/components/uid.html) installed than `\Symfony\Component\Uid\Factory\UuidFactory` uses for generating UUIDs.
 To configure UUID version use the [Symfony configuration](https://symfony.com/blog/new-in-symfony-5-3-uid-improvements)
 
 Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests;
 
+use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
-use EonX\EasyRandom\Generators\UuidGenerator;
 use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;

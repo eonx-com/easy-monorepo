@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Generators;
 
+use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
-use EonX\EasyRandom\Generators\UuidGenerator;
 use EonX\EasyRandom\Interfaces\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Interfaces\RandomStringInterface;
