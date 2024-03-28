@@ -3,26 +3,24 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Symfony;
 
-use EonX\EasyRandom\Tests\AbstractTestCase;
-use EonX\EasyRandom\Tests\Bridge\Symfony\Stubs\KernelStub;
+use EonX\EasyRandom\Tests\Bridge\Symfony\Fixtures\App\Kernel\ApplicationKernel;
+use EonX\EasyTest\Traits\ContainerServiceTrait;
+use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractSymfonyTestCase extends AbstractTestCase
+abstract class AbstractSymfonyTestCase extends KernelTestCase
 {
-    private ?KernelInterface $kernel = null;
+    use ContainerServiceTrait;
+    use PrivatePropertyAccessTrait;
 
-    /**
-     * @param string[]|null $configs
-     */
-    protected function getKernel(?array $configs = null): KernelInterface
+    protected function setUp(): void
     {
-        if ($this->kernel !== null) {
-            return $this->kernel;
-        }
+        self::bootKernel();
+    }
 
-        $this->kernel = new KernelStub('test', true, $configs);
-        $this->kernel->boot();
-
-        return $this->kernel;
+    protected static function createKernel(array $options = []): KernelInterface
+    {
+        return new ApplicationKernel('test', false);
     }
 }
