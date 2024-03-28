@@ -12,9 +12,9 @@ use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 final class RandomGenerator implements RandomGeneratorInterface
 {
     public function __construct(
-        private UuidGeneratorInterface $uuidGenerator,
-        private RandomIntegerGeneratorInterface $randomIntegerGenerator = new RandomIntegerGenerator(),
-        private RandomStringGeneratorInterface $randomStringGenerator = new RandomStringGenerator(),
+        private readonly UuidGeneratorInterface $uuidGenerator = new DefaultUuidGenerator(),
+        private readonly RandomIntegerGeneratorInterface $randomIntegerGenerator = new RandomIntegerGenerator(),
+        private readonly RandomStringGeneratorInterface $randomStringGenerator = new RandomStringGenerator(),
     ) {
     }
 

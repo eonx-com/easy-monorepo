@@ -5,6 +5,7 @@ namespace EonX\EasyRandom\Bridge\Laravel;
 
 use EonX\EasyRandom\Bridge\Laravel\Exceptions\UnsupportedUuidVersionException;
 use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
+use EonX\EasyRandom\Generators\DefaultUuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;
 use EonX\EasyRandom\Generators\RandomStringGenerator;
@@ -37,6 +38,10 @@ final class EasyRandomServiceProvider extends ServiceProvider
 
         $this->app->singleton(RandomStringGeneratorInterface::class, RandomStringGenerator::class);
         $this->app->singleton(RandomIntegerGeneratorInterface::class, RandomIntegerGenerator::class);
+        $this->app->singleton(
+            UuidGeneratorInterface::class,
+            static fn (): UuidGeneratorInterface => new DefaultUuidGenerator()
+        );
 
         if (\class_exists(UuidFactory::class)) {
             $this->app->singleton(
