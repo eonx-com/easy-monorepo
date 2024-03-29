@@ -57,7 +57,7 @@ return [
 You can configure the UUID version to use for the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` service.
 The default value is `6`. The possible values are `1`, `4`, `6`, `7`.
 
-If the [UID Component](https://symfony.com/doc/current/components/uid.html) installed than `\Symfony\Component\Uid\Factory\UuidFactory` uses for generating UUIDs.
+If the [UID Component](https://symfony.com/doc/current/components/uid.html) installed then `\EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator` will be used for UUID generation.
 
 Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
 and register it in your service provider.

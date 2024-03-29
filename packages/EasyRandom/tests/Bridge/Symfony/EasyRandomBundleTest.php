@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Bridge\Symfony;
 
-use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
+use EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;
 use EonX\EasyRandom\Generators\RandomStringGenerator;

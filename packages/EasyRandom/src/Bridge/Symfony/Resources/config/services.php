@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
+use EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator;
 use EonX\EasyRandom\Generators\DefaultUuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Generators\RandomIntegerGenerator;

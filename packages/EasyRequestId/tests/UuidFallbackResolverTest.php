@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests;
 
-use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
+use EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRequestId\UuidFallbackResolver;
 use Symfony\Component\Uid\Factory\UuidFactory;

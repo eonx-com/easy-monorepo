@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRandom\Bridge\Uid;
+namespace EonX\EasyRandom\Bridge\Symfony\Uid;
 
 use EonX\EasyRandom\Interfaces\UuidGeneratorInterface;
 use Symfony\Component\Uid\Factory\UuidFactory;

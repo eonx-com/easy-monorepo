@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
-use EonX\EasyRandom\Bridge\Uid\UuidGenerator;
+use EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator;
 use EonX\EasyRandom\Generators\RandomGenerator;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
