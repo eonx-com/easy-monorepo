@@ -129,7 +129,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'masknull',
                 'maskstring',
                 'prop1',
-                '0'
+                '0',
             ],
         ];
         yield 'Mask keys in URL' => [
