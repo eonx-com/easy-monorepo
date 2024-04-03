@@ -20,6 +20,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
+                0 => 'will be masked',
                 'ignoreBool' => true,
                 'ignoreDouble' => 1.23,
                 'ignoreInteger' => 1,
@@ -71,6 +72,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     ),
             ],
             'expectedOutput' => [
+                '0' => '*REDACTED*',
                 'ignoreBool' => true,
                 'ignoreDouble' => 1.23,
                 'ignoreInteger' => 1,
@@ -127,6 +129,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'masknull',
                 'maskstring',
                 'prop1',
+                '0'
             ],
         ];
         yield 'Mask keys in URL' => [
