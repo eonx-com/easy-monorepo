@@ -27,6 +27,9 @@ interface SensitiveDataSanitizerInterface
         'token',
         'verificationcode',
         'x-shared-key',
+        '40309', // Value of the CURLOPT_CAINFO_BLOB constant
+        '40291', // Value of the CURLOPT_SSLCERT_BLOB constant
+        '40292', // Value of the CURLOPT_SSLKEY_BLOB constant
     ];
 
     public const DEFAULT_MASK_PATTERN = '*REDACTED*';
