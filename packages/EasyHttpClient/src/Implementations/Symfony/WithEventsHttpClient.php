@@ -20,6 +20,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Response\AsyncContext;
 use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Contracts\HttpClient\ChunkInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
@@ -97,29 +98,19 @@ final class WithEventsHttpClient implements HttpClientInterface
     private function getPassThruClosure(RequestDataInterface $requestData, Config $config): Closure
     {
         return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
-            // Get chunk content here, so we can handle transport/timeout exceptions
             try {
-                $chunkContent = $chunk->getContent();
-            } catch (Throwable $throwable) {
+                if ($chunk->isLast()) {
+                    $this->dispatchEvent($config, $requestData, new ResponseData(
+                        (string)($asyncContext->getContent() ?? ''),
+                        $asyncContext->getHeaders(),
+                        Carbon::now('UTC'),
+                        $asyncContext->getStatusCode()
+                    ));
+                }
+            } catch (TransportExceptionInterface $throwable) {
                 $this->dispatchEvent($config, $requestData, throwable: $throwable);
 
                 throw $throwable;
-            }
-
-            if ($chunkContent !== '') {
-                $asyncContext->setInfo(
-                    'temp_content',
-                    ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent()
-                );
-            }
-
-            if ($chunk->isLast()) {
-                $this->dispatchEvent($config, $requestData, new ResponseData(
-                    (string)($asyncContext->getInfo('temp_content') ?? ''),
-                    $asyncContext->getHeaders(),
-                    Carbon::now('UTC'),
-                    $asyncContext->getStatusCode()
-                ));
             }
 
             yield $chunk;
