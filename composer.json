@@ -99,7 +99,10 @@
             "EonX\\EasyDecision\\Expressions\\": "packages/EasyDecision/packages/expressions/src",
             "EonX\\EasyDoctrine\\": "packages/EasyDoctrine/src",
             "EonX\\EasyEncryption\\": "packages/EasyEncryption/src",
-            "EonX\\EasyErrorHandler\\": "packages/EasyErrorHandler/src",
+            "EonX\\EasyErrorHandler\\": [
+                "packages/EasyErrorHandler/config",
+                "packages/EasyErrorHandler/src"
+            ],
             "EonX\\EasyErrorHandler\\Config\\": "packages/EasyErrorHandler/config",
             "EonX\\EasyEventDispatcher\\": "packages/EasyEventDispatcher/src",
             "EonX\\EasyHttpClient\\": "packages/EasyHttpClient/src",

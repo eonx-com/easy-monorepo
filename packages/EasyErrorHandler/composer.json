@@ -25,7 +25,10 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyErrorHandler\\": "src",
+            "EonX\\EasyErrorHandler\\": [
+                "config",
+                "src"
+            ],
             "EonX\\EasyErrorHandler\\Config\\": "config"
         }
     },
