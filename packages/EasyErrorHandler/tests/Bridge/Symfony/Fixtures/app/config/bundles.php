@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use EonX\EasyErrorHandler\Config\EasyErrorHandlerSymfonyBundle;
+use EonX\EasyErrorHandler\Config\EasyErrorHandlerBundle;
 use EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 
@@ -14,7 +14,7 @@ return [
     DoctrineBundle::class => [
         'all' => true,
     ],
-    EasyErrorHandlerSymfonyBundle::class => [
+    EasyErrorHandlerBundle::class => [
         'all' => true,
     ],
     FrameworkBundle::class => [
