@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\Symfony\Commands\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Bridge\Symfony\DataCollector\ErrorHandlerDataCollector;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ConsoleErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Listener\ExceptionEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Messenger\ReportErrorEventListener;
 use EonX\EasyErrorHandler\Bridge\Symfony\Translator;
+use EonX\EasyErrorHandler\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\ErrorDetailsResolver;
 use EonX\EasyErrorHandler\ErrorHandler;
 use EonX\EasyErrorHandler\ErrorLogLevelResolver;

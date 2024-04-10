@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Symfony;
+namespace EonX\EasyErrorHandler;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformCompilerPass;
-use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorHandlerCompilerPass;
-use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorRendererCompilerPass;
+use EonX\EasyErrorHandler\DependencyInjection\Compiler\ApiPlatformCompilerPass;
+use EonX\EasyErrorHandler\DependencyInjection\Compiler\ErrorHandlerCompilerPass;
+use EonX\EasyErrorHandler\DependencyInjection\Compiler\ErrorRendererCompilerPass;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;
@@ -25,7 +24,7 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
     public function __construct()
     {
-        $this->path = \realpath(__DIR__);
+        $this->path = \realpath(__DIR__) . '/..';
     }
 
     public function build(ContainerBuilder $container): void
@@ -40,7 +39,7 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/Resources/config/definition.php');
+        $definition->import(__DIR__ . '/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -127,27 +126,27 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             ->registerForAutoconfiguration(VerboseStrategyDriverInterface::class)
             ->addTag(BridgeConstantsInterface::TAG_VERBOSE_STRATEGY_DRIVER);
 
-        $container->import(__DIR__ . '/Resources/config/services.php');
+        $container->import(__DIR__ . '/services.php');
 
         if ($config['use_default_builders'] ?? true) {
-            $container->import(__DIR__ . '/Resources/config/default_builders.php');
+            $container->import(__DIR__ . '/default_builders.php');
         }
 
         if ($config['override_api_platform_listener'] ?? true) {
-            $container->import(__DIR__ . '/Resources/config/api_platform_builders.php');
+            $container->import(__DIR__ . '/api_platform_builders.php');
         }
 
         if ($config['use_default_reporters'] ?? true) {
-            $container->import(__DIR__ . '/Resources/config/default_reporters.php');
+            $container->import(__DIR__ . '/default_reporters.php');
         }
 
         if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
-            $container->import(__DIR__ . '/Resources/config/bugsnag_reporter.php');
+            $container->import(__DIR__ . '/bugsnag_reporter.php');
         }
 
         // EasyWebhook Bridge
         if (\class_exists(FinalFailedWebhookEvent::class)) {
-            $container->import(__DIR__ . '/Resources/config/easy_webhook.php');
+            $container->import(__DIR__ . '/easy_webhook.php');
         }
     }
 }

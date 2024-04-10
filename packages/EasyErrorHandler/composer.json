@@ -25,8 +25,11 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyErrorHandler\\": "src",
-            "EonX\\EasyErrorHandler\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyErrorHandler\\": [
+                "config",
+                "src"
+            ],
+            "EonX\\EasyErrorHandler\\DependencyInjection\\Compiler\\": "config"
         }
     },
     "autoload-dev": {

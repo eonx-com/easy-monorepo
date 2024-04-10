@@ -26,7 +26,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle::class => ['all' => true],
+    EonX\EasyErrorHandler\EasyErrorHandlerSymfonyBundle::class => ['all' => true],
 ];
 ```
 
@@ -61,4 +61,5 @@ $app->configure('easy-error-handler');
 ```
 
 [1]: https://getcomposer.org/
+
 [2]: https://flex.symfony.com/

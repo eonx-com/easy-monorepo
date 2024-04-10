@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Providers\DefaultErrorResponseBuilderProvider;
+use EonX\EasyErrorHandler\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Providers\DefaultErrorReporterProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -12,6 +12,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(DefaultErrorResponseBuilderProvider::class)
-        ->arg('$keys', param(BridgeConstantsInterface::PARAM_RESPONSE_KEYS));
+    $services->set(DefaultErrorReporterProvider::class)
+        ->arg('$ignoredExceptions', param(BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS));
 };

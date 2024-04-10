@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler;
+namespace EonX\EasyErrorHandler\DependencyInjection\Compiler;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\ErrorRenderer\TranslateInternalErrorMessageErrorRenderer;
 use EonX\EasyErrorHandler\Interfaces\ErrorDetailsResolverInterface;

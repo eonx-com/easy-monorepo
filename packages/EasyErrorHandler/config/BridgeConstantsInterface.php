@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Bridge;
+namespace EonX\EasyErrorHandler;
 
 interface BridgeConstantsInterface
 {
