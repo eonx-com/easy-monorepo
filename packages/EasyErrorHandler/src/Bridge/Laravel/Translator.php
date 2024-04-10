@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Bridge\Laravel;
 
-use EonX\EasyErrorHandler\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Config\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as IlluminateTranslatorInterface;
 

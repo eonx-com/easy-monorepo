@@ -25,11 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyErrorHandler\\": [
-                "config",
-                "src"
-            ],
-            "EonX\\EasyErrorHandler\\DependencyInjection\\Compiler\\": "config"
+            "EonX\\EasyErrorHandler\\": "src",
+            "EonX\\EasyErrorHandler\\Config\\": "config"
         }
     },
     "autoload-dev": {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Bridge\Symfony\Provider\ApiPlatformErrorResponseBuilderProvider;
-use EonX\EasyErrorHandler\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Config\BridgeConstantsInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

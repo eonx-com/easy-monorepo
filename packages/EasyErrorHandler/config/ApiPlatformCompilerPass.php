@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\DependencyInjection\Compiler;
+namespace EonX\EasyErrorHandler\Config;
 
-use EonX\EasyErrorHandler\BridgeConstantsInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

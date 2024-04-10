@@ -1,12 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler;
+namespace EonX\EasyErrorHandler\Config;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\DependencyInjection\Compiler\ApiPlatformCompilerPass;
-use EonX\EasyErrorHandler\DependencyInjection\Compiler\ErrorHandlerCompilerPass;
-use EonX\EasyErrorHandler\DependencyInjection\Compiler\ErrorRendererCompilerPass;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;

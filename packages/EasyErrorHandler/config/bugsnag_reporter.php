@@ -9,7 +9,7 @@ use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\UnhandledClientConfigurat
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Providers\BugsnagErrorReporterProvider;
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
-use EonX\EasyErrorHandler\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Config\BridgeConstantsInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

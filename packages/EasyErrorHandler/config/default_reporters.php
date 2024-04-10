@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyErrorHandler\BridgeConstantsInterface;
+use EonX\EasyErrorHandler\Config\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Providers\DefaultErrorReporterProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
