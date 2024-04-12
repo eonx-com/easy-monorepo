@@ -16,7 +16,7 @@ final class SensitiveDataTest extends AbstractSensitiveDataSanitizerTestCase
             'easy-utils' => [
                 'sensitive_data' => [
                     'mask_pattern' => $maskPattern,
-                    'keys_to_mask' => $keysToMask,
+                    'keys_to_mask' => $keysToMask ?? [],
                 ],
             ],
         ]);

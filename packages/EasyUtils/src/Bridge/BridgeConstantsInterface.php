@@ -15,8 +15,6 @@ interface BridgeConstantsInterface
 
     public const PARAM_MATH_SCALE = 'easy_utils.math.scale';
 
-    public const PARAM_SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK = 'easy_utils.sensitive_data.default_keys_to_mask';
-
     public const PARAM_SENSITIVE_DATA_KEYS_TO_MASK = 'easy_utils.sensitive_data.keys_to_mask';
 
     public const PARAM_SENSITIVE_DATA_MASK_PATTERN = 'easy_utils.sensitive_data.mask_pattern';

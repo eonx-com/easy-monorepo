@@ -14,7 +14,7 @@ final class SensitiveDataTest extends AbstractSensitiveDataSanitizerTestCase
     protected function getSanitizer(string $maskPattern, ?array $keysToMask = null): SensitiveDataSanitizerInterface
     {
         $container = $this->getKernel([
-            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_KEYS_TO_MASK => $keysToMask,
+            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_KEYS_TO_MASK => $keysToMask ?? [],
             BridgeConstantsInterface::PARAM_SENSITIVE_DATA_MASK_PATTERN => $maskPattern,
         ])
             ->getContainer();
