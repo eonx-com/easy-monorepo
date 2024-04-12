@@ -21,10 +21,37 @@ final class EasyUtilsSymfonyBundle extends AbstractBundle
         'scale' => BridgeConstantsInterface::PARAM_MATH_SCALE,
     ];
 
+    public const SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK = [
+        'access_key',
+        'access_secret',
+        'access_token',
+        'apikey',
+        'auth_basic',
+        'auth_bearer',
+        'authorization',
+        'card_number',
+        'cert',
+        'cvc',
+        'cvv',
+        'number',
+        'password',
+        'php-auth-pw',
+        'php_auth_pw',
+        'php-auth-user',
+        'php_auth_user',
+        'securitycode',
+        'token',
+        'verificationcode',
+        'x-shared-key',
+        '40309', // Value of the CURLOPT_CAINFO_BLOB constant
+        '40291', // Value of the CURLOPT_SSLCERT_BLOB constant
+        '40292', // Value of the CURLOPT_SSLKEY_BLOB constant
+    ];
+
+    public const SENSITIVE_DATA_DEFAULT_MASK_PATTERN = '*REDACTED*';
+
     private const SENSITIVE_DATA_CONFIG = [
         'keys_to_mask' => BridgeConstantsInterface::PARAM_SENSITIVE_DATA_KEYS_TO_MASK,
-        'mask_pattern' => BridgeConstantsInterface::PARAM_SENSITIVE_DATA_MASK_PATTERN,
-        'use_default_keys_to_mask' => BridgeConstantsInterface::PARAM_SENSITIVE_DATA_USE_DEFAULT_KEYS_TO_MASK,
     ];
 
     private const STRING_TRIMMER_CONFIG = [
@@ -84,6 +111,22 @@ final class EasyUtilsSymfonyBundle extends AbstractBundle
             }
 
             $container->import(__DIR__ . '/Resources/config/sensitive_data.php');
+
+            $container
+                ->parameters()
+                ->set(
+                    BridgeConstantsInterface::PARAM_SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+                    ($config['sensitive_data']['use_default_keys_to_mask'] ?? false)
+                        ? BridgeConstantsInterface::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK : []
+                );
+
+            $container
+                ->parameters()
+                ->set(
+                    BridgeConstantsInterface::PARAM_SENSITIVE_DATA_MASK_PATTERN,
+                    $config['sensitive_data']['mask_pattern']
+                        ?? BridgeConstantsInterface::SENSITIVE_DATA_DEFAULT_MASK_PATTERN
+                );
         }
 
         // StringTrimmer

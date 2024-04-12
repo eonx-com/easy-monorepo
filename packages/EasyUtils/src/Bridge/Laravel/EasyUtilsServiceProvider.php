@@ -131,12 +131,19 @@ final class EasyUtilsServiceProvider extends ServiceProvider
             ]);
         }
 
+        $defaultKeysToMask = \config('easy-utils.sensitive_data.use_default_keys_to_mask', true)
+            ? BridgeConstantsInterface::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK
+            : [];
+
+        $maskPattern = \config('easy-utils.sensitive_data.mask_pattern')
+            ?? BridgeConstantsInterface::SENSITIVE_DATA_DEFAULT_MASK_PATTERN;
+
         $this->app->singleton(
             SensitiveDataSanitizerInterface::class,
             static fn (Container $container): SensitiveDataSanitizerInterface => new SensitiveDataSanitizer(
-                \config('easy-utils.sensitive_data.use_default_keys_to_mask', true),
+                $defaultKeysToMask,
+                $maskPattern,
                 \config('easy-utils.sensitive_data.keys_to_mask', []),
-                \config('easy-utils.sensitive_data.mask_pattern'),
                 $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER),
                 $container->tagged(BridgeConstantsInterface::TAG_SENSITIVE_DATA_STRING_SANITIZER)
             )

@@ -10,11 +10,12 @@ final class SensitiveDataTest extends AbstractSensitiveDataSanitizerTestCase
 {
     use LaravelTestCaseTrait;
 
-    protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface
+    protected function getSanitizer(string $maskPattern, ?array $keysToMask = null): SensitiveDataSanitizerInterface
     {
         $app = $this->getApplication([
             'easy-utils' => [
                 'sensitive_data' => [
+                    'mask_pattern' => $maskPattern,
                     'keys_to_mask' => $keysToMask,
                 ],
             ],
