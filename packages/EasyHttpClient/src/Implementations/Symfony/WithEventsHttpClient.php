@@ -22,9 +22,10 @@ use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Contracts\HttpClient\ChunkInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\Service\ResetInterface;
 use Throwable;
 
-final class WithEventsHttpClient implements HttpClientInterface
+final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
 {
     use AsyncDecoratorTrait;
 
