@@ -87,7 +87,7 @@ final class EasyUtilsSymfonyBundle extends AbstractBundle
 
         $container->import(__DIR__ . '/Resources/config/sensitive_data.php');
 
-        $defaultKeysToMask = ($config['sensitive_data']['use_default_keys_to_mask'] ?? false)
+        $defaultKeysToMask = ($config['sensitive_data']['use_default_keys_to_mask'] ?? true)
             ? BridgeConstantsInterface::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK
             : [];
 

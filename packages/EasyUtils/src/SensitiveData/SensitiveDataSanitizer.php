@@ -12,8 +12,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
      */
     private array $keysToMask;
 
-    private string $maskPattern;
-
     /**
      * @var \EonX\EasyUtils\SensitiveData\ObjectTransformerInterface[]
      */
@@ -29,7 +27,7 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
      */
     public function __construct(
         array $keysToMask,
-        string $maskPattern,
+        private readonly string $maskPattern,
         ?iterable $objectTransformers = null,
         ?iterable $stringSanitizers = null,
     ) {
@@ -37,7 +35,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
             static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
             $keysToMask
         );
-        $this->maskPattern = $maskPattern;
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
         );

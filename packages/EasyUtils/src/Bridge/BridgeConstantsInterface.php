@@ -19,6 +19,11 @@ interface BridgeConstantsInterface
 
     public const PARAM_SENSITIVE_DATA_MASK_PATTERN = 'easy_utils.sensitive_data.mask_pattern';
 
+    /**
+     * @deprecated
+     */
+    public const PARAM_SENSITIVE_DATA_USE_DEFAULT_KEYS_TO_MASK = 'easy_utils.sensitive_data.use_default_keys_to_mask';
+
     public const PARAM_STRING_TRIMMER_EXCEPT_KEYS = 'easy_utils.string_trimmer.except_keys';
 
     public const SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK = [
