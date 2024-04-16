@@ -12,8 +12,6 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
      */
     private array $keysToMask;
 
-    private string $maskPattern;
-
     /**
      * @var \EonX\EasyUtils\SensitiveData\ObjectTransformerInterface[]
      */
@@ -25,29 +23,18 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
     private array $stringSanitizers;
 
     /**
-     * @param string[]|null $keysToMask
+     * @param string[] $keysToMask
      */
     public function __construct(
-        ?bool $useDefaultKeysToMask = null,
-        ?array $keysToMask = null,
-        ?string $maskPattern = null,
+        array $keysToMask,
+        private readonly string $maskPattern,
         ?iterable $objectTransformers = null,
         ?iterable $stringSanitizers = null,
     ) {
-        $defaultKeysToMask = ($useDefaultKeysToMask ?? true) ? self::DEFAULT_KEYS_TO_MASK : [];
-        $keysToMask = \array_map(
+        $this->keysToMask = \array_map(
             static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
-            $keysToMask ?? []
+            $keysToMask
         );
-
-        foreach ($keysToMask as $keyToMask) {
-            if (\in_array($keyToMask, $defaultKeysToMask, true) === false) {
-                $defaultKeysToMask[] = $keyToMask;
-            }
-        }
-
-        $this->keysToMask = $defaultKeysToMask;
-        $this->maskPattern = $maskPattern ?? self::DEFAULT_MASK_PATTERN;
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
         );
