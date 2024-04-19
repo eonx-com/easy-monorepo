@@ -21,7 +21,7 @@
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
         "symfony/amazon-sqs-messenger": "^6.3",
-        "symfony/contracts": "^3.3",
+        "symfony/contracts": "^3.4",
         "symfony/symfony": "^6.3"
     },
     "autoload": {
