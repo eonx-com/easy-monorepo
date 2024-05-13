@@ -13,6 +13,8 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Throwable;
 use TypeError;
+use ApiPlatform\Symfony\EventListener\DeserializeListener;
+use ApiPlatform\State\Provider\DeserializeProvider;
 
 final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
@@ -201,7 +203,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             }
         }
 
-        if ($throwable instanceof TypeError) {
+        if ($throwable instanceof TypeError && $this->isThrowableFromApiPlatformSerializer($throwable)) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR, $throwable->getMessage(), $matches);
             $explodedIri = \explode('\\', $matches[3]);
@@ -229,5 +231,19 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     private function getKey(string $name): string
     {
         return $this->keys[$name] ?? $name;
+    }
+
+    private function isThrowableFromApiPlatformSerializer(Throwable $throwable): bool
+    {
+        foreach ($throwable->getTrace() as $trace) {
+            if (
+                (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
+                || ((($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide'))
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
