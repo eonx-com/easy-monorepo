@@ -119,7 +119,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
             ],
             'exceptionMessage' => 'Cannot create an instance of ' .
                 '"EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\ApiResource\\Book"' .
-                ' from serialized data because its constructor requires the following parameters to be present : "$description".',
+                ' from serialized data because its constructor requires the following parameters to be' .
+                ' present : "$description".',
         ];
 
         yield 'missing constructor argument in DTO' => [

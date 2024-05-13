@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
 use ApiPlatform\Exception\InvalidArgumentException;
+use ApiPlatform\State\Provider\DeserializeProvider;
+use ApiPlatform\Symfony\EventListener\DeserializeListener;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +15,6 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Throwable;
 use TypeError;
-use ApiPlatform\Symfony\EventListener\DeserializeListener;
-use ApiPlatform\State\Provider\DeserializeProvider;
 
 final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorResponseBuilder
 {

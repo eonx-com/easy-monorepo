@@ -45,9 +45,11 @@ final class SerializerContextBuilderTest extends AbstractTestCase
 
         $context = $contextBuilder->createFromRequest($request, true);
 
+        /** @var string[] $groups */
+        $groups = $context['groups'] ?? [];
         self::assertSame(
             $isGroupAdded,
-            \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $context['groups'] ?? [], true)
+            \in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $groups, true)
         );
     }
 
