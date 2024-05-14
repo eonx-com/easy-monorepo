@@ -121,8 +121,12 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
         // Symfony Messenger HandlerFailedException
         if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
-            foreach ($throwable->getWrappedExceptions() as $wrappedException) {
-                $this->report($wrappedException);
+            $nestedExceptionsGetter = \method_exists($throwable, 'getNestedException')
+                ? 'getNestedExceptions'
+                : 'getWrappedExceptions';
+
+            foreach ($throwable->{$nestedExceptionsGetter}() as $nestedException) {
+                $this->report($nestedException);
             }
 
             return;
