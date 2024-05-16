@@ -198,4 +198,16 @@ final class JsonbTypeTest extends AbstractTestCase
 
         self::assertSame($type::FORMAT_DB_JSONB, $result);
     }
+
+    public function testRequiresSQLCommentHintSucceeds(): void
+    {
+        /** @var \EonX\EasyDoctrine\DBAL\Types\JsonbType $type */
+        $type = Type::getType(JsonbType::JSONB);
+        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
+        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+
+        $result = $type->requiresSQLCommentHint($platform);
+
+        self::assertTrue($result);
+    }
 }
