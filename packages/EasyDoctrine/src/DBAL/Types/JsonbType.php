@@ -61,6 +61,11 @@ final class JsonbType extends Type
         return self::JSONB;
     }
 
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
+    {
+        return true;
+    }
+
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return self::FORMAT_DB_JSONB;
