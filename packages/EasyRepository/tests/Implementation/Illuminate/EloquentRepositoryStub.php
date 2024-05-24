@@ -22,6 +22,7 @@ final class EloquentRepositoryStub extends AbstractEloquentRepository
 
     protected function getModel(): Model
     {
+        /** @var \Illuminate\Database\Eloquent\Model $mock */
         $mock = Mockery::mock(Model::class);
         $collection = Mockery::mock(Collection::class);
 
