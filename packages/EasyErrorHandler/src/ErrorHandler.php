@@ -119,7 +119,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             $throwable = $throwable->getPrevious();
         }
 
-        // Symfony Messenger WrappedExceptionsInterface 
+        // Symfony Messenger WrappedExceptionsInterface
         if (\class_exists(WrappedExceptionsInterface::class) && $throwable instanceof WrappedExceptionsInterface) {
             foreach ($throwable->getWrappedExceptions() as $wrappedException) {
                 $this->report($wrappedException);
