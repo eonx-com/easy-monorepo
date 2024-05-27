@@ -110,7 +110,10 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         }
 
         if ($throwable instanceof RetryableException) {
-            if ($throwable->willRetry() && $this->reportRetryableExceptionAttempts === false) {
+            if (
+                ($throwable->willRetry() && $this->reportRetryableExceptionAttempts === false)
+                || $throwable->getPrevious() === null
+            ) {
                 return;
             }
 
