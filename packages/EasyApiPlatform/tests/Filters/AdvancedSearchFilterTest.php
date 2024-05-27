@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Tests\Filters;
 
 use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
-use ApiPlatform\Exception\InvalidArgumentException;
+use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\Get;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Filters\AdvancedSearchFilter;
