@@ -19,7 +19,7 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
     /**
      * @param string[]|null $keysToMask
      */
-    protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface
+    protected function getSanitizer(string $maskPattern, ?array $keysToMask = null): SensitiveDataSanitizerInterface
     {
         $objectTransformers = [
             new ThrowableObjectTransformer(),
@@ -33,6 +33,6 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
             new CreditCardNumberStringSanitizer(new CreditCardNumberValidator()),
         ];
 
-        return new SensitiveDataSanitizer(null, $keysToMask, null, $objectTransformers, $stringSanitizers);
+        return new SensitiveDataSanitizer($keysToMask ?? [], $maskPattern, $objectTransformers, $stringSanitizers);
     }
 }

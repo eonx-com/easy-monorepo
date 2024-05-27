@@ -11,9 +11,12 @@ final class SensitiveDataTest extends AbstractSensitiveDataSanitizerTestCase
 {
     use SymfonyTestCaseTrait;
 
-    protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface
+    protected function getSanitizer(string $maskPattern, ?array $keysToMask = null): SensitiveDataSanitizerInterface
     {
-        $container = $this->getKernel([BridgeConstantsInterface::PARAM_SENSITIVE_DATA_KEYS_TO_MASK => $keysToMask])
+        $container = $this->getKernel([
+            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_KEYS_TO_MASK => $keysToMask ?? [],
+            BridgeConstantsInterface::PARAM_SENSITIVE_DATA_MASK_PATTERN => $maskPattern,
+        ])
             ->getContainer();
 
         return $container->get(SensitiveDataSanitizerInterface::class);
