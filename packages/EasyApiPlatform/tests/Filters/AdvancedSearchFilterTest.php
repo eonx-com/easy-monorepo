@@ -21,6 +21,9 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
 
     protected string $filterClass = AdvancedSearchFilter::class;
 
+    /**
+     * @var class-string
+     */
     protected string $resourceClass = Dummy::class;
 
     /**
