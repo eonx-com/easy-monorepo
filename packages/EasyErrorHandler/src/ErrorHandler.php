@@ -18,8 +18,8 @@ use EonX\EasyUtils\Helpers\CollectorHelper;
 use SplObjectStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Symfony\Component\Messenger\Exception\WrappedExceptionsInterface;
 use Throwable;
 
 final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
@@ -119,15 +119,10 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             $throwable = $throwable->getPrevious();
         }
 
-        // Symfony Messenger HandlerFailedException
-        if (\class_exists(HandlerFailedException::class) && $throwable instanceof HandlerFailedException) {
-            // @todo: use only getWrappedExceptions when symfony packages will be >= 6.4
-            $nestedExceptionsGetter = \method_exists($throwable, 'getNestedException')
-                ? 'getNestedExceptions'
-                : 'getWrappedExceptions';
-
-            foreach ($throwable->{$nestedExceptionsGetter}() as $nestedException) {
-                $this->report($nestedException);
+        // Symfony Messenger WrappedExceptionsInterface
+        if (\class_exists(WrappedExceptionsInterface::class) && $throwable instanceof WrappedExceptionsInterface) {
+            foreach ($throwable->getWrappedExceptions() as $wrappedException) {
+                $this->report($wrappedException);
             }
 
             return;
