@@ -112,17 +112,14 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         }
 
         if ($throwable instanceof RetryableException) {
-            if (
-                ($throwable->willRetry() && $this->reportRetryableExceptionAttempts === false)
-                || $throwable->getPrevious() === null
-            ) {
+            if ($throwable->willRetry() && $this->reportRetryableExceptionAttempts === false) {
                 return;
             }
 
             $throwable = $throwable->getPrevious();
         }
 
-        if (\is_a($throwable, WrappedExceptionsInterface::class)) {
+        if ($throwable instanceof WrappedExceptionsInterface) {
             foreach ($throwable->getWrappedExceptions() as $wrappedException) {
                 $this->report($wrappedException);
             }
@@ -130,7 +127,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             return;
         }
 
-        if (\is_a($throwable, UnrecoverableExceptionInterface::class)) {
+        if ($throwable instanceof UnrecoverableExceptionInterface) {
             $throwable = $throwable->getPrevious();
         }
 
