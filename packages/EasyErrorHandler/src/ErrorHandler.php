@@ -18,6 +18,8 @@ use EonX\EasyUtils\Helpers\CollectorHelper;
 use SplObjectStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
+use Symfony\Component\Messenger\Exception\WrappedExceptionsInterface;
 use Throwable;
 
 final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
@@ -120,8 +122,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             $throwable = $throwable->getPrevious();
         }
 
-        // Symfony Messenger WrappedExceptionsInterface
-        if (\is_a($throwable, '\Symfony\Component\Messenger\Exception\WrappedExceptionsInterface')) {
+        if (\is_a($throwable, WrappedExceptionsInterface::class)) {
             foreach ($throwable->getWrappedExceptions() as $wrappedException) {
                 $this->report($wrappedException);
             }
@@ -129,8 +130,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             return;
         }
 
-        // Symfony Messenger UnrecoverableMessageHandlingException
-        if (\is_a($throwable, '\Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface')) {
+        if (\is_a($throwable, UnrecoverableExceptionInterface::class)) {
             $throwable = $throwable->getPrevious();
         }
 
