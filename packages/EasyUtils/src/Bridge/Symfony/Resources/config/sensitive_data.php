@@ -15,7 +15,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(SensitiveDataSanitizerInterface::class, SensitiveDataSanitizer::class)
-        ->arg('$useDefaultKeysToMask', param(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_USE_DEFAULT_KEYS_TO_MASK))
         ->arg('$keysToMask', param(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_KEYS_TO_MASK))
         ->arg('$maskPattern', param(BridgeConstantsInterface::PARAM_SENSITIVE_DATA_MASK_PATTERN))
         ->arg('$objectTransformers', tagged_iterator(BridgeConstantsInterface::TAG_SENSITIVE_DATA_OBJECT_TRANSFORMER))

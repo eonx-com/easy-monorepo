@@ -42,7 +42,7 @@ jobs:
                         ${{ env.PHP_EXTENSIONS }}
 
             -   name: Install Composer dependencies
-                uses: ramsey/composer-install@v2
+                uses: ramsey/composer-install@v3
 
             -   id: output_data
                 run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
@@ -90,7 +90,7 @@ jobs:
                         ${{ env.PHP_EXTENSIONS }}
 
             -   name: Install Composer dependencies
-                uses: ramsey/composer-install@v2
+                uses: ramsey/composer-install@v3
 
             -   run: bin/monorepo localize-monorepo-packages
 

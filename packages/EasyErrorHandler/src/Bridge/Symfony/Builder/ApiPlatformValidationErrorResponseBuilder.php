@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Symfony\Builder;
 
 use ApiPlatform\Exception\InvalidArgumentException;
+use ApiPlatform\State\Provider\DeserializeProvider;
+use ApiPlatform\Symfony\EventListener\DeserializeListener;
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -201,7 +203,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             }
         }
 
-        if ($throwable instanceof TypeError) {
+        if ($throwable instanceof TypeError && $this->isThrowableFromApiPlatformSerializer($throwable)) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_CONSTRUCTOR_TYPE_ERROR, $throwable->getMessage(), $matches);
             $explodedIri = \explode('\\', $matches[3]);
@@ -229,5 +231,19 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
     private function getKey(string $name): string
     {
         return $this->keys[$name] ?? $name;
+    }
+
+    private function isThrowableFromApiPlatformSerializer(Throwable $throwable): bool
+    {
+        foreach ($throwable->getTrace() as $trace) {
+            if (
+                (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
+                || ((($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide'))
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
