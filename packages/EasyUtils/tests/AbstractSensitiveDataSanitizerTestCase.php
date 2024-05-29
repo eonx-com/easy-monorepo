@@ -20,6 +20,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
     {
         yield 'Mask value if key explicitly provided' => [
             'input' => [
+                0 => 'will be masked',
                 'ignoreBool' => true,
                 'ignoreDouble' => 1.23,
                 'ignoreInteger' => 1,
@@ -71,6 +72,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     ),
             ],
             'expectedOutput' => [
+                '0' => '*REDACTED*',
                 'ignoreBool' => true,
                 'ignoreDouble' => 1.23,
                 'ignoreInteger' => 1,
@@ -120,6 +122,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     'prop3' => 'some-short-name',
                 ],
             ],
+            'maskPattern' => '*REDACTED*',
             'maskKeys' => [
                 'maskboolean',
                 'maskdouble',
@@ -127,6 +130,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'masknull',
                 'maskstring',
                 'prop1',
+                '0',
             ],
         ];
         yield 'Mask keys in URL' => [
@@ -136,6 +140,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
             'expectedOutput' => [
                 'maskToken' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
             ],
+            'maskPattern' => '*REDACTED*',
             'maskKeys' => [
                 'token',
                 'phonenumber',
@@ -406,6 +411,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     '\"doubleValue\":\"*REDACTED*\",\"booleanValue\":\"*REDACTED*\",' .
                     '\"nullValue\":\"*REDACTED*\",\"arrayValue\":[\"*REDACTED*\"],\"objectValue\":\"*REDACTED*\"}}',
             ],
+            'maskPattern' => '*REDACTED*',
             'maskKeys' => [
                 'arrayvalue',
                 'booleanvalue',
@@ -465,23 +471,30 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'inUrl' => 'https://eonx.com/page?card=400555*REDACTED*0001',
                 'nonCardNumber' => '1234567890123456',
             ],
+            'maskPattern' => '*REDACTED*',
         ];
     }
 
+    /**
+     * @see testSanitizeException
+     */
     public static function provideExceptionDataForSanitizing(): iterable
     {
         yield 'Mask value if key explicitly provided' => [
             'keysToMask' => ['message'],
+            'maskPattern' => '*REDACTED*',
             'message' => 'This is a test message',
             'expectedMessage' => '*REDACTED*',
         ];
         yield 'Mask key in JSON' => [
             'keysToMask' => ['keyToMask'],
+            'maskPattern' => '*REDACTED*',
             'message' => '{"keyToMask":"This is a test message"}',
             'expectedMessage' => '{"keyToMask":"*REDACTED*"}',
         ];
         yield 'Mask card number' => [
             'keysToMask' => ['card'],
+            'maskPattern' => '*REDACTED*',
             'message' => 'This is a test message with card number 4242 4242 4242 4242',
             'expectedMessage' => 'This is a test message with card number 424242*REDACTED*4242',
         ];
@@ -489,7 +502,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
 
     public function testDoNotSanitizeCardLikeValuesThatAreNotLuhnValid(): void
     {
-        $sanitizer = $this->getSanitizer();
+        $sanitizer = $this->getSanitizer('');
 
         $result = $sanitizer->sanitize(['uuid' => '{"uuid":"ba7e6152-1756-4391-bbe6-3bbc5057eb3d"}']);
 
@@ -500,9 +513,13 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
      * @param string[]|null $keysToMask
      */
     #[DataProvider('provideAbstractDataForSanitizing')]
-    public function testSanitize(array $input, array $expectedOutput, ?array $keysToMask = null): void
-    {
-        $sanitizer = $this->getSanitizer($keysToMask);
+    public function testSanitize(
+        array $input,
+        array $expectedOutput,
+        string $maskPattern,
+        ?array $keysToMask = null,
+    ): void {
+        $sanitizer = $this->getSanitizer($maskPattern, $keysToMask);
 
         self::assertEquals($expectedOutput, $sanitizer->sanitize($input));
     }
@@ -511,9 +528,13 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
      * @param string[] $keysToMask
      */
     #[DataProvider('provideExceptionDataForSanitizing')]
-    public function testSanitizeException(array $keysToMask, string $message, string $expectedMessage): void
-    {
-        $sanitizer = $this->getSanitizer($keysToMask);
+    public function testSanitizeException(
+        array $keysToMask,
+        string $maskPattern,
+        string $message,
+        string $expectedMessage,
+    ): void {
+        $sanitizer = $this->getSanitizer($maskPattern, $keysToMask);
         $exception = new RuntimeException($message);
 
         $sanitizedException = $sanitizer->sanitize($exception);
@@ -521,5 +542,8 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
         self::assertSame($expectedMessage, $sanitizedException['message']);
     }
 
-    abstract protected function getSanitizer(?array $keysToMask = null): SensitiveDataSanitizerInterface;
+    abstract protected function getSanitizer(
+        string $maskPattern,
+        ?array $keysToMask = null,
+    ): SensitiveDataSanitizerInterface;
 }

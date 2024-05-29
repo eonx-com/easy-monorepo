@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Tests\Filters;
 
 use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
-use ApiPlatform\Exception\InvalidArgumentException;
+use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\Get;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Filters\AdvancedSearchFilter;
@@ -21,6 +21,9 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
 
     protected string $filterClass = AdvancedSearchFilter::class;
 
+    /**
+     * @var class-string
+     */
     protected string $resourceClass = Dummy::class;
 
     /**

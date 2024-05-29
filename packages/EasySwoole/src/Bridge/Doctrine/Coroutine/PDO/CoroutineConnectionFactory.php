@@ -57,11 +57,20 @@ final class CoroutineConnectionFactory extends ConnectionFactory
 
         $connectionClass = $connection::class;
 
-        return new $connectionClass(
+        $coroutineConnection = new $connectionClass(
             $connection->getParams(),
             $driver,
             $connection->getConfiguration(),
             $connection->getEventManager()
         );
+
+        if (\count($mappingTypes ?? []) > 0) {
+            $platform = $coroutineConnection->getDatabasePlatform();
+            foreach ($mappingTypes as $dbType => $doctrineType) {
+                $platform->registerDoctrineTypeMapping($dbType, $doctrineType);
+            }
+        }
+
+        return $coroutineConnection;
     }
 }
