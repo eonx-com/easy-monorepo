@@ -5,7 +5,6 @@ namespace EonX\EasyErrorHandler\Bridge\Symfony;
 
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ApiPlatformCompilerPass;
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorHandlerCompilerPass;
 use EonX\EasyErrorHandler\Bridge\Symfony\DependencyInjection\Compiler\ErrorRendererCompilerPass;
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
@@ -33,7 +32,6 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
         parent::build($container);
 
         $container
-            ->addCompilerPass(new ApiPlatformCompilerPass())
             ->addCompilerPass(new ErrorHandlerCompilerPass())
             ->addCompilerPass(new ErrorRendererCompilerPass());
     }
@@ -45,74 +43,55 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $parameters = $container->parameters();
-
-        $parameters->set(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold']);
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
-            \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_IGNORE_EXCEPTIONS_HANDLED_BY_API_PLATFORM_BUILDERS,
-            $config['bugsnag_ignore_exceptions_handled_by_api_platform_builders']
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_BUGSNAG_HANDLED_EXCEPTIONS,
-            \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
-        );
-
-        $useApiPlatformBuilders = $config['use_api_platform_builders'] ?? true;
-        $parameters->set(BridgeConstantsInterface::PARAM_USE_API_PLATFORM_BUILDERS, $useApiPlatformBuilders);
-
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_API_PLATFORM_CUSTOM_SERIALIZER_EXCEPTIONS,
-            $config['api_platform_custom_serializer_exceptions']
-        );
-
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS,
-            \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS,
-            $config['report_retryable_exception_attempts'] ?? false
-        );
-
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_SKIP_REPORTED_EXCEPTIONS,
-            $config['skip_reported_exceptions'] ?? false
-        );
-
-        $parameters->set(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose']);
-
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS,
-            \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS,
-            \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null
-        );
-
-        $parameters->set(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response']);
-        $parameters->set(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain']);
-
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE,
-            $config['error_codes_interface']
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE,
-            $config['error_codes_category_size']
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED,
-            $config['translate_internal_error_messages']['enabled'] ?? false
-        );
-        $parameters->set(
-            BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE,
-            $config['translate_internal_error_messages']['locale'] ?? self::DEFAULT_LOCALE
-        );
+        $container->parameters()
+            ->set(BridgeConstantsInterface::PARAM_BUGSNAG_THRESHOLD, $config['bugsnag_threshold'])
+            ->set(
+                BridgeConstantsInterface::PARAM_BUGSNAG_IGNORED_EXCEPTIONS,
+                \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_BUGSNAG_HANDLED_EXCEPTIONS,
+                \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_IGNORED_EXCEPTIONS,
+                \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_REPORT_RETRYABLE_EXCEPTION_ATTEMPTS,
+                $config['report_retryable_exception_attempts'] ?? false
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_SKIP_REPORTED_EXCEPTIONS,
+                $config['skip_reported_exceptions'] ?? false
+            )
+            ->set(BridgeConstantsInterface::PARAM_IS_VERBOSE, $config['verbose'])
+            ->set(
+                BridgeConstantsInterface::PARAM_LOGGER_EXCEPTION_LOG_LEVELS,
+                \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_LOGGER_IGNORED_EXCEPTIONS,
+                \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null
+            )
+            ->set(BridgeConstantsInterface::PARAM_RESPONSE_KEYS, $config['response'])
+            ->set(BridgeConstantsInterface::PARAM_TRANSLATION_DOMAIN, $config['translation_domain'])
+            ->set(
+                BridgeConstantsInterface::PARAM_ERROR_CODES_INTERFACE,
+                $config['error_codes_interface']
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_ERROR_CODES_CATEGORY_SIZE,
+                $config['error_codes_category_size']
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED,
+                $config['translate_internal_error_messages']['enabled'] ?? false
+            )
+            ->set(
+                BridgeConstantsInterface::PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE,
+                $config['translate_internal_error_messages']['locale'] ?? self::DEFAULT_LOCALE
+            );
 
         $builder
             ->registerForAutoconfiguration(ErrorReporterProviderInterface::class)
@@ -132,16 +111,12 @@ final class EasyErrorHandlerSymfonyBundle extends AbstractBundle
             $container->import(__DIR__ . '/Resources/config/default_builders.php');
         }
 
-        if ($useApiPlatformBuilders) {
-            $container->import(__DIR__ . '/Resources/config/api_platform_builders.php');
-        }
-
         if ($config['use_default_reporters'] ?? true) {
             $container->import(__DIR__ . '/Resources/config/default_reporters.php');
         }
 
         if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
-            $container->import(__DIR__ . '/Resources/config/bugsnag_reporter.php');
+            $container->import(__DIR__ . '/Resources/config/easy_bugsnag.php');
         }
 
         // EasyWebhook Bridge

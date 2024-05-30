@@ -9,7 +9,7 @@ use EonX\EasyApiPlatform\Routing\IriConverter;
 use EonX\EasyApiPlatform\Routing\NoIriItemInterface;
 use EonX\EasyApiPlatform\Routing\SelfProvidedIriItemInterface;
 use EonX\EasyApiPlatform\Tests\AbstractTestCase;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\Dummy;
 use Mockery\MockInterface;
 
 /**

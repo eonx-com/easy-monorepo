@@ -5,13 +5,9 @@ namespace EonX\EasyErrorHandler\Bridge;
 
 interface BridgeConstantsInterface
 {
-    public const PARAM_API_PLATFORM_CUSTOM_SERIALIZER_EXCEPTIONS = 'easy_error_handler.param_api_platform_custom_serializer_exceptions';
-
     public const PARAM_BUGSNAG_HANDLED_EXCEPTIONS = 'easy_error_handler.param_bugsnag_handled_exceptions';
 
     public const PARAM_BUGSNAG_IGNORED_EXCEPTIONS = 'easy_error_handler.param_bugsnag_ignored_exceptions';
-
-    public const PARAM_BUGSNAG_IGNORE_EXCEPTIONS_HANDLED_BY_API_PLATFORM_BUILDERS = 'easy_error_handler.bugsnag_ignore_exceptions_handled_by_api_platform_builders';
 
     public const PARAM_BUGSNAG_THRESHOLD = 'easy_error_handler.param_bugsnag_threshold';
 
@@ -33,17 +29,13 @@ interface BridgeConstantsInterface
 
     public const PARAM_SKIP_REPORTED_EXCEPTIONS = 'easy_error_handler.param_skip_reported_exceptions';
 
-    public const PARAM_TRANSFORM_VALIDATION_ERRORS = 'easy_error_handler.param_transform_validation_errors';
-
     public const PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED = 'easy_error_handler.translate_internal_error_messages_enabled';
 
     public const PARAM_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE = 'easy_error_handler.translate_internal_error_messages_locale';
 
     public const PARAM_TRANSLATION_DOMAIN = 'easy_error_handler.param_translation_domain';
 
-    public const PARAM_USE_API_PLATFORM_BUILDERS = 'easy_error_handler.param_use_api_platform_builders';
-
-    public const TAG_API_PLATFORM_RESPONSE_BUILDER = 'easy_error_handler.api_platform_response_builder';
+    public const TAG_BUGSNAG_EXCEPTION_IGNORER = 'easy_error_handler.bugsnag_exception_ignorer';
 
     public const TAG_ERROR_REPORTER_PROVIDER = 'easy_error_handler.error_reporter_provider';
 

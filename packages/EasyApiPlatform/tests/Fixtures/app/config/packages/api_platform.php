@@ -42,7 +42,8 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
 
     $apiPlatformConfig->mapping()
         ->paths([
-            param('kernel.project_dir') . '/src/ApiResource/',
+            param('kernel.project_dir') . '/src/Case/AdvancedSearchFilter/ApiResource/',
+            param('kernel.project_dir') . '/src/Case/EasyErrorHandler/ApiResource/',
         ]);
 
     $apiPlatformConfig->swagger()

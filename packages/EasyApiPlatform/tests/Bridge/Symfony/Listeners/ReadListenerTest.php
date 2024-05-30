@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\NotExposed;
 use ApiPlatform\Metadata\Post;
 use EonX\EasyApiPlatform\Bridge\Symfony\Listeners\ReadListener;
 use EonX\EasyApiPlatform\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\Dummy;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;

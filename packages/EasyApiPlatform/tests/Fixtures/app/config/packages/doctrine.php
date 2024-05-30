@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Config\DoctrineConfig;
 
-return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $containerConfigurator): void {
+return static function (DoctrineConfig $doctrineConfig): void {
     $dbal = $doctrineConfig->dbal();
 
     $connection = $dbal->connection('default');
@@ -19,10 +19,15 @@ return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $c
     $entityManager = $doctrineConfig->orm()
         ->entityManager('default');
 
-    $entityManager->mapping('AppApiResource')
-        ->alias('AppApiResource')
-        ->dir(param('kernel.project_dir') . '/src/ApiResource')
+    $entityManager->mapping('AppCaseAdvancedSearchFilterApiResource')
+        ->dir(param('kernel.project_dir') . '/src/Case/AdvancedSearchFilter/ApiResource')
         ->isBundle(false)
-        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource')
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource')
+        ->type('attribute');
+
+    $entityManager->mapping('AppCaseEasyErrorHandlerApiResource')
+        ->dir(param('kernel.project_dir') . '/src/Case/EasyErrorHandler/ApiResource')
+        ->isBundle(false)
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\EasyErrorHandler\ApiResource')
         ->type('attribute');
 };

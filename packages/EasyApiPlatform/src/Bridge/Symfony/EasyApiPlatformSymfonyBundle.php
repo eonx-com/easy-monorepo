@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Bridge\Symfony;
 
 use EonX\EasyApiPlatform\Bridge\BridgeConstantsInterface;
+use EonX\EasyApiPlatform\Bridge\Symfony\DependencyInjection\Compiler\EasyErrorHandlerCompilerPass;
 use EonX\EasyApiPlatform\Bridge\Symfony\DependencyInjection\Compiler\ReadListenerCompilerPass;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Config\FileLocator;
@@ -13,14 +14,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyApiPlatformSymfonyBundle extends AbstractBundle
 {
-    private const EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG = [
-        'iri_fields' => BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
-    ];
-
-    private const EASY_API_PLATFORM_BASE_CONFIG = [
-        'custom_paginator_enabled' => BridgeConstantsInterface::PARAM_CUSTOM_PAGINATOR_ENABLED,
-    ];
-
     protected string $extensionAlias = 'easy_api_platform';
 
     public function __construct()
@@ -30,6 +23,7 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new EasyErrorHandlerCompilerPass());
         $container->addCompilerPass(new ReadListenerCompilerPass());
     }
 
@@ -40,23 +34,30 @@ final class EasyApiPlatformSymfonyBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::EASY_API_PLATFORM_BASE_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param, $config[$name]);
-        }
-
-        foreach (self::EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param, $config['advanced_search_filter'][$name]);
-        }
+        $parameters = $container->parameters();
+        $parameters->set(
+            BridgeConstantsInterface::PARAM_ADVANCED_SEARCH_FILTER_IRI_FIELDS,
+            $config['advanced_search_filter']['iri_fields']
+        );
 
         $container->import(__DIR__ . '/Resources/config/services.php');
         $container->import(__DIR__ . '/Resources/config/filters.php');
 
-        if ($config['custom_paginator_enabled'] ?? true) {
+        if ($config['custom_paginator']['enabled']) {
             $container->import(__DIR__ . '/Resources/config/pagination.php');
+        }
+
+        if ($config['easy_error_handler']['enabled']) {
+            $parameters->set(
+                BridgeConstantsInterface::PARAM_EASY_ERROR_HANDLER_CUSTOM_SERIALIZER_EXCEPTIONS,
+                $config['easy_error_handler']['custom_serializer_exceptions']
+            );
+
+            $container->import(__DIR__ . '/Resources/config/easy_error_handler.php');
+        }
+
+        if ($config['easy_bugsnag']['enabled']) {
+            $container->import(__DIR__ . '/Resources/config/easy_bugsnag.php');
         }
     }
 

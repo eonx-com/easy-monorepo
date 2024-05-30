@@ -6,12 +6,12 @@ namespace EonX\EasyErrorHandler\Bridge\Laravel\Provider;
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagConstantsInterface;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\ErrorDetailsClientConfigurator;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\SeverityClientConfigurator;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Configurators\UnhandledClientConfigurator;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Providers\BugsnagErrorReporterProvider;
-use EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers\DefaultBugsnagIgnoreExceptionsResolver;
+use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Configurators\ErrorDetailsClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Configurators\SeverityClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Configurators\UnhandledClientConfigurator;
+use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Ignorers\DefaultBugsnagExceptionIgnorer;
+use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Interfaces\BugsnagExceptionIgnorerInterface;
+use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Providers\BugsnagErrorReporterProvider;
 use EonX\EasyErrorHandler\Bridge\EasyWebhook\WebhookFinalFailedListener;
 use EonX\EasyErrorHandler\Bridge\Laravel\Console\Commands\Lumen\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Bridge\Laravel\ExceptionHandler;
@@ -159,8 +159,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(
-            BugsnagIgnoreExceptionsResolverInterface::class,
-            static fn (): BugsnagIgnoreExceptionsResolverInterface => new DefaultBugsnagIgnoreExceptionsResolver(
+            BugsnagExceptionIgnorerInterface::class,
+            static fn (): BugsnagExceptionIgnorerInterface => new DefaultBugsnagExceptionIgnorer(
                 \config('easy-error-handler.bugsnag_ignored_exceptions', []),
                 false
             )
@@ -171,7 +171,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 BugsnagErrorReporterProvider::class,
                 static fn (Container $app): BugsnagErrorReporterProvider => new BugsnagErrorReporterProvider(
                     $app->make(Client::class),
-                    $app->make(BugsnagIgnoreExceptionsResolverInterface::class),
+                    $app->tagged(BridgeConstantsInterface::TAG_BUGSNAG_EXCEPTION_IGNORER),
                     $app->make(ErrorLogLevelResolverInterface::class),
                     \config('easy-error-handler.bugsnag_threshold')
                 )

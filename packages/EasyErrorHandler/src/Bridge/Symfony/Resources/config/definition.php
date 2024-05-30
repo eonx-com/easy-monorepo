@@ -1,8 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ApiPlatformErrorResponseBuilderInterface;
+use EonX\EasyApiPlatform\Bridge\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return static function (DefinitionConfigurator $definition) {
     $defaultLocale = 'en';
@@ -18,25 +20,12 @@ return static function (DefinitionConfigurator $definition) {
                 ->scalarPrototype()->end()
             ->end()
             ->arrayNode('bugsnag_ignored_exceptions')
+                ->defaultValue([
+                    HttpExceptionInterface::class,
+                    RequestExceptionInterface::class,
+                ])
                 ->beforeNormalization()->castToArray()->end()
                 ->scalarPrototype()->end()
-            ->end()
-            ->booleanNode('bugsnag_ignore_exceptions_handled_by_api_platform_builders')
-                ->info('If true, errors handled by ' . ApiPlatformErrorResponseBuilderInterface::class
-                    . ' will be ignored')
-                ->defaultTrue()
-            ->end()
-            ->booleanNode('use_api_platform_builders')->defaultTrue()->end()
-            ->arrayNode('api_platform_custom_serializer_exceptions')
-                ->info('Custom serializer exceptions to be handled by '
-                    . ApiPlatformErrorResponseBuilderInterface::class)
-                ->arrayPrototype()
-                    ->children()
-                        ->scalarNode('class')->isRequired()->end()
-                        ->scalarNode('message_pattern')->isRequired()->end()
-                        ->scalarNode('violation_message')->isRequired()->end()
-                    ->end()
-                ->end()
             ->end()
             ->arrayNode('logger_exception_log_levels')
                 ->useAttributeAsKey('class')
