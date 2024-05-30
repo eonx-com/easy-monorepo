@@ -23,7 +23,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        $container->setDefinition('api_platform.iri_converter', new Definition(IriConverterStub::class));
         $container->setDefinition(
             'api_platform.serializer.context_builder',
             new Definition(SerializerContextBuilderStub::class)
