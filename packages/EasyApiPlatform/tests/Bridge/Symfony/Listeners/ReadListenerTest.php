@@ -7,15 +7,15 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\NotExposed;
 use ApiPlatform\Metadata\Post;
 use EonX\EasyApiPlatform\Bridge\Symfony\Listeners\ReadListener;
-use EonX\EasyApiPlatform\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
+use EonX\EasyApiPlatform\Tests\AbstractTestCase;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\Dummy;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-final class ReadListenerTest extends AbstractSymfonyTestCase
+final class ReadListenerTest extends AbstractTestCase
 {
     /**
      * @see testItThrowsException
@@ -137,7 +137,11 @@ final class ReadListenerTest extends AbstractSymfonyTestCase
     #[DataProvider('provideRequestsForSuccessfulCases')]
     public function testItSucceeds(Request $request): void
     {
-        $event = new RequestEvent($this->getKernel(), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent(
+            self::getService(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
         $sut = new ReadListener();
 
         $sut($event);
@@ -148,7 +152,11 @@ final class ReadListenerTest extends AbstractSymfonyTestCase
     #[DataProvider('provideRequestsForCasesWithThrownException')]
     public function testItThrowsException(Request $request): void
     {
-        $event = new RequestEvent($this->getKernel(), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent(
+            self::getService(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
         $sut = new ReadListener();
 
         $this->expectException(NotFoundHttpException::class);

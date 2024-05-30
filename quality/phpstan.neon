@@ -48,7 +48,7 @@ parameters:
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Api\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
 
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\Case\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
 
         - message: '#Access to an undefined property EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\ReadListener\:\:\$resourceMetadataCollectionFactory#'

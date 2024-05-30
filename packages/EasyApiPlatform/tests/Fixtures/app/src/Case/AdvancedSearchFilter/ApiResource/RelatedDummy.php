@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource;
 
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -47,7 +47,7 @@ class RelatedDummy extends ParentDummy
     private ?string $name = null;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedToDummyFriend>
+     * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\RelatedToDummyFriend>
      */
     #[Groups(['fakemanytomany', 'friends'])]
     #[ORM\OneToMany(mappedBy: 'relatedDummy', targetEntity: RelatedToDummyFriend::class, cascade: ['persist'])]
@@ -95,7 +95,7 @@ class RelatedDummy extends ParentDummy
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\RelatedToDummyFriend>
+     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\RelatedToDummyFriend>
      */
     public function getRelatedToDummyFriend(): Collection
     {

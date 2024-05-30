@@ -19,10 +19,15 @@ return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $c
     $entityManager = $doctrineConfig->orm()
         ->entityManager('default');
 
-    $entityManager->mapping('AppApiResource')
-        ->alias('AppApiResource')
-        ->dir(param('kernel.project_dir') . '/src/ApiResource')
+    $entityManager->mapping('AppCaseAdvancedSearchFilterApiResource')
+        ->dir(param('kernel.project_dir') . '/src/Case/AdvancedSearchFilter/ApiResource')
         ->isBundle(false)
-        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource')
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource')
+        ->type('attribute');
+
+    $entityManager->mapping('AppCaseCustomPaginatorApiResource')
+        ->dir(param('kernel.project_dir') . '/src/Case/CustomPaginator/ApiResource')
+        ->isBundle(false)
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\CustomPaginator\ApiResource')
         ->type('attribute');
 };
