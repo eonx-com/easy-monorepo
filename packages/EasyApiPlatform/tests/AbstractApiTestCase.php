@@ -5,6 +5,8 @@ namespace EonX\EasyApiPlatform\Tests;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\ApplicationKernel;
 use EonX\EasyTest\Traits\ArrayAssertionTrait;
 use EonX\EasyTest\Traits\ContainerServiceTrait;
@@ -32,5 +34,14 @@ abstract class AbstractApiTestCase extends ApiTestCase
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new ApplicationKernel('test', false);
+    }
+
+    protected function initDatabase(): void
+    {
+        $entityManager = self::getService(EntityManagerInterface::class);
+        $metaData = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->dropSchema($metaData);
+        $schemaTool->updateSchema($metaData);
     }
 }

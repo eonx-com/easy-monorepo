@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Tests\Paginators;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyApiPlatform\Tests\AbstractApiTestCase;
 use EonX\EasyApiPlatform\Tests\Fixtures\App\Case\CustomPaginator\ApiResource\Category;
 
@@ -12,10 +11,8 @@ final class CustomPaginatorTest extends AbstractApiTestCase
 {
     public function testCustomPaginator(): void
     {
+        $this->initDatabase();
         $entityManager = self::getService(EntityManagerInterface::class);
-        $metaData = $entityManager->getMetadataFactory()->getAllMetadata();
-        $schemaTool = new SchemaTool($entityManager);
-        $schemaTool->updateSchema($metaData);
         $entityManager->persist((new Category())->setTitle('Some category'));
         $entityManager->flush();
 
