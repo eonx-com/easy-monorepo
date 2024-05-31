@@ -51,12 +51,6 @@ parameters:
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\Case\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
 
-        - message: '#Access to an undefined property EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\ReadListener\:\:\$resourceMetadataCollectionFactory#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php
-
-        - message: '#Call to an undefined method EonX\\EasyApiPlatform\\Bridge\\Symfony\\Listeners\\ReadListener\:\:initializeOperation\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/ReadListener.php
-
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
           path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php

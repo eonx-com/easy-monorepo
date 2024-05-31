@@ -20,9 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Question
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private int $id;
 
     #[Orm\Column(type: Types::STRING, nullable: true)]

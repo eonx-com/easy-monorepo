@@ -25,10 +25,10 @@ return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $c
         ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource')
         ->type('attribute');
 
-    $entityManager->mapping('AppCaseAdvancedSearchFilterApiResource')
-        ->dir(param('kernel.project_dir') . '/src/Case/AdvancedSearchFilter/ApiResource')
+    $entityManager->mapping('AppCaseCustomPaginatorApiResource')
+        ->dir(param('kernel.project_dir') . '/src/Case/CustomPaginator/ApiResource')
         ->isBundle(false)
-        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource')
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixtures\App\Case\CustomPaginator\ApiResource')
         ->type('attribute');
 
     $entityManager->mapping('AppCaseReadListenerApiResource')

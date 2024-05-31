@@ -39,7 +39,8 @@ abstract class AbstractApiTestCase extends ApiTestCase
     protected function initDatabase(): void
     {
         $entityManager = self::getService(EntityManagerInterface::class);
-        $metaData = $entityManager->getMetadataFactory()->getAllMetadata();
+        $metaData = $entityManager->getMetadataFactory()
+->getAllMetadata();
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema($metaData);
         $schemaTool->updateSchema($metaData);
