@@ -21,51 +21,51 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     public static function providerProperties(): iterable
     {
         yield 'only allowed properties' => [
-            'globalDisallowProperties' => [],
-            'entityAllowProperties' => ['title', 'content'],
-            'entityDisallowProperties' => [],
+            'globalDisallowedProperties' => [],
+            'allowedProperties' => ['title', 'content'],
+            'disallowedProperties' => [],
             'expectedDataProperties' => ['title', 'content'],
         ];
 
         yield 'allowed and disallowed properties intersection' => [
-            'globalDisallowProperties' => [],
-            'entityAllowProperties' => ['title', 'content'],
-            'entityDisallowProperties' => ['content'],
+            'globalDisallowedProperties' => [],
+            'allowedProperties' => ['title', 'content'],
+            'disallowedProperties' => ['content'],
             'expectedDataProperties' => ['title'],
         ];
 
         yield 'only disallowed properties' => [
-            'globalDisallowProperties' => [],
-            'entityAllowProperties' => [],
-            'entityDisallowProperties' => ['createdAt'],
+            'globalDisallowedProperties' => [],
+            'allowedProperties' => [],
+            'disallowedProperties' => ['createdAt'],
             'expectedDataProperties' => ['title', 'author', 'content'],
         ];
 
         yield 'all properties are disallowed' => [
-            'globalDisallowProperties' => [],
-            'entityAllowProperties' => [],
-            'entityDisallowProperties' => ['title', 'createdAt', 'author', 'content'],
+            'globalDisallowedProperties' => [],
+            'allowedProperties' => [],
+            'disallowedProperties' => ['title', 'createdAt', 'author', 'content'],
             'expectedDataProperties' => null,
         ];
 
         yield 'disallowed properties and defined on global and entity levels' => [
-            'globalDisallowProperties' => ['createdAt'],
-            'entityAllowProperties' => [],
-            'entityDisallowProperties' => ['title', 'author'],
+            'globalDisallowedProperties' => ['createdAt'],
+            'allowedProperties' => [],
+            'disallowedProperties' => ['title', 'author'],
             'expectedDataProperties' => ['content'],
         ];
 
         yield 'empty allowed properties' => [
-            'globalDisallowProperties' => [],
-            'entityAllowProperties' => [],
-            'entityDisallowProperties' => [],
+            'globalDisallowedProperties' => [],
+            'allowedProperties' => [],
+            'disallowedProperties' => [],
             'expectedDataProperties' => ['title', 'createdAt', 'author', 'content'],
         ];
 
         yield 'allowed properties are null' => [
-            'globalDisallowProperties' => [],
-            'entityAllowProperties' => null,
-            'entityDisallowProperties' => [],
+            'globalDisallowedProperties' => [],
+            'allowedProperties' => null,
+            'disallowedProperties' => [],
             'expectedDataProperties' => null,
         ];
     }
