@@ -6,12 +6,12 @@
     "require": {
         "php": "^8.1",
         "doctrine/orm": "^3.2",
-        "doctrine/persistence": "^3.0",
+        "doctrine/persistence": "^3.3",
         "psr/log": "^3.0"
     },
     "require-dev": {
-        "doctrine/common": "^3.0",
-        "doctrine/dbal": "^3.0",
+        "doctrine/common": "^3.4",
+        "doctrine/dbal": "^4.0",
         "eonx-com/easy-event-dispatcher": "^5.11",
         "eonx-com/easy-random": "^5.11",
         "mockery/mockery": "^1.6",

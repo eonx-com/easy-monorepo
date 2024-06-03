@@ -15,9 +15,9 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.269",
-        "doctrine/annotations": "^1.14",
-        "doctrine/dbal": "^3.0",
-        "doctrine/doctrine-bundle": "^2.8",
+        "doctrine/annotations": "^4.0",
+        "doctrine/dbal": "^4.0",
+        "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^3.2",
         "eonx-com/easy-error-handler": "^5.11",
         "eonx-com/easy-test": "^5.11",

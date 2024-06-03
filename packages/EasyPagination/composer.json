@@ -10,8 +10,8 @@
         "symfony/string": "^6.4"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.14",
-        "doctrine/dbal": "^3.0",
+        "doctrine/annotations": "^4.0",
+        "doctrine/dbal": "^4.0",
         "doctrine/orm": "^3.2",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
