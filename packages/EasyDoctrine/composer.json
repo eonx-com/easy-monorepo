@@ -18,7 +18,7 @@
         "doctrine/annotations": "^1.14",
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^3.2",
         "eonx-com/easy-error-handler": "^5.11",
         "eonx-com/easy-test": "^5.11",
         "mockery/mockery": "^1.6",

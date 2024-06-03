@@ -13,7 +13,7 @@
     "require-dev": {
         "api-platform/core": "^3.3",
         "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^3.2",
         "eonx-com/easy-bugsnag": "^5.11",
         "eonx-com/easy-test": "^5.11",
         "eonx-com/easy-webhook": "^5.11",

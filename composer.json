@@ -14,7 +14,7 @@
         "aws/aws-sdk-php": "^3.269",
         "bugsnag/bugsnag": "^3.29",
         "doctrine/migrations": "^3.4",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^3.2",
         "dragonmantank/cron-expression": "^3.3",
         "elasticsearch/elasticsearch": "^7.17",
         "fakerphp/faker": "^1.19.0",
