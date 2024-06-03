@@ -123,7 +123,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 ],
             ],
             'maskPattern' => '*REDACTED*',
-            'maskKeys' => [
+            'keysToMask' => [
                 'maskboolean',
                 'maskdouble',
                 'maskinteger',
@@ -141,7 +141,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                 'maskToken' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
             ],
             'maskPattern' => '*REDACTED*',
-            'maskKeys' => [
+            'keysToMask' => [
                 'token',
                 'phonenumber',
             ],
@@ -412,7 +412,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractTestCase
                     '\"nullValue\":\"*REDACTED*\",\"arrayValue\":[\"*REDACTED*\"],\"objectValue\":\"*REDACTED*\"}}',
             ],
             'maskPattern' => '*REDACTED*',
-            'maskKeys' => [
+            'keysToMask' => [
                 'arrayvalue',
                 'booleanvalue',
                 'doublevalue',

@@ -462,22 +462,22 @@ final class NumberTest extends TestCase
         yield [
             'value' => '100',
             'expectedResult' => '1',
-            'truncateZeroCents' => true,
+            'trimTrailingZero' => true,
         ];
         yield [
             'value' => '100',
             'expectedResult' => '1.00',
-            'truncateZeroCents' => false,
+            'trimTrailingZero' => false,
         ];
         yield [
             'value' => '123',
             'expectedResult' => '1.23',
-            'truncateZeroCents' => false,
+            'trimTrailingZero' => false,
         ];
         yield [
             'value' => '123',
             'expectedResult' => '1.23',
-            'truncateZeroCents' => true,
+            'trimTrailingZero' => true,
         ];
     }
 
