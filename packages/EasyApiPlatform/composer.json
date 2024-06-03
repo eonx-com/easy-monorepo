@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "doctrine/common": "^3.4",
-        "doctrine/annotations": "^4.0",
+        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.12",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy": "^1.0",

@@ -15,7 +15,7 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.269",
-        "doctrine/annotations": "^4.0",
+        "doctrine/annotations": "^2.0",
         "doctrine/dbal": "^4.0",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^3.2",
