@@ -372,7 +372,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
     }
 
     #[DataProvider('provideDataForBuildErrorResponse')]
-    public function testBuildErrorResponse(string $url, array $json, array $violations): void
+    public function testBuildErrorResponse(string $url, array $json, array $violations, string $exceptionMessage): void
     {
         $response = self::$client->request('POST', $url, ['json' => $json]);
 
@@ -442,9 +442,16 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
         );
     }
 
+    /**
+     * @param class-string<\Throwable> $exceptionClass
+     */
     #[DataProvider('provideDataForDoNotBuildErrorResponse')]
-    public function testDoNotBuildErrorResponse(string $url, array $json): void
-    {
+    public function testDoNotBuildErrorResponse(
+        string $url,
+        array $json,
+        string $exceptionClass,
+        string $exceptionMessage,
+    ): void {
         $response = self::$client->request('POST', $url, ['json' => $json]);
 
         $responseData = $response->toArray(false);
