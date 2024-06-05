@@ -84,6 +84,7 @@ return static function (ECSConfig $ecsConfig): void {
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Traits/ContainerServiceTrait.php',
+            'packages/EasyTest/src/Traits/DatabaseEntityTrait.php',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
             'packages/*/src/Bridge/BridgeConstantsInterface.php',
