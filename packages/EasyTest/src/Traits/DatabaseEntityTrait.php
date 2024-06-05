@@ -137,7 +137,7 @@ trait DatabaseEntityTrait
         }
 
         /**
-         * @var object|null $entity
+         * @var TEntity|null $entity
          */
         $entity = $queryBuilder
             ->getQuery()

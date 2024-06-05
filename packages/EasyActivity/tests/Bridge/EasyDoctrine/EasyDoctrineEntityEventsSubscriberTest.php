@@ -359,10 +359,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @param string[] $globalDisallowedProperties
-     * @param string[] $allowedProperties
-     * @param string[] $disallowedProperties
-     * @param string[] $expectedProperties
+     * @param string[]|null $expectedProperties
      */
     #[DataProvider('provideProperties')]
     public function testPropertyFilters(
@@ -386,9 +383,10 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         }
         self::assertEntityCount(ActivityLog::class, 1);
         $activityLog = self::findOneEntity(ActivityLog::class, []);
+        self::assertNotNull($activityLog);
         self::assertEqualsCanonicalizing(
             $expectedProperties,
-            \array_keys(\json_decode($activityLog->getSubjectData(), true))
+            \array_keys(\json_decode((string)$activityLog->getSubjectData(), true))
         );
     }
 }

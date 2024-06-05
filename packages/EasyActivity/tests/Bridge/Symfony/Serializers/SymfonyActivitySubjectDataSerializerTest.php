@@ -212,9 +212,11 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractTestCase
         ?array $disallowedProperties,
         ?string $expectedResult,
     ): void {
+        /** @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface $circularReferenceHandler */
+        $circularReferenceHandler = self::getService(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER);
         $serializer = new SymfonyActivitySubjectDataSerializer(
             self::getService(SerializerInterface::class),
-            self::getService(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER),
+            $circularReferenceHandler,
             $disallowedProperties ?? []
         );
 

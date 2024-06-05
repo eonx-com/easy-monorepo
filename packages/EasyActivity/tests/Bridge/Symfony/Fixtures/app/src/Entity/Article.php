@@ -18,7 +18,7 @@ class Article
     private Author $author;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection<string|int, \Bridge\Symfony\Fixtures\app\src\Entity\Comment>
+     * @var \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Comment>
      */
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class, cascade: ['persist'])]
     private Collection $comments;
@@ -60,7 +60,7 @@ class Article
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection<string|int, \Bridge\Symfony\Fixtures\app\src\Entity\Comment>
+     * @return \Doctrine\Common\Collections\Collection<string|int, \EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Comment>
      */
     public function getComments(): Collection
     {
