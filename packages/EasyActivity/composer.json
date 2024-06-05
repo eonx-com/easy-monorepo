@@ -9,6 +9,7 @@
         "nesbot/carbon": "^2.67"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": "^2.7",
         "doctrine/dbal": "^3.0",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
