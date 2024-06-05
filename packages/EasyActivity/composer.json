@@ -21,9 +21,10 @@
         "eonx-com/easy-webhook": "^5.11",
         "phpunit/phpunit": "^10.2",
         "psr/log": "^3.0",
+        "symfony/amazon-sqs-messenger": "^6.3",
         "symfony/framework-bundle": "^6.3",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/amazon-sqs-messenger": "^6.3"
+        "symfony/uid": "^6.3"
     },
     "autoload": {
         "psr-4": {

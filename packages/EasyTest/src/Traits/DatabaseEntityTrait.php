@@ -90,11 +90,11 @@ trait DatabaseEntityTrait
     }
 
     /**
+     * @template TEntity of object
+     *
      * @param class-string<TEntity> $entityClass
      *
      * @return TEntity|null
-     *
-     * @template TEntity of object
      */
     protected static function findOneEntity(
         string $entityClass,

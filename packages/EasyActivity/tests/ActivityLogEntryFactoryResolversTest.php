@@ -35,7 +35,7 @@ final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
         $subjectType = 'subject-type';
         $activityLogEntity = new ActivityLogEntity($subjectId, $subjectType, ['field1']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
-        
+
         $result = $sut->create(
             ActivityLogEntry::ACTION_UPDATE,
             $activityLogEntity,
