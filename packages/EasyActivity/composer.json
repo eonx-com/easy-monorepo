@@ -22,6 +22,7 @@
         "phpunit/phpunit": "^10.2",
         "psr/log": "^3.0",
         "symfony/amazon-sqs-messenger": "^6.3",
+        "symfony/doctrine-bridge": "^6.3",
         "symfony/framework-bundle": "^6.3",
         "symfony/monolog-bundle": "^3.8",
         "symfony/uid": "^6.3"
