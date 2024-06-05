@@ -20,8 +20,7 @@ final class CircularReferenceHandlerTest extends AbstractTestCase
         $result = $sut($article, 'json', []);
 
         self::assertSame(
-            'EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Article' .
-            '#00000000-0000-0000-0000-000000000000 (circular reference)',
+            Article::class . '#00000000-0000-0000-0000-000000000000 (circular reference)',
             $result
         );
     }

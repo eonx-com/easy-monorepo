@@ -12,6 +12,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure();
-    
+
     $services->set(ActorResolverInterface::class, Case4ActorResolver::class);
 };

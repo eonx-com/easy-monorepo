@@ -7,13 +7,14 @@ use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use EonX\EasyDoctrine\Traits\TimestampableTrait;
+use Stringable;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Index(columns: ['subject_id'])]
 #[ORM\Index(columns: ['subject_type'])]
 #[ORM\Table(name: 'activity_logs')]
-class ActivityLog
+class ActivityLog implements Stringable
 {
     use TimestampableTrait;
 

@@ -72,7 +72,7 @@ trait DatabaseEntityTrait
         string $entityClass,
         array $criteria,
         ?array $jsonAttributes = null,
-        ?string $message = null
+        ?string $message = null,
     ): void {
         $entity = self::findOneEntity($entityClass, $criteria, $jsonAttributes);
 
@@ -104,15 +104,17 @@ trait DatabaseEntityTrait
         $alias = 'entity';
         $queryBuilder = self::getEntityManager()->createQueryBuilder();
 
-        $queryBuilder->select($alias)->from($entityClass, $alias);
+        $queryBuilder->select($alias)
+            ->from($entityClass, $alias);
 
         foreach ($criteria as $criteriaProperty => $criteriaValue) {
             if (\in_array($criteriaProperty, $jsonAttributes ?? [], true)) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        \sprintf('CONTAINS(%s.%s, :%s)', $alias, $criteriaProperty, $criteriaProperty),
-                        'TRUE'
-                    )
+                    $queryBuilder->expr()
+                        ->eq(
+                            \sprintf('CONTAINS(%s.%s, :%s)', $alias, $criteriaProperty, $criteriaProperty),
+                            'TRUE'
+                        )
                 );
                 $queryBuilder->setParameter($criteriaProperty, \json_encode($criteriaValue));
 
@@ -125,10 +127,11 @@ trait DatabaseEntityTrait
             }
             $paramName = \str_replace('.', '', $criteriaProperty);
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq(
-                    \sprintf('%s.%s', $alias, $criteriaProperty),
-                    \sprintf(':%s', $paramName)
-                )
+                $queryBuilder->expr()
+                    ->eq(
+                        \sprintf('%s.%s', $alias, $criteriaProperty),
+                        \sprintf(':%s', $paramName)
+                    )
             );
             $queryBuilder->setParameter($paramName, $criteriaValue);
         }
@@ -180,7 +183,7 @@ trait DatabaseEntityTrait
     private static function createMessageForEntityAssertion(
         string $message,
         string $entityClass,
-        array $criteria
+        array $criteria,
     ): string {
         $cloner = new VarCloner(
             \array_merge(
