@@ -77,6 +77,7 @@
         "squizlabs/php_codesniffer": "^3.7",
         "symfony/amazon-sqs-messenger": "^6.3",
         "symfony/browser-kit": "^6.3",
+        "symfony/doctrine-bridge": "^6.3",
         "symfony/framework-bundle": "^6.3",
         "symfony/maker-bundle": "^1.48",
         "symfony/monolog-bundle": "^3.8",
@@ -123,6 +124,7 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "packages/EasyActivity/tests",
+            "EonX\\EasyActivity\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/src",
             "EonX\\EasyApiPlatform\\Tests\\": "packages/EasyApiPlatform/tests",
             "EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\": "packages/EasyApiPlatform/tests/Fixtures/app/src",
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",

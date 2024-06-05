@@ -4,88 +4,32 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Tests;
 
 use Carbon\Carbon;
-use DateTime;
 use EonX\EasyActivity\ActivityLogEntry;
-use EonX\EasyActivity\Tests\Fixtures\Article;
-use EonX\EasyActivity\Tests\Fixtures\Author;
-use EonX\EasyActivity\Tests\Fixtures\Comment;
-use EonX\EasyActivity\Tests\Stubs\ActivityLogFactoryStub;
-use PHPUnit\Framework\Attributes\DataProvider;
+use EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Article;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Author;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Comment;
 use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryTest extends AbstractTestCase
 {
-    /**
-     * @see testPropertyFilters
-     */
-    public static function providerProperties(): iterable
-    {
-        yield 'only allowed properties' => [
-            'globalDisallowedProperties' => [],
-            'allowedProperties' => ['title', 'content'],
-            'disallowedProperties' => [],
-            'expectedDataProperties' => ['title', 'content'],
-        ];
-
-        yield 'allowed and disallowed properties intersection' => [
-            'globalDisallowedProperties' => [],
-            'allowedProperties' => ['title', 'content'],
-            'disallowedProperties' => ['content'],
-            'expectedDataProperties' => ['title'],
-        ];
-
-        yield 'only disallowed properties' => [
-            'globalDisallowedProperties' => [],
-            'allowedProperties' => [],
-            'disallowedProperties' => ['createdAt'],
-            'expectedDataProperties' => ['title', 'author', 'content'],
-        ];
-
-        yield 'all properties are disallowed' => [
-            'globalDisallowedProperties' => [],
-            'allowedProperties' => [],
-            'disallowedProperties' => ['title', 'createdAt', 'author', 'content'],
-            'expectedDataProperties' => null,
-        ];
-
-        yield 'disallowed properties and defined on global and entity levels' => [
-            'globalDisallowedProperties' => ['createdAt'],
-            'allowedProperties' => [],
-            'disallowedProperties' => ['title', 'author'],
-            'expectedDataProperties' => ['content'],
-        ];
-
-        yield 'empty allowed properties' => [
-            'globalDisallowedProperties' => [],
-            'allowedProperties' => [],
-            'disallowedProperties' => [],
-            'expectedDataProperties' => ['title', 'createdAt', 'author', 'content'],
-        ];
-
-        yield 'allowed properties are null' => [
-            'globalDisallowedProperties' => [],
-            'allowedProperties' => null,
-            'disallowedProperties' => [],
-            'expectedDataProperties' => null,
-        ];
-    }
-
     public function testCreateReturnsNullWhenNoSubjectConfigured(): void
     {
-        $factory = new ActivityLogFactoryStub([], []);
+        $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
-        $result = $factory->create(ActivityLogEntry::ACTION_UPDATE, new Article(), ['key' => 'value']);
+        $result = $sut->create(ActivityLogEntry::ACTION_UPDATE, new Article(), ['key' => 'value']);
 
         self::assertNull($result);
     }
 
     public function testCreateSucceeds(): void
     {
-        Carbon::setTestNow('2021-10-10 00:00:00');
-        $factory = new ActivityLogFactoryStub([Article::class => []], []);
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+        self::bootKernel(['environment' => 'case8']);
+        $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
-        $result = $factory->create(
+        $result = $sut->create(
             ActivityLogEntry::ACTION_CREATE,
             (new Article())->setId((string)(new NilUuid())),
             ['title' => [null, 'New Title']]
@@ -104,13 +48,14 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertNull($result->getActorName());
         self::assertSame((string)(new NilUuid()), $result->getSubjectId());
         self::assertSame(Article::class, $result->getSubjectType());
-        self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getCreatedAt());
-        self::assertEqualsCanonicalizing(Carbon::getTestNow(), $result->getUpdatedAt());
+        self::assertEquals($now, $result->getCreatedAt());
+        self::assertEquals($now, $result->getUpdatedAt());
     }
 
     public function testCreateSucceedsWithCollections(): void
     {
-        $factory = new ActivityLogFactoryStub([Article::class => []], []);
+        self::bootKernel(['environment' => 'case8']);
+        $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $comment1 = (new Comment())
             ->setId((string)(new NilUuid()))
             ->setMessage('Test 1');
@@ -124,8 +69,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
             ->addComment($comment1)
             ->addComment($comment2);
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
-        $result = $factory->create(
+        $result = $sut->create(
             ActivityLogEntry::ACTION_CREATE,
             $article,
             [
@@ -149,7 +93,8 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithRelatedObjects(): void
     {
-        $factory = new ActivityLogFactoryStub([Article::class => []], []);
+        self::bootKernel(['environment' => 'case8']);
+        $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $author = new Author();
         $author->setId((string)(new NilUuid()));
         $author->setName('John');
@@ -159,8 +104,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $article->setTitle('Related objects');
         $article->setAuthor($author);
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
-        $result = $factory->create(
+        $result = $sut->create(
             ActivityLogEntry::ACTION_CREATE,
             $article,
             [
@@ -181,17 +125,8 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
 
     public function testCreateSucceedsWithRelatedObjects2(): void
     {
-        $factory = new ActivityLogFactoryStub(
-            [
-                Article::class => [
-                    'allowed_properties' => [
-                        'title',
-                        'author' => ['name', 'position'],
-                    ],
-                ],
-            ],
-            []
-        );
+        self::bootKernel(['environment' => 'case9']);
+        $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $author = new Author();
         $author->setId((string)(new NilUuid()));
         $author->setName('John');
@@ -201,8 +136,7 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         $article->setTitle('Related objects');
         $article->setAuthor($author);
 
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
-        $result = $factory->create(
+        $result = $sut->create(
             ActivityLogEntry::ACTION_CREATE,
             $article,
             [
@@ -221,62 +155,6 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
                 ],
             ],
             \json_decode((string)$result->getSubjectData(), true)
-        );
-    }
-
-    /**
-     * @param string[] $globalDisallowedProperties
-     * @param string[]|null $allowedProperties
-     * @param string[] $disallowedProperties
-     * @param string[]|null $expectedDataProperties
-     */
-    #[DataProvider('providerProperties')]
-    public function testPropertyFilters(
-        array $globalDisallowedProperties,
-        ?array $allowedProperties,
-        array $disallowedProperties,
-        ?array $expectedDataProperties = null,
-    ): void {
-        $factory = new ActivityLogFactoryStub(
-            [
-                Article::class => [
-                    'allowed_properties' => $allowedProperties,
-                    'disallowed_properties' => $disallowedProperties,
-                ],
-            ],
-            $globalDisallowedProperties
-        );
-        $author = new Author();
-        $author->setName('John');
-        $author->setPosition(1);
-        $author->setId((string)(new NilUuid()));
-        $article = new Article();
-        $article->setId('00000000-0000-0000-0000-000000000001');
-
-        /** @var \EonX\EasyActivity\ActivityLogEntry $result */
-        $result = $factory->create(
-            ActivityLogEntry::ACTION_UPDATE,
-            $article,
-            [
-                'title' => ['Title 2', 'Title'],
-                'content' => ['Content 2', 'Content'],
-                'author' => [$author, $author],
-                'createdAt' => [
-                    new DateTime('2021-10-10 00:00:00'),
-                    new DateTime('2021-10-10 00:00:00'),
-                ],
-            ]
-        );
-
-        if ($expectedDataProperties === null) {
-            self::assertNull($result);
-
-            return;
-        }
-        self::assertNotNull($result);
-        self::assertEqualsCanonicalizing(
-            $expectedDataProperties,
-            \array_keys(\json_decode($result->getSubjectData() ?? '', true))
         );
     }
 }

@@ -4,18 +4,16 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Tests\Bridge\EasyDoctrine;
 
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use EonX\EasyActivity\ActivityLogEntry;
-use EonX\EasyActivity\Actor;
-use EonX\EasyActivity\Interfaces\ActorInterface;
-use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyActivity\Tests\Fixtures\Article;
-use EonX\EasyActivity\Tests\Fixtures\Author;
-use EonX\EasyActivity\Tests\Fixtures\Comment;
-use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use EonX\EasyActivity\Tests\AbstractTestCase;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\ActivityLog;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Article;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Author;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Comment;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCase
+final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
 {
     /**
      * @see testPropertyFilters
@@ -23,78 +21,52 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
     public static function provideProperties(): iterable
     {
         yield 'only allowed properties' => [
-            'globalDisallowedProperties' => null,
-            'allowedProperties' => ['title', 'content', 234],
-            'disallowedProperties' => null,
-            'expectedDataProperties' => ['title', 'content'],
+            'environment' => 'case6_1',
+            'expectedProperties' => ['title', 'content'],
         ];
 
         yield 'allowed and disallowed properties intersection' => [
-            'globalDisallowedProperties' => null,
-            'allowedProperties' => ['title', 'content'],
-            'disallowedProperties' => ['content'],
-            'expectedDataProperties' => ['title'],
+            'environment' => 'case6_2',
+            'expectedProperties' => ['title'],
         ];
 
         yield 'only disallowed properties' => [
-            'globalDisallowedProperties' => null,
-            'allowedProperties' => [],
-            'disallowedProperties' => ['createdAt'],
-            'expectedDataProperties' => ['title', 'author', 'id', 'content'],
+            'environment' => 'case6_3',
+            'expectedProperties' => ['title', 'author', 'id', 'content'],
         ];
 
         yield 'all properties are disallowed' => [
-            'globalDisallowedProperties' => null,
-            'allowedProperties' => [],
-            'disallowedProperties' => ['title', 'createdAt', 'author', 'content', 'id'],
-            'expectedDataProperties' => null,
-        ];
-
-        yield 'allowed properties is explicitly set as null' => [
-            'globalDisallowedProperties' => null,
-            'allowedProperties' => null,
-            'disallowedProperties' => ['title', 'createdAt', 'author', 'content'],
-            'expectedDataProperties' => null,
+            'environment' => 'case6_4',
+            'expectedProperties' => null,
         ];
 
         yield 'disallowed properties and defined on global and entity levels' => [
-            'globalDisallowedProperties' => ['createdAt'],
-            'allowedProperties' => [],
-            'disallowedProperties' => ['title', 'author'],
-            'expectedDataProperties' => ['content', 'id'],
+            'environment' => 'case6_5',
+            'expectedProperties' => ['content', 'id'],
         ];
     }
 
     public function testLoggerDoesNothingWhenSubjectIsNotDefinedInConfig(): void
     {
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [],
-            ]
-        );
-        $article = new Article();
-        $article->setTitle('Resolver');
-        $article->setContent('Test actor resolver');
-
+        self::bootKernel();
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
+        $article = (new Article())
+            ->setTitle('Resolver')
+            ->setContent('Test actor resolver');
         $entityManager->persist($article);
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(0, $logEntries);
+        self::assertEntityCount(ActivityLog::class, 0);
     }
 
     public function testLoggerSucceedsForDeletedSubjects(): void
     {
-        Carbon::setTestNow('2021-10-10 10:00:00.001001');
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [
-                        'type' => 'article',
-                    ],
-                ],
-            ]
-        );
+        self::bootKernel(['environment' => 'case1']);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
+        $now = CarbonImmutable::now();
+        Carbon::setTestNow($now);
         $author = new Author();
         $author->setPosition(1);
         $author->setName('John');
@@ -111,159 +83,135 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $entityManager->remove($article);
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(2, $logEntries);
-        self::assertEquals([
-            'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
-            'actor_id' => null,
-            'actor_name' => null,
-            'action' => ActivityLogEntry::ACTION_DELETE,
-            'subject_type' => 'article',
-            'subject_id' => $articleId,
-            'subject_data' => null,
-            'subject_old_data' => \json_encode([
-                'content' => 'Content',
-                'createdAt' => '2021-10-10T10:00:00+00:00',
-                'id' => $articleId,
-                'title' => 'Title 1',
-                'author' => [
-                    'id' => $authorId,
-                ],
-                'comments' => [],
-
-            ]),
-            'created_at' => '2021-10-10 10:00:00.001001',
-            'updated_at' => '2021-10-10 10:00:00.001001',
-        ], $logEntries[1]);
+        self::assertEntityCount(ActivityLog::class, 2);
+        self::assertEntityExists(
+            ActivityLog::class,
+            [
+                'action' => ActivityLogEntry::ACTION_DELETE,
+                'actorId' => null,
+                'actorName' => null,
+                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'subjectId' => $articleId,
+                'subjectType' => Article::class,
+                'createdAt' => $now,
+                'updatedAt' => $now,
+                'subjectData' => null,
+                'subjectOldData' => \json_encode([
+                    'content' => 'Content',
+                    'createdAt' => $now->toAtomString(),
+                    'id' => $articleId,
+                    'title' => 'Title 1',
+                    'author' => [
+                        'id' => $authorId,
+                    ],
+                    'comments' => [],
+                ]),
+            ],
+        );
     }
 
     public function testLoggerSucceedsForSubjectsCreatedInTransaction(): void
     {
-        Carbon::setTestNow('2021-10-10 10:00:00.899933');
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [
-                        'type' => 'article',
-                        'allowed_properties' => ['title', 'content'],
-                    ],
-                ],
-            ]
-        );
+        self::bootKernel(['environment' => 'case2']);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
+        $now = CarbonImmutable::now();
+        Carbon::setTestNow($now);
+
         $article = new Article();
         $article->setTitle('Title 1');
         $article->setContent('Content 1');
-
         $entityManager->persist($article);
         $entityManager->wrapInTransaction(function () use ($entityManager, $article): void {
             $article->setTitle('Title 2');
-
             $entityManager->flush();
-
             $article->setTitle('Title 3');
-
             $entityManager->flush();
-
             $article->setContent('Content 2');
         });
 
-        $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(1, $logEntries);
-        self::assertEquals([
-            'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
-            'actor_id' => null,
-            'actor_name' => null,
-            'action' => ActivityLogEntry::ACTION_CREATE,
-            'subject_type' => 'article',
-            'subject_id' => $article->getId(),
-            'subject_data' => \json_encode([
-                'content' => 'Content 2',
-                'title' => 'Title 3',
-            ]),
-            'subject_old_data' => null,
-            'created_at' => '2021-10-10 10:00:00.899933',
-            'updated_at' => '2021-10-10 10:00:00.899933',
-        ], $logEntries[0]);
+        self::assertEntityCount(ActivityLog::class, 1);
+        self::assertEntityExists(
+            ActivityLog::class,
+            [
+                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorId' => null,
+                'actorName' => null,
+                'action' => ActivityLogEntry::ACTION_CREATE,
+                'subjectType' => 'article',
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'content' => 'Content 2',
+                    'title' => 'Title 3',
+                ]),
+                'subjectOldData' => null,
+                'createdAt' => $now,
+                'updatedAt' => $now,
+            ]
+        );
     }
 
     public function testLoggerSucceedsForUpdatedSubjects(): void
     {
-        Carbon::setTestNow('2021-10-10 10:00:00.899933');
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [
-                        'type' => 'article',
-                        'allowed_properties' => ['title', 'content'],
-                    ],
-                ],
-            ]
-        );
+        self::bootKernel(['environment' => 'case2']);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
+        $now = CarbonImmutable::now();
+        Carbon::setTestNow($now);
 
         $article = new Article();
         $article->setTitle('Title 1');
         $article->setContent('Content');
-
         $entityManager->persist($article);
         $entityManager->flush();
-
         $article->setTitle('Title 2');
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-
-        self::assertCount(2, $logEntries);
-        self::assertEquals([
-            'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
-            'actor_id' => null,
-            'actor_name' => null,
-            'action' => ActivityLogEntry::ACTION_CREATE,
-            'subject_type' => 'article',
-            'subject_id' => $article->getId(),
-            'subject_data' => \json_encode([
-                'content' => 'Content',
-                'title' => 'Title 1',
-            ]),
-            'subject_old_data' => null,
-            'created_at' => '2021-10-10 10:00:00.899933',
-            'updated_at' => '2021-10-10 10:00:00.899933',
-        ], $logEntries[0]);
-        self::assertEquals([
-            'actor_type' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
-            'actor_id' => null,
-            'actor_name' => null,
-            'action' => ActivityLogEntry::ACTION_UPDATE,
-            'subject_type' => 'article',
-            'subject_id' => $article->getId(),
-            'subject_data' => \json_encode([
-                'title' => 'Title 2',
-            ]),
-            'subject_old_data' => \json_encode([
-                'title' => 'Title 1',
-            ]),
-            'created_at' => '2021-10-10 10:00:00.899933',
-            'updated_at' => '2021-10-10 10:00:00.899933',
-        ], $logEntries[1]);
+        self::assertEntityCount(ActivityLog::class, 2);
+        self::assertEntityExists(
+            ActivityLog::class,
+            [
+                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorId' => null,
+                'actorName' => null,
+                'action' => ActivityLogEntry::ACTION_CREATE,
+                'subjectType' => 'article',
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'content' => 'Content',
+                    'title' => 'Title 1',
+                ]),
+                'subjectOldData' => null,
+                'createdAt' => $now,
+                'updatedAt' => $now,
+            ]
+        );
+        self::assertEntityExists(
+            ActivityLog::class,
+            [
+                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorId' => null,
+                'actorName' => null,
+                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'subjectType' => 'article',
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'title' => 'Title 2',
+                ]),
+                'subjectOldData' => \json_encode([
+                    'title' => 'Title 1',
+                ]),
+                'createdAt' => $now,
+                'updatedAt' => $now,
+            ]
+        );
     }
 
     public function testLoggerSucceedsWithCollections(): void
     {
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [
-                        'allowed_properties' => [
-                            'title',
-                            'comments',
-                        ],
-                    ],
-                ],
-            ],
-            null,
-            null,
-            [Article::class, Comment::class]
-        );
-
+        self::bootKernel(['environment' => 'case3']);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
         $article = new Article();
         $article->setTitle('Test collections');
         $article->setContent('Content');
@@ -290,77 +238,68 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $article->addComment($commentE);
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(4, $logEntries);
+        self::assertEntityCount(ActivityLog::class, 4);
         // Create an article
-        self::assertSame('create', $logEntries[0]['action']);
-        self::assertSame(
+        self::assertEntityExists(
+            ActivityLog::class,
             [
-                'title' => 'Test collections',
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
-            ],
-            \json_decode((string)$logEntries[0]['subject_data'], true)
+                'action' => ActivityLogEntry::ACTION_CREATE,
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'title' => 'Test collections',
+                    'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
+                ]),
+            ]
         );
         // Remove the comment C from collection
-        self::assertSame('update', $logEntries[1]['action']);
-        self::assertSame(
+        self::assertEntityExists(
+            ActivityLog::class,
             [
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
-            ],
-            \json_decode((string)$logEntries[1]['subject_data'], true)
-        );
-        self::assertSame(
-            [
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
-            ],
-            \json_decode((string)$logEntries[1]['subject_old_data'], true)
+                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
+                ]),
+                'subjectOldData' => \json_encode([
+                    'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
+                ]),
+            ]
         );
         // Remove the comment D entity
-        self::assertSame('update', $logEntries[2]['action']);
-        self::assertSame(
+        self::assertEntityExists(
+            ActivityLog::class,
             [
-                'comments' => [$commentA->getId(), $commentB->getId()],
-            ],
-            \json_decode((string)$logEntries[2]['subject_data'], true)
-        );
-        self::assertSame(
-            [
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
-            ],
-            \json_decode((string)$logEntries[2]['subject_old_data'], true)
+                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'comments' => [$commentA->getId(), $commentB->getId()],
+                ]),
+                'subjectOldData' => \json_encode([
+                    'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
+                ]),
+            ]
         );
         // Add a new comment E to the collection
-        self::assertSame('update', $logEntries[3]['action']);
-        self::assertSame(
+        self::assertEntityExists(
+            ActivityLog::class,
             [
-                'comments' => [$commentA->getId(), $commentB->getId(), $commentE->getId()],
-            ],
-            \json_decode((string)$logEntries[3]['subject_data'], true)
-        );
-        self::assertSame(
-            [
-                'comments' => [$commentA->getId(), $commentB->getId()],
-            ],
-            \json_decode((string)$logEntries[3]['subject_old_data'], true)
+                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'subjectId' => $article->getId(),
+                'subjectData' => \json_encode([
+                    'comments' => [$commentA->getId(), $commentB->getId(), $commentE->getId()],
+                ]),
+                'subjectOldData' => \json_encode([
+                    'comments' => [$commentA->getId(), $commentB->getId()],
+                ]),
+            ]
         );
     }
 
     public function testLoggerSucceedsWithCustomActorResolver(): void
     {
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [],
-                ],
-            ],
-            new class() implements ActorResolverInterface {
-                public function resolve(object $object): ActorInterface
-                {
-                    return new Actor('actor-type', 'actor-id', 'actor-name');
-                }
-            }
-        );
-
+        self::bootKernel(['environment' => 'case4']);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
         $article = new Article();
         $article->setTitle('Resolver');
         $article->setContent('Test actor resolver');
@@ -368,29 +307,23 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $entityManager->persist($article);
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(1, $logEntries);
-        self::assertSame('actor-id', $logEntries[0]['actor_id']);
-        self::assertSame('actor-type', $logEntries[0]['actor_type']);
-        self::assertSame('actor-name', $logEntries[0]['actor_name']);
+        self::assertEntityCount(ActivityLog::class, 1);
+        self::assertEntityExists(
+            ActivityLog::class,
+            [
+                'actorType' => 'actor-type',
+                'actorId' => 'actor-id',
+                'actorName' => 'actor-name',
+                'subjectId' => $article->getId(),
+            ]
+        );
     }
 
     public function testLoggerSucceedsWithRelatedObjects(): void
     {
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [
-                        'allowed_properties' => [
-                            'title',
-                            'author',
-                        ],
-                    ],
-                    Author::class => [],
-                ],
-            ]
-        );
-
+        self::bootKernel(['environment' => 'case5']);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
         $author = new Author();
         $author->setName('John');
         $author->setPosition(1);
@@ -403,22 +336,25 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $entityManager->persist($article);
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-        self::assertCount(2, $logEntries);
-        self::assertSame(
+        self::assertEntityCount(ActivityLog::class, 2);
+        self::assertEntityExists(
+            ActivityLog::class,
             [
-                'id' => $author->getId(),
-                'name' => 'John',
-                'position' => 1,
-            ],
-            \json_decode((string)$logEntries[0]['subject_data'], true)
+                'subjectData' => \json_encode([
+                    'id' => $author->getId(),
+                    'name' => 'John',
+                    'position' => 1,
+                ]),
+            ]
         );
-        self::assertSame(
+        self::assertEntityExists(
+            ActivityLog::class,
             [
-                'title' => 'Resolver',
-                'author' => ['id' => $author->getId()],
-            ],
-            \json_decode((string)$logEntries[1]['subject_data'], true)
+                'subjectData' => \json_encode([
+                    'title' => 'Resolver',
+                    'author' => ['id' => $author->getId()],
+                ]),
+            ]
         );
     }
 
@@ -426,27 +362,16 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
      * @param string[] $globalDisallowedProperties
      * @param string[] $allowedProperties
      * @param string[] $disallowedProperties
-     * @param string[] $expectedDataProperties
+     * @param string[] $expectedProperties
      */
     #[DataProvider('provideProperties')]
     public function testPropertyFilters(
-        ?array $globalDisallowedProperties = null,
-        ?array $allowedProperties = null,
-        ?array $disallowedProperties = null,
-        ?array $expectedDataProperties = null,
+        string $environment,
+        ?array $expectedProperties = null,
     ): void {
-        $entityManager = EntityManagerStub::createFromEasyActivityConfig(
-            [
-                'subjects' => [
-                    Article::class => [
-                        'allowed_properties' => $allowedProperties,
-                        'disallowed_properties' => $disallowedProperties,
-                    ],
-                ],
-                'disallowed_properties' => $globalDisallowedProperties,
-            ]
-        );
-
+        self::bootKernel(['environment' => $environment]);
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
         $article = new Article();
         $article->setTitle('Title');
         $article->setContent('Content');
@@ -454,16 +379,16 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractSymfonyTestCa
         $entityManager->persist($article);
         $entityManager->flush();
 
-        $logEntries = $this->getLogEntries($entityManager);
-        if ($expectedDataProperties === null) {
-            self::assertCount(0, $logEntries);
+        if ($expectedProperties === null) {
+            self::assertEntityCount(ActivityLog::class, 0);
 
             return;
         }
-        self::assertCount(1, $logEntries);
+        self::assertEntityCount(ActivityLog::class, 1);
+        $activityLog = self::findOneEntity(ActivityLog::class, []);
         self::assertEqualsCanonicalizing(
-            $expectedDataProperties,
-            \array_keys(\json_decode((string)$logEntries[0]['subject_data'], true))
+            $expectedProperties,
+            \array_keys(\json_decode($activityLog->getSubjectData(), true))
         );
     }
 }
