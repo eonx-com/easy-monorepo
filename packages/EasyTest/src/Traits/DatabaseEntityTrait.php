@@ -218,7 +218,7 @@ trait DatabaseEntityTrait
                 object $entity,
                 array $array,
                 Stub $stub,
-                bool $isNested
+                bool $isNested,
             ) use ($fields): array {
                 if ($isNested) {
                     return $array;
