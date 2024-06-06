@@ -7,7 +7,18 @@
         "php": "^8.1",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "symfony/clock": "^6.4",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/error-handler": "^6.4",
+        "symfony/event-dispatcher": "^6.4",
+        "symfony/filesystem": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/messenger": "^6.4",
+        "symfony/var-dumper": "^6.4",
+        "symfony/var-exporter": "^6.4"
     },
     "require-dev": {
         "doctrine/common": "^3.0",
@@ -16,7 +27,7 @@
         "eonx-com/easy-random": "^5.11",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "symfony/framework-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
@@ -33,14 +44,12 @@
         }
     },
     "suggest": {
+        "doctrine/dbal": "To use Doctrine related middlewares",
         "eonx-com/easy-error-handler": "To report about the Illuminate worker stopping event",
         "eonx-com/easy-logging": "To provide the logging service",
         "illuminate/contracts": "To use this package with Laravel/Lumen",
         "illuminate/queue": "To use this package with Laravel/Lumen",
-        "illuminate/support": "To use this package with Laravel/Lumen",
-        "symfony/config": "To use this package with Symfony",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/http-kernel": "To use this package with Symfony"
+        "illuminate/support": "To use this package with Laravel/Lumen"
     },
     "extra": {
         "branch-alias": {
