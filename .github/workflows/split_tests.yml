@@ -94,8 +94,8 @@ jobs:
 
             -   run: bin/monorepo localize-monorepo-packages
 
-            -   run: bin/monorepo check-symfony-version packages/${{ matrix.package.dir }}/composer.lock
-
             -   run: composer update --prefer-dist --no-progress --ansi --working-dir=packages/${{ matrix.package.dir }}
+
+            -   run: bin/monorepo check-symfony-version packages/${{ matrix.package.dir }}/composer.lock
 
             -   run: vendor/bin/phpunit --coverage-text packages/${{ matrix.package.dir }}/tests

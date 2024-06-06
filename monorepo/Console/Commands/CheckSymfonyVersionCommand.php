@@ -45,8 +45,7 @@ final class CheckSymfonyVersionCommand extends Command
             return Command::FAILURE;
         }
 
-        $composerFile = \file_get_contents($composerLockFile);
-        $composerData = (array)\json_decode($composerFile, true);
+        $composerData = (array)\json_decode((string)\file_get_contents($composerLockFile), true);
 
         if (isset($composerData['packages']) === false) {
             $symfonyStyleOutput->error("The file $composerLockFile does not contain valid composer.lock data.");
@@ -54,14 +53,15 @@ final class CheckSymfonyVersionCommand extends Command
             return Command::FAILURE;
         }
 
-        $symfonyPackages = \array_filter($composerData['packages'], static function ($package) {
-            return \str_starts_with($package['name'], 'symfony/')
-                && \in_array($package['name'], self::EXCLUDED_PACKAGES, true) === false;
-        });
+        $symfonyPackages = \array_filter(
+            $composerData['packages'],
+            static fn ($package): bool => \str_starts_with((string)$package['name'], 'symfony/')
+                && \in_array($package['name'], self::EXCLUDED_PACKAGES, true) === false
+        );
 
         $versions = \array_map(
-            static function ($package) {
-                $versionParts = \explode('.', $package['version']);
+            static function ($package): string {
+                $versionParts = \explode('.', (string)$package['version']);
 
                 return $versionParts[0] . '.' . $versionParts[1];
             },
@@ -70,8 +70,8 @@ final class CheckSymfonyVersionCommand extends Command
 
         $uniqueVersions = \array_unique($versions);
 
-        if (count($uniqueVersions) > 1) {
-            $symfonyStyleOutput->error("Symfony packages have different MAJOR.MINOR versions:");
+        if (\count($uniqueVersions) > 1) {
+            $symfonyStyleOutput->error('Symfony packages have different MAJOR.MINOR versions:');
             foreach ($symfonyPackages as $package) {
                 $symfonyStyleOutput->writeln($package['name'] . ': ' . $package['version']);
             }
@@ -80,7 +80,7 @@ final class CheckSymfonyVersionCommand extends Command
         }
 
         $symfonyStyleOutput
-            ->success("All Symfony packages have the same MAJOR.MINOR version: " . \reset($uniqueVersions));
+            ->success('All Symfony packages have the same MAJOR.MINOR version: ' . \reset($uniqueVersions));
 
         return Command::SUCCESS;
     }
