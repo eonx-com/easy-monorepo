@@ -14,13 +14,6 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyAsyncBundle extends AbstractBundle
 {
-//    protected string $extensionAlias = 'easy_async';
-//
-//    public function __construct()
-//    {
-//        $this->path = \realpath(__DIR__);
-//    }
-
     public function build(ContainerBuilder $container): void
     {
         // -11 to run after easy-batch pass so middleware are first in the list
