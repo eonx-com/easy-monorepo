@@ -23,4 +23,11 @@ final class Abn extends Constraint
     public const MODULUS_CALCULATION_FAILED_ERROR = 'MODULUS_CALCULATION_FAILED_ERROR';
 
     public string $message = 'This field must be an 11-digit string representing a valid Australian Business Number.';
+
+    public function __construct(?array $groups = null, ?string $message = null)
+    {
+        $this->message = $message ?? $this->message;
+
+        parent::__construct(groups: $groups);
+    }
 }
