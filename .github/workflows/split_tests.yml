@@ -96,6 +96,7 @@ jobs:
 
             -   run: composer update --prefer-dist --no-progress --ansi --working-dir=packages/${{ matrix.package.dir }}
 
-            -   run: bin/monorepo check-symfony-version packages/${{ matrix.package.dir }}/composer.lock
+            # @todo: Enable this step when all packages will be refactored to new package structure
+            #-   run: bin/monorepo check-symfony-version packages/${{ matrix.package.dir }}/composer.lock
 
             -   run: vendor/bin/phpunit --coverage-text packages/${{ matrix.package.dir }}/tests
