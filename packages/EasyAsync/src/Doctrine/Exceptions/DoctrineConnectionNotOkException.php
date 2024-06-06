@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Doctrine\Exceptions;
 
-use EonX\EasyAsync\Exceptions\AbstractEasyAsyncException;
-use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface;
+use EonX\EasyAsync\Common\Exception\AbstractEasyAsyncException;
+use EonX\EasyAsync\Common\Exception\ShouldKillWorkerExceptionInterface;
 
 final class DoctrineConnectionNotOkException extends AbstractEasyAsyncException implements
     ShouldKillWorkerExceptionInterface

@@ -20,8 +20,11 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyAsync\\": "src",
-            "EonX\\EasyAsync\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyAsync\\": [
+                "bundle",
+                "src"
+            ],
+            "EonX\\EasyAsync\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {

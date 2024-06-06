@@ -91,7 +91,11 @@
             "EonX\\EasyActivity\\": "packages/EasyActivity/src",
             "EonX\\EasyApiPlatform\\": "packages/EasyApiPlatform/src",
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
-            "EonX\\EasyAsync\\": "packages/EasyAsync/src",
+            "EonX\\EasyAsync\\": [
+                "packages/EasyAsync/bundle",
+                "packages/EasyAsync/src"
+            ],
+            "EonX\\EasyAsync\\Laravel\\": "packages/EasyAsync/laravel",
             "EonX\\EasyBankFiles\\": "packages/EasyBankFiles/src",
             "EonX\\EasyBatch\\": "packages/EasyBatch/src",
             "EonX\\EasyBugsnag\\": "packages/EasyBugsnag/src",

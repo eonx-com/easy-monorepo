@@ -15,7 +15,7 @@ Once the package required, you must tell your application to use it. Laravel use
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyAsync\Bridge\Laravel\Providers\EasyAsyncServiceProvider::class,
+    \EonX\EasyAsync\Laravel\EasyAsyncServiceProvider::class,
 ],
 ```
 
@@ -38,7 +38,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyAsync\Bridge\Laravel\Providers\EasyAsyncServiceProvider::class);
+$app->register(\EonX\EasyAsync\Laravel\EasyAsyncServiceProvider::class);
 ```
 
 [1]: https://laravel.com/docs/5.8/providers
