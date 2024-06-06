@@ -124,6 +124,27 @@ final class ErrorHandlerTest extends AbstractTestCase
         self::assertCount($expectedReportedErrorsCount, $reporter->getReportedErrors());
     }
 
+    #[DataProvider('providerTestRepeatedExceptionReport')]
+    public function testRepeatedExceptionReport(bool $skipReportedExceptions, int $expectedReportedErrorsCount): void
+    {
+        $throwable = new Exception('message');
+        $reporter = new ErrorReporterStub();
+        $reporterProviders = [new FromIterableErrorReporterProvider([$reporter])];
+        $verboseStrategy = new ChainVerboseStrategy([], false);
+        $errorHandler = new ErrorHandler(
+            new ErrorResponseFactory(),
+            [],
+            $reporterProviders,
+            $verboseStrategy,
+            skipReportedExceptions: $skipReportedExceptions,
+        );
+
+        $errorHandler->report($throwable);
+        $errorHandler->report($throwable);
+
+        self::assertCount($expectedReportedErrorsCount, $reporter->getReportedErrors());
+    }
+
     #[DataProvider('providerTestReport')]
     public function testReport(
         Throwable $throwable,
