@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyAsync\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 

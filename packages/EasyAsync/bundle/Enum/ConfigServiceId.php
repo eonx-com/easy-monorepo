@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Enum;
+namespace EonX\EasyAsync\Bundle\Enum;
 
 enum ConfigServiceId: string
 {

@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyAsync\EasyAsyncBundle::class => ['all' => true],
+    EonX\EasyAsync\Bundle\EasyAsyncBundle::class => ['all' => true],
 ];
 ```
 

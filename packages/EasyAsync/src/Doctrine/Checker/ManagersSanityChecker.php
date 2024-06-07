@@ -6,8 +6,8 @@ namespace EonX\EasyAsync\Doctrine\Checker;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException;
-use EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException;
+use EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException;
+use EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;
@@ -23,8 +23,8 @@ final class ManagersSanityChecker
     /**
      * @param string[]|null $managers
      *
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException
      */
     public function checkSanity(?array $managers = null): void
     {
@@ -49,8 +49,8 @@ final class ManagersSanityChecker
     }
 
     /**
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException
      */
     private function checkEntityManager(EntityManagerInterface $entityManager, string $name): void
     {

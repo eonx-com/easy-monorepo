@@ -5,10 +5,10 @@ namespace EonX\EasyAsync\Laravel;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use EonX\EasyAsync\Bundle\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\Enum\ConfigServiceId;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Clearer\ManagersClearer;
-use EonX\EasyAsync\Enum\ConfigParam;
-use EonX\EasyAsync\Enum\ConfigServiceId;
 use EonX\EasyAsync\Laravel\Listeners\DoctrineManagersClearListener;
 use EonX\EasyAsync\Laravel\Listeners\DoctrineManagersSanityCheckListener;
 use EonX\EasyAsync\Laravel\Listeners\QueueWorkerStoppingListener;

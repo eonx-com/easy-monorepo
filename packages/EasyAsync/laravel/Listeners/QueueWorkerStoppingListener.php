@@ -7,13 +7,8 @@ use Illuminate\Queue\Events\WorkerStopping;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class QueueWorkerStoppingListener
+final class QueueWorkerStoppingListener implements WorkerStoppingListenerInterface
 {
-    public const REASONS = [
-        1 => 'Timeout',
-        12 => 'Memory exceeded',
-    ];
-
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),
     ) {

@@ -25,8 +25,8 @@ final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
     }
 
     /**
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException
      * @throws \Throwable
      */
     public function handle(JobProcessing $event): void

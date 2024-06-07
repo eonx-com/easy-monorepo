@@ -21,8 +21,8 @@ final class DoctrineManagersClearMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineConnectionNotOkException
-     * @throws \EonX\EasyAsync\Doctrine\Exceptions\DoctrineManagerClosedException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException
+     * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException
      */
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

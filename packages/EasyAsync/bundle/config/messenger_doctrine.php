@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Clearer\ManagersClearer;
-use EonX\EasyAsync\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;
 

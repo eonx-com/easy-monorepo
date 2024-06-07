@@ -5,7 +5,7 @@ namespace EonX\EasyAsync\Tests\Stub;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyAsync\EasyAsyncBundle;
+use EonX\EasyAsync\Bundle\EasyAsyncBundle;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use Psr\Log\LoggerInterface;

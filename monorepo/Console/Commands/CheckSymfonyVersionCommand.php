@@ -40,7 +40,7 @@ final class CheckSymfonyVersionCommand extends Command
         $composerLockFile = $input->getArgument('composerLockFile');
 
         if (\file_exists($composerLockFile) === false) {
-            $symfonyStyleOutput->error("The file $composerLockFile does not exist.");
+            $symfonyStyleOutput->error("The $composerLockFile file does not exist.");
 
             return Command::FAILURE;
         }
@@ -48,7 +48,7 @@ final class CheckSymfonyVersionCommand extends Command
         $composerData = (array)\json_decode((string)\file_get_contents($composerLockFile), true);
 
         if (isset($composerData['packages']) === false) {
-            $symfonyStyleOutput->error("The file $composerLockFile does not contain valid composer.lock data.");
+            $symfonyStyleOutput->error("The $composerLockFile file does not contain valid composer.lock data.");
 
             return Command::FAILURE;
         }

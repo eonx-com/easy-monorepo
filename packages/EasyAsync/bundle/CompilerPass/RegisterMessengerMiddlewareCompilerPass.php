@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\CompilerPass;
+namespace EonX\EasyAsync\Bundle\CompilerPass;
 
-use EonX\EasyAsync\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersCloseConnectionMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;

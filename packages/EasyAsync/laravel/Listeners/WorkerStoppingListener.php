@@ -7,7 +7,7 @@ use EonX\EasyAsync\Laravel\Exceptions\WorkerStoppingException;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Illuminate\Queue\Events\WorkerStopping;
 
-final class WorkerStoppingListener
+final class WorkerStoppingListener implements WorkerStoppingListenerInterface
 {
     public function __construct(
         private readonly ErrorHandlerInterface $errorHandler,
@@ -22,7 +22,7 @@ final class WorkerStoppingListener
             return;
         }
 
-        $reason = QueueWorkerStoppingListener::REASONS[$event->status] ?? null;
+        $reason = self::REASONS[$event->status] ?? null;
         $exception = new WorkerStoppingException(\sprintf(
             'Worker stopping with status "%s"%s',
             $event->status,

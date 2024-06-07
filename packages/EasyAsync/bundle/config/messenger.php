@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyAsync\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Decoder\JsonMessageBodyDecoder;
 use EonX\EasyAsync\Messenger\Decoder\MessageBodyDecoderInterface;
 use EonX\EasyAsync\Messenger\Subscriber\ShouldKillWorkerSubscriber;

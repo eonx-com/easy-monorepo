@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync;
+namespace EonX\EasyAsync\Bundle;
 
 use Doctrine\ORM\EntityManagerInterface;
-use EonX\EasyAsync\CompilerPass\RegisterMessengerMiddlewareCompilerPass;
-use EonX\EasyAsync\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\CompilerPass\RegisterMessengerMiddlewareCompilerPass;
+use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
