@@ -13,7 +13,7 @@
         "symfony/http-foundation": "^6.4"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.0",
+        "doctrine/dbal": "^4.0",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.4"
