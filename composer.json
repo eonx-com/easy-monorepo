@@ -77,6 +77,7 @@
         "squizlabs/php_codesniffer": "^3.7",
         "symfony/amazon-sqs-messenger": "^6.3",
         "symfony/browser-kit": "^6.3",
+        "symfony/contracts": "^3.4",
         "symfony/framework-bundle": "^6.3",
         "symfony/maker-bundle": "^1.48",
         "symfony/monolog-bundle": "^3.8",
