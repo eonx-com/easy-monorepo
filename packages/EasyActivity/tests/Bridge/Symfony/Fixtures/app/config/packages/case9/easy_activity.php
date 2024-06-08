@@ -7,6 +7,9 @@ use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Article;
 use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Author;
 use Symfony\Config\EasyActivityConfig;
 
+/**
+ * @see \EonX\EasyActivity\Tests\ActivityLogEntryFactoryTest::testCreateSucceedsWithRelatedObjects2
+ */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Article::class)
         ->allowedProperties([

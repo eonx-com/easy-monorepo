@@ -11,6 +11,9 @@ use Symfony\Component\Uid\NilUuid;
 
 final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 {
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case7/easy_activity.php
+     */
     public function testCreateSucceedsWithCustomSubjectDataResolver(): void
     {
         self::bootKernel(['environment' => 'case7']);

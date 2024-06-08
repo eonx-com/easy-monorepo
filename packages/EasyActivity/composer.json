@@ -4,14 +4,14 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
         "doctrine/common": "^3.0",
         "nesbot/carbon": "^2.67",
+        "php": "^8.1",
         "symfony/serializer": "^6.3"
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "^2.7",
         "doctrine/dbal": "^3.0",
+        "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
         "eonx-com/easy-doctrine": "^5.11",

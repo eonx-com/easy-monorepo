@@ -20,26 +20,41 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
      */
     public static function provideProperties(): iterable
     {
+        /**
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_1/easy_activity.php
+         */
         yield 'only allowed properties' => [
             'environment' => 'case6_1',
             'expectedProperties' => ['title', 'content'],
         ];
 
+        /**
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_2/easy_activity.php
+         */
         yield 'allowed and disallowed properties intersection' => [
             'environment' => 'case6_2',
             'expectedProperties' => ['title'],
         ];
 
+        /**
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_3/easy_activity.php
+         */
         yield 'only disallowed properties' => [
             'environment' => 'case6_3',
             'expectedProperties' => ['title', 'author', 'id', 'content'],
         ];
 
+        /**
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_4/easy_activity.php
+         */
         yield 'all properties are disallowed' => [
             'environment' => 'case6_4',
             'expectedProperties' => null,
         ];
 
+        /**
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_5/easy_activity.php
+         */
         yield 'disallowed properties and defined on global and entity levels' => [
             'environment' => 'case6_5',
             'expectedProperties' => ['content', 'id'],
@@ -60,6 +75,9 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         self::assertEntityCount(ActivityLog::class, 0);
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case1/easy_activity.php
+     */
     public function testLoggerSucceedsForDeletedSubjects(): void
     {
         self::bootKernel(['environment' => 'case1']);
@@ -110,6 +128,9 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case2/easy_activity.php
+     */
     public function testLoggerSucceedsForSubjectsCreatedInTransaction(): void
     {
         self::bootKernel(['environment' => 'case2']);
@@ -151,6 +172,9 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case2/easy_activity.php
+     */
     public function testLoggerSucceedsForUpdatedSubjects(): void
     {
         self::bootKernel(['environment' => 'case2']);
@@ -207,6 +231,9 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case3/easy_activity.php
+     */
     public function testLoggerSucceedsWithCollections(): void
     {
         self::bootKernel(['environment' => 'case3']);
@@ -295,6 +322,9 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case4/easy_activity.php
+     */
     public function testLoggerSucceedsWithCustomActorResolver(): void
     {
         self::bootKernel(['environment' => 'case4']);
@@ -319,6 +349,9 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case5/easy_activity.php
+     */
     public function testLoggerSucceedsWithRelatedObjects(): void
     {
         self::bootKernel(['environment' => 'case5']);

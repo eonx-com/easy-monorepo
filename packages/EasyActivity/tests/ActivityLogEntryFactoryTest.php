@@ -22,11 +22,14 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertNull($result);
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case8/easy_activity.php
+     */
     public function testCreateSucceeds(): void
     {
+        self::bootKernel(['environment' => 'case8']);
         $now = Carbon::now();
         Carbon::setTestNow($now);
-        self::bootKernel(['environment' => 'case8']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
@@ -52,6 +55,9 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         self::assertEquals($now, $result->getUpdatedAt());
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case8/easy_activity.php
+     */
     public function testCreateSucceedsWithCollections(): void
     {
         self::bootKernel(['environment' => 'case8']);
@@ -91,6 +97,9 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case8/easy_activity.php
+     */
     public function testCreateSucceedsWithRelatedObjects(): void
     {
         self::bootKernel(['environment' => 'case8']);
@@ -123,6 +132,9 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case9/easy_activity.php
+     */
     public function testCreateSucceedsWithRelatedObjects2(): void
     {
         self::bootKernel(['environment' => 'case9']);
