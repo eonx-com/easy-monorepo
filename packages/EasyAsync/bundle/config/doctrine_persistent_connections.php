@@ -5,6 +5,7 @@ use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
 use EonX\EasyAsync\Messenger\Listener\ClosePersistentConnectionListener;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
