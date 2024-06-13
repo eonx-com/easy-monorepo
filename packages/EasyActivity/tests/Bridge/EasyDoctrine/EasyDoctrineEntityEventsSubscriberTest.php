@@ -281,7 +281,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
                 'subjectData' => \json_encode([
                     'content' => 'Content',
                     'createdAt' => $article->getCreatedAt()
-                        ->toAtomString(),
+                        ->format('c'),
                     'id' => $article->getId(),
                     'title' => 'Test collections',
                     'author' => null,
@@ -398,7 +398,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
                 'subjectData' => \json_encode([
                     'content' => 'Test actor resolver',
                     'createdAt' => $article->getCreatedAt()
-                        ->toAtomString(),
+                        ->format('c'),
                     'id' => $article->getId(),
                     'title' => 'Resolver',
                     'author' => ['id' => $author->getId()],
