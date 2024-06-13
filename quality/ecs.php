@@ -91,8 +91,7 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
         ],
         MethodChainingNewlineFixer::class => [
-            'packages/*/src/Bridge/Symfony/DependencyInjection/Configuration.php',
-            'packages/*/src/Bridge/Symfony/Resources/config/definition.php',
+            'packages/*/definition.php',
         ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Interfaces/MathInterface.php',

@@ -19,7 +19,7 @@ final class MessageSerializerDecorator implements MessageSerializerInterface
         if ($message instanceof HandlerFailedException) {
             $envelope = $message->getEnvelope()
                 ->withoutAll(AckStamp::class);
-            $message = new HandlerFailedException($envelope, $message->getNestedExceptions());
+            $message = new HandlerFailedException($envelope, $message->getWrappedExceptions());
         }
 
         return $this->decorated->serialize($message);

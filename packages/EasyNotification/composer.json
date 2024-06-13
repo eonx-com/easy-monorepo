@@ -8,12 +8,12 @@
         "aws/aws-sdk-php": "^3.269",
         "eonx-com/easy-utils": "^5.11",
         "nette/utils": "^3.2",
-        "symfony/http-client": "^6.3"
+        "symfony/http-client": "^6.4"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3"
+        "symfony/symfony": "^6.4"
     },
     "autoload": {
         "psr-4": {

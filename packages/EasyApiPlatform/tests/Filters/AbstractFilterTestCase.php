@@ -8,13 +8,11 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource\Dummy;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\ApplicationKernel;
+use EonX\EasyApiPlatform\Tests\AbstractTestCase;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\AdvancedSearchFilter\ApiResource\Dummy;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractFilterTestCase extends KernelTestCase
+abstract class AbstractFilterTestCase extends AbstractTestCase
 {
     protected static string $alias = 'o';
 
@@ -34,7 +32,7 @@ abstract class AbstractFilterTestCase extends KernelTestCase
 
     protected function setUp(): void
     {
-        self::bootKernel();
+        parent::setUp();
 
         /** @var \Doctrine\Bundle\DoctrineBundle\Registry $managerRegistry */
         $managerRegistry = self::$kernel->getContainer()->get('doctrine');
@@ -112,10 +110,5 @@ abstract class AbstractFilterTestCase extends KernelTestCase
                 )
             );
         }
-    }
-
-    protected static function createKernel(array $options = []): KernelInterface
-    {
-        return new ApplicationKernel('test', false);
     }
 }

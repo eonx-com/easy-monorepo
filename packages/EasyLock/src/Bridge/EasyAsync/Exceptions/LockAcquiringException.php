@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Bridge\EasyAsync\Exceptions;
 
-use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface as ShouldKillWorker;
+use EonX\EasyAsync\Common\Exception\ShouldKillWorkerExceptionInterface as ShouldKillWorker;
 use EonX\EasyLock\Interfaces\EasyLockExceptionInterface;
 use RuntimeException;
 

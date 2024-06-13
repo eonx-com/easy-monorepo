@@ -17,15 +17,15 @@
         "aws/aws-sdk-php": "^3.269",
         "doctrine/annotations": "^1.14",
         "doctrine/dbal": "^3.0",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-error-handler": "^5.11",
         "eonx-com/easy-test": "^5.11",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.3",
-        "symfony/doctrine-bridge": "^6.3"
+        "symfony/symfony": "^6.4",
+        "symfony/doctrine-bridge": "^6.4"
     },
     "autoload": {
         "psr-4": {
