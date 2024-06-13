@@ -5,7 +5,7 @@ namespace EonX\EasyAsync\Laravel;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyAsync\Bundle\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\Enum\BundleParam;
 use EonX\EasyAsync\Bundle\Enum\ConfigServiceId;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Clearer\ManagersClearer;
@@ -90,7 +90,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
             ConfigServiceId::Logger->value,
             static function (Container $app): LoggerInterface {
                 $loggerParams = \interface_exists(EasyLoggingBridgeConstantsInterface::class)
-                    ? [EasyLoggingBridgeConstantsInterface::KEY_CHANNEL => ConfigParam::LogChannel->value]
+                    ? [EasyLoggingBridgeConstantsInterface::KEY_CHANNEL => BundleParam::LogChannel->value]
                     : [];
 
                 return $app->make(LoggerInterface::class, $loggerParams);

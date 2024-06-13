@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyAsync\Bundle\Enum\ConfigParam;
+use EonX\EasyAsync\Bundle\Enum\BundleParam;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Clearer\ManagersClearer;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
@@ -21,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Default managers sanity checker
     $services
         ->set(ManagersSanityChecker::class)
-        ->tag('monolog.logger', ['channel' => ConfigParam::LogChannel->value]);
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 
     // Default managers clearer middleware (clear all managers)
     $services->set(DoctrineManagersClearMiddleware::class);
