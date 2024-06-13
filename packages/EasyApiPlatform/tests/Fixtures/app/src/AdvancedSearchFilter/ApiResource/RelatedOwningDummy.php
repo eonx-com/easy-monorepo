@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\AdvancedSearchFilter\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Serializer\NameConverter;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\AdvancedSearchFilter\Serializer\NameConverter;
 
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 

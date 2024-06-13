@@ -3,72 +3,32 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Paginators;
 
-use ApiPlatform\Doctrine\Orm\Paginator;
-use ArrayIterator;
-use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use EonX\EasyApiPlatform\Paginators\CustomPaginator;
-use EonX\EasyApiPlatform\Tests\AbstractTestCase;
-use Mockery\MockInterface;
+use EonX\EasyApiPlatform\Tests\AbstractApiTestCase;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\CustomPaginator\ApiResource\Category;
 
-final class CustomPaginatorTest extends AbstractTestCase
+final class CustomPaginatorTest extends AbstractApiTestCase
 {
     public function testCustomPaginator(): void
     {
-        $paginator = new CustomPaginator($this->getApiPlatformPaginator());
+        $this->initDatabase();
+        $entityManager = self::getService(EntityManagerInterface::class);
+        $entityManager->persist((new Category())->setTitle('Some category'));
+        $entityManager->flush();
 
-        $expectedPagination = [
-            'currentPage' => 1,
-            'hasNextPage' => false,
-            'hasPreviousPage' => false,
-            'itemsPerPage' => 15,
-            'totalItems' => 0,
-            'totalPages' => 1,
-        ];
+        $response = self::$client->request('GET', '/categories');
 
-        self::assertEmpty($paginator->getItems());
-        self::assertEquals($expectedPagination, $paginator->getPagination());
-    }
-
-    /**
-     * @return \ApiPlatform\Doctrine\Orm\Paginator
-     */
-    private function getApiPlatformPaginator(): Paginator
-    {
-        /** @var \Doctrine\ORM\EntityManagerInterface $manager */
-        $manager = self::mock(EntityManagerInterface::class, static function (MockInterface $mock): void {
-            $mock->shouldReceive('getConfiguration')
-                ->atLeast()
-                ->once()
-                ->withNoArgs()
-                ->andReturn(new Configuration());
-        });
-
-        $query = new Query($manager);
-        $query->setFirstResult(1)
-            ->setMaxResults(15);
-
-        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<object> $doctrinePaginator */
-        $doctrinePaginator = self::mock(
-            DoctrinePaginator::class,
-            static function (MockInterface $mock) use ($query): void {
-                $mock->shouldReceive('getQuery')
-                    ->once()
-                    ->withNoArgs()
-                    ->andReturn($query);
-                $mock->shouldReceive('getIterator')
-                    ->once()
-                    ->withNoArgs()
-                    ->andReturn(new ArrayIterator());
-                $mock->shouldReceive('count')
-                    ->once()
-                    ->withNoArgs()
-                    ->andReturn(0);
-            }
+        $responseData = $response->toArray(false);
+        self::assertSame(
+            [
+                'currentPage' => 1,
+                'hasNextPage' => false,
+                'hasPreviousPage' => false,
+                'itemsPerPage' => 25,
+                'totalItems' => 1,
+                'totalPages' => 1,
+            ],
+            $responseData['pagination']
         );
-
-        return new Paginator($doctrinePaginator);
     }
 }
