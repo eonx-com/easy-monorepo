@@ -5,7 +5,7 @@ namespace EonX\EasyLock;
 
 use Closure;
 use Doctrine\DBAL\Driver\PDO\Exception as PdoException;
-use EonX\EasyAsync\Interfaces\ShouldKillWorkerExceptionInterface;
+use EonX\EasyAsync\Common\Exception\ShouldKillWorkerExceptionInterface;
 use EonX\EasyLock\Bridge\EasyAsync\Exceptions\LockAcquiringException;
 use EonX\EasyLock\Exceptions\ShouldRetryException;
 use EonX\EasyLock\Interfaces\LockDataInterface;
