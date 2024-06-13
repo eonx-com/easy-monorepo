@@ -8,7 +8,7 @@ use EonX\EasyActivity\Interfaces\ActivitySubjectDataInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
 
-final class Case7ActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
+final class CustomActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
     public function resolve(
         string $action,

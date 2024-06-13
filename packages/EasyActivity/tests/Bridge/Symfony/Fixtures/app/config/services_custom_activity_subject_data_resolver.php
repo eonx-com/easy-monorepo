@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyActivity\Interfaces\ActorResolverInterface;
-use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\ActorResolver\Case4ActorResolver;
+use EonX\EasyActivity\Interfaces\ActivitySubjectDataResolverInterface;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\ActivitySubjectDataResolver\CustomActivitySubjectDataResolver;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -13,5 +13,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(ActorResolverInterface::class, Case4ActorResolver::class);
+    $services->set(ActivitySubjectDataResolverInterface::class, CustomActivitySubjectDataResolver::class);
 };

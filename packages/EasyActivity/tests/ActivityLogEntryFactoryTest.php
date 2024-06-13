@@ -23,11 +23,11 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case8/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/default_subject_config
      */
     public function testCreateSucceeds(): void
     {
-        self::bootKernel(['environment' => 'case8']);
+        self::bootKernel(['environment' => 'default_subject_config']);
         $now = Carbon::now();
         Carbon::setTestNow($now);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
@@ -56,11 +56,11 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case8/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/default_subject_config
      */
     public function testCreateSucceedsWithCollections(): void
     {
-        self::bootKernel(['environment' => 'case8']);
+        self::bootKernel(['environment' => 'default_subject_config']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $comment1 = (new Comment())
             ->setId((string)(new NilUuid()))
@@ -98,11 +98,11 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case8/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/default_subject_config
      */
     public function testCreateSucceedsWithRelatedObjects(): void
     {
-        self::bootKernel(['environment' => 'case8']);
+        self::bootKernel(['environment' => 'default_subject_config']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $author = new Author();
         $author->setId((string)(new NilUuid()));
@@ -133,11 +133,11 @@ final class ActivityLogEntryFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case9/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/nested_object_allowed_properties
      */
-    public function testCreateSucceedsWithRelatedObjects2(): void
+    public function testCreateSucceedsWithRelatedObjectsWhenConfiguredNestedObjectAllowedProperties(): void
     {
-        self::bootKernel(['environment' => 'case9']);
+        self::bootKernel(['environment' => 'nested_object_allowed_properties']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $author = new Author();
         $author->setId((string)(new NilUuid()));

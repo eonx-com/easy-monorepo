@@ -21,42 +21,42 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     public static function provideProperties(): iterable
     {
         /**
-         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_1/easy_activity.php
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/only_allowed_properties
          */
         yield 'only allowed properties' => [
-            'environment' => 'case6_1',
+            'environment' => 'only_allowed_properties',
             'expectedProperties' => ['title', 'content'],
         ];
 
         /**
-         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_2/easy_activity.php
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/allowed_and_disallowed_properties_intersection
          */
         yield 'allowed and disallowed properties intersection' => [
-            'environment' => 'case6_2',
+            'environment' => 'allowed_and_disallowed_properties_intersection',
             'expectedProperties' => ['title'],
         ];
 
         /**
-         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_3/easy_activity.php
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/only_disallowed_properties
          */
         yield 'only disallowed properties' => [
-            'environment' => 'case6_3',
+            'environment' => 'only_disallowed_properties',
             'expectedProperties' => ['title', 'author', 'id', 'content'],
         ];
 
         /**
-         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_4/easy_activity.php
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/all_properties_are_disallowed
          */
         yield 'all properties are disallowed' => [
-            'environment' => 'case6_4',
+            'environment' => 'all_properties_are_disallowed',
             'expectedProperties' => null,
         ];
 
         /**
-         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case6_5/easy_activity.php
+         * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/global_and_subject_disallowed_properties
          */
         yield 'disallowed properties and defined on global and entity levels' => [
-            'environment' => 'case6_5',
+            'environment' => 'global_and_subject_disallowed_properties',
             'expectedProperties' => ['content', 'id'],
         ];
     }
@@ -76,11 +76,11 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case1/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/default_subject_config
      */
     public function testLoggerSucceedsForDeletedSubjects(): void
     {
-        self::bootKernel(['environment' => 'case1']);
+        self::bootKernel(['environment' => 'default_subject_config']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
         $now = CarbonImmutable::now();
@@ -129,11 +129,11 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case2/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/custom_subject_type
      */
     public function testLoggerSucceedsForSubjectsCreatedInTransaction(): void
     {
-        self::bootKernel(['environment' => 'case2']);
+        self::bootKernel(['environment' => 'custom_subject_type']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
         $now = CarbonImmutable::now();
@@ -163,7 +163,10 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
                     'content' => 'Content 2',
+                    'createdAt' => $now->toAtomString(),
+                    'id' => $article->getId(),
                     'title' => 'Title 3',
+                    'author' => null,
                 ]),
                 'subjectOldData' => null,
                 'createdAt' => $now,
@@ -173,11 +176,11 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case2/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/custom_subject_type
      */
     public function testLoggerSucceedsForUpdatedSubjects(): void
     {
-        self::bootKernel(['environment' => 'case2']);
+        self::bootKernel(['environment' => 'custom_subject_type']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
         $now = CarbonImmutable::now();
@@ -203,7 +206,10 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
                     'content' => 'Content',
+                    'createdAt' => $now->toAtomString(),
+                    'id' => $article->getId(),
                     'title' => 'Title 1',
+                    'author' => null,
                 ]),
                 'subjectOldData' => null,
                 'createdAt' => $now,
@@ -232,11 +238,11 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case3/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/custom_subject_type
      */
     public function testLoggerSucceedsWithCollections(): void
     {
-        self::bootKernel(['environment' => 'case3']);
+        self::bootKernel(['environment' => 'custom_subject_type']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
         $article = new Article();
@@ -273,7 +279,12 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
                 'action' => ActivityLogEntry::ACTION_CREATE,
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
+                    'content' => 'Content',
+                    'createdAt' => $article->getCreatedAt()
+                        ->toAtomString(),
+                    'id' => $article->getId(),
                     'title' => 'Test collections',
+                    'author' => null,
                     'comments' => [$commentA->getId(), $commentB->getId(), $commentC->getId(), $commentDId],
                 ]),
             ]
@@ -323,11 +334,12 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case4/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/custom_actor_resolver
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/services_custom_actor_resolver.php
      */
     public function testLoggerSucceedsWithCustomActorResolver(): void
     {
-        self::bootKernel(['environment' => 'case4']);
+        self::bootKernel(['environment' => 'custom_actor_resolver']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
         $article = new Article();
@@ -350,11 +362,11 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
     }
 
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case5/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/related_object_in_subjects
      */
     public function testLoggerSucceedsWithRelatedObjects(): void
     {
-        self::bootKernel(['environment' => 'case5']);
+        self::bootKernel(['environment' => 'related_object_in_subjects']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
         $author = new Author();
@@ -384,6 +396,10 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractTestCase
             ActivityLog::class,
             [
                 'subjectData' => \json_encode([
+                    'content' => 'Test actor resolver',
+                    'createdAt' => $article->getCreatedAt()
+                        ->toAtomString(),
+                    'id' => $article->getId(),
                     'title' => 'Resolver',
                     'author' => ['id' => $author->getId()],
                 ]),

@@ -9,12 +9,9 @@ use Symfony\Config\EasyActivityConfig;
 /**
  * @see \EonX\EasyActivity\Tests\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsForSubjectsCreatedInTransaction
  * @see \EonX\EasyActivity\Tests\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsForUpdatedSubjects
+ * @see \EonX\EasyActivity\Tests\Bridge\EasyDoctrine\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithCollections
  */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Article::class)
-        ->type('article')
-        ->allowedProperties([
-            'title',
-            'content',
-        ]);
+        ->type('article');
 };

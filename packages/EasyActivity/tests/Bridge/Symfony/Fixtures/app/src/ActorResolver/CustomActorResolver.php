@@ -7,7 +7,7 @@ use EonX\EasyActivity\Actor;
 use EonX\EasyActivity\Interfaces\ActorInterface;
 use EonX\EasyActivity\Interfaces\ActorResolverInterface;
 
-final class Case4ActorResolver implements ActorResolverInterface
+final class CustomActorResolver implements ActorResolverInterface
 {
     public function resolve(object $object): ActorInterface
     {

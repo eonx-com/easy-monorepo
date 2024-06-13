@@ -12,11 +12,11 @@ use Symfony\Component\Uid\NilUuid;
 final class ActivityLogEntryFactoryResolversTest extends AbstractTestCase
 {
     /**
-     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/case7/easy_activity.php
+     * @see packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/config/packages/custom_activity_subject_data_resolver
      */
     public function testCreateSucceedsWithCustomSubjectDataResolver(): void
     {
-        self::bootKernel(['environment' => 'case7']);
+        self::bootKernel(['environment' => 'custom_activity_subject_data_resolver']);
         $author = new Author();
         $author->setId((string)(new NilUuid()));
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
