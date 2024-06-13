@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests;
+namespace EonX\EasyAsync\Tests\Unit;
 
+use EonX\EasyAsync\Tests\AbstractTestCase;
 use EonX\EasyAsync\Tests\Stub\KernelStub;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractSymfonyTestCase extends AbstractTestCase
+abstract class AbstractUnitTestCase extends AbstractTestCase
 {
     private ?KernelInterface $kernel = null;
 

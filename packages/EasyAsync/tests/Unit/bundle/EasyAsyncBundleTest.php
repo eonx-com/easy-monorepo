@@ -5,11 +5,11 @@ namespace EonX\EasyAsync\Tests\Unit\Bundle;
 
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
-use EonX\EasyAsync\Tests\AbstractSymfonyTestCase;
+use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
+final class EasyAsyncBundleTest extends AbstractUnitTestCase
 {
     /**
      * @see testMessengerConfig
