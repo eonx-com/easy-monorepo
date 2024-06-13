@@ -94,6 +94,6 @@ jobs:
 
             -   run: bin/monorepo localize-monorepo-packages
 
-            -   run: composer update --prefer-dist --no-progress --ansi --working-dir=packages/${{ matrix.package.dir }}
+            -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
 
-            -   run: packages/${{ matrix.package.dir }}/vendor/bin/phpunit --coverage-text packages/${{ matrix.package.dir }}/tests
+            -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit --coverage-text tests
