@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests;
+namespace EonX\EasyAsync\Tests\Unit\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use EonX\EasyAsync\Tests\AbstractTestCase;
 
 abstract class AbstractStoreTestCase extends AbstractTestCase
 {

@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -13,7 +14,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(StopWorkerOnTimeLimitSubscriber::class)
-        ->arg('$minTimeLimitInSeconds', '%' . ConfigParam::MessengerWorkerStopMinTime->value . '%')
-        ->arg('$maxTimeLimitInSeconds', '%' . ConfigParam::MessengerWorkerStopMaxTime->value . '%')
+        ->arg('$minTimeLimitInSeconds', param(ConfigParam::MessengerWorkerStopMinTime->value))
+        ->arg('$maxTimeLimitInSeconds', param(ConfigParam::MessengerWorkerStopMaxTime->value))
         ->tag('monolog.logger', ['channel' => ConfigParam::LogChannel->value]);
 };

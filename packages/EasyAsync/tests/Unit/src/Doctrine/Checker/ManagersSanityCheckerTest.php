@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests\Doctrine\Checker;
+namespace EonX\EasyAsync\Tests\Unit\Doctrine\Checker;
 
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -9,10 +9,10 @@ use Doctrine\Persistence\Mapping\Driver\PHPDriver;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException;
-use EonX\EasyAsync\Tests\AbstractStoreTestCase;
 use EonX\EasyAsync\Tests\Stub\ConnectionStub;
 use EonX\EasyAsync\Tests\Stub\EntityManagerForSanityStub;
 use EonX\EasyAsync\Tests\Stub\ManagerRegistryStub;
+use EonX\EasyAsync\Tests\Unit\Doctrine\AbstractStoreTestCase;
 
 final class ManagersSanityCheckerTest extends AbstractStoreTestCase
 {

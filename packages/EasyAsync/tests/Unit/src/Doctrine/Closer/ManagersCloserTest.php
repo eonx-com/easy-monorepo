@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests\Doctrine\Closer;
+namespace EonX\EasyAsync\Tests\Unit\Doctrine\Closer;
 
 use Doctrine\Persistence\ObjectManager;
 use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
-use EonX\EasyAsync\Tests\AbstractStoreTestCase;
 use EonX\EasyAsync\Tests\Stub\EntityManagerForSanityStub;
 use EonX\EasyAsync\Tests\Stub\ManagerRegistryStub;
+use EonX\EasyAsync\Tests\Unit\Doctrine\AbstractStoreTestCase;
 use Mockery\LegacyMockInterface;
 use Psr\Log\LoggerInterface;
 

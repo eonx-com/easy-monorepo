@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests;
+namespace EonX\EasyAsync\Tests\Unit\Bundle;
 
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
+use EonX\EasyAsync\Tests\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -28,7 +29,7 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
                 self::assertFalse($container->has(StopWorkerOnTimeLimitSubscriber::class));
             },
             [
-                __DIR__ . '/Fixture/config/messages_limit_only.yaml',
+                __DIR__ . '/../../Fixture/config/messages_limit_only.yaml',
             ],
         ];
 
@@ -38,7 +39,7 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
                 self::assertTrue($container->has(StopWorkerOnTimeLimitSubscriber::class));
             },
             [
-                __DIR__ . '/Fixture/config/time_limit_only.yaml',
+                __DIR__ . '/../../Fixture/config/time_limit_only.yaml',
             ],
         ];
 
@@ -48,7 +49,7 @@ final class EasyAsyncBundleTest extends AbstractSymfonyTestCase
                 self::assertTrue($container->has(StopWorkerOnTimeLimitSubscriber::class));
             },
             [
-                __DIR__ . '/Fixture/config/both_limits.yaml',
+                __DIR__ . '/../../Fixture/config/both_limits.yaml',
             ],
         ];
     }
