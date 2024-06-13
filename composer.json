@@ -129,6 +129,7 @@
             "EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\": "packages/EasyApiPlatform/tests/Fixtures/app/src",
             "EonX\\EasyApiToken\\Tests\\": "packages/EasyApiToken/tests",
             "EonX\\EasyAsync\\Tests\\": "packages/EasyAsync/tests",
+            "EonX\\EasyAsync\\Tests\\Fixture\\App\\": "packages/EasyAsync/tests/Fixture/app/src",
             "EonX\\EasyAsync\\Tests\\Unit\\": "packages/EasyAsync/tests/Unit/src",
             "EonX\\EasyAsync\\Tests\\Unit\\Bundle\\": "packages/EasyAsync/tests/Unit/bundle",
             "EonX\\EasyBankFiles\\Tests\\": "packages/EasyBankFiles/tests",

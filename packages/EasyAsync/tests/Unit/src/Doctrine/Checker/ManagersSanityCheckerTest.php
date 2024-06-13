@@ -3,57 +3,38 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Unit\Doctrine\Checker;
 
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\Mapping\Driver\PHPDriver;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException;
-use EonX\EasyAsync\Tests\Stub\ConnectionStub;
-use EonX\EasyAsync\Tests\Stub\EntityManagerForSanityStub;
-use EonX\EasyAsync\Tests\Stub\ManagerRegistryStub;
-use EonX\EasyAsync\Tests\Unit\Doctrine\AbstractStoreTestCase;
+use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
 
-final class ManagersSanityCheckerTest extends AbstractStoreTestCase
+final class ManagersSanityCheckerTest extends AbstractUnitTestCase
 {
+    use PrivatePropertyAccessTrait;
+
     public function testEntityManagerClosed(): void
     {
+        self::getService(EntityManagerInterface::class)->close();
+        $sut = self::getService(ManagersSanityChecker::class);
         $this->expectException(DoctrineManagerClosedException::class);
 
-        $registry = new ManagerRegistryStub([
-            'default' => new EntityManagerForSanityStub(false),
-        ]);
-
-        (new ManagersSanityChecker($registry))->checkSanity();
+        $sut->checkSanity();
     }
 
     public function testEntityManagerConnectionNotOk(): void
     {
+        $connection = self::getService(EntityManagerInterface::class)->getConnection();
+        self::setPrivatePropertyValue(
+            $connection,
+            '_conn',
+            new Connection([], $connection->getDriver())
+        );
+        $sut = self::getService(ManagersSanityChecker::class);
         $this->expectException(DoctrineConnectionNotOkException::class);
 
-        $registry = new ManagerRegistryStub([
-            'default' => new EntityManagerForSanityStub(true, ConnectionStub::class),
-        ]);
-
-        (new ManagersSanityChecker($registry))->checkSanity();
-    }
-
-    public function testWithRealDoctrineConnection(): void
-    {
-        $config = new Configuration();
-        $config->setMetadataDriverImpl(new PHPDriver(__DIR__));
-        $config->setProxyDir(__DIR__);
-        $config->setProxyNamespace('proxies');
-
-        $conn = $this->getDoctrineDbalConnection();
-        $entityManager = EntityManager::create($conn, $config);
-
-        $registry = new ManagerRegistryStub([
-            'default' => $entityManager,
-        ]);
-
-        (new ManagersSanityChecker($registry))->checkSanity();
-
-        self::assertTrue(true);
+        $sut->checkSanity();
     }
 }
