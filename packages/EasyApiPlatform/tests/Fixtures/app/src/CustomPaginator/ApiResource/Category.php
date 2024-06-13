@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\CustomPaginator\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\CustomPaginator\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;

@@ -42,9 +42,9 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
 
     $apiPlatformConfig->mapping()
         ->paths([
-            param('kernel.project_dir') . '/src/Case/AdvancedSearchFilter/ApiResource/',
-            param('kernel.project_dir') . '/src/Case/CustomPaginator/ApiResource/',
-            param('kernel.project_dir') . '/src/Case/ReadListener/ApiResource/',
+            param('kernel.project_dir') . '/src/AdvancedSearchFilter/ApiResource/',
+            param('kernel.project_dir') . '/src/CustomPaginator/ApiResource/',
+            param('kernel.project_dir') . '/src/ReadListener/ApiResource/',
         ]);
 
     $apiPlatformConfig->swagger()

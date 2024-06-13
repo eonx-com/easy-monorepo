@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\ReadListener\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\ReadListener\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;

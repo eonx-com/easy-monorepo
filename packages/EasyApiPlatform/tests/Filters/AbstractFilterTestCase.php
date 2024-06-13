@@ -9,7 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Tests\AbstractTestCase;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\Dummy;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\AdvancedSearchFilter\ApiResource\Dummy;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractFilterTestCase extends AbstractTestCase

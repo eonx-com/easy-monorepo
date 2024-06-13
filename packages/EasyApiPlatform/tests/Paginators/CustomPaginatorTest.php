@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Tests\Paginators;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyApiPlatform\Tests\AbstractApiTestCase;
-use EonX\EasyApiPlatform\Tests\Fixtures\App\Case\CustomPaginator\ApiResource\Category;
+use EonX\EasyApiPlatform\Tests\Fixtures\App\CustomPaginator\ApiResource\Category;
 
 final class CustomPaginatorTest extends AbstractApiTestCase
 {

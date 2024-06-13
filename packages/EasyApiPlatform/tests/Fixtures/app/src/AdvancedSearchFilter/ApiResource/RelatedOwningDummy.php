@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixtures\App\AdvancedSearchFilter\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(types: ['https://schema.org/Product'])]
 #[ORM\Entity]
-class RelatedOwnedDummy
+class RelatedOwningDummy
 {
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
@@ -19,9 +19,8 @@ class RelatedOwnedDummy
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\JoinColumn(nullable: false)]
-    #[ORM\OneToOne(inversedBy: 'relatedOwnedDummy', targetEntity: Dummy::class, cascade: ['persist'])]
-    private Dummy $owningDummy;
+    #[ORM\OneToOne(mappedBy: 'relatedOwningDummy', targetEntity: Dummy::class, cascade: ['persist'])]
+    private ?Dummy $ownedDummy = null;
 
     public function getId(): int
     {
@@ -33,12 +32,9 @@ class RelatedOwnedDummy
         return $this->name;
     }
 
-    /**
-     * Get owning dummy.
-     */
-    public function getOwningDummy(): ?Dummy
+    public function getOwnedDummy(): ?Dummy
     {
-        return $this->owningDummy;
+        return $this->ownedDummy;
     }
 
     public function setId(int $id): void
@@ -51,8 +47,12 @@ class RelatedOwnedDummy
         $this->name = $name;
     }
 
-    public function setOwningDummy(Dummy $owningDummy): void
+    public function setOwnedDummy(?Dummy $ownedDummy): void
     {
-        $this->owningDummy = $owningDummy;
+        $this->ownedDummy = $ownedDummy;
+
+        if ($this->ownedDummy !== null && $this !== $this->ownedDummy->getRelatedOwningDummy()) {
+            $this->ownedDummy->setRelatedOwningDummy($this);
+        }
     }
 }
