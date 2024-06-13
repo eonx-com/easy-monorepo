@@ -19,7 +19,8 @@
         "eonx-com/easy-event-dispatcher": "^5.11",
         "eonx-com/easy-random": "^5.11",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2"
+        "phpunit/phpunit": "^10.2",
+        "symfony/yaml": "^6.4"
     },
     "autoload": {
         "psr-4": {
