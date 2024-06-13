@@ -80,12 +80,11 @@ return static function (ECSConfig $ecsConfig): void {
         DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
-            'packages/*/src/Bridge/Symfony/Resources/config/*',
-            'packages/*/tests/Fixtures/app/config/packages/*',
-            'packages/*/tests/Bridge/Symfony/Fixtures/app/config/packages/*',
+            'packages/*/config/*',
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Traits/ContainerServiceTrait.php',
+            'packages/EasyTest/src/Traits/DatabaseEntityTrait.php',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
             'packages/*/src/Bridge/BridgeConstantsInterface.php',

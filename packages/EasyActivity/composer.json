@@ -4,12 +4,14 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
         "doctrine/common": "^3.0",
-        "nesbot/carbon": "^2.67"
+        "nesbot/carbon": "^2.67",
+        "php": "^8.1",
+        "symfony/serializer": "^6.3"
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
+        "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
         "eonx-com/easy-doctrine": "^5.11",
@@ -19,7 +21,11 @@
         "eonx-com/easy-webhook": "^5.11",
         "phpunit/phpunit": "^10.2",
         "psr/log": "^3.0",
-        "symfony/symfony": "^6.3"
+        "symfony/amazon-sqs-messenger": "^6.3",
+        "symfony/doctrine-bridge": "^6.3",
+        "symfony/framework-bundle": "^6.3",
+        "symfony/monolog-bundle": "^3.8",
+        "symfony/uid": "^6.3"
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +34,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyActivity\\Tests\\": "tests"
+            "EonX\\EasyActivity\\Tests\\": "tests",
+            "EonX\\EasyActivity\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
         }
     },
     "suggest": {

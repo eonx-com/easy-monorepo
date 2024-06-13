@@ -3,87 +3,44 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests;
 
-use Closure;
-use Doctrine\ORM\EntityManagerInterface;
-use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use Doctrine\ORM\Tools\SchemaTool;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Kernel\ApplicationKernel;
+use EonX\EasyTest\Traits\ContainerServiceTrait;
+use EonX\EasyTest\Traits\DatabaseEntityTrait;
 use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Throwable;
 
-/**
- * This class has for objective to provide common features to all tests without having to update
- * the class they all extend.
- */
-abstract class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends KernelTestCase
 {
+    use ContainerServiceTrait;
+    use DatabaseEntityTrait;
     use PrivatePropertyAccessTrait;
 
-    protected ?Throwable $thrownException = null;
-
-    protected function tearDown(): void
+    public static function tearDownAfterClass(): void
     {
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
+        parent::tearDownAfterClass();
 
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
+        $filesystem = new Filesystem();
+        $varDir = __DIR__ . '/Bridge/Symfony/Fixtures/App/var';
 
-        parent::tearDown();
-    }
-
-    protected function assertLogEntries(EntityManagerInterface $entityManager, array $expectedLogEntries): void
-    {
-        $logEntries = $this->getLogEntries($entityManager);
-
-        self::assertEquals($expectedLogEntries, $logEntries);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    protected function assertThrownException(
-        string $expectedException,
-        int $code,
-        ?string $previousException = null,
-    ): void {
-        self::assertNotNull($this->thrownException);
-
-        if ($this->thrownException instanceof $expectedException === false) {
-            throw $this->thrownException;
-        }
-
-        self::assertSame($code, $this->thrownException->getCode());
-
-        if ($previousException === null) {
-            self::assertNull($this->thrownException->getPrevious());
-        }
-
-        if ($previousException !== null) {
-            self::assertTrue($this->thrownException->getPrevious() instanceof $previousException);
+        if ($filesystem->exists($varDir)) {
+            $filesystem->remove($varDir);
         }
     }
 
-    protected function getLogEntries(EntityManagerInterface $entityManager): array
+    protected static function getKernelClass(): string
     {
-        $sql = \sprintf('SELECT * FROM %s', EntityManagerStub::ACTIVITY_TABLE_NAME);
-
-        $logEntries = $entityManager->getConnection()
-            ->fetchAllAssociative($sql);
-        foreach ($logEntries as $key => $logEntry) {
-            unset($logEntries[$key]['id']);
-        }
-
-        return $logEntries;
+        return ApplicationKernel::class;
     }
 
-    protected function safeCall(Closure $func): void
+    protected function initDatabase(): void
     {
-        try {
-            $func();
-        } catch (Throwable $exception) {
-            $this->thrownException = $exception;
-        }
+        $entityManager = self::getEntityManager();
+        $metaData = $entityManager->getMetadataFactory()
+            ->getAllMetadata();
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->dropSchema($metaData);
+        $schemaTool->updateSchema($metaData);
     }
 }
