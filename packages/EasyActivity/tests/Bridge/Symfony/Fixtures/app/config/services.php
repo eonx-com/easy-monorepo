@@ -27,6 +27,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->decorate('doctrine.orm.default_entity_manager');
 
     $services->set(EntityEventListener::class)
-        ->arg('$entities', param('easy_doctrine.deferred_dispatcher_entities'))
+        ->arg('$trackableEntities', param('easy_doctrine.deferred_dispatcher_entities'))
         ->tag('doctrine.event_subscriber', ['connection' => 'default']);
 };
