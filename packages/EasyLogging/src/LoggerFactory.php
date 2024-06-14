@@ -71,7 +71,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
             return $this->loggers[$channel];
         }
 
-        if (isset($this->initiatedLazyLoggers[$channel]) === false && $this->isLazy($channel)) {
+        if ($this->isLazy($channel) && isset($this->initiatedLazyLoggers[$channel]) === false) {
             return new LazyLoggerProxy($this, $channel);
         }
 
@@ -185,7 +185,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
     }
 
     /**
-     * @return \Monolog\Processor\ProcessorInterface[]|callable[]
+     * @return \Monolog\Processor\ProcessorInterface[]
      */
     private function getProcessors(string $channel): array
     {

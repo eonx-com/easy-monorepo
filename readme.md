@@ -65,7 +65,6 @@ $ git checkout master && git pull
 # Split new version to each package
 $ make release version=X.X.X
 ```
-
 _Note for MacOS users: you should update the `make` utility to 4.0 or higher.
 Do not forget to export new path in `.bashrc` or `.zshrc` file._
 

@@ -6,34 +6,27 @@
     "require": {
         "php": "^8.1",
         "doctrine/orm": "^2.14",
-        "doctrine/dbal": "^3.0",
         "doctrine/persistence": "^3.0",
-        "psr/log": "^3.0",
-        "symfony/config": "^6.4",
-        "symfony/dependency-injection": "^6.4",
-        "symfony/event-dispatcher": "^6.4",
-        "symfony/http-kernel": "^6.4",
-        "symfony/messenger": "^6.4"
+        "psr/log": "^3.0"
     },
     "require-dev": {
+        "doctrine/common": "^3.0",
+        "doctrine/dbal": "^3.0",
         "eonx-com/easy-event-dispatcher": "^5.11",
         "eonx-com/easy-random": "^5.11",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/yaml": "^6.4"
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyAsync\\": "src",
-            "EonX\\EasyAsync\\Bundle\\": "bundle",
-            "EonX\\EasyAsync\\Laravel\\": "laravel"
+            "EonX\\EasyAsync\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyAsync\\Tests\\": "tests",
-            "EonX\\EasyAsync\\Tests\\Unit\\": "tests/Unit/src",
-            "EonX\\EasyAsync\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
+            "EonX\\EasyAsync\\Tests\\": "tests"
         }
     },
     "suggest": {
@@ -41,7 +34,10 @@
         "eonx-com/easy-logging": "To provide the logging service",
         "illuminate/contracts": "To use this package with Laravel/Lumen",
         "illuminate/queue": "To use this package with Laravel/Lumen",
-        "illuminate/support": "To use this package with Laravel/Lumen"
+        "illuminate/support": "To use this package with Laravel/Lumen",
+        "symfony/config": "To use this package with Symfony",
+        "symfony/dependency-injection": "To use this package with Symfony",
+        "symfony/http-kernel": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {

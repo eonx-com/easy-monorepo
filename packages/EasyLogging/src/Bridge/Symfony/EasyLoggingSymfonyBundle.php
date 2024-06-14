@@ -12,6 +12,7 @@ use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
 use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
 use Monolog\Logger;
+use Symfony\Bridge\Monolog\Logger as SymfonyBridgeLogger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -59,7 +60,10 @@ final class EasyLoggingSymfonyBundle extends AbstractBundle
             $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
         );
 
-        $params->set(BridgeConstantsInterface::PARAM_LOGGER_CLASS, Logger::class);
+        $params->set(
+            BridgeConstantsInterface::PARAM_LOGGER_CLASS,
+            \class_exists(SymfonyBridgeLogger::class) ? SymfonyBridgeLogger::class : Logger::class
+        );
 
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER, $config['stream_handler']);
         $params->set(BridgeConstantsInterface::PARAM_STREAM_HANDLER_LEVEL, $config['stream_handler_level']);

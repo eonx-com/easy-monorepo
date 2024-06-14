@@ -15,6 +15,11 @@ use Symfony\Component\Finder\Finder;
 )]
 final class CleanUpPackagesVendorDirsCommand extends Command
 {
+    protected function configure(): void
+    {
+        $this->addArgument('version');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filesystem = new Filesystem();

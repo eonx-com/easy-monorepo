@@ -21,7 +21,7 @@ final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
     public function __construct(
         private readonly string $projectDir,
     ) {
-        $this->parser = (new ParserFactory())->createForHostVersion();
+        $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
     }
 
     public function locateErrorCodesEnums(): array

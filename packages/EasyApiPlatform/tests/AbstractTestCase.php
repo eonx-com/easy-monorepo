@@ -3,24 +3,41 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests;
 
-use EonX\EasyApiPlatform\Tests\Fixtures\App\Kernel\ApplicationKernel;
-use EonX\EasyTest\Traits\ContainerServiceTrait;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Mockery;
+use Mockery\MockInterface;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractTestCase extends KernelTestCase
+/**
+ * This class has for objective to provide common features to all tests without having to update
+ * the class they all extend.
+ */
+abstract class AbstractTestCase extends TestCase
 {
-    use ContainerServiceTrait;
-    use PrivatePropertyAccessTrait;
-
-    protected function setUp(): void
+    protected function tearDown(): void
     {
-        self::bootKernel();
+        $fs = new Filesystem();
+        $var = __DIR__ . '/../var';
+
+        if ($fs->exists($var)) {
+            $fs->remove($var);
+        }
+
+        parent::tearDown();
     }
 
-    protected static function createKernel(array $options = []): KernelInterface
+    /**
+     * @param class-string|object $target
+     */
+    protected static function mock(string|object $target, ?callable $expectations = null): MockInterface
     {
-        return new ApplicationKernel('test', false);
+        /** @var \Mockery\MockInterface $mock */
+        $mock = Mockery::mock($target);
+
+        if ($expectations !== null) {
+            $expectations($mock);
+        }
+
+        return $mock;
     }
 }

@@ -13,7 +13,7 @@
         "eonx-com/easy-test": "^5.11",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {

@@ -59,13 +59,7 @@ final class LocalizePackageRepositoriesCommand extends Command
                 'symfony/dependency-injection' => '5.3.7',
             ];
 
-            $filesystem->dumpFile(
-                $filename,
-                (string)\json_encode(
-                    $composerJsonFileContents,
-                    \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES
-                )
-            );
+            $filesystem->dumpFile($filename, (string)\json_encode($composerJsonFileContents));
 
             $output->writeln(\sprintf('Successfully updated %s', $filename));
         }

@@ -7,7 +7,7 @@
         "php": "^8.1",
         "eonx-com/easy-utils": "^5.11",
         "spatie/url": "^2.2",
-        "symfony/string": "^6.4"
+        "symfony/string": "^6.3"
     },
     "require-dev": {
         "doctrine/annotations": "^1.14",
@@ -16,8 +16,8 @@
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/yaml": "^6.4",
+        "symfony/framework-bundle": "^6.3",
+        "symfony/yaml": "^6.3",
         "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {

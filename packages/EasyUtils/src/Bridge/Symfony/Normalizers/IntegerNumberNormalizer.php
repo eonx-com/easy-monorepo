@@ -5,10 +5,14 @@ namespace EonX\EasyUtils\Bridge\Symfony\Normalizers;
 
 use EonX\EasyUtils\ValueObjects\Number;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class IntegerNumberNormalizer implements DenormalizerInterface, NormalizerInterface
+final class IntegerNumberNormalizer implements
+    CacheableSupportsMethodInterface,
+    DenormalizerInterface,
+    NormalizerInterface
 {
     /**
      * @param string|null $data
@@ -22,11 +26,9 @@ final class IntegerNumberNormalizer implements DenormalizerInterface, Normalizer
         return new Number($data);
     }
 
-    public function getSupportedTypes(?string $format = null): array
+    public function hasCacheableSupportsMethod(): bool
     {
-        return [
-            Number::class => true,
-        ];
+        return true;
     }
 
     /**

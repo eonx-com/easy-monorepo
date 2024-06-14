@@ -46,9 +46,12 @@ easy_doctrine:
 
 ```yaml
 services:
-    EonX\EasyDoctrine\Listeners\EntityEventListener:
+    EonX\EasyDoctrine\Subscribers\EntityEventSubscriber:
         arguments:
-            $trackableEntities: '%easy_doctrine.entities%'
+            $entities: '%easy_doctrine.entities%'
+        tags:
+            -   name: doctrine.event_subscriber
+                connection: default
 ```
 
 #### Events

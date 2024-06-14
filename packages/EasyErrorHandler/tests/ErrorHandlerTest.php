@@ -9,13 +9,11 @@ use EonX\EasyErrorHandler\Providers\FromIterableErrorReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
-use EonX\EasyWebhook\Bridge\Symfony\Exceptions\UnrecoverableWebhookMessageException;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Throwable;
 
 final class ErrorHandlerTest extends AbstractTestCase
@@ -38,7 +36,7 @@ final class ErrorHandlerTest extends AbstractTestCase
             'throwable' => new Exception('message'),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
         ];
 
@@ -46,7 +44,7 @@ final class ErrorHandlerTest extends AbstractTestCase
             'throwable' => new HandlerFailedException(Envelope::wrap(new stdClass()), [new Exception('message')]),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
         ];
 
@@ -57,8 +55,8 @@ final class ErrorHandlerTest extends AbstractTestCase
             ]),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(2, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[1]::class);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[1]);
             },
         ];
 
@@ -73,7 +71,7 @@ final class ErrorHandlerTest extends AbstractTestCase
             'throwable' => RetryableException::fromThrowable(new Exception(), false),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
         ];
 
@@ -81,25 +79,9 @@ final class ErrorHandlerTest extends AbstractTestCase
             'throwable' => RetryableException::fromThrowable(new Exception(), true),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
+                self::assertInstanceOf(Exception::class, $reporter->getReportedErrors()[0]);
             },
             'reportRetryableExceptionAttempts' => true,
-        ];
-
-        yield 'Symfony Messenger UnrecoverableMessageHandlingException' => [
-            'throwable' => new UnrecoverableMessageHandlingException(previous: new Exception()),
-            'assertions' => static function (ErrorReporterStub $reporter): void {
-                self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
-            },
-        ];
-
-        yield 'EasyWebhook UnrecoverableWebhookMessageException' => [
-            'throwable' => new UnrecoverableWebhookMessageException(previous: new Exception()),
-            'assertions' => static function (ErrorReporterStub $reporter): void {
-                self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
-            },
         ];
     }
 

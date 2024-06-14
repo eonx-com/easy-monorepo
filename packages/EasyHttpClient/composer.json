@@ -13,16 +13,16 @@
         "bugsnag/bugsnag": "^3.29",
         "doctrine/dbal": "^3.0",
         "doctrine/orm": "^2.14",
-        "doctrine/doctrine-bundle": "^2.8",
+        "doctrine/doctrine-bundle": "^2.7",
         "eonx-com/easy-lock": "^5.11",
         "eonx-com/easy-webhook": "^5.11",
         "eonx-com/easy-test": "^5.11",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/amazon-sqs-messenger": "^6.4",
-        "symfony/contracts": "^3.4",
-        "symfony/symfony": "^6.4"
+        "symfony/amazon-sqs-messenger": "^6.3",
+        "symfony/contracts": "^3.3",
+        "symfony/symfony": "^6.3"
     },
     "autoload": {
         "psr-4": {
