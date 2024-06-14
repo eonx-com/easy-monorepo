@@ -3,11 +3,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Traits;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
  */
 trait ContainerServiceTrait
 {
+    protected static function getEntityManager(): EntityManagerInterface
+    {
+        return self::getService(EntityManagerInterface::class);
+    }
+
     /**
      * @template TService of object
      *

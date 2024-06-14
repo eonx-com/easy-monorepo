@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Tests\Fixtures;
+namespace EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
