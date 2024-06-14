@@ -1,9 +1,0 @@
-easy_doctrine:
-    deferred_dispatcher_entities:
-        - EonX\EasyActivity\Tests\Fixtures\Article
-        - EonX\EasyActivity\Tests\Fixtures\Author
-
-easy_activity:
-    subjects:
-        EonX\EasyActivity\Tests\Fixtures\Author: ~
-        EonX\EasyActivity\Tests\Fixtures\Comment: ~

@@ -3,38 +3,35 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Tests\Bridge\Symfony\Serializers;
 
-use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
-use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyActivity\Tests\Fixtures\Article;
-use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
-use PHPUnit\Framework\Attributes\CoversClass;
+use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
+use EonX\EasyActivity\Tests\AbstractTestCase;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Article;
 use stdClass;
 use Symfony\Component\Uid\NilUuid;
 
-#[CoversClass(CircularReferenceHandler::class)]
-final class CircularReferenceHandlerTest extends AbstractSymfonyTestCase
+final class CircularReferenceHandlerTest extends AbstractTestCase
 {
     public function testInvokeSucceedsWithId(): void
     {
-        $entityManager = EntityManagerStub::createFromEventManager();
-        $handler = new CircularReferenceHandler($entityManager);
         $article = (new Article())->setId((string)(new NilUuid()));
+        /** @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface $sut */
+        $sut = self::getService(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER);
 
-        $result = $handler($article, 'json', []);
+        $result = $sut($article, 'json', []);
 
         self::assertSame(
-            'EonX\EasyActivity\Tests\Fixtures\Article#00000000-0000-0000-0000-000000000000 (circular reference)',
+            Article::class . '#00000000-0000-0000-0000-000000000000 (circular reference)',
             $result
         );
     }
 
     public function testInvokeSucceedsWithoutId(): void
     {
-        $entityManager = EntityManagerStub::createFromEventManager();
-        $handler = new CircularReferenceHandler($entityManager);
         $object = new stdClass();
+        /** @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface $sut */
+        $sut = self::getService(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER);
 
-        $result = $handler($object, 'json', []);
+        $result = $sut($object, 'json', []);
 
         self::assertSame('stdClass (circular reference)', $result);
     }

@@ -19,7 +19,7 @@
         "doctrine/common": "^3.0",
         "doctrine/annotations": "^1.14",
         "doctrine/doctrine-bundle": "^2.8",
-        "eonx-com/easy-test": "^5.11",
+        "eonx-com/easy-test": "^5.12",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     },
     "minimum-stability": "dev",
