@@ -22,7 +22,8 @@
         "eonx-com/easy-logging": "^5.11",
         "eonx-com/easy-random": "^5.11",
         "eonx-com/easy-test": "^5.11",
-        "phpunit/phpunit": "^10.2"
+        "phpunit/phpunit": "^10.2",
+        "symfony/framework-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
