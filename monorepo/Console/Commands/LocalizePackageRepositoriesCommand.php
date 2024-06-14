@@ -43,23 +43,32 @@ final class LocalizePackageRepositoriesCommand extends Command
             $filename = $composerJsonFile->getRealPath();
             $composerJsonFileContents = $this->getComposerJsonFileContents($composerJsonFile);
 
+            // Backup original versions
+            $originalVersions = [];
+
             // Replace monorepo packages version with dev one
             foreach (['require', 'require-dev'] as $section) {
                 foreach (\array_keys($composerJsonFileContents[$section] ?? []) as $package) {
                     if (\in_array($package, $monorepoPackageNames, true)) {
+                        $originalVersions[$package] = $composerJsonFileContents[$section][$package];
                         $composerJsonFileContents[$section][$package] = $devVersion;
                     }
                 }
             }
 
+            // Store original versions in 'extra' section
+            $composerJsonFileContents['extra']['original-versions'] = $originalVersions;
             $composerJsonFileContents['repositories'] = $repositories;
             $composerJsonFileContents['minimum-stability'] = 'dev';
             $composerJsonFileContents['prefer-stable'] = true;
-            $composerJsonFileContents['conflict'] = [
-                'symfony/dependency-injection' => '5.3.7',
-            ];
 
-            $filesystem->dumpFile($filename, (string)\json_encode($composerJsonFileContents));
+            $filesystem->dumpFile(
+                $filename,
+                \json_encode(
+                    $composerJsonFileContents,
+                    \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES
+                ) . \PHP_EOL
+            );
 
             $output->writeln(\sprintf('Successfully updated %s', $filename));
         }
