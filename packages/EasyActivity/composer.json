@@ -29,13 +29,15 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyActivity\\": "src"
+            "EonX\\EasyActivity\\": "src",
+            "EonX\\EasyActivity\\Bundle\\": "bundle"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "tests",
-            "EonX\\EasyActivity\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
+            "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyActivity\\Tests\\Unit\\": "tests/Unit/src",
         }
     },
     "suggest": {
