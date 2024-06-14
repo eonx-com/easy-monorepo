@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyErrorHandler\Bridge\Symfony\Interfaces\ApiPlatformErrorResponseBuilderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -9,7 +10,7 @@ return static function (DefinitionConfigurator $definition) {
 
     $definition->rootNode()
         ->children()
-            //Bugsnag
+            // Bugsnag
             ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
             ->integerNode('bugsnag_threshold')->defaultNull()->end()
             ->arrayNode('bugsnag_handled_exceptions')
@@ -20,9 +21,25 @@ return static function (DefinitionConfigurator $definition) {
                 ->beforeNormalization()->castToArray()->end()
                 ->scalarPrototype()->end()
             ->end()
-            ->booleanNode('bugsnag_ignore_validation_errors')->defaultTrue()->end()
-            ->booleanNode('transform_validation_errors')->defaultTrue()->end()
+            ->booleanNode('bugsnag_ignore_exceptions_handled_by_api_platform_builders')
+                ->info('If true, errors handled by ' . ApiPlatformErrorResponseBuilderInterface::class
+                    . ' will be ignored')
+                ->defaultTrue()
+            ->end()
+            ->booleanNode('use_api_platform_builders')->defaultTrue()->end()
+            ->arrayNode('api_platform_custom_serializer_exceptions')
+                ->info('Custom serializer exceptions to be handled by '
+                    . ApiPlatformErrorResponseBuilderInterface::class)
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('class')->isRequired()->end()
+                        ->scalarNode('message_pattern')->isRequired()->end()
+                        ->scalarNode('violation_message')->isRequired()->end()
+                    ->end()
+                ->end()
+            ->end()
             ->arrayNode('logger_exception_log_levels')
+                ->useAttributeAsKey('class')
                 ->beforeNormalization()->castToArray()->end()
                 ->integerPrototype()->end()
             ->end()
@@ -37,7 +54,6 @@ return static function (DefinitionConfigurator $definition) {
             ->booleanNode('report_retryable_exception_attempts')->defaultFalse()->end()
             ->booleanNode('skip_reported_exceptions')->defaultFalse()->end()
             ->booleanNode('verbose')->defaultFalse()->end()
-            ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
             ->booleanNode('use_default_builders')->defaultTrue()->end()
             ->booleanNode('use_default_reporters')->defaultTrue()->end()
             ->scalarNode('translation_domain')->defaultValue('messages')->end()

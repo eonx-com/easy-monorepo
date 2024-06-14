@@ -87,7 +87,7 @@ final class BugsnagReporterTest extends AbstractTestCase
         $stub = new BugsnagClientStub();
         $reporter = new BugsnagErrorReporter(
             $stub,
-            new DefaultBugsnagIgnoreExceptionsResolver($ignoredExceptions),
+            new DefaultBugsnagIgnoreExceptionsResolver($ignoredExceptions ?? []),
             new ErrorLogLevelResolver(),
             $threshold
         );

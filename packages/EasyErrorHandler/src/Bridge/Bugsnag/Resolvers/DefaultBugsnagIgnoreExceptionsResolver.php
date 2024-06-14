@@ -4,15 +4,13 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bridge\Bugsnag\Resolvers;
 
 use EonX\EasyErrorHandler\Bridge\Bugsnag\Interfaces\BugsnagIgnoreExceptionsResolverInterface;
-use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorResponseBuilder;
+use EonX\EasyErrorHandler\Bridge\Symfony\Provider\ApiPlatformErrorResponseBuilderProvider;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExceptionsResolverInterface
 {
-    private readonly bool $ignoreValidationErrors;
-
     /**
      * @var class-string[]
      */
@@ -23,13 +21,13 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
      */
     public function __construct(
         ?array $ignoredExceptions = null,
-        ?bool $ignoreValidationErrors = null,
+        private readonly bool $ignoreExceptionsHandledByApiPlatformBuilders = true,
+        private readonly ?ApiPlatformErrorResponseBuilderProvider $apiPlatformErrorResponseBuilderProvider = null,
     ) {
         $this->ignoredExceptions = $ignoredExceptions ?? [
             HttpExceptionInterface::class,
             RequestExceptionInterface::class,
         ];
-        $this->ignoreValidationErrors = $ignoreValidationErrors ?? true;
     }
 
     public function shouldIgnore(Throwable $throwable): bool
@@ -40,8 +38,15 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
             }
         }
 
-        if ($this->ignoreValidationErrors) {
-            return ApiPlatformValidationErrorResponseBuilder::supports($throwable);
+        if (
+            $this->ignoreExceptionsHandledByApiPlatformBuilders
+            && $this->apiPlatformErrorResponseBuilderProvider !== null
+        ) {
+            foreach ($this->apiPlatformErrorResponseBuilderProvider->getBuilders() as $builder) {
+                if ($builder->supports($throwable)) {
+                    return true;
+                }
+            }
         }
 
         return false;
