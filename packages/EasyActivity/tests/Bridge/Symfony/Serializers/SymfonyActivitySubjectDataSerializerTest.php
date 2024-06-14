@@ -7,19 +7,18 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use EonX\EasyActivity\ActivitySubject;
-use EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandler;
+use EonX\EasyActivity\Bridge\BridgeConstantsInterface;
 use EonX\EasyActivity\Bridge\Symfony\Serializers\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
-use EonX\EasyActivity\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
-use EonX\EasyActivity\Tests\Fixtures\Article;
-use EonX\EasyActivity\Tests\Fixtures\Author;
-use EonX\EasyActivity\Tests\Fixtures\Comment;
-use EonX\EasyActivity\Tests\Stubs\EntityManagerStub;
+use EonX\EasyActivity\Tests\AbstractTestCase;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Article;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Author;
+use EonX\EasyActivity\Tests\Bridge\Symfony\Fixtures\App\Entity\Comment;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\NilUuid;
 
-final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTestCase
+final class SymfonyActivitySubjectDataSerializerTest extends AbstractTestCase
 {
     /**
      * @see testSerializeSucceeds
@@ -197,7 +196,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
             'disallowedProperties' => null,
             'expectedResult' => \sprintf(
                 '{"comments":[{"article":{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"'
-                . ',"position":1},"comments":["EonX\\\EasyActivity\\\Tests\\\Fixtures\\\Comment#00000000-0000-0000-0000'
+                . ',"position":1},"comments":["EonX\\\EasyActivity\\\Tests\\\Bridge\\\Symfony\\\Fixtures' .
+                '\\\App\\\Entity\\\Comment#00000000-0000-0000-0000'
                 . '-000000000000 (circular reference)"],"createdAt":"%s","id":"00000000-0000-0000-0000-000000000001"},'
                 . '"id":"00000000-0000-0000-0000-000000000000","message":"some-message"}]}',
                 $expectedCreatedAt
@@ -212,25 +212,16 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractSymfonyTest
         ?array $disallowedProperties,
         ?string $expectedResult,
     ): void {
-        $symfonySerializer = $this->arrangeSymfonySerializer();
+        /** @var \EonX\EasyActivity\Bridge\Symfony\Serializers\CircularReferenceHandlerInterface $circularReferenceHandler */
+        $circularReferenceHandler = self::getService(BridgeConstantsInterface::SERVICE_CIRCULAR_REFERENCE_HANDLER);
         $serializer = new SymfonyActivitySubjectDataSerializer(
-            $symfonySerializer,
-            new CircularReferenceHandler(EntityManagerStub::createFromEventManager()),
+            self::getService(SerializerInterface::class),
+            $circularReferenceHandler,
             $disallowedProperties ?? []
         );
 
         $result = $serializer->serialize($data, $subject);
 
         self::assertEquals($expectedResult, $result);
-    }
-
-    private function arrangeSymfonySerializer(): SerializerInterface
-    {
-        $container = $this->getKernel()
-            ->getContainer();
-        /** @var \Symfony\Component\Serializer\SerializerInterface $symfonySerializer */
-        $symfonySerializer = $container->get(SerializerInterface::class);
-
-        return $symfonySerializer;
     }
 }

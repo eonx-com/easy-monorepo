@@ -14,9 +14,6 @@ final class CircularReferenceHandler implements CircularReferenceHandlerInterfac
     ) {
     }
 
-    /**
-     * @noinspection BadExceptionsProcessingInspection
-     */
     public function __invoke(object $object, string $format, array $context): string
     {
         $className = $object::class;

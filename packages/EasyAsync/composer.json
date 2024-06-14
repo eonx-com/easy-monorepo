@@ -16,8 +16,8 @@
         "symfony/messenger": "^6.4"
     },
     "require-dev": {
-        "eonx-com/easy-event-dispatcher": "^5.11",
-        "eonx-com/easy-random": "^5.11",
+        "eonx-com/easy-event-dispatcher": "^5.12",
+        "eonx-com/easy-random": "^5.12",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
         "symfony/yaml": "^6.4"
@@ -45,7 +45,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     }
 }
