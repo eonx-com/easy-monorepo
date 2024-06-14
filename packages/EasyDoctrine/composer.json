@@ -25,7 +25,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.4",
-        "symfony/doctrine-bridge": "^6.3"
+        "symfony/doctrine-bridge": "^6.4"
     },
     "autoload": {
         "psr-4": {
