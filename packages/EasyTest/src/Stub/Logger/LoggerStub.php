@@ -28,7 +28,7 @@ final class LoggerStub extends Logger
         string $name,
         ?array $handlers = null,
         ?array $processors = null,
-        ?DateTimeZone $timezone = null
+        ?DateTimeZone $timezone = null,
     ) {
         $this->testHandler = new TestHandler();
         $this->testHandler->setSkipReset(true);
