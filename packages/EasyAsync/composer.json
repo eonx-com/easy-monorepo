@@ -16,6 +16,7 @@
         "symfony/messenger": "^6.4"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.14",
         "doctrine/doctrine-bundle": "^2.8",
         "eonx-com/easy-event-dispatcher": "^5.11",
         "eonx-com/easy-logging": "^5.11",
