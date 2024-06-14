@@ -45,7 +45,7 @@ final class GlobalizePackageRepositoriesCommand extends Command
                 // Remove the 'extra' backup after restoration
                 unset($composerJsonFileContents['extra']['original-versions']);
 
-                if (count($composerJsonFileContents['extra']) === 0) {
+                if (\count($composerJsonFileContents['extra']) === 0) {
                     unset($composerJsonFileContents['extra']);
                 }
             }
