@@ -11,7 +11,7 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
         "eonx-com/easy-doctrine": "^5.12",
