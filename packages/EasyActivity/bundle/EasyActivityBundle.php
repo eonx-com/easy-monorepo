@@ -13,9 +13,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyActivityBundle extends AbstractBundle
 {
-    /**
-     * @var array<string, \BackedEnum>
-     */
     private const EASY_ACTIVITY_CONFIG = [
         'disallowed_properties' => ConfigParam::DisallowedProperties,
         'easy_doctrine_subscriber_enabled' => ConfigParam::EasyDoctrineSubscriberEnabled,
