@@ -11,45 +11,38 @@
         "doctrine/persistence": "^3.0",
         "nesbot/carbon": "^2.67",
         "psr/log": "^3.0",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
         "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
         "symfony/property-access": "^6.4",
         "symfony/serializer": "^6.4"
     },
     "require-dev": {
-        "doctrine/common": "^3.0",
         "doctrine/annotations": "^1.14",
         "doctrine/doctrine-bundle": "^2.8",
         "eonx-com/easy-test": "^5.12",
-        "mockery/mockery": "^1.6",
-        "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
         "symfony/browser-kit": "^6.4",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/routing": "^6.4"
+        "symfony/framework-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyApiPlatform\\": "src",
+            "EonX\\EasyApiPlatform\\Bundle\\": "bundle",
             "EonX\\EasyApiPlatform\\Bridge\\Symfony\\": "src/Bridge/Symfony"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyApiPlatform\\Tests\\": "tests",
-            "EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\": "tests/Fixtures/app/src"
+            "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "tests/Fixture/app/src"
         }
-    },
-    "suggest": {
-        "symfony/config": "To use this package with Symfony",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/http-kernel": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
