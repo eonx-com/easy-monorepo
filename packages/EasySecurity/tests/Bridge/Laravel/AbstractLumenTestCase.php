@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel;
 
-use EonX\EasyApiToken\Bridge\BridgeConstantsInterface as EasyApiTokenConstantsInterface;
-use EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider;
+use EonX\EasyApiToken\Bundle\Enum\ConfigTag;
+use EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider;
 use EonX\EasySecurity\Bridge\Laravel\EasySecurityServiceProvider;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\ApiTokenDecoderProviderStub;
@@ -39,7 +39,7 @@ abstract class AbstractLumenTestCase extends AbstractTestCase
         }
 
         $this->app->singleton(ApiTokenDecoderProviderStub::class);
-        $this->app->tag(ApiTokenDecoderProviderStub::class, [EasyApiTokenConstantsInterface::TAG_DECODER_PROVIDER]);
+        $this->app->tag(ApiTokenDecoderProviderStub::class, [ConfigTag::DecoderProvider->value]);
 
         return $this->app;
     }

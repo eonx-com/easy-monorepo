@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
 
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 
