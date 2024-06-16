@@ -49,6 +49,11 @@
         "symfony/cache": "To use the Amazon Cognito JWT driver to decode/encode tokens",
         "symfony/http-client": "To use the Amazon Cognito JWT driver to decode/encode tokens"
     },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"
