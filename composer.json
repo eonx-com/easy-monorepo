@@ -134,6 +134,7 @@
             "EonX\\EasyAsync\\Tests\\Unit\\": "packages/EasyAsync/tests/Unit/src",
             "EonX\\EasyAsync\\Tests\\Unit\\Bundle\\": "packages/EasyAsync/tests/Unit/bundle",
             "EonX\\EasyBankFiles\\Tests\\": "packages/EasyBankFiles/tests",
+            "EonX\\EasyBankFiles\\Tests\\Unit\\": "packages/EasyBankFiles/tests/Unit/src",
             "EonX\\EasyBatch\\Tests\\": "packages/EasyBatch/tests",
             "EonX\\EasyBugsnag\\Tests\\": "packages/EasyBugsnag/tests",
             "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/EasyDecision/packages/expressions/tests",

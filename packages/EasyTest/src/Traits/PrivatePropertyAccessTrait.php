@@ -8,6 +8,11 @@ use ReflectionProperty;
 
 trait PrivatePropertyAccessTrait
 {
+    public function callPrivateMethod(object $object, string $method, mixed ...$args): mixed
+    {
+        return (fn () => $this->{$method}(...$args))->call($object);
+    }
+
     protected static function getPrivatePropertyValue(object $object, string $propertyName): mixed
     {
         return self::resolvePropertyReflection($object, $propertyName)->getValue($object);
