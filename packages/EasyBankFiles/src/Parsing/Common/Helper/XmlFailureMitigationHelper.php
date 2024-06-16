@@ -14,8 +14,6 @@ final class XmlFailureMitigationHelper
      * Attempts to work around common data inconsistencies that the banks find acceptable (for some odd reason).
      *
      * @param string $content The XML content.
-     *
-     * @throws \EonX\EasyBankFiles\Exceptions\ImpossibleException
      */
     public static function tryMitigateParseFailures(string $content): string
     {

@@ -6,7 +6,6 @@ namespace EonX\EasyBankFiles\Parsing\Common\Converter;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
-use EonX\EasyBankFiles\Helpers\The;
 use EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlException;
 use EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlTagException;
 

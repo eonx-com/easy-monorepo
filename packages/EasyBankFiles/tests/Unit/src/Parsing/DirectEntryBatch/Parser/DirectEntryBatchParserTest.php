@@ -82,7 +82,9 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
 
     public function testProcessReturnsErrorsAndParseOnlyCorrectBatches(): void
     {
-        $parser = new DirectEntryBatchParser($this->getSampleFileContents('incorrect.multiple-batches-with-errors.nde'));
+        $parser = new DirectEntryBatchParser(
+            $this->getSampleFileContents('incorrect.multiple-batches-with-errors.nde')
+        );
 
         $batches = $parser->getBatches();
         self::assertCount(3, $batches);
@@ -275,8 +277,8 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
 
     private function getSampleFileContents(string $file): string
     {
-        return \file_get_contents(\realpath(
-            __DIR__ . '/../../../../../Fixture/Parsing/DirectEntryBatch/Parser/data/' . $file
-        )) ?: '';
+        return \file_get_contents(
+            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/DirectEntryBatch/Parser/data/' . $file
+        ) ?: '';
     }
 }

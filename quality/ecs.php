@@ -74,7 +74,6 @@ return static function (ECSConfig $ecsConfig): void {
         BlankLineAfterOpeningTagFixer::class => null,
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
-            'packages/EasyBankFiles/src/Generators/BaseGenerator.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,

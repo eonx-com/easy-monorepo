@@ -280,8 +280,6 @@ final class ResultsContext implements ResultsContextInterface
 
     /**
      * Instantiate accounts.
-     *
-     * @return \EonX\EasyBankFiles\Parsers\Nai\Results\ResultsContext
      */
     private function initAccounts(array $accounts): self
     {

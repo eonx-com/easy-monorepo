@@ -36,10 +36,8 @@ abstract class AbstractGenerator implements GeneratorInterface
 
     /**
      * Set break lines.
-     *
-     * @return \EonX\EasyBankFiles\Generators\AbstractGenerator
      */
-    public function setBreakLines(string $breakLine): self
+    public function setBreakLines(string $breakLine): static
     {
         $this->breakLine = $breakLine;
 
@@ -130,7 +128,6 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param array $errors The errors array to set errors to
      * @param string $rule The rule to process
      * @param string $attribute The attribute the value relates to
-     * @param mixed $value The value from the attribute
      */
     private function processRule(array &$errors, string $rule, string $attribute, mixed $value): void
     {

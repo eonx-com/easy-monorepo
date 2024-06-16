@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
 
 /**
- * @method FileHeader getHeader()
- * @method FileTrailer getTrailer()
+ * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\FileHeader getHeader()
+ * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\FileTrailer getTrailer()
  */
 final class File extends AbstractNaiResult
 {

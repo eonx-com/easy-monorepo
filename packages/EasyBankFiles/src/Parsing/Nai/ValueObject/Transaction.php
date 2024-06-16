@@ -10,7 +10,7 @@ namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
  * @method string getReferenceNumber()
  * @method string getText()
  * @method string getTransactionCode()
- * @method TransactionDetails getTransactionDetails()
+ * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\TransactionDetails getTransactionDetails()
  */
 final class Transaction extends AbstractNaiResult
 {
