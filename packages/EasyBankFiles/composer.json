@@ -5,8 +5,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "ext-ctype": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
+        "ext-mbstring": "*",
         "eonx-com/easy-error-handler": "^5.12",
         "nette/utils": "^3.2"
     },
