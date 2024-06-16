@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Unit\Listener;
+namespace EonX\EasyApiPlatform\Tests\Application\Listener;
 
 use EonX\EasyApiPlatform\Listener\ReadListener;
-use EonX\EasyApiPlatform\Tests\Unit\AbstractApiTestCase;
+use EonX\EasyApiPlatform\Tests\Application\AbstractApiTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ReadListenerTest extends AbstractApiTestCase

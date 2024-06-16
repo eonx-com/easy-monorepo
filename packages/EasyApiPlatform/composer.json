@@ -30,14 +30,15 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyApiPlatform\\": "src",
-            "EonX\\EasyApiPlatform\\Bundle\\": "bundle",
-            "EonX\\EasyApiPlatform\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyApiPlatform\\Bundle\\": "bundle"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyApiPlatform\\Tests\\": "tests",
-            "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "tests/Fixture/app/src"
+            "EonX\\EasyApiPlatform\\Tests\\Application\\": "tests/Application/src",
+            "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyApiPlatform\\Tests\\Unit\\": "tests/Unit/src"
         }
     },
     "extra": {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Unit;
+namespace EonX\EasyApiPlatform\Tests\Application;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
