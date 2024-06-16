@@ -95,7 +95,7 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/*/definition.php',
         ],
         OrderedClassElementsFixer::class => [
-            'packages/EasyApiPlatform/tests/Unit/AbstractApiTestCase.php',
+            'packages/EasyApiPlatform/tests/Application/AbstractApplicationTestCase.php',
         ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Interfaces/MathInterface.php',

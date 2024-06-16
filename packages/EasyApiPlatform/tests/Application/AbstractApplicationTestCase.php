@@ -13,7 +13,7 @@ use EonX\EasyTest\Traits\ContainerServiceTrait;
 use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractApiTestCase extends ApiTestCase
+abstract class AbstractApplicationTestCase extends ApiTestCase
 {
     use ArrayAssertionTrait;
     use ContainerServiceTrait;

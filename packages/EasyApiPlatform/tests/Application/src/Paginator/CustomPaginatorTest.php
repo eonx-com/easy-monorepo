@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Tests\Application\Paginator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use EonX\EasyApiPlatform\Tests\Application\AbstractApiTestCase;
+use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyApiPlatform\Tests\Fixture\App\CustomPaginator\ApiResource\Category;
 
-final class CustomPaginatorTest extends AbstractApiTestCase
+final class CustomPaginatorTest extends AbstractApplicationTestCase
 {
     public function testCustomPaginator(): void
     {

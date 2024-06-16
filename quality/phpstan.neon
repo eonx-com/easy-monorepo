@@ -51,10 +51,10 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizer/CarbonImmutableNormalizer.php
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/Filter/AdvancedSearchFilterTest.php
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/Filter/AdvancedSearchFilterTest.php
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
