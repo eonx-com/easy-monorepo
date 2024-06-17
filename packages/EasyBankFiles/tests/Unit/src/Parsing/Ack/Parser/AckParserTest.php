@@ -351,7 +351,7 @@ XML;
     private function getSampleFileContents(string $file): string
     {
         return \file_get_contents(
-            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/Ack/Parser/data/' . $file
+            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/Ack/' . $file
         ) ?: '';
     }
 }

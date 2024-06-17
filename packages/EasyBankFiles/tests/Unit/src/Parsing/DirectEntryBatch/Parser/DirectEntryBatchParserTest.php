@@ -278,7 +278,7 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
     private function getSampleFileContents(string $file): string
     {
         return \file_get_contents(
-            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/DirectEntryBatch/Parser/data/' . $file
+            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/DirectEntryBatch/' . $file
         ) ?: '';
     }
 }

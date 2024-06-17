@@ -275,7 +275,7 @@ final class NaiParserTest extends AbstractUnitTestCase
     private function getSampleFileContents(string $file): string
     {
         return \file_get_contents(
-            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/Nai/Parser/data/' . $file
+            \realpath(__DIR__) . '/../../../../../Fixture/Parsing/Nai/' . $file
         ) ?: '';
     }
 
