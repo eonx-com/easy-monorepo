@@ -10,7 +10,7 @@ interface BatchItemIteratorConfigInterface
     public static function create(
         int|string $batchId,
         callable $func,
-        ?string $dependsOnName = null
+        ?string $dependsOnName = null,
     ): BatchItemIteratorConfig;
 
     public function forCancel(?bool $forCancel = null): BatchItemIteratorConfig;
@@ -33,12 +33,9 @@ interface BatchItemIteratorConfigInterface
 
     public function isForDispatch(): bool;
 
-    public function setBatchItemsPerPage(int $batchItemsPerPage
-    ): BatchItemIteratorConfig;
+    public function setBatchItemsPerPage(int $batchItemsPerPage): BatchItemIteratorConfig;
 
-    public function setCurrentPageCallback(callable $currentPageCallback
-    ): BatchItemIteratorConfig;
+    public function setCurrentPageCallback(callable $currentPageCallback): BatchItemIteratorConfig;
 
-    public function setExtendPaginator(callable $extendPaginator
-    ): BatchItemIteratorConfig;
+    public function setExtendPaginator(callable $extendPaginator): BatchItemIteratorConfig;
 }

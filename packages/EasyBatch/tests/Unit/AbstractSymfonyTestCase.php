@@ -46,7 +46,7 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
             $conn->executeStatement($sql);
         }
 
-        parent::setUp();
+        parent::tearDown();
     }
 
     protected function getContainer(): ContainerInterface

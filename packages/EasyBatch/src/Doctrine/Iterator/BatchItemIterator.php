@@ -9,7 +9,6 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfigInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
-use EonX\EasyBatch\Doctrine\ValueObject\BatchItemIteratorConfig;
 use EonX\EasyPagination\Interfaces\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Pagination;
@@ -89,7 +88,7 @@ final class BatchItemIterator implements BatchItemIteratorInterface
         return \md5($hash);
     }
 
-    private function processConfig(BatchItemIteratorConfig $config): void
+    private function processConfig(BatchItemIteratorConfigInterface $config): void
     {
         $quote = static fn (
             QueryBuilder $queryBuilder,

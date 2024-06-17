@@ -28,7 +28,7 @@ abstract class AbstractUnitTestCase extends TestCase
     protected function tearDown(): void
     {
         $fs = new Filesystem();
-        $var = __DIR__ . '/../var';
+        $var = __DIR__ . '/../../var';
 
         if ($fs->exists($var)) {
             $fs->remove($var);

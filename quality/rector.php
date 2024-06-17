@@ -78,7 +78,7 @@ return static function (RectorConfig $rectorConfig): void {
         FinalizePublicClassConstantRector::class,
         FirstClassCallableRector::class => [
             'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
-            'packages/EasyBatch/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyBatch/tests/Stub/HttpKernel/KernelStub.php',
             'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyDoctrine/src/Bridge/Symfony/Resources/config/services.php',
             'packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Compiler/RegisterLockStoreServicePass.php',

@@ -145,8 +145,10 @@ final class BatchObjectManager implements BatchObjectManagerInterface
             $this->batchRepository->save($batchObject);
 
             // Cancel remaining batchItems
-            $iteratorConfig = BatchItemIteratorConfig::create($batchObject->getIdOrFail(),
-                $this->getCancelBatchItemClosure())
+            $iteratorConfig = BatchItemIteratorConfig::create(
+                $batchObject->getIdOrFail(),
+                $this->getCancelBatchItemClosure()
+            )
                 ->forCancel();
             $this->batchItemIterator->iterateThroughItems($iteratorConfig);
 
