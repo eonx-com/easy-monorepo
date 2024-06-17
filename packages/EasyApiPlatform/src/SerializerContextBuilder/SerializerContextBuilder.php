@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Serializer;
+namespace EonX\EasyApiPlatform\SerializerContextBuilder;
 
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\State\SerializerContextBuilderInterface;

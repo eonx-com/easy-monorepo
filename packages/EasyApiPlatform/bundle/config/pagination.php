@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyApiPlatform\Listener\HttpKernelViewListener;
-use EonX\EasyApiPlatform\Serializer\SerializerContextBuilder;
+use EonX\EasyApiPlatform\SerializerContextBuilder\SerializerContextBuilder;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
