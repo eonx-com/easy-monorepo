@@ -35,8 +35,6 @@
         "symfony/http-foundation": "To use this package with Symfony",
         "symfony/http-kernel": "To use this package with Symfony"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"
