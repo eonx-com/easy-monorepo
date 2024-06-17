@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasyBatch\Processors\BatchProcessor;
+use EonX\EasyBatch\Common\Processor\BatchProcessor;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\EasyBatch\BatchProcessorResetter;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
