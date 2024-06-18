@@ -53,7 +53,8 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         if (\config('easy-decision.use_expression_language', false)) {
             $this->app->bind(
                 SetExpressionLanguageDecisionConfigurator::class,
-                static fn (Container $app
+                static fn (
+                    Container $app,
                 ): SetExpressionLanguageDecisionConfigurator => new SetExpressionLanguageDecisionConfigurator(
                     $app->make(ExpressionLanguageFactoryInterface::class)
                 )
