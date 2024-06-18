@@ -26,7 +26,7 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
+        - %currentWorkingDirectory%/packages/*/tests/*/config/*
         - %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/OperationRequestInitiatorTrait.php
 
     checkMissingIterableValueType: false
