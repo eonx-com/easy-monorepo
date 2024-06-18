@@ -6,7 +6,8 @@ namespace EonX\EasyDecision\Configurator;
 use EonX\EasyDecision\Configurator\RestrictedDecisionConfiguratorInterface as RestrictedInterface;
 use EonX\EasyDecision\Decision\DecisionInterface;
 
-abstract class AbstractTypeRestrictedDecisionConfigurator extends AbstractDecisionConfigurator implements RestrictedInterface
+abstract class AbstractTypeRestrictedDecisionConfigurator extends AbstractDecisionConfigurator implements
+    RestrictedInterface
 {
     public function supports(DecisionInterface $decision): bool
     {

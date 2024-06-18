@@ -15,6 +15,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
@@ -57,6 +58,7 @@ return static function (ECSConfig $ecsConfig): void {
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
@@ -72,6 +74,10 @@ return static function (ECSConfig $ecsConfig): void {
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
+        ClassDefinitionFixer::class => [
+            'packages/EasyDecision/src/Configurator/AbstractNameRestrictedDecisionConfigurator.php',
+            'packages/EasyDecision/src/Configurator/AbstractTypeRestrictedDecisionConfigurator.php',
+        ],
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
             'packages/EasyBankFiles/src/Generators/BaseGenerator.php',
