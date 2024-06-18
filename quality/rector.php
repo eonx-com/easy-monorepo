@@ -14,7 +14,6 @@ use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\Php71\Rector\FuncCall\CountOnNullRector;
 use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
-use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
@@ -71,9 +70,6 @@ return static function (RectorConfig $rectorConfig): void {
             'packages/EasyUtils/tests/Bridge/Symfony/Validator/Constraints/AbnValidatorTest.php',
         ],
         ClassPropertyAssignToConstructorPromotionRector::class,
-        ClosureToArrowFunctionRector::class => [
-            'packages/EasyDecision/laravel/EasyDecisionServiceProvider.php',
-        ],
         CountOnNullRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
             'packages/EasySecurity/src/SecurityContext.php',

@@ -2,7 +2,7 @@
 
 {% block toolbar %}
     {% set icon %}
-        {{ include('@EasyDecisionBundle/DataCollector/thinking.svg') }}
+        {{ include('@EasyDecisionBundle/icon/thinking.svg') }}
     {% endset %}
 
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
@@ -11,7 +11,7 @@
 {% block menu %}
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span class="label">
-        <span class="icon">{{ include('@EasyDecisionBundle/DataCollector/thinking.svg') }}</span>
+        <span class="icon">{{ include('@EasyDecisionBundle/icon/thinking.svg') }}</span>
         <strong>EasyDecision</strong>
     </span>
 {% endblock %}

@@ -68,7 +68,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
                     'value' => 1,
                 ]));
             },
-            [__DIR__ . '/../../Fixture/value_with_name.php'],
+            [__DIR__ . '/../../Fixture/config/value_with_name.php'],
         ];
 
         yield 'Value decision with rules configurator' => [
@@ -79,7 +79,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
                     'value' => 1,
                 ]));
             },
-            [__DIR__ . '/../../Fixture/value_with_rules_and_expression_language.php'],
+            [__DIR__ . '/../../Fixture/config/value_with_rules_and_expression_language.php'],
         ];
 
         yield 'Value decision with name restricted configurator supported' => [
@@ -97,7 +97,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
             },
-            [__DIR__ . '/../../Fixture/value_with_name_restricted_expression_function.php'],
+            [__DIR__ . '/../../Fixture/config/value_with_name_restricted_expression_function.php'],
         ];
 
         yield 'Value decision with name restricted configurator not supported' => [
@@ -114,7 +114,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
 
                 self::assertEmpty($functions);
             },
-            [__DIR__ . '/../../Fixture/value_with_name_restricted_expression_function.php'],
+            [__DIR__ . '/../../Fixture/config/value_with_name_restricted_expression_function.php'],
         ];
 
         yield 'Decision with type restricted configurator supported' => [
@@ -132,7 +132,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
                 self::assertCount(1, $functions);
                 self::assertSame('restricted', $functions[0]->getName());
             },
-            [__DIR__ . '/../../Fixture/value_with_type_restricted_expression_function.php'],
+            [__DIR__ . '/../../Fixture/config/value_with_type_restricted_expression_function.php'],
         ];
 
         yield 'Decision with type restricted configurator not supported' => [
@@ -149,7 +149,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
 
                 self::assertEmpty($functions);
             },
-            [__DIR__ . '/../../Fixture/value_with_type_restricted_expression_function.php'],
+            [__DIR__ . '/../../Fixture/config/value_with_type_restricted_expression_function.php'],
         ];
     }
 
@@ -162,14 +162,14 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
         );
 
         $kernel = new KernelStub([
-            __DIR__ . '/../../Fixture/type_mapping_configuration_with_nonexistent_decision_class.php',
+            __DIR__ . '/../../Fixture/config/type_mapping_configuration_with_nonexistent_decision_class.php',
         ]);
         $kernel->boot();
     }
 
     public function testCreateByNameDecisionSucceeds(): void
     {
-        $kernel = new KernelStub([__DIR__ . '/../../Fixture/decision_by_name.php']);
+        $kernel = new KernelStub([__DIR__ . '/../../Fixture/config/decision_by_name.php']);
         $kernel->boot();
         $factory = $kernel->getContainer()
             ->get(DecisionFactoryInterface::class);
@@ -184,7 +184,7 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
         $this->expectException(InvalidMappingException::class);
         $this->expectExceptionMessage('Decision for name "non-configured-decision" is not configured');
 
-        $kernel = new KernelStub([__DIR__ . '/../../Fixture/decision_by_name.php']);
+        $kernel = new KernelStub([__DIR__ . '/../../Fixture/config/decision_by_name.php']);
         $kernel->boot();
         $factory = $kernel->getContainer()
             ->get(DecisionFactoryInterface::class);
@@ -217,8 +217,8 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
         );
 
         $kernel = new KernelStub([
-            __DIR__ . '/../../Fixture/disable_expression_language.php',
-            __DIR__ . '/../../Fixture/value_with_rules_and_expression_language.php',
+            __DIR__ . '/../../Fixture/config/disable_expression_language.php',
+            __DIR__ . '/../../Fixture/config/value_with_rules_and_expression_language.php',
         ]);
 
         $kernel->boot();

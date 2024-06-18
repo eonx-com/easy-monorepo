@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDecision\Tests\Stub\Configurator\TypeRestrictedExpressionFunctionDecisionConfigurator;
+use Symfony\Config\EasyDecisionConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('easy_decision', [
-        'use_expression_language' => true,
-    ]);
+return static function (EasyDecisionConfig $easyDecisionConfig, ContainerConfigurator $containerConfigurator): void {
+    $easyDecisionConfig->useExpressionLanguage(true);
 
     $services = $containerConfigurator->services();
 
