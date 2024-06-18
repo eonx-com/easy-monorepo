@@ -49,7 +49,7 @@ You can even create your own cache implementation if required. For Symfony appli
 `Symfony\Contracts\Cache\CacheInterface`. For Laravel applications, create a cache that implements
 `Illuminate\Contracts\Cache\Repository`.
 
-When you register your cache implementation as a service, use the `\EonX\EasyBugsnag\Bundle\Enum\ConfigServiceId::SessionTrackingCache` as the service ID.
+When you register your cache implementation as a service, use `\EonX\EasyBugsnag\Bundle\Enum\ConfigServiceId::SessionTrackingCache` as the service ID.
 
 ## Tracking queue jobs in Laravel
 

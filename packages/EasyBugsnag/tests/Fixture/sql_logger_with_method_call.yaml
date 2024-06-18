@@ -5,7 +5,7 @@ easy_bugsnag:
 
 services:
     sql_logger_stub:
-        class: EonX\EasyBugsnag\Tests\Stub\DBAL\Logging\SqlLoggerStub
+        class: EonX\EasyBugsnag\Tests\Stub\Logging\SqlLoggerStub
 
     doctrine.dbal.default_connection.configuration:
         class: Doctrine\DBAL\Configuration
@@ -13,4 +13,4 @@ services:
             -   setSQLLogger: ['@sql_logger_stub']
 
     doctrine.dbal.default_connection:
-        class: EonX\EasyBugsnag\Tests\Stub\DBAL\Driver\ConnectionStub
+        class: EonX\EasyBugsnag\Tests\Stub\Driver\ConnectionStub

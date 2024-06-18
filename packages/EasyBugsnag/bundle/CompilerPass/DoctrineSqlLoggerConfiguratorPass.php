@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class DoctrineOrmSqlLoggerConfiguratorPass implements CompilerPassInterface
+final class DoctrineSqlLoggerConfiguratorPass implements CompilerPassInterface
 {
     private const BUGSNAG_ABSTRACT_LOGGER = 'easy_bugsnag.sql_logger.abstract';
 

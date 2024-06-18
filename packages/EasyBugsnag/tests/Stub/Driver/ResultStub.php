@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBugsnag\Tests\Stub\DBAL\Driver;
+namespace EonX\EasyBugsnag\Tests\Stub\Driver;
 
 use Doctrine\DBAL\Driver\Result;
 

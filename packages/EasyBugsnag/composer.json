@@ -8,12 +8,19 @@
         "bugsnag/bugsnag": "^3.29",
         "eonx-com/easy-utils": "^5.12",
         "guzzlehttp/guzzle": "^7.0",
+        "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "symfony/config": "^6.4",
         "symfony/dependency-injection": "^6.4",
         "symfony/filesystem": "^6.4",
         "symfony/http-foundation": "^6.4",
-        "symfony/http-kernel": "^6.4"
+        "symfony/http-kernel": "^6.4",
+        "symfony/cache": "^6.4",
+        "symfony/cache-contracts": "^3.5",
+        "symfony/console": "^6.4",
+        "symfony/event-dispatcher": "^6.4",
+        "symfony/messenger": "^6.4",
+        "symfony/var-dumper": "^6.4"
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
@@ -44,14 +51,7 @@
         "illuminate/queue": "To use this package with Laravel/Lumen",
         "illuminate/routing": "To use this package with Laravel/Lumen",
         "illuminate/support": "To use this package with Laravel/Lumen",
-        "laravel/lumen-framework": "To use this package with Lumen",
-        "nesbot/carbon": "To use this package with Symfony",
-        "symfony/cache": "To use this package with Symfony",
-        "symfony/cache-contracts": "To use this package with Symfony",
-        "symfony/console": "To use this package with Symfony",
-        "symfony/event-dispatcher": "To use this package with Symfony",
-        "symfony/messenger": "To use this package with Symfony",
-        "symfony/var-dumper": "To use this package with Symfony"
+        "laravel/lumen-framework": "To use this package with Lumen"
     },
     "extra": {
         "branch-alias": {

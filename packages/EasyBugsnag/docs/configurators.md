@@ -108,7 +108,7 @@ final class RuntimeVersionConfigurator extends AbstractClientConfigurator
 }
 ```
 
-Register your client configurator as a service and tag it using the `\EonX\EasyBugsnag\Bundle\Enum\ConfigTag::ClientConfigurator` provided for this purpose.
+Register your client configurator as a service and tag it using `\EonX\EasyBugsnag\Bundle\Enum\ConfigTag::ClientConfigurator` provided for this purpose.
 This should be done in a service provider. For example:
 
 ```php

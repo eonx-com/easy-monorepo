@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bundle;
 
-use EonX\EasyBugsnag\Bundle\CompilerPass\DoctrineOrmSqlLoggerConfiguratorPass;
+use EonX\EasyBugsnag\Bundle\CompilerPass\DoctrineSqlLoggerConfiguratorPass;
 use EonX\EasyBugsnag\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
@@ -39,7 +39,7 @@ final class EasyBugsnagBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new DoctrineOrmSqlLoggerConfiguratorPass())
+            ->addCompilerPass(new DoctrineSqlLoggerConfiguratorPass())
             ->addCompilerPass(new SensitiveDataSanitizerCompilerPass());
     }
 
