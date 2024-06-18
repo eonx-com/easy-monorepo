@@ -16,8 +16,8 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
-use EonX\EasyBatch\Doctrine\ValueObject\BatchItemIteratorConfig;
 use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 
 final class BatchObjectManager implements BatchObjectManagerInterface

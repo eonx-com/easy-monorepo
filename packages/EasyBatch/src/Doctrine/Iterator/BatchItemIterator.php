@@ -7,7 +7,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfigInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyPagination\Interfaces\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
@@ -21,7 +21,7 @@ final class BatchItemIterator implements BatchItemIteratorInterface
     ) {
     }
 
-    public function iterateThroughItems(BatchItemIteratorConfigInterface $config): void
+    public function iterateThroughItems(BatchItemIteratorConfig $config): void
     {
         $page = 1;
         $pagesCache = [];
@@ -88,7 +88,7 @@ final class BatchItemIterator implements BatchItemIteratorInterface
         return \md5($hash);
     }
 
-    private function processConfig(BatchItemIteratorConfigInterface $config): void
+    private function processConfig(BatchItemIteratorConfig $config): void
     {
         $quote = static fn (
             QueryBuilder $queryBuilder,

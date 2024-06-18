@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Doctrine\ValueObject;
+namespace EonX\EasyBatch\Common\ValueObject;
 
 use Closure;
-use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfigInterface;
 
-final class BatchItemIteratorConfig implements BatchItemIteratorConfigInterface
+final class BatchItemIteratorConfig
 {
     private ?int $batchItemsPerPage = null;
 
