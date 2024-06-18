@@ -15,7 +15,8 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 {
     public function testDefaultConfiguratorsOff(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_configurators_off.php'])->getContainer();
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_configurators_off.php'])
+            ->getContainer();
 
         self::assertFalse($container->has(BasicsClientConfigurator::class));
         self::assertFalse($container->has(RuntimeVersionClientConfigurator::class));
@@ -23,7 +24,8 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 
     public function testSanityCheck(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_config.php'])->getContainer();
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_config.php'])
+            ->getContainer();
 
         self::assertInstanceOf(Client::class, $container->get(Client::class));
         self::assertInstanceOf(SessionTracker::class, $container->get(SessionTracker::class));
@@ -31,9 +33,13 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 
     public function testSetSqlLoggerOnConfigNoMethodCall(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/sql_logger_no_method_call.php'])->getContainer();
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/sql_logger_no_method_call.php'])
+            ->getContainer();
 
-        self::assertInstanceOf(Configuration::class, $container->get('doctrine.dbal.default_connection.configuration'));
+        self::assertInstanceOf(
+            Configuration::class,
+            $container->get('doctrine.dbal.default_connection.configuration')
+        );
     }
 
     /**
@@ -41,7 +47,8 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
      */
     public function testSetSqlLoggerOnConfigWithMethodCall(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/sql_logger_with_method_call.php'])->getContainer();
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/sql_logger_with_method_call.php'])
+            ->getContainer();
         /** @var \Doctrine\DBAL\Configuration $configuration */
         $configuration = $container->get('doctrine.dbal.default_connection.configuration');
         $sqlLogger = $configuration->getSQLLogger();
