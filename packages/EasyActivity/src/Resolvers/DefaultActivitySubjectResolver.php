@@ -17,7 +17,7 @@ final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInt
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function resolve(object $object): ?ActivitySubjectInterface
     {

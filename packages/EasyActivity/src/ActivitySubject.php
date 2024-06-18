@@ -32,7 +32,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getAllowedActivityProperties(): ?array
     {
@@ -40,7 +40,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getDisallowedActivityProperties(): array
     {

@@ -98,7 +98,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
     /**
      * @return \ParagonIE\Halite\EncryptionKeyPair|\ParagonIE\Halite\Symmetric\EncryptionKey
      */
-    private function doGetKey(string $keyName)
+    private function doGetKey(string $keyName): EncryptionKey|EncryptionKeyPair
     {
         foreach ($this->keyResolvers as $keyResolver) {
             if ($keyResolver->supportsKey($keyName)) {

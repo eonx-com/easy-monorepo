@@ -80,6 +80,7 @@
         "symfony/doctrine-bridge": "^6.3",
         "symfony/framework-bundle": "^6.3",
         "symfony/maker-bundle": "^1.48",
+        "symfony/messenger": "^6.3",
         "symfony/monolog-bundle": "^3.8",
         "symfony/runtime": "^6.3",
         "symplify/monorepo-builder": "^11.0",

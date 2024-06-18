@@ -48,7 +48,7 @@ abstract class BaseObject extends AbstractDataBag
             $line[] = $value;
         }
 
-        return \implode($line);
+        return \implode('', $line);
     }
 
     /**

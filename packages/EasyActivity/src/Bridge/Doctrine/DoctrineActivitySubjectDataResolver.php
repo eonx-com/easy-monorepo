@@ -18,7 +18,7 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function resolve(
         string $action,

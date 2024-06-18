@@ -8,9 +8,6 @@ services:
 parameters:
     tmpDir: var/cache/phpstan
 
-    parallel:
-        maximumNumberOfProcesses: 2
-
     level: 8
 
     bootstrapFiles:
@@ -29,9 +26,9 @@ parameters:
         - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
         - %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/OperationRequestInitiatorTrait.php
 
-    checkMissingIterableValueType: false
-
     ignoreErrors:
+        -
+            identifier: missingType.iterableValue
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'

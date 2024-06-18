@@ -46,7 +46,7 @@ final class JwkFetcher implements JwkFetcherInterface
     private function convertJwkToPem(array $jwk): string
     {
         return (string)PublicKeyLoader::load([
-            'e' => new BigInteger((string)\base64_decode($jwk['e'], true), 256),
+            'e' => new BigInteger((string)\base64_decode((string)$jwk['e'], true), 256),
             'n' => new BigInteger(JWT::urlsafeB64Decode($jwk['n']), 256),
         ]);
     }
