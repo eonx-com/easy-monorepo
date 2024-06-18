@@ -6,15 +6,15 @@
     "require": {
         "php": "^8.1",
         "doctrine/dbal": "^3.0",
-        "eonx-com/easy-encryption": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
-        "eonx-com/easy-event-dispatcher": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
-        "eonx-com/easy-pagination": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
-        "eonx-com/easy-random": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
-        "eonx-com/easy-utils": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
+        "eonx-com/easy-encryption": "^5.12",
+        "eonx-com/easy-event-dispatcher": "^5.12",
+        "eonx-com/easy-pagination": "^5.12",
+        "eonx-com/easy-random": "^5.12",
+        "eonx-com/easy-utils": "^5.12",
         "nesbot/carbon": "^2.67"
     },
     "require-dev": {
-        "eonx-com/easy-lock": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
+        "eonx-com/easy-lock": "^5.12",
         "phpunit/phpunit": "^10.2",
         "psr/container": "^2.0",
         "symfony/symfony": "^6.4"
@@ -40,130 +40,6 @@
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"
-        },
-        "original-versions": {
-            "eonx-com/easy-encryption": "^5.12",
-            "eonx-com/easy-event-dispatcher": "^5.12",
-            "eonx-com/easy-pagination": "^5.12",
-            "eonx-com/easy-random": "^5.12",
-            "eonx-com/easy-utils": "^5.12",
-            "eonx-com/easy-lock": "^5.12"
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../EasyActivity"
-        },
-        {
-            "type": "path",
-            "url": "../EasyApiPlatform"
-        },
-        {
-            "type": "path",
-            "url": "../EasyApiToken"
-        },
-        {
-            "type": "path",
-            "url": "../EasyAsync"
-        },
-        {
-            "type": "path",
-            "url": "../EasyBankFiles"
-        },
-        {
-            "type": "path",
-            "url": "../EasyBatch"
-        },
-        {
-            "type": "path",
-            "url": "../EasyBugsnag"
-        },
-        {
-            "type": "path",
-            "url": "../EasyDecision"
-        },
-        {
-            "type": "path",
-            "url": "../EasyDoctrine"
-        },
-        {
-            "type": "path",
-            "url": "../EasyEncryption"
-        },
-        {
-            "type": "path",
-            "url": "../EasyErrorHandler"
-        },
-        {
-            "type": "path",
-            "url": "../EasyEventDispatcher"
-        },
-        {
-            "type": "path",
-            "url": "../EasyHttpClient"
-        },
-        {
-            "type": "path",
-            "url": "../EasyLock"
-        },
-        {
-            "type": "path",
-            "url": "../EasyLogging"
-        },
-        {
-            "type": "path",
-            "url": "../EasyNotification"
-        },
-        {
-            "type": "path",
-            "url": "../EasyPagination"
-        },
-        {
-            "type": "path",
-            "url": "../EasyPipeline"
-        },
-        {
-            "type": "path",
-            "url": "../EasyRandom"
-        },
-        {
-            "type": "path",
-            "url": "../EasyRepository"
-        },
-        {
-            "type": "path",
-            "url": "../EasyRequestId"
-        },
-        {
-            "type": "path",
-            "url": "../EasySchedule"
-        },
-        {
-            "type": "path",
-            "url": "../EasySecurity"
-        },
-        {
-            "type": "path",
-            "url": "../EasySwoole"
-        },
-        {
-            "type": "path",
-            "url": "../EasyTemplatingBlock"
-        },
-        {
-            "type": "path",
-            "url": "../EasyTest"
-        },
-        {
-            "type": "path",
-            "url": "../EasyUtils"
-        },
-        {
-            "type": "path",
-            "url": "../EasyWebhook"
-        }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
