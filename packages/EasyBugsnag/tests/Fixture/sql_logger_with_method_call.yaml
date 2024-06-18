@@ -1,0 +1,16 @@
+easy_bugsnag:
+    api_key: 'my-api-key'
+    doctrine_dbal:
+        enabled: true
+
+services:
+    sql_logger_stub:
+        class: EonX\EasyBugsnag\Tests\Stub\DBAL\Logging\SqlLoggerStub
+
+    doctrine.dbal.default_connection.configuration:
+        class: Doctrine\DBAL\Configuration
+        calls:
+            -   setSQLLogger: ['@sql_logger_stub']
+
+    doctrine.dbal.default_connection:
+        class: EonX\EasyBugsnag\Tests\Stub\DBAL\Driver\ConnectionStub

@@ -1,0 +1,15 @@
+easy_bugsnag:
+    api_key: 'my-bugsnag-api-key'
+    sensitive_data_sanitizer:
+        enabled: true
+    session_tracking:
+        enabled: true
+        exclude_urls:
+            - ^/ping
+
+services:
+    doctrine.dbal.default_connection.configuration:
+        class: Doctrine\DBAL\Configuration
+
+    doctrine.dbal.default_connection:
+        class: EonX\EasyBugsnag\Tests\Stub\DBAL\Driver\ConnectionStub

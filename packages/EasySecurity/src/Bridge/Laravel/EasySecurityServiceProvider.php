@@ -5,6 +5,7 @@ namespace EonX\EasySecurity\Bridge\Laravel;
 
 use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
 use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
+use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
@@ -113,7 +114,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         );
         $this->app->tag(
             SecurityContextClientConfigurator::class,
-            [EasyBugsnagBridgeConstantsInterface::TAG_CLIENT_CONFIGURATOR]
+            [ConfigTag::ClientConfigurator->value]
         );
     }
 

@@ -6,7 +6,7 @@ namespace EonX\EasySwoole\Bridge\EasyBugsnag;
 use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
-use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
