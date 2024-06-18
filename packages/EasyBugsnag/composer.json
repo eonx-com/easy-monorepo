@@ -25,9 +25,7 @@
     "require-dev": {
         "doctrine/dbal": "^3.0",
         "laravel/lumen-framework": "^9.1",
-        "phpunit/phpunit": "^10.2",
-        "symfony/cache": "^6.4",
-        "symfony/yaml": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
