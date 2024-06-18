@@ -141,7 +141,7 @@
             "EonX\\EasyDecision\\Tests\\": "packages/EasyDecision/tests",
             "EonX\\EasyDecision\\Tests\\Unit\\": "packages/EasyDecision/tests/Unit/src",
             "EonX\\EasyDecision\\Tests\\Unit\\Bundle\\": "packages/EasyDecision/tests/Unit/bundle",
-            "EonX\\EasyDecision\\Tests\\Unit\\Bundle\\": "packages/EasyDecision/tests/Unit/laravel",
+            "EonX\\EasyDecision\\Tests\\Unit\\Laravel\\": "packages/EasyDecision/tests/Unit/laravel",
             "EonX\\EasyDoctrine\\Tests\\": "packages/EasyDoctrine/tests",
             "EonX\\EasyEncryption\\Tests\\": "packages/EasyEncryption/tests",
             "EonX\\EasyErrorHandler\\Tests\\": "packages/EasyErrorHandler/tests",

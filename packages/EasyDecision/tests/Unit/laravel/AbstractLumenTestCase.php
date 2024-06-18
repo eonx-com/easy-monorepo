@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Tests\Unit\Bundle;
+namespace EonX\EasyDecision\Tests\Unit\Laravel;
 
 use EonX\EasyDecision\Bundle\Enum\ConfigTag;
 use EonX\EasyDecision\Factory\DecisionFactoryInterface;

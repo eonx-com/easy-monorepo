@@ -29,7 +29,8 @@
         "psr-4": {
             "EonX\\EasyDecision\\Tests\\": "tests",
             "EonX\\EasyDecision\\Tests\\Unit\\": "tests/Unit/src",
-            "EonX\\EasyDecision\\Tests\\Unit\\Bundle\\": "tests/Unit/laravel"
+            "EonX\\EasyDecision\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyDecision\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {

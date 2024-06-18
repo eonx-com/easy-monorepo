@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Tests\Unit\Bundle;
+namespace EonX\EasyDecision\Tests\Unit\Laravel;
 
 use EonX\EasyDecision\Decision\AffirmativeDecision;
 
