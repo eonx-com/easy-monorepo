@@ -26,8 +26,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(SessionTracker::class)
         ->arg('$exclude', param(ConfigParam::SessionTrackingExcludeUrls->value))
-        ->arg('$excludeDelimiter',
-            param(ConfigParam::SessionTrackingExcludeUrlsDelimiter->value));
+        ->arg('$excludeDelimiter', param(ConfigParam::SessionTrackingExcludeUrlsDelimiter->value));
 
     $services
         ->set(SessionTrackingClientConfigurator::class)

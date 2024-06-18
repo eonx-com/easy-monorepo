@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class DefaultBugsnagSeverityResolverTest extends AbstractSymfonyTestCase
 {
+    /**
+     * @see testItSucceeds
+     */
     public static function provideLevels(): iterable
     {
         yield 'debug' => [Logger::DEBUG, 'info'];

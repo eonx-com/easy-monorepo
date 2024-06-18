@@ -17,6 +17,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
 use Symfony\Component\Runtime\SymfonyRuntime;
+
 use function Symfony\Component\String\u;
 
 final class EasySwooleRuntime extends SymfonyRuntime
