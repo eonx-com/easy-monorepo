@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-random": "^5.12",
-        "eonx-com/easy-utils": "^5.12"
+        "eonx-com/easy-random": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag",
+        "eonx-com/easy-utils": "dev-feature/MTCE-221-Monorepo-v6-refactoring-EasyBugsnag"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
@@ -29,6 +29,126 @@
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"
+        },
+        "original-versions": {
+            "eonx-com/easy-random": "^5.12",
+            "eonx-com/easy-utils": "^5.12"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../EasyActivity"
+        },
+        {
+            "type": "path",
+            "url": "../EasyApiPlatform"
+        },
+        {
+            "type": "path",
+            "url": "../EasyApiToken"
+        },
+        {
+            "type": "path",
+            "url": "../EasyAsync"
+        },
+        {
+            "type": "path",
+            "url": "../EasyBankFiles"
+        },
+        {
+            "type": "path",
+            "url": "../EasyBatch"
+        },
+        {
+            "type": "path",
+            "url": "../EasyBugsnag"
+        },
+        {
+            "type": "path",
+            "url": "../EasyDecision"
+        },
+        {
+            "type": "path",
+            "url": "../EasyDoctrine"
+        },
+        {
+            "type": "path",
+            "url": "../EasyEncryption"
+        },
+        {
+            "type": "path",
+            "url": "../EasyErrorHandler"
+        },
+        {
+            "type": "path",
+            "url": "../EasyEventDispatcher"
+        },
+        {
+            "type": "path",
+            "url": "../EasyHttpClient"
+        },
+        {
+            "type": "path",
+            "url": "../EasyLock"
+        },
+        {
+            "type": "path",
+            "url": "../EasyLogging"
+        },
+        {
+            "type": "path",
+            "url": "../EasyNotification"
+        },
+        {
+            "type": "path",
+            "url": "../EasyPagination"
+        },
+        {
+            "type": "path",
+            "url": "../EasyPipeline"
+        },
+        {
+            "type": "path",
+            "url": "../EasyRandom"
+        },
+        {
+            "type": "path",
+            "url": "../EasyRepository"
+        },
+        {
+            "type": "path",
+            "url": "../EasyRequestId"
+        },
+        {
+            "type": "path",
+            "url": "../EasySchedule"
+        },
+        {
+            "type": "path",
+            "url": "../EasySecurity"
+        },
+        {
+            "type": "path",
+            "url": "../EasySwoole"
+        },
+        {
+            "type": "path",
+            "url": "../EasyTemplatingBlock"
+        },
+        {
+            "type": "path",
+            "url": "../EasyTest"
+        },
+        {
+            "type": "path",
+            "url": "../EasyUtils"
+        },
+        {
+            "type": "path",
+            "url": "../EasyWebhook"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
