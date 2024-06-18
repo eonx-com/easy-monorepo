@@ -17,14 +17,16 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyDecision\\": "src",
-            "EonX\\EasyDecision\\Bridge\\Symfony\\": "src/Bridge/Symfony",
-            "EonX\\EasyDecision\\Expressions\\": "packages/expressions/src"
+            "EonX\\EasyDecision\\Bundle\\": "bundle",
+            "EonX\\EasyDecision\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyDecision\\Expressions\\Tests\\": "packages/expressions/tests",
-            "EonX\\EasyDecision\\Tests\\": "tests"
+            "EonX\\EasyDecision\\Tests\\": "tests",
+            "EonX\\EasyDecision\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyDecision\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyDecision\\Tests\\Unit\\Bundle\\": "tests/Unit/laravel"
         }
     },
     "suggest": {
