@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Filter\AdvancedSearchFilter;
 use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\RelatedDummy;
-use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\NameConverter\CustomConverter;
+use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\NameConverter\CustomNameConverter;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 
@@ -1340,7 +1340,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             null,
             $properties,
             null,
-            new CustomConverter(),
+            new CustomNameConverter(),
             ['entityId']
         );
     }
