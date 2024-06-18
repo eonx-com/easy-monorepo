@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony;
 
-use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagBridgeConstantsInterface;
+use EonX\EasyBugsnag\Bundle\Enum\ConfigTag as EasyBugsnagConfigTag;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterPermissionExpressionFunctionPass;
 use EonX\EasySecurity\Bridge\Symfony\DependencyInjection\Compiler\RegisterRoleExpressionFunctionPass;
@@ -98,7 +98,7 @@ final class EasySecuritySymfonyBundle extends AbstractBundle
         }
 
         // EasyBugsnag
-        if (($config['easy_bugsnag'] ?? false) && \interface_exists(EasyBugsnagBridgeConstantsInterface::class)) {
+        if (($config['easy_bugsnag'] ?? false) && \enum_exists(EasyBugsnagConfigTag::class)) {
             $container->import(__DIR__ . '/Resources/config/easy_bugsnag.php');
         }
 

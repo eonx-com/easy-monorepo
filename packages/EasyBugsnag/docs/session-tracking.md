@@ -17,6 +17,7 @@ Since you may not want every request to count towards a session, the EasyBugsnag
 request URLs. For example, you might want to exclude the `/ping` URL from session tracking.
 
 There are two configuration options that can help with excluding URLs from session tracking:
+
 - `session_tracking.exclude_urls`: An array of URLs or regular expressions to exclude from session tracking. For
   example, you could use the URL `/ping` or the regular expression `(ping|pong)`. Note that all elements of the array
   are treated as regular expressions when matching URLs to exclude. Do not include regular expression delimiters in the
@@ -34,10 +35,12 @@ The default cache expiry is set to one hour for performance reasons. If necessar
 expiry via the `session_tracking.cache_expires_after` configuration option.
 
 You can tweak the default Symfony cache implementation through the following configuration options:
+
 - `session_tracking.cache_directory`: Set the cache directory (the default is `%kernel.cache_dir%`).
 - `session_tracking.cache_namespace`: Set the cache namespace (the default is `easy_bugsnag_sessions`).
 
 You can tweak the default Laravel cache implementation through the following configuration option:
+
 - `session_tracking.cache_store`: Set the cache store to use (the default is `file`).
 
 ### Custom cache implementation
@@ -46,8 +49,7 @@ You can even create your own cache implementation if required. For Symfony appli
 `Symfony\Contracts\Cache\CacheInterface`. For Laravel applications, create a cache that implements
 `Illuminate\Contracts\Cache\Repository`.
 
-When you register your cache implementation as a service, use the `SERVICE_SESSION_TRACKING_CACHE` constant from
-`EonX\EasyBugsnag\Bridge\BridgeConstantsInterface` as the service ID.
+When you register your cache implementation as a service, use the `\EonX\EasyBugsnag\Bundle\Enum\ConfigServiceId::SessionTrackingCache` as the service ID.
 
 ## Tracking queue jobs in Laravel
 

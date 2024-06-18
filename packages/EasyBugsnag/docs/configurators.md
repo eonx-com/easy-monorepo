@@ -25,7 +25,8 @@ For example, the following configurator sets the *release stage* attribute of th
 
 namespace App\Bugsnag;
 
-use Bugsnag\Client;use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use Bugsnag\Client;
+use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
 
 final class ReleaseStageConfigurator extends AbstractClientConfigurator
 {
@@ -80,7 +81,9 @@ Create a class extending `EonX\EasyBugsnag\Configurator\AbstractClientConfigurat
 
 namespace App\Bugsnag;
 
-use Bugsnag\Client;use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;use Illuminate\Contracts\Foundation\Application;
+use Bugsnag\Client;
+use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use Illuminate\Contracts\Foundation\Application;
 
 final class RuntimeVersionConfigurator extends AbstractClientConfigurator
 {
@@ -105,8 +108,8 @@ final class RuntimeVersionConfigurator extends AbstractClientConfigurator
 }
 ```
 
-Register your client configurator as a service and tag it using the `EonX\EasyBugsnag\Bridge\BridgeConstantsInterface`
-constant `TAG_CLIENT_CONFIGURATOR` provided for this purpose. This should be done in a service provider. For example:
+Register your client configurator as a service and tag it using the `\EonX\EasyBugsnag\Bundle\Enum\ConfigTag::ClientConfigurator` provided for this purpose.
+This should be done in a service provider. For example:
 
 ```php
 // app/Providers/BugsnagServiceProvider.php
@@ -126,7 +129,7 @@ final class BugsnagServiceProvider extends ServiceProvider
         });
 
         // Tag it as a client configurator
-        $this->app->tag(RuntimeVersionConfigurator::class, [ConfigTag::ClientConfigurator->valueR]);
+        $this->app->tag(RuntimeVersionConfigurator::class, [ConfigTag::ClientConfigurator->value]);
     }
 }
 ```
