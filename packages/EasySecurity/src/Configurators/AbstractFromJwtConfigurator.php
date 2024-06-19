@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Configurators;
 
-use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
+use EonX\EasyApiToken\Common\ValueObject\JwtInterface;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use EonX\EasySecurity\JwtClaimFetcher;

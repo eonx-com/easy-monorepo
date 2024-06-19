@@ -9,26 +9,36 @@
         "eonx-com/easy-utils": "^5.12",
         "nette/utils": "^3.2",
         "psr/log": "^3.0",
-        "symfony/http-foundation": "^6.4"
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/security-bundle": "^6.4",
+        "symfony/security-http": "^6.4",
+        "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
         "auth0/auth0-php": "^8.6",
         "firebase/php-jwt": "^6.5",
         "laravel/lumen-framework": "^9.1",
+        "nyholm/psr7": "^1.8",
         "phpseclib/phpseclib": "^3.0",
         "phpunit/phpunit": "^10.2",
-        "psr/cache": "^3.0",
-        "symfony/symfony": "^6.4"
+        "symfony/cache": "^6.4",
+        "symfony/http-client": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyApiToken\\": "src",
-            "EonX\\EasyApiToken\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyApiToken\\Bundle\\": "bundle",
+            "EonX\\EasyApiToken\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyApiToken\\Tests\\": "tests"
+            "EonX\\EasyApiToken\\Tests\\": "tests",
+            "EonX\\EasyApiToken\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyApiToken\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyApiToken\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {
@@ -38,13 +48,7 @@
         "illuminate/support": "To use this package with Laravel/Lumen",
         "phpseclib/phpseclib": "To use the Amazon Cognito JWT driver to decode/encode tokens",
         "symfony/cache": "To use the Amazon Cognito JWT driver to decode/encode tokens",
-        "symfony/config": "To use this package with Symfony",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/http-client": "To use the Amazon Cognito JWT driver to decode/encode tokens",
-        "symfony/http-kernel": "To use this package with Symfony",
-        "symfony/security-bundle": "To use this package with Symfony",
-        "symfony/security-http": "To use this package with Symfony",
-        "symfony/service-contracts": "To use this package with Symfony"
+        "symfony/http-client": "To use the Amazon Cognito JWT driver to decode/encode tokens"
     },
     "config": {
         "allow-plugins": {

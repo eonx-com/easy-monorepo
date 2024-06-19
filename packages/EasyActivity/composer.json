@@ -4,52 +4,38 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "doctrine/common": "^3.0",
-        "nesbot/carbon": "^2.67",
         "php": "^8.1",
-        "symfony/serializer": "^6.4"
+        "doctrine/dbal": "^3.0",
+        "doctrine/orm": "^2.14",
+        "eonx-com/easy-doctrine": "^5.12",
+        "eonx-com/easy-lock": "^5.12",
+        "nesbot/carbon": "^2.67",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/event-dispatcher": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/messenger": "^6.4",
+        "symfony/serializer": "^6.4",
+        "symfony/uid": "^6.4"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/orm": "^2.14",
-        "doctrine/persistence": "^3.0",
-        "eonx-com/easy-doctrine": "^5.12",
-        "eonx-com/easy-event-dispatcher": "^5.12",
-        "eonx-com/easy-lock": "^5.12",
         "eonx-com/easy-test": "^5.12",
-        "eonx-com/easy-webhook": "^5.12",
         "phpunit/phpunit": "^10.2",
-        "psr/log": "^3.0",
-        "symfony/amazon-sqs-messenger": "^6.4",
-        "symfony/doctrine-bridge": "^6.4",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/monolog-bundle": "^3.8",
-        "symfony/uid": "^6.4"
+        "symfony/framework-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyActivity\\": "src"
+            "EonX\\EasyActivity\\": "src",
+            "EonX\\EasyActivity\\Bundle\\": "bundle"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "tests",
-            "EonX\\EasyActivity\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
+            "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyActivity\\Tests\\Unit\\": "tests/Unit/src"
         }
-    },
-    "suggest": {
-        "doctrine/dbal": "To save log entities to a database",
-        "doctrine/orm": "To save log entities to a database",
-        "eonx-com/easy-doctrine": "To create log entries from Doctrine events",
-        "eonx-com/easy-lock": "To lock async messages",
-        "symfony/config": "To use this package with Symfony",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/event-dispatcher": "To subscribe to EasyDoctrine events",
-        "symfony/http-kernel": "To use this package with Symfony",
-        "symfony/messenger": "To use this package with Symfony",
-        "symfony/serializer": "To use this package with Symfony",
-        "symfony/uid": "To use this package with Symfony"
     },
     "extra": {
         "branch-alias": {

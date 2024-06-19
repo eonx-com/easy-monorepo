@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Configurators;
 
-use EonX\EasyApiToken\Tokens\ApiKey;
-use EonX\EasyApiToken\Tokens\Jwt;
+use EonX\EasyApiToken\Common\ValueObject\ApiKey;
+use EonX\EasyApiToken\Common\ValueObject\Jwt;
 use EonX\EasySecurity\Authorization\AuthorizationMatrix;
 use EonX\EasySecurity\Authorization\Role;
 use EonX\EasySecurity\Configurators\RolesFromJwtConfigurator;
