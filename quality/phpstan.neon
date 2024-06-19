@@ -28,7 +28,7 @@ parameters:
         - %currentWorkingDirectory%/packages/*/vendor/*
         - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
         - %currentWorkingDirectory%/packages/*/tests/Fixture/app/config/packages/*
-        - %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/OperationRequestInitiatorTrait.php
+        - %currentWorkingDirectory%/packages/*/tests/Fixture/app/config/packages/*
 
     checkMissingIterableValueType: false
 
@@ -45,14 +45,17 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
-        - message: '#Class EonX\\EasyApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizers/CarbonImmutableNormalizer.php
+        - message: '#Method EonX\\EasyApiPlatform\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filter/AdvancedSearchFilter.php
 
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Api\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+        - message: '#Class EonX\\EasyApiPlatform\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizer/CarbonImmutableNormalizer.php
 
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
+
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
 
         # ---- EasyApiToken ----
         - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
