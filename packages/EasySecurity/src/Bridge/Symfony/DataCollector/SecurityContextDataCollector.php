@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bridge\Symfony\DataCollector;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
 use EonX\EasySecurity\Authorization\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterface;

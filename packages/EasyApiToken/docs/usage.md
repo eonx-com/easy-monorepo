@@ -37,7 +37,7 @@ controller.
 
 namespace App\Controller;
 
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
@@ -51,7 +51,7 @@ final class MyController
         $apiToken = $decoder->decode($request); // Decode token for given request
 
         /**
-         * $apiToken will be either a EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface instance
+         * $apiToken will be either a \EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface instance
          * or null if no BasicAuth provided on the given request.
          */
 
@@ -84,8 +84,7 @@ Once the configuration updated, simply change the argument given to the decoder 
 
 namespace App\Controller;
 
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
+use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
@@ -98,7 +97,7 @@ final class MyController
         $apiToken = $decoder->decode($request); // Decode token for given request
 
         /**
-         * $apiToken will now be either a EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface instance
+         * $apiToken will now be either a \EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface instance
          * or null if no BasicAuth provided on the given request.
          */
 
@@ -145,8 +144,7 @@ Once the configuration updated, replace the argument for the decoder factory to 
 
 namespace App\Controller;
 
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
+use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;use Symfony\Component\HttpFoundation\Request;
 
 final class MyController
 {
@@ -162,8 +160,8 @@ final class MyController
          * $apiToken now be an instance of any ApiToken returned by the configured decoders under chain.list
          * So in our case, $apiToken can be either:
          *
-         * - EonX\EasyApiToken\Interfaces\Tokens\BasicAuthEasyApiTokenInterface: BasicAuth provided
-         * - EonX\EasyApiToken\Interfaces\Tokens\ApiKeyEasyApiTokenInterface: User ApiKey provided
+         * - \EonX\EasyApiToken\Common\ValueObject\BasicAuthInterface: BasicAuth provided
+         * - \EonX\EasyApiToken\Common\ValueObject\ApiKeyInterface: User ApiKey provided
          * - null: neither BasicAuth or User ApiKey provided
          */
 

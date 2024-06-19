@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
 
-use EonX\EasyApiToken\Interfaces\Tokens\HashedApiKeyInterface;
+use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
 use EonX\EasySecurity\Configurators\AbstractFromHashedApiKeyConfigurator;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;

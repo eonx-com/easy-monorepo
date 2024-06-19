@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests;
 
-use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasySecurity\Authorization\AuthorizationMatrix;
 use EonX\EasySecurity\Authorization\Permission;
 use EonX\EasySecurity\Authorization\Role;

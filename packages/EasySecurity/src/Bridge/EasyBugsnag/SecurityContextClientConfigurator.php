@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Bridge\EasyBugsnag;
 use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
-use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
 use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;

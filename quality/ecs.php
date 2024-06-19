@@ -15,6 +15,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
@@ -75,7 +76,6 @@ return static function (ECSConfig $ecsConfig): void {
         BlankLineAfterOpeningTagFixer::class => null,
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
-            'packages/EasyBankFiles/src/Generators/BaseGenerator.php',
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
@@ -93,6 +93,9 @@ return static function (ECSConfig $ecsConfig): void {
         ],
         MethodChainingNewlineFixer::class => [
             'packages/*/definition.php',
+        ],
+        OrderedClassElementsFixer::class => [
+            'packages/EasyApiPlatform/tests/Application/AbstractApplicationTestCase.php',
         ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Interfaces/MathInterface.php',

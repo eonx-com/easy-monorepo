@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Laravel;
 
-use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
+use EonX\EasyApiToken\Common\Decoder\BasicAuthDecoder;
 use EonX\EasySecurity\Configurators\DefaultSecurityContextConfigurator;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\SecurityContext;

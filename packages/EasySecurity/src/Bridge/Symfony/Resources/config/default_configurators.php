@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyApiToken\Interfaces\Factories\ApiTokenDecoderFactoryInterface;
+use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bridge\BridgeConstantsInterface;
 use EonX\EasySecurity\Configurators\ApiTokenConfigurator;
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
