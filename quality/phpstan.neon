@@ -28,7 +28,6 @@ parameters:
         - %currentWorkingDirectory%/packages/*/vendor/*
         - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
         - %currentWorkingDirectory%/packages/*/tests/Fixture/app/config/packages/*
-        - %currentWorkingDirectory%/packages/*/tests/Fixture/app/config/packages/*
 
     checkMissingIterableValueType: false
 
