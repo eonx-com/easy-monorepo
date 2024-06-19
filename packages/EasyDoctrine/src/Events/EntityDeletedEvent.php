@@ -12,7 +12,7 @@ final class EntityDeletedEvent implements EntityActionEventInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getChangeSet(): array
     {

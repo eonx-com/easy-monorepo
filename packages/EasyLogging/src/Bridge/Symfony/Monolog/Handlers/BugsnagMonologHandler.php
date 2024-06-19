@@ -12,7 +12,7 @@ use Monolog\Logger;
 final class BugsnagMonologHandler extends AbstractProcessingHandler
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function __construct(
         private BugsnagSeverityResolverInterface $bugsnagSeverityResolver,

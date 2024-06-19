@@ -16,7 +16,7 @@ final class AsyncActivityLogger implements ActivityLoggerInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function addActivityLogEntry(string $action, object $object, array $changeSet): void
     {

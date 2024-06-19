@@ -25,7 +25,7 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getAllowedActivityProperties(): ?array
     {
@@ -33,7 +33,7 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getDisallowedActivityProperties(): array
     {
@@ -41,7 +41,7 @@ final class ActivityLogEntity implements ActivitySubjectInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getNestedObjectAllowedActivityProperties(): array
     {

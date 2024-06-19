@@ -19,7 +19,7 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function create(string $action, object $object, array $changeSet): ?ActivityLogEntry
     {

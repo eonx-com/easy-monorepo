@@ -12,7 +12,7 @@ final class EntityCreatedEvent implements EntityActionEventInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getChangeSet(): array
     {
