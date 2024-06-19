@@ -24,8 +24,7 @@
         "phpseclib/phpseclib": "^3.0",
         "phpunit/phpunit": "^10.2",
         "symfony/cache": "^6.4",
-        "symfony/http-client": "^6.4",
-        "symfony/yaml": "^6.4"
+        "symfony/http-client": "^6.4"
     },
     "autoload": {
         "psr-4": {

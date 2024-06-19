@@ -25,7 +25,7 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
         yield 'Default firewall from container' => [
             'my-firewall',
             [
-                __DIR__ . '/../../../../Fixture/config/default_firewall_context.yaml',
+                __DIR__ . '/../../../../Fixture/config/default_firewall_context.php',
             ],
             [
                 'firewall_context' => true,
