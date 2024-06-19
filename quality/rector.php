@@ -86,7 +86,7 @@ return static function (RectorConfig $rectorConfig): void {
         ],
         JsonThrowOnErrorRector::class,
         PhpDocCommentRector::class => [
-            'packages/EasyApiPlatform/src/Filters/AdvancedSearchFilter.php',
+            'packages/EasyApiPlatform/src/Filter/AdvancedSearchFilter.php',
         ],
         ReadOnlyPropertyRector::class,
     ]);

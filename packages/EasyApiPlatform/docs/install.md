@@ -29,7 +29,7 @@ If you're using [Symfony Flex][https://flex.symfony.com/], the bundle registrati
    return [
        // Other bundles ...
 
-       EonX\EasyApiPlatform\Bridge\Symfony\EasyApiPlatformSymfonyBundle::class => ['all' => true],
+       \EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle::class => ['all' => true],
    ];
    ```
 
