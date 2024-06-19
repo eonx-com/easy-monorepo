@@ -90,6 +90,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyActivity\\": "packages/EasyActivity/src",
+            "EonX\\EasyActivity\\Bundle\\": "packages/EasyActivity/bundle",
             "EonX\\EasyApiPlatform\\": "packages/EasyApiPlatform/src",
             "EonX\\EasyApiPlatform\\Bundle\\": "packages/EasyApiPlatform/bundle",
             "EonX\\EasyApiToken\\": "packages/EasyApiToken/src",
@@ -127,7 +128,8 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "packages/EasyActivity/tests",
-            "EonX\\EasyActivity\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "packages/EasyActivity/tests/Bridge/Symfony/Fixtures/app/src",
+            "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "packages/EasyActivity/tests/Fixture/app/src",
+            "EonX\\EasyActivity\\Tests\\Unit\\": "packages/EasyActivity/tests/Unit/src",
             "EonX\\EasyApiPlatform\\Tests\\": "packages/EasyApiPlatform/tests",
             "EonX\\EasyApiPlatform\\Tests\\Application\\": "packages/EasyApiPlatform/tests/Application/src",
             "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "packages/EasyApiPlatform/tests/Fixture/app/src",

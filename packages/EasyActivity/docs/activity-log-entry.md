@@ -5,16 +5,16 @@ weight: 1003
 
 # ActivityLogEntry class
 
-The `EonX\EasyActivity\ActivityLogEntry` class defines the data that can be recorded in an activity log entry.
+The `EonX\EasyActivity\Common\Entity\ActivityLogEntry` class defines the data that can be recorded in an activity log entry.
 
 ## Properties
 
 An ActivityLogEntry object has the following properties:
 
 - `action`: The type of action performed on the subject, which may be one of:
-  - `ActivityLogEntry::ACTION_CREATE` (i.e. `create`): Create subject
-  - `ActivityLogEntry::ACTION_DELETE` (i.e. `delete`): Delete subject
-  - `ActivityLogEntry::ACTION_UPDATE` (i.e. `update`): Update subject
+    - `ActivityLogEntry::ACTION_CREATE` (i.e. `create`): Create subject
+    - `ActivityLogEntry::ACTION_DELETE` (i.e. `delete`): Delete subject
+    - `ActivityLogEntry::ACTION_UPDATE` (i.e. `update`): Update subject
 - `actorId`: An optional identifier for an actor in the application.
 - `actorName`: An optional name for an actor in the application.
 - `actorType`: A mandatory actor type. The actor type could be a `user`, `provider`, `customer`, `jwt:provider`,
@@ -35,9 +35,10 @@ An ActivityLogEntry object has the following properties:
 
 ## ActivityLogEntry creation
 
-The package provides `EonX\EasyActivity\Interfaces\ActivityLogEntryFactoryInterface` that takes care of activity log
-entry creation. A default implementation `EonX\EasyActivity\ActivityLogEntryFactory` is also provided by the package.
+The package provides `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface` that takes care of activity log
+entry creation. A default implementation `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactory` is also provided by the package.
 See [Usage][2] for more information on using the package.
 
 [1]: config.md
+
 [2]: usage.md
