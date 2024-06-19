@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stubs;
 
-use EonX\EasyApiToken\Decoders\BasicAuthDecoder;
-use EonX\EasyApiToken\Interfaces\ApiTokenDecoderProviderInterface;
+use EonX\EasyApiToken\Common\Decoder\BasicAuthDecoder;
+use EonX\EasyApiToken\Common\Provider\DecoderProviderInterface;
 use EonX\EasyUtils\Traits\HasPriorityTrait;
 
-final class ApiTokenDecoderProviderStub implements ApiTokenDecoderProviderInterface
+final class ApiTokenDecoderProviderStub implements DecoderProviderInterface
 {
     use HasPriorityTrait;
 
     /**
-     * @return iterable<\EonX\EasyApiToken\Interfaces\ApiTokenDecoderInterface>
+     * @return iterable<\EonX\EasyApiToken\Common\Decoder\DecoderInterface>
      */
     public function getDecoders(): iterable
     {

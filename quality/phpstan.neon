@@ -57,8 +57,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
 
         # ---- EasyApiToken ----
-        - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
         # ---- EasyAsync ----
 

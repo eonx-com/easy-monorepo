@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
 use EonX\EasySecurity\Authorization\Helpers\AuthorizationMatrixFormatter;
 use EonX\EasySecurity\Exceptions\NoProviderInContextException;
 use EonX\EasySecurity\Exceptions\NoUserInContextException;

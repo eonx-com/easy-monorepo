@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity;
 
-use EonX\EasyApiToken\Exceptions\InvalidArgumentException;
-use EonX\EasyApiToken\Interfaces\Tokens\JwtInterface;
+use EonX\EasyApiToken\Common\Exception\InvalidArgumentException;
+use EonX\EasyApiToken\Common\ValueObject\JwtInterface;
 use EonX\EasySecurity\Interfaces\JwtClaimFetcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
