@@ -28,9 +28,9 @@ parameters:
         - %currentWorkingDirectory%/packages/*/vendor/*
         - %currentWorkingDirectory%/packages/*/tests/*/config/*
 
-    checkMissingIterableValueType: false
-
     ignoreErrors:
+        -
+            identifier: missingType.iterableValue
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
@@ -165,6 +165,12 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
+        - message: '#Anonymous function never returns null so it can be removed from the return type#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
+        - message: '#Else branch is unreachable because ternary operator condition is always true#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'

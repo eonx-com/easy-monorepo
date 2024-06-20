@@ -46,7 +46,7 @@ final class ActivitySubject implements ActivitySubjectInterface
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function getNestedObjectAllowedActivityProperties(): array
     {

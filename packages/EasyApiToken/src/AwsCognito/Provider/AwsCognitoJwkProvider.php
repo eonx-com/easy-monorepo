@@ -12,6 +12,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use UnexpectedValueException;
 
 final class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInterface
 {
@@ -44,8 +45,14 @@ final class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInterface
 
     private function convertJwkToPem(array $jwk): string
     {
+        $exponent = $jwk['e'] ?? null;
+
+        if (\is_string($exponent) === false) {
+            throw new UnexpectedValueException('The exponent value has to be a string.');
+        }
+
         return (string)PublicKeyLoader::load([
-            'e' => new BigInteger((string)\base64_decode($jwk['e'], true), 256),
+            'e' => new BigInteger((string)\base64_decode($exponent, true), 256),
             'n' => new BigInteger(JWT::urlsafeB64Decode($jwk['n']), 256),
         ]);
     }

@@ -57,11 +57,9 @@ return static function (DefinitionConfigurator $definition) {
             // Doctrine DBAL
             ->arrayNode('doctrine_dbal')
                 ->beforeNormalization()
-                    ->always(static function ($v): array {
-                        return \is_array($v) ? $v : [
-                            'enabled' => (bool)$v,
-                        ];
-                    })
+                    ->always(static fn ($v): array => \is_array($v) ? $v : [
+                        'enabled' => (bool)$v,
+                    ])
                 ->end()
                 ->addDefaultsIfNotSet()
                 ->children()

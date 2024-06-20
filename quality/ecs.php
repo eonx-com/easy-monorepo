@@ -33,14 +33,8 @@ use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
-
-    $ecsConfig->import(EasyQualitySetList::ECS);
-
-    $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
-
-    $ecsConfig->paths([
+return ECSConfig::configure()
+    ->withPaths([
         __DIR__ . '/../bin',
         __DIR__ . '/../config',
         __DIR__ . '/../monorepo',
@@ -48,9 +42,13 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/../packages',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
-    ]);
-
-    $ecsConfig->skip([
+    ])
+    ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
+    ->withCache(__DIR__ . '/var/cache/ecs')
+    ->withSets([
+        EasyQualitySetList::ECS,
+    ])
+    ->withSkip([
         // Skip entire files or directories
         'packages/*/var/*', // Cache files
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
@@ -113,9 +111,8 @@ return static function (ECSConfig $ecsConfig): void {
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
-    ]);
-
-    $ecsConfig->rules([
+    ])
+    ->withRules([
         AvoidPublicPropertiesSniff::class,
         DateTimeImmutableFixer::class,
         DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class,
@@ -126,15 +123,14 @@ return static function (ECSConfig $ecsConfig): void {
         StandaloneLinePromotedPropertyFixer::class,
         StaticClosureSniff::class,
         UselessConstantTypeHintSniff::class,
-    ]);
-
-    $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
+    ])
+    ->withConfiguredRule(AlphabeticallySortedArrayKeysSniff::class, [
         'skipPatterns' => [\T_ATTRIBUTE => []],
-    ]);
-    $ecsConfig->ruleWithConfiguration(ArrangeActAssertSniff::class, [
+    ])
+    ->withConfiguredRule(ArrangeActAssertSniff::class, [
         'testNamespace' => 'Test',
-    ]);
-    $ecsConfig->ruleWithConfiguration(DocCommentSpacingSniff::class, [
+    ])
+    ->withConfiguredRule(DocCommentSpacingSniff::class, [
         'annotationsGroups' => [
             '@Annotation',
             '@Target',
@@ -159,8 +155,8 @@ return static function (ECSConfig $ecsConfig): void {
             '@dataProvider',
         ],
         'linesCountBetweenAnnotationsGroups' => 1,
-    ]);
-    $ecsConfig->ruleWithConfiguration(MakeClassAbstractSniff::class, [
+    ])
+    ->withConfiguredRule(MakeClassAbstractSniff::class, [
         'applyTo' => [
             [
                 'namespace' => '/^Test/',
@@ -169,17 +165,17 @@ return static function (ECSConfig $ecsConfig): void {
                 ],
             ],
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(TrailingCommaInMultilineFixer::class, [
+    ])
+    ->withConfiguredRule(TrailingCommaInMultilineFixer::class, [
         'elements' => [
             TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS,
             TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS,
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(UseSpacingSniff::class, [
+    ])
+    ->withConfiguredRule(UseSpacingSniff::class, [
         'linesCountBetweenUseTypes' => 1,
-    ]);
-    $ecsConfig->ruleWithConfiguration(UseYieldInsteadOfReturnSniff::class, [
+    ])
+    ->withConfiguredRule(UseYieldInsteadOfReturnSniff::class, [
         'applyTo' => [
             [
                 'namespace' => '/^Test/',
@@ -189,4 +185,3 @@ return static function (ECSConfig $ecsConfig): void {
             ],
         ],
     ]);
-};
