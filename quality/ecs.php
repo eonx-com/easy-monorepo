@@ -43,7 +43,7 @@ return ECSConfig::configure()
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
-    ->withParallel(300, 2, 20)
+    ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
     ->withCache(__DIR__ . '/var/cache/ecs')
     ->withSets([
         EasyQualitySetList::ECS,

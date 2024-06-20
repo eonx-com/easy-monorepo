@@ -167,6 +167,12 @@ parameters:
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
+        - message: '#Anonymous function never returns null so it can be removed from the return type#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
+        - message: '#Else branch is unreachable because ternary operator condition is always true#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
 

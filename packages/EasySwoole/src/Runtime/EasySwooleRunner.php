@@ -207,7 +207,11 @@ final class EasySwooleRunner implements RunnerInterface
         }
 
         // Format and filter dirs
-        $dirs = \array_filter(\array_map(static fn (string $dir): ?string => \realpath($dir) ?: null, $dirs));
+        $dirs = \array_filter(\array_map(static function (string $dir): ?string {
+            $realpath = \realpath($dir);
+
+            return \is_string($realpath) ? $realpath : null;
+        }, $dirs));
 
         if (\count($dirs) < 1) {
             OutputHelper::writeln('No directories to watch, hot reload disabled');

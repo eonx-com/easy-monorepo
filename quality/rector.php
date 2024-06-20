@@ -26,7 +26,7 @@ return RectorConfig::configure()
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
-    ->withParallel(300, 2, 20)
+    ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
     ->withImportNames(importDocBlockNames: false)
     ->withPhpSets(php81: true)
     ->withCache(__DIR__ . '/var/cache/rector', FileCacheStorage::class)
