@@ -39,7 +39,7 @@ final class EasyBatchBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -50,6 +50,6 @@ final class EasyBatchBundle extends AbstractBundle
                 ->set($param->value, $config[$name]);
         }
 
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
     }
 }
