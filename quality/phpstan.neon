@@ -78,7 +78,7 @@ parameters:
         # ---- EasyDoctrine ----
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
-          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptor.php
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
