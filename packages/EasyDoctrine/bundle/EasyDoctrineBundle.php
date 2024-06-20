@@ -22,6 +22,11 @@ final class EasyDoctrineBundle extends AbstractBundle
         'mode' => ConfigParam::AwsRdsSslMode,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import(__DIR__ . '/config/definition.php');
