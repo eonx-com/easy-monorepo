@@ -50,7 +50,7 @@ final class EasyBugsnagBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -67,11 +67,11 @@ final class EasyBugsnagBundle extends AbstractBundle
                 ->set($param->value, $config[$name]);
         }
 
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         // Default configurators
         if ($config['use_default_configurators'] ?? true) {
-            $container->import(__DIR__ . '/config/default_configurators.php');
+            $container->import('config/default_configurators.php');
         }
 
         $container
@@ -96,7 +96,7 @@ final class EasyBugsnagBundle extends AbstractBundle
                 ->parameters()
                 ->set(ConfigParam::AppNameEnvVar->value, $config['app_name']['env_var']);
 
-            $container->import(__DIR__ . '/config/app_name.php');
+            $container->import('config/app_name.php');
         }
 
         if ($config['aws_ecs_fargate']['enabled'] ?? false) {
@@ -106,7 +106,7 @@ final class EasyBugsnagBundle extends AbstractBundle
                     ->set($param->value, $config['aws_ecs_fargate'][$name]);
             }
 
-            $container->import(__DIR__ . '/config/aws_ecs_fargate.php');
+            $container->import('config/aws_ecs_fargate.php');
         }
 
         $container
@@ -123,15 +123,15 @@ final class EasyBugsnagBundle extends AbstractBundle
                     ->set($param->value, $config['session_tracking'][$name]);
             }
 
-            $container->import(__DIR__ . '/config/sessions.php');
+            $container->import('config/sessions.php');
 
             if ($config['session_tracking']['messenger_message_count_for_sessions'] ?? false) {
-                $container->import(__DIR__ . '/config/sessions_messenger.php');
+                $container->import('config/sessions_messenger.php');
             }
         }
 
         if ($config['worker_info']['enabled'] ?? false) {
-            $container->import(__DIR__ . '/config/worker.php');
+            $container->import('config/worker.php');
         }
     }
 }
