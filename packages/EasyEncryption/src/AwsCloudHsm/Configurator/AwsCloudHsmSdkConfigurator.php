@@ -6,8 +6,8 @@ namespace EonX\EasyEncryption\AwsCloudHsm\Configurator;
 use Aws\CloudHSMV2\CloudHSMV2Client;
 use Aws\Sts\StsClient;
 use EonX\EasyEncryption\AwsCloudHsm\Builder\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\AwsCloudHsm\Exception\AwsCloudHsmCouldNotConfigureSdkException;
 use EonX\EasyEncryption\AwsCloudHsm\Exception\AwsCloudHsmInvalidConfigurationException;
-use EonX\EasyEncryption\AwsCloudHsm\Exception\AwsCloudHsmSdkNotConfigureException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Throwable;
@@ -99,7 +99,7 @@ final class AwsCloudHsmSdkConfigurator
                     ]);
                     $awsCredentials = $stsClient->createCredentials($awsResult);
                 } catch (Throwable $throwable) {
-                    throw new AwsCloudHsmSdkNotConfigureException(
+                    throw new AwsCloudHsmCouldNotConfigureSdkException(
                         $throwable->getMessage(),
                         $throwable->getCode(),
                         $throwable
@@ -123,7 +123,7 @@ final class AwsCloudHsmSdkConfigurator
                     ],
                 ]);
             } catch (Throwable $throwable) {
-                throw new AwsCloudHsmSdkNotConfigureException(
+                throw new AwsCloudHsmCouldNotConfigureSdkException(
                     $throwable->getMessage(),
                     $throwable->getCode(),
                     $throwable
@@ -132,11 +132,11 @@ final class AwsCloudHsmSdkConfigurator
 
             $cloudHsmClusters = (array)$awsResult->get('Clusters');
             $cloudHsmCluster = $cloudHsmClusters[0]
-                ?? throw new AwsCloudHsmSdkNotConfigureException(
+                ?? throw new AwsCloudHsmCouldNotConfigureSdkException(
                     \sprintf('No CloudHSM cluster found for the cluster ID "%s"', $options['--cluster-id'])
                 );
             $cloudHsmClusterServers = $cloudHsmCluster['Hsms']
-                ?? throw new AwsCloudHsmSdkNotConfigureException(
+                ?? throw new AwsCloudHsmCouldNotConfigureSdkException(
                     \sprintf('No HSMs found for the cluster ID "%s"', $options['--cluster-id'])
                 );
 
@@ -144,7 +144,7 @@ final class AwsCloudHsmSdkConfigurator
                 $servers[] = [
                     'enable' => true,
                     'hostname' => $cloudHsmClusterServer['EniIp']
-                        ?? throw new AwsCloudHsmSdkNotConfigureException(
+                        ?? throw new AwsCloudHsmCouldNotConfigureSdkException(
                             'No ENI IP found for the HSM'
                         ),
                     'port' => self::SERVER_PORT,
@@ -194,7 +194,7 @@ final class AwsCloudHsmSdkConfigurator
             $process = new Process($cmd);
             $process->run();
         } catch (Throwable $throwable) {
-            throw new AwsCloudHsmSdkNotConfigureException(
+            throw new AwsCloudHsmCouldNotConfigureSdkException(
                 $throwable->getMessage(),
                 $throwable->getCode(),
                 $throwable
@@ -202,7 +202,7 @@ final class AwsCloudHsmSdkConfigurator
         }
 
         if ($process->isSuccessful() === false) {
-            throw new AwsCloudHsmSdkNotConfigureException(\sprintf(
+            throw new AwsCloudHsmCouldNotConfigureSdkException(\sprintf(
                 'Output: %s. Error Output: %s',
                 $process->getOutput(),
                 $process->getErrorOutput()

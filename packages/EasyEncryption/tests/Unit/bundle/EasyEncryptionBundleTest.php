@@ -5,7 +5,7 @@ namespace EonX\EasyEncryption\Tests\Unit\Bundle;
 
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 
-final class EasyEncryptionSymfonyBundleTest extends AbstractSymfonyTestCase
+final class EasyEncryptionBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void
     {
