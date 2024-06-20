@@ -37,7 +37,7 @@ final class EasyErrorHandlerBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -124,27 +124,27 @@ final class EasyErrorHandlerBundle extends AbstractBundle
             ->registerForAutoconfiguration(VerboseStrategyDriverInterface::class)
             ->addTag(ConfigTag::VerboseStrategyDriver->value);
 
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         if ($config['use_default_builders'] ?? true) {
-            $container->import(__DIR__ . '/config/default_builders.php');
+            $container->import('config/default_builders.php');
         }
 
         if ($config['override_api_platform_listener'] ?? true) {
-            $container->import(__DIR__ . '/config/api_platform_builders.php');
+            $container->import('config/api_platform_builders.php');
         }
 
         if ($config['use_default_reporters'] ?? true) {
-            $container->import(__DIR__ . '/config/default_reporters.php');
+            $container->import('config/default_reporters.php');
         }
 
         if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
-            $container->import(__DIR__ . '/config/bugsnag_reporter.php');
+            $container->import('config/bugsnag_reporter.php');
         }
 
         // EasyWebhook integration
         if (\class_exists(FinalFailedWebhookEvent::class)) {
-            $container->import(__DIR__ . '/config/easy_webhook.php');
+            $container->import('config/easy_webhook.php');
         }
     }
 }
