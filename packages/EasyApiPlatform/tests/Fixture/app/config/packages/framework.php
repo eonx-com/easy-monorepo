@@ -13,5 +13,6 @@ return static function (FrameworkConfig $frameworkConfig): void {
         ->enabled(true);
 
     $frameworkConfig
+        ->secret('some-secret')
         ->test(true);
 };
