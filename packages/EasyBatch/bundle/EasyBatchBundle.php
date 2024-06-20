@@ -24,6 +24,11 @@ final class EasyBatchBundle extends AbstractBundle
         'lock_ttl' => ConfigParam::LockTtl,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container
