@@ -36,6 +36,11 @@ final class EasyBugsnagBundle extends AbstractBundle
         'exclude_urls_delimiter' => ConfigParam::SessionTrackingExcludeUrlsDelimiter,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container
