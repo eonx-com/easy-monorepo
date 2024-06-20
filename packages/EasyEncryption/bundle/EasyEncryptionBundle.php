@@ -34,6 +34,11 @@ final class EasyEncryptionBundle extends AbstractBundle
         'default_salt' => ConfigParam::DefaultSalt,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import(__DIR__ . '/config/definition.php');
