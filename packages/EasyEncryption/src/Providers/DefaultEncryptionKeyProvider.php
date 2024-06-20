@@ -95,9 +95,6 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
         ));
     }
 
-    /**
-     * @return \ParagonIE\Halite\EncryptionKeyPair|\ParagonIE\Halite\Symmetric\EncryptionKey
-     */
     private function doGetKey(string $keyName): EncryptionKeyPair|EncryptionKey
     {
         foreach ($this->keyResolvers as $keyResolver) {
