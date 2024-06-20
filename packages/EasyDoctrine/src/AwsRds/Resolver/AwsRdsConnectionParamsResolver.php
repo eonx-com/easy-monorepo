@@ -31,7 +31,7 @@ final class AwsRdsConnectionParamsResolver
             && $this->isEnabled('EASY_DOCTRINE_AWS_RDS_IAM_ENABLED')
             && $this->authTokenProvider !== null) {
             // Override username with aws one if provided to provide auth issue with db
-            $params['user'] = $params['driverOptions'][AwsRdsOption::AwsUsername->value]
+            $params['user'] = $params['driverOptions'][AwsRdsOption::Username->value]
                 ?? $this->awsUsername
                 ?? $params['user'];
 

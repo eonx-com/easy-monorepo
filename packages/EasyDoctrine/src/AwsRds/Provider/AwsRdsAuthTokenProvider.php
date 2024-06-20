@@ -32,7 +32,7 @@ final class AwsRdsAuthTokenProvider
      */
     public function getAuthToken(array $params): string
     {
-        $region = $params['driverOptions'][AwsRdsOption::AwsRegion->value] ?? $this->awsRegion;
+        $region = $params['driverOptions'][AwsRdsOption::Region->value] ?? $this->awsRegion;
         $key = \sprintf(self::CACHE_KEY_PATTERN, \hash('xxh128', \sprintf(
             self::CACHE_HASH_PATTERN,
             $region,
