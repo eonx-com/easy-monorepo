@@ -29,7 +29,7 @@ final class EasyDoctrineBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -41,13 +41,13 @@ final class EasyDoctrineBundle extends AbstractBundle
                 $config['deferred_dispatcher_entities']
             );
 
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         /** @var array<string, string> $bundles */
         $bundles = $builder->getParameter('kernel.bundles');
 
         if ($config['easy_error_handler_enabled'] && isset($bundles['EasyErrorHandlerSymfonyBundle']) === true) {
-            $container->import(__DIR__ . '/config/easy-error-handler-listener.php');
+            $container->import('config/easy-error-handler-listener.php');
         }
 
         $awsRdsSslEnabled = $this->loadAwsRdsSsl($container, $config);
@@ -60,7 +60,7 @@ final class EasyDoctrineBundle extends AbstractBundle
                     ->set(ConfigParam::AwsRdsSslMode->value, null);
             }
 
-            $container->import(__DIR__ . '/config/aws_rds.php');
+            $container->import('config/aws_rds.php');
         }
     }
 
@@ -93,7 +93,7 @@ final class EasyDoctrineBundle extends AbstractBundle
                     ->set($param->value, $value);
             }
 
-            $container->import(__DIR__ . '/config/aws_rds_iam.php');
+            $container->import('config/aws_rds_iam.php');
         }
 
         return $awsRdsIamEnabled;
@@ -125,7 +125,7 @@ final class EasyDoctrineBundle extends AbstractBundle
                     ->set($param->value, $value);
             }
 
-            $container->import(__DIR__ . '/config/aws_rds_ssl.php');
+            $container->import('config/aws_rds_ssl.php');
         }
 
         return $awsRdsSslEnabled;
