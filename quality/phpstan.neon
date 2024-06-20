@@ -26,13 +26,11 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/*/Fixtures/app/config/packages/*
-        - %currentWorkingDirectory%/packages/*/tests/Fixture/app/config/packages/*
-        - %currentWorkingDirectory%/packages/EasyApiPlatform/src/Bridge/Symfony/Listeners/OperationRequestInitiatorTrait.php
-
-    checkMissingIterableValueType: false
+        - %currentWorkingDirectory%/packages/*/tests/*/config/*
 
     ignoreErrors:
+        -
+            identifier: missingType.iterableValue
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
@@ -45,30 +43,31 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
-        - message: '#Class EonX\\EasyApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizers/CarbonImmutableNormalizer.php
+        - message: '#Method EonX\\EasyApiPlatform\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filter/AdvancedSearchFilter.php
 
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Api\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+        - message: '#Class EonX\\EasyApiPlatform\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizer/CarbonImmutableNormalizer.php
 
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Filters/AdvancedSearchFilterTest.php
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
+
+        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
 
         # ---- EasyApiToken ----
-        - message: '#Parameter \#1 \$payload of static method Firebase\\JWT\\JWT\:\:encode\(\) expects array, array\|object given#'
-          path: %currentWorkingDirectory%/packages/EasyApiToken/src/External/FirebaseJwtDriver.php
 
         # ---- EasyAsync ----
 
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Unit/src/Parsing/Nai/Parser/NaiParserTest.php
 
-        - message: '#Method EonX\\EasyBankFiles\\Tests\\Parsers\\Nai\\ParserTest\:\:getTransactionsForAccounts\(\) is unused#'
-          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+        - message: '#Method EonX\\EasyBankFiles\\Tests\\Unit\\Parsing\\Nai\\Parser\\NaiParserTest\:\:getTransactionsForAccounts\(\) is unused#'
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Unit/src/Parsing/Nai/Parser/NaiParserTest.php
 
         - message: '#Unreachable statement \- code above always terminates#'
-          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Parsers/Nai/ParserTest.php
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Unit/src/Parsing/Nai/Parser/NaiParserTest.php
 
         # ---- EasyBatch ----
         - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
@@ -166,6 +165,12 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
+        - message: '#Anonymous function never returns null so it can be removed from the return type#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+
+        - message: '#Else branch is unreachable because ternary operator condition is always true#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
 
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'

@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1"
+        "php": "^8.2"
     },
     "require-dev": {
         "doctrine/orm": "^2.14",
@@ -36,8 +36,6 @@
         "symfony/dependency-injection": "To use this package with Symfony",
         "symfony/http-kernel": "To use this package with Symfony"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"

@@ -12,6 +12,7 @@ final class EasyEventDispatcherServiceProviderTest extends AbstractLaravelTestCa
     public function testDispatchInLaravel(): void
     {
         $app = $this->getApp();
+        /** @var \EonX\EasyEventDispatcher\Tests\Bridge\Laravel\Stubs\LaravelEventDispatcherStub $symfonyDispatcher */
         $symfonyDispatcher = $app->get(IlluminateDispatcherContract::class);
         $easyDispatcher = $app->get(EventDispatcherInterface::class);
         $event = new EventStub();
