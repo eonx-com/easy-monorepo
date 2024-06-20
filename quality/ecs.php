@@ -56,6 +56,7 @@ return ECSConfig::configure()
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
@@ -68,6 +69,8 @@ return ECSConfig::configure()
             'packages/*/tests/Stubs/Model/*',
             'packages/*/tests/*/Fixtures/*/ApiResource/*',
             'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
+            'packages/*/tests/Fixture/*/ApiResource/*',
+            'packages/*/tests/Fixture/*/DataTransferObject/*',
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,

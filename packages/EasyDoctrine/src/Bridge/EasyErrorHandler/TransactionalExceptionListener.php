@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Bridge\EasyErrorHandler;
 
 use EonX\EasyDoctrine\Events\TransactionalExceptionEvent;
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 
 final class TransactionalExceptionListener
 {

@@ -20,6 +20,11 @@ final class EasyActivityBundle extends AbstractBundle
         'table_name' => ConfigParam::TableName,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import(__DIR__ . '/config/definition.php');

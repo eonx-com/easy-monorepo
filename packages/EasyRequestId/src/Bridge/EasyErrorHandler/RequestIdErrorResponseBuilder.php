@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\EasyErrorHandler;
 
-use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
-use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
+use EonX\EasyErrorHandler\Common\Builder\AbstractErrorResponseBuilder;
+use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use Throwable;
 
@@ -28,7 +28,7 @@ final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder i
     }
 
     /**
-     * @return iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface>
+     * @return iterable<\EonX\EasyErrorHandler\Common\Builder\ErrorResponseBuilderInterface>
      */
     public function getBuilders(): iterable
     {

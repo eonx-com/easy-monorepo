@@ -39,7 +39,7 @@ parameters:
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
         - message: '#Class .* implements generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types: T#'
-          path: %currentWorkingDirectory%/packages/*/tests/Bridge/Symfony/Fixtures/app/src/StateProvider/*
+          path: %currentWorkingDirectory%/packages/*/tests/Fixture/*/StateProvider/*
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
@@ -82,7 +82,7 @@ parameters:
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
-          path: %currentWorkingDirectory%/packages/EasyErrorHandler/src/Providers/ErrorCodesFromInterfaceProvider.php
+          path: %currentWorkingDirectory%/packages/EasyErrorHandler/src/ErrorCodes/Provider/ErrorCodesFromInterfaceProvider.php
 
         # ---- EasyEventDispatcher ----
         # ---- EasyHttpClient ----

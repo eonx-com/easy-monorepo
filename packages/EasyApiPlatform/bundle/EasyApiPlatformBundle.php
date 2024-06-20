@@ -21,6 +21,11 @@ final class EasyApiPlatformBundle extends AbstractBundle
         'custom_paginator_enabled' => ConfigParam::CustomPaginatorEnabled,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ReadListenerCompilerPass());
