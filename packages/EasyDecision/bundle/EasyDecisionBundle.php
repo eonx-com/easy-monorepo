@@ -23,15 +23,15 @@ final class EasyDecisionBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         if ($config['use_expression_language'] ?? false) {
-            $container->import(__DIR__ . '/config/use_expression_language.php');
+            $container->import('config/use_expression_language.php');
         }
 
         $builder
@@ -48,7 +48,7 @@ final class EasyDecisionBundle extends AbstractBundle
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {
-            $container->import(__DIR__ . '/config/messenger_middleware.php');
+            $container->import('config/messenger_middleware.php');
         }
     }
 }
