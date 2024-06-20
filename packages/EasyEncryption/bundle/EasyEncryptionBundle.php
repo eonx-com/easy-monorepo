@@ -41,12 +41,12 @@ final class EasyEncryptionBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         foreach (self::CONFIGS_TO_PARAMS as $configName => $param) {
             $container
@@ -65,11 +65,11 @@ final class EasyEncryptionBundle extends AbstractBundle
             ->addTag(ConfigTag::EncryptionKeyResolver->value);
 
         if ($config['use_default_key_resolvers'] ?? true) {
-            $container->import(__DIR__ . '/config/default_key_resolvers.php');
+            $container->import('config/default_key_resolvers.php');
         }
 
         if ($config['aws_cloud_hsm_encryptor']['enabled'] ?? false) {
-            $container->import(__DIR__ . '/config/aws_cloud_hsm_encryptor.php');
+            $container->import('config/aws_cloud_hsm_encryptor.php');
         }
     }
 }
