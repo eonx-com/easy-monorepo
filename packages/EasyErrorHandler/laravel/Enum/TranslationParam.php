@@ -5,5 +5,5 @@ namespace EonX\EasyErrorHandler\Laravel\Enum;
 
 enum TranslationParam: string
 {
-    case TranslationNamespace = 'easy-error-handler';
+    case Namespace = 'easy-error-handler';
 }

@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Tests\Application\Twig;
 
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 
-final class TestTemplateOverrideTest extends AbstractApplicationTestCase
+final class TemplateOverrideTest extends AbstractApplicationTestCase
 {
     public function testTemplateOverride(): void
     {

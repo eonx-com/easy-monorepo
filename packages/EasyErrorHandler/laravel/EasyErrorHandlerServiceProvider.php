@@ -56,7 +56,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__ . '/translations', TranslationParam::TranslationNamespace->value);
+        $this->loadTranslationsFrom(__DIR__ . '/translations', TranslationParam::Namespace->value);
 
         $this->publishes([
             __DIR__ . '/config/easy-error-handler.php' => \base_path('config/easy-error-handler.php'),

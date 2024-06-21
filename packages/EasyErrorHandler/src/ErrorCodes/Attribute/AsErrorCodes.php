@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Common\Attribute;
+namespace EonX\EasyErrorHandler\ErrorCodes\Attribute;
 
 use Attribute;
 

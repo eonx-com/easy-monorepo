@@ -22,7 +22,7 @@ final class LaravelTranslator implements TranslatorInterface
             return $translation;
         }
 
-        $namespacedMessage = \sprintf('%s::%s', TranslationParam::TranslationNamespace->value, \trim($message));
+        $namespacedMessage = \sprintf('%s::%s', TranslationParam::Namespace->value, \trim($message));
         $translation = $this->doTranslate($namespacedMessage, $parameters, $locale);
 
         // If translation is finally different we return it otherwise default to original message

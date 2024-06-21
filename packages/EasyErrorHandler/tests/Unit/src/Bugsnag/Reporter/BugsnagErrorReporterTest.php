@@ -36,7 +36,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
     /**
      * @see testReport
      */
-    public static function providerTestReport(): iterable
+    public static function provideReportData(): iterable
     {
         yield 'Report unexpected exception with no log level' => [
             'shouldReport' => true,
@@ -77,7 +77,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
     /**
      * @param class-string[]|null $ignoredExceptions
      */
-    #[DataProvider('providerTestReport')]
+    #[DataProvider('provideReportData')]
     public function testReport(
         bool $shouldReport,
         Throwable $throwable,

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\ErrorCodes\Provider;
 
-use EonX\EasyErrorHandler\Common\Attribute\AsErrorCodes;
+use EonX\EasyErrorHandler\ErrorCodes\Attribute\AsErrorCodes;
 use EonX\EasyErrorHandler\ErrorCodes\ValueObject\ErrorCode;
 use PhpParser\Error;
 use PhpParser\Node\Stmt\Enum_;
