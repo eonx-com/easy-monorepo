@@ -34,7 +34,7 @@
         }
     },
     "suggest": {
-        "bugsnag/bugsnag": "For Bugsnag integration"
+        "bugsnag/bugsnag": "For Bugsnag  integration"
     },
     "extra": {
         "branch-alias": {
