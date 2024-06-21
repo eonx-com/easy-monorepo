@@ -6,7 +6,7 @@ namespace EonX\EasySwoole\Bridge\Symfony;
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EonX\EasyBugsnag\Interfaces\ClientConfiguratorInterface;
-use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
+use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\AddDoctrineDbalConnectionNameToParamsPass;
 use EonX\EasySwoole\Bridge\Symfony\DependencyInjection\Compiler\EasyErrorHandlerPublicPass;

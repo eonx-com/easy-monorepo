@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\EasyLogging;
 
-use EonX\EasyLogging\Config\AbstractSelfProcessorConfigProvider;
+use EonX\EasyLogging\Processor\AbstractSelfConfigProvidingProcessor;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 
-final class RequestIdProcessor extends AbstractSelfProcessorConfigProvider
+final class RequestIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(
         private RequestIdServiceInterface $requestIdService,

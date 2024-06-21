@@ -46,7 +46,7 @@ service container under the following service ids:
 
 You can then use dependency injection anywhere you like!
 
-Thanks to [Autowiring via setters][3] in Symfony, you can use `\EonX\EasyLogging\Bridge\Symfony\Traits\LoggerAwareTrait`
+Thanks to [Autowiring via setters][3] in Symfony, you can use `\EonX\EasyLogging\Logger\LoggerAwareTrait`
 to simplify the injection of `Psr\Log\LoggerInterface`.
 
 <br>
@@ -56,9 +56,9 @@ to simplify the injection of `Psr\Log\LoggerInterface`.
 The `LoggerFactoryInterface` allows you to set different collections of "config providers", each config can define:
 
 - **channels:** if defined the config will be applied only to given channels, if `null` the config will be applied
-                to all channels
+  to all channels
 - **priority:** define the order each config must be set on the logger instance, higher the priority later the config
-                will be added to the logger instance
+  will be added to the logger instance
 
 <br>
 
@@ -72,7 +72,7 @@ To tell the logger factory about your `HandlerConfigInterface`, you must use a `
 logger factory accepts a collection of providers via the `setHandlerConfigProviders()` method:
 
 ```php
-use EonX\EasyLogging\LoggerFactory;
+use EonX\EasyLogging\Factory\LoggerFactory;
 
 $handlerConfigProviders = [];
 
@@ -91,14 +91,12 @@ Here is a simple example of a `HandlerConfigProviderInterface` to register a `St
 ```php
 namespace App\Logger;
 
-use EonX\EasyLogging\Config\HandlerConfig;
-use EonX\EasyLogging\Interfaces\Config\HandlerConfigProviderInterface;
-use Monolog\Handler\StreamHandler;
+use EonX\EasyLogging\Config\HandlerConfig;use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;use Monolog\Handler\StreamHandler;
 
 final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
     /**
-     * @return iterable<\EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface>
+     * @return iterable<\EonX\EasyLogging\Config\HandlerConfigInterface>
      */
     public function handlers(): iterable
     {
@@ -124,7 +122,7 @@ To tell the logger factory about your `ProcessorConfigInterface`, you must use a
 logger factory accepts a collection of providers via the `setProcessorConfigProviders()` method:
 
 ```php
-use EonX\EasyLogging\LoggerFactory;
+use EonX\EasyLogging\Factory\LoggerFactory;
 
 $processorConfigProviders = [];
 
@@ -143,14 +141,12 @@ Here is a simple example of a `ProcessorConfigProviderInterface` to register a `
 ```php
 namespace App\Logger;
 
-use EonX\EasyLogging\Config\ProcessorConfig;
-use EonX\EasyLogging\Interfaces\Config\ProcessorConfigProviderInterface;
-use Monolog\Processor\TagProcessor;
+use EonX\EasyLogging\Config\ProcessorConfig;use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;use Monolog\Processor\TagProcessor;
 
 final class TagProcessorConfigProvider implements ProcessorConfigProviderInterface
 {
     /**
-     * @return iterable<\EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface>
+     * @return iterable<\EonX\EasyLogging\Config\ProcessorConfigInterface>
      */
     public function processors(): iterable
     {
@@ -174,7 +170,7 @@ that, the logger factory accepts a collection of `LoggerConfiguratorInterface`.
 To tell the logger factory about your `LoggerConfiguratorInterface`, you must call the `setLoggerConfigurators()` method:
 
 ```php
-use EonX\EasyLogging\LoggerFactory;
+use EonX\EasyLogging\Factory\LoggerFactory;
 
 $loggerConfigurators = [];
 
@@ -193,9 +189,7 @@ Here is a simple example of a `LoggerConfiguratorInterface` to use microseconds:
 ```php
 namespace App\Logger;
 
-use EonX\EasyLogging\Config\AbstractLoggingConfig;
-use EonX\EasyLogging\Interfaces\Config\LoggerConfiguratorInterface;
-use Monolog\Logger;
+use EonX\EasyLogging\Config\AbstractLoggingConfig;use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;use Monolog\Logger;
 
 final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig implements LoggerConfiguratorInterface
 {
@@ -207,5 +201,7 @@ final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig impl
 ```
 
 [1]: https://getcomposer.org/
+
 [2]: https://github.com/Seldaek/monolog
+
 [3]: https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls

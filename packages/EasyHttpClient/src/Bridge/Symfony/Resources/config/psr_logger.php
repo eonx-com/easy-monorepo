@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface;
 use EonX\EasyHttpClient\Bridge\PsrLogger\LogHttpRequestSentListener;
-use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {

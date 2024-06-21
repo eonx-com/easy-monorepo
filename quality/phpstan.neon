@@ -89,7 +89,7 @@ parameters:
         # ---- EasyLock ----
         # ---- EasyLogging ----
         - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
-          path: %currentWorkingDirectory%/packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
+          path: %currentWorkingDirectory%/packages/EasyLogging/src/Provider/StreamHandlerConfigProvider.php
 
         # ---- EasyNotification ----
         # ---- EasyPagination ----
