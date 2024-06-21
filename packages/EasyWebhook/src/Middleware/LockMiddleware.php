@@ -18,7 +18,7 @@ final class LockMiddleware extends AbstractMiddleware
     private string $resourcePattern;
 
     public function __construct(
-        private LockerInterface $lockService,
+        private LockerInterface $locker,
         ?string $lockResourcePattern = null,
         ?int $priority = null,
     ) {
@@ -32,7 +32,7 @@ final class LockMiddleware extends AbstractMiddleware
         $func = fn (): WebhookResultInterface => $this->passOn($webhook, $stack);
 
         $result = $webhook->getId() !== null && $webhook->isSendNow()
-            ? $this->lockService->processWithLock($this->getLockData($webhook), $func)
+            ? $this->locker->processWithLock($this->getLockData($webhook), $func)
             : $func();
 
         return $result instanceof WebhookResultInterface ? $result : new WebhookResult($webhook);

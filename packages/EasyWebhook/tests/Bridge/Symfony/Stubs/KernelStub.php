@@ -8,7 +8,7 @@ use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookSymfonyBundle;
 use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;
-use EonX\EasyWebhook\Tests\Stubs\LockerServiceStub;
+use EonX\EasyWebhook\Tests\Stubs\LockerStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -42,7 +42,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(Connection::class, new Definition(EventDispatcherStub::class));
 
         $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
-        $container->setDefinition(LockerInterface::class, new Definition(LockerServiceStub::class));
+        $container->setDefinition(LockerInterface::class, new Definition(LockerStub::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
 

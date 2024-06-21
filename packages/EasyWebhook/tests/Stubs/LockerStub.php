@@ -9,7 +9,7 @@ use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use RuntimeException;
 use Symfony\Component\Lock\LockInterface;
 
-final class LockerServiceStub implements LockerInterface
+final class LockerStub implements LockerInterface
 {
     private bool $canProcess;
 

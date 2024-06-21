@@ -7,7 +7,7 @@ use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
-use EonX\EasyWebhook\Tests\Stubs\LockerServiceStub;
+use EonX\EasyWebhook\Tests\Stubs\LockerStub;
 use EonX\EasyWebhook\Webhook;
 use EonX\EasyWebhook\WebhookResult;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -52,7 +52,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
         $canProcess ??= true;
         $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId());
         $expectedResult = new WebhookResult($webhook);
-        $lockerService = new LockerServiceStub($canProcess);
+        $lockerService = new LockerStub($canProcess);
         $middleware = new LockMiddleware($lockerService);
 
         $result = $this->process($middleware, $webhook, $expectedResult);

@@ -16,7 +16,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly LockerInterface $lockService,
+        private readonly LockerInterface $locker,
     ) {
     }
 
@@ -30,7 +30,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
             $this->ran = true;
 
             $description = $event->getDescription();
-            $lock = $this->lockService->createLock($event->getLockResource(), $event->getMaxLockTime());
+            $lock = $this->locker->createLock($event->getLockResource(), $event->getMaxLockTime());
 
             $output->writeln(\sprintf('<info>Running scheduled command:</info> %s', $description));
 
