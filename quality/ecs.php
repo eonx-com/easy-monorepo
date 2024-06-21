@@ -15,6 +15,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
@@ -71,6 +72,9 @@ return ECSConfig::configure()
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
+        ClassDefinitionFixer::class => [
+            'packages/EasyLock/src/Common/Exception/LockAcquiringException.php',
+        ],
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
             'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',

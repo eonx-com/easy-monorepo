@@ -60,6 +60,7 @@ return RectorConfig::configure()
             'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyDoctrine/src/Bridge/Symfony/Resources/config/services.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
+            'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Bridge/Symfony/Stubs/KernelStub.php',
         ],
         JsonThrowOnErrorRector::class,
