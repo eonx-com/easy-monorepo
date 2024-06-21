@@ -1,14 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyLock\Tests\Stub\HttpKernel;
 
-use Doctrine\DBAL\Connection;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyLock\Common\Locker\LockerInterface;
-use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookSymfonyBundle;
-use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;
-use EonX\EasyWebhook\Tests\Stubs\LockerServiceStub;
+use EonX\EasyLock\Bundle\EasyLockBundle;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -16,7 +11,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -37,13 +31,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        // TODO: Find proper way to work with dbal connection
-        $container->setDefinition('doctrine.dbal.default_connection', new Definition(EventDispatcherStub::class));
-        $container->setDefinition(Connection::class, new Definition(EventDispatcherStub::class));
-
-        $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
-        $container->setDefinition(LockerInterface::class, new Definition(LockerServiceStub::class));
-        $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
 
         foreach ($container->getAliases() as $alias) {
@@ -60,7 +47,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyWebhookSymfonyBundle();
+        yield new EasyLockBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

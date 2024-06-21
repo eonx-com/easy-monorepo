@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
 
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
-use EonX\EasyLock\LockData;
+use EonX\EasyLock\Common\Locker\LockerInterface;
+use EonX\EasyLock\Common\ValueObject\LockData;
+use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyWebhook\Interfaces\StackInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
@@ -18,7 +18,7 @@ final class LockMiddleware extends AbstractMiddleware
     private string $resourcePattern;
 
     public function __construct(
-        private LockServiceInterface $lockService,
+        private LockerInterface $lockService,
         ?string $lockResourcePattern = null,
         ?int $priority = null,
     ) {

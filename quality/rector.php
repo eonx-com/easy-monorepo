@@ -59,7 +59,7 @@ return RectorConfig::configure()
             'packages/EasyBatch/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyDoctrine/src/Bridge/Symfony/Resources/config/services.php',
-            'packages/EasyLock/src/Bridge/Symfony/DependencyInjection/Compiler/RegisterLockStoreServicePass.php',
+            'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
             'packages/EasyPagination/tests/Bridge/Symfony/Stubs/KernelStub.php',
         ],
         JsonThrowOnErrorRector::class,
