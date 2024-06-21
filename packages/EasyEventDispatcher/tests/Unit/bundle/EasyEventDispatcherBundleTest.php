@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Tests\Bridge\Symfony;
+namespace EonX\EasyEventDispatcher\Tests\Unit\Bundle;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
-use EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\EventStub;
-use EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Tests\Stub\Dispatcher\SymfonyEventDispatcherStub;
+use EonX\EasyEventDispatcher\Tests\Stub\Even\EventStub;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
 final class EasyEventDispatcherBundleTest extends AbstractSymfonyTestCase
@@ -14,7 +14,7 @@ final class EasyEventDispatcherBundleTest extends AbstractSymfonyTestCase
     {
         $container = $this->getKernel()
             ->getContainer();
-        /** @var \EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub $symfonyDispatcher */
+        /** @var \EonX\EasyEventDispatcher\Tests\Stub\Dispatcher\SymfonyEventDispatcherStub $symfonyDispatcher */
         $symfonyDispatcher = $container->get(SymfonyEventDispatcherInterface::class);
         $easyDispatcher = $container->get(EventDispatcherInterface::class);
         $event = new EventStub();

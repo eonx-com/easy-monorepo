@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Bridge\Laravel;
+namespace EonX\EasyEventDispatcher\Laravel;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Laravel\Dispatcher\EventDispatcher;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 use Illuminate\Support\ServiceProvider;

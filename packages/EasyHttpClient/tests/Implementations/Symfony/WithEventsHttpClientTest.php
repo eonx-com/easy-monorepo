@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Tests\Implementations\Symfony;
 
 use DateTimeInterface;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Events\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
 use EonX\EasyHttpClient\Tests\AbstractSymfonyTestCase;

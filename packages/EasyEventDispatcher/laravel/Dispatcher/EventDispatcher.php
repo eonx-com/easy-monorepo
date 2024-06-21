@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Bridge\Laravel;
+namespace EonX\EasyEventDispatcher\Laravel\Dispatcher;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 
 final class EventDispatcher implements EventDispatcherInterface

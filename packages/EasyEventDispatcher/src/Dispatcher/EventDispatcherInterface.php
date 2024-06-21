@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Interfaces;
+namespace EonX\EasyEventDispatcher\Dispatcher;
 
 interface EventDispatcherInterface
 {

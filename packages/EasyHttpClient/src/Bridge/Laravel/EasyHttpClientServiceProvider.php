@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Bridge\Laravel;
 
 use Bugsnag\Client;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface;
 use EonX\EasyHttpClient\Bridge\EasyBugsnag\HttpRequestSentBreadcrumbListener;
 use EonX\EasyHttpClient\Bridge\PsrLogger\LogHttpRequestSentListener;

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Tests\Bridge\Symfony;
+namespace EonX\EasyEventDispatcher\Tests\Unit\Bundle;
 
-use EonX\EasyEventDispatcher\Tests\AbstractTestCase;
-use EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs\KernelStub;
+use EonX\EasyEventDispatcher\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyEventDispatcher\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractSymfonyTestCase extends AbstractTestCase
+abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
 {
     private ?KernelInterface $kernel = null;
 

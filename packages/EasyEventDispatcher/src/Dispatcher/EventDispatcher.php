@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Bridge\Symfony;
+namespace EonX\EasyEventDispatcher\Dispatcher;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
 final class EventDispatcher implements EventDispatcherInterface

@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Tests\Bridge\Laravel;
+namespace EonX\EasyEventDispatcher\Tests\Unit\Laravel;
 
-use EonX\EasyEventDispatcher\Bridge\Laravel\EasyEventDispatcherServiceProvider;
-use EonX\EasyEventDispatcher\Tests\AbstractTestCase;
-use EonX\EasyEventDispatcher\Tests\Bridge\Laravel\Stubs\LaravelEventDispatcherStub;
+use EonX\EasyEventDispatcher\Laravel\EasyEventDispatcherServiceProvider;
+use EonX\EasyEventDispatcher\Tests\Stub\Dispatcher\LaravelEventDispatcherStub;
+use EonX\EasyEventDispatcher\Tests\Unit\AbstractUnitTestCase;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 use Laravel\Lumen\Application;
 
-abstract class AbstractLaravelTestCase extends AbstractTestCase
+abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 

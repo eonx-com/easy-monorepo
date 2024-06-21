@@ -5,7 +5,7 @@ namespace EonX\EasyHttpClient\Implementations\Symfony;
 
 use Carbon\Carbon;
 use Closure;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Data\Config;
 use EonX\EasyHttpClient\Data\RequestData;
 use EonX\EasyHttpClient\Data\ResponseData;
