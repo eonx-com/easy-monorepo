@@ -27,7 +27,6 @@ to use it to avoid you doing work already done.
 Make sure all your repositories extend it, then you will be able to use the existing methods and/or create your own. To
 be able to work properly this abstraction will ensure an entity class is provided.
 
-
 Here is a simple example how to use it:
 
 ```php
@@ -76,13 +75,14 @@ final class PostRepository extends AbstractDoctrineRepository implements PostRep
 
 ## AbstractPaginatedDoctrineOrmRepository
 
-If you need to deal with paginated sets of objects, this package provides you with `EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository`
+If you need to deal with paginated sets of objects, this package provides you with `EonX\EasyRepository\Repository\AbstractPaginatedDoctrineOrmRepository`
 which has everything setup for you. This repository has a dependency on the `StartSizeDataInterface` from the `eonx/pagination`
 package so to be able to use it you first need to update your project's dependencies:
 
 ```bash
 $ composer require eonx/pagination
-``` 
+```
+
 And then don't forget to register the service provider into your application, please refer to the [documentation][5].
 
 Once everything setup, the pagination data will be resolved and injected automatically into your repositories. You will
@@ -96,8 +96,7 @@ Here is a simple example how to use it:
 ```php
 // app/Repositories/PostRepositoryInterface.php
 
-use App\Database\Entities\Post;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use App\Database\Entities\Post;use App\Database\Entities\Post;use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;use EonX\EasyRepository\Repository\AbstractPaginatedDoctrineOrmRepository;
 
 interface PostRepositoryInterface
 {
@@ -105,9 +104,6 @@ interface PostRepositoryInterface
 }
 
 // app/Repositories/PostRepository.php
-
-use App\Database\Entities\Post;
-use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
 
 final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implements PostRepositoryInterface
 {
@@ -117,10 +113,10 @@ final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implem
                       ->where('p.category = :category')
                       ->setParameter('category', $category)
                       ->getQuery();
-                      
+
         return $this->doPaginate($query);
     }
-    
+
     /**
      * Get entity class managed by the repository.
      *
@@ -134,7 +130,11 @@ final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implem
 ```
 
 [1]: https://laravel.com/
+
 [2]: https://lumen.laravel.com/
+
 [3]: https://www.doctrine-project.org/projects/orm.html
+
 [4]: https://www.laraveldoctrine.org/docs/1.3/orm
+
 [5]: https://github.com/eonx/easy-pagination/blob/master/docs/install_laravel.md
