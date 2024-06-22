@@ -5,6 +5,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-kernel": "^6.4",
         "symfony/string": "^6.4",
         "symfony/uid": "^6.4"
     },
@@ -12,19 +15,25 @@
         "eonx-com/easy-test": "^5.12",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "ramsey/uuid": "^4.7",
-        "symfony/framework-bundle": "^6.4"
+        "ramsey/uuid": "^4.7"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyRandom\\": "src",
-            "EonX\\EasyRandom\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyRandom\\Bundle\\": "bundle",
+            "EonX\\EasyRandom\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyRandom\\Tests\\": "tests"
+            "EonX\\EasyRandom\\Tests\\": "tests",
+            "EonX\\EasyRandom\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyRandom\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyRandom\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
+    },
+    "suggest": {
+        "ramsey/uuid": "To generate UUIDs with Ramsey UUID"
     },
     "extra": {
         "branch-alias": {

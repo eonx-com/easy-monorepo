@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests;
 
-use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
-use EonX\EasyRandom\Generators\RandomGenerator;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGenerator;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\SymfonyUuidV6Generator;
 use EonX\EasyWebhook\Interfaces\Stores\DataCleanerInterface;
 use EonX\EasyWebhook\Stores\NullDataCleaner;
 use PHPUnit\Framework\TestCase;
