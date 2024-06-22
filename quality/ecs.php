@@ -56,6 +56,7 @@ return ECSConfig::configure()
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
@@ -73,7 +74,7 @@ return ECSConfig::configure()
         BlankLineAfterOpeningTagFixer::class => null,
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',
+            'packages/EasySecurity/src/SymfonySecurity/Voter/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [
