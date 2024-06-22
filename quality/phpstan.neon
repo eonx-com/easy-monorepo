@@ -107,11 +107,8 @@ parameters:
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stubs/Entity/Item.php
 
         # ---- EasyPipeline ----
-        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
-          path: %currentWorkingDirectory%/packages/EasyPipeline/src/Bridge/Laravel
-
-        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
-          path: %currentWorkingDirectory%/packages/EasyPipeline/tests
+        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Factory\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
+          path: %currentWorkingDirectory%/packages/EasyPipeline/laravel
 
         # ---- EasyRandom ----
         # ---- EasyRepository ----

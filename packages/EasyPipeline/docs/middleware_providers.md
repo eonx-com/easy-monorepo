@@ -8,15 +8,15 @@ This document describes the concept of middleware providers and how to use them.
 # What's a pipeline?
 
 If you're not familiar with the Pipeline Design Pattern we recommend you to have a look at this [documentation][1].
-In this package the "tasks or stages" are represented by the `EonX\EasyPipeline\Interfaces\MiddlewareInterface`.
+In this package the "tasks or stages" are represented by the `EonX\EasyPipeline\Middleware\MiddlewareInterface`.
 So the pipelines created using this package will allow you to process input data through a collection of middleware.
-The only way to define the middleware each pipeline will use is via `EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface`.
+The only way to define the middleware each pipeline will use is via `EonX\EasyPipeline\Provider\MiddlewareProviderInterface`.
 
 <br>
 
 # How MiddlewareProviders work?
 
-Each middleware provider must be an instance of the `EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface`,
+Each middleware provider must be an instance of the `EonX\EasyPipeline\Provider\MiddlewareProviderInterface`,
 this interface defines one simple method `getMiddlewareList(): array`. The objective of this method is to return a list
 of middleware to use within a pipeline instance.
 
@@ -45,10 +45,10 @@ implementation of this package your MiddlewareProviders can return closures and 
 
 #### Accessing the Pipeline name
 
-If you're using the IlluminatePipelineFactory, a MiddlewareProvider can access the name it was registered under by implementing the `EonX\EasyPipeline\Interfaces\PipelineNameAwareInterface`.
+If you're using the IlluminatePipelineFactory, a MiddlewareProvider can access the name it was registered under by implementing the `EonX\EasyPipeline\Provider\PipelineNameAwareInterface`.
 The factory will call `setPipelineName()` on any MiddlewareProviders implementing this.
 
-To save time, the `EonX\EasyPipeline\Traits\PipelineNameAwareTrait` is available, providing an implementation of this function and the private property `$pipelineName`.
+To save time, the `EonX\EasyPipeline\Provider\PipelineNameAwareTrait` is available, providing an implementation of this function and the private property `$pipelineName`.
 
 <br>
 
@@ -62,8 +62,7 @@ dependency injection on them, how convenient!
 # Example
 
 ```php
-use App\Validator\MyValidatorInterface;
-use EonX\EasyPipeline\Interfaces\MiddlewareProviderInterface;
+use App\Validator\MyValidatorInterface;use EonX\EasyPipeline\Provider\MiddlewareProviderInterface;
 
 final class MyPipeline1MiddlewareProvider implements MiddlewareProviderInterface
 {
