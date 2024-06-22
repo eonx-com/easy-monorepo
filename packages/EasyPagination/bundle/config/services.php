@@ -18,10 +18,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(PaginationConfigInterface::class, PaginationConfig::class)
-        ->arg('$pageAttribute', '%' . ConfigParam::PageAttribute->value . '%')
-        ->arg('$pageDefault', '%' . ConfigParam::PageDefault->value . '%')
-        ->arg('$perPageAttribute', '%' . ConfigParam::PerPageAttribute->value . '%')
-        ->arg('$perPageDefault', '%' . ConfigParam::PerPageDefault->value . '%');
+        ->arg('$pageAttribute', param(ConfigParam::PageAttribute->value))
+        ->arg('$pageDefault', param(ConfigParam::PageDefault->value))
+        ->arg('$perPageAttribute', param(ConfigParam::PerPageAttribute->value))
+        ->arg('$perPageDefault', param(ConfigParam::PerPageDefault->value));
 
     $services->set(PaginationProviderInterface::class, PaginationProvider::class);
 
