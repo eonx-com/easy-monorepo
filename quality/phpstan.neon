@@ -150,11 +150,8 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyRequestId/src/Bridge/EasyLogging/RequestIdProcessor.php
 
         # ---- EasySchedule ----
-        - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Command/ScheduleRunCommand.php
-
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Event.php
+          path: %currentWorkingDirectory%/packages/EasySchedule/src/Entry/ScheduleEntry.php
 
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
