@@ -7,9 +7,9 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyPagination\Interfaces\ExtendablePaginatorInterface;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Pagination;
+use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface;
+use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 
 final class BatchItemIterator
 {

@@ -9,9 +9,9 @@ use EonX\EasyBatch\Exceptions\BatchItemNotFoundException;
 use EonX\EasyBatch\Interfaces\BatchItemInterface;
 use EonX\EasyBatch\Interfaces\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\PaginationInterface;
-use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
+use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
+use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
 {

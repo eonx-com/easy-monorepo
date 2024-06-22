@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stores;
 
 use Carbon\Carbon;
-use EonX\EasyPagination\Pagination;
+use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Stores\DoctrineDbalStore;
 use EonX\EasyWebhook\Tests\AbstractStoreTestCase;

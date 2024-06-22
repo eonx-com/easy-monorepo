@@ -56,6 +56,7 @@ return ECSConfig::configure()
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
@@ -65,7 +66,7 @@ return ECSConfig::configure()
         ],
         AvoidPublicPropertiesSniff::class => [
             'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
             'packages/*/tests/*/Fixtures/*/ApiResource/*',
             'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
@@ -100,11 +101,11 @@ return ECSConfig::configure()
         ],
         PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
             'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         PropertyTypeHintSniff::class . '.UselessAnnotation' => [
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
         ],
         SingleSpaceAfterConstructFixer::class => null,
         StaticClosureSniff::class => [

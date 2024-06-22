@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Bridge\Laravel\Commands;
 
 use Carbon\Carbon;
-use EonX\EasyPagination\Pagination;
+use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyWebhook\Exceptions\InvalidDateTimeException;
 use EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface;
 use EonX\EasyWebhook\Interfaces\Stores\StoreInterface;

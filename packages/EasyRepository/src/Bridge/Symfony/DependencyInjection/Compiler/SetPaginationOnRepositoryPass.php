@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bridge\Symfony\DependencyInjection\Compiler;
 
-use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use EonX\EasyRepository\Bridge\BridgeConstantsInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

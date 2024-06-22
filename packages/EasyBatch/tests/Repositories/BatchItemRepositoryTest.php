@@ -10,8 +10,8 @@ use EonX\EasyBatch\Repositories\BatchItemRepository;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractRepositoriesTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Pagination;
+use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
