@@ -24,7 +24,7 @@
         }
     },
     "suggest": {
-        "illuminate/pipeline": "To use the Illuminate Pipeline implementation"
+        "illuminate/pipeline": "To use the Illuminate  Pipeline implementation"
     },
     "extra": {
         "branch-alias": {
