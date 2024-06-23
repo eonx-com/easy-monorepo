@@ -43,7 +43,7 @@
         }
     },
     "suggest": {
-        "doctrine/orm": "To use  this package with Doctrine",
+        "doctrine/orm": "To use this package with Doctrine",
         "doctrine/persistence": "To use this package with Doctrine",
         "easycorp/easyadmin-bundle": "To use this package with EasyAdmin",
         "eonx-com/easy-batch": "To use this package with EasyBatch",
