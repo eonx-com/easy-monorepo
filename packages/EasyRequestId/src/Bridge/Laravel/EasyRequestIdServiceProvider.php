@@ -14,7 +14,7 @@ use EonX\EasyRequestId\Interfaces\FallbackResolverInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 use EonX\EasyRequestId\RequestIdService;
 use EonX\EasyRequestId\UuidFallbackResolver;
-use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
+use EonX\EasyWebhook\Bundle\Enum\ConfigTag as EasyWebhookConfigTag;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Queue;
@@ -126,19 +126,20 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyWebhook
-        if ($this->bridgeEnabled('easy_webhook', EasyWebhookBridgeConstantsInterface::class)) {
+        if ($this->bridgeEnabled('easy_webhook', EasyWebhookConfigTag::class)) {
             $this->app->singleton(RequestIdWebhookMiddleware::class);
             $this->app->tag(
                 RequestIdWebhookMiddleware::class,
-                [EasyWebhookBridgeConstantsInterface::TAG_MIDDLEWARE]
+                [EasyWebhookConfigTag::Middleware->value]
             );
         }
     }
 
-    private function bridgeEnabled(string $config, string $interface): bool
+    private function bridgeEnabled(string $config, string $enum): bool
     {
         $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
 
-        return $enabled && \interface_exists($interface);
+        // @todo Remove \interface_exists() after migrating to new structure
+        return $enabled && (\enum_exists($enum) || \interface_exists($enum));
     }
 }

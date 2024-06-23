@@ -124,7 +124,9 @@
             "EonX\\EasyTemplatingBlock\\": "packages/EasyTemplatingBlock/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
-            "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
+            "EonX\\EasyWebhook\\": "packages/EasyWebhook/src",
+            "EonX\\EasyWebhook\\Bundle\\": "packages/EasyWebhook/bundle",
+            "EonX\\EasyWebhook\\Laravel\\": "packages/EasyWebhook/laravel"
         }
     },
     "autoload-dev": {
@@ -170,7 +172,10 @@
             "EonX\\EasyTemplatingBlock\\Tests\\": "packages/EasyTemplatingBlock/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
-            "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests"
+            "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests",
+            "EonX\\EasyWebhook\\Tests\\Unit\\": "packages/EasyWebhook/tests/Unit/src",
+            "EonX\\EasyWebhook\\Tests\\Unit\\Bundle\\": "packages/EasyWebhook/tests/Unit/bundle",
+            "EonX\\EasyWebhook\\Tests\\Unit\\Laravel\\": "packages/EasyWebhook/tests/Unit/laravel"
         }
     },
     "replace": {
