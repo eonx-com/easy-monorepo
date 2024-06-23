@@ -29,7 +29,7 @@
         "bin/easy-test"
     ],
     "suggest": {
-        "ext-simplexml": "For  check coverage in Clover format",
+        "ext-simplexml": "For check coverage in Clover format",
         "doctrine/collections": "For use Doctrine Collections test utils",
         "doctrine/orm": "For use Doctrine ORM test utils",
         "fakerphp/faker": "For use Faker test utils",
