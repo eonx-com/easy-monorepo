@@ -57,7 +57,7 @@ return ECSConfig::configure()
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
             'packages/*/tests/*',
-            'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
+            'packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
             'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
             'quality/ecs.php',
