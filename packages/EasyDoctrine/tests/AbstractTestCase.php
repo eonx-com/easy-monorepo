@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests;
 
 use Closure;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;

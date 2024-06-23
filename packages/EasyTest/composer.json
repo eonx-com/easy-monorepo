@@ -5,27 +5,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "ext-simplexml": "*",
-        "doctrine/collections": "^2.0",
         "eonx-com/easy-utils": "^5.12",
-        "fakerphp/faker": "^1.19.0",
-        "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "phpunit/phpunit": "^10.2",
         "symfony/config": "^6.4",
         "symfony/console": "^6.4",
-        "symfony/contracts": "^3.4",
+        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^6.4",
-        "symfony/event-dispatcher": "^6.4",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/http-client": "^6.4",
-        "symfony/http-kernel": "^6.4",
-        "symfony/intl": "^6.4",
-        "symfony/messenger": "^6.4",
-        "symfony/property-access": "^6.4",
-        "symfony/translation": "^6.4",
-        "symfony/validator": "^6.4",
-        "symfony/yaml": "^6.4"
+        "symfony/http-kernel": "^6.4"
     },
     "autoload": {
         "psr-4": {
@@ -34,12 +21,32 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyTest\\Tests\\": "tests"
+            "EonX\\EasyTest\\Tests\\": "tests",
+            "EonX\\EasyTest\\Tests\\Unit\\": "tests/Unit/src"
         }
     },
     "bin": [
         "bin/easy-test"
     ],
+    "suggest": {
+        "ext-simplexml": "For check coverage in Clover format",
+        "doctrine/collections": "For use Doctrine Collections test utils",
+        "doctrine/orm": "For use Doctrine ORM test utils",
+        "fakerphp/faker": "For use Faker test utils",
+        "nesbot/carbon": "For use Carbon test utils",
+        "symfony/clock": "For use Symfony Clock test utils",
+        "symfony/event-dispatcher": "For use Symfony EventDispatcher test utils",
+        "symfony/framework-bundle": "For use Symfony FrameworkBundle test utils",
+        "symfony/http-client": "For use Symfony HttpClient test utils",
+        "symfony/http-foundation": "For use Symfony HttpFoundation test utils",
+        "symfony/messenger": "For use Symfony Messenger test utils",
+        "symfony/property-access": "For use Symfony PropertyAccess test utils",
+        "symfony/serializer": "For use Symfony Serializer test utils",
+        "symfony/translation": "For use Symfony Translation test utils",
+        "symfony/uid": "For use Symfony UID test utils",
+        "symfony/validator": "For use Symfony Validator test utils",
+        "symfony/var-dumper": "For use Symfony VarDumper test utils"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"

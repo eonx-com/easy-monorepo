@@ -81,8 +81,8 @@ return ECSConfig::configure()
             'packages/*/config/*',
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
-            'packages/EasyTest/src/Traits/ContainerServiceTrait.php',
-            'packages/EasyTest/src/Traits/DatabaseEntityTrait.php',
+            'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
+            'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
         ],
         LineLengthSniff::class . '.MaxExceeded' => [
             'packages/*/src/Bridge/BridgeConstantsInterface.php',
