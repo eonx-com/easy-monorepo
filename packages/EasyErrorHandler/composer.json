@@ -23,7 +23,8 @@
         "symfony/framework-bundle": "^6.4",
         "symfony/messenger": "^6.4",
         "symfony/routing": "^6.4",
-        "symfony/serializer": "^6.4"
+        "symfony/serializer": "^6.4",
+        "symfony/validator": "^6.4"
     },
     "autoload": {
         "psr-4": {
