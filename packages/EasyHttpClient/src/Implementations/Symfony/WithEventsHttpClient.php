@@ -14,7 +14,7 @@ use EonX\EasyHttpClient\Interfaces\HttpOptionsInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
 use EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface;
 use EonX\EasyHttpClient\Interfaces\ResponseDataInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Response\AsyncContext;

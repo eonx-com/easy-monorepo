@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTemplatingBlock\Blocks;
 
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
 {

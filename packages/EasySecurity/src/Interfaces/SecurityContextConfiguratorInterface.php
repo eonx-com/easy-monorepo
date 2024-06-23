@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
-use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface SecurityContextConfiguratorInterface extends HasPriorityInterface

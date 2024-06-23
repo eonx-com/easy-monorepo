@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\Listeners;
 
 use EonX\EasySwoole\Interfaces\AppStateResetterInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
 final class ApplicationStateResetListener extends AbstractTerminateEventListener

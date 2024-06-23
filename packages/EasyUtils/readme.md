@@ -64,7 +64,7 @@ requires the services be used in a specific order, then use the `orderHigherPrio
 `orderLowerPriorityFirst()` methods!
 
 These methods will sort the objects within the given `iterable` based on their priority. In order to define an object's
-priority, it must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided by this package. If an object
+priority, it must implement the `EonX\EasyUtils\Common\Helper\HasPriorityInterface` provided by this package. If an object
 doesn't implement this interface then its priority will default to `0` automatically.
 
 ### CollectorHelper::convertToArray()
@@ -79,8 +79,7 @@ were already an `array`, then there would be no problem. However, because they a
 guarantee you will receive an `array`. So use the `convertToArray()` method!
 
 ```php
-use App\Domain\WorkerInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -114,8 +113,7 @@ The following example is the same as for the `convertToArray()` method above. If
 ensure each item is an instance of a specific class/interface, use the `filterByClass()` method!
 
 ```php
-use App\Domain\WorkerInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -148,8 +146,7 @@ to make sure each item is an instance of a specific class/interface, but you nee
 `filterByClassAsArray()` method!
 
 ```php
-use App\Domain\WorkerInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -175,8 +172,7 @@ Those methods are similar to the `filterByClass()` and `filterByClassAsArray()` 
 exception if at least of the items is not an instance of the given class.
 
 ```php
-use App\Domain\WorkerInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -206,11 +202,11 @@ Please note that with the `ensureClass()` method, the exception will be thrown o
 The `orderHigherPriorityFirst()` method will ensure the object with the highest priority is placed first, and the object
 with the lowest priority is placed last.
 
-In order to define an object's priority, it must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided
+In order to define an object's priority, it must implement the `EonX\EasyUtils\Common\Helper\HasPriorityInterface` provided
 by this package. If an object doesn't implement this interface then its priority will default to `0` automatically.
 
 ```php
-// Foo and Bar both implement EonX\EasyUtils\Interfaces\HasPriorityInterface
+// Foo and Bar both implement EonX\EasyUtils\Common\Helper\HasPriorityInterface
 
 $foo = new Foo(); // Has a priority of 10
 $bar = new Bar(); // Has a priority of 100
@@ -232,11 +228,11 @@ can use the `orderHigherPriorityFirstAsArray()` method instead.
 The `orderLowerPriorityFirst()` method is the opposite of `orderHigherPriorityFirst()`. It will ensure the object with
 the lowest priority is placed first, and the object with the highest priority is placed last.
 
-In order to define an object's priority, it must implement the `EonX\EasyUtils\Interfaces\HasPriorityInterface` provided
+In order to define an object's priority, it must implement the `EonX\EasyUtils\Common\Helper\HasPriorityInterface` provided
 by this package. If an object doesn't implement this interface then its priority will default to `0` automatically.
 
 ```php
-// Foo and Bar both implement EonX\EasyUtils\Interfaces\HasPriorityInterface
+// Foo and Bar both implement EonX\EasyUtils\Common\Helper\HasPriorityInterface
 
 $foo = new Foo(); // Has a priority of 10
 $bar = new Bar(); // Has a priority of 100

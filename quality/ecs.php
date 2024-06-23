@@ -56,15 +56,16 @@ return ECSConfig::configure()
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
-            'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
+            'packages/EasyUtils/src/CreditCard/Validator/CreditCardNumberValidator.php',
             'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
             'quality/ecs.php',
             'quality/rector.php',
         ],
         AvoidPublicPropertiesSniff::class => [
-            'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
+            'packages/*/src/*/Constraint/*',
             'packages/*/tests/Stubs/Model/*',
             'packages/*/tests/*/Fixtures/*/ApiResource/*',
             'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
@@ -95,11 +96,11 @@ return ECSConfig::configure()
             'packages/EasyApiPlatform/tests/Application/AbstractApplicationTestCase.php',
         ],
         PhpdocAlignFixer::class => [
-            'packages/EasyUtils/src/Interfaces/MathInterface.php',
-            'packages/EasyUtils/src/Math/Math.php',
+            'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
+            'packages/EasyUtils/src/Math/Helper/MathHelper.php',
         ],
         PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
-            'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
+            'packages/*/src/*/Constraint/*',
             'packages/*/tests/Stubs/Model/*',
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,

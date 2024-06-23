@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Bridge\Symfony\AppStateResetters;
 
 use EonX\EasySwoole\Interfaces\AppStateResetterInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 use Traversable;
 

@@ -5,7 +5,7 @@ namespace EonX\EasySwoole\Bridge\Symfony\Listeners;
 
 use EonX\EasySwoole\Interfaces\AppStateCheckerInterface;
 use EonX\EasySwoole\Interfaces\RequestAttributesInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 

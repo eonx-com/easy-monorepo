@@ -5,7 +5,7 @@ namespace EonX\EasyTemplatingBlock\Renderers;
 
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 abstract class AbstractSimpleTemplatingBlockRenderer implements TemplatingBlockRendererInterface
 {

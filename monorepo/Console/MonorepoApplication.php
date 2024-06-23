@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Console;
 
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 

@@ -8,7 +8,7 @@ use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockProviderInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingBlockRendererInterface;
 use EonX\EasyTemplatingBlock\Interfaces\TemplatingEventRendererInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class TemplatingEventRenderer implements TemplatingEventRendererInterface
 {

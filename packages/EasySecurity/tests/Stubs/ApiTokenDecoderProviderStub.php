@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Tests\Stubs;
 
 use EonX\EasyApiToken\Common\Decoder\BasicAuthDecoder;
 use EonX\EasyApiToken\Common\Provider\DecoderProviderInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 final class ApiTokenDecoderProviderStub implements DecoderProviderInterface
 {

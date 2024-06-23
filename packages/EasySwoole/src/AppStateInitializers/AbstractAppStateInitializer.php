@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\AppStateInitializers;
 
 use EonX\EasySwoole\Interfaces\AppStateInitializerInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 abstract class AbstractAppStateInitializer implements AppStateInitializerInterface
 {

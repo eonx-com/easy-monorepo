@@ -124,6 +124,8 @@
             "EonX\\EasyTemplatingBlock\\": "packages/EasyTemplatingBlock/src",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
+            "EonX\\EasyUtils\\Bundle\\": "packages/EasyUtils/bundle",
+            "EonX\\EasyUtils\\Laravel\\": "packages/EasyUtils/laravel",
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
         }
     },
@@ -170,6 +172,9 @@
             "EonX\\EasyTemplatingBlock\\Tests\\": "packages/EasyTemplatingBlock/tests",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
+            "EonX\\EasyUtils\\Tests\\Unit\\": "packages/EasyUtils/tests/Unit/src",
+            "EonX\\EasyUtils\\Tests\\Unit\\Bundle\\": "packages/EasyUtils/tests/Unit/bundle",
+            "EonX\\EasyUtils\\Tests\\Unit\\Laravel\\": "packages/EasyUtils/tests/Unit/laravel",
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests"
         }
     },

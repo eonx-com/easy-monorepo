@@ -7,7 +7,7 @@ use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixFactoryInterfa
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionsProviderInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RolesProviderInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {

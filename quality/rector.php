@@ -46,7 +46,7 @@ return RectorConfig::configure()
         // Skip rules
         AddLiteralSeparatorToNumberRector::class => [
             'packages/EasyApiToken/tests/AbstractFirebaseJwtTokenTestCase.php',
-            'packages/EasyUtils/tests/Bridge/Symfony/Validator/Constraints/AbnValidatorTest.php',
+            'packages/EasyUtils/tests/Unit/src/Common/Validator/AbnValidatorTest.php',
         ],
         ClassPropertyAssignToConstructorPromotionRector::class,
         FinalizeClassesWithoutChildrenRector::class => [

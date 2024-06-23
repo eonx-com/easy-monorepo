@@ -8,7 +8,7 @@ use EonX\EasyEncryption\Exceptions\CouldNotProvideEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyResolverInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Throwable;

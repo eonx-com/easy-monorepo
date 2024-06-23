@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Configurators;
 
 use EonX\EasySecurity\Interfaces\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 final class FromRequestConfigurator

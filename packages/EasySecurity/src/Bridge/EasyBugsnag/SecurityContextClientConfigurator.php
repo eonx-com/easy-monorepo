@@ -13,7 +13,7 @@ use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;
 use EonX\EasySecurity\Interfaces\ProviderInterface;
 use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
 use EonX\EasySecurity\Interfaces\UserInterface;
-use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Throwable;
 
 final class SecurityContextClientConfigurator extends AbstractClientConfigurator

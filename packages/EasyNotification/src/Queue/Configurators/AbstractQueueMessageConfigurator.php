@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Queue\Configurators;
 
 use EonX\EasyNotification\Interfaces\QueueMessageConfiguratorInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 abstract class AbstractQueueMessageConfigurator implements QueueMessageConfiguratorInterface
 {
