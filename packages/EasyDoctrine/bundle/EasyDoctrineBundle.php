@@ -47,7 +47,7 @@ final class EasyDoctrineBundle extends AbstractBundle
         $bundles = $builder->getParameter('kernel.bundles');
 
         if ($config['easy_error_handler_enabled'] && isset($bundles['EasyErrorHandlerSymfonyBundle']) === true) {
-            $container->import('config/easy-error-handler-listener.php');
+            $container->import('config/easy_error_handler_listener.php');
         }
 
         $awsRdsSslEnabled = $this->loadAwsRdsSsl($container, $config);
