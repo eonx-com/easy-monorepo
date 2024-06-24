@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stub\Kernel;
 
 use Doctrine\DBAL\Connection;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyWebhook\Bundle\EasyWebhookBundle;
 use EonX\EasyWebhook\Tests\Stub\Dispatcher\EventDispatcherStub;

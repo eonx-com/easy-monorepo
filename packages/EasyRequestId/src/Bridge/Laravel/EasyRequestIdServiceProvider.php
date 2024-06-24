@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\Laravel;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
-use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface as EasyHttpClientBridgeConstantsInterface;
+use EonX\EasyHttpClient\Bundle\Enum\ConfigTag as EasyHttpClientConfigTag;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\EasyErrorHandler\RequestIdErrorResponseBuilder;
 use EonX\EasyRequestId\Bridge\EasyHttpClient\RequestIdRequestDataModifier;
@@ -117,11 +117,11 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyHttpClient
-        if ($this->bridgeEnabled('easy_http_client', EasyHttpClientBridgeConstantsInterface::class)) {
+        if ($this->bridgeEnabled('easy_http_client', EasyHttpClientConfigTag::class)) {
             $this->app->singleton(RequestIdRequestDataModifier::class);
             $this->app->tag(
                 RequestIdRequestDataModifier::class,
-                [EasyHttpClientBridgeConstantsInterface::TAG_REQUEST_DATA_MODIFIER]
+                [EasyHttpClientConfigTag::RequestDataModifier->value]
             );
         }
 
@@ -139,7 +139,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
     {
         $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
 
-        // @todo Remove \interface_exists() after migrating to new structure
+        // @todo Remove \interface_exists after migration to new structure
         return $enabled && (\enum_exists($enum) || \interface_exists($enum));
     }
 }

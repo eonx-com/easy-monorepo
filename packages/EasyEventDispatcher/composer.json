@@ -4,22 +4,28 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "symfony/contracts": "^3.5",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-kernel": "^6.4"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "symfony/config": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyEventDispatcher\\": "src",
-            "EonX\\EasyEventDispatcher\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyEventDispatcher\\Bundle\\": "bundle",
+            "EonX\\EasyEventDispatcher\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyEventDispatcher\\Tests\\": "tests"
+            "EonX\\EasyEventDispatcher\\Tests\\": "tests",
+            "EonX\\EasyEventDispatcher\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyEventDispatcher\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "extra": {
