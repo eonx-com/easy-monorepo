@@ -6,7 +6,7 @@ namespace EonX\EasyRepository\Laravel;
 use Illuminate\Support\ServiceProvider;
 use LogicException;
 
-final class EasyRepositoryProvider extends ServiceProvider
+final class EasyRepositoryServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {

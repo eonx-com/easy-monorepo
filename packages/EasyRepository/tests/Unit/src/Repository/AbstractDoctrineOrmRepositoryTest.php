@@ -5,6 +5,7 @@ namespace EonX\EasyRepository\Tests\Unit\Repository;
 
 use Closure;
 use Doctrine\ORM\QueryBuilder;
+use EonX\EasyRepository\Tests\Stub\Repository\DoctrineOrmRepositoryStub;
 use EonX\EasyRepository\Tests\Unit\AbstractUnitTestCase;
 use Mockery\MockInterface;
 use stdClass;

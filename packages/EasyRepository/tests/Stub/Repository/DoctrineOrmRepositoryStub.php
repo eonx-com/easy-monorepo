@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRepository\Tests\Unit\Repository;
+namespace EonX\EasyRepository\Tests\Stub\Repository;
 
 use EonX\EasyRepository\Repository\AbstractDoctrineOrmRepository;
 use stdClass;

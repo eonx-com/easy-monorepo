@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Tests\Unit\Laravel;
 
-use EonX\EasyRepository\Laravel\EasyRepositoryProvider;
+use EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider;
 use EonX\EasyRepository\Tests\Stub\Repository\Repository1Stub;
 use EonX\EasyRepository\Tests\Stub\Repository\Repository2Stub;
 use LogicException;
 
-final class EasyRepositoryProviderTest extends AbstractLumenTestCase
+final class EasyRepositoryServiceProviderTest extends AbstractLumenTestCase
 {
     public function testEmptyRepositoriesListException(): void
     {
@@ -17,7 +17,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
 
-        (new EasyRepositoryProvider($app))->register();
+        (new EasyRepositoryServiceProvider($app))->register();
     }
 
     public function testRegisterRepositoriesSuccessfully(): void
@@ -30,7 +30,7 @@ final class EasyRepositoryProviderTest extends AbstractLumenTestCase
                 'interface-2' => Repository2Stub::class,
             ]);
 
-        $provider = new EasyRepositoryProvider($app);
+        $provider = new EasyRepositoryServiceProvider($app);
         $provider->boot();
         $provider->register();
 

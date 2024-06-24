@@ -23,7 +23,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyRepository\Laravel\EasyRepositoryProvider::class,
+    \EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class,
 ],
 ```
 
@@ -65,7 +65,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyRepository\Laravel\EasyRepositoryProvider::class);
+$app->register(\EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class);
 ```
 
 <br>
