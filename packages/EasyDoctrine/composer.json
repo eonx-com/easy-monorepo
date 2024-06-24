@@ -16,7 +16,7 @@
         "myclabs/deep-copy": "^1.11",
         "nesbot/carbon": "^2.67",
         "symfony/config": "^6.4",
-        "symfony/contracts": "^3.4",
+        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^6.4",
         "symfony/doctrine-bridge": "^6.4",
         "symfony/http-kernel": "^6.4"
