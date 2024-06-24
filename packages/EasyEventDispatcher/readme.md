@@ -19,7 +19,7 @@ $ composer require eonx-com/easy-event-dispatcher
 
 ### Usage
 
-This package will register the `EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface` within the DI container,
+This package will register the `EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface` within the DI container,
 allowing you to use dependency injection to dispatch your events.
 
 ```php
@@ -27,13 +27,12 @@ allowing you to use dependency injection to dispatch your events.
 
 namespace App;
 
-use App\MyEvent;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use App\MyEvent;use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final class MyService
 {
     /**
-     * @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface
+     * @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface
      */
     private $eventDispatcher;
 

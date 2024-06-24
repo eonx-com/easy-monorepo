@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Bridge\Symfony\Stubs;
 
 use Doctrine\DBAL\Connection;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookSymfonyBundle;
 use EonX\EasyWebhook\Tests\Stubs\EventDispatcherStub;

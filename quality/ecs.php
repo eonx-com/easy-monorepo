@@ -57,6 +57,7 @@ return ECSConfig::configure()
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
             'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
