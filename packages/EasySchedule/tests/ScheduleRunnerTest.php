@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule\Tests;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasySchedule\Events\CommandExecutedEvent;
 use EonX\EasySchedule\Schedule;
@@ -40,7 +40,7 @@ final class ScheduleRunnerTest extends AbstractTestCase
             ->shouldBeCalled();
         $eventDispatcherProphecy->dispatch(new CommandExecutedEvent($event2))
             ->shouldBeCalled();
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcher */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = $eventDispatcherProphecy->reveal();
         /** @var \Symfony\Component\Console\Output\OutputInterface $output */
         $output = $this->prophesize(OutputInterface::class)->reveal();
