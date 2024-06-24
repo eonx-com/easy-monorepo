@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Laravel;
 
 use Bugsnag\Client;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigServiceId;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;

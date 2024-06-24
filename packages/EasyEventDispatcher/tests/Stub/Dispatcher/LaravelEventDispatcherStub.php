@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Tests\Bridge\Laravel\Stubs;
+namespace EonX\EasyEventDispatcher\Tests\Stub\Dispatcher;
 
 use Illuminate\Contracts\Events\Dispatcher;
 

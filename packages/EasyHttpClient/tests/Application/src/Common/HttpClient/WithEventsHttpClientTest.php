@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Tests\Application\Common\HttpClient;
 
 use DateTimeInterface;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseDataInterface;
 use EonX\EasyHttpClient\Tests\Application\AbstractApplicationTestCase;

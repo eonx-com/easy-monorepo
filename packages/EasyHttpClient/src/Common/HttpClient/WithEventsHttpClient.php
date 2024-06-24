@@ -5,7 +5,7 @@ namespace EonX\EasyHttpClient\Common\HttpClient;
 
 use Carbon\Carbon;
 use Closure;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Common\Enum\HttpOption;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;

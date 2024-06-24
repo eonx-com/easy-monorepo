@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Tests\Bridge\Symfony\Stubs;
+namespace EonX\EasyEventDispatcher\Tests\Stub\Dispatcher;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

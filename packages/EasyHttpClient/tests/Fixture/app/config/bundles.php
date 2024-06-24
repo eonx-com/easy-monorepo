@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle;
+use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyHttpClient\Bundle\EasyHttpClientBundle;
 use EonX\EasyLock\Bridge\Symfony\EasyLockSymfonyBundle;
 use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookSymfonyBundle;
@@ -12,7 +12,7 @@ return [
     DoctrineBundle::class => [
         'all' => true,
     ],
-    EasyEventDispatcherSymfonyBundle::class => [
+    EasyEventDispatcherBundle::class => [
         'all' => true,
     ],
     EasyWebhookSymfonyBundle::class => [
