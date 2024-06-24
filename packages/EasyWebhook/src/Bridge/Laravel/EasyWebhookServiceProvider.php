@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Bridge\Laravel;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstants;
 use EonX\EasyWebhook\Async\NullAsyncDispatcher;
