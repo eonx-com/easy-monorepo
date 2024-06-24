@@ -7,7 +7,7 @@ use Closure;
 use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-trait ProcessWithLockerTrait
+trait ProcessWithLockTrait
 {
     private LockerInterface $locker;
 

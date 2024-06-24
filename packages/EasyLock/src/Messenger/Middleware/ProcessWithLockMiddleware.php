@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Messenger\Middleware;
 
-use EonX\EasyLock\Common\Locker\ProcessWithLockerTrait;
+use EonX\EasyLock\Common\Locker\ProcessWithLockTrait;
 use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 use EonX\EasyLock\Messenger\Stamp\WithLockDataStamp;
 use Symfony\Component\Messenger\Envelope;
@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
 final class ProcessWithLockMiddleware implements MiddlewareInterface
 {
-    use ProcessWithLockerTrait;
+    use ProcessWithLockTrait;
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
