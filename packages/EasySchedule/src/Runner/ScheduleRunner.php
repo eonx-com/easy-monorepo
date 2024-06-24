@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule\Runner;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasySchedule\Event\CommandExecutedEvent;
 use EonX\EasySchedule\Schedule\ScheduleInterface;
