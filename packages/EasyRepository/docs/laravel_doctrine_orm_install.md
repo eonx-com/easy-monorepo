@@ -96,7 +96,7 @@ Here is a simple example how to use it:
 ```php
 // app/Repositories/PostRepositoryInterface.php
 
-use App\Database\Entities\Post;use App\Database\Entities\Post;use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
+use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
 
 interface PostRepositoryInterface
 {
@@ -104,6 +104,9 @@ interface PostRepositoryInterface
 }
 
 // app/Repositories/PostRepository.php
+
+use App\Database\Entities\Post;
+use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
 
 final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implements PostRepositoryInterface
 {
