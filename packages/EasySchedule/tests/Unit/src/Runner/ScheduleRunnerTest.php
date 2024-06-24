@@ -18,7 +18,7 @@ final class ScheduleRunnerTest extends AbstractUnitTestCase
 {
     use ProphecyTrait;
 
-    public function testRunSucceedsAndDispatchesEntry(): void
+    public function testRunSucceedsAndDispatchesEvent(): void
     {
         $app = new Application();
         $schedule = (new Schedule())->setApplication($app);

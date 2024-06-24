@@ -12,7 +12,8 @@ The `ScheduleInterface` passed to the `schedule` method offers all the features 
 ```php
 // src/Schedule/MyScheduleProvider.php
 
-use EonX\EasySchedule\Provider\ScheduleProviderInterface;use EonX\EasySchedule\Schedule\Schedule\ScheduleInterface;
+use EonX\EasySchedule\Provider\ScheduleProviderInterface;
+use EonX\EasySchedule\Schedule\Schedule\ScheduleInterface;
 
 final class MyScheduleProvider implements ScheduleProviderInterface
 {
