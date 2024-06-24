@@ -11,7 +11,7 @@ use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterf
 use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyDoctrine\EntityEvent\Event\TransactionalExceptionEvent;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -61,7 +61,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         /** @var \EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface $entityEventDispatcherReveal */
         $entityEventDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $entityEventDispatcherReveal,
@@ -96,7 +96,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         /** @var \EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
         $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $deferredDispatcherReveal,
@@ -131,7 +131,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         /** @var \EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
         $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $deferredDispatcherReveal,
@@ -166,7 +166,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         /** @var \EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
         $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $deferredDispatcherReveal,
@@ -212,7 +212,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         /** @var \EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface $deferredDispatcherReveal */
         $deferredDispatcherReveal = $deferredEntityEventDispatcher->reveal();
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $deferredDispatcherReveal,
@@ -264,7 +264,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::type(TransactionalExceptionEvent::class))
             ->willReturnArgument();
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $deferredDispatcherReveal,
@@ -320,7 +320,7 @@ final class WithEventsEntityManagerTest extends AbstractUnitTestCase
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::type(TransactionalExceptionEvent::class))
             ->willReturnArgument();
-        /** @var \EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface $eventDispatcherReveal */
+        /** @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface $eventDispatcherReveal */
         $eventDispatcherReveal = $eventDispatcher->reveal();
         $entityManagerDecorator = new WithEventsEntityManager(
             $deferredDispatcherReveal,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests\Stub\EventDispatcher;
 
 use Closure;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final class EventDispatcherStub implements EventDispatcherInterface
 {

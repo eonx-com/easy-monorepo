@@ -16,8 +16,8 @@ use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
 use EonX\EasyDoctrine\Tests\Fixture\Type\PriceType;
-use EonX\EasyEventDispatcher\Bridge\Symfony\EventDispatcher;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcher;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 final class EntityManagerStub

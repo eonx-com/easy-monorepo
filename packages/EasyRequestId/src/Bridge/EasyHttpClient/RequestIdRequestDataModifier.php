@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bridge\EasyHttpClient;
 
-use EonX\EasyHttpClient\Interfaces\RequestDataInterface;
-use EonX\EasyHttpClient\Interfaces\RequestDataModifierInterface;
+use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
+use EonX\EasyHttpClient\Common\ValueObject\RequestDataInterface;
 use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
 
 final class RequestIdRequestDataModifier implements RequestDataModifierInterface

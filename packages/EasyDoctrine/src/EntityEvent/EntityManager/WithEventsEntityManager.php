@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\TransactionalExceptionEvent;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Throwable;
 
 final class WithEventsEntityManager extends DoctrineEntityManagerDecorator

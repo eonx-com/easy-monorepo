@@ -8,7 +8,7 @@ use EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use LogicException;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
