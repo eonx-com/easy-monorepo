@@ -34,8 +34,6 @@ parameters:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
-        - '#Method EonX\\.*\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
-        - '#Method EonX\\.*\\Fixtures\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
         - message: '#Class .* implements generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types: T#'

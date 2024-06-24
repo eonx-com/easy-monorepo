@@ -67,8 +67,6 @@ return ECSConfig::configure()
         AvoidPublicPropertiesSniff::class => [
             'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
             'packages/*/tests/Stubs/Model/*',
-            'packages/*/tests/*/Fixtures/*/ApiResource/*',
-            'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
             'packages/*/tests/Fixture/*/ApiResource/*',
             'packages/*/tests/Fixture/*/DataTransferObject/*',
             'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
