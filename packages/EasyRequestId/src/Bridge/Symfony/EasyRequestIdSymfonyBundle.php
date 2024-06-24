@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Bridge\Symfony;
 
 use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag as EasyErrorHandlerConfigTag;
-use EonX\EasyHttpClient\Bridge\BridgeConstantsInterface as EasyHttpClientBridgeConstantsInterface;
+use EonX\EasyHttpClient\Bundle\Enum\ConfigParam as EasyHttpClientConfigParam;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use EonX\EasyRequestId\Bridge\BridgeConstantsInterface;
 use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
@@ -55,13 +55,14 @@ final class EasyRequestIdSymfonyBundle extends AbstractBundle
 
         $this->loadIfEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class);
         $this->loadIfEnabled('easy_logging', EasyLoggingBridgeConstantsInterface::class);
-        $this->loadIfEnabled('easy_http_client', EasyHttpClientBridgeConstantsInterface::class);
+        $this->loadIfEnabled('easy_http_client', EasyHttpClientConfigParam::class);
         $this->loadIfEnabled('easy_webhook', EasyWebhookBridgeConstantsInterface::class);
     }
 
     private function loadIfEnabled(string $configName, ?string $enum = null): void
     {
         // Load only if enum exists
+        // @todo Remove \interface_exists after migration to new structure
         // @todo Remove \interface_exists after migration to new structure
         if ($enum !== null && (\enum_exists($enum) || \interface_exists($enum)) === false) {
             return;
