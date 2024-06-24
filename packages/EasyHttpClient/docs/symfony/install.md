@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyHttpClient\Bridge\Symfony\EasyHttpClientSymfonyBundle::class => ['all' => true],
+    EonX\EasyHttpClient\Bundle\EasyHttpClientBundle::class => ['all' => true],
 ];
 ```
 

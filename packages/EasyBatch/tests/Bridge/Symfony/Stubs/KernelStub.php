@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Tests\Bridge\Symfony\Stubs;
 use Doctrine\DBAL\Connection;
 use EonX\EasyBatch\Bridge\Symfony\EasyBatchSymfonyBundle;
 use EonX\EasyEncryption\Bundle\EasyEncryptionBundle;
-use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle;
+use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use Psr\Container\ContainerInterface;
@@ -49,7 +49,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         yield new EasyBatchSymfonyBundle();
         yield new EasyEncryptionBundle();
-        yield new EasyEventDispatcherSymfonyBundle();
+        yield new EasyEventDispatcherBundle();
         yield new EasyRandomSymfonyBundle();
     }
 
