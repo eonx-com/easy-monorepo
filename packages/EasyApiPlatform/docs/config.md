@@ -16,7 +16,7 @@ must be named `easy_api_platform`.
 
 The following configuration options are available:
 
-- `advanced_search_filter`: Configures options for the `\EonX\EasyApiPlatform\Filters\AdvancedSearchFilter` class.
+- `advanced_search_filter`: Configures options for the `\EonX\EasyApiPlatform\Filter\AdvancedSearchFilter` class.
     - `iri_fields`: An array of fields to be treated as IRIs. Defaults to `[]`.
 
 ## Example configuration file

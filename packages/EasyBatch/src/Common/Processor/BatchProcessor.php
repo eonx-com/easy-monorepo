@@ -14,7 +14,7 @@ use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final class BatchProcessor
 {

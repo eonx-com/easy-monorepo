@@ -9,7 +9,7 @@ use EonX\EasyBatch\Tests\Stub\ConnectionFactory\DoctrineDbalConnectionFactoryStu
 use EonX\EasyBatch\Tests\Stub\EventDispatcher\SymfonyEventDispatcherStub;
 use EonX\EasyBatch\Tests\Stub\MessageBus\MessageBusStub;
 use EonX\EasyEncryption\Bridge\Symfony\EasyEncryptionSymfonyBundle;
-use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle;
+use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyLock\Interfaces\LockServiceInterface;
 use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use Psr\Container\ContainerInterface;
@@ -52,7 +52,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         yield new EasyBatchBundle();
         yield new EasyEncryptionSymfonyBundle();
-        yield new EasyEventDispatcherSymfonyBundle();
+        yield new EasyEventDispatcherBundle();
         yield new EasyRandomSymfonyBundle();
     }
 

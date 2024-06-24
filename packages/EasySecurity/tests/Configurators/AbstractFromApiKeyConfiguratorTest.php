@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Configurators;
 
-use EonX\EasyApiToken\Tokens\ApiKey;
+use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasySecurity\SecurityContext;
 use EonX\EasySecurity\Tests\AbstractTestCase;
 use EonX\EasySecurity\Tests\Stubs\PermissionFromApiKeyConfiguratorStub;

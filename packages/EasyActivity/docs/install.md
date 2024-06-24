@@ -25,7 +25,7 @@ If you're using [Symfony Flex][2], this step has been done automatically for you
 return [
     // Other bundles ...
 
-    EonX\EasyActivity\Bridge\Symfony\EasyActivitySymfonyBundle::class => ['all' => true],
+    EonX\EasyActivity\Bundle\EasyActivityBundle::class => ['all' => true],
 ];
 ```
 
@@ -39,7 +39,11 @@ following packages for the following purposes:
 - [symfony/messenger][5]: to store entries asynchronously
 
 [1]: https://getcomposer.org/
+
 [2]: https://flex.symfony.com/
+
 [3]: https://github.com/eonx-com/easy-doctrine
+
 [4]: https://github.com/symfony/serializer
+
 [5]: https://github.com/symfony/messenger

@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "symfony/lock": "^6.4"
     },
     "require-dev": {

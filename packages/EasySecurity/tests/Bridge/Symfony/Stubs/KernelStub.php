@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Bridge\Symfony\Stubs;
 
-use EonX\EasyApiToken\Bridge\BridgeConstantsInterface as EasyApiTokenConstantsInterface;
-use EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle;
+use EonX\EasyApiToken\Bundle\EasyApiTokenBundle;
+use EonX\EasyApiToken\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle;
 use EonX\EasySecurity\Bridge\Symfony\EasySecuritySymfonyBundle;
 use EonX\EasySecurity\Tests\Stubs\ApiTokenDecoderProviderStub;
@@ -42,7 +42,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         // ApiTokenDecoderProvider
         $container
             ->setDefinition(ApiTokenDecoderProviderStub::class, new Definition(ApiTokenDecoderProviderStub::class))
-            ->addTag(EasyApiTokenConstantsInterface::TAG_DECODER_PROVIDER);
+            ->addTag(ConfigTag::DecoderProvider->value);
 
         // RequestStack
         $requestStackDef = new Definition(RequestStack::class);
@@ -63,7 +63,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyApiTokenSymfonyBundle();
+        yield new EasyApiTokenBundle();
         yield new EasyLoggingSymfonyBundle();
         yield new EasySecuritySymfonyBundle();
     }

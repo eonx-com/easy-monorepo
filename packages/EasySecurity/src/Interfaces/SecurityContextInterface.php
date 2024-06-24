@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Interfaces;
 
-use EonX\EasyApiToken\Interfaces\ApiTokenInterface;
+use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
 use EonX\EasySecurity\Interfaces\Authorization\AuthorizationMatrixInterface;
 use EonX\EasySecurity\Interfaces\Authorization\PermissionInterface;
 use EonX\EasySecurity\Interfaces\Authorization\RoleInterface;

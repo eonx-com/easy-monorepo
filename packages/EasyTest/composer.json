@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-simplexml": "*",
         "doctrine/collections": "^2.0",
         "eonx-com/easy-utils": "^5.12",
@@ -14,7 +14,7 @@
         "phpunit/phpunit": "^10.2",
         "symfony/config": "^6.4",
         "symfony/console": "^6.4",
-        "symfony/contracts": "^3.4",
+        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^6.4",
         "symfony/event-dispatcher": "^6.4",
         "symfony/framework-bundle": "^6.4",

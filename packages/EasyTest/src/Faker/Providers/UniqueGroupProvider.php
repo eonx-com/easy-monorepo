@@ -66,7 +66,7 @@ final class UniqueGroupProvider extends BaseProvider
         $callableParams = \array_intersect_key($attributes, \array_flip($groupAttributes));
         for ($i = 0; $i < self::ITERATIONS_LIMIT; $i++) {
             $uniqueParams = \array_map(
-                static fn (UniqueGroupPropertyValueGenerator $generator) => $generator->generateValue(),
+                static fn (UniqueGroupPropertyValueGenerator $generator): mixed => $generator->generateValue(),
                 $callableParams
             );
             $paramsKey = \implode(',', $uniqueParams);
