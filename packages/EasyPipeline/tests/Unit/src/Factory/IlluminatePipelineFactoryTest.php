@@ -6,7 +6,7 @@ namespace EonX\EasyPipeline\Tests\Unit\Factory;
 use EonX\EasyPipeline\Exception\InvalidMiddlewareProviderException;
 use EonX\EasyPipeline\Exception\PipelineNotFoundException;
 use EonX\EasyPipeline\Factory\IlluminatePipelineFactory;
-use EonX\EasyPipeline\Laravel\EasyIlluminatePipelineServiceProvider;
+use EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider;
 use EonX\EasyPipeline\Pipeline\PipelineInterface;
 use EonX\EasyPipeline\Tests\Stub\Provider\PipelineNameAwareMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Stub\Provider\ValidMiddlewareProviderStub;
@@ -17,7 +17,7 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
 {
     public function testCreatePipelineSuccessfullyWithPrefixAndCacheResolved(): void
     {
-        $prefix = EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX;
+        $prefix = EasyPipelineServiceProvider::PIPELINES_PREFIX;
 
         $app = $this->getApplication();
         $app->instance($prefix . 'pipeline', new ValidMiddlewareProviderStub());

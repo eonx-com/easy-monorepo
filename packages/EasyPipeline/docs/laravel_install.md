@@ -29,7 +29,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyPipeline\Laravel\EasyIlluminatePipelineServiceProvider::class,
+    \EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider::class,
 ],
 ```
 
@@ -73,7 +73,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyPipeline\Laravel\EasyIlluminatePipelineServiceProvider::class);
+$app->register(\EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider::class);
 ```
 
 <br>

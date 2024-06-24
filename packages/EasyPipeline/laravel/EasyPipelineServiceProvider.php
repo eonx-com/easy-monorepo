@@ -9,7 +9,7 @@ use EonX\EasyPipeline\Factory\PipelineFactoryInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
-final class EasyIlluminatePipelineServiceProvider extends ServiceProvider
+final class EasyPipelineServiceProvider extends ServiceProvider
 {
     public const PIPELINES_PREFIX = 'pipeline.';
 

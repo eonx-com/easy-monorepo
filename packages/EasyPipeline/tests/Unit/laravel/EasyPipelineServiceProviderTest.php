@@ -5,11 +5,11 @@ namespace EonX\EasyPipeline\Tests\Unit\Laravel;
 
 use EonX\EasyPipeline\Exception\EmptyPipelinesListException;
 use EonX\EasyPipeline\Factory\PipelineFactoryInterface;
-use EonX\EasyPipeline\Laravel\EasyIlluminatePipelineServiceProvider;
+use EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider;
 use EonX\EasyPipeline\Tests\Stub\Provider\MiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
 
-final class EasyPipelineProviderTest extends AbstractLumenTestCase
+final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
 {
     public function testEmptyProvidersListException(): void
     {
@@ -18,7 +18,7 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
 
-        $serviceProvider = new EasyIlluminatePipelineServiceProvider($app);
+        $serviceProvider = new EasyPipelineServiceProvider($app);
 
         $serviceProvider->boot();
         $serviceProvider->register();
@@ -33,7 +33,7 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
                 'pipeline-1' => 'provider-1',
             ]);
 
-        (new EasyIlluminatePipelineServiceProvider($app))->register();
+        (new EasyPipelineServiceProvider($app))->register();
 
         self::assertInstanceOf(PipelineFactoryInterface::class, $app->get(PipelineFactoryInterface::class));
     }
@@ -47,11 +47,11 @@ final class EasyPipelineProviderTest extends AbstractLumenTestCase
                 'pipeline-1' => MiddlewareProviderStub::class,
             ]);
 
-        (new EasyIlluminatePipelineServiceProvider($app))->register();
+        (new EasyPipelineServiceProvider($app))->register();
 
         self::assertInstanceOf(
             MiddlewareProviderStub::class,
-            $app->get(EasyIlluminatePipelineServiceProvider::PIPELINES_PREFIX . 'pipeline-1')
+            $app->get(EasyPipelineServiceProvider::PIPELINES_PREFIX . 'pipeline-1')
         );
     }
 }
