@@ -38,7 +38,7 @@ use EonX\EasyBatch\Messenger\MessageHandler\UpdateBatchItemMessageHandler;
 use EonX\EasyBatch\Messenger\Middleware\DispatchBatchMiddleware;
 use EonX\EasyBatch\Messenger\Middleware\ProcessBatchItemMiddleware;
 use EonX\EasyBatch\Messenger\Serializer\HandlerFailedExceptionMessageSerializer;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
