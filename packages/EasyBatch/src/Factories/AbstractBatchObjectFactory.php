@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Factories;
 use EonX\EasyBatch\Events\AbstractBatchObjectEvent;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 abstract class AbstractBatchObjectFactory
 {
