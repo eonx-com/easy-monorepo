@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\DataTransferObjects;
 
-final class ErrorCodesDto
+final readonly class ErrorCodesDto
 {
     /**
      * @param \EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto[] $nextGroupedErrorCodes
      */
     public function __construct(
-        private readonly int $nextGroupErrorCode = 0,
-        private readonly array $nextGroupedErrorCodes = [],
+        private int $nextGroupErrorCode = 0,
+        private array $nextGroupedErrorCodes = [],
     ) {
     }
 

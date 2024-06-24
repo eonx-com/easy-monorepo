@@ -9,10 +9,10 @@ use OpenSwoole\Core\Coroutine\Client\PDOStatementProxy;
 use PDO;
 use PDOException;
 
-final class DbalResult implements Result
+final readonly class DbalResult implements Result
 {
     public function __construct(
-        private readonly PDOStatementProxy $pdoStatement,
+        private PDOStatementProxy $pdoStatement,
     ) {
     }
 

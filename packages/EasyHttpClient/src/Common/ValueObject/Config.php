@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Common\ValueObject;
 
-final class Config
+final readonly class Config
 {
     /**
      * @param \EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface[]|null $requestDataModifiers
      * @param string[]|null $requestDataModifiersWhitelist
      */
     public function __construct(
-        private readonly array $httpClientOptions,
-        private readonly ?array $requestDataExtra = null,
-        private readonly ?array $requestDataModifiers = null,
-        private readonly ?array $requestDataModifiersWhitelist = null,
-        private readonly ?bool $isRequestDataModifiersEnabled = null,
-        private readonly ?bool $isEventsEnabled = null,
+        private array $httpClientOptions,
+        private ?array $requestDataExtra = null,
+        private ?array $requestDataModifiers = null,
+        private ?array $requestDataModifiersWhitelist = null,
+        private ?bool $isRequestDataModifiersEnabled = null,
+        private ?bool $isEventsEnabled = null,
     ) {
     }
 

@@ -5,12 +5,12 @@ namespace EonX\EasySwoole\ValueObjects;
 
 use EonX\EasySwoole\Enums\SwooleTableColumnType;
 
-final class SwooleTableColumnDefinition
+final readonly class SwooleTableColumnDefinition
 {
     public function __construct(
-        public readonly string $name,
-        public readonly SwooleTableColumnType $type,
-        public readonly ?int $size = null,
+        public string $name,
+        public SwooleTableColumnType $type,
+        public ?int $size = null,
     ) {
     }
 }

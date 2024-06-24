@@ -7,13 +7,13 @@ use EonX\EasyDoctrine\Bridge\AwsRds\Iam\AuthTokenProvider;
 use EonX\EasyDoctrine\Bridge\AwsRds\Ssl\CertificateAuthorityProvider;
 use PDO;
 
-final class AwsRdsConnectionParamsResolver
+final readonly class AwsRdsConnectionParamsResolver
 {
     public function __construct(
-        private readonly ?AuthTokenProvider $authTokenProvider = null,
-        private readonly ?string $sslMode = null,
-        private readonly ?CertificateAuthorityProvider $certificateAuthorityProvider = null,
-        private readonly ?string $awsUsername = null,
+        private ?AuthTokenProvider $authTokenProvider = null,
+        private ?string $sslMode = null,
+        private ?CertificateAuthorityProvider $certificateAuthorityProvider = null,
+        private ?string $awsUsername = null,
     ) {
     }
 

@@ -8,15 +8,15 @@ use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
-final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
+final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataSerializerInterface
 {
     /**
      * @param string[] $disallowedProperties
      */
     public function __construct(
-        private readonly SymfonySerializerInterface $serializer,
-        private readonly CircularReferenceHandlerInterface $circularReferenceHandler,
-        private readonly array $disallowedProperties,
+        private SymfonySerializerInterface $serializer,
+        private CircularReferenceHandlerInterface $circularReferenceHandler,
+        private array $disallowedProperties,
     ) {
     }
 

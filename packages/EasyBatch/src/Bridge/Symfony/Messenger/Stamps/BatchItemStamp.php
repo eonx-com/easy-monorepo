@@ -5,10 +5,10 @@ namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps;
 
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
-final class BatchItemStamp implements StampInterface
+final readonly class BatchItemStamp implements StampInterface
 {
     public function __construct(
-        private readonly int|string $batchItemId,
+        private int|string $batchItemId,
     ) {
     }
 

@@ -5,10 +5,10 @@ namespace EonX\EasySchedule\Events;
 
 use EonX\EasySchedule\Interfaces\EventInterface;
 
-final class CommandExecutedEvent
+final readonly class CommandExecutedEvent
 {
     public function __construct(
-        private readonly EventInterface $scheduleEvent,
+        private EventInterface $scheduleEvent,
     ) {
     }
 

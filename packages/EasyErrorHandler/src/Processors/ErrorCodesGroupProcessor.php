@@ -7,14 +7,14 @@ use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodeCategoryDto;
 use EonX\EasyErrorHandler\DataTransferObjects\ErrorCodesDto;
 use EonX\EasyErrorHandler\Interfaces\ErrorCodesGroupProcessorInterface;
 
-final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
+final readonly class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
 {
     /**
      * @param array<\EonX\EasyErrorHandler\Interfaces\ErrorCodesProviderInterface> $errorCodesProviders
      */
     public function __construct(
-        private readonly int $categorySize,
-        private readonly array $errorCodesProviders,
+        private int $categorySize,
+        private array $errorCodesProviders,
     ) {
     }
 

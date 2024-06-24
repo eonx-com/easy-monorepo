@@ -10,10 +10,10 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-final class DispatchBatchMiddleware implements MiddlewareInterface
+final readonly class DispatchBatchMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly BatchObjectManagerInterface $batchObjectManager,
+        private BatchObjectManagerInterface $batchObjectManager,
     ) {
     }
 

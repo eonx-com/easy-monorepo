@@ -12,13 +12,13 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Iterator\BatchItemIterator;
 use EonX\EasyBatch\Iterator\IteratorConfig;
 
-final class BatchItemDispatcher
+final readonly class BatchItemDispatcher
 {
     public function __construct(
-        private readonly AsyncDispatcherInterface $asyncDispatcher,
-        private readonly BatchItemIterator $batchItemIterator,
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchRepositoryInterface $batchRepository,
+        private AsyncDispatcherInterface $asyncDispatcher,
+        private BatchItemIterator $batchItemIterator,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private BatchRepositoryInterface $batchRepository,
     ) {
     }
 

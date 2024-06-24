@@ -21,16 +21,16 @@ use EonX\EasyBatch\Persisters\BatchPersister;
 use EonX\EasyBatch\Processors\BatchProcessor;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
-final class BatchObjectManager implements BatchObjectManagerInterface
+final readonly class BatchObjectManager implements BatchObjectManagerInterface
 {
     public function __construct(
-        private readonly BatchPersister $batchPersister,
-        private readonly BatchRepositoryInterface $batchRepository,
-        private readonly BatchProcessor $batchProcessor,
-        private readonly BatchItemDispatcher $batchItemDispatcher,
-        private readonly BatchItemIterator $batchItemIterator,
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private BatchPersister $batchPersister,
+        private BatchRepositoryInterface $batchRepository,
+        private BatchProcessor $batchProcessor,
+        private BatchItemDispatcher $batchItemDispatcher,
+        private BatchItemIterator $batchItemIterator,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

@@ -16,14 +16,14 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Runtime\RunnerInterface;
 
-final class EasyScheduleSwooleRunner implements RunnerInterface
+final readonly class EasyScheduleSwooleRunner implements RunnerInterface
 {
     public const ENABLED = 'EASY_SCHEDULE_ENABLED';
 
     private const LAST_RUN = 'last_run';
 
     public function __construct(
-        private readonly Application $application,
+        private Application $application,
     ) {
     }
 

@@ -12,10 +12,10 @@ use EonX\EasyBatch\Tests\Bridge\Symfony\Stubs\SymfonyEventDispatcherStub;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class EasyBatchTestContext
+final readonly class EasyBatchTestContext
 {
     public function __construct(
-        private readonly ContainerInterface $container,
+        private ContainerInterface $container,
     ) {
     }
 

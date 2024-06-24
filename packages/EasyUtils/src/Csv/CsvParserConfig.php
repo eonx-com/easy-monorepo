@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Csv;
 
-final class CsvParserConfig implements CsvParserConfigInterface
+final readonly class CsvParserConfig implements CsvParserConfigInterface
 {
     /**
      * @param string[]|null $requiredHeaders
@@ -11,10 +11,10 @@ final class CsvParserConfig implements CsvParserConfigInterface
      * @param callable[]|null $recordTransformers
      */
     public function __construct(
-        private readonly ?array $requiredHeaders = null,
-        private readonly ?array $groupPrefixes = null,
-        private readonly ?bool $ignoreEmptyRecords = null,
-        private readonly ?array $recordTransformers = null,
+        private ?array $requiredHeaders = null,
+        private ?array $groupPrefixes = null,
+        private ?bool $ignoreEmptyRecords = null,
+        private ?array $recordTransformers = null,
     ) {
     }
 

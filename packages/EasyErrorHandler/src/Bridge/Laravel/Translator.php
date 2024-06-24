@@ -7,10 +7,10 @@ use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
 use Illuminate\Contracts\Translation\Translator as IlluminateTranslatorInterface;
 
-final class Translator implements TranslatorInterface
+final readonly class Translator implements TranslatorInterface
 {
     public function __construct(
-        private readonly IlluminateTranslatorInterface $decorated,
+        private IlluminateTranslatorInterface $decorated,
     ) {
     }
 

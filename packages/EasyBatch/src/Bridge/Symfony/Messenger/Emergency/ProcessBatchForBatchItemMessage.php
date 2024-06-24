@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Emergency;
 
-final class ProcessBatchForBatchItemMessage
+final readonly class ProcessBatchForBatchItemMessage
 {
     public function __construct(
-        private readonly int|string $batchItemId,
-        private readonly ?array $errorDetails = null,
+        private int|string $batchItemId,
+        private ?array $errorDetails = null,
     ) {
     }
 

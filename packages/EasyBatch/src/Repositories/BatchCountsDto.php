@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Repositories;
 
-final class BatchCountsDto
+final readonly class BatchCountsDto
 {
     public function __construct(
-        private readonly int $countCancelled,
-        private readonly int $countFailed,
-        private readonly int $countProcessed,
-        private readonly int $countSucceeded,
-        private readonly int $countTotal,
+        private int $countCancelled,
+        private int $countFailed,
+        private int $countProcessed,
+        private int $countSucceeded,
+        private int $countTotal,
     ) {
     }
 

@@ -6,10 +6,10 @@ namespace EonX\EasyBatch\IdStrategies;
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
 
-final class UuidStrategy implements BatchObjectIdStrategyInterface
+final readonly class UuidStrategy implements BatchObjectIdStrategyInterface
 {
     public function __construct(
-        private readonly RandomGeneratorInterface $randomGenerator,
+        private RandomGeneratorInterface $randomGenerator,
     ) {
     }
 

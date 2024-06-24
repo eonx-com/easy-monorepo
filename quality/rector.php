@@ -28,7 +28,7 @@ return RectorConfig::configure()
     ])
     ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
     ->withImportNames(importDocBlockNames: false)
-    ->withPhpSets(php81: true)
+    ->withPhpSets(php82: true)
     ->withCache(__DIR__ . '/var/cache/rector', FileCacheStorage::class)
     ->withBootstrapFiles([
         __DIR__ . '/../vendor/autoload.php',

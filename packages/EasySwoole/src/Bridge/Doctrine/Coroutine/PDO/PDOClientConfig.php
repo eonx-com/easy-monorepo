@@ -7,12 +7,12 @@ use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
 use OpenSwoole\Core\Coroutine\Client\ClientConfigInterface;
 use Psr\Log\LoggerInterface;
 
-final class PDOClientConfig implements ClientConfigInterface
+final readonly class PDOClientConfig implements ClientConfigInterface
 {
     public function __construct(
-        private readonly array $params,
-        private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
-        private readonly ?LoggerInterface $logger = null,
+        private array $params,
+        private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
+        private ?LoggerInterface $logger = null,
     ) {
     }
 

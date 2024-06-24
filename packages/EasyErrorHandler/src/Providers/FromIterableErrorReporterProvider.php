@@ -5,13 +5,13 @@ namespace EonX\EasyErrorHandler\Providers;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorReporterProviderInterface;
 
-final class FromIterableErrorReporterProvider implements ErrorReporterProviderInterface
+final readonly class FromIterableErrorReporterProvider implements ErrorReporterProviderInterface
 {
     /**
      * @param iterable<\EonX\EasyErrorHandler\Interfaces\ErrorReporterInterface> $reporters
      */
     public function __construct(
-        private readonly iterable $reporters,
+        private iterable $reporters,
     ) {
     }
 

@@ -5,10 +5,10 @@ namespace EonX\EasySwoole\Bridge\Monolog;
 
 use Monolog\Formatter\FormatterInterface;
 
-final class SimpleFormatter implements FormatterInterface
+final readonly class SimpleFormatter implements FormatterInterface
 {
     public function __construct(
-        private readonly string $prefix,
+        private string $prefix,
     ) {
     }
 

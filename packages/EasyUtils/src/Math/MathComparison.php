@@ -5,11 +5,11 @@ namespace EonX\EasyUtils\Math;
 
 use EonX\EasyUtils\Interfaces\MathComparisonInterface;
 
-final class MathComparison implements MathComparisonInterface
+final readonly class MathComparison implements MathComparisonInterface
 {
     public function __construct(
-        private readonly string $leftOperand,
-        private readonly int $scale,
+        private string $leftOperand,
+        private int $scale,
     ) {
     }
 

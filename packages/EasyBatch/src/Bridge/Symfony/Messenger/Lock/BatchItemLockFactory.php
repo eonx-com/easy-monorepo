@@ -8,10 +8,10 @@ use EonX\EasyLock\Interfaces\LockDataInterface;
 use EonX\EasyLock\LockData;
 use Symfony\Component\Messenger\Envelope;
 
-final class BatchItemLockFactory implements BatchItemLockFactoryInterface
+final readonly class BatchItemLockFactory implements BatchItemLockFactoryInterface
 {
     public function __construct(
-        private readonly ?float $ttl = null,
+        private ?float $ttl = null,
     ) {
     }
 

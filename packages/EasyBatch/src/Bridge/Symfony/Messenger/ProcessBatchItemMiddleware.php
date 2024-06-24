@@ -20,16 +20,16 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Throwable;
 
-final class ProcessBatchItemMiddleware implements MiddlewareInterface
+final readonly class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly BatchRepositoryInterface $batchRepository,
-        private readonly BatchItemExceptionHandler $batchItemExceptionHandler,
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchItemProcessor $batchItemProcessor,
-        private readonly BatchItemLockFactoryInterface $batchItemLockFactory,
-        private readonly BatchProcessor $batchProcessor,
-        private readonly LockServiceInterface $lockService,
+        private BatchRepositoryInterface $batchRepository,
+        private BatchItemExceptionHandler $batchItemExceptionHandler,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private BatchItemProcessor $batchItemProcessor,
+        private BatchItemLockFactoryInterface $batchItemLockFactory,
+        private BatchProcessor $batchProcessor,
+        private LockServiceInterface $lockService,
     ) {
     }
 

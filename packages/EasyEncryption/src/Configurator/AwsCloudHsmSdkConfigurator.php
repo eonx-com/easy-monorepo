@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Throwable;
 
-final class AwsCloudHsmSdkConfigurator
+final readonly class AwsCloudHsmSdkConfigurator
 {
     private const AWS_CLOUDHSM_API_VERSION = '2017-04-28';
 
@@ -35,9 +35,9 @@ final class AwsCloudHsmSdkConfigurator
     private const AWS_STS_API_VERSION = '2011-06-15';
 
     public function __construct(
-        private readonly AwsCloudHsmSdkOptionsBuilder $awsCloudHsmSdkOptionsBuilder,
-        private readonly ?string $awsRoleArn = null,
-        private readonly bool $useCloudHsmConfigureTool = true,
+        private AwsCloudHsmSdkOptionsBuilder $awsCloudHsmSdkOptionsBuilder,
+        private ?string $awsRoleArn = null,
+        private bool $useCloudHsmConfigureTool = true,
     ) {
     }
 

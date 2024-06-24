@@ -10,11 +10,11 @@ use EonX\EasyWebhook\Interfaces\WebhookClientInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class SendWebhookHandler
+final readonly class SendWebhookHandler
 {
     public function __construct(
-        private readonly WebhookClientInterface $client,
-        private readonly StoreInterface $store,
+        private WebhookClientInterface $client,
+        private StoreInterface $store,
     ) {
     }
 

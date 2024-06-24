@@ -7,10 +7,10 @@ use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Interfaces\FormatAwareInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-final class ExceptionEventListener
+final readonly class ExceptionEventListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
+        private ErrorHandlerInterface $errorHandler,
     ) {
     }
 
