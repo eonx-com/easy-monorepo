@@ -19,12 +19,7 @@ interface BridgeConstantsInterface
 
     public const PARAM_AWS_PKCS11_HSM_CA_CERT = 'easy_encryption.aws_pkcs11_hsm_ca_cert';
 
-    /**
-     * @deprecated Since 5.11.1
-     */
     public const PARAM_AWS_PKCS11_HSM_IP_ADDRESS = 'easy_encryption.aws_pkcs11_hsm_ip_address';
-
-    public const PARAM_AWS_PKCS11_HSM_IP_ADDRESSES = 'easy_encryption.aws_pkcs11_hsm_ip_addresses';
 
     public const PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE = 'easy_encryption.aws_pkcs11_server_client_cert_file';
 
