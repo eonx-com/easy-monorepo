@@ -12,7 +12,7 @@ use EonX\EasyBatch\Interfaces\BatchRepositoryInterface;
 use EonX\EasyBatch\Interfaces\CurrentBatchObjectsAwareInterface;
 use EonX\EasyBatch\Processors\BatchItemProcessor;
 use EonX\EasyBatch\Processors\BatchProcessor;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -20,16 +20,16 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Throwable;
 
-final readonly class ProcessBatchItemMiddleware implements MiddlewareInterface
+final class ProcessBatchItemMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private BatchRepositoryInterface $batchRepository,
-        private BatchItemExceptionHandler $batchItemExceptionHandler,
-        private BatchItemRepositoryInterface $batchItemRepository,
-        private BatchItemProcessor $batchItemProcessor,
-        private BatchItemLockFactoryInterface $batchItemLockFactory,
-        private BatchProcessor $batchProcessor,
-        private LockServiceInterface $lockService,
+        private readonly BatchRepositoryInterface $batchRepository,
+        private readonly BatchItemExceptionHandler $batchItemExceptionHandler,
+        private readonly BatchItemRepositoryInterface $batchItemRepository,
+        private readonly BatchItemProcessor $batchItemProcessor,
+        private readonly BatchItemLockFactoryInterface $batchItemLockFactory,
+        private readonly BatchProcessor $batchProcessor,
+        private readonly LockerInterface $locker,
     ) {
     }
 
@@ -56,7 +56,7 @@ final readonly class ProcessBatchItemMiddleware implements MiddlewareInterface
             // Since items can be dispatched multiple times to guarantee all items are dispatched
             // We must protect the processing logic with a lock to make sure the same item isn't processed
             // by multiple workers concurrently
-            $result = $this->lockService->processWithLock(
+            $result = $this->locker->processWithLock(
                 $this->batchItemLockFactory->createFromEnvelope($envelope),
                 function () use ($batchItemStamp, $message, $func) {
                     $batchItem = $this->batchItemRepository->findForProcess($batchItemStamp->getBatchItemId());

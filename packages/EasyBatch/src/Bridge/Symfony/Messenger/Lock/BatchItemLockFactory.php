@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bridge\Symfony\Messenger\Lock;
 
 use EonX\EasyBatch\Bridge\Symfony\Messenger\Stamps\BatchItemStamp;
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyLock\LockData;
+use EonX\EasyLock\Common\ValueObject\LockData;
+use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use Symfony\Component\Messenger\Envelope;
 
 final readonly class BatchItemLockFactory implements BatchItemLockFactoryInterface
