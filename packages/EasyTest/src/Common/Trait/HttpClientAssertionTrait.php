@@ -5,9 +5,11 @@ namespace EonX\EasyTest\Common\Trait;
 
 use EonX\EasyTest\HttpClient\HttpClient\HttpClientStub;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
+ */
 trait HttpClientAssertionTrait
 {
     public function assertAllHttpRequestsAreMade(string $httpClientName): void
@@ -22,7 +24,7 @@ trait HttpClientAssertionTrait
     public function getHttpClientStub(string $name): HttpClientStub
     {
         /** @var \EonX\EasyTest\HttpClient\HttpClient\HttpClientStub $httpClient */
-        $httpClient = KernelTestCase::getContainer()->get(
+        $httpClient = self::getContainer()->get(
             \sprintf('%s $%s', HttpClientInterface::class, $name)
         );
 
