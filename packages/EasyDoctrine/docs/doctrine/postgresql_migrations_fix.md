@@ -19,9 +19,9 @@ Register the listener:
 ```yaml
 // services_dev.yaml
 services:
-    EonX\EasyDoctrine\Listeners\FixPostgreSqlDefaultSchemaListener:
+    EonX\EasyDoctrine\Common\Listener\FixPostgreSqlDefaultSchemaListener:
         tags:
-            - { name: doctrine.event_listener, event: postGenerateSchema }
+            - {name: doctrine.event_listener, event: postGenerateSchema}
 ```
 
 [1]: https://github.com/doctrine/dbal/issues/1110

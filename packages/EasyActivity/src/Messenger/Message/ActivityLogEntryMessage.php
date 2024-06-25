@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Messenger\Message;
 
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyLock\Interfaces\WithLockDataInterface;
-use EonX\EasyLock\LockData;
+use EonX\EasyLock\Common\ValueObject\LockData;
+use EonX\EasyLock\Common\ValueObject\LockDataInterface;
+use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 
 final class ActivityLogEntryMessage implements WithLockDataInterface
 {
