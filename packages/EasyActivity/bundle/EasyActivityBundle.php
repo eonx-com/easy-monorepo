@@ -71,6 +71,6 @@ final class EasyActivityBundle extends AbstractBundle
         /** @var array<string, string> $bundles */
         $bundles = $builder->getParameter('kernel.bundles');
 
-        return isset($bundles['EasyDoctrineSymfonyBundle']);
+        return isset($bundles['EasyDoctrineBundle']);
     }
 }

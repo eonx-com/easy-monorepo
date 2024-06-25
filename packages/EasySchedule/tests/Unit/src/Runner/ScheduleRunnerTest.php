@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySchedule\Tests\Unit\Runner;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasySchedule\Event\CommandExecutedEvent;
 use EonX\EasySchedule\Runner\ScheduleRunner;
 use EonX\EasySchedule\Schedule\Schedule;
@@ -24,18 +24,18 @@ final class ScheduleRunnerTest extends AbstractUnitTestCase
         $schedule = (new Schedule())->setApplication($app);
         $entry1 = $schedule->command('list', ['-q']);
         $entry2 = $schedule->command('list', ['-q']);
-        $lockServiceProphecy = $this->prophesize(LockServiceInterface::class);
-        $lockServiceProphecy->createLock($entry1->getLockResource(), $entry1->getMaxLockTime())
+        $lockerProphecy = $this->prophesize(LockerInterface::class);
+        $lockerProphecy->createLock($entry1->getLockResource(), $entry1->getMaxLockTime())
             ->shouldBeCalled();
         $lockProphecy = $this->prophesize(LockInterface::class);
         $lockProphecy->acquire()
             ->willReturn(true);
         $lockProphecy->release()
             ->shouldBeCalled();
-        $lockServiceProphecy->createLock($entry2->getLockResource(), $entry2->getMaxLockTime())
+        $lockerProphecy->createLock($entry2->getLockResource(), $entry2->getMaxLockTime())
             ->willReturn($lockProphecy);
-        /** @var \EonX\EasyLock\Interfaces\LockServiceInterface $lockService */
-        $lockService = $lockServiceProphecy->reveal();
+        /** @var \EonX\EasyLock\Common\Locker\LockerInterface $locker */
+        $locker = $lockerProphecy->reveal();
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcherProphecy->dispatch(new CommandExecutedEvent($entry1))
             ->shouldBeCalled();
@@ -45,7 +45,7 @@ final class ScheduleRunnerTest extends AbstractUnitTestCase
         $eventDispatcher = $eventDispatcherProphecy->reveal();
         /** @var \Symfony\Component\Console\Output\OutputInterface $output */
         $output = $this->prophesize(OutputInterface::class)->reveal();
-        $scheduleRunner = new ScheduleRunner($eventDispatcher, $lockService);
+        $scheduleRunner = new ScheduleRunner($eventDispatcher, $locker);
 
         $scheduleRunner->run($schedule, $output);
 

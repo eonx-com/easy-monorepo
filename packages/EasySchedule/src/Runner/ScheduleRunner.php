@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySchedule\Runner;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasySchedule\Event\CommandExecutedEvent;
 use EonX\EasySchedule\Schedule\ScheduleInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +15,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly LockServiceInterface $lockService,
+        private readonly LockerInterface $locker,
     ) {
     }
 
@@ -29,7 +29,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
             $this->ran = true;
 
             $description = $entry->getDescription();
-            $lock = $this->lockService->createLock($entry->getLockResource(), $entry->getMaxLockTime());
+            $lock = $this->locker->createLock($entry->getLockResource(), $entry->getMaxLockTime());
 
             $output->writeln(\sprintf('<info>Running scheduled command:</info> %s', $description));
 
