@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Messenger\Factory;
 
-use EonX\EasyLock\Interfaces\LockDataInterface;
+use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use Symfony\Component\Messenger\Envelope;
 
 interface BatchItemLockFactoryInterface

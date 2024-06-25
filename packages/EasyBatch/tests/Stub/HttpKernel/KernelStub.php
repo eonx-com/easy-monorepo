@@ -10,7 +10,7 @@ use EonX\EasyBatch\Tests\Stub\EventDispatcher\SymfonyEventDispatcherStub;
 use EonX\EasyBatch\Tests\Stub\MessageBus\MessageBusStub;
 use EonX\EasyEncryption\Bridge\Symfony\EasyEncryptionSymfonyBundle;
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
 use Psr\Container\ContainerInterface;
 use stdClass;
@@ -28,7 +28,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         $container->setAlias(ContainerInterface::class, 'service_container');
         $container->setDefinition(EventDispatcherInterface::class, new Definition(SymfonyEventDispatcherStub::class));
-        $container->setDefinition(LockServiceInterface::class, new Definition(stdClass::class));
+        $container->setDefinition(LockerInterface::class, new Definition(stdClass::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
 
         $container->setDefinition(

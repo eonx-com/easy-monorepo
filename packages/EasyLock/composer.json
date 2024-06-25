@@ -5,24 +5,39 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "symfony/lock": "^6.4"
+        "doctrine/dbal": "^3.0",
+        "doctrine/doctrine-bundle": "^2.8",
+        "doctrine/orm": "^2.14",
+        "psr/log": "^3.0",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/lock": "^6.4",
+        "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
-        "doctrine/orm": "^2.14",
         "laravel/lumen-framework": "^9.1",
-        "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyLock\\": "src",
-            "EonX\\EasyLock\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyLock\\Bundle\\": "bundle",
+            "EonX\\EasyLock\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyLock\\Tests\\": "tests"
+            "EonX\\EasyLock\\Tests\\": "tests",
+            "EonX\\EasyLock\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyLock\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyLock\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
+    },
+    "suggest": {
+        "eonx-com/easy-async": "For EasyAsync integration",
+        "eonx-com/easy-logging": "For Laravel and EasyLogging integration",
+        "symfony/messenger": "For Symfony Messenger integration"
     },
     "extra": {
         "branch-alias": {
