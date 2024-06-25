@@ -45,7 +45,7 @@ easy-monorepo: ## Execute EasyMonorepo commands
 	$(call runCommand,bin/monorepo $(command))
 
 check-all: ## Check codebase with all checkers
-	$(call runCommand,$(MAKE) --jobs=1 --keep-going --output-sync \
+	$(call runCommand,$(MAKE) --jobs=2 --keep-going --output-sync \
 		check-composer \
 		check-ecs \
 		check-monorepo \
