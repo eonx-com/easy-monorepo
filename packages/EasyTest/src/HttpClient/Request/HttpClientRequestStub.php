@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\HttpClient\Request;
 
 use Closure;
-use EonX\EasyTest\HttpClient\Client\HttpClientStub;
+use EonX\EasyTest\HttpClient\HttpClient\HttpClientStub;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class HttpClientRequestStub

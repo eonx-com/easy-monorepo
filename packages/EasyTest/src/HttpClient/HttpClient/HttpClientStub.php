@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\HttpClient\Client;
+namespace EonX\EasyTest\HttpClient\HttpClient;
 
 use EonX\EasyTest\HttpClient\Request\HttpClientRequestStub;
 use Symfony\Component\HttpClient\Exception\TransportException;
