@@ -12,8 +12,8 @@ final class AwsCloudHsmSdkOptionsBuilder
 
     public function __construct(
         private readonly string $hsmCaCert,
+        private readonly array $hsmIpAddresses,
         private readonly bool $disableKeyAvailabilityCheck = false,
-        private readonly ?array $hsmIpAddresses = null,
         private readonly ?string $cloudHsmClusterId = null,
         private readonly string $awsRegion = self::DEFAULT_AWS_REGION,
         private readonly ?string $serverClientCertFile = null,
@@ -25,7 +25,7 @@ final class AwsCloudHsmSdkOptionsBuilder
     public function build(): array
     {
         $filesystem = new Filesystem();
-        $isSetHsmIpAddresses = $this->hsmIpAddresses !== null && \count($this->hsmIpAddresses) > 0;
+        $isSetHsmIpAddresses = \count($this->hsmIpAddresses) > 0;
         $isSetCloudHsmClusterId = $this->isNonEmptyString($this->cloudHsmClusterId);
         $isSetServerClientCertFile = $this->isNonEmptyString($this->serverClientCertFile);
         $isSetServerClientKeyFile = $this->isNonEmptyString($this->serverClientKeyFile);

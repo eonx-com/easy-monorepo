@@ -75,7 +75,7 @@ final class AwsCloudHsmSdkConfigurator
         $servers = [];
 
         if (\array_key_exists('-a', $options)) {
-            $hsmIpAddresses = \explode(' ', $options['-a']);
+            $hsmIpAddresses = \explode(' ', (string)$options['-a']);
 
             foreach ($hsmIpAddresses as $hsmIpAddress) {
                 $servers[] = [

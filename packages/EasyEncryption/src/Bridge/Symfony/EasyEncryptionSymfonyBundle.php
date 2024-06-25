@@ -55,7 +55,7 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
                 ->set($param, $config[$configName]);
         }
 
-        // TODO: remove this "if" statement when the "hsm_ip_address" parameter is being removed
+        // TODO: remove this "if" statement when the "hsm_ip_address" parameter is removed
         if (($config['aws_pkcs11_encryptor']['hsm_ip_address'] ?? null) !== null) {
             $config['aws_pkcs11_encryptor']['hsm_ip_addresses'] ??= [];
             $config['aws_pkcs11_encryptor']['hsm_ip_addresses'][] = $config['aws_pkcs11_encryptor']['hsm_ip_address'];
