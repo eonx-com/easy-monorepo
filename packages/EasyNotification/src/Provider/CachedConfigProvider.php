@@ -13,7 +13,7 @@ final class CachedConfigProvider implements ConfigProviderInterface
         private CacheInterface $cache,
         private ConfigProviderInterface $decorated,
         private int $expiresAfter,
-        private string $key
+        private string $key,
     ) {
     }
 
