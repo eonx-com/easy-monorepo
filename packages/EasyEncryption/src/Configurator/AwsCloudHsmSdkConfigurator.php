@@ -75,11 +75,15 @@ final class AwsCloudHsmSdkConfigurator
         $servers = [];
 
         if (\array_key_exists('-a', $options)) {
-            $servers[] = [
-                'enable' => true,
-                'hostname' => $options['-a'],
-                'port' => self::AWS_CLOUDHSM_SERVER_PORT,
-            ];
+            $hsmIpAddresses = \explode(' ', $options['-a']);
+
+            foreach ($hsmIpAddresses as $hsmIpAddress) {
+                $servers[] = [
+                    'enable' => true,
+                    'hostname' => $hsmIpAddress,
+                    'port' => self::AWS_CLOUDHSM_SERVER_PORT,
+                ];
+            }
         }
 
         if (\array_key_exists('--cluster-id', $options)) {

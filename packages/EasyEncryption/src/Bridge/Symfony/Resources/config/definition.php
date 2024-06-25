@@ -26,7 +26,19 @@ return static function (DefinitionConfigurator $definition) {
                     ->scalarNode('cloud_hsm_cluster_id')->defaultNull()->end()
                     ->booleanNode('disable_key_availability_check')->defaultFalse()->end()
                     ->scalarNode('hsm_ca_cert')->defaultNull()->end()
-                    ->scalarNode('hsm_ip_address')->defaultNull()->end()
+                    ->arrayNode('hsm_ip_addresses')
+                        ->defaultValue([])
+                        ->normalizeKeys(false)
+                        ->prototype('scalar')->end()
+                    ->end()
+                    ->scalarNode('hsm_ip_address')
+                        ->setDeprecated(
+                            'eonx-com/easy-encryption',
+                            '5.11.1',
+                            'The "%node%" node is deprecated, use "aws_pkcs11_encryptor.hsm_ip_addresses" instead.'
+                        )
+                        ->defaultNull()
+                        ->end()
                     ->scalarNode('server_client_cert_file')->defaultNull()->end()
                     ->scalarNode('server_client_key_file')->defaultNull()->end()
                     ->booleanNode('use_aws_cloud_hsm_configure_tool')->defaultTrue()->end()

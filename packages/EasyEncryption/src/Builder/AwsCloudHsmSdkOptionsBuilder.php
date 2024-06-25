@@ -13,7 +13,7 @@ final class AwsCloudHsmSdkOptionsBuilder
     public function __construct(
         private readonly string $hsmCaCert,
         private readonly bool $disableKeyAvailabilityCheck = false,
-        private readonly ?string $hsmIpAddress = null,
+        private readonly ?array $hsmIpAddresses = null,
         private readonly ?string $cloudHsmClusterId = null,
         private readonly string $awsRegion = self::DEFAULT_AWS_REGION,
         private readonly ?string $serverClientCertFile = null,
@@ -25,7 +25,7 @@ final class AwsCloudHsmSdkOptionsBuilder
     public function build(): array
     {
         $filesystem = new Filesystem();
-        $isSetHsmIpAddress = $this->isNonEmptyString($this->hsmIpAddress);
+        $isSetHsmIpAddresses = $this->hsmIpAddresses !== null && \count($this->hsmIpAddresses) > 0;
         $isSetCloudHsmClusterId = $this->isNonEmptyString($this->cloudHsmClusterId);
         $isSetServerClientCertFile = $this->isNonEmptyString($this->serverClientCertFile);
         $isSetServerClientKeyFile = $this->isNonEmptyString($this->serverClientKeyFile);
@@ -36,14 +36,14 @@ final class AwsCloudHsmSdkOptionsBuilder
                 $this->hsmCaCert
             ));
         }
-        if ($isSetHsmIpAddress === false && $isSetCloudHsmClusterId === false) {
+        if ($isSetHsmIpAddresses === false && $isSetCloudHsmClusterId === false) {
             throw new InvalidConfigurationException(
-                'At least HSM IP address or CloudHSM cluster id has to be set'
+                'At least HSM IP addresses or CloudHSM cluster id has to be set'
             );
         }
-        if ($isSetHsmIpAddress && $isSetCloudHsmClusterId) {
+        if ($isSetHsmIpAddresses && $isSetCloudHsmClusterId) {
             throw new InvalidConfigurationException(
-                'Both HSM IP address and CloudHSM cluster id options cannot be set at the same time'
+                'Both HSM IP addresses and CloudHSM cluster id options cannot be set at the same time'
             );
         }
         if ($isSetServerClientCertFile !== $isSetServerClientKeyFile) {
@@ -52,8 +52,8 @@ final class AwsCloudHsmSdkOptionsBuilder
 
         $options = $this->cloudHsmSdkOptions ?? [];
 
-        if ($isSetHsmIpAddress) {
-            $options['-a'] = $this->hsmIpAddress;
+        if ($isSetHsmIpAddresses) {
+            $options['-a'] = \implode(' ', $this->hsmIpAddresses);
         }
 
         if ($isSetCloudHsmClusterId) {

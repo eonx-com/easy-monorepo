@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '$disableKeyAvailabilityCheck',
             param(BridgeConstantsInterface::PARAM_AWS_PKCS11_DISABLE_KEY_AVAILABILITY_CHECK)
         )
-        ->arg('$hsmIpAddress', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_HSM_IP_ADDRESS))
+        ->arg('$hsmIpAddresses', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_HSM_IP_ADDRESSES))
         ->arg('$cloudHsmClusterId', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_CLOUD_HSM_CLUSTER_ID))
         ->arg('$awsRegion', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AWS_REGION))
         ->arg('$serverClientCertFile', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE))
