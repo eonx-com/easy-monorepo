@@ -79,7 +79,8 @@ were already an `array`, then there would be no problem. However, because they a
 guarantee you will receive an `array`. So use the `convertToArray()` method!
 
 ```php
-use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
+use App\Domain\WorkerInterface;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -113,7 +114,8 @@ The following example is the same as for the `convertToArray()` method above. If
 ensure each item is an instance of a specific class/interface, use the `filterByClass()` method!
 
 ```php
-use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
+use App\Domain\WorkerInterface;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -146,7 +148,8 @@ to make sure each item is an instance of a specific class/interface, but you nee
 `filterByClassAsArray()` method!
 
 ```php
-use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
+use App\Domain\WorkerInterface;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {
@@ -172,7 +175,8 @@ Those methods are similar to the `filterByClass()` and `filterByClassAsArray()` 
 exception if at least of the items is not an instance of the given class.
 
 ```php
-use App\Domain\WorkerInterface;use EonX\EasyUtils\Common\Helper\CollectorHelper;
+use App\Domain\WorkerInterface;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class MyClass
 {

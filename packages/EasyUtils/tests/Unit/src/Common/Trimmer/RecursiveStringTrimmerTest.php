@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests\Unit\Common\Trimmer;
 
 use EonX\EasyUtils\Common\Trimmer\RecursiveStringTrimmer;
-use EonX\EasyUtils\Tests\Stub\ValueObject\ToStringStub;
+use EonX\EasyUtils\Tests\Stub\ValueObject\StringableStub;
 use EonX\EasyUtils\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -17,7 +17,7 @@ final class RecursiveStringTrimmerTest extends AbstractUnitTestCase
     public static function provideDataForClean(): iterable
     {
         $object1 = new stdClass();
-        $object2 = new ToStringStub();
+        $object2 = new StringableStub();
         yield 'data is a string' => [
             'data' => " \t\n\r\0\x0B" . '123' . \PHP_EOL,
             'exceptKeys' => [],

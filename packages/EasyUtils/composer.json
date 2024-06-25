@@ -37,9 +37,9 @@
     "suggest": {
         "ext-iconv": "To support CSV parsing",
         "ext-mbstring": "To support sensitive data sanitization",
-        "symfony/serializer": "To supoort string trimming",
-        "symfony/translation": "To use Symfony Translato integration",
-        "symfony/validator": "To support support custom constraints"
+        "symfony/serializer": "To support string trimming",
+        "symfony/translation": "To use Symfony Translator integration",
+        "symfony/validator": "To support custom constraints"
     },
     "extra": {
         "branch-alias": {

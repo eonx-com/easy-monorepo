@@ -12,7 +12,7 @@ use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidator;
 use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidatorInterface;
 use EonX\EasyUtils\Csv\Parser\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\Parser\CsvWithHeadersParserInterface;
-use EonX\EasyUtils\Laravel\Middleware\TrimStrings;
+use EonX\EasyUtils\Laravel\Middleware\TrimStringsMiddleware;
 use EonX\EasyUtils\Math\Helper\MathHelper;
 use EonX\EasyUtils\Math\Helper\MathHelperInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\AuthorizationStringSanitizer;
@@ -163,12 +163,12 @@ final class EasyUtilsServiceProvider extends ServiceProvider
         $app = $this->app;
         $app->singleton(StringTrimmerInterface::class, RecursiveStringTrimmer::class);
         $app->singleton(
-            TrimStrings::class,
-            static fn (Container $app): TrimStrings => new TrimStrings(
+            TrimStringsMiddleware::class,
+            static fn (Container $app): TrimStringsMiddleware => new TrimStringsMiddleware(
                 $app->get(StringTrimmerInterface::class),
                 \config('easy-utils.string_trimmer.except_keys', [])
             )
         );
-        $app->middleware([TrimStrings::class]);
+        $app->middleware([TrimStringsMiddleware::class]);
     }
 }

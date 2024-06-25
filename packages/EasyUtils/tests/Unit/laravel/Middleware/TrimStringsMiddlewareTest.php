@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests\Unit\Laravel\Middleware;
 
 use EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface;
-use EonX\EasyUtils\Laravel\Middleware\TrimStrings;
+use EonX\EasyUtils\Laravel\Middleware\TrimStringsMiddleware;
 use EonX\EasyUtils\Tests\Unit\AbstractUnitTestCase;
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-final class TrimStringsTest extends AbstractUnitTestCase
+final class TrimStringsMiddlewareTest extends AbstractUnitTestCase
 {
     public function testHandleSucceedsWithGetRequest(): void
     {
@@ -36,7 +36,7 @@ final class TrimStringsTest extends AbstractUnitTestCase
                     ->andReturn([]);
             }
         );
-        $middleware = new TrimStrings($trimmer, $except);
+        $middleware = new TrimStringsMiddleware($trimmer, $except);
         $symfonyRequest = new SymfonyRequest($data);
         $symfonyRequest->server->set('REQUEST_METHOD', 'GET');
         $request = Request::createFromBase($symfonyRequest);
@@ -69,7 +69,7 @@ final class TrimStringsTest extends AbstractUnitTestCase
                     ->andReturn($expectedResult);
             }
         );
-        $middleware = new TrimStrings($trimmer, $except);
+        $middleware = new TrimStringsMiddleware($trimmer, $except);
         $symfonyRequest = new SymfonyRequest([], [], [], [], [], [], $json);
         $symfonyRequest->server->set('REQUEST_METHOD', 'POST');
         $symfonyRequest->headers = new HeaderBag([
@@ -104,7 +104,7 @@ final class TrimStringsTest extends AbstractUnitTestCase
                     ->andReturn($expectedResult);
             }
         );
-        $middleware = new TrimStrings($trimmer, $except);
+        $middleware = new TrimStringsMiddleware($trimmer, $except);
         $symfonyRequest = new SymfonyRequest([], $data);
         $symfonyRequest->server->set('REQUEST_METHOD', 'POST');
         $request = Request::createFromBase($symfonyRequest);

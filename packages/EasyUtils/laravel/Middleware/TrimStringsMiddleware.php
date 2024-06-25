@@ -8,7 +8,7 @@ use EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-final class TrimStrings
+final class TrimStringsMiddleware
 {
     /**
      * @var string[]
