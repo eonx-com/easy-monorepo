@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO;
 
-use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
+use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use OpenSwoole\Core\Coroutine\Client\ClientConfigInterface;
 use Psr\Log\LoggerInterface;
 
