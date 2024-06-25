@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyLock\Bridge\Symfony\EasyLockSymfonyBundle::class => ['all' => true],
+    EonX\EasyLock\Bundle\EasyLockBundle::class => ['all' => true],
 ];
 ```
 
@@ -28,8 +28,8 @@ time.
 
 This package comes with a Messenger Middleware handling lock out of the box. Two options are available:
 
-- Make your message implement `EonX\EasyLock\Interfaces\WithLockDataInterface`
-- Add `EonX\EasyLock\Bridge\Symfony\Messenger\WithLockDataStamp` to the envelope
+- Make your message implement `EonX\EasyLock\Common\ValueObject\WithLockDataInterface`
+- Add `EonX\EasyLock\Messenger\Stamp\WithLockDataStamp` to the envelope
 
 ::: tip
 Remember to update your messenger configuration to add the middleware
