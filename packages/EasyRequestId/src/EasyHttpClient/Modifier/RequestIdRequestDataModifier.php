@@ -5,12 +5,12 @@ namespace EonX\EasyRequestId\EasyHttpClient\Modifier;
 
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
 use EonX\EasyHttpClient\Common\ValueObject\RequestDataInterface;
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
 final class RequestIdRequestDataModifier implements RequestDataModifierInterface
 {
     public function __construct(
-        private RequestIdInterface $requestId,
+        private RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 
@@ -19,11 +19,11 @@ final class RequestIdRequestDataModifier implements RequestDataModifierInterface
         $options = $data->getOptions();
         $headers = $options['headers'] ?? [];
 
-        $correlationIdHeaderName = $this->requestId->getCorrelationIdHeaderName();
-        $requestIdHeaderName = $this->requestId->getRequestIdHeaderName();
+        $correlationIdHeaderName = $this->requestIdProvider->getCorrelationIdHeaderName();
+        $requestIdHeaderName = $this->requestIdProvider->getRequestIdHeaderName();
 
-        $headers[$correlationIdHeaderName] ??= $this->requestId->getCorrelationId();
-        $headers[$requestIdHeaderName] ??= $this->requestId->getRequestId();
+        $headers[$correlationIdHeaderName] ??= $this->requestIdProvider->getCorrelationId();
+        $headers[$requestIdHeaderName] ??= $this->requestIdProvider->getRequestId();
 
         $options['headers'] = $headers;
 

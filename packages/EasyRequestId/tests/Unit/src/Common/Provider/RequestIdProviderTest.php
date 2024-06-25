@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRequestId\Tests\Unit\Common\RequestId;
+namespace EonX\EasyRequestId\Tests\Unit\Common\Provider;
 
 use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
 use EonX\EasyRandom\Generators\RandomGenerator;
-use EonX\EasyRequestId\Common\RequestId\RequestId;
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 use EonX\EasyRequestId\Common\Resolver\HttpFoundationRequestResolver;
 use EonX\EasyRequestId\Common\Resolver\UuidFallbackResolver;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Uuid;
 
-final class RequestIdTest extends AbstractUnitTestCase
+final class RequestIdProviderTest extends AbstractUnitTestCase
 {
     /**
      * @see testGetIds
@@ -34,8 +34,8 @@ final class RequestIdTest extends AbstractUnitTestCase
 
         yield 'Default resolver with default values' => [
             self::getRequestWithHeaders([
-                RequestIdInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
-                RequestIdInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
+                RequestIdProviderInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
+                RequestIdProviderInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
             ]),
             'request-id',
             'correlation-id',
@@ -51,23 +51,23 @@ final class RequestIdTest extends AbstractUnitTestCase
         ?FallbackResolverInterface $fallbackResolver = null,
     ): void {
         $fallbackResolver ??= $this->defaultFallbackResolver();
-        $service = new RequestId($fallbackResolver);
-        $service->setResolver(new HttpFoundationRequestResolver($request, $service));
+        $requestIdProvider = new RequestIdProvider($fallbackResolver);
+        $requestIdProvider->setResolver(new HttpFoundationRequestResolver($request, $requestIdProvider));
 
         // For caching coverage
-        $service->getCorrelationId();
-        $service->getRequestId();
+        $requestIdProvider->getCorrelationId();
+        $requestIdProvider->getRequestId();
 
         if ($requestId !== null) {
-            self::assertSame($requestId, $service->getRequestId());
+            self::assertSame($requestId, $requestIdProvider->getRequestId());
         }
 
         if ($correlationId !== null) {
-            self::assertSame($correlationId, $service->getCorrelationId());
+            self::assertSame($correlationId, $requestIdProvider->getCorrelationId());
         }
 
         if ($assert !== null) {
-            $assert($service->getRequestId(), $service->getCorrelationId());
+            $assert($requestIdProvider->getRequestId(), $requestIdProvider->getCorrelationId());
         }
     }
 

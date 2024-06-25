@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Messenger\Resolver;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Messenger\Stamp\RequestIdStamp;
 use Symfony\Component\Messenger\Envelope;
 
@@ -26,8 +26,8 @@ final class MessengerMessageResolver
         }
 
         return [
-            RequestIdInterface::KEY_RESOLVED_CORRELATION_ID => $stamp->getCorrelationId(),
-            RequestIdInterface::KEY_RESOLVED_REQUEST_ID => $stamp->getRequestId(),
+            RequestIdProviderInterface::KEY_RESOLVED_CORRELATION_ID => $stamp->getCorrelationId(),
+            RequestIdProviderInterface::KEY_RESOLVED_REQUEST_ID => $stamp->getRequestId(),
         ];
     }
 }

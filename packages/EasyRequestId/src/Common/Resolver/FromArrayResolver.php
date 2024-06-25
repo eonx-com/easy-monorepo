@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Common\Resolver;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
 final class FromArrayResolver
 {
     public function __construct(
         private array $array,
-        private RequestIdInterface $requestId,
+        private RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 
@@ -19,11 +19,11 @@ final class FromArrayResolver
     public function __invoke(): array
     {
         return [
-            RequestIdInterface::KEY_RESOLVED_CORRELATION_ID => $this->getIdValue(
-                $this->requestId->getCorrelationIdHeaderName()
+            RequestIdProviderInterface::KEY_RESOLVED_CORRELATION_ID => $this->getIdValue(
+                $this->requestIdProvider->getCorrelationIdHeaderName()
             ),
-            RequestIdInterface::KEY_RESOLVED_REQUEST_ID => $this->getIdValue(
-                $this->requestId->getRequestIdHeaderName()
+            RequestIdProviderInterface::KEY_RESOLVED_REQUEST_ID => $this->getIdValue(
+                $this->requestIdProvider->getRequestIdHeaderName()
             ),
         ];
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Unit\Bundle;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Symfony\Component\Uid\Uuid;
 
 final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
@@ -11,9 +11,9 @@ final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
     public function testSanity(): void
     {
         $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default.php'])->getContainer();
-        $requestId = $container->get(RequestIdInterface::class);
+        $requestIdProvider = $container->get(RequestIdProviderInterface::class);
 
-        self::assertTrue(Uuid::isValid($requestId->getCorrelationId()));
-        self::assertTrue(Uuid::isValid($requestId->getRequestId()));
+        self::assertTrue(Uuid::isValid($requestIdProvider->getCorrelationId()));
+        self::assertTrue(Uuid::isValid($requestIdProvider->getRequestId()));
     }
 }

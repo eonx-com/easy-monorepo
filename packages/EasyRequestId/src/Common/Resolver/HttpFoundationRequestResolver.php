@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Common\Resolver;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class HttpFoundationRequestResolver
 {
     public function __construct(
         private Request $request,
-        private RequestIdInterface $requestId,
+        private RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 
@@ -19,12 +19,12 @@ final class HttpFoundationRequestResolver
      */
     public function __invoke(): array
     {
-        $correlationIdHeader = $this->getHeader($this->requestId->getCorrelationIdHeaderName());
-        $requestIdHeader = $this->getHeader($this->requestId->getRequestIdHeaderName());
+        $correlationIdHeader = $this->getHeader($this->requestIdProvider->getCorrelationIdHeaderName());
+        $requestIdHeader = $this->getHeader($this->requestIdProvider->getRequestIdHeaderName());
 
         return [
-            RequestIdInterface::KEY_RESOLVED_CORRELATION_ID => $correlationIdHeader,
-            RequestIdInterface::KEY_RESOLVED_REQUEST_ID => $requestIdHeader,
+            RequestIdProviderInterface::KEY_RESOLVED_CORRELATION_ID => $correlationIdHeader,
+            RequestIdProviderInterface::KEY_RESOLVED_REQUEST_ID => $requestIdHeader,
         ];
     }
 

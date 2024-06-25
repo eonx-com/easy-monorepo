@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
 return [
     'http_headers' => [
         /**
          * Header used to resolve/send the correlation id from the HTTP request.
          */
-        'correlation_id' => RequestIdInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID,
+        'correlation_id' => RequestIdProviderInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID,
 
         /**
          * Header used to resolve/send the request id from the HTTP request.
          */
-        'request_id' => RequestIdInterface::DEFAULT_HTTP_HEADER_REQUEST_ID,
+        'request_id' => RequestIdProviderInterface::DEFAULT_HTTP_HEADER_REQUEST_ID,
     ],
 
     /**

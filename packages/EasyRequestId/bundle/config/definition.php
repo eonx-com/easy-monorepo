@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -11,11 +11,11 @@ return static function (DefinitionConfigurator $definition) {
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('correlation_id')
-                        ->defaultValue(RequestIdInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID)
+                        ->defaultValue(RequestIdProviderInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID)
                         ->info('Header used to resolve/send the correlation id from the HTTP request')
                     ->end()
                     ->scalarNode('request_id')
-                        ->defaultValue(RequestIdInterface::DEFAULT_HTTP_HEADER_REQUEST_ID)
+                        ->defaultValue(RequestIdProviderInterface::DEFAULT_HTTP_HEADER_REQUEST_ID)
                         ->info('Header used to resolve/send the request id from the HTTP request')
                     ->end()
                 ->end()

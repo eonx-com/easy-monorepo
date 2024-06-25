@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRequestId\Common\RequestId;
+namespace EonX\EasyRequestId\Common\Provider;
 
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 
-final class RequestId implements RequestIdInterface
+final class RequestIdProvider implements RequestIdProviderInterface
 {
     private ?string $correlationId = null;
 
@@ -44,7 +44,7 @@ final class RequestId implements RequestIdInterface
         return $this->requestIdHeaderName;
     }
 
-    public function setResolver(callable $resolver): RequestIdInterface
+    public function setResolver(callable $resolver): RequestIdProviderInterface
     {
         $ids = $resolver();
 

@@ -3,26 +3,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Common\Resolver;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 trait ResolvesFromHttpFoundationRequestTrait
 {
-    private function setResolver(Request $request, RequestIdInterface $requestId): void
+    private function setResolver(Request $request, RequestIdProviderInterface $requestIdProvider): void
     {
-        $resolver = new HttpFoundationRequestResolver($request, $requestId);
+        $resolver = new HttpFoundationRequestResolver($request, $requestIdProvider);
 
-        $requestId->setResolver($resolver);
+        $requestIdProvider->setResolver($resolver);
 
         // Make sure all requests have IDs set
         $request->headers->set(
-            $requestId->getCorrelationIdHeaderName(),
-            $requestId->getCorrelationId()
+            $requestIdProvider->getCorrelationIdHeaderName(),
+            $requestIdProvider->getCorrelationId()
         );
 
         $request->headers->set(
-            $requestId->getRequestIdHeaderName(),
-            $requestId->getRequestId()
+            $requestIdProvider->getRequestIdHeaderName(),
+            $requestIdProvider->getRequestId()
         );
     }
 }

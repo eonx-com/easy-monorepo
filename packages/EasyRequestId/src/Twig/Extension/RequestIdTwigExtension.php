@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Twig\Extension;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class RequestIdTwigExtension extends AbstractExtension
 {
     public function __construct(
-        private RequestIdInterface $requestId,
+        private RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 
@@ -20,13 +20,16 @@ final class RequestIdTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('correlationId', fn (): string => $this->requestId->getCorrelationId()),
+            new TwigFunction('correlationId', fn (): string => $this->requestIdProvider->getCorrelationId()),
             new TwigFunction(
                 'correlationIdHeaderName',
-                fn (): string => $this->requestId->getCorrelationIdHeaderName()
+                fn (): string => $this->requestIdProvider->getCorrelationIdHeaderName()
             ),
-            new TwigFunction('requestId', fn (): string => $this->requestId->getRequestId()),
-            new TwigFunction('requestIdHeaderName', fn (): string => $this->requestId->getRequestIdHeaderName()),
+            new TwigFunction('requestId', fn (): string => $this->requestIdProvider->getRequestId()),
+            new TwigFunction(
+                'requestIdHeaderName',
+                fn (): string => $this->requestIdProvider->getRequestIdHeaderName()
+            ),
         ];
     }
 }

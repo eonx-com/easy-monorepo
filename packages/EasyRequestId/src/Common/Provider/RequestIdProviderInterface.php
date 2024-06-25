@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRequestId\Common\RequestId;
+namespace EonX\EasyRequestId\Common\Provider;
 
-interface RequestIdInterface
+interface RequestIdProviderInterface
 {
     public const DEFAULT_HTTP_HEADER_CORRELATION_ID = 'X-CORRELATION-ID';
 

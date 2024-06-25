@@ -5,14 +5,14 @@ namespace EonX\EasyRequestId\EasyErrorHandler\Builder;
 
 use EonX\EasyErrorHandler\Builders\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Throwable;
 
 final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder implements
     ErrorResponseBuilderProviderInterface
 {
     public function __construct(
-        private RequestIdInterface $requestId,
+        private RequestIdProviderInterface $requestIdProvider,
         ?int $priority = null,
     ) {
         parent::__construct($priority);
@@ -21,8 +21,8 @@ final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder i
     public function buildHeaders(Throwable $throwable, ?array $headers = null): ?array
     {
         $headers ??= [];
-        $headers[$this->requestId->getCorrelationIdHeaderName()] = $this->requestId->getCorrelationId();
-        $headers[$this->requestId->getRequestIdHeaderName()] = $this->requestId->getRequestId();
+        $headers[$this->requestIdProvider->getCorrelationIdHeaderName()] = $this->requestIdProvider->getCorrelationId();
+        $headers[$this->requestIdProvider->getRequestIdHeaderName()] = $this->requestIdProvider->getRequestId();
 
         return parent::buildHeaders($throwable, $headers);
     }

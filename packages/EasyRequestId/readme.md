@@ -47,24 +47,18 @@ This package is based on a single service providing the requestId and correlatio
 
 namespace App\Controller;
 
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
 final class MyController
 {
-    /**
-     * @var \EonX\EasyRequestId\Common\RequestId\RequestIdInterface
-     */
-    private $requestId;
-
-    public function __construct(RequestIdInterface $requestId)
+    public function __construct(private RequestIdProviderInterface $requestId)
     {
-        $this->requestId = $requestId;
     }
 
     public function __invoke()
     {
-        $requestId = $this->requestId->getRequestId();
-        $correlationId = $this->requestId->getCorrelationId();
+        $requestId = $this->requestIdProvider->getRequestId();
+        $correlationId = $this->requestIdProvider->getCorrelationId();
 
         // Use the IDs in your logic...
     }

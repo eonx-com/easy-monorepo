@@ -6,8 +6,8 @@ namespace EonX\EasyRequestId\Laravel;
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag as EasyHttpClientConfigTag;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
-use EonX\EasyRequestId\Common\RequestId\RequestId;
-use EonX\EasyRequestId\Common\RequestId\RequestIdInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 use EonX\EasyRequestId\Common\Resolver\UuidFallbackResolver;
 use EonX\EasyRequestId\EasyErrorHandler\Builder\RequestIdErrorResponseBuilder;
@@ -35,15 +35,15 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
             __DIR__ . '/config/easy-request-id.php' => \base_path('config/easy-request-id.php'),
         ]);
 
-        /** @var \EonX\EasyRequestId\Common\RequestId\RequestIdInterface $requestId */
-        $requestId = $this->app->make(RequestIdInterface::class);
+        /** @var \EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface $requestIdProvider */
+        $requestIdProvider = $this->app->make(RequestIdProviderInterface::class);
 
         // Queue
         // Add IDs to jobs pushed to the queue
         Queue::createPayloadUsing(static fn (): array => [
             'easy_request_id' => [
-                $requestId->getCorrelationIdHeaderName() => $requestId->getCorrelationId(),
-                $requestId->getRequestIdHeaderName() => $requestId->getRequestId(),
+                $requestIdProvider->getCorrelationIdHeaderName() => $requestIdProvider->getCorrelationId(),
+                $requestIdProvider->getRequestIdHeaderName() => $requestIdProvider->getRequestId(),
             ],
         ]);
 
@@ -51,21 +51,21 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         $this->app->make('events')
             ->listen(
                 JobProcessing::class,
-                static function (JobProcessing $event) use ($requestId): void {
+                static function (JobProcessing $event) use ($requestIdProvider): void {
                     $body = \json_decode($event->job->getRawBody(), true);
 
                     if (\is_array($body) === false) {
                         return;
                     }
 
-                    $requestId->setResolver(static function () use ($body, $requestId): array {
+                    $requestIdProvider->setResolver(static function () use ($body, $requestIdProvider): array {
                         $ids = $body['easy_request_id'] ?? [];
 
                         return [
-                            RequestIdInterface::KEY_RESOLVED_CORRELATION_ID =>
-                                $ids[$requestId->getCorrelationIdHeaderName()] ?? null,
-                            RequestIdInterface::KEY_RESOLVED_REQUEST_ID =>
-                                $ids[$requestId->getRequestIdHeaderName()] ?? null,
+                            RequestIdProviderInterface::KEY_RESOLVED_CORRELATION_ID =>
+                                $ids[$requestIdProvider->getCorrelationIdHeaderName()] ?? null,
+                            RequestIdProviderInterface::KEY_RESOLVED_REQUEST_ID =>
+                                $ids[$requestIdProvider->getRequestIdHeaderName()] ?? null,
                         ];
                     });
                 }
@@ -82,8 +82,8 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         $this->app->singleton(FallbackResolverInterface::class, UuidFallbackResolver::class);
 
         $this->app->singleton(
-            RequestIdInterface::class,
-            static fn (Container $app): RequestIdInterface => new RequestId(
+            RequestIdProviderInterface::class,
+            static fn (Container $app): RequestIdProviderInterface => new RequestIdProvider(
                 $app->make(FallbackResolverInterface::class),
                 \config('easy-request-id.http_headers.correlation_id'),
                 \config('easy-request-id.http_headers.request_id')
