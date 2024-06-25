@@ -57,7 +57,7 @@ check-ecs: ## Check App with ECS
 	$(call runCommand,quality/vendor/bin/ecs check --ansi --config=quality/ecs.php --memory-limit=2000M)
 
 check-monorepo: ## Check monorepo
-	$(call runCommand,vendor/bin/monorepo-builder validate --ansi
+	$(call runCommand,vendor/bin/monorepo-builder validate --ansi)
 
 check-phpstan: ## Check App with PHPStan
 	$(call runCommand,quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.neon)
