@@ -29,7 +29,7 @@ final class SubscribeInfoProvider implements SubscribeInfoProviderInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function find(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface
+    public function provide(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface
     {
         $options = [
             'auth_basic' => [$apiKey],

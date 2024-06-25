@@ -11,7 +11,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class SubscribeInfoProviderTest extends AbstractUnitTestCase
 {
-    public function testFind(): void
+    public function testProvide(): void
     {
         $response = new MockResponse(Json::encode([
             'jwt' => 'my-jwt',
@@ -19,9 +19,9 @@ final class SubscribeInfoProviderTest extends AbstractUnitTestCase
             'url' => 'https://subscribe.com',
         ]));
         $httpClient = new MockHttpClient([$response]);
-        $finder = new SubscribeInfoProvider('https://my-url.com', $httpClient);
+        $subscribeInfoProvider = new SubscribeInfoProvider('https://my-url.com', $httpClient);
 
-        $subscribeInfo = $finder->find('my-api-key', 'my-provider', ['/nathan']);
+        $subscribeInfo = $subscribeInfoProvider->provide('my-api-key', 'my-provider', ['/nathan']);
 
         self::assertEquals('my-jwt', $subscribeInfo->getJwt());
         self::assertEquals(['/nathan'], $subscribeInfo->getTopics());

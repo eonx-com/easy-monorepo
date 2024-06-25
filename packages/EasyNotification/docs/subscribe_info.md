@@ -65,7 +65,7 @@ final class SubscribeInfoController
         // Please do better in your code! :)
         $body = \json_decode($request->getContent(), true);
 
-        $subscribeInfo = $this->subscribeInfoFinder->find(
+        $subscribeInfo = $this->subscribeInfoFinder->provide(
             $this->apiKey,
             $this->providerExternalId,
             $body['topics'] // Get topics from request body

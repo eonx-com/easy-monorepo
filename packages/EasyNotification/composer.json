@@ -12,8 +12,8 @@
         "symfony/config": "^6.4",
         "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^6.4",
-        "symfony/http-kernel": "^6.4",
-        "symfony/http-client": "^6.4"
+        "symfony/http-client": "^6.4",
+        "symfony/http-kernel": "^6.4"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",

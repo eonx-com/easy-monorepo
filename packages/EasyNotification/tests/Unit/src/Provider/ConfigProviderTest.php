@@ -17,8 +17,8 @@ final class ConfigProviderTest extends AbstractUnitTestCase
         $responses = [new MockResponse(Json::encode($defaultConfig))];
         $httpClient = new MockHttpClient($responses);
 
-        $configFinder = new ConfigProvider('https://api.com', $httpClient);
-        $config = $configFinder->provide('my-api-key', $defaultConfig['externalId']);
+        $configProvider = new ConfigProvider('https://api.com', $httpClient);
+        $config = $configProvider->provide('my-api-key', $defaultConfig['externalId']);
 
         self::assertEquals($defaultConfig['algorithm'], $config->getAlgorithm());
         self::assertEquals($defaultConfig['externalId'], $config->getProviderExternalId());

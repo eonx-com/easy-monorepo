@@ -18,7 +18,7 @@ final class EasyNotificationServiceProviderTest extends AbstractLaravelTestCase
         self::assertInstanceOf(NotificationClientInterface::class, $app->get(NotificationClientInterface::class));
     }
 
-    public function testSanityFinders(): void
+    public function testSanityProviders(): void
     {
         $app = $this->getApp();
 

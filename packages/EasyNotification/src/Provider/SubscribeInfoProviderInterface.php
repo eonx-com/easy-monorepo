@@ -10,5 +10,5 @@ interface SubscribeInfoProviderInterface
     /**
      * @param string[] $topics
      */
-    public function find(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface;
+    public function provide(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface;
 }
