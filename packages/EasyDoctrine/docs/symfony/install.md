@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle::class => ['all' => true],
+    EonX\EasyDoctrine\Bundle\EasyDoctrineBundle::class => ['all' => true],
 ];
 ```
 
