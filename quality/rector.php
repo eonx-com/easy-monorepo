@@ -58,7 +58,7 @@ return RectorConfig::configure()
             'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyBatch/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
-            'packages/EasyDoctrine/src/Bridge/Symfony/Resources/config/services.php',
+            'packages/EasyDoctrine/bundle/config/services.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Bridge/Symfony/Stubs/KernelStub.php',
