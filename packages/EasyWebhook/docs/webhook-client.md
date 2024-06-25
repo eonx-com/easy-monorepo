@@ -11,7 +11,8 @@ The **WebhookClient** class triggers the processing of the [middleware](middlewa
 For example:
 
 ```php
-use EonX\EasyWebhook\Common\Client\WebhookClientInterface;use EonX\EasyWebhook\Common\Entity\Webhook;
+use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
+use EonX\EasyWebhook\Common\Entity\Webhook;
 
 final class MyService
 {

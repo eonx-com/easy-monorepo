@@ -216,7 +216,9 @@ one of the following classes:
 For example, here is how you would add a custom header to every webhook sent in configure once middleware:
 
 ```php
-use EonX\EasyWebhook\Common\Entity\WebhookInterface;use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;use EonX\EasyWebhook\Common\Stack\StackInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class MyCustomHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
@@ -236,7 +238,9 @@ final class MyCustomHeaderMiddleware extends AbstractConfigureOnceMiddleware
 This example shows placement of custom pre-processing and post-processing in normal middleware:
 
 ```php
-use EonX\EasyWebhook\Common\Entity\WebhookInterface;use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;use EonX\EasyWebhook\Common\Stack\StackInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class MyCustomMiddleware extends AbstractMiddleware
 {

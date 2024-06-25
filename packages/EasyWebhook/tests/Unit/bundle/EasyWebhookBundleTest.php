@@ -16,7 +16,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
     /**
      * @see testConfigAndDependenciesSanity
      */
-    public static function providerTestConfigAndDependenciesSanity(): iterable
+    public static function provideTestConfigAndDependenciesSanity(): iterable
     {
         yield 'Defaults' => [
             [],
@@ -63,7 +63,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
     /**
      * @param string[] $configs
      */
-    #[DataProvider('providerTestConfigAndDependenciesSanity')]
+    #[DataProvider('provideTestConfigAndDependenciesSanity')]
     public function testConfigAndDependenciesSanity(array $configs, callable $tests): void
     {
         $tests($this->getKernel($configs)->getContainer());

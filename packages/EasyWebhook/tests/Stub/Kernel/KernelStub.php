@@ -9,7 +9,7 @@ use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyWebhook\Bundle\EasyWebhookBundle;
 use EonX\EasyWebhook\Tests\Stub\Dispatcher\EventDispatcherStub;
 use EonX\EasyWebhook\Tests\Stub\Locker\LockerStub;
-use EonX\EasyWebhook\Tests\Stub\Messenger\MessageBusStub;
+use EonX\EasyWebhook\Tests\Stub\MessageBus\MessageBusStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Loader\LoaderInterface;

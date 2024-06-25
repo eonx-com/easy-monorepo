@@ -119,7 +119,7 @@ final class EasyWebhookBundle extends AbstractBundle
         $container
             ->parameters()
             ->set(ConfigParam::IdHeader->value, $header);
-        $container->import('config/id.php');
+        $container->import('config/id_header.php');
     }
 
     private function middleware(ContainerConfigurator $container): void

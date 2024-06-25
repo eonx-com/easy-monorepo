@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyWebhook\Tests\Stub\Messenger;
+namespace EonX\EasyWebhook\Tests\Stub\MessageBus;
 
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;

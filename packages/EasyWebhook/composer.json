@@ -42,7 +42,6 @@
     },
     "suggest": {
         "doctrine/dbal": "To use Doctrine DBAL for persistence",
-        "eonx-com/easy-logging": "To use EasyLogging for logging",
         "symfony/messenger": "To send webhooks asynchronously using Symfony Messenger"
     },
     "extra": {
