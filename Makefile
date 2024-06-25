@@ -41,6 +41,9 @@ define runCommand
 	fi
 endef
 
+easy-monorepo: ## Execute EasyMonorepo commands
+	$(call runCommand,bin/monorepo $(command))
+
 check-all: ## Check codebase with all checkers
 	$(call runCommand,$(MAKE) --jobs=1 --keep-going --output-sync \
 		check-composer \
@@ -94,20 +97,22 @@ test-package: ## Execute the tests for a package (use `package=<packageName>` as
 	$(call runCommand,vendor/bin/phpunit packages/$(package)/tests)
 
 help:
-	echo '███████  █████  ███████ ██    ██     ███    ███  ██████  ███    ██  ██████  ██████  ███████ ██████   ██████'
-	echo '██      ██   ██ ██       ██  ██      ████  ████ ██    ██ ████   ██ ██    ██ ██   ██ ██      ██   ██ ██    ██'
-	echo '█████   ███████ ███████   ████       ██ ████ ██ ██    ██ ██ ██  ██ ██    ██ ██████  █████   ██████  ██    ██'
-	echo '██      ██   ██      ██    ██        ██  ██  ██ ██    ██ ██  ██ ██ ██    ██ ██   ██ ██      ██      ██    ██'
-	echo '███████ ██   ██ ███████    ██        ██      ██  ██████  ██   ████  ██████  ██   ██ ███████ ██       ██████'
+	echo '  ███████  █████  ███████ ██    ██     ███    ███  ██████  ███    ██  ██████  ██████  ███████ ██████   ██████'
+	echo '  ██      ██   ██ ██       ██  ██      ████  ████ ██    ██ ████   ██ ██    ██ ██   ██ ██      ██   ██ ██    ██'
+	echo '  █████   ███████ ███████   ████       ██ ████ ██ ██    ██ ██ ██  ██ ██    ██ ██████  █████   ██████  ██    ██'
+	echo '  ██      ██   ██      ██    ██        ██  ██  ██ ██    ██ ██  ██ ██ ██    ██ ██   ██ ██      ██      ██    ██'
+	echo '  ███████ ██   ██ ███████    ██        ██      ██  ██████  ██   ████  ██████  ██   ██ ███████ ██       ██████'
 	echo ''
 	echo ''
-	echo '██    ██ ███████     ██████  ██    ██     ███████  ██████  ███    ██ $(shell tput setaf 3)██$(shell tput sgr0)   $(shell tput setaf 2)██$(shell tput sgr0)'
-	echo '██    ██ ██          ██   ██  ██  ██      ██      ██    ██ ████   ██  $(shell tput setaf 3)██$(shell tput sgr0) $(shell tput setaf 2)██$(shell tput sgr0)'
-	echo '██    ██ ███████     ██████    ████       █████   ██    ██ ██ ██  ██   $(shell tput setaf 3)██$(shell tput sgr0)$(shell tput setaf 2)█$(shell tput sgr0)'
-	echo ' ██  ██       ██     ██   ██    ██        ██      ██    ██ ██  ██ ██  $(shell tput setaf 1)██$(shell tput sgr0) $(shell tput setaf 4)██$(shell tput sgr0)'
-	echo '  ████   ███████     ██████     ██        ███████  ██████  ██   ████ $(shell tput setaf 1)██$(shell tput sgr0)   $(shell tput setaf 4)██$(shell tput sgr0)'
+	echo '  ██    ██ ███████     ██████  ██    ██     ███████  ██████  ███    ██ $(shell tput setaf 3)██$(shell tput sgr0)   $(shell tput setaf 2)██$(shell tput sgr0)'
+	echo '  ██    ██ ██          ██   ██  ██  ██      ██      ██    ██ ████   ██  $(shell tput setaf 3)██$(shell tput sgr0) $(shell tput setaf 2)██$(shell tput sgr0)'
+	echo '  ██    ██ ███████     ██████    ████       █████   ██    ██ ██ ██  ██   $(shell tput setaf 3)██$(shell tput sgr0)$(shell tput setaf 2)█$(shell tput sgr0)'
+	echo '   ██  ██       ██     ██   ██    ██        ██      ██    ██ ██  ██ ██  $(shell tput setaf 1)██$(shell tput sgr0) $(shell tput setaf 4)██$(shell tput sgr0)'
+	echo '    ████   ███████     ██████     ██        ███████  ██████  ██   ████ $(shell tput setaf 1)██$(shell tput sgr0)   $(shell tput setaf 4)██$(shell tput sgr0)'
 	echo ''
-
+	echo '  It is possible to use shortcuts for recipe, like $(shell tput setaf 3)make c-a$(shell tput sgr0) or $(shell tput setaf 3)make c:a$(shell tput sgr0).'
+	echo "  Escape commands with options using double or single quotes, like $(shell tput setaf 3)make e:m 'cl -v'$(shell tput sgr0) or $(shell tput setaf 3)make e:m \"cl -v\"$(shell tput sgr0)."
+	echo ''
 	grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 	| sed -n 's/^\(.*\):.*##\(.*\)/$(shell tput setaf 2)  \1$(shell tput sgr0)  :::\2/p' \
 	| sed 's/\[\#yellow\]/$(shell tput setaf 3)/g' \
@@ -135,7 +140,7 @@ help:
 
 				$(eval parsedCommand := $(shell echo $(MAKECMDGOALS) | sed 's/[a-zA-Z0-9_:-]* //'))
 
-				if [[ "$(foundRecipes)" == "symfony-command" ]] || [[ "$(foundRecipes)" == "container-execute" ]]; then
+				if [[ "$(foundRecipes)" == "easy-monorepo" ]]; then
 					$(eval stopExecution='yes')
 
 					if [[ "$(parsedCommand)" == "$(MAKECMDGOALS)" ]]; then
