@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Laravel;
 
+use EonX\EasyNotification\Bundle\Enum\BundleParam;
 use EonX\EasyNotification\Bundle\Enum\ConfigServiceId;
 use EonX\EasyNotification\Bundle\Enum\ConfigTag;
 use EonX\EasyNotification\Client\NotificationClient;
@@ -67,7 +68,8 @@ final class EasyNotificationServiceProvider extends ServiceProvider
             ): ConfigProviderInterface => new CachedConfigProvider(
                 $app->make(ConfigServiceId::ConfigCache->value),
                 $decorated,
-                \config('easy-notification.config_expires_after', 3600)
+                \config('easy-notification.config_expires_after', 3600),
+                BundleParam::ConfigCacheKey->value,
             )
         );
 

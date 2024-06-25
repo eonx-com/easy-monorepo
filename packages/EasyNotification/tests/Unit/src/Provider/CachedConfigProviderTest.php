@@ -14,10 +14,10 @@ final class CachedConfigProviderTest extends AbstractUnitTestCase
     {
         $defaultConfig = static::$defaultConfig;
         $stub = new ConfigProviderStub($defaultConfig);
-        $cacheFinder = new CachedConfigProvider(new ArrayAdapter(), $stub);
+        $cacheFinder = new CachedConfigProvider(new ArrayAdapter(), $stub, 10, 'some-key');
 
-        $cacheFinder->find('my-api-key', $defaultConfig['externalId']);
-        $cacheFinder->find('my-api-key', $defaultConfig['externalId']);
+        $cacheFinder->provide('my-api-key', $defaultConfig['externalId']);
+        $cacheFinder->provide('my-api-key', $defaultConfig['externalId']);
 
         self::assertEquals(1, $stub->getCalled());
     }

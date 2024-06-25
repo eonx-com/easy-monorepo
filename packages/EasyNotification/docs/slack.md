@@ -31,7 +31,10 @@ The simplest Slack message is made of a `channel` and a `text`.
 
 namespace App\Listener;
 
-use App\Entity\User;use EonX\EasyNotification\Client\NotificationClientInterface;use EonX\EasyNotification\Message\SlackMessage;use EonX\EasyNotification\Provider\ConfigProviderInterface;
+use App\Entity\User;
+use EonX\EasyNotification\Client\NotificationClientInterface;
+use EonX\EasyNotification\Message\SlackMessage;
+use EonX\EasyNotification\Provider\ConfigProviderInterface;
 
 final class UserCreatedListener
 {
@@ -53,7 +56,7 @@ final class UserCreatedListener
 
     public function created(User $user): void
     {
-        $config = $this->configFinder->find('my-api-key', 'my-provider-external-id');
+        $config = $this->configFinder->provide('my-api-key', 'my-provider-external-id');
 
         /**
          * Define channel. It can be a direct message to a user "@user" or a public channel "#channel".

@@ -20,7 +20,7 @@ final class ConfigProvider implements ConfigProviderInterface
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
-    public function find(string $apiKey, string $providerExternalId): ConfigInterface
+    public function provide(string $apiKey, string $providerExternalId): ConfigInterface
     {
         $options = [
             'auth_basic' => [$apiKey],

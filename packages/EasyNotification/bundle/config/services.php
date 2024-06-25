@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyNotification\Bundle\Enum\BundleParam;
 use EonX\EasyNotification\Bundle\Enum\ConfigParam;
 use EonX\EasyNotification\Bundle\Enum\ConfigServiceId;
 use EonX\EasyNotification\Bundle\Enum\ConfigTag;
@@ -46,7 +47,8 @@ return static function (ContainerConfigurator $container): void {
         ->set(CachedConfigProvider::class)
         ->decorate(ConfigProviderInterface::class)
         ->arg('$cache', service(ConfigServiceId::ConfigCache->value))
-        ->arg('$expiresAfter', param(ConfigParam::ConfigCacheExpiresAfter->value));
+        ->arg('$expiresAfter', param(ConfigParam::ConfigCacheExpiresAfter->value))
+        ->arg('$key', BundleParam::ConfigCacheKey->value);
 
     // Client
     $services

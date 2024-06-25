@@ -7,5 +7,5 @@ use EonX\EasyNotification\ValueObject\ConfigInterface;
 
 interface ConfigProviderInterface
 {
-    public function find(string $apiKey, string $providerExternalId): ConfigInterface;
+    public function provide(string $apiKey, string $providerExternalId): ConfigInterface;
 }

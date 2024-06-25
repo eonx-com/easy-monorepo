@@ -53,7 +53,10 @@ this client into your own classes and send notifications:
 
 namespace App\Listener;
 
-use App\Entity\User;use EonX\EasyNotification\Client\NotificationClientInterface;use EonX\EasyNotification\Message\RealTimeMessage;use EonX\EasyNotification\Provider\ConfigProviderInterface;
+use App\Entity\User;
+use EonX\EasyNotification\Client\NotificationClientInterface;
+use EonX\EasyNotification\Message\RealTimeMessage;
+use EonX\EasyNotification\Provider\ConfigProviderInterface;
 
 final class UserCreatedListener
 {
@@ -80,7 +83,7 @@ final class UserCreatedListener
          *
          * For multi-tenancies application, it is a best practice to store those values against each tenancy.
          */
-        $config = $this->configFinder->find('my-api-key', 'my-provider-external-id');
+        $config = $this->configFinder->provide('my-api-key', 'my-provider-external-id');
 
         /**
          * Topics are "channels" to send notifications to.

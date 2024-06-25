@@ -25,7 +25,7 @@ set it on the `NotificationClientInterace` using the `withConfig()` method:
 /** @var \EonX\EasyNotification\Provider\ConfigProviderInterface $configFinder */
 /** @var \EonX\EasyNotification\Client\NotificationClientInterface $notificationClient */
 
-$config = $configFinder->find('my-api-key', 'my-provider');
+$config = $configFinder->provide('my-api-key', 'my-provider');
 
 $notificationClient->withConfig($config);
 ```
@@ -59,7 +59,9 @@ available options.
 
 namespace App\Http\Controller;
 
-use EonX\EasyNotification\Client\NotificationClientInterface;use Symfony\Component\HttpFoundation\JsonResponse;use Symfony\Component\HttpFoundation\Request;
+use EonX\EasyNotification\Client\NotificationClientInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 final class NotificationGetMessage
 {
@@ -103,7 +105,10 @@ to mark specific messages as read.
 
 namespace App\Http\Controller;
 
-use EonX\EasyNotification\Client\NotificationClientInterface;use EonX\EasyNotification\Message\RealTimeMessage;use Symfony\Component\HttpFoundation\JsonResponse;use Symfony\Component\HttpFoundation\Request;
+use EonX\EasyNotification\Client\NotificationClientInterface;
+use EonX\EasyNotification\Message\RealTimeMessage;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 final class NotificationUpdateMessage
 {
@@ -144,7 +149,8 @@ to remove messages from the list.
 
 namespace App\Http\Controller;
 
-use EonX\EasyNotification\Client\NotificationClientInterface;use Symfony\Component\HttpFoundation\JsonResponse;
+use EonX\EasyNotification\Client\NotificationClientInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class NotificationDeleteMessage
 {

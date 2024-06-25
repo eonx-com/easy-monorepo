@@ -29,7 +29,9 @@ Here is an example how to generate subscription info within a Symfony Controller
 
 namespace App\Http\Controller;
 
-use EonX\EasyNotification\Provider\SubscribeInfoProviderInterface;use Symfony\Component\HttpFoundation\JsonResponse;use Symfony\Component\HttpFoundation\Request;
+use EonX\EasyNotification\Provider\SubscribeInfoProviderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 final class SubscribeInfoController
 {

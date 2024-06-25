@@ -16,15 +16,15 @@ final class ConfigProviderStub implements ConfigProviderInterface
     ) {
     }
 
-    public function find(string $apiKey, string $providerExternalId): ConfigInterface
+    public function getCalled(): int
+    {
+        return $this->called;
+    }
+
+    public function provide(string $apiKey, string $providerExternalId): ConfigInterface
     {
         $this->called++;
 
         return Config::fromArray($this->config);
-    }
-
-    public function getCalled(): int
-    {
-        return $this->called;
     }
 }
