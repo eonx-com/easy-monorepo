@@ -46,7 +46,7 @@ easy_doctrine:
 
 ```yaml
 services:
-    EonX\EasyDoctrine\Listeners\EntityEventListener:
+    EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener:
         arguments:
             $trackableEntities: '%easy_doctrine.entities%'
 ```
@@ -62,12 +62,12 @@ services:
     App\Listener\SomeEntityCreatedListener:
         tags:
             -   name: kernel.event_listener
-                event: EonX\EasyDoctrine\Events\EntityCreatedEvent
+                event: EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent
 
     App\Listener\SomeEntityUpdatedListener:
         tags:
             -   name: kernel.event_listener
-                event: EonX\EasyDoctrine\Events\EntityUpdatedEvent
+                event: EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent
 ```
 
 Listener example:
