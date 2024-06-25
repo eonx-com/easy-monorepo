@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
+use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Bridge\BridgeConstantsInterface;
 use EonX\EasySwoole\Bridge\Doctrine\Coroutine\PDO\CoroutineConnectionFactory;
 use Psr\Log\LoggerInterface;

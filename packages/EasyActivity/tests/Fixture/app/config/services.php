@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyDoctrine\Listeners\EntityEventListener;
-use EonX\EasyDoctrine\ORM\Decorators\EntityManagerDecorator;
+use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
+use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '../src/**/Entity',
         ]);
 
-    $services->set(EntityManagerDecorator::class)
+    $services->set(WithEventsEntityManager::class)
         ->arg('$decorated', service('.inner'))
         ->decorate('doctrine.orm.default_entity_manager');
 

@@ -6,7 +6,7 @@ namespace EonX\EasyActivity\Tests\Fixture\App\Entity;
 use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use EonX\EasyDoctrine\Traits\TimestampableTrait;
+use EonX\EasyDoctrine\Common\Entity\TimestampableTrait;
 use Stringable;
 use Symfony\Component\Uid\Uuid;
 
