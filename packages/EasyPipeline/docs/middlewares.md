@@ -61,7 +61,9 @@ to implement the logging logic yourself.
 Here is the minimum required code for your middleware to log content:
 
 ```php
-use EonX\EasyPipeline\Logger\MiddlewareLoggerAwareInterface;use EonX\EasyPipeline\Logger\MiddlewareLoggerAwareTrait;use EonX\EasyPipeline\Middleware\MiddlewareInterface;
+use EonX\EasyPipeline\Logger\MiddlewareLoggerAwareInterface;
+use EonX\EasyPipeline\Logger\MiddlewareLoggerAwareTrait;
+use EonX\EasyPipeline\Middleware\MiddlewareInterface;
 
 final class MyMiddlewareWithLog implements MiddlewareInterface, MiddlewareLoggerAwareInterface
 {

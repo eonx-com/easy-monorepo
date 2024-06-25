@@ -62,7 +62,8 @@ dependency injection on them, how convenient!
 # Example
 
 ```php
-use App\Validator\MyValidatorInterface;use EonX\EasyPipeline\Provider\MiddlewareProviderInterface;
+use App\Validator\MyValidatorInterface;
+use EonX\EasyPipeline\Provider\MiddlewareProviderInterface;
 
 final class MyPipeline1MiddlewareProvider implements MiddlewareProviderInterface
 {
