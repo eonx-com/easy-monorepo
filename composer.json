@@ -126,6 +126,7 @@
             "EonX\\EasySecurity\\": "packages/EasySecurity/src",
             "EonX\\EasySwoole\\": "packages/EasySwoole/src",
             "EonX\\EasyTemplatingBlock\\": "packages/EasyTemplatingBlock/src",
+            "EonX\\EasyTemplatingBlock\\Bundle\\": "packages/EasyTemplatingBlock/bundle",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src"
@@ -178,6 +179,8 @@
             "EonX\\EasySecurity\\Tests\\": "packages/EasySecurity/tests",
             "EonX\\EasySwoole\\Tests\\": "packages/EasySwoole/tests",
             "EonX\\EasyTemplatingBlock\\Tests\\": "packages/EasyTemplatingBlock/tests",
+            "EonX\\EasyTemplatingBlock\\Tests\\Unit\\": "packages/EasyTemplatingBlock/tests/Unit/src",
+            "EonX\\EasyTemplatingBlock\\Tests\\Unit\\Bundle\\": "packages/EasyTemplatingBlock/tests/Unit/bundle",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests"
