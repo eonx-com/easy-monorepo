@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stub\LockService;
 
 use Closure;
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
+use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use RuntimeException;
 use Symfony\Component\Lock\LockInterface;
 
-final class LockServiceStub implements LockServiceInterface
+final class LockerStub implements LockerInterface
 {
     private bool $canProcess;
 

@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 
-use EonX\EasyLock\Interfaces\LockDataInterface;
-use EonX\EasyWebhook\Common\Entity\Webhook;
-use EonX\EasyWebhook\Common\Entity\WebhookInterface;
-use EonX\EasyWebhook\Common\Entity\WebhookResult;
-use EonX\EasyWebhook\Common\Middleware\LockMiddleware;
-use EonX\EasyWebhook\Tests\Stub\LockService\LockServiceStub;
+use EonX\EasyLock\Common\ValueObject\LockDataInterface;
+use EonX\EasyWebhook\Interfaces\WebhookInterface;
+use EonX\EasyWebhook\Middleware\LockMiddleware;
+use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
+use EonX\EasyWebhook\Tests\Stubs\LockerStub;
+use EonX\EasyWebhook\Webhook;
+use EonX\EasyWebhook\WebhookResult;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class LockMiddlewareTest extends AbstractMiddlewareTestCase
@@ -51,12 +52,11 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
         $canProcess ??= true;
         $expectedResource = \sprintf('easy_webhook_send_%s', $webhook->getId());
         $expectedResult = new WebhookResult($webhook);
-        $lockService = new LockServiceStub($canProcess);
-        $middleware = new LockMiddleware($lockService);
+        $lockerService = new LockerStub($canProcess);
+        $middleware = new LockMiddleware($lockerService);
 
         $result = $this->process($middleware, $webhook, $expectedResult);
-        /** @var \EonX\EasyLock\Interfaces\LockDataInterface $lockData */
-        $lockData = $lockService->getLockData();
+        $lockData = $lockerService->getLockData();
 
         switch ($shouldLock) {
             case true:
@@ -65,7 +65,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 
                 break;
             case false:
-                self::assertNull($lockService->getLockData());
+                self::assertNull($lockerService->getLockData());
         }
 
         $canProcess

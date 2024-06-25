@@ -5,10 +5,10 @@ namespace EonX\EasyWebhook\Tests\Stub\Kernel;
 
 use Doctrine\DBAL\Connection;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyWebhook\Bundle\EasyWebhookBundle;
 use EonX\EasyWebhook\Tests\Stub\Dispatcher\EventDispatcherStub;
-use EonX\EasyWebhook\Tests\Stub\LockService\LockServiceStub;
+use EonX\EasyWebhook\Tests\Stub\LockService\LockerStub;
 use EonX\EasyWebhook\Tests\Stub\Messenger\MessageBusStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -43,7 +43,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(Connection::class, new Definition(EventDispatcherStub::class));
 
         $container->setDefinition(EventDispatcherInterface::class, new Definition(EventDispatcherStub::class));
-        $container->setDefinition(LockServiceInterface::class, new Definition(LockServiceStub::class));
+        $container->setDefinition(LockerInterface::class, new Definition(LockerStub::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
 

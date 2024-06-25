@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Unit\Laravel;
 
 use EonX\EasyEventDispatcher\Laravel\EasyEventDispatcherServiceProvider;
-use EonX\EasyLock\Bridge\Laravel\EasyLockServiceProvider;
+use EonX\EasyLock\Laravel\EasyLockServiceProvider;
 use EonX\EasyWebhook\Laravel\EasyWebhookServiceProvider;
 use EonX\EasyWebhook\Tests\Unit\AbstractUnitTestCase;
 use Laravel\Lumen\Application;
