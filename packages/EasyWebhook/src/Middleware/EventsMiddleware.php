@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Middleware;
 
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyWebhook\Events\FailedWebhookEvent;
 use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
 use EonX\EasyWebhook\Events\SuccessWebhookEvent;
