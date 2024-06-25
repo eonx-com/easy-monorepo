@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 MAKEFLAGS += --no-print-directory
-projectName = Easy Monorepo v5
+projectName = Easy Monorepo
 enableNotification = yes
 .ONESHELL:
 .SILENT:
