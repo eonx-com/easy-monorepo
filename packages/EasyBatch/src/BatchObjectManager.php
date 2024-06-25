@@ -19,7 +19,7 @@ use EonX\EasyBatch\Iterator\BatchItemIterator;
 use EonX\EasyBatch\Iterator\IteratorConfig;
 use EonX\EasyBatch\Persisters\BatchPersister;
 use EonX\EasyBatch\Processors\BatchProcessor;
-use EonX\EasyEventDispatcher\Interfaces\EventDispatcherInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final class BatchObjectManager implements BatchObjectManagerInterface
 {

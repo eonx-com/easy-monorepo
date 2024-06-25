@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle::class => ['all' => true],
+    EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle::class => ['all' => true],
 ];
 ```
 

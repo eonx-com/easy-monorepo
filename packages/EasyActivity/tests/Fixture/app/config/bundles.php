@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use EonX\EasyActivity\Bundle\EasyActivityBundle;
-use EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle;
-use EonX\EasyEventDispatcher\Bridge\Symfony\EasyEventDispatcherSymfonyBundle;
+use EonX\EasyDoctrine\Bundle\EasyDoctrineBundle;
+use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 
 return [
     EasyActivityBundle::class => [
         'all' => true,
     ],
-    EasyEventDispatcherSymfonyBundle::class => [
+    EasyEventDispatcherBundle::class => [
         'all' => true,
     ],
-    EasyDoctrineSymfonyBundle::class => [
+    EasyDoctrineBundle::class => [
         'all' => true,
     ],
     DoctrineBundle::class => [

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Bridge\Laravel;
 
-use EonX\EasyEventDispatcher\Bridge\Laravel\EasyEventDispatcherServiceProvider;
-use EonX\EasyLock\Bridge\Laravel\EasyLockServiceProvider;
+use EonX\EasyEventDispatcher\Laravel\EasyEventDispatcherServiceProvider;
+use EonX\EasyLock\Laravel\EasyLockServiceProvider;
 use EonX\EasyWebhook\Bridge\Laravel\EasyWebhookServiceProvider;
 use EonX\EasyWebhook\Tests\AbstractTestCase;
 use Laravel\Lumen\Application;

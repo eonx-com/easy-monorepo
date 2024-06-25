@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyDoctrine\DBAL\Types\CarbonImmutableDateTimeMicrosecondsType;
+use EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType;
 use Symfony\Config\DoctrineConfig;
 
 return static function (DoctrineConfig $doctrineConfig): void {
