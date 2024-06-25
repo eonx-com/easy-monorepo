@@ -91,7 +91,9 @@ Here is a simple example of a `HandlerConfigProviderInterface` to register a `St
 ```php
 namespace App\Logger;
 
-use EonX\EasyLogging\Config\HandlerConfig;use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;use Monolog\Handler\StreamHandler;
+use EonX\EasyLogging\Config\HandlerConfig;
+use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
+use Monolog\Handler\StreamHandler;
 
 final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
@@ -141,7 +143,9 @@ Here is a simple example of a `ProcessorConfigProviderInterface` to register a `
 ```php
 namespace App\Logger;
 
-use EonX\EasyLogging\Config\ProcessorConfig;use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;use Monolog\Processor\TagProcessor;
+use EonX\EasyLogging\Config\ProcessorConfig;
+use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
+use Monolog\Processor\TagProcessor;
 
 final class TagProcessorConfigProvider implements ProcessorConfigProviderInterface
 {
