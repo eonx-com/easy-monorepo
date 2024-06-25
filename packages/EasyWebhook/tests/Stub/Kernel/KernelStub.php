@@ -8,7 +8,7 @@ use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyWebhook\Bundle\EasyWebhookBundle;
 use EonX\EasyWebhook\Tests\Stub\Dispatcher\EventDispatcherStub;
-use EonX\EasyWebhook\Tests\Stub\LockService\LockerStub;
+use EonX\EasyWebhook\Tests\Stub\Locker\LockerStub;
 use EonX\EasyWebhook\Tests\Stub\Messenger\MessageBusStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

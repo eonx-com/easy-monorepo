@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 
 use EonX\EasyLock\Common\ValueObject\LockDataInterface;
-use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\Middleware\LockMiddleware;
-use EonX\EasyWebhook\Tests\AbstractMiddlewareTestCase;
-use EonX\EasyWebhook\Tests\Stubs\LockerStub;
-use EonX\EasyWebhook\Webhook;
-use EonX\EasyWebhook\WebhookResult;
+use EonX\EasyWebhook\Common\Entity\Webhook;
+use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookResult;
+use EonX\EasyWebhook\Common\Middleware\LockMiddleware;
+use EonX\EasyWebhook\Tests\Stub\Locker\LockerStub;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class LockMiddlewareTest extends AbstractMiddlewareTestCase

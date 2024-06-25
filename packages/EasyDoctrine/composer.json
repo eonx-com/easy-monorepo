@@ -8,35 +8,45 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-event-dispatcher": "^5.12",
-        "eonx-com/easy-utils": "^5.12",
-        "myclabs/deep-copy": "^1.11",
-        "nesbot/carbon": "^2.67"
-    },
-    "require-dev": {
-        "aws/aws-sdk-php": "^3.269",
-        "doctrine/annotations": "^1.14",
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
+        "eonx-com/easy-event-dispatcher": "^5.12",
+        "eonx-com/easy-utils": "^5.12",
+        "myclabs/deep-copy": "^1.11",
+        "nesbot/carbon": "^2.67",
+        "symfony/config": "^6.4",
+        "symfony/contracts": "^3.5",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/doctrine-bridge": "^6.4",
+        "symfony/http-kernel": "^6.4"
+    },
+    "require-dev": {
+        "aws/aws-sdk-php": "^3.269",
         "eonx-com/easy-error-handler": "^5.12",
         "eonx-com/easy-test": "^5.12",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4",
-        "symfony/doctrine-bridge": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyDoctrine\\": "src",
-            "EonX\\EasyDoctrine\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyDoctrine\\Bundle\\": "bundle",
+            "EonX\\EasyDoctrine\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyDoctrine\\Tests\\": "tests"
+            "EonX\\EasyDoctrine\\Tests\\": "tests",
+            "EonX\\EasyDoctrine\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyDoctrine\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
+    },
+    "suggest": {
+        "aws/aws-sdk-php": "To use AWS RDS integration",
+        "eonx-com/easy-error-handler": "To report transactional errors",
+        "illuminate/support": "To use this package with Laravel/Lumen"
     },
     "extra": {
         "branch-alias": {

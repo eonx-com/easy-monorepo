@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Laravel;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use EonX\EasyLock\Interfaces\LockServiceInterface;
+use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstants;
 use EonX\EasyWebhook\Bundle\Enum\BundleParam;
 use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId;
@@ -99,7 +99,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $coreMiddlewareList = [
             // BEFORE MIDDLEWARE
             LockMiddleware::class => static fn (Container $app): LockMiddleware => new LockMiddleware(
-                $app->make(LockServiceInterface::class),
+                $app->make(LockerInterface::class),
                 null,
                 MiddlewareInterface::PRIORITY_CORE_BEFORE - 6
             ),
