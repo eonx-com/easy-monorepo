@@ -9,7 +9,7 @@ use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use EonX\EasyDoctrine\Bridge\AwsRds\AwsRdsConnectionParamsResolver;
+use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use EonX\EasySwoole\Doctrine\ClientConfig\PdoClientConfig;
 use EonX\EasySwoole\Doctrine\Connection\DbalConnection;
