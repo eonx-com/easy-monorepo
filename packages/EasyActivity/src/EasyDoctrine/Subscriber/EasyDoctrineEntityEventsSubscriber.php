@@ -5,9 +5,9 @@ namespace EonX\EasyActivity\EasyDoctrine\Subscriber;
 
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Logger\ActivityLoggerInterface;
-use EonX\EasyDoctrine\Events\EntityCreatedEvent;
-use EonX\EasyDoctrine\Events\EntityDeletedEvent;
-use EonX\EasyDoctrine\Events\EntityUpdatedEvent;
+use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
+use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
+use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
 
 final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
 {
