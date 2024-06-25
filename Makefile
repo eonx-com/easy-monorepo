@@ -46,12 +46,12 @@ easy-monorepo: ## Execute EasyMonorepo commands
 
 check-all: ## Check codebase with all checkers
 	$(call runCommand,$(MAKE) --jobs=2 --keep-going --output-sync \
-		check-composer \
-		check-ecs \
-		check-monorepo \
-		check-phpstan \
-		check-rector \
-		check-security)
+		check-composer enableNotification="no"\
+		check-ecs enableNotification="no"\
+		check-monorepo enableNotification="no"\
+		check-phpstan enableNotification="no"\
+		check-rector enableNotification="no"\
+		check-security enableNotification="no")
 
 check-composer: ## Validate composer.json
 	$(call runCommand,composer validate --strict)
