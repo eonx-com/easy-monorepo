@@ -12,8 +12,8 @@
     "require-dev": {
         "doctrine/common": "^3.0",
         "doctrine/dbal": "^3.0",
-        "eonx-com/easy-event-dispatcher": "^5.11.1",
-        "eonx-com/easy-random": "^5.11.1",
+        "eonx-com/easy-event-dispatcher": "^5.12",
+        "eonx-com/easy-random": "^5.12",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
         "symfony/symfony": "^6.3"
