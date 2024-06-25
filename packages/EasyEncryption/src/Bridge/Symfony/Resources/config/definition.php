@@ -38,7 +38,7 @@ return static function (DefinitionConfigurator $definition) {
                             'The "%node%" node is deprecated, use "aws_pkcs11_encryptor.hsm_ip_addresses" instead.'
                         )
                         ->defaultNull()
-                        ->end()
+                    ->end()
                     ->scalarNode('server_client_cert_file')->defaultNull()->end()
                     ->scalarNode('server_client_key_file')->defaultNull()->end()
                     ->booleanNode('use_aws_cloud_hsm_configure_tool')->defaultTrue()->end()
