@@ -41,7 +41,6 @@ return RectorConfig::configure()
         // Skip entire files or directories
         'packages/*/var/*', // Cache files
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
-        'packages/EasyEncryption/src/AwsPkcs11Encryptor.php', // Because of Pkcs11
 
         // Skip rules
         AddLiteralSeparatorToNumberRector::class => [
