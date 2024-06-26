@@ -23,7 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Fallback
     $services->set(FallbackResolverInterface::class, UuidFallbackResolver::class);
 
-    // RequestId
+    // RequestIdProvider
     $services
         ->set(RequestIdProviderInterface::class, RequestIdProvider::class)
         ->arg('$correlationIdHeaderName', param(ConfigParam::HttpHeaderCorrelationId->value))

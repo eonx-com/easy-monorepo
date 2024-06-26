@@ -51,7 +51,7 @@ use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
 final class MyController
 {
-    public function __construct(private RequestIdProviderInterface $requestId)
+    public function __construct(private RequestIdProviderInterface $requestIdProvider)
     {
     }
 

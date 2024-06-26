@@ -20,7 +20,7 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
     /**
      * @see testGetIds
      */
-    public static function providerTestGetIds(): iterable
+    public static function provideTestGetIds(): iterable
     {
         yield 'Default fallback to UUID' => [
             new Request(),
@@ -42,7 +42,7 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestGetIds')]
+    #[DataProvider('provideTestGetIds')]
     public function testGetIds(
         Request $request,
         ?string $requestId = null,
