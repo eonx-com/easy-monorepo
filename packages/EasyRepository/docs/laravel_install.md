@@ -23,7 +23,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class,
+    \EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class,
 ],
 ```
 
@@ -65,7 +65,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class);
+$app->register(\EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class);
 ```
 
 <br>
@@ -102,7 +102,11 @@ $app->make(\App\Repositories\PostRepositoryInterface::class); // Will be your co
 ```
 
 [1]: https://laravel.com/
+
 [2]: https://lumen.laravel.com/
+
 [4]: https://laravel.com/docs/5.7/providers
+
 [5]: https://en.wikipedia.org/wiki/Fully_qualified_name
+
 [6]: http://php-di.org/doc/autowiring.html

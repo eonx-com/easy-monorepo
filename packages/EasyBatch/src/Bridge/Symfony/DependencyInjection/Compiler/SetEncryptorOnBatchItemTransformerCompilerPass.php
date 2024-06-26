@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bridge\Symfony\DependencyInjection\Compiler;
 
 use EonX\EasyBatch\Bridge\BridgeConstantsInterface;
-use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

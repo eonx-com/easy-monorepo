@@ -75,7 +75,7 @@ final class PostRepository extends AbstractDoctrineRepository implements PostRep
 
 ## AbstractPaginatedDoctrineOrmRepository
 
-If you need to deal with paginated sets of objects, this package provides you with `EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository`
+If you need to deal with paginated sets of objects, this package provides you with `EonX\EasyRepository\Repository\AbstractPaginatedDoctrineOrmRepository`
 which has everything setup for you. This repository has a dependency on the `StartSizeDataInterface` from the `eonx/pagination`
 package so to be able to use it you first need to update your project's dependencies:
 
@@ -106,7 +106,7 @@ interface PostRepositoryInterface
 // app/Repositories/PostRepository.php
 
 use App\Database\Entities\Post;
-use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractPaginatedDoctrineOrmRepository;
+use EonX\EasyRepository\Repository\AbstractPaginatedDoctrineOrmRepository;
 
 final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implements PostRepositoryInterface
 {

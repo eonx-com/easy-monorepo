@@ -6,11 +6,11 @@ namespace EonX\EasyBatch\Tests\Transformers;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyEncryption\Encryptor;
-use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
-use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
-use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
+use EonX\EasyEncryption\Common\Encryptor\Encryptor;
+use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
+use EonX\EasyEncryption\Common\Factory\DefaultEncryptionKeyFactory;
+use EonX\EasyEncryption\Common\Provider\DefaultEncryptionKeyProvider;
+use EonX\EasyEncryption\Common\Resolver\SimpleEncryptionKeyResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
