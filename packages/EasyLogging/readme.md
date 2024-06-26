@@ -193,7 +193,9 @@ Here is a simple example of a `LoggerConfiguratorInterface` to use microseconds:
 ```php
 namespace App\Logger;
 
-use EonX\EasyLogging\Config\AbstractLoggingConfig;use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;use Monolog\Logger;
+use EonX\EasyLogging\Config\AbstractLoggingConfig;
+use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
+use Monolog\Logger;
 
 final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig implements LoggerConfiguratorInterface
 {
