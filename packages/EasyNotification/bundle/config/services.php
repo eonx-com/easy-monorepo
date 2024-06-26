@@ -31,12 +31,12 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->autowire();
 
-    // SubscribeInfoFinder
+    // SubscribeInfoProvider
     $services
         ->set(SubscribeInfoProviderInterface::class, SubscribeInfoProvider::class)
         ->arg('$apiUrl', param(ConfigParam::ApiUrl->value));
 
-    // Config + ConfigFinder
+    // Config + ConfigProvider
     $services
         ->set(ConfigProviderInterface::class, ConfigProvider::class)
         ->arg('$apiUrl', param(ConfigParam::ApiUrl->value));

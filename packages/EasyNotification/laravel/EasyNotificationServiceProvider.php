@@ -73,7 +73,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
             )
         );
 
-        // SubscribeInfoFinder
+        // SubscribeInfoProvider
         $this->app->singleton(
             SubscribeInfoProviderInterface::class,
             static fn (): SubscribeInfoProviderInterface => new SubscribeInfoProvider(

@@ -48,16 +48,16 @@ final class SubscribeInfoController
     /**
      * @var \EonX\EasyNotification\Provider\SubscribeInfoProviderInterface
      */
-    private $subscribeInfoFinder;
+    private $subscribeInfoProvider;
 
     public function __construct(
         string $notificationApiKey,
         string $notificationProvider,
-        SubscribeInfoProviderInterface $subscribeInfoFinder
+        SubscribeInfoProviderInterface $subscribeInfoProvider
     ) {
         $this->apiKey = $notificationApiKey;
         $this->providerExternalId = $notificationProvider;
-        $this->subscribeInfoFinder = $subscribeInfoFinder;
+        $this->subscribeInfoProvider = $subscribeInfoProvider;
     }
 
     public function __invoke(Request $request)
@@ -65,7 +65,7 @@ final class SubscribeInfoController
         // Please do better in your code! :)
         $body = \json_decode($request->getContent(), true);
 
-        $subscribeInfo = $this->subscribeInfoFinder->provide(
+        $subscribeInfo = $this->subscribeInfoProvider->provide(
             $this->apiKey,
             $this->providerExternalId,
             $body['topics'] // Get topics from request body
