@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Bundle\CompilerPass;
 
 use EonX\EasyBatch\Bundle\Enum\ConfigServiceId;
-use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

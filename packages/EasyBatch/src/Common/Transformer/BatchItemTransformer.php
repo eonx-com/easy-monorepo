@@ -8,7 +8,7 @@ use EonX\EasyBatch\Common\Serializer\MessageSerializerInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
-use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 
 final class BatchItemTransformer extends AbstractBatchObjectTransformer
 {

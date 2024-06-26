@@ -8,7 +8,7 @@ use EonX\EasyBatch\Bundle\EasyBatchBundle;
 use EonX\EasyBatch\Tests\Stub\ConnectionFactory\DoctrineDbalConnectionFactoryStub;
 use EonX\EasyBatch\Tests\Stub\EventDispatcher\SymfonyEventDispatcherStub;
 use EonX\EasyBatch\Tests\Stub\MessageBus\MessageBusStub;
-use EonX\EasyEncryption\Bridge\Symfony\EasyEncryptionSymfonyBundle;
+use EonX\EasyEncryption\Bundle\EasyEncryptionBundle;
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
@@ -51,7 +51,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function registerBundles(): iterable
     {
         yield new EasyBatchBundle();
-        yield new EasyEncryptionSymfonyBundle();
+        yield new EasyEncryptionBundle();
         yield new EasyEventDispatcherBundle();
         yield new EasyRandomSymfonyBundle();
     }

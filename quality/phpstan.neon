@@ -78,7 +78,7 @@ parameters:
         # ---- EasyDoctrine ----
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
-          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptor.php
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
@@ -116,7 +116,7 @@ parameters:
         # ---- EasyRandom ----
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Illuminate
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
@@ -124,26 +124,26 @@ parameters:
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+        - message: '#Property EonX\\EasyRepository\\Repository\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/DoctrineOrmRepositoryTrait.php
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Property EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/DoctrineOrmRepositoryTrait.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getManager\(\) should return Doctrine\\ORM\\EntityManagerInterface but returns Doctrine\\Persistence\\ObjectManager\|null#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:getManager\(\) should return Doctrine\\ORM\\EntityManagerInterface but returns Doctrine\\Persistence\\ObjectManager\|null#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$manager \(Doctrine\\ORM\\EntityManagerInterface\|null\) does not accept Doctrine\\Persistence\\ObjectManager\|null#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Property EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:\$manager \(Doctrine\\ORM\\EntityManagerInterface\|null\) does not accept Doctrine\\Persistence\\ObjectManager\|null#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
         - message: "#Offset 'extra' on array{message: string, context: array, level: 100|200|250|300|400|500|550|600, level_name: 'ALERT'|'CRITICAL'|'DEBUG'|'EMERGENCY'|'ERROR'|'INFO'|'NOTICE'|'WARNING', channel: string, datetime: DateTimeImmutable, extra: array} on left side of ?? always exists and is not nullable#"
