@@ -8,9 +8,9 @@ use ApiPlatform\Symfony\Bundle\Test\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyApiPlatform\Tests\Fixture\App\Kernel\ApplicationKernel;
-use EonX\EasyTest\Traits\ArrayAssertionTrait;
-use EonX\EasyTest\Traits\ContainerServiceTrait;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\ArrayAssertionTrait;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractApplicationTestCase extends ApiTestCase

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Strategy;
 
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 
 final class UuidStrategy implements BatchObjectIdStrategyInterface
 {

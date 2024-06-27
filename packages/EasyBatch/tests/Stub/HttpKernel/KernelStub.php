@@ -11,7 +11,7 @@ use EonX\EasyBatch\Tests\Stub\MessageBus\MessageBusStub;
 use EonX\EasyEncryption\Bundle\EasyEncryptionBundle;
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyLock\Common\Locker\LockerInterface;
-use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
+use EonX\EasyRandom\Bundle\EasyRandomBundle;
 use Psr\Container\ContainerInterface;
 use stdClass;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -53,7 +53,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         yield new EasyBatchBundle();
         yield new EasyEncryptionBundle();
         yield new EasyEventDispatcherBundle();
-        yield new EasyRandomSymfonyBundle();
+        yield new EasyRandomBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

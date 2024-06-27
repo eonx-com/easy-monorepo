@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Tests\Fixture\App\Client\SomeClient;
 use EonX\EasyHttpClient\Tests\Stub\Dispatcher\EventDispatcherStub;
-use EonX\EasyTest\HttpClient\TestResponseFactory;
+use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
