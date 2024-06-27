@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Verbose;
 
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyDriverInterface;
 use EonX\EasyErrorHandler\Interfaces\VerboseStrategyInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 

@@ -8,7 +8,7 @@ use Bugsnag\Configuration;
 use Bugsnag\Request\ResolverInterface;
 use Bugsnag\Shutdown\ShutdownStrategyInterface;
 use EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use GuzzleHttp\ClientInterface;
 
 final class ClientFactory implements ClientFactoryInterface

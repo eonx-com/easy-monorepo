@@ -34,7 +34,7 @@ use EonX\EasyErrorHandler\Providers\ErrorCodesFromEnumProvider;
 use EonX\EasyErrorHandler\Providers\ErrorCodesFromInterfaceProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
-use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
+use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;

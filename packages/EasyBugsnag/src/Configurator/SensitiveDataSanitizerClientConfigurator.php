@@ -5,7 +5,7 @@ namespace EonX\EasyBugsnag\Configurator;
 
 use Bugsnag\Client;
 use Bugsnag\Report;
-use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 
 final class SensitiveDataSanitizerClientConfigurator extends AbstractClientConfigurator
 {
