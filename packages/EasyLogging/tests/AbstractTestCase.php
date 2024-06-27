@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests;
 
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 

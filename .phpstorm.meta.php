@@ -11,6 +11,6 @@ override(\Symfony\Component\Messenger\Envelope::last(0), type(0));
 
 // self::getService(Type::class) → instance of "Type"
 override(
-    \EonX\EasyTest\Traits\ContainerServiceTrait::getService(),
+    \EonX\EasyTest\Common\Trait\ContainerServiceTrait::getService(),
     type(0),
 );

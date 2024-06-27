@@ -5,9 +5,9 @@ namespace EonX\EasyActivity\Tests\Unit;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyActivity\Tests\Fixture\App\Kernel\ApplicationKernel;
-use EonX\EasyTest\Traits\ContainerServiceTrait;
-use EonX\EasyTest\Traits\DatabaseEntityTrait;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
+use EonX\EasyTest\Common\Trait\DatabaseEntityTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 

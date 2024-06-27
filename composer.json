@@ -222,6 +222,7 @@
             "EonX\\EasyTemplatingBlock\\Tests\\Unit\\": "packages/EasyTemplatingBlock/tests/Unit/src",
             "EonX\\EasyTemplatingBlock\\Tests\\Unit\\Bundle\\": "packages/EasyTemplatingBlock/tests/Unit/bundle",
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
+            "EonX\\EasyTest\\Tests\\Unit\\": "packages/EasyTest/tests/Unit/src",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests",
             "EonX\\EasyWebhook\\Tests\\Unit\\": "packages/EasyWebhook/tests/Unit/src",
