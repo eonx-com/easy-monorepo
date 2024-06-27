@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Tests\Stub\HttpKernel;
+namespace EonX\EasyEventDispatcher\Tests\Stub\Kernel;
 
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyEventDispatcher\Tests\Stub\Dispatcher\SymfonyEventDispatcherStub;

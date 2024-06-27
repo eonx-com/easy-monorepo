@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Tests\Stub\HttpKernel;
+namespace EonX\EasyDoctrine\Tests\Stub\Kernel;
 
 use EonX\EasyDoctrine\Bundle\EasyDoctrineBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;

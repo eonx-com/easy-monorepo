@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Tests\Stub\HttpKernel;
+namespace EonX\EasyLogging\Tests\Stub\Kernel;
 
-use EonX\EasyEncryption\Bundle\EasyEncryptionBundle;
+use EonX\EasyLogging\Bundle\EasyLoggingBundle;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,8 +33,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             $alias->setPublic(true);
         }
 
-        foreach ($container->getDefinitions() as $definition) {
-            $definition->setPublic(true);
+        foreach ($container->getDefinitions() as $def) {
+            $def->setPublic(true);
         }
     }
 
@@ -42,7 +43,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyEncryptionBundle();
+        yield new EasyLoggingBundle();
+        yield new EasyUtilsBundle();
     }
 
     /**

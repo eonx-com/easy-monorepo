@@ -5,7 +5,7 @@ namespace EonX\EasyBatch\Tests\Unit;
 
 use Doctrine\DBAL\Connection;
 use EonX\EasyBatch\Doctrine\Provider\DoctrineDbalStatementProvider;
-use EonX\EasyBatch\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyBatch\Tests\Stub\Kernel\KernelStub;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
