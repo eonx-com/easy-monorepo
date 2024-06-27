@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Bundle;
 
-use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
+use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag as EasyErrorHandlerConfigTag;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam as EasyHttpClientConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam as EasyLoggingConfigParam;
 use EonX\EasyRequestId\Bundle\Enum\ConfigParam;
@@ -51,7 +51,7 @@ final class EasyRequestIdBundle extends AbstractBundle
         $this->config = $config;
         $this->containerConfigurator = $container;
 
-        $this->loadIfEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class);
+        $this->loadIfEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class);
         $this->loadIfEnabled('easy_logging', EasyLoggingConfigParam::class);
         $this->loadIfEnabled('easy_http_client', EasyHttpClientConfigParam::class);
         $this->loadIfEnabled('easy_webhook', EasyWebhookConfigParam::class);
@@ -59,7 +59,8 @@ final class EasyRequestIdBundle extends AbstractBundle
 
     private function loadIfEnabled(string $configName, ?string $enum = null): void
     {
-        // Load only if interface exists
+        // Load only if enum exists
+        // @todo Remove \interface_exists after migration to new structure
         // @todo Remove \interface_exists after migration to new structure
         if ($enum !== null && (\enum_exists($enum) || \interface_exists($enum)) === false) {
             return;

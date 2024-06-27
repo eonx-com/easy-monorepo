@@ -8,7 +8,17 @@
         "eonx-com/easy-logging": "^5.12",
         "eonx-com/easy-utils": "^5.12",
         "nesbot/carbon": "^2.67",
-        "nikic/php-parser": "^5.0"
+        "nikic/php-parser": "^5.0",
+        "symfony/config": "^6.4",
+        "symfony/console": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/error-handler": "^6.4",
+        "symfony/finder": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/serializer": "^6.4",
+        "symfony/service-contracts": "^3.5",
+        "symfony/translation": "^6.4"
     },
     "require-dev": {
         "api-platform/core": "^3.3",
@@ -30,14 +40,26 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyErrorHandler\\": "src",
-            "EonX\\EasyErrorHandler\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyErrorHandler\\Bundle\\": "bundle",
+            "EonX\\EasyErrorHandler\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyErrorHandler\\Tests\\": "tests",
-            "EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
+            "EonX\\EasyErrorHandler\\Tests\\Application\\": "tests/Application/src",
+            "EonX\\EasyErrorHandler\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyErrorHandler\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyErrorHandler\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyErrorHandler\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
+    },
+    "suggest": {
+        "api-platform/core": "To use ApiPlatform integration",
+        "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
+        "eonx-com/easy-webhook": "To use EasyWebhook integration",
+        "symfony/messenger": "To use Symfony Messenger integration",
+        "symfony/validator": "To use ApiPlatform integration"
     },
     "extra": {
         "branch-alias": {

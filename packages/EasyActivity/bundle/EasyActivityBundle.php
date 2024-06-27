@@ -20,9 +20,14 @@ final class EasyActivityBundle extends AbstractBundle
         'table_name' => ConfigParam::TableName,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -33,10 +38,10 @@ final class EasyActivityBundle extends AbstractBundle
                 ->set($param->value, $config[$name]);
         }
 
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         if ($this->easyDoctrineBundleIsRegistered($builder)) {
-            $container->import(__DIR__ . '/config/easy-doctrine-bridge-services.php');
+            $container->import('config/easy-doctrine-bridge-services.php');
         }
     }
 

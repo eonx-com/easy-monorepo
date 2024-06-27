@@ -68,8 +68,8 @@ return ECSConfig::configure()
         AvoidPublicPropertiesSniff::class => [
             'packages/*/src/*/Constraint/*',
             'packages/*/tests/Stub/Model/*',
-            'packages/*/tests/*/Fixtures/*/ApiResource/*',
-            'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
+            'packages/*/tests/Fixture/*/ApiResource/*',
+            'packages/*/tests/Fixture/*/DataTransferObject/*',
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,

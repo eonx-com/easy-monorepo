@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Common\Runner;
 
 use Carbon\CarbonImmutable;
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasySwoole\Caching\Helper\CacheTableHelper;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use EonX\EasySwoole\Common\Helper\AppRuntimeHelper;
@@ -117,7 +117,7 @@ final class EasySwooleRunner implements RunnerInterface
 
                     // If eonx-com/easy-error-handler is installed and configured, let's report the error
                     if ($hasEasyErrorHandler) {
-                        /** @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface|null $errorHandler */
+                        /** @var \EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface|null $errorHandler */
                         $errorHandler = $app->getContainer()
                             ->get(ErrorHandlerInterface::class);
 

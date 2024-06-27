@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Common\Exception;
 
-use EonX\EasyErrorHandler\Exceptions\ValidationException;
+use EonX\EasyErrorHandler\Common\Exception\ValidationException;
 use Throwable;
 
 final class ValidationFailedException extends ValidationException

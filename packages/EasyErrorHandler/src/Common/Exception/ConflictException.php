@@ -1,0 +1,11 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasyErrorHandler\Common\Exception;
+
+abstract class ConflictException extends BaseException
+{
+    protected int $statusCode = 409;
+
+    protected string $userMessage = self::USER_MESSAGE_CONFLICT;
+}

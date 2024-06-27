@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Laravel;
 
-use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
+use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag as EasyErrorHandlerConfigTag;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag as EasyHttpClientConfigTag;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag as EasyLoggingConfigTag;
 use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
@@ -101,11 +101,11 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyErrorHandler
-        if ($this->bridgeEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class)) {
+        if ($this->bridgeEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class)) {
             $this->app->singleton(RequestIdErrorResponseBuilder::class);
             $this->app->tag(
                 RequestIdErrorResponseBuilder::class,
-                [EasyErrorHandlerBridgeConstantsInterface::TAG_ERROR_RESPONSE_BUILDER_PROVIDER]
+                [EasyErrorHandlerConfigTag::ErrorResponseBuilderProvider->value]
             );
         }
 

@@ -14,6 +14,11 @@ use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyAsyncBundle extends AbstractBundle
 {
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         // -11 to run after easy-batch pass so middleware are first in the list
@@ -22,7 +27,7 @@ final class EasyAsyncBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -38,10 +43,10 @@ final class EasyAsyncBundle extends AbstractBundle
                 $config['messenger_middleware_auto_register'] ?? true
             );
 
-        $container->import(__DIR__ . '/config/messenger.php');
+        $container->import('config/messenger.php');
 
         if (($config['doctrine']['enabled'] ?? true) && \interface_exists(EntityManagerInterface::class)) {
-            $container->import(__DIR__ . '/config/messenger_doctrine.php');
+            $container->import('config/messenger_doctrine.php');
 
             if ($config['doctrine']['close_persistent_connections'] ?? true) {
                 $container->parameters()
@@ -50,7 +55,7 @@ final class EasyAsyncBundle extends AbstractBundle
                         $config['doctrine']['persistent_connections_max_idle_time'] ?? 10.0
                     );
 
-                $container->import(__DIR__ . '/config/doctrine_persistent_connections.php');
+                $container->import('config/doctrine_persistent_connections.php');
             }
         }
 
@@ -68,7 +73,7 @@ final class EasyAsyncBundle extends AbstractBundle
                     $config['messenger_worker']['stop_on_messages_limit']['max_messages']
                 );
 
-            $container->import(__DIR__ . '/config/messenger_stop_on_messages_limit.php');
+            $container->import('config/messenger_stop_on_messages_limit.php');
         }
 
         // Stop Worker On Time
@@ -85,7 +90,7 @@ final class EasyAsyncBundle extends AbstractBundle
                     $config['messenger_worker']['stop_on_time_limit']['max_time']
                 );
 
-            $container->import(__DIR__ . '/config/messenger_stop_on_time_limit.php');
+            $container->import('config/messenger_stop_on_time_limit.php');
         }
     }
 }

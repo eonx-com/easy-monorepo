@@ -12,7 +12,7 @@ and reports.
 ## Using explicitly
 
 You can also use the package to explicitly report an exception at any point in your application. Since
-`\EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface` is registered as a service in your framework, you can use
+`\EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface` is registered as a service in your framework, you can use
 dependency injection to use it within your application. For example:
 
 ```php
@@ -20,12 +20,12 @@ dependency injection to use it within your application. For example:
 
 namespace App\Service;
 
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 
 final class MyService
 {
     /**
-     * @var \EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface
+     * @var \EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface
      */
     private $errorHandler;
 
@@ -48,7 +48,7 @@ final class MyService
 ### Symfony
 
 Due to the [Autowiring via setters][1] feature of Symfony, you can use
-`\EonX\EasyErrorHandler\Traits\ErrorHandlerAwareTrait` to simplify the injection of
-`\EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface`.
+`\EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerAwareTrait` to simplify the injection of
+`\EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface`.
 
 [1]: https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls
