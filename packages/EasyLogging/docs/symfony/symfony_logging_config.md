@@ -15,6 +15,5 @@ It requires to tag the different config providers and logger configurators as fo
 By default, the Symfony Bridge will register each interface listed below for auto-configuration and add the required
 tag, so you have nothing to do.
 
-However, if you need to tag services manually (e.g. 3rd party package), to make this process easier, 
-this package provides you with public constants you can use for the tags name. 
-These constants are defined on `EonX\EasyLogging\Bridge\BridgeConstantsInterface`.
+However, if you need to tag services manually (e.g. 3rd party package), to make this process easier,
+this package provides you with `\EonX\EasyLogging\Bundle\Enum\ConfigTag`.

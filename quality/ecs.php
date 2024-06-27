@@ -14,7 +14,6 @@ use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
@@ -56,7 +55,6 @@ return ECSConfig::configure()
 
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
-            'packages/*/src/Bridge/Laravel/config/*',
             'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php',
@@ -90,10 +88,6 @@ return ECSConfig::configure()
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
             'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
-        ],
-        LineLengthSniff::class . '.MaxExceeded' => [
-            'packages/*/src/Bridge/BridgeConstantsInterface.php',
-            'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
         ],
         MethodChainingNewlineFixer::class => [
             'packages/*/definition.php',
