@@ -19,7 +19,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
     /**
      * @see testRandomString
      */
-    public static function providerTestRandomString(): iterable
+    public static function provideRandomStringData(): iterable
     {
         yield 'Default configs' => [
             'configure' => static function (RandomStringInterface $randomString): void {
@@ -151,7 +151,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         $sut->__toString();
     }
 
-    #[DataProvider('providerTestRandomString')]
+    #[DataProvider('provideRandomStringData')]
     public function testRandomString(callable $configure, callable $assert, ?int $length = null): void
     {
         $length ??= 100;

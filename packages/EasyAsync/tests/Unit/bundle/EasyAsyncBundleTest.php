@@ -14,7 +14,7 @@ final class EasyAsyncBundleTest extends AbstractUnitTestCase
     /**
      * @see testMessengerConfig
      */
-    public static function providerTestMessengerConfig(): iterable
+    public static function provideMessengerConfigData(): iterable
     {
         yield 'no config - no subscribers' => [
             static function (ContainerInterface $container): void {
@@ -57,7 +57,7 @@ final class EasyAsyncBundleTest extends AbstractUnitTestCase
     /**
      * @param string[]|null $configs
      */
-    #[DataProvider('providerTestMessengerConfig')]
+    #[DataProvider('provideMessengerConfigData')]
     public function testMessengerConfig(callable $assert, ?array $configs = null): void
     {
         $container = $this->getKernel($configs)

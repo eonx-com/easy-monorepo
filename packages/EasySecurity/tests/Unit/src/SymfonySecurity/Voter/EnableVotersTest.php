@@ -14,7 +14,7 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
     /**
      * @see testVotersEnabled
      */
-    public static function providerTestVotersEnabled(): iterable
+    public static function provideVotersEnabledData(): iterable
     {
         yield 'All disabled by default' => [
             [],
@@ -65,7 +65,7 @@ final class EnableVotersTest extends AbstractSymfonyTestCase
     /**
      * @param string[] $configs
      */
-    #[DataProvider('providerTestVotersEnabled')]
+    #[DataProvider('provideVotersEnabledData')]
     public function testVotersEnabled(array $configs, array $assertions): void
     {
         $container = $this->getKernel($configs)

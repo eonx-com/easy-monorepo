@@ -15,7 +15,7 @@ final class IterablePaginatorTest extends AbstractUnitTestCase
     /**
      * @see testPaginatorGetItems
      */
-    public static function providerTestPaginatorGetItems(): iterable
+    public static function providePaginatorGetItemsData(): iterable
     {
         yield 'Empty array' => [
             [],
@@ -43,7 +43,7 @@ final class IterablePaginatorTest extends AbstractUnitTestCase
     /**
      * @see testPaginatorPageMethods
      */
-    public static function providerTestPaginatorPageMethods(): iterable
+    public static function providePaginatorPageMethodsData(): iterable
     {
         yield 'Default' => [
             [],
@@ -74,7 +74,7 @@ final class IterablePaginatorTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestPaginatorGetItems')]
+    #[DataProvider('providePaginatorGetItemsData')]
     public function testPaginatorGetItems(iterable $items, callable $assert, ?callable $transformer = null): void
     {
         $paginator = new IterablePaginator(Pagination::create(1, 15), $items);
@@ -83,7 +83,7 @@ final class IterablePaginatorTest extends AbstractUnitTestCase
         $assert($paginator->getItems());
     }
 
-    #[DataProvider('providerTestPaginatorPageMethods')]
+    #[DataProvider('providePaginatorPageMethodsData')]
     public function testPaginatorPageMethods(
         iterable $items,
         PaginationInterface $pagination,

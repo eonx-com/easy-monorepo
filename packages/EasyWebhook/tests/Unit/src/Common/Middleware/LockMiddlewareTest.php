@@ -16,7 +16,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'should not lock (no id, not send now) -> return result from stack' => [Webhook::fromArray([]), false];
 
@@ -45,7 +45,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(WebhookInterface $webhook, bool $shouldLock, ?bool $canProcess = null): void
     {
         $canProcess ??= true;

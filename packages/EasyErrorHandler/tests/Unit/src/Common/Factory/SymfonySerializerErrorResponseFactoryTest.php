@@ -19,7 +19,7 @@ final class SymfonySerializerErrorResponseFactoryTest extends AbstractUnitTestCa
     /**
      * @see testCreate
      */
-    public static function providerTestCreate(): iterable
+    public static function provideCreateData(): iterable
     {
         yield 'Default format' => [
             'request' => new Request(),
@@ -43,7 +43,7 @@ final class SymfonySerializerErrorResponseFactoryTest extends AbstractUnitTestCa
         ];
     }
 
-    #[DataProvider('providerTestCreate')]
+    #[DataProvider('provideCreateData')]
     public function testCreate(
         Request $request,
         ErrorResponseDataInterface $errorResponseData,
