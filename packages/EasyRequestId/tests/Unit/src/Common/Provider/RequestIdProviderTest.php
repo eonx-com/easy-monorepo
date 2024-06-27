@@ -22,7 +22,7 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
      */
     public static function provideGetIdsData(): iterable
     {
-        yield 'Default fallback to  UUID' => [
+        yield 'Default fallback to UUID' => [
             new Request(),
             null,
             null,
