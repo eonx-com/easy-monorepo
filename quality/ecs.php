@@ -78,7 +78,7 @@ return ECSConfig::configure()
         ],
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',
+            'packages/EasySecurity/src/SymfonySecurity/Voter/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
         FullyQualifiedGlobalFunctionsSniff::class => [

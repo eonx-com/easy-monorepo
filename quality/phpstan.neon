@@ -154,8 +154,8 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySchedule/src/Event.php
 
         # ---- EasySecurity ----
-        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
-          path: %currentWorkingDirectory%/packages/EasySecurity/tests/Authorization/RoleTest.php
+        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\ValueObject\\Role constructor expects array<EonX\\EasySecurity\\Authorization\\ValueObject\\PermissionInterface\|string>\|null, array<int, EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|stdClass\|string> given#'
+          path: %currentWorkingDirectory%/packages/EasySecurity/tests/Unit/src/Authorization/ValueObject/RoleTest.php
 
         # ---- EasySwoole ----
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
