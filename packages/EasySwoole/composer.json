@@ -27,13 +27,13 @@
         "symfony/twig-bundle": "^6.4"
     },
     "autoload": {
+        "files": [
+            "src/Logging/Function/dump.php"
+        ],
         "psr-4": {
             "EonX\\EasySwoole\\": "src",
             "EonX\\EasySwoole\\Bundle\\": "bundle"
-        },
-        "files": [
-            "src/Logging/Function/dump.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
