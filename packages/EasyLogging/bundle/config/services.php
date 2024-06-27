@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         );
 
     $services
-        ->set('easy_logging.logger', ConfigParam::LoggerClass->value)
+        ->set('easy_logging.logger', (string)param(ConfigParam::LoggerClass->value))
         ->factory([service(LoggerFactoryInterface::class), 'create'])
         ->args([param(ConfigParam::DefaultChannel->value)]);
 };
