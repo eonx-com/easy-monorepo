@@ -6,7 +6,7 @@ namespace EonX\EasyAsync\Tests\Unit\Doctrine\Closer;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
 use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyTest\Traits\LoggerTrait;
+use EonX\EasyTest\Common\Trait\LoggerTrait;
 
 final class ManagersCloserTest extends AbstractUnitTestCase
 {

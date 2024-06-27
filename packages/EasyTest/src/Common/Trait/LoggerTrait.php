@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Traits;
+namespace EonX\EasyTest\Common\Trait;
 
 use EonX\EasyTest\Monolog\Logger\LoggerStub;
 use Psr\Log\LoggerInterface;
