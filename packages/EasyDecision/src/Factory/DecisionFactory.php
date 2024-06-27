@@ -11,7 +11,7 @@ use EonX\EasyDecision\Decision\DecisionInterface;
 use EonX\EasyDecision\Decision\UnanimousDecision;
 use EonX\EasyDecision\Decision\ValueDecision;
 use EonX\EasyDecision\Provider\MappingProviderInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class DecisionFactory implements DecisionFactoryInterface
 {

@@ -12,7 +12,7 @@ use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Common\Entity\ProviderInterface;
 use EonX\EasySecurity\Common\Entity\UserInterface;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

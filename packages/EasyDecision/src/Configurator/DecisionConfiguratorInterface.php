@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Configurator;
 
 use EonX\EasyDecision\Decision\DecisionInterface;
-use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 
 interface DecisionConfiguratorInterface extends HasPriorityInterface
 {

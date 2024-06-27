@@ -6,7 +6,7 @@ namespace EonX\EasyDecision\ExpressionLanguage;
 use EonX\EasyDecision\Exception\ExpressionLanguageLockedException;
 use EonX\EasyDecision\Exception\InvalidExpressionException;
 use EonX\EasyDecision\ExpressionFunction\ExpressionFunctionInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;

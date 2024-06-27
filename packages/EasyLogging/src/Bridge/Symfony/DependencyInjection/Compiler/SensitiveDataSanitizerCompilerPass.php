@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Bridge\Symfony\DependencyInjection\Compiler;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
 use EonX\EasyLogging\Bridge\EasyUtils\Exceptions\EasyUtilsNotInstalledException;
 use EonX\EasyLogging\Bridge\EasyUtils\SensitiveDataSanitizerProcessor;
-use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

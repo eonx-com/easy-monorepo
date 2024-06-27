@@ -5,10 +5,10 @@ namespace EonX\EasyTest\InvalidData\Maker;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
-use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Alphanumeric;
-use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\AlphanumericHyphen;
-use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\DateInterval;
-use EonX\EasyUtils\Bridge\Symfony\Validator\Constraints\Decimal;
+use EonX\EasyUtils\Common\Constraint\Alphanumeric;
+use EonX\EasyUtils\Common\Constraint\AlphanumericHyphen;
+use EonX\EasyUtils\Common\Constraint\DateInterval;
+use EonX\EasyUtils\Common\Constraint\Decimal;
 use Symfony\Component\Validator\Constraints\CardScheme;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Count;

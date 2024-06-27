@@ -9,7 +9,7 @@ use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
-use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Psr\Log\LoggerInterface;
 use Throwable;
 

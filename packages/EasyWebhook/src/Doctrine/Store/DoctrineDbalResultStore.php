@@ -6,7 +6,7 @@ namespace EonX\EasyWebhook\Doctrine\Store;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
-use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 use EonX\EasyWebhook\Common\Store\ResultStoreInterface;

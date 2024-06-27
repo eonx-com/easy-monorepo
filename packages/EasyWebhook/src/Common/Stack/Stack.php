@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\Stack;
 
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use EonX\EasyWebhook\Common\Exception\InvalidStackIndexException;
 use EonX\EasyWebhook\Common\Exception\NoNextMiddlewareException;
 use EonX\EasyWebhook\Common\Middleware\MiddlewareInterface;

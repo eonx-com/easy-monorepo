@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Common\Helper;
 
 use EonX\EasySwoole\Logging\Helper\OutputHelper;
-use EonX\EasyUtils\Helpers\EnvVarSubstitutionHelper;
+use EonX\EasyUtils\Common\Helper\EnvVarSubstitutionHelper;
 
 use function Symfony\Component\String\u;
 

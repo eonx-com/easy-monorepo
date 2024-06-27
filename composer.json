@@ -150,6 +150,8 @@
             "EonX\\EasyTemplatingBlock\\Bundle\\": "packages/EasyTemplatingBlock/bundle",
             "EonX\\EasyTest\\": "packages/EasyTest/src",
             "EonX\\EasyUtils\\": "packages/EasyUtils/src",
+            "EonX\\EasyUtils\\Bundle\\": "packages/EasyUtils/bundle",
+            "EonX\\EasyUtils\\Laravel\\": "packages/EasyUtils/laravel",
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src",
             "EonX\\EasyWebhook\\Bundle\\": "packages/EasyWebhook/bundle",
             "EonX\\EasyWebhook\\Laravel\\": "packages/EasyWebhook/laravel"
@@ -237,6 +239,9 @@
             "EonX\\EasyTest\\Tests\\": "packages/EasyTest/tests",
             "EonX\\EasyTest\\Tests\\Unit\\": "packages/EasyTest/tests/Unit/src",
             "EonX\\EasyUtils\\Tests\\": "packages/EasyUtils/tests",
+            "EonX\\EasyUtils\\Tests\\Unit\\": "packages/EasyUtils/tests/Unit/src",
+            "EonX\\EasyUtils\\Tests\\Unit\\Bundle\\": "packages/EasyUtils/tests/Unit/bundle",
+            "EonX\\EasyUtils\\Tests\\Unit\\Laravel\\": "packages/EasyUtils/tests/Unit/laravel",
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests",
             "EonX\\EasyWebhook\\Tests\\Unit\\": "packages/EasyWebhook/tests/Unit/src",
             "EonX\\EasyWebhook\\Tests\\Unit\\Bundle\\": "packages/EasyWebhook/tests/Unit/bundle",
