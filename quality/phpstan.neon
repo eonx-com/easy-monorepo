@@ -69,7 +69,7 @@ parameters:
 
         # ---- EasyBatch ----
         - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
-          path: %currentWorkingDirectory%/packages/EasyBatch/src/Repositories/BatchItemRepository.php
+          path: %currentWorkingDirectory%/packages/EasyBatch/src/Doctrine/Repository/BatchItemRepository.php
 
         # ---- EasyBugsnag ----
         # ---- EasyDecision ----
@@ -87,22 +87,22 @@ parameters:
         # ---- EasyLock ----
         # ---- EasyLogging ----
         - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
-          path: %currentWorkingDirectory%/packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
+          path: %currentWorkingDirectory%/packages/EasyLogging/src/Provider/StreamHandlerConfigProvider.php
 
         # ---- EasyNotification ----
         # ---- EasyPagination ----
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
-        - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stubs\\Model\\.*\:\:\$.*#'
-        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineOrmPaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginators\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
-        - '#Call to an undefined method EonX\\EasyPagination\\Paginators\\Doctrine(Dbal|Orm)Paginator\:\:isLargeDatasetEnabled\(\)#'
+        - '#Access to an undefined property EonX\\EasyPagination\\Tests\\Stub\\Model\\.*\:\:\$.*#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineOrmLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineOrmPaginator\:\:fetchResults\(\) expects Doctrine\\ORM\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
+        - '#Call to an undefined method EonX\\EasyPagination\\Paginator\\Doctrine(Dbal|Orm)Paginator\:\:isLargeDatasetEnabled\(\)#'
 
         - message: '#Property .*\:\:\$id is never written, only read#'
           paths:
-            - %currentWorkingDirectory%/packages/EasyPagination/tests/Stubs/Entity/ChildItem.php
-            - %currentWorkingDirectory%/packages/EasyPagination/tests/Stubs/Entity/Item.php
+            - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/ChildItem.php
+            - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/Item.php
 
         # ---- EasyPipeline ----
         - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Factory\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
@@ -145,11 +145,8 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyRequestId/src/EasyLogging/Processor/RequestIdProcessor.php
 
         # ---- EasySchedule ----
-        - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Command/ScheduleRunCommand.php
-
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Event.php
+          path: %currentWorkingDirectory%/packages/EasySchedule/src/Entry/ScheduleEntry.php
 
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\ValueObject\\Role constructor expects array<EonX\\EasySecurity\\Authorization\\ValueObject\\PermissionInterface\|string>\|null, array<int, EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|stdClass\|string> given#'

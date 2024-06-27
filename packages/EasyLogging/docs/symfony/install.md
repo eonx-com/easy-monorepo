@@ -16,13 +16,14 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle::class => ['all' => true],
+    EonX\EasyLogging\Bundle\EasyLoggingBundle::class => ['all' => true],
 ];
 ```
 
 <br>
 
 ### Configuration
+
 There is no required configuration, but if you want to specify a custom default channel you can do it.
 
 ```yaml

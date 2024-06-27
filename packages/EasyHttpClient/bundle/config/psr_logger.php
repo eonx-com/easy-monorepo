@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyHttpClient\Bundle\Enum\BundleParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigServiceId;
 use EonX\EasyHttpClient\PsrLogger\Listener\LogHttpRequestSentListener;
-use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {

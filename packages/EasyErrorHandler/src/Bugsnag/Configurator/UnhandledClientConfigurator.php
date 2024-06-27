@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Bugsnag\Configurator;
 
 use Bugsnag\Client;
 use Bugsnag\Report;
-use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
 use EonX\EasyErrorHandler\Bugsnag\Helper\UnhandledCallbackBridgeHelper;
 use EonX\EasyErrorHandler\Common\Exception\BaseException;
 use EonX\EasyErrorHandler\Common\Exception\LogLevelAwareExceptionInterface;

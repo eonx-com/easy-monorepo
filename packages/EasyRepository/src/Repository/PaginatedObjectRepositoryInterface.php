@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Repository;
 
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\Interfaces\PaginationInterface;
+use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 interface PaginatedObjectRepositoryInterface extends ObjectRepositoryInterface
 {

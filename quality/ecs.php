@@ -67,7 +67,7 @@ return ECSConfig::configure()
         ],
         AvoidPublicPropertiesSniff::class => [
             'packages/*/src/*/Constraint/*',
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
             'packages/*/tests/Fixture/*/ApiResource/*',
             'packages/*/tests/Fixture/*/DataTransferObject/*',
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
@@ -107,11 +107,11 @@ return ECSConfig::configure()
         ],
         PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
             'packages/*/src/*/Constraint/*',
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         PropertyTypeHintSniff::class . '.UselessAnnotation' => [
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
         ],
         SingleSpaceAfterConstructFixer::class => null,
         StaticClosureSniff::class => [

@@ -1,6 +1,0 @@
-easy_bugsnag:
-    api_key: 'my-api-key'
-    use_default_configurators: false
-
-    doctrine_dbal:
-        enabled: false

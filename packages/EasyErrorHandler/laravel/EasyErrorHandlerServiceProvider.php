@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Laravel;
 
 use Bugsnag\Client;
-use EonX\EasyBugsnag\Bridge\BridgeConstantsInterface as EasyBugsnagConstantsInterface;
+use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
 use EonX\EasyErrorHandler\Bugsnag\Configurator\ErrorDetailsClientConfigurator;
 use EonX\EasyErrorHandler\Bugsnag\Configurator\SeverityClientConfigurator;
 use EonX\EasyErrorHandler\Bugsnag\Configurator\UnhandledClientConfigurator;
@@ -184,7 +184,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
             foreach (self::BUGSNAG_CONFIGURATORS as $configurator) {
                 $this->app->singleton($configurator);
-                $this->app->tag($configurator, [EasyBugsnagConstantsInterface::TAG_CLIENT_CONFIGURATOR]);
+                $this->app->tag($configurator, [ConfigTag::ClientConfigurator->value]);
             }
 
             $this->app->singleton(

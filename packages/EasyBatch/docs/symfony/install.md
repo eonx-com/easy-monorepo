@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyBatch\Bridge\Symfony\EasyBatchSymfonyBundle::class => ['all' => true],
+    EonX\EasyBatch\Bundle\EasyBatchBundle::class => ['all' => true],
 ];
 ```
 

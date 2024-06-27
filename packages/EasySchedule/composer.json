@@ -9,31 +9,30 @@
         "eonx-com/easy-event-dispatcher": "^5.12",
         "eonx-com/easy-lock": "^5.12",
         "nesbot/carbon": "^2.67",
-        "symfony/console": "^6.4"
+        "symfony/config": "^6.4",
+        "symfony/console": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasySchedule\\": "src",
-            "EonX\\EasySchedule\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasySchedule\\Bundle\\": "bundle"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasySchedule\\Tests\\": "tests"
+            "EonX\\EasySchedule\\Tests\\": "tests",
+            "EonX\\EasySchedule\\Tests\\Unit\\": "tests/Unit/src"
         }
     },
     "suggest": {
-        "doctrine/orm": "To clear the Doctrine Entity Manager",
-        "doctrine/persistence": "To clear the Doctrine Entity Manager",
-        "symfony/config": "To use this package with Symfony",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/http-foundation": "To use this package with Symfony",
-        "symfony/http-kernel": "To use this package with Symfony"
+        "doctrine/orm": "To clear the Doctrine Entity Manager"
     },
     "extra": {
         "branch-alias": {

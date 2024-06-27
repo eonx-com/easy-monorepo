@@ -16,7 +16,7 @@ use EonX\EasyAsync\Laravel\Listeners\ShouldKillWorkerListener;
 use EonX\EasyAsync\Laravel\Listeners\WorkerStoppingListener;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Laravel\EasyErrorHandlerServiceProvider;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
+use EonX\EasyLogging\Bundle\Enum\BundleParam as EasyLoggingBundleParam;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
@@ -89,8 +89,8 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->app->singleton(
             ConfigServiceId::Logger->value,
             static function (Container $app): LoggerInterface {
-                $loggerParams = \interface_exists(EasyLoggingBridgeConstantsInterface::class)
-                    ? [EasyLoggingBridgeConstantsInterface::KEY_CHANNEL => BundleParam::LogChannel->value]
+                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel->value]
                     : [];
 
                 return $app->make(LoggerInterface::class, $loggerParams);

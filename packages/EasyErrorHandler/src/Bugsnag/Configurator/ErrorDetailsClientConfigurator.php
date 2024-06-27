@@ -6,7 +6,7 @@ namespace EonX\EasyErrorHandler\Bugsnag\Configurator;
 use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
-use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorDetailsResolverInterface;
 use Throwable;
 
