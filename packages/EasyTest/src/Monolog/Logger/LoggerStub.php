@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\Stub\Logger;
+namespace EonX\EasyTest\Monolog\Logger;
 
 use BadMethodCallException;
 use DateTimeZone;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Tests\Unit;
 
 use EonX\EasyAsync\Tests\Fixture\App\Kernel\ApplicationKernel;
-use EonX\EasyTest\Traits\ContainerServiceTrait;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 

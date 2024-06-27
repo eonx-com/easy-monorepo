@@ -9,7 +9,7 @@ use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException;
 use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 
 final class ManagersSanityCheckerTest extends AbstractUnitTestCase
 {
