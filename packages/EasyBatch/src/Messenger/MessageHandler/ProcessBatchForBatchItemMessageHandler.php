@@ -23,6 +23,7 @@ final readonly class ProcessBatchForBatchItemMessageHandler
         private BatchRepositoryInterface $batchRepository,
     ) {
     }
+
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchNotFoundException

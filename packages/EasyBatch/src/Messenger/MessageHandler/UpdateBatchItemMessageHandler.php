@@ -20,6 +20,7 @@ final readonly class UpdateBatchItemMessageHandler
         private ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
     ) {
     }
+
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchNotFoundException
@@ -37,6 +38,7 @@ final readonly class UpdateBatchItemMessageHandler
         $processBatchForBatchItemHandler = $this->processBatchForBatchItemHandler;
         $processBatchForBatchItemHandler(new ProcessBatchForBatchItemMessage($message->getBatchItemId()));
     }
+
     private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
         /** @var \DateTimeInterface $newDateTime */
@@ -44,6 +46,7 @@ final readonly class UpdateBatchItemMessageHandler
 
         return $newDateTime;
     }
+
     private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem

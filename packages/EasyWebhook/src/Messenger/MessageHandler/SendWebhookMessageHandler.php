@@ -18,6 +18,7 @@ final readonly class SendWebhookMessageHandler
         private StoreInterface $store,
     ) {
     }
+
     public function __invoke(SendWebhookMessage $message): void
     {
         $webhook = $this->store->find($message->getWebhookId());
