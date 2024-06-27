@@ -11,9 +11,14 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyApiTokenBundle extends AbstractBundle
 {
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import(__DIR__ . '/config/services.php');
+        $container->import('config/services.php');
 
         $builder
             ->registerForAutoconfiguration(DecoderProviderInterface::class)

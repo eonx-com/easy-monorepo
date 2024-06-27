@@ -5,6 +5,7 @@ use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 
 return [
     ApiPlatformBundle::class => [
@@ -17,6 +18,9 @@ return [
         'all' => true,
     ],
     FrameworkBundle::class => [
+        'all' => true,
+    ],
+    TwigBundle::class => [
         'all' => true,
     ],
 ];

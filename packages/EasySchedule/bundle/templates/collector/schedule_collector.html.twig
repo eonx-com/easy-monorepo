@@ -1,0 +1,125 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% if collector.entries|length > 0 or collector.providers|length > 0 %}
+        {% set icon %}
+            {{ include('@EasySchedule/icon/business_time_solid.svg') }}
+            <span class="sf-toolbar-value">{{ collector.entries|length }}</span>
+        {% endset %}
+
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>Entries</b>
+                <span class="sf-toolbar-status">{{ collector.entries|length }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Providers</b>
+                <span class="sf-toolbar-status">{{ collector.providers|length }}</span>
+            </div>
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+    <span class="label {{ 0 == collector.entries|length and 0 == collector.providers|length ? 'disabled' }}">
+        <span class="icon">{{ include('@EasySchedule/icon/business_time_solid.svg') }}</span>
+        <strong>Schedule</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Schedule</h2>
+
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">Entries <span class="badge">{{ collector.entries|length }}</span></h3>
+            <div class="tab-content">
+                {% if collector.entries|length == 0 %}
+                    <div class="empty">
+                        <p>No entries registered</p>
+                    </div>
+                {% else %}
+                    <table>
+                        <thead>
+                        <tr>
+                            <th scope="col">Command</th>
+                            <th scope="col">Cron</th>
+                            <th scope="col">Overlap</th>
+                            <th scope="col">Lock Name</th>
+                            <th class="num-col" scope="col">Lock Time (sec)</th>
+                            <th scope="col">Timezone</th>
+                            <th scope="col">Provider</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entry in collector.entries %}
+                            {%- set file = entry.provider.file -%}
+                            {%- set link = file ? file|file_link(1) : false -%}
+
+                            <tr>
+                                <td>{{ entry.description }}</td>
+                                <td>{{ entry.cronExpression }}</td>
+                                <td>{{ entry.allowsOverlapping ? 'yes' : 'no' }}</td>
+                                <td>{{ entry.lockResource }}</td>
+                                <td class="font-normal num-col">{{ entry.maxLockTime }}</td>
+                                <td>{{ entry.timezone }}</td>
+                                <td>
+                                    {% if link %}
+                                        <a href="{{ link }}" title="{{ file }}">{{ entry.provider.class }}</a>
+                                    {% else %}
+                                        {{ entry.provider.class }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+        <div class="tab">
+            <h3 class="tab-title">Providers <span class="badge">{{ collector.providers|length }}</span></h3>
+            <div class="tab-content">
+                {% if collector.providers|length == 0 %}
+                    <div class="empty">
+                        <p>No providers registered</p>
+                    </div>
+                {% else %}
+                    <table>
+                        <thead>
+                        <tr>
+                            <th scope="col">Providers & Path</th>
+                            <th class="num-col" scope="col">Entries Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for provider in collector.providers %}
+                            {%- set file = provider.file -%}
+                            {%- set link = file ? file|file_link(1) : false -%}
+
+                            <tr>
+                                <td>
+                                    {% if link %}
+                                        <a href="{{ link }}" title="{{ file }}">{{ provider.class }}</a>
+                                        <div>
+                                            <a class="text-muted" href="{{ link }}" title="{{ file }}">
+                                                {{ file|file_relative|default(file) }}
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        {{ provider.class }}
+                                    {% endif %}
+                                </td>
+                                <td class="font-normal num-col">{{ provider.entries_count }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -16,7 +16,7 @@ not familiar with this concept make sure to have a look at the [documentation][1
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyNotification\Bridge\Laravel\EasyNotificationServiceProvider::class,
+    \EonX\EasyNotification\Laravel\EasyNotificationServiceProvider::class,
 ],
 ```
 
@@ -35,7 +35,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyNotification\Bridge\Laravel\EasyNotificationServiceProvider::class);
+$app->register(\EonX\EasyNotification\Laravel\EasyNotificationServiceProvider::class);
 ```
 
 ### Configuration

@@ -6,14 +6,14 @@ weight: 1001
 ### Register Your Scheduled Commands
 
 To register the scheduled commands this bundle implements a concept of "schedule providers", thanks to Symfony's
-autoconfigure feature, the only thing required is to create services that implement `EonX\EasySchedule\Interfaces\ScheduleProviderInterface`.
+autoconfigure feature, the only thing required is to create services that implement `EonX\EasySchedule\Provider\ScheduleProviderInterface`.
 The `ScheduleInterface` passed to the `schedule` method offers all the features of the [Laravel Console Scheduling][1].
 
 ```php
 // src/Schedule/MyScheduleProvider.php
 
-use EonX\EasySchedule\Interfaces\ScheduleInterface;
-use EonX\EasySchedule\Interfaces\ScheduleProviderInterface;
+use EonX\EasySchedule\Provider\ScheduleProviderInterface;
+use EonX\EasySchedule\Schedule\Schedule\ScheduleInterface;
 
 final class MyScheduleProvider implements ScheduleProviderInterface
 {
@@ -23,7 +23,7 @@ final class MyScheduleProvider implements ScheduleProviderInterface
             ->command('poc:hello-world', ['-v'])
             ->everyMinute()
             ->setMaxLockTime(120);
-    
+
         $schedule
             ->command('poc:hello-world-2')
             ->everyFiveMinutes();

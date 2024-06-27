@@ -21,6 +21,11 @@ final class EasyApiPlatformBundle extends AbstractBundle
         'custom_paginator_enabled' => ConfigParam::CustomPaginatorEnabled,
     ];
 
+    public function __construct()
+    {
+        $this->path = \realpath(__DIR__);
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ReadListenerCompilerPass());
@@ -28,7 +33,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->import(__DIR__ . '/config/definition.php');
+        $definition->import('config/definition.php');
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -45,11 +50,11 @@ final class EasyApiPlatformBundle extends AbstractBundle
                 ->set($param->value, $config['advanced_search_filter'][$name]);
         }
 
-        $container->import(__DIR__ . '/config/services.php');
-        $container->import(__DIR__ . '/config/filters.php');
+        $container->import('config/services.php');
+        $container->import('config/filters.php');
 
         if ($config['custom_paginator_enabled'] ?? true) {
-            $container->import(__DIR__ . '/config/pagination.php');
+            $container->import('config/pagination.php');
         }
     }
 

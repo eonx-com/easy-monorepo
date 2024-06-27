@@ -17,7 +17,7 @@ The multiplier retry strategy has the following properties:
 With the default values, there will be 1 second delay between each retry.
 
 You can modify the multiplier retry strategy by setting its arguments when registering the
-`EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface` service.
+`EonX\EasyWebhook\Common\Strategy\WebhookRetryStrategyInterface` service.
 
 For example, if you set `$delayMilliseconds` to `10000` and `$multiplier` to `2.0`, the retry delays will be:
 
@@ -26,4 +26,4 @@ For example, if you set `$delayMilliseconds` to `10000` and `$multiplier` to `2.
 - Retry 3: 40 second delay (20000 * 2 = 40000).
 
 You can also create your own retry strategy by overriding the
-`EonX\EasyWebhook\Interfaces\WebhookRetryStrategyInterface` service with your own implementation.
+`EonX\EasyWebhook\Common\Strategy\WebhookRetryStrategyInterface` service with your own implementation.
