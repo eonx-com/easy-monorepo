@@ -71,7 +71,7 @@ parameters:
 
         # ---- EasyBatch ----
         - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
-          path: %currentWorkingDirectory%/packages/EasyBatch/src/Repositories/BatchItemRepository.php
+          path: %currentWorkingDirectory%/packages/EasyBatch/src/Doctrine/Repository/BatchItemRepository.php
 
         # ---- EasyBugsnag ----
         # ---- EasyDecision ----
@@ -89,7 +89,7 @@ parameters:
         # ---- EasyLock ----
         # ---- EasyLogging ----
         - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
-          path: %currentWorkingDirectory%/packages/EasyLogging/src/Config/StreamHandlerConfigProvider.php
+          path: %currentWorkingDirectory%/packages/EasyLogging/src/Provider/StreamHandlerConfigProvider.php
 
         # ---- EasyNotification ----
         # ---- EasyPagination ----
@@ -147,11 +147,8 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyRequestId/src/EasyLogging/Processor/RequestIdProcessor.php
 
         # ---- EasySchedule ----
-        - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Command/ScheduleRunCommand.php
-
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Event.php
+          path: %currentWorkingDirectory%/packages/EasySchedule/src/Entry/ScheduleEntry.php
 
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\ValueObject\\Role constructor expects array<EonX\\EasySecurity\\Authorization\\ValueObject\\PermissionInterface\|string>\|null, array<int, EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|stdClass\|string> given#'

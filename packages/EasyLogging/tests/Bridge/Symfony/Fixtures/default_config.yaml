@@ -1,5 +1,0 @@
-easy_logging:
-    default_channel: 'my-app'
-
-    sensitive_data_sanitizer:
-        enabled: true

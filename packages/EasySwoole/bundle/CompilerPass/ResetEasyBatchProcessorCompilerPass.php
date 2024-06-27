@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Bundle\CompilerPass;
 
-use EonX\EasyBatch\Processors\BatchProcessor;
+use EonX\EasyBatch\Common\Processor\BatchProcessor;
 use EonX\EasySwoole\Bundle\Enum\ConfigParam;
 use EonX\EasySwoole\Bundle\Enum\ConfigTag;
 use EonX\EasySwoole\EasyBatch\Resetter\BatchProcessorResetter;

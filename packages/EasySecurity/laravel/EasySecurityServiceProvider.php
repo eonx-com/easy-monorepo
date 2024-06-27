@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Laravel;
 
 use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag as EasyBugsnagConfigTag;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
+use EonX\EasyLogging\Bundle\Enum\BundleParam as EasyLoggingBundleParam;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Authorization\Factory\CachedAuthorizationMatrixFactory;
@@ -124,8 +124,8 @@ final class EasySecurityServiceProvider extends ServiceProvider
         $this->app->singleton(
             ConfigServiceId::Logger->value,
             static function (Container $app): LoggerInterface {
-                $loggerParams = \interface_exists(EasyLoggingBridgeConstantsInterface::class)
-                    ? [EasyLoggingBridgeConstantsInterface::KEY_CHANNEL => BundleParam::LogChannel->value]
+                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel->value]
                     : [];
 
                 return $app->make(LoggerInterface::class, $loggerParams);

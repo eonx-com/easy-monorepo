@@ -12,7 +12,7 @@ It requires to tag the different config providers and logger configurators as fo
 - **ProcessorConfigProviderInterface:** `easy_logging.processor_config_provider`
 - **LoggerConfiguratorInterface:** `easy_logging.logger_configurator`
 
-To make this process easier, this package provides you with public constants you can use for the tags name. 
+To make this process easier, this package provides you with public constants you can use for the tags name.
 These constants are defined on `EonX\EasyLogging\Bridge\BridgeConstantsInterface`.
 
 Here is an example on how to register a `HandlerConfigProviderInterface` within a service provider:
@@ -21,7 +21,7 @@ Here is an example on how to register a `HandlerConfigProviderInterface` within 
 namespace App\Providers;
 
 use App\Logger\StreamHandlerConfigProvider;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface;
+use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use Illuminate\Support\ServiceProvider;
 
 final class LoggingServiceProvider extends ServiceProvider
@@ -30,9 +30,9 @@ final class LoggingServiceProvider extends ServiceProvider
     {
         // Register HandlerConfigProvider as a service
         $this->app->singleton(StreamHandlerConfigProvider::class);
-        
+
         // Tag StreamHandlerConfigProvider service as a HandlerConfigProvider
-        $this->app->tag(StreamHandlerConfigProvider::class, [BridgeConstantsInterface::TAG_HANDLER_CONFIG_PROVIDER]);
+        $this->app->tag(StreamHandlerConfigProvider::class, [ConfigTag::HandlerConfigProvider->value]);
     }
 }
 ```
