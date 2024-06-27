@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Tests\Bridge\Symfony\Stubs;
 
 use EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagSymfonyBundle;
-use EonX\EasyUtils\Bridge\Symfony\EasyUtilsSymfonyBundle;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -70,7 +70,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function registerBundles(): iterable
     {
         yield new EasyBugsnagSymfonyBundle();
-        yield new EasyUtilsSymfonyBundle();
+        yield new EasyUtilsBundle();
     }
 
     /**

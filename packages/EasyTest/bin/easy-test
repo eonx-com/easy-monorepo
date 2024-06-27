@@ -2,7 +2,8 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyTest\Console\EasyTestApplication;
+use EonX\EasyTest\Coverage\Application\EasyTestApplication;
+use EonX\EasyTest\Coverage\Kernel\EasyTestKernel;
 
 // performance boost
 \gc_disable();
@@ -12,7 +13,7 @@ use EonX\EasyTest\Console\EasyTestApplication;
     ->autoloadProjectAutoloaderFile('/../../autoload.php')
     ->includeDependencyOrRepositoryVendorAutoloadIfExists();
 
-$kernel = new \EonX\EasyTest\HttpKernel\EasyTestKernel('prod', false);
+$kernel = new EasyTestKernel('prod', false);
 $kernel->boot();
 
 exit($kernel->getContainer()->get(EasyTestApplication::class)->run());

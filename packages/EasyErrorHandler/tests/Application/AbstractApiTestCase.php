@@ -6,9 +6,9 @@ namespace EonX\EasyErrorHandler\Tests\Application;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use EonX\EasyErrorHandler\Tests\Fixture\App\Kernel\ApplicationKernel;
-use EonX\EasyTest\Traits\ArrayAssertionTrait;
-use EonX\EasyTest\Traits\ContainerServiceTrait;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\ArrayAssertionTrait;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 

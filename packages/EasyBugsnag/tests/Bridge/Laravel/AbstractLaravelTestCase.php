@@ -5,7 +5,7 @@ namespace EonX\EasyBugsnag\Tests\Bridge\Laravel;
 
 use EonX\EasyBugsnag\Bridge\Laravel\EasyBugsnagServiceProvider;
 use EonX\EasyBugsnag\Tests\AbstractTestCase;
-use EonX\EasyUtils\Bridge\Laravel\EasyUtilsServiceProvider;
+use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
 use Laravel\Lumen\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractTestCase

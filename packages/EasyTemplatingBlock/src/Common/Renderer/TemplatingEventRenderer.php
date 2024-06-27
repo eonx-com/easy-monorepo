@@ -6,7 +6,7 @@ namespace EonX\EasyTemplatingBlock\Common\Renderer;
 use EonX\EasyTemplatingBlock\Common\Exception\NoRendererFoundForBlockException;
 use EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface;
 use EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class TemplatingEventRenderer implements TemplatingEventRendererInterface
 {

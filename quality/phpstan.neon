@@ -76,7 +76,7 @@ parameters:
         # ---- EasyDoctrine ----
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
-          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptor.php
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
@@ -105,16 +105,13 @@ parameters:
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stubs/Entity/Item.php
 
         # ---- EasyPipeline ----
-        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Implementations\\Illuminate\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
-          path: %currentWorkingDirectory%/packages/EasyPipeline/src/Bridge/Laravel
-
-        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
-          path: %currentWorkingDirectory%/packages/EasyPipeline/tests
+        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Factory\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
+          path: %currentWorkingDirectory%/packages/EasyPipeline/laravel
 
         # ---- EasyRandom ----
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Illuminate
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository
 
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
@@ -122,30 +119,30 @@ parameters:
         - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+        - message: '#Property EonX\\EasyRepository\\Repository\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/DoctrineOrmRepositoryTrait.php
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Property EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/DoctrineOrmRepositoryTrait.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/DoctrineOrmRepositoryTrait.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:getClassMetadata\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getManager\(\) should return Doctrine\\ORM\\EntityManagerInterface but returns Doctrine\\Persistence\\ObjectManager\|null#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:getManager\(\) should return Doctrine\\ORM\\EntityManagerInterface but returns Doctrine\\Persistence\\ObjectManager\|null#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Property EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:\$manager \(Doctrine\\ORM\\EntityManagerInterface\|null\) does not accept Doctrine\\Persistence\\ObjectManager\|null#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Property EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:\$manager \(Doctrine\\ORM\\EntityManagerInterface\|null\) does not accept Doctrine\\Persistence\\ObjectManager\|null#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
-        - message: '#Method EonX\\EasyRepository\\Implementations\\Doctrine\\ORM\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
-          path: %currentWorkingDirectory%/packages/EasyRepository/src/Implementations/Doctrine/ORM/AbstractOptimizedDoctrineOrmRepository.php
+        - message: '#Method EonX\\EasyRepository\\Repository\\AbstractOptimizedDoctrineOrmRepository\:\:getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
+          path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
         - message: "#Offset 'extra' on array{message: string, context: array, level: 100|200|250|300|400|500|550|600, level_name: 'ALERT'|'CRITICAL'|'DEBUG'|'EMERGENCY'|'ERROR'|'INFO'|'NOTICE'|'WARNING', channel: string, datetime: DateTimeImmutable, extra: array} on left side of ?? always exists and is not nullable#"
-          path: %currentWorkingDirectory%/packages/EasyRequestId/src/Bridge/EasyLogging/RequestIdProcessor.php
+          path: %currentWorkingDirectory%/packages/EasyRequestId/src/EasyLogging/Processor/RequestIdProcessor.php
 
         # ---- EasySchedule ----
         - message: '#Parameter \#1 \$app of method EonX\\EasySchedule\\Interfaces\\ScheduleInterface\:\:setApplication\(\) expects Symfony\\Component\\Console\\Application, Symfony\\Component\\Console\\Application\|null given#'
@@ -155,46 +152,49 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySchedule/src/Event.php
 
         # ---- EasySecurity ----
-        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\Role constructor expects array<EonX\\EasySecurity\\Interfaces\\Authorization\\PermissionInterface\|string\>\|null, array<int, EonX\\EasySecurity\\Authorization\\Permission\|stdClass\|string\> given#'
-          path: %currentWorkingDirectory%/packages/EasySecurity/tests/Authorization/RoleTest.php
+        - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\ValueObject\\Role constructor expects array<EonX\\EasySecurity\\Authorization\\ValueObject\\PermissionInterface\|string>\|null, array<int, EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|stdClass\|string> given#'
+          path: %currentWorkingDirectory%/packages/EasySecurity/tests/Unit/src/Authorization/ValueObject/RoleTest.php
 
         # ---- EasySwoole ----
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Logging/Function/dump.php
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
 
         - message: '#Anonymous function never returns null so it can be removed from the return type#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
 
         - message: '#Else branch is unreachable because ternary operator condition is always true#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
 
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SwooleTableHelper.php
 
         - message: '#Access to undefined constant OpenSwoole\\Constant\:\:SSL#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SslCertificateHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SslCertificateHelper.php
 
         - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Result/DbalResult.php
 
-        - message: '#Call to an undefined method EonX\\EasySwoole\\Bridge\\Doctrine\\Coroutine\\PDO\\PDOClient\:\:.*\(\)#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
+        - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:execute\(\)#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php
+
+        - message: '#Call to an undefined method EonX\\EasySwoole\\Doctrine\\Client\\PdoClient\:\:.*\(\)#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php
 
         - message: '#While loop condition is always true#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/PDOClientPool.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Pool/PdoClientPool.php
 
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
-          path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 
         - message: '#Result of && is always false#'
-          path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
-          path: %currentWorkingDirectory%/packages/EasyWebhook/src/AbstractWebhook.php
+          path: %currentWorkingDirectory%/packages/EasyWebhook/src/Common/Entity/AbstractWebhook.php

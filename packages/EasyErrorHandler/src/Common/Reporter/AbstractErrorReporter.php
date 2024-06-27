@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Common\Reporter;
 
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 abstract class AbstractErrorReporter implements ErrorReporterInterface
 {

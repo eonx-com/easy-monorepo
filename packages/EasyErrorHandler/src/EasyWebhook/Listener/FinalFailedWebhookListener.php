@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\EasyWebhook\Listener;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
+use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 
 final class FinalFailedWebhookListener
 {

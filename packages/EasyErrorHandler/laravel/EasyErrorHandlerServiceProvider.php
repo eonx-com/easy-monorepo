@@ -35,7 +35,7 @@ use EonX\EasyErrorHandler\Laravel\Command\AnalyzeErrorCodesCommand;
 use EonX\EasyErrorHandler\Laravel\Enum\TranslationParam;
 use EonX\EasyErrorHandler\Laravel\ExceptionHandler\LaravelExceptionHandler;
 use EonX\EasyErrorHandler\Laravel\Translator\LaravelTranslator;
-use EonX\EasyWebhook\Events\FinalFailedWebhookEvent;
+use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
 use Illuminate\Support\ServiceProvider;

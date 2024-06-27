@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Common\Strategy;
 
 use EonX\EasyErrorHandler\Common\Driver\VerboseStrategyDriverInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 

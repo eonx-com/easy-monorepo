@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Common\Decoder;
 
 use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ChainDecoder extends AbstractDecoder

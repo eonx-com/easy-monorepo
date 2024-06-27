@@ -11,7 +11,7 @@ use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Common\Reporter\ErrorReporterInterface;
 use EonX\EasyErrorHandler\Common\Strategy\VerboseStrategyInterface;
 use EonX\EasyErrorHandler\Common\ValueObject\ErrorResponseData;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use SplObjectStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

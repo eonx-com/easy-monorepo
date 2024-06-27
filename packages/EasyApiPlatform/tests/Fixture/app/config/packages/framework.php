@@ -9,9 +9,6 @@ return static function (FrameworkConfig $frameworkConfig): void {
     $frameworkConfig->annotations()
         ->enabled(true);
 
-    $frameworkConfig->validation()
-        ->enabled(true);
-
     $frameworkConfig
         ->secret('some-secret')
         ->test(true);
