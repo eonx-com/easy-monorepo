@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Tests\Unit;
 
 use EonX\EasyApiPlatform\Tests\Fixture\App\Kernel\ApplicationKernel;
-use EonX\EasyTest\Traits\ContainerServiceTrait;
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 

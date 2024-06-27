@@ -16,7 +16,7 @@ use EonX\EasyRequestId\EasyLogging\Processor\RequestIdProcessor;
 use EonX\EasyRequestId\EasyWebhook\Middleware\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\Laravel\Listeners\RequestIdRouteMatchedListener;
 use EonX\EasyRequestId\Laravel\Middleware\RequestIdMiddleware;
-use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
+use EonX\EasyWebhook\Bundle\Enum\ConfigTag as EasyWebhookConfigTag;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Queue;
@@ -128,11 +128,11 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyWebhook
-        if ($this->bridgeEnabled('easy_webhook', EasyWebhookBridgeConstantsInterface::class)) {
+        if ($this->bridgeEnabled('easy_webhook', EasyWebhookConfigTag::class)) {
             $this->app->singleton(RequestIdWebhookMiddleware::class);
             $this->app->tag(
                 RequestIdWebhookMiddleware::class,
-                [EasyWebhookBridgeConstantsInterface::TAG_MIDDLEWARE]
+                [EasyWebhookConfigTag::Middleware->value]
             );
         }
     }

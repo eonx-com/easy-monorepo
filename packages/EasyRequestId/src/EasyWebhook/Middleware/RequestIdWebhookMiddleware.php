@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\EasyWebhook\Middleware;
 
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
-use EonX\EasyWebhook\Interfaces\StackInterface;
-use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
-use EonX\EasyWebhook\Middleware\AbstractConfigureOnceMiddleware;
+use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Middleware\AbstractConfigureOnceMiddleware;
+use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class RequestIdWebhookMiddleware extends AbstractConfigureOnceMiddleware
 {

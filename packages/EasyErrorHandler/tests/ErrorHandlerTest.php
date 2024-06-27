@@ -9,7 +9,7 @@ use EonX\EasyErrorHandler\Providers\FromIterableErrorReporterProvider;
 use EonX\EasyErrorHandler\Response\ErrorResponseFactory;
 use EonX\EasyErrorHandler\Tests\Stubs\ErrorReporterStub;
 use EonX\EasyErrorHandler\Verbose\ChainVerboseStrategy;
-use EonX\EasyWebhook\Bridge\Symfony\Exceptions\UnrecoverableWebhookMessageException;
+use EonX\EasyWebhook\Messenger\Exception\UnrecoverableWebhookMessageException;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;

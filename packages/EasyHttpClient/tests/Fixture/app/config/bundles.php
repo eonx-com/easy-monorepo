@@ -5,7 +5,7 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyHttpClient\Bundle\EasyHttpClientBundle;
 use EonX\EasyLock\Bundle\EasyLockBundle;
-use EonX\EasyWebhook\Bridge\Symfony\EasyWebhookSymfonyBundle;
+use EonX\EasyWebhook\Bundle\EasyWebhookBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 
 return [
@@ -15,7 +15,7 @@ return [
     EasyEventDispatcherBundle::class => [
         'all' => true,
     ],
-    EasyWebhookSymfonyBundle::class => [
+    EasyWebhookBundle::class => [
         'all' => true,
     ],
     EasyLockBundle::class => [
