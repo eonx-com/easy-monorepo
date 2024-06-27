@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Config;
 
-use EonX\EasyLogging\Interfaces\Config\LoggingConfigInterface;
-
 abstract class AbstractLoggingConfig implements LoggingConfigInterface
 {
     /**

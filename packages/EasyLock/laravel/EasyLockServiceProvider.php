@@ -7,7 +7,7 @@ use EonX\EasyLock\Bundle\Enum\BundleParam;
 use EonX\EasyLock\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLock\Common\Locker\Locker;
 use EonX\EasyLock\Common\Locker\LockerInterface;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstants;
+use EonX\EasyLogging\Bundle\Enum\BundleParam as EasyLoggingBundleParam;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -35,8 +35,8 @@ final class EasyLockServiceProvider extends ServiceProvider
         $this->app->singleton(
             LockerInterface::class,
             static function (Container $app): LockerInterface {
-                $loggerParams = \interface_exists(EasyLoggingBridgeConstants::class)
-                    ? [EasyLoggingBridgeConstants::KEY_CHANNEL => BundleParam::LogChannel]
+                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
                     : [];
 
                 return new Locker(

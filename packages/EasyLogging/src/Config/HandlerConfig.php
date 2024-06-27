@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Config;
 
-use EonX\EasyLogging\Interfaces\Config\HandlerConfigInterface;
 use Monolog\Handler\HandlerInterface;
 
 final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfigInterface

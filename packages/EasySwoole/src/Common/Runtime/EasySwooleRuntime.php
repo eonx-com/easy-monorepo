@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Runtime;
 
-use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
+use EonX\EasyBugsnag\Enum\ServerParam as EasyBugsnagServerParam;
 use EonX\EasySwoole\Caching\Helper\AppCacheWarmupHelper;
 use EonX\EasySwoole\Common\Helper\AppRuntimeHelper;
 use EonX\EasySwoole\Common\Helper\EnvVarHelper;
@@ -91,8 +91,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
             OptionHelper::setOptions(SslCertificateHelper::loadSslCertificates(OptionHelper::getOptions()));
 
             // Bridge for eonx-com/easy-bugsnag to resolve request in CLI
-            if (\interface_exists(EasyBugsnagValueOptionInterface::class)) {
-                $_SERVER[EasyBugsnagValueOptionInterface::RESOLVE_REQUEST_IN_CLI] = true;
+            if (\enum_exists(EasyBugsnagServerParam::class)) {
+                $_SERVER[EasyBugsnagServerParam::ResolveRequestInCli->value] = true;
             }
 
             return new EasySwooleRunner($application);

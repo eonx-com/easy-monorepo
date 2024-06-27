@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\EasyBatch\Resetter;
 
-use EonX\EasyBatch\Processors\BatchProcessor;
+use EonX\EasyBatch\Common\Processor\BatchProcessor;
 use EonX\EasySwoole\Common\Resetter\AbstractAppStateResetter;
 
 final class BatchProcessorResetter extends AbstractAppStateResetter
