@@ -5,7 +5,7 @@ namespace EonX\EasyApiToken\Common\Driver;
 
 use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
-use EonX\EasyUtils\Helpers\UrlHelper;
+use EonX\EasyUtils\Common\Helper\UrlHelper;
 
 final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
 {

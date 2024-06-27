@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Bundle\CompilerPass;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
-use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

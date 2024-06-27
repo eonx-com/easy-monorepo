@@ -22,7 +22,7 @@ use EonX\EasyBugsnag\Interfaces\ClientFactoryInterface;
 use EonX\EasyBugsnag\Resolvers\DefaultAppNameResolver;
 use EonX\EasyBugsnag\Session\SessionTracker;
 use EonX\EasyBugsnag\Shutdown\ShutdownStrategy;
-use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;

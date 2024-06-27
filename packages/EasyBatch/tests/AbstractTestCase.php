@@ -12,8 +12,8 @@ use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
 use EonX\EasyBatch\Transformers\BatchTransformer;
-use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
-use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generator\RandomGenerator;
+use EonX\EasyRandom\Generator\SymfonyUuidV6Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 

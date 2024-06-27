@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginators;
 
 use EonX\EasyPagination\Interfaces\PaginationInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class IterablePaginator extends AbstractPaginator
 {

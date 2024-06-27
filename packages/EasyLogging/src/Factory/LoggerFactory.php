@@ -9,7 +9,7 @@ use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Logger\LazyLogger;
 use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectInterface;
 use EonX\EasyBatch\Interfaces\BatchObjectTransformerInterface;
-use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface

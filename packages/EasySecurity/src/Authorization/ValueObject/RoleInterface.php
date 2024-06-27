@@ -1,0 +1,28 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasySecurity\Authorization\ValueObject;
+
+use Stringable;
+
+interface RoleInterface extends Stringable
+{
+    public function addMetadata(string $name, mixed $value): self;
+
+    public function getIdentifier(): string;
+
+    public function getMetadata(?string $name = null, mixed $default = null): mixed;
+
+    public function getName(): ?string;
+
+    /**
+     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     */
+    public function getPermissions(): array;
+
+    public function hasMetadata(string $name): bool;
+
+    public function removeMetadata(string $name): self;
+
+    public function setMetadata(array $metadata): self;
+}

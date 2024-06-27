@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyLogging\Processor;
 
 use EonX\EasyLogging\Config\ProcessorConfigInterface;
-use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 
 final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingProcessor
 {
