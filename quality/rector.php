@@ -56,7 +56,7 @@ return RectorConfig::configure()
         FirstClassCallableRector::class => [
             'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyBatch/tests/Stub/HttpKernel/KernelStub.php',
-            'packages/EasyBugsnag/tests/Bridge/Symfony/Stubs/KernelStub.php',
+            'packages/EasyBugsnag/tests/Stub/HttpKernel/KernelStub.php',
             'packages/EasyDoctrine/bundle/config/services.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
