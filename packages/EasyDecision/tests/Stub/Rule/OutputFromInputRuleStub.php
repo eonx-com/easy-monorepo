@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Tests\Stub\Rule;
 
 use EonX\EasyDecision\Rule\RuleInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
 final class OutputFromInputRuleStub implements RuleInterface
 {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\Middleware;
 
-use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 use EonX\EasyWebhook\Common\Stack\StackInterface;

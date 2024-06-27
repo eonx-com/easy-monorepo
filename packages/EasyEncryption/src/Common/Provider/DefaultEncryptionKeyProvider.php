@@ -7,7 +7,7 @@ use EonX\EasyEncryption\Common\Exception\CircularReferenceDetectedException;
 use EonX\EasyEncryption\Common\Exception\CouldNotProvideEncryptionKeyException;
 use EonX\EasyEncryption\Common\Factory\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Throwable;

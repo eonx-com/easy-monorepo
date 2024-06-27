@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Resetter;
 
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 use Traversable;
 

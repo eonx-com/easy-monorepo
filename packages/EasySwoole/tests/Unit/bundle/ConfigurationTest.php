@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Tests\Unit\Bundle;
 
 use EonX\EasySwoole\Bundle\EasySwooleBundle;
-use EonX\EasyUtils\Helpers\ArrayHelper;
+use EonX\EasyUtils\Common\Helper\ArrayHelper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Processor;

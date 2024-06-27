@@ -12,7 +12,7 @@ use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\QueueMessage;
 use EonX\EasyNotification\Message\RealTimeMessage;
 use EonX\EasyNotification\ValueObject\ConfigInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;

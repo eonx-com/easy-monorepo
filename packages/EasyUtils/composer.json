@@ -4,25 +4,43 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "ext-bcmath": "*",
+        "ext-ctype": "*",
+        "ext-filter": "*",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-kernel": "^6.4"
     },
     "require-dev": {
         "eonx-com/easy-test": "^5.12",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "symfony/serializer": "^6.4",
+        "symfony/validator": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyUtils\\": "src",
-            "EonX\\EasyUtils\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyUtils\\Bundle\\": "bundle",
+            "EonX\\EasyUtils\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyUtils\\Tests\\": "tests"
+            "EonX\\EasyUtils\\Tests\\": "tests",
+            "EonX\\EasyUtils\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyUtils\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyUtils\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
+    },
+    "suggest": {
+        "ext-iconv": "To support CSV parsing",
+        "ext-mbstring": "To support sensitive data sanitization",
+        "symfony/serializer": "To support string trimming",
+        "symfony/translation": "To use Symfony Translator integration",
+        "symfony/validator": "To support custom constraints"
     },
     "extra": {
         "branch-alias": {

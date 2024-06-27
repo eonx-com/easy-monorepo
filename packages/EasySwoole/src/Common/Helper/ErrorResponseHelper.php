@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Helper;
 
-use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Swoole\Http\Response;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Throwable;

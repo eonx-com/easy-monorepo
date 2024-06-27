@@ -15,7 +15,7 @@ use EonX\EasyDecision\ExpressionLanguage\ExpressionLanguageAwareInterface;
 use EonX\EasyDecision\ExpressionLanguage\ExpressionLanguageInterface;
 use EonX\EasyDecision\Rule\DecisionOutputForRuleAwareInterface;
 use EonX\EasyDecision\Rule\RuleInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Throwable;
 
 abstract class AbstractDecision implements DecisionInterface

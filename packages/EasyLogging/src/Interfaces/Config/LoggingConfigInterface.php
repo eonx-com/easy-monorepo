@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Interfaces\Config;
 
-use EonX\EasyUtils\Interfaces\HasPriorityInterface;
+use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 
 interface LoggingConfigInterface extends HasPriorityInterface
 {

@@ -192,10 +192,10 @@ parameters:
         # ---- EasyTest ----
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
-          path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 
         - message: '#Result of && is always false#'
-          path: %currentWorkingDirectory%/packages/EasyUtils/src/Helpers/EnvVarSubstitutionHelper.php
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design

@@ -9,7 +9,7 @@ use EonX\EasyApiToken\Common\Driver\HashedApiKeyDriverInterface;
 use EonX\EasyApiToken\Common\Exception\InvalidConfigurationException;
 use EonX\EasyApiToken\Common\Exception\InvalidDefaultDecoderException;
 use EonX\EasyApiToken\Common\Provider\DecoderProviderInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
 {

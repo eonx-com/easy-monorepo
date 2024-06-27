@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Common\Listener;
 
 use EonX\EasySwoole\Common\Initializer\AppStateInitializerInterface;
-use EonX\EasyUtils\Helpers\CollectorHelper;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class ApplicationStateInitListener extends AbstractRequestListener
