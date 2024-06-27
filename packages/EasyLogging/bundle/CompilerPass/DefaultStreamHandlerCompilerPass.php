@@ -9,6 +9,7 @@ use EonX\EasyLogging\Provider\StreamHandlerConfigProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Parameter;
 
 final class DefaultStreamHandlerCompilerPass implements CompilerPassInterface
 {
@@ -30,7 +31,7 @@ final class DefaultStreamHandlerCompilerPass implements CompilerPassInterface
             ->addTag(ConfigTag::HandlerConfigProvider->value)
             ->setAutoconfigured(true)
             ->setAutowired(true)
-            ->setArgument('$level', '%' . ConfigParam::StreamHandlerLevel->value . '%');
+            ->setArgument('$level', new Parameter(ConfigParam::StreamHandlerLevel->value));
 
         $container->setDefinition(StreamHandlerConfigProvider::class, $def);
     }
