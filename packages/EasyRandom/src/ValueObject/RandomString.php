@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\ValueObject;
 
-use EonX\EasyRandom\Exceptions\InvalidAlphabetException;
-use EonX\EasyRandom\Exceptions\InvalidAlphabetNameException;
-use EonX\EasyRandom\Exceptions\InvalidRandomStringException;
-use EonX\EasyRandom\Interfaces\RandomStringInterface;
+use EonX\EasyRandom\Exception\InvalidAlphabetException;
+use EonX\EasyRandom\Exception\InvalidAlphabetNameException;
+use EonX\EasyRandom\Exception\InvalidRandomStringException;
 use Symfony\Component\String\ByteString;
 use Symfony\Component\String\UnicodeString;
 
 final class RandomString implements RandomStringInterface
 {
     /**
-     * @var \EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[]|null
+     * @var \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]|null
      */
     private ?array $constraints = [];
 
@@ -68,7 +67,7 @@ final class RandomString implements RandomStringInterface
     }
 
     /**
-     * @param \EonX\EasyRandom\Interfaces\RandomStringConstraintInterface[] $constraints
+     * @param \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[] $constraints
      */
     public function constraints(array $constraints): RandomStringInterface
     {

@@ -5,27 +5,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "ext-simplexml": "*",
-        "doctrine/collections": "^2.0",
         "eonx-com/easy-utils": "^5.12",
-        "fakerphp/faker": "^1.19.0",
-        "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",
         "phpunit/phpunit": "^10.2",
         "symfony/config": "^6.4",
         "symfony/console": "^6.4",
         "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^6.4",
-        "symfony/event-dispatcher": "^6.4",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/http-client": "^6.4",
-        "symfony/http-kernel": "^6.4",
-        "symfony/intl": "^6.4",
-        "symfony/messenger": "^6.4",
-        "symfony/property-access": "^6.4",
-        "symfony/translation": "^6.4",
-        "symfony/validator": "^6.4",
-        "symfony/yaml": "^6.4"
+        "symfony/http-kernel": "^6.4"
     },
     "autoload": {
         "psr-4": {
@@ -34,12 +21,32 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyTest\\Tests\\": "tests"
+            "EonX\\EasyTest\\Tests\\": "tests",
+            "EonX\\EasyTest\\Tests\\Unit\\": "tests/Unit/src"
         }
     },
     "bin": [
         "bin/easy-test"
     ],
+    "suggest": {
+        "ext-simplexml": "To check coverage in Clover format",
+        "doctrine/collections": "To use InvalidDataMaker",
+        "doctrine/orm": "To use ContainerServiceTrait",
+        "fakerphp/faker": "To use UniqueGroupGenerator",
+        "nesbot/carbon": "To use InvalidDataMaker",
+        "symfony/clock": "To use MessengerAssertionsTrait",
+        "symfony/event-dispatcher": "To use MessengerAssertionsTrait",
+        "symfony/framework-bundle": "To use ContainerServiceTrait, HttpClientAssertionTrait and MessengerAssertionsTrait",
+        "symfony/http-client": "To use HttpClientStub",
+        "symfony/http-foundation": "To use HttpClientStub",
+        "symfony/messenger": "To use MessengerAssertionsTrait",
+        "symfony/property-access": "To use MessengerAssertionsTrait",
+        "symfony/serializer": "To use DatabaseEntityTrait",
+        "symfony/translation": "To use InvalidDataMaker",
+        "symfony/uid": "To use DatabaseEntityTrait",
+        "symfony/validator": "To use InvalidDataMaker",
+        "symfony/var-dumper": "To use DatabaseEntityTrait"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"

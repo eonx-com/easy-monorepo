@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyAsync\Laravel\Listeners;
 
 use EonX\EasyAsync\Laravel\Exceptions\WorkerStoppingException;
-use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use Illuminate\Queue\Events\WorkerStopping;
 
 final readonly class WorkerStoppingListener implements WorkerStoppingListenerInterface

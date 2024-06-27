@@ -12,11 +12,11 @@ You can set the Symfony translation domain for the package via the `translation_
 exception's `setDomain()` method.
 
 If you want to update the default package translations, copy the file
-`src/Bridge/Symfony/Resources/translations/EasyErrorHandlerBundle.en.php` from the package to
+`bundle/translations/EasyErrorHandlerBundle.en.php` from the package to
 `translations/EasyErrorHandlerBundle.en.php` in your project and edit the file as required.
 
 ## Laravel
 
-If you want to update the default package translations, copy the file `src/Bridge/Laravel/translations/en/messages.php`
-from the package to `resources/lang/vendor/easy-error-handler/en/messages.php` in your project and edit the file as
+If you want to update the default package translations, copy the file `laravel/translations/en/exceptions.php`
+from the package to `resources/lang/vendor/easy-error-handler/en/exceptions.php` in your project and edit the file as
 required.

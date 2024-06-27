@@ -1,3 +1,0 @@
-easy_swoole:
-    doctrine:
-        enabled: false

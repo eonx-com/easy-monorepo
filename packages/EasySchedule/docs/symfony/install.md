@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasySchedule\Bridge\Symfony\EasyScheduleSymfonyBundle::class => ['all' => true],
+    EonX\EasySchedule\Bundle\EasyScheduleBundle::class => ['all' => true],
 ];
 ```
 

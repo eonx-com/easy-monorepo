@@ -8,32 +8,38 @@
         "eonx-com/easy-utils": "^5.12",
         "nesbot/carbon": "^2.67",
         "openswoole/core": "^22.1",
+        "symfony/cache": "^6.4",
+        "symfony/config": "^6.4",
+        "symfony/contracts": "^3.5",
+        "symfony/dependency-injection": "^6.4",
         "symfony/filesystem": "^6.4",
+        "symfony/framework-bundle": "^6.4",
         "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
         "symfony/runtime": "^6.4",
         "symfony/string": "^6.4"
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^5.12",
         "eonx-com/easy-logging": "^5.12",
-        "monolog/monolog": "^2.9",
         "openswoole/ide-helper": "^22.0",
         "phpunit/phpunit": "^10.2",
-        "psr/log": "^3.0",
-        "symfony/symfony": "^6.4"
+        "symfony/twig-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasySwoole\\": "src",
-            "EonX\\EasySwoole\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasySwoole\\Bundle\\": "bundle"
         },
         "files": [
-            "src/Resources/functions/dump.php"
+            "src/Logging/Function/dump.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasySwoole\\Tests\\": "tests"
+            "EonX\\EasySwoole\\Tests\\": "tests",
+            "EonX\\EasySwoole\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasySwoole\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
     "suggest": {
@@ -41,18 +47,17 @@
         "doctrine/persistence": "To use this package with Doctrine",
         "easycorp/easyadmin-bundle": "To use this package with EasyAdmin",
         "eonx-com/easy-batch": "To use this package with EasyBatch",
-        "monolog/monolog": "To improve output of EonX\\EasySwoole\\Helpers\\OutputHelper",
+        "eonx-com/easy-bugsnag": "To use this package with EasyBugsnag",
+        "eonx-com/easy-doctrine": "To use this package with EasyDoctrine",
+        "eonx-com/easy-error-handler": "To use this package with EasyErrorHandler",
+        "eonx-com/easy-logging": "To use this package with EasyLogging",
+        "monolog/monolog": "To improve output of OutputHelper",
         "nesbot/carbon": "To work with EasySchedule bridge",
         "psr/log": "To enable access logs",
-        "symfony/cache": "To use this package with Symfony",
-        "symfony/cache-contracts": "To use this package with Symfony",
-        "symfony/config": "To use this package with Symfony",
-        "symfony/console": "To work with EasySchedule bridge",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/http-kernel": "To work with Symfony HttpKernel",
+        "symfony/console": "To use this package with EasySchedule",
         "symfony/process": "To enable hot reload",
-        "symfony/service-contracts": "To use this package with Symfony",
-        "symfony/var-dumper": "To improve output of EonX\\EasySwoole\\Helpers\\VarDumpHelper"
+        "symfony/twig-bundle": "To use this package with Twig",
+        "symfony/var-dumper": "To improve output of VarDumpHelper"
     },
     "config": {
         "allow-plugins": {
