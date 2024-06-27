@@ -59,7 +59,7 @@ return ECSConfig::configure()
             'packages/*/src/Bridge/Laravel/config/*',
             'packages/*/laravel/config/*',
             'packages/*/tests/*',
-            'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
+            'packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
             'packages/EasyWebhook/laravel/EasyWebhookServiceProvider.php',
             'quality/ecs.php',

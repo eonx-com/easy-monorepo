@@ -159,31 +159,34 @@ parameters:
 
         # ---- EasySwoole ----
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Resources/functions/dump.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Logging/Function/dump.php
 
         - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
 
         - message: '#Anonymous function never returns null so it can be removed from the return type#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
 
         - message: '#Else branch is unreachable because ternary operator condition is always true#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Runtime/EasySwooleRunner.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
 
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SwooleTableHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SwooleTableHelper.php
 
         - message: '#Access to undefined constant OpenSwoole\\Constant\:\:SSL#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Helpers/SslCertificateHelper.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SslCertificateHelper.php
 
         - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Result/DbalResult.php
 
-        - message: '#Call to an undefined method EonX\\EasySwoole\\Bridge\\Doctrine\\Coroutine\\PDO\\PDOClient\:\:.*\(\)#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/*
+        - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:execute\(\)#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php
+
+        - message: '#Call to an undefined method EonX\\EasySwoole\\Doctrine\\Client\\PdoClient\:\:.*\(\)#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php
 
         - message: '#While loop condition is always true#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Bridge/Doctrine/Coroutine/PDO/PDOClientPool.php
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Pool/PdoClientPool.php
 
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----
