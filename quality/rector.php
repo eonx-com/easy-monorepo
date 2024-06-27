@@ -41,7 +41,6 @@ return RectorConfig::configure()
         // Skip entire files or directories
         'packages/*/var/*', // Cache files
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
-        'packages/EasyEncryption/src/AwsPkcs11Encryptor.php', // Because of Pkcs11
 
         // Skip rules
         AddLiteralSeparatorToNumberRector::class => [
@@ -50,7 +49,7 @@ return RectorConfig::configure()
         ],
         ClassPropertyAssignToConstructorPromotionRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
-            'packages/EasySecurity/src/SecurityContext.php',
+            'packages/EasySecurity/src/Common/Context/SecurityContext.php',
             'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
         ],
         FinalizePublicClassConstantRector::class,

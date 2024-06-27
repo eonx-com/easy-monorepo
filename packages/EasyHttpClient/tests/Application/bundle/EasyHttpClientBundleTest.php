@@ -5,7 +5,7 @@ namespace EonX\EasyHttpClient\Tests\Application\Bundle;
 
 use EonX\EasyHttpClient\Common\HttpClient\WithEventsHttpClient;
 use EonX\EasyHttpClient\Tests\Application\AbstractApplicationTestCase;
-use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
+use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId as EasyWebhookConfigServiceId;
 
 final class EasyHttpClientBundleTest extends AbstractApplicationTestCase
 {
@@ -13,7 +13,7 @@ final class EasyHttpClientBundleTest extends AbstractApplicationTestCase
     {
         self::assertInstanceOf(
             WithEventsHttpClient::class,
-            self::getContainer()->get(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT)
+            self::getContainer()->get(EasyWebhookConfigServiceId::HttpClient->value)
         );
     }
 }
