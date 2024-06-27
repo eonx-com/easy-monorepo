@@ -96,7 +96,7 @@ Here is a simple example how to use it:
 ```php
 // app/Repositories/PostRepositoryInterface.php
 
-use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
+use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
 
 interface PostRepositoryInterface
 {
