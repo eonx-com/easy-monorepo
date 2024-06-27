@@ -29,7 +29,7 @@ Here is an example how to generate subscription info within a Symfony Controller
 
 namespace App\Http\Controller;
 
-use EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface;
+use EonX\EasyNotification\Provider\SubscribeInfoProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,7 +37,7 @@ final class SubscribeInfoController
 {
     /**
      * @var string
-     */    
+     */
     private $apiKey;
 
     /**
@@ -46,18 +46,18 @@ final class SubscribeInfoController
     private $providerExternalId;
 
     /**
-     * @var \EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface
+     * @var \EonX\EasyNotification\Provider\SubscribeInfoProviderInterface
      */
-    private $subscribeInfoFinder;
+    private $subscribeInfoProvider;
 
     public function __construct(
-        string $notificationApiKey, 
-        string $notificationProvider, 
-        SubscribeInfoFinderInterface $subscribeInfoFinder
+        string $notificationApiKey,
+        string $notificationProvider,
+        SubscribeInfoProviderInterface $subscribeInfoProvider
     ) {
         $this->apiKey = $notificationApiKey;
         $this->providerExternalId = $notificationProvider;
-        $this->subscribeInfoFinder = $subscribeInfoFinder;
+        $this->subscribeInfoProvider = $subscribeInfoProvider;
     }
 
     public function __invoke(Request $request)
@@ -65,9 +65,9 @@ final class SubscribeInfoController
         // Please do better in your code! :)
         $body = \json_decode($request->getContent(), true);
 
-        $subscribeInfo = $this->subscribeInfoFinder->find(
-            $this->apiKey, 
-            $this->providerExternalId, 
+        $subscribeInfo = $this->subscribeInfoProvider->provide(
+            $this->apiKey,
+            $this->providerExternalId,
             $body['topics'] // Get topics from request body
         );
 

@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasySecurity\Bridge\Symfony\EasySecuritySymfonyBundle::class => ['all' => true],
+    EonX\EasySecurity\Bundle\EasySecurityBundle::class => ['all' => true],
 ];
 ```
 

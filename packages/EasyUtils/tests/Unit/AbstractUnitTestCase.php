@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Tests\Unit;
 
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;

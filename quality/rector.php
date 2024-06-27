@@ -49,8 +49,8 @@ return RectorConfig::configure()
         ],
         ClassPropertyAssignToConstructorPromotionRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
-            'packages/EasySecurity/src/SecurityContext.php',
-            'packages/EasyTest/src/InvalidDataMaker/InvalidDataMaker.php',
+            'packages/EasySecurity/src/Common/Context/SecurityContext.php',
+            'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
         ],
         FinalizePublicClassConstantRector::class,
         FirstClassCallableRector::class => [
