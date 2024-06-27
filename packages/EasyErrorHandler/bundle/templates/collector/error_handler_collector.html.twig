@@ -3,7 +3,7 @@
 {% block toolbar %}
     {% if collector.renderedErrorResponses|length > 0 or collector.reportedErrors|length > 0 %}
         {% set icon %}
-            {{ include('@EasyErrorHandler/icon/exclamation-circle-solid.svg') }}
+            {{ include('@EasyErrorHandler/icon/exclamation_circle_solid.svg') }}
             <span class="sf-toolbar-value">{{ collector.reportedErrors|length }}</span>
         {% endset %}
 
@@ -26,7 +26,7 @@
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span
         class="label {{ collector.renderedErrorResponses|length == 0 and collector.reportedErrors|length == 0 ? 'disabled' }}">
-        <span class="icon">{{ include('@EasyErrorHandler/icon/exclamation-circle-solid.svg') }}</span>
+        <span class="icon">{{ include('@EasyErrorHandler/icon/exclamation_circle_solid.svg') }}</span>
         <strong>Error Handler</strong>
     </span>
 {% endblock %}
