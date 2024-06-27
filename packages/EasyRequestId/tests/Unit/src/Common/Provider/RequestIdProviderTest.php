@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Unit\Common\Provider;
 
-use EonX\EasyRandom\Bridge\Symfony\Generators\SymfonyUuidV6Generator;
-use EonX\EasyRandom\Generators\RandomGenerator;
+use EonX\EasyRandom\Generator\RandomGenerator;
+use EonX\EasyRandom\Generator\SymfonyUuidV6Generator;
 use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;

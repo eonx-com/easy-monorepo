@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Stub\HttpKernel;
 
-use EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle;
+use EonX\EasyRandom\Bundle\EasyRandomBundle;
 use EonX\EasyRequestId\Bundle\EasyRequestIdBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -47,7 +47,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyRandomSymfonyBundle();
+        yield new EasyRandomBundle();
         yield new EasyRequestIdBundle();
     }
 

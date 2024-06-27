@@ -29,7 +29,7 @@ $ composer require eonx-com/easy-random
 
 ```php
 // Will generate a random integer between 0 and 20 (both included)
-$myNumber = (new \EonX\EasyRandom\Generators\RandomGenerator(...))->integer(0, 20);
+$myNumber = (new \EonX\EasyRandom\Generator\RandomGenerator(...))->integer(0, 20);
 ```
 
 <br>
@@ -40,7 +40,7 @@ The random generator allows you to control the length, and the composition of th
 fluent interface:
 
 ```php
-$myString = (new \EonX\EasyRandom\Generators\RandomGenerator(...))
+$myString = (new \EonX\EasyRandom\Generator\RandomGenerator(...))
     ->string(16)
     ->excludeSimilar() // Will exclude similar characters
     ->excludeVowel() // Will exclude vowels, nice trick to avoid "bad words" in generated random strings
@@ -57,7 +57,7 @@ Do you need to generate random strings for your end users?
 // - include numeric
 // - include uppercase
 
-$reference = (new \EonX\EasyRandom\Generators\RandomGenerator(...))
+$reference = (new \EonX\EasyRandom\Generator\RandomGenerator(...))
     ->string(16)
     ->userFriendly();
 ```
@@ -68,10 +68,10 @@ $reference = (new \EonX\EasyRandom\Generators\RandomGenerator(...))
 
 The random generator allows you to generate UUID.
 This package comes with built-in implementations for: [ramsey/uuid][3], [symfony/uid][2].
-If you want to use your own, then you will need to make sure it implements `EonX\EasyRandom\Interfaces\UuidGeneratorInterface`.
+If you want to use your own, then you will need to make sure it implements `EonX\EasyRandom\Generator\UuidGeneratorInterface`.
 
 ```php
-$uuid = (new \EonX\EasyRandom\Generators\RandomGenerator(...))->uuid();
+$uuid = (new \EonX\EasyRandom\Generator\RandomGenerator(...))->uuid();
 ```
 
 [1]: https://getcomposer.org/

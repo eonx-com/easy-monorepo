@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Doctrine\Store;
 
 use Doctrine\DBAL\Connection;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Store\AbstractStore;
 

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Stub\Store;
 
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Cleaner\NullDataCleaner;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;

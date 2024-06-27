@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Common\Resolver;
 
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 
 final class UuidFallbackResolver implements FallbackResolverInterface
 {

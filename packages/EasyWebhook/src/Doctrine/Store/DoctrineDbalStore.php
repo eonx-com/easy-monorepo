@@ -10,7 +10,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyPagination\Interfaces\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\Interfaces\PaginationInterface;
 use EonX\EasyPagination\Paginators\DoctrineDbalLengthAwarePaginator;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;

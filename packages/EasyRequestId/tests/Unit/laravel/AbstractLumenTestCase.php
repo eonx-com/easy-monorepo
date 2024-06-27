@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Unit\Laravel;
 
-use EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider;
+use EonX\EasyRandom\Laravel\EasyRandomServiceProvider;
 use EonX\EasyRequestId\Laravel\EasyRequestIdServiceProvider;
 use EonX\EasyRequestId\Tests\Unit\AbstractUnitTestCase;
 use Illuminate\Bus\BusServiceProvider;

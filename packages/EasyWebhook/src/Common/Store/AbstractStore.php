@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Common\Store;
 
 use DateTimeInterface;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use Nette\Utils\Json;
 
