@@ -35,10 +35,10 @@
         }
     },
     "suggest": {
-        "aws/aws-sdk-php": "For AWS Cloud HSM support",
-        "ext-pkcs11": "For AWS Cloud HSM support",
-        "natepage/php-pkcs11-ide-helper": "For better IDE support when using PKCS11",
-        "symfony/filesystem": "For AWS Cloud HSM support"
+        "aws/aws-sdk-php": "To use AWS Cloud HSM",
+        "ext-pkcs11": "To use AWS Cloud HSM",
+        "natepage/php-pkcs11-ide-helper": "To use IDE support when using PKCS11",
+        "symfony/filesystem": "To use AWS Cloud HSM"
     },
     "extra": {
         "branch-alias": {

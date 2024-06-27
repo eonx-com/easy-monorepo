@@ -41,8 +41,8 @@
         }
     },
     "suggest": {
-        "eonx-com/easy-bugsnag": "For EasyBugsnag integration",
-        "eonx-com/easy-logging": "For EasyLogging integration"
+        "eonx-com/easy-bugsnag": "To use EasyBugsnag",
+        "eonx-com/easy-logging": "To use EasyLogging"
     },
     "extra": {
         "branch-alias": {

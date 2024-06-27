@@ -35,9 +35,9 @@
         }
     },
     "suggest": {
-        "eonx-com/easy-async": "For EasyAsync integration",
-        "eonx-com/easy-logging": "For Laravel and EasyLogging integration",
-        "symfony/messenger": "For Symfony Messenger integration"
+        "eonx-com/easy-async": "To use EasyAsync",
+        "eonx-com/easy-logging": "To use Laravel and EasyLogging",
+        "symfony/messenger": "To use Symfony Messenger"
     },
     "extra": {
         "branch-alias": {

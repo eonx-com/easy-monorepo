@@ -32,11 +32,11 @@
         }
     },
     "suggest": {
-        "eonx-com/easy-error-handler": "For EasyErrorHandler integration",
-        "eonx-com/easy-http-client": "For EasyHttpClient integration",
-        "eonx-com/easy-logging": "For EasyLogging integration",
-        "eonx-com/easy-webhook": "For EasyWebhook integration",
-        "twig/twig": "For Twig integration"
+        "eonx-com/easy-error-handler": "To use EasyErrorHandler",
+        "eonx-com/easy-http-client": "To use EasyHttpClient",
+        "eonx-com/easy-logging": "To use EasyLogging",
+        "eonx-com/easy-webhook": "To use EasyWebhook",
+        "twig/twig": "To use Twig"
     },
     "extra": {
         "branch-alias": {
