@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyDecision\Bridge\Symfony\EasyDecisionSymfonyBundle::class => ['all' => true],
+    EonX\EasyDecision\Bundle\EasyDecisionBundle::class => ['all' => true],
 ];
 ```
 

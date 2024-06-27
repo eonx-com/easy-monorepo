@@ -74,6 +74,8 @@ return ECSConfig::configure()
         ],
         BlankLineAfterOpeningTagFixer::class => null,
         ClassDefinitionFixer::class => [
+            'packages/EasyDecision/src/Configurator/AbstractNameRestrictedDecisionConfigurator.php',
+            'packages/EasyDecision/src/Configurator/AbstractTypeRestrictedDecisionConfigurator.php',
             'packages/EasyLock/src/Common/Exception/LockAcquiringException.php',
         ],
         DateTimeImmutableFixer::class => null,
