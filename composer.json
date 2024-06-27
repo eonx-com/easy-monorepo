@@ -298,7 +298,7 @@
         "eonx-com/easy-swoole": "self.version",
         "eonx-com/easy-templating-block": "self.version",
         "eonx-com/easy-test": "self.version",
-        "eonx-com/easy-utils": " self.version",
+        "eonx-com/easy-utils": "self.version",
         "eonx-com/easy-webhook": "self.version"
     },
     "scripts": {
