@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Unit;
 
-use EonX\EasyTest\Traits\PrivatePropertyAccessTrait;
+use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Mockery;
 use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;

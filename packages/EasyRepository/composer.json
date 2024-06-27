@@ -12,17 +12,20 @@
         "eonx-com/easy-pagination": "^5.12",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2",
-        "vlucas/phpdotenv": "^5.5"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyRepository\\": "src"
+            "EonX\\EasyRepository\\": "src",
+            "EonX\\EasyRepository\\Bundle\\": "bundle",
+            "EonX\\EasyRepository\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyRepository\\Tests\\": "tests"
+            "EonX\\EasyRepository\\Tests\\": "tests",
+            "EonX\\EasyRepository\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyRepository\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {

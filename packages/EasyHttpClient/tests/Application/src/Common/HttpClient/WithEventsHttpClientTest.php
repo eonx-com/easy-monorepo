@@ -9,8 +9,8 @@ use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseDataInterface;
 use EonX\EasyHttpClient\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyHttpClient\Tests\Fixture\App\Client\SomeClient;
-use EonX\EasyTest\HttpClient\SimpleTestResponse;
-use EonX\EasyTest\HttpClient\TestResponseFactory;
+use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
+use EonX\EasyTest\HttpClient\Response\SimpleTestResponse;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Throwable;
 

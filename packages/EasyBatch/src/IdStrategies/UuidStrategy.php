@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\IdStrategies;
 
 use EonX\EasyBatch\Interfaces\BatchObjectIdStrategyInterface;
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 
 final class UuidStrategy implements BatchObjectIdStrategyInterface
 {
