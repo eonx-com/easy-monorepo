@@ -5,7 +5,7 @@ namespace EonX\EasyWebhook\Laravel;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstants;
+use EonX\EasyLogging\Bundle\Enum\BundleParam as EasyLoggingBundleParam;
 use EonX\EasyWebhook\Bundle\Enum\BundleParam;
 use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId;
 use EonX\EasyWebhook\Bundle\Enum\ConfigTag;
@@ -144,8 +144,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 MiddlewareInterface::PRIORITY_CORE_AFTER + 2
             ),
             SyncRetryMiddleware::class => static function (Container $app): SyncRetryMiddleware {
-                $loggerParams = \interface_exists(EasyLoggingBridgeConstants::class)
-                    ? [EasyLoggingBridgeConstants::KEY_CHANNEL => BundleParam::LogChannel]
+                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
                     : [];
 
                 return new SyncRetryMiddleware(

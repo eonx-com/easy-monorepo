@@ -5,7 +5,7 @@ namespace EonX\EasyRequestId\Bundle;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam as EasyHttpClientConfigParam;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
+use EonX\EasyLogging\Bundle\Enum\ConfigParam as EasyLoggingConfigParam;
 use EonX\EasyRequestId\Bundle\Enum\ConfigParam;
 use EonX\EasyWebhook\Bundle\Enum\ConfigParam as EasyWebhookConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -52,7 +52,7 @@ final class EasyRequestIdBundle extends AbstractBundle
         $this->containerConfigurator = $container;
 
         $this->loadIfEnabled('easy_error_handler', EasyErrorHandlerBridgeConstantsInterface::class);
-        $this->loadIfEnabled('easy_logging', EasyLoggingBridgeConstantsInterface::class);
+        $this->loadIfEnabled('easy_logging', EasyLoggingConfigParam::class);
         $this->loadIfEnabled('easy_http_client', EasyHttpClientConfigParam::class);
         $this->loadIfEnabled('easy_webhook', EasyWebhookConfigParam::class);
     }

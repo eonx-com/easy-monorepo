@@ -5,7 +5,7 @@ namespace EonX\EasyRequestId\Laravel;
 
 use EonX\EasyErrorHandler\Bridge\BridgeConstantsInterface as EasyErrorHandlerBridgeConstantsInterface;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag as EasyHttpClientConfigTag;
-use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
+use EonX\EasyLogging\Bundle\Enum\ConfigTag as EasyLoggingConfigTag;
 use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
@@ -110,11 +110,11 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyLogging
-        if ($this->bridgeEnabled('easy_logging', EasyLoggingBridgeConstantsInterface::class)) {
+        if ($this->bridgeEnabled('easy_logging', EasyLoggingConfigTag::class)) {
             $this->app->singleton(RequestIdProcessor::class);
             $this->app->tag(
                 RequestIdProcessor::class,
-                [EasyLoggingBridgeConstantsInterface::TAG_PROCESSOR_CONFIG_PROVIDER]
+                [EasyLoggingConfigTag::ProcessorConfigProvider->value]
             );
         }
 
