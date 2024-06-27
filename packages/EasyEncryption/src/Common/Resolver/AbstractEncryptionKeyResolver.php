@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Common\Resolver;
 
 use EonX\EasyEncryption\Common\Exception\CouldNotResolveEncryptionKeyException;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 

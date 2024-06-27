@@ -8,22 +8,30 @@
         "aws/aws-sdk-php": "^3.269",
         "eonx-com/easy-utils": "^5.12",
         "nette/utils": "^3.2",
-        "symfony/http-client": "^6.4"
+        "symfony/cache": "^6.4",
+        "symfony/config": "^6.4",
+        "symfony/contracts": "^3.5",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-client": "^6.4",
+        "symfony/http-kernel": "^6.4"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
-        "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyNotification\\": "src",
-            "EonX\\EasyNotification\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyNotification\\Bundle\\": "bundle",
+            "EonX\\EasyNotification\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyNotification\\Tests\\": "tests"
+            "EonX\\EasyNotification\\Tests\\": "tests",
+            "EonX\\EasyNotification\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyNotification\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyNotification\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "extra": {

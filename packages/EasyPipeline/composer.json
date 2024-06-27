@@ -8,18 +8,19 @@
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
-        "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2",
-        "vlucas/phpdotenv": "^5.5"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyPipeline\\": "src"
+            "EonX\\EasyPipeline\\": "src",
+            "EonX\\EasyPipeline\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyPipeline\\Tests\\": "tests"
+            "EonX\\EasyPipeline\\Tests\\": "tests",
+            "EonX\\EasyPipeline\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyPipeline\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {

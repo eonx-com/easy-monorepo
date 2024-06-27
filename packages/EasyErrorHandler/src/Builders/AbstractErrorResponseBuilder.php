@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Builders;
 
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface;
-use EonX\EasyUtils\Traits\HasPriorityTrait;
+use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 use Throwable;
 
 abstract class AbstractErrorResponseBuilder implements ErrorResponseBuilderInterface

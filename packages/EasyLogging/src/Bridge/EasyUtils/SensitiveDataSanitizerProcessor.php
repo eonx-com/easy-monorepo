@@ -5,7 +5,7 @@ namespace EonX\EasyLogging\Bridge\EasyUtils;
 
 use EonX\EasyLogging\Config\AbstractSelfProcessorConfigProvider;
 use EonX\EasyLogging\Interfaces\Config\ProcessorConfigInterface;
-use EonX\EasyUtils\SensitiveData\SensitiveDataSanitizerInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 
 final class SensitiveDataSanitizerProcessor extends AbstractSelfProcessorConfigProvider
 {

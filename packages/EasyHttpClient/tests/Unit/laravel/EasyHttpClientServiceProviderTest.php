@@ -5,8 +5,8 @@ namespace EonX\EasyHttpClient\Tests\Unit\Laravel;
 
 use EonX\EasyEventDispatcher\Laravel\EasyEventDispatcherServiceProvider;
 use EonX\EasyHttpClient\Common\HttpClient\WithEventsHttpClient;
-use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
-use EonX\EasyWebhook\Bridge\Laravel\EasyWebhookServiceProvider;
+use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId as EasyWebhookConfigServiceId;
+use EonX\EasyWebhook\Laravel\EasyWebhookServiceProvider;
 
 final class EasyHttpClientServiceProviderTest extends AbstractLaravelTestCase
 {
@@ -23,7 +23,7 @@ final class EasyHttpClientServiceProviderTest extends AbstractLaravelTestCase
 
         self::assertInstanceOf(
             WithEventsHttpClient::class,
-            $app->get(EasyWebhookBridgeConstantsInterface::HTTP_CLIENT)
+            $app->get(EasyWebhookConfigServiceId::HttpClient->value)
         );
     }
 }

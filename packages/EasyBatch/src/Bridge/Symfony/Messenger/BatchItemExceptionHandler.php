@@ -11,7 +11,7 @@ use EonX\EasyBatch\Interfaces\EasyBatchEmergencyExceptionInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchExceptionInterface;
 use EonX\EasyBatch\Interfaces\EasyBatchPreventProcessExceptionInterface;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyUtils\Helpers\ErrorDetailsHelper;
+use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ExceptionInterface as MessengerExceptionInterface;
