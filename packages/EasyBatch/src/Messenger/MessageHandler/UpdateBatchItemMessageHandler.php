@@ -13,14 +13,13 @@ use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class UpdateBatchItemMessageHandler
+final readonly class UpdateBatchItemMessageHandler
 {
     public function __construct(
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
     ) {
     }
-
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchNotFoundException
@@ -38,7 +37,6 @@ final class UpdateBatchItemMessageHandler
         $processBatchForBatchItemHandler = $this->processBatchForBatchItemHandler;
         $processBatchForBatchItemHandler(new ProcessBatchForBatchItemMessage($message->getBatchItemId()));
     }
-
     private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
         /** @var \DateTimeInterface $newDateTime */
@@ -46,7 +44,6 @@ final class UpdateBatchItemMessageHandler
 
         return $newDateTime;
     }
-
     private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem

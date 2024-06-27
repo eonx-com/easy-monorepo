@@ -6,10 +6,10 @@ namespace EonX\EasyErrorHandler\Common\Listener;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
 
-final class ConsoleErrorListener
+final readonly class ConsoleErrorListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
+        private ErrorHandlerInterface $errorHandler,
     ) {
     }
 

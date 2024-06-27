@@ -6,10 +6,10 @@ namespace EonX\EasySchedule\Listener;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasySchedule\Event\CommandExecutedEvent;
 
-final class CommandExecutedListener
+final readonly class CommandExecutedListener
 {
     public function __construct(
-        private readonly ManagerRegistry $managerRegistry,
+        private ManagerRegistry $managerRegistry,
     ) {
     }
 

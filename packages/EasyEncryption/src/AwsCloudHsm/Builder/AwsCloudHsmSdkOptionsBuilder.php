@@ -6,19 +6,19 @@ namespace EonX\EasyEncryption\AwsCloudHsm\Builder;
 use EonX\EasyEncryption\AwsCloudHsm\Exception\AwsCloudHsmInvalidConfigurationException;
 use Symfony\Component\Filesystem\Filesystem;
 
-final class AwsCloudHsmSdkOptionsBuilder
+final readonly class AwsCloudHsmSdkOptionsBuilder
 {
     private const DEFAULT_REGION = 'ap-southeast-2';
 
     public function __construct(
-        private readonly string $caCertFile,
-        private readonly bool $disableKeyAvailabilityCheck = false,
-        private readonly ?string $ipAddress = null,
-        private readonly ?string $clusterId = null,
-        private readonly string $region = self::DEFAULT_REGION,
-        private readonly ?string $serverClientCertFile = null,
-        private readonly ?string $serverClientKeyFile = null,
-        private readonly ?array $sdkOptions = null,
+        private string $caCertFile,
+        private bool $disableKeyAvailabilityCheck = false,
+        private ?string $ipAddress = null,
+        private ?string $clusterId = null,
+        private string $region = self::DEFAULT_REGION,
+        private ?string $serverClientCertFile = null,
+        private ?string $serverClientKeyFile = null,
+        private ?array $sdkOptions = null,
     ) {
     }
 
