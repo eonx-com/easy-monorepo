@@ -25,6 +25,7 @@ include those IDs in your:
 ### Dependencies
 
 This package has dependencies on the following packages, please see their documentation directly:
+
 - [EasyRandom][1]
 
 <br>
@@ -46,24 +47,18 @@ This package is based on a single service providing the requestId and correlatio
 
 namespace App\Controller;
 
-use EonX\EasyRequestId\Interfaces\RequestIdServiceInterface;
+use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
 final class MyController
 {
-    /**
-     * @var \EonX\EasyRequestId\Interfaces\RequestIdServiceInterface
-     */
-    private $requestIdService;
-
-    public function __construct(RequestIdServiceInterface $requestIdService)
+    public function __construct(private RequestIdProviderInterface $requestIdProvider)
     {
-        $this->requestIdService = $requestIdService; 
     }
 
     public function __invoke()
     {
-        $requestId = $this->requestIdService->getRequestId();
-        $correlationId = $this->requestIdService->getCorrelationId();
+        $requestId = $this->requestIdProvider->getRequestId();
+        $correlationId = $this->requestIdProvider->getCorrelationId();
 
         // Use the IDs in your logic...
     }
@@ -71,8 +66,13 @@ final class MyController
 ```
 
 [1]: https://github.com/eonx-com/easy-random
+
 [3]: https://getcomposer.org/
+
 [4]: https://github.com/eonx-com/easy-bugsnag
+
 [5]: https://github.com/eonx-com/easy-error-handler
+
 [6]: https://github.com/eonx-com/easy-error-logging
+
 [7]: https://github.com/eonx-com/easy-webhook

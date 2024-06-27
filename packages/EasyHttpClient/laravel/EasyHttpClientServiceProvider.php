@@ -11,7 +11,7 @@ use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\HttpClient\WithEventsHttpClient;
 use EonX\EasyHttpClient\EasyBugsnag\Listener\HttpRequestSentBreadcrumbListener;
 use EonX\EasyHttpClient\PsrLogger\Listener\LogHttpRequestSentListener;
-use EonX\EasyWebhook\Bridge\BridgeConstantsInterface as EasyWebhookBridgeConstantsInterface;
+use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId as EasyWebhookConfigServiceId;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -70,12 +70,12 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
     {
         // Register only if enabled and eonx-com/easy-webhook installed
         if (\config('easy-http-client.decorate_easy_webhook_client', false) === false
-            || \interface_exists(EasyWebhookBridgeConstantsInterface::class) === false) {
+            || \enum_exists(EasyWebhookConfigServiceId::class) === false) {
             return;
         }
 
         $this->app->extend(
-            EasyWebhookBridgeConstantsInterface::HTTP_CLIENT,
+            EasyWebhookConfigServiceId::HttpClient->value,
             static fn (HttpClientInterface $decorated, Container $app): HttpClientInterface => self::instantiateClient(
                 $app,
                 $decorated

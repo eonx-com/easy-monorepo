@@ -1,5 +1,0 @@
-easy_security:
-    voters:
-        permission_enabled: true
-        provider_enabled: true
-        role_enabled: true

@@ -6,25 +6,37 @@
     "require": {
         "php": "^8.2",
         "eonx-com/easy-random": "^5.12",
-        "eonx-com/easy-utils": "^5.12"
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/messenger": "^6.4"
     },
     "require-dev": {
         "laravel/lumen-framework": "^9.1",
-        "phpunit/phpunit": "^10.2",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/uid": "^6.4",
-        "symfony/yaml": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyRequestId\\": "src",
-            "EonX\\EasyRequestId\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyRequestId\\Bundle\\": "bundle",
+            "EonX\\EasyRequestId\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyRequestId\\Tests\\": "tests"
+            "EonX\\EasyRequestId\\Tests\\": "tests",
+            "EonX\\EasyRequestId\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyRequestId\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyRequestId\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
+    },
+    "suggest": {
+        "eonx-com/easy-error-handler": "For EasyErrorHandler integration",
+        "eonx-com/easy-http-client": "For EasyHttpClient integration",
+        "eonx-com/easy-logging": "For EasyLogging integration",
+        "eonx-com/easy-webhook": "For EasyWebhook integration",
+        "twig/twig": "For Twig integration"
     },
     "extra": {
         "branch-alias": {
