@@ -12,7 +12,7 @@ It is based on 2 different IDs:
 - **request_id:** ID of request specific to each project
 - **correlation_id:** shared ID across projects for the same initial request
 
-On the top of resolving those IDs for you, this package also comes with bridges to different packages to automatically
+On the top of resolving those IDs for you, this package also comes with integrations to different packages to automatically
 include those IDs in your:
 
 - **bugsnag notifications:** using [EasyBugsnag][4]

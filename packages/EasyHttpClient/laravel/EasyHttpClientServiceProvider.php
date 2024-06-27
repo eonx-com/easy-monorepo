@@ -34,7 +34,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-http-client.php', 'easy-http-client');
 
         $this->registerHttpClient();
-        $this->registerEasyWebhookBridge();
+        $this->registerEasyWebhookIntegration();
 
         if (\config('easy-http-client.easy_bugsnag_enabled', true) && \class_exists(Client::class)) {
             $this->app->make('events')
@@ -66,7 +66,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerEasyWebhookBridge(): void
+    private function registerEasyWebhookIntegration(): void
     {
         // Register only if enabled and eonx-com/easy-webhook installed
         if (\config('easy-http-client.decorate_easy_webhook_client', false) === false

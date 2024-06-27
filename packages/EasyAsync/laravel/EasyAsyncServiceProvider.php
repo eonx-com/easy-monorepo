@@ -59,7 +59,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         $this->clearDoctrineEmBeforeJob();
         $this->logQueueWorkerStopping();
         $this->registerAsyncLogger();
-        $this->registerEasyErrorHandlerBridge();
+        $this->registerEasyErrorHandlerIntegration();
         $this->registerQueueListeners();
         $this->restartQueueOnEmClose();
     }
@@ -98,7 +98,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
         );
     }
 
-    private function registerEasyErrorHandlerBridge(): void
+    private function registerEasyErrorHandlerIntegration(): void
     {
         if (\class_exists(EasyErrorHandlerServiceProvider::class) === false
             || \config('easy-async.easy_error_handler_worker_stopping_enabled', true) === false) {

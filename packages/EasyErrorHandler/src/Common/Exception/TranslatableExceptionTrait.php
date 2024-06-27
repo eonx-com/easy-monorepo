@@ -34,7 +34,7 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * Sets the translation domain for Symfony bridge.
+     * Sets the translation domain for Symfony integration.
      */
     public function setDomain(string $domain): self
     {

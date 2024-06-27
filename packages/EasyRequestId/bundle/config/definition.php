@@ -21,7 +21,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
 
-            // Bridges
+            // Integrations
             ->booleanNode('easy_error_handler')->defaultTrue()->end()
             ->booleanNode('easy_logging')->defaultTrue()->end()
             ->booleanNode('easy_http_client')->defaultTrue()->end()

@@ -7,7 +7,7 @@ use EonX\EasySecurity\Common\Entity\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 /**
- * The current implement of Symfony bridge using Guard requires to always have a User.
+ * The current implement of bundle using Guard requires to always have a User.
  * User on the security context is not required, use this class as a placeholder to trick Symfony ;).
  */
 final class FakeUser implements UserInterface, SymfonyUserInterface

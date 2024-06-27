@@ -22,7 +22,7 @@ abstract class AbstractUnitTestCase extends KernelTestCase
         parent::tearDownAfterClass();
 
         $filesystem = new Filesystem();
-        $varDir = __DIR__ . '/Bridge/Symfony/Fixtures/App/var';
+        $varDir = __DIR__ . '/../Fixture/app/var';
 
         if ($filesystem->exists($varDir)) {
             $filesystem->remove($varDir);

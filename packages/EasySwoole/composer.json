@@ -52,7 +52,7 @@
         "eonx-com/easy-error-handler": "To use this package with EasyErrorHandler",
         "eonx-com/easy-logging": "To use this package with EasyLogging",
         "monolog/monolog": "To improve output of OutputHelper",
-        "nesbot/carbon": "To work with EasySchedule bridge",
+        "nesbot/carbon": "To use this package with EasySchedule",
         "psr/log": "To enable access logs",
         "symfony/console": "To use this package with EasySchedule",
         "symfony/process": "To enable hot reload",
