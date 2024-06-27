@@ -61,7 +61,7 @@ return ECSConfig::configure()
             'packages/*/tests/*',
             'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
-            'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
+            'packages/EasyWebhook/laravel/EasyWebhookServiceProvider.php',
             'quality/ecs.php',
             'quality/rector.php',
         ],
@@ -70,7 +70,7 @@ return ECSConfig::configure()
             'packages/*/tests/Stubs/Model/*',
             'packages/*/tests/*/Fixtures/*/ApiResource/*',
             'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
-            'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
+            'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
         ClassDefinitionFixer::class => [
