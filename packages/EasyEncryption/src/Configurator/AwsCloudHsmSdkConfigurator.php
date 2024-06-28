@@ -71,17 +71,14 @@ final class AwsCloudHsmSdkConfigurator
             ],
         ];
 
-        if (
-            \array_key_exists('--server-client-cert-file', $options) &&
-            \array_key_exists('--server-client-key-file', $options)
-        ) {
+        if (isset($options['--server-client-cert-file']) && isset($options['--server-client-key-file'])) {
             $cluster['client_cert_path'] = $options['--server-client-cert-file'];
             $cluster['client_key_path'] = $options['--server-client-key-file'];
         }
 
         $servers = [];
 
-        if (\array_key_exists('-a', $options)) {
+        if (isset($options['-a'])) {
             $hsmIpAddresses = \explode(' ', (string)$options['-a']);
 
             foreach ($hsmIpAddresses as $hsmIpAddress) {
@@ -93,7 +90,7 @@ final class AwsCloudHsmSdkConfigurator
             }
         }
 
-        if (\array_key_exists('--cluster-id', $options)) {
+        if (isset($options['--cluster-id'])) {
             $awsCredentials = null;
             if ($this->awsRoleArn !== null) {
                 $stsClient = new StsClient([
