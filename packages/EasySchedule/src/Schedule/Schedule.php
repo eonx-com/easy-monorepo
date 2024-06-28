@@ -6,6 +6,7 @@ namespace EonX\EasySchedule\Schedule;
 use EonX\EasySchedule\Entry\ScheduleEntry;
 use EonX\EasySchedule\Entry\ScheduleEntryInterface;
 use Symfony\Component\Console\Application;
+use UnexpectedValueException;
 
 final class Schedule implements ScheduleInterface
 {
@@ -28,8 +29,19 @@ final class Schedule implements ScheduleInterface
         return $this;
     }
 
+    /**
+     * @param class-string<\Symfony\Component\Console\Command\Command>|string $command
+     */
     public function command(string $command, ?array $parameters = null): ScheduleEntryInterface
     {
+        if (\class_exists($command)) {
+            $command = $command::getDefaultName() ?? '';
+
+            if ($command === '') {
+                throw new UnexpectedValueException('Could not determine default name for command.');
+            }
+        }
+
         $entry = new ScheduleEntry($command, $parameters);
         $this->entries[] = $entry;
 
