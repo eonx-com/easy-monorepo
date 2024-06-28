@@ -65,13 +65,20 @@ final class AwsCloudHsmSdkConfigurator
     private function configureAwsCloudHsmSdkUsingAwsSdk(array $options): void
     {
         $cluster = [
-            'client_cert_path' => $options['--server-client-cert-file'],
-            'client_key_path' => $options['--server-client-key-file'],
             'hsm_ca_file' => $options['--hsm-ca-cert'],
             'options' => [
                 'disable_key_availability_check' => $options['--disable-key-availability-check'],
             ],
         ];
+
+        if (
+            \array_key_exists('--server-client-cert-file', $options) &&
+            \array_key_exists('--server-client-key-file', $options)
+        ) {
+            $cluster['client_cert_path'] = $options['--server-client-cert-file'];
+            $cluster['client_key_path'] = $options['--server-client-key-file'];
+        }
+
         $servers = [];
 
         if (\array_key_exists('-a', $options)) {
