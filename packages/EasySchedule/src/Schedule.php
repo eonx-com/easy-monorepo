@@ -6,6 +6,8 @@ namespace EonX\EasySchedule;
 use EonX\EasySchedule\Interfaces\EventInterface;
 use EonX\EasySchedule\Interfaces\ScheduleInterface;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use UnexpectedValueException;
 
 final class Schedule implements ScheduleInterface
 {
@@ -28,8 +30,19 @@ final class Schedule implements ScheduleInterface
         return $this;
     }
 
+    /**
+     * @param class-string<\Symfony\Component\Console\Command\Command>|string $command
+     */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
+        if (\is_a($command, Command::class, true)) {
+            $command = $command::getDefaultName() ?? '';
+
+            if ($command === '') {
+                throw new UnexpectedValueException('Could not determine default name for command.');
+            }
+        }
+
         $event = new Event($command, $parameters);
         $this->events[] = $event;
 
