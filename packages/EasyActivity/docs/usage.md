@@ -37,8 +37,8 @@ To create a new activity log entry, an application can use one of the following 
 - **EasyDoctrine**: Install the [eonx-com/easy-doctrine][3] package that provides events for Doctrine entity creation,
   update and deletion. EasyActivity has integration with EasyDoctrine that contains
   `EonX\EasyActivity\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriber`, which will take care of accepting those
-  events and passing them to `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`. The EasyActivity also passes the
-  subject list from the EasyActivity configuration to the EasyDoctrine configuration (so the EasyDoctrine knows which
+  events and passing them to `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`.
+  EasyActivity also passes the subject list to the EasyDoctrine configuration (so the EasyDoctrine knows which
   Doctrine entities to listen to).
 - **Eloquent**: Use an Eloquent integration with a listener for Eloquent events that will take care of passing model data to
   `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface` (not implemented yet).
