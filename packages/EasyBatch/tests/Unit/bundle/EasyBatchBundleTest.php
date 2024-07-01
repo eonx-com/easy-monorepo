@@ -22,7 +22,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
     /**
      * @see testCoreLogic
      */
-    public static function providerTestCoreLogic(): iterable
+    public static function provideCoreLogicData(): iterable
     {
         yield 'Manually approve single item within nested batch' => [
             static function (EasyBatchBundleTestContext $context): void {
@@ -87,7 +87,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
     /**
      * @see testRestoreBatchState
      */
-    public static function providerTestRestoreBatchState(): iterable
+    public static function provideRestoreBatchStateData(): iterable
     {
         yield 'Simple batch update (batch processing)' => [
             static function (
@@ -149,7 +149,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
         ];
     }
 
-    #[DataProvider('providerTestCoreLogic')]
+    #[DataProvider('provideCoreLogicData')]
     public function testCoreLogic(callable $setup, callable $runTest, callable $assert): void
     {
         $context = new EasyBatchBundleTestContext($this->getContainer());
@@ -159,7 +159,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
         \call_user_func($assert, $context);
     }
 
-    #[DataProvider('providerTestRestoreBatchState')]
+    #[DataProvider('provideRestoreBatchStateData')]
     public function testRestoreBatchState(callable $setupFunc, callable $assert, ?string $batchId = null): void
     {
         $container = $this->getContainer();

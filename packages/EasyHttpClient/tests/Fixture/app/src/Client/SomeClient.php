@@ -6,10 +6,10 @@ namespace EonX\EasyHttpClient\Tests\Fixture\App\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class SomeClient
+final readonly class SomeClient
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
+        private HttpClientInterface $httpClient,
     ) {
     }
 

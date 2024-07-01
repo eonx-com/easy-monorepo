@@ -16,7 +16,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'Invalid secret' => [
             Webhook::fromArray([
@@ -108,7 +108,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @phpstan-param class-string<\Throwable>|null $exceptedException
      */
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,

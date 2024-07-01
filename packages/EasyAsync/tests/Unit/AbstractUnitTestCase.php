@@ -3,26 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Unit;
 
-use EonX\EasyAsync\Tests\AbstractTestCase;
-use EonX\EasyAsync\Tests\Stub\KernelStub;
-use Symfony\Component\HttpKernel\KernelInterface;
+use EonX\EasyAsync\Tests\Fixture\App\Kernel\ApplicationKernel;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractUnitTestCase extends AbstractTestCase
+abstract class AbstractUnitTestCase extends KernelTestCase
 {
-    private ?KernelInterface $kernel = null;
+    use ContainerServiceTrait;
 
-    /**
-     * @param string[]|null $configs
-     */
-    protected function getKernel(?array $configs = null): KernelInterface
+    public static function tearDownAfterClass(): void
     {
-        if ($this->kernel !== null) {
-            return $this->kernel;
+        parent::tearDownAfterClass();
+
+        $filesystem = new Filesystem();
+        $varDir = __DIR__ . '/../Fixture/app/var';
+
+        if ($filesystem->exists($varDir)) {
+            $filesystem->remove($varDir);
         }
+    }
 
-        $this->kernel = new KernelStub($configs);
-        $this->kernel->boot();
-
-        return $this->kernel;
+    protected static function getKernelClass(): string
+    {
+        return ApplicationKernel::class;
     }
 }

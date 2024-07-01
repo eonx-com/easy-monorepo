@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Provider;
 
-final class FromIterableErrorReporterProvider implements ErrorReporterProviderInterface
+final readonly class FromIterableErrorReporterProvider implements ErrorReporterProviderInterface
 {
     /**
      * @param iterable<\EonX\EasyErrorHandler\Common\Reporter\ErrorReporterInterface> $reporters
      */
     public function __construct(
-        private readonly iterable $reporters,
+        private iterable $reporters,
     ) {
     }
 

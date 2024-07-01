@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Tests\Unit\Bundle;
 
-use EonX\EasyRequestId\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyRequestId\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyRequestId\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 

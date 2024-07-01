@@ -14,13 +14,13 @@ use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class ProcessBatchForBatchItemMessageHandler
+final readonly class ProcessBatchForBatchItemMessageHandler
 {
     public function __construct(
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchObjectManagerInterface $batchObjectManager,
-        private readonly BatchProcessor $batchProcessor,
-        private readonly BatchRepositoryInterface $batchRepository,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private BatchObjectManagerInterface $batchObjectManager,
+        private BatchProcessor $batchProcessor,
+        private BatchRepositoryInterface $batchRepository,
     ) {
     }
 

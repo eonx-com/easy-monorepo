@@ -13,7 +13,7 @@ final class EnvVarHelperTest extends AbstractUnitTestCase
     /**
      * @see testLoadEnvVars
      */
-    public static function providerTestLoadEnvVars(): iterable
+    public static function provideLoadEnvVarsData(): iterable
     {
         yield 'simple test' => [
             [
@@ -60,7 +60,7 @@ final class EnvVarHelperTest extends AbstractUnitTestCase
     /**
      * @param string[]|null $jsonSecrets
      */
-    #[DataProvider('providerTestLoadEnvVars')]
+    #[DataProvider('provideLoadEnvVarsData')]
     public function testLoadEnvVars(array $secrets, array $expected, ?array $jsonSecrets = null): void
     {
         foreach ($secrets as $name => $value) {

@@ -19,7 +19,7 @@ final class ProviderVoterTest extends AbstractUnitTestCase
     /**
      * @see testVoter
      */
-    public static function providerTestVoter(): iterable
+    public static function provideVoterData(): iterable
     {
         yield 'Abstain because subject not provider restricted' => [
             new SecurityContext(),
@@ -43,7 +43,7 @@ final class ProviderVoterTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestVoter')]
+    #[DataProvider('provideVoterData')]
     public function testVoter(SecurityContextInterface $securityContext, mixed $subject, int $expectedVote): void
     {
         $voter = new ProviderVoter(new SecurityContextResolverStub($securityContext));

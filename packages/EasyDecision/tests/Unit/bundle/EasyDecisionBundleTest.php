@@ -12,7 +12,7 @@ use EonX\EasyDecision\Decision\ValueDecision;
 use EonX\EasyDecision\Exception\InvalidMappingException;
 use EonX\EasyDecision\Exception\UnableToMakeDecisionException;
 use EonX\EasyDecision\Factory\DecisionFactoryInterface;
-use EonX\EasyDecision\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyDecision\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyDecision\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;

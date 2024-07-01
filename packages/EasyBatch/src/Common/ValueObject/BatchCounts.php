@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\ValueObject;
 
-final class BatchCounts
+final readonly class BatchCounts
 {
     public function __construct(
-        private readonly int $countCancelled,
-        private readonly int $countFailed,
-        private readonly int $countProcessed,
-        private readonly int $countSucceeded,
-        private readonly int $countTotal,
+        private int $countCancelled,
+        private int $countFailed,
+        private int $countProcessed,
+        private int $countSucceeded,
+        private int $countTotal,
     ) {
     }
 

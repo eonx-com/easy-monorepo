@@ -13,7 +13,7 @@ final class IterableLengthAwarePaginatorTest extends AbstractUnitTestCase
     /**
      * @see testUrls
      */
-    public static function providerTestUrls(): iterable
+    public static function provideUrlsData(): iterable
     {
         yield 'Prev: no, Next: yes' => [
             10,
@@ -63,7 +63,7 @@ final class IterableLengthAwarePaginatorTest extends AbstractUnitTestCase
         self::assertFalse($paginator->hasNextPage());
     }
 
-    #[DataProvider('providerTestUrls')]
+    #[DataProvider('provideUrlsData')]
     public function testUrls(
         int $total,
         Pagination $pagination,

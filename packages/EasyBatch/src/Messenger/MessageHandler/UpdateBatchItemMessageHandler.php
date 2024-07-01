@@ -13,11 +13,11 @@ use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class UpdateBatchItemMessageHandler
+final readonly class UpdateBatchItemMessageHandler
 {
     public function __construct(
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
     ) {
     }
 

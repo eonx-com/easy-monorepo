@@ -14,7 +14,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'Cannot rerun exception' => [
             Webhook::fromArray([
@@ -46,7 +46,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @phpstan-param class-string<\Throwable>|null $exceptedException
      */
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
         ?string $expectedStatus = null,

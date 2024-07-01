@@ -13,11 +13,11 @@ use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\ValueObject\Pagination;
 
-final class BatchItemIterator implements BatchItemIteratorInterface
+final readonly class BatchItemIterator implements BatchItemIteratorInterface
 {
     public function __construct(
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly int $batchItemsPerPage,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private int $batchItemsPerPage,
     ) {
     }
 

@@ -28,7 +28,7 @@ return RectorConfig::configure()
     ])
     ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
     ->withImportNames(importDocBlockNames: false)
-    ->withPhpSets(php81: true)
+    ->withPhpSets(php82: true)
     ->withCache(__DIR__ . '/var/cache/rector', FileCacheStorage::class)
     ->withBootstrapFiles([
         __DIR__ . '/../vendor/autoload.php',
@@ -54,12 +54,12 @@ return RectorConfig::configure()
         ],
         FinalizePublicClassConstantRector::class,
         FirstClassCallableRector::class => [
-            'packages/EasyBatch/tests/Stub/HttpKernel/KernelStub.php',
-            'packages/EasyBugsnag/tests/Stub/HttpKernel/KernelStub.php',
+            'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
+            'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyDoctrine/bundle/config/services.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
-            'packages/EasyPagination/tests/Stub/HttpKernel/KernelStub.php',
+            'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
         JsonThrowOnErrorRector::class,
         ReadOnlyPropertyRector::class,

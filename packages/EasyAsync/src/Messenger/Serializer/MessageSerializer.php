@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Throwable;
 
-final class MessageSerializer implements SerializerInterface
+final readonly class MessageSerializer implements SerializerInterface
 {
     private const HEADER_RETRY = 'retry';
 
@@ -23,8 +23,8 @@ final class MessageSerializer implements SerializerInterface
     private const KEY_HEADERS = 'headers';
 
     public function __construct(
-        private readonly MessageBodyDecoderInterface $bodyDecoder,
-        private readonly MessageObjectFactoryInterface $messageFactory,
+        private MessageBodyDecoderInterface $bodyDecoder,
+        private MessageObjectFactoryInterface $messageFactory,
     ) {
     }
 

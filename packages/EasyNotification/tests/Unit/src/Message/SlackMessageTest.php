@@ -23,7 +23,7 @@ final class SlackMessageTest extends AbstractUnitTestCase
     /**
      * @see testGetters
      */
-    public static function providerTestGetters(): iterable
+    public static function provideGettersData(): iterable
     {
         yield 'Constructor' => [
             static fn (): SlackMessage => new SlackMessage('channel', 'text', [
@@ -55,7 +55,7 @@ final class SlackMessageTest extends AbstractUnitTestCase
     /**
      * @throws \Nette\Utils\JsonException
      */
-    #[DataProvider('providerTestGetters')]
+    #[DataProvider('provideGettersData')]
     public function testGetters(callable $getMessage, array $body): void
     {
         // Trick for coverage

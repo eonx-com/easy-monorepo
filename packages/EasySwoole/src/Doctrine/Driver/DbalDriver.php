@@ -20,18 +20,18 @@ use Psr\Log\LoggerInterface;
 use SensitiveParameter;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class DbalDriver implements Driver
+final readonly class DbalDriver implements Driver
 {
     private const POOL_NAME_PATTERN = 'coroutine_pdo_pool_%s';
 
     public function __construct(
-        private readonly Driver $decorated,
-        private readonly int $defaultPoolSize,
-        private readonly bool $defaultHeartbeat,
-        private readonly float $defaultMaxIdleTime,
-        private readonly RequestStack $requestStack,
-        private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
-        private readonly ?LoggerInterface $logger = null,
+        private Driver $decorated,
+        private int $defaultPoolSize,
+        private bool $defaultHeartbeat,
+        private float $defaultMaxIdleTime,
+        private RequestStack $requestStack,
+        private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
+        private ?LoggerInterface $logger = null,
     ) {
     }
 

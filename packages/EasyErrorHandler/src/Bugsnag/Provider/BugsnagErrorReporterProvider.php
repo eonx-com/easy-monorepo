@@ -9,13 +9,13 @@ use EonX\EasyErrorHandler\Bugsnag\Resolver\BugsnagIgnoreExceptionsResolverInterf
 use EonX\EasyErrorHandler\Common\Provider\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
 
-final class BugsnagErrorReporterProvider implements ErrorReporterProviderInterface
+final readonly class BugsnagErrorReporterProvider implements ErrorReporterProviderInterface
 {
     public function __construct(
-        private readonly Client $bugsnag,
-        private readonly BugsnagIgnoreExceptionsResolverInterface $bugsnagIgnoreExceptionsResolver,
-        private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        private readonly ?int $threshold = null,
+        private Client $bugsnag,
+        private BugsnagIgnoreExceptionsResolverInterface $bugsnagIgnoreExceptionsResolver,
+        private ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        private ?int $threshold = null,
     ) {
     }
 

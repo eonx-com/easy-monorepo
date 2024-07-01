@@ -12,7 +12,7 @@ final class OptionHelperTest extends AbstractUnitTestCase
     /**
      * @see testGetArray
      */
-    public static function providerTestGetArray(): iterable
+    public static function provideGetArrayData(): iterable
     {
         yield 'Empty values preserved' => [
             [
@@ -32,7 +32,7 @@ final class OptionHelperTest extends AbstractUnitTestCase
     /**
      * @see testGetBoolean
      */
-    public static function providerTestGetBoolean(): iterable
+    public static function provideGetBooleanData(): iterable
     {
         yield 'True with boolean' => [
             ['test' => true],
@@ -122,7 +122,7 @@ final class OptionHelperTest extends AbstractUnitTestCase
     /**
      * @see testIsset
      */
-    public static function providerTestIsset(): iterable
+    public static function provideIssetData(): iterable
     {
         yield 'Simple isset true' => [
             ['test' => 'test'],
@@ -137,7 +137,7 @@ final class OptionHelperTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestGetArray')]
+    #[DataProvider('provideGetArrayData')]
     public function testGetArray(array $options, string $key, array $expected): void
     {
         OptionHelper::setOptions($options);
@@ -145,7 +145,7 @@ final class OptionHelperTest extends AbstractUnitTestCase
         self::assertSame($expected, OptionHelper::getArray($key));
     }
 
-    #[DataProvider('providerTestGetBoolean')]
+    #[DataProvider('provideGetBooleanData')]
     public function testGetBoolean(array $options, string $key, bool $expected): void
     {
         OptionHelper::setOptions($options);
@@ -153,7 +153,7 @@ final class OptionHelperTest extends AbstractUnitTestCase
         self::assertSame($expected, OptionHelper::getBoolean($key));
     }
 
-    #[DataProvider('providerTestIsset')]
+    #[DataProvider('provideIssetData')]
     public function testIsset(array $options, string $issetKey, bool $expected): void
     {
         OptionHelper::setOptions($options);

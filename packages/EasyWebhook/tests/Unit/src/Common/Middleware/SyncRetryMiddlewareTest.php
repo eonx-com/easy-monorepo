@@ -22,14 +22,14 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne
      */
-    public static function providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt(): iterable
+    public static function provideDoNotRetryIfAsyncEnabledOrMaxAttemptData(): iterable
     {
         yield 'async enabled' => [true, 3];
 
         yield 'max attempt is one' => [false, 1];
     }
 
-    #[DataProvider('providerTestDoNotRetryIfAsyncEnabledOrMaxAttempt')]
+    #[DataProvider('provideDoNotRetryIfAsyncEnabledOrMaxAttemptData')]
     public function testDoNotRetryIfAsyncEnabledOrMaxAttemptIsOne(bool $asyncEnabled, int $maxAttempt): void
     {
         $webhook = Webhook::create('https://eonx.com')->maxAttempt($maxAttempt);

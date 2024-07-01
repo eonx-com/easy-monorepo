@@ -21,14 +21,14 @@ use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Throwable;
 
-final class BatchItemExceptionHandler
+final readonly class BatchItemExceptionHandler
 {
     private const MESSENGER_TRANSPORT_PATTERN = 'messenger.transport.%s';
 
     public function __construct(
-        private readonly BatchItemTransformer $batchItemTransformer,
-        private readonly ContainerInterface $container,
-        private readonly string $emergencyTransportName = 'async',
+        private BatchItemTransformer $batchItemTransformer,
+        private ContainerInterface $container,
+        private string $emergencyTransportName = 'async',
     ) {
     }
 

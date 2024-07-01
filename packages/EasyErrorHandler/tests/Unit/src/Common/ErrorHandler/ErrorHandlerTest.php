@@ -24,7 +24,7 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
     /**
      * @see testRepeatedExceptionReport
      */
-    public static function providerTestRepeatedExceptionReport(): iterable
+    public static function provideRepeatedExceptionReportData(): iterable
     {
         yield 'Skip reported exceptions' => [true, 1];
         yield 'Report all exceptions' => [false, 2];
@@ -33,7 +33,7 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
     /**
      * @see testReport
      */
-    public static function providerTestReport(): iterable
+    public static function provideReportData(): iterable
     {
         yield 'Simple report' => [
             'throwable' => new Exception('message'),
@@ -104,7 +104,7 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestRepeatedExceptionReport')]
+    #[DataProvider('provideRepeatedExceptionReportData')]
     public function testRepeatedExceptionReport(bool $skipReportedExceptions, int $expectedReportedErrorsCount): void
     {
         $throwable = new Exception('message');
@@ -125,7 +125,7 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
         self::assertCount($expectedReportedErrorsCount, $reporter->getReportedErrors());
     }
 
-    #[DataProvider('providerTestReport')]
+    #[DataProvider('provideReportData')]
     public function testReport(
         Throwable $throwable,
         callable $assertions,

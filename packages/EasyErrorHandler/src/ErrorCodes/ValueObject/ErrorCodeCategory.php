@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\ErrorCodes\ValueObject;
 
-final class ErrorCodeCategory
+final readonly class ErrorCodeCategory
 {
     public function __construct(
-        private readonly string $categoryName,
-        private readonly int $nextErrorCodeToUse,
+        private string $categoryName,
+        private int $nextErrorCodeToUse,
     ) {
     }
 

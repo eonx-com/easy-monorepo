@@ -3,44 +3,36 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Unit\Doctrine\Closer;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
-use EonX\EasyAsync\Tests\Stub\EntityManagerForSanityStub;
-use EonX\EasyAsync\Tests\Stub\ManagerRegistryStub;
-use EonX\EasyAsync\Tests\Unit\Doctrine\AbstractStoreTestCase;
-use Mockery\LegacyMockInterface;
-use Psr\Log\LoggerInterface;
+use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyTest\Common\Trait\LoggerTrait;
 
-final class ManagersCloserTest extends AbstractStoreTestCase
+final class ManagersCloserTest extends AbstractUnitTestCase
 {
+    use LoggerTrait;
+
     public function testCloseNotEntityManagerInstance(): void
     {
-        $registry = new ManagerRegistryStub([
-            'default' => new EntityManagerForSanityStub(true),
-        ]);
+        self::bootKernel(['environment' => 'not_supported_entity_manager']);
+        $sut = self::getService(ManagersCloser::class);
 
-        /** @var \Psr\Log\LoggerInterface $logger */
-        $logger = $this->mock(LoggerInterface::class, function (LegacyMockInterface $logger): void {
-            $logger->shouldNotReceive('warning');
-        });
+        $sut->close();
 
-        (new ManagersCloser($registry, $logger))->close();
+        self::assertLoggerHasWarning(
+            'Type "EonX\EasyAsync\Tests\Fixture\App\ObjectManager\NotSupportedObjectManager"'
+            . ' for manager "not_supported" not supported by manager closer'
+        );
     }
 
     public function testCloseSuccessful(): void
     {
-        /** @var \Doctrine\Persistence\ObjectManager $notEmInstance */
-        $notEmInstance = $this->mock(ObjectManager::class);
-        $registry = new ManagerRegistryStub([
-            'default' => $notEmInstance,
-        ]);
+        $connection = self::getService(EntityManagerInterface::class)->getConnection();
+        $connection->connect();
+        $sut = self::getService(ManagersCloser::class);
 
-        /** @var \Psr\Log\LoggerInterface $logger */
-        $logger = $this->mock(LoggerInterface::class, function (LegacyMockInterface $logger): void {
-            $logger->shouldReceive('warning')
-                ->once();
-        });
+        $sut->close();
 
-        (new ManagersCloser($registry, $logger))->close();
+        self::assertFalse($connection->isConnected());
     }
 }

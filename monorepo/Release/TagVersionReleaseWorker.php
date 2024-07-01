@@ -10,12 +10,12 @@ use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterfa
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Throwable;
 
-final class TagVersionReleaseWorker implements ReleaseWorkerInterface
+final readonly class TagVersionReleaseWorker implements ReleaseWorkerInterface
 {
     public function __construct(
-        private readonly GitManager $gitManager,
-        private readonly ClientInterface $httpClient,
-        private readonly ProcessRunner $processRunner,
+        private GitManager $gitManager,
+        private ClientInterface $httpClient,
+        private ProcessRunner $processRunner,
     ) {
     }
 

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Tests\Unit\Bundle;
 
-use EonX\EasyBugsnag\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyBugsnag\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 

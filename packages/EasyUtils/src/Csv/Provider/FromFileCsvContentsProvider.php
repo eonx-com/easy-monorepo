@@ -5,10 +5,10 @@ namespace EonX\EasyUtils\Csv\Provider;
 
 use EonX\EasyUtils\Csv\Exception\InvalidCsvFilenameException;
 
-final class FromFileCsvContentsProvider implements CsvContentsProviderInterface
+final readonly class FromFileCsvContentsProvider implements CsvContentsProviderInterface
 {
     public function __construct(
-        private readonly string $filename,
+        private string $filename,
     ) {
     }
 

@@ -9,10 +9,10 @@ use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Messenger\Stamp\BatchItemStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class AsyncDispatcher implements AsyncDispatcherInterface
+final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
-        private readonly MessageBusInterface $bus,
+        private MessageBusInterface $bus,
     ) {
     }
 

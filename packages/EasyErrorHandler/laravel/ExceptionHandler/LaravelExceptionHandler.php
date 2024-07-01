@@ -15,11 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-final class LaravelExceptionHandler implements IlluminateExceptionHandlerInterface
+final readonly class LaravelExceptionHandler implements IlluminateExceptionHandlerInterface
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
-        private readonly TranslatorInterface $translator,
+        private ErrorHandlerInterface $errorHandler,
+        private TranslatorInterface $translator,
     ) {
     }
 

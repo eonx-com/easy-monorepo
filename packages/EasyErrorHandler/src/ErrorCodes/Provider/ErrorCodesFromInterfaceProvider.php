@@ -8,7 +8,7 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 
-final class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterface
+final readonly class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterface
 {
     private const ERROR_CODE_NAME_PREFIX = 'ERROR_';
 
@@ -16,7 +16,7 @@ final class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterfa
      * @param class-string|null $errorCodesInterface
      */
     public function __construct(
-        private readonly ?string $errorCodesInterface = null,
+        private ?string $errorCodesInterface = null,
     ) {
     }
 
