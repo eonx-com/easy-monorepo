@@ -15,7 +15,7 @@ final class TemplatingEventRendererTest extends AbstractUnitTestCase
     /**
      * @see testRenderEvent
      */
-    public static function providerTestRenderEvent(): iterable
+    public static function provideRenderEventData(): iterable
     {
         yield 'No block for event' => [
             [
@@ -61,7 +61,7 @@ final class TemplatingEventRendererTest extends AbstractUnitTestCase
      * @param \EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface[] $providers
      * @param \EonX\EasyTemplatingBlock\Common\Renderer\TemplatingBlockRendererInterface[]|null $renderers
      */
-    #[DataProvider('providerTestRenderEvent')]
+    #[DataProvider('provideRenderEventData')]
     public function testRenderEvent(
         array $events,
         ?array $context,

@@ -18,7 +18,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'No event for pending' => [];
 
@@ -44,7 +44,7 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(?WebhookInterface $webhook = null, ?string $eventClass = null): void
     {
         $dispatcher = new EventDispatcherStub();

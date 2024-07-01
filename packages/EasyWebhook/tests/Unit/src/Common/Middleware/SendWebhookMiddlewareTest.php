@@ -20,7 +20,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'empty url exception' => [Webhook::fromArray([]), null, null, InvalidWebhookUrlException::class];
 
@@ -55,7 +55,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @phpstan-param class-string<\Throwable>|null $expectedException
      */
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,

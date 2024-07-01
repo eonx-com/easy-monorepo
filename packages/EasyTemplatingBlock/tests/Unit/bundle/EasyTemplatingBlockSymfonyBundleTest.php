@@ -11,7 +11,7 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
     /**
      * @see testRenderEvent
      */
-    public static function providerTestRenderEvent(): iterable
+    public static function provideRenderEventData(): iterable
     {
         yield 'No block provider for event' => [
             [
@@ -46,7 +46,7 @@ final class EasyTemplatingBlockSymfonyBundleTest extends AbstractSymfonyTestCase
     /**
      * @param string[]|null $configs
      */
-    #[DataProvider('providerTestRenderEvent')]
+    #[DataProvider('provideRenderEventData')]
     public function testRenderEvent(array $events, ?array $context, ?array $configs = null): void
     {
         $kernel = $this->getKernel($configs);

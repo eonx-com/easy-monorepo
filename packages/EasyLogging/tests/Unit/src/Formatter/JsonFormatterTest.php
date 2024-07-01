@@ -15,7 +15,7 @@ final class JsonFormatterTest extends AbstractUnitTestCase
     /**
      * @see testCreateLogFormat
      */
-    public static function providerTestCreateLogFormat(): iterable
+    public static function provideCreateLogFormatData(): iterable
     {
         yield 'DateTime format' => [
             static function (Logger $logger): void {
@@ -39,7 +39,7 @@ final class JsonFormatterTest extends AbstractUnitTestCase
     /**
      * @throws \Exception
      */
-    #[DataProvider('providerTestCreateLogFormat')]
+    #[DataProvider('provideCreateLogFormatData')]
     public function testCreateLogFormat(callable $log, callable $assert): void
     {
         $stream = \fopen('php://memory', 'rw+');

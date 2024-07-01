@@ -16,7 +16,7 @@ final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'body null' => [
             Webhook::fromArray([
@@ -94,7 +94,7 @@ final class BodyFormatterMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
         callable $test,

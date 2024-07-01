@@ -37,7 +37,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
     /**
      * @see testSend
      */
-    public static function providerTestSend(): iterable
+    public static function provideSendData(): iterable
     {
         yield 'Simple URL' => [
             (new Webhook())->url('https://eonx.com'),
@@ -158,7 +158,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
     /**
      * @param iterable<\EonX\EasyWebhook\Common\Middleware\MiddlewareInterface>|null $middleware
      */
-    #[DataProvider('providerTestSend')]
+    #[DataProvider('provideSendData')]
     public function testSend(
         WebhookInterface $webhook,
         string $method,

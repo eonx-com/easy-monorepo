@@ -18,7 +18,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'enabled = false so just pass on the webhook' => [
             Webhook::fromArray([]),
@@ -49,7 +49,7 @@ final class AsyncMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @phpstan-param class-string<\Throwable> $expectedException
      */
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
         ?callable $test = null,

@@ -15,7 +15,7 @@ final class SessionTrackerTest extends AbstractUnitTestCase
     /**
      * @see testExclude
      */
-    public static function providerTestExclude(): iterable
+    public static function provideExcludeData(): iterable
     {
         yield 'Track' => [
             true,
@@ -38,7 +38,7 @@ final class SessionTrackerTest extends AbstractUnitTestCase
     /**
      * @param string[]|null $exclude
      */
-    #[DataProvider('providerTestExclude')]
+    #[DataProvider('provideExcludeData')]
     public function testExclude(
         bool $trackSession,
         string $uri,

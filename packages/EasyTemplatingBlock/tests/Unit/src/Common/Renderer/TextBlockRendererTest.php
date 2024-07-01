@@ -15,7 +15,7 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
     /**
      * @see testRenderBlock
      */
-    public static function providerTestRenderBlock(): iterable
+    public static function provideRenderBlockData(): iterable
     {
         yield 'Simple text' => [
             (new TextBlock('my-text-block'))->setContents('my simple contents'),
@@ -26,7 +26,7 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
     /**
      * @see testSupports
      */
-    public static function providerTestSupports(): iterable
+    public static function provideSupportsData(): iterable
     {
         yield 'Supported' => [
             new TextBlock('my-text-block'),
@@ -39,7 +39,7 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestRenderBlock')]
+    #[DataProvider('provideRenderBlockData')]
     public function testRenderBlock(TextBlock $block, string $expected): void
     {
         $renderer = new TextBlockRenderer();
@@ -47,7 +47,7 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
         self::assertEquals($expected, $renderer->renderBlock($block));
     }
 
-    #[DataProvider('providerTestSupports')]
+    #[DataProvider('provideSupportsData')]
     public function testSupports(TemplatingBlockInterface $block, bool $expected): void
     {
         $renderer = new TextBlockRenderer();

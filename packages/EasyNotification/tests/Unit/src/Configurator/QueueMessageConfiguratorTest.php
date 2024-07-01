@@ -28,7 +28,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
     /**
      * @see testConfigure
      */
-    public static function providerTestConfigure(): iterable
+    public static function provideConfigureData(): iterable
     {
         yield 'Provider Header' => [
             new ProviderHeaderQueueMessageConfigurator(),
@@ -134,7 +134,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestConfigure')]
+    #[DataProvider('provideConfigureData')]
     public function testConfigure(
         QueueMessageConfiguratorInterface $configurator,
         ConfigInterface $config,

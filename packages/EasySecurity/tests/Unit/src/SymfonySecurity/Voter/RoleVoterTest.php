@@ -19,7 +19,7 @@ final class RoleVoterTest extends AbstractUnitTestCase
     /**
      * @see testVoter
      */
-    public static function providerTestVoter(): iterable
+    public static function provideVoterData(): iterable
     {
         yield 'Abstain because role not in matrix' => [
             new AuthorizationMatrixProvider([], []),
@@ -48,7 +48,7 @@ final class RoleVoterTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestVoter')]
+    #[DataProvider('provideVoterData')]
     public function testVoter(
         AuthorizationMatrixProviderInterface $authorizationMatrix,
         SecurityContextInterface $securityContext,

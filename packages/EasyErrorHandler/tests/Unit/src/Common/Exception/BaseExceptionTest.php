@@ -13,7 +13,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
     /**
      * @see testLogLevelConvenientMethods
      */
-    public static function providerTestLogLevelConvenientMethods(): iterable
+    public static function provideLogLevelConvenientMethodsData(): iterable
     {
         yield 'critical' => [
             'method' => 'setCriticalLogLevel',
@@ -111,7 +111,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
         self::assertSame($userMessageParams, $result);
     }
 
-    #[DataProvider('providerTestLogLevelConvenientMethods')]
+    #[DataProvider('provideLogLevelConvenientMethodsData')]
     public function testLogLevelConvenientMethods(string $method, int $expectedLogLevel): void
     {
         $exception = new BaseExceptionStub();

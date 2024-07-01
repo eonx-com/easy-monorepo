@@ -17,7 +17,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
     /**
      * @see testFromFile
      */
-    public static function providerTestFromFile(): iterable
+    public static function provideFromFileData(): iterable
     {
         yield 'Simple file' => [
             __DIR__ . '/../../../../Fixture/Csv/simple_file.csv',
@@ -110,7 +110,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
     /**
      * @see testFromFileForException
      */
-    public static function providerTestFromFileForException(): iterable
+    public static function provideFromFileForExceptionData(): iterable
     {
         yield 'Value for required header missing' => [
             __DIR__ . '/../../../../Fixture/Csv/missing_value_for_required_header.csv',
@@ -123,7 +123,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
      * @throws \EonX\EasyUtils\Csv\Exception\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exception\MissingValueForRequiredHeadersException
      */
-    #[DataProvider('providerTestFromFile')]
+    #[DataProvider('provideFromFileData')]
     public function testFromFile(string $filename, CsvParserConfigInterface $config, array $expected): void
     {
         $parser = new CsvWithHeadersParser();
@@ -139,7 +139,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
      * @throws \EonX\EasyUtils\Csv\Exception\MissingRequiredHeadersException
      * @throws \EonX\EasyUtils\Csv\Exception\MissingValueForRequiredHeadersException
      */
-    #[DataProvider('providerTestFromFileForException')]
+    #[DataProvider('provideFromFileForExceptionData')]
     public function testFromFileForException(
         string $filename,
         CsvParserConfigInterface $config,

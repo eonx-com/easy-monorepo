@@ -18,7 +18,7 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
     /**
      * @see testPaginationResolver
      */
-    public static function providerTestPaginationResolver(): iterable
+    public static function providePaginationResolverData(): iterable
     {
         yield 'Page_PerPage_Defaults' => [
             __DIR__ . '/../../Fixture/config/page_perPage_1_15.php',
@@ -38,7 +38,7 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestPaginationResolver')]
+    #[DataProvider('providePaginationResolverData')]
     public function testPaginationResolver(string $config, Request $request, int $page, int $perPage): void
     {
         $kernel = new KernelStub($config);

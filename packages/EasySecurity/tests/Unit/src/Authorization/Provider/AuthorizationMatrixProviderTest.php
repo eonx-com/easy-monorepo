@@ -17,7 +17,7 @@ final class AuthorizationMatrixProviderTest extends AbstractUnitTestCase
     /**
      * @see testMatrix
      */
-    public static function providerTestMatrix(): iterable
+    public static function provideMatrixData(): iterable
     {
         yield 'Empty roles and permissions' => [
             static function (AuthorizationMatrixProvider $matrix): void {
@@ -63,7 +63,7 @@ final class AuthorizationMatrixProviderTest extends AbstractUnitTestCase
      * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]|null $roles
      * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions
      */
-    #[DataProvider('providerTestMatrix')]
+    #[DataProvider('provideMatrixData')]
     public function testMatrix(callable $test, ?array $roles = null, ?array $permissions = null): void
     {
         $factory = new AuthorizationMatrixFactory(

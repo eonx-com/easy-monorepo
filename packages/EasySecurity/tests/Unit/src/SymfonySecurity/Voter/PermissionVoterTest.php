@@ -19,7 +19,7 @@ final class PermissionVoterTest extends AbstractUnitTestCase
     /**
      * @see testVoter
      */
-    public static function providerTestVoter(): iterable
+    public static function provideVoterData(): iterable
     {
         yield 'Abstain because permission not in matrix' => [
             new AuthorizationMatrixProvider([], []),
@@ -46,7 +46,7 @@ final class PermissionVoterTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestVoter')]
+    #[DataProvider('provideVoterData')]
     public function testVoter(
         AuthorizationMatrixProviderInterface $authorizationMatrix,
         SecurityContextInterface $securityContext,
