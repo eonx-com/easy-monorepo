@@ -38,7 +38,7 @@ $console = $loggerFactory->create('console'); // Create logger for console chann
 
 ### Usage in Framework
 
-The different bridge provided by this package will by default register the logger for your default channel in the
+The different integrations provided by this package will by default register the logger for your default channel in the
 service container under the following service ids:
 
 - `Psr\Log\LoggerInterface`

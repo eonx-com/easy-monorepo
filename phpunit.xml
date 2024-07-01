@@ -13,10 +13,15 @@
 
     <source>
         <include>
+            <directory>packages/*/bundle</directory>
+            <directory>packages/*/laravel</directory>
             <directory>packages/*/src</directory>
         </include>
         <exclude>
-            <directory>packages/*/src/Bridge/Laravel/config</directory>
+            <directory>packages/*/bundle/Enum</directory>
+            <directory>packages/*/bundle/config</directory>
+            <directory>packages/*/bundle/templates</directory>
+            <directory>packages/*/bundle/translations</directory>
         </exclude>
     </source>
 

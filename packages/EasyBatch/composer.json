@@ -24,8 +24,7 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyBatch\\": "src",
-            "EonX\\EasyBatch\\Bundle\\": "bundle",
-            "EonX\\EasyBatch\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyBatch\\Bundle\\": "bundle"
         }
     },
     "autoload-dev": {

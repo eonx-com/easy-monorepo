@@ -17,22 +17,22 @@ return [
     ],
 
     /**
-     * Enable bridge for eonx-com/easy-error-handler.
+     * Enable integration with eonx-com/easy-error-handler.
      */
     'easy_error_handler' => true,
 
     /**
-     * Enable bridge for eonx-com/easy-logging.
+     * Enable integration with eonx-com/easy-logging.
      */
     'easy_logging' => true,
 
     /**
-     * Enable bridge for eonx-com/easy-http-client.
+     * Enable integration with eonx-com/easy-http-client.
      */
     'easy_http_client' => true,
 
     /**
-     * Enable bridge for eonx-com/easy-webhook.
+     * Enable integration with eonx-com/easy-webhook.
      */
     'easy_webhook' => true,
 ];

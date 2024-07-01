@@ -54,7 +54,6 @@ return RectorConfig::configure()
         ],
         FinalizePublicClassConstantRector::class,
         FirstClassCallableRector::class => [
-            'packages/EasyActivity/tests/Bridge/Symfony/Stubs/KernelStub.php',
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyDoctrine/bundle/config/services.php',

@@ -90,7 +90,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
 
             OptionHelper::setOptions(SslCertificateHelper::loadSslCertificates(OptionHelper::getOptions()));
 
-            // Bridge for eonx-com/easy-bugsnag to resolve request in CLI
+            // Integration with eonx-com/easy-bugsnag to resolve request in CLI
             if (\enum_exists(EasyBugsnagServerParam::class)) {
                 $_SERVER[EasyBugsnagServerParam::ResolveRequestInCli->value] = true;
             }

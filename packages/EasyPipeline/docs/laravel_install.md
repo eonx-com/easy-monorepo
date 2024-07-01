@@ -39,7 +39,7 @@ automatically. Make sure to register it:
 
 To allow this package to work with your own pipelines you must let it know about your pipelines and
 middleware providers structure. To do so you will use the configuration file
-`src/Bridge/Laravel/config/easy-pipeline.php`. Copy/Paste this file into your `config` folder and then
+`laravel/config/easy-pipeline.php`. Copy/Paste this file into your `config` folder and then
 update it with your own pipelines list.
 
 ```php
