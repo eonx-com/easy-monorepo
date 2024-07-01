@@ -29,5 +29,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Encryptor
     $services
         ->set(EncryptorInterface::class, Encryptor::class)
-        ->arg('$defaultKeyName', '%' . ConfigParam::DefaultKeyName->value . '%');
+        ->arg('$defaultKeyName', param(ConfigParam::DefaultKeyName->value));
 };

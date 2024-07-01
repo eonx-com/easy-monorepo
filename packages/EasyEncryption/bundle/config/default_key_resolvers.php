@@ -15,7 +15,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ConfigServiceId::DefaultKeyResolver->value, SimpleEncryptionKeyResolver::class)
-        ->arg('$keyName', '%' . ConfigParam::DefaultKeyName->value . '%')
-        ->arg('$encryptionKey', '%' . ConfigParam::DefaultEncryptionKey->value . '%')
-        ->arg('$salt', '%' . ConfigParam::DefaultSalt->value . '%');
+        ->arg('$keyName', param(ConfigParam::DefaultKeyName->value))
+        ->arg('$encryptionKey', param(ConfigParam::DefaultEncryptionKey->value))
+        ->arg('$salt', param(ConfigParam::DefaultSalt->value));
 };

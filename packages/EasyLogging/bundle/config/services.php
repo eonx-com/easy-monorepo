@@ -16,9 +16,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(LoggerFactoryInterface::class, LoggerFactory::class)
-        ->arg('$defaultChannel', '%' . ConfigParam::DefaultChannel->value . '%')
-        ->arg('$loggerClass', '%' . ConfigParam::LoggerClass->value . '%')
-        ->arg('$lazyLoggers', '%' . ConfigParam::LazyLoggers->value . '%')
+        ->arg('$defaultChannel', param(ConfigParam::DefaultChannel->value))
+        ->arg('$loggerClass', param(ConfigParam::LoggerClass->value))
+        ->arg('$lazyLoggers', param(ConfigParam::LazyLoggers->value))
         ->call('setHandlerConfigProviders', [tagged_iterator(ConfigTag::HandlerConfigProvider->value)])
         ->call('setLoggerConfigurators', [tagged_iterator(ConfigTag::LoggerConfigurator->value)])
         ->call(
@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         );
 
     $services
-        ->set('easy_logging.logger', '%' . ConfigParam::LoggerClass->value . '%')
+        ->set('easy_logging.logger', (string)param(ConfigParam::LoggerClass->value))
         ->factory([service(LoggerFactoryInterface::class), 'create'])
-        ->args(['%' . ConfigParam::DefaultChannel->value . '%']);
+        ->args([param(ConfigParam::DefaultChannel->value)]);
 };
