@@ -35,15 +35,17 @@ final class Schedule implements ScheduleInterface
      */
     public function command(string $command, ?array $parameters = null): EventInterface
     {
-        if (\is_a($command, Command::class, true)) {
-            $command = $command::getDefaultName() ?? '';
+        $commandName = $command;
 
-            if ($command === '') {
-                throw new UnexpectedValueException('Could not determine default name for command.');
-            }
+        if (\is_a($command, Command::class, true)) {
+            $commandName = $command::getDefaultName() ?? '';
         }
 
-        $event = new Event($command, $parameters);
+        if ($commandName === '') {
+            throw new UnexpectedValueException('Command name cannot be empty.');
+        }
+
+        $event = new Event($commandName, $parameters);
         $this->events[] = $event;
 
         return $event;
