@@ -13,7 +13,7 @@ final class HashedApiKeyDriverTest extends AbstractUnitTestCase
     /**
      * @see testDriver
      */
-    public static function providerTestDriver(): iterable
+    public static function provideDriverData(): iterable
     {
         yield 'Int id' => [1, 'secret'];
 
@@ -22,7 +22,7 @@ final class HashedApiKeyDriverTest extends AbstractUnitTestCase
         yield 'Custom version' => ['id', 'secret', 'my-version'];
     }
 
-    #[DataProvider('providerTestDriver')]
+    #[DataProvider('provideDriverData')]
     public function testDriver(int|string $id, string $secret, ?string $version = null): void
     {
         $driver = new HashedApiKeyDriver();

@@ -19,7 +19,7 @@ final class DecisionsTest extends AbstractUnitTestCase
     /**
      * @see testDecisions
      */
-    public static function providerTestDecisions(): iterable
+    public static function provideDecisionsData(): iterable
     {
         yield 'No rules' => [
             new ValueDecision(),
@@ -122,7 +122,7 @@ final class DecisionsTest extends AbstractUnitTestCase
     /**
      * @param \EonX\EasyDecision\Rule\RuleInterface[] $rules
      */
-    #[DataProvider('providerTestDecisions')]
+    #[DataProvider('provideDecisionsData')]
     public function testDecisions(
         DecisionInterface $decision,
         array $rules,

@@ -19,13 +19,13 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
     /**
      * @see testEncryptedBatchItem
      */
-    public static function providerTestEncryptedBatchItem(): iterable
+    public static function provideEncryptedBatchItemData(): iterable
     {
         yield 'Encrypted' => [true];
         yield 'Not Encrypted' => [false];
     }
 
-    #[DataProvider('providerTestEncryptedBatchItem')]
+    #[DataProvider('provideEncryptedBatchItemData')]
     public function testEncryptedBatchItem(bool $encrypted): void
     {
         $message = new stdClass();

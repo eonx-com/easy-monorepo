@@ -15,7 +15,7 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
     /**
      * @see testDecoderProvider
      */
-    public static function providerTestDecoderProvider(): iterable
+    public static function provideDecoderProviderData(): iterable
     {
         yield 'Null firewall' => [null];
 
@@ -38,7 +38,7 @@ final class AbstractFirewallAwareDecoderProviderTest extends AbstractSymfonyTest
      * @param string[]|null $configs
      * @param string[]|null $firewallMap
      */
-    #[DataProvider('providerTestDecoderProvider')]
+    #[DataProvider('provideDecoderProviderData')]
     public function testDecoderProvider(
         ?string $expectedFirewall,
         ?array $configs = null,

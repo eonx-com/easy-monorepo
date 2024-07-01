@@ -24,7 +24,7 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
     /**
      * @see testGetters
      */
-    public static function providerTestGetters(): iterable
+    public static function provideGettersData(): iterable
     {
         yield 'Constructor' => [
             fn (): RealTimeMessage => new RealTimeMessage(static::$body, static::$topics),
@@ -61,7 +61,7 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
      *
      * @throws \Nette\Utils\JsonException
      */
-    #[DataProvider('providerTestGetters')]
+    #[DataProvider('provideGettersData')]
     public function testGetters(callable $getMessage, array $body, array $topics): void
     {
         // Trick for coverage

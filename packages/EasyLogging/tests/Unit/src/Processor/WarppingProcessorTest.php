@@ -16,7 +16,7 @@ final class WarppingProcessorTest extends AbstractUnitTestCase
     /**
      * @see testInvoke
      */
-    public static function providerTestInvoke(): iterable
+    public static function provideInvokeData(): iterable
     {
         yield 'Using closure' => [
             fn (array $records): array => $records,
@@ -25,7 +25,7 @@ final class WarppingProcessorTest extends AbstractUnitTestCase
         yield 'Using object with __invoke method' => [new InvokableStub()];
     }
 
-    #[DataProvider('providerTestInvoke')]
+    #[DataProvider('provideInvokeData')]
     public function testInvoke(callable $wrapped): void
     {
         $wrapper = WarppingProcessor::wrap($wrapped);

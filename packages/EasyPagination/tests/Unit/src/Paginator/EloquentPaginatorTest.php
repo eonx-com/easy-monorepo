@@ -18,7 +18,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
     /**
      * @see testPaginator
      */
-    public static function providerTestPaginator(): iterable
+    public static function providePaginatorData(): iterable
     {
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
@@ -192,7 +192,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    #[DataProvider('providerTestPaginator')]
+    #[DataProvider('providePaginatorData')]
     public function testPaginator(
         PaginationInterface $pagination,
         Model $model,

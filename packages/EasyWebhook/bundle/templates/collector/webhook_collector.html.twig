@@ -2,7 +2,7 @@
 
 {% block toolbar %}
     {% set icon %}
-        {{ include('@EasyWebhook/icon/paper-plane-solid.svg') }}
+        {{ include('@EasyWebhook/icon/paper_plane_solid.svg') }}
     {% endset %}
 
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
@@ -11,7 +11,7 @@
 {% block menu %}
     {# This left-hand menu appears when using the full-screen profiler. #}
     <span class="label">
-        <span class="icon">{{ include('@EasyWebhook/icon/paper-plane-solid.svg') }}</span>
+        <span class="icon">{{ include('@EasyWebhook/icon/paper_plane_solid.svg') }}</span>
         <strong>EasyWebhook</strong>
     </span>
 {% endblock %}

@@ -9,14 +9,14 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-final class DoctrineManagersClearMiddleware implements MiddlewareInterface
+final readonly class DoctrineManagersClearMiddleware implements MiddlewareInterface
 {
     /**
      * @param string[]|null $managers
      */
     public function __construct(
-        private readonly ManagersClearer $managersClearer,
-        private readonly ?array $managers = null,
+        private ManagersClearer $managersClearer,
+        private ?array $managers = null,
     ) {
     }
 

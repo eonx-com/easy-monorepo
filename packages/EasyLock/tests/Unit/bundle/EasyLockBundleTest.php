@@ -12,7 +12,7 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
     /**
      * @see testSanity
      */
-    public static function providerTestSanity(): iterable
+    public static function provideSanityData(): iterable
     {
         yield 'default config, no connection' => [null];
 
@@ -22,7 +22,7 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
     /**
      * @param string[]|null $configs
      */
-    #[DataProvider('providerTestSanity')]
+    #[DataProvider('provideSanityData')]
     public function testSanity(?array $configs = null): void
     {
         $container = $this->getKernel($configs)

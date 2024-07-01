@@ -41,7 +41,7 @@ final class EasyActivityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         if ($this->easyDoctrineBundleIsRegistered($builder)) {
-            $container->import('config/easy-doctrine-bridge-services.php');
+            $container->import('config/easy_doctrine.php');
         }
     }
 

@@ -8,10 +8,10 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
-final class MonologLoggerFactory
+final readonly class MonologLoggerFactory
 {
     public function __construct(
-        private readonly string $timezone = 'UTC',
+        private string $timezone = 'UTC',
     ) {
     }
 

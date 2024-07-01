@@ -16,7 +16,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'id from store' => [
             Webhook::fromArray([]),
@@ -57,7 +57,7 @@ final class IdHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
         callable $test,

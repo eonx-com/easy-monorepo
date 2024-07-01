@@ -12,11 +12,11 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;
 
-final class ManagersSanityChecker
+final readonly class ManagersSanityChecker
 {
     public function __construct(
-        private readonly ManagerRegistry $registry,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        private ManagerRegistry $registry,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

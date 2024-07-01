@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBatch\Tests\Stub\HttpKernel;
+namespace EonX\EasyBatch\Tests\Stub\Kernel;
 
 use Doctrine\DBAL\Connection;
 use EonX\EasyBatch\Bundle\EasyBatchBundle;

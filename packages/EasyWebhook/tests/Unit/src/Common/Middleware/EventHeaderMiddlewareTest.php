@@ -14,7 +14,7 @@ final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'no event' => [
             Webhook::fromArray([]),
@@ -51,7 +51,7 @@ final class EventHeaderMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(WebhookInterface $webhook, callable $test, ?string $eventHeader = null): void
     {
         $middleware = new EventHeaderMiddleware($eventHeader);

@@ -12,10 +12,10 @@ use EonX\EasySwoole\Doctrine\Result\DbalResult;
 use OpenSwoole\Core\Coroutine\Client\PDOStatementProxy;
 use PDOException;
 
-final class DbalStatement implements Statement
+final readonly class DbalStatement implements Statement
 {
     public function __construct(
-        private readonly PDOStatementProxy $pdoStatement,
+        private PDOStatementProxy $pdoStatement,
     ) {
     }
 

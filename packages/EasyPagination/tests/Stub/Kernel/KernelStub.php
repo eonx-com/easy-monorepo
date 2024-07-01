@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyPagination\Tests\Stub\HttpKernel;
+namespace EonX\EasyPagination\Tests\Stub\Kernel;
 
 use EonX\EasyPagination\Bundle\EasyPaginationBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;

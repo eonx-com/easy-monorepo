@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDecision\Tests\Stub\HttpKernel;
+namespace EonX\EasyDecision\Tests\Stub\Kernel;
 
 use EonX\EasyDecision\Bundle\EasyDecisionBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;

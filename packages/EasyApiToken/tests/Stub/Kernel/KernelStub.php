@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyLock\Tests\Stub\HttpKernel;
+namespace EonX\EasyApiToken\Tests\Stub\Kernel;
 
-use EonX\EasyLock\Bundle\EasyLockBundle;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use EonX\EasyApiToken\Bundle\EasyApiTokenBundle;
+use EonX\EasyApiToken\Bundle\Enum\ConfigTag;
+use EonX\EasyApiToken\Tests\Stub\Common\Decoder\DecoderProviderStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,31 +15,30 @@ use Symfony\Component\HttpKernel\Kernel;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
-     * @var string[]
-     */
-    private array $configs;
-
-    /**
      * @param string[]|null $configs
      */
-    public function __construct(?array $configs = null)
-    {
-        $this->configs = $configs ?? [];
-
+    public function __construct(
+        private ?array $configs = null,
+    ) {
         parent::__construct('test', true);
     }
 
     public function process(ContainerBuilder $container): void
     {
-        $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
+        foreach ($container->getDefinitions() as $definition) {
+            $definition->setPublic(true);
+        }
 
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);
         }
 
-        foreach ($container->getDefinitions() as $def) {
-            $def->setPublic(true);
-        }
+        $container
+            ->setDefinition(DecoderProviderStub::class, new Definition(DecoderProviderStub::class))
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+            ->setPublic(true)
+            ->addTag(ConfigTag::DecoderProvider->value);
     }
 
     /**
@@ -47,12 +46,15 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyLockBundle();
+        yield new EasyApiTokenBundle();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        foreach ($this->configs as $config) {
+        foreach ($this->configs ?? [] as $config) {
             $loader->load($config);
         }
     }

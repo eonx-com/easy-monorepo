@@ -16,7 +16,7 @@ final class ErrorDetailsResolverTest extends AbstractUnitTestCase
     /**
      * @see testResolveExtendedDetails
      */
-    public static function providerTestResolveExtendedDetails(): iterable
+    public static function provideResolveExtendedDetailsData(): iterable
     {
         yield 'simple' => [
             'throwable' => new Exception(),
@@ -50,7 +50,7 @@ final class ErrorDetailsResolverTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestResolveExtendedDetails')]
+    #[DataProvider('provideResolveExtendedDetailsData')]
     public function testResolveExtendedDetails(
         Throwable $throwable,
         ?callable $assertions = null,

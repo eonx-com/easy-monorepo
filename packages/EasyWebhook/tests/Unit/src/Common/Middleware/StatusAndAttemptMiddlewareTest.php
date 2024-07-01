@@ -17,7 +17,7 @@ final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'successful' => [new WebhookResult(new Webhook(), new MockResponse()), WebhookInterface::STATUS_SUCCESS];
 
@@ -36,7 +36,7 @@ final class StatusAndAttemptMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(WebhookResultInterface $webhookResult, string $status): void
     {
         $middleware = new StatusAndAttemptMiddleware();

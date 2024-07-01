@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Unit\Bundle;
 
-use EonX\EasyNotification\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyNotification\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 

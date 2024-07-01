@@ -12,7 +12,7 @@ final class EnvVarSubstitutionHelperTest extends AbstractUnitTestCase
     /**
      * @see testResolveVariables
      */
-    public static function providerTestResolveVariables(): iterable
+    public static function provideResolveVariablesData(): iterable
     {
         yield 'With $ in value' => [
             ['password' => 'qLiByxT5Gg11zt$2PjHb952nnVEZK'],
@@ -20,7 +20,7 @@ final class EnvVarSubstitutionHelperTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestResolveVariables')]
+    #[DataProvider('provideResolveVariablesData')]
     public function testResolveVariables(array $input, array $expected): void
     {
         self::assertEquals($expected, EnvVarSubstitutionHelper::resolveVariables($input));

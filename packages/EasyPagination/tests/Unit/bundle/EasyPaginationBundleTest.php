@@ -6,7 +6,7 @@ namespace EonX\EasyPagination\Tests\Unit\Bundle;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
-use EonX\EasyPagination\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyPagination\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
 use EonX\EasyPagination\ValueObject\PaginationInterface;
@@ -18,7 +18,7 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
     /**
      * @see testPaginationResolver
      */
-    public static function providerTestPaginationResolver(): iterable
+    public static function providePaginationResolverData(): iterable
     {
         yield 'Page_PerPage_Defaults' => [
             __DIR__ . '/../../Fixture/config/page_perPage_1_15.php',
@@ -38,7 +38,7 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         ];
     }
 
-    #[DataProvider('providerTestPaginationResolver')]
+    #[DataProvider('providePaginationResolverData')]
     public function testPaginationResolver(string $config, Request $request, int $page, int $perPage): void
     {
         $kernel = new KernelStub($config);

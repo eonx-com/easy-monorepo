@@ -15,7 +15,7 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function provideTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'No send after -> should send' => [Webhook::fromArray([]), true];
 
@@ -34,7 +34,7 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('provideTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(WebhookInterface $webhook, bool $shouldSend): void
     {
         $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());

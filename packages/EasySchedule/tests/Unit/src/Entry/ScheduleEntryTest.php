@@ -24,7 +24,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
     /**
      * @see testFiltersPass
      */
-    public static function providerTestFiltersPass(): iterable
+    public static function provideFiltersPassData(): iterable
     {
         yield 'False because at least one filter false' => [[false], [false], false];
 
@@ -42,7 +42,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
     /**
      * @see testNoArgsMethods
      */
-    public static function providerTestNoArgsMethods(): iterable
+    public static function provideNoArgsMethodsData(): iterable
     {
         yield ['0 0 1 * *', 'monthly'];
         yield ['0 0 * * 0', 'weekly'];
@@ -79,7 +79,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
         self::assertTrue($this->entry->setAllowOverlapping(true)->allowsOverlapping());
     }
 
-    #[DataProvider('providerTestFiltersPass')]
+    #[DataProvider('provideFiltersPassData')]
     public function testFiltersPass(array $filters, array $rejects, bool $expected): void
     {
         $entry = new ScheduleEntry('command:foo', [
@@ -114,7 +114,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
         self::assertSame(30.0, $this->entry->setMaxLockTime(30.0)->getMaxLockTime());
     }
 
-    #[DataProvider('providerTestNoArgsMethods')]
+    #[DataProvider('provideNoArgsMethodsData')]
     public function testNoArgsMethods(string $expression, string $method, ?array $params = null): void
     {
         $entry = new ScheduleEntry('command:foo', [

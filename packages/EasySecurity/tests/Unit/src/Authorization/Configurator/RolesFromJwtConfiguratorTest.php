@@ -21,7 +21,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
     /**
      * @see testConfigure
      */
-    public static function providerTestConfigure(): iterable
+    public static function provideConfigureData(): iterable
     {
         yield 'No role resolved because not token' => [[]];
 
@@ -61,7 +61,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
     /**
      * @param \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[] $authorizationRoles
      */
-    #[DataProvider('providerTestConfigure')]
+    #[DataProvider('provideConfigureData')]
     public function testConfigure(
         array $authorizationRoles,
         ?SecurityContextInterface $context = null,
