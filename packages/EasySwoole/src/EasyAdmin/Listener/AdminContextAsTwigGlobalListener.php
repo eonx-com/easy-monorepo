@@ -7,10 +7,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Twig\Environment;
 
-final class AdminContextAsTwigGlobalListener
+final readonly class AdminContextAsTwigGlobalListener
 {
     public function __construct(
-        private readonly Environment $twig,
+        private Environment $twig,
     ) {
     }
 

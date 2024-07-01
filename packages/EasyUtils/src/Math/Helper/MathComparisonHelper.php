@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Math\Helper;
 
-final class MathComparisonHelper implements MathComparisonHelperInterface
+final readonly class MathComparisonHelper implements MathComparisonHelperInterface
 {
     public function __construct(
-        private readonly string $leftOperand,
-        private readonly int $scale,
+        private string $leftOperand,
+        private int $scale,
     ) {
     }
 

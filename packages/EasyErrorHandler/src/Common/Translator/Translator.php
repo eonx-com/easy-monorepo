@@ -5,13 +5,13 @@ namespace EonX\EasyErrorHandler\Common\Translator;
 
 use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterface;
 
-final class Translator implements TranslatorInterface
+final readonly class Translator implements TranslatorInterface
 {
     private const DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
 
     public function __construct(
-        private readonly SymfonyTranslatorInterface $decorated,
-        private readonly ?string $domain = null,
+        private SymfonyTranslatorInterface $decorated,
+        private ?string $domain = null,
     ) {
     }
 

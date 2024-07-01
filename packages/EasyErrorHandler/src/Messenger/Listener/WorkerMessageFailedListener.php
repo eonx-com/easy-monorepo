@@ -8,11 +8,11 @@ use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorDetailsResolverInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 
-final class WorkerMessageFailedListener
+final readonly class WorkerMessageFailedListener
 {
     public function __construct(
-        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorHandlerInterface $errorHandler,
+        private ErrorDetailsResolverInterface $errorDetailsResolver,
+        private ErrorHandlerInterface $errorHandler,
     ) {
     }
 

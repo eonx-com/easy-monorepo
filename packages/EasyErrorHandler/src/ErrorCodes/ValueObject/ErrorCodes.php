@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\ErrorCodes\ValueObject;
 
-final class ErrorCodes
+final readonly class ErrorCodes
 {
     /**
      * @param \EonX\EasyErrorHandler\ErrorCodes\ValueObject\ErrorCodeCategory[] $nextGroupedErrorCodes
      */
     public function __construct(
-        private readonly int $nextGroupErrorCode = 0,
-        private readonly array $nextGroupedErrorCodes = [],
+        private int $nextGroupErrorCode = 0,
+        private array $nextGroupedErrorCodes = [],
     ) {
     }
 

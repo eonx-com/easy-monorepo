@@ -7,11 +7,11 @@ use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 use EonX\EasyBatch\Common\ValueObject\MessageWrapper;
 
-final class BatchPersister
+final readonly class BatchPersister
 {
     public function __construct(
-        private readonly BatchRepositoryInterface $batchRepository,
-        private readonly BatchItemPersister $batchItemPersister,
+        private BatchRepositoryInterface $batchRepository,
+        private BatchItemPersister $batchItemPersister,
     ) {
     }
 

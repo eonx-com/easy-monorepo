@@ -7,10 +7,10 @@ use EonX\EasyAsync\Laravel\Exceptions\WorkerStoppingException;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use Illuminate\Queue\Events\WorkerStopping;
 
-final class WorkerStoppingListener implements WorkerStoppingListenerInterface
+final readonly class WorkerStoppingListener implements WorkerStoppingListenerInterface
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
+        private ErrorHandlerInterface $errorHandler,
     ) {
     }
 

@@ -16,12 +16,12 @@ use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use Throwable;
 
-final class BatchItemProcessor
+final readonly class BatchItemProcessor
 {
     public function __construct(
-        private readonly BatchProcessor $batchProcessor,
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
-        private readonly BatchObjectManagerInterface $batchObjectManager,
+        private BatchProcessor $batchProcessor,
+        private BatchItemRepositoryInterface $batchItemRepository,
+        private BatchObjectManagerInterface $batchObjectManager,
     ) {
     }
 
