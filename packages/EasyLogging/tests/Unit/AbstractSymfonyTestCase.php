@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Unit;
 
-use EonX\EasyLogging\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyLogging\Tests\Stub\Kernel\KernelStub;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase

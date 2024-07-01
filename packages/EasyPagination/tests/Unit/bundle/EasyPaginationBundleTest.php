@@ -6,7 +6,7 @@ namespace EonX\EasyPagination\Tests\Unit\Bundle;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
-use EonX\EasyPagination\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyPagination\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
 use EonX\EasyPagination\ValueObject\PaginationInterface;

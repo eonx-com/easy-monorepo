@@ -1,44 +1,45 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiToken\Tests\Stub\HttpKernel;
+namespace EonX\EasyRequestId\Tests\Stub\Kernel;
 
-use EonX\EasyApiToken\Bundle\EasyApiTokenBundle;
-use EonX\EasyApiToken\Bundle\Enum\ConfigTag;
-use EonX\EasyApiToken\Tests\Stub\Common\Decoder\DecoderProviderStub;
+use EonX\EasyRandom\Bundle\EasyRandomBundle;
+use EonX\EasyRequestId\Bundle\EasyRequestIdBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
+     * @var string[]
+     */
+    private array $configs;
+
+    /**
      * @param string[]|null $configs
      */
-    public function __construct(
-        private ?array $configs = null,
-    ) {
+    public function __construct(?array $configs = null)
+    {
+        $this->configs = $configs ?? [];
+
         parent::__construct('test', true);
     }
 
     public function process(ContainerBuilder $container): void
     {
-        foreach ($container->getDefinitions() as $definition) {
-            $definition->setPublic(true);
-        }
+        $container->setDefinition(RequestStack::class, new Definition(RequestStack::class));
 
         foreach ($container->getAliases() as $alias) {
             $alias->setPublic(true);
         }
 
-        $container
-            ->setDefinition(DecoderProviderStub::class, new Definition(DecoderProviderStub::class))
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            ->setPublic(true)
-            ->addTag(ConfigTag::DecoderProvider->value);
+        foreach ($container->getDefinitions() as $definition) {
+            $definition->setPublic(true);
+        }
     }
 
     /**
@@ -46,15 +47,13 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyApiTokenBundle();
+        yield new EasyRandomBundle();
+        yield new EasyRequestIdBundle();
     }
 
-    /**
-     * @throws \Exception
-     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        foreach ($this->configs ?? [] as $config) {
+        foreach ($this->configs as $config) {
             $loader->load($config);
         }
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Unit\Bundle;
 
-use EonX\EasyLock\Tests\Stub\HttpKernel\KernelStub;
+use EonX\EasyLock\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyLock\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
