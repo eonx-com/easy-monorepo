@@ -6,63 +6,45 @@ namespace EonX\EasyAsync\Tests\Unit\Bundle;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
 use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyAsyncBundleTest extends AbstractUnitTestCase
 {
-    /**
-     * @see testMessengerConfig
-     */
-    public static function provideMessengerConfigData(): iterable
+    public function testMessengerConfigWithEmptyConfig(): void
     {
-        yield 'no config - no subscribers' => [
-            static function (ContainerInterface $container): void {
-                self::assertFalse($container->has(StopWorkerOnMessagesLimitSubscriber::class));
-                self::assertFalse($container->has(StopWorkerOnTimeLimitSubscriber::class));
-            },
-        ];
-
-        yield 'messages only' => [
-            static function (ContainerInterface $container): void {
-                self::assertTrue($container->has(StopWorkerOnMessagesLimitSubscriber::class));
-                self::assertFalse($container->has(StopWorkerOnTimeLimitSubscriber::class));
-            },
-            [
-                __DIR__ . '/../../Fixture/config/messages_limit_only.yaml',
-            ],
-        ];
-
-        yield 'time only' => [
-            static function (ContainerInterface $container): void {
-                self::assertFalse($container->has(StopWorkerOnMessagesLimitSubscriber::class));
-                self::assertTrue($container->has(StopWorkerOnTimeLimitSubscriber::class));
-            },
-            [
-                __DIR__ . '/../../Fixture/config/time_limit_only.yaml',
-            ],
-        ];
-
-        yield 'both limits' => [
-            static function (ContainerInterface $container): void {
-                self::assertTrue($container->has(StopWorkerOnMessagesLimitSubscriber::class));
-                self::assertTrue($container->has(StopWorkerOnTimeLimitSubscriber::class));
-            },
-            [
-                __DIR__ . '/../../Fixture/config/both_limits.yaml',
-            ],
-        ];
+        self::assertFalse(self::getContainer()->has(StopWorkerOnMessagesLimitSubscriber::class));
+        self::assertFalse(self::getContainer()->has(StopWorkerOnTimeLimitSubscriber::class));
     }
 
     /**
-     * @param string[]|null $configs
+     * @see packages/EasyAsync/tests/Fixture/app/config/packages/messages_and_time_limits
      */
-    #[DataProvider('provideMessengerConfigData')]
-    public function testMessengerConfig(callable $assert, ?array $configs = null): void
+    public function testMessengerConfigWithMessagesAndTimeLimits(): void
     {
-        $container = $this->getKernel($configs)
-            ->getContainer();
+        self::bootKernel(['environment' => 'messages_and_time_limits']);
 
-        \call_user_func($assert, $container);
+        self::assertTrue(self::getContainer()->has(StopWorkerOnMessagesLimitSubscriber::class));
+        self::assertTrue(self::getContainer()->has(StopWorkerOnTimeLimitSubscriber::class));
+    }
+
+    /**
+     * @see packages/EasyAsync/tests/Fixture/app/config/packages/messages_limit
+     */
+    public function testMessengerConfigWithMessagesLimit(): void
+    {
+        self::bootKernel(['environment' => 'messages_limit']);
+
+        self::assertTrue(self::getContainer()->has(StopWorkerOnMessagesLimitSubscriber::class));
+        self::assertFalse(self::getContainer()->has(StopWorkerOnTimeLimitSubscriber::class));
+    }
+
+    /**
+     * @see packages/EasyAsync/tests/Fixture/app/config/packages/time_limit
+     */
+    public function testMessengerConfigWithTimeLimit(): void
+    {
+        self::bootKernel(['environment' => 'time_limit']);
+
+        self::assertFalse(self::getContainer()->has(StopWorkerOnMessagesLimitSubscriber::class));
+        self::assertTrue(self::getContainer()->has(StopWorkerOnTimeLimitSubscriber::class));
     }
 }
