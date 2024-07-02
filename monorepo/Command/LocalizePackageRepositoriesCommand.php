@@ -18,7 +18,7 @@ use Symfony\Component\Finder\SplFileInfo;
 final class LocalizePackageRepositoriesCommand extends Command
 {
     public function __construct(
-        private GitHelper $gitManager,
+        private GitHelper $gitHelper,
     ) {
         parent::__construct();
     }
@@ -26,7 +26,7 @@ final class LocalizePackageRepositoriesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $composerJsonFiles = $this->getComposerJsonFiles();
-        $devVersion = \sprintf('dev-%s', $this->gitManager->getCurrentBranch());
+        $devVersion = \sprintf('dev-%s', $this->gitHelper->getCurrentBranch());
         $filesystem = new Filesystem();
         $monorepoPackages = $this->getMonorepoPackages($composerJsonFiles);
         $monorepoPackageNames = \array_keys($monorepoPackages);

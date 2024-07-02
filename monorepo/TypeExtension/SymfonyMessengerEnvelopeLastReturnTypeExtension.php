@@ -18,7 +18,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\UnionType;
 use Symfony\Component\Messenger\Envelope;
 
-final class SymfonyMessengerEnvelopeLastReturnType implements DynamicMethodReturnTypeExtension
+final class SymfonyMessengerEnvelopeLastReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     public function getClass(): string
     {
