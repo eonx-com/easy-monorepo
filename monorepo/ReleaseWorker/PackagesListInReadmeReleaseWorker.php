@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\Release;
+namespace EonX\EasyMonorepo\ReleaseWorker;
 
 use PharIo\Version\Version;
 use Symfony\Component\Filesystem\Filesystem;

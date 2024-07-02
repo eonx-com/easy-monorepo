@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\Release;
+namespace EonX\EasyMonorepo\ReleaseWorker;
 
 use PharIo\Version\Version;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
-final class UpdateTagInGithubWorkflow implements ReleaseWorkerInterface
+final class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWorkerInterface
 {
     private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 

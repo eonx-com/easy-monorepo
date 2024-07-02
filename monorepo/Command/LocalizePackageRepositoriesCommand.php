@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\Console\Commands;
+namespace EonX\EasyMonorepo\Command;
 
-use EonX\EasyMonorepo\Git\GitManager;
+use EonX\EasyMonorepo\Helper\GitHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Finder\SplFileInfo;
 final class LocalizePackageRepositoriesCommand extends Command
 {
     public function __construct(
-        private GitManager $gitManager,
+        private GitHelper $gitManager,
     ) {
         parent::__construct();
     }

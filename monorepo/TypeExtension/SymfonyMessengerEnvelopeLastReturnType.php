@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\PHPStan;
+namespace EonX\EasyMonorepo\TypeExtension;
 
 use InvalidArgumentException;
 use PhpParser\Node\Arg;
