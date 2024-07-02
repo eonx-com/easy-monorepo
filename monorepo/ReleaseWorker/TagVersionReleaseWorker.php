@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\Release;
+namespace EonX\EasyMonorepo\ReleaseWorker;
 
-use EonX\EasyMonorepo\Git\GitManager;
+use EonX\EasyMonorepo\Helper\GitHelper;
 use GuzzleHttp\ClientInterface;
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
@@ -13,7 +13,7 @@ use Throwable;
 final readonly class TagVersionReleaseWorker implements ReleaseWorkerInterface
 {
     public function __construct(
-        private GitManager $gitManager,
+        private GitHelper $gitManager,
         private ClientInterface $httpClient,
         private ProcessRunner $processRunner,
     ) {

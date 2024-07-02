@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\Console;
+namespace EonX\EasyMonorepo\Application;
 
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\Console\Application;

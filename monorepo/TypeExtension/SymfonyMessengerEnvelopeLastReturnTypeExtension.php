@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\PHPStan;
+namespace EonX\EasyMonorepo\TypeExtension;
 
 use InvalidArgumentException;
 use PhpParser\Node\Arg;
@@ -18,7 +18,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\UnionType;
 use Symfony\Component\Messenger\Envelope;
 
-final class SymfonyMessengerEnvelopeLastReturnType implements DynamicMethodReturnTypeExtension
+final class SymfonyMessengerEnvelopeLastReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     public function getClass(): string
     {
