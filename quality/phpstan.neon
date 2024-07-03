@@ -2,7 +2,7 @@ includes:
     - vendor/symplify/phpstan-extensions/config/config.neon
 
 services:
-    - class: EonX\EasyMonorepo\PHPStan\SymfonyMessengerEnvelopeLastReturnType
+    - class: EonX\EasyMonorepo\TypeExtension\SymfonyMessengerEnvelopeLastReturnTypeExtension
       tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 parameters:

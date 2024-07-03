@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyMonorepo\Git;
+namespace EonX\EasyMonorepo\Helper;
 
 use Symfony\Component\Process\Process;
 
-final class GitManager
+final class GitHelper
 {
     public function getCurrentBranch(): string
     {
