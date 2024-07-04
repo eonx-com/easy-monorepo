@@ -57,6 +57,12 @@ final class EasyErrorHandlerBundle extends AbstractBundle
             ConfigParam::BugsnagHandledExceptions->value,
             \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
         );
+        $parameters->set(
+            ConfigParam::EasyWebhookBugsnagIgnoredExceptions->value,
+            \count($config['easy_webhook_bugsnag_ignored_exceptions']) > 0
+                ? $config['easy_webhook_bugsnag_ignored_exceptions']
+                : null
+        );
 
         $parameters->set(
             ConfigParam::TransformValidationErrors->value,

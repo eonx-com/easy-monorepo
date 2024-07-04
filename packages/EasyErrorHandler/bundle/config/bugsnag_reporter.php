@@ -22,6 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(BugsnagIgnoreExceptionsResolverInterface::class, DefaultBugsnagIgnoreExceptionsResolver::class)
         ->arg('$ignoredExceptions', param(ConfigParam::BugsnagIgnoredExceptions->value))
+        ->arg('$easyWebhookIgnoredExceptions', param(ConfigParam::EasyWebhookBugsnagIgnoredExceptions->value))
         ->arg('$ignoreValidationErrors', param(ConfigParam::BugsnagIgnoreValidationErrors->value));
 
     $services->set(ErrorDetailsClientConfigurator::class);

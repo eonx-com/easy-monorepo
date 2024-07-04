@@ -19,12 +19,15 @@ final class DefaultBugsnagIgnoreExceptionsResolver implements BugsnagIgnoreExcep
 
     /**
      * @param class-string[] $ignoredExceptions
+     * @param class-string[] $easyWebhookIgnoredExceptions
      */
     public function __construct(
         ?array $ignoredExceptions = null,
+        ?array $easyWebhookIgnoredExceptions = null,
         ?bool $ignoreValidationErrors = null,
     ) {
-        $this->ignoredExceptions = $ignoredExceptions ?? [
+        $allIgnoredExceptions = \array_merge($ignoredExceptions ?? [], $easyWebhookIgnoredExceptions ?? []);
+        $this->ignoredExceptions = $allIgnoredExceptions ?: [
             HttpExceptionInterface::class,
             RequestExceptionInterface::class,
         ];

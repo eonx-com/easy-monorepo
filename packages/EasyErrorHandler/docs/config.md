@@ -22,6 +22,7 @@ The common configuration options for Laravel and Symfony are as follows:
 | `bugsnag_enabled`                          | `true`       | Automatically register the error reporter for easy-bugsnag integration. |
 | `bugsnag_ignored_exceptions`               | `[]`         | List of exceptions that will not be reported to Bugsnag.                |
 | `bugsnag_threshold`                        | `null`       | Log level threshold for reporting to Bugsnag.                           |
+| `easy_webhook_bugsnag_ignored_exceptions`  | `[]`         | List of EasyWebhook exceptions that will not be reported to Bugsnag.    |
 | `error_codes_interface`                    | `null`       | Interface with all error codes.                                         |
 | `logger_exception_log_levels`              | `[]`         | List of exceptions and their associated log levels.                     |
 | `logger_ignored_exceptions`                | `[]`         | List of exceptions that will not be reported to Logger.                 |

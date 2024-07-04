@@ -13,6 +13,8 @@ enum ConfigParam: string
 
     case BugsnagThreshold = 'easy_error_handler.bugsnag_threshold';
 
+    case EasyWebhookBugsnagIgnoredExceptions = 'easy_error_handler.easy_webhook_bugsnag_ignored_exceptions';
+
     case ErrorCodesCategorySize = 'easy_error_handler.error_codes_category_size';
 
     case ErrorCodesInterface = 'easy_error_handler.error_codes_interface';
