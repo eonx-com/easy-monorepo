@@ -9,6 +9,7 @@ use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 use EonX\EasyWebhook\Common\Exception\InvalidWebhookUrlException;
 use EonX\EasyWebhook\Common\Exception\WebhookRequestFailedException;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
@@ -41,10 +42,9 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             // Set response to null here to make sure not to carry over the faulty response
             $response = null;
 
-            if ($throwable instanceof HttpExceptionInterface) {
+            if ($throwable instanceof ExceptionInterface) {
                 $response = $throwable->getResponse();
 
-                // This one can be added to ignored by Bugsnag exceptions list in example
                 $throwable = new WebhookRequestFailedException(
                     message: 'Webhook request failed: ' . $throwable->getMessage(),
                     previous: $throwable
