@@ -276,8 +276,7 @@
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests",
             "EonX\\EasyWebhook\\Tests\\Unit\\": "packages/EasyWebhook/tests/Unit/src",
             "EonX\\EasyWebhook\\Tests\\Unit\\Bundle\\": "packages/EasyWebhook/tests/Unit/bundle",
-            "EonX\\EasyWebhook\\Tests\\Unit\\Laravel\\": "packages/EasyWebhook/tests/Unit/laravel",
-            "Pkcs11\\": "vendor/natepage/php-pkcs11-ide-helper/src"
+            "EonX\\EasyWebhook\\Tests\\Unit\\Laravel\\": "packages/EasyWebhook/tests/Unit/laravel"
         }
     },
     "replace": {
