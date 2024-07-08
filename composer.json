@@ -89,7 +89,8 @@
         "symfony/twig-bundle": "^6.4",
         "symfony/validator": "^6.4",
         "symfony/yaml": "^6.4",
-        "symplify/monorepo-builder": "^11.0"
+        "symplify/monorepo-builder": "^11.0",
+        "natepage/php-pkcs11-ide-helper": "^1.0"
     },
     "autoload": {
         "files": [
@@ -173,6 +174,9 @@
         }
     },
     "autoload-dev": {
+        "files": [
+            "vendor/natepage/php-pkcs11-ide-helper/src/constants.php"
+        ],
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "packages/EasyActivity/tests",
             "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "packages/EasyActivity/tests/Fixture/app/src",
@@ -275,7 +279,9 @@
             "EonX\\EasyWebhook\\Tests\\": "packages/EasyWebhook/tests",
             "EonX\\EasyWebhook\\Tests\\Unit\\": "packages/EasyWebhook/tests/Unit/src",
             "EonX\\EasyWebhook\\Tests\\Unit\\Bundle\\": "packages/EasyWebhook/tests/Unit/bundle",
-            "EonX\\EasyWebhook\\Tests\\Unit\\Laravel\\": "packages/EasyWebhook/tests/Unit/laravel"
+            "EonX\\EasyWebhook\\Tests\\Unit\\Laravel\\": "packages/EasyWebhook/tests/Unit/laravel",
+            "OpenSwoole\\": "vendor/openswoole/ide-helper/src/OpenSwoole",
+            "Pkcs11\\": "vendor/natepage/php-pkcs11-ide-helper/src"
         }
     },
     "replace": {

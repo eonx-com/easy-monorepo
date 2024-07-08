@@ -168,9 +168,6 @@ parameters:
         - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SwooleTableHelper.php
 
-        - message: '#Access to undefined constant OpenSwoole\\Constant\:\:SSL#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SslCertificateHelper.php
-
         - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Result/DbalResult.php
 
