@@ -72,7 +72,7 @@ final class GlobalizePackageRepositoriesCommand extends Command
     private function getComposerJsonFiles(): Finder
     {
         return (new Finder())
-            ->in([__DIR__ . '/../../../packages'])
+            ->in([__DIR__ . '/../../packages'])
             ->name('composer.json');
     }
 }
