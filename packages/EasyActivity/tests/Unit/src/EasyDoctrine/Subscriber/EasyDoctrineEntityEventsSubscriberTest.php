@@ -358,7 +358,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
     #[DataProvider('provideActorTypes')]
     public function testLoggerSucceedsWithCustomActorResolver(
         string|BackedEnum $actorType,
-        string $expectedEnumType
+        string $expectedEnumType,
     ): void {
         self::bootKernel(['environment' => 'custom_actor_resolver']);
         /** @var \EonX\EasyActivity\Tests\Fixture\App\ActorResolver\CustomActorResolver $customActorResolver */
