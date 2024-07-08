@@ -75,6 +75,7 @@
         "jetbrains/phpstorm-attributes": "^1.0",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
+        "natepage/php-pkcs11-ide-helper": "^1.0",
         "nyholm/psr7": "^1.8",
         "openswoole/ide-helper": "^22.0",
         "phpseclib/phpseclib": "^3.0",

@@ -2,6 +2,9 @@ name: PHP-CI
 
 on: [push, pull_request]
 
+env:
+    TERM: xterm-256color
+
 jobs:
     coding_standards:
         runs-on: ubuntu-latest
