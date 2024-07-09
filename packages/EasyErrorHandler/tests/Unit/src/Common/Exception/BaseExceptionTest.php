@@ -60,6 +60,22 @@ final class BaseExceptionTest extends AbstractUnitTestCase
     }
 
     /**
+     * @see testSetStatusCode
+     */
+    public static function provideStatusCodes(): iterable
+    {
+        yield 'integer' => [
+            'statusCode' => 418,
+            'expectedStatusCode' => HttpStatusCode::IamTeapot,
+        ];
+
+        yield 'enum' => [
+            'statusCode' => HttpStatusCode::IamTeapot,
+            'expectedStatusCode' => HttpStatusCode::IamTeapot,
+        ];
+    }
+
+    /**
      * @see testSetSubCode
      */
     public static function provideSubCodes(): iterable
@@ -188,15 +204,15 @@ final class BaseExceptionTest extends AbstractUnitTestCase
         self::assertSame($messageParams, self::getPrivatePropertyValue($result, 'messageParams'));
     }
 
-    public function testSetStatusCode(): void
+    #[DataProvider('provideStatusCodes')]
+    public function testSetStatusCode(int|HttpStatusCode $statusCode, HttpStatusCode $expectedStatusCode): void
     {
-        $statusCode = HttpStatusCode::IamTeapot;
         $exception = new BaseExceptionStub();
 
         $result = $exception->setStatusCode($statusCode);
 
         self::assertSame($exception, $result);
-        self::assertSame($statusCode, self::getPrivatePropertyValue($result, 'statusCode'));
+        self::assertSame($expectedStatusCode, self::getPrivatePropertyValue($result, 'statusCode'));
     }
 
     #[DataProvider('provideSubCodes')]
