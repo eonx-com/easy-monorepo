@@ -19,7 +19,7 @@ trait StatusCodeAwareExceptionTrait
      */
     public function setStatusCode(int|HttpStatusCode $statusCode): self
     {
-        $this->statusCode = $statusCode instanceof HttpStatusCode ? $statusCode : HttpStatusCode::from($statusCode);
+        $this->statusCode = \is_int($statusCode) ? HttpStatusCode::from($statusCode) : $statusCode;
 
         return $this;
     }
