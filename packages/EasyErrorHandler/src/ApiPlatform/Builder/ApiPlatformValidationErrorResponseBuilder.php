@@ -8,7 +8,7 @@ use ApiPlatform\State\Provider\DeserializeProvider;
 use ApiPlatform\Symfony\EventListener\DeserializeListener;
 use EonX\EasyErrorHandler\Common\Builder\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Response;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
@@ -219,13 +219,13 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         return parent::buildData($throwable, $data);
     }
 
-    public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
+    public function buildStatusCode(Throwable $throwable, ?HttpStatusCode $statusCode = null): ?HttpStatusCode
     {
         if (self::supports($throwable) === false) {
             return parent::buildStatusCode($throwable, $statusCode);
         }
 
-        return Response::HTTP_BAD_REQUEST;
+        return HttpStatusCode::BadRequest;
     }
 
     private function getKey(string $name): string

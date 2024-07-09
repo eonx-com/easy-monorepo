@@ -29,7 +29,8 @@ final class SymfonySerializerErrorResponseFactory implements ErrorResponseFactor
         $headers['X-Content-Type-Options'] = 'nosniff';
         $headers['X-Frame-Options'] = 'deny';
 
-        $statusCode = $data->getStatusCode();
+        $statusCode = $data->getStatusCode()
+            ->value;
 
         $content = $this->serializer->serialize(
             $data->getRawData(),

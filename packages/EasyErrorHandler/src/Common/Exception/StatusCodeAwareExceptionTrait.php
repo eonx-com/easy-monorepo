@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Exception;
 
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
+
 trait StatusCodeAwareExceptionTrait
 {
-    protected int $statusCode = 500;
+    protected HttpStatusCode $statusCode = HttpStatusCode::InternalServerError;
 
-    public function getStatusCode(): int
+    public function getStatusCode(): HttpStatusCode
     {
         return $this->statusCode;
     }
@@ -15,9 +17,9 @@ trait StatusCodeAwareExceptionTrait
     /**
      * Sets the HTTP response status code for an exception.
      */
-    public function setStatusCode(int $statusCode): self
+    public function setStatusCode(int|HttpStatusCode $statusCode): self
     {
-        $this->statusCode = $statusCode;
+        $this->statusCode = $statusCode instanceof HttpStatusCode ? $statusCode : HttpStatusCode::from($statusCode);
 
         return $this;
     }

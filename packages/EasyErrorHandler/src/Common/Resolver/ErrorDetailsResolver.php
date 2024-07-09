@@ -99,7 +99,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         }
 
         if ($throwable instanceof StatusCodeAwareExceptionInterface) {
-            $details['status_code'] = $throwable->getStatusCode();
+            $details['status_code'] = $throwable->getStatusCode()->value;
         }
 
         if ($throwable instanceof TranslatableExceptionInterface) {
