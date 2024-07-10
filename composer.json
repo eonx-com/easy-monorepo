@@ -1,7 +1,7 @@
 {
     "name": "eonx-com/easy-monorepo",
     "type": "library",
-    "description": "Reusable packages to make PHP projects easier to create/maintain",
+    "description": "Reusable  packages to make PHP projects easier to create/maintain",
     "license": "MIT",
     "require": {
         "php": "^8.2",
