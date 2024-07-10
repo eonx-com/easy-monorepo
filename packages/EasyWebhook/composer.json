@@ -21,8 +21,8 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
-        "illuminate/database": "^9.52",
-        "laravel/lumen-framework": "^9.1",
+        "illuminate/database": "^10.48",
+        "laravel/lumen-framework": "^10.0",
         "phpunit/phpunit": "^10.2"
     },
     "autoload": {
