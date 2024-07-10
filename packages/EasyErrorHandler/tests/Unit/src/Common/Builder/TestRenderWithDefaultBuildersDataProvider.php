@@ -5,6 +5,7 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Common\Builder;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Exception;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
@@ -48,9 +49,9 @@ final class TestRenderWithDefaultBuildersDataProvider
 
         yield 'Response with status code of code aware exception interface' => [
             'request' => new Request(),
-            'exception' => (new BaseExceptionStub())->setStatusCode(123),
+            'exception' => (new BaseExceptionStub())->setStatusCode(HttpStatusCode::IamTeapot),
             'assertResponse' => static function (Response $response): void {
-                TestCase::assertSame(123, $response->getStatusCode());
+                TestCase::assertSame(418, $response->getStatusCode());
             },
             'translations' => null,
         ];

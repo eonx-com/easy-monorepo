@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Builder;
 
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
@@ -31,10 +32,10 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
         return parent::buildData($throwable, $data);
     }
 
-    public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
+    public function buildStatusCode(Throwable $throwable, ?HttpStatusCode $statusCode = null): ?HttpStatusCode
     {
         if ($throwable instanceof HttpExceptionInterface) {
-            $statusCode = $throwable->getStatusCode();
+            $statusCode = HttpStatusCode::from($throwable->getStatusCode());
         }
 
         return parent::buildStatusCode($throwable, $statusCode);

@@ -4,17 +4,18 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Common\Builder;
 
 use EonX\EasyErrorHandler\Common\Exception\StatusCodeAwareExceptionInterface;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Throwable;
 
 final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
     /**
-     * @var array<class-string, int>
+     * @var array<class-string, \EonX\EasyUtils\Common\Enum\HttpStatusCode>
      */
     private readonly array $exceptionToStatusCode;
 
     /**
-     * @param array<class-string, int>|null $exceptionToStatusCode
+     * @param array<class-string, \EonX\EasyUtils\Common\Enum\HttpStatusCode>|null $exceptionToStatusCode
      */
     public function __construct(
         ?array $exceptionToStatusCode = null,
@@ -25,7 +26,7 @@ final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
         parent::__construct($priority);
     }
 
-    public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
+    public function buildStatusCode(Throwable $throwable, ?HttpStatusCode $statusCode = null): ?HttpStatusCode
     {
         if ($throwable instanceof StatusCodeAwareExceptionInterface) {
             $statusCode = $throwable->getStatusCode();
