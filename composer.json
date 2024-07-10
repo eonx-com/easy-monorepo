@@ -22,7 +22,7 @@
         "doctrine/persistence": "^3.0",
         "dragonmantank/cron-expression": "^3.3",
         "guzzlehttp/guzzle": "^7.0",
-        "monolog/monolog": "^2.9",
+        "monolog/monolog": "^3.7",
         "myclabs/deep-copy": "^1.11",
         "nesbot/carbon": "^2.67",
         "nette/utils": "^3.2",

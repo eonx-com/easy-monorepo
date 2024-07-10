@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.2",
         "eonx-com/easy-utils": "^5.12",
-        "monolog/monolog": "^2.9",
+        "monolog/monolog": "^3.7",
         "symfony/config": "^6.4",
         "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^6.4",
