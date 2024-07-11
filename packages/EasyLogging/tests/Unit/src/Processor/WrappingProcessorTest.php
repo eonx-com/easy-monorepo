@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Unit\Processor;
 
-use EonX\EasyLogging\Processor\WarppingProcessor;
+use EonX\EasyLogging\Processor\WrappingProcessor;
 use EonX\EasyLogging\Tests\Stub\ValueObject\InvokableStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 /**
  * @phpstan-import-type Record from \Monolog\Logger
  */
-final class WarppingProcessorTest extends AbstractUnitTestCase
+final class WrappingProcessorTest extends AbstractUnitTestCase
 {
     /**
      * @see testInvoke
@@ -28,7 +28,7 @@ final class WarppingProcessorTest extends AbstractUnitTestCase
     #[DataProvider('provideInvokeData')]
     public function testInvoke(callable $wrapped): void
     {
-        $wrapper = WarppingProcessor::wrap($wrapped);
+        $wrapper = WrappingProcessor::wrap($wrapped);
         /** @phpstan-var Record $array */
         $array = [
             'key' => 'value',
