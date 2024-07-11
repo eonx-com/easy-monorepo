@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Common\Exception;
 
-use EonX\EasyErrorHandler\Common\Exception\ValidationException;
+use EonX\EasyErrorHandler\Common\Exception\WithErrorListException;
 use Throwable;
 
-final class ValidationFailedException extends ValidationException
+final class ValidationFailedException extends WithErrorListException
 {
     public function __construct(array $errors, ?string $message = null, ?int $code = null, ?Throwable $previous = null)
     {

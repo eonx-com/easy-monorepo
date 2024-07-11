@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Common\Provider;
 
 use EonX\EasyErrorHandler\Common\Builder\CodeErrorResponseBuilder;
+use EonX\EasyErrorHandler\Common\Builder\ErrorListResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\ExtendedExceptionErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\HttpExceptionErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\StatusCodeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\SubCodeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\TimeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\UserMessageErrorResponseBuilder;
-use EonX\EasyErrorHandler\Common\Builder\ViolationsErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -48,7 +48,7 @@ final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderP
             $this->translator,
             $this->getKey(UserMessageErrorResponseBuilder::DEFAULT_KEY)
         );
-        yield new ViolationsErrorResponseBuilder($this->getKey(ViolationsErrorResponseBuilder::DEFAULT_KEY));
+        yield new ErrorListResponseBuilder($this->getKey(ErrorListResponseBuilder::DEFAULT_KEY));
 
         if (\interface_exists(HttpExceptionInterface::class)) {
             yield new HttpExceptionErrorResponseBuilder($this->keys);

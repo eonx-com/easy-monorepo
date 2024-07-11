@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
-use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
+use EonX\EasyErrorHandler\Tests\Stub\Exception\WithErrorListExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\Common\Builder\TestRenderWithDefaultBuildersDataProvider;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -68,7 +68,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
         $handler = $this->getApplication()
             ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
-        $exception = (new ValidationExceptionStub())->setErrors([
+        $exception = (new WithErrorListExceptionStub())->setErrors([
             'property' => ['Property must not be null'],
         ]);
 
@@ -86,7 +86,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
             ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
 
-        $handler->renderForConsole($output, new ValidationExceptionStub());
+        $handler->renderForConsole($output, new WithErrorListExceptionStub());
         $result = $output->fetch();
 
         self::assertStringContainsString('Validation Failures:', $result);

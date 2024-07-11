@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Exception;
 
-interface ValidationExceptionInterface
+interface WithErrorListExceptionInterface
 {
     /**
      * Returns validation errors.
