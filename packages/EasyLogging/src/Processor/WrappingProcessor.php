@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Processor;
 use Closure;
 use Monolog\Processor\ProcessorInterface;
 
-final class WarppingProcessor implements ProcessorInterface
+final class WrappingProcessor implements ProcessorInterface
 {
     private Closure $wrapped;
 
