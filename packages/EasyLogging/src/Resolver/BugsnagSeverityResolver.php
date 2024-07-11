@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Resolver;
 
-use Monolog\Logger;
+use EonX\EasyLogging\Enum\BugsnagSeverity;
+use Monolog\Level;
 
 final class BugsnagSeverityResolver implements BugsnagSeverityResolverInterface
 {
-    public function resolve(int $level): string
+    public function resolve(Level $level): BugsnagSeverity
     {
         return match (true) {
-            $level >= Logger::CRITICAL => self::SEVERITY_ERROR,
-            $level >= Logger::ERROR => self::SEVERITY_WARNING,
-            default => self::SEVERITY_INFO
+            $level->value >= Level::Critical->value => BugsnagSeverity::Error,
+            $level->value >= Level::Error->value => BugsnagSeverity::Warning,
+            default => BugsnagSeverity::Info
         };
     }
 }

@@ -32,7 +32,6 @@ final class LoggerStub extends Logger
     ) {
         $this->testHandler = new TestHandler();
         $this->testHandler->setSkipReset(true);
-        unset($handlers);
 
         parent::__construct(
             name: $name,

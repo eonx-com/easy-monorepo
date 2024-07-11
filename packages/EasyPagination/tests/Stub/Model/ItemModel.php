@@ -13,7 +13,7 @@ final class ItemModel extends Model
     public $timestamps = false;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'title',

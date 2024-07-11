@@ -141,9 +141,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
-        - message: "#Offset 'extra' on array{message: string, context: array, level: 100|200|250|300|400|500|550|600, level_name: 'ALERT'|'CRITICAL'|'DEBUG'|'EMERGENCY'|'ERROR'|'INFO'|'NOTICE'|'WARNING', channel: string, datetime: DateTimeImmutable, extra: array} on left side of ?? always exists and is not nullable#"
-          path: %currentWorkingDirectory%/packages/EasyRequestId/src/EasyLogging/Processor/RequestIdProcessor.php
-
         # ---- EasySchedule ----
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
           path: %currentWorkingDirectory%/packages/EasySchedule/src/Entry/ScheduleEntry.php

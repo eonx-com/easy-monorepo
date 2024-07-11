@@ -5,6 +5,7 @@ namespace EonX\EasyRequestId\EasyLogging\Processor;
 
 use EonX\EasyLogging\Processor\AbstractSelfConfigProvidingProcessor;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
+use Monolog\LogRecord;
 
 final class RequestIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
@@ -13,13 +14,11 @@ final class RequestIdProcessor extends AbstractSelfConfigProvidingProcessor
     ) {
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
-        $extra = $record['extra'] ?? [];
-        $extra[$this->requestIdProvider->getCorrelationIdHeaderName()] = $this->requestIdProvider->getCorrelationId();
-        $extra[$this->requestIdProvider->getRequestIdHeaderName()] = $this->requestIdProvider->getRequestId();
-
-        $record['extra'] = $extra;
+        $record->extra[$this->requestIdProvider->getCorrelationIdHeaderName()]
+            = $this->requestIdProvider->getCorrelationId();
+        $record->extra[$this->requestIdProvider->getRequestIdHeaderName()] = $this->requestIdProvider->getRequestId();
 
         return $record;
     }

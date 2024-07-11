@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Unit\Processor;
 
+use DateTimeImmutable;
 use EonX\EasyLogging\Processor\WarppingProcessor;
 use EonX\EasyLogging\Tests\Stub\ValueObject\InvokableStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
+use Monolog\Level;
+use Monolog\LogRecord;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @phpstan-import-type Record from \Monolog\Logger
- */
 final class WarppingProcessorTest extends AbstractUnitTestCase
 {
     /**
@@ -19,7 +19,7 @@ final class WarppingProcessorTest extends AbstractUnitTestCase
     public static function provideInvokeData(): iterable
     {
         yield 'Using closure' => [
-            fn (array $records): array => $records,
+            fn (LogRecord $record): LogRecord => $record,
         ];
 
         yield 'Using object with __invoke method' => [new InvokableStub()];
@@ -29,11 +29,8 @@ final class WarppingProcessorTest extends AbstractUnitTestCase
     public function testInvoke(callable $wrapped): void
     {
         $wrapper = WarppingProcessor::wrap($wrapped);
-        /** @phpstan-var Record $array */
-        $array = [
-            'key' => 'value',
-        ];
+        $logRecord = new LogRecord(new DateTimeImmutable(), 'some-channel', Level::Warning, 'some-message');
 
-        self::assertEquals($array, $wrapper($array));
+        self::assertEquals($logRecord, $wrapper($logRecord));
     }
 }

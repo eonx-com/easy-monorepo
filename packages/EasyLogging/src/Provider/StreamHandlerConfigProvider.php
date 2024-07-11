@@ -6,11 +6,12 @@ namespace EonX\EasyLogging\Provider;
 use EonX\EasyLogging\Config\HandlerConfig;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 
 final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
-    private int $level;
+    private Level $level;
 
     /**
      * @var resource|string

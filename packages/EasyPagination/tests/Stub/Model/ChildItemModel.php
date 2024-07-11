@@ -14,7 +14,7 @@ final class ChildItemModel extends Model
     public $timestamps = false;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'child_title',
