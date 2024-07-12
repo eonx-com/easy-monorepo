@@ -6,7 +6,7 @@ namespace EonX\EasyErrorHandler\Common\Builder;
 use EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface;
 use Throwable;
 
-final class ErrorListResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
+final class ViolationsErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
     public const DEFAULT_KEY = 'violations';
 

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Exception;
 
-abstract class WithErrorListException extends BadRequestException implements WithErrorListExceptionInterface
+abstract class ValidationException extends BadRequestException implements WithErrorListExceptionInterface
 {
     use ValidationExceptionTrait;
 

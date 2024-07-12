@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Unit\Common\Builder;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
-use EonX\EasyErrorHandler\Tests\Stub\Exception\WithErrorListExceptionStub;
+use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Exception;
 use Illuminate\Http\Request;
@@ -82,7 +82,7 @@ final class TestRenderWithDefaultBuildersDataProvider
 
         yield 'Response with validation errors' => [
             'request' => new Request(),
-            'exception' => (new WithErrorListExceptionStub())->setErrors(['foo' => 'bar']),
+            'exception' => (new ValidationExceptionStub())->setErrors(['foo' => 'bar']),
             'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 TestCase::assertArrayHasKey('custom_violations', $content);
@@ -114,7 +114,7 @@ final class TestRenderWithDefaultBuildersDataProvider
 
         yield 'Short response with violations' => [
             'request' => new Request(),
-            'exception' => (new WithErrorListExceptionStub())->setErrors(['foo' => ['bar']]),
+            'exception' => (new ValidationExceptionStub())->setErrors(['foo' => ['bar']]),
             'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 TestCase::assertArrayHasKey('custom_violations', $content);

@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Common\Exception;
 
-use EonX\EasyErrorHandler\Tests\Stub\Exception\WithErrorListExceptionStub;
+use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 
-final class WithErrorListExceptionTest extends AbstractUnitTestCase
+final class ValidationExceptionTest extends AbstractUnitTestCase
 {
     public function testGetErrors(): void
     {
         $errors = ['foo' => 'bar'];
-        $exception = new WithErrorListExceptionStub();
+        $exception = new ValidationExceptionStub();
         self::setPrivatePropertyValue($exception, 'errors', $errors);
 
         $result = $exception->getErrors();
@@ -22,7 +22,7 @@ final class WithErrorListExceptionTest extends AbstractUnitTestCase
     public function testSetErrors(): void
     {
         $errors = ['foo' => 'bar'];
-        $exception = new WithErrorListExceptionStub();
+        $exception = new ValidationExceptionStub();
 
         $result = $exception->setErrors($errors);
 
