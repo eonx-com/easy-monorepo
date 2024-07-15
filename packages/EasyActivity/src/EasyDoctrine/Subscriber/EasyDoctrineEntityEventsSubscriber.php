@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\EasyDoctrine\Subscriber;
 
-use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Logger\ActivityLoggerInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
@@ -12,7 +12,7 @@ use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
 final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEventsSubscriberInterface
 {
     public function __construct(
-        private ActivityLoggerInterface $activityLogger,
+        private readonly ActivityLoggerInterface $activityLogger,
         private bool $enabled,
     ) {
     }
@@ -38,20 +38,20 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
 
     public function onCreate(EntityCreatedEvent $event): void
     {
-        $this->dispatchLogEntry(ActivityLogEntry::ACTION_CREATE, $event->getEntity(), $event->getChangeSet());
+        $this->dispatchLogEntry(ActivityAction::Create, $event->getEntity(), $event->getChangeSet());
     }
 
     public function onDelete(EntityDeletedEvent $event): void
     {
-        $this->dispatchLogEntry(ActivityLogEntry::ACTION_DELETE, $event->getEntity(), $event->getChangeSet());
+        $this->dispatchLogEntry(ActivityAction::Delete, $event->getEntity(), $event->getChangeSet());
     }
 
     public function onUpdate(EntityUpdatedEvent $event): void
     {
-        $this->dispatchLogEntry(ActivityLogEntry::ACTION_UPDATE, $event->getEntity(), $event->getChangeSet());
+        $this->dispatchLogEntry(ActivityAction::Update, $event->getEntity(), $event->getChangeSet());
     }
 
-    private function dispatchLogEntry(string $action, object $object, array $changeSet): void
+    private function dispatchLogEntry(ActivityAction $action, object $object, array $changeSet): void
     {
         if ($this->enabled === false) {
             return;

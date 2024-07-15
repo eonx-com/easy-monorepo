@@ -8,7 +8,7 @@ use EonX\EasyActivity\Messenger\Message\ActivityLogEntryMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class ActivityLogEntryMessageHandler
+final readonly class ActivityLogEntryMessageHandler
 {
     public function __construct(
         private StoreInterface $store,

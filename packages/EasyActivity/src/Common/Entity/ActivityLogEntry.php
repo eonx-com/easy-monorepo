@@ -4,19 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Common\Entity;
 
 use DateTimeInterface;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
 
 final class ActivityLogEntry
 {
-    public const ACTION_CREATE = 'create';
-
-    public const ACTION_DELETE = 'delete';
-
-    public const ACTION_UPDATE = 'update';
-
     public const DEFAULT_ACTOR_TYPE = 'system';
 
-    private string $action;
+    private ActivityAction $action;
 
     private ?string $actorId = null;
 
@@ -36,7 +31,7 @@ final class ActivityLogEntry
 
     private DateTimeInterface $updatedAt;
 
-    public function getAction(): string
+    public function getAction(): ActivityAction
     {
         return $this->action;
     }
@@ -86,7 +81,7 @@ final class ActivityLogEntry
         return $this->updatedAt;
     }
 
-    public function setAction(string $action): self
+    public function setAction(ActivityAction $action): self
     {
         $this->action = $action;
 

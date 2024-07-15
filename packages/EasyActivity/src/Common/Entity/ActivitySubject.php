@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Common\Entity;
 
-final class ActivitySubject implements ActivitySubjectInterface
+final readonly class ActivitySubject implements ActivitySubjectInterface
 {
     /**
      * @param list<string> $disallowedProperties

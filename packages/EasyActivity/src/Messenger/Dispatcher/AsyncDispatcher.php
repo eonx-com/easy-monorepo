@@ -8,15 +8,15 @@ use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Messenger\Message\ActivityLogEntryMessage;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class AsyncDispatcher implements AsyncDispatcherInterface
+final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
-        private MessageBusInterface $bus,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
     public function dispatch(ActivityLogEntry $activityLogEntry): void
     {
-        $this->bus->dispatch(new ActivityLogEntryMessage($activityLogEntry));
+        $this->messageBus->dispatch(new ActivityLogEntryMessage($activityLogEntry));
     }
 }

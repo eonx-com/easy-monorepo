@@ -5,7 +5,7 @@ namespace EonX\EasyActivity\Tests\Fixture\App\Entity;
 
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 
-final class ActivityLogEntity implements ActivitySubjectInterface
+final readonly class ActivityLogEntity implements ActivitySubjectInterface
 {
     public function __construct(
         private string $id,

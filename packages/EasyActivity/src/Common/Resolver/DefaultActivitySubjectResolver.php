@@ -8,7 +8,7 @@ use EonX\EasyActivity\Common\Entity\ActivitySubject;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Exception\UnableToResolveActivitySubjectException;
 
-final class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
+final readonly class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
     public function __construct(
         private array $subjects,

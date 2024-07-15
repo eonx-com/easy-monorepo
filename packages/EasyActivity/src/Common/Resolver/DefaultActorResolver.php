@@ -7,7 +7,7 @@ use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Entity\Actor;
 use EonX\EasyActivity\Common\Entity\ActorInterface;
 
-final class DefaultActorResolver implements ActorResolverInterface
+final readonly class DefaultActorResolver implements ActorResolverInterface
 {
     public function resolve(object $object): ActorInterface
     {
