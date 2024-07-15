@@ -1,19 +1,15 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
-use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
-use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
-use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
-use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -26,7 +22,11 @@ return RectorConfig::configure()
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
-    ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
+    ->withParallel(
+        ParallelSettingsHelper::getTimeoutSeconds(),
+        ParallelSettingsHelper::getMaxNumberOfProcess(),
+        ParallelSettingsHelper::getJobSize()
+    )
     ->withImportNames(importDocBlockNames: false)
     ->withPhpSets(php82: true)
     ->withCache(__DIR__ . '/var/cache/rector', FileCacheStorage::class)
@@ -35,7 +35,7 @@ return RectorConfig::configure()
     ])
     ->withSets([
         EasyQualitySetList::RECTOR,
-        PHPUnitSetList::PHPUNIT_100,
+        EasyQualitySetList::RECTOR_PHPUNIT_10,
     ])
     ->withSkip([
         // Skip entire files or directories
@@ -43,16 +43,7 @@ return RectorConfig::configure()
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
 
         // Skip rules
-        AddLiteralSeparatorToNumberRector::class => [
-            'packages/EasyApiToken/tests/AbstractFirebaseJwtTokenTestCase.php',
-            'packages/EasyUtils/tests/Unit/src/Common/Validator/AbnValidatorTest.php',
-        ],
         ClassPropertyAssignToConstructorPromotionRector::class,
-        FinalizeClassesWithoutChildrenRector::class => [
-            'packages/EasySecurity/src/Common/Context/SecurityContext.php',
-            'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
-        ],
-        FinalizePublicClassConstantRector::class,
         FirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
@@ -61,7 +52,6 @@ return RectorConfig::configure()
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
-        JsonThrowOnErrorRector::class,
         ReadOnlyPropertyRector::class,
     ])
     ->withRules([

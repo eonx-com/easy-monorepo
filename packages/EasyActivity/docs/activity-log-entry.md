@@ -12,9 +12,9 @@ The `EonX\EasyActivity\Common\Entity\ActivityLogEntry` class defines the data th
 An ActivityLogEntry object has the following properties:
 
 - `action`: The type of action performed on the subject, which may be one of:
-    - `ActivityLogEntry::ACTION_CREATE` (i.e. `create`): Create subject
-    - `ActivityLogEntry::ACTION_DELETE` (i.e. `delete`): Delete subject
-    - `ActivityLogEntry::ACTION_UPDATE` (i.e. `update`): Update subject
+    - `ActivityAction::Create` (i.e. `create`): Create subject
+    - `ActivityAction::Delete` (i.e. `delete`): Delete subject
+    - `ActivityAction::Update` (i.e. `update`): Update subject
 - `actorId`: An optional identifier for an actor in the application.
 - `actorName`: An optional name for an actor in the application.
 - `actorType`: A mandatory actor type. The actor type could be a `user`, `provider`, `customer`, `jwt:provider`,

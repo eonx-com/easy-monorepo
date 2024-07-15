@@ -6,7 +6,7 @@ namespace EonX\EasyActivity\Common\Entity;
 use BackedEnum;
 use InvalidArgumentException;
 
-final class Actor implements ActorInterface
+final readonly class Actor implements ActorInterface
 {
     private string $type;
 
