@@ -17,9 +17,6 @@ final readonly class DoctrineActivitySubjectDataResolver implements ActivitySubj
     ) {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function resolve(
         ActivityAction $action,
         ActivitySubjectInterface $subject,

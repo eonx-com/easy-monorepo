@@ -29,25 +29,16 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
         return $this->type;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAllowedActivityProperties(): ?array
     {
         return $this->allowedProperties;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getDisallowedActivityProperties(): array
     {
         return $this->disallowedProperties;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getNestedObjectAllowedActivityProperties(): array
     {
         return $this->nestedObjectAllowedProperties;

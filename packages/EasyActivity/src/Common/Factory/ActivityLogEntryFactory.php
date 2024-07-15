@@ -19,9 +19,6 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
     ) {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function create(ActivityAction $action, object $object, array $changeSet): ?ActivityLogEntry
     {
         $subject = $this->subjectResolver->resolve($object);

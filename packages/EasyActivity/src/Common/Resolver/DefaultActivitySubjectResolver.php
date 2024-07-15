@@ -15,9 +15,6 @@ final readonly class DefaultActivitySubjectResolver implements ActivitySubjectRe
     ) {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function resolve(object $object): ?ActivitySubjectInterface
     {
         if ($object instanceof ActivitySubjectInterface) {
