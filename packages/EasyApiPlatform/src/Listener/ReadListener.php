@@ -10,7 +10,7 @@ use ApiPlatform\State\Util\RequestAttributesExtractor;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-final class ReadListener
+final readonly class ReadListener
 {
     use OperationRequestInitiatorTrait;
 

@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Paginator;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
 
-final class CustomPaginator implements CustomPaginatorInterface
+final readonly class CustomPaginator implements CustomPaginatorInterface
 {
     public function __construct(
         private Paginator $decorated,
