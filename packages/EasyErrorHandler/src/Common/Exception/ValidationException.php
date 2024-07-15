@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Common\Exception;
 
 abstract class ValidationException extends BadRequestException implements WithErrorListExceptionInterface
 {
-    use ValidationExceptionTrait;
+    use WithErrorListExceptionTrait;
 
     protected string $userMessage = self::USER_MESSAGE_NOT_VALID;
 }
