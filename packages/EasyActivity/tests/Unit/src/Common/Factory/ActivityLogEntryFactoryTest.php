@@ -5,6 +5,7 @@ namespace EonX\EasyActivity\Tests\Unit\Common\Factory;
 
 use Carbon\Carbon;
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLogEntity;
@@ -20,7 +21,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
     {
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
-        $result = $sut->create(ActivityLogEntry::ACTION_UPDATE, new Article(), ['key' => 'value']);
+        $result = $sut->create(ActivityAction::Update, new Article(), ['key' => 'value']);
 
         self::assertNull($result);
     }
@@ -36,7 +37,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
-            ActivityLogEntry::ACTION_CREATE,
+            ActivityAction::Create,
             (new Article())->setId((string)(new NilUuid())),
             ['title' => [null, 'New Title']]
         );
@@ -50,7 +51,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         );
         self::assertNull($result->getSubjectOldData());
         self::assertSame(DefaultActorResolver::DEFAULT_ACTOR_TYPE, $result->getActorType());
-        self::assertSame(ActivityLogEntry::ACTION_CREATE, $result->getAction());
+        self::assertSame(ActivityAction::Create, $result->getAction());
         self::assertNull($result->getActorName());
         self::assertSame((string)(new NilUuid()), $result->getSubjectId());
         self::assertSame(Article::class, $result->getSubjectType());
@@ -79,7 +80,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
             ->addComment($comment2);
 
         $result = $sut->create(
-            ActivityLogEntry::ACTION_CREATE,
+            ActivityAction::Create,
             $article,
             [
                 'content' => [null, $article->getContent()],
@@ -111,7 +112,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
-            ActivityLogEntry::ACTION_UPDATE,
+            ActivityAction::Update,
             $author,
             ['field' => [1, 2]]
         );
@@ -129,7 +130,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
-            ActivityLogEntry::ACTION_UPDATE,
+            ActivityAction::Update,
             $activityLogEntity,
             [
                 'field1' => [1, 2],
@@ -161,7 +162,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $article->setAuthor($author);
 
         $result = $sut->create(
-            ActivityLogEntry::ACTION_CREATE,
+            ActivityAction::Create,
             $article,
             [
                 'title' => [null, $article->getTitle()],
@@ -196,7 +197,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $article->setAuthor($author);
 
         $result = $sut->create(
-            ActivityLogEntry::ACTION_CREATE,
+            ActivityAction::Create,
             $article,
             [
                 'title' => [null, 'Related objects'],

@@ -1,4 +1,5 @@
 includes:
+    - vendor/eonx-com/easy-quality/config/phpstan/eonx.neon
     - vendor/symplify/phpstan-extensions/config/config.neon
 
 services:
@@ -7,9 +8,6 @@ services:
 
 parameters:
     tmpDir: var/cache/phpstan
-
-    parallel:
-        maximumNumberOfProcesses: 2
 
     level: 8
 

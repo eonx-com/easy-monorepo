@@ -7,6 +7,7 @@ use BackedEnum;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLog;
@@ -125,7 +126,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'action' => ActivityLogEntry::ACTION_DELETE,
+                'action' => ActivityAction::Delete->value,
                 'actorId' => null,
                 'actorName' => null,
                 'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
@@ -178,7 +179,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
                 'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'actorId' => null,
                 'actorName' => null,
-                'action' => ActivityLogEntry::ACTION_CREATE,
+                'action' => ActivityAction::Create->value,
                 'subjectType' => 'article',
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
@@ -221,7 +222,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
                 'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'actorId' => null,
                 'actorName' => null,
-                'action' => ActivityLogEntry::ACTION_CREATE,
+                'action' => ActivityAction::Create->value,
                 'subjectType' => 'article',
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
@@ -242,7 +243,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
                 'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'actorId' => null,
                 'actorName' => null,
-                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'action' => ActivityAction::Update->value,
                 'subjectType' => 'article',
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
@@ -296,7 +297,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'action' => ActivityLogEntry::ACTION_CREATE,
+                'action' => ActivityAction::Create->value,
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
                     'content' => 'Content',
@@ -313,7 +314,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'action' => ActivityAction::Update->value,
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
                     'comments' => [$commentA->getId(), $commentB->getId(), $commentDId],
@@ -327,7 +328,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'action' => ActivityAction::Update->value,
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
                     'comments' => [$commentA->getId(), $commentB->getId()],
@@ -341,7 +342,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'action' => ActivityLogEntry::ACTION_UPDATE,
+                'action' => ActivityAction::Update->value,
                 'subjectId' => $article->getId(),
                 'subjectData' => \json_encode([
                     'comments' => [$commentA->getId(), $commentB->getId(), $commentE->getId()],
@@ -359,7 +360,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
     #[DataProvider('provideActorTypes')]
     public function testLoggerSucceedsWithCustomActorResolver(
         string|BackedEnum $actorType,
-        string $expectedEnumType,
+        string $expectedActorType,
     ): void {
         self::bootKernel(['environment' => 'custom_actor_resolver']);
         /** @var \EonX\EasyActivity\Tests\Fixture\App\ActorResolver\CustomActorResolver $customActorResolver */
@@ -378,7 +379,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'actorType' => $expectedEnumType,
+                'actorType' => $expectedActorType,
                 'actorId' => 'actor-id',
                 'actorName' => 'actor-name',
                 'subjectId' => $article->getId(),

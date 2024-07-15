@@ -5,12 +5,11 @@ namespace EonX\EasyActivity\Common\Factory;
 
 use Symfony\Component\Uid\Factory\UuidFactory as SymfonyUuidFactory;
 
-final class UuidFactory implements IdFactoryInterface
+final readonly class UuidFactory implements IdFactoryInterface
 {
     public function __construct(
         private SymfonyUuidFactory $uuidFactory,
     ) {
-        // The body is not required
     }
 
     public function create(): string

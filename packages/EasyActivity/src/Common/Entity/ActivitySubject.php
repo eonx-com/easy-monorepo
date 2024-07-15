@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Common\Entity;
 
-final class ActivitySubject implements ActivitySubjectInterface
+final readonly class ActivitySubject implements ActivitySubjectInterface
 {
     /**
      * @param list<string> $disallowedProperties
@@ -29,25 +29,16 @@ final class ActivitySubject implements ActivitySubjectInterface
         return $this->type;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAllowedActivityProperties(): ?array
     {
         return $this->allowedProperties;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getDisallowedActivityProperties(): array
     {
         return $this->disallowedProperties;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getNestedObjectAllowedActivityProperties(): array
     {
         return $this->nestedObjectAllowedProperties;

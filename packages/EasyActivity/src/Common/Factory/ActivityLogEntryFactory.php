@@ -5,11 +5,12 @@ namespace EonX\EasyActivity\Common\Factory;
 
 use Carbon\Carbon;
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
 
-final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
+final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
 {
     public function __construct(
         private ActorResolverInterface $actorResolver,
@@ -18,10 +19,7 @@ final class ActivityLogEntryFactory implements ActivityLogEntryFactoryInterface
     ) {
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function create(string $action, object $object, array $changeSet): ?ActivityLogEntry
+    public function create(ActivityAction $action, object $object, array $changeSet): ?ActivityLogEntry
     {
         $subject = $this->subjectResolver->resolve($object);
         if ($subject === null) {

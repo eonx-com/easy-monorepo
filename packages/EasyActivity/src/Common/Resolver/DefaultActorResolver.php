@@ -6,7 +6,7 @@ namespace EonX\EasyActivity\Common\Resolver;
 use EonX\EasyActivity\Common\Entity\Actor;
 use EonX\EasyActivity\Common\Entity\ActorInterface;
 
-final class DefaultActorResolver implements ActorResolverInterface
+final readonly class DefaultActorResolver implements ActorResolverInterface
 {
     public const DEFAULT_ACTOR_TYPE = 'system';
 
