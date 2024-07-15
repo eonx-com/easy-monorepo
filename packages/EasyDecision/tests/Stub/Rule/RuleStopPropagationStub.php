@@ -6,7 +6,7 @@ namespace EonX\EasyDecision\Tests\Stub\Rule;
 use EonX\EasyDecision\Context\ContextAwareInterface;
 use EonX\EasyDecision\Context\ContextAwareTrait;
 
-final class RuleStopPropagationStub extends RuleStub implements ContextAwareInterface
+final class RuleStopPropagationStub extends AbstractRuleStub implements ContextAwareInterface
 {
     use ContextAwareTrait;
 
