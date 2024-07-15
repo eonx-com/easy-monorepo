@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
@@ -44,7 +45,11 @@ return ECSConfig::configure()
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
-    ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
+    ->withParallel(
+        ParallelSettingsHelper::getTimeoutSeconds(),
+        ParallelSettingsHelper::getMaxNumberOfProcess(),
+        ParallelSettingsHelper::getJobSize()
+    )
     ->withCache(__DIR__ . '/var/cache/ecs')
     ->withSets([
         EasyQualitySetList::ECS,
@@ -83,6 +88,8 @@ return ECSConfig::configure()
         ],
         DisallowNonNullDefaultValueSniff::class => null,
         FinalClassFixer::class => [
+            'packages/EasyActivity/tests/Fixture/app/src/Entity/Type.php',
+            'packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/EmbeddableDummy.php',
             'packages/EasySecurity/src/Common/Context/SecurityContext.php',
             'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
         ],
