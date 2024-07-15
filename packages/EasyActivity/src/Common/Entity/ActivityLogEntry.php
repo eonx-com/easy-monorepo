@@ -12,7 +12,7 @@ final class ActivityLogEntry
     /**
      * The type of action performed on the subject.
      */
-    private string $action;
+    private ActivityAction $action;
 
     /**
      * An optional identifier for an actor in the application.
