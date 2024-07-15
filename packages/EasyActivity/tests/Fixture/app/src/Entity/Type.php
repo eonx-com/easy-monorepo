@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
-class Type
+final class Type
 {
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $description;

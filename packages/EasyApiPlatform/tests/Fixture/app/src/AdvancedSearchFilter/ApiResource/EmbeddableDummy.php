@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Embeddable]
-class EmbeddableDummy
+final class EmbeddableDummy
 {
     #[Orm\Column(type: Types::BOOLEAN, nullable: true)]
     private ?bool $dummyBoolean = null;

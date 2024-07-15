@@ -20,7 +20,8 @@ final readonly class DoctrineDbalStore implements StoreInterface
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry
     {
         $data = [
-            'action' => $logEntry->getAction()->value,
+            'action' => $logEntry->getAction()
+                ->value,
             'actor_id' => $logEntry->getActorId(),
             'actor_name' => $logEntry->getActorName(),
             'actor_type' => $logEntry->getActorType(),
