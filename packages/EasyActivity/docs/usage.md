@@ -1,77 +1,215 @@
----eonx_docs---
+<!---eonx_docs---
 title: Usage
 weight: 1002
----eonx_docs---
+---eonx_docs--->
 
 # Usage
 
-The EasyActivity package stores activity log entries for actions performed on subjects. Activity log entries are stored
-as database records in the `easy_activity_logs` table by default (the table name can be changed in the package
-[configuration][1]). See the [ActivityLogEntry class][2] for more information on what can be stored in the database
-record.
-
-An application can either use `EonX\EasyActivity\Doctrine\Provider\DoctrineDbalStatementsProvider` to create a table or
-describe a database entity/model relying on this table by itself.
+The EasyActivity package stores activity log entries for actions performed on subjects.
 
 ## Resolving actors
 
-To resolve an actor's identifier, name and type, the package relies on
-`EonX\EasyActivity\Common\Resolver\ActorResolverInterface`.
+A default implementation is provided by the package ([`EonX\EasyActivity\Common\Resolver\DefaultActorResolver`](../src/Common/Resolver/DefaultActorResolver.php))
+, it only sets the actor's type to the default (`system`), so your application should register
+its own implementation of the interface to provide the required values (e.g. from a Security Context).
 
-Although a default implementation is provided by the package (`EonX\EasyActivity\Common\Resolver\DefaultActorResolver`), it
-only sets the actor's type to the default (`system`), so your application should register its own implementation of the
-interface to provide the required values (e.g. from a Security Context).
+For example, if you are using the EasySecurity package, you can create the following implementation `src/Infrastructure/EasyActivity/Resolver/ActorResolver.php`
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Infrastructure\EasyActivity\Resolver;
+
+use EonX\EasyActivity\Actor;
+use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+use EonX\EasySecurity\Interfaces\ProviderInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextInterface;
+use EonX\EasySecurity\Interfaces\SecurityContextResolverInterface;
+use EonX\EasySecurity\Interfaces\UserInterface;
+use UnexpectedValueException;
+
+final class ActorResolver implements ActorResolverInterface
+{
+    public const ACTOR_TYPE_API_KEY_PROVIDER = 'api_key:provider';
+
+    private const ACTOR_TYPE_JWT_PROVIDER = 'jwt:provider';
+
+    private const ACTOR_TYPE_USER = 'user';
+
+    public function __construct(private SecurityContextResolverInterface $securityContextResolver)
+    {
+    }
+
+    public function resolve(object $object): Actor
+    {
+        $securityContext = $this->securityContextResolver->resolveContext();
+        $user = $securityContext->getUser();
+        $provider = $securityContext->getProvider();
+
+        return match (true) {
+            $user !== null => $this->resolveUserActor($user, $securityContext),
+            $provider !== null => $this->resolveProviderActor($provider, $securityContext),
+            default => throw new UnexpectedValueException("Actor couldn't be resolved."),
+        };
+    }
+
+    private function resolveProviderActor(ProviderInterface $provider, SecurityContextInterface $securityContext): Actor
+    {
+        $token = $securityContext->getToken();
+
+        if ($token !== null) {
+            return new Actor(
+                self::ACTOR_TYPE_API_KEY_PROVIDER,
+                $token->getPayload()['sub'],
+                $provider->getName()
+            );
+        }
+
+        return new Actor(self::ACTOR_TYPE_JWT_PROVIDER, $provider->getExternalId(), $provider->getFullName());
+    }
+
+    private function resolveUserActor(UserInterface $user, SecurityContextInterface $securityContext): Actor
+    {
+        return new Actor(self::ACTOR_TYPE_USER, $user->getUserIdentifier(), $user->getFullName());
+    }
+}
+
+```
+
+And add service definition to your Symfony configuration:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use App\Infrastructure\EasyActivity\Resolver\ActorResolver;
+use EonX\EasyActivity\Interfaces\ActorResolverInterface;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $services = $containerConfigurator->services();
+
+    $services->defaults()
+        ->autowire()
+        ->autoconfigure();
+
+    $services->set(ActorResolverInterface::class, ActorResolver::class);
+};
+
+```
 
 ## Resolving subjects
 
-To resolve a subject's identifier, type, data and old data, the package relies on
-`EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface`.
+The package provides a default implementation ([`EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectResolver`](../src/Common/Resolver/DefaultActivitySubjectResolver.php))
+, but you can implement your own instead.
 
-The package provides a default implementation (`EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectResolver`), but you
-can implement your own instead.
+By default the package use FQCN for the subject type. You could set the subject type in the configuration
+for each subject or implement your own resolver `src/Infrastructure/EasyActivity/Resolver/ActivitySubjectResolver.php`:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Infrastructure\EasyActivity\Resolver;
+
+use EonX\EasyActivity\ActivitySubject;
+use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
+use ReflectionClass;
+
+final class ActivitySubjectResolver implements ActivitySubjectResolverInterface
+{
+    public function __construct(private ActivitySubjectResolverInterface $decorated)
+    {
+    }
+
+    public function resolve(object $object): ?ActivitySubjectInterface
+    {
+        $activitySubject = $this->decorated->resolve($object);
+
+        if ($activitySubject !== null) {
+            $activitySubject = new ActivitySubject(
+                $activitySubject->getActivitySubjectId(),
+                $this->resolveSubjectType($activitySubject->getActivitySubjectType()),
+                $activitySubject->getDisallowedActivityProperties(),
+                $activitySubject->getNestedObjectAllowedActivityProperties(),
+                $activitySubject->getAllowedActivityProperties()
+            );
+        }
+
+        return $activitySubject;
+    }
+
+    private function resolveSubjectType(string $subjectType): string
+    {
+        if (\class_exists($subjectType)) {
+            $subjectType = (new ReflectionClass($subjectType))->getShortName();
+        }
+
+        return $subjectType;
+    }
+}
+
+```
+
+And add service definition to your Symfony configuration:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use App\Infrastructure\EasyActivity\Resolver\ActivitySubjectResolver;
+use EonX\EasyActivity\Interfaces\ActivitySubjectResolverInterface;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $services = $containerConfigurator->services();
+
+    $services->defaults()
+        ->autowire()
+        ->autoconfigure();
+
+    $services->set(ActivitySubjectResolver::class)
+        ->arg('$decorated', service('.inner'))
+        ->decorate(ActivitySubjectResolverInterface::class);
+};
+
+```
 
 ## Creating activity log entries
 
-To create a new activity log entry, an application can use one of the following methods:
+The [eonx-com/easy-doctrine](https://github.com/eonx-com/easy-doctrine) package provides events for Doctrine entity creation,
+update and deletion. EasyActivity has integration with EasyDoctrine that contains
+[`EonX\EasyActivity\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriber`](../src/EasyDoctrine/Subscriber/EasyDoctrineEntityEventsSubscriber.php)
+, which will take care of accepting those events and passing them to
+[`EonX\EasyActivity\Common\Factory\ActivityLogEntryFactory`](../src/Common/Factory/ActivityLogEntryFactory.php)
+EasyActivity also passes the subject list to the EasyDoctrine configuration
+(so the EasyDoctrine knows which Doctrine entities to listen to).
 
-- **EasyDoctrine**: Install the [eonx-com/easy-doctrine][3] package that provides events for Doctrine entity creation,
-  update and deletion. EasyActivity has integration with EasyDoctrine that contains
-  `EonX\EasyActivity\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriber`, which will take care of accepting those
-  events and passing them to `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`.
-  EasyActivity also passes the subject list to the EasyDoctrine configuration (so the EasyDoctrine knows which
-  Doctrine entities to listen to).
-- **Eloquent**: Use an Eloquent integration with a listener for Eloquent events that will take care of passing model data to
-  `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface` (not implemented yet).
-- **Manual creation**: Create activity log entries manually using
-  `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`, with either the default
-  `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactory` implementation or your own implementation registered for the interface.
+Also you could create activity log entries manually.
 
-To save a new activity log entry the package relies on `EonX\EasyActivity\Common\Logger\ActivityLoggerInterface`. An
-application can register its own implementation or use one of the following:
+## Serializing activity log entry data
 
-- `EonX\EasyActivity\Common\Logger\AsyncActivityLogger` to save an activity log entry asynchronously (this is the default)
-- `EonX\EasyActivity\Common\Logger\SyncActivityLogger` to save an activity log entry synchronously
+Package provides the
+[`EonX\EasyActivity\Common\Serializer\SymfonyActivitySubjectDataSerializer`](../src/Common/Serializer/SymfonyActivitySubjectDataSerializer.php)
+, which is a simple wrapper for
+`Symfony\Component\Serializer\SerializerInterface` used to serialize activity log entry data.
+Please note that all the nested objects are serialized as an array containing only the `id` key by default.
+You can change the default behaviour with the `nested_object_allowed_properties` configuration option
+(see [Configuration](config.md)).
 
-## Symfony bundle
+## Storing activity log entries
 
-The Symfony bundle provided with this package allows it to be integrated into a Symfony-based application. Besides
-Symfony bundle/extension classes, it brings the following functionality:
+Activity log entries are stored as database records in the `easy_activity_logs` table by default
+(the table name can be changed in the package [configuration](config.md)).
 
-- The default implementation for `EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface`:
-  `EonX\EasyActivity\Common\Serializer\SymfonyActivitySubjectDataSerializer`, which is a simple wrapper for
-  `Symfony\Component\Serializer\SerializerInterface` used to serialize activity log entry data. Please note that all
-  the nested objects are serialized as an array containing only the `id` key by default. You can change the default
-  behaviour with the `nested_object_allowed_properties` configuration option (see [Configuration][4]).
-- The Symfony Messenger classes that are used for asynchronous activity log entry storing.
-- The default implementation for `EonX\EasyActivity\Common\Store\StoreInterface`:
-  `EonX\EasyActivity\Doctrine\Store\DoctrineDbalStore`, which stores the activity log entries using a DBAL connection.
-  An application can register its own implementation for this interface to be able to store activity log entries in a
-  different way or using different storage.
+An application can either use
+[`EonX\EasyActivity\Doctrine\Provider\DoctrineDbalStatementProvider`](../src/Doctrine/Provider/DoctrineDbalStatementProvider.php)
+to create a table or describe a database entity/model relying on this table by itself.
 
-[1]: config.md
-
-[2]: activity-log-entry.md
-
-[3]: https://github.com/eonx-com/easy-doctrine
-
-[4]: config.md
+By default package uses the
+[`EonX\EasyActivity\Doctrine\Store\DoctrineDbalStore`](../src/Doctrine/Store/DoctrineDbalStore.php)
+, which stores the activity log entries using a DBAL connection.

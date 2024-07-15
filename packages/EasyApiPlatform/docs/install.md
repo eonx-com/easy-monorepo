@@ -1,36 +1,28 @@
----eonx_docs---
+<!---eonx_docs---
 title: Installation
 weight: 1000
----eonx_docs---
+---eonx_docs--->
 
 # Installation
 
-## Using Composer
-
-To install this package, we recommend using [Composer][https://getcomposer.org/]:
+The recommended way to install this package is to use [Composer](https://getcomposer.org/):
 
 ```bash
-$ composer require eonx-com/easy-api-platform
+composer require eonx-com/easy-api-platform
 ```
 
-## Integrating with Symfony
+## Register bundle
 
-### Registering the Bundle
+Your bundle should be automatically enabled by Flex.
+In case you don't use Flex, you'll need to manually enable the bundle by adding the following line
+in the `config/bundles.php` file of your project:
 
-If you're using [Symfony Flex][https://flex.symfony.com/], the bundle registration step has already been done for you automatically. If not, follow these simple steps to register the bundle manually:
+```php
+// config/bundles.php
 
-1. Open the `config/bundles.php` file in your Symfony project.
+return [
+    // Other bundles ...
 
-2. Add the following line to the file:
-
-   ```php
-   // config/bundles.php
-
-   return [
-       // Other bundles ...
-
-       \EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle::class => ['all' => true],
-   ];
-   ```
-
-That's it! You have now successfully installed and registered the EasyApiPlatform bundle for use in your Symfony application. Happy coding!
+    \EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle::class => ['all' => true],
+];
+```

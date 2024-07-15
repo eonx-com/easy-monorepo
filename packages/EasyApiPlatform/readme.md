@@ -3,12 +3,12 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-### Require package (Composer)
+# Introduction
 
-The recommended way to install this package is to use [Composer][1]:
+The **EasyApiPlatform** package provides a set of tools to improve the development experience
+of API Platform applications.
 
-```bash
-$ composer require eonx-com/easy-api-platform
-```
+## Documentation
 
-[1]: https://getcomposer.org/
+- [Installation](docs/install.md)
+- [Configuration](docs/config.md)
