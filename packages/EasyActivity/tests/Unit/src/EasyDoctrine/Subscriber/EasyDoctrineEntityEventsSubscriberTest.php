@@ -6,7 +6,6 @@ namespace EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber;
 use BackedEnum;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
