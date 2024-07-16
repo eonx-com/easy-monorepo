@@ -5,8 +5,8 @@ namespace EonX\EasyBankFiles\Tests\Unit\Parsing\DirectEntryReturn\Parser;
 
 use DateTime;
 use EonX\EasyBankFiles\Parsing\DirectEntryReturn\Parser\DirectEntryReturnParser;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Header;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Trailer;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\HeaderRecord;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\TrailerRecord;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -14,28 +14,28 @@ use PHPUnit\Framework\Attributes\CoversClass;
 final class DirectEntryReturnParserTest extends AbstractUnitTestCase
 {
     /**
-     * Test if process on parser returns transactions.
+     * Test if process on parser returns detail records.
      */
-    public function testProcessReturnsTransactions(): void
+    public function testProcessReturnsDetailRecords(): void
     {
         $parser = new DirectEntryReturnParser($this->getSampleFileContents('DE_return.txt'));
 
-        $transactions = $parser->getTransactions();
-        self::assertCount(10, $transactions);
-        $firstTransactionItem = $transactions[0];
-        self::assertSame('18622', $firstTransactionItem->getAmount());
-        self::assertSame('THOMPSON  SARAH', $firstTransactionItem->getAccountName());
-        self::assertSame('458799993', $firstTransactionItem->getAccountNumber());
-        self::assertSame('082001', $firstTransactionItem->getBsb());
-        self::assertSame('5', $firstTransactionItem->getIndicator());
-        self::assertSame('694609', $firstTransactionItem->getLodgmentReference());
-        self::assertSame('06', $firstTransactionItem->getOriginalDayOfProcessing());
-        self::assertSame('337999', $firstTransactionItem->getOriginalUserIdNumber());
-        self::assertSame('2', $firstTransactionItem->getRecordType());
-        self::assertSame('SUNNY-PEOPLE', $firstTransactionItem->getRemitterName());
-        self::assertSame('010479999', $firstTransactionItem->getTraceAccountNumber());
-        self::assertSame('062184', $firstTransactionItem->getTraceBsb());
-        self::assertSame('13', $firstTransactionItem->getTxnCode());
+        $detailRecords = $parser->getDetailRecords();
+        self::assertCount(10, $detailRecords);
+        $firstDetailRecord = $detailRecords[0];
+        self::assertSame('18622', $firstDetailRecord->getAmount());
+        self::assertSame('THOMPSON  SARAH', $firstDetailRecord->getAccountName());
+        self::assertSame('458799993', $firstDetailRecord->getAccountNumber());
+        self::assertSame('082001', $firstDetailRecord->getBsb());
+        self::assertSame('5', $firstDetailRecord->getReturnCode());
+        self::assertSame('694609', $firstDetailRecord->getLodgmentReference());
+        self::assertSame('06', $firstDetailRecord->getOriginalDayOfProcessing());
+        self::assertSame('337999', $firstDetailRecord->getOriginalUserIdNumber());
+        self::assertSame('2', $firstDetailRecord->getRecordType());
+        self::assertSame('SUNNY-PEOPLE', $firstDetailRecord->getRemitterName());
+        self::assertSame('010479999', $firstDetailRecord->getTraceAccountNumber());
+        self::assertSame('062184', $firstDetailRecord->getTraceBsb());
+        self::assertSame('13', $firstDetailRecord->getTransactionCode());
     }
 
     /**
@@ -45,31 +45,31 @@ final class DirectEntryReturnParserTest extends AbstractUnitTestCase
     {
         $invalidLine = 'invalid';
 
-        $batchParser = new DirectEntryReturnParser($invalidLine);
+        $parser = new DirectEntryReturnParser($invalidLine);
 
-        $firstError = $batchParser->getErrors()[0];
+        $firstError = $parser->getErrors()[0];
         self::assertSame(1, $firstError->getLineNumber());
         self::assertSame($invalidLine, $firstError->getLine());
     }
 
     /**
-     * Test process on parser returns header.
+     * Test process on parser returns header record.
      */
-    public function testProcessShouldReturnHeader(): void
+    public function testProcessShouldReturnHeaderRecord(): void
     {
-        $expected = new Header([
+        $expected = new HeaderRecord([
             'dateProcessed' => '070905',
             'description' => 'DE Returns',
-            'userFinancialInstitution' => 'NAB',
-            'userIdSupplyingFile' => '012345',
-            'userSupplyingFile' => 'NAB',
+            'directEntryUserId' => '012345',
+            'mnemonicOfFinancialInstitution' => 'NAB',
+            'mnemonicOfSendingMember' => 'NAB',
             'reelSequenceNumber' => '01',
         ]);
 
         $parser = new DirectEntryReturnParser($this->getSampleFileContents('DE_return.txt'));
 
-        self::assertEquals($expected, $parser->getHeader());
-        self::assertEquals(new DateTime('2005-09-07'), $parser->getHeader()->getDateProcessedObject());
+        self::assertEquals($expected, $parser->getHeaderRecord());
+        self::assertEquals(new DateTime('2005-09-07'), $parser->getHeaderRecord()->getDateProcessedObject());
     }
 
     /**
@@ -77,17 +77,17 @@ final class DirectEntryReturnParserTest extends AbstractUnitTestCase
      */
     public function testProcessShouldReturnTrailer(): void
     {
-        $expected = new Trailer([
+        $expected = new TrailerRecord([
             'bsb' => '999999',
-            'numberPayments' => '10',
-            'totalNetAmount' => '296782',
             'totalCreditAmount' => '0',
             'totalDebitAmount' => '296782',
+            'totalNetAmount' => '296782',
+            'totalRecordCount' => '10',
         ]);
 
         $parser = new DirectEntryReturnParser($this->getSampleFileContents('DE_return.txt'));
 
-        self::assertEquals($expected, $parser->getTrailer());
+        self::assertEquals($expected, $parser->getTrailerRecord());
     }
 
     private function getSampleFileContents(string $file): string

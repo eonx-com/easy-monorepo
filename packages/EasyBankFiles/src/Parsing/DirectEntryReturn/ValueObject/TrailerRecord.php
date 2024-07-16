@@ -7,12 +7,12 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
  * @method string|null getBsb()
- * @method string|null getNumberPayments()
+ * @method string|null getTotalRecordCount()
  * @method string|null getTotalCreditAmount()
  * @method string|null getTotalDebitAmount()
  * @method string|null getTotalNetAmount()
  */
-final class Trailer extends AbstractResult
+final class TrailerRecord extends AbstractResult
 {
     /**
      * Return object attributes.
@@ -21,6 +21,6 @@ final class Trailer extends AbstractResult
      */
     protected function initAttributes(): array
     {
-        return ['bsb', 'numberPayments', 'totalNetAmount', 'totalCreditAmount', 'totalDebitAmount'];
+        return ['bsb', 'totalCreditAmount', 'totalDebitAmount', 'totalNetAmount', 'totalRecordCount'];
     }
 }

@@ -10,12 +10,12 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 /**
  * @method string|null getDateProcessed()
  * @method string|null getDescription()
- * @method string|null getUserFinancialInstitution()
- * @method string|null getUserIdSupplyingFile()
- * @method string|null getUserSupplyingFile()
+ * @method string|null getDirectEntryUserId()
+ * @method string|null getMnemonicOfFinancialInstitution()
+ * @method string|null getMnemonicOfSendingMember()
  * @method string|null getReelSequenceNumber()
  */
-final class Header extends AbstractResult
+final class HeaderRecord extends AbstractResult
 {
     private const DATE_STRING_PATTERN = '%s-%s-%s';
 
@@ -54,9 +54,9 @@ final class Header extends AbstractResult
         return [
             'dateProcessed',
             'description',
-            'userFinancialInstitution',
-            'userIdSupplyingFile',
-            'userSupplyingFile',
+            'directEntryUserId',
+            'mnemonicOfFinancialInstitution',
+            'mnemonicOfSendingMember',
             'reelSequenceNumber',
         ];
     }

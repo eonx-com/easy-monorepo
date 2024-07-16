@@ -19,7 +19,7 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
  * @method string|null getReturnCodeDescription()
  * @method string|null getTransactionReferenceNumber()
  */
-final class Transaction extends AbstractResult
+final class DetailRecord extends AbstractResult
 {
     /**
      * Return object attributes.

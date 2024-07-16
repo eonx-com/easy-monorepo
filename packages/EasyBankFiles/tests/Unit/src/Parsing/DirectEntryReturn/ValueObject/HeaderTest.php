@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\DirectEntryReturn\ValueObject;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Header;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\HeaderRecord;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversClass(Header::class)]
+#[CoversClass(HeaderRecord::class)]
 final class HeaderTest extends AbstractUnitTestCase
 {
     /**
@@ -34,7 +34,7 @@ final class HeaderTest extends AbstractUnitTestCase
      */
     public function testDateConversion(): void
     {
-        $header = new Header([
+        $header = new HeaderRecord([
             'dateProcessed' => '070904',
         ]);
 
@@ -49,7 +49,7 @@ final class HeaderTest extends AbstractUnitTestCase
     #[DataProvider('provideInvalidDateProcessedValues')]
     public function testGetDateProcessedShouldReturnNull(array $dateProcessed): void
     {
-        $header = new Header($dateProcessed);
+        $header = new HeaderRecord($dateProcessed);
 
         self::assertNull($header->getDateProcessedObject());
     }

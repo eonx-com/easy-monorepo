@@ -5,39 +5,39 @@ namespace EonX\EasyBankFiles\Parsing\DirectEntryReturn\Parser;
 
 use EonX\EasyBankFiles\Parsing\Common\Parser\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Header;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Trailer;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Transaction;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\HeaderRecord;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\TrailerRecord;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord;
 
 final class DirectEntryReturnParser extends AbstractLineByLineParser
 {
-    private const HEADER = '0';
+    private const RECORD_TYPE_HEADER = '0';
 
-    private const MIN_HEADER_LINE_LENGTH = 80;
+    private const MIN_HEADER_RECORD_LINE_LENGTH = 80;
 
-    private const MIN_TRAILER_LINE_LENGTH = 80;
+    private const MIN_TRAILER_RECORD_LINE_LENGTH = 80;
 
-    private const MIN_TRANSACTION_LINE_LENGTH = 120;
+    private const MIN_DETAIL_RECORD_LINE_LENGTH = 120;
 
-    private const TRAILER = '7';
+    private const RECORD_TYPE_TRAILER = '7';
 
-    private const TRANSACTION_1 = '1';
+    private const RECORD_TYPE_DETAIL_1 = '1';
 
-    private const TRANSACTION_2 = '2';
+    private const RECORD_TYPE_DETAIL_2 = '2';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[] $errors
      */
     private array $errors = [];
 
-    private Header $header;
+    private HeaderRecord $headerRecord;
 
-    private Trailer $trailer;
+    private TrailerRecord $trailerRecord;
 
     /**
-     * @var \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Transaction[]
+     * @var \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord[]
      */
-    private array $transactions = [];
+    private array $detailRecords = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
@@ -50,25 +50,25 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
     /**
      * Get header record.
      */
-    public function getHeader(): Header
+    public function getHeaderRecord(): HeaderRecord
     {
-        return $this->header;
+        return $this->headerRecord;
     }
 
     /**
      * Get trailer record.
      */
-    public function getTrailer(): Trailer
+    public function getTrailerRecord(): TrailerRecord
     {
-        return $this->trailer;
+        return $this->trailerRecord;
     }
 
     /**
-     * @return \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\Transaction[]
+     * @return \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord[]
      */
-    public function getTransactions(): array
+    public function getDetailRecords(): array
     {
-        return $this->transactions;
+        return $this->detailRecords;
     }
 
     protected function processLine(int $lineNumber, string $line): void
@@ -77,23 +77,23 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
         $lineLength = \strlen($line);
 
-        if ($code === self::HEADER && $lineLength >= self::MIN_HEADER_LINE_LENGTH) {
-            $this->header = $this->processHeader($line);
+        if ($code === self::RECORD_TYPE_HEADER && $lineLength >= self::MIN_HEADER_RECORD_LINE_LENGTH) {
+            $this->headerRecord = $this->processHeaderRecord($line);
 
             return;
         }
 
-        if ($code === self::TRAILER && $lineLength >= self::MIN_TRAILER_LINE_LENGTH) {
-            $this->trailer = $this->processTrailer($line);
+        if ($code === self::RECORD_TYPE_TRAILER && $lineLength >= self::MIN_TRAILER_RECORD_LINE_LENGTH) {
+            $this->trailerRecord = $this->processTrailerRecord($line);
 
             return;
         }
 
         if (
-            ($code === self::TRANSACTION_1 || $code === self::TRANSACTION_2) &&
-            $lineLength >= self::MIN_TRANSACTION_LINE_LENGTH
+            ($code === self::RECORD_TYPE_DETAIL_1 || $code === self::RECORD_TYPE_DETAIL_2) &&
+            $lineLength >= self::MIN_DETAIL_RECORD_LINE_LENGTH
         ) {
-            $this->transactions[] = $this->processTransaction($line);
+            $this->detailRecords[] = $this->processDetailRecord($line);
 
             return;
         }
@@ -104,40 +104,42 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
     /**
      * Process header block of line.
      */
-    private function processHeader(string $line): Header
+    private function processHeaderRecord(string $line): HeaderRecord
     {
         /** @var string|false $dateProcessed */
         $dateProcessed = \substr($line, 74, 6);
         /** @var string|false $description */
         $description = \substr($line, 62, 12);
-        /** @var string|false $userFinancialInstitution */
-        $userFinancialInstitution = \substr($line, 20, 3);
-        /** @var string|false $userIdSupplyingFile */
-        $userIdSupplyingFile = \substr($line, 56, 6);
-        /** @var string|false $userSupplyingFile */
-        $userSupplyingFile = \substr($line, 30, 26);
+        /** @var string|false $mnemonicOfFinancialInstitution */
+        $mnemonicOfFinancialInstitution = \substr($line, 20, 3);
+        /** @var string|false $directEntryUserId */
+        $directEntryUserId = \substr($line, 56, 6);
+        /** @var string|false $mnemonicOfSendingMember */
+        $mnemonicOfSendingMember = \substr($line, 30, 26);
         /** @var string|false $reelSequenceNumber */
         $reelSequenceNumber = \substr($line, 18, 2);
 
-        return new Header([
+        return new HeaderRecord([
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
             'description' => $description === false ? null : \trim($description),
+            'directEntryUserId' => $directEntryUserId === false ? null : $directEntryUserId,
+            'mnemonicOfFinancialInstitution' => $mnemonicOfFinancialInstitution === false
+                ? null
+                : $mnemonicOfFinancialInstitution,
+            'mnemonicOfSendingMember' => $mnemonicOfSendingMember === false ? null : \trim($mnemonicOfSendingMember),
             'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
-            'userFinancialInstitution' => $userFinancialInstitution === false ? null : $userFinancialInstitution,
-            'userIdSupplyingFile' => $userIdSupplyingFile === false ? null : $userIdSupplyingFile,
-            'userSupplyingFile' => $userSupplyingFile === false ? null : \trim($userSupplyingFile),
         ]);
     }
 
     /**
      * Process trailer block of line.
      */
-    private function processTrailer(string $line): Trailer
+    private function processTrailerRecord(string $line): TrailerRecord
     {
         /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
-        /** @var string|false $numberPayments */
-        $numberPayments = \substr($line, 74, 6);
+        /** @var string|false $totalRecordCount */
+        $totalRecordCount = \substr($line, 74, 6);
         /** @var string|false $totalNetAmount */
         $totalNetAmount = \substr($line, 20, 10);
         /** @var string|false $totalCreditAmount */
@@ -145,9 +147,9 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
         /** @var string|false $totalDebitAmount */
         $totalDebitAmount = \substr($line, 40, 10);
 
-        return new Trailer([
+        return new TrailerRecord([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'numberPayments' => $numberPayments === false ? null : $this->trimLeftZeros($numberPayments),
+            'totalRecordCount' => $totalRecordCount === false ? null : $this->trimLeftZeros($totalRecordCount),
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
             'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
             'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
@@ -157,7 +159,7 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
     /**
      * Process transaction block of line.
      */
-    private function processTransaction(string $line): Transaction
+    private function processDetailRecord(string $line): DetailRecord
     {
         /** @var string|false $accountName */
         $accountName = \substr($line, 30, 32);
@@ -179,23 +181,23 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
         $traceAccountNumber = \substr($line, 87, 9);
         /** @var string|false $traceBsb */
         $traceBsb = \substr($line, 80, 7);
-        /** @var string|false $txnCode */
-        $txnCode = \substr($line, 18, 2);
+        /** @var string|false $transactionCode */
+        $transactionCode = \substr($line, 18, 2);
 
-        return new Transaction([
+        return new DetailRecord([
             'accountName' => $accountName === false ? null : \trim($accountName),
             'accountNumber' => $accountNumber === false ? null : $accountNumber,
             'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'indicator' => $line[17] ?? '',
             'lodgmentReference' => $lodgmentReference === false ? null : \trim($lodgmentReference),
             'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : \trim($originalDayOfProcessing),
             'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
             'recordType' => $line[0] ?? '',
             'remitterName' => $remitterName === false ? null : \trim($remitterName),
+            'returnCode' => $line[17] ?? '',
             'traceAccountNumber' => $traceAccountNumber === false ? null : $traceAccountNumber,
             'traceBsb' => $traceBsb === false ? null : \str_replace('-', '', $traceBsb),
-            'txnCode' => $txnCode === false ? null : $txnCode,
+            'transactionCode' => $transactionCode === false ? null : $transactionCode,
         ]);
     }
 }

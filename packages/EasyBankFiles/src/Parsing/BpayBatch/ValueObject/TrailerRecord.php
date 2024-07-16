@@ -14,7 +14,7 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
  * @method string|null getNumberOfDeclines()
  * @method string|null getNumberOfPayments()
  */
-final class Trailer extends AbstractResult
+final class TrailerRecord extends AbstractResult
 {
     /**
      * Return object attributes.

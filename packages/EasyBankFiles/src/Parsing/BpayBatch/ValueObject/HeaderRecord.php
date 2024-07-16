@@ -13,7 +13,7 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
  * @method string|null getDateProcessed()
  * @method string|null getRestOfRecord()
  */
-final class Header extends AbstractResult
+final class HeaderRecord extends AbstractResult
 {
     /**
      * Return processed date as a DateTime object.

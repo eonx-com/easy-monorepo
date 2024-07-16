@@ -8,9 +8,9 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
  * @method string|null getBillerCode()
- * @method string|null getRestOfRecord()
+ * @method string|null getFiller()
  */
-final class Trailer extends AbstractResult
+final class TrailerRecord extends AbstractResult
 {
     use SignedFieldsTrait;
 
@@ -92,15 +92,15 @@ final class Trailer extends AbstractResult
     protected function initAttributes(): array
     {
         return [
-            'billerCode',
-            'numberOfPayments',
-            'amountOfPayments',
-            'numberOfErrorCorrections',
             'amountOfErrorCorrections',
-            'numberOfReversals',
+            'amountOfPayments',
             'amountOfReversals',
+            'billerCode',
+            'filler',
+            'numberOfErrorCorrections',
+            'numberOfPayments',
+            'numberOfReversals',
             'settlementAmount',
-            'restOfRecord',
         ];
     }
 

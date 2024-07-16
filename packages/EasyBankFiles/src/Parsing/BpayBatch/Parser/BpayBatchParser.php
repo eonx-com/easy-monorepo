@@ -3,33 +3,33 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsing\BpayBatch\Parser;
 
-use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\Header;
-use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\Trailer;
-use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\Transaction;
+use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\HeaderRecord;
+use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\TrailerRecord;
+use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord;
 use EonX\EasyBankFiles\Parsing\Common\Parser\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
 
 final class BpayBatchParser extends AbstractLineByLineParser
 {
-    private const HEADER = '1';
+    private const RECORD_TYPE_HEADER = '1';
 
-    private const TRAILER = '9';
+    private const RECORD_TYPE_TRAILER = '9';
 
-    private const TRANSACTION = '2';
+    private const RECORD_TYPE_DETAIL = '2';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
      */
     private array $errors = [];
 
-    private Header $header;
+    private HeaderRecord $headerRecord;
 
-    private Trailer $trailer;
+    private TrailerRecord $trailerRecord;
 
     /**
-     * @var \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\Transaction[]
+     * @var \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]
      */
-    private array $transactions = [];
+    private array $detailRecords = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
@@ -42,25 +42,25 @@ final class BpayBatchParser extends AbstractLineByLineParser
     /**
      * Return the Header object.
      */
-    public function getHeader(): Header
+    public function getHeaderRecord(): HeaderRecord
     {
-        return $this->header;
+        return $this->headerRecord;
     }
 
     /**
      * Return the Trailer object.
      */
-    public function getTrailer(): Trailer
+    public function getTrailerRecord(): TrailerRecord
     {
-        return $this->trailer;
+        return $this->trailerRecord;
     }
 
     /**
-     * @return \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\Transaction[]
+     * @return \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]
      */
-    public function getTransactions(): array
+    public function getDetailRecords(): array
     {
-        return $this->transactions;
+        return $this->detailRecords;
     }
 
     /**
@@ -71,18 +71,18 @@ final class BpayBatchParser extends AbstractLineByLineParser
         $code = $line[0] ?? self::EMPTY_LINE_CODE;
 
         switch ($code) {
-            case self::HEADER:
-                $this->header = $this->processHeader($line);
+            case self::RECORD_TYPE_HEADER:
+                $this->headerRecord = $this->processHeaderRecord($line);
 
                 break;
 
-            case self::TRANSACTION:
-                $this->transactions[] = $this->processTransaction($line);
+            case self::RECORD_TYPE_DETAIL:
+                $this->detailRecords[] = $this->processDetailRecord($line);
 
                 break;
 
-            case self::TRAILER:
-                $this->trailer = $this->processTrailer($line);
+            case self::RECORD_TYPE_TRAILER:
+                $this->trailerRecord = $this->processTrailerRecord($line);
 
                 break;
 
@@ -96,7 +96,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
     /**
      * Parse header.
      */
-    private function processHeader(string $line): Header
+    private function processHeaderRecord(string $line): HeaderRecord
     {
         /** @var string|false $customerId */
         $customerId = \substr($line, 1, 16);
@@ -107,7 +107,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
         /** @var string|false $restOfRecord */
         $restOfRecord = \substr($line, 45, 174);
 
-        return new Header([
+        return new HeaderRecord([
             'customerId' => $customerId === false ? null : \trim($customerId),
             'customerShortName' => $customerShortName === false ? null : \trim($customerShortName),
             'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
@@ -118,7 +118,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
     /**
      * Parse trailer.
      */
-    private function processTrailer(string $line): Trailer
+    private function processTrailerRecord(string $line): TrailerRecord
     {
         /** @var string|false $numberOfApprovals */
         $numberOfApprovals = \substr($line, 1, 10);
@@ -135,7 +135,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
         /** @var string|false $restOfRecord */
         $restOfRecord = \substr($line, 70, 149);
 
-        return new Trailer([
+        return new TrailerRecord([
             'amountOfApprovals' => $amountOfApprovals === false ? null : $this->trimLeftZeros($amountOfApprovals),
             'amountOfDeclines' => $amountOfDeclines === false ? null : $this->trimLeftZeros($amountOfDeclines),
             'amountOfPayments' => $amountOfPayments === false ? null : $this->trimLeftZeros($amountOfPayments),
@@ -149,7 +149,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
     /**
      * Parse transaction items.
      */
-    private function processTransaction(string $line): Transaction
+    private function processDetailRecord(string $line): DetailRecord
     {
         /** @var string|false $billerCode */
         $billerCode = \substr($line, 1, 10);
@@ -176,7 +176,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
         /** @var string|false $restOfRecord */
         $restOfRecord = \substr($line, 214, 5);
 
-        return new Transaction([
+        return new DetailRecord([
             'accountBsb' => $accountBsb === false ? null : $accountBsb,
             'accountNumber' => $accountNumber === false ? null : $accountNumber,
             'amount' => $amount === false ? null : $this->trimLeftZeros($amount),

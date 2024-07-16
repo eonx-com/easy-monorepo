@@ -7,14 +7,14 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
  * @method string|null getBillerCode()
- * @method string|null getBillerShortName()
- * @method string|null getBillerCreditBSB()
  * @method string|null getBillerCreditAccount()
+ * @method string|null getBillerCreditBSB()
+ * @method string|null getBillerShortName()
  * @method string|null getFileCreationDate()
  * @method string|null getFileCreationTime()
- * @method string|null getRestOfRecord()
+ * @method string|null getFiller()
  */
-final class Header extends AbstractResult
+final class HeaderRecord extends AbstractResult
 {
     /**
      * Return object attributes.
@@ -25,12 +25,12 @@ final class Header extends AbstractResult
     {
         return [
             'billerCode',
-            'billerShortName',
-            'billerCreditBSB',
             'billerCreditAccount',
+            'billerCreditBSB',
+            'billerShortName',
             'fileCreationDate',
             'fileCreationTime',
-            'restOfRecord',
+            'filler',
         ];
     }
 }

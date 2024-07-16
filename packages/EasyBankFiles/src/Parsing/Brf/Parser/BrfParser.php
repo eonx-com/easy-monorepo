@@ -3,33 +3,33 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsing\Brf\Parser;
 
-use EonX\EasyBankFiles\Parsing\Brf\ValueObject\Header;
-use EonX\EasyBankFiles\Parsing\Brf\ValueObject\Trailer;
-use EonX\EasyBankFiles\Parsing\Brf\ValueObject\Transaction;
+use EonX\EasyBankFiles\Parsing\Brf\ValueObject\HeaderRecord;
+use EonX\EasyBankFiles\Parsing\Brf\ValueObject\TrailerRecord;
+use EonX\EasyBankFiles\Parsing\Brf\ValueObject\DetailRecord;
 use EonX\EasyBankFiles\Parsing\Common\Parser\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
 
 final class BrfParser extends AbstractLineByLineParser
 {
-    private const HEADER = '00';
+    private const RECORD_TYPE_HEADER = '00';
 
-    private const TRAILER = '99';
+    private const RECORD_TYPE_TRAILER = '99';
 
-    private const TRANSACTION = '50';
+    private const RECORD_TYPE_DETAIL = '50';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[] $errors
      */
     private array $errors = [];
 
-    private Header $header;
+    private HeaderRecord $headerRecord;
 
-    private Trailer $trailer;
+    private TrailerRecord $trailerRecord;
 
     /**
-     * @var \EonX\EasyBankFiles\Parsing\Brf\ValueObject\Transaction[] $transactions
+     * @var \EonX\EasyBankFiles\Parsing\Brf\ValueObject\DetailRecord[] $detailRecords
      */
-    private array $transactions = [];
+    private array $detailRecords = [];
 
     /**
      * @return \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
@@ -42,25 +42,25 @@ final class BrfParser extends AbstractLineByLineParser
     /**
      * Return the Header object.
      */
-    public function getHeader(): Header
+    public function getHeaderRecord(): HeaderRecord
     {
-        return $this->header;
+        return $this->headerRecord;
     }
 
     /**
      * Return the Trailer object.
      */
-    public function getTrailer(): Trailer
+    public function getTrailerRecord(): TrailerRecord
     {
-        return $this->trailer;
+        return $this->trailerRecord;
     }
 
     /**
-     * @return \EonX\EasyBankFiles\Parsing\Brf\ValueObject\Transaction[]
+     * @return \EonX\EasyBankFiles\Parsing\Brf\ValueObject\DetailRecord[]
      */
-    public function getTransactions(): array
+    public function getDetailRecords(): array
     {
-        return $this->transactions;
+        return $this->detailRecords;
     }
 
     /**
@@ -71,18 +71,18 @@ final class BrfParser extends AbstractLineByLineParser
         $code = \substr($line, 0, 2);
 
         switch ($code) {
-            case self::HEADER:
-                $this->header = $this->processHeader($line);
+            case self::RECORD_TYPE_HEADER:
+                $this->headerRecord = $this->processHeaderRecord($line);
 
                 break;
 
-            case self::TRANSACTION:
-                $this->transactions[] = $this->processTransaction($line);
+            case self::RECORD_TYPE_DETAIL:
+                $this->detailRecords[] = $this->processDetailRecord($line);
 
                 break;
 
-            case self::TRAILER:
-                $this->trailer = $this->processTrailer($line);
+            case self::RECORD_TYPE_TRAILER:
+                $this->trailerRecord = $this->processTrailerRecord($line);
 
                 break;
 
@@ -96,7 +96,7 @@ final class BrfParser extends AbstractLineByLineParser
     /**
      * Parse header.
      */
-    private function processHeader(string $line): Header
+    private function processHeaderRecord(string $line): HeaderRecord
     {
         /** @var string|false $billerCode */
         $billerCode = \substr($line, 2, 10);
@@ -110,24 +110,24 @@ final class BrfParser extends AbstractLineByLineParser
         $fileCreationDate = \substr($line, 47, 8);
         /** @var string|false $fileCreationTime */
         $fileCreationTime = \substr($line, 55, 6);
-        /** @var string|false $restOfRecord */
-        $restOfRecord = \substr($line, 61, 158);
+        /** @var string|false $filler */
+        $filler = \substr($line, 61, 158);
 
-        return new Header([
+        return new HeaderRecord([
             'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
             'billerCreditAccount' => $billerCreditAccount === false ? null : $billerCreditAccount,
             'billerCreditBSB' => $billerCreditBSB === false ? null : $billerCreditBSB,
             'billerShortName' => $billerShortName === false ? null : \trim($billerShortName),
             'fileCreationDate' => $fileCreationDate === false ? null : $fileCreationDate,
             'fileCreationTime' => $fileCreationTime === false ? null : $fileCreationTime,
-            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
+            'filler' => $filler === false ? null : $filler,
         ]);
     }
 
     /**
      * Parse trailer.
      */
-    private function processTrailer(string $line): Trailer
+    private function processTrailerRecord(string $line): TrailerRecord
     {
         /** @var string|false $billerCode */
         $billerCode = \substr($line, 2, 10);
@@ -145,10 +145,10 @@ final class BrfParser extends AbstractLineByLineParser
         $amountOfReversals = \substr($line, 69, 15);
         /** @var string|false $settlementAmount */
         $settlementAmount = \substr($line, 84, 15);
-        /** @var string|false $restOfRecord */
-        $restOfRecord = \substr($line, 99, 120);
+        /** @var string|false $filler */
+        $filler = \substr($line, 99, 120);
 
-        return new Trailer([
+        return new TrailerRecord([
             'amountOfErrorCorrections' => $amountOfErrorCorrections === false
                 ? null
                 : $this->trimLeftZeros($amountOfErrorCorrections),
@@ -160,7 +160,7 @@ final class BrfParser extends AbstractLineByLineParser
                 : $this->trimLeftZeros($numberOfErrorCorrections),
             'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
             'numberOfReversals' => $numberOfReversals === false ? null : $this->trimLeftZeros($numberOfReversals),
-            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
+            'filler' => $filler === false ? null : $filler,
             'settlementAmount' => $settlementAmount === false ? null : $this->trimLeftZeros($settlementAmount),
         ]);
     }
@@ -168,7 +168,7 @@ final class BrfParser extends AbstractLineByLineParser
     /**
      * Parse transaction items.
      */
-    private function processTransaction(string $line): Transaction
+    private function processDetailRecord(string $line): DetailRecord
     {
         /** @var string|false $billerCode */
         $billerCode = \substr($line, 2, 10);
@@ -190,10 +190,10 @@ final class BrfParser extends AbstractLineByLineParser
         $paymentTime = \substr($line, 99, 6);
         /** @var string|false $settlementDate */
         $settlementDate = \substr($line, 105, 8);
-        /** @var string|false $restOfRecord */
-        $restOfRecord = \substr($line, 113, 106);
+        /** @var string|false $filler */
+        $filler = \substr($line, 113, 106);
 
-        return new Transaction([
+        return new DetailRecord([
             'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
             'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
             'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
@@ -202,7 +202,7 @@ final class BrfParser extends AbstractLineByLineParser
             'paymentDate' => $paymentDate === false ? null : $paymentDate,
             'paymentInstructionType' => $paymentInstructionType === false ? null : $paymentInstructionType,
             'paymentTime' => $paymentTime === false ? null : $paymentTime,
-            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
+            'filler' => $filler === false ? null : $filler,
             'settlementDate' => $settlementDate === false ? null : $settlementDate,
             'transactionReferenceNumber' => $transactionReferenceNumber === false
                 ? null
