@@ -94,7 +94,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 #### Events
 
-`DeferredEntityEventDispatcher` dispatch the following events:
+`DeferredEntityEventDispatcher` dispatches the following events:
 
 - `EntityCreatedEvent`
 - `EntityDeletedEvent`
