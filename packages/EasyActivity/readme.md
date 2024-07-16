@@ -17,10 +17,12 @@ The following terms are used across the package:
   performed on the subject, and the actor that performed the action.
 
 Once configured with a set of subjects, the package will create activity log entries for every action performed on those
-subjects.
+subjects. See [Configuration][1] for more information on configuring subjects.
 
-## Documentation
+The [ActivityLogEntry class][2] defines the data that can be recorded in an activity log entry.
 
-- [Installation](docs/install.md)
-- [Configuration](docs/config.md)
-- [Usage](docs/usage.md)
+See [Usage][3] for information on using the EasyActivity package.
+
+[1]: config.md
+[2]: activity-log-entry.md
+[3]: usage.md

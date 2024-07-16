@@ -4,7 +4,10 @@ weight: 0
 ---eonx_docs---
 
 This repository is a mono-repository, it contains the code of many packages. For more information about this concept
-you can look [there](https://en.wikipedia.org/wiki/Monorepo).
+you can look [there][1].
+
+
+<br>
 
 ### Packages
 
@@ -41,12 +44,16 @@ you can look [there](https://en.wikipedia.org/wiki/Monorepo).
 
 <!-- end-monorepo-packages -->
 
+<br>
+
 ### Contribute
 
 - Any new feature and/or hotfix MUST be submitted as a PR
 - The title of the PR MUST respect the following pattern `[<PackageName>] <PR Title>`
 - The PR MUST pass the checks before being merged
 - (Ideally) Create one PR per package
+
+<br>
 
 ### Release New Version
 
@@ -63,3 +70,5 @@ $ make release version=X.X.X
 
 _Note for MacOS users: you should update the `make` utility to 4.0 or higher.
 Do not forget to export new path in `.bashrc` or `.zshrc` file._
+
+[1]: https://en.wikipedia.org/wiki/Monorepo

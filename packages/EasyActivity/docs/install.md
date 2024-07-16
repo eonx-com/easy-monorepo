@@ -1,21 +1,23 @@
-<!---eonx_docs---
+---eonx_docs---
 title: Installation
 weight: 1000
----eonx_docs--->
+---eonx_docs---
 
 # Installation
 
-The recommended way to install this package is to use [Composer](https://getcomposer.org/):
+## Require package (Composer)
+
+The recommended way to install this package is to use [Composer][1]:
 
 ```bash
-composer require eonx-com/easy-activity
+$ composer require eonx-com/easy-activity
 ```
 
-## Register bundle
+## Symfony
 
-Your bundle should be automatically enabled by Flex.
-In case you don't use Flex, you'll need to manually enable the bundle by adding the following line
-in the `config/bundles.php` file of your project:
+### Register bundle
+
+If you're using [Symfony Flex][2], this step has been done automatically for you. If not, you can register the bundle yourself:
 
 ```php
 // config/bundles.php
@@ -26,3 +28,22 @@ return [
     EonX\EasyActivity\Bundle\EasyActivityBundle::class => ['all' => true],
 ];
 ```
+
+### Install additional packages
+
+We suggest that you install additional packages to maximize the utility of the EasyActivity package. Install the
+following packages for the following purposes:
+
+- [eonx-com/easy-doctrine][3]: to create entries from Doctrine events
+- [symfony/serializer][4]: to serialize the subject's data
+- [symfony/messenger][5]: to store entries asynchronously
+
+[1]: https://getcomposer.org/
+
+[2]: https://flex.symfony.com/
+
+[3]: https://github.com/eonx-com/easy-doctrine
+
+[4]: https://github.com/symfony/serializer
+
+[5]: https://github.com/symfony/messenger
