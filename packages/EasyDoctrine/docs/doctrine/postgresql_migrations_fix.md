@@ -16,12 +16,28 @@ When using PostgreSQL, `$this->addSql('CREATE SCHEMA public')` is automatically 
 
 Register the listener:
 
-```yaml
-# services_dev.yaml
-services:
-    EonX\EasyDoctrine\Common\Listener\FixPostgreSqlDefaultSchemaListener:
-        tags:
-            - {name: doctrine.event_listener, event: postGenerateSchema}
+```php
+# services_dev.php or services_local.php
+
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use EonX\EasyDoctrine\Common\Listener\FixPostgreSqlDefaultSchemaListener;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $services = $containerConfigurator->services();
+
+    $services->defaults()
+        ->autowire()
+        ->autoconfigure();
+
+    // Workaround for an issue: https://github.com/doctrine/dbal/issues/1110
+    $services->set(FixPostgreSqlDefaultSchemaListener::class)
+        ->tag('doctrine.event_listener', ['event' => 'postGenerateSchema']);
+};
+
 ```
 
 [1]: https://github.com/doctrine/dbal/issues/1110

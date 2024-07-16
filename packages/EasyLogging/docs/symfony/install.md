@@ -26,11 +26,20 @@ return [
 
 There is no required configuration, but if you want to specify a custom default channel you can do it.
 
-```yaml
-# config/packages/easy_logging.yaml
+```php
+# config/packages/easy_logging.php
 
-easy_logging:
-    default_channel: 'my-channel'
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyLoggingConfig;
+
+return static function (EasyLoggingConfig $easyLoggingConfig): void {
+    $easyLoggingConfig->defaultChannel('my-channel');
+};
+
 ```
 
 [1]: https://symfony.com/components/Symfony%20Flex
