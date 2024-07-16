@@ -6,9 +6,9 @@ namespace EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber;
 use BackedEnum;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
+use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLog;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
@@ -128,7 +128,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
                 'action' => ActivityAction::Delete->value,
                 'actorId' => null,
                 'actorName' => null,
-                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'subjectId' => $articleId,
                 'subjectType' => Article::class,
                 'createdAt' => $now,
@@ -175,7 +175,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'actorId' => null,
                 'actorName' => null,
                 'action' => ActivityAction::Create->value,
@@ -218,7 +218,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'actorId' => null,
                 'actorName' => null,
                 'action' => ActivityAction::Create->value,
@@ -239,7 +239,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::assertEntityExists(
             ActivityLog::class,
             [
-                'actorType' => ActivityLogEntry::DEFAULT_ACTOR_TYPE,
+                'actorType' => DefaultActorResolver::DEFAULT_ACTOR_TYPE,
                 'actorId' => null,
                 'actorName' => null,
                 'action' => ActivityAction::Update->value,
