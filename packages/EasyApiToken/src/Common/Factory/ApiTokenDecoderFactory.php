@@ -16,7 +16,7 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
     /**
      * @var \EonX\EasyApiToken\Common\Provider\DecoderProviderInterface[]
      */
-    private array $decoderProviders;
+    private readonly array $decoderProviders;
 
     /**
      * @var \EonX\EasyApiToken\Common\Decoder\DecoderInterface[]|null

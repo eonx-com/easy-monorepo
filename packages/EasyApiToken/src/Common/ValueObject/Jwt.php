@@ -7,7 +7,7 @@ use EonX\EasyApiToken\Common\Exception\InvalidArgumentException;
 use Nette\Utils\Json;
 use stdClass;
 
-final class Jwt implements JwtInterface
+final readonly class Jwt implements JwtInterface
 {
     public function __construct(
         private array $payload,
