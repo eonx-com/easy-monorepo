@@ -7,7 +7,7 @@ use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
 use EonX\EasyUtils\Common\Helper\UrlHelper;
 
-final class HashedApiKeyDriver implements HashedApiKeyDriverInterface
+final readonly class HashedApiKeyDriver implements HashedApiKeyDriverInterface
 {
     public function decode(string $hashedApiKey): ?HashedApiKey
     {

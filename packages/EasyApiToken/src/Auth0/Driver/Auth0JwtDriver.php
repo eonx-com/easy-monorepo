@@ -12,15 +12,17 @@ use EonX\EasyApiToken\Common\Generator\TokenGenerator;
 use Psr\Cache\CacheItemPoolInterface;
 use Throwable;
 
-final class Auth0JwtDriver implements JwtDriverInterface
+final readonly class Auth0JwtDriver implements JwtDriverInterface
 {
-    /**
-     * @var string[]
-     */
-    private array $allowedAlgorithms = [
+    private const DEFAULT_ALLOWED_ALGORITHMS = [
         'HS256',
         'RS256',
     ];
+
+    /**
+     * @var string[]
+     */
+    private array $allowedAlgorithms;
 
     private string $audienceForEncode;
 
@@ -29,11 +31,11 @@ final class Auth0JwtDriver implements JwtDriverInterface
     /**
      * @param string[] $validAudiences
      * @param string[] $authorizedIss
-     * @param string[]|null $allowedAlgorithms
+     * @param string[] $allowedAlgorithms
      */
     public function __construct(
         private array $validAudiences,
-        private array $authorizedIss,
+        array $authorizedIss,
         private string $domain,
         private ?string $privateKey = null,
         ?string $audienceForEncode = null,
@@ -41,7 +43,7 @@ final class Auth0JwtDriver implements JwtDriverInterface
         private ?CacheItemPoolInterface $cache = null,
         private ?int $cacheTtl = null,
     ) {
-        $this->allowedAlgorithms = $allowedAlgorithms ?? $this->allowedAlgorithms;
+        $this->allowedAlgorithms = $allowedAlgorithms ?? self::DEFAULT_ALLOWED_ALGORITHMS;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->issuerForEncode = (string)\reset($authorizedIss);
     }
@@ -77,10 +79,9 @@ final class Auth0JwtDriver implements JwtDriverInterface
                     $this->cacheTtl,
                     $this->cache
                 );
-                $tokenIssuer = (string)\reset($this->authorizedIss);
 
                 return $verifier
-                    ->validate($tokenIssuer, $this->validAudiences)
+                    ->validate($this->issuerForEncode, $this->validAudiences)
                     ->toArray();
             } catch (Throwable $throwable) {
                 $exceptions[] = $throwable->getMessage();

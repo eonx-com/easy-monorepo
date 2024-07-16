@@ -5,13 +5,13 @@ namespace EonX\EasyApiToken\Common\ValueObject;
 
 interface HashedApiKeyInterface extends ApiTokenInterface
 {
-    public const DEFAULT_VERSION = 'v1';
+    final public const DEFAULT_VERSION = 'v1';
 
-    public const KEY_ID = 'id';
+    final public const KEY_ID = 'id';
 
-    public const KEY_SECRET = 'secret';
+    final public const KEY_SECRET = 'secret';
 
-    public const KEY_VERSION = 'version';
+    final public const KEY_VERSION = 'version';
 
     public function getId(): int|string;
 

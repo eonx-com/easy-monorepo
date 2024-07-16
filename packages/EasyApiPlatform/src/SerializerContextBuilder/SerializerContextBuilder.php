@@ -8,7 +8,7 @@ use ApiPlatform\State\SerializerContextBuilderInterface;
 use EonX\EasyApiPlatform\Paginator\CustomPaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class SerializerContextBuilder implements SerializerContextBuilderInterface
+final readonly class SerializerContextBuilder implements SerializerContextBuilderInterface
 {
     public function __construct(
         private SerializerContextBuilderInterface $decorated,
