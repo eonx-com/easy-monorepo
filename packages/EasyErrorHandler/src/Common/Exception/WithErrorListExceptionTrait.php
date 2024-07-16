@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Exception;
 
-trait ValidationExceptionTrait
+trait WithErrorListExceptionTrait
 {
     protected array $errors = [];
 

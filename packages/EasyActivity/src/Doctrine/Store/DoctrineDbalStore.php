@@ -8,7 +8,7 @@ use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Factory\IdFactoryInterface;
 use EonX\EasyActivity\Common\Store\StoreInterface;
 
-final class DoctrineDbalStore implements StoreInterface
+final readonly class DoctrineDbalStore implements StoreInterface
 {
     public function __construct(
         private IdFactoryInterface $idFactory,
@@ -20,7 +20,8 @@ final class DoctrineDbalStore implements StoreInterface
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry
     {
         $data = [
-            'action' => $logEntry->getAction(),
+            'action' => $logEntry->getAction()
+                ->value,
             'actor_id' => $logEntry->getActorId(),
             'actor_name' => $logEntry->getActorName(),
             'actor_type' => $logEntry->getActorType(),

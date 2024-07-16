@@ -5,7 +5,7 @@ namespace EonX\EasyDecision\Tests\Stub\Rule;
 
 use EonX\EasyDecision\Rule\DecisionOutputForRuleAwareInterface;
 
-final class RuleWithExtraOutputStub extends RuleStub implements DecisionOutputForRuleAwareInterface
+final class RuleWithExtraOutputStub extends AbstractRuleStub implements DecisionOutputForRuleAwareInterface
 {
     public function __construct(
         string $name,
