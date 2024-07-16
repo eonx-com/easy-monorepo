@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Common\ValueObject;
 
-final class BasicAuth implements BasicAuthInterface
+final readonly class BasicAuth implements BasicAuthInterface
 {
     public function __construct(
         private string $username,
