@@ -45,4 +45,4 @@ and register it in your container.
 
 <br>
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/components/Symfony%20Flex

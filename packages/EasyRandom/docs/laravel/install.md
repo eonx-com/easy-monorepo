@@ -67,4 +67,4 @@ and register it in your service provider.
 
 <br>
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

@@ -16,7 +16,7 @@ The only configuration required is the Bugsnag Integration API Key for your proj
 For Laravel applications, the EasyBugsnag configuration file must be called `easy-bugsnag.php` and be located in the
 `config` directory.
 
-For Symfony applications, the EasyBugnag configuration file can be a YAML, XML or PHP file located under the
+For Symfony applications, the EasyBugsnag configuration file can be a YAML, XML or PHP file located under the
 `config/packages` directory, with a name like `easy_bugsnag.<format>`. The root node of the configuration must be called
 `easy_bugsnag`.
 

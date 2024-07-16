@@ -10,7 +10,7 @@ Two main features of EntityManagerDecorator are Transactional and Deferred entit
 
 ### Transactional
 
-`$entityManager->transactional(callable $callback)` provide:
+`$entityManager->wrapInTransaction(callable $callback)` provide:
 
 - flush and commit or rollback if something goes wrong
 - close EntityManager if `Doctrine\ORM\ORMException` or `Doctrine\DBAL\Exception` is thrown

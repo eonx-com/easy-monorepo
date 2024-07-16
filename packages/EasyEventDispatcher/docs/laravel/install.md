@@ -38,4 +38,4 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 $app->register(\EonX\EasyEventDispatcher\Laravel\EasyEventDispatcherServiceProvider::class);
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

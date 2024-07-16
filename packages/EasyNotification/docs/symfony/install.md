@@ -36,4 +36,4 @@ easy_notification:
     config_expires_after: 500 # Number of seconds
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/components/Symfony%20Flex

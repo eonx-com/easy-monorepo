@@ -18,7 +18,7 @@ Subscribe info is made of:
 
 ### Provide Subscribe Info to clients
 
-This package provides you with a `EonX\EasyNotification\Interfaces\SubscribeInfoFinderInterface` service making generating
+This package provides you with a `EonX\EasyNotification\Provider\SubscribeInfoProviderInterface` service making generating
 the subscription info from the EonX Notification service easy. You can use dependency injection to use anywhere you like
 in your code.
 

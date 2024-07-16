@@ -37,7 +37,7 @@ The following set of error response builders are provided to the ErrorHandler by
 - **TimeBuilder**: Adds a timestamp to the response body.
 - **UserMessageBuilder**: Adds the exception's user-friendly message to the response body.
 - **ViolationsBuilder**: Adds violations information to the response body if the exception implements
-  `EonX\EasyErrorHandler\Common\Exception\ValidationExceptionInterface` (such as
+  `EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface` (such as
   [ValidationException](exceptions.md))
 - **HttpExceptionBuilder**: For HTTP exceptions in Symfony applications (i.e. exceptions that implement
   `Symfony\Component\HttpKernel\Exception\HttpExceptionInterface`), sets the message in the response body to the

@@ -17,7 +17,7 @@ When using PostgreSQL, `$this->addSql('CREATE SCHEMA public')` is automatically 
 Register the listener:
 
 ```yaml
-// services_dev.yaml
+# services_dev.yaml
 services:
     EonX\EasyDoctrine\Common\Listener\FixPostgreSqlDefaultSchemaListener:
         tags:

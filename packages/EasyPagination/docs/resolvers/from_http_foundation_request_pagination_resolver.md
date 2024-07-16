@@ -5,7 +5,7 @@
 
 ---
 
-# StartSizeInQueryResolver
+# FromHttpFoundationRequestPaginationResolver
 
 This resolver will look for pagination data in the request query parameters:
 
@@ -17,13 +17,13 @@ This resolver will look for pagination data in the request query parameters:
 # Usage
 
 ```php
-use EonX\EasyPagination\Resolvers\Config\StartSizeConfig;
-use EonX\EasyPagination\Resolvers\StartSizeInQueryResolver;
+use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
+use EonX\EasyPagination\ValueObject\PaginationConfig;
 
 // Request: <url>?page=2&perPage=30
 
-$config = new StartSizeConfig('page', 1, 'perPage', 15); // Instantiate config according to your needs
-$resolver = new StartSizeInQueryResolver($config); // Instantiate the resolver with your config
+$config = new PaginationConfig('page', 1, 'perPage', 15); // Instantiate config according to your needs
+$resolver = new FromHttpFoundationRequestPaginationResolver($config); // Instantiate the resolver with your config
 
 $data = $resolver->resolve($request); // Then resolve the data for the given request
 

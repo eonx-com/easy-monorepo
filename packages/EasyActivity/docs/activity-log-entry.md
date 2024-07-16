@@ -9,7 +9,7 @@ The `EonX\EasyActivity\Common\Entity\ActivityLogEntry` class defines the data th
 
 ## Properties
 
-An ActivityLogEntry object has the following properties:
+An `ActivityLogEntry` object has the following properties:
 
 - `action`: The type of action performed on the subject, which may be one of:
     - `ActivityAction::Create` (i.e. `create`): Create subject
@@ -19,14 +19,14 @@ An ActivityLogEntry object has the following properties:
 - `actorName`: An optional name for an actor in the application.
 - `actorType`: A mandatory actor type. The actor type could be a `user`, `provider`, `customer`, `jwt:provider`,
   `api_key:customer`, or something similar in an application. The default value is
-  `ActivityLogEntry::DEFAULT_ACTOR_TYPE` (i.e. `system`).
+  `DefaultActorResolver::DEFAULT_ACTOR_TYPE` (i.e. `system`).
 - `subjectId`: An optional identifier for a subject in the application.
 - `subjectType`: A mandatory subject type in the application. The subject type can be a short class name, a FQCN (Fully
   Qualified Class Name), or any arbitrary string that an application maps in the package [configuration][1].
-- `data`: An optional representation of the state of the subject after applying the action (i.e. a serialized
+- `subjectData`: An optional representation of the state of the subject after applying the action (i.e. a serialized
   entity/model containing the new attribute values of the subject after updating the entity/model). This is a simple
   key-value array with attribute names in keys.
-- `oldData`: An optional representation of the state of the subject before applying the action (i.e. a serialized
+- `subjectOldData`: An optional representation of the state of the subject before applying the action (i.e. a serialized
   entity/model containing the original attribute values before updating the entity/model). This is a simple key-value
   array with attribute names in keys.
 - `id`: A UUID generated in the default store implementation.
