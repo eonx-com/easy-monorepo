@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface;
+use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
@@ -49,7 +50,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
             $result->getSubjectData()
         );
         self::assertNull($result->getSubjectOldData());
-        self::assertSame(ActivityLogEntry::DEFAULT_ACTOR_TYPE, $result->getActorType());
+        self::assertSame(DefaultActorResolver::DEFAULT_ACTOR_TYPE, $result->getActorType());
         self::assertSame(ActivityAction::Create, $result->getAction());
         self::assertNull($result->getActorName());
         self::assertSame((string)(new NilUuid()), $result->getSubjectId());

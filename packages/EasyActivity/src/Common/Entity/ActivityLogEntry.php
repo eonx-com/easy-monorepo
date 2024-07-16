@@ -9,8 +9,6 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
 
 final class ActivityLogEntry
 {
-    public const DEFAULT_ACTOR_TYPE = 'system';
-
     private ActivityAction $action;
 
     private ?string $actorId = null;
