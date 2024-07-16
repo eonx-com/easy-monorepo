@@ -3,19 +3,24 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsing\BpayBatch\Parser;
 
+use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord;
 use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\HeaderRecord;
 use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\TrailerRecord;
-use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord;
 use EonX\EasyBankFiles\Parsing\Common\Parser\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
 
 final class BpayBatchParser extends AbstractLineByLineParser
 {
+    private const RECORD_TYPE_DETAIL = '2';
+
     private const RECORD_TYPE_HEADER = '1';
 
     private const RECORD_TYPE_TRAILER = '9';
 
-    private const RECORD_TYPE_DETAIL = '2';
+    /**
+     * @var \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]
+     */
+    private array $detailRecords = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
@@ -27,9 +32,12 @@ final class BpayBatchParser extends AbstractLineByLineParser
     private TrailerRecord $trailerRecord;
 
     /**
-     * @var \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]
+     * @return \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]
      */
-    private array $detailRecords = [];
+    public function getDetailRecords(): array
+    {
+        return $this->detailRecords;
+    }
 
     /**
      * @return \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
@@ -53,14 +61,6 @@ final class BpayBatchParser extends AbstractLineByLineParser
     public function getTrailerRecord(): TrailerRecord
     {
         return $this->trailerRecord;
-    }
-
-    /**
-     * @return \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]
-     */
-    public function getDetailRecords(): array
-    {
-        return $this->detailRecords;
     }
 
     /**
@@ -91,6 +91,52 @@ final class BpayBatchParser extends AbstractLineByLineParser
 
                 break;
         }
+    }
+
+    /**
+     * Parse transaction items.
+     */
+    private function processDetailRecord(string $line): DetailRecord
+    {
+        /** @var string|false $billerCode */
+        $billerCode = \substr($line, 1, 10);
+        /** @var string|false $accountBsb */
+        $accountBsb = \substr($line, 11, 6);
+        /** @var string|false $accountNumber */
+        $accountNumber = \substr($line, 17, 9);
+        /** @var string|false $customerReferenceNumber */
+        $customerReferenceNumber = \substr($line, 26, 20);
+        /** @var string|false $amount */
+        $amount = \substr($line, 46, 13);
+        /** @var string|false $reference1 */
+        $reference1 = \substr($line, 59, 10);
+        /** @var string|false $reference2 */
+        $reference2 = \substr($line, 69, 20);
+        /** @var string|false $reference3 */
+        $reference3 = \substr($line, 89, 50);
+        /** @var string|false $returnCode */
+        $returnCode = \substr($line, 139, 4);
+        /** @var string|false $returnCodeDescription */
+        $returnCodeDescription = \substr($line, 143, 50);
+        /** @var string|false $transactionReferenceNumber */
+        $transactionReferenceNumber = \substr($line, 193, 21);
+        /** @var string|false $restOfRecord */
+        $restOfRecord = \substr($line, 214, 5);
+
+        return new DetailRecord([
+            'accountBsb' => $accountBsb === false ? null : $accountBsb,
+            'accountNumber' => $accountNumber === false ? null : $accountNumber,
+            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
+            'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
+            'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
+            'reference1' => $reference1 === false ? null : \trim($reference1),
+            'reference2' => $reference2 === false ? null : \trim($reference2),
+            'reference3' => $reference3 === false ? null : \trim($reference3),
+            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
+            'returnCode' => $returnCode === false ? null : $returnCode,
+            'returnCodeDescription' => $returnCodeDescription === false ? null : \trim($returnCodeDescription),
+            'transactionReferenceNumber' => $transactionReferenceNumber === false ? null : $transactionReferenceNumber,
+        ]);
     }
 
     /**
@@ -143,52 +189,6 @@ final class BpayBatchParser extends AbstractLineByLineParser
             'numberOfDeclines' => $numberOfDeclines === false ? null : $this->trimLeftZeros($numberOfDeclines),
             'numberOfPayments' => $numberOfPayments === false ? null : $this->trimLeftZeros($numberOfPayments),
             'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
-        ]);
-    }
-
-    /**
-     * Parse transaction items.
-     */
-    private function processDetailRecord(string $line): DetailRecord
-    {
-        /** @var string|false $billerCode */
-        $billerCode = \substr($line, 1, 10);
-        /** @var string|false $accountBsb */
-        $accountBsb = \substr($line, 11, 6);
-        /** @var string|false $accountNumber */
-        $accountNumber = \substr($line, 17, 9);
-        /** @var string|false $customerReferenceNumber */
-        $customerReferenceNumber = \substr($line, 26, 20);
-        /** @var string|false $amount */
-        $amount = \substr($line, 46, 13);
-        /** @var string|false $reference1 */
-        $reference1 = \substr($line, 59, 10);
-        /** @var string|false $reference2 */
-        $reference2 = \substr($line, 69, 20);
-        /** @var string|false $reference3 */
-        $reference3 = \substr($line, 89, 50);
-        /** @var string|false $returnCode */
-        $returnCode = \substr($line, 139, 4);
-        /** @var string|false $returnCodeDescription */
-        $returnCodeDescription = \substr($line, 143, 50);
-        /** @var string|false $transactionReferenceNumber */
-        $transactionReferenceNumber = \substr($line, 193, 21);
-        /** @var string|false $restOfRecord */
-        $restOfRecord = \substr($line, 214, 5);
-
-        return new DetailRecord([
-            'accountBsb' => $accountBsb === false ? null : $accountBsb,
-            'accountNumber' => $accountNumber === false ? null : $accountNumber,
-            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
-            'billerCode' => $billerCode === false ? null : $this->trimLeftZeros($billerCode),
-            'customerReferenceNumber' => $customerReferenceNumber === false ? null : \trim($customerReferenceNumber),
-            'reference1' => $reference1 === false ? null : \trim($reference1),
-            'reference2' => $reference2 === false ? null : \trim($reference2),
-            'reference3' => $reference3 === false ? null : \trim($reference3),
-            'restOfRecord' => $restOfRecord === false ? null : $restOfRecord,
-            'returnCode' => $returnCode === false ? null : $returnCode,
-            'returnCodeDescription' => $returnCodeDescription === false ? null : \trim($returnCodeDescription),
-            'transactionReferenceNumber' => $transactionReferenceNumber === false ? null : $transactionReferenceNumber,
         ]);
     }
 }

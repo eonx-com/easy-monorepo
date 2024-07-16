@@ -12,6 +12,30 @@ use PHPUnit\Framework\Attributes\Group;
 final class BrfParserTest extends AbstractUnitTestCase
 {
     /**
+     * Should return array of Transaction classes.
+     */
+    #[Group('Brf-Parser-Transaction')]
+    public function testShouldReturnDetailRecord(): void
+    {
+        $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));
+
+        $detailRecords = $brfParser->getDetailRecords();
+        self::assertCount(3, $detailRecords);
+        $firstDetailRecord = $detailRecords[0];
+        self::assertSame('55000', $firstDetailRecord->getAmount());
+        self::assertSame('254169', $firstDetailRecord->getBillerCode());
+        self::assertSame('4370658181', $firstDetailRecord->getCustomerReferenceNumber());
+        self::assertSame('000', $firstDetailRecord->getErrorCorrectionReason());
+        self::assertSame('', $firstDetailRecord->getOriginalReferenceNumber());
+        self::assertSame('05', $firstDetailRecord->getPaymentInstructionType());
+        self::assertSame('062726', $firstDetailRecord->getPaymentTime());
+        self::assertSame('CBA201605260146337726', $firstDetailRecord->getTransactionReferenceNumber());
+        self::assertSame('20160526', $firstDetailRecord->getPaymentDate());
+        self::assertSame('20160526', $firstDetailRecord->getSettlementDate());
+        self::assertSame('', $firstDetailRecord->getFiller());
+    }
+
+    /**
      * Should return error from the content.
      */
     #[Group('Brf-Parser-Error')]
@@ -83,30 +107,6 @@ final class BrfParserTest extends AbstractUnitTestCase
             'amount' => '115000',
             'type' => 'credit',
         ], $trailerRecord->getSettlementAmount());
-    }
-
-    /**
-     * Should return array of Transaction classes.
-     */
-    #[Group('Brf-Parser-Transaction')]
-    public function testShouldReturnDetailRecord(): void
-    {
-        $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));
-
-        $detailRecords = $brfParser->getDetailRecords();
-        self::assertCount(3, $detailRecords);
-        $firstDetailRecord = $detailRecords[0];
-        self::assertSame('55000', $firstDetailRecord->getAmount());
-        self::assertSame('254169', $firstDetailRecord->getBillerCode());
-        self::assertSame('4370658181', $firstDetailRecord->getCustomerReferenceNumber());
-        self::assertSame('000', $firstDetailRecord->getErrorCorrectionReason());
-        self::assertSame('', $firstDetailRecord->getOriginalReferenceNumber());
-        self::assertSame('05', $firstDetailRecord->getPaymentInstructionType());
-        self::assertSame('062726', $firstDetailRecord->getPaymentTime());
-        self::assertSame('CBA201605260146337726', $firstDetailRecord->getTransactionReferenceNumber());
-        self::assertSame('20160526', $firstDetailRecord->getPaymentDate());
-        self::assertSame('20160526', $firstDetailRecord->getSettlementDate());
-        self::assertSame('', $firstDetailRecord->getFiller());
     }
 
     private function getSampleFileContents(string $file): string

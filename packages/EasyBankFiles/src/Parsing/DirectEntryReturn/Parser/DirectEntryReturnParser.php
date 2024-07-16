@@ -5,25 +5,30 @@ namespace EonX\EasyBankFiles\Parsing\DirectEntryReturn\Parser;
 
 use EonX\EasyBankFiles\Parsing\Common\Parser\AbstractLineByLineParser;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
+use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord;
 use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\HeaderRecord;
 use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\TrailerRecord;
-use EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord;
 
 final class DirectEntryReturnParser extends AbstractLineByLineParser
 {
-    private const RECORD_TYPE_HEADER = '0';
+    private const MIN_DETAIL_RECORD_LINE_LENGTH = 120;
 
     private const MIN_HEADER_RECORD_LINE_LENGTH = 80;
 
     private const MIN_TRAILER_RECORD_LINE_LENGTH = 80;
 
-    private const MIN_DETAIL_RECORD_LINE_LENGTH = 120;
-
-    private const RECORD_TYPE_TRAILER = '7';
-
     private const RECORD_TYPE_DETAIL_1 = '1';
 
     private const RECORD_TYPE_DETAIL_2 = '2';
+
+    private const RECORD_TYPE_HEADER = '0';
+
+    private const RECORD_TYPE_TRAILER = '7';
+
+    /**
+     * @var \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord[]
+     */
+    private array $detailRecords = [];
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[] $errors
@@ -35,9 +40,12 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
     private TrailerRecord $trailerRecord;
 
     /**
-     * @var \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord[]
+     * @return \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord[]
      */
-    private array $detailRecords = [];
+    public function getDetailRecords(): array
+    {
+        return $this->detailRecords;
+    }
 
     /**
      * @return \EonX\EasyBankFiles\Parsing\Common\ValueObject\Error[]
@@ -61,14 +69,6 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
     public function getTrailerRecord(): TrailerRecord
     {
         return $this->trailerRecord;
-    }
-
-    /**
-     * @return \EonX\EasyBankFiles\Parsing\DirectEntryReturn\ValueObject\DetailRecord[]
-     */
-    public function getDetailRecords(): array
-    {
-        return $this->detailRecords;
     }
 
     protected function processLine(int $lineNumber, string $line): void
@@ -99,6 +99,51 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
         }
 
         $this->errors[] = new Error(\compact('line', 'lineNumber'));
+    }
+
+    /**
+     * Process transaction block of line.
+     */
+    private function processDetailRecord(string $line): DetailRecord
+    {
+        /** @var string|false $accountName */
+        $accountName = \substr($line, 30, 32);
+        /** @var string|false $accountNumber */
+        $accountNumber = \substr($line, 8, 9);
+        /** @var string|false $amount */
+        $amount = \substr($line, 20, 10);
+        /** @var string|false $bsb */
+        $bsb = \substr($line, 1, 7);
+        /** @var string|false $lodgmentReference */
+        $lodgmentReference = \substr($line, 62, 18);
+        /** @var string|false $originalDayOfProcessing */
+        $originalDayOfProcessing = \substr($line, 112, 2);
+        /** @var string|false $originalUserIdNumber */
+        $originalUserIdNumber = \substr($line, 114, 6);
+        /** @var string|false $remitterName */
+        $remitterName = \substr($line, 96, 16);
+        /** @var string|false $traceAccountNumber */
+        $traceAccountNumber = \substr($line, 87, 9);
+        /** @var string|false $traceBsb */
+        $traceBsb = \substr($line, 80, 7);
+        /** @var string|false $transactionCode */
+        $transactionCode = \substr($line, 18, 2);
+
+        return new DetailRecord([
+            'accountName' => $accountName === false ? null : \trim($accountName),
+            'accountNumber' => $accountNumber === false ? null : $accountNumber,
+            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
+            'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
+            'lodgmentReference' => $lodgmentReference === false ? null : \trim($lodgmentReference),
+            'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : \trim($originalDayOfProcessing),
+            'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
+            'recordType' => $line[0] ?? '',
+            'remitterName' => $remitterName === false ? null : \trim($remitterName),
+            'returnCode' => $line[17] ?? '',
+            'traceAccountNumber' => $traceAccountNumber === false ? null : $traceAccountNumber,
+            'traceBsb' => $traceBsb === false ? null : \str_replace('-', '', $traceBsb),
+            'transactionCode' => $transactionCode === false ? null : $transactionCode,
+        ]);
     }
 
     /**
@@ -149,55 +194,10 @@ final class DirectEntryReturnParser extends AbstractLineByLineParser
 
         return new TrailerRecord([
             'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'totalRecordCount' => $totalRecordCount === false ? null : $this->trimLeftZeros($totalRecordCount),
             'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
             'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
             'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
-        ]);
-    }
-
-    /**
-     * Process transaction block of line.
-     */
-    private function processDetailRecord(string $line): DetailRecord
-    {
-        /** @var string|false $accountName */
-        $accountName = \substr($line, 30, 32);
-        /** @var string|false $accountNumber */
-        $accountNumber = \substr($line, 8, 9);
-        /** @var string|false $amount */
-        $amount = \substr($line, 20, 10);
-        /** @var string|false $bsb */
-        $bsb = \substr($line, 1, 7);
-        /** @var string|false $lodgmentReference */
-        $lodgmentReference = \substr($line, 62, 18);
-        /** @var string|false $originalDayOfProcessing */
-        $originalDayOfProcessing = \substr($line, 112, 2);
-        /** @var string|false $originalUserIdNumber */
-        $originalUserIdNumber = \substr($line, 114, 6);
-        /** @var string|false $remitterName */
-        $remitterName = \substr($line, 96, 16);
-        /** @var string|false $traceAccountNumber */
-        $traceAccountNumber = \substr($line, 87, 9);
-        /** @var string|false $traceBsb */
-        $traceBsb = \substr($line, 80, 7);
-        /** @var string|false $transactionCode */
-        $transactionCode = \substr($line, 18, 2);
-
-        return new DetailRecord([
-            'accountName' => $accountName === false ? null : \trim($accountName),
-            'accountNumber' => $accountNumber === false ? null : $accountNumber,
-            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
-            'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'lodgmentReference' => $lodgmentReference === false ? null : \trim($lodgmentReference),
-            'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : \trim($originalDayOfProcessing),
-            'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
-            'recordType' => $line[0] ?? '',
-            'remitterName' => $remitterName === false ? null : \trim($remitterName),
-            'returnCode' => $line[17] ?? '',
-            'traceAccountNumber' => $traceAccountNumber === false ? null : $traceAccountNumber,
-            'traceBsb' => $traceBsb === false ? null : \str_replace('-', '', $traceBsb),
-            'transactionCode' => $transactionCode === false ? null : $transactionCode,
+            'totalRecordCount' => $totalRecordCount === false ? null : $this->trimLeftZeros($totalRecordCount),
         ]);
     }
 }

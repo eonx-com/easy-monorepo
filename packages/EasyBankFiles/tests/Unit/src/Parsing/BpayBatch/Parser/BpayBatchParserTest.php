@@ -12,6 +12,31 @@ use PHPUnit\Framework\Attributes\Group;
 final class BpayBatchParserTest extends AbstractUnitTestCase
 {
     /**
+     * Should return array of DetailRecord classes.
+     */
+    #[Group('Batch-Parser-Transaction')]
+    public function testShouldReturnDetailRecord(): void
+    {
+        $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));
+
+        $detailRecords = $batchParser->getDetailRecords();
+        self::assertCount(2, $detailRecords);
+        $firstDetailRecordItem = $detailRecords[0];
+        self::assertSame('162', $firstDetailRecordItem->getAmount());
+        self::assertSame('083170', $firstDetailRecordItem->getAccountBsb());
+        self::assertSame('739813974', $firstDetailRecordItem->getAccountNumber());
+        self::assertSame('254177', $firstDetailRecordItem->getBillerCode());
+        self::assertSame('1444089773', $firstDetailRecordItem->getCustomerReferenceNumber());
+        self::assertSame('', $firstDetailRecordItem->getReference1());
+        self::assertSame('', $firstDetailRecordItem->getReference2());
+        self::assertSame('', $firstDetailRecordItem->getReference3());
+        self::assertSame('', $firstDetailRecordItem->getRestOfRecord());
+        self::assertSame('0000', $firstDetailRecordItem->getReturnCode());
+        self::assertSame('PROCESSED', $firstDetailRecordItem->getReturnCodeDescription());
+        self::assertSame('NAB201907175132940001', $firstDetailRecordItem->getTransactionReferenceNumber());
+    }
+
+    /**
      * Should return error from the content.
      */
     #[Group('Batch-Parser-Error')]
@@ -57,31 +82,6 @@ final class BpayBatchParserTest extends AbstractUnitTestCase
         self::assertSame('0', $trailer->getNumberOfDeclines());
         self::assertSame('2', $trailer->getNumberOfPayments());
         self::assertSame('', $trailer->getRestOfRecord());
-    }
-
-    /**
-     * Should return array of DetailRecord classes.
-     */
-    #[Group('Batch-Parser-Transaction')]
-    public function testShouldReturnDetailRecord(): void
-    {
-        $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));
-
-        $detailRecords = $batchParser->getDetailRecords();
-        self::assertCount(2, $detailRecords);
-        $firstDetailRecordItem = $detailRecords[0];
-        self::assertSame('162', $firstDetailRecordItem->getAmount());
-        self::assertSame('083170', $firstDetailRecordItem->getAccountBsb());
-        self::assertSame('739813974', $firstDetailRecordItem->getAccountNumber());
-        self::assertSame('254177', $firstDetailRecordItem->getBillerCode());
-        self::assertSame('1444089773', $firstDetailRecordItem->getCustomerReferenceNumber());
-        self::assertSame('', $firstDetailRecordItem->getReference1());
-        self::assertSame('', $firstDetailRecordItem->getReference2());
-        self::assertSame('', $firstDetailRecordItem->getReference3());
-        self::assertSame('', $firstDetailRecordItem->getRestOfRecord());
-        self::assertSame('0000', $firstDetailRecordItem->getReturnCode());
-        self::assertSame('PROCESSED', $firstDetailRecordItem->getReturnCodeDescription());
-        self::assertSame('NAB201907175132940001', $firstDetailRecordItem->getTransactionReferenceNumber());
     }
 
     private function getSampleFileContents(string $file): string
