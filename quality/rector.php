@@ -19,6 +19,7 @@ return RectorConfig::configure()
         __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
         __DIR__ . '/../tests',
+        __DIR__ . '/tests',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])

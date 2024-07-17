@@ -14,6 +14,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
@@ -42,6 +43,7 @@ return ECSConfig::configure()
         __DIR__ . '/../monorepo',
         __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
+        __DIR__ . '/tests',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
@@ -75,6 +77,9 @@ return ECSConfig::configure()
             'packages/*/tests/Fixture/*/ApiResource/*',
             'packages/*/tests/Fixture/*/DataTransferObject/*',
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
+        ],
+        ArrangeActAssertSniff::class => [
+            'quality/tests/*',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
         ClassDefinitionFixer::class => [
@@ -118,6 +123,9 @@ return ECSConfig::configure()
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         PropertyTypeHintSniff::class . '.UselessAnnotation' => [
             'packages/*/tests/Stub/Model/*',
+        ],
+        Psr4Sniff::class => [
+            'quality/tests/*',
         ],
         SingleSpaceAfterConstructFixer::class => null,
         StaticClosureSniff::class => [

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
-use EonX\EasyUtils\SensitiveData\Transformer\ObjectHydratorInterface;
+use EonX\EasyUtils\SensitiveData\Hydrator\ObjectHydratorInterface;
 use EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface;
 
 final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface

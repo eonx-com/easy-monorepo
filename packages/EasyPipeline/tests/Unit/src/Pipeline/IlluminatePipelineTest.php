@@ -7,8 +7,8 @@ use Closure;
 use EonX\EasyPipeline\Exception\EmptyMiddlewareListException;
 use EonX\EasyPipeline\Pipeline\IlluminatePipeline;
 use EonX\EasyPipeline\Tests\Stub\Input\InputStub;
-use EonX\EasyPipeline\Tests\Stub\Logger\LoggerChangeNameMiddlewareStub;
 use EonX\EasyPipeline\Tests\Stub\Middleware\ChangeNameMiddlewareStub;
+use EonX\EasyPipeline\Tests\Stub\Middleware\LoggerAwareChangeNameMiddlewareStub;
 use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
 use Illuminate\Pipeline\Pipeline;
 
@@ -31,8 +31,8 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
     {
         $middlewareList = [
             new ChangeNameMiddlewareStub('bob'),
-            new LoggerChangeNameMiddlewareStub(new ChangeNameMiddlewareStub('harry')),
-            new LoggerChangeNameMiddlewareStub(new ChangeNameMiddlewareStub('brandon')),
+            new LoggerAwareChangeNameMiddlewareStub(new ChangeNameMiddlewareStub('harry')),
+            new LoggerAwareChangeNameMiddlewareStub(new ChangeNameMiddlewareStub('brandon')),
             function ($input, $next) {
                 if ($input instanceof InputStub) {
                     $input->setName('nathan');
@@ -62,7 +62,7 @@ final class IlluminatePipelineTest extends AbstractLumenTestCase
     {
         self::assertEquals('nathan', $name);
         self::assertEquals([
-            LoggerChangeNameMiddlewareStub::class => [
+            LoggerAwareChangeNameMiddlewareStub::class => [
                 'Changed name "bob" to "harry"',
                 'Changed name "harry" to "brandon"',
             ],

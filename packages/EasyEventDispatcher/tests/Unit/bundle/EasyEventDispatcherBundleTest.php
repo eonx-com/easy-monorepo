@@ -5,7 +5,7 @@ namespace EonX\EasyEventDispatcher\Tests\Unit\Bundle;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyEventDispatcher\Tests\Stub\Dispatcher\SymfonyEventDispatcherStub;
-use EonX\EasyEventDispatcher\Tests\Stub\Even\EventStub;
+use EonX\EasyEventDispatcher\Tests\Stub\Event\EventStub;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
 final class EasyEventDispatcherBundleTest extends AbstractSymfonyTestCase

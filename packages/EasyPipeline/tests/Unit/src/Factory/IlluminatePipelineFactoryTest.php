@@ -8,7 +8,7 @@ use EonX\EasyPipeline\Exception\PipelineNotFoundException;
 use EonX\EasyPipeline\Factory\IlluminatePipelineFactory;
 use EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider;
 use EonX\EasyPipeline\Pipeline\PipelineInterface;
-use EonX\EasyPipeline\Tests\Stub\Provider\PipelineNameAwareMiddlewareProviderStub;
+use EonX\EasyPipeline\Tests\Stub\Provider\PipelineNameAwareProviderMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Stub\Provider\ValidMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
 use stdClass;
@@ -42,7 +42,7 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
     public function testPipelineNameAwareMiddlewareSetsName(): void
     {
         $app = $this->getApplication();
-        $app->instance('pipeline', new PipelineNameAwareMiddlewareProviderStub());
+        $app->instance('pipeline', new PipelineNameAwareProviderMiddlewareProviderStub());
 
         $pipeline = (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
 

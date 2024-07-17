@@ -16,6 +16,7 @@ jobs:
                     - {name: composer, run: make check-composer}
                     - {name: monorepo, run: make check-monorepo}
                     - {name: security, run: make check-security}
+                    - {name: project-architecture, run: make check-project-architecture}
                     - {name: ecs, run: make check-ecs, cache: ecs}
                     - {name: rector, run: make check-rector, cache: rector}
                     - {name: phpstan, run: make check-phpstan, cache: phpstan}
