@@ -21,7 +21,7 @@
         "symfony/translation": "^6.4"
     },
     "require-dev": {
-        "api-platform/core": "^3.3",
+        "api-platform/core": "^3.3.9",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
         "eonx-com/easy-bugsnag": "^5.12",
