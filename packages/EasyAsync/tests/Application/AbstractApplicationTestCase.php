@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests\Unit;
+namespace EonX\EasyAsync\Tests\Application;
 
 use EonX\EasyAsync\Tests\Fixture\App\Kernel\ApplicationKernel;
 use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractUnitTestCase extends KernelTestCase
+abstract class AbstractApplicationTestCase extends KernelTestCase
 {
     use ContainerServiceTrait;
 

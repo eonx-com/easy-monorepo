@@ -34,8 +34,8 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "tests",
-            "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
-            "EonX\\EasyActivity\\Tests\\Unit\\": "tests/Unit/src"
+            "EonX\\EasyActivity\\Tests\\Application\\": "tests/Application/src",
+            "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "tests/Fixture/app/src"
         }
     },
     "extra": {

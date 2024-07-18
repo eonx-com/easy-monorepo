@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Symfony\Config\EasyAsyncConfig;
 
 /**
- * @see \EonX\EasyAsync\Tests\Unit\Bundle\EasyAsyncBundleTest::testMessengerConfigWithTimeLimit
+ * @see \EonX\EasyAsync\Tests\Application\Bundle\EasyAsyncBundleTest::testMessengerConfigWithTimeLimit
  */
 return static function (EasyAsyncConfig $easyAsyncConfig): void {
     $messengerWorkerConfig = $easyAsyncConfig->messengerWorker();

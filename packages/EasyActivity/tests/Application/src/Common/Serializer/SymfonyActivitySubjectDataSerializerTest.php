@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Tests\Unit\Common\Serializer;
+namespace EonX\EasyActivity\Tests\Application\Common\Serializer;
 
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -10,15 +10,15 @@ use EonX\EasyActivity\Bundle\Enum\ConfigServiceId;
 use EonX\EasyActivity\Common\Entity\ActivitySubject;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Serializer\SymfonyActivitySubjectDataSerializer;
+use EonX\EasyActivity\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Comment;
-use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\NilUuid;
 
-final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCase
+final class SymfonyActivitySubjectDataSerializerTest extends AbstractApplicationTestCase
 {
     /**
      * @see testSerializeSucceeds

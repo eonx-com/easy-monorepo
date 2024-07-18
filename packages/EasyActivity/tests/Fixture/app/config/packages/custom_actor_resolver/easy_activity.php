@@ -7,7 +7,7 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use Symfony\Config\EasyActivityConfig;
 
 /**
- * @see \EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithCustomActorResolver
+ * @see \Application\src\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithCustomActorResolver
  */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Article::class);

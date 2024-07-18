@@ -7,9 +7,9 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use Symfony\Config\EasyActivityConfig;
 
 /**
- * @see \EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsForSubjectsCreatedInTransaction
- * @see \EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsForUpdatedSubjects
- * @see \EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithCollections
+ * @see \Application\src\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsForSubjectsCreatedInTransaction
+ * @see \Application\src\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsForUpdatedSubjects
+ * @see \Application\src\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithCollections
  */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Article::class)

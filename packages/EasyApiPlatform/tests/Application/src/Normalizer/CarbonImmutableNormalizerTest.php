@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Unit\Normalizer;
+namespace EonX\EasyApiPlatform\Tests\Application\Normalizer;
 
 use Carbon\CarbonImmutable;
 use EonX\EasyApiPlatform\Normalizer\CarbonImmutableNormalizer;
-use EonX\EasyApiPlatform\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 
-final class CarbonImmutableNormalizerTest extends AbstractUnitTestCase
+final class CarbonImmutableNormalizerTest extends AbstractApplicationTestCase
 {
     public function testDenormalizeSucceeds(): void
     {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests\Unit\Doctrine\Closer;
+namespace EonX\EasyAsync\Tests\Application\Doctrine\Closer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
-use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyAsync\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyTest\Common\Trait\LoggerTrait;
 
-final class ManagersCloserTest extends AbstractUnitTestCase
+final class ManagersCloserTest extends AbstractApplicationTestCase
 {
     use LoggerTrait;
 

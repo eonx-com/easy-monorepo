@@ -40,8 +40,7 @@
         "psr-4": {
             "EonX\\EasyApiPlatform\\Tests\\": "tests",
             "EonX\\EasyApiPlatform\\Tests\\Application\\": "tests/Application/src",
-            "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
-            "EonX\\EasyApiPlatform\\Tests\\Unit\\": "tests/Unit/src"
+            "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "tests/Fixture/app/src"
         }
     },
     "extra": {

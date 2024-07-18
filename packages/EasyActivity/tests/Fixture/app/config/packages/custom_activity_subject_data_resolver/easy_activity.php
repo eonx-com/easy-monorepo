@@ -7,7 +7,7 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
 use Symfony\Config\EasyActivityConfig;
 
 /**
- * @see \EonX\EasyActivity\Tests\Unit\Common\Factory\ActivityLogEntryFactoryTest::testCreateSucceedsWithCustomSubjectDataResolver
+ * @see \Application\src\Common\Factory\ActivityLogEntryFactoryTest::testCreateSucceedsWithCustomSubjectDataResolver
  */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Author::class);

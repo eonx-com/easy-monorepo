@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Tests\Unit\Common\CircularReferenceHandler;
+namespace EonX\EasyActivity\Tests\Application\Common\CircularReferenceHandler;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigServiceId;
+use EonX\EasyActivity\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
-use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 use stdClass;
 use Symfony\Component\Uid\NilUuid;
 
-final class CircularReferenceHandlerTest extends AbstractUnitTestCase
+final class CircularReferenceHandlerTest extends AbstractApplicationTestCase
 {
     public function testInvokeSucceedsWithId(): void
     {

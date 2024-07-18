@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber;
+namespace EonX\EasyActivity\Tests\Application\EasyDoctrine\Subscriber;
 
 use BackedEnum;
 use Carbon\Carbon;
@@ -9,15 +9,15 @@ use Carbon\CarbonImmutable;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
+use EonX\EasyActivity\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLog;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Comment;
 use EonX\EasyActivity\Tests\Fixture\App\Enum\ActorType;
-use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
+final class EasyDoctrineEntityEventsSubscriberTest extends AbstractApplicationTestCase
 {
     /**
      * @see testLoggerSucceedsWithCustomActorResolver

@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Tests\Unit\Common\Factory;
+namespace EonX\EasyActivity\Tests\Application\Common\Factory;
 
 use Carbon\Carbon;
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
+use EonX\EasyActivity\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Comment;
-use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\Uid\NilUuid;
 
-final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
+final class ActivityLogEntryFactoryTest extends AbstractApplicationTestCase
 {
     public function testCreateReturnsNullWhenNoSubjectConfigured(): void
     {

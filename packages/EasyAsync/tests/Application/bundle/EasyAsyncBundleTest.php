@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests\Unit\Bundle;
+namespace EonX\EasyAsync\Tests\Application\Bundle;
 
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
-use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyAsync\Tests\Application\AbstractApplicationTestCase;
 
-final class EasyAsyncBundleTest extends AbstractUnitTestCase
+final class EasyAsyncBundleTest extends AbstractApplicationTestCase
 {
     public function testMessengerConfigWithEmptyConfig(): void
     {

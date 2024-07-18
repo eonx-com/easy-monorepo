@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Unit\Filter;
+namespace EonX\EasyApiPlatform\Tests\Application\Filter;
 
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Metadata\Exception\InvalidArgumentException;

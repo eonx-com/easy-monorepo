@@ -8,7 +8,7 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
 use Symfony\Config\EasyActivityConfig;
 
 /**
- * @see \EonX\EasyActivity\Tests\Unit\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithRelatedObjects
+ * @see \Application\src\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriberTest::testLoggerSucceedsWithRelatedObjects
  */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Article::class);

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyAsync\Tests\Unit\Doctrine\Checker;
+namespace EonX\EasyAsync\Tests\Application\Doctrine\Checker;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException;
 use EonX\EasyAsync\Doctrine\Exception\DoctrineManagerClosedException;
-use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyAsync\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 
-final class ManagersSanityCheckerTest extends AbstractUnitTestCase
+final class ManagersSanityCheckerTest extends AbstractApplicationTestCase
 {
     use PrivatePropertyAccessTrait;
 

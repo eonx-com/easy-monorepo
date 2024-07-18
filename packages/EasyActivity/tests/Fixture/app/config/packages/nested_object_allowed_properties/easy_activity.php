@@ -8,7 +8,7 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
 use Symfony\Config\EasyActivityConfig;
 
 /**
- * @see \EonX\EasyActivity\Tests\Unit\Common\Factory\ActivityLogEntryFactoryTest::testCreateSucceedsWithRelatedObjectsWhenConfiguredNestedObjectAllowedProperties
+ * @see \Application\src\Common\Factory\ActivityLogEntryFactoryTest::testCreateSucceedsWithRelatedObjectsWhenConfiguredNestedObjectAllowedProperties
  */
 return static function (EasyActivityConfig $easyActivityConfig): void {
     $easyActivityConfig->subjects(Article::class)

@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Unit\Filter;
+namespace EonX\EasyApiPlatform\Tests\Application\Filter;
 
 use ApiPlatform\Doctrine\Orm\Filter\FilterInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\Dummy;
-use EonX\EasyApiPlatform\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-abstract class AbstractFilterTestCase extends AbstractUnitTestCase
+abstract class AbstractFilterTestCase extends AbstractApplicationTestCase
 {
     protected static string $alias = 'o';
 
