@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\ValueObject;
 
-final class ErrorResponseFormat
+final readonly class ErrorResponseFormat
 {
     public function __construct(
-        private readonly string $key,
-        private readonly string $value,
+        private string $key,
+        private string $value,
     ) {
     }
 

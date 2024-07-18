@@ -7,10 +7,10 @@ use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use EonX\EasyErrorHandler\Laravel\Enum\TranslationParam;
 use Illuminate\Contracts\Translation\Translator as IlluminateTranslatorInterface;
 
-final class LaravelTranslator implements TranslatorInterface
+final readonly class LaravelTranslator implements TranslatorInterface
 {
     public function __construct(
-        private readonly IlluminateTranslatorInterface $decorated,
+        private IlluminateTranslatorInterface $decorated,
     ) {
     }
 

@@ -8,7 +8,7 @@ use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Throwable;
 
-final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererInterface
+final readonly class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererInterface
 {
     private const PATTERNS = [
         '<title>%s',
@@ -16,8 +16,8 @@ final class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererI
     ];
 
     public function __construct(
-        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorRendererInterface $decorated,
+        private ErrorDetailsResolverInterface $errorDetailsResolver,
+        private ErrorRendererInterface $decorated,
     ) {
     }
 

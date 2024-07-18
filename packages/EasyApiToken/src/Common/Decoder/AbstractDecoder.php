@@ -8,9 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractDecoder implements DecoderInterface
 {
     public function __construct(
-        private ?string $name = null,
+        private readonly ?string $name = null,
     ) {
-        // No body needed
     }
 
     public function getName(): string

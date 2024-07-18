@@ -6,14 +6,14 @@ namespace EonX\EasyErrorHandler\ErrorCodes\Processor;
 use EonX\EasyErrorHandler\ErrorCodes\ValueObject\ErrorCodeCategory;
 use EonX\EasyErrorHandler\ErrorCodes\ValueObject\ErrorCodes;
 
-final class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
+final readonly class ErrorCodesGroupProcessor implements ErrorCodesGroupProcessorInterface
 {
     /**
      * @param array<\EonX\EasyErrorHandler\ErrorCodes\Provider\ErrorCodesProviderInterface> $errorCodesProviders
      */
     public function __construct(
-        private readonly int $categorySize,
-        private readonly array $errorCodesProviders,
+        private int $categorySize,
+        private array $errorCodesProviders,
     ) {
     }
 

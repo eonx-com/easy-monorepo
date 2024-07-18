@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use ReflectionProperty;
 
-final class CircularReferenceHandler implements CircularReferenceHandlerInterface
+final readonly class CircularReferenceHandler implements CircularReferenceHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

@@ -9,14 +9,14 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-final class DoctrineManagersSanityCheckMiddleware implements MiddlewareInterface
+final readonly class DoctrineManagersSanityCheckMiddleware implements MiddlewareInterface
 {
     /**
      * @param string[]|null $managers
      */
     public function __construct(
-        private readonly ManagersSanityChecker $managersSanityChecker,
-        private readonly ?array $managers = null,
+        private ManagersSanityChecker $managersSanityChecker,
+        private ?array $managers = null,
     ) {
     }
 

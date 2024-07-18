@@ -8,11 +8,11 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\MessageWrapper;
 
-final class BatchItemPersister
+final readonly class BatchItemPersister
 {
     public function __construct(
-        private readonly BatchItemFactoryInterface $batchItemFactory,
-        private readonly BatchItemRepositoryInterface $batchItemRepository,
+        private BatchItemFactoryInterface $batchItemFactory,
+        private BatchItemRepositoryInterface $batchItemRepository,
     ) {
     }
 

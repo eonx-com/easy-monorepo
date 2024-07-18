@@ -58,7 +58,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     /**
      * @see testConfiguration
      */
-    public static function providerTestConfiguration(): iterable
+    public static function provideConfigurationData(): iterable
     {
         yield 'No configuration set' => [
             'configs' => [],
@@ -200,7 +200,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         ];
     }
 
-    #[DataProvider('providerTestConfiguration')]
+    #[DataProvider('provideConfigurationData')]
     public function testConfiguration(array $configs, array $expectedConfig): void
     {
         $config = (new Processor())->processConfiguration(

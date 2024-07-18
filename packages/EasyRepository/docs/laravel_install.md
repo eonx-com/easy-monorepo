@@ -32,7 +32,7 @@ automatically. Make sure to register it:
 # Config
 
 To allow this package to work with your own repositories you must let it know about your repositories structure. To do
-so you will use the configuration file `src/Bridge/Laravel/config/easy-repository.php`. Copy/Paste this file into your
+so you will use the configuration file `laravel/config/easy-repository.php`. Copy/Paste this file into your
 `config` folder and then update it with your own repositories list.
 
 ```php

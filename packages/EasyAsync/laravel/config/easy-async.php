@@ -18,7 +18,7 @@ return [
     'restart_queue_on_doctrine_em_close' => \env('EASY_ASYNC_RESTART_QUEUE_ON_DOCTRINE_EM_CLOSE', true),
 
     /**
-     * Enable bridge with EasyErrorHandler to report queue worker stopping with non-zero status.
+     * Enable integration with EasyErrorHandler to report queue worker stopping with non-zero status.
      */
     'easy_error_handler_worker_stopping_enabled' => true,
 

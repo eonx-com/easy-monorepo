@@ -25,7 +25,7 @@ use Throwable;
 
 use function Symfony\Component\String\u;
 
-final class EasySwooleRunner implements RunnerInterface
+final readonly class EasySwooleRunner implements RunnerInterface
 {
     private const SERVER_EVENTS = [
         AppRuntimeHelper::EVENT_AFTER_RELOAD,
@@ -47,7 +47,7 @@ final class EasySwooleRunner implements RunnerInterface
     ];
 
     public function __construct(
-        private readonly HttpKernelInterface $app,
+        private HttpKernelInterface $app,
     ) {
     }
 

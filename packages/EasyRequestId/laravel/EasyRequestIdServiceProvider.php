@@ -101,7 +101,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyErrorHandler
-        if ($this->bridgeEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class)) {
+        if ($this->packageEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class)) {
             $this->app->singleton(RequestIdErrorResponseBuilder::class);
             $this->app->tag(
                 RequestIdErrorResponseBuilder::class,
@@ -110,7 +110,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyLogging
-        if ($this->bridgeEnabled('easy_logging', EasyLoggingConfigTag::class)) {
+        if ($this->packageEnabled('easy_logging', EasyLoggingConfigTag::class)) {
             $this->app->singleton(RequestIdProcessor::class);
             $this->app->tag(
                 RequestIdProcessor::class,
@@ -119,7 +119,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyHttpClient
-        if ($this->bridgeEnabled('easy_http_client', EasyHttpClientConfigTag::class)) {
+        if ($this->packageEnabled('easy_http_client', EasyHttpClientConfigTag::class)) {
             $this->app->singleton(RequestIdRequestDataModifier::class);
             $this->app->tag(
                 RequestIdRequestDataModifier::class,
@@ -128,7 +128,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
 
         // EasyWebhook
-        if ($this->bridgeEnabled('easy_webhook', EasyWebhookConfigTag::class)) {
+        if ($this->packageEnabled('easy_webhook', EasyWebhookConfigTag::class)) {
             $this->app->singleton(RequestIdWebhookMiddleware::class);
             $this->app->tag(
                 RequestIdWebhookMiddleware::class,
@@ -137,7 +137,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
     }
 
-    private function bridgeEnabled(string $config, string $enum): bool
+    private function packageEnabled(string $config, string $enum): bool
     {
         $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
 

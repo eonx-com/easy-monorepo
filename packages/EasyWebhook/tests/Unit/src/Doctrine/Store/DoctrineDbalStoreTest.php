@@ -15,7 +15,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
     /**
      * @see testFindDueWebhooks
      */
-    public static function providerTestFindDueWebhooks(): iterable
+    public static function provideFindDueWebhooksData(): iterable
     {
         yield '0 webhook in store' => [[], 0];
 
@@ -41,7 +41,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    #[DataProvider('providerTestFindDueWebhooks')]
+    #[DataProvider('provideFindDueWebhooksData')]
     public function testFindDueWebhooks(array $webhooks, int $expectedDue): void
     {
         $store = $this->getStore();

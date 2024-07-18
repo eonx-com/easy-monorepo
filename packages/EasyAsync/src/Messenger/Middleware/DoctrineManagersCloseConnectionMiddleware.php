@@ -9,14 +9,14 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-final class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
+final readonly class DoctrineManagersCloseConnectionMiddleware implements MiddlewareInterface
 {
     /**
      * @param string[]|null $managers
      */
     public function __construct(
-        private readonly ManagersCloser $managersCloser,
-        private readonly ?array $managers = null,
+        private ManagersCloser $managersCloser,
+        private ?array $managers = null,
     ) {
     }
 

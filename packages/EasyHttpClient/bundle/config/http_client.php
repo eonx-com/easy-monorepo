@@ -17,6 +17,6 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(ConfigServiceId::HttpClient->value, WithEventsHttpClient::class)
         ->arg('$modifiers', tagged_iterator(ConfigTag::RequestDataModifier->value))
-        ->arg('$modifiersEnabled', '%' . ConfigParam::ModifiersEnabled->value . '%')
-        ->arg('$modifiersWhitelist', '%' . ConfigParam::ModifiersWhitelist->value . '%');
+        ->arg('$modifiersEnabled', param(ConfigParam::ModifiersEnabled->value))
+        ->arg('$modifiersWhitelist', param(ConfigParam::ModifiersWhitelist->value));
 };

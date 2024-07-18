@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Common\ValueObject;
 
-final class ApiKey implements ApiKeyInterface
+final readonly class ApiKey implements ApiKeyInterface
 {
     public function __construct(
         private string $apiKey,

@@ -20,7 +20,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
     /**
      * @see testFindForDispatch
      */
-    public static function providerTestFindForDispatch(): iterable
+    public static function provideFindForDispatchData(): iterable
     {
         yield 'Fetch only batchItems for batch and no dependency' => [
             static function (BatchItemFactoryInterface $factory, BatchItemRepositoryInterface $repo): void {
@@ -91,7 +91,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    #[DataProvider('providerTestFindForDispatch')]
+    #[DataProvider('provideFindForDispatchData')]
     public function testFindForDispatch(callable $setup, callable $test, ?string $dependsOnName = null): void
     {
         $factory = $this->getBatchItemFactory();

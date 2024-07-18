@@ -6,10 +6,10 @@ namespace EonX\EasyErrorHandler\EasyWebhook\Listener;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 
-final class FinalFailedWebhookListener
+final readonly class FinalFailedWebhookListener
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
+        private ErrorHandlerInterface $errorHandler,
     ) {
     }
 

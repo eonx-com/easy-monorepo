@@ -5,10 +5,10 @@ namespace EonX\EasyAsync\Doctrine\Clearer;
 
 use Doctrine\Persistence\ManagerRegistry;
 
-final class ManagersClearer
+final readonly class ManagersClearer
 {
     public function __construct(
-        private readonly ManagerRegistry $registry,
+        private ManagerRegistry $registry,
     ) {
     }
 

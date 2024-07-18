@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Doctrine\Pool;
 
-use co;
 use EonX\EasySwoole\Doctrine\Client\PdoClient;
 use EonX\EasySwoole\Doctrine\ClientConfig\PdoClientConfig;
 use EonX\EasySwoole\Doctrine\Factory\PdoClientFactory;
 use OpenSwoole\Coroutine;
 use OpenSwoole\Coroutine\Channel;
+use OpenSwoole\Coroutine\System;
 use Throwable;
 
 final class PdoClientPool
@@ -58,7 +58,7 @@ final class PdoClientPool
         Coroutine::create(function (): void {
             while (true) {
                 // Trigger every 3 seconds only to save CPU usage
-                co::sleep(3);
+                System::sleep(3);
 
                 // If pool is empty, then no need to check
                 if ($this->pool->isEmpty()) {

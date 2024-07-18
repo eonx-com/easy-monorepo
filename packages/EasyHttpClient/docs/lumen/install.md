@@ -15,7 +15,7 @@ Once the package required, you must tell your application to use it. Laravel use
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyHttpClient\Bridge\Laravel\Providers\EasyHttpClientServiceProvider::class,
+    \EonX\EasyHttpClient\Laravel\EasyHttpClientServiceProvider::class,
 ],
 ```
 
@@ -38,7 +38,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyHttpClient\Bridge\Laravel\Providers\EasyHttpClientServiceProvider::class);
+$app->register(\EonX\EasyHttpClient\Laravel\EasyHttpClientServiceProvider::class);
 ```
 
 [1]: https://laravel.com/docs/5.8/providers

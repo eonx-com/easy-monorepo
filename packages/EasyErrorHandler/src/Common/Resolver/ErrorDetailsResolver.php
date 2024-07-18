@@ -6,7 +6,7 @@ namespace EonX\EasyErrorHandler\Common\Resolver;
 use EonX\EasyErrorHandler\Common\Exception\StatusCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\TranslatableExceptionInterface;
-use EonX\EasyErrorHandler\Common\Exception\ValidationExceptionInterface;
+use EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Psr\Log\LoggerInterface;
@@ -99,7 +99,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         }
 
         if ($throwable instanceof StatusCodeAwareExceptionInterface) {
-            $details['status_code'] = $throwable->getStatusCode();
+            $details['status_code'] = $throwable->getStatusCode()->value;
         }
 
         if ($throwable instanceof TranslatableExceptionInterface) {
@@ -108,7 +108,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
             $details['user_message_params'] = $throwable->getUserMessageParams();
         }
 
-        if ($throwable instanceof ValidationExceptionInterface) {
+        if ($throwable instanceof WithErrorListExceptionInterface) {
             $details['violations'] = $throwable->getErrors();
         }
 

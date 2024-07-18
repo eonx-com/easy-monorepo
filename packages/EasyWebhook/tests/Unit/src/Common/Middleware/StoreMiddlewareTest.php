@@ -16,7 +16,7 @@ final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'Should store' => [1];
 
@@ -26,7 +26,7 @@ final class StoreMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(int $resultsCount, ?WebhookResultInterface $webhookResult = null): void
     {
         $webhook = new Webhook();

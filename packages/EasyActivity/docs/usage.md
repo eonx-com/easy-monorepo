@@ -35,12 +35,12 @@ can implement your own instead.
 To create a new activity log entry, an application can use one of the following methods:
 
 - **EasyDoctrine**: Install the [eonx-com/easy-doctrine][3] package that provides events for Doctrine entity creation,
-  update and deletion. EasyActivity has a bridge for EasyDoctrine that contains
+  update and deletion. EasyActivity has integration with EasyDoctrine that contains
   `EonX\EasyActivity\EasyDoctrine\Subscriber\EasyDoctrineEntityEventsSubscriber`, which will take care of accepting those
-  events and passing them to `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`. The bridge also passes the
-  subject list from the EasyActivity configuration to the EasyDoctrine configuration (so the EasyDoctrine knows which
+  events and passing them to `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`.
+  EasyActivity also passes the subject list to the EasyDoctrine configuration (so the EasyDoctrine knows which
   Doctrine entities to listen to).
-- **Eloquent**: Use an Eloquent bridge with a listener for Eloquent events that will take care of passing model data to
+- **Eloquent**: Use an Eloquent integration with a listener for Eloquent events that will take care of passing model data to
   `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface` (not implemented yet).
 - **Manual creation**: Create activity log entries manually using
   `EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface`, with either the default
@@ -52,9 +52,9 @@ application can register its own implementation or use one of the following:
 - `EonX\EasyActivity\Common\Logger\AsyncActivityLogger` to save an activity log entry asynchronously (this is the default)
 - `EonX\EasyActivity\Common\Logger\SyncActivityLogger` to save an activity log entry synchronously
 
-## Symfony bridge
+## Symfony bundle
 
-The Symfony bridge provided with this package allows it to be integrated into a Symfony-based application. Besides
+The Symfony bundle provided with this package allows it to be integrated into a Symfony-based application. Besides
 Symfony bundle/extension classes, it brings the following functionality:
 
 - The default implementation for `EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface`:

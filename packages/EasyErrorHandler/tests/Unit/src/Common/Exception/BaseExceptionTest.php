@@ -3,17 +3,35 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Common\Exception;
 
+use EonX\EasyErrorHandler\Tests\Fixture\App\Enum\ErrorCode;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class BaseExceptionTest extends AbstractUnitTestCase
 {
     /**
+     * @see testSetCode
+     */
+    public static function provideCodes(): iterable
+    {
+        yield 'integer' => [
+            'code' => 1,
+            'expectedCode' => 1,
+        ];
+
+        yield 'enum' => [
+            'code' => ErrorCode::Code1,
+            'expectedCode' => 1,
+        ];
+    }
+
+    /**
      * @see testLogLevelConvenientMethods
      */
-    public static function providerTestLogLevelConvenientMethods(): iterable
+    public static function provideLogLevelConvenientMethodsData(): iterable
     {
         yield 'critical' => [
             'method' => 'setCriticalLogLevel',
@@ -38,6 +56,38 @@ final class BaseExceptionTest extends AbstractUnitTestCase
         yield 'warning' => [
             'method' => 'setWarningLogLevel',
             'expectedLogLevel' => Logger::WARNING,
+        ];
+    }
+
+    /**
+     * @see testSetStatusCode
+     */
+    public static function provideStatusCodes(): iterable
+    {
+        yield 'integer' => [
+            'statusCode' => 418,
+            'expectedStatusCode' => HttpStatusCode::IamTeapot,
+        ];
+
+        yield 'enum' => [
+            'statusCode' => HttpStatusCode::IamTeapot,
+            'expectedStatusCode' => HttpStatusCode::IamTeapot,
+        ];
+    }
+
+    /**
+     * @see testSetSubCode
+     */
+    public static function provideSubCodes(): iterable
+    {
+        yield 'integer' => [
+            'subCode' => 1,
+            'expectedSubCode' => 1,
+        ];
+
+        yield 'enum' => [
+            'subCode' => ErrorCode::Code1,
+            'expectedSubCode' => 1,
         ];
     }
 
@@ -67,7 +117,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
 
     public function testGetStatusCode(): void
     {
-        $statusCode = 123;
+        $statusCode = HttpStatusCode::IamTeapot;
         $exception = new BaseExceptionStub();
         self::setPrivatePropertyValue($exception, 'statusCode', $statusCode);
 
@@ -111,7 +161,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
         self::assertSame($userMessageParams, $result);
     }
 
-    #[DataProvider('providerTestLogLevelConvenientMethods')]
+    #[DataProvider('provideLogLevelConvenientMethodsData')]
     public function testLogLevelConvenientMethods(string $method, int $expectedLogLevel): void
     {
         $exception = new BaseExceptionStub();
@@ -120,6 +170,14 @@ final class BaseExceptionTest extends AbstractUnitTestCase
 
         self::assertSame($exception, $result);
         self::assertSame($expectedLogLevel, self::getPrivatePropertyValue($result, 'logLevel'));
+    }
+
+    #[DataProvider('provideCodes')]
+    public function testSetCode(int|ErrorCode $code, int $expectedCode): void
+    {
+        $result = new BaseExceptionStub(code: $code);
+
+        self::assertSame($expectedCode, self::getPrivatePropertyValue($result, 'code'));
     }
 
     public function testSetLogLevel(): void
@@ -146,26 +204,26 @@ final class BaseExceptionTest extends AbstractUnitTestCase
         self::assertSame($messageParams, self::getPrivatePropertyValue($result, 'messageParams'));
     }
 
-    public function testSetStatusCode(): void
+    #[DataProvider('provideStatusCodes')]
+    public function testSetStatusCode(int|HttpStatusCode $statusCode, HttpStatusCode $expectedStatusCode): void
     {
-        $statusCode = 123;
         $exception = new BaseExceptionStub();
 
         $result = $exception->setStatusCode($statusCode);
 
         self::assertSame($exception, $result);
-        self::assertSame($statusCode, self::getPrivatePropertyValue($result, 'statusCode'));
+        self::assertSame($expectedStatusCode, self::getPrivatePropertyValue($result, 'statusCode'));
     }
 
-    public function testSetSubCode(): void
+    #[DataProvider('provideSubCodes')]
+    public function testSetSubCode(int|ErrorCode $subCode, int $expectedSubCode): void
     {
-        $subCode = 123;
         $exception = new BaseExceptionStub();
 
         $result = $exception->setSubCode($subCode);
 
         self::assertSame($exception, $result);
-        self::assertSame($subCode, self::getPrivatePropertyValue($result, 'subCode'));
+        self::assertSame($expectedSubCode, self::getPrivatePropertyValue($result, 'subCode'));
     }
 
     public function testSetUserMessage(): void

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Builder;
 
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 use Throwable;
 
@@ -25,7 +26,7 @@ abstract class AbstractErrorResponseBuilder implements ErrorResponseBuilderInter
         return $headers;
     }
 
-    public function buildStatusCode(Throwable $throwable, ?int $statusCode = null): ?int
+    public function buildStatusCode(Throwable $throwable, ?HttpStatusCode $statusCode = null): ?HttpStatusCode
     {
         return $statusCode;
     }

@@ -15,7 +15,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
     /**
      * @see testEnsureClass
      */
-    public static function providerTestEnsureClass(): iterable
+    public static function provideEnsureClassData(): iterable
     {
         yield 'basic type' => [[0], true];
 
@@ -27,7 +27,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
     /**
      * @see testFilterByClass
      */
-    public static function providerTestFilterByClass(): iterable
+    public static function provideFilterByClassData(): iterable
     {
         yield 'basic types' => [[0, 'string', 12.00, []], 0];
 
@@ -39,7 +39,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
     /**
      * @see testOrderHigherPriorityFirst
      */
-    public static function providerTestOrderHigherPriorityFirst(): iterable
+    public static function provideOrderHigherPriorityFirstData(): iterable
     {
         $priority1 = self::hasPriorityStub(1);
         $priority10 = self::hasPriorityStub(10);
@@ -57,7 +57,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
     /**
      * @see testOrderLowerPriorityFirst
      */
-    public static function providerTestOrderLowerPriorityFirst(): iterable
+    public static function provideOrderLowerPriorityFirstData(): iterable
     {
         $priority1 = self::hasPriorityStub(1);
         $priority10 = self::hasPriorityStub(10);
@@ -72,7 +72,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
         yield 'same order when no priority' => [[$noPriority1, $noPriority2], [$noPriority1, $noPriority2]];
     }
 
-    #[DataProvider('providerTestEnsureClass')]
+    #[DataProvider('provideEnsureClassData')]
     public function testEnsureClass(iterable $items, bool $expectException, ?string $class = null): void
     {
         if ($expectException) {
@@ -89,7 +89,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
     /**
      * @param class-string|null $class
      */
-    #[DataProvider('providerTestFilterByClass')]
+    #[DataProvider('provideFilterByClassData')]
     public function testFilterByClass(iterable $items, int $expectedCount, ?string $class = null): void
     {
         $class ??= stdClass::class;
@@ -102,13 +102,13 @@ final class CollectorHelperTest extends AbstractUnitTestCase
         }
     }
 
-    #[DataProvider('providerTestOrderHigherPriorityFirst')]
+    #[DataProvider('provideOrderHigherPriorityFirstData')]
     public function testOrderHigherPriorityFirst(iterable $items, array $expected): void
     {
         self::assertEquals($expected, CollectorHelper::orderHigherPriorityFirstAsArray($items));
     }
 
-    #[DataProvider('providerTestOrderLowerPriorityFirst')]
+    #[DataProvider('provideOrderLowerPriorityFirstData')]
     public function testOrderLowerPriorityFirst(iterable $items, array $expected): void
     {
         self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirstAsArray($items));

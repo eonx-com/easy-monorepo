@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Laravel\ExceptionHandler;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Exception\TranslatableExceptionInterface;
-use EonX\EasyErrorHandler\Common\Exception\ValidationExceptionInterface;
+use EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
@@ -15,11 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-final class LaravelExceptionHandler implements IlluminateExceptionHandlerInterface
+final readonly class LaravelExceptionHandler implements IlluminateExceptionHandlerInterface
 {
     public function __construct(
-        private readonly ErrorHandlerInterface $errorHandler,
-        private readonly TranslatorInterface $translator,
+        private ErrorHandlerInterface $errorHandler,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -84,7 +84,7 @@ final class LaravelExceptionHandler implements IlluminateExceptionHandlerInterfa
      */
     private function renderValidationFailuresToConsoleIfNeeded(OutputInterface $output, Throwable $exception): void
     {
-        if ($exception instanceof ValidationExceptionInterface === false) {
+        if ($exception instanceof WithErrorListExceptionInterface === false) {
             return;
         }
 

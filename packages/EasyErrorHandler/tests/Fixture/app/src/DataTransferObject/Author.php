@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Fixture\App\DataTransferObject;
 
-final class Author
+final readonly class Author
 {
     public function __construct(
-        private readonly string $name,
-        private readonly int $age,
+        private string $name,
+        private int $age,
     ) {
     }
 

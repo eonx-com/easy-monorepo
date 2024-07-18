@@ -17,7 +17,7 @@ final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
      *
      * @see testSymfonyBundle
      */
-    public static function providerTestSymfonyBundle(): iterable
+    public static function provideSymfonyBundleData(): iterable
     {
         yield 'Sanity test with default config' => [
             'assertion' => function (ContainerInterface $container): void {
@@ -58,7 +58,7 @@ final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
     /**
      * @param string[]|null $configs
      */
-    #[DataProvider('providerTestSymfonyBundle')]
+    #[DataProvider('provideSymfonyBundleData')]
     public function testSymfonyBundle(callable $assertion, ?array $configs = null): void
     {
         $container = $this->getKernel($configs)

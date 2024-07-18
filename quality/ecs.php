@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
@@ -14,8 +15,8 @@ use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
+use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
@@ -44,7 +45,11 @@ return ECSConfig::configure()
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
-    ->withParallel(timeoutSeconds: 300, maxNumberOfProcess: 2, jobSize: 20)
+    ->withParallel(
+        ParallelSettingsHelper::getTimeoutSeconds(),
+        ParallelSettingsHelper::getMaxNumberOfProcess(),
+        ParallelSettingsHelper::getJobSize()
+    )
     ->withCache(__DIR__ . '/var/cache/ecs')
     ->withSets([
         EasyQualitySetList::ECS,
@@ -56,7 +61,6 @@ return ECSConfig::configure()
 
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
-            'packages/*/src/Bridge/Laravel/config/*',
             'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php',
@@ -83,6 +87,12 @@ return ECSConfig::configure()
             'packages/EasySecurity/src/SymfonySecurity/Voter/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
+        FinalClassFixer::class => [
+            'packages/EasyActivity/tests/Fixture/app/src/Entity/Type.php',
+            'packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/EmbeddableDummy.php',
+            'packages/EasySecurity/src/Common/Context/SecurityContext.php',
+            'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
+        ],
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
             'packages/*/config/*',
@@ -90,10 +100,6 @@ return ECSConfig::configure()
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
             'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
-        ],
-        LineLengthSniff::class . '.MaxExceeded' => [
-            'packages/*/src/Bridge/BridgeConstantsInterface.php',
-            'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
         ],
         MethodChainingNewlineFixer::class => [
             'packages/*/definition.php',

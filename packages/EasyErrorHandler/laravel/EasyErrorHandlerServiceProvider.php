@@ -62,7 +62,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             __DIR__ . '/config/easy-error-handler.php' => \base_path('config/easy-error-handler.php'),
         ]);
 
-        // EasyWebhook Bridge
+        // EasyWebhook integration
         if (\class_exists(FinalFailedWebhookEvent::class)) {
             $this->app->make('events')
                 ->listen(FinalFailedWebhookEvent::class, FinalFailedWebhookListener::class);

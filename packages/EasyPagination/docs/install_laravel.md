@@ -26,14 +26,10 @@ You just have to register the one you want:
 
 'providers' => [
     // Other Service Providers...
-    
-    // If you want to handle pagination data as an array in the request query
-    \EonX\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider::class,
-    
-    // If you want to handle pagination data directly in the request query
-    \EonX\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider::class,
+
+    \EonX\EasyPagination\Laravel\EasyPaginationServiceProvider::class,
 ],
-``` 
+```
 
 # Usage
 
@@ -44,14 +40,14 @@ The "StartSize" service providers will register 2 services as:
 - `EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface`: Used to resolve the pagination data
 - `EonX\EasyPagination\Interfaces\StartSizeDataInterface`: Resolved pagination data
 
-That's it you're all setup! You're now able to resolve pagination data or automatically inject it anywhere you want, 
+That's it you're all setup! You're now able to resolve pagination data or automatically inject it anywhere you want,
 using dependency injection or service locator (we strongly recommend to use the first one haha).
 
 ```php
 // Dependency Injection
 public function __construct(\EonX\EasyPagination\Interfaces\StartSizeDataInterface $data) {
     $this->data = $data;
-    
+
     $data->getStart();
     $data->getSize();
 }
@@ -102,5 +98,7 @@ return [
 ```
 
 [1]: https://laravel.com/
+
 [2]: https://lumen.laravel.com/
+
 [3]: https://getcomposer.org/

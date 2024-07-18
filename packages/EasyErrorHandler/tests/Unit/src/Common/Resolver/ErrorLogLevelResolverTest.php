@@ -18,7 +18,7 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
     /**
      * @see testGetErrorLogLevel
      */
-    public static function providerTestGetErrorLogLevel(): iterable
+    public static function provideGetErrorLogLevelData(): iterable
     {
         yield 'Error because default' => [
             'throwable' => new InvalidArgumentException(),
@@ -56,7 +56,7 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
     /**
      * @param array<class-string, int> $exceptionLogLevels
      */
-    #[DataProvider('providerTestGetErrorLogLevel')]
+    #[DataProvider('provideGetErrorLogLevelData')]
     public function testGetErrorLogLevel(
         Throwable $throwable,
         int $expectedLogLevel,

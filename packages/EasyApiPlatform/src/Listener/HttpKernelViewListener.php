@@ -7,7 +7,7 @@ use ApiPlatform\Doctrine\Orm\Paginator;
 use EonX\EasyApiPlatform\Paginator\CustomPaginator;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
-final class HttpKernelViewListener
+final readonly class HttpKernelViewListener
 {
     public function __invoke(ViewEvent $event): void
     {

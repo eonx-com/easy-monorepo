@@ -6,7 +6,7 @@ namespace EonX\EasyApiPlatform\Bundle\CompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class ReadListenerCompilerPass implements CompilerPassInterface
+final readonly class ReadListenerCompilerPass implements CompilerPassInterface
 {
     private const DEFINITION_ID_READ_LISTENER = 'api_platform.listener.request.read';
 

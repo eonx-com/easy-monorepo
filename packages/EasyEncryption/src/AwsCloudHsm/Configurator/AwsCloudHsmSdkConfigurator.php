@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Throwable;
 
-final class AwsCloudHsmSdkConfigurator
+final readonly class AwsCloudHsmSdkConfigurator
 {
     private const API_VERSION = '2017-04-28';
 
@@ -35,9 +35,9 @@ final class AwsCloudHsmSdkConfigurator
     private const STS_API_VERSION = '2011-06-15';
 
     public function __construct(
-        private readonly AwsCloudHsmSdkOptionsBuilder $awsCloudHsmSdkOptionsBuilder,
-        private readonly ?string $roleArn = null,
-        private readonly bool $useConfigureTool = true,
+        private AwsCloudHsmSdkOptionsBuilder $awsCloudHsmSdkOptionsBuilder,
+        private ?string $roleArn = null,
+        private bool $useConfigureTool = true,
     ) {
     }
 
@@ -65,16 +65,20 @@ final class AwsCloudHsmSdkConfigurator
     private function configureAwsCloudHsmSdkUsingAwsSdk(array $options): void
     {
         $cluster = [
-            'client_cert_path' => $options['--server-client-cert-file'],
-            'client_key_path' => $options['--server-client-key-file'],
             'hsm_ca_file' => $options['--hsm-ca-cert'],
             'options' => [
                 'disable_key_availability_check' => $options['--disable-key-availability-check'],
             ],
         ];
+
+        if (isset($options['--server-client-cert-file']) && isset($options['--server-client-key-file'])) {
+            $cluster['client_cert_path'] = $options['--server-client-cert-file'];
+            $cluster['client_key_path'] = $options['--server-client-key-file'];
+        }
+
         $servers = [];
 
-        if (\array_key_exists('-a', $options)) {
+        if (isset($options['-a'])) {
             $hsmIpAddresses = \explode(' ', (string)$options['-a']);
 
             foreach ($hsmIpAddresses as $hsmIpAddress) {
@@ -86,7 +90,7 @@ final class AwsCloudHsmSdkConfigurator
             }
         }
 
-        if (\array_key_exists('--cluster-id', $options)) {
+        if (isset($options['--cluster-id'])) {
             $awsCredentials = null;
             if ($this->roleArn !== null) {
                 $stsClient = new StsClient([

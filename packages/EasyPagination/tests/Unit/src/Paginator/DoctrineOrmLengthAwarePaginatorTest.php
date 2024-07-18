@@ -17,7 +17,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
     /**
      * @see testPaginator
      */
-    public static function providerTestPaginator(): iterable
+    public static function providePaginatorData(): iterable
     {
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
@@ -228,7 +228,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
     /**
      * @throws \Doctrine\ORM\ORMException
      */
-    #[DataProvider('providerTestPaginator')]
+    #[DataProvider('providePaginatorData')]
     public function testPaginator(
         PaginationInterface $pagination,
         string $from,

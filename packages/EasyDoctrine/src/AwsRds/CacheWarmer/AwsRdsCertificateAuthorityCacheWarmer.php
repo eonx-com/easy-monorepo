@@ -6,10 +6,10 @@ namespace EonX\EasyDoctrine\AwsRds\CacheWarmer;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsCertificateAuthorityProvider;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
-final class AwsRdsCertificateAuthorityCacheWarmer implements CacheWarmerInterface
+final readonly class AwsRdsCertificateAuthorityCacheWarmer implements CacheWarmerInterface
 {
     public function __construct(
-        private readonly AwsRdsCertificateAuthorityProvider $certificateAuthorityProvider,
+        private AwsRdsCertificateAuthorityProvider $certificateAuthorityProvider,
     ) {
     }
 

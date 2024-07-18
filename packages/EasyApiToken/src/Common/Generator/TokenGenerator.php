@@ -5,14 +5,14 @@ namespace EonX\EasyApiToken\Common\Generator;
 
 use Firebase\JWT\JWT;
 
-final class TokenGenerator implements TokenGeneratorInterface
+final readonly class TokenGenerator implements TokenGeneratorInterface
 {
     private const DEFAULT_ALGO = 'HS256';
 
     public function __construct(
-        private readonly ?string $audience = null,
-        private readonly ?string $secret = null,
-        private readonly ?string $issuer = null,
+        private string $audience,
+        private ?string $secret = null,
+        private ?string $issuer = null,
     ) {
     }
 
@@ -49,7 +49,7 @@ final class TokenGenerator implements TokenGeneratorInterface
         $payload['jti'] = \md5((string)\json_encode($payload));
 
         $secret = $secretEncoded === true ? \base64_decode(
-            \strtr((string)$this->secret, '-_', '+/'),
+            \strtr($this->secret ?? '', '-_', '+/'),
             true
         ) : $this->secret;
 

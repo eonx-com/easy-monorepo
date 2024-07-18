@@ -8,13 +8,13 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
 
-final class FirebaseJwtDriver implements JwtDriverInterface
+final readonly class FirebaseJwtDriver implements JwtDriverInterface
 {
     public function __construct(
-        private readonly string $algo,
-        private readonly OpenSSLAsymmetricKey|string $publicKey,
-        private readonly OpenSSLAsymmetricKey|string $privateKey,
-        private readonly ?int $leeway = null,
+        private string $algo,
+        private OpenSSLAsymmetricKey|string $publicKey,
+        private OpenSSLAsymmetricKey|string $privateKey,
+        private ?int $leeway = null,
     ) {
     }
 

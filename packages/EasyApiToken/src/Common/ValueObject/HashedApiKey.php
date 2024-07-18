@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Common\ValueObject;
 
-final class HashedApiKey implements HashedApiKeyInterface
+final readonly class HashedApiKey implements HashedApiKeyInterface
 {
     public function __construct(
         private int|string $id,

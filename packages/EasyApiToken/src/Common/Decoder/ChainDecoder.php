@@ -12,7 +12,7 @@ final class ChainDecoder extends AbstractDecoder
     /**
      * @var \EonX\EasyApiToken\Common\Decoder\DecoderInterface[]
      */
-    private array $decoders;
+    private readonly array $decoders;
 
     public function __construct(iterable $decoders, ?string $name = null)
     {

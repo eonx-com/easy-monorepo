@@ -16,11 +16,14 @@
         "symfony/messenger": "^6.4"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.14",
+        "doctrine/doctrine-bundle": "^2.8",
         "eonx-com/easy-event-dispatcher": "^5.12",
+        "eonx-com/easy-logging": "^5.12",
         "eonx-com/easy-random": "^5.12",
-        "mockery/mockery": "^1.6",
+        "eonx-com/easy-test": "^5.12",
         "phpunit/phpunit": "^10.2",
-        "symfony/yaml": "^6.4"
+        "symfony/framework-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
@@ -32,6 +35,7 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyAsync\\Tests\\": "tests",
+            "EonX\\EasyAsync\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
             "EonX\\EasyAsync\\Tests\\Unit\\": "tests/Unit/src",
             "EonX\\EasyAsync\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }

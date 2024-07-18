@@ -13,7 +13,7 @@ final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
     /**
      * @see testProcess
      */
-    public static function providerTestProcess(): iterable
+    public static function provideProcessData(): iterable
     {
         yield 'default method' => [Webhook::fromArray([]), WebhookInterface::DEFAULT_METHOD];
 
@@ -27,7 +27,7 @@ final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
         ];
     }
 
-    #[DataProvider('providerTestProcess')]
+    #[DataProvider('provideProcessData')]
     public function testProcess(WebhookInterface $webhook, string $expectedMethod, ?string $defaultMethod = null): void
     {
         $middleware = new MethodMiddleware($defaultMethod);
