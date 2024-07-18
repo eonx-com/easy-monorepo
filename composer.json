@@ -13,7 +13,7 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "ext-sodium": "*",
-        "api-platform/core": "^3.3",
+        "api-platform/core": "^3.3.9",
         "aws/aws-sdk-php": "^3.269",
         "bugsnag/bugsnag": "^3.29",
         "doctrine/dbal": "^3.0",
