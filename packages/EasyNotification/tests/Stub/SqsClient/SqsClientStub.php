@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyNotification\Tests\Stub\Client;
+namespace EonX\EasyNotification\Tests\Stub\SqsClient;
 
 use Aws\Sqs\SqsClient;
 

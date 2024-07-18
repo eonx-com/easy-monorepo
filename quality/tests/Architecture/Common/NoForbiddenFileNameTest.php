@@ -5,6 +5,7 @@ namespace Test\Architecture\Common;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
@@ -21,39 +22,41 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
     ];
 
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->files()
-            ->in($path);
-        foreach ($finder as $file) {
-            if (self::shouldSkip($file->getRealPath())) {
-                continue;
-            }
-
-            foreach (self::FORBIDDEN_FILE_NAMES as $forbiddenFileName) {
-                if (\str_ends_with($file->getBasename(), $forbiddenFileName)) {
-                    self::fail(\sprintf(
-                        'Found forbidden file name "%s" in "%s"',
-                        $forbiddenFileName,
-                        $file->getRealPath()
-                    ));
+        return (new Finder())->files()
+            ->filter(static function (\SplFileInfo $file): bool {
+                foreach (self::SKIP_FILES as $skipFile) {
+                    if (\str_ends_with($file->getRealPath(), $skipFile)) {
+                        return false;
+                    }
                 }
-            }
-        }
 
-        self::assertTrue(true);
+                return true;
+            });
     }
 
-    private static function shouldSkip(string $path): bool
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
     {
-        foreach (self::SKIP_FILES as $skipFile) {
-            if (\str_ends_with($path, $skipFile)) {
-                return true;
+        self::assertTrue(
+            self::isNameAllowed($subject),
+            \sprintf(
+                'Found forbidden file name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
+    }
+
+    private static function isNameAllowed(SplFileInfo $file): bool
+    {
+        foreach (self::FORBIDDEN_FILE_NAMES as $forbiddenFileName) {
+            if (\str_ends_with($file->getBasename(), $forbiddenFileName)) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 }

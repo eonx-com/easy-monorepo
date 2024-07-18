@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEventDispatcher\Laravel\Dispatcher;
+namespace EonX\EasyEventDispatcher\Laravel\Dispatchers;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;

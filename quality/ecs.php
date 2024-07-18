@@ -78,9 +78,6 @@ return ECSConfig::configure()
             'packages/*/tests/Fixture/*/DataTransferObject/*',
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
-        ArrangeActAssertSniff::class => [
-            'quality/tests/*',
-        ],
         BlankLineAfterOpeningTagFixer::class => null,
         ClassDefinitionFixer::class => [
             'packages/EasyDecision/src/Configurator/AbstractNameRestrictedDecisionConfigurator.php',

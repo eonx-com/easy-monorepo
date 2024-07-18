@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Laravel\ExceptionHandler;
+namespace EonX\EasyErrorHandler\Laravel\ExceptionHandlers;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Exception\TranslatableExceptionInterface;

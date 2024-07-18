@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Laravel\Translator;
+namespace EonX\EasyErrorHandler\Laravel\Translators;
 
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
-use EonX\EasyErrorHandler\Laravel\Enum\TranslationParam;
+use EonX\EasyErrorHandler\Laravel\Enums\TranslationParam;
 use Illuminate\Contracts\Translation\Translator as IlluminateTranslatorInterface;
 
 final readonly class LaravelTranslator implements TranslatorInterface

@@ -5,6 +5,7 @@ namespace Test\Architecture\Symfony;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Test\Architecture\AbstractArchitectureTestCase;
 
@@ -17,42 +18,37 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
     ];
 
     private const SKIP_DIRS = [
-        '/AwsRds',
-        '/CompilerPass',
-        '/EasyApiPlatform/bundle/templates/bundles',
-        '/EasyApiPlatform/bundle/templates/bundles/ApiPlatformBundle/SwaggerUi',
-        '/EasyApiToken/tests/Fixture/keys',
-        '/EasyErrorHandler/src/ErrorCodes',
-        '/MessageBus',
-        '/Parsing/Nai',
-        '/templates',
-        '/tests',
-        '/translations',
+        'AwsRds',
+        'CompilerPass',
+        'bundles',
+        'SwaggerUi',
+        'keys',
+        'ErrorCodes',
+        'MessageBus',
+        'Nai',
+        'templates',
+        'tests',
+        'translations',
     ];
 
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->directories()
+        return (new Finder())->directories()
             ->exclude(self::EXCLUDE_DIRS)
-            ->in($path);
+            ->notName(self::SKIP_DIRS);
+    }
 
-        foreach ($finder as $dir) {
-            if (self::shouldSkip($dir->getRealPath())) {
-                continue;
-            }
-
-            if (self::isSingular($dir->getBasename()) === false) {
-                self::fail(\sprintf(
-                    'Found plural directory name "%s" in "%s"',
-                    $dir->getBasename(),
-                    $dir->getRealPath()
-                ));
-            }
-        }
-
-        self::assertTrue(true);
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        self::assertTrue(
+            self::isSingular($subject->getBasename()),
+            \sprintf(
+                'Found plural directory name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
     }
 
     private static function isSingular(string $dirName): bool
@@ -61,16 +57,5 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
         $singularDirNames = $inflector->singularize($dirName);
 
         return \count($singularDirNames) === 1 && $singularDirNames[0] === $dirName;
-    }
-
-    private static function shouldSkip(string $path): bool
-    {
-        foreach (self::SKIP_DIRS as $skipDir) {
-            if (\str_ends_with($path, $skipDir)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

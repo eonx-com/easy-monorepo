@@ -5,7 +5,6 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Bundle;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Strategy\VerboseStrategyInterface;
-use EonX\EasyErrorHandler\Tests\Unit\Common\DataProvider\TestRenderWithDefaultBuilderDataProvider;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Symfony\Component\Translation\Loader\ArrayLoader;

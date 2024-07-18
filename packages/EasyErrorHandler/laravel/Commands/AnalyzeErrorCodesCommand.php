@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Laravel\Command;
+namespace EonX\EasyErrorHandler\Laravel\Commands;
 
 use EonX\EasyErrorHandler\ErrorCodes\Processor\ErrorCodesGroupProcessorInterface;
 use Illuminate\Console\Command;

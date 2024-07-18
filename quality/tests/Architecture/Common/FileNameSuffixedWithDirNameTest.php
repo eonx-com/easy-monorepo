@@ -5,6 +5,7 @@ namespace Test\Architecture\Common;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Test\Architecture\AbstractArchitectureTestCase;
 
@@ -31,6 +32,12 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'tests/Fixture/config',
     ];
 
+    private const EXCLUDE_FILE_NAMES = [
+        '*BundleTest.php',
+        '*ServiceProviderTest.php',
+        '*TestCase.php',
+    ];
+
     private const SKIP_DIR_NAMES = [
         'ApiResource',
         'Attribute',
@@ -38,14 +45,14 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'DataTransferObject',
         'Entity',
         'Enum',
+        'Enums',
         'Function',
         'ValueObject',
         'bundle',
         'laravel',
     ];
 
-    private const SKIP_FILES = [
-        'BundleTest.php',
+    private const SKIP_FILE_NAMES = [
         'EasyApiPlatform/tests/Application/src/Twig/TemplateOverrideTest.php',
         'EasyErrorHandler/src/Common/ErrorHandler/FormatAwareInterface.php',
         'EasyLock/src/Common/Locker/ProcessWithLockTrait.php',
@@ -54,39 +61,44 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'EasyUtils/src/Common/Helper/HasPriorityInterface.php',
         'EasyUtils/src/Common/Helper/HasPriorityTrait.php',
         'EasyUtils/tests/Fixture/SensitiveData/DummyObject.php',
-        'ServiceProviderTest.php',
-        'TestCase.php',
     ];
 
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->files()
+        return (new Finder())->files()
             ->name('*.php')
+            ->notName(self::EXCLUDE_FILE_NAMES)
             ->exclude(self::EXCLUDE_DIRS)
-            ->in($path);
-        foreach ($finder as $file) {
-            if (self::shouldSkip($file->getRealPath())) {
-                continue;
-            }
+            ->filter(static function (SplFileInfo $file): bool {
+                $dirName = \basename(\dirname($file->getRealPath()));
 
-            $dirName = \basename(\dirname($file->getRealPath()));
+                if (\in_array($dirName, self::SKIP_DIR_NAMES, true)) {
+                    return false;
+                }
 
-            if (\in_array($dirName, self::SKIP_DIR_NAMES, true)) {
-                continue;
-            }
+                foreach (self::SKIP_FILE_NAMES as $skipFileName) {
+                    if (\str_ends_with($file->getRealPath(), $skipFileName)) {
+                        return false;
+                    }
+                }
 
-            if (self::isNameAllowed($file->getFilenameWithoutExtension(), $dirName) === false) {
-                self::fail(\sprintf(
-                    'File "%s" is not suffixed with directory name "%s"',
-                    $file->getRealPath(),
-                    $dirName
-                ));
-            }
-        }
+                return true;
+            });
+    }
 
-        self::assertTrue(true);
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        $parentDirName = \basename(\dirname($subject->getRealPath()));
+
+        self::assertTrue(
+            self::isNameAllowed($subject->getFilenameWithoutExtension(), $parentDirName),
+            \sprintf(
+                'File "%s" is not suffixed with directory name "%s"',
+                $subject->getRealPath(),
+                $parentDirName
+            )
+        );
     }
 
     private static function isNameAllowed(string $fileName, string $dirName): bool
@@ -105,17 +117,6 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
                 if (\str_ends_with($fileName, $singularDirName . $suffix)) {
                     return true;
                 }
-            }
-        }
-
-        return false;
-    }
-
-    private static function shouldSkip(string $path): bool
-    {
-        foreach (self::SKIP_FILES as $skipFile) {
-            if (\str_ends_with($path, $skipFile)) {
-                return true;
             }
         }
 

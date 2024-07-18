@@ -5,47 +5,44 @@ namespace Test\Architecture\Symfony;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Test\Architecture\AbstractArchitectureTestCase;
 
 final class BundleNamingTest extends AbstractArchitectureTestCase
 {
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->directories()
+        return (new Finder())->directories()
             ->name('bundle')
-            ->depth(0)
-            ->in($path);
+            ->depth(0);
+    }
 
-        if ($finder->count() === 0) {
-            self::markTestSkipped('No bundle directory found');
-        }
-
-        $bundleDir = \current(\iterator_to_array($finder));
-
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
         $fileFinder = new Finder();
         $fileFinder->files()
-            ->in($bundleDir->getRealPath())
+            ->in($subject->getRealPath())
             ->depth(0);
+        $serviceProviderFile = \current(\iterator_to_array($fileFinder));
+        $expectedName = \basename(\substr($subject->getRealPath(), 0, -7)) . 'Bundle.php';
 
-        if ($fileFinder->count() > 1) {
-            self::fail(\sprintf(
-                'Found more than one PHP file in "%s"',
-                $bundleDir->getRealPath()
-            ));
-        }
-
-        $bundleFile = \current(\iterator_to_array($fileFinder));
-
-        if ($bundleFile->getBasename() !== \basename($path) . 'Bundle.php') {
-            self::fail(\sprintf(
+        self::assertCount(
+            1,
+            $fileFinder,
+            \sprintf(
+                'Found more than one file in "%s"',
+                $subject->getRealPath()
+            )
+        );
+        self::assertSame(
+            $expectedName,
+            $serviceProviderFile->getBasename(),
+            \sprintf(
                 'Bundle file name "%s" does not match name "%s"',
-                $bundleFile->getBasename(),
-                \basename($path) . 'Bundle.php'
-            ));
-        }
-
-        self::assertTrue(true);
+                $serviceProviderFile->getBasename(),
+                $expectedName
+            )
+        );
     }
 }

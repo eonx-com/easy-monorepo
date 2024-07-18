@@ -16,51 +16,33 @@ final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCas
         'tests',
     ];
 
-    private const SKIP_FILE_NAMES = [
-
-    ];
-
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->files()
+        return (new Finder())->files()
             ->exclude(self::EXCLUDE_DIRS)
-            ->in($path);
+            ->filter(static function (SplFileInfo $file): bool {
+                if (
+                    $file->getExtension() === 'php'
+                    && \preg_match('/(class|trait|interface|enum)\s/', $file->getContents()) === 1
+                ) {
+                    return false;
+                }
 
-        foreach ($finder as $file) {
-            if (self::shouldSkip($file)) {
-                continue;
-            }
-
-            if (\preg_match('/^[\w]+(-[\w]+)*$/', $file->getFilenameWithoutExtension()) !== 1) {
-                self::fail(\sprintf(
-                    'Found non-kebab case file name "%s" in "%s"',
-                    $file->getBasename(),
-                    $file->getRealPath()
-                ));
-            }
-        }
-
-        self::assertTrue(true);
+                return true;
+            });
     }
 
-    private static function shouldSkip(SplFileInfo $file): bool
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
     {
-        foreach (self::SKIP_FILE_NAMES as $skipFileName) {
-            if (\str_ends_with($file->getRealPath(), $skipFileName)) {
-                return true;
-            }
-        }
-
-        if ($file->getExtension() === 'php') {
-            foreach (['class ', 'trait ', 'interface ', 'enum '] as $keyword) {
-                if (\str_contains($file->getContents(), $keyword)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        self::assertMatchesRegularExpression(
+            '/^[\w]+(-[\w]+)*$/',
+            $subject->getFilenameWithoutExtension(),
+            \sprintf(
+                'Found non-kebab case file name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
     }
 }

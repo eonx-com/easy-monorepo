@@ -5,6 +5,7 @@ namespace Test\Architecture\Common;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
@@ -17,6 +18,7 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         'Interfaces',
         'Manager',
         'Managers',
+        'Pass',
         'Service',
         'Services',
         'Trait',
@@ -30,39 +32,31 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         '/EasyTest/src/Common/Trait',
     ];
 
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->directories()
-            ->in($path);
-        foreach ($finder as $dir) {
-            if (self::shouldSkip($dir->getRealPath())) {
-                continue;
-            }
-
-            foreach (self::FORBIDDEN_DIR_NAMES as $forbiddenDirName) {
-                if ($dir->getBasename() === $forbiddenDirName) {
-                    self::fail(\sprintf(
-                        'Found forbidden directory name "%s" in "%s"',
-                        $forbiddenDirName,
-                        $dir->getRealPath()
-                    ));
+        return (new Finder())->directories()
+            ->filter(static function (SplFileInfo $dir): bool {
+                foreach (self::SKIP_DIRS as $skipDir) {
+                    if (\str_ends_with($dir->getRealPath(), $skipDir)) {
+                        return false;
+                    }
                 }
-            }
-        }
 
-        self::assertTrue(true);
+                return true;
+            });
     }
 
-    private static function shouldSkip(string $path): bool
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
     {
-        foreach (self::SKIP_DIRS as $skipDir) {
-            if (\str_ends_with($path, $skipDir)) {
-                return true;
-            }
-        }
-
-        return false;
+        self::assertNotContains(
+            $subject->getBasename(),
+            self::FORBIDDEN_DIR_NAMES,
+            \sprintf(
+                'Found forbidden directory name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
     }
 }

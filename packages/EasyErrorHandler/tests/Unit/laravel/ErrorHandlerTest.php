@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
-use EonX\EasyErrorHandler\Tests\Unit\Common\DataProvider\TestRenderWithDefaultBuilderDataProvider;
+use EonX\EasyErrorHandler\Tests\Unit\Bundle\TestRenderWithDefaultBuilderDataProvider;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;

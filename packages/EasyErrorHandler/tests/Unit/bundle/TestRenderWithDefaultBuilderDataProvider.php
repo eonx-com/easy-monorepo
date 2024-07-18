@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyErrorHandler\Tests\Unit\Common\DataProvider;
+namespace EonX\EasyErrorHandler\Tests\Unit\Bundle;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;

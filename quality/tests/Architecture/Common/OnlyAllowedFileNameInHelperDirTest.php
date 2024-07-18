@@ -5,6 +5,7 @@ namespace Test\Architecture\Common;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Test\Architecture\AbstractArchitectureTestCase;
 
 final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestCase
@@ -21,33 +22,23 @@ final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestC
         'TraitTest.php',
     ];
 
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->directories()
-            ->in($path);
-        foreach ($finder as $dir) {
-            if ($dir->getBasename() !== 'Helper') {
-                continue;
-            }
+        return (new Finder())->files()
+            ->path('/\/Helper\//');
+    }
 
-            $fileFinder = new Finder();
-            $fileFinder->files()
-                ->in($dir->getRealPath());
-
-            foreach ($fileFinder as $file) {
-                if ($this->isNameAllowed($file->getBasename()) === false) {
-                    self::fail(\sprintf(
-                        'Found forbidden file name "%s" in "%s"',
-                        $file->getBasename(),
-                        $file->getRealPath()
-                    ));
-                }
-            }
-        }
-
-        self::assertTrue(true);
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        self::assertTrue(
+            $this->isNameAllowed($subject->getBasename()),
+            \sprintf(
+                'Found forbidden file name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
     }
 
     private function isNameAllowed(string $name): bool

@@ -5,6 +5,7 @@ namespace Test\Architecture\Common;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCase
@@ -19,48 +20,42 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
         '/tests/Unit',
     ];
 
-    #[DataProvider('providePackage')]
-    public function testItSucceeds(string $baseNamespace, string $path): void
+    public static function arrangeFinder(): Finder
     {
-        $finder = new Finder();
-        $finder->directories()
-            ->in($path);
-        foreach ($finder as $dir) {
-            if (self::shouldSkip($dir->getRealPath())) {
-                continue;
-            }
-
-            $nestedDirFinder = new Finder();
-            $nestedDirFinder->directories()
-                ->in($dir->getRealPath());
-            if ($nestedDirFinder->count() > 0) {
-                $nestedFileFinder = new Finder();
-                $nestedFileFinder->files()
-                    ->in($dir->getRealPath())
-                    ->depth(0);
-
-                if ($nestedFileFinder->count() > 0) {
-                    self::fail(\sprintf(
-                        'Directory "%s" with subdirectories [%s] contains files [%s]',
-                        $dir->getRealPath(),
-                        \implode(', ', \iterator_to_array($nestedDirFinder)),
-                        \implode(', ', \iterator_to_array($nestedFileFinder))
-                    ));
+        return (new Finder())->directories()
+            ->filter(static function (SplFileInfo $dir): bool {
+                foreach (self::SKIP_DIRS as $skipDir) {
+                    if (\str_ends_with($dir->getRealPath(), $skipDir)) {
+                        return false;
+                    }
                 }
-            }
-        }
 
-        self::assertTrue(true);
+                $nestedDirFinder = (new Finder())->directories()
+                    ->in($dir->getRealPath());
+
+                if ($nestedDirFinder->count() === 0) {
+                    return false;
+                }
+
+                return true;
+            });
     }
 
-    private static function shouldSkip(string $path): bool
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
     {
-        foreach (self::SKIP_DIRS as $skipDir) {
-            if (\str_ends_with($path, $skipDir)) {
-                return true;
-            }
-        }
+        $nestedFileFinder = (new Finder())->files()
+            ->in($subject->getRealPath())
+            ->depth(0);
 
-        return false;
+        self::assertCount(
+            0,
+            $nestedFileFinder,
+            \sprintf(
+                'Directory "%s" with subdirectories contains files [%s]',
+                $subject->getRealPath(),
+                \implode(', ', \iterator_to_array($nestedFileFinder))
+            )
+        );
     }
 }
