@@ -20,15 +20,6 @@ final class PluralNameForDirTest extends AbstractArchitectureTestCase
         'Middleware',
     ];
 
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->directories()
-            ->exclude(self::EXCLUDE_DIRS)
-            ->path('/laravel\//')
-            ->depth(1)
-            ->notName(self::SKIP_DIRS);
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -40,6 +31,15 @@ final class PluralNameForDirTest extends AbstractArchitectureTestCase
                 $subject->getRealPath()
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->directories()
+            ->exclude(self::EXCLUDE_DIRS)
+            ->path('/laravel\//')
+            ->depth(1)
+            ->notName(self::SKIP_DIRS);
     }
 
     private static function isPlural(string $dirName): bool

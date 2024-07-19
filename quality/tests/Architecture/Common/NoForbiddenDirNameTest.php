@@ -32,20 +32,6 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         '/EasyTest/src/Common/Trait',
     ];
 
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->directories()
-            ->filter(static function (SplFileInfo $dir): bool {
-                foreach (self::SKIP_DIRS as $skipDir) {
-                    if (\str_ends_with($dir->getRealPath(), $skipDir)) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -58,5 +44,19 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
                 $subject->getRealPath()
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->directories()
+            ->filter(static function (SplFileInfo $dir): bool {
+                foreach (self::SKIP_DIRS as $skipDir) {
+                    if (\str_ends_with($dir->getRealPath(), $skipDir)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
     }
 }

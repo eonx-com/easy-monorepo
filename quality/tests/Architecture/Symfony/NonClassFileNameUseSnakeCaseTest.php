@@ -22,7 +22,21 @@ final class NonClassFileNameUseSnakeCaseTest extends AbstractArchitectureTestCas
         '/EasyTest/bin/easy-test',
     ];
 
-    public static function arrangeFinder(): Finder
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        self::assertMatchesRegularExpression(
+            '/^[\w]+(_[\w]+)*$/',
+            self::trimDoubleExtension($subject->getFilenameWithoutExtension()),
+            \sprintf(
+                'Found non-snake case file name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
+    }
+
+    protected static function arrangeFinder(): Finder
     {
         return (new Finder())->files()
             ->exclude(self::EXCLUDE_DIRS)
@@ -42,20 +56,6 @@ final class NonClassFileNameUseSnakeCaseTest extends AbstractArchitectureTestCas
 
                 return true;
             });
-    }
-
-    #[DataProvider('provideSubject')]
-    public function testItSucceeds(SplFileInfo $subject): void
-    {
-        self::assertMatchesRegularExpression(
-            '/^[\w]+(_[\w]+)*$/',
-            self::trimDoubleExtension($subject->getFilenameWithoutExtension()),
-            \sprintf(
-                'Found non-snake case file name "%s" in "%s"',
-                $subject->getBasename(),
-                $subject->getRealPath()
-            )
-        );
     }
 
     private static function trimDoubleExtension(string $fileName): string

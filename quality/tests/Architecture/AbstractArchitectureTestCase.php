@@ -9,8 +9,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 abstract class AbstractArchitectureTestCase extends TestCase
 {
-    abstract public static function arrangeFinder(): Finder;
-
     /**
      * @return array<\Symfony\Component\Finder\SplFileInfo>
      */
@@ -29,6 +27,8 @@ abstract class AbstractArchitectureTestCase extends TestCase
     }
 
     abstract public function testItSucceeds(SplFileInfo $subject): void;
+
+    abstract protected static function arrangeFinder(): Finder;
 
     /**
      * @return string[]

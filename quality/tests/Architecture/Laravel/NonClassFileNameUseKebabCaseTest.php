@@ -16,7 +16,21 @@ final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCas
         'tests',
     ];
 
-    public static function arrangeFinder(): Finder
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        self::assertMatchesRegularExpression(
+            '/^[\w]+(-[\w]+)*$/',
+            $subject->getFilenameWithoutExtension(),
+            \sprintf(
+                'Found non-kebab case file name "%s" in "%s"',
+                $subject->getBasename(),
+                $subject->getRealPath()
+            )
+        );
+    }
+
+    protected static function arrangeFinder(): Finder
     {
         return (new Finder())->files()
             ->exclude(self::EXCLUDE_DIRS)
@@ -30,19 +44,5 @@ final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCas
 
                 return true;
             });
-    }
-
-    #[DataProvider('provideSubject')]
-    public function testItSucceeds(SplFileInfo $subject): void
-    {
-        self::assertMatchesRegularExpression(
-            '/^[\w]+(-[\w]+)*$/',
-            $subject->getFilenameWithoutExtension(),
-            \sprintf(
-                'Found non-kebab case file name "%s" in "%s"',
-                $subject->getBasename(),
-                $subject->getRealPath()
-            )
-        );
     }
 }

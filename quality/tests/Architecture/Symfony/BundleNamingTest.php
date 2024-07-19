@@ -10,13 +10,6 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class BundleNamingTest extends AbstractArchitectureTestCase
 {
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->directories()
-            ->name('bundle')
-            ->depth(0);
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -44,5 +37,12 @@ final class BundleNamingTest extends AbstractArchitectureTestCase
                 $expectedName
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->directories()
+            ->name('bundle')
+            ->depth(0);
     }
 }

@@ -10,11 +10,6 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoNameWithAllUppercaseTest extends AbstractArchitectureTestCase
 {
-    public static function arrangeFinder(): Finder
-    {
-        return new Finder();
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -26,5 +21,10 @@ final class NoNameWithAllUppercaseTest extends AbstractArchitectureTestCase
                 $subject->getRealPath()
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return new Finder();
     }
 }

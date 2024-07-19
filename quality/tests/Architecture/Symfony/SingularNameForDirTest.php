@@ -31,13 +31,6 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
         'translations',
     ];
 
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->directories()
-            ->exclude(self::EXCLUDE_DIRS)
-            ->notName(self::SKIP_DIRS);
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -49,6 +42,13 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
                 $subject->getRealPath()
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->directories()
+            ->exclude(self::EXCLUDE_DIRS)
+            ->notName(self::SKIP_DIRS);
     }
 
     private static function isSingular(string $dirName): bool

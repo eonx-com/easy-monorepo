@@ -20,7 +20,25 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
         '/tests/Unit',
     ];
 
-    public static function arrangeFinder(): Finder
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        $nestedFileFinder = (new Finder())->files()
+            ->in($subject->getRealPath())
+            ->depth(0);
+
+        self::assertCount(
+            0,
+            $nestedFileFinder,
+            \sprintf(
+                'Directory "%s" with subdirectories contains files [%s]',
+                $subject->getRealPath(),
+                \implode(', ', \iterator_to_array($nestedFileFinder))
+            )
+        );
+    }
+
+    protected static function arrangeFinder(): Finder
     {
         return (new Finder())->directories()
             ->filter(static function (SplFileInfo $dir): bool {
@@ -39,23 +57,5 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
 
                 return true;
             });
-    }
-
-    #[DataProvider('provideSubject')]
-    public function testItSucceeds(SplFileInfo $subject): void
-    {
-        $nestedFileFinder = (new Finder())->files()
-            ->in($subject->getRealPath())
-            ->depth(0);
-
-        self::assertCount(
-            0,
-            $nestedFileFinder,
-            \sprintf(
-                'Directory "%s" with subdirectories contains files [%s]',
-                $subject->getRealPath(),
-                \implode(', ', \iterator_to_array($nestedFileFinder))
-            )
-        );
     }
 }

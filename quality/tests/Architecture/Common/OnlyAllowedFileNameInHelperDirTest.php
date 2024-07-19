@@ -22,12 +22,6 @@ final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestC
         'TraitTest.php',
     ];
 
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->files()
-            ->path('/\/Helper\//');
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -39,6 +33,12 @@ final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestC
                 $subject->getRealPath()
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->files()
+            ->path('/\/Helper\//');
     }
 
     private function isNameAllowed(string $name): bool

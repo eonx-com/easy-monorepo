@@ -10,13 +10,6 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class ServiceProviderNamingTest extends AbstractArchitectureTestCase
 {
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->directories()
-            ->name('laravel')
-            ->depth(0);
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -44,5 +37,12 @@ final class ServiceProviderNamingTest extends AbstractArchitectureTestCase
                 $expectedName
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->directories()
+            ->name('laravel')
+            ->depth(0);
     }
 }

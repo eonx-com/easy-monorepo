@@ -63,7 +63,22 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'EasyUtils/tests/Fixture/SensitiveData/DummyObject.php',
     ];
 
-    public static function arrangeFinder(): Finder
+    #[DataProvider('provideSubject')]
+    public function testItSucceeds(SplFileInfo $subject): void
+    {
+        $parentDirName = \basename(\dirname($subject->getRealPath()));
+
+        self::assertTrue(
+            self::isNameAllowed($subject->getFilenameWithoutExtension(), $parentDirName),
+            \sprintf(
+                'File "%s" is not suffixed with directory name "%s"',
+                $subject->getRealPath(),
+                $parentDirName
+            )
+        );
+    }
+
+    protected static function arrangeFinder(): Finder
     {
         return (new Finder())->files()
             ->name('*.php')
@@ -84,21 +99,6 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
 
                 return true;
             });
-    }
-
-    #[DataProvider('provideSubject')]
-    public function testItSucceeds(SplFileInfo $subject): void
-    {
-        $parentDirName = \basename(\dirname($subject->getRealPath()));
-
-        self::assertTrue(
-            self::isNameAllowed($subject->getFilenameWithoutExtension(), $parentDirName),
-            \sprintf(
-                'File "%s" is not suffixed with directory name "%s"',
-                $subject->getRealPath(),
-                $parentDirName
-            )
-        );
     }
 
     private static function isNameAllowed(string $fileName, string $dirName): bool

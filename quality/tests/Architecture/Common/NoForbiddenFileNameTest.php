@@ -22,20 +22,6 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
     ];
 
-    public static function arrangeFinder(): Finder
-    {
-        return (new Finder())->files()
-            ->filter(static function (\SplFileInfo $file): bool {
-                foreach (self::SKIP_FILES as $skipFile) {
-                    if (\str_ends_with($file->getRealPath(), $skipFile)) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
-    }
-
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
@@ -47,6 +33,20 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
                 $subject->getRealPath()
             )
         );
+    }
+
+    protected static function arrangeFinder(): Finder
+    {
+        return (new Finder())->files()
+            ->filter(static function (\SplFileInfo $file): bool {
+                foreach (self::SKIP_FILES as $skipFile) {
+                    if (\str_ends_with($file->getRealPath(), $skipFile)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
     }
 
     private static function isNameAllowed(SplFileInfo $file): bool
