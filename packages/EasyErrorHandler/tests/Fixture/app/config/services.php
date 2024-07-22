@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyApiPlatform\Tests\Fixture\App\BugsnagExceptionIgnorer\Helper\IgnorerHelper;
-use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag;
-
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
@@ -13,7 +10,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->load('EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\', '../src/*')
+    $services->load('EonX\\EasyErrorHandler\\Tests\\Fixture\\App\\', '../src/*')
         ->exclude([
             '../src/Kernel/ApplicationKernel.php',
             '../src/**/ApiResource',
@@ -21,11 +18,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '../src/**/DataTransferObject',
             '../src/**/Entity',
         ]);
-
-    $services->alias('test.property_accessor', 'property_accessor')
-        ->public();
-
-    $services->set(IgnorerHelper::class)
-        ->arg('$exceptionIgnorers', tagged_iterator(ConfigTag::BugsnagExceptionIgnorer->value))
-        ->public();
 };

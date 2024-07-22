@@ -7,10 +7,10 @@ use EonX\EasyApiPlatform\EasyErrorHandler\Provider\ApiPlatformErrorResponseBuild
 use EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface;
 use Throwable;
 
-final class ApiPlatformBugsnagExceptionIgnorer implements BugsnagExceptionIgnorerInterface
+final readonly class ApiPlatformBugsnagExceptionIgnorer implements BugsnagExceptionIgnorerInterface
 {
     public function __construct(
-        private readonly ApiPlatformErrorResponseBuilderProvider $apiPlatformErrorResponseBuilderProvider,
+        private ApiPlatformErrorResponseBuilderProvider $apiPlatformErrorResponseBuilderProvider,
     ) {
     }
 

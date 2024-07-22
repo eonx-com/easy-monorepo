@@ -5,7 +5,6 @@ namespace EonX\EasyErrorHandler\Bundle;
 
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface;
-use EonX\EasyErrorHandler\Bundle\CompilerPass\ApiPlatformCompilerPass;
 use EonX\EasyErrorHandler\Bundle\CompilerPass\ErrorHandlerCompilerPass;
 use EonX\EasyErrorHandler\Bundle\CompilerPass\ErrorRendererCompilerPass;
 use EonX\EasyErrorHandler\Bundle\Enum\ConfigParam;
@@ -47,7 +46,7 @@ final class EasyErrorHandlerBundle extends AbstractBundle
         $parameters->set(ConfigParam::BugsnagThreshold->value, $config['bugsnag']['threshold']);
         $parameters->set(
             ConfigParam::BugsnagIgnoredExceptions->value,
-            \count($config['bugsnag']['ignored_exceptions']) > 0 ? $config['bugsnag']['ignored_exceptions'] : null
+            \count($config['bugsnag']['ignored_exceptions']) > 0 ? $config['bugsnag']['ignored_exceptions'] : []
         );
         $parameters->set(
             ConfigParam::BugsnagHandledExceptions->value,

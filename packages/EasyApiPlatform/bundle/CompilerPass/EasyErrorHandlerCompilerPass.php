@@ -15,8 +15,7 @@ final class EasyErrorHandlerCompilerPass implements CompilerPassInterface
             return;
         }
 
-//        $container->removeDefinition('api_platform.listener.exception.validation');
-//        $container->removeDefinition('api_platform.error_listener');
+        $container->removeDefinition('api_platform.listener.exception.validation');
 
         // We need this to handle \TypeError in \EonX\EasyErrorHandler\ApiPlatform\Builder\ApiPlatformValidationErrorResponseBuilder
         // @see \Symfony\Component\HttpKernel\HttpKernel

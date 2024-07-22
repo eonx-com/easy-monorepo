@@ -5,13 +5,13 @@ namespace EonX\EasyApiPlatform\EasyErrorHandler\Provider;
 
 use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
 
-final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
+final readonly class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     /**
      * @param iterable<\EonX\EasyApiPlatform\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface> $builders
      */
     public function __construct(
-        private readonly iterable $builders,
+        private iterable $builders,
     ) {
     }
 

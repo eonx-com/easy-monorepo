@@ -15,14 +15,14 @@ use EonX\EasyErrorHandler\Common\Resolver\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
-final class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
+final readonly class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     private const KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
 
     public function __construct(
-        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly TranslatorInterface $translator,
-        private readonly array $keys,
+        private ErrorDetailsResolverInterface $errorDetailsResolver,
+        private TranslatorInterface $translator,
+        private array $keys,
     ) {
     }
 

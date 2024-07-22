@@ -2,7 +2,10 @@
 declare(strict_types=1);
 
 use EonX\EasyApiPlatform\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface;
-use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;use Symfony\Component\Config\Definition\Builder\NodeBuilder;use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
+use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 return static function (DefinitionConfigurator $definition) {
@@ -31,7 +34,8 @@ return static function (DefinitionConfigurator $definition) {
                          ->canBeDisabled()
                          ->children();
 
-        $easyErrorHandlerDefinition->append((new NodeBuilder())
+        $easyErrorHandlerDefinition->append(
+            (new NodeBuilder())
             ->arrayNode('custom_serializer_exceptions')
                 ->info('Custom serializer exceptions to be handled by '
                    . ApiPlatformErrorResponseBuilderInterface::class)
@@ -42,10 +46,11 @@ return static function (DefinitionConfigurator $definition) {
                         ->scalarNode('violation_message')->isRequired()->end()
                     ->end()
                 ->end()
-            );
+        );
 
         if (ContainerBuilder::willBeAvailable('eonx-com/easy-bugsnag', EasyBugsnagBundle::class, [])) {
-            $easyErrorHandlerDefinition->append((new NodeBuilder())
+            $easyErrorHandlerDefinition->append(
+                (new NodeBuilder())
                 ->booleanNode('report_exceptions_to_bugsnag')
                     ->info('Report exceptions handled by '
                     . ApiPlatformErrorResponseBuilderInterface::class . ' to Bugsnag')

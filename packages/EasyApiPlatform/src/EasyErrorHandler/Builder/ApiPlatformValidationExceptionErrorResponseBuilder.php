@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
-use ApiPlatform\Symfony\Validator\Exception\ConstraintViolationListAwareExceptionInterface as LegacyConstraintViolationListAwareExceptionInterface;
 use ApiPlatform\Validator\Exception\ConstraintViolationListAwareExceptionInterface;
 use Throwable;
 
@@ -35,10 +34,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
     {
         $violations = [];
 
-        if (
-            $throwable instanceof ConstraintViolationListAwareExceptionInterface
-            || $throwable instanceof LegacyConstraintViolationListAwareExceptionInterface
-        ) {
+        if ($throwable instanceof ConstraintViolationListAwareExceptionInterface) {
             foreach ($throwable->getConstraintViolationList() as $violation) {
                 $propertyPath = $violation->getPropertyPath();
 

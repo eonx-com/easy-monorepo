@@ -9,11 +9,11 @@ enum ConfigParam: string
 
     case CustomPaginatorEnabled = 'easy_api_platform.custom_paginator_enabled';
 
+    case EasyErrorHandlerCustomSerializerExceptions
+    = 'easy_api_platform.easy_error_handler_custom_serializer_exceptions';
+
     case EasyErrorHandlerEnabled = 'easy_api_platform.easy_error_handler_enabled';
 
-    case EasyErrorHandlerCustomSerializerExceptions =
-    'easy_api_platform.easy_error_handler_custom_serializer_exceptions';
-
-    case EasyErrorHandlerReportExceptionsToBugsnag =
-    'easy_api_platform.easy_error_handler_report_exceptions_to_bugsnag';
+    case EasyErrorHandlerReportExceptionsToBugsnag
+    = 'easy_api_platform.easy_error_handler_report_exceptions_to_bugsnag';
 }

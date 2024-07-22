@@ -75,7 +75,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
     }
 
     /**
-     * @param class-string[]|null $ignoredExceptions
+     * @param array<class-string<\Throwable>>|null $ignoredExceptions
      */
     #[DataProvider('provideReportData')]
     public function testReport(

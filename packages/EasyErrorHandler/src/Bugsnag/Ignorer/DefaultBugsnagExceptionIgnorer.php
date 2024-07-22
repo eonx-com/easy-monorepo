@@ -5,15 +5,16 @@ namespace EonX\EasyErrorHandler\Bugsnag\Ignorer;
 
 use Throwable;
 
-final class DefaultBugsnagExceptionIgnorer implements BugsnagExceptionIgnorerInterface
+final readonly class DefaultBugsnagExceptionIgnorer implements BugsnagExceptionIgnorerInterface
 {
     /**
      * @template TThrowable of \Throwable
      *
      * @param class-string<TThrowable>[] $ignoredExceptions
      */
-    public function __construct(private readonly array $ignoredExceptions)
-    {
+    public function __construct(
+        private array $ignoredExceptions,
+    ) {
     }
 
     public function shouldIgnore(Throwable $throwable): bool

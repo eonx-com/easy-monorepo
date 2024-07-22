@@ -184,8 +184,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be present.',
                 ],
             ],
-            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests' .
-                '\\Fixture\\App\\EasyErrorHandler\\DataTransferObject\\CategoryInputDtoWithConstructor" from serialized' .
+            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
+                '\\EasyErrorHandler\\DataTransferObject\\CategoryInputDtoWithConstructor" from serialized' .
                 ' data because its constructor requires the following parameters to be present : "$rank".',
         ];
 

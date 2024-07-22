@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Bundle;
 
-use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Kernel\ApplicationKernel;
+use EonX\EasyErrorHandler\Tests\Fixture\App\Kernel\ApplicationKernel;
 use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
 use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends KernelTestCase
 {
@@ -34,8 +33,8 @@ abstract class AbstractSymfonyTestCase extends KernelTestCase
         }
     }
 
-    protected static function createKernel(array $options = []): KernelInterface
+    protected static function getKernelClass(): string
     {
-        return new ApplicationKernel('test', false);
+        return ApplicationKernel::class;
     }
 }

@@ -23,8 +23,8 @@ final class EasyApiPlatformBundle extends AbstractBundle
     ];
 
     private const EASY_API_PLATFORM_EASY_ERROR_HANDLER_CONFIG = [
-        'enabled' => ConfigParam::EasyErrorHandlerEnabled,
         'custom_serializer_exceptions' => ConfigParam::EasyErrorHandlerCustomSerializerExceptions,
+        'enabled' => ConfigParam::EasyErrorHandlerEnabled,
         'report_exceptions_to_bugsnag' => ConfigParam::EasyErrorHandlerReportExceptionsToBugsnag,
     ];
 
@@ -76,7 +76,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
             $container->import('config/easy_error_handler.php');
         }
 
-        if ($config['easy_error_handler']['report_exceptions_to_bugsnag']) {
+        if ($config['easy_error_handler']['report_exceptions_to_bugsnag'] === false) {
             $container->import('config/bugsnag.php');
         }
     }

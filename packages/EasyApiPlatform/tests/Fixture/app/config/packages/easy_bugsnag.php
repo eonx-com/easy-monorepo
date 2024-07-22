@@ -8,5 +8,11 @@ use Symfony\Config\EasyBugsnagConfig;
 return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
     $easyBugsnagConfig
         ->apiKey('')
-        ->enabled(false);
+        ->enabled(true);
+
+    $sensitiveDataSanitizerConfig = $easyBugsnagConfig->sensitiveDataSanitizer();
+    $sensitiveDataSanitizerConfig->enabled(false);
+
+    $doctrineDbalConfig = $easyBugsnagConfig->doctrineDbal();
+    $doctrineDbalConfig->enabled(false);
 };
