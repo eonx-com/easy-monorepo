@@ -42,4 +42,4 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
 
 ```
 
-[1]: https://symfony.com/components/Symfony%20Flex
+[1]: https://symfony.com/doc/current/setup/flex.html

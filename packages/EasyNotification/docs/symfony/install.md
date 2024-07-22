@@ -44,4 +44,4 @@ return static function (EasyNotificationConfig $easyNotificationConfig): void {
 
 ```
 
-[1]: https://symfony.com/components/Symfony%20Flex
+[1]: https://symfony.com/doc/current/setup/flex.html
