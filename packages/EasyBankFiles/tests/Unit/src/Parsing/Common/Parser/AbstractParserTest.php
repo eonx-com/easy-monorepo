@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Common\Parser;
 
-use EonX\EasyBankFiles\Tests\Stub\Parsing\Common\Parser\ParserStub;
+use EonX\EasyBankFiles\Tests\Stub\Parser\ParserStub;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 
 final class AbstractParserTest extends AbstractUnitTestCase

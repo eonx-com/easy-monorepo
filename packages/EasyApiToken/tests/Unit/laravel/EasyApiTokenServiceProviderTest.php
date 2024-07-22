@@ -8,7 +8,7 @@ use EonX\EasyApiToken\Common\Decoder\BasicAuthDecoder;
 use EonX\EasyApiToken\Common\Decoder\DecoderInterface;
 use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider;
-use EonX\EasyApiToken\Tests\Stub\Common\Provider\DecoderProviderStub;
+use EonX\EasyApiToken\Tests\Stub\Provider\DecoderProviderStub;
 
 final class EasyApiTokenServiceProviderTest extends AbstractLumenTestCase
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Stub\Parsing\Common\ValueObject;
+namespace EonX\EasyBankFiles\Tests\Stub\ValueObject;
 
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 

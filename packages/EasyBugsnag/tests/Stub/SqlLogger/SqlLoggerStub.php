@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBugsnag\Tests\Stub\Logger;
+namespace EonX\EasyBugsnag\Tests\Stub\SqlLogger;
 
 use Doctrine\DBAL\Logging\SQLLogger;
 

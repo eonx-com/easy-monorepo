@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiToken\Tests\Stub\Common\Provider;
+namespace EonX\EasyApiToken\Tests\Stub\Provider;
 
 use EonX\EasyApiToken\Common\Provider\AbstractFirewallAwareDecoderProvider;
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Stub\Generation\Common\Generator;
+namespace EonX\EasyBankFiles\Tests\Stub\Generator;
 
 use EonX\EasyBankFiles\Generation\Common\Generator\AbstractGenerator;
 

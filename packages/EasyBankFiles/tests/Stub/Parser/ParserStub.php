@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyBankFiles\Tests\Stub\Parsing\Common\Parser;
+namespace EonX\EasyBankFiles\Tests\Stub\Parser;
 
 use EonX\EasyBankFiles\Parsing\Common\Parser\AbstractParser;
 
