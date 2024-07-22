@@ -6,7 +6,6 @@ use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
 use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 return static function (DefinitionConfigurator $definition) {
     $rootNode = $definition->rootNode();
