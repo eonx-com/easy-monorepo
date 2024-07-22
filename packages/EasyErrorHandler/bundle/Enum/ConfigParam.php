@@ -29,8 +29,6 @@ enum ConfigParam: string
 
     case SkipReportedExceptions = 'easy_error_handler.skip_reported_exceptions';
 
-    case TransformValidationErrors = 'easy_error_handler.transform_validation_errors';
-
     case TranslateInternalErrorMessagesEnabled = 'easy_error_handler.translate_internal_error_messages_enabled';
 
     case TranslateInternalErrorMessagesLocale = 'easy_error_handler.translate_internal_error_messages_locale';

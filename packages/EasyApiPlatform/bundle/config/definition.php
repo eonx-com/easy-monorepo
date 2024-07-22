@@ -28,7 +28,7 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
         ->end();
 
-    if (ContainerBuilder::willBeAvailable('eonx-com/easy-error-handler', EasyErrorHandlerBundle::class, [])) {
+    if (\class_exists(EasyErrorHandlerBundle::class)) {
         $easyErrorHandlerDefinition = $rootNode->children()
                      ->arrayNode('easy_error_handler')
                          ->canBeDisabled()
@@ -48,7 +48,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
         );
 
-        if (ContainerBuilder::willBeAvailable('eonx-com/easy-bugsnag', EasyBugsnagBundle::class, [])) {
+        if (\class_exists(EasyBugsnagBundle::class)) {
             $easyErrorHandlerDefinition->append(
                 (new NodeBuilder())
                 ->booleanNode('report_exceptions_to_bugsnag')

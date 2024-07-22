@@ -54,11 +54,6 @@ final class EasyErrorHandlerBundle extends AbstractBundle
         );
 
         $parameters->set(
-            ConfigParam::TransformValidationErrors->value,
-            $config['transform_validation_errors']
-        );
-
-        $parameters->set(
             ConfigParam::IgnoredExceptions->value,
             \count($config['ignored_exceptions']) > 0 ? $config['ignored_exceptions'] : null
         );

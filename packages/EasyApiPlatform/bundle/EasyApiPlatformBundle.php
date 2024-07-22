@@ -14,15 +14,15 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyApiPlatformBundle extends AbstractBundle
 {
-    private const EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG = [
+    private const ADVANCED_SEARCH_FILTER_CONFIG = [
         'iri_fields' => ConfigParam::AdvancedSearchFilterIriFields,
     ];
 
-    private const EASY_API_PLATFORM_BASE_CONFIG = [
-        'custom_paginator_enabled' => ConfigParam::CustomPaginatorEnabled,
+    private const CUSTOM_PAGINATOR_CONFIG = [
+        'enabled' => ConfigParam::CustomPaginatorEnabled,
     ];
 
-    private const EASY_API_PLATFORM_EASY_ERROR_HANDLER_CONFIG = [
+    private const EASY_ERROR_HANDLER_CONFIG = [
         'custom_serializer_exceptions' => ConfigParam::EasyErrorHandlerCustomSerializerExceptions,
         'enabled' => ConfigParam::EasyErrorHandlerEnabled,
         'report_exceptions_to_bugsnag' => ConfigParam::EasyErrorHandlerReportExceptionsToBugsnag,
@@ -47,19 +47,19 @@ final class EasyApiPlatformBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::EASY_API_PLATFORM_BASE_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config[$name]);
-        }
-
-        foreach (self::EASY_API_PLATFORM_ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
+        foreach (self::ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
             $container
                 ->parameters()
                 ->set($param->value, $config['advanced_search_filter'][$name]);
         }
 
-        foreach (self::EASY_API_PLATFORM_EASY_ERROR_HANDLER_CONFIG as $name => $param) {
+        foreach (self::CUSTOM_PAGINATOR_CONFIG as $name => $param) {
+            $container
+                ->parameters()
+                ->set($param->value, $config['custom_paginator'][$name]);
+        }
+
+        foreach (self::EASY_ERROR_HANDLER_CONFIG as $name => $param) {
             $container
                 ->parameters()
                 ->set($param->value, $config['easy_error_handler'][$name]);
@@ -68,7 +68,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
         $container->import('config/services.php');
         $container->import('config/filters.php');
 
-        if ($config['custom_paginator']['enabled'] ?? true) {
+        if ($config['custom_paginator']['enabled']) {
             $container->import('config/pagination.php');
         }
 

@@ -31,4 +31,18 @@ final class CustomPaginatorTest extends AbstractApplicationTestCase
             $responseData['pagination']
         );
     }
+
+    public function testDefaultPaginator(): void
+    {
+        self::setUpClient(['environment' => 'default_paginator']);
+        $this->initDatabase();
+        $entityManager = self::getService(EntityManagerInterface::class);
+        $entityManager->persist((new Category())->setTitle('Some category'));
+        $entityManager->flush();
+
+        $response = self::$client->request('GET', '/categories');
+
+        $responseData = $response->toArray(false);
+        self::assertFalse(isset($responseData['pagination']));
+    }
 }

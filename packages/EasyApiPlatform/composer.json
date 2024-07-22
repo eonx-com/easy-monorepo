@@ -21,6 +21,7 @@
     "require-dev": {
         "doctrine/annotations": "^1.14",
         "doctrine/doctrine-bundle": "^2.8",
+        "eonx-com/easy-bugsnag": "^5.12",
         "eonx-com/easy-error-handler": "^5.12",
         "eonx-com/easy-test": "^5.12",
         "phpspec/prophecy-phpunit": "^2.0",
@@ -46,6 +47,7 @@
         }
     },
     "suggest": {
+        "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
         "eonx-com/easy-error-handler": "To use EasyErrorHandler integration"
     },
     "extra": {
