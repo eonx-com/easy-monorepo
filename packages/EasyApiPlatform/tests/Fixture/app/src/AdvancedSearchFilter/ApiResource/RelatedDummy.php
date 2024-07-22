@@ -7,18 +7,7 @@ namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiR
 namespace EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource;
 >>>>>>>> refs/heads/6.x:packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/RelatedDummy.php
 
-use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Metadata\ApiResource;
-use Carbon\CarbonImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use EonX\EasyApiPlatform\Filter\AdvancedSearchFilter;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;use ApiPlatform\Metadata\ApiFilter;use ApiPlatform\Metadata\ApiProperty;use ApiPlatform\Metadata\ApiResource;use Carbon\CarbonImmutable;use Doctrine\Common\Collections\ArrayCollection;use Doctrine\Common\Collections\Collection;use Doctrine\DBAL\Types\Types;use Doctrine\ORM\Mapping as ORM;use EonX\EasyApiPlatform\Filter\AdvancedSearchFilter;use Symfony\Component\Serializer\Annotation\Groups;use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity]

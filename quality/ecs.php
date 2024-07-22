@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
@@ -14,7 +15,9 @@ use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
+use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
+use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
@@ -32,14 +35,8 @@ use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
-
-    $ecsConfig->import(EasyQualitySetList::ECS);
-
-    $ecsConfig->parallel(maxNumberOfProcess: 2, jobSize: 1);
-
-    $ecsConfig->paths([
+return ECSConfig::configure()
+    ->withPaths([
         __DIR__ . '/../bin',
         __DIR__ . '/../config',
         __DIR__ . '/../monorepo',
@@ -47,73 +44,87 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/../packages',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
-    ]);
-
-    $ecsConfig->skip([
+    ])
+    ->withParallel(
+        ParallelSettingsHelper::getTimeoutSeconds(),
+        ParallelSettingsHelper::getMaxNumberOfProcess(),
+        ParallelSettingsHelper::getJobSize()
+    )
+    ->withCache(__DIR__ . '/var/cache/ecs')
+    ->withSets([
+        EasyQualitySetList::ECS,
+    ])
+    ->withSkip([
         // Skip entire files or directories
         'packages/*/var/*', // Cache files
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
 
         // Skip rules
         AlphabeticallySortedArrayKeysSniff::class => [
-            'packages/*/src/Bridge/Laravel/config/*',
+            'packages/*/laravel/config/*',
             'packages/*/tests/*',
-            'packages/EasySwoole/src/Runtime/EasySwooleRuntime.php',
-            'packages/EasyUtils/src/CreditCard/CreditCardNumberValidator.php',
-            'packages/EasyWebhook/src/Bridge/Laravel/EasyWebhookServiceProvider.php',
+            'packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php',
+            'packages/EasyUtils/src/CreditCard/Validator/CreditCardNumberValidator.php',
+            'packages/EasyWebhook/laravel/EasyWebhookServiceProvider.php',
             'quality/ecs.php',
             'quality/rector.php',
         ],
         AvoidPublicPropertiesSniff::class => [
-            'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
-            'packages/*/tests/Stubs/Model/*',
-            'packages/*/tests/*/Fixtures/*/ApiResource/*',
-            'packages/*/tests/*/Fixtures/*/DataTransferObject/*',
-            'packages/EasyWebhook/src/Bridge/Laravel/Jobs/SendWebhookJob.php',
+            'packages/*/src/*/Constraint/*',
+            'packages/*/tests/Stub/Model/*',
+            'packages/*/tests/Fixture/*/ApiResource/*',
+            'packages/*/tests/Fixture/*/DataTransferObject/*',
+            'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
+        ClassDefinitionFixer::class => [
+            'packages/EasyDecision/src/Configurator/AbstractNameRestrictedDecisionConfigurator.php',
+            'packages/EasyDecision/src/Configurator/AbstractTypeRestrictedDecisionConfigurator.php',
+            'packages/EasyLock/src/Common/Exception/LockAcquiringException.php',
+        ],
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
-            'packages/EasyBankFiles/src/Generators/BaseGenerator.php',
-            'packages/EasySecurity/src/Bridge/Symfony/Security/Voters/*',
+            'packages/EasySecurity/src/SymfonySecurity/Voter/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
+        FinalClassFixer::class => [
+            'packages/EasyActivity/tests/Fixture/app/src/Entity/Type.php',
+            'packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/EmbeddableDummy.php',
+            'packages/EasySecurity/src/Common/Context/SecurityContext.php',
+            'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
+        ],
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
-            'packages/*/src/Bridge/Symfony/Resources/config/*',
-            'packages/*/tests/Fixtures/app/config/packages/*',
-            'packages/*/tests/Bridge/Symfony/Fixtures/app/config/packages/*',
+            'packages/*/config/*',
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
-            'packages/EasyTest/src/Traits/ContainerServiceTrait.php',
-        ],
-        LineLengthSniff::class . '.MaxExceeded' => [
-            'packages/*/src/Bridge/BridgeConstantsInterface.php',
-            'packages/EasySecurity/src/Bridge/Laravel/EasySecurityServiceProvider.php',
+            'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
+            'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
         ],
         MethodChainingNewlineFixer::class => [
-            'packages/*/src/Bridge/Symfony/DependencyInjection/Configuration.php',
-            'packages/*/src/Bridge/Symfony/Resources/config/definition.php',
+            'packages/*/definition.php',
+        ],
+        OrderedClassElementsFixer::class => [
+            'packages/EasyApiPlatform/tests/Application/AbstractApplicationTestCase.php',
         ],
         PhpdocAlignFixer::class => [
-            'packages/EasyUtils/src/Interfaces/MathInterface.php',
-            'packages/EasyUtils/src/Math/Math.php',
+            'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
+            'packages/EasyUtils/src/Math/Helper/MathHelper.php',
         ],
         PropertyTypeHintSniff::class . '.MissingNativeTypeHint' => [
-            'packages/*/src/Bridge/Symfony/Validator/Constraints/*',
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/src/*/Constraint/*',
+            'packages/*/tests/Stub/Model/*',
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         PropertyTypeHintSniff::class . '.UselessAnnotation' => [
-            'packages/*/tests/Stubs/Model/*',
+            'packages/*/tests/Stub/Model/*',
         ],
         SingleSpaceAfterConstructFixer::class => null,
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
-    ]);
-
-    $ecsConfig->rules([
+    ])
+    ->withRules([
         AvoidPublicPropertiesSniff::class,
         DateTimeImmutableFixer::class,
         DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class,
@@ -124,15 +135,14 @@ return static function (ECSConfig $ecsConfig): void {
         StandaloneLinePromotedPropertyFixer::class,
         StaticClosureSniff::class,
         UselessConstantTypeHintSniff::class,
-    ]);
-
-    $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
+    ])
+    ->withConfiguredRule(AlphabeticallySortedArrayKeysSniff::class, [
         'skipPatterns' => [\T_ATTRIBUTE => []],
-    ]);
-    $ecsConfig->ruleWithConfiguration(ArrangeActAssertSniff::class, [
+    ])
+    ->withConfiguredRule(ArrangeActAssertSniff::class, [
         'testNamespace' => 'Test',
-    ]);
-    $ecsConfig->ruleWithConfiguration(DocCommentSpacingSniff::class, [
+    ])
+    ->withConfiguredRule(DocCommentSpacingSniff::class, [
         'annotationsGroups' => [
             '@Annotation',
             '@Target',
@@ -157,8 +167,8 @@ return static function (ECSConfig $ecsConfig): void {
             '@dataProvider',
         ],
         'linesCountBetweenAnnotationsGroups' => 1,
-    ]);
-    $ecsConfig->ruleWithConfiguration(MakeClassAbstractSniff::class, [
+    ])
+    ->withConfiguredRule(MakeClassAbstractSniff::class, [
         'applyTo' => [
             [
                 'namespace' => '/^Test/',
@@ -167,17 +177,17 @@ return static function (ECSConfig $ecsConfig): void {
                 ],
             ],
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(TrailingCommaInMultilineFixer::class, [
+    ])
+    ->withConfiguredRule(TrailingCommaInMultilineFixer::class, [
         'elements' => [
             TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS,
             TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS,
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(UseSpacingSniff::class, [
+    ])
+    ->withConfiguredRule(UseSpacingSniff::class, [
         'linesCountBetweenUseTypes' => 1,
-    ]);
-    $ecsConfig->ruleWithConfiguration(UseYieldInsteadOfReturnSniff::class, [
+    ])
+    ->withConfiguredRule(UseYieldInsteadOfReturnSniff::class, [
         'applyTo' => [
             [
                 'namespace' => '/^Test/',
@@ -187,4 +197,3 @@ return static function (ECSConfig $ecsConfig): void {
             ],
         ],
     ]);
-};

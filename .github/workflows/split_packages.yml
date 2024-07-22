@@ -25,10 +25,10 @@ jobs:
                     path: '${{ steps.cache-extensions.outputs.dir }}'
                     key: '${{ steps.cache-extensions.outputs.key }}'
                     restore-keys: '${{ steps.cache-extensions.outputs.key }}'
-            -   name: 'Setup PHP 8.1'
+            -   name: 'Setup PHP 8.2'
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.1
+                    php-version: 8.2
                     coverage: none
                     extensions: '${{ env.PHP_EXTENSIONS }}'
             -   name: 'Install Composer dependencies'
@@ -45,7 +45,7 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 5.10.3
+                    - 5.11.3
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'

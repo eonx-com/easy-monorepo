@@ -2,8 +2,8 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyMonorepo\Console\MonorepoApplication;
-use EonX\EasyMonorepo\MonorepoKernel;
+use EonX\EasyMonorepo\Application\MonorepoApplication;
+use EonX\EasyMonorepo\Kernel\MonorepoKernel;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
 

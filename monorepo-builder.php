@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyMonorepo\Git\GitManager;
-use EonX\EasyMonorepo\Release\PackagesListInReadmeReleaseWorker;
-use EonX\EasyMonorepo\Release\PushNextDevReleaseWorker;
-use EonX\EasyMonorepo\Release\TagVersionReleaseWorker;
-use EonX\EasyMonorepo\Release\UpdateTagInGithubWorkflow;
+use EonX\EasyMonorepo\Helper\GitHelper;
+use EonX\EasyMonorepo\ReleaseWorker\PackagesListInReadmeReleaseWorker;
+use EonX\EasyMonorepo\ReleaseWorker\PushNextDevReleaseWorker;
+use EonX\EasyMonorepo\ReleaseWorker\TagVersionReleaseWorker;
+use EonX\EasyMonorepo\ReleaseWorker\UpdateTagInGithubWorkflowReleaseWorker;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Symplify\MonorepoBuilder\Config\MBConfig;
@@ -25,7 +25,7 @@ return static function (MBConfig $monorepoBuilderConfig): void {
     $monorepoBuilderConfig->packageDirectoriesExcludes([]);
     $monorepoBuilderConfig->workers([
         AddTagToChangelogReleaseWorker::class,
-        UpdateTagInGithubWorkflow::class,
+        UpdateTagInGithubWorkflowReleaseWorker::class,
         PackagesListInReadmeReleaseWorker::class,
         SetCurrentMutualDependenciesReleaseWorker::class,
         TagVersionReleaseWorker::class,
@@ -42,6 +42,6 @@ return static function (MBConfig $monorepoBuilderConfig): void {
 
     $services->set(ClientInterface::class, Client::class);
     $services->set(FinderSanitizer::class);
-    $services->set(GitManager::class);
+    $services->set(GitHelper::class);
     $services->set(SmartFileSystem::class);
 };

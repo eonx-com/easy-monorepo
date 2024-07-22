@@ -8,3 +8,9 @@ override(\Psr\Container\ContainerInterface::get(0), type(0));
 
 // $envelope->last(Stamp::class) -> instance of "Stamp"
 override(\Symfony\Component\Messenger\Envelope::last(0), type(0));
+
+// self::getService(Type::class) → instance of "Type"
+override(
+    \EonX\EasyTest\Common\Trait\ContainerServiceTrait::getService(),
+    type(0),
+);
