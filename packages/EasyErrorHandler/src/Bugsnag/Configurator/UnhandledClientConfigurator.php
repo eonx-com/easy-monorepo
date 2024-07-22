@@ -1,21 +1,6 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyErrorHandler/src/Bridge/EasyBugsnag/Configurators/UnhandledClientConfigurator.php
-namespace EonX\EasyErrorHandler\Bridge\EasyBugsnag\Configurators;
-
-use Bugsnag\Client;
-use Bugsnag\Report;
-use EonX\EasyBugsnag\Configurators\AbstractClientConfigurator;
-use EonX\EasyErrorHandler\Bridge\EasyBugsnag\UnhandledCallbackBridge;
-use EonX\EasyErrorHandler\Exceptions\BaseException;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\LogLevelAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\SeverityAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\StatusCodeAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\SubCodeAwareExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface;
-use EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface;
-========
 namespace EonX\EasyErrorHandler\Bugsnag\Configurator;
 
 use Bugsnag\Client;
@@ -29,7 +14,6 @@ use EonX\EasyErrorHandler\Common\Exception\StatusCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\TranslatableExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface;
->>>>>>>> refs/heads/6.x:packages/EasyErrorHandler/src/Bugsnag/Configurator/UnhandledClientConfigurator.php
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 

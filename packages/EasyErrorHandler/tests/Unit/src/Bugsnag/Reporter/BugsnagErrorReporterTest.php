@@ -1,27 +1,15 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyErrorHandler/tests/Bridge/EasyBugsnag/Reporters/BugsnagReporterTest.php
-namespace EonX\EasyErrorHandler\Tests\Bridge\EasyBugsnag\Reporters;
-
-use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Ignorers\DefaultBugsnagExceptionIgnorer;
-use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Interfaces\BugsnagExceptionIgnorerInterface;
-use EonX\EasyErrorHandler\Bridge\EasyBugsnag\Reporters\BugsnagErrorReporter;
-use EonX\EasyErrorHandler\ErrorLogLevelResolver;
-use EonX\EasyErrorHandler\Tests\AbstractTestCase;
-use EonX\EasyErrorHandler\Tests\Stubs\BaseExceptionStub;
-use EonX\EasyErrorHandler\Tests\Stubs\BugsnagClientStub;
-========
 namespace EonX\EasyErrorHandler\Tests\Unit\Bugsnag\Reporter;
 
+use EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface;
+use EonX\EasyErrorHandler\Bugsnag\Ignorer\DefaultBugsnagExceptionIgnorer;
 use EonX\EasyErrorHandler\Bugsnag\Reporter\BugsnagErrorReporter;
-use EonX\EasyErrorHandler\Bugsnag\Resolver\BugsnagIgnoreExceptionsResolverInterface;
-use EonX\EasyErrorHandler\Bugsnag\Resolver\DefaultBugsnagIgnoreExceptionsResolver;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\Stub\Client\BugsnagClientStub;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
->>>>>>>> refs/heads/6.x:packages/EasyErrorHandler/tests/Unit/src/Bugsnag/Reporter/BugsnagErrorReporterTest.php
 use Exception;
 use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -106,8 +94,8 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
 
         $reporter->report($throwable);
 
-        self::assertEquals(0, $reporter->getPriority());
-        self::assertEquals($shouldReport, \count($stub->getCalls()) > 0);
+        self::assertSame(0, $reporter->getPriority());
+        self::assertSame($shouldReport, \count($stub->getCalls()) > 0);
     }
 
     #[DataProvider('provideDataForReportWithIgnoredExceptionsResolver')]
@@ -133,7 +121,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
 
         $reporter->report($throwable);
 
-        self::assertEquals(0, $reporter->getPriority());
-        self::assertEquals($shouldIgnore, \count($stub->getCalls()) === 0);
+        self::assertSame(0, $reporter->getPriority());
+        self::assertSame($shouldIgnore, \count($stub->getCalls()) === 0);
     }
 }

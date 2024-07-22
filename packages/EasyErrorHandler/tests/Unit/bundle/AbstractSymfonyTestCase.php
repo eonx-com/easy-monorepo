@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Bundle;
 
-use EonX\EasyErrorHandler\Tests\Fixture\App\Kernel\ApplicationKernel;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Kernel\ApplicationKernel;
 use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
 use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

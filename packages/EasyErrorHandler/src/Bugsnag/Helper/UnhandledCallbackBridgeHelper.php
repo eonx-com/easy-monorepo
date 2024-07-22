@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyErrorHandler/src/Bridge/EasyBugsnag/UnhandledCallbackBridge.php
-namespace EonX\EasyErrorHandler\Bridge\EasyBugsnag;
-========
 namespace EonX\EasyErrorHandler\Bugsnag\Helper;
->>>>>>>> refs/heads/6.x:packages/EasyErrorHandler/src/Bugsnag/Helper/UnhandledCallbackBridgeHelper.php
 
 use Bugsnag\Report;
 use Closure;

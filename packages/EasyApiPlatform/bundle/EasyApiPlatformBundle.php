@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Bundle;
 
+use EonX\EasyApiPlatform\Bundle\CompilerPass\EasyErrorHandlerCompilerPass;
 use EonX\EasyApiPlatform\Bundle\CompilerPass\ReadListenerCompilerPass;
 use EonX\EasyApiPlatform\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -21,6 +22,12 @@ final class EasyApiPlatformBundle extends AbstractBundle
         'custom_paginator_enabled' => ConfigParam::CustomPaginatorEnabled,
     ];
 
+    private const EASY_API_PLATFORM_EASY_ERROR_HANDLER_CONFIG = [
+        'enabled' => ConfigParam::EasyErrorHandlerEnabled,
+        'custom_serializer_exceptions' => ConfigParam::EasyErrorHandlerCustomSerializerExceptions,
+        'report_exceptions_to_bugsnag' => ConfigParam::EasyErrorHandlerReportExceptionsToBugsnag,
+    ];
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -28,7 +35,9 @@ final class EasyApiPlatformBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new ReadListenerCompilerPass());
+        $container
+            ->addCompilerPass(new EasyErrorHandlerCompilerPass())
+            ->addCompilerPass(new ReadListenerCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -50,11 +59,25 @@ final class EasyApiPlatformBundle extends AbstractBundle
                 ->set($param->value, $config['advanced_search_filter'][$name]);
         }
 
+        foreach (self::EASY_API_PLATFORM_EASY_ERROR_HANDLER_CONFIG as $name => $param) {
+            $container
+                ->parameters()
+                ->set($param->value, $config['easy_error_handler'][$name]);
+        }
+
         $container->import('config/services.php');
         $container->import('config/filters.php');
 
-        if ($config['custom_paginator_enabled'] ?? true) {
+        if ($config['custom_paginator']['enabled'] ?? true) {
             $container->import('config/pagination.php');
+        }
+
+        if ($config['easy_error_handler']['enabled']) {
+            $container->import('config/easy_error_handler.php');
+        }
+
+        if ($config['easy_error_handler']['report_exceptions_to_bugsnag']) {
+            $container->import('config/bugsnag.php');
         }
     }
 

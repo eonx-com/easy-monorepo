@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyErrorHandler/src/Bridge/EasyBugsnag/Configurators/ErrorDetailsClientConfigurator.php
-namespace EonX\EasyErrorHandler\Bridge\EasyBugsnag\Configurators;
-========
 namespace EonX\EasyErrorHandler\Bugsnag\Configurator;
->>>>>>>> refs/heads/6.x:packages/EasyErrorHandler/src/Bugsnag/Configurator/ErrorDetailsClientConfigurator.php
 
 use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;

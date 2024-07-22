@@ -39,10 +39,10 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
-        - message: '#Method EonX\\EasyApiPlatform\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
+        - message: '#Method EonX\\EasyApiPlatform\\ApiPlatform\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filter/AdvancedSearchFilter.php
 
-        - message: '#Class EonX\\EasyApiPlatform\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
+        - message: '#Class EonX\\EasyUtils\\Common\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizer/CarbonImmutableNormalizer.php
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'

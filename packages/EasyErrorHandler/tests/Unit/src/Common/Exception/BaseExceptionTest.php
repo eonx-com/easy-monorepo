@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Common\Exception;
 
-use EonX\EasyErrorHandler\Tests\Fixture\App\Enum\ErrorCode;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Enum\ErrorCode;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;

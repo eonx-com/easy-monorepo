@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyApiPlatform/tests/Fixtures/app/src/Case/AdvancedSearchFilter/ApiResource/RelatedOwningDummy.php
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource;
-========
 namespace EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource;
->>>>>>>> refs/heads/6.x:packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/RelatedOwningDummy.php
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;

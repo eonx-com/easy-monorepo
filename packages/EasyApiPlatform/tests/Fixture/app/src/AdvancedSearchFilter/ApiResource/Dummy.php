@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyApiPlatform/tests/Fixtures/app/src/Case/AdvancedSearchFilter/ApiResource/Dummy.php
-namespace EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource;
-========
 namespace EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource;
->>>>>>>> refs/heads/6.x:packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/Dummy.php
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -72,11 +68,7 @@ class Dummy
     private ?string $nameConverted = null;
 
     /**
-<<<<<<<< HEAD:packages/EasyApiPlatform/tests/Fixtures/app/src/Case/AdvancedSearchFilter/ApiResource/Dummy.php
-     * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\RelatedDummy> Several dummies
-========
      * @var \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\RelatedDummy> Several dummies
->>>>>>>> refs/heads/6.x:packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/Dummy.php
      */
     #[ORM\ManyToMany(targetEntity: RelatedDummy::class)]
     private Collection $relatedDummies;
@@ -177,11 +169,7 @@ class Dummy
     }
 
     /**
-<<<<<<<< HEAD:packages/EasyApiPlatform/tests/Fixtures/app/src/Case/AdvancedSearchFilter/ApiResource/Dummy.php
-     * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixtures\App\Case\AdvancedSearchFilter\ApiResource\RelatedDummy>
-========
      * @return \Doctrine\Common\Collections\Collection<int, \EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\RelatedDummy>
->>>>>>>> refs/heads/6.x:packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/Dummy.php
      */
     public function getRelatedDummies(): Collection
     {

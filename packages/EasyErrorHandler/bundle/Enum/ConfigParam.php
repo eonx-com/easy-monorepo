@@ -7,8 +7,6 @@ enum ConfigParam: string
 {
     case BugsnagHandledExceptions = 'easy_error_handler.bugsnag_handled_exceptions';
 
-    case BugsnagIgnoreValidationErrors = 'easy_error_handler.bugsnag_ignore_validation_errors';
-
     case BugsnagIgnoredExceptions = 'easy_error_handler.bugsnag_ignored_exceptions';
 
     case BugsnagThreshold = 'easy_error_handler.bugsnag_threshold';
@@ -24,8 +22,6 @@ enum ConfigParam: string
     case LoggerExceptionLogLevels = 'easy_error_handler.logger_exception_log_levels';
 
     case LoggerIgnoredExceptions = 'easy_error_handler.logger_ignored_exceptions';
-
-    case OverrideApiPlatformListener = 'easy_error_handler.override_api_platform_listener';
 
     case ReportRetryableExceptionAttempts = 'easy_error_handler.report_retryable_exception_attempts';
 

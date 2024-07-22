@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyApiPlatform\Bridge\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -12,29 +11,37 @@ return static function (DefinitionConfigurator $definition) {
 
     $definition->rootNode()
         ->children()
-            // Bugsnag
-            ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
-            ->integerNode('bugsnag_threshold')->defaultNull()->end()
-            ->arrayNode('bugsnag_handled_exceptions')
-                ->beforeNormalization()->castToArray()->end()
-                ->scalarPrototype()->end()
+            ->arrayNode('bugsnag')
+                ->canBeDisabled()
+                ->children()
+                    ->integerNode('threshold')->defaultNull()->end()
+                    ->arrayNode('handled_exceptions')
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                    ->arrayNode('ignored_exceptions')
+                        ->defaultValue([
+                            HttpExceptionInterface::class,
+                            RequestExceptionInterface::class,
+                        ])
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                ->end()
             ->end()
-            ->arrayNode('bugsnag_ignored_exceptions')
-                ->defaultValue([
-                    HttpExceptionInterface::class,
-                    RequestExceptionInterface::class,
-                ])
-                ->beforeNormalization()->castToArray()->end()
-                ->scalarPrototype()->end()
-            ->end()
-            ->arrayNode('logger_exception_log_levels')
-                ->useAttributeAsKey('class')
-                ->beforeNormalization()->castToArray()->end()
-                ->integerPrototype()->end()
-            ->end()
-            ->arrayNode('logger_ignored_exceptions')
-                ->beforeNormalization()->castToArray()->end()
-                ->scalarPrototype()->end()
+            ->arrayNode('logger')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('exception_log_levels')
+                        ->useAttributeAsKey('class')
+                        ->beforeNormalization()->castToArray()->end()
+                        ->integerPrototype()->end()
+                    ->end()
+                    ->arrayNode('ignored_exceptions')
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                ->end()
             ->end()
             ->arrayNode('ignored_exceptions')
                 ->beforeNormalization()->castToArray()->end()

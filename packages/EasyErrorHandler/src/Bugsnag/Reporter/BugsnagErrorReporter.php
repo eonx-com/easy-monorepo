@@ -1,20 +1,11 @@
 <?php
 declare(strict_types=1);
 
-<<<<<<<< HEAD:packages/EasyErrorHandler/src/Bridge/EasyBugsnag/Reporters/BugsnagErrorReporter.php
-namespace EonX\EasyErrorHandler\Bridge\EasyBugsnag\Reporters;
-
-use Bugsnag\Client;
-use EonX\EasyErrorHandler\Interfaces\ErrorLogLevelResolverInterface;
-use EonX\EasyErrorHandler\Reporters\AbstractErrorReporter;
-========
 namespace EonX\EasyErrorHandler\Bugsnag\Reporter;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Bugsnag\Resolver\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Common\Reporter\AbstractErrorReporter;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
->>>>>>>> refs/heads/6.x:packages/EasyErrorHandler/src/Bugsnag/Reporter/BugsnagErrorReporter.php
 use Monolog\Logger;
 use Throwable;
 
@@ -23,7 +14,7 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
     private readonly int $threshold;
 
     /**
-     * @param \EonX\EasyErrorHandler\Bridge\EasyBugsnag\Interfaces\BugsnagExceptionIgnorerInterface[] $exceptionIgnorers
+     * @param \EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface[] $exceptionIgnorers
      */
     public function __construct(
         private readonly Client $bugsnag,

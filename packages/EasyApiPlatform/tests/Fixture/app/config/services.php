@@ -10,7 +10,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->load('EonX\\EasyApiPlatform\\Tests\\Fixtures\\App\\', '../src/*')
+    $services->load('EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\', '../src/*')
         ->exclude([
             '../src/Kernel/ApplicationKernel.php',
             '../src/**/ApiResource',
