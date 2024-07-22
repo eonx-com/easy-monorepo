@@ -4,25 +4,28 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1"
+        "php": "^8.2"
     },
     "require-dev": {
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
-        "eonx-com/easy-pagination": "^5.11",
+        "eonx-com/easy-pagination": "^5.12",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2",
-        "vlucas/phpdotenv": "^5.5"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyRepository\\": "src"
+            "EonX\\EasyRepository\\": "src",
+            "EonX\\EasyRepository\\Bundle\\": "bundle",
+            "EonX\\EasyRepository\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyRepository\\Tests\\": "tests"
+            "EonX\\EasyRepository\\Tests\\": "tests",
+            "EonX\\EasyRepository\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyRepository\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {
@@ -36,11 +39,9 @@
         "symfony/dependency-injection": "To use this package with Symfony",
         "symfony/http-kernel": "To use this package with Symfony"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     }
 }

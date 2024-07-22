@@ -29,7 +29,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class,
+    \EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider::class,
 ],
 ```
 
@@ -39,7 +39,7 @@ automatically. Make sure to register it:
 
 To allow this package to work with your own pipelines you must let it know about your pipelines and
 middleware providers structure. To do so you will use the configuration file
-`src/Bridge/Laravel/config/easy-pipeline.php`. Copy/Paste this file into your `config` folder and then
+`laravel/config/easy-pipeline.php`. Copy/Paste this file into your `config` folder and then
 update it with your own pipelines list.
 
 ```php
@@ -73,7 +73,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyPipeline\Bridge\Laravel\EasyIlluminatePipelineServiceProvider::class);
+$app->register(\EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider::class);
 ```
 
 <br>
@@ -101,10 +101,10 @@ of your pipeline, for more information please have a look at the [documentation]
 
 That's it you're all setup! You're now able to use your pipelines anywhere you want, using dependency
 injection or service locator (we strongly recommend using the first one haha). To do so, you need to use the
-`EonX\EasyPipeline\Interfaces\PipelineFactoryInterface` to create your pipelines and their middleware list.
+`EonX\EasyPipeline\Factory\PipelineFactoryInterface` to create your pipelines and their middleware list.
 
 ```php
-use EonX\EasyPipeline\Interfaces\PipelineFactoryInterface;
+use EonX\EasyPipeline\Factory\PipelineFactoryInterface;
 
 final class MyClass
 {
@@ -122,7 +122,7 @@ final class MyClass
     public function processMyPipelineToo($input)
     {
         // Will be your configured repository implementation as well
-        $pipeline = $app->make(\EonX\EasyPipeline\Interfaces\PipelineFactoryInterface::class)->create('my-pipeline');
+        $pipeline = $app->make(\EonX\EasyPipeline\Factory\PipelineFactoryInterface::class)->create('my-pipeline');
 
         $output = $pipeline->process($input); // Return the potentially modified version of $input
 
@@ -132,6 +132,9 @@ final class MyClass
 ```
 
 [1]: https://laravel.com/
+
 [2]: https://lumen.laravel.com/
+
 [3]: https://getcomposer.org/
+
 [4]: https://laravel.com/docs/5.7/providers

@@ -9,7 +9,7 @@ The EasyWebhook package uses a **middleware stack** that is processed every time
 middleware proceeds down the stack to where the webhook is sent in a HTTP request, and then proceeds back up the stack.
 Actions may be taken on the way down and/or the way back up.
 
-Middleware are services implementing `EonX\EasyWebhook\Interfaces\MiddlewareInterface`. This package provides **core
+Middleware are services implementing `EonX\EasyWebhook\Common\Middleware\MiddlewareInterface`. This package provides **core
 middleware**, but you can also write **custom middleware**, e.g. to add a custom header to webhook HTTP requests.
 
 The middleware is ordered by **priority** in the stack, whereby the lower the priority, the earlier in the stack the
@@ -47,7 +47,7 @@ This middleware formats the body of the webhook HTTP request.
 By default, this package uses the `EonX\EasyWebhook\Formatters\JsonFormatter` body formatter, which formats the request
 body as a JSON string and sets the `Content-Type` header of the HTTP request to be `application/json`.
 
-You can use your own body formatter by setting the `EonX\EasyWebhook\Interfaces\WebhookBodyFormatterInterface` service
+You can use your own body formatter by setting the `EonX\EasyWebhook\Common\Formatter\WebhookBodyFormatterInterface` service
 to your own implementation.
 
 *This is configure once middleware.*
@@ -72,7 +72,7 @@ This middleware catches exceptions that are thrown within the stack and handles 
 failed WebhookResult containing the actual exception.
 
 ::: tip
-To prevent an exception to be handled by this middleware, simply implement `EonX\EasyWebhook\Interfaces\DoNotHandleMeEasyWebhookExceptionInterface`.
+To prevent an exception to be handled by this middleware, simply implement `EonX\EasyWebhook\Common\Exception\DoNotHandleMeEasyWebhookExceptionInterface`.
 :::
 
 ### `IdHeaderMiddleware`
@@ -114,7 +114,7 @@ This middleware resets the webhook store and webhook results store. See [Stores]
 This middleware prevents memory issues when sending webhooks asynchronously with stores that use memory for their
 storage, such as the array stores.
 
-Note that the stores must implement `EonX\EasyWebhook\Interfaces\Stores\ResetStoreInterface`. Of the stores provided by
+Note that the stores must implement `EonX\EasyWebhook\Common\Store\ResetStoreInterface`. Of the stores provided by
 the EasyWebhook package, only the array stores support reset.
 
 ### `SendAfterMiddleware`
@@ -124,7 +124,7 @@ time, it simply stores the webhook in the configured store, and does not proceed
 You can initiate sending of delayed webhooks via the console command `easy-webhooks:send-due-webhooks`. See
 [Console](console.md) for more information.
 
-Note that the webhook store must implement `EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface` in order to be
+Note that the webhook store must implement `EonX\EasyWebhook\Common\Store\SendAfterStoreInterface` in order to be
 able to find due webhooks. Of the stores provided by the EasyWebhook package, only the Doctrine DBAL webhook store
 supports finding due webhooks.
 
@@ -140,7 +140,7 @@ By default, this package uses the `EonX\EasyWebhook\Signers\Rs256Signer` signer.
 (Hash-based Message Authentication Code) constructed by hashing the webhook's request body with either the webhook's
 `$secret` property (if it exists) or the secret defined in the package configuration (see [Configuration](config.md)).
 
-You can use your own signer by setting the `EonX\EasyWebhook\Interfaces\WebhookSignerInterface` service to your own
+You can use your own signer by setting the `EonX\EasyWebhook\Common\Signer\WebhookSignerInterface` service to your own
 implementation.
 
 The default name of the Signature header is `X-Webhook-Signature`, but the name is configurable (see
@@ -177,48 +177,48 @@ asynchronously, so your application is not blocked by retries.
 
 The following table show the middleware stack in priority order, with summaries of their actions:
 
-| Middleware | Action forward :arrow_down: | Action back :arrow_up: |
-| ---------- | --------------------------- | ---------------------- |
-| *Begin initial core middleware* | | |
-| `LockMiddleware` | Lock webhook | Unlock webhook |
-| `StoreMiddleware` | | Store webhook and result |
-| `StatusAndAttemptMiddleware` | | Update status and attempt |
-| `HandleExceptionsMiddleware` | | Handle exception thrown within the stack |
-| `ResetStoreMiddleware` | Reset webhook and result stores | |
-| `EventsMiddleware` | | Dispatch event |
-| `RerunMiddleware` | If rerun allowed, reset status and current attempt<br/>If not allowed, throw exception | |
-| *End initial core middleware* | | |
-| *Begin custom middleware*<br/>*(processed in priority order)* | | |
-| `BodyFormatterMiddleware`| Format request body | |
-| `EventHeaderMiddleware` | Set Event request header | |
-| `IdHeaderMiddleware` | Set ID request header | |
-| `SignatureHeaderMiddleware` | Set Signature request header | |
-| Custom middleware | Custom pre-processing | Custom post-processing |
-| *End custom middleware* | | |
-| *Begin final core middleware* | | |
-| `MethodMiddleware` | Set request method | |
-| `SendAfterMiddleware` | If time is before `$sendAfter`, store webhook and return up stack<br/>If time is after `$sendAfter`, continue down stack | |
-| `AsyncMiddleware` | If asynchronous, store webhook and return up stack<br/>If synchronous, continue down stack | |
-| `SyncRetryMiddleware` | If asynchronous, continue down stack<br/>If synchronous, retries webhook if not successful | |
-| `SendWebhookMiddleware` | Send request and return up stack | |
-| *End final core middleware* | | |
+| Middleware                                                    | Action forward :arrow_down:                                                                                              | Action back :arrow_up:                   |
+|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
+| *Begin initial core middleware*                               |                                                                                                                          |                                          |
+| `LockMiddleware`                                              | Lock webhook                                                                                                             | Unlock webhook                           |
+| `StoreMiddleware`                                             |                                                                                                                          | Store webhook and result                 |
+| `StatusAndAttemptMiddleware`                                  |                                                                                                                          | Update status and attempt                |
+| `HandleExceptionsMiddleware`                                  |                                                                                                                          | Handle exception thrown within the stack |
+| `ResetStoreMiddleware`                                        | Reset webhook and result stores                                                                                          |                                          |
+| `EventsMiddleware`                                            |                                                                                                                          | Dispatch event                           |
+| `RerunMiddleware`                                             | If rerun allowed, reset status and current attempt<br/>If not allowed, throw exception                                   |                                          |
+| *End initial core middleware*                                 |                                                                                                                          |                                          |
+| *Begin custom middleware*<br/>*(processed in priority order)* |                                                                                                                          |                                          |
+| `BodyFormatterMiddleware`                                     | Format request body                                                                                                      |                                          |
+| `EventHeaderMiddleware`                                       | Set Event request header                                                                                                 |                                          |
+| `IdHeaderMiddleware`                                          | Set ID request header                                                                                                    |                                          |
+| `SignatureHeaderMiddleware`                                   | Set Signature request header                                                                                             |                                          |
+| Custom middleware                                             | Custom pre-processing                                                                                                    | Custom post-processing                   |
+| *End custom middleware*                                       |                                                                                                                          |                                          |
+| *Begin final core middleware*                                 |                                                                                                                          |                                          |
+| `MethodMiddleware`                                            | Set request method                                                                                                       |                                          |
+| `SendAfterMiddleware`                                         | If time is before `$sendAfter`, store webhook and return up stack<br/>If time is after `$sendAfter`, continue down stack |                                          |
+| `AsyncMiddleware`                                             | If asynchronous, store webhook and return up stack<br/>If synchronous, continue down stack                               |                                          |
+| `SyncRetryMiddleware`                                         | If asynchronous, continue down stack<br/>If synchronous, retries webhook if not successful                               |                                          |
+| `SendWebhookMiddleware`                                       | Send request and return up stack                                                                                         |                                          |
+| *End final core middleware*                                   |                                                                                                                          |                                          |
 
 ## Custom middleware
 
-Custom middleware must implement `EonX\EasyWebhook\Interfaces\MiddlewareInterface`. However, it may be easier to extend
+Custom middleware must implement `EonX\EasyWebhook\Common\Middleware\MiddlewareInterface`. However, it may be easier to extend
 one of the following classes:
 
-- `EonX\EasyWebhook\Middleware\AbstractConfigureOnceMiddleware`: For middleware that should not be processed if the
+- `EonX\EasyWebhook\Common\Middleware\AbstractConfigureOnceMiddleware`: For middleware that should not be processed if the
   webhook is already "configured". Implement the `doProcess()` method.
-- `EonX\EasyWebhook\Middleware\AbstractMiddleware`: For middleware that should be processed regardless of whether the
+- `EonX\EasyWebhook\Common\Middleware\AbstractMiddleware`: For middleware that should be processed regardless of whether the
   webhook is "configured". Implement the `process()` method.
 
 For example, here is how you would add a custom header to every webhook sent in configure once middleware:
 
 ```php
-use EonX\EasyWebhook\Interfaces\StackInterface;
-use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class MyCustomHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
@@ -238,9 +238,9 @@ final class MyCustomHeaderMiddleware extends AbstractConfigureOnceMiddleware
 This example shows placement of custom pre-processing and post-processing in normal middleware:
 
 ```php
-use EonX\EasyWebhook\Interfaces\StackInterface;
-use EonX\EasyWebhook\Interfaces\WebhookInterface;
-use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class MyCustomMiddleware extends AbstractMiddleware
 {

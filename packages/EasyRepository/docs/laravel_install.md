@@ -23,7 +23,7 @@ automatically. Make sure to register it:
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class,
+    \EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class,
 ],
 ```
 
@@ -32,7 +32,7 @@ automatically. Make sure to register it:
 # Config
 
 To allow this package to work with your own repositories you must let it know about your repositories structure. To do
-so you will use the configuration file `src/Bridge/Laravel/config/easy-repository.php`. Copy/Paste this file into your
+so you will use the configuration file `laravel/config/easy-repository.php`. Copy/Paste this file into your
 `config` folder and then update it with your own repositories list.
 
 ```php
@@ -65,7 +65,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyRepository\Bridge\Laravel\EasyRepositoryProvider::class);
+$app->register(\EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class);
 ```
 
 <br>
@@ -102,7 +102,11 @@ $app->make(\App\Repositories\PostRepositoryInterface::class); // Will be your co
 ```
 
 [1]: https://laravel.com/
+
 [2]: https://lumen.laravel.com/
+
 [4]: https://laravel.com/docs/5.7/providers
+
 [5]: https://en.wikipedia.org/wiki/Fully_qualified_name
+
 [6]: http://php-di.org/doc/autowiring.html
