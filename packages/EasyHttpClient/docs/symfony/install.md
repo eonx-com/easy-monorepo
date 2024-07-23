@@ -16,8 +16,8 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyHttpClient\Bridge\Symfony\EasyHttpClientSymfonyBundle::class => ['all' => true],
+    EonX\EasyHttpClient\Bundle\EasyHttpClientBundle::class => ['all' => true],
 ];
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

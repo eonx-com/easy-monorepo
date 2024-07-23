@@ -16,16 +16,41 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyRandom\Bridge\Symfony\EasyRandomSymfonyBundle::class => ['all' => true],
+    EonX\EasyRandom\Bundle\EasyRandomBundle::class => ['all' => true],
 ];
 ```
 
+<br>
+
 ### Configuration
 
-If the [UID Component](https://symfony.com/doc/current/components/uid.html) installed than `\EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator` uses for generating UUIDs.
-To configure UUID version use the [Symfony configuration](https://symfony.com/blog/new-in-symfony-5-3-uid-improvements)
+```php
+# config/packages/easy_random.php
 
-Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyRandomConfig;
+
+return static function (EasyRandomConfig $easyRandomConfig): void {
+    $easyRandomConfig->uuidVersion(6);
+};
+
+```
+
+You can configure the UUID version to use for the `EonX\EasyRandom\Generator\UuidGeneratorInterface` service.
+The default value is `6`. The possible values are `4` and `6`.
+
+The following classes will be used depending on the version you choose:
+
+- Version 4: `EonX\EasyRandom\Generator\SymfonyUuidV4Generator` (the `EonX\EasyRandom\Generator\RamseyUuidV4Generator` class if the "symfony/uid" package is not installed)
+- Version 6: `EonX\EasyRandom\Generator\SymfonyUuidV6Generator` (the `EonX\EasyRandom\Generator\RamseyUuidV6Generator` class if the "symfony/uid" package is not installed)
+
+Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Generator\UuidGeneratorInterface` interface
 and register it in your container.
 
-[1]: https://flex.symfony.com/
+<br>
+
+[1]: https://symfony.com/doc/current/setup/flex.html

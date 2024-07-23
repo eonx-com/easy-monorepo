@@ -26,7 +26,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagSymfonyBundle::class => ['all' => true],
+    EonX\EasyBugsnag\Bundle\EasyBugsnagBundle::class => ['all' => true],
 ];
 ```
 
@@ -50,7 +50,7 @@ For example:
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyBugsnag\Bridge\Laravel\EasyBugsnagServiceProvider::class,
+    \EonX\EasyBugsnag\Laravel\EasyBugsnagServiceProvider::class,
 ],
 ```
 
@@ -72,7 +72,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyBugsnag\Bridge\Laravel\EasyBugsnagServiceProvider::class);
+$app->register(\EonX\EasyBugsnag\Laravel\EasyBugsnagServiceProvider::class);
 ```
 
 ### Configuration
@@ -95,5 +95,7 @@ The minimum configuration required is your Bugsnag Integration API key. See [Con
 information about configuration options.
 
 [1]: https://getcomposer.org/
-[2]: https://flex.symfony.com/
-[3]: https://laravel.com/docs/8.x/providers
+
+[2]: https://symfony.com/doc/current/setup/flex.html
+
+[3]: https://laravel.com/docs/10.x/providers

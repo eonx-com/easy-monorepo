@@ -16,7 +16,7 @@ not familiar with this concept make sure to have a look at the [documentation][1
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasySecurity\Bridge\Laravel\EasySecurityServiceProvider::class,
+    \EonX\EasySecurity\Laravel\EasySecurityServiceProvider::class,
 ],
 ```
 
@@ -35,7 +35,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasySecurity\Bridge\Laravel\EasySecurityServiceProvider::class);
+$app->register(\EonX\EasySecurity\Laravel\EasySecurityServiceProvider::class);
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

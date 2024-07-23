@@ -16,8 +16,8 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasySchedule\Bridge\Symfony\EasyScheduleSymfonyBundle::class => ['all' => true],
+    EonX\EasySchedule\Bundle\EasyScheduleBundle::class => ['all' => true],
 ];
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

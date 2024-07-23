@@ -4,42 +4,65 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "eonx-com/easy-logging": "^5.11",
-        "eonx-com/easy-utils": "^5.11",
+        "php": "^8.2",
+        "eonx-com/easy-logging": "^5.12",
+        "eonx-com/easy-utils": "^5.12",
         "nesbot/carbon": "^2.67",
-        "nikic/php-parser": "^5.0"
+        "nikic/php-parser": "^5.0",
+        "symfony/config": "^6.4",
+        "symfony/console": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/error-handler": "^6.4",
+        "symfony/finder": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/serializer": "^6.4",
+        "symfony/service-contracts": "^3.5",
+        "symfony/translation": "^6.4"
     },
     "require-dev": {
-        "api-platform/core": "^3.1",
+        "api-platform/core": "^3.3.9",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-bugsnag": "^5.11",
-        "eonx-com/easy-test": "^5.11",
+        "eonx-com/easy-bugsnag": "^5.12",
+        "eonx-com/easy-test": "^5.12",
+        "eonx-com/easy-webhook": "^5.12",
         "laravel/lumen-framework": "^9.1",
         "phpunit/phpunit": "^10.2",
         "symfony/browser-kit": "^6.4",
         "symfony/framework-bundle": "^6.4",
+        "symfony/messenger": "^6.4",
         "symfony/routing": "^6.4",
-        "symfony/serializer": "^6.4"
+        "symfony/serializer": "^6.4",
+        "symfony/validator": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyErrorHandler\\": "src",
-            "EonX\\EasyErrorHandler\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyErrorHandler\\Bundle\\": "bundle",
+            "EonX\\EasyErrorHandler\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyErrorHandler\\Tests\\": "tests",
-            "EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\": "tests/Bridge/Symfony/Fixtures/app/src"
+            "EonX\\EasyErrorHandler\\Tests\\Application\\": "tests/Application/src",
+            "EonX\\EasyErrorHandler\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyErrorHandler\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyErrorHandler\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyErrorHandler\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "suggest": {
+        "api-platform/core": "To use ApiPlatform integration",
+        "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
+        "eonx-com/easy-webhook": "To use EasyWebhook integration",
+        "symfony/messenger": "To use Symfony Messenger integration",
+        "symfony/validator": "To use ApiPlatform integration"
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     }
 }

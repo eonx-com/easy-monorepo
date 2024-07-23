@@ -4,32 +4,45 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "eonx-com/easy-utils": "^5.11",
-        "paragonie/halite": "^5.1"
+        "php": "^8.2",
+        "ext-sodium": "*",
+        "eonx-com/easy-utils": "^5.12",
+        "paragonie/halite": "^5.1",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-kernel": "^6.4"
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.269",
         "laravel/lumen-framework": "^9.1",
-        "natepage/php-pkcs11-ide-helper": "^1.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "symfony/filesystem": "^6.4",
+        "symfony/process": "^6.4"
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyEncryption\\": "src"
+            "EonX\\EasyEncryption\\": "src",
+            "EonX\\EasyEncryption\\Bundle\\": "bundle",
+            "EonX\\EasyEncryption\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyEncryption\\Tests\\": "tests"
+            "EonX\\EasyEncryption\\Tests\\": "tests",
+            "EonX\\EasyEncryption\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyEncryption\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasyEncryption\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "suggest": {
+        "aws/aws-sdk-php": "For AWS Cloud HSM support",
+        "ext-pkcs11": "For AWS Cloud HSM support",
+        "natepage/php-pkcs11-ide-helper": "For better IDE support when using PKCS11",
+        "symfony/filesystem": "For AWS Cloud HSM support"
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     }
 }

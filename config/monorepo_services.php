@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyMonorepo\Console\MonorepoApplication;
-use EonX\EasyMonorepo\MonorepoKernel;
+use EonX\EasyMonorepo\Application\MonorepoApplication;
+use EonX\EasyMonorepo\Kernel\MonorepoKernel;
 use Symfony\Component\Console\Command\Command;
 
 return static function (ContainerConfigurator $container): void {
@@ -21,8 +21,8 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->load(MonorepoKernel::NAMESPACE, __DIR__ . '/../monorepo')
         ->exclude([
-            __DIR__ . '/../monorepo/Release/*',
-            __DIR__ . '/../monorepo/MonorepoKernel.php',
+            __DIR__ . '/../monorepo/ReleaseWorker/*',
+            __DIR__ . '/../monorepo/Kernel/*',
         ]);
 
     $services

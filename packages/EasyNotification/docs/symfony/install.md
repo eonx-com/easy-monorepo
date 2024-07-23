@@ -16,7 +16,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyNotification\Bridge\Symfony\EasyNotificationSymfonyBundle::class => ['all' => true],
+    EonX\EasyNotification\Bundle\EasyNotificationBundle::class => ['all' => true],
 ];
 ```
 
@@ -26,14 +26,22 @@ return [
 
 The only required configuration is the API URL of the EonX Notification service your application is working with.
 
-```yaml
-# config/packages/easy_notification.yaml
+```php
+# config/packages/easy_notification.php
 
-easy_notification:
-    api_url: '%env(EONX_NOTIFICATION_API_URL)%'
+<?php
+declare(strict_types=1);
 
-    # You can optionally customise the expiry time for the cached config here.
-    config_expires_after: 500 # Number of seconds
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyNotificationConfig;
+
+return static function (EasyNotificationConfig $easyNotificationConfig): void {
+    $easyNotificationConfig
+        ->apiUrl(env('EONX_NOTIFICATION_API_URL'))
+        ->configExpiresAfter(500); // Number of seconds
+};
+
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

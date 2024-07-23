@@ -8,7 +8,7 @@ section_icon: fab fa-laravel
 ### Package Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
-not familiar with this concept make sure to have a look at the [documentation](https://laravel.com/docs/5.8/providers).
+not familiar with this concept make sure to have a look at the [documentation][1].
 
 ```php
 // config/app.php
@@ -16,7 +16,7 @@ not familiar with this concept make sure to have a look at the [documentation](h
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider::class,
+    \EonX\EasyRandom\Laravel\EasyRandomServiceProvider::class,
 ],
 ```
 
@@ -35,7 +35,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyRandom\Bridge\Laravel\EasyRandomServiceProvider::class);
+$app->register(\EonX\EasyRandom\Laravel\EasyRandomServiceProvider::class);
 ```
 
 <br>
@@ -54,10 +54,17 @@ return [
 ];
 ```
 
-You can configure the UUID version to use for the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` service.
-The default value is `6`. The possible values are `1`, `4`, `6`, `7`.
+You can configure the UUID version to use for the `EonX\EasyRandom\Generator\UuidGeneratorInterface` service.
+The default value is `6`. The possible values are `4` and `6`.
 
-If the [UID Component](https://symfony.com/doc/current/components/uid.html) installed then `\EonX\EasyRandom\Bridge\Symfony\Uid\UuidGenerator` will be used for UUID generation.
+The following classes will be used depending on the version you choose:
 
-Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Interfaces\UuidGeneratorInterface` interface
+- Version 4: `EonX\EasyRandom\Generator\RamseyUuidV4Generator` (the `EonX\EasyRandom\Generator\SymfonyUuidV4Generator` class if the "ramsey/uuid" package is not installed)
+- Version 6: `EonX\EasyRandom\Generator\RamseyUuidV6Generator` (the `EonX\EasyRandom\Generator\SymfonyUuidV6Generator` class if the "ramsey/uuid" package is not installed)
+
+Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Generator\UuidGeneratorInterface` interface
 and register it in your service provider.
+
+<br>
+
+[1]: https://laravel.com/docs/10.x/providers

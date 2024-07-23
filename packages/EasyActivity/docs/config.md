@@ -37,24 +37,39 @@ The configuration options are as follows:
 
 ## Example configuration file
 
-In Symfony, you could have a configuration file called `easy_activity.yaml` that looks like the following:
+In Symfony, you could have a configuration file called `easy_activity.php` that looks like the following:
 
-```yaml
-easy_activity:
-    disallowed_properties:
-        - updatedAt
-    subjects:
-        App\Entity\SomeEntity:
-            allowed_properties:
-                - content
-                - description
-            disallowed_properties:
-                - author
-            nested_object_allowed_properties:
-                App\Entity\SomeOtherEntity:
-                    - processingDate
-            type: SomeEntity
-    table_name: activity_logs
+```php
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use App\Entity\SomeEntity;
+use App\Entity\SomeOtherEntity;
+use Symfony\Config\EasyActivityConfig;
+
+return static function (EasyActivityConfig $easyActivityConfig): void {
+    $easyActivityConfig
+        ->tableName('activity_logs')
+        ->disallowedProperties([
+            'updatedAt',
+        ]);
+        
+    $easyActivityConfig->subjects(SomeEntity::class)
+        ->allowedProperties([
+            'content',
+            'description',
+        ])
+        ->disallowedProperties([
+            'author',
+        ])
+        ->nestedObjectAllowedProperties([
+            SomeOtherEntity::class => [
+                'processingDate',
+            ]
+        ])
+        ->type('SomeEntity');
+};
+
 ```
-
-[1]: https://flex.symfony.com/

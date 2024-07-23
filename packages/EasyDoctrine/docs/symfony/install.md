@@ -16,8 +16,8 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyDoctrine\Bridge\Symfony\EasyDoctrineSymfonyBundle::class => ['all' => true],
+    EonX\EasyDoctrine\Bundle\EasyDoctrineBundle::class => ['all' => true],
 ];
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

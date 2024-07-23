@@ -26,7 +26,7 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle::class => ['all' => true],
+    EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle::class => ['all' => true],
 ];
 ```
 
@@ -43,7 +43,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyErrorHandler\Bridge\Laravel\Provider\EasyErrorHandlerServiceProvider::class);
+$app->register(\EonX\EasyErrorHandler\Laravel\EasyErrorHandlerServiceProvider::class);
 ```
 
 ### Add configuration
@@ -61,4 +61,5 @@ $app->configure('easy-error-handler');
 ```
 
 [1]: https://getcomposer.org/
-[2]: https://flex.symfony.com/
+
+[2]: https://symfony.com/doc/current/setup/flex.html

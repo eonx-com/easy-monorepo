@@ -4,29 +4,40 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
+        "doctrine/dbal": "^3.0",
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/event-dispatcher": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/messenger": "^6.4"
     },
     "require-dev": {
-        "doctrine/common": "^3.0",
-        "doctrine/dbal": "^3.0",
-        "eonx-com/easy-event-dispatcher": "^5.11",
-        "eonx-com/easy-random": "^5.11",
-        "mockery/mockery": "^1.6",
+        "doctrine/annotations": "^1.14",
+        "doctrine/doctrine-bundle": "^2.8",
+        "eonx-com/easy-event-dispatcher": "^5.12",
+        "eonx-com/easy-logging": "^5.12",
+        "eonx-com/easy-random": "^5.12",
+        "eonx-com/easy-test": "^5.12",
         "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "symfony/framework-bundle": "^6.4"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasyAsync\\": "src",
-            "EonX\\EasyAsync\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasyAsync\\Bundle\\": "bundle",
+            "EonX\\EasyAsync\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyAsync\\Tests\\": "tests"
+            "EonX\\EasyAsync\\Tests\\": "tests",
+            "EonX\\EasyAsync\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyAsync\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyAsync\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
     "suggest": {
@@ -34,14 +45,11 @@
         "eonx-com/easy-logging": "To provide the logging service",
         "illuminate/contracts": "To use this package with Laravel/Lumen",
         "illuminate/queue": "To use this package with Laravel/Lumen",
-        "illuminate/support": "To use this package with Laravel/Lumen",
-        "symfony/config": "To use this package with Symfony",
-        "symfony/dependency-injection": "To use this package with Symfony",
-        "symfony/http-kernel": "To use this package with Symfony"
+        "illuminate/support": "To use this package with Laravel/Lumen"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     }
 }

@@ -15,7 +15,7 @@ Once the package required, you must tell your application to use it. Laravel use
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyEncryption\Bridge\Laravel\Providers\EasyEncryptionServiceProvider::class,
+    \EonX\EasyEncryption\Laravel\EasyEncryptionServiceProvider::class,
 ],
 ```
 
@@ -38,7 +38,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyEncryption\Bridge\Laravel\Providers\EasyEncryptionServiceProvider::class);
+$app->register(\EonX\EasyEncryption\Laravel\EasyEncryptionServiceProvider::class);
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

@@ -15,8 +15,8 @@ not familiar with this concept make sure to have a look at the [documentation][1
 
 'providers' => [
     // Other Service Providers...
-    
-    \EonX\EasyLogging\Bridge\Laravel\EasyLoggingServiceProvider::class,
+
+    \EonX\EasyLogging\Laravel\EasyLoggingServiceProvider::class,
 ],
 ```
 
@@ -42,7 +42,7 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyLogging\Bridge\Laravel\EasyLoggingServiceProvider::class);
+$app->register(\EonX\EasyLogging\Laravel\EasyLoggingServiceProvider::class);
 ```
 
 <br>
@@ -56,7 +56,7 @@ There is no required configuration, but if you want to specify a custom default 
 
 return [
     'default_channel' => 'my-default-channel',
-]; 
+];
 ```
 
 <br>
@@ -77,4 +77,4 @@ $app->configure('easy-logging');
 // ...
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

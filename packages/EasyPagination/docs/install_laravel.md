@@ -26,81 +26,13 @@ You just have to register the one you want:
 
 'providers' => [
     // Other Service Providers...
-    
-    // If you want to handle pagination data as an array in the request query
-    \EonX\EasyPagination\Bridge\Laravel\Providers\StartSizeAsArrayInQueryEasyPaginationProvider::class,
-    
-    // If you want to handle pagination data directly in the request query
-    \EonX\EasyPagination\Bridge\Laravel\Providers\StartSizeInQueryEasyPaginationProvider::class,
+
+    \EonX\EasyPagination\Laravel\EasyPaginationServiceProvider::class,
 ],
-``` 
-
-# Usage
-
-## StartSize EasyPagination
-
-The "StartSize" service providers will register 2 services as:
-
-- `EonX\EasyPagination\Interfaces\StartSizeDataResolverInterface`: Used to resolve the pagination data
-- `EonX\EasyPagination\Interfaces\StartSizeDataInterface`: Resolved pagination data
-
-That's it you're all setup! You're now able to resolve pagination data or automatically inject it anywhere you want, 
-using dependency injection or service locator (we strongly recommend to use the first one haha).
-
-```php
-// Dependency Injection
-public function __construct(\EonX\EasyPagination\Interfaces\StartSizeDataInterface $data) {
-    $this->data = $data;
-    
-    $data->getStart();
-    $data->getSize();
-}
-
-// Service Locator
-$app->make(\EonX\EasyPagination\Interfaces\StartSizeDataInterface::class);
-```
-
-# Config
-
-To make sure to fit your needs this package comes with a configuration file you can customize as you which.
-
-```php
-return [
-    /*
-    |--------------------------------------------------------------------------
-    | Array in query attribute name
-    |--------------------------------------------------------------------------
-    |
-    | This config is used to resolve the pagination data when it is expected
-    | in the query parameters of the request as an array. This config is the
-    | name of the query parameter containing the pagination data array.
-    |
-    | Example:
-    | For this config as "page", the resolver will look in the query for:
-    | "<your-url>?page[<number_attr>]=1&page[<size_attr>]=15"
-    |
-    */
-    'array_in_query_attr' => \env('PAGINATION_ARRAY_IN_QUERY_ATTR', 'page'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | StartSize EasyPagination
-    |--------------------------------------------------------------------------
-    |
-    | This config contains the names of the attributes to use to resolve the
-    | start_size pagination data, and also their default values if not set
-    | on the given request.
-    |
-    */
-    'start_size' => [
-        'start_attribute' => \env('PAGINATION_PAGE_START_ATTRIBUTE', 'page'),
-        'start_default' => \env('PAGINATION_PAGE_START_DEFAULT', 1),
-        'size_attribute' => \env('PAGINATION_PAGE_SIZE_ATTRIBUTE', 'perPage'),
-        'size_default' => \env('PAGINATION_PAGE_SIZE_DEFAULT', 15)
-    ]
-];
 ```
 
 [1]: https://laravel.com/
+
 [2]: https://lumen.laravel.com/
+
 [3]: https://getcomposer.org/

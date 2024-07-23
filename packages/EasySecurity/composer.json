@@ -4,34 +4,49 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "eonx-com/easy-api-token": "^5.11",
-        "eonx-com/easy-utils": "^5.11",
-        "nette/utils": "^3.2"
+        "php": "^8.2",
+        "eonx-com/easy-api-token": "^5.12",
+        "eonx-com/easy-utils": "^5.12",
+        "nette/utils": "^3.2",
+        "symfony/cache": "^6.4",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/expression-language": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/security-core": "^6.4",
+        "symfony/security-http": "^6.4"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^5.11",
-        "eonx-com/easy-logging": "^5.11",
+        "eonx-com/easy-bugsnag": "^5.12",
+        "eonx-com/easy-logging": "^5.12",
         "laravel/lumen-framework": "^9.1",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2",
-        "symfony/symfony": "^6.4"
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "EonX\\EasySecurity\\": "src",
-            "EonX\\EasySecurity\\Bridge\\Symfony\\": "src/Bridge/Symfony"
+            "EonX\\EasySecurity\\Bundle\\": "bundle",
+            "EonX\\EasySecurity\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasySecurity\\Tests\\": "tests"
+            "EonX\\EasySecurity\\Tests\\": "tests",
+            "EonX\\EasySecurity\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasySecurity\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
+            "EonX\\EasySecurity\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
+    },
+    "suggest": {
+        "eonx-com/easy-bugsnag": "For EasyBugsnag integration",
+        "eonx-com/easy-logging": "For EasyLogging integration"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.11-dev"
+            "dev-master": "5.12-dev"
         }
     }
 }

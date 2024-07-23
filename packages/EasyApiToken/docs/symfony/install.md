@@ -16,8 +16,8 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyApiToken\Bridge\Symfony\EasyApiTokenSymfonyBundle::class => ['all' => true],
+    EonX\EasyApiToken\Bundle\EasyApiTokenBundle::class => ['all' => true],
 ];
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

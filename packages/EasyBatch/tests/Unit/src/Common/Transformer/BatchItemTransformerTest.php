@@ -1,0 +1,66 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasyBatch\Tests\Unit\Common\Transformer;
+
+use EonX\EasyBatch\Common\Serializer\MessageSerializer;
+use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
+use EonX\EasyBatch\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyEncryption\Common\Encryptor\Encryptor;
+use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
+use EonX\EasyEncryption\Common\Factory\DefaultEncryptionKeyFactory;
+use EonX\EasyEncryption\Common\Provider\DefaultEncryptionKeyProvider;
+use EonX\EasyEncryption\Common\Resolver\SimpleEncryptionKeyResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
+use stdClass;
+
+final class BatchItemTransformerTest extends AbstractUnitTestCase
+{
+    /**
+     * @see testEncryptedBatchItem
+     */
+    public static function provideEncryptedBatchItemData(): iterable
+    {
+        yield 'Encrypted' => [true];
+        yield 'Not Encrypted' => [false];
+    }
+
+    #[DataProvider('provideEncryptedBatchItemData')]
+    public function testEncryptedBatchItem(bool $encrypted): void
+    {
+        $message = new stdClass();
+        $message->key = 'value';
+
+        $batchItem = $this->getBatchItemFactory()
+            ->create('batchId', $message);
+        $batchItem->setId('my-id');
+        $batchItem->setEncrypted($encrypted);
+
+        $transformer = new BatchItemTransformer(new MessageSerializer());
+        if ($encrypted) {
+            $transformer->setEncryptor($this->getEncryptor());
+        }
+
+        $array = $transformer->transformToArray($batchItem);
+        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $newBatchItem */
+        $newBatchItem = $transformer->transformToObject($array);
+        $expectedEncryptionKeyName = $encrypted ? EncryptorInterface::DEFAULT_KEY_NAME : null;
+
+        self::assertEquals($encrypted, $array['encrypted']);
+        self::assertEquals($encrypted, $newBatchItem->isEncrypted());
+        self::assertEquals($expectedEncryptionKeyName, $newBatchItem->getEncryptionKeyName());
+        self::assertInstanceOf(stdClass::class, $newBatchItem->getMessage());
+    }
+
+    private function getEncryptor(): EncryptorInterface
+    {
+        $keyResolver = new SimpleEncryptionKeyResolver(
+            EncryptorInterface::DEFAULT_KEY_NAME,
+            'TwzQsKkBcVlYYRQDvwgiGZemFVbpNiCr'
+        );
+        $keyFactory = new DefaultEncryptionKeyFactory();
+        $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, [$keyResolver]);
+
+        return new Encryptor($keyFactory, $keyProvider);
+    }
+}

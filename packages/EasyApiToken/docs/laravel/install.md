@@ -16,7 +16,7 @@ not familiar with this concept make sure to have a look at the [documentation][1
 'providers' => [
     // Other Service Providers...
 
-    \EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class,
+    \EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider::class,
 ],
 ```
 
@@ -39,11 +39,11 @@ $app = new Laravel\Lumen\Application(\dirname(__DIR__));
 
 // Other actions...
 
-$app->register(\EonX\EasyApiToken\Bridge\Laravel\EasyApiTokenServiceProvider::class);
+$app->register(\EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider::class);
 
 // Configure the package
 
 $app->configure('easy-api-token');
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

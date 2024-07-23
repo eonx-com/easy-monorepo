@@ -16,8 +16,8 @@ yourself:
 return [
     // Other bundles ...
 
-    EonX\EasyEncryption\Bridge\Symfony\EasyEncryptionSymfonyBundle::class => ['all' => true],
+    EonX\EasyEncryption\Bundle\EasyEncryptionBundle::class => ['all' => true],
 ];
 ```
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

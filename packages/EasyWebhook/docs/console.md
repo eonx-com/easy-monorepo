@@ -15,7 +15,7 @@ The `easy-webhooks:send-due-webhooks` command finds stored webhooks that are due
 sent because they had the `$sendAfter` property set to a date and time in the future, but can now be sent because the
 `$sendAfter` date and time has passed.
 
-Note that the webhook store must implement `EonX\EasyWebhook\Interfaces\Stores\SendAfterStoreInterface` in order to be
+Note that the webhook store must implement `EonX\EasyWebhook\Common\Store\SendAfterStoreInterface` in order to be
 able to find due webhooks. Of the stores provided by the EasyWebhook package, only the Doctrine DBAL webhook store
 supports finding due webhooks.
 

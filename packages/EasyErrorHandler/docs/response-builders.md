@@ -8,7 +8,7 @@ weight: 1005
 The **error response builders** are used by the ErrorHandler's `render()` method to build the HTTP error response. See
 [ErrorHandler](error-handler.md).
 
-The error response builders implement `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface`, which defines
+The error response builders implement `EonX\EasyErrorHandler\Common\Builder\ErrorResponseBuilderInterface`, which defines
 the following methods:
 
 - `buildData()`: provides `$data`, an array of raw data which will be encoded to generate the HTTP response body
@@ -18,7 +18,7 @@ the following methods:
 The ErrorHandler loops through the provided error response builders and calls the methods above on each one.
 
 Error response builders are provided to the ErrorHandler via implementations of
-`EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface`.
+`EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface`.
 
 ## Default builders
 
@@ -37,7 +37,7 @@ The following set of error response builders are provided to the ErrorHandler by
 - **TimeBuilder**: Adds a timestamp to the response body.
 - **UserMessageBuilder**: Adds the exception's user-friendly message to the response body.
 - **ViolationsBuilder**: Adds violations information to the response body if the exception implements
-  `EonX\EasyErrorHandler\Interfaces\Exceptions\ValidationExceptionInterface` (such as
+  `EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface` (such as
   [ValidationException](exceptions.md))
 - **HttpExceptionBuilder**: For HTTP exceptions in Symfony applications (i.e. exceptions that implement
   `Symfony\Component\HttpKernel\Exception\HttpExceptionInterface`), sets the message in the response body to the
@@ -48,28 +48,27 @@ The following set of error response builders are provided to the ErrorHandler by
 You can create your own custom error response builders and provide them to the ErrorHandler.
 
 Create your own custom error response builders by implementing
-`EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface`.
+`EonX\EasyErrorHandler\Common\Builder\ErrorResponseBuilderInterface`.
 
 Provide your error response builders to the ErrorHandler by using
-`EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface`. This interface defines the `getBuilders()`
-method which returns a collection of your `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderInterface`
+`EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface`. This interface defines the `getBuilders()`
+method which returns a collection of your `EonX\EasyErrorHandler\Common\Builder\ErrorResponseBuilderInterface`
 implementations. The ErrorHandler accepts a collection of all error response builder providers via its constructor.
 
 For example, to provide your custom error response builder, StatusCodeBuilder, to the ErrorHandler, create a builder
-provider implementing `EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface`:
+provider implementing `EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface`:
 
 ```php
 // src/Exception/Response/MyStatusCodeBuilderProvider.php
 
 namespace App\Exception\Response;
 
-use EonX\EasyErrorHandler\Builders\StatusCodeErrorResponseBuilder;
-use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
+use EonX\EasyErrorHandler\Common\Builder\StatusCodeErrorResponseBuilder;use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
 
 final class MyStatusCodeBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     /**
-     * @return iterable<\EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface>
+     * @return iterable<\EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface>
      */
      public function getBuilders(): iterable
     {

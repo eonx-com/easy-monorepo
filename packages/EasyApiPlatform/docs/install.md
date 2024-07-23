@@ -17,7 +17,7 @@ $ composer require eonx-com/easy-api-platform
 
 ### Registering the Bundle
 
-If you're using [Symfony Flex][https://flex.symfony.com/], the bundle registration step has already been done for you automatically. If not, follow these simple steps to register the bundle manually:
+If you're using [Symfony Flex][https://symfony.com/doc/current/setup/flex.html], the bundle registration step has already been done for you automatically. If not, follow these simple steps to register the bundle manually:
 
 1. Open the `config/bundles.php` file in your Symfony project.
 
@@ -29,7 +29,7 @@ If you're using [Symfony Flex][https://flex.symfony.com/], the bundle registrati
    return [
        // Other bundles ...
 
-       EonX\EasyApiPlatform\Bridge\Symfony\EasyApiPlatformSymfonyBundle::class => ['all' => true],
+       \EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle::class => ['all' => true],
    ];
    ```
 

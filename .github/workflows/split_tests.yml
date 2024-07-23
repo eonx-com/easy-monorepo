@@ -7,7 +7,7 @@ on:
             - '*' # Prevents running on tags
 
 env:
-    PHP_EXTENSIONS: pdo_sqlite, openswoole, pkcs11
+    PHP_EXTENSIONS: pdo_sqlite, openswoole, pkcs11, pcov
     PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
                         ${{ env.PHP_EXTENSIONS }}
 
             -   name: Install Composer dependencies
-                uses: ramsey/composer-install@v2
+                uses: ramsey/composer-install@v3
 
             -   id: output_data
                 run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
@@ -57,7 +57,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '8.1', '8.2' ]
+                php: ['8.2']
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
         name: ${{ matrix.package.dir }} (${{ matrix.php }})
@@ -85,15 +85,15 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    coverage: none
+                    coverage: pcov
                     extensions:
                         ${{ env.PHP_EXTENSIONS }}
 
             -   name: Install Composer dependencies
-                uses: ramsey/composer-install@v2
+                uses: ramsey/composer-install@v3
 
             -   run: bin/monorepo localize-monorepo-packages
 
             -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
 
-            -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit tests
+            -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit --coverage-text tests
