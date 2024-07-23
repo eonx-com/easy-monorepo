@@ -34,7 +34,7 @@ final class EventsMiddleware extends AbstractMiddleware
         $status = $webhookResult->getWebhook()
             ->getStatus();
 
-        $eventClass = self::EVENT_CLASSES[$status] ?? null;
+        $eventClass = self::EVENT_CLASSES[$status->value] ?? null;
 
         if ($eventClass !== null) {
             $this->dispatcher->dispatch(new $eventClass($webhookResult));

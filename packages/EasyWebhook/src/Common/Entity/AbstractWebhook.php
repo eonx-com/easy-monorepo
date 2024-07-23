@@ -72,7 +72,7 @@ abstract class AbstractWebhook implements WebhookInterface
 
     private ?bool $sendNow = null;
 
-    private ?string $status = null;
+    private ?WebhookStatus $status = null;
 
     private ?string $url = null;
 
@@ -369,7 +369,7 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    public function status(string $status): WebhookInterface
+    public function status(WebhookStatus $status): WebhookInterface
     {
         $this->status = $status;
 
