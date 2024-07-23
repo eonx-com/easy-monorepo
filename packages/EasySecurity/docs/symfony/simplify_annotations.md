@@ -46,14 +46,28 @@ To simplify all that, this package provides an expression function to help us to
 In the config, define your permissions locations by providing a list of the classes/interfaces where your permissions
 are defined:
 
-```yaml
-# config/packages/easy_security.yaml
+```php
+# config/packages/easy_security.php
 
-easy_security:
-    permissions_locations:
-        - App\Security\Interfaces\PermissionsInterface
-    roles_locations:
-        - App\Security\Interfaces\RolesInterface
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use App\Infrastructure\EasySecurity\Authorization\PermissionsInterface;
+use App\Infrastructure\EasySecurity\Authorization\RolesInterface;
+use Symfony\Config\EasySecurityConfig;
+
+return static function (EasySecurityConfig $easySecurityConfig): void {
+    $easySecurityConfig
+        ->permissionsLocations([
+            PermissionsInterface::class,
+        ])
+        ->rolesLocations([
+            RolesInterface::class,
+        ]);
+};
+
 ```
 
 The package will now know where to look for your permissions.
@@ -79,5 +93,7 @@ public function index()
 ```
 
 [1]: https://symfony.com/doc/current/components/security.html
+
 [2]: https://symfony.com/doc/current/security/expressions.html
+
 [3]: https://symfony.com/doc/current/components/expression_language.html
