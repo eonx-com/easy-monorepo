@@ -5,12 +5,12 @@ namespace EonX\EasyRandom\Generator;
 
 use EonX\EasyRandom\ValueObject\RandomStringInterface;
 
-final class RandomGenerator implements RandomGeneratorInterface
+final readonly class RandomGenerator implements RandomGeneratorInterface
 {
     public function __construct(
-        private readonly UuidGeneratorInterface $uuidGenerator,
-        private readonly RandomIntegerGeneratorInterface $randomIntegerGenerator,
-        private readonly RandomStringGeneratorInterface $randomStringGenerator,
+        private UuidGeneratorInterface $uuidGenerator,
+        private RandomIntegerGeneratorInterface $randomIntegerGenerator,
+        private RandomStringGeneratorInterface $randomStringGenerator,
     ) {
     }
 

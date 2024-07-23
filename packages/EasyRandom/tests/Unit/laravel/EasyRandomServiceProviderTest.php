@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Tests\Unit\Laravel;
 
-use EonX\EasyRandom\Generator\RamseyUuidV4Generator;
-use EonX\EasyRandom\Generator\RamseyUuidV6Generator;
 use EonX\EasyRandom\Generator\RandomGenerator;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyRandom\Generator\RandomIntegerGenerator;

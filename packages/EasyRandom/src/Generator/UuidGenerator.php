@@ -5,10 +5,10 @@ namespace EonX\EasyRandom\Generator;
 
 use Symfony\Component\Uid\Factory\UuidFactory;
 
-final class UuidGenerator implements UuidGeneratorInterface
+final readonly class UuidGenerator implements UuidGeneratorInterface
 {
     public function __construct(
-        private readonly UuidFactory $uuidFactory,
+        private UuidFactory $uuidFactory,
     ) {
     }
 

@@ -5,10 +5,10 @@ namespace EonX\EasyRandom\Tests\Fixture\App\Provider;
 
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 
-final class UuidProvider
+final readonly class UuidProvider
 {
     public function __construct(
-        private readonly RandomGeneratorInterface $randomGenerator,
+        private RandomGeneratorInterface $randomGenerator,
     ) {
     }
 
