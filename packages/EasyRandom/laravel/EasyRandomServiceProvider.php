@@ -3,21 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Laravel;
 
-use EonX\EasyRandom\Generator\RamseyUuidV4Generator;
-use EonX\EasyRandom\Generator\RamseyUuidV6Generator;
 use EonX\EasyRandom\Generator\RandomGenerator;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyRandom\Generator\RandomIntegerGenerator;
 use EonX\EasyRandom\Generator\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\RandomStringGeneratorInterface;
-use EonX\EasyRandom\Generator\SymfonyUuidV4Generator;
-use EonX\EasyRandom\Generator\SymfonyUuidV6Generator;
+use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRandom\Generator\UuidGeneratorInterface;
 use Illuminate\Support\ServiceProvider;
 use LogicException;
-use Ramsey\Uuid\Uuid as RamseyUuid;
-use Symfony\Component\Uid\Uuid as SymfonyUuid;
+use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class EasyRandomServiceProvider extends ServiceProvider
 {
@@ -33,33 +29,22 @@ final class EasyRandomServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-random.php', 'easy-random');
 
         $uuidVersion = (int)\config('easy-random.uuid_version', 6);
+        $supportedUuidVersions = [1, 4, 6, 7];
 
-        if (\in_array($uuidVersion, [4, 6], true) === false) {
-            throw new LogicException(\sprintf('Unsupported UUID version "%d".', $uuidVersion));
+        if (\in_array($uuidVersion, $supportedUuidVersions, true) === false) {
+            throw new LogicException(\sprintf(
+                'Unsupported UUID version "%d". Supported versions are: %s',
+                $uuidVersion,
+                \implode(', ', $supportedUuidVersions)
+            ));
         }
 
         $this->app->singleton(RandomStringGeneratorInterface::class, RandomStringGenerator::class);
         $this->app->singleton(RandomIntegerGeneratorInterface::class, RandomIntegerGenerator::class);
-
-        if ($uuidVersion === 4) {
-            if (\class_exists(SymfonyUuid::class)) {
-                $this->app->singleton(UuidGeneratorInterface::class, SymfonyUuidV4Generator::class);
-            }
-
-            if (\class_exists(RamseyUuid::class)) {
-                $this->app->singleton(UuidGeneratorInterface::class, RamseyUuidV4Generator::class);
-            }
-        }
-
-        if ($uuidVersion === 6) {
-            if (\class_exists(SymfonyUuid::class)) {
-                $this->app->singleton(UuidGeneratorInterface::class, SymfonyUuidV6Generator::class);
-            }
-
-            if (\class_exists(RamseyUuid::class)) {
-                $this->app->singleton(UuidGeneratorInterface::class, RamseyUuidV6Generator::class);
-            }
-        }
+        $this->app->singleton(
+            UuidGeneratorInterface::class,
+            static fn (): UuidGeneratorInterface => new UuidGenerator(new UuidFactory($uuidVersion))
+        );
 
         $this->app->singleton(RandomGeneratorInterface::class, RandomGenerator::class);
     }

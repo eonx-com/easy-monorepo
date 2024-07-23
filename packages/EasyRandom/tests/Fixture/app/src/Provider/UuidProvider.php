@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRandom\Tests\Bridge\Symfony\Fixtures\App\Provider;
+namespace EonX\EasyRandom\Tests\Fixture\App\Provider;
 
-use EonX\EasyRandom\Interfaces\RandomGeneratorInterface;
+use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 
 final class UuidProvider
 {

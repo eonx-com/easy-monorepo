@@ -9,6 +9,8 @@ use EonX\EasyRandom\Generator\RandomIntegerGenerator;
 use EonX\EasyRandom\Generator\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\RandomStringGeneratorInterface;
+use EonX\EasyRandom\Generator\UuidGenerator;
+use EonX\EasyRandom\Generator\UuidGeneratorInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -19,5 +21,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(RandomIntegerGeneratorInterface::class, RandomIntegerGenerator::class);
     $services->set(RandomStringGeneratorInterface::class, RandomStringGenerator::class);
+    $services->set(UuidGeneratorInterface::class, UuidGenerator::class);
     $services->set(RandomGeneratorInterface::class, RandomGenerator::class);
 };

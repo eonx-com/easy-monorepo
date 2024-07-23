@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRandom\Tests\Bridge\Symfony\Fixtures\App\Kernel;
+namespace EonX\EasyRandom\Tests\Fixture\App\Kernel;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
