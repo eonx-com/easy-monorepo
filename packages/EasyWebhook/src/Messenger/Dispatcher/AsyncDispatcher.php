@@ -8,7 +8,7 @@ use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Messenger\Message\SendWebhookMessage;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class AsyncDispatcher implements AsyncDispatcherInterface
+final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
         private MessageBusInterface $bus,

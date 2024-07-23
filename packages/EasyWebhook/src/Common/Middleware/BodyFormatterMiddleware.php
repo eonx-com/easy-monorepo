@@ -11,10 +11,10 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class BodyFormatterMiddleware extends AbstractConfigureOnceMiddleware
 {
-    private JsonWebhookBodyFormatter $jsonFormatter;
+    private readonly JsonWebhookBodyFormatter $jsonFormatter;
 
     public function __construct(
-        private WebhookBodyFormatterInterface $bodyFormatter,
+        private readonly WebhookBodyFormatterInterface $bodyFormatter,
         ?int $priority = null,
     ) {
         $this->jsonFormatter = new JsonWebhookBodyFormatter();

@@ -5,7 +5,7 @@ namespace EonX\EasyDoctrine\EntityEvent\Event;
 
 use Throwable;
 
-final class TransactionalExceptionEvent
+final readonly class TransactionalExceptionEvent
 {
     public function __construct(
         private Throwable $throwable,

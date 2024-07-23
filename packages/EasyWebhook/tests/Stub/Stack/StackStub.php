@@ -14,7 +14,7 @@ final class StackStub implements StackInterface
     private array $calls = [];
 
     public function __construct(
-        private StackInterface $decorated,
+        private readonly StackInterface $decorated,
     ) {
     }
 

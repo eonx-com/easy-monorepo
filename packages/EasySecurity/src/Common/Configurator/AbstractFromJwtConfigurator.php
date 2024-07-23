@@ -14,7 +14,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     private ?JwtClaimResolverInterface $jwtClaimFetcher = null;
 
     public function __construct(
-        private string $jwtClaim,
+        private readonly string $jwtClaim,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

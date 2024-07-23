@@ -10,13 +10,12 @@ use Symfony\Component\Lock\PersistingStoreInterface;
 use Symfony\Component\Lock\Store\DoctrineDbalStore;
 
 #[AsDoctrineListener(event: ToolEvents::postGenerateSchema)]
-final class EasyLockDoctrineSchemaListener
+final readonly class EasyLockDoctrineSchemaListener
 {
     public function __construct(
         private PersistingStoreInterface $persistingStore,
     ) {
     }
-
     public function postGenerateSchema(GenerateSchemaEventArgs $event): void
     {
         if ($this->persistingStore instanceof DoctrineDbalStore) {

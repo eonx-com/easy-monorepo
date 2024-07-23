@@ -8,8 +8,8 @@ use Bugsnag\Client;
 final class RuntimeVersionClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
-        private string $runtime,
-        private string $version,
+        private readonly string $runtime,
+        private readonly string $version,
     ) {
         parent::__construct();
     }

@@ -5,7 +5,7 @@ namespace EonX\EasyRequestId\Common\Resolver;
 
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 
-final class UuidFallbackResolver implements FallbackResolverInterface
+final readonly class UuidFallbackResolver implements FallbackResolverInterface
 {
     public function __construct(
         private RandomGeneratorInterface $randomGenerator,

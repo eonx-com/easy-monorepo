@@ -5,7 +5,7 @@ namespace EonX\EasyDoctrine\EntityEvent\Copier;
 
 use DeepCopy\DeepCopy;
 
-final class ObjectCopier implements ObjectCopierInterface
+final readonly class ObjectCopier implements ObjectCopierInterface
 {
     public function __construct(
         private DeepCopy $deepCopy,

@@ -10,8 +10,8 @@ final class Context implements ContextInterface
     private array $ruleOutputs = [];
 
     public function __construct(
-        private string $decisionType,
-        private array $input,
+        private readonly string $decisionType,
+        private readonly array $input,
     ) {
     }
 

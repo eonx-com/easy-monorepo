@@ -9,14 +9,14 @@ final class RequestIdProvider implements RequestIdProviderInterface
 {
     private ?string $correlationId = null;
 
-    private string $correlationIdHeaderName;
+    private readonly string $correlationIdHeaderName;
 
     private ?string $requestId = null;
 
-    private string $requestIdHeaderName;
+    private readonly string $requestIdHeaderName;
 
     public function __construct(
-        private FallbackResolverInterface $fallback,
+        private readonly FallbackResolverInterface $fallback,
         ?string $correlationIdHeaderName = null,
         ?string $requestIdHeaderName = null,
     ) {

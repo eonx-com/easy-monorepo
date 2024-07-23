@@ -10,13 +10,13 @@ use Throwable;
 
 final class HttpRequestSentEvent
 {
-    private array $extra;
+    private readonly array $extra;
 
     public function __construct(
-        private RequestDataInterface $requestData,
-        private ?ResponseDataInterface $responseData = null,
-        private ?Throwable $throwable = null,
-        private ?DateTimeInterface $throwableThrownAt = null,
+        private readonly RequestDataInterface $requestData,
+        private readonly ?ResponseDataInterface $responseData = null,
+        private readonly ?Throwable $throwable = null,
+        private readonly ?DateTimeInterface $throwableThrownAt = null,
         ?array $extra = null,
     ) {
         $this->extra = $extra ?? [];

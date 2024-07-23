@@ -8,15 +8,15 @@ use EonX\EasyUtils\Math\Exception\InvalidDivisionByZeroException;
 
 final class MathHelper implements MathHelperInterface
 {
-    private string $decimalSeparator;
+    private readonly string $decimalSeparator;
 
-    private int $roundMode;
+    private readonly int $roundMode;
 
-    private int $roundPrecision;
+    private readonly int $roundPrecision;
 
-    private int $scale;
+    private readonly int $scale;
 
-    private string $thousandsSeparator;
+    private readonly string $thousandsSeparator;
 
     /**
      * @param int|null $roundMode [optional] <p>

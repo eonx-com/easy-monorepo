@@ -6,7 +6,7 @@ namespace EonX\EasyBugsnag\Listener;
 use EonX\EasyBugsnag\Tracker\SessionTracker;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-final class SessionTrackingListener
+final readonly class SessionTrackingListener
 {
     public function __construct(
         private SessionTracker $sessionTracker,

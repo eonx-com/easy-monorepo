@@ -16,8 +16,8 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
      * @throws \EonX\EasyPipeline\Exception\EmptyMiddlewareListException
      */
     public function __construct(
-        private IlluminatePipelineContract $illuminatePipeline,
-        private array $middlewareList,
+        private readonly IlluminatePipelineContract $illuminatePipeline,
+        private readonly array $middlewareList,
     ) {
         if (\count($middlewareList) === 0) {
             throw new EmptyMiddlewareListException(\sprintf(

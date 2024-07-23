@@ -5,7 +5,7 @@ namespace EonX\EasyNotification\ValueObject;
 
 use EonX\EasyNotification\Helper\StringHelper;
 
-final class Config implements ConfigInterface
+final readonly class Config implements ConfigInterface
 {
     public function __construct(
         private string $algorithm,

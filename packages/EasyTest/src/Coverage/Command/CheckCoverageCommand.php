@@ -20,8 +20,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class CheckCoverageCommand extends Command
 {
     public function __construct(
-        private CoverageLoaderInterface $coverageLoader,
-        private CoverageResolverLocatorInterface $coverageResolverLocator,
+        private readonly CoverageLoaderInterface $coverageLoader,
+        private readonly CoverageResolverLocatorInterface $coverageResolverLocator,
     ) {
         parent::__construct();
     }

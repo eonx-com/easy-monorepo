@@ -7,7 +7,7 @@ use EonX\EasyHttpClient\Common\Enum\LogFormat;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use Psr\Log\LoggerInterface;
 
-final class LogHttpRequestSentListener
+final readonly class LogHttpRequestSentListener
 {
     public function __construct(
         private LoggerInterface $logger,

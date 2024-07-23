@@ -6,7 +6,7 @@ namespace EonX\EasyRequestId\Common\Resolver;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class HttpFoundationRequestResolver
+final readonly class HttpFoundationRequestResolver
 {
     public function __construct(
         private Request $request,

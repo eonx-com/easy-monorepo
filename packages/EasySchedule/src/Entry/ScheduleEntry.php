@@ -18,11 +18,11 @@ final class ScheduleEntry extends AbstractScheduleEntry
      */
     private array $before = [];
 
-    private InputInterface $input;
+    private readonly InputInterface $input;
 
     private float $maxLockTime = 60.0;
 
-    private array $params;
+    private readonly array $params;
 
     /**
      * @var callable[]
@@ -30,7 +30,7 @@ final class ScheduleEntry extends AbstractScheduleEntry
     private array $then = [];
 
     public function __construct(
-        private string $command,
+        private readonly string $command,
         ?array $params = null,
     ) {
         $this->params = $params ?? [];

@@ -8,7 +8,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
-final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
+final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {
     private const GITHUB_URL = 'https://github.com/';
 
@@ -50,8 +50,8 @@ final class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
             ->sortByName();
 
         foreach ($composerFiles as $composerFile) {
-            $packageName = \last(\explode('/', $composerFile->getPath()));
-            $json = \json_decode($composerFile->getContents(), true);
+            $packageName = \last(\explode('/', (string) $composerFile->getPath()));
+            $json = \json_decode((string) $composerFile->getContents(), true);
 
             yield $packageName => [
                 'description' => $json['description'],

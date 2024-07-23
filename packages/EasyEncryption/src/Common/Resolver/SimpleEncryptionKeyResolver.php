@@ -12,9 +12,9 @@ use ParagonIE\Halite\Symmetric\EncryptionKey;
 final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
 {
     public function __construct(
-        private string $keyName,
-        private string $encryptionKey,
-        private ?string $salt = null,
+        private readonly string $keyName,
+        private readonly string $encryptionKey,
+        private readonly ?string $salt = null,
     ) {
     }
 

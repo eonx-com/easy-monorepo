@@ -6,9 +6,9 @@ namespace EonX\EasyAsync\Messenger\Envelope;
 final class QueueEnvelope implements QueueEnvelopeInterface
 {
     public function __construct(
-        private string $originalBody,
+        private readonly string $originalBody,
         private array $headers,
-        private ?array $body = null,
+        private readonly ?array $body = null,
     ) {
     }
 

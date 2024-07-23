@@ -13,13 +13,13 @@ final class TrimStringsMiddleware
     /**
      * @var string[]
      */
-    private array $exceptKeys;
+    private readonly array $exceptKeys;
 
     /**
      * @param string[]|null $exceptKeys
      */
     public function __construct(
-        private StringTrimmerInterface $trimmer,
+        private readonly StringTrimmerInterface $trimmer,
         ?array $exceptKeys = null,
     ) {
         $this->exceptKeys = $exceptKeys ?? [];

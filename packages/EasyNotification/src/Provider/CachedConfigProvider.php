@@ -7,7 +7,7 @@ use EonX\EasyNotification\ValueObject\ConfigInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class CachedConfigProvider implements ConfigProviderInterface
+final readonly class CachedConfigProvider implements ConfigProviderInterface
 {
     public function __construct(
         private CacheInterface $cache,
