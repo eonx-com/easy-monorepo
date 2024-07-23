@@ -43,7 +43,10 @@ return RectorConfig::configure()
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
 
         // Skip rules
-        ClassPropertyAssignToConstructorPromotionRector::class,
+        ClassPropertyAssignToConstructorPromotionRector::class => [
+            'packages/*/ApiResource/*',
+            'packages/*/Entity/*',
+        ],
         FirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
