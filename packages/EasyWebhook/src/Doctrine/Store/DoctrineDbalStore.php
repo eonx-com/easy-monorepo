@@ -14,12 +14,15 @@ use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Exception\InvalidDateTimeException;
 use EonX\EasyWebhook\Common\Store\SendAfterStoreInterface;
 use EonX\EasyWebhook\Common\Store\StoreInterface;
 
 final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements StoreInterface, SendAfterStoreInterface
 {
+    public const DEFAULT_TABLE = 'easy_webhooks';
+
     public function __construct(
         RandomGeneratorInterface $random,
         Connection $conn,
@@ -65,7 +68,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ->where('status = :status AND send_after < :sendAfter')
                     ->setParameters([
                         'sendAfter' => $sendAfter->format(self::DATETIME_FORMAT),
-                        'status' => WebhookInterface::STATUS_PENDING,
+                        'status' => WebhookStatus::Pending,
                     ])
                     ->orderBy('created_at');
             })

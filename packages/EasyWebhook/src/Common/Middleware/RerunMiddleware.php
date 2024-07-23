@@ -5,12 +5,13 @@ namespace EonX\EasyWebhook\Common\Middleware;
 
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Exception\CannotRerunWebhookException;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class RerunMiddleware extends AbstractMiddleware
 {
-    private const SHOULD_NOT_RERUN = [WebhookInterface::STATUS_FAILED, WebhookInterface::STATUS_SUCCESS];
+    private const SHOULD_NOT_RERUN = [WebhookStatus::Failed->value, WebhookStatus::Success->value];
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
@@ -24,7 +25,7 @@ final class RerunMiddleware extends AbstractMiddleware
 
             // Reset webhook status and currentAttempt of rerun
             $webhook
-                ->status(WebhookInterface::STATUS_PENDING)
+                ->status(WebhookStatus::Pending)
                 ->currentAttempt(WebhookInterface::DEFAULT_CURRENT_ATTEMPT);
         }
 

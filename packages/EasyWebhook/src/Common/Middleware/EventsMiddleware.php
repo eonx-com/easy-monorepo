@@ -6,6 +6,7 @@ namespace EonX\EasyWebhook\Common\Middleware;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Event\FailedWebhookEvent;
 use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use EonX\EasyWebhook\Common\Event\SuccessWebhookEvent;
@@ -14,9 +15,9 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 final class EventsMiddleware extends AbstractMiddleware
 {
     private const EVENT_CLASSES = [
-        WebhookInterface::STATUS_FAILED => FinalFailedWebhookEvent::class,
-        WebhookInterface::STATUS_FAILED_PENDING_RETRY => FailedWebhookEvent::class,
-        WebhookInterface::STATUS_SUCCESS => SuccessWebhookEvent::class,
+        WebhookStatus::Failed->value => FinalFailedWebhookEvent::class,
+        WebhookStatus::FailedPendingRetry->value => FailedWebhookEvent::class,
+        WebhookStatus::Success->value => SuccessWebhookEvent::class,
     ];
 
     public function __construct(

@@ -6,6 +6,7 @@ namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookOption;
 use EonX\EasyWebhook\Common\Exception\InvalidWebhookSecretException;
 use EonX\EasyWebhook\Common\Middleware\SignatureHeaderMiddleware;
 use EonX\EasyWebhook\Tests\Stub\Signer\SignerStub;
@@ -20,7 +21,7 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
     {
         yield 'Invalid secret' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_BODY_AS_STRING => 'not empty',
+                WebhookOption::BodyAsString->value => 'not empty',
             ]),
             null,
             null,
@@ -40,15 +41,15 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Sign with default secret + header' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_BODY_AS_STRING => 'not empty',
+                WebhookOption::BodyAsString->value => 'not empty',
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
                     ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(Webhook::HEADER_SIGNATURE, $headers);
-                self::assertEquals('not empty', $signer->getPayload());
-                self::assertEquals('my-secret', $signer->getSecret());
+                self::assertSame('not empty', $signer->getPayload());
+                self::assertSame('my-secret', $signer->getSecret());
             },
             null,
             'my-secret',
@@ -56,15 +57,15 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Sign with default secret and custom header' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_BODY_AS_STRING => 'not empty',
+                WebhookOption::BodyAsString->value => 'not empty',
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
                     ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Signature', $headers);
-                self::assertEquals('not empty', $signer->getPayload());
-                self::assertEquals('my-secret', $signer->getSecret());
+                self::assertSame('not empty', $signer->getPayload());
+                self::assertSame('my-secret', $signer->getSecret());
             },
             null,
             'my-secret',
@@ -73,16 +74,16 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Sign with webhook secret and custom header' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_BODY_AS_STRING => 'not empty',
-                WebhookInterface::OPTION_SECRET => 'my-secret',
+                WebhookOption::BodyAsString->value => 'not empty',
+                WebhookOption::Secret->value => 'my-secret',
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
                     ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey('X-My-Signature', $headers);
-                self::assertEquals('not empty', $signer->getPayload());
-                self::assertEquals('my-secret', $signer->getSecret());
+                self::assertSame('not empty', $signer->getPayload());
+                self::assertSame('my-secret', $signer->getSecret());
             },
             null,
             null,
@@ -91,16 +92,16 @@ final class SignatureHeaderMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Secret considered as empty' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_BODY_AS_STRING => 'not empty',
-                WebhookInterface::OPTION_SECRET => '0',
+                WebhookOption::BodyAsString->value => 'not empty',
+                WebhookOption::Secret->value => '0',
             ]),
             static function (WebhookResultInterface $webhookResult, SignerStub $signer): void {
                 $headers = $webhookResult->getWebhook()
                     ->getHttpClientOptions()['headers'] ?? [];
 
                 self::assertArrayHasKey(WebhookInterface::HEADER_SIGNATURE, $headers);
-                self::assertEquals('not empty', $signer->getPayload());
-                self::assertEquals('0', $signer->getSecret());
+                self::assertSame('not empty', $signer->getPayload());
+                self::assertSame('0', $signer->getSecret());
             },
         ];
     }
