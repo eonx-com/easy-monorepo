@@ -50,8 +50,8 @@ final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerI
             ->sortByName();
 
         foreach ($composerFiles as $composerFile) {
-            $packageName = \last(\explode('/', (string) $composerFile->getPath()));
-            $json = \json_decode((string) $composerFile->getContents(), true);
+            $packageName = \last(\explode('/', (string)$composerFile->getPath()));
+            $json = \json_decode((string)$composerFile->getContents(), true);
 
             yield $packageName => [
                 'description' => $json['description'],

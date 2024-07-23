@@ -16,6 +16,7 @@ final readonly class EasyLockDoctrineSchemaListener
         private PersistingStoreInterface $persistingStore,
     ) {
     }
+
     public function postGenerateSchema(GenerateSchemaEventArgs $event): void
     {
         if ($this->persistingStore instanceof DoctrineDbalStore) {

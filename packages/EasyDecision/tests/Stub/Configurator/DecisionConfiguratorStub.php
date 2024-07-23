@@ -7,7 +7,9 @@ use EonX\EasyDecision\Configurator\DecisionConfiguratorInterface;
 use EonX\EasyDecision\Configurator\RestrictedDecisionConfiguratorInterface;
 use EonX\EasyDecision\Decision\DecisionInterface;
 
-final readonly class DecisionConfiguratorStub implements DecisionConfiguratorInterface, RestrictedDecisionConfiguratorInterface
+final readonly class DecisionConfiguratorStub implements
+    DecisionConfiguratorInterface,
+    RestrictedDecisionConfiguratorInterface
 {
     public function __construct(
         private string $decisionName,
