@@ -29,9 +29,9 @@ return static function (DefinitionConfigurator $definition) {
 
     if (\class_exists(EasyErrorHandlerBundle::class)) {
         $easyErrorHandlerDefinition = $rootNode->children()
-                     ->arrayNode('easy_error_handler')
-                         ->canBeDisabled()
-                         ->children();
+            ->arrayNode('easy_error_handler')
+                ->canBeDisabled()
+                ->children();
 
         $easyErrorHandlerDefinition->append(
             (new NodeBuilder())
