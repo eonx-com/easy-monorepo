@@ -8,6 +8,16 @@ use EonX\EasyUtils\Math\Exception\InvalidDivisionByZeroException;
 
 final class MathHelper implements MathHelperInterface
 {
+    private const ROUND_DECIMAL_SEPARATOR = '.';
+
+    private const ROUND_MODE = \PHP_ROUND_HALF_EVEN;
+
+    private const ROUND_PRECISION = 0;
+
+    private const ROUND_THOUSANDS_SEPARATOR = '';
+
+    private const SCALE = 99;
+
     private string $decimalSeparator;
 
     private int $roundMode;
@@ -33,11 +43,11 @@ final class MathHelper implements MathHelperInterface
         ?string $decimalSeparator = null,
         ?string $thousandsSeparator = null,
     ) {
-        $this->roundPrecision = $roundPrecision ?? 0;
-        $this->roundMode = $roundMode ?? \PHP_ROUND_HALF_EVEN;
-        $this->scale = $scale ?? 99;
-        $this->decimalSeparator = $decimalSeparator ?? '.';
-        $this->thousandsSeparator = $thousandsSeparator ?? '';
+        $this->roundPrecision = $roundPrecision ?? self::ROUND_PRECISION;
+        $this->roundMode = $roundMode ?? self::ROUND_MODE;
+        $this->scale = $scale ?? self::SCALE;
+        $this->decimalSeparator = $decimalSeparator ?? self::ROUND_DECIMAL_SEPARATOR;
+        $this->thousandsSeparator = $thousandsSeparator ?? self::ROUND_THOUSANDS_SEPARATOR;
     }
 
     public function abs(string $value, ?int $precision = null, ?int $mode = null): string
