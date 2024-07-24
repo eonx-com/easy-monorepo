@@ -9,6 +9,8 @@ use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
 
 final class RoleExpressionFunctionProviderTest extends AbstractUnitTestCase
 {
+    public const ROLE_VALID = 'role';
+
     public function testRoleExpressionFunctionFoundWithConstant(): void
     {
         $function = (new RoleExpressionFunctionProvider([self::class]))->getFunctions()[0];

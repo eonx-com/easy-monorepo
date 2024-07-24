@@ -9,6 +9,8 @@ use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
 
 final class PermissionExpressionFunctionProviderTest extends AbstractUnitTestCase
 {
+    public const PERMISSION_VALID = 'permission';
+
     public function testPermissionExpressionFunctionFoundWithConstant(): void
     {
         $function = (new PermissionExpressionFunctionProvider([self::class]))->getFunctions()[0];
