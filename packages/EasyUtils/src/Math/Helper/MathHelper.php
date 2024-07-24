@@ -33,11 +33,11 @@ final class MathHelper implements MathHelperInterface
         ?string $decimalSeparator = null,
         ?string $thousandsSeparator = null,
     ) {
-        $this->roundPrecision = $roundPrecision ?? self::ROUND_PRECISION;
-        $this->roundMode = $roundMode ?? self::ROUND_MODE;
-        $this->scale = $scale ?? self::SCALE;
-        $this->decimalSeparator = $decimalSeparator ?? self::ROUND_DECIMAL_SEPARATOR;
-        $this->thousandsSeparator = $thousandsSeparator ?? self::ROUND_THOUSANDS_SEPARATOR;
+        $this->roundPrecision = $roundPrecision ?? 0;
+        $this->roundMode = $roundMode ?? \PHP_ROUND_HALF_EVEN;
+        $this->scale = $scale ?? 99;
+        $this->decimalSeparator = $decimalSeparator ?? '.';
+        $this->thousandsSeparator = $thousandsSeparator ?? '';
     }
 
     public function abs(string $value, ?int $precision = null, ?int $mode = null): string
