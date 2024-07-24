@@ -9,15 +9,13 @@ use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
 
 final class PermissionExpressionFunctionProviderTest extends AbstractUnitTestCase
 {
-    public const PERMISSION_VALID = 'permission';
-
     public function testPermissionExpressionFunctionFoundWithConstant(): void
     {
         $function = (new PermissionExpressionFunctionProvider([self::class]))->getFunctions()[0];
 
-        self::assertSame(self::PERMISSION_VALID, $function->getEvaluator()([], 'PERMISSION_VALID'));
+        self::assertSame('permission', $function->getEvaluator()([], 'PERMISSION_VALID'));
         // Using cached permission
-        self::assertSame(self::PERMISSION_VALID, $function->getEvaluator()([], 'PERMISSION_VALID'));
+        self::assertSame('permission', $function->getEvaluator()([], 'PERMISSION_VALID'));
     }
 
     public function testPermissionExpressionFunctionFoundWithEnum(): void
