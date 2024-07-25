@@ -5,6 +5,7 @@ namespace EonX\EasyNotification\Transport;
 
 use Aws\Sqs\SqsClient;
 use EonX\EasyNotification\Message\QueueMessageInterface;
+use SplObjectStorage;
 
 final class SqsQueueTransport implements QueueTransportInterface
 {
@@ -23,16 +24,16 @@ final class SqsQueueTransport implements QueueTransportInterface
     }
 
     /**
-     * @param string[] $headers
+     * @param \SplObjectStorage<\EonX\EasyNotification\Enum\Header, string> $headers
      */
-    private function formatHeaders(array $headers): array
+    private function formatHeaders(SplObjectStorage $headers): array
     {
         $sqsHeaders = [];
 
-        foreach ($headers as $name => $value) {
-            $sqsHeaders[$name] = [
+        foreach ($headers as $header) {
+            $sqsHeaders[$header->value] = [
                 'DataType' => 'String',
-                'StringValue' => $value,
+                'StringValue' => $headers->offsetGet($header),
             ];
         }
 

@@ -3,20 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Message;
 
+use BackedEnum;
+use EonX\EasyNotification\Enum\Header;
+use SplObjectStorage;
+
 final class QueueMessage implements QueueMessageInterface
 {
     private string $body;
 
     /**
-     * @var string[]
+     * @var \SplObjectStorage<\EonX\EasyNotification\Enum\Header, string>
      */
-    private array $headers = [];
+    private SplObjectStorage $headers;
 
     private string $queueUrl;
 
-    public function addHeader(string $name, string $value): QueueMessageInterface
+    public function __construct()
     {
-        $this->headers[$name] = $value;
+        $this->headers = new SplObjectStorage();
+    }
+
+    public function addHeader(Header $header, string|BackedEnum $value): QueueMessageInterface
+    {
+        $this->headers->offsetSet($header, \is_string($value) ? $value : (string)$value->value);
 
         return $this;
     }
@@ -26,10 +35,7 @@ final class QueueMessage implements QueueMessageInterface
         return $this->body;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getHeaders(): array
+    public function getHeaders(): SplObjectStorage
     {
         return $this->headers;
     }

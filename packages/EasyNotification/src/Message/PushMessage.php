@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Message;
 
+use EonX\EasyNotification\Enum\Type;
+
 final class PushMessage extends AbstractMessage
 {
-    public const DO_NOT_SEND_TOKEN = 'do_not_send_token';
+    private const DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
     public function __construct(
         private ?string $device = null,
@@ -42,9 +44,9 @@ final class PushMessage extends AbstractMessage
         return $this->token;
     }
 
-    public function getType(): string
+    public function getType(): Type
     {
-        return self::TYPE_PUSH;
+        return Type::Push;
     }
 
     public function token(string $token): self

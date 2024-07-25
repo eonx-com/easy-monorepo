@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Client;
 
 use EonX\EasyNotification\Configurator\QueueMessageConfiguratorInterface;
+use EonX\EasyNotification\Enum\Status;
 use EonX\EasyNotification\Exception\ApiRequestFailedException;
 use EonX\EasyNotification\Exception\ConfigRequiredException;
-use EonX\EasyNotification\Exception\InvalidRealTimeMessageStatusException;
 use EonX\EasyNotification\Factory\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\QueueMessage;
-use EonX\EasyNotification\Message\RealTimeMessage;
 use EonX\EasyNotification\ValueObject\ConfigInterface;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
@@ -89,24 +88,16 @@ final class NotificationClient implements NotificationClientInterface
     /**
      * @param string[] $messages Messages IDs
      */
-    public function updateMessagesStatus(array $messages, string $status): void
+    public function updateMessagesStatus(array $messages, Status $status): void
     {
         if ($this->config === null) {
             throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));
         }
 
-        if (RealTimeMessage::isStatusValid($status) === false) {
-            throw new InvalidRealTimeMessageStatusException(\sprintf(
-                'Invalid status "%s". Valid statuses are ["%s"]',
-                $status,
-                \implode('", "', RealTimeMessage::STATUSES)
-            ));
-        }
-
         $this->sendApiRequest('PUT', 'messages', [
             'json' => [
                 'messages' => $messages,
-                'status' => $status,
+                'status' => $status->value,
             ],
         ]);
     }

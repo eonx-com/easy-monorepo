@@ -3,22 +3,20 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Message;
 
+use BackedEnum;
+use EonX\EasyNotification\Enum\Header;
+use SplObjectStorage;
+
 interface QueueMessageInterface
 {
-    public const HEADER_PROVIDER = 'provider';
-
-    public const HEADER_SIGNATURE = 'signature';
-
-    public const HEADER_TYPE = 'type';
-
-    public function addHeader(string $name, string $value): self;
+    public function addHeader(Header $header, string|BackedEnum $value): self;
 
     public function getBody(): string;
 
     /**
-     * @return string[]
+     * @return \SplObjectStorage<\EonX\EasyNotification\Enum\Header, string>
      */
-    public function getHeaders(): array;
+    public function getHeaders(): SplObjectStorage;
 
     public function getQueueUrl(): string;
 

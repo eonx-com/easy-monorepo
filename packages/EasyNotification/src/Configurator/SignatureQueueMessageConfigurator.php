@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Configurator;
 
+use EonX\EasyNotification\Enum\Header;
 use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\QueueMessageInterface;
 use EonX\EasyNotification\ValueObject\ConfigInterface;
@@ -24,6 +25,6 @@ final class SignatureQueueMessageConfigurator extends AbstractQueueMessageConfig
 
         return $queueMessage
             ->setBody($body)
-            ->addHeader(QueueMessageInterface::HEADER_SIGNATURE, $signature);
+            ->addHeader(Header::Signature, $signature);
     }
 }
