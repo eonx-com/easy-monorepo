@@ -17,8 +17,14 @@ final class RandomString implements RandomStringInterface
      */
     private ?array $constraints = [];
 
+    /**
+     * @var \SplObjectStorage<\EonX\EasyRandom\Enum\Alphabet, null>
+     */
     private SplObjectStorage $excludes;
 
+    /**
+     * @var \SplObjectStorage<\EonX\EasyRandom\Enum\Alphabet, null>
+     */
     private SplObjectStorage $includes;
 
     private int $maxAttempts = 100;
