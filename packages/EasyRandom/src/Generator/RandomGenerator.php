@@ -9,8 +9,8 @@ final readonly class RandomGenerator implements RandomGeneratorInterface
 {
     public function __construct(
         private UuidGeneratorInterface $uuidGenerator,
-        private RandomIntegerGeneratorInterface $randomIntegerGenerator,
-        private RandomStringGeneratorInterface $randomStringGenerator,
+        private RandomIntegerGeneratorInterface $randomIntegerGenerator = new RandomIntegerGenerator(),
+        private RandomStringGeneratorInterface $randomStringGenerator = new RandomStringGenerator(),
     ) {
     }
 

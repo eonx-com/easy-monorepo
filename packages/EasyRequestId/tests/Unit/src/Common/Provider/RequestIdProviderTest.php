@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Tests\Unit\Common\Provider;
 
 use EonX\EasyRandom\Generator\RandomGenerator;
-use EonX\EasyRandom\Generator\RandomIntegerGenerator;
-use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
@@ -77,11 +75,7 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
     private function defaultFallbackResolver(): FallbackResolverInterface
     {
         return new UuidFallbackResolver(
-            new RandomGenerator(
-                new UuidGenerator(new UuidFactory()),
-                new RandomIntegerGenerator(),
-                new RandomStringGenerator()
-            )
+            new RandomGenerator(new UuidGenerator(new UuidFactory()))
         );
     }
 }

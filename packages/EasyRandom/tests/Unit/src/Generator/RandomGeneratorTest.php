@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyRandom\Tests\Unit\Generator;
 
 use EonX\EasyRandom\Generator\RandomGenerator;
-use EonX\EasyRandom\Generator\RandomIntegerGenerator;
 use EonX\EasyRandom\Generator\RandomIntegerGeneratorInterface;
-use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRandom\Generator\UuidGeneratorInterface;
@@ -27,8 +25,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
         };
         $sut = new RandomGenerator(
             uuidGenerator: new UuidGenerator(new UuidFactory()),
-            randomIntegerGenerator: $randomIntegerGenerator,
-            randomStringGenerator: new RandomStringGenerator()
+            randomIntegerGenerator: $randomIntegerGenerator
         );
 
         $result = $sut->integer(100, 23);
@@ -46,8 +43,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
         };
         $sut = new RandomGenerator(
             uuidGenerator: new UuidGenerator(new UuidFactory()),
-            randomIntegerGenerator: new RandomIntegerGenerator(),
-            randomStringGenerator: $randomStringGenerator,
+            randomStringGenerator: $randomStringGenerator
         );
 
         $result = $sut->string(100);
@@ -55,7 +51,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
         self::assertEquals(new RandomString(100), $result);
     }
 
-    public function testUuidSucceedsWithCustomUuidGenerator(): void
+    public function testUuidSucceeds(): void
     {
         $uuidGenerator = new class() implements UuidGeneratorInterface {
             public function generate(): string
@@ -63,11 +59,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
                 return 'some-uuid';
             }
         };
-        $sut = new RandomGenerator(
-            uuidGenerator: $uuidGenerator,
-            randomIntegerGenerator: new RandomIntegerGenerator(),
-            randomStringGenerator: new RandomStringGenerator()
-        );
+        $sut = new RandomGenerator($uuidGenerator);
 
         $result = $sut->uuid();
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Tests\Unit\Common\Resolver;
 
 use EonX\EasyRandom\Generator\RandomGenerator;
-use EonX\EasyRandom\Generator\RandomIntegerGenerator;
-use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRequestId\Common\Resolver\UuidFallbackResolver;
 use EonX\EasyRequestId\Tests\Unit\AbstractUnitTestCase;
@@ -17,11 +15,7 @@ final class UuidFallbackResolverTest extends AbstractUnitTestCase
     public function testFallbackCorrelationIdSucceeds(): void
     {
         $sut = new UuidFallbackResolver(
-            new RandomGenerator(
-                new UuidGenerator(new UuidFactory()),
-                new RandomIntegerGenerator(),
-                new RandomStringGenerator()
-            )
+            new RandomGenerator(new UuidGenerator(new UuidFactory()))
         );
 
         $result = $sut->fallbackCorrelationId();
@@ -32,11 +26,7 @@ final class UuidFallbackResolverTest extends AbstractUnitTestCase
     public function testFallbackRequestIdSucceeds(): void
     {
         $sut = new UuidFallbackResolver(
-            new RandomGenerator(
-                new UuidGenerator(new UuidFactory()),
-                new RandomIntegerGenerator(),
-                new RandomStringGenerator()
-            )
+            new RandomGenerator(new UuidGenerator(new UuidFactory()))
         );
 
         $result = $sut->fallbackRequestId();

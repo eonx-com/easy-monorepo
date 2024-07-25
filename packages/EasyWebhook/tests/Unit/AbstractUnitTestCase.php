@@ -5,8 +5,6 @@ namespace EonX\EasyWebhook\Tests\Unit;
 
 use EonX\EasyRandom\Generator\RandomGenerator;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
-use EonX\EasyRandom\Generator\RandomIntegerGenerator;
-use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Cleaner\NullDataCleaner;
@@ -38,11 +36,7 @@ abstract class AbstractUnitTestCase extends TestCase
 
     protected static function getRandomGenerator(): RandomGeneratorInterface
     {
-        self::$randomGenerator ??= new RandomGenerator(
-            new UuidGenerator(new UuidFactory()),
-            new RandomIntegerGenerator(),
-            new RandomStringGenerator()
-        );
+        self::$randomGenerator ??= new RandomGenerator(new UuidGenerator(new UuidFactory()));
 
         return self::$randomGenerator;
     }
