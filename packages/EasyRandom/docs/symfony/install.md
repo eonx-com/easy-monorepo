@@ -22,6 +22,26 @@ return [
 
 ### Configuration
 
-To configure UUID version use the [Symfony configuration](https://symfony.com/blog/new-in-symfony-5-3-uid-improvements)
+```php
+# config/packages/easy_random.php
+
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyRandomConfig;
+
+return static function (EasyRandomConfig $easyRandomConfig): void {
+    $easyRandomConfig->uuidVersion(6);
+};
+
+```
+
+You can configure the UUID version to use for the `EonX\EasyRandom\Generator\UuidGeneratorInterface` service.
+The default value is `6`. The possible values are `1`, `4`, `6`, `7`.
+
+Of course, you can also create your own generator by implementing the `EonX\EasyRandom\Generator\UuidGeneratorInterface` interface
+and register it in your container.
 
 [1]:

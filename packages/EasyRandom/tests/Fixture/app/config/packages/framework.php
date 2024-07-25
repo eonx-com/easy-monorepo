@@ -10,6 +10,5 @@ return static function (FrameworkConfig $frameworkConfig): void {
         ->test(true);
 
     $frameworkConfig->uid()
-        ->defaultUuidVersion(7)
-        ->timeBasedUuidVersion(7);
+        ->defaultUuidVersion(7);
 };
