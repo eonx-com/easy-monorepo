@@ -3,44 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\ValueObject;
 
+use EonX\EasyRandom\Enum\Alphabet;
 use Stringable;
 
 interface RandomStringInterface extends Stringable
 {
-    public const ALPHABETS = [
-        self::AMBIGUOUS => '-[]\\;\',./!()_{}:"<>?',
-        self::LOWERCASE => 'abcdefghijklmnopqrstuvwxyz',
-        self::NUMERIC => '0123456789',
-        self::SIMILAR => 'iIlLoOqQsS015!$',
-        self::SYMBOL => '-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?',
-        self::UPPERCASE => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        self::VOWEL => 'aAeEiIoOuU',
-    ];
-
-    public const ALPHABET_NAMES = [
-        self::AMBIGUOUS,
-        self::LOWERCASE,
-        self::NUMERIC,
-        self::SIMILAR,
-        self::SYMBOL,
-        self::UPPERCASE,
-        self::VOWEL,
-    ];
-
-    public const AMBIGUOUS = 'ambiguous';
-
-    public const LOWERCASE = 'lowercase';
-
-    public const NUMERIC = 'numeric';
-
-    public const SIMILAR = 'similar';
-
-    public const SYMBOL = 'symbol';
-
-    public const UPPERCASE = 'uppercase';
-
-    public const VOWEL = 'vowel';
-
     public function __toString(): string;
 
     public function alphabet(string $alphabet): self;
@@ -52,7 +19,7 @@ interface RandomStringInterface extends Stringable
      */
     public function constraints(array $constraints): self;
 
-    public function exclude(string $alphabetName): self;
+    public function exclude(Alphabet $alphabet): self;
 
     public function excludeAmbiguous(): self;
 
@@ -68,7 +35,7 @@ interface RandomStringInterface extends Stringable
 
     public function excludeVowel(): self;
 
-    public function include(string $alphabetName): self;
+    public function include(Alphabet $alphabet): self;
 
     public function includeAmbiguous(): self;
 
