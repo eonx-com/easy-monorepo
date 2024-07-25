@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
@@ -31,8 +30,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(EventDispatcherInterface::class, new Definition(SymfonyEventDispatcherStub::class));
         $container->setDefinition(LockerInterface::class, new Definition(stdClass::class));
         $container->setDefinition(MessageBusInterface::class, new Definition(MessageBusStub::class));
-
-        $container->setDefinition(UuidFactory::class, new Definition(UuidFactory::class));
 
         $container->setDefinition(
             Connection::class,
