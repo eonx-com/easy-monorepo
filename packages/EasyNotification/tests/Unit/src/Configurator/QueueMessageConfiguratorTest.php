@@ -94,7 +94,8 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
                 $hash = \hash_hmac(static::$defaultConfig['algorithm'], 'my-body', static::$defaultConfig['secret']);
-                $signature = $queueMessage->getHeaders()[Header::Signature->value];
+                $signature = $queueMessage->getHeaders()[Header::Signature
+                    ->value];
 
                 self::assertTrue(\hash_equals($hash, $signature));
             },
@@ -108,7 +109,8 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
             static function (QueueMessageInterface $queueMessage): void {
                 self::assertEquals(
                     Type::RealTime->value,
-                    $queueMessage->getHeaders()[Header::Type->value]
+                    $queueMessage->getHeaders()[Header::Type
+                        ->value]
                 );
             },
             (new QueueMessage())->setBody('my-body'),
