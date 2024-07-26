@@ -25,6 +25,6 @@ final class SignatureQueueMessageConfigurator extends AbstractQueueMessageConfig
 
         return $queueMessage
             ->setBody($body)
-            ->addHeader(Header::Signature, $signature);
+            ->addHeader(Header::Signature->value, $signature);
     }
 }

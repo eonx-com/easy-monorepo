@@ -34,30 +34,30 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
     {
         yield 'Provider Header' => [
             new ProviderHeaderQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
-                self::assertTrue($queueMessage->getHeaders()->contains(Header::Provider));
-                self::assertSame(
-                    self::$defaultConfig['externalId'],
+                self::assertEquals(
+                    [
+                        Header::Provider->value => static::$defaultConfig['externalId'],
+                    ],
                     $queueMessage->getHeaders()
-                        ->offsetGet(Header::Provider)
                 );
             },
         ];
 
         yield 'Queue URL' => [
             new QueueUrlQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
-                self::assertSame(self::$defaultConfig['queueUrl'], $queueMessage->getQueueUrl());
+                self::assertEquals(static::$defaultConfig['queueUrl'], $queueMessage->getQueueUrl());
             },
         ];
 
         yield 'RealTimeBody with not RealTime message' => [
             new RealTimeBodyQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new MessageStub([]),
             static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
                 $testCase->expectException(Error::class);
@@ -67,35 +67,34 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
 
         yield 'RealTimeBody' => [
             new RealTimeBodyQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([
                 'name' => 'nathan',
             ], ['nathan']),
             static function (QueueMessageInterface $queueMessage): void {
                 $expected = '{"body":"{\"name\":\"nathan\"}","topics":["nathan"]}';
 
-                self::assertSame($expected, $queueMessage->getBody());
+                self::assertEquals($expected, $queueMessage->getBody());
             },
         ];
 
         yield 'Signature with empty body' => [
             new SignatureQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
-                self::assertFalse($queueMessage->getHeaders()->contains(Header::Signature));
+                self::assertFalse(isset($queueMessage->getHeaders()[Header::Signature->value]));
             },
             (new QueueMessage())->setBody(''),
         ];
 
         yield 'Signature' => [
             new SignatureQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
-                $hash = \hash_hmac(self::$defaultConfig['algorithm'], 'my-body', self::$defaultConfig['secret']);
-                $signature = $queueMessage->getHeaders()
-                    ->offsetGet(Header::Signature);
+                $hash = \hash_hmac(static::$defaultConfig['algorithm'], 'my-body', static::$defaultConfig['secret']);
+                $signature = $queueMessage->getHeaders()[Header::Signature->value];
 
                 self::assertTrue(\hash_equals($hash, $signature));
             },
@@ -104,13 +103,12 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
 
         yield 'Type with RealTimeMessage' => [
             new TypeQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
-                self::assertSame(
+                self::assertEquals(
                     Type::RealTime->value,
-                    $queueMessage->getHeaders()
-                        ->offsetGet(Header::Type)
+                    $queueMessage->getHeaders()[Header::Type->value]
                 );
             },
             (new QueueMessage())->setBody('my-body'),
@@ -118,7 +116,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
 
         yield 'SlackBody with not Slack message' => [
             new SlackBodyQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new MessageStub([]),
             static function (QueueMessageInterface $queueMessage, TestCase $testCase): void {
                 $testCase->expectException(Error::class);
@@ -128,12 +126,12 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
 
         yield 'SlackBody' => [
             new SlackBodyQueueMessageConfigurator(),
-            Config::fromArray(self::$defaultConfig),
+            Config::fromArray(static::$defaultConfig),
             new SlackMessage('channel', 'text'),
             static function (QueueMessageInterface $queueMessage): void {
                 $expected = '{"channel":"channel","text":"text"}';
 
-                self::assertSame($expected, $queueMessage->getBody());
+                self::assertEquals($expected, $queueMessage->getBody());
             },
         ];
     }

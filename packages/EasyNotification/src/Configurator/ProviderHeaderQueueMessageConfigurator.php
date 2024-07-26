@@ -15,6 +15,6 @@ final class ProviderHeaderQueueMessageConfigurator extends AbstractQueueMessageC
         QueueMessageInterface $queueMessage,
         MessageInterface $message,
     ): QueueMessageInterface {
-        return $queueMessage->addHeader(Header::Provider, $config->getProviderExternalId());
+        return $queueMessage->addHeader(Header::Provider->value, $config->getProviderExternalId());
     }
 }

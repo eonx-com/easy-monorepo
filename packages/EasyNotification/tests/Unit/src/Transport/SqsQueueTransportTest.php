@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Unit\Transport;
 
-use EonX\EasyNotification\Enum\Header;
 use EonX\EasyNotification\Message\QueueMessage;
 use EonX\EasyNotification\Tests\Stub\Sqs\SqsClientStub;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
@@ -15,7 +14,7 @@ final class SqsQueueTransportTest extends AbstractUnitTestCase
     {
         $stub = new SqsClientStub();
         $queueMessage = (new QueueMessage())
-            ->addHeader(Header::Provider, 'some-provider')
+            ->addHeader('my-header', 'my-value')
             ->setBody('my-body')
             ->setQueueUrl(static::$defaultConfig['queueUrl']);
 
@@ -24,9 +23,9 @@ final class SqsQueueTransportTest extends AbstractUnitTestCase
         $expected = [
             'QueueUrl' => static::$defaultConfig['queueUrl'],
             'MessageAttributes' => [
-                'provider' => [
+                'my-header' => [
                     'DataType' => 'String',
-                    'StringValue' => 'some-provider',
+                    'StringValue' => 'my-value',
                 ],
             ],
             'MessageBody' => 'my-body',

@@ -15,6 +15,6 @@ final class TypeQueueMessageConfigurator extends AbstractQueueMessageConfigurato
         QueueMessageInterface $queueMessage,
         MessageInterface $message,
     ): QueueMessageInterface {
-        return $queueMessage->addHeader(Header::Type, $message->getType());
+        return $queueMessage->addHeader(Header::Type->value, $message->getType()->value);
     }
 }
