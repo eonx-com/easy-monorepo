@@ -9,7 +9,6 @@ use EonX\EasyLogging\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
-use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
 use Monolog\Logger;
@@ -53,10 +52,7 @@ final class EasyLoggingBundle extends AbstractBundle
 
         $params->set(ConfigParam::LazyLoggers->value, $config['lazy_loggers'] ?? []);
 
-        $params->set(
-            ConfigParam::DefaultChannel->value,
-            $config['default_channel'] ?? LoggerFactoryInterface::DEFAULT_CHANNEL
-        );
+        $params->set(ConfigParam::DefaultChannel->value, $config['default_channel']);
 
         $params->set(ConfigParam::LoggerClass->value, Logger::class);
 

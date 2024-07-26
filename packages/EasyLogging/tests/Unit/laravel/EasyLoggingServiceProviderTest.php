@@ -29,7 +29,7 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
         $logger = $this->getApp()
             ->make(LoggerInterface::class, [BundleParam::KeyChannel->value => $channel]);
 
-        self::assertEquals($channel ?? LoggerFactoryInterface::DEFAULT_CHANNEL, $logger->getName());
+        self::assertSame($channel ?? 'app', $logger->getName());
     }
 
     public function testDefaultLoggerNotOverriddenBecauseOfConfig(): void

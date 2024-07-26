@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class SensitiveDataSanitizerCompilerPass implements CompilerPassInterface
 {
-    public const SANITIZER_ID = SensitiveDataSanitizerInterface::class;
+    private const SANITIZER_ID = SensitiveDataSanitizerInterface::class;
 
     public function process(ContainerBuilder $container): void
     {
