@@ -24,11 +24,19 @@ return [
 
 ### Configuration
 
-```yaml
-# config/packages/easy_random.yaml
+```php
+# config/packages/easy_random.php
 
-easy_random:
-    uuid_version: 6 # Default value
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyRandomConfig;
+
+return static function (EasyRandomConfig $easyRandomConfig): void {
+    $easyRandomConfig->uuidVersion(6);
+};
 
 ```
 
@@ -45,4 +53,4 @@ and register it in your container.
 
 <br>
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

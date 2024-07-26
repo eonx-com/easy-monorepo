@@ -30,4 +30,4 @@ is formatted as JSON by default, but you can implement your own formatter (see [
 **[Error reporters](reporters.md)** report on exceptions. The default error reporter logs to the main logging channel of
 your application, but you can implement custom error reporters, e.g. to send email.
 
-[1]: https://packages.eonx.com/projects/eonx-com/easy-bugsnag/
+[1]: https://packages.eonx.com/packages/easy-bugsnag/

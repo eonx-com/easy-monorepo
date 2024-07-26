@@ -35,4 +35,4 @@ This package comes with a Messenger Middleware handling lock out of the box. Two
 Remember to update your messenger configuration to add the middleware
 :::
 
-[1]: https://flex.symfony.com/
+[1]: https://symfony.com/doc/current/setup/flex.html

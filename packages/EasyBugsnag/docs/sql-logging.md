@@ -14,28 +14,52 @@ much easier, the EasyBugsnag package provides logging of SQL queries for Bugsnag
 To add SQL queries details to your Bugsnag reports in Symfony, simply set the `doctrine_dbal.enabled` configuration to
 `true`:
 
-```yaml
-# config/packages/easy_bugsnag.yaml
+```php
+# config/packages/easy_bugsnag.php
 
-easy_bugsnag:
-    api_key: '%env(BUGSNAG_API_KEY)%'
-    doctrine_dbal:
-        enabled: true
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyBugsnagConfig;
+
+return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
+    $easyBugsnagConfig
+        ->apiKey(env('BUGSNAG_API_KEY'));
+
+    $doctrineDbal = $easyBugsnagConfig->doctrineDbal();
+    $doctrineDbal
+        ->enabled(true);
+};
+
 ```
 
 You can also explicitly define the connections you want to log the queries for:
 
-```yaml
-# config/packages/easy_bugsnag.yaml
+```php
+# config/packages/easy_bugsnag.php
 
-easy_bugsnag:
-    api_key: '%env(BUGSNAG_API_KEY)%'
+<?php
+declare(strict_types=1);
 
-    doctrine_dbal:
-        enabled: true
-        connections:
-            - default
-            - secure
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyBugsnagConfig;
+
+return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
+    $easyBugsnagConfig
+        ->apiKey(env('BUGSNAG_API_KEY'));
+
+    $doctrineDbal = $easyBugsnagConfig->doctrineDbal();
+    $doctrineDbal
+        ->enabled(true)
+        ->connections([
+            'default',
+            'secure',
+        ]);
+};
+
 ```
 
 You are now all set up to start logging SQL queries into your Bugsnag reports.

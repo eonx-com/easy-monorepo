@@ -47,10 +47,13 @@ Laravel has the following additional configuration option:
 
 Symfony has the following additional configuration options:
 
-| Configuration        | Default    | Description                                                           |
-|----------------------|------------|-----------------------------------------------------------------------|
-| `translation_domain` | `messages` | Symfony translation domain.                                           |
-| `verbose`            | `false`    | Use extended error response containing exception message, trace, etc. |
+| Configuration                      | Default    | Description                                                                                              |
+|------------------------------------|------------|----------------------------------------------------------------------------------------------------------|
+| `bugsnag_ignore_validation_errors` | `true`     | Ignore validation errors based on ApiPlatformValidationErrorsResponseBuilder                             |
+| `override_api_platform_listener`   | `true`     | If using [API Platform][1], override its inbuilt exception handling to use the EasyErrorHandler package. |
+| `transform_validation_errors`      | `true`     | Transform validation errors response structure based on ApiPlatformValidationErrrorResponseBuilder.      |
+| `translation_domain`               | `messages` | Symfony translation domain.                                                                              |
+| `verbose`                          | `false`    | Use extended error response containing exception message, trace, etc.                                    |
 
 ## Example configuration files
 
@@ -64,24 +67,31 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use App\Exception\MyCustomException;
 use InvalidArgumentException;
-use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Monolog\Logger;
 use Symfony\Config\EasyErrorHandlerConfig;
 
 return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
     $easyErrorHandlerConfig
-        ->bugsnagEnabled(false)
+        ->bugsnagEnabled(true)
         ->bugsnagIgnoredExceptions([
             InvalidArgumentException::class,
         ])
-        ->bugsnagThreshold(null)
+        ->bugsnagIgnoreValidationErrors(true)
+        ->bugsnagThreshold(Logger::INFO)
         ->loggerExceptionLogLevels([
             InvalidArgumentException::class => 300,
         ])
         ->loggerIgnoredExceptions([
-            \App\MyCustomException::class,
-        ]);
+            MyCustomException::class,
+        ])
+        ->overrideApiPlatformListener(true)
+        ->transformValidationErrors(true)
+        ->translationDomain('violations')
+        ->useDefaultBuilders(true)
+        ->useDefaultReporters(true)
+        ->verbose(false);
 
     $response = $easyErrorHandlerConfig->response();
     $response
@@ -91,6 +101,7 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
         ->subCode('custom_sub_code')
         ->time('custom_time')
         ->violations('custom_violations');
+
     $extendedExceptionKeys = $response->extendedExceptionKeys();
     $extendedExceptionKeys
         ->class('custom_class')
@@ -99,16 +110,11 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
         ->message('custom_message')
         ->trace('custom_trace');
 
-    $easyErrorHandlerConfig->apiPlatformCustomSerializerExceptions()
-        ->class(UnexpectedValueException::class)
-        ->messagePattern('/This value is not a valid date\/time\./')
-        ->violationMessage('violations.invalid_datetime');
-
-    $easyErrorHandlerConfig->apiPlatformCustomSerializerExceptions()
-        ->class(NotNormalizableValueException::class)
-        ->messagePattern('/Failed to parse time string \(.*\) at position .* \(.*\): .*/')
-        ->violationMessage('Some custom violation message for datetime parsing error.');
+    $easyErrorHandlerConfig->translateInternalErrorMessages()
+        ->enabled(true)
+        ->locale('en');
 };
+
 ```
 
 ### Laravel
@@ -151,3 +157,5 @@ return [
     'use_extended_response' => false,
 ];
 ```
+
+[1]: https://api-platform.com/

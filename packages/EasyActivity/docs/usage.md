@@ -10,7 +10,7 @@ as database records in the `easy_activity_logs` table by default (the table name
 [configuration][1]). See the [ActivityLogEntry class][2] for more information on what can be stored in the database
 record.
 
-An application can either use `EonX\EasyActivity\Doctrine\Provider\DoctrineDbalStatementsProvider` to create a table or
+An application can either use `EonX\EasyActivity\Doctrine\Provider\DoctrineDbalStatementProvider` to create a table or
 describe a database entity/model relying on this table by itself.
 
 ## Resolving actors
@@ -72,6 +72,6 @@ Symfony bundle/extension classes, it brings the following functionality:
 
 [2]: activity-log-entry.md
 
-[3]: https://github.com/eonx-com/easy-doctrine
+[3]: https://packages.eonx.com/packages/easy-doctrine/
 
 [4]: config.md

@@ -44,17 +44,17 @@ setting the `use_default_configurators` configuration option to `false`. See [Co
 
 The default configurators are:
 
-- `BasicsConfigurator`: Sets basic information in the Bugsnag client:
+- `BasicsClientConfigurator`: Sets basic information in the Bugsnag client:
     - The project root
     - The release stage
     - The strip path
-- `RuntimeVersionConfigurator`: Sets the runtime and version in the *runtime versions* of the device data for Bugsnag:
+- `RuntimeVersionClientConfigurator`: Sets the runtime and version in the *runtime versions* of the device data for Bugsnag:
     - For Symfony applications, sets the runtime to the value of the `runtime` configuration option (`symfony` by default)
       and sets the version to the value of the `runtime_version` configuration option (the Symfony runtime version).
     - For Laravel/Lumen applications, sets the runtime to either `lumen` or `laravel` as applicable and sets the version
       to the application version.
-- `AwsEcsFargateConfigurator`: If the `aws_ecs_fargate.enabled` configuration option is set to `true`, then the
-  `AwsEcsFargateConfigurator` automatically resolves information about the AWS ECS Fargate task (`AvailabilityZone`,
+- `AwsEcsFargateClientConfigurator`: If the `aws_ecs_fargate.enabled` configuration option is set to `true`, then the
+  `AwsEcsFargateClientConfigurator` automatically resolves information about the AWS ECS Fargate task (`AvailabilityZone`,
   `Cluster`, `TaskARN` and `TaskDefinition`) and adds it as metadata to Bugsnag reports.
 
 ## Registering additional configurators
