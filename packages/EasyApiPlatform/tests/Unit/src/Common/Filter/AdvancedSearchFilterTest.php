@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Unit\ApiPlatform\Filter;
+namespace EonX\EasyApiPlatform\Tests\Unit\Common\Filter;
 
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\IriConverterInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyApiPlatform\ApiPlatform\Filter\AdvancedSearchFilter;
+use EonX\EasyApiPlatform\Common\Filter\AdvancedSearchFilter;
 use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\RelatedDummy;
 use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\NameConverter\CustomNameConverter;

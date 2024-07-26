@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyApiPlatform\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface;
+use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformErrorResponseBuilderInterface;
 use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
 use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;

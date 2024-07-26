@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Application\ApiPlatform\Listener;
+namespace EonX\EasyApiPlatform\Tests\Application\Common\Listener;
 
-use EonX\EasyApiPlatform\ApiPlatform\Listener\ReadListener;
+use EonX\EasyApiPlatform\Common\Listener\ReadListener;
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

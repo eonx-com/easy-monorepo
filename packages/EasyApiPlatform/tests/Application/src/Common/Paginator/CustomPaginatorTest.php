@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Application\ApiPlatform\Paginator;
+namespace EonX\EasyApiPlatform\Tests\Application\Common\Paginator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;

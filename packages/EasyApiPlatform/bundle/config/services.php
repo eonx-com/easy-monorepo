@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyApiPlatform\ApiPlatform\Listener\ReadListener;
+use EonX\EasyApiPlatform\Common\Listener\ReadListener;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

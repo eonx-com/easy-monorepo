@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\ApiPlatform\Paginator;
+namespace EonX\EasyApiPlatform\Common\Paginator;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 

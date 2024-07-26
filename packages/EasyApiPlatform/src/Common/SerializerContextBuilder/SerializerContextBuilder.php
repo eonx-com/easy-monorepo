@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\ApiPlatform\SerializerContextBuilder;
+namespace EonX\EasyApiPlatform\Common\SerializerContextBuilder;
 
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\State\SerializerContextBuilderInterface;
-use EonX\EasyApiPlatform\ApiPlatform\Paginator\CustomPaginatorInterface;
+use EonX\EasyApiPlatform\Common\Paginator\CustomPaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final readonly class SerializerContextBuilder implements SerializerContextBuilderInterface

@@ -8,7 +8,7 @@ use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
 final readonly class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
     /**
-     * @param iterable<\EonX\EasyApiPlatform\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface> $builders
+     * @param iterable<\EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformErrorResponseBuilderInterface> $builders
      */
     public function __construct(
         private iterable $builders,
@@ -16,7 +16,7 @@ final readonly class ApiPlatformErrorResponseBuilderProvider implements ErrorRes
     }
 
     /**
-     * @return iterable<\EonX\EasyApiPlatform\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface>
+     * @return iterable<\EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformErrorResponseBuilderInterface>
      */
     public function getBuilders(): iterable
     {

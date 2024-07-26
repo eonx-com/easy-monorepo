@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Application\ApiPlatform\Twig;
+namespace EonX\EasyApiPlatform\Tests\Application\Common\Twig;
 
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 

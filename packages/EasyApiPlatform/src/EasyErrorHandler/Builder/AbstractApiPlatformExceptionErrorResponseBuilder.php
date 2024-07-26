@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
-use EonX\EasyApiPlatform\EasyErrorHandler\Interface\ApiPlatformErrorResponseBuilderInterface;
 use EonX\EasyErrorHandler\Common\Builder\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
