@@ -31,6 +31,8 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         'default_encryption_key' => BridgeConstantsInterface::PARAM_DEFAULT_ENCRYPTION_KEY,
         'default_key_name' => BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME,
         'default_salt' => BridgeConstantsInterface::PARAM_DEFAULT_SALT,
+        'fully_encrypted_messages' => BridgeConstantsInterface::PARAM_FULLY_ENCRYPTED_MESSAGES,
+        'max_chunk_size' => BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE,
     ];
 
     protected string $extensionAlias = 'easy_encryption';

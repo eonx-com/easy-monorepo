@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Bridge\Laravel\Provider;
 
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
-use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\LocalEncryptor;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 use Illuminate\Contracts\Container\Container;
@@ -56,7 +56,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             EncryptorInterface::class,
-            static fn (Container $app): EncryptorInterface => new Encryptor(
+            static fn (Container $app): EncryptorInterface => new LocalEncryptor(
                 $app->make(EncryptionKeyFactoryInterface::class),
                 $app->make(EncryptionKeyProviderInterface::class),
                 \config('easy-encryption.default_key_name')

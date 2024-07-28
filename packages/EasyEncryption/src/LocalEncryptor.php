@@ -12,7 +12,7 @@ use ParagonIE\Halite\Symmetric\Crypto as SymmetricCrypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use ParagonIE\HiddenString\HiddenString;
 
-final class Encryptor extends AbstractEncryptor
+final class LocalEncryptor extends AbstractEncryptor
 {
     public function __construct(
         private readonly EncryptionKeyFactoryInterface $keyFactory,

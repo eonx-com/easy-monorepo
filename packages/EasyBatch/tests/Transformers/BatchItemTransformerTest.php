@@ -6,9 +6,9 @@ namespace EonX\EasyBatch\Tests\Transformers;
 use EonX\EasyBatch\Serializers\MessageSerializer;
 use EonX\EasyBatch\Tests\AbstractTestCase;
 use EonX\EasyBatch\Transformers\BatchItemTransformer;
-use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\LocalEncryptor;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -61,6 +61,6 @@ final class BatchItemTransformerTest extends AbstractTestCase
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, [$keyResolver]);
 
-        return new Encryptor($keyFactory, $keyProvider);
+        return new LocalEncryptor($keyFactory, $keyProvider);
     }
 }

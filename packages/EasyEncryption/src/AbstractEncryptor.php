@@ -8,7 +8,7 @@ use EonX\EasyEncryption\Exceptions\CouldNotEncryptException;
 use EonX\EasyEncryption\Interfaces\DecryptedStringInterface;
 use EonX\EasyEncryption\Interfaces\EasyEncryptionExceptionInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\ValueObjects\DecryptedString;
+use EonX\EasyEncryption\ValueObject\DecryptedString;
 use ParagonIE\ConstantTime\Encoding;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
