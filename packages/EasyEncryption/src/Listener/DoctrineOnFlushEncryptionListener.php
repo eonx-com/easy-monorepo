@@ -17,6 +17,9 @@ use WeakMap;
 #[AsDoctrineListener(Events::postFlush, priority: 1)]
 final class DoctrineOnFlushEncryptionListener
 {
+    /**
+     * @var \WeakMap<\EonX\EasyEncryption\Interfaces\EncryptableInterface, \EonX\EasyEncryption\Interfaces\EncryptableInterface>
+     */
     private WeakMap $weakMap;
 
     public function __construct(
