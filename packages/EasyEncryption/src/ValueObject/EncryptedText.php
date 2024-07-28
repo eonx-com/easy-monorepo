@@ -5,7 +5,9 @@ namespace EonX\EasyEncryption\ValueObject;
 
 final readonly class EncryptedText
 {
-    public function __construct(public string $encryptionKeyName, public string $value)
-    {
+    public function __construct(
+        public string $encryptionKeyName,
+        public string $value,
+    ) {
     }
 }

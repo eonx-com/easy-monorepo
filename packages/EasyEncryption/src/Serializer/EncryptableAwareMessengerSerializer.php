@@ -25,15 +25,14 @@ final class EncryptableAwareMessengerSerializer implements SerializerInterface
     private const ENVELOPE_HEADER_ENCRYPTION_TYPE = 'encryption_type';
 
     private const ENVELOPE_HEADER_TYPE = 'type';
-    
+
     public function __construct(
         private Encryptor $encryptor,
         private EncryptableEncryptor $encryptableEncryptor,
         private EncryptableMetadata $encryptableMetadata,
         private SerializerInterface $serializer,
-        private array $fullyEncryptedMessages
+        private array $fullyEncryptedMessages,
     ) {
-
     }
 
     public function decode(array $encodedEnvelope): Envelope

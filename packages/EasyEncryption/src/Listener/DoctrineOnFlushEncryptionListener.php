@@ -19,8 +19,9 @@ final class DoctrineOnFlushEncryptionListener
 {
     private WeakMap $weakMap;
 
-    public function __construct(private EncryptableEncryptor $encryptableEncryptor)
-    {
+    public function __construct(
+        private EncryptableEncryptor $encryptableEncryptor,
+    ) {
         $this->weakMap = new WeakMap();
     }
 
@@ -74,7 +75,8 @@ final class DoctrineOnFlushEncryptionListener
         // We run this code in onFlush and the change set is already computed
         // So we have to recompute the change set to include the encrypted data
         $entityMetadata = $objectManager->getClassMetadata($entity::class);
-        $objectManager->getUnitOfWork()->recomputeSingleEntityChangeSet($entityMetadata, $entity);
+        $objectManager->getUnitOfWork()
+->recomputeSingleEntityChangeSet($entityMetadata, $entity);
 
         // We store the entity in a WeakMap to decrypt it in the postFlush method
         // We use WeakMap to ensure that the entity will not be decrypted twice

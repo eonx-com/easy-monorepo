@@ -5,8 +5,9 @@ namespace EonX\EasyEncryption\HashCalculator;
 
 final class HmacSha512HashCalculator implements HashCalculatorInterface
 {
-    public function __construct(private string $secret)
-    {
+    public function __construct(
+        private string $secret,
+    ) {
     }
 
     public function calculate(string $value): string

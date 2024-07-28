@@ -12,8 +12,9 @@ use EonX\EasyEncryption\Interfaces\EncryptableInterface;
 #[AsDoctrineListener(Events::postLoad)]
 final class DoctrinePostLoadEncryptionListener
 {
-    public function __construct(private EncryptableEncryptor $encryptableEncryptor)
-    {
+    public function __construct(
+        private EncryptableEncryptor $encryptableEncryptor,
+    ) {
     }
 
     public function postLoad(PostLoadEventArgs $args): void

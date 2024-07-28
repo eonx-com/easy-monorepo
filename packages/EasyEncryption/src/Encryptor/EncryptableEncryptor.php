@@ -9,8 +9,10 @@ use EonX\EasyEncryption\ValueObject\EncryptedText;
 
 final class EncryptableEncryptor
 {
-    public function __construct(private Encryptor $encryptor, private HashCalculatorInterface $hashCalculator)
-    {
+    public function __construct(
+        private Encryptor $encryptor,
+        private HashCalculatorInterface $hashCalculator,
+    ) {
     }
 
     public function decrypt(EncryptableInterface $encryptable): void

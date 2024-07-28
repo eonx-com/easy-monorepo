@@ -9,8 +9,10 @@ final class AwsPkcs11HashCalculator implements HashCalculatorInterface
 {
     private const DEFAULT_ENCODING = 'UTF-8';
 
-    public function __construct(private AwsPkcs11EncryptorInterface $encryptor, private string $signKeyName)
-    {
+    public function __construct(
+        private AwsPkcs11EncryptorInterface $encryptor,
+        private string $signKeyName,
+    ) {
     }
 
     public function calculate(string $value): string
