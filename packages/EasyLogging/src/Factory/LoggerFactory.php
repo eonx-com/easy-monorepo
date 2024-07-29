@@ -20,7 +20,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
 {
     private const DEFAULT_CHANNEL = 'app';
 
-    private string $defaultChannel;
+    private readonly string $defaultChannel;
 
     /**
      * @var \EonX\EasyLogging\Config\HandlerConfigInterface[]
