@@ -9,6 +9,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Table;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Doctrine\Provider\DoctrineDbalStatementProvider;
 use EonX\EasyWebhook\Tests\Unit\AbstractUnitTestCase;
 
@@ -52,7 +53,7 @@ abstract class AbstractDoctrineDbalStoreTestCase extends AbstractUnitTestCase
 
     protected static function createWebhookForSendAfter(
         ?DateTimeInterface $sendAfter = null,
-        ?string $status = null,
+        ?WebhookStatus $status = null,
     ): WebhookInterface {
         $webhook = Webhook::create('https://eonx.com', null, WebhookInterface::DEFAULT_METHOD);
 

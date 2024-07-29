@@ -5,16 +5,6 @@ namespace EonX\EasyUtils\Math\Helper;
 
 interface MathHelperInterface
 {
-    public const ROUND_DECIMAL_SEPARATOR = '.';
-
-    public const ROUND_MODE = \PHP_ROUND_HALF_EVEN;
-
-    public const ROUND_PRECISION = 0;
-
-    public const ROUND_THOUSANDS_SEPARATOR = '';
-
-    public const SCALE = 99;
-
     /**
      * @param int|null $mode [optional] <p>
      * One of PHP_ROUND_HALF_UP,

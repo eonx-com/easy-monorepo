@@ -6,6 +6,7 @@ namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResult;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Event\FailedWebhookEvent;
 use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use EonX\EasyWebhook\Common\Event\SuccessWebhookEvent;
@@ -24,21 +25,21 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Success' => [
             Webhook::fromArray([
-                'status' => WebhookInterface::STATUS_SUCCESS,
+                'status' => WebhookStatus::Success->value,
             ]),
             SuccessWebhookEvent::class,
         ];
 
         yield 'Failed pending retry' => [
             Webhook::fromArray([
-                'status' => WebhookInterface::STATUS_FAILED_PENDING_RETRY,
+                'status' => WebhookStatus::FailedPendingRetry->value,
             ]),
             FailedWebhookEvent::class,
         ];
 
         yield 'Final failed' => [
             Webhook::fromArray([
-                'status' => WebhookInterface::STATUS_FAILED,
+                'status' => WebhookStatus::Failed->value,
             ]),
             FinalFailedWebhookEvent::class,
         ];

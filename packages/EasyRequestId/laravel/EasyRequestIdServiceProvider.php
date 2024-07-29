@@ -10,6 +10,7 @@ use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 use EonX\EasyRequestId\Common\Resolver\UuidFallbackResolver;
+use EonX\EasyRequestId\Common\ValueObject\RequestIdInfo;
 use EonX\EasyRequestId\EasyErrorHandler\Builder\RequestIdErrorResponseBuilder;
 use EonX\EasyRequestId\EasyHttpClient\Modifier\RequestIdRequestDataModifier;
 use EonX\EasyRequestId\EasyLogging\Processor\RequestIdProcessor;
@@ -58,15 +59,13 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                         return;
                     }
 
-                    $requestIdProvider->setResolver(static function () use ($body, $requestIdProvider): array {
+                    $requestIdProvider->setResolver(static function () use ($body, $requestIdProvider): RequestIdInfo {
                         $ids = $body['easy_request_id'] ?? [];
 
-                        return [
-                            RequestIdProviderInterface::KEY_RESOLVED_CORRELATION_ID =>
-                                $ids[$requestIdProvider->getCorrelationIdHeaderName()] ?? null,
-                            RequestIdProviderInterface::KEY_RESOLVED_REQUEST_ID =>
-                                $ids[$requestIdProvider->getRequestIdHeaderName()] ?? null,
-                        ];
+                        return new RequestIdInfo(
+                            $ids[$requestIdProvider->getCorrelationIdHeaderName()] ?? null,
+                            $ids[$requestIdProvider->getRequestIdHeaderName()] ?? null
+                        );
                     });
                 }
             );
