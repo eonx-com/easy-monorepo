@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
