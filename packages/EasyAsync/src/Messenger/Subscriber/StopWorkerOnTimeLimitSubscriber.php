@@ -23,7 +23,7 @@ final class StopWorkerOnTimeLimitSubscriber implements EventSubscriberInterface
     public function __construct(
         int $minTimeLimitInSeconds,
         ?int $maxTimeLimitInSeconds = null,
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
         try {
             $this->timeLimitInSeconds = \random_int(

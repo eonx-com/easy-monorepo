@@ -13,7 +13,7 @@ abstract class AbstractStore
 {
     public function __construct(
         protected RandomGeneratorInterface $random,
-        private DataCleanerInterface $dataCleaner,
+        private readonly DataCleanerInterface $dataCleaner,
     ) {
     }
 

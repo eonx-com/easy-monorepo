@@ -10,7 +10,7 @@ final class FromArrayResolver implements ResolverInterface
 {
     public function __construct(
         private array $array,
-        private RequestIdProviderInterface $requestIdProvider,
+        private readonly RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 

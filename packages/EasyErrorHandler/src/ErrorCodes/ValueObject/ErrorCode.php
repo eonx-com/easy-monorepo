@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\ErrorCodes\ValueObject;
 
-final class ErrorCode
+final readonly class ErrorCode
 {
     /**
      * @param array<int, string> $splitName

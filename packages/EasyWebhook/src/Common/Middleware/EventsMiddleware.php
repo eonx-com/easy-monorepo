@@ -21,7 +21,7 @@ final class EventsMiddleware extends AbstractMiddleware
     ];
 
     public function __construct(
-        private EventDispatcherInterface $dispatcher,
+        private readonly EventDispatcherInterface $dispatcher,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

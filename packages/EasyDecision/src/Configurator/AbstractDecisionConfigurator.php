@@ -5,7 +5,7 @@ namespace EonX\EasyDecision\Configurator;
 
 abstract class AbstractDecisionConfigurator implements DecisionConfiguratorInterface
 {
-    private int $priority;
+    private readonly int $priority;
 
     public function __construct(?int $priority = null)
     {

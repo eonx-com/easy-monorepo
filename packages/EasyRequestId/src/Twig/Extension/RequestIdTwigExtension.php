@@ -10,7 +10,7 @@ use Twig\TwigFunction;
 final class RequestIdTwigExtension extends AbstractExtension
 {
     public function __construct(
-        private RequestIdProviderInterface $requestIdProvider,
+        private readonly RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 

@@ -10,7 +10,7 @@ use DateTimeInterface;
 use EonX\EasyHttpClient\Common\Enum\LogFormat;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 
-final class HttpRequestSentBreadcrumbListener
+final readonly class HttpRequestSentBreadcrumbListener
 {
     private const BREADCRUMB_NAME = 'HTTP Request Sent';
 

@@ -5,7 +5,7 @@ namespace EonX\EasyHttpClient\Common\ValueObject;
 
 use DateTimeInterface;
 
-final class ResponseData implements ResponseDataInterface
+final readonly class ResponseData implements ResponseDataInterface
 {
     public function __construct(
         private string $content,

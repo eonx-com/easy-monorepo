@@ -15,12 +15,12 @@ final class DoctrineDbalStatementProvider
 
     private ?Closure $extendWebhooksTable = null;
 
-    private string $webhookResultsTable;
+    private readonly string $webhookResultsTable;
 
-    private string $webhooksTable;
+    private readonly string $webhooksTable;
 
     public function __construct(
-        private Connection $conn,
+        private readonly Connection $conn,
         ?string $webhooksTable = null,
         ?string $webhookResultsTable = null,
     ) {

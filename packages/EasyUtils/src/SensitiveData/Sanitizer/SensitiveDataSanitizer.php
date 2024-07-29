@@ -12,17 +12,17 @@ final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
     /**
      * @var string[]
      */
-    private array $keysToMask;
+    private readonly array $keysToMask;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface[]
      */
-    private array $objectTransformers;
+    private readonly array $objectTransformers;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\Sanitizer\StringSanitizerInterface[]
      */
-    private array $stringSanitizers;
+    private readonly array $stringSanitizers;
 
     /**
      * @param string[] $keysToMask

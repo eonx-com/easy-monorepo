@@ -7,7 +7,7 @@ use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Messenger\Resolver\MessengerMessageResolver;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 
-final class WorkerMessageReceivedListener
+final readonly class WorkerMessageReceivedListener
 {
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,

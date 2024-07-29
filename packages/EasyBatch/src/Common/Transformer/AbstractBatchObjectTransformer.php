@@ -11,7 +11,7 @@ use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
-    private string $datetimeFormat;
+    private readonly string $datetimeFormat;
 
     public function __construct(
         private readonly string $class,

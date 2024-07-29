@@ -10,10 +10,10 @@ final class UniqueGroupPropertyValueGenerator
     private array $callbackStack = [];
 
     public function __construct(
-        private Generator $generator,
-        private mixed $arguments,
-        private string $name,
-        private string $uniqueGroupName,
+        private readonly Generator $generator,
+        private readonly mixed $arguments,
+        private readonly string $name,
+        private readonly string $uniqueGroupName,
     ) {
     }
 

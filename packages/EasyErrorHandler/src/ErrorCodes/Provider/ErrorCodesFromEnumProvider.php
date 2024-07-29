@@ -13,12 +13,12 @@ use PhpParser\ParserFactory;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
-final class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
+final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInterface
 {
     private Parser $parser;
 
     public function __construct(
-        private readonly string $projectDir,
+        private string $projectDir,
     ) {
         $this->parser = (new ParserFactory())->createForHostVersion();
     }

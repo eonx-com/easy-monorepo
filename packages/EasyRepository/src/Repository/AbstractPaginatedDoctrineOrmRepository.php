@@ -14,7 +14,7 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
 {
     public function __construct(
         ManagerRegistry $registry,
-        private PaginationInterface $pagination,
+        private readonly PaginationInterface $pagination,
     ) {
         parent::__construct($registry);
     }

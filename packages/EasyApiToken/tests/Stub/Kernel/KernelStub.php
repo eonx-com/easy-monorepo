@@ -18,7 +18,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      * @param string[]|null $configs
      */
     public function __construct(
-        private ?array $configs = null,
+        private readonly ?array $configs = null,
     ) {
         parent::__construct('test', true);
     }

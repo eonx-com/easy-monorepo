@@ -17,7 +17,7 @@ final class WebhookDataCollector extends DataCollector
     public const NAME = 'easy_webhook.data_collector';
 
     public function __construct(
-        private WebhookClientInterface $webhookClient,
+        private readonly WebhookClientInterface $webhookClient,
     ) {
     }
 

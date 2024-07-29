@@ -7,7 +7,7 @@ use EonX\EasyTest\Coverage\Resolver\CoverageResolverInterface;
 use InvalidArgumentException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
-final class CoverageResolverLocator implements CoverageResolverLocatorInterface
+final readonly class CoverageResolverLocator implements CoverageResolverLocatorInterface
 {
     /**
      * @param \Symfony\Contracts\Service\ServiceProviderInterface<\EonX\EasyTest\Coverage\Resolver\CoverageResolverInterface> $coverageResolvers

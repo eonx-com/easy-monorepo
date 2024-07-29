@@ -15,7 +15,7 @@ final class PdoClientPool
 {
     private int $connectionCount = 0;
 
-    private Channel $pool;
+    private readonly Channel $pool;
 
     public function __construct(
         private readonly PdoClientFactory $factory,

@@ -12,7 +12,7 @@ abstract class AbstractFromHeaderConfigurator extends AbstractSecurityContextCon
      * @param string[] $headerNames
      */
     public function __construct(
-        private array $headerNames,
+        private readonly array $headerNames,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

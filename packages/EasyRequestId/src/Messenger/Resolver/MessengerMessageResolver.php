@@ -8,7 +8,7 @@ use EonX\EasyRequestId\Common\ValueObject\RequestIdInfo;
 use EonX\EasyRequestId\Messenger\Stamp\RequestIdStamp;
 use Symfony\Component\Messenger\Envelope;
 
-final class MessengerMessageResolver implements ResolverInterface
+final readonly class MessengerMessageResolver implements ResolverInterface
 {
     public function __construct(
         private Envelope $envelope,

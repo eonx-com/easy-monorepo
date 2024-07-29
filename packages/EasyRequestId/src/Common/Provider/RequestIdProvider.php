@@ -13,9 +13,9 @@ final class RequestIdProvider implements RequestIdProviderInterface
     private ?string $requestId = null;
 
     public function __construct(
-        private FallbackResolverInterface $fallbackResolver,
-        private string $correlationIdHeaderName,
-        private string $requestIdHeaderName,
+        private readonly FallbackResolverInterface $fallbackResolver,
+        private readonly string $correlationIdHeaderName,
+        private readonly string $requestIdHeaderName,
     ) {
     }
 

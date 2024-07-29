@@ -14,17 +14,17 @@ final class Pagination implements PaginationInterface
 
     private const DEFAULT_URL = '/';
 
-    private string $pageAttribute;
+    private readonly string $pageAttribute;
 
-    private string $perPageAttribute;
+    private readonly string $perPageAttribute;
 
-    private string $url;
+    private readonly string $url;
 
     private ?Closure $urlResolver = null;
 
     public function __construct(
-        private int $page,
-        private int $perPage,
+        private readonly int $page,
+        private readonly int $perPage,
         ?string $pageAttribute = null,
         ?string $perPageAttribute = null,
         ?string $url = null,
