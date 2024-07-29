@@ -6,6 +6,8 @@ namespace EonX\EasyBatch\Common\Manager;
 use Carbon\Carbon;
 use Closure;
 use EonX\EasyBatch\Common\Dispatcher\BatchItemDispatcher;
+use EonX\EasyBatch\Common\Enum\BatchItemType;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Event\BatchCompletedEvent;
 use EonX\EasyBatch\Common\Exception\BatchObjectInvalidException;
 use EonX\EasyBatch\Common\Exception\BatchObjectNotSupportedException;
@@ -49,11 +51,11 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
             throw new BatchObjectNotSupportedException(\sprintf(
                 'Cannot approve BatchObject of type "%s" with status "%s"',
                 $batchObject::class,
-                $batchObject->getStatus()
+                $batchObject->getStatus()->value
             ));
         }
 
-        $batchObject->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+        $batchObject->setStatus(BatchObjectStatus::Succeeded);
 
         if ($batchObject->getStartedAt() === null) {
             $batchObject->setStartedAt(Carbon::now('UTC'));
@@ -85,7 +87,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
                 $batchObject->setAttempts(1);
             }
 
-            if ($batchObject->getStatus() !== BatchItemInterface::STATUS_PROCESSING_DEPENDENT_OBJECTS) {
+            if ($batchObject->getStatus() !== BatchObjectStatus::ProcessingDependentObjects) {
                 $this->batchItemRepository->save($batchObject);
             }
 
@@ -95,7 +97,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
             }
 
             // Approve nested batch
-            if ($batchObject->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
+            if ($batchObject->getType() === BatchItemType::NestedBatch->value) {
                 $this->approve($this->batchRepository->findNestedOrFail($batchObject->getIdOrFail()));
             }
 
@@ -138,7 +140,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
 
         $batchObject
             ->setCancelledAt(Carbon::now('UTC'))
-            ->setStatus(BatchObjectInterface::STATUS_CANCELLED);
+            ->setStatus(BatchObjectStatus::Cancelled);
 
         // Batch
         if ($batchObject instanceof BatchInterface) {
@@ -166,7 +168,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
                 $batchObject->setAttempts(1);
             }
 
-            if ($batchObject->getStatus() !== BatchItemInterface::STATUS_PROCESSING_DEPENDENT_OBJECTS) {
+            if ($batchObject->getStatus() !== BatchObjectStatus::ProcessingDependentObjects) {
                 $this->batchItemRepository->save($batchObject);
             }
 
@@ -182,7 +184,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
             }
 
             // Cancel nested batch
-            if ($batchObject->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
+            if ($batchObject->getType() === BatchItemType::NestedBatch->value) {
                 $this->cancel($this->batchRepository->findNestedOrFail($batchObject->getIdOrFail()));
             }
 
@@ -225,7 +227,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         // Allow to dispatch a batch with no item, and trigger all completed logic as expected
         if ($batch->countTotal() === 0) {
             // Explicitly set the batch status to pending approval
-            $batch->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
+            $batch->setStatus(BatchObjectStatus::SucceededPendingApproval);
 
             /** @var \EonX\EasyBatch\Common\ValueObject\BatchInterface $batch */
             $batch = $this->approve($batch);

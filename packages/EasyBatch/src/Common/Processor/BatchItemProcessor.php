@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Common\Processor;
 
 use Carbon\Carbon;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Exception\BatchCancelledException;
 use EonX\EasyBatch\Common\Exception\BatchItemCannotBeRetriedException;
 use EonX\EasyBatch\Common\Exception\BatchItemCompletedException;
@@ -13,7 +14,6 @@ use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use Throwable;
 
 final readonly class BatchItemProcessor
@@ -51,8 +51,8 @@ final readonly class BatchItemProcessor
 
             $batchItem->setStatus(
                 $batchItem->canBeRetried()
-                    ? BatchItemInterface::STATUS_FAILED_PENDING_RETRY
-                    : BatchObjectInterface::STATUS_FAILED
+                    ? BatchObjectStatus::FailedPendingRetry
+                    : BatchObjectStatus::Failed
             );
             $batchItem->setThrowable($throwable);
 
@@ -61,8 +61,8 @@ final readonly class BatchItemProcessor
             if ($messageFuncSuccess) {
                 $batchItem->setStatus(
                     $batchItem->isApprovalRequired()
-                        ? BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL
-                        : BatchObjectInterface::STATUS_SUCCEEDED
+                        ? BatchObjectStatus::SucceededPendingApproval
+                        : BatchObjectStatus::Succeeded
                 );
             }
 
@@ -107,7 +107,7 @@ final readonly class BatchItemProcessor
             throw new BatchItemCompletedException(\sprintf(
                 'BatchItem "%s" is already completed with status "%s"',
                 $batchItem->getId(),
-                $batchItem->getStatus()
+                $batchItem->getStatus()->value
             ));
         }
 
