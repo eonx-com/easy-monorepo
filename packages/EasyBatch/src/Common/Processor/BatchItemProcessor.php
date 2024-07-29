@@ -107,7 +107,8 @@ final readonly class BatchItemProcessor
             throw new BatchItemCompletedException(\sprintf(
                 'BatchItem "%s" is already completed with status "%s"',
                 $batchItem->getId(),
-                $batchItem->getStatus()->value
+                $batchItem->getStatus()
+                    ->value
             ));
         }
 

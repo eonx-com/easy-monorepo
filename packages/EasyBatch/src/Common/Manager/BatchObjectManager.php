@@ -51,7 +51,8 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
             throw new BatchObjectNotSupportedException(\sprintf(
                 'Cannot approve BatchObject of type "%s" with status "%s"',
                 $batchObject::class,
-                $batchObject->getStatus()->value
+                $batchObject->getStatus()
+                    ->value
             ));
         }
 

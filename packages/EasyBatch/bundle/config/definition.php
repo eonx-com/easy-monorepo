@@ -1,9 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
-use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\Batch;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;

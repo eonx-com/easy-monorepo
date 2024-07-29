@@ -11,13 +11,23 @@ enum BatchObjectStatus: string
 
     case BatchPendingApproval = 'batch_pending_approval';
 
-    case FailedPendingRetry = 'failed_pending_retry';
-
-    case ProcessingDependentObjects = 'processing_dependent_objects';
+    case Cancelled = 'cancelled';
 
     case Created = 'created';
 
+    case Failed = 'failed';
+
+    case FailedPendingRetry = 'failed_pending_retry';
+
     case Pending = 'pending';
+
+    case Processing = 'processing';
+
+    case ProcessingDependentObjects = 'processing_dependent_objects';
+
+    case Succeeded = 'succeeded';
+
+    case SucceededPendingApproval = 'succeeded_pending_approval';
 
     public const STATUSES_FOR_CANCEL = [
         self::Cancelled,
@@ -35,16 +45,6 @@ enum BatchObjectStatus: string
         self::Created,
         self::FailedPendingRetry,
     ];
-
-    case Cancelled = 'cancelled';
-
-    case Failed = 'failed';
-
-    case Processing = 'processing';
-
-    case Succeeded = 'succeeded';
-
-    case SucceededPendingApproval = 'succeeded_pending_approval';
 
     public const STATUSES_FOR_PENDING_APPROVAL = [
         self::BatchPendingApproval,
