@@ -27,5 +27,6 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->booleanNode('use_default_configurators')->defaultTrue()->end()
+            ->integerNode('default_configurators_priority')->defaultValue(-100)->end()
         ->end();
 };
