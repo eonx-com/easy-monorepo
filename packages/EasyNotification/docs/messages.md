@@ -106,7 +106,7 @@ to mark specific messages as read.
 namespace App\Http\Controller;
 
 use EonX\EasyNotification\Client\NotificationClientInterface;
-use EonX\EasyNotification\Enum\Status;
+use EonX\EasyNotification\Enum\MessageStatus;
 use EonX\EasyNotification\Message\RealTimeMessage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,7 +129,7 @@ final class NotificationUpdateMessage
         $body = \json_decode($request->getContent(), true);
 
         // RealTimeMessage class provides you with constants for each available status
-        $status = Status::from($body['status']) ?? Status::Read;
+        $status = MessageStatus::from($body['status']) ?? MessageStatus::Read;
 
         $this->notificationClient->updateMessagesStatus($body['messages'], $status);
 

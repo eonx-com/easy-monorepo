@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Message;
 
-use EonX\EasyNotification\Enum\Type;
+use EonX\EasyNotification\Enum\MessageType;
 
 interface MessageInterface
 {
     public function getBody(): string;
 
-    public function getType(): Type;
+    public function getType(): MessageType;
 }

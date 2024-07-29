@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Client;
 
 use EonX\EasyNotification\Configurator\QueueMessageConfiguratorInterface;
-use EonX\EasyNotification\Enum\Status;
+use EonX\EasyNotification\Enum\MessageStatus;
 use EonX\EasyNotification\Exception\ApiRequestFailedException;
 use EonX\EasyNotification\Exception\ConfigRequiredException;
 use EonX\EasyNotification\Factory\QueueTransportFactoryInterface;
@@ -88,7 +88,7 @@ final class NotificationClient implements NotificationClientInterface
     /**
      * @param string[] $messages Messages IDs
      */
-    public function updateMessagesStatus(array $messages, Status $status): void
+    public function updateMessagesStatus(array $messages, MessageStatus $status): void
     {
         if ($this->config === null) {
             throw new ConfigRequiredException(\sprintf('Config must be set before calling "%s"', __METHOD__));

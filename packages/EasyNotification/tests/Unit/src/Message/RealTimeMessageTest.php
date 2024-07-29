@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Unit\Message;
 
-use EonX\EasyNotification\Enum\Type;
+use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Exception\InvalidRealTimeMessageTypeException;
 use EonX\EasyNotification\Message\RealTimeMessage;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
@@ -39,15 +39,15 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
         ];
 
         yield 'Create method + topics' => [
-            fn (): RealTimeMessage => RealTimeMessage::create(static::$body)->topics(static::$topics),
+            fn (): RealTimeMessage => RealTimeMessage::create(static::$body)->setTopics(static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method + body + topics' => [
             function (): RealTimeMessage {
-                $message = RealTimeMessage::create()->topics(static::$topics);
-                $message->body(static::$body);
+                $message = RealTimeMessage::create()->setTopics(static::$topics);
+                $message->setBody(static::$body);
 
                 return $message;
             },
@@ -68,7 +68,7 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
         /** @var \EonX\EasyNotification\Message\RealTimeMessage $message */
         $message = $getMessage();
 
-        self::assertSame(Type::RealTime, $message->getType());
+        self::assertSame(MessageType::RealTime, $message->getType());
         self::assertSame(Json::encode($body), $message->getBody());
         self::assertSame($topics, $message->getTopics());
     }
@@ -77,13 +77,13 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidRealTimeMessageTypeException::class);
 
-        RealTimeMessage::create(null, null, Type::Slack);
+        RealTimeMessage::create(null, null, MessageType::Slack);
     }
 
     public function testMessageCanHaveFlashType(): void
     {
-        $message = RealTimeMessage::create(null, null, Type::Flash);
+        $message = RealTimeMessage::create(null, null, MessageType::Flash);
 
-        self::assertEquals(Type::Flash, $message->getType());
+        self::assertEquals(MessageType::Flash, $message->getType());
     }
 }

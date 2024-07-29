@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Enum;
 
-enum Type: string
+enum MessageType: string
 {
     case Flash = 'flash';
 

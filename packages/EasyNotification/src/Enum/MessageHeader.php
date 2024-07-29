@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Enum;
 
-enum Header: string
+enum MessageHeader: string
 {
     case Provider = 'provider';
 

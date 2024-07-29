@@ -10,8 +10,8 @@ use EonX\EasyNotification\Configurator\RealTimeBodyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\SignatureQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\SlackBodyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\TypeQueueMessageConfigurator;
-use EonX\EasyNotification\Enum\Header;
-use EonX\EasyNotification\Enum\Type;
+use EonX\EasyNotification\Enum\MessageHeader;
+use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\QueueMessage;
 use EonX\EasyNotification\Message\QueueMessageInterface;
@@ -39,7 +39,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
             static function (QueueMessageInterface $queueMessage): void {
                 self::assertEquals(
                     [
-                        Header::Provider->value => static::$defaultConfig['externalId'],
+                        MessageHeader::Provider->value => static::$defaultConfig['externalId'],
                     ],
                     $queueMessage->getHeaders()
                 );
@@ -83,7 +83,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
             Config::fromArray(static::$defaultConfig),
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
-                self::assertFalse(isset($queueMessage->getHeaders()[Header::Signature->value]));
+                self::assertFalse(isset($queueMessage->getHeaders()[MessageHeader::Signature->value]));
             },
             (new QueueMessage())->setBody(''),
         ];
@@ -94,7 +94,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
                 $hash = \hash_hmac(static::$defaultConfig['algorithm'], 'my-body', static::$defaultConfig['secret']);
-                $signature = $queueMessage->getHeaders()[Header::Signature
+                $signature = $queueMessage->getHeaders()[MessageHeader::Signature
                     ->value];
 
                 self::assertTrue(\hash_equals($hash, $signature));
@@ -108,8 +108,8 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
             new RealTimeMessage([]),
             static function (QueueMessageInterface $queueMessage): void {
                 self::assertEquals(
-                    Type::RealTime->value,
-                    $queueMessage->getHeaders()[Header::Type
+                    MessageType::RealTime->value,
+                    $queueMessage->getHeaders()[MessageHeader::Type
                         ->value]
                 );
             },

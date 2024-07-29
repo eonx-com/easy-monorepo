@@ -9,8 +9,8 @@ use EonX\EasyNotification\Configurator\ProviderHeaderQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\QueueUrlQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\RealTimeBodyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\TypeQueueMessageConfigurator;
-use EonX\EasyNotification\Enum\Status;
-use EonX\EasyNotification\Enum\Type;
+use EonX\EasyNotification\Enum\MessageStatus;
+use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Exception\ApiRequestFailedException;
 use EonX\EasyNotification\Exception\ConfigRequiredException;
 use EonX\EasyNotification\Message\RealTimeMessage;
@@ -115,7 +115,7 @@ final class NotificationClientTest extends AbstractUnitTestCase
                 ],
                 'type' => [
                     'DataType' => 'String',
-                    'StringValue' => Type::RealTime->value,
+                    'StringValue' => MessageType::RealTime->value,
                 ],
             ],
             'MessageBody' => '{"body":"{\"name\":\"nathan\"}","topics":["topic"]}',
@@ -131,12 +131,12 @@ final class NotificationClientTest extends AbstractUnitTestCase
         $client = $this->getNotificationClient(null, $httpClientStub)
             ->withConfig($config);
 
-        $client->updateMessagesStatus(['message-id'], Status::Read);
+        $client->updateMessagesStatus(['message-id'], MessageStatus::Read);
 
         $expectedOptions = [
             'json' => [
                 'messages' => ['message-id'],
-                'status' => Status::Read->value,
+                'status' => MessageStatus::Read->value,
             ],
             'auth_basic' => [$config->getApiKey()],
             'headers' => [

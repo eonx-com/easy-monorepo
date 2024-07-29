@@ -3,26 +3,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Message;
 
-use EonX\EasyNotification\Enum\Type;
+use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Exception\InvalidRealTimeMessageTypeException;
 
 final class RealTimeMessage extends AbstractMessage
 {
-    private const REAL_TIME_TYPES = [Type::Flash, Type::RealTime];
+    private const REAL_TIME_TYPES = [MessageType::Flash, MessageType::RealTime];
 
     /**
      * @var string[]
      */
     private array $topics;
 
-    private Type $type;
+    private MessageType $type;
 
     /**
      * @param string[]|null $topics
      */
-    public function __construct(?array $body = null, ?array $topics = null, ?Type $type = null)
+    public function __construct(?array $body = null, ?array $topics = null, ?MessageType $type = null)
     {
-        $this->type($type ?? Type::RealTime);
+        $this->setType($type ?? MessageType::RealTime);
         $this->topics = $topics ?? [];
 
         parent::__construct($body);
@@ -31,7 +31,7 @@ final class RealTimeMessage extends AbstractMessage
     /**
      * @param string[]|null $topics
      */
-    public static function create(?array $body = null, ?array $topics = null, ?Type $type = null): self
+    public static function create(?array $body = null, ?array $topics = null, ?MessageType $type = null): self
     {
         return new self($body, $topics, $type);
     }
@@ -44,7 +44,7 @@ final class RealTimeMessage extends AbstractMessage
         return $this->topics;
     }
 
-    public function getType(): Type
+    public function getType(): MessageType
     {
         return $this->type;
     }
@@ -52,14 +52,14 @@ final class RealTimeMessage extends AbstractMessage
     /**
      * @param string[] $topics
      */
-    public function topics(array $topics): self
+    public function setTopics(array $topics): self
     {
         $this->topics = $topics;
 
         return $this;
     }
 
-    public function type(Type $type): self
+    public function setType(MessageType $type): self
     {
         if (\in_array($type, self::REAL_TIME_TYPES, true) === false) {
             throw new InvalidRealTimeMessageTypeException(\sprintf(
@@ -67,7 +67,7 @@ final class RealTimeMessage extends AbstractMessage
                 $type->name,
                 \implode(
                     '", "',
-                    \array_map(static fn (Type $type): string => $type->name, self::REAL_TIME_TYPES)
+                    \array_map(static fn (MessageType $type): string => $type->name, self::REAL_TIME_TYPES)
                 )
             ));
         }
