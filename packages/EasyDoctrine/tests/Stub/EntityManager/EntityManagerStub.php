@@ -73,8 +73,8 @@ final class EntityManagerStub
         $entityManager = EntityManager::create($conn, $config, $eventManager);
         $schema = \array_map(fn ($class): ClassMetadata => $entityManager->getClassMetadata($class), $fixtures);
 
-        if (Type::hasType(PriceType::NAME) === false) {
-            Type::addType(PriceType::NAME, PriceType::class);
+        if (Type::hasType(PriceType::PRICE) === false) {
+            Type::addType(PriceType::PRICE, PriceType::class);
         }
 
         $schemaTool = new SchemaTool($entityManager);

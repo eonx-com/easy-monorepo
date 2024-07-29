@@ -35,7 +35,7 @@ class Product
     )]
     private Collection $offers;
 
-    #[ORM\Column(type: PriceType::NAME)]
+    #[ORM\Column(type: PriceType::PRICE)]
     private Price $price;
 
     /**

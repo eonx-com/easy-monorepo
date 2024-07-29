@@ -196,6 +196,6 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $platformReveal = $platform->reveal();
         $result = $type->getSQLDeclaration([], $platformReveal);
 
-        self::assertSame($type::FORMAT_DB_JSONB, $result);
+        self::assertSame('JSONB', $result);
     }
 }

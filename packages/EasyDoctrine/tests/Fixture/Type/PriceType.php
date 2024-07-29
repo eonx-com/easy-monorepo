@@ -9,7 +9,7 @@ use EonX\EasyDoctrine\Tests\Fixture\ValueObject\Price;
 
 final class PriceType extends StringType
 {
-    public const NAME = 'PRICE';
+    public const PRICE = 'price';
 
     public function convertToPHPValue($value, AbstractPlatform $platform): Price
     {
@@ -20,6 +20,6 @@ final class PriceType extends StringType
 
     public function getName(): string
     {
-        return self::NAME;
+        return self::PRICE;
     }
 }

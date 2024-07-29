@@ -10,9 +10,9 @@ use JsonException;
 
 final class JsonbType extends Type
 {
-    public const FORMAT_DB_JSONB = 'JSONB';
-
     public const JSONB = 'jsonb';
+
+    private const FORMAT_DB_JSONB = 'JSONB';
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException

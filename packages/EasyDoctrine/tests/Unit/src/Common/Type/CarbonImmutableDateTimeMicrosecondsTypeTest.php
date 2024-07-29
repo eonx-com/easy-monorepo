@@ -90,7 +90,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
             [
                 'version' => true,
             ],
-            CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP,
+            'TIMESTAMP',
         ];
 
         yield 'mysql, with version = false' => [
@@ -98,7 +98,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
             [
                 'version' => false,
             ],
-            CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_DATETIME,
+            'DATETIME(6)',
         ];
 
         $platformClassNameDbal2 = PostgreSQL94Platform::class;
@@ -108,7 +108,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         yield 'postgresql' => [
             $platformClassName,
             [],
-            CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            'TIMESTAMP(6) WITHOUT TIME ZONE',
         ];
 
         yield 'postgresql, with version = true' => [
@@ -116,7 +116,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
             [
                 'version' => true,
             ],
-            CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            'TIMESTAMP(6) WITHOUT TIME ZONE',
         ];
 
         yield 'postgresql, with version = false' => [
@@ -124,7 +124,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
             [
                 'version' => false,
             ],
-            CarbonImmutableDateTimeMicrosecondsType::FORMAT_DB_TIMESTAMP_WO_TIMEZONE,
+            'TIMESTAMP(6) WITHOUT TIME ZONE',
         ];
     }
 
