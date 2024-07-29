@@ -7,7 +7,7 @@ use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\ValueObject\RequestIdInfo;
 use Symfony\Component\HttpFoundation\Request;
 
-final class HttpFoundationRequestResolver implements ResolverInterface
+final readonly class HttpFoundationRequestResolver implements ResolverInterface
 {
     public function __construct(
         private Request $request,

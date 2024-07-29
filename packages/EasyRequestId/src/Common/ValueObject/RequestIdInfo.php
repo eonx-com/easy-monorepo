@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Common\ValueObject;
 
-final class RequestIdInfo
+final readonly class RequestIdInfo
 {
     public function __construct(
         private ?string $correlationId = null,
