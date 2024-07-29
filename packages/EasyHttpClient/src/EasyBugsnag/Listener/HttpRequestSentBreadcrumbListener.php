@@ -12,9 +12,9 @@ use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 
 final class HttpRequestSentBreadcrumbListener
 {
-    public const BREADCRUMB_NAME = 'HTTP Request Sent';
+    private const BREADCRUMB_NAME = 'HTTP Request Sent';
 
-    public const DEFAULT_TIMING_MESSAGE = 'No timing available';
+    private const DEFAULT_TIMING_MESSAGE = 'No timing available';
 
     // The metadata attributes priority list (low to high)
     private const METADATA_ATTRIBUTES_PRIORITY_LIST = [

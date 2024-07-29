@@ -82,7 +82,7 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractUnitTestCase
                 'Request Options' => '{"optionName":"option-value"}',
                 'Throwable Class' => 'Exception',
                 'Throwable Message' => 'some-exception-message',
-                'Timing' => HttpRequestSentBreadcrumbListener::DEFAULT_TIMING_MESSAGE,
+                'Timing' => 'No timing available',
             ],
         ];
 
@@ -242,7 +242,7 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractUnitTestCase
                 $mock->shouldReceive('leaveBreadcrumb')
                     ->once()
                     ->with(
-                        HttpRequestSentBreadcrumbListener::BREADCRUMB_NAME,
+                        'HTTP Request Sent',
                         Breadcrumb::REQUEST_TYPE,
                         $expectedMetadata
                     );
