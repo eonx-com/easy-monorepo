@@ -7,6 +7,9 @@ use EonX\EasyEncryption\AwsPkcs11Encryptor;
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
 use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
 use EonX\EasyEncryption\Configurator\AwsCloudHsmSdkConfigurator;
+use EonX\EasyEncryption\Encryptor\Encryptor;
+use EonX\EasyEncryption\HashCalculator\AwsPkcs11HashCalculator;
+use EonX\EasyEncryption\HashCalculator\HashCalculatorInterface;
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -42,4 +45,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$userPin', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_USER_PIN))
         ->arg('$aad', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AAD))
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
+
+    $services->set(Encryptor::class)
+        ->arg('$encryptor', service(AwsPkcs11EncryptorInterface::class))
+        ->arg('$encryptionKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME))
+        ->arg('$maxChunkSize', param(BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE));
+
+    $services->set(HashCalculatorInterface::class, AwsPkcs11HashCalculator::class)
+        ->arg('$signKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 };

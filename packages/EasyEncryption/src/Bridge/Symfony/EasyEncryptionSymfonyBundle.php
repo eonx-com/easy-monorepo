@@ -74,5 +74,9 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         if ($config['aws_pkcs11_encryptor']['enabled'] ?? false) {
             $container->import(__DIR__ . '/Resources/config/aws_pkcs11_encryptor.php');
         }
+
+        if ($builder->hasDefinition('messenger.transport.native_php_serializer')) {
+            $container->import(__DIR__ . '/Resources/config/encryptable_messenger.php');
+        }
     }
 }
