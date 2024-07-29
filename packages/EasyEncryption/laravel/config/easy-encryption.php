@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
-
 return [
     /**
      * Encryption key associated with default key name.
@@ -12,7 +10,7 @@ return [
     /**
      * Default key name to use when none provided.
      */
-    'default_key_name' => EncryptorInterface::DEFAULT_KEY_NAME,
+    'default_key_name' => 'app',
 
     /**
      * Optional salt used with default encryption key if provided/needed.

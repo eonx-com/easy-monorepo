@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Tests\Unit\Common\Encryptor;
 
 use EonX\EasyEncryption\Common\Encryptor\Encryptor;
-use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
+use EonX\EasyEncryption\Common\Enum\EncryptionKeyOption;
 use EonX\EasyEncryption\Common\Factory\DefaultEncryptionKeyFactory;
-use EonX\EasyEncryption\Common\Factory\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Common\Provider\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Common\Resolver\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Tests\Stub\Resolver\EncryptionKeyResolverStub;
@@ -32,7 +31,7 @@ final class EncryptorTest extends AbstractUnitTestCase
             null,
             [
                 new EncryptionKeyResolverStub([
-                    EncryptorInterface::DEFAULT_KEY_NAME => KeyFactory::generateEncryptionKey()->getRawKeyMaterial(),
+                    'app' => KeyFactory::generateEncryptionKey()->getRawKeyMaterial(),
                 ]),
             ],
         ];
@@ -42,7 +41,7 @@ final class EncryptorTest extends AbstractUnitTestCase
             null,
             [
                 new EncryptionKeyResolverStub([
-                    EncryptorInterface::DEFAULT_KEY_NAME => KeyFactory::generateEncryptionKeyPair()
+                    'app' => KeyFactory::generateEncryptionKeyPair()
                         ->getSecretKey()
                         ->getRawKeyMaterial(),
                 ]),
@@ -54,9 +53,9 @@ final class EncryptorTest extends AbstractUnitTestCase
             null,
             [
                 new EncryptionKeyResolverStub([
-                    EncryptorInterface::DEFAULT_KEY_NAME => [
-                        EncryptionKeyFactoryInterface::OPTION_KEY => 'IP70gUSWQ3qhl1Nf',
-                        EncryptionKeyFactoryInterface::OPTION_SALT => 'xOI68z0AeksgNYAm',
+                    'app' => [
+                        EncryptionKeyOption::Key->value => 'IP70gUSWQ3qhl1Nf',
+                        EncryptionKeyOption::Salt->value => 'xOI68z0AeksgNYAm',
                     ],
                 ]),
             ],
@@ -87,8 +86,8 @@ final class EncryptorTest extends AbstractUnitTestCase
         yield 'Direct key + salt as array' => [
             $message,
             [
-                EncryptionKeyFactoryInterface::OPTION_KEY => 'IP70gUSWQ3qhl1Nf',
-                EncryptionKeyFactoryInterface::OPTION_SALT => 'xOI68z0AeksgNYAm',
+                EncryptionKeyOption::Key->value => 'IP70gUSWQ3qhl1Nf',
+                EncryptionKeyOption::Salt->value => 'xOI68z0AeksgNYAm',
             ],
         ];
 
@@ -96,9 +95,9 @@ final class EncryptorTest extends AbstractUnitTestCase
         yield 'Direct public + secret as array' => [
             $message,
             [
-                EncryptionKeyFactoryInterface::OPTION_PUBLIC_KEY => $encryptionKeyPair->getPublicKey()
+                EncryptionKeyOption::PublicKey->value => $encryptionKeyPair->getPublicKey()
                     ->getRawKeyMaterial(),
-                EncryptionKeyFactoryInterface::OPTION_SECRET_KEY => $encryptionKeyPair->getSecretKey()
+                EncryptionKeyOption::SecretKey->value => $encryptionKeyPair->getSecretKey()
                     ->getRawKeyMaterial(),
             ],
         ];
@@ -106,8 +105,8 @@ final class EncryptorTest extends AbstractUnitTestCase
         yield 'Direct key + salt (same) as array' => [
             $message,
             [
-                EncryptionKeyFactoryInterface::OPTION_KEY => 'IP70gUSWQ3qhl1Nf',
-                EncryptionKeyFactoryInterface::OPTION_SALT => 'IP70gUSWQ3qhl1Nf',
+                EncryptionKeyOption::Key->value => 'IP70gUSWQ3qhl1Nf',
+                EncryptionKeyOption::Salt->value => 'IP70gUSWQ3qhl1Nf',
             ],
         ];
 
