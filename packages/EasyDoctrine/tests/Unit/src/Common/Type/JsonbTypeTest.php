@@ -18,8 +18,8 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        if (Type::hasType(JsonbType::JSONB) === false) {
-            Type::addType(JsonbType::JSONB, JsonbType::class);
+        if (Type::hasType(JsonbType::NAME) === false) {
+            Type::addType(JsonbType::NAME, JsonbType::class);
         }
     }
 
@@ -115,7 +115,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToDatabaseValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\Common\Type\JsonbType $type */
-        $type = Type::getType(JsonbType::JSONB);
+        $type = Type::getType(JsonbType::NAME);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
 
@@ -130,7 +130,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToDatabaseValueThrowsConversionException(): void
     {
         /** @var \EonX\EasyDoctrine\Common\Type\JsonbType $type */
-        $type = Type::getType(JsonbType::JSONB);
+        $type = Type::getType(JsonbType::NAME);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $value = \urldecode('some incorrectly encoded utf string %C4');
@@ -150,7 +150,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToPhpValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         /** @var \EonX\EasyDoctrine\Common\Type\JsonbType $type */
-        $type = Type::getType(JsonbType::JSONB);
+        $type = Type::getType(JsonbType::NAME);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
 
@@ -165,7 +165,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToPhpValueThrowsConversionException(): void
     {
         /** @var \EonX\EasyDoctrine\Common\Type\JsonbType $type */
-        $type = Type::getType(JsonbType::JSONB);
+        $type = Type::getType(JsonbType::NAME);
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $value = 'ineligible-value';
@@ -178,19 +178,19 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testGetNameSucceeds(): void
     {
         /** @var \EonX\EasyDoctrine\Common\Type\JsonbType $type */
-        $type = Type::getType(JsonbType::JSONB);
+        $type = Type::getType(JsonbType::NAME);
 
         $name = $type->getName();
 
-        self::assertSame(JsonbType::JSONB, $name);
+        self::assertSame(JsonbType::NAME, $name);
     }
 
     public function testGetSQLDeclaration(): void
     {
         /** @var \EonX\EasyDoctrine\Common\Type\JsonbType $type */
-        $type = Type::getType(JsonbType::JSONB);
+        $type = Type::getType(JsonbType::NAME);
         $platform = $this->prophesize(AbstractPlatform::class);
-        $platform->getDoctrineTypeMapping($type::JSONB)->willReturn($type::JSONB);
+        $platform->getDoctrineTypeMapping($type::NAME)->willReturn($type::NAME);
 
         /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platformReveal */
         $platformReveal = $platform->reveal();
