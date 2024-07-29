@@ -15,6 +15,7 @@ use EonX\EasyWebhook\Common\Client\WebhookClient;
 use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 use EonX\EasyWebhook\Common\Dispatcher\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Common\Dispatcher\NullAsyncDispatcher;
+use EonX\EasyWebhook\Common\Enum\MiddlewarePriority;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Common\Formatter\JsonWebhookBodyFormatter;
@@ -27,7 +28,6 @@ use EonX\EasyWebhook\Common\Middleware\HandleExceptionsMiddleware;
 use EonX\EasyWebhook\Common\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Common\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Common\Middleware\MethodMiddleware;
-use EonX\EasyWebhook\Common\Middleware\MiddlewareInterface;
 use EonX\EasyWebhook\Common\Middleware\RerunMiddleware;
 use EonX\EasyWebhook\Common\Middleware\ResetStoreMiddleware;
 use EonX\EasyWebhook\Common\Middleware\SendAfterMiddleware;
@@ -101,47 +101,47 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             LockMiddleware::class => static fn (Container $app): LockMiddleware => new LockMiddleware(
                 $app->make(LockerInterface::class),
                 null,
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 6
+                MiddlewarePriority::CoreBefore->value - 6
             ),
             StoreMiddleware::class => static fn (Container $app): StoreMiddleware => new StoreMiddleware(
                 $app->make(StoreInterface::class),
                 $app->make(ResultStoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 5
+                MiddlewarePriority::CoreBefore->value - 5
             ),
             EventsMiddleware::class => static fn (Container $app): EventsMiddleware => new EventsMiddleware(
                 $app->make(EventDispatcherInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 4
+                MiddlewarePriority::CoreBefore->value - 4
             ),
             StatusAndAttemptMiddleware::class => static fn (
             ): StatusAndAttemptMiddleware => new StatusAndAttemptMiddleware(
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 3
+                MiddlewarePriority::CoreBefore->value - 3
             ),
             HandleExceptionsMiddleware::class => static fn (
             ): HandleExceptionsMiddleware => new HandleExceptionsMiddleware(
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 2
+                MiddlewarePriority::CoreBefore->value - 2
             ),
             ResetStoreMiddleware::class => static fn (Container $app): ResetStoreMiddleware => new ResetStoreMiddleware(
                 $app->make(StoreInterface::class),
                 $app->make(ResultStoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_BEFORE - 1
+                MiddlewarePriority::CoreBefore->value - 1
             ),
             RerunMiddleware::class => static fn (): RerunMiddleware => new RerunMiddleware(
-                MiddlewareInterface::PRIORITY_CORE_BEFORE
+                MiddlewarePriority::CoreBefore->value
             ),
             // AFTER MIDDLEWARE
             MethodMiddleware::class => static fn (): MethodMiddleware => new MethodMiddleware(
                 \config('easy-webhook.method'),
-                MiddlewareInterface::PRIORITY_CORE_AFTER
+                MiddlewarePriority::CoreAfter->value
             ),
             SendAfterMiddleware::class => static fn (Container $app): SendAfterMiddleware => new SendAfterMiddleware(
                 $app->make(StoreInterface::class),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 1
+                MiddlewarePriority::CoreAfter->value + 1
             ),
             AsyncMiddleware::class => static fn (Container $app): AsyncMiddleware => new AsyncMiddleware(
                 $app->make(AsyncDispatcherInterface::class),
                 $app->make(StoreInterface::class),
                 \config('easy-webhook.send_async', true),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 2
+                MiddlewarePriority::CoreAfter->value + 2
             ),
             SyncRetryMiddleware::class => static function (Container $app): SyncRetryMiddleware {
                 $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
@@ -153,14 +153,14 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     $app->make(WebhookRetryStrategyInterface::class),
                     \config('easy-webhook.send_async', true),
                     $app->make(LoggerInterface::class, $loggerParams),
-                    MiddlewareInterface::PRIORITY_CORE_AFTER + 3
+                    MiddlewarePriority::CoreAfter->value + 3
                 );
             },
             SendWebhookMiddleware::class => static fn (
                 Container $app,
             ): SendWebhookMiddleware => new SendWebhookMiddleware(
                 $app->make(ConfigServiceId::HttpClient->value),
-                MiddlewareInterface::PRIORITY_CORE_AFTER + 4
+                MiddlewarePriority::CoreAfter->value + 4
             ),
         ];
 

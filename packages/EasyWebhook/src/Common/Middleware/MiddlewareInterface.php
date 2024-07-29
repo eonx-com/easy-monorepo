@@ -10,9 +10,5 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 interface MiddlewareInterface extends HasPriorityInterface
 {
-    public const PRIORITY_CORE_AFTER = 5000;
-
-    public const PRIORITY_CORE_BEFORE = -5000;
-
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface;
 }

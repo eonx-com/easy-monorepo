@@ -5,6 +5,8 @@ namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookOption;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Exception\CannotRerunWebhookException;
 use EonX\EasyWebhook\Common\Middleware\RerunMiddleware;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,7 +20,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     {
         yield 'Cannot rerun exception' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
+                WebhookOption::Status->value => WebhookStatus::Success->value,
             ]),
             null,
             null,
@@ -27,18 +29,18 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Can rerun, reset status and current attempt' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_SUCCESS,
+                WebhookOption::Status->value => WebhookStatus::Success->value,
             ])->allowRerun(),
-            WebhookInterface::STATUS_PENDING,
+            WebhookStatus::Pending,
             WebhookInterface::DEFAULT_CURRENT_ATTEMPT,
         ];
 
         yield 'Not a rerun, send through stack' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_CURRENT_ATTEMPT => 4,
-                WebhookInterface::OPTION_STATUS => WebhookInterface::STATUS_FAILED_PENDING_RETRY,
+                WebhookOption::CurrentAttempt->value => 4,
+                WebhookOption::Status->value => WebhookStatus::FailedPendingRetry->value,
             ])->allowRerun(),
-            WebhookInterface::STATUS_FAILED_PENDING_RETRY,
+            WebhookStatus::FailedPendingRetry,
             4,
         ];
     }
@@ -49,7 +51,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
     #[DataProvider('provideProcessData')]
     public function testProcess(
         WebhookInterface $webhook,
-        ?string $expectedStatus = null,
+        ?WebhookStatus $expectedStatus = null,
         ?int $expectedCurrentAttempt = null,
         ?string $exceptedException = null,
     ): void {
@@ -60,7 +62,7 @@ final class RerunMiddlewareTest extends AbstractMiddlewareTestCase
         $middleware = new RerunMiddleware();
         $result = $this->process($middleware, $webhook);
 
-        self::assertEquals($expectedStatus, $result->getWebhook()->getStatus());
-        self::assertEquals($expectedCurrentAttempt, $result->getWebhook()->getCurrentAttempt());
+        self::assertSame($expectedStatus, $result->getWebhook()->getStatus());
+        self::assertSame($expectedCurrentAttempt, $result->getWebhook()->getCurrentAttempt());
     }
 }

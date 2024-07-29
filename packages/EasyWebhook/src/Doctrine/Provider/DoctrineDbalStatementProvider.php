@@ -6,8 +6,8 @@ namespace EonX\EasyWebhook\Doctrine\Provider;
 use Closure;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use EonX\EasyWebhook\Common\Store\ResultStoreInterface;
-use EonX\EasyWebhook\Common\Store\StoreInterface;
+use EonX\EasyWebhook\Doctrine\Store\DoctrineDbalResultStore;
+use EonX\EasyWebhook\Doctrine\Store\DoctrineDbalStore;
 
 final class DoctrineDbalStatementProvider
 {
@@ -24,8 +24,8 @@ final class DoctrineDbalStatementProvider
         ?string $webhooksTable = null,
         ?string $webhookResultsTable = null,
     ) {
-        $this->webhooksTable = $webhooksTable ?? StoreInterface::DEFAULT_TABLE;
-        $this->webhookResultsTable = $webhookResultsTable ?? ResultStoreInterface::DEFAULT_TABLE;
+        $this->webhooksTable = $webhooksTable ?? DoctrineDbalStore::DEFAULT_TABLE;
+        $this->webhookResultsTable = $webhookResultsTable ?? DoctrineDbalResultStore::DEFAULT_TABLE;
     }
 
     public function extendWebhookResultsTable(callable $callable): self

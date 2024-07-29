@@ -5,6 +5,7 @@ namespace EonX\EasyWebhook\Common\Middleware;
 
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class StatusAndAttemptMiddleware extends AbstractMiddleware
@@ -27,14 +28,14 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
 
         switch ($webhookResult->isSuccessful()) {
             case true:
-                $webhook->status(WebhookInterface::STATUS_SUCCESS);
+                $webhook->status(WebhookStatus::Success);
 
                 break;
             case false:
                 $webhook->status(
                     $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt()
-                        ? WebhookInterface::STATUS_FAILED
-                        : WebhookInterface::STATUS_FAILED_PENDING_RETRY
+                        ? WebhookStatus::Failed
+                        : WebhookStatus::FailedPendingRetry
                 );
         }
 
