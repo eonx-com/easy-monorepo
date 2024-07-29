@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyDecision\Bundle\Enum\BundleParam;
 use EonX\EasyDecision\Bundle\Enum\ConfigTag;
 use EonX\EasyDecision\Configurator\AddRulesDecisionConfigurator;
 use EonX\EasyDecision\DataCollector\DecisionDataCollector;
@@ -32,7 +33,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(DecisionDataCollector::class)
         ->tag('data_collector', [
-            'id' => DecisionDataCollector::NAME,
+            'id' => 'easy_decision',
             'template' => '@EasyDecisionBundle/collector/decision_collector.html.twig',
         ]);
 };

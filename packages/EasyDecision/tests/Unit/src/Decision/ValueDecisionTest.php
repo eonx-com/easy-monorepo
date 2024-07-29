@@ -120,7 +120,7 @@ final class ValueDecisionTest extends AbstractUnitTestCase
         $expected = 10;
 
         $expectedRuleOutput = [
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
             $modifyRule->toString() => 10,
         ];
 

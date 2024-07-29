@@ -58,7 +58,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ErrorHandlerDataCollector::class)
         ->tag('data_collector', [
-            'id' => 'error_handler.error_handler_collector',
+            'id' => 'easy_error_handler',
             'template' => '@EasyErrorHandler/collector/error_handler_collector.html.twig',
         ]);
 
