@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -10,12 +9,10 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('pagination')
                 ->addDefaultsIfNotSet()
                 ->children()
-                    ->scalarNode('page_attribute')->defaultValue(PaginationInterface::DEFAULT_PAGE_ATTRIBUTE)->end()
-                    ->integerNode('page_default')->defaultValue(PaginationInterface::DEFAULT_PAGE)->end()
-                    ->scalarNode('per_page_attribute')
-                        ->defaultValue(PaginationInterface::DEFAULT_PER_PAGE_ATTRIBUTE)
-                        ->end()
-                    ->integerNode('per_page_default')->defaultValue(PaginationInterface::DEFAULT_PER_PAGE)->end()
+                    ->scalarNode('page_attribute')->defaultValue('page')->end()
+                    ->integerNode('page_default')->defaultValue(1)->end()
+                    ->scalarNode('per_page_attribute')->defaultValue('perPage')->end()
+                    ->integerNode('per_page_default')->defaultValue(15)->end()
                 ->end()
             ->end()
             ->booleanNode('use_default_resolver')
