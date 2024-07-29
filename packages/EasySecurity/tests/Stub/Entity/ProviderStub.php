@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Tests\Stub\Entity;
 
 use EonX\EasySecurity\Common\Entity\ProviderInterface;
 
-final class ProviderStub implements ProviderInterface
+final readonly class ProviderStub implements ProviderInterface
 {
     public function __construct(
         private int|string $providerId,

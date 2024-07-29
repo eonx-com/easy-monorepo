@@ -9,7 +9,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class EventHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    private string $eventHeader;
+    private readonly string $eventHeader;
 
     public function __construct(?string $eventHeader = null, ?int $priority = null)
     {

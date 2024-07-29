@@ -7,7 +7,7 @@ use Closure;
 
 final class CallbackRandomStringConstraint implements RandomStringConstraintInterface
 {
-    private Closure $callback;
+    private readonly Closure $callback;
 
     public function __construct(callable $callback)
     {

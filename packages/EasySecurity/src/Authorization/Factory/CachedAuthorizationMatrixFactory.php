@@ -11,11 +11,11 @@ final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFacto
 {
     public const CACHE_KEY = 'easy_security.authorization_matrix_key';
 
-    private string $key;
+    private readonly string $key;
 
     public function __construct(
-        private CacheInterface $cache,
-        private AuthorizationMatrixFactoryInterface $decorated,
+        private readonly CacheInterface $cache,
+        private readonly AuthorizationMatrixFactoryInterface $decorated,
         ?string $key = null,
     ) {
         $this->key = $key ?? self::CACHE_KEY;

@@ -15,8 +15,8 @@ use Throwable;
 final class WithEventsEntityManager extends DoctrineEntityManagerDecorator
 {
     public function __construct(
-        private DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
+        private readonly EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $decorated,
     ) {
         parent::__construct($decorated);

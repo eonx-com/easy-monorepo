@@ -20,7 +20,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private array $configs;
+    private readonly array $configs;
 
     /**
      * @param string[]|null $configs

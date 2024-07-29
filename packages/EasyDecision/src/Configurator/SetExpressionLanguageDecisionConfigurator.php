@@ -9,7 +9,7 @@ use EonX\EasyDecision\Factory\ExpressionLanguageFactoryInterface;
 final class SetExpressionLanguageDecisionConfigurator extends AbstractDecisionConfigurator
 {
     public function __construct(
-        private ExpressionLanguageFactoryInterface $exprLangFactory,
+        private readonly ExpressionLanguageFactoryInterface $exprLangFactory,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

@@ -7,7 +7,7 @@ use EonX\EasyDoctrine\AwsRds\Exception\CouldNotDownloadRdsCombinedCaException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-final class AwsRdsCertificateAuthorityProvider
+final readonly class AwsRdsCertificateAuthorityProvider
 {
     /**
      * @see https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/UsingWithRDS.SSL.html
@@ -17,8 +17,8 @@ final class AwsRdsCertificateAuthorityProvider
     private Filesystem $filesystem;
 
     public function __construct(
-        private readonly string $caPath,
-        private readonly ?LoggerInterface $logger = null,
+        private string $caPath,
+        private ?LoggerInterface $logger = null,
     ) {
         $this->filesystem = new Filesystem();
     }

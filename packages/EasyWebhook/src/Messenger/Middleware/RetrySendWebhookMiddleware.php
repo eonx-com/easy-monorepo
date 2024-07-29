@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-final class RetrySendWebhookMiddleware implements MiddlewareInterface
+final readonly class RetrySendWebhookMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private ContainerInterface $container,

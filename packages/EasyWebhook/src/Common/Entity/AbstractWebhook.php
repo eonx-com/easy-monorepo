@@ -4,36 +4,38 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Common\Entity;
 
 use DateTimeInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookOption;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 
 abstract class AbstractWebhook implements WebhookInterface
 {
     /**
      * @var string[]
      */
-    protected static array $booleans = [self::OPTION_SEND_NOW];
+    protected static array $booleans = [WebhookOption::SendNow->value];
 
     /**
      * @var string[]
      */
-    protected static array $integers = [self::OPTION_CURRENT_ATTEMPT, self::OPTION_MAX_ATTEMPT];
+    protected static array $integers = [WebhookOption::CurrentAttempt->value, WebhookOption::MaxAttempt->value];
 
     /**
      * @var string[]
      */
     protected static array $setters = [
-        self::OPTION_BODY => 'body',
-        self::OPTION_BODY_AS_STRING => 'bodyAsString',
-        self::OPTION_CURRENT_ATTEMPT => 'currentAttempt',
-        self::OPTION_EVENT => 'event',
-        self::OPTION_HTTP_OPTIONS => 'httpClientOptions',
-        self::OPTION_ID => 'id',
-        self::OPTION_MAX_ATTEMPT => 'maxAttempt',
-        self::OPTION_METHOD => 'method',
-        self::OPTION_SECRET => 'secret',
-        self::OPTION_SEND_AFTER => 'sendAfter',
-        self::OPTION_SEND_NOW => 'sendNow',
-        self::OPTION_STATUS => 'status',
-        self::OPTION_URL => 'url',
+        WebhookOption::Body->value => 'body',
+        WebhookOption::BodyAsString->value => 'bodyAsString',
+        WebhookOption::CurrentAttempt->value => 'currentAttempt',
+        WebhookOption::Event->value => 'event',
+        WebhookOption::HttpOptions->value => 'httpClientOptions',
+        WebhookOption::Id->value => 'id',
+        WebhookOption::MaxAttempt->value => 'maxAttempt',
+        WebhookOption::Method->value => 'method',
+        WebhookOption::Secret->value => 'secret',
+        WebhookOption::SendAfter->value => 'sendAfter',
+        WebhookOption::SendNow->value => 'sendNow',
+        WebhookOption::Status->value => 'status',
+        WebhookOption::Url->value => 'url',
     ];
 
     private ?bool $allowRerun = null;
@@ -70,7 +72,7 @@ abstract class AbstractWebhook implements WebhookInterface
 
     private ?bool $sendNow = null;
 
-    private ?string $status = null;
+    private ?WebhookStatus $status = null;
 
     private ?string $url = null;
 
@@ -100,6 +102,10 @@ abstract class AbstractWebhook implements WebhookInterface
 
                 if (\in_array($name, static::$integers, true)) {
                     $value = (int)$value;
+                }
+
+                if ($name === WebhookOption::Status->value) {
+                    $value = WebhookStatus::from($value);
                 }
 
                 $webhook->{$setter}($value);
@@ -234,9 +240,9 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this->sendAfter;
     }
 
-    public function getStatus(): string
+    public function getStatus(): WebhookStatus
     {
-        return $this->status ?? WebhookInterface::STATUS_PENDING;
+        return $this->status ?? WebhookStatus::Pending;
     }
 
     public function getUrl(): ?string
@@ -363,7 +369,7 @@ abstract class AbstractWebhook implements WebhookInterface
         return $this;
     }
 
-    public function status(string $status): WebhookInterface
+    public function status(WebhookStatus $status): WebhookInterface
     {
         $this->status = $status;
 

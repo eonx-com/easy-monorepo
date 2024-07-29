@@ -6,7 +6,7 @@ namespace EonX\EasyDoctrine\EasyErrorHandler\Listener;
 use EonX\EasyDoctrine\EntityEvent\Event\TransactionalExceptionEvent;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 
-final class TransactionalExceptionListener
+final readonly class TransactionalExceptionListener
 {
     public function __construct(
         private ErrorHandlerInterface $errorHandler,

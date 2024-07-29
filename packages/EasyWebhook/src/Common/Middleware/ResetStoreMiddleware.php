@@ -13,8 +13,8 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 final class ResetStoreMiddleware extends AbstractMiddleware
 {
     public function __construct(
-        private StoreInterface $store,
-        private ResultStoreInterface $resultStore,
+        private readonly StoreInterface $store,
+        private readonly ResultStoreInterface $resultStore,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

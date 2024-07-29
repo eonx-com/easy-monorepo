@@ -16,7 +16,7 @@ final class ScheduleDataCollector extends DataCollector
     public const NAME = 'schedule.schedule_collector';
 
     public function __construct(
-        private ScheduleInterface $schedule,
+        private readonly ScheduleInterface $schedule,
     ) {
     }
 

@@ -8,7 +8,7 @@ use Monolog\Handler\HandlerInterface;
 final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfigInterface
 {
     public function __construct(
-        private HandlerInterface $handler,
+        private readonly HandlerInterface $handler,
     ) {
     }
 

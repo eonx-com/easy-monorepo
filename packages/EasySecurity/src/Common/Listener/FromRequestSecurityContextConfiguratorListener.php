@@ -7,7 +7,7 @@ use EonX\EasySecurity\Common\Configurator\FromRequestConfigurator;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-final class FromRequestSecurityContextConfiguratorListener
+final readonly class FromRequestSecurityContextConfiguratorListener
 {
     /**
      * @param iterable<\EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface> $configurators

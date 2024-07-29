@@ -6,7 +6,7 @@ namespace EonX\EasyNotification\Transport;
 use Aws\Sqs\SqsClient;
 use EonX\EasyNotification\Message\QueueMessageInterface;
 
-final class SqsQueueTransport implements QueueTransportInterface
+final readonly class SqsQueueTransport implements QueueTransportInterface
 {
     public function __construct(
         private SqsClient $sqs,

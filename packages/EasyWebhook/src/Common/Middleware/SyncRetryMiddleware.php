@@ -13,13 +13,13 @@ use Psr\Log\NullLogger;
 
 final class SyncRetryMiddleware extends AbstractMiddleware
 {
-    private bool $asyncEnabled;
+    private readonly bool $asyncEnabled;
 
     public function __construct(
-        private ResultStoreInterface $resultStore,
-        private WebhookRetryStrategyInterface $retryStrategy,
+        private readonly ResultStoreInterface $resultStore,
+        private readonly WebhookRetryStrategyInterface $retryStrategy,
         ?bool $asyncEnabled = null,
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly LoggerInterface $logger = new NullLogger(),
         ?int $priority = null,
     ) {
         $this->asyncEnabled = $asyncEnabled ?? true;

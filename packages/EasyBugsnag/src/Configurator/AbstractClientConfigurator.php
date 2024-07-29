@@ -5,7 +5,7 @@ namespace EonX\EasyBugsnag\Configurator;
 
 abstract class AbstractClientConfigurator implements ClientConfiguratorInterface
 {
-    private int $priority;
+    private readonly int $priority;
 
     public function __construct(?int $priority = null)
     {

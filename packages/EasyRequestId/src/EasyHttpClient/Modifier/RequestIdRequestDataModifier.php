@@ -7,7 +7,7 @@ use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
 use EonX\EasyHttpClient\Common\ValueObject\RequestDataInterface;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 
-final class RequestIdRequestDataModifier implements RequestDataModifierInterface
+final readonly class RequestIdRequestDataModifier implements RequestDataModifierInterface
 {
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,

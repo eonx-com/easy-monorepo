@@ -12,7 +12,7 @@ final class FromRequestConfigurator
     /**
      * @var \EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface[]
      */
-    private array $configurators;
+    private readonly array $configurators;
 
     /**
      * @param iterable<\EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface> $configurators

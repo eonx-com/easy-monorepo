@@ -24,13 +24,13 @@ final class NotificationClient implements NotificationClientInterface
     /**
      * @var \EonX\EasyNotification\Configurator\QueueMessageConfiguratorInterface[]
      */
-    private array $configurators;
+    private readonly array $configurators;
 
-    private HttpClientInterface $httpClient;
+    private readonly HttpClientInterface $httpClient;
 
     public function __construct(
         iterable $configurators,
-        private QueueTransportFactoryInterface $transportFactory,
+        private readonly QueueTransportFactoryInterface $transportFactory,
         ?HttpClientInterface $httpClient = null,
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();

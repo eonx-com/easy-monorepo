@@ -9,7 +9,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class MethodMiddleware extends AbstractConfigureOnceMiddleware
 {
-    private string $method;
+    private readonly string $method;
 
     public function __construct(?string $method = null, ?int $priority = null)
     {

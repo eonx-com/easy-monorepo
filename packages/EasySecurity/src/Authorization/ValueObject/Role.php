@@ -10,7 +10,7 @@ final class Role implements RoleInterface
     /**
      * @var \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
      */
-    private array $permissions;
+    private readonly array $permissions;
 
     /**
      * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions
