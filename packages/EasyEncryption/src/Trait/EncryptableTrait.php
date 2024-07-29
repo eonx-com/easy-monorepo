@@ -14,8 +14,17 @@ trait EncryptableTrait
 
     public function decrypt(callable $decryptor): void
     {
-        $decryptedString = (string)$decryptor($this->encryptedData);
-        $decryptedData = \json_decode($decryptedString, true);
+        if (isset($this->encryptedData) === false) {
+            return;
+        }
+
+        $decryptedString = $decryptor($this->encryptedData);
+        $decryptedData = \json_decode((string)$decryptedString, true);
+
+        if (\is_array($decryptedData) === false) {
+            throw new UnexpectedValueException('Decrypted data has to be an array.');
+        }
+
         $metadata = new EncryptableMetadata();
 
         foreach ($metadata->getEncryptableFieldNames(static::class) as $entityPropertyName => $fieldName) {

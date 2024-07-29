@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyEncryptionSymfonyBundle extends AbstractBundle
 {
@@ -75,7 +76,7 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
             $container->import(__DIR__ . '/Resources/config/aws_pkcs11_encryptor.php');
         }
 
-        if ($builder->hasDefinition('messenger.transport.native_php_serializer')) {
+        if (\class_exists(MessengerPass::class)) {
             $container->import(__DIR__ . '/Resources/config/encryptable_messenger.php');
         }
     }

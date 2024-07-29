@@ -9,8 +9,7 @@ use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\Listener\DoctrineOnFlushEncryptionListener;
-use EonX\EasyEncryption\Listener\DoctrinePostLoadEncryptionListener;
+use EonX\EasyEncryption\Listener\DoctrineEncryptionListener;
 use EonX\EasyEncryption\LocalEncryptor;
 use EonX\EasyEncryption\Metadata\EncryptableMetadata;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
@@ -37,6 +36,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(LocalEncryptor::class);
     $services->set(EncryptableMetadata::class);
     $services->set(EncryptableEncryptor::class);
-    $services->set(DoctrineOnFlushEncryptionListener::class);
-    $services->set(DoctrinePostLoadEncryptionListener::class);
+    $services->set(DoctrineEncryptionListener::class);
 };
