@@ -6,7 +6,6 @@ namespace EonX\EasyRequestId\Tests\Unit\Common\Provider;
 use EonX\EasyRandom\Generator\RandomGenerator;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
-use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 use EonX\EasyRequestId\Common\Resolver\HttpFoundationRequestResolver;
 use EonX\EasyRequestId\Common\Resolver\UuidFallbackResolver;
@@ -35,8 +34,8 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
 
         yield 'Default resolver with default values' => [
             self::getRequestWithHeaders([
-                RequestIdProviderInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
-                RequestIdProviderInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
+                'some-correlation-id-header' => 'correlation-id',
+                'some-request-id-header' => 'request-id',
             ]),
             'request-id',
             'correlation-id',
@@ -52,7 +51,11 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
         ?FallbackResolverInterface $fallbackResolver = null,
     ): void {
         $fallbackResolver ??= $this->defaultFallbackResolver();
-        $requestIdProvider = new RequestIdProvider($fallbackResolver);
+        $requestIdProvider = new RequestIdProvider(
+            $fallbackResolver,
+            'some-correlation-id-header',
+            'some-request-id-header',
+        );
         $requestIdProvider->setResolver(new HttpFoundationRequestResolver($request, $requestIdProvider));
 
         // For caching coverage

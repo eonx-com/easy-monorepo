@@ -8,17 +8,23 @@ use Spatie\Url\Url;
 
 final class Pagination implements PaginationInterface
 {
-    private string $pageAttribute;
+    private const DEFAULT_PAGE_ATTRIBUTE = 'page';
 
-    private string $perPageAttribute;
+    private const DEFAULT_PER_PAGE_ATTRIBUTE = 'perPage';
 
-    private string $url;
+    private const DEFAULT_URL = '/';
+
+    private readonly string $pageAttribute;
+
+    private readonly string $perPageAttribute;
+
+    private readonly string $url;
 
     private ?Closure $urlResolver = null;
 
     public function __construct(
-        private int $page,
-        private int $perPage,
+        private readonly int $page,
+        private readonly int $perPage,
         ?string $pageAttribute = null,
         ?string $perPageAttribute = null,
         ?string $url = null,

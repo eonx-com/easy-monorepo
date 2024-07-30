@@ -4,29 +4,24 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Common\Provider;
 
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
+use EonX\EasyRequestId\Common\Resolver\ResolverInterface;
 
 final class RequestIdProvider implements RequestIdProviderInterface
 {
     private ?string $correlationId = null;
 
-    private string $correlationIdHeaderName;
-
     private ?string $requestId = null;
 
-    private string $requestIdHeaderName;
-
     public function __construct(
-        private FallbackResolverInterface $fallback,
-        ?string $correlationIdHeaderName = null,
-        ?string $requestIdHeaderName = null,
+        private readonly FallbackResolverInterface $fallbackResolver,
+        private readonly string $correlationIdHeaderName,
+        private readonly string $requestIdHeaderName,
     ) {
-        $this->correlationIdHeaderName = $correlationIdHeaderName ?? self::DEFAULT_HTTP_HEADER_CORRELATION_ID;
-        $this->requestIdHeaderName = $requestIdHeaderName ?? self::DEFAULT_HTTP_HEADER_REQUEST_ID;
     }
 
     public function getCorrelationId(): string
     {
-        return $this->correlationId ??= $this->fallback->fallbackCorrelationId();
+        return $this->correlationId ??= $this->fallbackResolver->fallbackCorrelationId();
     }
 
     public function getCorrelationIdHeaderName(): string
@@ -36,7 +31,7 @@ final class RequestIdProvider implements RequestIdProviderInterface
 
     public function getRequestId(): string
     {
-        return $this->requestId ??= $this->fallback->fallbackRequestId();
+        return $this->requestId ??= $this->fallbackResolver->fallbackRequestId();
     }
 
     public function getRequestIdHeaderName(): string
@@ -44,12 +39,12 @@ final class RequestIdProvider implements RequestIdProviderInterface
         return $this->requestIdHeaderName;
     }
 
-    public function setResolver(callable $resolver): RequestIdProviderInterface
+    public function setResolver(ResolverInterface|callable $resolver): RequestIdProviderInterface
     {
-        $ids = $resolver();
+        $requestIdInfo = $resolver();
 
-        $this->correlationId = $ids[self::KEY_RESOLVED_CORRELATION_ID] ?? null;
-        $this->requestId = $ids[self::KEY_RESOLVED_REQUEST_ID] ?? null;
+        $this->correlationId = $requestIdInfo->getCorrelationId();
+        $this->requestId = $requestIdInfo->getRequestId();
 
         return $this;
     }

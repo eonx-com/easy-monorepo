@@ -11,7 +11,7 @@ final class SessionTrackingQueueListener
     private bool $configured = false;
 
     public function __construct(
-        private Client $client,
+        private readonly Client $client,
     ) {
     }
 

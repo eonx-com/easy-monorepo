@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-final class AuthenticationFailureResponseFactory implements AuthenticationFailureResponseFactoryInterface
+final readonly class AuthenticationFailureResponseFactory implements AuthenticationFailureResponseFactoryInterface
 {
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),

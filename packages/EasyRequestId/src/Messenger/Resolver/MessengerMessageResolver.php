@@ -3,31 +3,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestId\Messenger\Resolver;
 
-use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
+use EonX\EasyRequestId\Common\Resolver\ResolverInterface;
+use EonX\EasyRequestId\Common\ValueObject\RequestIdInfo;
 use EonX\EasyRequestId\Messenger\Stamp\RequestIdStamp;
 use Symfony\Component\Messenger\Envelope;
 
-final class MessengerMessageResolver
+final readonly class MessengerMessageResolver implements ResolverInterface
 {
     public function __construct(
         private Envelope $envelope,
     ) {
     }
 
-    /**
-     * @return null[]|string[]
-     */
-    public function __invoke(): array
+    public function __invoke(): RequestIdInfo
     {
         $stamp = $this->envelope->last(RequestIdStamp::class);
 
         if ($stamp instanceof RequestIdStamp === false) {
-            return [];
+            return new RequestIdInfo();
         }
 
-        return [
-            RequestIdProviderInterface::KEY_RESOLVED_CORRELATION_ID => $stamp->getCorrelationId(),
-            RequestIdProviderInterface::KEY_RESOLVED_REQUEST_ID => $stamp->getRequestId(),
-        ];
+        return new RequestIdInfo($stamp->getCorrelationId(), $stamp->getRequestId());
     }
 }

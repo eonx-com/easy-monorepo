@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\ValueObject;
 
-final class PaginationConfig implements PaginationConfigInterface
+final readonly class PaginationConfig implements PaginationConfigInterface
 {
     public function __construct(
         private string $pageAttribute,

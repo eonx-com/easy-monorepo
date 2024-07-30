@@ -15,7 +15,7 @@ final class TraceableWebhookClient implements WebhookClientInterface
     private array $results = [];
 
     public function __construct(
-        private WebhookClientInterface $decorated,
+        private readonly WebhookClientInterface $decorated,
     ) {
     }
 

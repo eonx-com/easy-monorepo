@@ -26,11 +26,11 @@ final class SecurityContextDataCollector extends DataCollector
     /**
      * @var \EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface[]
      */
-    private array $configurators;
+    private readonly array $configurators;
 
     public function __construct(
-        private AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
-        private SecurityContextResolverInterface $securityContextResolver,
+        private readonly AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
+        private readonly SecurityContextResolverInterface $securityContextResolver,
         iterable $configurators,
     ) {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(

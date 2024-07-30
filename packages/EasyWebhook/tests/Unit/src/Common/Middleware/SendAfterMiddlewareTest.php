@@ -6,6 +6,7 @@ namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 use DateTime;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookOption;
 use EonX\EasyWebhook\Common\Middleware\SendAfterMiddleware;
 use EonX\EasyWebhook\Common\Store\ArrayStore;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -21,14 +22,14 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Send after passed -> should send' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_SEND_AFTER => (new DateTime())->modify('-1 day'),
+                WebhookOption::SendAfter->value => (new DateTime())->modify('-1 day'),
             ]),
             true,
         ];
 
         yield 'Send after in future -> should not send' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_SEND_AFTER => (new DateTime())->modify('+1 day'),
+                WebhookOption::SendAfter->value => (new DateTime())->modify('+1 day'),
             ]),
             false,
         ];

@@ -10,8 +10,8 @@ use Illuminate\Contracts\Cache\Repository;
 final class SessionTrackingClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
-        private Repository $cache,
-        private int $expiresAfter,
+        private readonly Repository $cache,
+        private readonly int $expiresAfter,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

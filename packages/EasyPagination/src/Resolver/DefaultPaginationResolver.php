@@ -7,7 +7,7 @@ use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
 use EonX\EasyPagination\ValueObject\PaginationInterface;
 
-final class DefaultPaginationResolver
+final readonly class DefaultPaginationResolver
 {
     public function __construct(
         private PaginationConfigInterface $config,

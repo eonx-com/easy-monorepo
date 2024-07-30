@@ -12,7 +12,7 @@ final class ApplicationStateInitListener extends AbstractRequestListener
     /**
      * @var \EonX\EasySwoole\Common\Initializer\AppStateInitializerInterface[]
      */
-    private array $appStateInitializers;
+    private readonly array $appStateInitializers;
 
     /**
      * @param iterable<\EonX\EasySwoole\Common\Initializer\AppStateInitializerInterface> $appStateInitializers

@@ -6,7 +6,7 @@ namespace EonX\EasyAsync\Messenger\Message;
 use EonX\EasyAsync\Messenger\Envelope\QueueEnvelopeInterface;
 use Throwable;
 
-final class NotSupportedMessage
+final readonly class NotSupportedMessage
 {
     public function __construct(
         private QueueEnvelopeInterface $envelope,

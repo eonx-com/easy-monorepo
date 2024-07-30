@@ -8,10 +8,10 @@ use DateTimeInterface;
 final class RequestData implements RequestDataInterface
 {
     public function __construct(
-        private string $method,
+        private readonly string $method,
         private array $options,
-        private DateTimeInterface $sentAt,
-        private string $url,
+        private readonly DateTimeInterface $sentAt,
+        private readonly string $url,
     ) {
     }
 
