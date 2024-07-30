@@ -13,8 +13,7 @@ abstract class AbstractDataCollector extends DataCollector implements TemplateAw
     {
         $fqcnParts = \explode('\\', static::class);
         $lastPart = \array_pop($fqcnParts);
-        $collectorName = \substr($lastPart, 0, -\strlen('DataCollector'));
-        $collectorName = (new ByteString($collectorName))->snake()->toString();
+        $collectorName = (new ByteString(\substr($lastPart, 0, -\strlen('DataCollector'))))->snake();
 
         return '@' . $fqcnParts[1] . 'Bundle/collector/' . $collectorName . '_collector.html.twig';
     }
