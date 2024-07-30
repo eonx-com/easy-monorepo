@@ -3,9 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Bridge\Laravel\Provider;
 
+use EonX\EasyEncryption\AwsPkcs11Encryptor;
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
+use EonX\EasyEncryption\Builders\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Configurators\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\Encryptor;
+use EonX\EasyEncryption\Encryptors\StringEncryptor;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
+use EonX\EasyEncryption\HashCalculators\AwsCloudHsmHashCalculator;
+use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
+use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
@@ -31,25 +38,85 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         $this->registerProvider();
         $this->registerEncryptor();
         $this->registerDefaultKeyResolvers();
+        $this->registerAwsCloudHsmEncryptor();
+    }
+
+    private function registerAwsCloudHsmEncryptor(): void
+    {
+        if (\config('aws_cloud_hsm_encryptor.enabled', true) === false) {
+            return;
+        }
+
+        $this->app->singleton(
+            AwsCloudHsmSdkOptionsBuilder::class,
+            static fn (): AwsCloudHsmSdkOptionsBuilder => new AwsCloudHsmSdkOptionsBuilder(
+                hsmCaCert: \config('aws_pkcs11_hsm_ca_cert'),
+                disableKeyAvailabilityCheck: \config('aws_pkcs11_disable_key_availability_check'),
+                hsmIpAddress: \config('aws_pkcs11_hsm_ip_address'),
+                cloudHsmClusterId: \config('aws_pkcs11_cloud_hsm_cluster_id'),
+                awsRegion: \config('aws_pkcs11_aws_region'),
+                serverClientCertFile: \config('aws_pkcs11_server_client_cert_file'),
+                serverClientKeyFile: \config('aws_pkcs11_server_client_key_file'),
+                cloudHsmSdkOptions: \config('aws_pkcs11_cloud_hsm_sdk_options')
+            )
+        );
+
+        $this->app->singleton(
+            AwsCloudHsmSdkConfigurator::class,
+            static fn (): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
+                awsCloudHsmSdkOptionsBuilder: $this->app->make(AwsCloudHsmSdkOptionsBuilder::class),
+                awsRoleArn: \config('aws_pkcs11_aws_role_arn'),
+                useCloudHsmConfigureTool: (bool)\config('aws_pkcs11_use_cloud_hsm_configure_tool')
+            )
+        );
+
+        $this->app->singleton(
+            AwsPkcs11EncryptorInterface::class,
+            static fn (): AwsPkcs11EncryptorInterface => new AwsPkcs11Encryptor(
+                userPin: \config('aws_pkcs11_user_pin'),
+                awsCloudHsmSdkConfigurator: $this->app->make(AwsCloudHsmSdkConfigurator::class),
+                aad: \config('aws_pkcs11_aad'),
+                defaultKeyName: \config('default_key_name')
+            )
+        );
+
+        $this->app->singleton(
+            HashCalculatorInterface::class,
+            static fn (): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
+                encryptor: $this->app->make(AwsPkcs11EncryptorInterface::class),
+                signKeyName: \config('default_key_name')
+            )
+        );
+
+        $this->app->singleton(
+            StringEncryptor::class,
+            static fn (): StringEncryptor => new StringEncryptor(
+                encryptor: $this->app->make(AwsPkcs11EncryptorInterface::class),
+                encryptionKeyName: \config('default_key_name'),
+                maxChunkSize: \config('max_chunk_size')
+            )
+        );
     }
 
     private function registerDefaultKeyResolvers(): void
     {
-        if (\config('easy-encryption.use_default_key_resolvers', true)) {
-            $this->app->singleton(
-                BridgeConstantsInterface::SERVICE_DEFAULT_KEY_RESOLVER,
-                static fn (): SimpleEncryptionKeyResolver => new SimpleEncryptionKeyResolver(
-                    \config('easy-encryption.default_key_name'),
-                    \config('easy-encryption.default_encryption_key'),
-                    \config('easy-encryption.default_salt')
-                )
-            );
-
-            $this->app->tag(
-                BridgeConstantsInterface::SERVICE_DEFAULT_KEY_RESOLVER,
-                [BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER]
-            );
+        if (\config('easy-encryption.use_default_key_resolvers', true) === false) {
+            return;
         }
+
+        $this->app->singleton(
+            BridgeConstantsInterface::SERVICE_DEFAULT_KEY_RESOLVER,
+            static fn (): SimpleEncryptionKeyResolver => new SimpleEncryptionKeyResolver(
+                \config('easy-encryption.default_key_name'),
+                \config('easy-encryption.default_encryption_key'),
+                \config('easy-encryption.default_salt')
+            )
+        );
+
+        $this->app->tag(
+            BridgeConstantsInterface::SERVICE_DEFAULT_KEY_RESOLVER,
+            [BridgeConstantsInterface::TAG_ENCRYPTION_KEY_RESOLVER]
+        );
     }
 
     private function registerEncryptor(): void

@@ -54,7 +54,7 @@ final class EncryptorTest extends AbstractSymfonyTestCase
     public function testItSucceedsWithLongText(string $text, int $maxChunkSize, int $expectedChunksCount): void
     {
         $container = $this->getKernel()
-->getContainer();
+            ->getContainer();
         $encryptor = $container->get(Encryptor::class);
         $sut = new StringEncryptor($encryptor, 'some-key', $maxChunkSize);
 
@@ -71,7 +71,7 @@ final class EncryptorTest extends AbstractSymfonyTestCase
     public function testItSucceedsWithShortText(string $text, int $maxChunkSize): void
     {
         $container = $this->getKernel()
-->getContainer();
+            ->getContainer();
         $encryptor = $container->get(Encryptor::class);
         $sut = new StringEncryptor($encryptor, 'some-key', $maxChunkSize);
 

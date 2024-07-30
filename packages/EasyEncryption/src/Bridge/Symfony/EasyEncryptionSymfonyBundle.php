@@ -73,7 +73,7 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         }
 
         if ($config['aws_pkcs11_encryptor']['enabled'] ?? false) {
-            $container->import(__DIR__ . '/Resources/config/aws_pkcs11_encryptor.php');
+            $container->import(__DIR__ . '/Resources/config/aws_cloud_hsm_encryptor.php');
         }
 
         if (\class_exists(MessengerPass::class)) {

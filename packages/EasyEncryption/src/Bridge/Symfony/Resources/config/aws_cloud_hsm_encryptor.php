@@ -46,11 +46,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$aad', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AAD))
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 
+    $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
+        ->arg('$signKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
+
     $services->set(StringEncryptor::class)
         ->arg('$encryptor', service(AwsPkcs11EncryptorInterface::class))
         ->arg('$encryptionKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME))
         ->arg('$maxChunkSize', param(BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE));
-
-    $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
-        ->arg('$signKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 };
