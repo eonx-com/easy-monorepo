@@ -8,6 +8,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "eonx-com/easy-event-dispatcher": "^5.12",
         "eonx-com/easy-lock": "^5.12",
+        "eonx-com/easy-utils": "^5.12",
         "nesbot/carbon": "^2.67",
         "symfony/config": "^6.4",
         "symfony/console": "^6.4",

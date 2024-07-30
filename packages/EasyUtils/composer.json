@@ -10,7 +10,8 @@
         "ext-filter": "*",
         "symfony/config": "^6.4",
         "symfony/dependency-injection": "^6.4",
-        "symfony/http-kernel": "^6.4"
+        "symfony/http-kernel": "^6.4",
+        "symfony/string": "^6.4"
     },
     "require-dev": {
         "eonx-com/easy-test": "^5.12",
