@@ -14,7 +14,7 @@ final class ApplicationStateCheckListener extends AbstractTerminateListener
     /**
      * @var \EonX\EasySwoole\Common\Checker\AppStateCheckerInterface[]
      */
-    private array $appStateCheckers;
+    private readonly array $appStateCheckers;
 
     /**
      * @param iterable<\EonX\EasySwoole\Common\Checker\AppStateCheckerInterface> $appStateCheckers

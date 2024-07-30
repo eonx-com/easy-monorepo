@@ -5,7 +5,7 @@ namespace EonX\EasyBugsnag\Listener;
 
 use EonX\EasyBugsnag\Strategy\ShutdownStrategy;
 
-final class ShutdownStrategyListener
+final readonly class ShutdownStrategyListener
 {
     public function __construct(
         private ShutdownStrategy $shutdownStrategy,

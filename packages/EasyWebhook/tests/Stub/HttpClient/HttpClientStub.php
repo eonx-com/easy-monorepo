@@ -20,7 +20,7 @@ final class HttpClientStub implements HttpClientInterface
     private string $url;
 
     public function __construct(
-        private ?Throwable $throwable = null,
+        private readonly ?Throwable $throwable = null,
     ) {
     }
 

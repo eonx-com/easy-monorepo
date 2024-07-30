@@ -11,7 +11,7 @@ use Mockery;
 
 final class EloquentRepositoryStub extends AbstractEloquentRepository
 {
-    private ?Closure $modelExpectations;
+    private readonly ?Closure $modelExpectations;
 
     public function __construct(?callable $modelExpectations = null)
     {

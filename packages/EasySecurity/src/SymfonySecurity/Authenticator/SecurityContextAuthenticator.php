@@ -22,8 +22,8 @@ use Throwable;
 final class SecurityContextAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(
-        private SecurityContextResolverInterface $securityContextResolver,
-        private AuthenticationFailureResponseFactoryInterface $responseFactory,
+        private readonly SecurityContextResolverInterface $securityContextResolver,
+        private readonly AuthenticationFailureResponseFactoryInterface $responseFactory,
     ) {
     }
 

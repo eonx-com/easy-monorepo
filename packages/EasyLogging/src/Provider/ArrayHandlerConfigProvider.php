@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Provider;
 
-final class ArrayHandlerConfigProvider implements HandlerConfigProviderInterface
+final readonly class ArrayHandlerConfigProvider implements HandlerConfigProviderInterface
 {
     /**
      * @param \EonX\EasyLogging\Config\HandlerConfigInterface[] $handlers

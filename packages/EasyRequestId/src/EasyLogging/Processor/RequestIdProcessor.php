@@ -9,7 +9,7 @@ use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 final class RequestIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(
-        private RequestIdProviderInterface $requestIdProvider,
+        private readonly RequestIdProviderInterface $requestIdProvider,
     ) {
     }
 

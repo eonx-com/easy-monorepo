@@ -8,7 +8,7 @@ use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
-final class WithLockDataStamp implements StampInterface, WithLockDataInterface
+final readonly class WithLockDataStamp implements StampInterface, WithLockDataInterface
 {
     public function __construct(
         private string $resource,

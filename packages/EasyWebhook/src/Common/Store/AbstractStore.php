@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\Store;
 
+use BackedEnum;
 use DateTimeInterface;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
@@ -12,7 +13,7 @@ abstract class AbstractStore
 {
     public function __construct(
         protected RandomGeneratorInterface $random,
-        private DataCleanerInterface $dataCleaner,
+        private readonly DataCleanerInterface $dataCleaner,
     ) {
     }
 
@@ -28,6 +29,10 @@ abstract class AbstractStore
 
             if ($value instanceof DateTimeInterface) {
                 return $value->format(StoreInterface::DATETIME_FORMAT);
+            }
+
+            if ($value instanceof BackedEnum) {
+                return $value->value;
             }
 
             return $value;

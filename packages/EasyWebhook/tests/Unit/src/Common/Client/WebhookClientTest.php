@@ -7,13 +7,14 @@ use EmptyIterator;
 use EonX\EasyWebhook\Common\Client\WebhookClient;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Enum\MiddlewarePriority;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Common\Formatter\JsonWebhookBodyFormatter;
 use EonX\EasyWebhook\Common\Middleware\AsyncMiddleware;
 use EonX\EasyWebhook\Common\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Common\Middleware\EventHeaderMiddleware;
 use EonX\EasyWebhook\Common\Middleware\IdHeaderMiddleware;
 use EonX\EasyWebhook\Common\Middleware\MethodMiddleware;
-use EonX\EasyWebhook\Common\Middleware\MiddlewareInterface;
 use EonX\EasyWebhook\Common\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Common\Middleware\SignatureHeaderMiddleware;
 use EonX\EasyWebhook\Common\Middleware\StatusAndAttemptMiddleware;
@@ -152,7 +153,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
 
         $webhookClient->sendWebhook($webhook);
 
-        self::assertEquals(WebhookInterface::STATUS_PENDING, $webhook->getStatus());
+        self::assertSame(WebhookStatus::Pending, $webhook->getStatus());
     }
 
     /**
@@ -199,8 +200,8 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ?iterable $middleware = null,
     ): StackInterface {
         $middlewareArray = [
-            new StoreMiddleware($store, $resultStore, MiddlewareInterface::PRIORITY_CORE_AFTER),
-            new SendWebhookMiddleware($httpClient, MiddlewareInterface::PRIORITY_CORE_AFTER + 1),
+            new StoreMiddleware($store, $resultStore, MiddlewarePriority::CoreAfter->value),
+            new SendWebhookMiddleware($httpClient, MiddlewarePriority::CoreAfter->value + 1),
         ];
 
         if ($middleware !== null) {

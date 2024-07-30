@@ -12,7 +12,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 final class RequestIdWebhookMiddleware extends AbstractConfigureOnceMiddleware
 {
     public function __construct(
-        private RequestIdProviderInterface $requestIdProvider,
+        private readonly RequestIdProviderInterface $requestIdProvider,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

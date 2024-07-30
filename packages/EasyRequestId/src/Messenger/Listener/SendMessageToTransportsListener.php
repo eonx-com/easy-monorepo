@@ -7,7 +7,7 @@ use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Messenger\Stamp\RequestIdStamp;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
-final class SendMessageToTransportsListener
+final readonly class SendMessageToTransportsListener
 {
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,

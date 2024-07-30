@@ -8,7 +8,7 @@ use EonX\EasyNotification\Enum\MessageType;
 final class SlackMessage extends AbstractMessage
 {
     public function __construct(
-        private string $channel,
+        private readonly string $channel,
         private ?string $text = null,
         ?array $body = null,
     ) {

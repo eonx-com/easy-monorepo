@@ -8,15 +8,25 @@ use EonX\EasyUtils\Math\Exception\InvalidDivisionByZeroException;
 
 final class MathHelper implements MathHelperInterface
 {
-    private string $decimalSeparator;
+    private const ROUND_DECIMAL_SEPARATOR = '.';
 
-    private int $roundMode;
+    private const ROUND_MODE = \PHP_ROUND_HALF_EVEN;
 
-    private int $roundPrecision;
+    private const ROUND_PRECISION = 0;
 
-    private int $scale;
+    private const ROUND_THOUSANDS_SEPARATOR = '';
 
-    private string $thousandsSeparator;
+    private const SCALE = 99;
+
+    private readonly string $decimalSeparator;
+
+    private readonly int $roundMode;
+
+    private readonly int $roundPrecision;
+
+    private readonly int $scale;
+
+    private readonly string $thousandsSeparator;
 
     /**
      * @param int|null $roundMode [optional] <p>

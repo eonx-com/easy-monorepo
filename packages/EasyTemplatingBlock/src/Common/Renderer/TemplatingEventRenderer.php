@@ -10,17 +10,17 @@ use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class TemplatingEventRenderer implements TemplatingEventRendererInterface
 {
-    private bool $isDebug;
+    private readonly bool $isDebug;
 
     /**
      * @var \EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface[]
      */
-    private array $providers;
+    private readonly array $providers;
 
     /**
      * @var \EonX\EasyTemplatingBlock\Common\Renderer\TemplatingBlockRendererInterface[]
      */
-    private array $renderers;
+    private readonly array $renderers;
 
     /**
      * @param iterable<\EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface> $providers

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\EntityEvent\Event;
 
-final class EntityUpdatedEvent implements EntityActionEventInterface
+final readonly class EntityUpdatedEvent implements EntityActionEventInterface
 {
     public function __construct(
         private object $entity,

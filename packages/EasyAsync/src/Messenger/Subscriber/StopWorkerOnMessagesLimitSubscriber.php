@@ -22,7 +22,7 @@ final class StopWorkerOnMessagesLimitSubscriber implements EventSubscriberInterf
     public function __construct(
         int $minMessages,
         ?int $maxMessages = null,
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
         try {
             $this->messagesLimit = \random_int($minMessages, $maxMessages ?? $minMessages);

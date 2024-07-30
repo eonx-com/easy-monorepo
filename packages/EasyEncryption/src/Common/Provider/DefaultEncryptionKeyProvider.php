@@ -17,7 +17,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
     /**
      * @var \EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface[]
      */
-    private array $keyResolvers;
+    private readonly array $keyResolvers;
 
     /**
      * @var \ParagonIE\Halite\Symmetric\EncryptionKey[]|\ParagonIE\Halite\EncryptionKeyPair[]
@@ -33,7 +33,7 @@ final class DefaultEncryptionKeyProvider implements EncryptionKeyProviderInterfa
      * @param iterable<\EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface> $keyResolvers
      */
     public function __construct(
-        private EncryptionKeyFactoryInterface $keyFactory,
+        private readonly EncryptionKeyFactoryInterface $keyFactory,
         iterable $keyResolvers,
     ) {
         /** @var \EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface[] $filteredAndSortedKeyResolvers */

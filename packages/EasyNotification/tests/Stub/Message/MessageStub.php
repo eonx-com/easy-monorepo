@@ -10,7 +10,7 @@ final class MessageStub extends AbstractMessage
 {
     public function __construct(
         array $body,
-        private ?MessageType $type = null,
+        private readonly ?MessageType $type = null,
     ) {
         parent::__construct($body);
     }

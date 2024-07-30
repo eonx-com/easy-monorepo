@@ -12,7 +12,7 @@ final class ApplicationStateResetListener extends AbstractTerminateListener
     /**
      * @var \EonX\EasySwoole\Common\Resetter\AppStateResetterInterface[]
      */
-    private array $appStateResetters;
+    private readonly array $appStateResetters;
 
     /**
      * @param iterable<\EonX\EasySwoole\Common\Resetter\AppStateResetterInterface> $appStateResetters

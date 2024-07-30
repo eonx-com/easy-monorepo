@@ -10,7 +10,7 @@ use Twig\TwigFunction;
 final class TwigBlockExtension extends AbstractExtension
 {
     public function __construct(
-        private TemplatingEventRendererInterface $templatingEventRenderer,
+        private readonly TemplatingEventRendererInterface $templatingEventRenderer,
     ) {
     }
 

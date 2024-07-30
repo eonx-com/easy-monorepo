@@ -10,7 +10,7 @@ final class RequestLimitsChecker extends AbstractAppStateChecker
 {
     private int $count = 0;
 
-    private int $limit;
+    private readonly int $limit;
 
     /**
      * @throws \Exception

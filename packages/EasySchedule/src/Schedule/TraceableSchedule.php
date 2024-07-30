@@ -21,7 +21,7 @@ final class TraceableSchedule implements TraceableScheduleInterface
     private array $providers = [];
 
     public function __construct(
-        private ScheduleInterface $decorated,
+        private readonly ScheduleInterface $decorated,
     ) {
     }
 

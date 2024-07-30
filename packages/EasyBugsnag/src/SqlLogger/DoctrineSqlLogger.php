@@ -19,10 +19,10 @@ final class DoctrineSqlLogger implements BaseSqlLoggerInterface
     private ?array $types = null;
 
     public function __construct(
-        private Client $client,
-        private Connection $conn,
-        private ?string $connName = null,
-        private ?BaseSqlLoggerInterface $decorated = null,
+        private readonly Client $client,
+        private readonly Connection $conn,
+        private readonly ?string $connName = null,
+        private readonly ?BaseSqlLoggerInterface $decorated = null,
     ) {
     }
 

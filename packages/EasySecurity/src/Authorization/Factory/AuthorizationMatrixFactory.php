@@ -14,12 +14,12 @@ final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInte
     /**
      * @var \EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface[]
      */
-    private array $permissionsProviders;
+    private readonly array $permissionsProviders;
 
     /**
      * @var \EonX\EasySecurity\Authorization\Provider\RolesProviderInterface[]
      */
-    private array $rolesProviders;
+    private readonly array $rolesProviders;
 
     /**
      * @param iterable<\EonX\EasySecurity\Authorization\Provider\RolesProviderInterface> $rolesProviders

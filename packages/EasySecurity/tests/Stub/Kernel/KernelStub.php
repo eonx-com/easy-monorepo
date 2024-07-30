@@ -21,7 +21,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private array $configs;
+    private readonly array $configs;
 
     /**
      * @param string[]|null $configs
@@ -30,7 +30,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         string $environment,
         bool $debug,
         ?array $configs = null,
-        private ?Request $request = null,
+        private readonly ?Request $request = null,
     ) {
         $this->configs = $configs ?? [];
 

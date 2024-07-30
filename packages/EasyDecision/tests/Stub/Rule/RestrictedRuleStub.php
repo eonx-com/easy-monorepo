@@ -10,7 +10,7 @@ final class RestrictedRuleStub extends AbstractRuleStub implements RestrictedRul
 {
     public function __construct(
         string $name,
-        private string $supportedDecision,
+        private readonly string $supportedDecision,
         mixed $output,
         ?bool $supports = null,
     ) {

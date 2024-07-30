@@ -6,7 +6,7 @@ namespace EonX\EasyBugsnag\Request;
 use Bugsnag\Request\RequestInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class HttpFoundationRequest implements RequestInterface
+final readonly class HttpFoundationRequest implements RequestInterface
 {
     public function __construct(
         private Request $request,

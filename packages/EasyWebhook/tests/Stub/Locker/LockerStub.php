@@ -11,7 +11,7 @@ use Symfony\Component\Lock\LockInterface;
 
 final class LockerStub implements LockerInterface
 {
-    private bool $canProcess;
+    private readonly bool $canProcess;
 
     private ?LockDataInterface $lockData = null;
 

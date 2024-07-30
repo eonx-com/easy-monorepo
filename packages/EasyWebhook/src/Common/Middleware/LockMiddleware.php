@@ -15,10 +15,10 @@ final class LockMiddleware extends AbstractMiddleware
 {
     private const DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
 
-    private string $resourcePattern;
+    private readonly string $resourcePattern;
 
     public function __construct(
-        private LockerInterface $locker,
+        private readonly LockerInterface $locker,
         ?string $lockResourcePattern = null,
         ?int $priority = null,
     ) {

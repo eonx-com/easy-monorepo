@@ -8,7 +8,7 @@ use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Laravel\Jobs\SendWebhookJob;
 use Illuminate\Contracts\Bus\Dispatcher;
 
-final class AsyncDispatcher implements AsyncDispatcherInterface
+final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
         private Dispatcher $dispatcher,

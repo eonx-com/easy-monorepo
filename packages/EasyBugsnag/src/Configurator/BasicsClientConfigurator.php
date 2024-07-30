@@ -8,9 +8,9 @@ use Bugsnag\Client;
 final class BasicsClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
-        private string $projectRoot,
-        private string $stripPath,
-        private string $releaseStage,
+        private readonly string $projectRoot,
+        private readonly string $stripPath,
+        private readonly string $releaseStage,
     ) {
         parent::__construct();
     }

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class RoleVoter extends Voter
 {
     public function __construct(
-        private SecurityContextResolverInterface $securityContextResolver,
+        private readonly SecurityContextResolverInterface $securityContextResolver,
     ) {
     }
 

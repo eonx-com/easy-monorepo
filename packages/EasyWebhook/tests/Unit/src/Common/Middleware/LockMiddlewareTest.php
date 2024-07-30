@@ -7,6 +7,7 @@ use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResult;
+use EonX\EasyWebhook\Common\Enum\WebhookOption;
 use EonX\EasyWebhook\Common\Middleware\LockMiddleware;
 use EonX\EasyWebhook\Tests\Stub\Locker\LockerStub;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,23 +23,23 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'should not lock (id, not send now) -> return result from stack' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_ID => 'my-id',
+                WebhookOption::Id->value => 'my-id',
             ]),
             false,
         ];
 
         yield 'should lock and acquire lock -> return result from stack' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_ID => 'my-id',
-                WebhookInterface::OPTION_SEND_NOW => true,
+                WebhookOption::Id->value => 'my-id',
+                WebhookOption::SendNow->value => true,
             ]),
             true,
         ];
 
         yield 'should lock but not acquire lock -> return new result' => [
             Webhook::fromArray([
-                WebhookInterface::OPTION_ID => 'my-id',
-                WebhookInterface::OPTION_SEND_NOW => true,
+                WebhookOption::Id->value => 'my-id',
+                WebhookOption::SendNow->value => true,
             ]),
             true,
             false,

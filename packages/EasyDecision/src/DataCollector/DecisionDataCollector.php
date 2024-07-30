@@ -17,7 +17,7 @@ final class DecisionDataCollector extends DataCollector
     public const NAME = 'easy_decision.decision_collector';
 
     public function __construct(
-        private DecisionFactoryInterface $decisionFactory,
+        private readonly DecisionFactoryInterface $decisionFactory,
     ) {
     }
 
