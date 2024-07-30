@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->scalarNode('default_key_name')->defaultValue(EncryptorInterface::DEFAULT_KEY_NAME)->end()
+            ->scalarNode('default_key_name')->defaultValue('app')->end()
             ->scalarNode('default_encryption_key')->defaultValue('%env(APP_SECRET)%')->end()
             ->scalarNode('default_salt')->defaultNull()->end()
             ->booleanNode('use_default_key_resolvers')->defaultTrue()->end()
