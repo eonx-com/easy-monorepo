@@ -168,8 +168,8 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             ->update($this->table)
             ->set('status', ':statusPending')
             ->where('status = :statusCreated')
-            ->setParameter('statusPending', BatchObjectStatus::Pending, Types::STRING)
-            ->setParameter('statusCreated', BatchObjectStatus::Created, Types::STRING);
+            ->setParameter('statusPending', BatchObjectStatus::Pending->value, Types::STRING)
+            ->setParameter('statusCreated', BatchObjectStatus::Created->value, Types::STRING);
 
         // Handle 1 batchItem
         if ($count === 1) {
