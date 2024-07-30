@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(SecurityContextDataCollector::class)
         ->arg('$configurators', tagged_iterator(ConfigTag::ContextConfigurator->value))
         ->tag('data_collector', [
-            'id' => 'easy_security',
+            'id' => SecurityContextDataCollector::NAME,
             'template' => '@EasySecurity/collector/security_context_collector.html.twig',
         ]);
 

@@ -13,7 +13,7 @@ use Throwable;
 
 final class ErrorHandlerDataCollector extends DataCollector
 {
-    private const NAME = 'error_handler';
+    public const NAME = 'error_handler.error_handler_collector';
 
     public function __construct(
         private readonly ErrorHandlerInterface $errorHandler,

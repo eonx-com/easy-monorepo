@@ -21,7 +21,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(WebhookDataCollector::class)
         ->arg('$webhookClient', service(TraceableWebhookClient::class))
         ->tag('data_collector', [
-            'id' => 'easy_webhook',
+            'id' => WebhookDataCollector::NAME,
             'template' => '@EasyWebhook/collector/webhook_collector.html.twig',
         ]);
 };

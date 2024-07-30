@@ -14,7 +14,7 @@ use Throwable;
 
 final class DecisionDataCollector extends DataCollector
 {
-    private const NAME = 'decisions';
+    public const NAME = 'easy_decision.decision_collector';
 
     public function __construct(
         private readonly DecisionFactoryInterface $decisionFactory,

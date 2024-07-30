@@ -14,7 +14,7 @@ use Throwable;
 
 final class WebhookDataCollector extends DataCollector
 {
-    private const NAME = 'webhooks';
+    public const NAME = 'easy_webhook.data_collector';
 
     public function __construct(
         private readonly WebhookClientInterface $webhookClient,

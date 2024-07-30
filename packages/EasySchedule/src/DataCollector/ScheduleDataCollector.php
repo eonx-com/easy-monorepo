@@ -13,7 +13,7 @@ use Throwable;
 
 final class ScheduleDataCollector extends DataCollector
 {
-    private const NAME = 'schedule';
+    public const NAME = 'schedule.schedule_collector';
 
     public function __construct(
         private readonly ScheduleInterface $schedule,

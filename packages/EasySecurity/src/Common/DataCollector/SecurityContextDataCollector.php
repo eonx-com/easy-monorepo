@@ -21,7 +21,7 @@ use Throwable;
 
 final class SecurityContextDataCollector extends DataCollector
 {
-    private const NAME = 'security_context';
+    public const NAME = 'easy_security.security_context_collector';
 
     /**
      * @var \EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface[]
