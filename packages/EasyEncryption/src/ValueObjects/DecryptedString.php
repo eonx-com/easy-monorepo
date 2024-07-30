@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\ValueObject;
+namespace EonX\EasyEncryption\ValueObjects;
 
 use EonX\EasyEncryption\Interfaces\DecryptedStringInterface;
 

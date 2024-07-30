@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\HashCalculator;
+namespace EonX\EasyEncryption\HashCalculators;
 
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
 
-final class AwsPkcs11HashCalculator implements HashCalculatorInterface
+final class AwsCloudHsmHashCalculator implements HashCalculatorInterface
 {
     private const DEFAULT_ENCODING = 'UTF-8';
 

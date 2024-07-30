@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Attribute;
+namespace EonX\EasyEncryption\Attributes;
 
 use Attribute;
 

@@ -5,11 +5,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyEncryption\AwsPkcs11Encryptor;
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
-use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
-use EonX\EasyEncryption\Configurator\AwsCloudHsmSdkConfigurator;
-use EonX\EasyEncryption\Encryptor\Encryptor;
-use EonX\EasyEncryption\HashCalculator\AwsPkcs11HashCalculator;
-use EonX\EasyEncryption\HashCalculator\HashCalculatorInterface;
+use EonX\EasyEncryption\Builders\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Configurators\AwsCloudHsmSdkConfigurator;
+use EonX\EasyEncryption\Encryptors\StringEncryptor;
+use EonX\EasyEncryption\HashCalculators\AwsCloudHsmHashCalculator;
+use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -46,11 +46,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$aad', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_AAD))
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 
-    $services->set(Encryptor::class)
+    $services->set(StringEncryptor::class)
         ->arg('$encryptor', service(AwsPkcs11EncryptorInterface::class))
         ->arg('$encryptionKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME))
         ->arg('$maxChunkSize', param(BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE));
 
-    $services->set(HashCalculatorInterface::class, AwsPkcs11HashCalculator::class)
+    $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
         ->arg('$signKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 };

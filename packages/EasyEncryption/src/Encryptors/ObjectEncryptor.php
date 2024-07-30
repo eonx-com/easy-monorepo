@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Encryptor;
+namespace EonX\EasyEncryption\Encryptors;
 
-use EonX\EasyEncryption\HashCalculator\HashCalculatorInterface;
+use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
 use EonX\EasyEncryption\Interfaces\EncryptableInterface;
-use EonX\EasyEncryption\ValueObject\EncryptedText;
+use EonX\EasyEncryption\ValueObjects\EncryptedText;
 
-final class EncryptableEncryptor
+final class ObjectEncryptor
 {
     public function __construct(
-        private Encryptor $encryptor,
+        private StringEncryptor $encryptor,
         private HashCalculatorInterface $hashCalculator,
     ) {
     }

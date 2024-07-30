@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\HashCalculator;
+namespace EonX\EasyEncryption\HashCalculators;
 
 final class HmacSha512HashCalculator implements HashCalculatorInterface
 {

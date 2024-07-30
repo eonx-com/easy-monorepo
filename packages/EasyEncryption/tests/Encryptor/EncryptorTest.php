@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Tests\Encryptor;
 
-use EonX\EasyEncryption\Encryptor\Encryptor;
-use EonX\EasyEncryption\LocalEncryptor;
+use EonX\EasyEncryption\Encryptor;
+use EonX\EasyEncryption\Encryptors\StringEncryptor;
 use EonX\EasyEncryption\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -55,8 +55,8 @@ final class EncryptorTest extends AbstractSymfonyTestCase
     {
         $container = $this->getKernel()
 ->getContainer();
-        $encryptor = $container->get(LocalEncryptor::class);
-        $sut = new Encryptor($encryptor, 'some-key', $maxChunkSize);
+        $encryptor = $container->get(Encryptor::class);
+        $sut = new StringEncryptor($encryptor, 'some-key', $maxChunkSize);
 
         $encryptedText = $sut->encrypt($text);
         $decryptedText = $sut->decrypt($encryptedText->value);
@@ -72,8 +72,8 @@ final class EncryptorTest extends AbstractSymfonyTestCase
     {
         $container = $this->getKernel()
 ->getContainer();
-        $encryptor = $container->get(LocalEncryptor::class);
-        $sut = new Encryptor($encryptor, 'some-key', $maxChunkSize);
+        $encryptor = $container->get(Encryptor::class);
+        $sut = new StringEncryptor($encryptor, 'some-key', $maxChunkSize);
 
         $encryptedText = $sut->encrypt($text);
         $decryptedText = $sut->decrypt($encryptedText->value);

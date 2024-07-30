@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Encryptor;
+namespace EonX\EasyEncryption\Encryptors;
 
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\ValueObject\EncryptedText;
+use EonX\EasyEncryption\ValueObjects\EncryptedText;
 use InvalidArgumentException;
 
-final class Encryptor
+final class StringEncryptor
 {
     private const CHUNKED_TEXT_PREFIX = 'chunked:';
 

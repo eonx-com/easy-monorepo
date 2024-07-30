@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Serializer;
+namespace EonX\EasyEncryption\Serializers;
 
-use EonX\EasyEncryption\Encryptor\EncryptableEncryptor;
-use EonX\EasyEncryption\Encryptor\Encryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptor;
+use EonX\EasyEncryption\Encryptors\StringEncryptor;
 use EonX\EasyEncryption\Interfaces\EncryptableInterface;
 use EonX\EasyEncryption\Metadata\EncryptableMetadata;
 use Symfony\Component\Messenger\Envelope;
@@ -27,8 +27,8 @@ final class EncryptableAwareMessengerSerializer implements SerializerInterface
     private const ENVELOPE_HEADER_TYPE = 'type';
 
     public function __construct(
-        private Encryptor $encryptor,
-        private EncryptableEncryptor $encryptableEncryptor,
+        private StringEncryptor $encryptor,
+        private ObjectEncryptor $encryptableEncryptor,
         private EncryptableMetadata $encryptableMetadata,
         private SerializerInterface $serializer,
         private array $fullyEncryptedMessages,

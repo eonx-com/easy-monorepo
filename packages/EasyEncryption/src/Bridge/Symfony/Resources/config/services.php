@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
-use EonX\EasyEncryption\Encryptor\EncryptableEncryptor;
+use EonX\EasyEncryption\Encryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptor;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\Listener\DoctrineEncryptionListener;
-use EonX\EasyEncryption\LocalEncryptor;
+use EonX\EasyEncryption\Listeners\DoctrineEncryptionListener;
 use EonX\EasyEncryption\Metadata\EncryptableMetadata;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 
@@ -30,11 +30,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Encryptor
     $services
-        ->set(EncryptorInterface::class, LocalEncryptor::class)
+        ->set(EncryptorInterface::class, Encryptor::class)
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 
-    $services->set(LocalEncryptor::class);
+    $services->set(Encryptor::class);
     $services->set(EncryptableMetadata::class);
-    $services->set(EncryptableEncryptor::class);
+    $services->set(ObjectEncryptor::class);
     $services->set(DoctrineEncryptionListener::class);
 };

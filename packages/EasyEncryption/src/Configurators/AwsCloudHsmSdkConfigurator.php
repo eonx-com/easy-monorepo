@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Configurator;
+namespace EonX\EasyEncryption\Configurators;
 
 use Aws\CloudHSMV2\CloudHSMV2Client;
 use Aws\Sts\StsClient;
-use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Builders\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Exceptions\AwsCloudHsmInvalidConfigurationException;
 use EonX\EasyEncryption\Exceptions\CouldNotConfigureAwsCloudHsmSdkException;
-use EonX\EasyEncryption\Exceptions\InvalidConfigurationException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Throwable;
@@ -50,7 +50,7 @@ final class AwsCloudHsmSdkConfigurator
             $this->useCloudHsmConfigureTool === false &&
             (\class_exists(CloudHSMV2Client::class) === false || \class_exists(StsClient::class) === false)
         ) {
-            throw new InvalidConfigurationException(
+            throw new AwsCloudHsmInvalidConfigurationException(
                 'The "aws/aws-sdk-php" package is required to configure CloudHSM without using configure-pkcs11 tool.' .
                 ' Install the package, or use the configure-pkcs11 tool, or provide the HSM IP instead of ' .
                 'the CloudHSM cluster ID'

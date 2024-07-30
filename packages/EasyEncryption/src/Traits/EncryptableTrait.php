@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Trait;
+namespace EonX\EasyEncryption\Traits;
 
 use EonX\EasyEncryption\Metadata\EncryptableMetadata;
 use UnexpectedValueException;
@@ -40,7 +40,7 @@ trait EncryptableTrait
     }
 
     /**
-     * @param callable(string): \EonX\EasyEncryption\ValueObject\EncryptedText $encryptor
+     * @param callable(string): \EonX\EasyEncryption\ValueObjects\EncryptedText $encryptor
      * @param callable(string): string $hashCalculator
      */
     public function encrypt(callable $encryptor, callable $hashCalculator): void

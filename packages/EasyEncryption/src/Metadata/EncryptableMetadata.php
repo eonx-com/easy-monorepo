@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Metadata;
 
-use EonX\EasyEncryption\Attribute\EncryptableField;
+use EonX\EasyEncryption\Attributes\EncryptableField;
 use ReflectionClass;
 
 final class EncryptableMetadata
@@ -28,7 +28,7 @@ final class EncryptableMetadata
 
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             foreach ($reflectionProperty->getAttributes(EncryptableField::class) as $reflectionAttribute) {
-                /** @var \EonX\EasyEncryption\Attribute\EncryptableField $reflectionAttributeInstance */
+                /** @var \EonX\EasyEncryption\Attributes\EncryptableField $reflectionAttributeInstance */
                 $reflectionAttributeInstance = $reflectionAttribute->newInstance();
                 $encryptedFields[$reflectionProperty->getName()] = $reflectionAttributeInstance->getFieldName()
                     ?? $reflectionProperty->getName();

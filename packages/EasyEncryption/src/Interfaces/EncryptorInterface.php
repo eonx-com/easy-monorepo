@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Interfaces;
 
-use ParagonIE\Halite\EncryptionKeyPair;
-use ParagonIE\Halite\Symmetric\EncryptionKey;
-
 interface EncryptorInterface
 {
     public const DEFAULT_KEY_NAME = 'app';
@@ -21,7 +18,7 @@ interface EncryptorInterface
 
     public function decryptRaw(
         string $text,
-        null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
+        null|array|string $key = null,
     ): string;
 
     /**
@@ -31,6 +28,6 @@ interface EncryptorInterface
 
     public function encryptRaw(
         string $text,
-        null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
+        null|array|string $key = null,
     ): string;
 }

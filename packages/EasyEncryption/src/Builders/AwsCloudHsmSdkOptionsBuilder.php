@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Builder;
+namespace EonX\EasyEncryption\Builders;
 
-use EonX\EasyEncryption\Exceptions\InvalidConfigurationException;
+use EonX\EasyEncryption\Exceptions\AwsCloudHsmInvalidConfigurationException;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class AwsCloudHsmSdkOptionsBuilder
@@ -31,23 +31,25 @@ final class AwsCloudHsmSdkOptionsBuilder
         $isSetServerClientKeyFile = $this->isNonEmptyString($this->serverClientKeyFile);
 
         if ($filesystem->exists($this->hsmCaCert) === false) {
-            throw new InvalidConfigurationException(\sprintf(
+            throw new AwsCloudHsmInvalidConfigurationException(\sprintf(
                 'Given CA Cert filename "%s" does not exist',
                 $this->hsmCaCert
             ));
         }
         if ($isSetHsmIpAddress === false && $isSetCloudHsmClusterId === false) {
-            throw new InvalidConfigurationException(
+            throw new AwsCloudHsmInvalidConfigurationException(
                 'At least HSM IP address or CloudHSM cluster id has to be set'
             );
         }
         if ($isSetHsmIpAddress && $isSetCloudHsmClusterId) {
-            throw new InvalidConfigurationException(
+            throw new AwsCloudHsmInvalidConfigurationException(
                 'Both HSM IP address and CloudHSM cluster id options cannot be set at the same time'
             );
         }
         if ($isSetServerClientCertFile !== $isSetServerClientKeyFile) {
-            throw new InvalidConfigurationException('Both Server Client Cert and Key must be set at the same time');
+            throw new AwsCloudHsmInvalidConfigurationException(
+                'Both Server Client Cert and Key must be set at the same time'
+            );
         }
 
         $options = $this->cloudHsmSdkOptions ?? [];
@@ -72,7 +74,7 @@ final class AwsCloudHsmSdkOptionsBuilder
             /** @var string $filename */
             foreach ($sslFiles as $option => $filename) {
                 if ($filesystem->exists($filename) === false) {
-                    throw new InvalidConfigurationException(\sprintf(
+                    throw new AwsCloudHsmInvalidConfigurationException(\sprintf(
                         'Filename "%s" for option "%s" does not exist',
                         $filename,
                         $option

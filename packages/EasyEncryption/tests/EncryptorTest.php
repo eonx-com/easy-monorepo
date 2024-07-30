@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Tests;
 
+use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\LocalEncryptor;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 use EonX\EasyEncryption\Resolvers\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Tests\Stubs\EncryptionKeyResolverStub;
@@ -127,7 +127,7 @@ final class EncryptorTest extends AbstractTestCase
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);
-        $encryptor = new LocalEncryptor($keyFactory, $keyProvider);
+        $encryptor = new Encryptor($keyFactory, $keyProvider);
 
         $encrypted = $encryptor->encrypt($text, $key);
 
@@ -142,7 +142,7 @@ final class EncryptorTest extends AbstractTestCase
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);
-        $encryptor = new LocalEncryptor($keyFactory, $keyProvider);
+        $encryptor = new Encryptor($keyFactory, $keyProvider);
 
         $encrypted = $encryptor->encryptRaw($text, $key);
 
