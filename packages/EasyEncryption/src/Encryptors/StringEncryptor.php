@@ -18,6 +18,9 @@ final class StringEncryptor
     public function __construct(
         private EncryptorInterface $encryptor,
         private string $encryptionKeyName,
+        /**
+         * @phpstan-var int<1, max>
+         */
         private int $maxChunkSize,
     ) {
         if ($maxChunkSize < 1) {
