@@ -7,7 +7,6 @@ use EonX\EasyDecision\Decision\ConsensusDecision;
 use EonX\EasyDecision\Decision\DecisionInterface;
 use EonX\EasyDecision\Decision\ValueDecision;
 use EonX\EasyDecision\Provider\ValueExpressionFunctionProvider;
-use EonX\EasyDecision\Rule\RuleInterface;
 use EonX\EasyDecision\Tests\Stub\Rule\RuleStub;
 use EonX\EasyDecision\Tests\Stub\Rule\StopPropagationRuleStub;
 use EonX\EasyDecision\Tests\Stub\Rule\WithExtraOutputRuleStub;
