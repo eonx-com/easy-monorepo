@@ -63,8 +63,8 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AwsCloudHsmSdkConfigurator::class,
-            static fn (): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
-                awsCloudHsmSdkOptionsBuilder: $this->app->make(AwsCloudHsmSdkOptionsBuilder::class),
+            static fn (Container $app): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
+                awsCloudHsmSdkOptionsBuilder: $app->make(AwsCloudHsmSdkOptionsBuilder::class),
                 awsRoleArn: \config('aws_pkcs11_aws_role_arn'),
                 useCloudHsmConfigureTool: (bool)\config('aws_pkcs11_use_cloud_hsm_configure_tool')
             )
@@ -72,9 +72,9 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AwsPkcs11EncryptorInterface::class,
-            static fn (): AwsPkcs11EncryptorInterface => new AwsPkcs11Encryptor(
+            static fn (Container $app): AwsPkcs11EncryptorInterface => new AwsPkcs11Encryptor(
                 userPin: \config('aws_pkcs11_user_pin'),
-                awsCloudHsmSdkConfigurator: $this->app->make(AwsCloudHsmSdkConfigurator::class),
+                awsCloudHsmSdkConfigurator: $app->make(AwsCloudHsmSdkConfigurator::class),
                 aad: \config('aws_pkcs11_aad'),
                 defaultKeyName: \config('default_key_name')
             )
@@ -82,16 +82,16 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             HashCalculatorInterface::class,
-            static fn (): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
-                encryptor: $this->app->make(AwsPkcs11EncryptorInterface::class),
+            static fn (Container $app): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
+                encryptor: $app->make(AwsPkcs11EncryptorInterface::class),
                 signKeyName: \config('default_key_name')
             )
         );
 
         $this->app->singleton(
             StringEncryptor::class,
-            static fn (): StringEncryptor => new StringEncryptor(
-                encryptor: $this->app->make(AwsPkcs11EncryptorInterface::class),
+            static fn (Container $app): StringEncryptor => new StringEncryptor(
+                encryptor: $app->make(AwsPkcs11EncryptorInterface::class),
                 encryptionKeyName: \config('default_key_name'),
                 maxChunkSize: \config('max_chunk_size')
             )
