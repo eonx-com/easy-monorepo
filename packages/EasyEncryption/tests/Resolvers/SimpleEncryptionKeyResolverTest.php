@@ -45,4 +45,18 @@ final class SimpleEncryptionKeyResolverTest extends AbstractSymfonyTestCase
 
         $resolver->resolveKey('some-key');
     }
+
+    public function testItThrowsExceptionIfKeyIsNotSupported(): void
+    {
+        $keyName = 'some-key';
+        $encryptionKey = 'key-must-be-either-16-or-32-byte';
+        $resolver = new SimpleEncryptionKeyResolver($keyName, $encryptionKey);
+
+        $this->expectException(CouldNotResolveEncryptionKeyException::class);
+        $this->expectExceptionMessage(
+            'Given key name "unsupported-key" not supported by ' . SimpleEncryptionKeyResolver::class
+        );
+
+        $resolver->resolveKey('unsupported-key');
+    }
 }
