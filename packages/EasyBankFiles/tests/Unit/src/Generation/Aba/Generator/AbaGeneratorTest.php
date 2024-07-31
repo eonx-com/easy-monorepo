@@ -7,6 +7,7 @@ use EonX\EasyBankFiles\Generation\Aba\Generator\AbaGenerator;
 use EonX\EasyBankFiles\Generation\Aba\ValueObject\DescriptiveRecord;
 use EonX\EasyBankFiles\Generation\Aba\ValueObject\FileTotalRecord;
 use EonX\EasyBankFiles\Generation\Aba\ValueObject\Transaction;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\Exception\InvalidArgumentException;
 use EonX\EasyBankFiles\Generation\Common\Exception\LengthMismatchesException;
 use EonX\EasyBankFiles\Generation\Common\Exception\ValidationFailedException;
@@ -136,7 +137,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $expected = [
             'attribute' => 'bsbNumber',
             'value' => '1112333',
-            'rule' => 'bsb',
+            'rule' => ValidationRule::Bsb,
         ];
 
         $trans = $this->createTransaction();

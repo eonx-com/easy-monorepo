@@ -64,13 +64,13 @@ final class XmlConverter
      *
      * @param \DOMElement $node The node to add the value to
      * @param string $name The node name to add
-     * @param bool|int|string $value The value to attach to the node
+     * @param $value The value to attach to the node
      *
      * @return \DOMElement
      *
      * @throws \EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
-    private function appendXmlAttribute(DOMElement $node, string $name, bool|int|string $value): DOMElement
+    private function appendXmlAttribute(DOMElement $node, string $name, mixed $value): DOMElement
     {
         // Add value and return
         $node->appendChild($this->createXmlElement($name, $value));
