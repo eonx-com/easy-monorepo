@@ -40,7 +40,7 @@ final class XmlConverter
     /**
      * @throws \EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlException If the XML is invalid and can't be loaded
      */
-    public function xmlToArray(string $xml, ?int $options = null): array
+    public function xmlToArray(string $xml, bool $includeAttributes = true): array
     {
         // Prevent errors on xml load
         \libxml_use_internal_errors(true);
@@ -60,7 +60,7 @@ final class XmlConverter
         }
 
         // Convert node to array
-        return $this->documentToArray($document, $options);
+        return $this->documentToArray($document, $includeAttributes);
     }
 
     /**
@@ -74,7 +74,7 @@ final class XmlConverter
      *
      * @throws \EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
-    private function appendXmlAttribute(DOMElement $node, string $name, $value): DOMElement
+    private function appendXmlAttribute(DOMElement $node, string $name, bool|int|string $value): DOMElement
     {
         // Add value and return
         $node->appendChild($this->createXmlElement($name, $value));
@@ -106,7 +106,7 @@ final class XmlConverter
      * Create an XML node from an array, recursively.
      *
      * @param string $name The name of the node to convert this array to
-     * @param $value The value to add, can be array or scalar value
+     * @param mixed $value The value to add, can be array or scalar value
      *
      * @return \DOMElement
      *
@@ -129,7 +129,7 @@ final class XmlConverter
     /**
      * Create the correct xml correct for a value.
      *
-     * @param $value The value to create a child from
+     * @param mixed $value The value to create a child from
      *
      * @return \DOMNode
      */
@@ -145,9 +145,8 @@ final class XmlConverter
      * Recursively convert a DOMDocument to array.
      *
      * @param \DOMDocument $document The document to convert
-     * @param int|null $options Additional xml parsing options
      */
-    private function documentToArray(DOMDocument $document, ?int $options = null): array
+    private function documentToArray(DOMDocument $document, bool $includeAttributes = true): array
     {
         // Get document element
         $element = $document->documentElement;
@@ -168,7 +167,7 @@ final class XmlConverter
         // The DOMElement array will come back with @value and @attributes tags as well as every
         // element contained within it's own array, post process the array to flatten single value
         // elements and alter based on options
-        $array = $this->postProcessDomElementArray($array, $options ?? self::XML_IGNORE_ATTRIBUTES);
+        $array = $this->postProcessDomElementArray($array, $includeAttributes);
 
         // Avoid ErrorException for illegal string offset when only one empty node is provided
         if (\is_array($array['element']) === false) {
@@ -256,9 +255,8 @@ final class XmlConverter
      * Post-process a converted DOMNode array and flatten based on options.
      *
      * @param array $array The array to process
-     * @param int $options Additional xml parsing options
      */
-    private function postProcessDomElementArray(array $array, int $options): array
+    private function postProcessDomElementArray(array $array, bool $includeAttributes = true): array
     {
         foreach ($array as $key => $value) {
             // Skip non-array values
@@ -270,13 +268,13 @@ final class XmlConverter
             $value = \count($value) === 1 && \array_key_exists(0, $value) ? $value[0] : $value;
 
             // If attributes are ignored, process value remove @attributes and further flatten @values tags
-            if ($options === self::XML_IGNORE_ATTRIBUTES) {
+            if ($includeAttributes === false) {
                 unset($value['@attributes']);
                 $value = \count($value) === 1 ? $value['@value'] ?? $value : $value;
             }
 
             // If value is still an array, recurse
-            $array[$key] = \is_array($value) ? $this->postProcessDomElementArray($value, $options) : $value;
+            $array[$key] = \is_array($value) ? $this->postProcessDomElementArray($value, $includeAttributes) : $value;
         }
 
         return $array;
@@ -368,7 +366,7 @@ final class XmlConverter
      *
      * @return bool|string
      */
-    private function stringToX(string $value)
+    private function stringToX(string $value): bool|string
     {
         // Convert booleans to boolean type
         if (\in_array(\mb_strtolower($value), ['true', 'false'], true)) {
@@ -382,7 +380,7 @@ final class XmlConverter
     /**
      * Convert a value to a string.
      *
-     * @param $value The value to convert
+     * @param mixed $value The value to convert
      *
      * @return string
      */

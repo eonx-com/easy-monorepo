@@ -17,6 +17,10 @@ use PHPUnit\Framework\Attributes\Group;
 #[CoversClass(AbaGenerator::class)]
 final class AbaGeneratorTest extends AbstractUnitTestCase
 {
+    private const TRANSACTION_CODE_CREDIT = 50;
+
+    private const TRANSACTION_CODE_DEBIT = 13;
+
     /**
      * Generator should throw exception when required attributes not set.
      *
@@ -163,7 +167,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $descriptiveRecord = $this->createDescriptiveRecord();
 
         $transactions[] = $this->createTransaction();
-        $transactions[] = $this->createTransaction(Transaction::CODE_GENERAL_DEBIT);
+        $transactions[] = $this->createTransaction(self::TRANSACTION_CODE_DEBIT);
         /** @var \EonX\EasyBankFiles\Generation\Aba\ValueObject\Transaction $trans */
         $trans = $transactions[0];
 
@@ -207,14 +211,14 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
     /**
      * Create a Transaction object with default values.
      *
-     * @param int|null $transactionCode Either Transaction::CODE_GENERAL_CREDIT or Transaction::CODE_GENERAL_DEBIT
+     * @param int|null $transactionCode
      */
     protected function createTransaction(?int $transactionCode = null): Transaction
     {
         return new Transaction([
             'bsbNumber' => '083-163',
             'accountNumber' => '1234356',
-            'transactionCode' => $transactionCode ?? Transaction::CODE_GENERAL_CREDIT,
+            'transactionCode' => $transactionCode ?? self::TRANSACTION_CODE_CREDIT,
             'amount' => '0000043452',
             'titleOfAccount' => 'TRUST ME',
             'lodgementReference' => '0049e2d7dd1288d086',

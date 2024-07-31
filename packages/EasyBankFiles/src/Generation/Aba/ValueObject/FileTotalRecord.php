@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Aba\ValueObject;
 
-use EonX\EasyBankFiles\Generation\Common\Generator\GeneratorInterface;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 /**
@@ -26,18 +26,13 @@ final class FileTotalRecord extends AbstractObject
         ], $data ?? []));
     }
 
-    /**
-     * Get validation rules.
-     *
-     * @return string[]
-     */
     public function getValidationRules(): array
     {
         return [
-            'fileUserCountOfRecordsType' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'fileUserCreditTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'fileUserDebitTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'fileUserNetTotalAmount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'fileUserCountOfRecordsType' => ValidationRule::Numeric,
+            'fileUserCreditTotalAmount' => ValidationRule::Numeric,
+            'fileUserDebitTotalAmount' => ValidationRule::Numeric,
+            'fileUserNetTotalAmount' => ValidationRule::Numeric,
         ];
     }
 

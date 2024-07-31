@@ -15,7 +15,7 @@ abstract class AbstractObject extends AbstractDataBag
     }
 
     /**
-     * Get validation rules.
+     * @return array<string, \EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule>
      */
     abstract public function getValidationRules(): array;
 

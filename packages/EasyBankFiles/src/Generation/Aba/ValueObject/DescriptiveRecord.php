@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Aba\ValueObject;
 
-use EonX\EasyBankFiles\Generation\Common\Generator\GeneratorInterface;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 /**
@@ -27,18 +27,13 @@ final class DescriptiveRecord extends AbstractObject
         ], $data ?? []));
     }
 
-    /**
-     * Get validation rules.
-     *
-     * @return string[]
-     */
     public function getValidationRules(): array
     {
         return [
-            'dateToBeProcessed' => GeneratorInterface::VALIDATION_RULE_DATE,
-            'descriptionOfEntries' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'nameOfUserSupplyingFile' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'numberOfUserSupplyingFile' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'dateToBeProcessed' => ValidationRule::Date,
+            'descriptionOfEntries' => ValidationRule::Alpha,
+            'nameOfUserSupplyingFile' => ValidationRule::Alpha,
+            'numberOfUserSupplyingFile' => ValidationRule::Numeric,
         ];
     }
 
