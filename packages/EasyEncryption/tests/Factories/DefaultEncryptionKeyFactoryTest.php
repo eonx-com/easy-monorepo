@@ -14,7 +14,7 @@ use ParagonIE\HiddenString\HiddenString;
 
 final class DefaultEncryptionKeyFactoryTest extends AbstractSymfonyTestCase
 {
-    public function testItSucceedsFromArray(): void
+    public function testItSucceedsFromArrayWithKeyAndSalt(): void
     {
         $key = 'some-key';
         $salt = 'must-be-16-bytes';
@@ -28,9 +28,24 @@ final class DefaultEncryptionKeyFactoryTest extends AbstractSymfonyTestCase
         self::assertInstanceOf(EncryptionKey::class, $result);
     }
 
+    public function testItSucceedsFromArrayWithSecretAndPublicKey(): void
+    {
+        $secretKey = 'key-must-be-either-16-or-32-byte';
+        $publicKey = 'key-must-be-exactly-32-byte-long';
+        $sut = new DefaultEncryptionKeyFactory();
+
+        $result = $sut->create([
+            EncryptionKeyFactoryInterface::OPTION_SECRET_KEY => $secretKey,
+            EncryptionKeyFactoryInterface::OPTION_PUBLIC_KEY => $publicKey,
+        ]);
+
+        self::assertInstanceOf(EncryptionKeyPair::class, $result);
+        self::assertSame($secretKey, $result->getSecretKey()->getRawKeyMaterial());
+    }
+
     public function testItSucceedsFromEncryptionKey(): void
     {
-        $value = 'key-must-be-either-16-or-32-byte';
+        $value = 'key-must-be-exactly-32-byte-long';
         $key = new EncryptionKey(new HiddenString($value));
         $sut = new DefaultEncryptionKeyFactory();
 
@@ -41,7 +56,7 @@ final class DefaultEncryptionKeyFactoryTest extends AbstractSymfonyTestCase
 
     public function testItSucceedsFromEncryptionKeyPair(): void
     {
-        $value = 'key-must-be-either-16-or-32-byte';
+        $value = 'key-must-be-exactly-32-byte-long';
         $key = new EncryptionKeyPair(new EncryptionSecretKey(new HiddenString($value)));
         $sut = new DefaultEncryptionKeyFactory();
 
@@ -52,7 +67,7 @@ final class DefaultEncryptionKeyFactoryTest extends AbstractSymfonyTestCase
 
     public function testItSucceedsFromString(): void
     {
-        $key = 'key-must-be-either-16-or-32-byte';
+        $key = 'key-must-be-exactly-32-byte-long';
         $sut = new DefaultEncryptionKeyFactory();
 
         $result = $sut->create($key);
@@ -61,7 +76,18 @@ final class DefaultEncryptionKeyFactoryTest extends AbstractSymfonyTestCase
         self::assertSame($key, $result->getRawKeyMaterial());
     }
 
-    public function testItThrowsExceptionIfKeyIsNotSupported(): void
+    public function testItThrowsExceptionForArrayIfKeyIsNotSupported(): void
+    {
+        $key = 'some-key';
+        $sut = new DefaultEncryptionKeyFactory();
+
+        $this->expectException(CouldNotCreateEncryptionKeyException::class);
+        $this->expectExceptionMessage('Could not create encryption key: Could not identify key type from given array');
+
+        $sut->create(['key' => $key]);
+    }
+
+    public function testItThrowsExceptionForStringIfKeyIsNotSupported(): void
     {
         $key = 'some-key';
         $sut = new DefaultEncryptionKeyFactory();
