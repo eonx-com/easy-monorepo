@@ -5,16 +5,14 @@ namespace EonX\EasySchedule\DataCollector;
 
 use EonX\EasySchedule\Schedule\ScheduleInterface;
 use EonX\EasySchedule\Schedule\TraceableScheduleInterface;
+use EonX\EasyUtils\Common\DataCollector\AbstractDataCollector;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
-final class ScheduleDataCollector extends DataCollector
+final class ScheduleDataCollector extends AbstractDataCollector
 {
-    public const NAME = 'schedule.schedule_collector';
-
     public function __construct(
         private readonly ScheduleInterface $schedule,
     ) {
@@ -61,21 +59,11 @@ final class ScheduleDataCollector extends DataCollector
         return $this->data['entries'] ?? [];
     }
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
     /**
      * @return string[]
      */
     public function getProviders(): array
     {
         return $this->data['providers'] ?? [];
-    }
-
-    public function reset(): void
-    {
-        $this->data = [];
     }
 }

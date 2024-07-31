@@ -6,16 +6,14 @@ namespace EonX\EasyDecision\DataCollector;
 use EonX\EasyDecision\Decision\DecisionInterface;
 use EonX\EasyDecision\Exception\ContextNotSetException;
 use EonX\EasyDecision\Factory\DecisionFactoryInterface;
+use EonX\EasyUtils\Common\DataCollector\AbstractDataCollector;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
-final class DecisionDataCollector extends DataCollector
+final class DecisionDataCollector extends AbstractDataCollector
 {
-    public const NAME = 'easy_decision.decision_collector';
-
     public function __construct(
         private readonly DecisionFactoryInterface $decisionFactory,
     ) {
@@ -29,16 +27,6 @@ final class DecisionDataCollector extends DataCollector
     public function getDecisions(): array
     {
         return $this->data['decisions'] ?? [];
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function reset(): void
-    {
-        $this->data = [];
     }
 
     private function mapConfigurators(DecisionInterface $decision): array
