@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Helpers;
+namespace EonX\EasyEncryption\Utils;
 
 use ParagonIE\ConstantTime\Binary;
 

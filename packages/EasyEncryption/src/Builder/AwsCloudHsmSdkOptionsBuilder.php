@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Builders;
+namespace EonX\EasyEncryption\Builder;
 
 use EonX\EasyEncryption\Exceptions\AwsCloudHsmInvalidConfigurationException;
 use Symfony\Component\Filesystem\Filesystem;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption;
 
-use EonX\EasyEncryption\Configurators\AwsCloudHsmSdkConfigurator;
+use EonX\EasyEncryption\Configurator\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\Exceptions\CouldNotEncryptException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Interfaces\AwsPkcs11EncryptorInterface;

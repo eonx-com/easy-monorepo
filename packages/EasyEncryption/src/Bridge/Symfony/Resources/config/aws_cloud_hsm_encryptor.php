@@ -5,8 +5,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyEncryption\AwsPkcs11Encryptor;
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
-use EonX\EasyEncryption\Builders\AwsCloudHsmSdkOptionsBuilder;
-use EonX\EasyEncryption\Configurators\AwsCloudHsmSdkConfigurator;
+use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Configurator\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\Encryptors\StringEncryptor;
 use EonX\EasyEncryption\HashCalculators\AwsCloudHsmHashCalculator;
 use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;

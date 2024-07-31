@@ -48,7 +48,7 @@ return [
 
     'aws_pkcs11_aad' => '',
 
-    'max_chunk_size' => 4096,
+    'max_chunk_size' => 16224,
 
     'aws_pkcs11_encryptor' => [
         'enabled' => false,

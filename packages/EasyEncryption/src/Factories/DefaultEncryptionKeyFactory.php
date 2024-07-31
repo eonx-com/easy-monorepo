@@ -5,8 +5,8 @@ namespace EonX\EasyEncryption\Factories;
 
 use EonX\EasyEncryption\Exceptions\CouldNotCreateEncryptionKeyException;
 use EonX\EasyEncryption\Exceptions\InvalidEncryptionKeyException;
-use EonX\EasyEncryption\Helpers\KeyLength;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
+use EonX\EasyEncryption\Utils\KeyLength;
 use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
 use ParagonIE\Halite\EncryptionKeyPair;

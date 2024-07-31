@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Resolvers;
 
 use EonX\EasyEncryption\Exceptions\CouldNotResolveEncryptionKeyException;
-use EonX\EasyEncryption\Helpers\KeyLength;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
+use EonX\EasyEncryption\Utils\KeyLength;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 

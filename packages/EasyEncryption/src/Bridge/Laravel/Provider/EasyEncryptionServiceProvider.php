@@ -5,8 +5,8 @@ namespace EonX\EasyEncryption\Bridge\Laravel\Provider;
 
 use EonX\EasyEncryption\AwsPkcs11Encryptor;
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
-use EonX\EasyEncryption\Builders\AwsCloudHsmSdkOptionsBuilder;
-use EonX\EasyEncryption\Configurators\AwsCloudHsmSdkConfigurator;
+use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Configurator\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Encryptors\StringEncryptor;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;

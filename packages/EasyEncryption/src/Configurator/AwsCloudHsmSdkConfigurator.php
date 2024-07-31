@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Configurators;
+namespace EonX\EasyEncryption\Configurator;
 
 use Aws\CloudHSMV2\CloudHSMV2Client;
 use Aws\Sts\StsClient;
-use EonX\EasyEncryption\Builders\AwsCloudHsmSdkOptionsBuilder;
+use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
 use EonX\EasyEncryption\Exceptions\AwsCloudHsmInvalidConfigurationException;
 use EonX\EasyEncryption\Exceptions\CouldNotConfigureAwsCloudHsmSdkException;
 use Symfony\Component\Filesystem\Filesystem;
