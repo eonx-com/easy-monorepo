@@ -7,7 +7,5 @@ use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 
 interface ResultStoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhook_results';
-
     public function store(WebhookResultInterface $result): WebhookResultInterface;
 }

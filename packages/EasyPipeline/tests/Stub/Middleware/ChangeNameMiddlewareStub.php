@@ -6,7 +6,7 @@ namespace EonX\EasyPipeline\Tests\Stub\Middleware;
 use EonX\EasyPipeline\Middleware\MiddlewareInterface;
 use EonX\EasyPipeline\Tests\Stub\Input\InputStub;
 
-final class ChangeNameMiddlewareStub implements MiddlewareInterface
+final readonly class ChangeNameMiddlewareStub implements MiddlewareInterface
 {
     public function __construct(
         private string $changeTo,

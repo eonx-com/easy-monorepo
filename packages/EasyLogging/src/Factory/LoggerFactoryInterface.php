@@ -7,8 +7,6 @@ use Psr\Log\LoggerInterface;
 
 interface LoggerFactoryInterface
 {
-    public const DEFAULT_CHANNEL = 'app';
-
     public function create(?string $channel = null): LoggerInterface;
 
     public function setHandlerConfigProviders(iterable $handlerConfigProviders): self;

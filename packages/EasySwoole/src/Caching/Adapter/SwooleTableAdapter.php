@@ -19,7 +19,7 @@ final class SwooleTableAdapter extends AbstractAdapter
     public function __construct(
         private readonly string $tableName,
         ?int $defaultLifetime = null,
-        private MarshallerInterface $marshaller = new DefaultMarshaller(),
+        private readonly MarshallerInterface $marshaller = new DefaultMarshaller(),
     ) {
         if (CacheTableHelper::exists($this->tableName) === false) {
             throw new InvalidArgumentException(\sprintf(

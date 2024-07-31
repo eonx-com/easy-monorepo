@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Resolver;
 
-final class DefaultAppNameResolver implements AppNameResolverInterface
+final readonly class DefaultAppNameResolver implements AppNameResolverInterface
 {
     public function __construct(
         private string $appNameEnvVar,

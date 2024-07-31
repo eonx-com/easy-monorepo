@@ -273,6 +273,6 @@ The Math helper provides the following methods:
 
 [4]: https://symfony.com/doc/current/service_container/tags.html
 
-[5]: https://laravel.com/docs/8.x/container#tagging
+[5]: https://laravel.com/docs/10.x/container#tagging
 
 [6]: https://symfony.com/blog/new-in-symfony-3-3-simpler-service-configuration#interface-based-service-configuration

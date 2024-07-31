@@ -23,9 +23,9 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
      * @param string[] $pipelines
      */
     public function __construct(
-        private ContainerInterface $container,
-        private array $pipelines,
-        private ?string $prefix = null,
+        private readonly ContainerInterface $container,
+        private readonly array $pipelines,
+        private readonly ?string $prefix = null,
     ) {
     }
 

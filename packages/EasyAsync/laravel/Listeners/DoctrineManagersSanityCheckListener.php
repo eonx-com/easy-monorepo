@@ -17,8 +17,8 @@ final class DoctrineManagersSanityCheckListener extends AbstractQueueListener
      */
     public function __construct(
         Cache $cache,
-        private ManagersSanityChecker $managersSanityChecker,
-        private ?array $managers = null,
+        private readonly ManagersSanityChecker $managersSanityChecker,
+        private readonly ?array $managers = null,
         ?LoggerInterface $logger = null,
     ) {
         parent::__construct($cache, $logger);

@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->scalarNode('default_channel')->defaultValue(LoggerFactoryInterface::DEFAULT_CHANNEL)->end()
+            ->scalarNode('default_channel')->defaultValue('app')->end()
             ->arrayNode('lazy_loggers')
                 ->scalarPrototype()->end()
             ->end()

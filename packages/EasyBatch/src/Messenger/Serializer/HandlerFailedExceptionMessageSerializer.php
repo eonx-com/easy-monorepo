@@ -7,7 +7,7 @@ use EonX\EasyBatch\Common\Serializer\MessageSerializerInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Stamp\AckStamp;
 
-final class HandlerFailedExceptionMessageSerializer implements MessageSerializerInterface
+final readonly class HandlerFailedExceptionMessageSerializer implements MessageSerializerInterface
 {
     public function __construct(
         private MessageSerializerInterface $decorated,

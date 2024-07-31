@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Tests\Stub\Provider;
 
 use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 
-final class AuthorizationPermissionsProviderStub implements PermissionsProviderInterface
+final readonly class AuthorizationPermissionsProviderStub implements PermissionsProviderInterface
 {
     /**
      * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions

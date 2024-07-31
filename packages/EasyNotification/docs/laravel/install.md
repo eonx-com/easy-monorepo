@@ -69,4 +69,4 @@ $app->configure('easy-notification');
 // ...
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

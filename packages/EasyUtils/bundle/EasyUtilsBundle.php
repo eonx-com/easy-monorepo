@@ -15,14 +15,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyUtilsBundle extends AbstractBundle
 {
-    public const MATH_CONFIG = [
-        'format_decimal_separator' => ConfigParam::MathFormatDecimalSeparator,
-        'format_thousands_separator' => ConfigParam::MathFormatThousandsSeparator,
-        'round_mode' => ConfigParam::MathRoundMode,
-        'round_precision' => ConfigParam::MathRoundPrecision,
-        'scale' => ConfigParam::MathScale,
-    ];
-
     public const SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK = [
         'access_key',
         'access_secret',
@@ -48,6 +40,14 @@ final class EasyUtilsBundle extends AbstractBundle
         '40309', // Value of the CURLOPT_CAINFO_BLOB constant
         '40291', // Value of the CURLOPT_SSLCERT_BLOB constant
         '40292', // Value of the CURLOPT_SSLKEY_BLOB constant
+    ];
+
+    private const MATH_CONFIG = [
+        'format_decimal_separator' => ConfigParam::MathFormatDecimalSeparator,
+        'format_thousands_separator' => ConfigParam::MathFormatThousandsSeparator,
+        'round_mode' => ConfigParam::MathRoundMode,
+        'round_precision' => ConfigParam::MathRoundPrecision,
+        'scale' => ConfigParam::MathScale,
     ];
 
     private const STRING_TRIMMER_CONFIG = [

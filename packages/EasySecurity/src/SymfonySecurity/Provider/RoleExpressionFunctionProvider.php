@@ -22,8 +22,8 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
      * @param string[] $locations
      */
     public function __construct(
-        private array $locations,
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly array $locations,
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

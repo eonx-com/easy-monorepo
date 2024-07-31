@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 final class LaravelRequestResolver extends AbstractRequestResolver
 {
     public function __construct(
-        private Request $request,
+        private readonly Request $request,
     ) {
     }
 

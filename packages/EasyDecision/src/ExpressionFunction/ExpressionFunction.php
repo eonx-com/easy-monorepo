@@ -7,12 +7,12 @@ use Closure;
 
 final class ExpressionFunction implements ExpressionFunctionInterface
 {
-    private Closure $evaluator;
+    private readonly Closure $evaluator;
 
     public function __construct(
-        private string $name,
+        private readonly string $name,
         callable $evaluator,
-        private ?string $description = null,
+        private readonly ?string $description = null,
     ) {
         $this->evaluator = $evaluator(...);
     }

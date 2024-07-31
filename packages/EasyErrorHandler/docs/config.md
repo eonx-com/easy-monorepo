@@ -59,38 +59,62 @@ Symfony has the following additional configuration options:
 
 ### Symfony
 
-In Symfony, you could have a configuration file called `easy_error_handler.yaml` that looks like the following:
+In Symfony, you could have a configuration file called `easy_error_handler.php` that looks like the following:
 
-```yaml
-easy_error_handler:
-    bugsnag_enabled: true
-    bugsnag_ignored_exceptions:
-        - InvalidArgumentException
-    bugsnag_ignore_validation_errors: true
-    bugsnag_threshold: null
-    logger_exception_log_level:
-        InvalidArgumentException: 300
-    logger_ignored_exceptions:
-        - App\MyCustomException
-    override_api_platform_listener: true
-    response:
-        code: 'code'
-        exception: 'exception'
-        extended_exception_keys:
-            class: 'class'
-            file: 'file'
-            line: 'line'
-            message: 'message'
-            trace: 'trace'
-        message: 'message'
-        sub_code: 'sub_code'
-        time: 'time'
-        violations: 'violations'
-    transform_validation_errors: true
-    translation_domain: 'messages'
-    use_default_builders: true
-    use_default_reporters: true
-    verbose: false
+```php
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use App\Exception\MyCustomException;
+use InvalidArgumentException;
+use Monolog\Logger;
+use Symfony\Config\EasyErrorHandlerConfig;
+
+return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
+    $easyErrorHandlerConfig
+        ->bugsnagEnabled(true)
+        ->bugsnagIgnoredExceptions([
+            InvalidArgumentException::class,
+        ])
+        ->bugsnagIgnoreValidationErrors(true)
+        ->bugsnagThreshold(Logger::INFO)
+        ->loggerExceptionLogLevels([
+            InvalidArgumentException::class => 300,
+        ])
+        ->loggerIgnoredExceptions([
+            MyCustomException::class,
+        ])
+        ->overrideApiPlatformListener(true)
+        ->transformValidationErrors(true)
+        ->translationDomain('violations')
+        ->useDefaultBuilders(true)
+        ->useDefaultReporters(true)
+        ->verbose(false);
+
+    $response = $easyErrorHandlerConfig->response();
+    $response
+        ->code('custom_code')
+        ->exception('custom_exception')
+        ->message('custom_message')
+        ->subCode('custom_sub_code')
+        ->time('custom_time')
+        ->violations('custom_violations');
+
+    $extendedExceptionKeys = $response->extendedExceptionKeys();
+    $extendedExceptionKeys
+        ->class('custom_class')
+        ->file('custom_file')
+        ->line('custom_line')
+        ->message('custom_message')
+        ->trace('custom_trace');
+
+    $easyErrorHandlerConfig->translateInternalErrorMessages()
+        ->enabled(true)
+        ->locale('en');
+};
+
 ```
 
 ### Laravel

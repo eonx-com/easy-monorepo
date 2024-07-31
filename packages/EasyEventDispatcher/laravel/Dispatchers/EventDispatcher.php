@@ -6,7 +6,7 @@ namespace EonX\EasyEventDispatcher\Laravel\Dispatchers;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 
-final class EventDispatcher implements EventDispatcherInterface
+final readonly class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private IlluminateDispatcherContract $decorated,

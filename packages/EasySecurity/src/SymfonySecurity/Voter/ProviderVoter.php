@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class ProviderVoter extends Voter
 {
     public function __construct(
-        private SecurityContextResolverInterface $securityContextResolver,
+        private readonly SecurityContextResolverInterface $securityContextResolver,
     ) {
     }
 

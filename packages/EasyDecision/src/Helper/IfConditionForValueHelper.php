@@ -6,7 +6,7 @@ namespace EonX\EasyDecision\Helper;
 final class IfConditionForValueHelper
 {
     public function __construct(
-        private bool $condition,
+        private readonly bool $condition,
         private mixed $value,
     ) {
     }

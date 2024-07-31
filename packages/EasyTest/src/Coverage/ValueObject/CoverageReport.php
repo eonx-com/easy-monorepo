@@ -8,13 +8,13 @@ final class CoverageReport
     /**
      * @var string[]
      */
-    private array $violations;
+    private readonly array $violations;
 
     /**
      * @param string[] $violations
      */
     public function __construct(
-        private float $coverage,
+        private readonly float $coverage,
         ?array $violations = null,
     ) {
         $this->violations = $violations ?? [];

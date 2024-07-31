@@ -15,7 +15,7 @@ The EasyBugsnag package currently only supports AWS ECS Fargate instances.
 Set the `aws_ecs_fargate.enabled` configuration option to `true` to enable this feature (see [Configuration](config.md)
 for more information).
 
-Note that the default configurators (which includes the `AwsEcsFargateConfigurator`) must also be enabled by setting the
+Note that the default configurators (which includes the `AwsEcsFargateClientConfigurator`) must also be enabled by setting the
 `use_default_configurators` configuration option to `true`.
 
 The `AwsEcsFargateConfigurator` automatically resolves information about the AWS ECS Fargate task (`AvailabilityZone`,

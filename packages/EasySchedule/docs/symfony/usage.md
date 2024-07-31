@@ -41,4 +41,4 @@ This bundle providers a console command to run the schedule:
 $ php bin/console schedule:run
 ```
 
-[1]: https://laravel.com/docs/5.8/scheduling
+[1]: https://laravel.com/docs/10.x/scheduling

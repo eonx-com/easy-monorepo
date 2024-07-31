@@ -103,6 +103,10 @@ final class EasySecurityBundle extends AbstractBundle
 
         // Default configurators
         if ($config['use_default_configurators'] ?? true) {
+            $container
+                ->parameters()
+                ->set(ConfigParam::DefaultConfiguratorsPriority->value, $config['default_configurators_priority']);
+
             $container->import('config/default_configurators.php');
         }
     }

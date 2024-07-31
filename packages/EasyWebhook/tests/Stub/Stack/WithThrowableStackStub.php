@@ -12,7 +12,7 @@ final class WithThrowableStackStub implements StackInterface
     private int $index = 0;
 
     public function __construct(
-        private Throwable $throwable,
+        private readonly Throwable $throwable,
     ) {
     }
 

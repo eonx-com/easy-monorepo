@@ -24,7 +24,7 @@ final class EntityEventListener
     /**
      * @var class-string[] $trackableEntities
      */
-    private array $trackableEntities;
+    private readonly array $trackableEntities;
 
     /**
      * @param class-string[]|null $trackableEntities

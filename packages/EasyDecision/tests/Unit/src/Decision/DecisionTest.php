@@ -89,7 +89,7 @@ final class DecisionTest extends AbstractUnitTestCase
             true,
             [
                 'Unsupported with extra' => [
-                    'output' => RuleInterface::OUTPUT_UNSUPPORTED,
+                    'output' => 'unsupported',
                     'key' => 'value',
                 ],
                 'Only false' => false,

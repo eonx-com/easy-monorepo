@@ -4,74 +4,19 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Common\Entity;
 
 use DateTimeInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 
 interface WebhookInterface
 {
-    public const DEFAULT_CURRENT_ATTEMPT = 0;
+    final public const DEFAULT_CURRENT_ATTEMPT = 0;
 
-    public const DEFAULT_METHOD = 'POST';
+    final public const DEFAULT_METHOD = 'POST';
 
-    public const HEADER_EVENT = 'X-Webhook-Event';
+    final public const HEADER_EVENT = 'X-Webhook-Event';
 
-    public const HEADER_ID = 'X-Webhook-Id';
+    final public const HEADER_ID = 'X-Webhook-Id';
 
-    public const HEADER_SIGNATURE = 'X-Webhook-Signature';
-
-    public const OPTIONS = [
-        self::OPTION_BODY,
-        self::OPTION_BODY_AS_STRING,
-        self::OPTION_CURRENT_ATTEMPT,
-        self::OPTION_EVENT,
-        self::OPTION_ID,
-        self::OPTION_HTTP_OPTIONS,
-        self::OPTION_MAX_ATTEMPT,
-        self::OPTION_METHOD,
-        self::OPTION_SECRET,
-        self::OPTION_SEND_AFTER,
-        self::OPTION_STATUS,
-        self::OPTION_URL,
-    ];
-
-    public const OPTION_BODY = 'body';
-
-    public const OPTION_BODY_AS_STRING = 'body_as_string';
-
-    public const OPTION_CURRENT_ATTEMPT = 'current_attempt';
-
-    public const OPTION_EVENT = 'event';
-
-    public const OPTION_HTTP_OPTIONS = 'http_options';
-
-    public const OPTION_ID = 'id';
-
-    public const OPTION_MAX_ATTEMPT = 'max_attempt';
-
-    public const OPTION_METHOD = 'method';
-
-    public const OPTION_SECRET = 'secret';
-
-    public const OPTION_SEND_AFTER = 'send_after';
-
-    public const OPTION_SEND_NOW = 'send_now';
-
-    public const OPTION_STATUS = 'status';
-
-    public const OPTION_URL = 'url';
-
-    public const STATUSES = [
-        self::STATUS_FAILED,
-        self::STATUS_FAILED_PENDING_RETRY,
-        self::STATUS_PENDING,
-        self::STATUS_SUCCESS,
-    ];
-
-    public const STATUS_FAILED = 'failed';
-
-    public const STATUS_FAILED_PENDING_RETRY = 'failed_pending_retry';
-
-    public const STATUS_PENDING = 'pending';
-
-    public const STATUS_SUCCESS = 'success';
+    final public const HEADER_SIGNATURE = 'X-Webhook-Signature';
 
     public static function fromArray(array $data): self;
 
@@ -113,7 +58,7 @@ interface WebhookInterface
 
     public function getSendAfter(): ?DateTimeInterface;
 
-    public function getStatus(): string;
+    public function getStatus(): WebhookStatus;
 
     public function getUrl(): ?string;
 
@@ -151,7 +96,7 @@ interface WebhookInterface
 
     public function sendNow(?bool $sendNow = null): self;
 
-    public function status(string $status): self;
+    public function status(WebhookStatus $status): self;
 
     public function toArray(): array;
 

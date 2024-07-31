@@ -8,7 +8,7 @@ use EonX\EasyDecision\Decision\DecisionInterface;
 final class SetNameDecisionConfigurator extends AbstractDecisionConfigurator
 {
     public function __construct(
-        private string $name,
+        private readonly string $name,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

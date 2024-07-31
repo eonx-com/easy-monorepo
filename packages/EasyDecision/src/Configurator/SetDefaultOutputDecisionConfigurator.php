@@ -8,7 +8,7 @@ use EonX\EasyDecision\Decision\DecisionInterface;
 final class SetDefaultOutputDecisionConfigurator extends AbstractDecisionConfigurator
 {
     public function __construct(
-        private mixed $defaultOutput,
+        private readonly mixed $defaultOutput,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

@@ -65,14 +65,14 @@ final class MyController
 }
 ```
 
-[1]: https://github.com/eonx-com/easy-random
+[1]: https://packages.eonx.com/packages/easy-random/
 
 [3]: https://getcomposer.org/
 
-[4]: https://github.com/eonx-com/easy-bugsnag
+[4]: https://packages.eonx.com/packages/easy-bugsnag/
 
-[5]: https://github.com/eonx-com/easy-error-handler
+[5]: https://packages.eonx.com/packages/easy-error-handler/
 
-[6]: https://github.com/eonx-com/easy-error-logging
+[6]: https://packages.eonx.com/packages/easy-error-logging/
 
-[7]: https://github.com/eonx-com/easy-webhook
+[7]: https://packages.eonx.com/packages/easy-webhook/

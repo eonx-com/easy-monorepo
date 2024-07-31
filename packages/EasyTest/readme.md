@@ -21,7 +21,7 @@ is lower than your limit the command fails.
 This console command expect the path of a file containing the coverage output.
 
 ```bash
-vendor/bin/easy-test easy-test:check-coverage <path_to_coverage_output_file> --coverage=90
+vendor/bin/easy-test easy-test:check-coverage --coverage=90 <path_to_coverage_output_file>
 ```
 
 [1]: https://getcomposer.org/

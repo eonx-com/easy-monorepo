@@ -11,10 +11,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ConfigProvider implements ConfigProviderInterface
 {
-    private HttpClientInterface $httpClient;
+    private readonly HttpClientInterface $httpClient;
 
     public function __construct(
-        private string $apiUrl,
+        private readonly string $apiUrl,
         ?HttpClientInterface $httpClient = null,
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();

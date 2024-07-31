@@ -7,7 +7,6 @@ use EonX\EasyDecision\Decision\AffirmativeDecision;
 use EonX\EasyDecision\Decision\ConsensusDecision;
 use EonX\EasyDecision\Decision\UnanimousDecision;
 use EonX\EasyDecision\Decision\ValueDecision;
-use EonX\EasyDecision\Rule\RuleInterface;
 use EonX\EasyDecision\Tests\Unit\AbstractUnitTestCase;
 
 final class ConsensusDecisionTest extends AbstractUnitTestCase
@@ -43,7 +42,7 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
             'true-1' => true,
             'false-1' => false,
             'false-2' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertFalse($decision->make([]));
@@ -63,7 +62,7 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
             'true-1' => true,
             'true-2' => true,
             'false-1' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertTrue($decision->make([]));
@@ -75,7 +74,7 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
         $decision = (new ConsensusDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
         $expected = [
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertTrue($decision->make([]));
@@ -97,7 +96,7 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
             'true-2' => true,
             'false-1' => false,
             'false-2' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertTrue($decision->make([]));

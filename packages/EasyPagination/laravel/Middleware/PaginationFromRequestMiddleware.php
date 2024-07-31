@@ -8,7 +8,7 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use Illuminate\Http\Request;
 
-final class PaginationFromRequestMiddleware
+final readonly class PaginationFromRequestMiddleware
 {
     public function __construct(
         private PaginationProviderInterface $paginationProvider,
