@@ -84,6 +84,7 @@ return ECSConfig::configure()
         ],
         DateTimeImmutableFixer::class => null,
         DisallowMixedTypeHintSniff::class => [
+            'packages/EasyBankFiles/src/Parsing/Common/Converter/XmlConverter.php',
             'packages/EasySecurity/src/SymfonySecurity/Voter/*',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
