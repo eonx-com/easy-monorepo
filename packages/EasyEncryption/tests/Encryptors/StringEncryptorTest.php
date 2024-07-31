@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Tests\Encryptor;
+namespace EonX\EasyEncryption\Tests\Encryptors;
 
 use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Encryptors\StringEncryptor;
 use EonX\EasyEncryption\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-final class EncryptorTest extends AbstractSymfonyTestCase
+final class StringEncryptorTest extends AbstractSymfonyTestCase
 {
     /**
      * @see testItSucceedsWithLongText
@@ -56,13 +56,13 @@ final class EncryptorTest extends AbstractSymfonyTestCase
         $container = $this->getKernel()
             ->getContainer();
         $encryptor = $container->get(Encryptor::class);
-        $sut = new StringEncryptor($encryptor, 'some-key', $maxChunkSize);
+        $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
 
         $encryptedText = $sut->encrypt($text);
         $decryptedText = $sut->decrypt($encryptedText->value);
 
         self::assertSame($text, $decryptedText);
-        self::assertSame('some-key', $encryptedText->encryptionKeyName);
+        self::assertSame('app', $encryptedText->encryptionKeyName);
         self::assertTrue(\str_starts_with($encryptedText->value, 'chunked:'));
         self::assertCount($expectedChunksCount, \explode(',', $encryptedText->value));
     }
@@ -73,13 +73,13 @@ final class EncryptorTest extends AbstractSymfonyTestCase
         $container = $this->getKernel()
             ->getContainer();
         $encryptor = $container->get(Encryptor::class);
-        $sut = new StringEncryptor($encryptor, 'some-key', $maxChunkSize);
+        $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
 
         $encryptedText = $sut->encrypt($text);
         $decryptedText = $sut->decrypt($encryptedText->value);
 
         self::assertSame($text, $decryptedText);
-        self::assertSame('some-key', $encryptedText->encryptionKeyName);
+        self::assertSame('app', $encryptedText->encryptionKeyName);
         self::assertFalse(\str_starts_with($encryptedText->value, 'chunked:'));
         self::assertFalse(\str_contains($encryptedText->value, ','));
     }

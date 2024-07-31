@@ -76,7 +76,7 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
             $container->import(__DIR__ . '/Resources/config/aws_cloud_hsm_encryptor.php');
         }
 
-        if (\class_exists(MessengerPass::class)) {
+        if (\class_exists(MessengerPass::class, false)) {
             $container->import(__DIR__ . '/Resources/config/encryptable_messenger.php');
         }
     }
