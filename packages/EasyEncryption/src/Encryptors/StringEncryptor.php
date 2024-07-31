@@ -15,17 +15,21 @@ final class StringEncryptor
 
     private const TEXT_CHUNKS_SEPARATOR = ',';
 
+    /**
+     * @phpstan-var int<1, max>
+     */
+    private int $maxChunkSize;
+
     public function __construct(
         private EncryptorInterface $encryptor,
         private string $encryptionKeyName,
-        /**
-         * @phpstan-var int<1, max>
-         */
-        private int $maxChunkSize,
+        int $maxChunkSize,
     ) {
         if ($maxChunkSize < 1) {
             throw new InvalidArgumentException('Max chunk size must be greater or equal to 1.');
         }
+
+        $this->maxChunkSize = $maxChunkSize;
     }
 
     public function decrypt(string $text): string
