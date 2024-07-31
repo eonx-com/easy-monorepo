@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Configurator;
 
+use EonX\EasyNotification\Enum\MessageHeader;
 use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\QueueMessageInterface;
 use EonX\EasyNotification\ValueObject\ConfigInterface;
@@ -14,6 +15,6 @@ final class ProviderHeaderQueueMessageConfigurator extends AbstractQueueMessageC
         QueueMessageInterface $queueMessage,
         MessageInterface $message,
     ): QueueMessageInterface {
-        return $queueMessage->addHeader(QueueMessageInterface::HEADER_PROVIDER, $config->getProviderExternalId());
+        return $queueMessage->addHeader(MessageHeader::Provider->value, $config->getProviderExternalId());
     }
 }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Message;
 
+use EonX\EasyNotification\Enum\MessageType;
+
 final class SlackMessage extends AbstractMessage
 {
     public function __construct(
@@ -33,12 +35,12 @@ final class SlackMessage extends AbstractMessage
         return parent::getBody();
     }
 
-    public function getType(): string
+    public function getType(): MessageType
     {
-        return self::TYPE_SLACK;
+        return MessageType::Slack;
     }
 
-    public function text(string $text): self
+    public function setText(string $text): self
     {
         $this->text = $text;
 
