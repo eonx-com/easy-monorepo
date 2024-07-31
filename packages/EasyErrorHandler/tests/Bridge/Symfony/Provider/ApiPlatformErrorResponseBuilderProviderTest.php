@@ -122,6 +122,19 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 ' from serialized data because its constructor requires parameter "description" to be present.',
         ];
 
+        yield 'missing constructor argument with serializedName attribute' => [
+            'url' => '/payments',
+            'json' => [],
+            'violations' => [
+                'type' => [
+                    'This value should be present.',
+                ],
+            ],
+            'exceptionMessage' => 'Cannot create an instance of ' .
+                '"EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\ApiResource\\Payment"' .
+                ' from serialized data because its constructor requires parameter "paymentType" to be present.',
+        ];
+
         yield 'missing constructor argument in DTO' => [
             'url' => '/books',
             'json' => [
@@ -143,6 +156,21 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 '"EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\DataTransferObject\\Author"' .
                 ' from serialized data because its constructor requires the following parameters to be present' .
                 ' : "$name", "$age".',
+        ];
+
+        yield 'missing constructor argument in DTO with serializedName attribute' => [
+            'url' => '/payments-dto-with-constructor',
+            'json' => [],
+            'violations' => [
+                'type' => [
+                    'This value should be present.',
+                ],
+            ],
+            'exceptionMessage' => 'Cannot create an instance of ' .
+                '"EonX\\EasyErrorHandler\\Tests\\Bridge\\Symfony\\Fixtures\\App\\DataTransferObject' .
+                '\\PaymentInputDtoWithConstructor"' .
+                ' from serialized data because its constructor requires the following parameters to be present' .
+                ' : "$paymentType".',
         ];
 
         yield 'invalid constructor argument type' => [
