@@ -18,6 +18,8 @@ use Psr\Log\LoggerInterface;
 
 final class LoggerFactory implements LazyLoggerFactoryInterface
 {
+    private const DEFAULT_CHANNEL = 'app';
+
     private readonly string $defaultChannel;
 
     /**

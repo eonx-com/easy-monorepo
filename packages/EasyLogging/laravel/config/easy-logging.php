@@ -1,13 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyLogging\Factory\LoggerFactoryInterface;
-
 return [
     /**
      * Define the default channel name for the application.
      */
-    'default_channel' => LoggerFactoryInterface::DEFAULT_CHANNEL,
+    'default_channel' => 'app',
 
     /**
      * Identify channels for lazy creation. "*" means all.
