@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\ValueObject;
 
+use EonX\EasyBatch\Common\Enum\BatchItemType;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
+
 abstract class AbstractBatchItem extends AbstractBatchObject implements BatchItemInterface
 {
     private int $attempts = 0;
@@ -22,8 +25,8 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
     public function __construct()
     {
         $this
-            ->setStatus(BatchObjectInterface::STATUS_CREATED)
-            ->setType(BatchItemInterface::TYPE_MESSAGE);
+            ->setStatus(BatchObjectStatus::Created)
+            ->setType(BatchItemType::Message->value);
     }
 
     public function canBeRetried(): bool
@@ -72,12 +75,7 @@ abstract class AbstractBatchItem extends AbstractBatchObject implements BatchIte
             return true;
         }
 
-        $pendingApprovalStatuses = [
-            self::STATUS_BATCH_PENDING_APPROVAL,
-            self::STATUS_PROCESSING_DEPENDENT_OBJECTS,
-        ];
-
-        return \in_array($this->getStatus(), $pendingApprovalStatuses, true);
+        return \in_array($this->getStatus(), BatchObjectStatus::STATUSES_FOR_PENDING_APPROVAL, true);
     }
 
     public function isRetried(): bool
