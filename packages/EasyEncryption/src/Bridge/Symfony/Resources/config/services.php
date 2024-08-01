@@ -37,7 +37,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 
     $services->set(HashCalculatorInterface::class, HmacSha512HashCalculator::class)
-        ->arg('$secret', env('APP_SECRET', 'some-secret'));
+        ->arg('$secret', env('APP_SECRET'));
 
     $services->set(StringEncryptor::class)
         ->arg('$encryptor', service(Encryptor::class))
