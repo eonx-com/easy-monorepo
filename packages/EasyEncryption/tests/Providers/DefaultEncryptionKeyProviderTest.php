@@ -88,4 +88,15 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
 
         self::assertTrue($result);
     }
+
+    public function testResetSucceeds(): void
+    {
+        $keyFactory = new DefaultEncryptionKeyFactory();
+        $sut = new DefaultEncryptionKeyProvider($keyFactory, []);
+        self::setPrivatePropertyValue($sut, 'resolved', ['some-key' => 'some-value']);
+
+        $sut->reset();
+
+        self::assertSame([], self::getPrivatePropertyValue($sut, 'resolved'));
+    }
 }
