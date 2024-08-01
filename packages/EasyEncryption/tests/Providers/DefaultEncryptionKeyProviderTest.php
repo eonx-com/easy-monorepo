@@ -17,7 +17,7 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
 {
     use PrivatePropertyAccessTrait;
 
-    public function testGetKeySucceeds()
+    public function testGetKeySucceeds(): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $value = 'key-must-be-exactly-32-byte-long';
@@ -27,10 +27,11 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
 
         $result = $sut->getKey('some-key');
 
+        self::assertInstanceOf(EncryptionKey::class, $result);
         self::assertSame($value, $result->getRawKeyMaterial());
     }
 
-    public function testGetKeySucceedsForAlreadyResolvedValue()
+    public function testGetKeySucceedsForAlreadyResolvedValue(): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $value = 'key-must-be-exactly-32-byte-long';
@@ -40,10 +41,11 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
 
         $result = $sut->getKey('some-key');
 
+        self::assertInstanceOf(EncryptionKey::class, $result);
         self::assertSame($value, $result->getRawKeyMaterial());
     }
 
-    public function testGetKeyThrowsExceptionIfKeyResolverIsNotFound()
+    public function testGetKeyThrowsExceptionIfKeyResolverIsNotFound(): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $sut = new DefaultEncryptionKeyProvider($keyFactory, []);
@@ -54,7 +56,7 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
         $sut->getKey('some-key');
     }
 
-    public function testGetKeyThrowsExceptionInCaseOfCircularReference()
+    public function testGetKeyThrowsExceptionInCaseOfCircularReference(): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $value = 'key-must-be-exactly-32-byte-long';
@@ -68,7 +70,7 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
         $sut->getKey('some-key');
     }
 
-    public function testHasKeyReturnsFalse()
+    public function testHasKeyReturnsFalse(): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $sut = new DefaultEncryptionKeyProvider($keyFactory, []);
@@ -78,7 +80,7 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
         self::assertFalse($result);
     }
 
-    public function testHasKeyReturnsTrue()
+    public function testHasKeyReturnsTrue(): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $resolver = new EncryptionKeyResolverStub(['some-key' => 'some-value']);
