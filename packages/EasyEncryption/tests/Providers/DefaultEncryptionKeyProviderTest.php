@@ -17,7 +17,20 @@ final class DefaultEncryptionKeyProviderTest extends AbstractSymfonyTestCase
 {
     use PrivatePropertyAccessTrait;
 
-    public function testGetKeySucceedsForResolvedValue()
+    public function testGetKeySucceeds()
+    {
+        $keyFactory = new DefaultEncryptionKeyFactory();
+        $value = 'key-must-be-exactly-32-byte-long';
+        $encryptionKey = new EncryptionKey(new HiddenString($value));
+        $resolver = new EncryptionKeyResolverStub(['some-key' => $encryptionKey]);
+        $sut = new DefaultEncryptionKeyProvider($keyFactory, [$resolver]);
+
+        $result = $sut->getKey('some-key');
+
+        self::assertSame($value, $result->getRawKeyMaterial());
+    }
+
+    public function testGetKeySucceedsForAlreadyResolvedValue()
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $value = 'key-must-be-exactly-32-byte-long';
