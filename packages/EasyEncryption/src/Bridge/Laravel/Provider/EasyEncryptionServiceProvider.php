@@ -43,21 +43,21 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
     private function registerAwsCloudHsmEncryptor(): void
     {
-        if (\config('aws_cloud_hsm_encryptor.enabled', true) === false) {
+        if (\config('easy-encryption.aws_cloud_hsm_encryptor.enabled', true) === false) {
             return;
         }
 
         $this->app->singleton(
             AwsCloudHsmSdkOptionsBuilder::class,
             static fn (): AwsCloudHsmSdkOptionsBuilder => new AwsCloudHsmSdkOptionsBuilder(
-                hsmCaCert: \config('aws_pkcs11_hsm_ca_cert'),
-                disableKeyAvailabilityCheck: \config('aws_pkcs11_disable_key_availability_check'),
-                hsmIpAddress: \config('aws_pkcs11_hsm_ip_address'),
-                cloudHsmClusterId: \config('aws_pkcs11_cloud_hsm_cluster_id'),
-                awsRegion: \config('aws_pkcs11_aws_region'),
-                serverClientCertFile: \config('aws_pkcs11_server_client_cert_file'),
-                serverClientKeyFile: \config('aws_pkcs11_server_client_key_file'),
-                cloudHsmSdkOptions: \config('aws_pkcs11_cloud_hsm_sdk_options')
+                hsmCaCert: \config('easy-encryption.aws_pkcs11_hsm_ca_cert'),
+                disableKeyAvailabilityCheck: \config('easy-encryption.aws_pkcs11_disable_key_availability_check'),
+                hsmIpAddress: \config('easy-encryption.aws_pkcs11_hsm_ip_address'),
+                cloudHsmClusterId: \config('easy-encryption.aws_pkcs11_cloud_hsm_cluster_id'),
+                awsRegion: \config('easy-encryption.aws_pkcs11_aws_region'),
+                serverClientCertFile: \config('easy-encryption.aws_pkcs11_server_client_cert_file'),
+                serverClientKeyFile: \config('easy-encryption.aws_pkcs11_server_client_key_file'),
+                cloudHsmSdkOptions: \config('easy-encryption.aws_pkcs11_cloud_hsm_sdk_options')
             )
         );
 
@@ -65,18 +65,18 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             AwsCloudHsmSdkConfigurator::class,
             static fn (Container $app): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
                 awsCloudHsmSdkOptionsBuilder: $app->make(AwsCloudHsmSdkOptionsBuilder::class),
-                awsRoleArn: \config('aws_pkcs11_aws_role_arn'),
-                useCloudHsmConfigureTool: (bool)\config('aws_pkcs11_use_cloud_hsm_configure_tool')
+                awsRoleArn: \config('easy-encryption.aws_pkcs11_aws_role_arn'),
+                useCloudHsmConfigureTool: (bool)\config('easy-encryption.aws_pkcs11_use_cloud_hsm_configure_tool')
             )
         );
 
         $this->app->singleton(
             AwsPkcs11EncryptorInterface::class,
             static fn (Container $app): AwsPkcs11EncryptorInterface => new AwsPkcs11Encryptor(
-                userPin: \config('aws_pkcs11_user_pin'),
+                userPin: \config('easy-encryption.aws_pkcs11_user_pin'),
                 awsCloudHsmSdkConfigurator: $app->make(AwsCloudHsmSdkConfigurator::class),
-                aad: \config('aws_pkcs11_aad'),
-                defaultKeyName: \config('default_key_name')
+                aad: \config('easy-encryption.aws_pkcs11_aad'),
+                defaultKeyName: \config('easy-encryption.default_key_name')
             )
         );
 
@@ -84,7 +84,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             HashCalculatorInterface::class,
             static fn (Container $app): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
                 encryptor: $app->make(AwsPkcs11EncryptorInterface::class),
-                signKeyName: \config('default_key_name')
+                signKeyName: \config('easy-encryption.default_key_name')
             )
         );
 
@@ -92,8 +92,8 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             StringEncryptor::class,
             static fn (Container $app): StringEncryptor => new StringEncryptor(
                 encryptor: $app->make(AwsPkcs11EncryptorInterface::class),
-                encryptionKeyName: \config('default_key_name'),
-                maxChunkSize: \config('max_chunk_size')
+                encryptionKeyName: \config('easy-encryption.default_key_name'),
+                maxChunkSize: \config('easy-encryption.max_chunk_size')
             )
         );
     }

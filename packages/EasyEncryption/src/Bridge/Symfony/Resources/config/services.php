@@ -40,7 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$secret', env('APP_SECRET'));
 
     $services->set(StringEncryptor::class)
-        ->arg('$encryptor', service(Encryptor::class))
+        ->arg('$encryptor', service(EncryptorInterface::class))
         ->arg('$encryptionKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME))
         ->arg('$maxChunkSize', param(BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE));
 
