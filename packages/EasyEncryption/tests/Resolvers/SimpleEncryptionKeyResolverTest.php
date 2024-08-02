@@ -29,7 +29,7 @@ final class SimpleEncryptionKeyResolverTest extends AbstractSymfonyTestCase
 
         $result = $sut->resolveKey('some-key');
 
-        self::assertSame(['key' => 'short-key',    'salt' => 'must-be-16-bytes'], $result);
+        self::assertSame(['key' => 'short-key', 'salt' => 'must-be-16-bytes'], $result);
     }
 
     public function testItThrowsExceptionForShortKeyWithoutSalt(): void
