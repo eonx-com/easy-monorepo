@@ -6,9 +6,6 @@ use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return static function (DefinitionConfigurator $definition) {
-    $defaultLocale = 'en';
-    $defaultErrorCodesCategorySize = 100;
-
     $definition->rootNode()
         ->children()
             ->arrayNode('bugsnag')
@@ -75,13 +72,12 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->arrayNode('translate_internal_error_messages')
-                ->addDefaultsIfNotSet()
+                ->canBeEnabled()
                 ->children()
-                    ->booleanNode('enabled')->defaultFalse()->end()
-                    ->scalarNode('locale')->defaultValue($defaultLocale)->end()
+                    ->scalarNode('locale')->defaultValue('en')->end()
                 ->end()
             ->end()
             ->scalarNode('error_codes_interface')->defaultNull()->end()
-            ->scalarNode('error_codes_category_size')->defaultValue($defaultErrorCodesCategorySize)->end()
+            ->scalarNode('error_codes_category_size')->defaultValue(100)->end()
         ->end();
 };

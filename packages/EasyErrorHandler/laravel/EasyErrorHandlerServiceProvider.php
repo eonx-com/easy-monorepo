@@ -86,7 +86,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(
             ErrorLogLevelResolverInterface::class,
             static fn (): ErrorLogLevelResolverInterface => new ErrorLogLevelResolver(
-                \config('easy-error-handler.logger_exception_log_levels')
+                \config('easy-error-handler.logger.exception_log_levels')
             )
         );
 
@@ -150,7 +150,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     $app->make(ErrorDetailsResolverInterface::class),
                     $app->make(ErrorLogLevelResolverInterface::class),
                     $app->make(LoggerInterface::class),
-                    \config('easy-error-handler.logger_ignored_exceptions')
+                    \config('easy-error-handler.logger.ignored_exceptions')
                 )
             );
             $this->app->tag(
@@ -162,11 +162,11 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         $this->app->singleton(
             BugsnagExceptionIgnorerInterface::class,
             static fn (): BugsnagExceptionIgnorerInterface => new DefaultBugsnagExceptionIgnorer(
-                \config('easy-error-handler.bugsnag_ignored_exceptions')
+                \config('easy-error-handler.bugsnag.ignored_exceptions')
             )
         );
 
-        if ((bool)\config('easy-error-handler.bugsnag_enabled', true) && \class_exists(Client::class)) {
+        if ((bool)\config('easy-error-handler.bugsnag.enabled', true) && \class_exists(Client::class)) {
             $this->app->tag(
                 BugsnagExceptionIgnorerInterface::class,
                 [ConfigTag::BugsnagExceptionIgnorer->value]
@@ -178,7 +178,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     $app->make(Client::class),
                     $app->tagged(ConfigTag::BugsnagExceptionIgnorer->value),
                     $app->make(ErrorLogLevelResolverInterface::class),
-                    \config('easy-error-handler.bugsnag_threshold')
+                    \config('easy-error-handler.bugsnag.threshold')
                 )
             );
 
@@ -195,7 +195,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             $this->app->singleton(
                 UnhandledClientConfigurator::class,
                 static fn (): UnhandledClientConfigurator => new UnhandledClientConfigurator(
-                    \config('easy-error-handler.bugsnag_handled_exceptions')
+                    \config('easy-error-handler.bugsnag.handled_exceptions')
                 )
             );
         }

@@ -18,6 +18,8 @@ The following configuration options are available:
 
 - `advanced_search_filter`: Configures options for the `\EonX\EasyApiPlatform\Common\Filter\AdvancedSearchFilter` class.
     - `iri_fields`: An array of fields to be treated as IRIs. Defaults to `[]`.
+- `custom_paginator`:
+    - `enabled`: Whether to enable the custom paginator. Defaults to `true`.
 
 ## Example configuration file
 
