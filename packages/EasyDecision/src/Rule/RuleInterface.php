@@ -7,10 +7,6 @@ use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 
 interface RuleInterface extends HasPriorityInterface
 {
-    public const OUTPUT_SKIPPED = 'skipped';
-
-    public const OUTPUT_UNSUPPORTED = 'unsupported';
-
     public function proceed(array $input): mixed;
 
     public function supports(array $input): bool;

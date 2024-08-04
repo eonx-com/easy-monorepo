@@ -21,8 +21,8 @@ final class Locker implements LockerInterface
     private ?LockFactory $factory = null;
 
     public function __construct(
-        private PersistingStoreInterface $store,
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly PersistingStoreInterface $store,
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

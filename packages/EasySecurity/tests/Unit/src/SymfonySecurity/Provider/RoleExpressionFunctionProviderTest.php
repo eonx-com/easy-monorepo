@@ -15,9 +15,9 @@ final class RoleExpressionFunctionProviderTest extends AbstractUnitTestCase
     {
         $function = (new RoleExpressionFunctionProvider([self::class]))->getFunctions()[0];
 
-        self::assertSame(self::ROLE_VALID, $function->getEvaluator()([], 'ROLE_VALID'));
+        self::assertSame('role', $function->getEvaluator()([], 'ROLE_VALID'));
         // Using cached role
-        self::assertSame(self::ROLE_VALID, $function->getEvaluator()([], 'ROLE_VALID'));
+        self::assertSame('role', $function->getEvaluator()([], 'ROLE_VALID'));
     }
 
     public function testRoleExpressionFunctionFoundWithEnum(): void

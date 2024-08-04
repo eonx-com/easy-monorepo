@@ -7,7 +7,7 @@ use EonX\EasyBankFiles\Generation\Common\Generator\AbstractGenerator;
 
 final class GeneratorStub extends AbstractGenerator
 {
-    private array $transactions;
+    private readonly array $transactions;
 
     /**
      * @throws \EonX\EasyBankFiles\Generation\Common\Exception\ValidationFailedException

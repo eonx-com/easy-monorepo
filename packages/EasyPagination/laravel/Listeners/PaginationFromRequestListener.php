@@ -7,7 +7,7 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use Illuminate\Routing\Events\RouteMatched;
 
-final class PaginationFromRequestListener
+final readonly class PaginationFromRequestListener
 {
     public function __construct(
         private PaginationProviderInterface $paginationProvider,

@@ -7,7 +7,7 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-final class PaginationFromRequestListener
+final readonly class PaginationFromRequestListener
 {
     public function __construct(
         private PaginationProviderInterface $paginationProvider,

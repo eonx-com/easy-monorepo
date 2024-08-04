@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization\ValueObject;
 
-final class Permission implements PermissionInterface
+final readonly class Permission implements PermissionInterface
 {
     public function __construct(
         private string $identifier,

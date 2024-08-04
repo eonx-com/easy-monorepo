@@ -13,11 +13,11 @@ final class SessionTracker
     /**
      * @var string[]
      */
-    private array $exclude;
+    private readonly array $exclude;
 
-    private string $excludeDelimiter;
+    private readonly string $excludeDelimiter;
 
-    private BugsnagSessionTracker $sessionTracker;
+    private readonly BugsnagSessionTracker $sessionTracker;
 
     /**
      * @param string[]|null $exclude

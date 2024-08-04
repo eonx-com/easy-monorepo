@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\ValueObject;
 
-final class SubscribeInfo implements SubscribeInfoInterface
+final readonly class SubscribeInfo implements SubscribeInfoInterface
 {
     /**
      * @param string[] $topics

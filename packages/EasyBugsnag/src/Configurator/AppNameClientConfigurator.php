@@ -11,7 +11,7 @@ use EonX\EasyBugsnag\Resolver\AppNameResolverInterface;
 final class AppNameClientConfigurator extends AbstractClientConfigurator
 {
     public function __construct(
-        private AppNameResolverInterface $appNameResolver,
+        private readonly AppNameResolverInterface $appNameResolver,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

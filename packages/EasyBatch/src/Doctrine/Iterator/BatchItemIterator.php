@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Doctrine\Iterator;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\ValueObject\Pagination;
@@ -94,8 +93,8 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
             QueryBuilder $queryBuilder,
             array $statuses,
         ): array => \array_map(
-            static fn (string $status): string => $queryBuilder->getConnection()
-                ->quote($status),
+            static fn (BatchObjectStatus $status): string => $queryBuilder->getConnection()
+                ->quote($status->value),
             $statuses
         );
 
@@ -105,7 +104,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
                     $queryBuilder
                         ->andWhere($queryBuilder->expr()->notIn(
                             'status',
-                            $quote($queryBuilder, BatchObjectInterface::STATUSES_FOR_COMPLETED)
+                            $quote($queryBuilder, BatchObjectStatus::STATUSES_FOR_COMPLETE)
                         ));
                 });
             });
@@ -117,7 +116,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
                     $queryBuilder
                         ->andWhere($queryBuilder->expr()->in(
                             'status',
-                            $quote($queryBuilder, BatchItemInterface::STATUSES_FOR_DISPATCH)
+                            $quote($queryBuilder, BatchObjectStatus::STATUSES_FOR_DISPATCH)
                         ));
                 });
             });

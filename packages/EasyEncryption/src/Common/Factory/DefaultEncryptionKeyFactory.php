@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Common\Factory;
 
+use EonX\EasyEncryption\Common\Enum\EncryptionKeyOption;
 use EonX\EasyEncryption\Common\Exception\CouldNotCreateEncryptionKeyException;
 use EonX\EasyEncryption\Common\Exception\InvalidEncryptionKeyException;
 use EonX\EasyEncryption\Common\Helper\KeyLengthHelper;
@@ -63,17 +64,17 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
      */
     private function doCreateFromArray(array $key): EncryptionKey|EncryptionKeyPair
     {
-        if (isset($key[self::OPTION_KEY], $key[self::OPTION_SALT])) {
+        if (isset($key[EncryptionKeyOption::Key->value], $key[EncryptionKeyOption::Salt->value])) {
             return KeyFactory::deriveEncryptionKey(
-                $this->getHiddenString((string)$key[self::OPTION_KEY]),
-                (string)$key[self::OPTION_SALT]
+                $this->getHiddenString((string)$key[EncryptionKeyOption::Key->value]),
+                (string)$key[EncryptionKeyOption::Salt->value]
             );
         }
 
-        if (isset($key[self::OPTION_SECRET_KEY], $key[self::OPTION_PUBLIC_KEY])) {
+        if (isset($key[EncryptionKeyOption::SecretKey->value], $key[EncryptionKeyOption::PublicKey->value])) {
             return new EncryptionKeyPair(
-                new EncryptionSecretKey($this->getHiddenString($key[self::OPTION_SECRET_KEY])),
-                new EncryptionPublicKey($this->getHiddenString($key[self::OPTION_PUBLIC_KEY]))
+                new EncryptionSecretKey($this->getHiddenString($key[EncryptionKeyOption::SecretKey->value])),
+                new EncryptionPublicKey($this->getHiddenString($key[EncryptionKeyOption::PublicKey->value]))
             );
         }
 

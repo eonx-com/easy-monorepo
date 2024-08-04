@@ -13,11 +13,11 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 
 final class AsyncMiddleware extends AbstractMiddleware
 {
-    private bool $enabled;
+    private readonly bool $enabled;
 
     public function __construct(
-        private AsyncDispatcherInterface $dispatcher,
-        private StoreInterface $store,
+        private readonly AsyncDispatcherInterface $dispatcher,
+        private readonly StoreInterface $store,
         ?bool $enabled = null,
         ?int $priority = null,
     ) {

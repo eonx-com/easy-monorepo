@@ -20,6 +20,10 @@ use Throwable;
 
 abstract class AbstractDecision implements DecisionInterface
 {
+    private const OUTPUT_SKIPPED = 'skipped';
+
+    private const OUTPUT_UNSUPPORTED = 'unsupported';
+
     protected ?ContextInterface $context = null;
 
     protected array $input;
@@ -211,14 +215,14 @@ abstract class AbstractDecision implements DecisionInterface
                     break;
                 }
 
-                $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_SKIPPED);
+                $this->addDecisionOutputForRule($rule, self::OUTPUT_SKIPPED);
 
                 continue;
             }
 
             // If rule doesn't support the input
             if ($rule->supports($this->input) === false) {
-                $this->addDecisionOutputForRule($rule, RuleInterface::OUTPUT_UNSUPPORTED);
+                $this->addDecisionOutputForRule($rule, self::OUTPUT_UNSUPPORTED);
 
                 continue;
             }

@@ -15,9 +15,9 @@ final class Number implements Stringable
 
     private const SCALE = 99;
 
-    private int $precision;
+    private readonly int $precision;
 
-    private string $value;
+    private readonly string $value;
 
     public function __construct(int|string|self $value, ?int $precision = null)
     {

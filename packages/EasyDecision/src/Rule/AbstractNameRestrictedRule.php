@@ -7,7 +7,7 @@ use EonX\EasyDecision\Decision\DecisionInterface;
 
 abstract class AbstractNameRestrictedRule implements RestrictedRuleInterface
 {
-    private int $priority;
+    private readonly int $priority;
 
     public function __construct(?int $priority = null)
     {

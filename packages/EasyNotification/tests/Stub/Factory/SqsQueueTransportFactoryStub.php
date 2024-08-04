@@ -9,7 +9,7 @@ use EonX\EasyNotification\Transport\QueueTransportInterface;
 use EonX\EasyNotification\Transport\SqsQueueTransport;
 use EonX\EasyNotification\ValueObject\ConfigInterface;
 
-final class SqsQueueTransportFactoryStub implements QueueTransportFactoryInterface
+final readonly class SqsQueueTransportFactoryStub implements QueueTransportFactoryInterface
 {
     public function __construct(
         private SqsClient $sqsClient,

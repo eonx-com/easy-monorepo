@@ -8,7 +8,7 @@ use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterfa
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Utils\VersionUtils;
 
-final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
+final readonly class PushNextDevReleaseWorker implements ReleaseWorkerInterface
 {
     public function __construct(
         private ProcessRunner $processRunner,

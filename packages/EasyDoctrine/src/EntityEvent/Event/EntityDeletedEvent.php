@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\EntityEvent\Event;
 
-final class EntityDeletedEvent implements EntityActionEventInterface
+final readonly class EntityDeletedEvent implements EntityActionEventInterface
 {
     public function __construct(
         private object $entity,

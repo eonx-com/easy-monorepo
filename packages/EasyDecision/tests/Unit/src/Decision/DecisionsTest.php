@@ -7,7 +7,6 @@ use EonX\EasyDecision\Decision\ConsensusDecision;
 use EonX\EasyDecision\Decision\DecisionInterface;
 use EonX\EasyDecision\Decision\ValueDecision;
 use EonX\EasyDecision\Provider\ValueExpressionFunctionProvider;
-use EonX\EasyDecision\Rule\RuleInterface;
 use EonX\EasyDecision\Tests\Stub\Rule\RuleStopPropagationStub;
 use EonX\EasyDecision\Tests\Stub\Rule\RuleStub;
 use EonX\EasyDecision\Tests\Stub\Rule\RuleWithExtraOutputStub;
@@ -89,7 +88,7 @@ final class DecisionsTest extends AbstractUnitTestCase
             true,
             [
                 'Unsupported with extra' => [
-                    'output' => RuleInterface::OUTPUT_UNSUPPORTED,
+                    'output' => 'unsupported',
                     'key' => 'value',
                 ],
                 'Only false' => false,

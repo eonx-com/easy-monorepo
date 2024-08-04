@@ -25,7 +25,7 @@ final class WorkerMessageReceivedListener
     private ?CliDumper $varDumper = null;
 
     public function __construct(
-        private Client $client,
+        private readonly Client $client,
     ) {
     }
 

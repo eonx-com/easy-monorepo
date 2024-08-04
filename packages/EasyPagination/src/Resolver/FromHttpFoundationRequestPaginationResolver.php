@@ -8,7 +8,7 @@ use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
 use EonX\EasyPagination\ValueObject\PaginationInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class FromHttpFoundationRequestPaginationResolver
+final readonly class FromHttpFoundationRequestPaginationResolver
 {
     public function __construct(
         private PaginationConfigInterface $config,

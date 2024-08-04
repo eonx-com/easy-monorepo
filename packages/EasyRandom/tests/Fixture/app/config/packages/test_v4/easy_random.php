@@ -5,6 +5,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Config\EasyRandomConfig;
 
-return static function (EasyRandomConfig $randomConfig): void {
-    $randomConfig->uuidVersion(6);
+return static function (EasyRandomConfig $easyRandomConfig): void {
+    $easyRandomConfig->uuidVersion(4);
 };

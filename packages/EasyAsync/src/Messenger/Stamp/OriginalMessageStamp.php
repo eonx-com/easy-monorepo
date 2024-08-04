@@ -5,7 +5,7 @@ namespace EonX\EasyAsync\Messenger\Stamp;
 
 use Symfony\Component\Messenger\Stamp\NonSendableStampInterface;
 
-final class OriginalMessageStamp implements NonSendableStampInterface
+final readonly class OriginalMessageStamp implements NonSendableStampInterface
 {
     public function __construct(
         private string $body,

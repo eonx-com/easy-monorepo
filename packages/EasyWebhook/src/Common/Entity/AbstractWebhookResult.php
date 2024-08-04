@@ -11,9 +11,9 @@ abstract class AbstractWebhookResult implements WebhookResultInterface
     private ?string $id = null;
 
     public function __construct(
-        private WebhookInterface $webhook,
-        private ?ResponseInterface $response = null,
-        private ?Throwable $throwable = null,
+        private readonly WebhookInterface $webhook,
+        private readonly ?ResponseInterface $response = null,
+        private readonly ?Throwable $throwable = null,
     ) {
     }
 

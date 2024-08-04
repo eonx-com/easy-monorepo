@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Common\Processor;
 
 use Carbon\Carbon;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Event\BatchCancelledEvent;
 use EonX\EasyBatch\Common\Event\BatchCompletedEvent;
 use EonX\EasyBatch\Common\Event\BatchItemCancelledEvent;
@@ -13,7 +14,6 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final class BatchProcessor
@@ -165,18 +165,14 @@ final class BatchProcessor
         BatchItemInterface $batchItem,
     ): void {
         $currentStatus = $batchItem->getStatus();
-        $toCancelStatuses = [
-            BatchObjectInterface::STATUS_CANCELLED,
-            BatchObjectInterface::STATUS_FAILED,
-        ];
 
-        $batchItem->setStatus(BatchItemInterface::STATUS_PROCESSING_DEPENDENT_OBJECTS);
+        $batchItem->setStatus(BatchObjectStatus::ProcessingDependentObjects);
 
-        if ($currentStatus === BatchObjectInterface::STATUS_SUCCEEDED) {
+        if ($currentStatus === BatchObjectStatus::Succeeded) {
             $batchObjectManager->approve($batchItem);
         }
 
-        if (\in_array($currentStatus, $toCancelStatuses, true)) {
+        if (\in_array($currentStatus, BatchObjectStatus::STATUSES_FOR_CANCEL, true)) {
             $batchObjectManager->cancel($batchItem);
         }
     }
@@ -192,7 +188,7 @@ final class BatchProcessor
 
         if ($batch->isSucceeded()) {
             // Change status to pending approval to trick batchObjectManager
-            $batch->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
+            $batch->setStatus(BatchObjectStatus::SucceededPendingApproval);
 
             $batchObjectManager->approve($batch);
         }
@@ -207,7 +203,7 @@ final class BatchProcessor
         // Start the batch timer
         if ($freshBatch->getStartedAt() === null) {
             $freshBatch->setStartedAt(Carbon::now('UTC'));
-            $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
+            $freshBatch->setStatus(BatchObjectStatus::Processing);
         }
 
         // Last item of the batch
@@ -218,7 +214,7 @@ final class BatchProcessor
             if ($freshBatch->countCancelled() === $freshBatch->countTotal()) {
                 $freshBatch
                     ->setCancelledAt($freshBatch->getCancelledAt() ?? Carbon::now('UTC'))
-                    ->setStatus(BatchObjectInterface::STATUS_CANCELLED);
+                    ->setStatus(BatchObjectStatus::Cancelled);
             }
 
             // If batch not cancelled from statement above, set status
@@ -226,20 +222,20 @@ final class BatchProcessor
                 // Batch failed if not all items succeeded
                 $freshBatch->setStatus(
                     $freshBatch->countSucceeded() < $freshBatch->countTotal()
-                        ? BatchObjectInterface::STATUS_FAILED
-                        : BatchObjectInterface::STATUS_SUCCEEDED
+                        ? BatchObjectStatus::Failed
+                        : BatchObjectStatus::Succeeded
                 );
             }
         }
 
         // Handle previously completed batch
         if ($freshBatch->isCompleted() === false && $freshBatch->countProcessed() > 0) {
-            $freshBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
+            $freshBatch->setStatus(BatchObjectStatus::Processing);
         }
 
         // Handle approval required
         if ($freshBatch->isSucceeded() && $freshBatch->isApprovalRequired()) {
-            $freshBatch->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
+            $freshBatch->setStatus(BatchObjectStatus::SucceededPendingApproval);
         }
     }
 }

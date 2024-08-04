@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Tests\Unit\Decision;
 
 use EonX\EasyDecision\Decision\UnanimousDecision;
-use EonX\EasyDecision\Rule\RuleInterface;
 use EonX\EasyDecision\Tests\Unit\AbstractUnitTestCase;
 
 final class UnanimousDecisionTest extends AbstractUnitTestCase
@@ -22,7 +21,7 @@ final class UnanimousDecisionTest extends AbstractUnitTestCase
             'true-1' => true,
             'true-2' => true,
             'false-1' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_SKIPPED,
+            'unsupported-1' => 'skipped',
         ];
 
         self::assertFalse($decision->make([]));
@@ -42,7 +41,7 @@ final class UnanimousDecisionTest extends AbstractUnitTestCase
             'true-1' => true,
             'true-2' => true,
             'true-3' => true,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertTrue($decision->make([]));
@@ -54,7 +53,7 @@ final class UnanimousDecisionTest extends AbstractUnitTestCase
         $decision = (new UnanimousDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
         $expected = [
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertTrue($decision->make([]));

@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Tests\Stub\Provider;
 
 use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 
-final class AuthorizationRolesProviderStub implements RolesProviderInterface
+final readonly class AuthorizationRolesProviderStub implements RolesProviderInterface
 {
     /**
      * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]|null $roles

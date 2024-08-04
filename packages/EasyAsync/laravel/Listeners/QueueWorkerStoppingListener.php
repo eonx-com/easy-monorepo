@@ -7,7 +7,7 @@ use Illuminate\Queue\Events\WorkerStopping;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class QueueWorkerStoppingListener implements WorkerStoppingListenerInterface
+final readonly class QueueWorkerStoppingListener implements WorkerStoppingListenerInterface
 {
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),

@@ -5,11 +5,11 @@ namespace EonX\EasyBatch\Doctrine\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Types;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Exception\BatchItemNotFoundException;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchCounts;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
 use EonX\EasyPagination\ValueObject\PaginationInterface;
@@ -39,7 +39,13 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         $results = \array_column($results, '_count', 'status');
 
         foreach ($results as $status => $count) {
-            if (\in_array($status, BatchObjectInterface::STATUSES_FOR_COMPLETED, true)) {
+            if (
+                \in_array(
+                    $status,
+                    BatchObjectStatus::extractValues(BatchObjectStatus::STATUSES_FOR_COMPLETE),
+                    true
+                )
+            ) {
                 $completed += $count;
             }
 
@@ -47,10 +53,10 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }
 
         return new BatchCounts(
-            $results[BatchObjectInterface::STATUS_CANCELLED] ?? 0,
-            $results[BatchObjectInterface::STATUS_FAILED] ?? 0,
+            $results[BatchObjectStatus::Cancelled->value] ?? 0,
+            $results[BatchObjectStatus::Failed->value] ?? 0,
             $completed,
-            $results[BatchObjectInterface::STATUS_SUCCEEDED] ?? 0,
+            $results[BatchObjectStatus::Succeeded->value] ?? 0,
             $total
         );
     }
@@ -64,7 +70,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     {
         $batchItem = $this->findOrFail($batchItemId);
 
-        if ($batchItem->getStatus() === BatchObjectInterface::STATUS_CREATED) {
+        if ($batchItem->getStatus() === BatchObjectStatus::Created) {
             $this->updateStatusToPending([$batchItem]);
         }
 
@@ -162,8 +168,8 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             ->update($this->table)
             ->set('status', ':statusPending')
             ->where('status = :statusCreated')
-            ->setParameter('statusPending', BatchObjectInterface::STATUS_PENDING, Types::STRING)
-            ->setParameter('statusCreated', BatchObjectInterface::STATUS_CREATED, Types::STRING);
+            ->setParameter('statusPending', BatchObjectStatus::Pending->value, Types::STRING)
+            ->setParameter('statusCreated', BatchObjectStatus::Created->value, Types::STRING);
 
         // Handle 1 batchItem
         if ($count === 1) {
@@ -189,7 +195,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         );
 
         foreach ($batchItems as $batchItem) {
-            $batchItem->setStatus(BatchObjectInterface::STATUS_PENDING);
+            $batchItem->setStatus(BatchObjectStatus::Pending);
         }
     }
 }

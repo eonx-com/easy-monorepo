@@ -18,7 +18,7 @@ use Monolog\Logger;
  */
 final class LoggerStub extends Logger
 {
-    private TestHandler $testHandler;
+    private readonly TestHandler $testHandler;
 
     /**
      * @param \Monolog\Handler\HandlerInterface[]|null $handlers

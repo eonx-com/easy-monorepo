@@ -12,7 +12,7 @@ final class RequestIdErrorResponseBuilder extends AbstractErrorResponseBuilder i
     ErrorResponseBuilderProviderInterface
 {
     public function __construct(
-        private RequestIdProviderInterface $requestIdProvider,
+        private readonly RequestIdProviderInterface $requestIdProvider,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

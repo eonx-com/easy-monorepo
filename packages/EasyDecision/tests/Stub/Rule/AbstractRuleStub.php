@@ -7,13 +7,13 @@ use EonX\EasyDecision\Rule\RuleInterface;
 
 abstract class AbstractRuleStub implements RuleInterface
 {
-    private int $priority;
+    private readonly int $priority;
 
-    private bool $supports;
+    private readonly bool $supports;
 
     public function __construct(
-        private string $name,
-        private mixed $output,
+        private readonly string $name,
+        private readonly mixed $output,
         ?bool $supports = null,
         ?int $priority = null,
     ) {

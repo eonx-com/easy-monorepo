@@ -10,7 +10,7 @@ final class SendWebhookMessage
     private ?WebhookResultInterface $result = null;
 
     public function __construct(
-        private string $webhookId,
+        private readonly string $webhookId,
     ) {
     }
 

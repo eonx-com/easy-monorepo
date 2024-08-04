@@ -56,11 +56,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         )
         ->arg('$skipReportedExceptions', param(ConfigParam::SkipReportedExceptions->value));
 
-    $services->set(ErrorHandlerDataCollector::class)
-        ->tag('data_collector', [
-            'id' => 'error_handler.error_handler_collector',
-            'template' => '@EasyErrorHandler/collector/error_handler_collector.html.twig',
-        ]);
+    $services->set(ErrorHandlerDataCollector::class);
 
     // Console EventListener
     $services

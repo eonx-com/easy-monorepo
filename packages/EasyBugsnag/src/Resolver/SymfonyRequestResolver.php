@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class SymfonyRequestResolver extends AbstractRequestResolver
 {
     public function __construct(
-        private RequestStack $requestStack,
+        private readonly RequestStack $requestStack,
     ) {
     }
 

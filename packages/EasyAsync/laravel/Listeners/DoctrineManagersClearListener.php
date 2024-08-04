@@ -8,7 +8,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class DoctrineManagersClearListener
+final readonly class DoctrineManagersClearListener
 {
     /**
      * @param string[]|null $managers
