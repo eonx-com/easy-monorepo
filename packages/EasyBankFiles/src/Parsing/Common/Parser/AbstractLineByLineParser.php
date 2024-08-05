@@ -31,7 +31,7 @@ abstract class AbstractLineByLineParser extends AbstractParser
         $lineNumber = 1;
 
         foreach ($contents as $line) {
-            $line = \trim($line);
+            $line = \trim((string)$line);
 
             if ($line === '') {
                 continue;

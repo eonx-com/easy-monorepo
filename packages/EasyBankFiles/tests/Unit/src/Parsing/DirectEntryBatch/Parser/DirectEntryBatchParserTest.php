@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\DirectEntryBatch\Parser;
 
-use DateTime;
 use EonX\EasyBankFiles\Parsing\DirectEntryBatch\Parser\DirectEntryBatchParser;
 use EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\PaymentDetailRecord;
 use EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\RefusalDetailRecord;
