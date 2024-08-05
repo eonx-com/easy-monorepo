@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Dispatcher;
 
+use EonX\EasyBatch\Common\Enum\BatchItemType;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
@@ -47,13 +48,13 @@ final readonly class BatchItemDispatcher
         };
 
         $func = function (BatchItemInterface $batchItem) use ($batchObjectManager): void {
-            if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
+            if ($batchItem->getType() === BatchItemType::Message->value) {
                 $this->asyncDispatcher->dispatchItem($batchItem);
 
                 return;
             }
 
-            if ($batchItem->getType() === BatchItemInterface::TYPE_NESTED_BATCH) {
+            if ($batchItem->getType() === BatchItemType::NestedBatch->value) {
                 $batchObjectManager->dispatchBatch($this->batchRepository->findNestedOrFail($batchItem->getIdOrFail()));
             }
         };

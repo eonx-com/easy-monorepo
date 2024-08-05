@@ -7,8 +7,6 @@ use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 
 interface BatchRepositoryInterface
 {
-    public const DEFAULT_TABLE = 'easy_batches';
-
     public function find(int|string $id): ?BatchInterface;
 
     public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface;

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Unit\Doctrine\Repository;
 
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Serializer\MessageSerializer;
 use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyBatch\Doctrine\Repository\BatchItemRepository;
 use EonX\EasyBatch\Tests\Unit\Common\Repository\AbstractRepositoriesTestCase;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
@@ -74,7 +74,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
 
         $batchItem1 = $factory->create('batch-id', new stdClass());
         $batchItem2 = $factory->create('batch-id', new stdClass());
-        $batchItem2->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+        $batchItem2->setStatus(BatchObjectStatus::Succeeded);
 
         $repo->save($batchItem1);
         $repo->save($batchItem2);
@@ -114,7 +114,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
             $this->getIdStrategy(),
             new BatchItemTransformer(new MessageSerializer()),
             $this->getDoctrineDbalConnection(),
-            BatchItemRepositoryInterface::DEFAULT_TABLE
+            'easy_batch_items'
         );
     }
 }

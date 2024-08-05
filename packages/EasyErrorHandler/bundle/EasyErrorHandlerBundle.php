@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bundle;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Bundle\CompilerPass\ApiPlatformCompilerPass;
+use EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface;
 use EonX\EasyErrorHandler\Bundle\CompilerPass\ErrorHandlerCompilerPass;
 use EonX\EasyErrorHandler\Bundle\CompilerPass\ErrorRendererCompilerPass;
 use EonX\EasyErrorHandler\Bundle\Enum\ConfigParam;
@@ -30,7 +30,6 @@ final class EasyErrorHandlerBundle extends AbstractBundle
         parent::build($container);
 
         $container
-            ->addCompilerPass(new ApiPlatformCompilerPass())
             ->addCompilerPass(new ErrorHandlerCompilerPass())
             ->addCompilerPass(new ErrorRendererCompilerPass());
     }
@@ -44,23 +43,14 @@ final class EasyErrorHandlerBundle extends AbstractBundle
     {
         $parameters = $container->parameters();
 
-        $parameters->set(ConfigParam::BugsnagThreshold->value, $config['bugsnag_threshold']);
+        $parameters->set(ConfigParam::BugsnagThreshold->value, $config['bugsnag']['threshold']);
         $parameters->set(
             ConfigParam::BugsnagIgnoredExceptions->value,
-            \count($config['bugsnag_ignored_exceptions']) > 0 ? $config['bugsnag_ignored_exceptions'] : null
-        );
-        $parameters->set(
-            ConfigParam::BugsnagIgnoreValidationErrors->value,
-            $config['bugsnag_ignore_validation_errors']
+            \count($config['bugsnag']['ignored_exceptions']) > 0 ? $config['bugsnag']['ignored_exceptions'] : []
         );
         $parameters->set(
             ConfigParam::BugsnagHandledExceptions->value,
-            \count($config['bugsnag_handled_exceptions']) > 0 ? $config['bugsnag_handled_exceptions'] : null
-        );
-
-        $parameters->set(
-            ConfigParam::TransformValidationErrors->value,
-            $config['transform_validation_errors']
+            \count($config['bugsnag']['handled_exceptions']) > 0 ? $config['bugsnag']['handled_exceptions'] : null
         );
 
         $parameters->set(
@@ -81,17 +71,13 @@ final class EasyErrorHandlerBundle extends AbstractBundle
 
         $parameters->set(
             ConfigParam::LoggerExceptionLogLevels->value,
-            \count($config['logger_exception_log_levels']) > 0 ? $config['logger_exception_log_levels'] : null
+            \count($config['logger']['exception_log_levels']) > 0 ? $config['logger']['exception_log_levels'] : null
         );
         $parameters->set(
             ConfigParam::LoggerIgnoredExceptions->value,
-            \count($config['logger_ignored_exceptions']) > 0 ? $config['logger_ignored_exceptions'] : null
+            \count($config['logger']['ignored_exceptions']) > 0 ? $config['logger']['ignored_exceptions'] : null
         );
 
-        $parameters->set(
-            ConfigParam::OverrideApiPlatformListener->value,
-            $config['override_api_platform_listener']
-        );
         $parameters->set(ConfigParam::ResponseKeys->value, $config['response']);
         $parameters->set(ConfigParam::TranslationDomain->value, $config['translation_domain']);
 
@@ -130,15 +116,14 @@ final class EasyErrorHandlerBundle extends AbstractBundle
             $container->import('config/default_builders.php');
         }
 
-        if ($config['override_api_platform_listener'] ?? true) {
-            $container->import('config/api_platform_builders.php');
-        }
-
         if ($config['use_default_reporters'] ?? true) {
             $container->import('config/default_reporters.php');
         }
 
-        if (($config['bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
+        if (($config['bugsnag']['enabled'] ?? true) && \class_exists(Client::class)) {
+            $builder->registerForAutoconfiguration(BugsnagExceptionIgnorerInterface::class)
+                ->addTag(ConfigTag::BugsnagExceptionIgnorer->value);
+
             $container->import('config/bugsnag_reporter.php');
         }
 

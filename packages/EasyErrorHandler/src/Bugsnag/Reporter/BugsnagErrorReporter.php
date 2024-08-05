@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Bugsnag\Reporter;
 
 use Bugsnag\Client;
-use EonX\EasyErrorHandler\Bugsnag\Resolver\BugsnagIgnoreExceptionsResolverInterface;
 use EonX\EasyErrorHandler\Common\Reporter\AbstractErrorReporter;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
 use Monolog\Logger;
@@ -14,9 +13,12 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
 {
     private readonly int $threshold;
 
+    /**
+     * @param \EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface[] $exceptionIgnorers
+     */
     public function __construct(
         private readonly Client $bugsnag,
-        private readonly BugsnagIgnoreExceptionsResolverInterface $ignoreExceptionsResolver,
+        private readonly iterable $exceptionIgnorers,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
         ?int $threshold = null,
         ?int $priority = null,
@@ -28,8 +30,10 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
 
     public function report(Throwable $throwable): void
     {
-        if ($this->ignoreExceptionsResolver->shouldIgnore($throwable)) {
-            return;
+        foreach ($this->exceptionIgnorers as $ignorer) {
+            if ($ignorer->shouldIgnore($throwable)) {
+                return;
+            }
         }
 
         $logLevel = $this->errorLogLevelResolver->getLogLevel($throwable);

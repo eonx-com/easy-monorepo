@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Tests\Unit\Doctrine\Iterator;
 
 use Closure;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyBatch\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -80,7 +80,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                 array $batchItems,
             ) use ($batchItemRepo): void {
                 foreach ($batchItems as $batchItem) {
-                    $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                    $batchItem->setStatus(BatchObjectStatus::Succeeded);
                     $batchItemRepo->save($batchItem);
                 }
             },
@@ -117,7 +117,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
             ) use ($batchItemRepo): void {
                 foreach ($batchItems as $batchItem) {
                     if ($batchItem->getName() === 'batchItem1') {
-                        $batchItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                        $batchItem->setStatus(BatchObjectStatus::Succeeded);
                         $batchItemRepo->save($batchItem);
                     }
                 }

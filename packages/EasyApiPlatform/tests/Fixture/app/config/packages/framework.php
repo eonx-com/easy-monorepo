@@ -6,6 +6,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $frameworkConfig): void {
+    $frameworkConfig->validation()
+        ->enabled(true);
+
     $frameworkConfig->annotations()
         ->enabled(true);
 

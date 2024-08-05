@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Messenger\Dispatcher;
 
 use EonX\EasyBatch\Common\Dispatcher\AsyncDispatcherInterface;
+use EonX\EasyBatch\Common\Enum\BatchItemType;
 use EonX\EasyBatch\Common\Exception\BatchItemInvalidException;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
 use EonX\EasyBatch\Messenger\Stamp\BatchItemStamp;
@@ -24,7 +25,7 @@ final readonly class AsyncDispatcher implements AsyncDispatcherInterface
     {
         $batchItemId = $batchItem->getIdOrFail();
 
-        if ($batchItem->getType() === BatchItemInterface::TYPE_MESSAGE) {
+        if ($batchItem->getType() === BatchItemType::Message->value) {
             $message = $batchItem->getMessage();
 
             if ($message === null) {
@@ -43,7 +44,7 @@ final readonly class AsyncDispatcher implements AsyncDispatcherInterface
         throw new BatchItemInvalidException(\sprintf(
             'BatchItem "%s" is not type of "%s", "%s" given',
             $batchItemId,
-            BatchItemInterface::TYPE_MESSAGE,
+            BatchItemType::Message->value,
             $batchItem->getType()
         ));
     }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle;
+use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
+use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
+use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 
@@ -15,6 +18,15 @@ return [
         'all' => true,
     ],
     EasyApiPlatformBundle::class => [
+        'all' => true,
+    ],
+    EasyErrorHandlerBundle::class => [
+        'all' => true,
+    ],
+    EasyLoggingBundle::class => [
+        'all' => true,
+    ],
+    EasyBugsnagBundle::class => [
         'all' => true,
     ],
     FrameworkBundle::class => [

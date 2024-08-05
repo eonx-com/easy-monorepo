@@ -8,8 +8,6 @@ use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 
 interface BatchObjectManagerInterface
 {
-    public const DEFAULT_BATCH_ITEMS_PER_PAGE = 15;
-
     public function approve(BatchObjectInterface $batchObject): BatchObjectInterface;
 
     public function cancel(BatchObjectInterface $batchObject): BatchObjectInterface;
