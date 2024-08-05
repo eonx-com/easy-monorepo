@@ -14,7 +14,7 @@ final class BpayBatchParserTest extends AbstractUnitTestCase
     /**
      * Should return array of DetailRecord classes.
      */
-    #[Group('Batch-Parser-Transaction')]
+    #[Group('Batch-Parser-Detail-Record')]
     public function testShouldReturnDetailRecord(): void
     {
         $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));

@@ -12,9 +12,9 @@ use PHPUnit\Framework\Attributes\Group;
 final class BrfParserTest extends AbstractUnitTestCase
 {
     /**
-     * Should return array of Transaction classes.
+     * Should return array of DetailRecord classes.
      */
-    #[Group('Brf-Parser-Transaction')]
+    #[Group('Brf-Parser-Detail-Record')]
     public function testShouldReturnDetailRecord(): void
     {
         $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));

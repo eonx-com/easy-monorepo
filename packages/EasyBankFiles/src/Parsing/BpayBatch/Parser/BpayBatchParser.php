@@ -94,7 +94,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
     }
 
     /**
-     * Parse transaction items.
+     * Parse Detail Record items.
      */
     private function processDetailRecord(string $line): DetailRecord
     {
@@ -140,7 +140,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
     }
 
     /**
-     * Parse header.
+     * Parse Header record.
      */
     private function processHeaderRecord(string $line): HeaderRecord
     {
@@ -162,7 +162,7 @@ final class BpayBatchParser extends AbstractLineByLineParser
     }
 
     /**
-     * Parse trailer.
+     * Parse Trailer record.
      */
     private function processTrailerRecord(string $line): TrailerRecord
     {
