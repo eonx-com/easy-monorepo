@@ -135,6 +135,17 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 ' from serialized data because its constructor requires parameter "paymentType" to be present.',
         ];
 
+        yield 'null constructor argument with serializedName attribute' => [
+            'url' => '/payments',
+            'json' => ['type' => null],
+            'violations' => [
+                'type' => [
+                    'This value should not be null.',
+                ],
+            ],
+            'exceptionMessage' => 'The type of the "paymentType" attribute must be "string", "NULL" given.',
+        ];
+
         yield 'missing constructor argument in DTO' => [
             'url' => '/books',
             'json' => [

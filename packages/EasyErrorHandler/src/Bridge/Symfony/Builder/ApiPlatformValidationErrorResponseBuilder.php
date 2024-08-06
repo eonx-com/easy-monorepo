@@ -113,13 +113,17 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         if ($throwable instanceof InvalidArgumentException || $throwable instanceof NotNormalizableValueException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
+            $propertyName = $throwable instanceof NotNormalizableValueException ? $throwable->getPath() : $matches[1];
+            $propertyName = $propertyName ?? $matches[1];
             $data[$violationsKey] = [
-                $matches[1] => [
+                $propertyName => [
                     $matches[3] === self::VALUE_NULL
                         ? (new NotNull())->message
                         : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[2], $matches[3]),
                 ],
             ];
+
+            return parent::buildData($throwable, $data);
         }
 
         if ($throwable instanceof MissingConstructorArgumentsException) {
