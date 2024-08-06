@@ -22,13 +22,13 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
         $sut->setFormatter(new LineFormatter('formatted'));
 
         $sut->handle(new LogRecord(
-            new DateTimeImmutable(),
-            'app',
-            Level::Warning,
-            'message',
-            [],
-            [],
-            'formatted'
+            datetime: new DateTimeImmutable(),
+            channel: 'app',
+            level: Level::Warning,
+            message: 'message',
+            context: [],
+            extra: [],
+            formatted: 'formatted',
         ));
 
         $reports = self::getPrivatePropertyValue(
