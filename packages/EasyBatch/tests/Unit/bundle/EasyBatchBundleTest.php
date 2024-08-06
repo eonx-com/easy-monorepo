@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Unit\Bundle;
 
+use EonX\EasyBatch\Common\Enum\BatchItemType;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Event\BatchCompletedEvent;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
@@ -10,8 +12,6 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\Batch;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyBatch\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -30,24 +30,24 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
                     ->create('dt-batch-id', new stdClass());
                 $disbursementTransferItem->setId('to-approve');
                 $disbursementTransferItem->setApprovalRequired(true);
-                $disbursementTransferItem->setStatus(BatchObjectInterface::STATUS_SUCCEEDED_PENDING_APPROVAL);
+                $disbursementTransferItem->setStatus(BatchObjectStatus::SucceededPendingApproval);
 
                 $disbursementTransferParentItem = $context->getBatchItemFactory()
                     ->create('dj-batch-id', new stdClass());
-                $disbursementTransferParentItem->setStatus(BatchItemInterface::STATUS_BATCH_PENDING_APPROVAL);
-                $disbursementTransferParentItem->setType(BatchItemInterface::TYPE_NESTED_BATCH);
+                $disbursementTransferParentItem->setStatus(BatchObjectStatus::BatchPendingApproval);
+                $disbursementTransferParentItem->setType(BatchItemType::NestedBatch->value);
                 $disbursementTransferParentItem->setId('dt-parent-batch-item');
 
                 $disbursementTransferBatch = new Batch();
                 $disbursementTransferBatch->setId('dt-batch-id');
                 $disbursementTransferBatch->setTotal(1);
-                $disbursementTransferBatch->setStatus(BatchObjectInterface::STATUS_PROCESSING);
+                $disbursementTransferBatch->setStatus(BatchObjectStatus::Processing);
                 $disbursementTransferBatch->setParentBatchItemId('dt-parent-batch-item');
 
                 $disbursementJobBatch = new Batch();
                 $disbursementJobBatch->setId('dj-batch-id');
                 $disbursementJobBatch->setTotal(1);
-                $disbursementJobBatch->setStatus(BatchObjectInterface::STATUS_PENDING);
+                $disbursementJobBatch->setStatus(BatchObjectStatus::Pending);
                 $disbursementJobBatch->setType('disbursement');
 
                 $context->getBatchItemRepository()
@@ -74,11 +74,11 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
                     ->fetchAllAssociative('select * from easy_batch_items');
 
                 foreach ($batches as $batch) {
-                    self::assertEquals(BatchObjectInterface::STATUS_SUCCEEDED, $batch['status']);
+                    self::assertEquals(BatchObjectStatus::Succeeded->value, $batch['status']);
                 }
 
                 foreach ($items as $item) {
-                    self::assertEquals(BatchObjectInterface::STATUS_SUCCEEDED, $item['status']);
+                    self::assertEquals(BatchObjectStatus::Succeeded->value, $item['status']);
                 }
             },
         ];
@@ -99,10 +99,10 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
                 $batchItemCreated = $batchItemFactory->create('batch-id', new stdClass());
 
                 $batchItemCompleted = $batchItemFactory->create('batch-id', new stdClass());
-                $batchItemCompleted->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                $batchItemCompleted->setStatus(BatchObjectStatus::Succeeded);
 
                 $batchItemCancelled = $batchItemFactory->create('batch-id', new stdClass());
-                $batchItemCancelled->setStatus(BatchObjectInterface::STATUS_CANCELLED);
+                $batchItemCancelled->setStatus(BatchObjectStatus::Cancelled);
 
                 $batchItemRepo->save($batchItemCreated);
                 $batchItemRepo->save($batchItemCompleted);
@@ -115,7 +115,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
                 $batchRepo->save($batch);
             },
             static function (BatchInterface $batch, array $events): void {
-                self::assertEquals(BatchObjectInterface::STATUS_PROCESSING, $batch->getStatus());
+                self::assertEquals(BatchObjectStatus::Processing, $batch->getStatus());
                 self::assertCount(5, $events);
             },
         ];
@@ -128,10 +128,10 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
             ): void {
                 // Batch items
                 $batchItemCompleted = $batchItemFactory->create('batch-id', new stdClass());
-                $batchItemCompleted->setStatus(BatchObjectInterface::STATUS_SUCCEEDED);
+                $batchItemCompleted->setStatus(BatchObjectStatus::Succeeded);
 
                 $batchItemCancelled = $batchItemFactory->create('batch-id', new stdClass());
-                $batchItemCancelled->setStatus(BatchObjectInterface::STATUS_CANCELLED);
+                $batchItemCancelled->setStatus(BatchObjectStatus::Cancelled);
 
                 $batchItemRepo->save($batchItemCompleted);
                 $batchItemRepo->save($batchItemCancelled);
@@ -143,7 +143,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
                 $batchRepo->save($batch);
             },
             static function (BatchInterface $batch, array $events): void {
-                self::assertEquals(BatchObjectInterface::STATUS_FAILED, $batch->getStatus());
+                self::assertEquals(BatchObjectStatus::Failed, $batch->getStatus());
                 self::assertInstanceOf(BatchCompletedEvent::class, \end($events));
             },
         ];

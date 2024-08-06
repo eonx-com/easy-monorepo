@@ -2,33 +2,43 @@
 declare(strict_types=1);
 
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return static function (DefinitionConfigurator $definition) {
-    $defaultLocale = 'en';
-    $defaultErrorCodesCategorySize = 100;
-
     $definition->rootNode()
         ->children()
-            //Bugsnag
-            ->booleanNode('bugsnag_enabled')->defaultTrue()->end()
-            ->integerNode('bugsnag_threshold')->defaultNull()->end()
-            ->arrayNode('bugsnag_handled_exceptions')
-                ->beforeNormalization()->castToArray()->end()
-                ->scalarPrototype()->end()
+            ->arrayNode('bugsnag')
+                ->canBeDisabled()
+                ->children()
+                    ->integerNode('threshold')->defaultNull()->end()
+                    ->arrayNode('handled_exceptions')
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                    ->arrayNode('ignored_exceptions')
+                        ->defaultValue([
+                            HttpExceptionInterface::class,
+                            RequestExceptionInterface::class,
+                        ])
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                ->end()
             ->end()
-            ->arrayNode('bugsnag_ignored_exceptions')
-                ->beforeNormalization()->castToArray()->end()
-                ->scalarPrototype()->end()
-            ->end()
-            ->booleanNode('bugsnag_ignore_validation_errors')->defaultTrue()->end()
-            ->booleanNode('transform_validation_errors')->defaultTrue()->end()
-            ->arrayNode('logger_exception_log_levels')
-                ->beforeNormalization()->castToArray()->end()
-                ->integerPrototype()->end()
-            ->end()
-            ->arrayNode('logger_ignored_exceptions')
-                ->beforeNormalization()->castToArray()->end()
-                ->scalarPrototype()->end()
+            ->arrayNode('logger')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('exception_log_levels')
+                        ->useAttributeAsKey('class')
+                        ->beforeNormalization()->castToArray()->end()
+                        ->integerPrototype()->end()
+                    ->end()
+                    ->arrayNode('ignored_exceptions')
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                ->end()
             ->end()
             ->arrayNode('ignored_exceptions')
                 ->beforeNormalization()->castToArray()->end()
@@ -37,7 +47,6 @@ return static function (DefinitionConfigurator $definition) {
             ->booleanNode('report_retryable_exception_attempts')->defaultFalse()->end()
             ->booleanNode('skip_reported_exceptions')->defaultFalse()->end()
             ->booleanNode('verbose')->defaultFalse()->end()
-            ->booleanNode('override_api_platform_listener')->defaultTrue()->end()
             ->booleanNode('use_default_builders')->defaultTrue()->end()
             ->booleanNode('use_default_reporters')->defaultTrue()->end()
             ->scalarNode('translation_domain')->defaultValue('messages')->end()
@@ -63,13 +72,12 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->arrayNode('translate_internal_error_messages')
-                ->addDefaultsIfNotSet()
+                ->canBeEnabled()
                 ->children()
-                    ->booleanNode('enabled')->defaultFalse()->end()
-                    ->scalarNode('locale')->defaultValue($defaultLocale)->end()
+                    ->scalarNode('locale')->defaultValue('en')->end()
                 ->end()
             ->end()
             ->scalarNode('error_codes_interface')->defaultNull()->end()
-            ->scalarNode('error_codes_category_size')->defaultValue($defaultErrorCodesCategorySize)->end()
+            ->scalarNode('error_codes_category_size')->defaultValue(100)->end()
         ->end();
 };

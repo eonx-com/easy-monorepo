@@ -5,7 +5,7 @@ namespace EonX\EasyUtils\Tests\Unit\Bundle\SensitiveData\Sanitizer;
 
 use EonX\EasyUtils\Bundle\Enum\ConfigParam;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
-use EonX\EasyUtils\Tests\Stub\Trait\KernelTrait;
+use EonX\EasyUtils\Tests\Stub\Kernel\KernelTrait;
 use EonX\EasyUtils\Tests\Unit\AbstractSensitiveDataSanitizerTestCase;
 
 final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTestCase

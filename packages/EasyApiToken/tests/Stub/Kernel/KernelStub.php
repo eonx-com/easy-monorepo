@@ -5,7 +5,7 @@ namespace EonX\EasyApiToken\Tests\Stub\Kernel;
 
 use EonX\EasyApiToken\Bundle\EasyApiTokenBundle;
 use EonX\EasyApiToken\Bundle\Enum\ConfigTag;
-use EonX\EasyApiToken\Tests\Stub\Common\Decoder\DecoderProviderStub;
+use EonX\EasyApiToken\Tests\Stub\Provider\DecoderProviderStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

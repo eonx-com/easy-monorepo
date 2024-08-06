@@ -10,7 +10,6 @@ return static function (FrameworkConfig $frameworkConfig): void {
         ->defaultLocale('en');
 
     $frameworkConfig->translator()
-        ->defaultPath(param('kernel.project_dir') . '/translations')
         ->fallbacks(['en'])
         ->cacheDir(null);
 };

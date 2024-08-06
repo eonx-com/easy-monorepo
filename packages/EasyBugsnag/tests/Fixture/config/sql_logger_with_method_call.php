@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\DBAL\Configuration;
-use EonX\EasyBugsnag\Tests\Stub\Driver\ConnectionStub;
-use EonX\EasyBugsnag\Tests\Stub\Logging\SqlLoggerStub;
+use EonX\EasyBugsnag\Tests\Stub\Connection\ConnectionStub;
+use EonX\EasyBugsnag\Tests\Stub\SqlLogger\SqlLoggerStub;
 use Symfony\Config\EasyBugsnagConfig;
 
 return static function (EasyBugsnagConfig $easyBugsnagConfig, ContainerConfigurator $containerConfigurator): void {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\Tests\Unit\Common\Provider;
 
-use EonX\EasyApiToken\Tests\Stub\Common\Provider\FirewallAwareDecoderProviderStub;
+use EonX\EasyApiToken\Tests\Stub\Provider\FirewallAwareDecoderProviderStub;
 use EonX\EasyApiToken\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
