@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -18,6 +17,7 @@ final readonly class UpdateBatchItemMessageHandler
     public function __construct(
         private BatchItemRepositoryInterface $batchItemRepository,
         private ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
+        private string $dateTimeFormat,
     ) {
     }
 
@@ -42,7 +42,7 @@ final readonly class UpdateBatchItemMessageHandler
     private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
         /** @var \DateTimeInterface $newDateTime */
-        $newDateTime = Carbon::createFromFormat(BatchObjectInterface::DATETIME_FORMAT, $dateTime, 'UTC');
+        $newDateTime = Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
 
         return $newDateTime;
     }
@@ -57,7 +57,7 @@ final readonly class UpdateBatchItemMessageHandler
 
         $metadata = $batchItem->getMetadata() ?? [];
         $internal = $metadata['_internal'] ?? [];
-        $now = Carbon::now('UTC')->format(BatchObjectInterface::DATETIME_FORMAT);
+        $now = Carbon::now('UTC')->format($this->dateTimeFormat);
 
         if (isset($internal['update_batch_item_emergency']) === false) {
             $internal['update_batch_item_emergency'] = [];

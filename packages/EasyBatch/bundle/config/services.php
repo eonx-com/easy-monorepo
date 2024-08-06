@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$batchItemsPerPage', param(ConfigParam::BatchItemPerPage->value))
-        ->bind('$datetimeFormat', param(ConfigParam::DateTimeFormat->value))
+        ->bind('$dateTimeFormat', param(ConfigParam::DateTimeFormat->value))
         ->bind('$eventDispatcher', service(EventDispatcherInterface::class));
 
     // AsyncDispatcher

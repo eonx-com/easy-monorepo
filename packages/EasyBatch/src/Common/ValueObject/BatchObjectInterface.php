@@ -9,16 +9,6 @@ use Throwable;
 
 interface BatchObjectInterface
 {
-    public const DATETIME_FORMAT = 'Y-m-d H:i:s.u';
-
-    public const DATE_TIMES = [
-        'cancelled_at' => 'setCancelledAt',
-        'created_at' => 'setCreatedAt',
-        'finished_at' => 'setFinishedAt',
-        'started_at' => 'setStartedAt',
-        'updated_at' => 'setUpdatedAt',
-    ];
-
     public function getCancelledAt(): ?DateTimeInterface;
 
     public function getCreatedAt(): ?DateTimeInterface;

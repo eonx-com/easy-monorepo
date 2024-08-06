@@ -17,9 +17,9 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     public function __construct(
         private readonly MessageSerializerInterface $messageSerializer,
         ?string $class = null,
-        ?string $datetimeFormat = null,
+        ?string $dateTimeFormat = null,
     ) {
-        parent::__construct($class ?? BatchItem::class, $datetimeFormat);
+        parent::__construct($class ?? BatchItem::class, $dateTimeFormat);
     }
 
     public function setEncryptor(EncryptorInterface $encryptor): void

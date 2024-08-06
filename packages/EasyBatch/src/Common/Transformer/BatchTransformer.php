@@ -8,9 +8,9 @@ use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 
 final class BatchTransformer extends AbstractBatchObjectTransformer
 {
-    public function __construct(?string $class = null, ?string $datetimeFormat = null)
+    public function __construct(?string $class = null, ?string $dateTimeFormat = null)
     {
-        parent::__construct($class ?? Batch::class, $datetimeFormat);
+        parent::__construct($class ?? Batch::class, $dateTimeFormat);
     }
 
     /**
