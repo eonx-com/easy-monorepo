@@ -64,7 +64,7 @@ final class HttpClientStub extends MockHttpClient
         }
 
         if ($queryParams !== null) {
-            $url = \sprintf('%s?%s', $url, \http_build_query($queryParams));
+            $url = \sprintf('%s?%s', $url, \urldecode(\http_build_query($queryParams)));
         }
 
         return new HttpClientRequestStub(
