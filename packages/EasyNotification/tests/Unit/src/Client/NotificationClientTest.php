@@ -16,7 +16,7 @@ use EonX\EasyNotification\Exception\ConfigRequiredException;
 use EonX\EasyNotification\Message\RealTimeMessage;
 use EonX\EasyNotification\Tests\Stub\Factory\SqsQueueTransportFactoryStub;
 use EonX\EasyNotification\Tests\Stub\HttpClient\HttpClientStub;
-use EonX\EasyNotification\Tests\Stub\Sqs\SqsClientStub;
+use EonX\EasyNotification\Tests\Stub\SqsClient\SqsClientStub;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyNotification\ValueObject\Config;
 use Symfony\Component\HttpClient\MockHttpClient;

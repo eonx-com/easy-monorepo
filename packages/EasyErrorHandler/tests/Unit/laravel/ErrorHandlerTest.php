@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
-use EonX\EasyErrorHandler\Tests\Unit\Common\Builder\TestRenderWithDefaultBuildersDataProvider;
+use EonX\EasyErrorHandler\Tests\Unit\Bundle\TestRenderWithDefaultBuilderDataProvider;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
@@ -93,7 +93,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
         self::assertStringContainsString('No validation errors in exception', $result);
     }
 
-    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provide')]
+    #[DataProviderExternal(TestRenderWithDefaultBuilderDataProvider::class, 'provide')]
     public function testRenderWithDefaultBuilders(
         Request $request,
         Exception $exception,
@@ -113,7 +113,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
         $assertResponse($result);
     }
 
-    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provideWithExtendedResponse')]
+    #[DataProviderExternal(TestRenderWithDefaultBuilderDataProvider::class, 'provideWithExtendedResponse')]
     public function testRenderWithDefaultBuildersAndExtendedResponse(
         Request $request,
         Exception $exception,

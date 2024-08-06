@@ -51,7 +51,11 @@ check-all: ## Check codebase with all checkers
 		check-monorepo enableNotification="no"\
 		check-phpstan enableNotification="no"\
 		check-rector enableNotification="no"\
+		check-packages-architecture enableNotification="no"\
 		check-security enableNotification="no")
+
+check-packages-architecture: ## Check packages architecture
+	$(call runCommand,quality/vendor/bin/phpunit -c quality/phpunit.xml --testsuite=Architecture)
 
 check-composer: ## Validate composer.json
 	$(call runCommand,composer validate --strict)

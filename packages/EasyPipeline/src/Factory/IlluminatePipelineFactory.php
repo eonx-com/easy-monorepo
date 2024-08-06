@@ -8,7 +8,7 @@ use EonX\EasyPipeline\Exception\PipelineNotFoundException;
 use EonX\EasyPipeline\Pipeline\IlluminatePipeline;
 use EonX\EasyPipeline\Pipeline\PipelineInterface;
 use EonX\EasyPipeline\Provider\MiddlewareProviderInterface;
-use EonX\EasyPipeline\Provider\PipelineNameAwareInterface;
+use EonX\EasyPipeline\Provider\PipelineNameAwareProviderInterface;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 use Illuminate\Pipeline\Pipeline;
 
@@ -37,7 +37,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
 
         $provider = $this->createMiddlewareProvider($pipeline);
 
-        if ($provider instanceof PipelineNameAwareInterface) {
+        if ($provider instanceof PipelineNameAwareProviderInterface) {
             $provider->setPipelineName($pipeline);
         }
 

@@ -8,7 +8,7 @@ use Doctrine\DBAL\Configuration;
 use EonX\EasyBugsnag\Configurator\BasicsClientConfigurator;
 use EonX\EasyBugsnag\Configurator\RuntimeVersionClientConfigurator;
 use EonX\EasyBugsnag\SqlLogger\DoctrineSqlLogger;
-use EonX\EasyBugsnag\Tests\Stub\Logging\SqlLoggerStub;
+use EonX\EasyBugsnag\Tests\Stub\SqlLogger\SqlLoggerStub;
 use EonX\EasyBugsnag\Tracker\SessionTracker;
 
 final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase

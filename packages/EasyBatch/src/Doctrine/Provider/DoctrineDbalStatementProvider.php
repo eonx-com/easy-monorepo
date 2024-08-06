@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use EonX\EasyBatch\Doctrine\Type\DateTimeWithMicroSeconds;
+use EonX\EasyBatch\Doctrine\Type\DateTimeWithMicroSecondsType;
 
 final class DoctrineDbalStatementProvider
 {
@@ -29,8 +29,8 @@ final class DoctrineDbalStatementProvider
         private readonly string $batchItemsTable = self::DEFAULT_BATCH_ITEM_TABLE,
     ) {
         // Register types
-        if (Type::hasType(DateTimeWithMicroSeconds::NAME) === false) {
-            Type::addType(DateTimeWithMicroSeconds::NAME, DateTimeWithMicroSeconds::class);
+        if (Type::hasType(DateTimeWithMicroSecondsType::NAME) === false) {
+            Type::addType(DateTimeWithMicroSecondsType::NAME, DateTimeWithMicroSecondsType::class);
         }
     }
 
@@ -141,19 +141,19 @@ final class DoctrineDbalStatementProvider
             'notNull' => false,
         ]);
 
-        $table->addColumn('cancelled_at', DateTimeWithMicroSeconds::NAME, [
+        $table->addColumn('cancelled_at', DateTimeWithMicroSecondsType::NAME, [
             'notNull' => false,
         ]);
 
-        $table->addColumn('started_at', DateTimeWithMicroSeconds::NAME, [
+        $table->addColumn('started_at', DateTimeWithMicroSecondsType::NAME, [
             'notNull' => false,
         ]);
 
-        $table->addColumn('finished_at', DateTimeWithMicroSeconds::NAME, [
+        $table->addColumn('finished_at', DateTimeWithMicroSecondsType::NAME, [
             'notNull' => false,
         ]);
 
-        $table->addColumn('created_at', DateTimeWithMicroSeconds::NAME);
-        $table->addColumn('updated_at', DateTimeWithMicroSeconds::NAME);
+        $table->addColumn('created_at', DateTimeWithMicroSecondsType::NAME);
+        $table->addColumn('updated_at', DateTimeWithMicroSecondsType::NAME);
     }
 }
