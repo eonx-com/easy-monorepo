@@ -88,7 +88,7 @@ propagate: ## Propagate all packages
 	$(call runCommand,vendor/bin/monorepo-builder propagate --ansi)
 
 release: ## Release all packages (use `version=<version>` as argument to release it with mentioned version)
-	$(call runCommand,bin/monorepo clean-up-packages-vendor-dirs \
+	$(call runCommand,bin/monorepo clean-up-packages \
 	&& vendor/bin/monorepo-builder release $(version))
 
 split: ## Split all packages
