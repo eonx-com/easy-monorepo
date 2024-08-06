@@ -7,9 +7,6 @@ use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 final class ObjectStub extends AbstractObject
 {
-    /**
-     * Get validation rules.
-     */
     public function getValidationRules(): array
     {
         return [];

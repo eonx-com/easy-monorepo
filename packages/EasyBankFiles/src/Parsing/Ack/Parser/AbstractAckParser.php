@@ -45,7 +45,7 @@ abstract class AbstractAckParser extends AbstractParser
         $xmlConverter = new XmlConverter();
 
         try {
-            $result = $xmlConverter->xmlToArray($xml, XmlConverter::XML_INCLUDE_ATTRIBUTES);
+            $result = $xmlConverter->xmlToArray($xml);
         } catch (InvalidXmlException $exception) {
             // When an exception is thrown, let's attempt to mitigate the issue by cleaning up some common
             // inconsistencies from the bank's side
@@ -57,7 +57,7 @@ abstract class AbstractAckParser extends AbstractParser
             }
 
             // Run the converter again, this time not capturing any exceptions
-            $result = $xmlConverter->xmlToArray($fixedContents, XmlConverter::XML_INCLUDE_ATTRIBUTES);
+            $result = $xmlConverter->xmlToArray($fixedContents);
         }
 
         return $result;

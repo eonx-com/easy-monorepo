@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Bpay\ValueObject;
 
-use EonX\EasyBankFiles\Generation\Common\Generator\GeneratorInterface;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 /**
@@ -14,16 +14,11 @@ use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
  */
 final class Trailer extends AbstractObject
 {
-    /**
-     * Get validation rules.
-     *
-     * @return string[]
-     */
     public function getValidationRules(): array
     {
         return [
-            'totalFileValue' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'totalNumberOfPayments' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
+            'totalFileValue' => ValidationRule::Numeric,
+            'totalNumberOfPayments' => ValidationRule::Numeric,
         ];
     }
 

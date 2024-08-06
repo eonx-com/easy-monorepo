@@ -49,10 +49,10 @@ final class AbaGenerator extends AbstractGenerator
 
             $objects[] = $transaction;
 
-            if ((int)$transaction->getTransactionCode() === Transaction::CODE_GENERAL_CREDIT) {
+            if ($transaction->isCredit()) {
                 $creditTotal += (int)$transaction->getAmount();
             }
-            if ((int)$transaction->getTransactionCode() === Transaction::CODE_GENERAL_DEBIT) {
+            if ($transaction->isDebit()) {
                 $debitTotal += (int)$transaction->getAmount();
             }
         }
