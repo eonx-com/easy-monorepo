@@ -36,7 +36,7 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
                 $throwable = $report->getOriginalError();
 
                 if ($throwable instanceof Throwable) {
-                    $report->setSeverity($this->getSeverity($throwable)->value);
+                    $report->setSeverity($this->getSeverity($throwable)?->value);
                 }
             }));
     }

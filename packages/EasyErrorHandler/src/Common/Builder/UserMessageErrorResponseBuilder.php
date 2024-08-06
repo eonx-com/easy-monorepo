@@ -11,7 +11,7 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        ?string $key = null,
+        string $key,
         ?int $priority = null,
     ) {
         parent::__construct($key, $priority);
