@@ -114,7 +114,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
             $propertyName = $throwable instanceof NotNormalizableValueException ? $throwable->getPath() : $matches[1];
-            $propertyName = $propertyName ?? $matches[1];
+            $propertyName ??= $matches[1];
             $data[$violationsKey] = [
                 $propertyName => [
                     $matches[3] === self::VALUE_NULL
