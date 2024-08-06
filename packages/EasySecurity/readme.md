@@ -28,6 +28,6 @@ The recommended way to install this package is to use [Composer][3]:
 $ composer require eonx-com/easy-security
 ```
 
-[1]: https://github.com/eonx-com/easy-api-token
+[1]: https://packages.eonx.com/packages/easy-api-token/
 
 [3]: https://getcomposer.org/

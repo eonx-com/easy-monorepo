@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\AwsCognito\ValueObject;
 
-final class UserPoolConfig implements UserPoolConfigInterface
+final readonly class UserPoolConfig implements UserPoolConfigInterface
 {
     public function __construct(
         private string $appClientId,

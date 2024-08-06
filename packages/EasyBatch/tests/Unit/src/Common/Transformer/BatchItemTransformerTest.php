@@ -44,7 +44,7 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         $array = $transformer->transformToArray($batchItem);
         /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $newBatchItem */
         $newBatchItem = $transformer->transformToObject($array);
-        $expectedEncryptionKeyName = $encrypted ? EncryptorInterface::DEFAULT_KEY_NAME : null;
+        $expectedEncryptionKeyName = $encrypted ? 'app' : null;
 
         self::assertEquals($encrypted, $array['encrypted']);
         self::assertEquals($encrypted, $newBatchItem->isEncrypted());
@@ -54,10 +54,7 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
 
     private function getEncryptor(): EncryptorInterface
     {
-        $keyResolver = new SimpleEncryptionKeyResolver(
-            EncryptorInterface::DEFAULT_KEY_NAME,
-            'TwzQsKkBcVlYYRQDvwgiGZemFVbpNiCr'
-        );
+        $keyResolver = new SimpleEncryptionKeyResolver('app', 'TwzQsKkBcVlYYRQDvwgiGZemFVbpNiCr');
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, [$keyResolver]);
 

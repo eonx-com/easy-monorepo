@@ -17,40 +17,44 @@ return [
      */
     'use_default_reporters' => \env('EASY_ERROR_HANDLER_USE_DEFAULT_REPORTERS', true),
 
-    /**
-     * Register error reporter for easy-bugsnag automatically.
-     */
-    'bugsnag_enabled' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', true),
+    'bugsnag' => [
+        /**
+         * Register error reporter for easy-bugsnag automatically.
+         */
+        'enabled' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_ENABLED', true),
 
-    /**
-     * Log level threshold to notify bugsnag.
-     */
-    'bugsnag_threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_THRESHOLD', null),
+        /**
+         * Log level threshold to notify bugsnag.
+         */
+        'threshold' => \env('EASY_ERROR_HANDLER_EASY_BUGSNAG_THRESHOLD', null),
 
-    /**
-     * List of handled exceptions that will set the bugsnag report as handled.
-     */
-    'bugsnag_handled_exceptions' => null,
+        /**
+         * List of handled exceptions that will set the bugsnag report as handled.
+         */
+        'handled_exceptions' => null,
 
-    /**
-     * List of Ignored Exceptions that'll not be reported to bugsnag.
-     */
-    'bugsnag_ignored_exceptions' => null,
+        /**
+         * List of Ignored Exceptions that'll not be reported to bugsnag.
+         */
+        'ignored_exceptions' => [],
+    ],
 
     /**
      * List of Ignored Exceptions that'll not be reported to any reporter.
      */
     'ignored_exceptions' => null,
 
-    /**
-     * List of Exceptions and their associated log levels.
-     */
-    'logger_exception_log_levels' => null,
+    'logger' => [
+        /**
+         * List of Exceptions and their associated log levels.
+         */
+        'exception_log_levels' => null,
 
-    /**
-     * List of Ignored Exceptions that'll not be reported to logger.
-     */
-    'logger_ignored_exceptions' => null,
+        /**
+         * List of Ignored Exceptions that'll not be reported to logger.
+         */
+        'ignored_exceptions' => null,
+    ],
 
     /**
      * Interface to fetch error codes from that will be used in the `easy-error-handler:error-codes:analyze` command.

@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Common\Listener;
 
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
-use EonX\EasyRequestId\Common\Resolver\ResolvesFromHttpFoundationRequestTrait;
+use EonX\EasyRequestId\Common\Resolver\HttpFoundationRequestResolverTrait;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestListener
 {
-    use ResolvesFromHttpFoundationRequestTrait;
+    use HttpFoundationRequestResolverTrait;
 
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,

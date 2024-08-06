@@ -10,10 +10,10 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 
 final class IdHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    private string $idHeader;
+    private readonly string $idHeader;
 
     public function __construct(
-        private StoreInterface $store,
+        private readonly StoreInterface $store,
         ?string $idHeader = null,
         ?int $priority = null,
     ) {

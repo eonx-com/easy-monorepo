@@ -11,12 +11,12 @@ use Monolog\Logger;
 
 final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
-    private Level $level;
+    private readonly Level $level;
 
     /**
      * @var resource|string
      */
-    private mixed $stream;
+    private readonly mixed $stream;
 
     /**
      * @param resource|string|null $stream
@@ -26,9 +26,9 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
     public function __construct(
         mixed $stream = null,
         ?int $level = null,
-        private ?array $channels = null,
-        private ?array $exceptChannels = null,
-        private ?int $priority = null,
+        private readonly ?array $channels = null,
+        private readonly ?array $exceptChannels = null,
+        private readonly ?int $priority = null,
     ) {
         if ($stream !== null && \is_string($stream) === false && \is_resource($stream) === false) {
             throw new InvalidArgumentException(\sprintf(

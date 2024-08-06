@@ -8,7 +8,7 @@ use Monolog\Processor\ProcessorInterface;
 final class ProcessorConfig extends AbstractLoggingConfig implements ProcessorConfigInterface
 {
     public function __construct(
-        private ProcessorInterface $processor,
+        private readonly ProcessorInterface $processor,
     ) {
     }
 

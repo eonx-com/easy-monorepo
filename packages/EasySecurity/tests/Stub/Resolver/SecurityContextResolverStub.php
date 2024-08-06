@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Tests\Stub\Resolver;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
 
-final class SecurityContextResolverStub implements SecurityContextResolverInterface
+final readonly class SecurityContextResolverStub implements SecurityContextResolverInterface
 {
     public function __construct(
         private SecurityContextInterface $securityContext,

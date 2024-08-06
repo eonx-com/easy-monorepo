@@ -10,7 +10,8 @@
         "ext-filter": "*",
         "symfony/config": "^6.4",
         "symfony/dependency-injection": "^6.4",
-        "symfony/http-kernel": "^6.4"
+        "symfony/http-kernel": "^6.4",
+        "symfony/string": "^6.4"
     },
     "require-dev": {
         "eonx-com/easy-test": "^5.12",
@@ -38,6 +39,7 @@
     "suggest": {
         "ext-iconv": "To support CSV parsing",
         "ext-mbstring": "To support sensitive data sanitization",
+        "symfony/framework-bundle": "To use Symfony Framework integration",
         "symfony/serializer": "To support string trimming",
         "symfony/translation": "To use Symfony Translator integration",
         "symfony/validator": "To support custom constraints"

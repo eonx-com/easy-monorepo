@@ -11,7 +11,7 @@ final class SignerStub implements WebhookSignerInterface
 
     private ?string $secret = null;
 
-    private string $signature;
+    private readonly string $signature;
 
     public function __construct(?string $signature = null)
     {

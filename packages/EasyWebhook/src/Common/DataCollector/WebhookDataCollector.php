@@ -3,21 +3,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\DataCollector;
 
+use EonX\EasyUtils\Common\DataCollector\AbstractDataCollector;
 use EonX\EasyWebhook\Common\Client\TraceableWebhookClient;
 use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
-final class WebhookDataCollector extends DataCollector
+final class WebhookDataCollector extends AbstractDataCollector
 {
-    public const NAME = 'easy_webhook.data_collector';
-
     public function __construct(
-        private WebhookClientInterface $webhookClient,
+        private readonly WebhookClientInterface $webhookClient,
     ) {
     }
 
@@ -32,22 +30,12 @@ final class WebhookDataCollector extends DataCollector
         return $this->data['webhook_middleware'] ?? [];
     }
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
     /**
      * @return \EonX\EasyWebhook\Common\Entity\WebhookResultInterface[]
      */
     public function getResults(): array
     {
         return $this->data['webhook_results'] ?? [];
-    }
-
-    public function reset(): void
-    {
-        $this->data = [];
     }
 
     private function setMiddleware(): void

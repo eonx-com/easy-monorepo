@@ -6,10 +6,10 @@ namespace EonX\EasyActivity\Doctrine\Provider;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 
-final class DoctrineDbalStatementProvider
+final readonly class DoctrineDbalStatementProvider
 {
     public function __construct(
-        private Connection $conn,
+        private Connection $connection,
         private string $activityLogsTable,
     ) {
     }
@@ -55,13 +55,11 @@ final class DoctrineDbalStatementProvider
         $activityLogsTable->addColumn('updated_at', 'datetime');
         $activityLogsTable->setPrimaryKey(['id']);
 
-        return $schema->toSql($this->conn->getDatabasePlatform());
+        return $schema->toSql($this->connection->getDatabasePlatform());
     }
 
     /**
      * @return string[]
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     public function rollbackStatements(): array
     {

@@ -9,7 +9,7 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
-final class ResetDecisionMiddleware implements MiddlewareInterface
+final readonly class ResetDecisionMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private DecisionFactoryInterface $decisionFactory,

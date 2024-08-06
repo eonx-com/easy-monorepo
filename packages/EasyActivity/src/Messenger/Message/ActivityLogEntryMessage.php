@@ -8,7 +8,7 @@ use EonX\EasyLock\Common\ValueObject\LockData;
 use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 
-final class ActivityLogEntryMessage implements WithLockDataInterface
+final readonly class ActivityLogEntryMessage implements WithLockDataInterface
 {
     private const LOCK_RESOURCE = 'activity_log_%s_%s';
 

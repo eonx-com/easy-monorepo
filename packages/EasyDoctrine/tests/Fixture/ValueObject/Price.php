@@ -7,14 +7,10 @@ use Stringable;
 
 final class Price implements Stringable
 {
-    private string $amount;
-
-    private string $currency;
-
-    public function __construct(string $amount, string $currency)
-    {
-        $this->amount = $amount;
-        $this->currency = $currency;
+    public function __construct(
+        private string $amount,
+        private string $currency,
+    ) {
     }
 
     public function __toString(): string

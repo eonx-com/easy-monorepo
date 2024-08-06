@@ -14,7 +14,6 @@ use EonX\EasySecurity\Bundle\Enum\BundleParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigServiceId;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Configurator\ApiTokenConfigurator;
-use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Common\Factory\SecurityContextFactory;
 use EonX\EasySecurity\Common\Factory\SecurityContextFactoryInterface;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolver;
@@ -90,7 +89,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
             static fn (Container $app): ApiTokenConfigurator => new ApiTokenConfigurator(
                 $app->make(ApiTokenDecoderFactoryInterface::class),
                 \config('easy-security.token_decoder'),
-                SecurityContextConfiguratorInterface::SYSTEM_PRIORITY
+                \config('easy-security.default_configurators_priority')
             )
         );
 

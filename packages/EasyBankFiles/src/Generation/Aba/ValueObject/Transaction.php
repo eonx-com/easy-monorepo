@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Aba\ValueObject;
 
-use EonX\EasyBankFiles\Generation\Common\Generator\GeneratorInterface;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 /**
@@ -22,29 +22,34 @@ use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
  */
 final class Transaction extends AbstractObject
 {
-    public const CODE_GENERAL_CREDIT = 50;
+    private const TRANSACTION_CODE_CREDIT = 50;
 
-    public const CODE_GENERAL_DEBIT = 13;
+    private const TRANSACTION_CODE_DEBIT = 13;
 
-    /**
-     * Get validation rules.
-     *
-     * @return string[]
-     */
     public function getValidationRules(): array
     {
         return [
-            'accountNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'amount' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'amountOfWithholdingTax' => GeneratorInterface::VALIDATION_RULE_NUMERIC,
-            'bsbNumber' => GeneratorInterface::VALIDATION_RULE_BSB,
-            'lodgementReference' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'nameOfRemitter' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'titleOfAccount' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'traceAccountNumber' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'traceBsb' => GeneratorInterface::VALIDATION_RULE_BSB,
-            'transactionCode' => GeneratorInterface::class,
+            'accountNumber' => ValidationRule::Alpha,
+            'amount' => ValidationRule::Numeric,
+            'amountOfWithholdingTax' => ValidationRule::Numeric,
+            'bsbNumber' => ValidationRule::Bsb,
+            'lodgementReference' => ValidationRule::Alpha,
+            'nameOfRemitter' => ValidationRule::Alpha,
+            'titleOfAccount' => ValidationRule::Alpha,
+            'traceAccountNumber' => ValidationRule::Alpha,
+            'traceBsb' => ValidationRule::Bsb,
+            'transactionCode' => ValidationRule::Required,
         ];
+    }
+
+    public function isCredit(): bool
+    {
+        return (int)$this->getTransactionCode() === self::TRANSACTION_CODE_CREDIT;
+    }
+
+    public function isDebit(): bool
+    {
+        return (int)$this->getTransactionCode() === self::TRANSACTION_CODE_DEBIT;
     }
 
     /**

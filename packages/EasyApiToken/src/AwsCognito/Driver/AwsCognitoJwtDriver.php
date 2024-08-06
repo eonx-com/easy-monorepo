@@ -12,7 +12,7 @@ use EonX\EasyApiToken\Common\Exception\MethodNotSupportedException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-final class AwsCognitoJwtDriver implements JwtDriverInterface
+final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
 {
     private const DEFAULT_JWK_ALGO = 'RS256';
 
@@ -21,10 +21,10 @@ final class AwsCognitoJwtDriver implements JwtDriverInterface
     private const TOKEN_TYPE_ID = 'id';
 
     public function __construct(
-        private readonly UserPoolConfigInterface $userPoolConfig,
+        private UserPoolConfigInterface $userPoolConfig,
         private AwsCognitoJwkProviderInterface $jwkFetcher = new AwsCognitoJwkProvider(),
-        private readonly ?int $leeway = null,
-        private readonly string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
+        private ?int $leeway = null,
+        private string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,
     ) {
     }
 

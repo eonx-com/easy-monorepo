@@ -17,7 +17,7 @@ final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
     private bool $shouldKillWorker = false;
 
     public function __construct(
-        private LoggerInterface $logger = new NullLogger(),
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

@@ -13,7 +13,7 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 final class SendAfterMiddleware extends AbstractMiddleware
 {
     public function __construct(
-        private StoreInterface $store,
+        private readonly StoreInterface $store,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

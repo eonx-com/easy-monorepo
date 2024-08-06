@@ -26,7 +26,7 @@ final class ValidationFailedException extends ValidationException
         $errorsToString = '';
 
         foreach ($errors ?? $this->getErrors() as $error) {
-            $errorsToString .= \sprintf($pattern, $error['attribute'], $error['value'], $error['rule']);
+            $errorsToString .= \sprintf($pattern, $error['attribute'], $error['value'], $error['rule']->name);
         }
 
         return $errorsToString;

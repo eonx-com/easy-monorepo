@@ -50,26 +50,41 @@ Symfony has the following additional configuration options:
 
 ### Symfony
 
-In Symfony, you could have a configuration file called `easy_webhook.yaml` that looks like the following:
+In Symfony, you could have a configuration file called `easy_webhook.php` that looks like the following:
 
-``` yaml
-easy_webhook:
-    async:
-        enabled: true
-        bus: 'messenger.bus.custom'
-    event:
-        enabled: true
-        event_header: 'My-Event-Header'
-    id:
-        enabled: true
-        id_header: 'My-Id-Header'
-    method: 'POST'
-    signature:
-        enabled: true
-        signature_header: 'My-Signature-Header'
-        signer: 'Rs256Signer::class'
-        secret: 'my-secret'
-    use_default_middleware: true
+```php
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use EonX\EasyWebhook\Signers\Rs256Signer;
+use Symfony\Config\EasyWebhookConfig;
+
+return static function (EasyWebhookConfig $easyWebhookConfig): void {
+    $easyWebhookConfig
+        ->method('POST')
+        ->useDefaultMiddleware(true);
+
+    $easyWebhookConfig->async()
+        ->enabled(true)
+        ->bus('messenger.bus.custom');
+
+    $easyWebhookConfig->event()
+        ->enabled(true)
+        ->eventHeader('My-Event-Header');
+
+    $easyWebhookConfig->id()
+        ->enabled(true)
+        ->idHeader('My-Id-Header');
+
+    $easyWebhookConfig->signature()
+        ->enabled(true)
+        ->signatureHeader('My-Signature-Header')
+        ->signer(Rs256Signer::class)
+        ->secret(env('APP_SECRET'));
+};
+
 ```
 
 ### Laravel

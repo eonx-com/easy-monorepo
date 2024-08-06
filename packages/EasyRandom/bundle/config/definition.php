@@ -8,7 +8,7 @@ return static function (DefinitionConfigurator $definition) {
         ->children()
             ->integerNode('uuid_version')
                 ->validate()
-                    ->ifNotInArray([4, 6])
+                    ->ifNotInArray([1, 4, 6, 7])
                     ->thenInvalid('Invalid UUID version %s')
                 ->end()
                 ->defaultValue(6)

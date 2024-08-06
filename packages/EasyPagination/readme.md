@@ -36,25 +36,9 @@ uses it too then perfect!
 
 Can't you find your happiness in the existing resolvers? Please let us know or even better create a PR :)
 
-### StartSize Resolvers
+### Resolvers List
 
-The "StartSize" resolvers assume your pagination is based on only 2 attributes to define the start and its size. What
-are those attributes names or default values? This is up to you!
-A `StartSizeConfigInterface` (and its default implementation) is here for you to define all that as you want.
-
-Here are some examples of configuration you can have:
-
-| start_attributes | start_default | size_attribute | size_default |
-|------------------|---------------|----------------|--------------|
-| page             | 1             | perPage        | 15           |
-| _page            | 1             | _per_page      | 15           |
-| number           | 1             | size           | 15           |
-| offset           | 0             | limit          | 30           |
-
-##### StartSize Resolvers List
-
-- [StartSizeInQueryResolver](docs/resolvers/startsize_in_query_resolver.md)
-- [StartSizeAsArrayInQueryResolver](docs/resolvers/startsize_as_array_in_query_resolver.md)
+- [FromHttpFoundationRequestPaginationResolver](docs/resolvers/from_http_foundation_request_pagination_resolver.md)
 
 [1]: https://getcomposer.org/
 

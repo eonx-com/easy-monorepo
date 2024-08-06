@@ -40,10 +40,10 @@ following packages for the following purposes:
 
 [1]: https://getcomposer.org/
 
-[2]: https://flex.symfony.com/
+[2]: https://symfony.com/doc/current/setup/flex.html
 
-[3]: https://github.com/eonx-com/easy-doctrine
+[3]: https://packages.eonx.com/packages/easy-doctrine/
 
-[4]: https://github.com/symfony/serializer
+[4]: https://symfony.com/doc/current/components/serializer.html
 
-[5]: https://github.com/symfony/messenger
+[5]: https://symfony.com/doc/current/components/messenger.html

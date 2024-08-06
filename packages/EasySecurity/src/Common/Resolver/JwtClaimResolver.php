@@ -8,7 +8,7 @@ use EonX\EasyApiToken\Common\ValueObject\JwtInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class JwtClaimResolver implements JwtClaimResolverInterface
+final readonly class JwtClaimResolver implements JwtClaimResolverInterface
 {
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),

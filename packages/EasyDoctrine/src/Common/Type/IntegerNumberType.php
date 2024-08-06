@@ -10,7 +10,7 @@ use EonX\EasyUtils\Math\ValueObject\Number;
 
 final class IntegerNumberType extends DoctrineBigIntType
 {
-    public const INTEGER_NUMBER = 'INTEGER_NUMBER';
+    public const NAME = 'integer_number';
 
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
@@ -41,7 +41,7 @@ final class IntegerNumberType extends DoctrineBigIntType
 
     public function getName(): string
     {
-        return self::INTEGER_NUMBER;
+        return self::NAME;
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool

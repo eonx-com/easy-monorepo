@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Unit\Generation\Common\ValueObject;
 
-use EonX\EasyBankFiles\Tests\Stub\Generation\Common\ValueObject\ObjectStub;
+use EonX\EasyBankFiles\Tests\Stub\ValueObject\ObjectStub;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 

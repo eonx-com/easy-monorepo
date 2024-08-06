@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Generation\Common\Generator;
 
 use DateTime;
+use EonX\EasyBankFiles\Generation\Common\Enum\LineBreak;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\Exception\InvalidArgumentException;
 use EonX\EasyBankFiles\Generation\Common\Exception\LengthMismatchesException;
 use EonX\EasyBankFiles\Generation\Common\Exception\ValidationFailedException;
@@ -11,18 +13,9 @@ use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 abstract class AbstractGenerator implements GeneratorInterface
 {
-    protected string $breakLine = self::BREAK_LINE_WINDOWS;
-
     protected string $contents = '';
 
-    /**
-     * @var string[] $validationRules
-     */
-    private static array $validationRules = [
-        self::VALIDATION_RULE_ALPHA => '/[^A-Za-z0-9 &\',-\\.\\/\\+\\$\\!%\\(\\)\\*\\#=:\\?\\[\\]_\\^@]/',
-        self::VALIDATION_RULE_BSB => '/^\\d{3}(\\-)\\d{3}/',
-        self::VALIDATION_RULE_NUMERIC => '/[^0-9-]/',
-    ];
+    protected LineBreak $lineBreak = LineBreak::Windows;
 
     /**
      * Return contents.
@@ -34,12 +27,9 @@ abstract class AbstractGenerator implements GeneratorInterface
         return $this->contents;
     }
 
-    /**
-     * Set break lines.
-     */
-    public function setBreakLines(string $breakLine): static
+    public function setBreakLines(LineBreak $lineBreak): static
     {
-        $this->breakLine = $breakLine;
+        $this->lineBreak = $lineBreak;
 
         return $this;
     }
@@ -73,6 +63,8 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * Validate object attributes.
      *
+     * @param array<string, \EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule>|null $rules
+     *
      * @throws \EonX\EasyBankFiles\Generation\Common\Exception\ValidationFailedException
      */
     protected function validateAttributes(AbstractObject $object, ?array $rules = null): void
@@ -96,7 +88,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     protected function writeLine(string $line): void
     {
         $this->checkLineLength($line);
-        $this->contents .= $line . $this->breakLine;
+        $this->contents .= $line . $this->lineBreak->value;
     }
 
     /**
@@ -126,16 +118,16 @@ abstract class AbstractGenerator implements GeneratorInterface
      * Process rule against a value.
      *
      * @param array $errors The errors array to set errors to
-     * @param string $rule The rule to process
+     * @param \EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule $rule The rule to process
      * @param string $attribute The attribute the value relates to
      */
-    private function processRule(array &$errors, string $rule, string $attribute, mixed $value): void
+    private function processRule(array &$errors, ValidationRule $rule, string $attribute, mixed $value): void
     {
         // Not sure why we allow arrays here
         if ($value === null || $value === '' || (\is_array($value) && \count($value) === 0)) {
             $errors[] = [
                 ...\compact('attribute', 'value'),
-                'rule' => 'required',
+                'rule' => ValidationRule::Required,
             ];
 
             return;
@@ -147,15 +139,15 @@ abstract class AbstractGenerator implements GeneratorInterface
         }
 
         switch ($rule) {
-            case self::VALIDATION_RULE_BSB:
+            case ValidationRule::Bsb:
                 // 123-456 length must be 7 characters with '-' in the 4th position
-                if (\preg_match(self::$validationRules[$rule], $value) === 0) {
+                if (\preg_match(ValidationRule::Bsb->value, $value) === 0) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
 
                 break;
 
-            case self::VALIDATION_RULE_DATE:
+            case ValidationRule::Date:
                 if (DateTime::createFromFormat('dmy', $value) === false &&
                     DateTime::createFromFormat('Ymd', $value) === false) {
                     $errors[] = \compact('attribute', 'value', 'rule');
@@ -163,9 +155,14 @@ abstract class AbstractGenerator implements GeneratorInterface
 
                 break;
 
-            case self::VALIDATION_RULE_ALPHA:
-            case self::VALIDATION_RULE_NUMERIC:
-                if (\preg_match(self::$validationRules[$rule], $value)) {
+            case ValidationRule::Alpha:
+                if (\preg_match(ValidationRule::Alpha->value, $value)) {
+                    $errors[] = \compact('attribute', 'value', 'rule');
+                }
+
+                break;
+            case ValidationRule::Numeric:
+                if (\preg_match(ValidationRule::Numeric->value, $value)) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
 

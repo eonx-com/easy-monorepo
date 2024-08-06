@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class AwsRdsAuthTokenProvider
+final readonly class AwsRdsAuthTokenProvider
 {
     private const CACHE_HASH_PATTERN = '%s_%s_%s_%s';
 
@@ -19,10 +19,10 @@ final class AwsRdsAuthTokenProvider
     private AuthTokenGenerator $authTokenGenerator;
 
     public function __construct(
-        private readonly string $awsRegion,
-        private readonly int $authTokenLifetimeInMinutes,
-        private readonly CacheInterface $cache,
-        private readonly ?LoggerInterface $logger = null,
+        private string $awsRegion,
+        private int $authTokenLifetimeInMinutes,
+        private CacheInterface $cache,
+        private ?LoggerInterface $logger = null,
     ) {
         $this->authTokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
     }

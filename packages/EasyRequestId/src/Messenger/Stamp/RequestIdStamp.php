@@ -5,7 +5,7 @@ namespace EonX\EasyRequestId\Messenger\Stamp;
 
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
-final class RequestIdStamp implements StampInterface
+final readonly class RequestIdStamp implements StampInterface
 {
     public function __construct(
         private ?string $correlationId = null,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Common\ValueObject;
 
 use DateTimeInterface;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use Throwable;
 
 interface BatchObjectInterface
@@ -17,26 +18,6 @@ interface BatchObjectInterface
         'started_at' => 'setStartedAt',
         'updated_at' => 'setUpdatedAt',
     ];
-
-    public const STATUSES_FOR_COMPLETED = [
-        self::STATUS_CANCELLED,
-        self::STATUS_FAILED,
-        self::STATUS_SUCCEEDED,
-    ];
-
-    public const STATUS_CANCELLED = 'cancelled';
-
-    public const STATUS_CREATED = 'created';
-
-    public const STATUS_FAILED = 'failed';
-
-    public const STATUS_PENDING = 'pending';
-
-    public const STATUS_PROCESSING = 'processing';
-
-    public const STATUS_SUCCEEDED = 'succeeded';
-
-    public const STATUS_SUCCEEDED_PENDING_APPROVAL = 'succeeded_pending_approval';
 
     public function getCancelledAt(): ?DateTimeInterface;
 
@@ -57,7 +38,7 @@ interface BatchObjectInterface
 
     public function getStartedAt(): ?DateTimeInterface;
 
-    public function getStatus(): string;
+    public function getStatus(): BatchObjectStatus;
 
     public function getThrowable(): ?Throwable;
 
@@ -95,7 +76,7 @@ interface BatchObjectInterface
 
     public function setStartedAt(DateTimeInterface $startedAt): self;
 
-    public function setStatus(string $status): self;
+    public function setStatus(BatchObjectStatus $status): self;
 
     public function setThrowable(Throwable $throwable): self;
 

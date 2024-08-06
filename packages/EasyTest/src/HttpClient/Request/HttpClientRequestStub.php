@@ -13,8 +13,8 @@ final class HttpClientRequestStub
 
     public function __construct(
         private Closure $addResponseClosure,
-        private string $method,
-        private string $url,
+        private readonly string $method,
+        private readonly string $url,
         private ?array $options = null,
     ) {
     }

@@ -5,12 +5,12 @@ namespace EonX\EasyRequestId\Laravel\Middleware;
 
 use Closure;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
-use EonX\EasyRequestId\Common\Resolver\ResolvesFromHttpFoundationRequestTrait;
+use EonX\EasyRequestId\Common\Resolver\HttpFoundationRequestResolverTrait;
 use Illuminate\Http\Request;
 
 final class RequestIdMiddleware
 {
-    use ResolvesFromHttpFoundationRequestTrait;
+    use HttpFoundationRequestResolverTrait;
 
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,

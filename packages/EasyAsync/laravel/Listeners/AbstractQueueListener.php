@@ -14,7 +14,7 @@ abstract class AbstractQueueListener
     protected LoggerInterface $logger;
 
     public function __construct(
-        private Cache $cache,
+        private readonly Cache $cache,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();

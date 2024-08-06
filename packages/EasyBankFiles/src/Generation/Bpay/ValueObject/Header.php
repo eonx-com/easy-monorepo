@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Generation\Bpay\ValueObject;
 
-use EonX\EasyBankFiles\Generation\Common\Generator\GeneratorInterface;
+use EonX\EasyBankFiles\Generation\Common\Enum\ValidationRule;
 use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
 
 /**
@@ -15,16 +15,11 @@ use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
  */
 final class Header extends AbstractObject
 {
-    /**
-     * Get validation rules.
-     *
-     * @return string[]
-     */
     public function getValidationRules(): array
     {
         return [
-            'customerShortName' => GeneratorInterface::VALIDATION_RULE_ALPHA,
-            'processingDate' => GeneratorInterface::VALIDATION_RULE_DATE,
+            'customerShortName' => ValidationRule::Alpha,
+            'processingDate' => ValidationRule::Date,
         ];
     }
 

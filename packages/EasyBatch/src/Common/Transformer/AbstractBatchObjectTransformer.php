@@ -3,15 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Transformer;
 
+use BackedEnum;
 use Carbon\Carbon;
 use DateTimeInterface;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
-    private string $datetimeFormat;
+    private readonly string $datetimeFormat;
 
     public function __construct(
         private readonly string $class,
@@ -41,7 +43,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             ->setApprovalRequired((bool)($data['requires_approval'] ?? 0))
             ->setName($data['name'] ?? null)
             ->setId($data['id'])
-            ->setStatus((string)($data['status'] ?? BatchObjectInterface::STATUS_PENDING));
+            ->setStatus(isset($data['status']) ? BatchObjectStatus::from($data['status']) : BatchObjectStatus::Pending);
 
         if (\is_string($data['metadata'] ?? null)) {
             $object->setMetadata(\json_decode($data['metadata'], true));
@@ -81,6 +83,10 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
             if ($value instanceof Throwable) {
                 $data[$name] = \json_encode(ErrorDetailsHelper::resolveSimpleDetails($value));
+            }
+
+            if ($value instanceof BackedEnum) {
+                $data[$name] = $value->value;
             }
         }
 

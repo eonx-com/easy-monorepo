@@ -46,4 +46,4 @@ $app->register(\EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider::class);
 $app->configure('easy-api-token');
 ```
 
-[1]: https://laravel.com/docs/5.8/providers
+[1]: https://laravel.com/docs/10.x/providers

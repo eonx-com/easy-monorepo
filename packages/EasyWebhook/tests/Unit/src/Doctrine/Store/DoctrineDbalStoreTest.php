@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
+use EonX\EasyWebhook\Common\Enum\WebhookOption;
+use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 use EonX\EasyWebhook\Doctrine\Store\DoctrineDbalStore;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -29,7 +31,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
         yield 'webhooks in store but only 1 is sendAfter' => [
             [
                 self::createWebhookForSendAfter(Carbon::now('UTC')->subDay()),
-                self::createWebhookForSendAfter(Carbon::now('UTC')->subDay(), WebhookInterface::STATUS_SUCCESS),
+                self::createWebhookForSendAfter(Carbon::now('UTC')->subDay(), WebhookStatus::Success),
                 self::createWebhookForSendAfter(Carbon::now('UTC')->addDay()),
             ],
             1,
@@ -59,9 +61,9 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
     {
         $store = $this->getStore();
         $webhook = Webhook::fromArray([
-            WebhookInterface::OPTION_METHOD => WebhookInterface::DEFAULT_METHOD,
-            WebhookInterface::OPTION_URL => 'https://eonx.com',
-            WebhookInterface::OPTION_HTTP_OPTIONS => [
+            WebhookOption::Method->value => WebhookInterface::DEFAULT_METHOD,
+            WebhookOption::Url->value => 'https://eonx.com',
+            WebhookOption::HttpOptions->value => [
                 'headers' => [
                     'X-My-Header' => 'my-header',
                 ],

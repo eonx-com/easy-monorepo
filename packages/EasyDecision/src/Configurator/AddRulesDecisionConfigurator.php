@@ -13,7 +13,7 @@ final class AddRulesDecisionConfigurator extends AbstractDecisionConfigurator
     /**
      * @var \EonX\EasyDecision\Rule\RuleInterface[]
      */
-    private array $rules;
+    private readonly array $rules;
 
     public function __construct(iterable $rules, ?int $priority = null)
     {

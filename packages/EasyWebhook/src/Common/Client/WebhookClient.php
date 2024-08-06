@@ -7,7 +7,7 @@ use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
 
-final class WebhookClient implements WebhookClientInterface
+final readonly class WebhookClient implements WebhookClientInterface
 {
     public function __construct(
         private StackInterface $stack,

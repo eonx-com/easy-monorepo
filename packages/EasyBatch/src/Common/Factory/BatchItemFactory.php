@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Factory;
 
+use EonX\EasyBatch\Common\Enum\BatchItemType;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Event\BatchItemCreatedEvent;
 use EonX\EasyBatch\Common\Event\BatchItemCreatedFromArrayEvent;
 use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
@@ -21,8 +23,8 @@ final class BatchItemFactory extends AbstractBatchObjectFactory implements Batch
 
         if ($message === null) {
             $batchItem
-                ->setStatus(BatchItemInterface::STATUS_BATCH_PENDING_APPROVAL)
-                ->setType(BatchItemInterface::TYPE_NESTED_BATCH);
+                ->setStatus(BatchObjectStatus::BatchPendingApproval)
+                ->setType(BatchItemType::NestedBatch->value);
         }
 
         /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchItem */

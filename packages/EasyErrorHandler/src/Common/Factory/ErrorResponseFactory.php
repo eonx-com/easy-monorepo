@@ -15,7 +15,7 @@ final class ErrorResponseFactory implements ErrorResponseFactoryInterface, Forma
 
     public function create(Request $request, ErrorResponseDataInterface $data): Response
     {
-        return new JsonResponse($data->getRawData(), $data->getStatusCode(), $data->getHeaders());
+        return new JsonResponse($data->getRawData(), $data->getStatusCode()->value, $data->getHeaders());
     }
 
     public function supportsFormat(Request $request): bool

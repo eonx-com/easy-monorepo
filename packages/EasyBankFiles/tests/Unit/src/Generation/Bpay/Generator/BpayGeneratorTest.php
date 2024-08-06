@@ -6,8 +6,8 @@ namespace EonX\EasyBankFiles\Tests\Unit\Generation\Bpay\Generator;
 use EonX\EasyBankFiles\Generation\Bpay\Generator\BpayGenerator;
 use EonX\EasyBankFiles\Generation\Bpay\ValueObject\Header;
 use EonX\EasyBankFiles\Generation\Bpay\ValueObject\Transaction;
+use EonX\EasyBankFiles\Generation\Common\Enum\LineBreak;
 use EonX\EasyBankFiles\Generation\Common\Exception\InvalidArgumentException;
-use EonX\EasyBankFiles\Generation\Common\Generator\GeneratorInterface;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -60,7 +60,7 @@ final class BpayGeneratorTest extends AbstractUnitTestCase
         $this->expectException(InvalidArgumentException::class);
 
         (new BpayGenerator($this->createHeader(), ['invalid']))
-            ->setBreakLines(GeneratorInterface::BREAK_LINE_WINDOWS)
+            ->setBreakLines(LineBreak::Windows)
             ->getContents();
     }
 

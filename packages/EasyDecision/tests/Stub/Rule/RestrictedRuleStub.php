@@ -6,11 +6,11 @@ namespace EonX\EasyDecision\Tests\Stub\Rule;
 use EonX\EasyDecision\Decision\DecisionInterface;
 use EonX\EasyDecision\Rule\RestrictedRuleInterface;
 
-final class RestrictedRuleStub extends RuleStub implements RestrictedRuleInterface
+final class RestrictedRuleStub extends AbstractRuleStub implements RestrictedRuleInterface
 {
     public function __construct(
         string $name,
-        private string $supportedDecision,
+        private readonly string $supportedDecision,
         mixed $output,
         ?bool $supports = null,
     ) {

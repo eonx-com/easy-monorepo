@@ -5,7 +5,7 @@ namespace EonX\EasyEventDispatcher\Dispatcher;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
-final class EventDispatcher implements EventDispatcherInterface
+final readonly class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private SymfonyEventDispatcherInterface $decorated,

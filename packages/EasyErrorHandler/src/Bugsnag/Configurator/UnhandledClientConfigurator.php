@@ -13,7 +13,7 @@ use EonX\EasyErrorHandler\Common\Exception\SeverityAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\StatusCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\SubCodeAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Exception\TranslatableExceptionInterface;
-use EonX\EasyErrorHandler\Common\Exception\ValidationExceptionInterface;
+use EonX\EasyErrorHandler\Common\Exception\WithErrorListExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
@@ -40,7 +40,7 @@ final class UnhandledClientConfigurator extends AbstractClientConfigurator
             StatusCodeAwareExceptionInterface::class,
             SubCodeAwareExceptionInterface::class,
             TranslatableExceptionInterface::class,
-            ValidationExceptionInterface::class,
+            WithErrorListExceptionInterface::class,
             // Symfony HTTP exceptions
             HttpExceptionInterface::class,
         ]);

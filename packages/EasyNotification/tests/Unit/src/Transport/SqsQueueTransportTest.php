@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Tests\Unit\Transport;
 
 use EonX\EasyNotification\Message\QueueMessage;
-use EonX\EasyNotification\Tests\Stub\Sqs\SqsClientStub;
+use EonX\EasyNotification\Tests\Stub\SqsClient\SqsClientStub;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyNotification\Transport\SqsQueueTransport;
 

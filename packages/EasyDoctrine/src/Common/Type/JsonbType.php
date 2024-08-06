@@ -10,9 +10,9 @@ use JsonException;
 
 final class JsonbType extends Type
 {
-    public const FORMAT_DB_JSONB = 'JSONB';
+    public const NAME = 'jsonb';
 
-    public const JSONB = 'jsonb';
+    private const FORMAT_DB_JSONB = 'JSONB';
 
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
@@ -58,7 +58,7 @@ final class JsonbType extends Type
 
     public function getName(): string
     {
-        return self::JSONB;
+        return self::NAME;
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string

@@ -17,7 +17,7 @@ final class BatchItemIteratorConfig
 
     private bool $forDispatch = false;
 
-    private Closure $func;
+    private readonly Closure $func;
 
     public function __construct(
         private readonly int|string $batchId,

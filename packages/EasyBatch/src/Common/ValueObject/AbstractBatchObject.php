@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Common\ValueObject;
 
 use DateTimeInterface;
+use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use Throwable;
 
@@ -25,7 +26,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     private ?DateTimeInterface $startedAt = null;
 
-    private string $status = self::STATUS_PENDING;
+    private BatchObjectStatus $status = BatchObjectStatus::Pending;
 
     private ?Throwable $throwable = null;
 
@@ -82,7 +83,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->startedAt;
     }
 
-    public function getStatus(): string
+    public function getStatus(): BatchObjectStatus
     {
         return $this->status;
     }
@@ -114,31 +115,27 @@ abstract class AbstractBatchObject implements BatchObjectInterface
 
     public function isCancelled(): bool
     {
-        return $this->getStatus() === self::STATUS_CANCELLED;
+        return $this->getStatus() === BatchObjectStatus::Cancelled;
     }
 
     public function isCompleted(): bool
     {
-        return \in_array(
-            $this->getStatus(),
-            BatchObjectInterface::STATUSES_FOR_COMPLETED,
-            true
-        );
+        return \in_array($this->getStatus(), BatchObjectStatus::STATUSES_FOR_COMPLETE, true);
     }
 
     public function isFailed(): bool
     {
-        return $this->getStatus() === self::STATUS_FAILED;
+        return $this->getStatus() === BatchObjectStatus::Failed;
     }
 
     public function isPendingApproval(): bool
     {
-        return $this->getStatus() === self::STATUS_SUCCEEDED_PENDING_APPROVAL;
+        return $this->getStatus() === BatchObjectStatus::SucceededPendingApproval;
     }
 
     public function isSucceeded(): bool
     {
-        return $this->getStatus() === self::STATUS_SUCCEEDED;
+        return $this->getStatus() === BatchObjectStatus::Succeeded;
     }
 
     public function setApprovalRequired(?bool $approvalRequired = null): BatchObjectInterface
@@ -197,7 +194,7 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this;
     }
 
-    public function setStatus(string $status): BatchObjectInterface
+    public function setStatus(BatchObjectStatus $status): BatchObjectInterface
     {
         $this->status = $status;
 

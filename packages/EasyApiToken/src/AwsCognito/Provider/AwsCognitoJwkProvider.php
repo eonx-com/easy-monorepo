@@ -14,15 +14,15 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use UnexpectedValueException;
 
-final class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInterface
+final readonly class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInterface
 {
     private const DEFAULT_CACHE_EXPIRY = 3600;
 
     private HttpClientInterface $httpClient;
 
     public function __construct(
-        private readonly CacheInterface $cache = new ArrayAdapter(),
-        private readonly int $cacheExpiry = self::DEFAULT_CACHE_EXPIRY,
+        private CacheInterface $cache = new ArrayAdapter(),
+        private int $cacheExpiry = self::DEFAULT_CACHE_EXPIRY,
         ?HttpClientInterface $httpClient = null,
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();

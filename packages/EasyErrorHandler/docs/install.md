@@ -62,4 +62,4 @@ $app->configure('easy-error-handler');
 
 [1]: https://getcomposer.org/
 
-[2]: https://flex.symfony.com/
+[2]: https://symfony.com/doc/current/setup/flex.html

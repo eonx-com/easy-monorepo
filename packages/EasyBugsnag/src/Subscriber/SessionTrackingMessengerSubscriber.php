@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 
-final class SessionTrackingMessengerSubscriber implements EventSubscriberInterface
+final readonly class SessionTrackingMessengerSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private Client $client,

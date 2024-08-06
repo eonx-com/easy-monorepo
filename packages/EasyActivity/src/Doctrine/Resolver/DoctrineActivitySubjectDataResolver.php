@@ -3,25 +3,22 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Doctrine\Resolver;
 
-use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
 
-final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
+final readonly class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
     public function __construct(
         private ActivitySubjectDataSerializerInterface $serializer,
     ) {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function resolve(
-        string $action,
+        ActivityAction $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
     ): ?ActivitySubjectDataInterface {
@@ -37,7 +34,7 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
         return new ActivitySubjectData($serializedData, $serializedOldData);
     }
 
-    private function resolveChangeData(string $action, array $changeSet): array
+    private function resolveChangeData(ActivityAction $action, array $changeSet): array
     {
         $oldData = [];
         $data = [];
@@ -46,11 +43,11 @@ final class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataRe
             $oldData[$field] = $oldValue;
         }
 
-        if ($action === ActivityLogEntry::ACTION_CREATE) {
+        if ($action === ActivityAction::Create) {
             $oldData = null;
         }
 
-        if ($action === ActivityLogEntry::ACTION_DELETE) {
+        if ($action === ActivityAction::Delete) {
             $data = null;
         }
 
