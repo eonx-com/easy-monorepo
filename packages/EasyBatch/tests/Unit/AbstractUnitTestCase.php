@@ -12,6 +12,8 @@ use EonX\EasyBatch\Common\Strategy\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Common\Strategy\UuidStrategy;
 use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
 use EonX\EasyBatch\Common\Transformer\BatchTransformer;
+use EonX\EasyBatch\Common\ValueObject\Batch;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyRandom\Generator\RandomGenerator;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +46,7 @@ abstract class AbstractUnitTestCase extends TestCase
             return $this->batchFactory;
         }
 
-        $this->batchFactory = new BatchFactory(new BatchTransformer());
+        $this->batchFactory = new BatchFactory($this->getBatchTransformer());
 
         return $this->batchFactory;
     }
@@ -55,11 +57,26 @@ abstract class AbstractUnitTestCase extends TestCase
             return $this->batchItemFactory;
         }
 
-        $this->batchItemFactory = new BatchItemFactory(
-            new BatchItemTransformer(new MessageSerializer())
-        );
+        $this->batchItemFactory = new BatchItemFactory($this->getBatchItemTransformer());
 
         return $this->batchItemFactory;
+    }
+
+    protected function getBatchItemTransformer(): BatchItemTransformer
+    {
+        return new BatchItemTransformer(
+            new MessageSerializer(),
+            BatchItem::class,
+            'Y-m-d H:i:s.u'
+        );
+    }
+
+    protected function getBatchTransformer(): BatchTransformer
+    {
+        return new BatchTransformer(
+            Batch::class,
+            'Y-m-d H:i:s.u'
+        );
     }
 
     protected function getIdStrategy(): BatchObjectIdStrategyInterface

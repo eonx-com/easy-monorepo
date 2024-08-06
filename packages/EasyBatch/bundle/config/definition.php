@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use EonX\EasyBatch\Common\ValueObject\Batch;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
