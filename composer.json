@@ -71,6 +71,7 @@
         "fakerphp/faker": "^1.19",
         "firebase/php-jwt": "^6.5",
         "illuminate/database": "^10.0",
+        "illuminate/routing": "^10.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "laravel/lumen-framework": "^10.0",
         "mockery/mockery": "^1.6",
