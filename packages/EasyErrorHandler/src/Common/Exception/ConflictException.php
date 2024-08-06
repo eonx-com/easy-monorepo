@@ -9,5 +9,5 @@ abstract class ConflictException extends BaseException
 {
     protected HttpStatusCode $statusCode = HttpStatusCode::Conflict;
 
-    protected string $userMessage = self::USER_MESSAGE_CONFLICT;
+    protected string $userMessage = 'exceptions.conflict';
 }

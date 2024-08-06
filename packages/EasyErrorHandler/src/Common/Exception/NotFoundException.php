@@ -9,5 +9,5 @@ abstract class NotFoundException extends BaseException
 {
     protected HttpStatusCode $statusCode = HttpStatusCode::NotFound;
 
-    protected string $userMessage = self::USER_MESSAGE_NOT_FOUND;
+    protected string $userMessage = 'exceptions.not_found';
 }

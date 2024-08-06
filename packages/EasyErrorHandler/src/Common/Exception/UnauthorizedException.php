@@ -9,5 +9,5 @@ abstract class UnauthorizedException extends BaseException
 {
     protected HttpStatusCode $statusCode = HttpStatusCode::Unauthorized;
 
-    protected string $userMessage = self::USER_MESSAGE_UNAUTHORIZED;
+    protected string $userMessage = 'exceptions.unauthorized';
 }

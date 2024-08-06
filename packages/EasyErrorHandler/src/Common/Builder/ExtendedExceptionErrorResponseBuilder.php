@@ -15,8 +15,6 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
 {
     use ErrorHandlerAwareTrait;
 
-    public const DEFAULT_KEY = 'exception';
-
     private const EXCEPTION_KEY_CLASS = 'class';
 
     private const EXCEPTION_KEY_FILE = 'file';
@@ -63,11 +61,6 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
             $this->getExceptionKey(self::EXCEPTION_KEY_MESSAGE) => $this->getMessage($throwable),
             $this->getExceptionKey(self::EXCEPTION_KEY_TRACE) => $details['trace'],
         ];
-    }
-
-    protected function getDefaultKey(): string
-    {
-        return self::DEFAULT_KEY;
     }
 
     private function getExceptionKey(string $name): string

@@ -9,8 +9,6 @@ use Throwable;
 
 final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
-    public const DEFAULT_KEY = 'message';
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         ?string $key = null,
@@ -21,7 +19,7 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
 
     protected function doBuildValue(Throwable $throwable, array $data): string
     {
-        $message = null;
+        $message = 'exceptions.default_user_message';
         $parameters = [];
 
         if ($throwable instanceof TranslatableExceptionInterface) {
@@ -29,14 +27,6 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
             $parameters = $throwable->getUserMessageParams();
         }
 
-        return $this->translator->trans(
-            $message ?? TranslatableExceptionInterface::USER_MESSAGE_DEFAULT,
-            $parameters
-        );
-    }
-
-    protected function getDefaultKey(): string
-    {
-        return self::DEFAULT_KEY;
+        return $this->translator->trans($message, $parameters);
     }
 }

@@ -8,8 +8,6 @@ use Throwable;
 
 final class ViolationsErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
-    public const DEFAULT_KEY = 'violations';
-
     protected function doBuildValue(Throwable $throwable, array $data): ?array
     {
         if (($throwable instanceof WithErrorListExceptionInterface) === false) {
@@ -17,10 +15,5 @@ final class ViolationsErrorResponseBuilder extends AbstractSingleKeyErrorRespons
         }
 
         return $throwable->getErrors();
-    }
-
-    protected function getDefaultKey(): string
-    {
-        return self::DEFAULT_KEY;
     }
 }

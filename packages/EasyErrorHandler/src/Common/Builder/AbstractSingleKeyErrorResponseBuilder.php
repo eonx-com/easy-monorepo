@@ -8,7 +8,7 @@ use Throwable;
 abstract class AbstractSingleKeyErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
     public function __construct(
-        protected readonly ?string $key = null,
+        protected readonly string $key,
         ?int $priority = null,
     ) {
         parent::__construct($priority);
@@ -19,13 +19,11 @@ abstract class AbstractSingleKeyErrorResponseBuilder extends AbstractErrorRespon
         $value = $this->doBuildValue($throwable, $data);
 
         if ($value !== null) {
-            $data[$this->key ?? $this->getDefaultKey()] = $value;
+            $data[$this->key] = $value;
         }
 
         return parent::buildData($throwable, $data);
     }
 
     abstract protected function doBuildValue(Throwable $throwable, array $data): mixed;
-
-    abstract protected function getDefaultKey(): string;
 }

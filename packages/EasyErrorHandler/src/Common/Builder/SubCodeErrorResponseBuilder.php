@@ -8,8 +8,6 @@ use Throwable;
 
 final class SubCodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
-    public const DEFAULT_KEY = 'sub_code';
-
     protected function doBuildValue(Throwable $throwable, array $data): ?int
     {
         if (($throwable instanceof SubCodeAwareExceptionInterface) === false) {
@@ -17,10 +15,5 @@ final class SubCodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBu
         }
 
         return $throwable->getSubCode();
-    }
-
-    protected function getDefaultKey(): string
-    {
-        return self::DEFAULT_KEY;
     }
 }

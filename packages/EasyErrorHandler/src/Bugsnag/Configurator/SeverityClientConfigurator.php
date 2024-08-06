@@ -7,6 +7,7 @@ use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use EonX\EasyErrorHandler\Common\Enum\ExceptionSeverity;
 use EonX\EasyErrorHandler\Common\Exception\SeverityAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
 use Monolog\Logger;
@@ -15,9 +16,9 @@ use Throwable;
 final class SeverityClientConfigurator extends AbstractClientConfigurator
 {
     private const MAPPING = [
-        Logger::ERROR => SeverityAwareExceptionInterface::SEVERITY_ERROR,
-        Logger::INFO => SeverityAwareExceptionInterface::SEVERITY_INFO,
-        Logger::WARNING => SeverityAwareExceptionInterface::SEVERITY_WARNING,
+        Logger::ERROR => ExceptionSeverity::Error,
+        Logger::INFO => ExceptionSeverity::Info,
+        Logger::WARNING => ExceptionSeverity::Warning,
     ];
 
     public function __construct(
@@ -35,12 +36,12 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
                 $throwable = $report->getOriginalError();
 
                 if ($throwable instanceof Throwable) {
-                    $report->setSeverity($this->getSeverity($throwable));
+                    $report->setSeverity($this->getSeverity($throwable)->value);
                 }
             }));
     }
 
-    private function getSeverity(Throwable $throwable): ?string
+    private function getSeverity(Throwable $throwable): ?ExceptionSeverity
     {
         // Allow to explicitly define the severity
         $severity = $throwable instanceof SeverityAwareExceptionInterface ? $throwable->getSeverity() : null;

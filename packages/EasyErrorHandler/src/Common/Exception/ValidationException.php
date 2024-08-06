@@ -7,5 +7,5 @@ abstract class ValidationException extends BadRequestException implements WithEr
 {
     use WithErrorListExceptionTrait;
 
-    protected string $userMessage = self::USER_MESSAGE_NOT_VALID;
+    protected string $userMessage = 'exceptions.not_valid';
 }
