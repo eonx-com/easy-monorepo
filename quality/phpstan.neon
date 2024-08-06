@@ -180,6 +180,9 @@ parameters:
         - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
 
+        - message: '#Parameter \#1 \$name of static method Monolog\\Level\:\:fromName\(\) expects .*, string given#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
+
         # ---- EasyUtils ----
         - message: '#Class EonX\\EasyUtils\\Common\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Normalizer/CarbonImmutableNormalizer.php
