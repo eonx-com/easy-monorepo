@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Caching\Adapter;
 
+use EonX\EasySwoole\Caching\Enum\CacheTableColumn;
 use EonX\EasySwoole\Caching\Helper\CacheTableHelper;
 use InvalidArgumentException;
 use OpenSwoole\Table as OpenSwooleTable;
@@ -73,13 +74,13 @@ final class SwooleTableAdapter extends AbstractAdapter
 
             $item = $table->get($id);
 
-            if ($now >= $item[CacheTableHelper::COLUMN_EXPIRY]) {
+            if ($now >= $item[CacheTableColumn::Expiry->value]) {
                 $table->del($id);
 
                 continue;
             }
 
-            $values[$id] = $this->marshaller->unmarshall($item[CacheTableHelper::COLUMN_VALUE]);
+            $values[$id] = $this->marshaller->unmarshall($item[CacheTableColumn::Value->value]);
         }
 
         return $values;
@@ -100,8 +101,8 @@ final class SwooleTableAdapter extends AbstractAdapter
         foreach ($values as $id => $value) {
             try {
                 $table->set($id, [
-                    CacheTableHelper::COLUMN_EXPIRY => $expiresAt,
-                    CacheTableHelper::COLUMN_VALUE => $value,
+                    CacheTableColumn::Expiry->value => $expiresAt,
+                    CacheTableColumn::Value->value => $value,
                 ]);
             } catch (Throwable) {
                 $failed[] = $id;
