@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\DirectEntryBatch\Parser;
 
+use DateTime;
 use EonX\EasyBankFiles\Parsing\DirectEntryBatch\Parser\DirectEntryBatchParser;
 use EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\PaymentDetailRecord;
 use EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\RefusalDetailRecord;
@@ -10,7 +11,6 @@ use EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\ReturnDetailRecord;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use DateTime;
 
 #[CoversClass(DirectEntryBatchParser::class)]
 final class DirectEntryBatchParserTest extends AbstractUnitTestCase
@@ -94,44 +94,6 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
         self::assertCount(10, $parser->getErrors());
     }
 
-    public function testProcessSucceedsWithDeReturnFile(): void
-    {
-        $parser = new DirectEntryBatchParser($this->getSampleFileContents('DE_return.txt'));
-
-        $batches = $parser->getBatches();
-        self::assertCount(1, $batches);
-        $descriptiveRecord = $batches[0]->getDescriptiveRecord();
-        self::assertSame('070905', $descriptiveRecord->getDateProcessed());
-        self::assertSame('DE Returns', $descriptiveRecord->getDescriptionOfEntries());
-        self::assertSame('01', $descriptiveRecord->getReelSequenceNumber());
-        self::assertSame('NAB', $descriptiveRecord->getUserFinancialInstitution());
-        self::assertSame('012345', $descriptiveRecord->getNumberOfUserSupplyingFile());
-        self::assertSame('NAB', $descriptiveRecord->getNameOfUserSupplyingFile());
-        self::assertEquals(new DateTime('2005-09-07'), $batches[0]->getDescriptiveRecord()->getDateProcessedObject());
-        $records = $batches[0]->getRecords();
-        self::assertCount(10, $records);
-        $firstRecord = $records[0];
-        self::assertSame('18622', $firstRecord->getAmount());
-        self::assertSame('THOMPSON  SARAH', $firstRecord->getAccountName());
-        self::assertSame('458799993', $firstRecord->getAccountNumber());
-        self::assertSame('082001', $firstRecord->getBsb());
-        self::assertSame('5', $firstRecord->getReturnCode());
-        self::assertSame('694609', $firstRecord->getLodgmentReference());
-        self::assertSame('2', $firstRecord->getRecordType());
-        self::assertSame('SUNNY-PEOPLE', $firstRecord->getRemitterName());
-        self::assertSame('010479999', $firstRecord->getTraceAccountNumber());
-        self::assertSame('062184', $firstRecord->getTraceBsb());
-        self::assertSame('13', $firstRecord->getTransactionCode());
-        self::assertSame('06', $firstRecord->getOriginalDayOfProcessing());
-        self::assertSame('337999', $firstRecord->getOriginalUserIdNumber());
-        $fileTotalRecord = $batches[0]->getFileTotalRecord();
-        self::assertSame('999999', $fileTotalRecord->getBsb());
-        self::assertSame('10', $fileTotalRecord->getTotalRecordCount());
-        self::assertSame('0', $fileTotalRecord->getTotalCreditAmount());
-        self::assertSame('296782', $fileTotalRecord->getTotalDebitAmount());
-        self::assertSame('296782', $fileTotalRecord->getTotalNetAmount());
-    }
-
     public function testProcessShouldReturnErrors(): void
     {
         $invalidLine = 'invalid';
@@ -211,6 +173,44 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
         self::assertSame('0', $fileTotalRecord->getTotalDebitAmount());
         self::assertSame('200000', $fileTotalRecord->getTotalNetAmount());
         self::assertCount(0, $parser->getErrors());
+    }
+
+    public function testProcessSucceedsWithDeReturnFile(): void
+    {
+        $parser = new DirectEntryBatchParser($this->getSampleFileContents('DE_return.txt'));
+
+        $batches = $parser->getBatches();
+        self::assertCount(1, $batches);
+        $descriptiveRecord = $batches[0]->getDescriptiveRecord();
+        self::assertSame('070905', $descriptiveRecord->getDateProcessed());
+        self::assertSame('DE Returns', $descriptiveRecord->getDescriptionOfEntries());
+        self::assertSame('01', $descriptiveRecord->getReelSequenceNumber());
+        self::assertSame('NAB', $descriptiveRecord->getUserFinancialInstitution());
+        self::assertSame('012345', $descriptiveRecord->getNumberOfUserSupplyingFile());
+        self::assertSame('NAB', $descriptiveRecord->getNameOfUserSupplyingFile());
+        self::assertEquals(new DateTime('2005-09-07'), $batches[0]->getDescriptiveRecord()->getDateProcessedObject());
+        $records = $batches[0]->getRecords();
+        self::assertCount(10, $records);
+        $firstRecord = $records[0];
+        self::assertSame('18622', $firstRecord->getAmount());
+        self::assertSame('THOMPSON  SARAH', $firstRecord->getAccountName());
+        self::assertSame('458799993', $firstRecord->getAccountNumber());
+        self::assertSame('082001', $firstRecord->getBsb());
+        self::assertSame('5', $firstRecord->getReturnCode());
+        self::assertSame('694609', $firstRecord->getLodgmentReference());
+        self::assertSame('2', $firstRecord->getRecordType());
+        self::assertSame('SUNNY-PEOPLE', $firstRecord->getRemitterName());
+        self::assertSame('010479999', $firstRecord->getTraceAccountNumber());
+        self::assertSame('062184', $firstRecord->getTraceBsb());
+        self::assertSame('13', $firstRecord->getTransactionCode());
+        self::assertSame('06', $firstRecord->getOriginalDayOfProcessing());
+        self::assertSame('337999', $firstRecord->getOriginalUserIdNumber());
+        $fileTotalRecord = $batches[0]->getFileTotalRecord();
+        self::assertSame('999999', $fileTotalRecord->getBsb());
+        self::assertSame('10', $fileTotalRecord->getTotalRecordCount());
+        self::assertSame('0', $fileTotalRecord->getTotalCreditAmount());
+        self::assertSame('296782', $fileTotalRecord->getTotalDebitAmount());
+        self::assertSame('296782', $fileTotalRecord->getTotalNetAmount());
     }
 
     public function testProcessSucceedsWithMultipleBatches(): void
