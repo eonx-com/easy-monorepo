@@ -28,7 +28,14 @@ final class CarbonNormalizer implements DenormalizerInterface
         throw new UnexpectedValueException('This value is not a valid date/time.');
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null): bool
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            CarbonImmutable::class => true,
+        ];
+    }
+
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === CarbonImmutable::class;
     }

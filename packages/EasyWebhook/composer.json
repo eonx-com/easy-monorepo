@@ -10,19 +10,19 @@
         "eonx-com/easy-pagination": "^5.12",
         "eonx-com/easy-random": "^5.12",
         "eonx-com/easy-utils": "^5.12",
-        "nesbot/carbon": "^2.67",
+        "nesbot/carbon": "^3.7",
         "nette/utils": "^3.2",
-        "symfony/config": "^6.4",
-        "symfony/console": "^6.4",
-        "symfony/dependency-injection": "^6.4",
-        "symfony/http-client": "^6.4",
-        "symfony/http-foundation": "^6.4",
-        "symfony/http-kernel": "^6.4"
+        "symfony/config": "^7.0",
+        "symfony/console": "^7.0",
+        "symfony/dependency-injection": "^7.0",
+        "symfony/http-client": "^7.0",
+        "symfony/http-foundation": "^7.0",
+        "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
-        "illuminate/database": "^10.0",
-        "laravel/lumen-framework": "^10.0",
+        "illuminate/database": "^11.0",
+        "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"
     },
     "autoload": {

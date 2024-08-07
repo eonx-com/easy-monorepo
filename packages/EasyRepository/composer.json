@@ -10,7 +10,7 @@
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
         "eonx-com/easy-pagination": "^5.12",
-        "laravel/lumen-framework": "^10.0",
+        "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2"
     },

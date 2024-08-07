@@ -91,6 +91,12 @@ parameters:
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Call to an undefined method EonX\\EasyPagination\\Paginator\\Doctrine(Dbal|Orm)Paginator\:\:isLargeDatasetEnabled\(\)#'
 
+        - message: '#Method EonX\\EasyPagination\\Paginator\\.* with generic class Illuminate\\Database\\.* does not specify its types.*#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/src/Paginator
+
+        - message: '#Method EonX\\EasyPagination\\Tests\\Stub\\Model\\ChildItemModel\:\:item\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Model/ChildItemModel.php
+
         - message: '#Property .*\:\:\$id is never written, only read#'
           paths:
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/ChildItem.php
@@ -134,9 +140,6 @@ parameters:
 
         # ---- EasyRequestId ----
         # ---- EasySchedule ----
-        - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
-          path: %currentWorkingDirectory%/packages/EasySchedule/src/Entry/ScheduleEntry.php
-
         # ---- EasySecurity ----
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\ValueObject\\Role constructor expects array<EonX\\EasySecurity\\Authorization\\ValueObject\\PermissionInterface\|string>\|null, array<int, EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|stdClass\|string> given#'
           path: %currentWorkingDirectory%/packages/EasySecurity/tests/Unit/src/Authorization/ValueObject/RoleTest.php
@@ -183,10 +186,10 @@ parameters:
         - message: '#Parameter \#1 \$name of static method Monolog\\Level\:\:fromName\(\) expects .*, string given#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
 
-        # ---- EasyUtils ----
-        - message: '#Class EonX\\EasyUtils\\Common\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
-          path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Normalizer/CarbonImmutableNormalizer.php
+        - message: '#Parameter \#1 \$schemes of class Symfony\\Component\\Validator\\Constraints\\CardScheme constructor expects array<string>\|string\|null, array<string, null> given#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php
 
+        # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 

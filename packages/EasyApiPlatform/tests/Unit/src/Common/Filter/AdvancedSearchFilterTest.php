@@ -1331,7 +1331,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
 
         /** @var \ApiPlatform\Metadata\IriConverterInterface $iriConverter */
         $iriConverter = $iriConverterProphecy->reveal();
-        $propertyAccessor = self::$kernel->getContainer()->get('test.property_accessor');
+        $propertyAccessor = self::$kernel?->getContainer()->get('test.property_accessor');
 
         return new AdvancedSearchFilter(
             $managerRegistry,

@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class DummyANormalizer implements DenormalizerInterface
 {
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         throw new UnexpectedValueException('This exception will NOT be handled by API Platform error'
             . ' builders, because it message is not supported by them.');
@@ -20,8 +20,12 @@ final class DummyANormalizer implements DenormalizerInterface
         return [DummyA::class => true];
     }
 
-    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
-    {
+    public function supportsDenormalization(
+        mixed $data,
+        string $type,
+        ?string $format = null,
+        array $context = [],
+    ): bool {
         return $type === DummyA::class;
     }
 }
