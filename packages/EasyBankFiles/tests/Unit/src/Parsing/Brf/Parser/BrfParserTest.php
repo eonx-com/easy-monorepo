@@ -12,6 +12,30 @@ use PHPUnit\Framework\Attributes\Group;
 final class BrfParserTest extends AbstractUnitTestCase
 {
     /**
+     * Should return array of DetailRecord classes.
+     */
+    #[Group('Brf-Parser-Detail-Record')]
+    public function testShouldReturnDetailRecord(): void
+    {
+        $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));
+
+        $detailRecords = $brfParser->getDetailRecords();
+        self::assertCount(3, $detailRecords);
+        $firstDetailRecord = $detailRecords[0];
+        self::assertSame('55000', $firstDetailRecord->getAmount());
+        self::assertSame('254169', $firstDetailRecord->getBillerCode());
+        self::assertSame('4370658181', $firstDetailRecord->getCustomerReferenceNumber());
+        self::assertSame('000', $firstDetailRecord->getErrorCorrectionReason());
+        self::assertSame('', $firstDetailRecord->getOriginalReferenceNumber());
+        self::assertSame('05', $firstDetailRecord->getPaymentInstructionType());
+        self::assertSame('062726', $firstDetailRecord->getPaymentTime());
+        self::assertSame('CBA201605260146337726', $firstDetailRecord->getTransactionReferenceNumber());
+        self::assertSame('20160526', $firstDetailRecord->getPaymentDate());
+        self::assertSame('20160526', $firstDetailRecord->getSettlementDate());
+        self::assertSame('', $firstDetailRecord->getFiller());
+    }
+
+    /**
      * Should return error from the content.
      */
     #[Group('Brf-Parser-Error')]
@@ -19,9 +43,9 @@ final class BrfParserTest extends AbstractUnitTestCase
     {
         $invalidLine = 'invalid';
 
-        $batchParser = new BrfParser($invalidLine);
+        $brfParser = new BrfParser($invalidLine);
 
-        $firstError = $batchParser->getErrors()[0];
+        $firstError = $brfParser->getErrors()[0];
         self::assertSame(1, $firstError->getLineNumber());
         self::assertSame($invalidLine, $firstError->getLine());
     }
@@ -30,83 +54,59 @@ final class BrfParserTest extends AbstractUnitTestCase
      * Should return Header object.
      */
     #[Group('Brf-Parser-Header')]
-    public function testShouldReturnHeader(): void
+    public function testShouldReturnHeaderRecord(): void
     {
         $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));
 
-        $header = $brfParser->getHeader();
-        self::assertSame('254169', $header->getBillerCode());
-        self::assertSame('739827524', $header->getBillerCreditAccount());
-        self::assertSame('083170', $header->getBillerCreditBSB());
-        self::assertSame('REAL ESTATE CLOUD', $header->getBillerShortName());
-        self::assertSame('20160526', $header->getFileCreationDate());
-        self::assertSame('203541', $header->getFileCreationTime());
-        self::assertSame('', $header->getRestOfRecord());
+        $headerRecord = $brfParser->getHeaderRecord();
+        self::assertSame('254169', $headerRecord->getBillerCode());
+        self::assertSame('739827524', $headerRecord->getBillerCreditAccount());
+        self::assertSame('083170', $headerRecord->getBillerCreditBSB());
+        self::assertSame('REAL ESTATE CLOUD', $headerRecord->getBillerShortName());
+        self::assertSame('20160526', $headerRecord->getFileCreationDate());
+        self::assertSame('203541', $headerRecord->getFileCreationTime());
+        self::assertSame('', $headerRecord->getFiller());
     }
 
     /**
      * Should return trailer from the content.
      */
     #[Group('Brf-Parser-Trailer')]
-    public function testShouldReturnTrailer(): void
+    public function testShouldReturnTrailerRecord(): void
     {
         $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));
 
-        $trailer = $brfParser->getTrailer();
-        self::assertSame('254169', $trailer->getBillerCode());
-        self::assertSame('', $trailer->getRestOfRecord());
+        $trailerRecord = $brfParser->getTrailerRecord();
+        self::assertSame('254169', $trailerRecord->getBillerCode());
+        self::assertSame('', $trailerRecord->getFiller());
         self::assertSame([
             'amount' => '0',
             'type' => 'credit',
-        ], $trailer->getAmountOfErrorCorrections());
+        ], $trailerRecord->getAmountOfErrorCorrections());
         self::assertSame([
             'amount' => '116025',
             'type' => 'debit',
-        ], $trailer->getAmountOfPayments());
+        ], $trailerRecord->getAmountOfPayments());
         self::assertSame([
             'amount' => '0',
             'type' => 'credit',
-        ], $trailer->getAmountOfReversals());
+        ], $trailerRecord->getAmountOfReversals());
         self::assertSame([
             'amount' => '0',
             'type' => 'credit',
-        ], $trailer->getNumberOfErrorCorrections());
+        ], $trailerRecord->getNumberOfErrorCorrections());
         self::assertSame([
             'amount' => '2',
             'type' => 'credit',
-        ], $trailer->getNumberOfPayments());
+        ], $trailerRecord->getNumberOfPayments());
         self::assertSame([
             'amount' => '0',
             'type' => 'credit',
-        ], $trailer->getNumberOfReversals());
+        ], $trailerRecord->getNumberOfReversals());
         self::assertSame([
             'amount' => '115000',
             'type' => 'credit',
-        ], $trailer->getSettlementAmount());
-    }
-
-    /**
-     * Should return array of Transaction classes.
-     */
-    #[Group('Brf-Parser-Transaction')]
-    public function testShouldReturnTransaction(): void
-    {
-        $brfParser = new BrfParser($this->getSampleFileContents('sample.BRF'));
-
-        $transactions = $brfParser->getTransactions();
-        self::assertCount(3, $transactions);
-        $firstTransactionItem = $transactions[0];
-        self::assertSame('55000', $firstTransactionItem->getAmount());
-        self::assertSame('254169', $firstTransactionItem->getBillerCode());
-        self::assertSame('4370658181', $firstTransactionItem->getCustomerReferenceNumber());
-        self::assertSame('000', $firstTransactionItem->getErrorCorrectionReason());
-        self::assertSame('', $firstTransactionItem->getOriginalReferenceNumber());
-        self::assertSame('05', $firstTransactionItem->getPaymentInstructionType());
-        self::assertSame('062726', $firstTransactionItem->getPaymentTime());
-        self::assertSame('CBA201605260146337726', $firstTransactionItem->getTransactionReferenceNumber());
-        self::assertSame('20160526', $firstTransactionItem->getPaymentDate());
-        self::assertSame('20160526', $firstTransactionItem->getSettlementDate());
-        self::assertSame('', $firstTransactionItem->getRestOfRecord());
+        ], $trailerRecord->getSettlementAmount());
     }
 
     private function getSampleFileContents(string $file): string

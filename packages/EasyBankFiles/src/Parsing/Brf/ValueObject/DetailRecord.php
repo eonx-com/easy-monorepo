@@ -11,16 +11,16 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
  * @method string|null getAmount()
  * @method string|null getBillerCode()
  * @method string|null getCustomerReferenceNumber()
- * @method string|null getPaymentInstructionType()
- * @method string|null getTransactionReferenceNumber()
- * @method string|null getOriginalReferenceNumber()
  * @method string|null getErrorCorrectionReason()
+ * @method string|null getFiller()
+ * @method string|null getOriginalReferenceNumber()
  * @method string|null getPaymentDate()
+ * @method string|null getPaymentInstructionType()
  * @method string|null getPaymentTime()
- * @method string|null getRestOfRecord()
  * @method string|null getSettlementDate()
+ * @method string|null getTransactionReferenceNumber()
  */
-final class Transaction extends AbstractResult
+final class DetailRecord extends AbstractResult
 {
     /**
      * Convert to DateTime object and return.
@@ -64,17 +64,17 @@ final class Transaction extends AbstractResult
     protected function initAttributes(): array
     {
         return [
+            'amount',
             'billerCode',
             'customerReferenceNumber',
-            'paymentInstructionType',
-            'transactionReferenceNumber',
-            'originalReferenceNumber',
             'errorCorrectionReason',
-            'amount',
+            'filler',
+            'originalReferenceNumber',
             'paymentDate',
+            'paymentInstructionType',
             'paymentTime',
-            'restOfRecord',
             'settlementDate',
+            'transactionReferenceNumber',
         ];
     }
 }

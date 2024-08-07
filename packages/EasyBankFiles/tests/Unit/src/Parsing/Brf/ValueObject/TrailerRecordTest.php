@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Brf\ValueObject;
 
 use EonX\EasyBankFiles\Parsing\Brf\Exception\InvalidSignFieldException;
-use EonX\EasyBankFiles\Parsing\Brf\ValueObject\Trailer;
+use EonX\EasyBankFiles\Parsing\Brf\ValueObject\TrailerRecord;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
-#[CoversClass(Trailer::class)]
-final class TrailerTest extends AbstractUnitTestCase
+#[CoversClass(TrailerRecord::class)]
+final class TrailerRecordTest extends AbstractUnitTestCase
 {
     /**
      * Should return amount of error corrections.
@@ -25,7 +25,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'amountOfErrorCorrections' => '00000000000200{',
         ]);
 
@@ -46,7 +46,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'amountOfPayments' => '00000000001201E',
         ]);
 
@@ -67,7 +67,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'amountOfReversals' => '00000000001251G',
         ]);
 
@@ -88,7 +88,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'numberOfErrorCorrections' => '00000001{',
         ]);
 
@@ -109,7 +109,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'numberOfPayments' => '00000003D',
         ]);
 
@@ -130,7 +130,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'numberOfReversals' => '00000002{',
         ]);
 
@@ -151,7 +151,7 @@ final class TrailerTest extends AbstractUnitTestCase
             'type' => 'credit',
         ];
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'settlementAmount' => '00000000001251G',
         ]);
 
@@ -169,7 +169,7 @@ final class TrailerTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidSignFieldException::class);
 
-        $trailer = new Trailer([
+        $trailer = new TrailerRecord([
             'amountOfErrorCorrections' => '00000000000200W',
         ]);
 

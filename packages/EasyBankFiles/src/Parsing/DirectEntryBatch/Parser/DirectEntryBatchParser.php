@@ -62,23 +62,6 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
         return $this->errors;
     }
 
-    protected function process(): void
-    {
-        $contents = (array)\preg_split("/[\r\n]/", $this->contents);
-        $lineNumber = 1;
-
-        foreach ($contents as $line) {
-            $line = \trim((string)$line);
-
-            if ($line === '') {
-                continue;
-            }
-
-            $this->processLine($lineNumber, $line);
-            $lineNumber++;
-        }
-    }
-
     protected function processLine(int $lineNumber, string $line): void
     {
         $code = $line[0] ?? self::EMPTY_LINE_CODE;

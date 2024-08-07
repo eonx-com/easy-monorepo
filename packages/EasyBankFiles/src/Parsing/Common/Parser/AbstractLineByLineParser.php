@@ -27,11 +27,11 @@ abstract class AbstractLineByLineParser extends AbstractParser
      */
     protected function process(): void
     {
-        $contents = \explode(\PHP_EOL, $this->contents);
+        $contents = (array)\preg_split("/[\r\n]/", $this->contents);
         $lineNumber = 1;
 
         foreach ($contents as $line) {
-            $line = \trim($line);
+            $line = \trim((string)$line);
 
             if ($line === '') {
                 continue;

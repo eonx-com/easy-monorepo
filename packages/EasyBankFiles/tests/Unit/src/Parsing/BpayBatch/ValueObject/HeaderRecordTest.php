@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\BpayBatch\ValueObject;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\Header;
+use EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\HeaderRecord;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
-#[CoversClass(Header::class)]
-final class HeaderTest extends AbstractUnitTestCase
+#[CoversClass(HeaderRecord::class)]
+final class HeaderRecordTest extends AbstractUnitTestCase
 {
     /**
      * @see testGetDateProcessedShouldReturnNull
@@ -37,7 +37,7 @@ final class HeaderTest extends AbstractUnitTestCase
     #[Group('Batch-Header')]
     public function testGetDateProcessedShouldReturnNull(array $dateProcessed): void
     {
-        $header = new Header($dateProcessed);
+        $header = new HeaderRecord($dateProcessed);
 
         self::assertNull($header->getDateProcessedObject());
     }
@@ -48,7 +48,7 @@ final class HeaderTest extends AbstractUnitTestCase
     #[Group('Batch-Header')]
     public function testShouldReturnDateProcessedObject(): void
     {
-        $header = new Header([
+        $header = new HeaderRecord([
             'dateProcessed' => '20190919',
         ]);
 

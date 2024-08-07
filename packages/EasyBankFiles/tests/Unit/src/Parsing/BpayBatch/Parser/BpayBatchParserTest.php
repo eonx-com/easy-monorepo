@@ -12,6 +12,31 @@ use PHPUnit\Framework\Attributes\Group;
 final class BpayBatchParserTest extends AbstractUnitTestCase
 {
     /**
+     * Should return array of DetailRecord classes.
+     */
+    #[Group('Batch-Parser-Detail-Record')]
+    public function testShouldReturnDetailRecord(): void
+    {
+        $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));
+
+        $detailRecords = $batchParser->getDetailRecords();
+        self::assertCount(2, $detailRecords);
+        $firstDetailRecordItem = $detailRecords[0];
+        self::assertSame('162', $firstDetailRecordItem->getAmount());
+        self::assertSame('083170', $firstDetailRecordItem->getAccountBsb());
+        self::assertSame('739813974', $firstDetailRecordItem->getAccountNumber());
+        self::assertSame('254177', $firstDetailRecordItem->getBillerCode());
+        self::assertSame('1444089773', $firstDetailRecordItem->getCustomerReferenceNumber());
+        self::assertSame('', $firstDetailRecordItem->getReference1());
+        self::assertSame('', $firstDetailRecordItem->getReference2());
+        self::assertSame('', $firstDetailRecordItem->getReference3());
+        self::assertSame('', $firstDetailRecordItem->getRestOfRecord());
+        self::assertSame('0000', $firstDetailRecordItem->getReturnCode());
+        self::assertSame('PROCESSED', $firstDetailRecordItem->getReturnCodeDescription());
+        self::assertSame('NAB201907175132940001', $firstDetailRecordItem->getTransactionReferenceNumber());
+    }
+
+    /**
      * Should return error from the content.
      */
     #[Group('Batch-Parser-Error')]
@@ -27,14 +52,14 @@ final class BpayBatchParserTest extends AbstractUnitTestCase
     }
 
     /**
-     * Should return Header object.
+     * Should return Header record object.
      */
     #[Group('Batch-Parser-Header')]
-    public function testShouldReturnHeader(): void
+    public function testShouldReturnHeaderRecord(): void
     {
         $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));
 
-        $header = $batchParser->getHeader();
+        $header = $batchParser->getHeaderRecord();
         self::assertSame('101249', $header->getCustomerId());
         self::assertSame('CustomerShortName', $header->getCustomerShortName());
         self::assertSame('20190717', $header->getDateProcessed());
@@ -42,14 +67,14 @@ final class BpayBatchParserTest extends AbstractUnitTestCase
     }
 
     /**
-     * Should return trailer from the content.
+     * Should return trailer record from the content.
      */
     #[Group('Batch-Parser-Trailer')]
-    public function testShouldReturnTrailer(): void
+    public function testShouldReturnTrailerRecord(): void
     {
         $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));
 
-        $trailer = $batchParser->getTrailer();
+        $trailer = $batchParser->getTrailerRecord();
         self::assertSame('342', $trailer->getAmountOfApprovals());
         self::assertSame('0', $trailer->getAmountOfDeclines());
         self::assertSame('342', $trailer->getAmountOfPayments());
@@ -57,31 +82,6 @@ final class BpayBatchParserTest extends AbstractUnitTestCase
         self::assertSame('0', $trailer->getNumberOfDeclines());
         self::assertSame('2', $trailer->getNumberOfPayments());
         self::assertSame('', $trailer->getRestOfRecord());
-    }
-
-    /**
-     * Should return array of Transaction classes.
-     */
-    #[Group('Batch-Parser-Transaction')]
-    public function testShouldReturnTransaction(): void
-    {
-        $batchParser = new BpayBatchParser($this->getSampleFileContents('sample.BPB'));
-
-        $transactions = $batchParser->getTransactions();
-        self::assertCount(2, $transactions);
-        $firstTransactionItem = $transactions[0];
-        self::assertSame('162', $firstTransactionItem->getAmount());
-        self::assertSame('083170', $firstTransactionItem->getAccountBsb());
-        self::assertSame('739813974', $firstTransactionItem->getAccountNumber());
-        self::assertSame('254177', $firstTransactionItem->getBillerCode());
-        self::assertSame('1444089773', $firstTransactionItem->getCustomerReferenceNumber());
-        self::assertSame('', $firstTransactionItem->getReference1());
-        self::assertSame('', $firstTransactionItem->getReference2());
-        self::assertSame('', $firstTransactionItem->getReference3());
-        self::assertSame('', $firstTransactionItem->getRestOfRecord());
-        self::assertSame('0000', $firstTransactionItem->getReturnCode());
-        self::assertSame('PROCESSED', $firstTransactionItem->getReturnCodeDescription());
-        self::assertSame('NAB201907175132940001', $firstTransactionItem->getTransactionReferenceNumber());
     }
 
     private function getSampleFileContents(string $file): string

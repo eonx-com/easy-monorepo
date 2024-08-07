@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Brf\ValueObject;
 
 use DateTime;
-use EonX\EasyBankFiles\Parsing\Brf\ValueObject\Transaction;
+use EonX\EasyBankFiles\Parsing\Brf\ValueObject\DetailRecord;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
-#[CoversClass(Transaction::class)]
-final class TransactionTest extends AbstractUnitTestCase
+#[CoversClass(DetailRecord::class)]
+final class DetailRecordTest extends AbstractUnitTestCase
 {
     /**
      * @see testGetDateObjectShouldReturnNull
@@ -51,7 +51,7 @@ final class TransactionTest extends AbstractUnitTestCase
     #[Group('Brf-Transaction')]
     public function testGetDateObjectShouldReturnNull(array $date, string $dateGetter): void
     {
-        $transaction = new Transaction($date);
+        $transaction = new DetailRecord($date);
 
         self::assertNull($transaction->{$dateGetter}());
     }
@@ -62,7 +62,7 @@ final class TransactionTest extends AbstractUnitTestCase
     #[Group('Brf-Transaction')]
     public function testShouldReturnPaymentDate(): void
     {
-        $transaction = new Transaction([
+        $transaction = new DetailRecord([
             'paymentDate' => '20160426',
         ]);
 
@@ -75,7 +75,7 @@ final class TransactionTest extends AbstractUnitTestCase
     #[Group('Brf-Transaction')]
     public function testShouldReturnSettlementDate(): void
     {
-        $transaction = new Transaction([
+        $transaction = new DetailRecord([
             'settlementDate' => '20160426',
         ]);
 
