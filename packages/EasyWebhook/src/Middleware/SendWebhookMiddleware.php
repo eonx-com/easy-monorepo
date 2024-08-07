@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Middleware;
 
 use EonX\EasyWebhook\Exceptions\InvalidWebhookUrlException;
+use EonX\EasyWebhook\Exceptions\WebhookRequestFailedException;
 use EonX\EasyWebhook\Interfaces\StackInterface;
 use EonX\EasyWebhook\Interfaces\WebhookInterface;
 use EonX\EasyWebhook\Interfaces\WebhookResultInterface;
 use EonX\EasyWebhook\WebhookResult;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
@@ -42,6 +44,13 @@ final class SendWebhookMiddleware extends AbstractMiddleware
 
             if ($throwable instanceof HttpExceptionInterface) {
                 $response = $throwable->getResponse();
+            }
+
+            if ($throwable instanceof ExceptionInterface) {
+                $throwable = new WebhookRequestFailedException(
+                    message: 'Webhook request failed: ' . $throwable->getMessage(),
+                    previous: $throwable
+                );
             }
         }
 
