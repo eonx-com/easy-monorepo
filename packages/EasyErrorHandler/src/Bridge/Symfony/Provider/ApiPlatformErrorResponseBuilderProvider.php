@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationErrorRespo
 use EonX\EasyErrorHandler\Bridge\Symfony\Builder\ApiPlatformValidationExceptionErrorResponseBuilder;
 use EonX\EasyErrorHandler\Interfaces\ErrorResponseBuilderProviderInterface;
 use EonX\EasyErrorHandler\Interfaces\TranslatorInterface;
+use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 
 final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
@@ -17,6 +18,7 @@ final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuil
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private readonly AdvancedNameConverterInterface $nameConverter,
         ?array $keys = null,
         ?bool $transformValidationErrors = null,
     ) {
@@ -33,7 +35,11 @@ final class ApiPlatformErrorResponseBuilderProvider implements ErrorResponseBuil
             yield new ApiPlatformValidationExceptionErrorResponseBuilder($this->translator, $this->keys);
 
             if ($this->transformValidationErrors) {
-                yield new ApiPlatformValidationErrorResponseBuilder($this->translator, $this->keys);
+                yield new ApiPlatformValidationErrorResponseBuilder(
+                    $this->translator,
+                    $this->nameConverter,
+                    $this->keys
+                );
             }
         }
     }
