@@ -5,8 +5,8 @@ namespace EonX\EasySwoole\EasySchedule\Runner;
 
 use Carbon\Carbon;
 use EonX\EasySwoole\Caching\Helper\CacheTableHelper;
+use EonX\EasySwoole\Common\Enum\SwooleServerEvent;
 use EonX\EasySwoole\Common\Enum\SwooleTableColumnType;
-use EonX\EasySwoole\Common\Helper\AppRuntimeHelper;
 use EonX\EasySwoole\Common\Helper\OptionHelper;
 use EonX\EasySwoole\Common\Helper\SwooleTableHelper;
 use EonX\EasySwoole\Common\ValueObject\SwooleTableColumnDefinition;
@@ -20,7 +20,9 @@ final readonly class EasyScheduleSwooleRunner implements RunnerInterface
 {
     public const ENABLED = 'EASY_SCHEDULE_ENABLED';
 
-    private const LAST_RUN = 'last_run';
+    private const COLUMN_NAME_LAST_RUN = 'last_run';
+
+    private const KEY_LAST_RUN_AT = 'last_run_at';
 
     public function __construct(
         private Application $application,
@@ -37,14 +39,14 @@ final readonly class EasyScheduleSwooleRunner implements RunnerInterface
             OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
         );
 
-        $server->on(AppRuntimeHelper::EVENT_REQUEST, static function (): void {
+        $server->on(SwooleServerEvent::Request->value, static function (): void {
         });
 
         $table = SwooleTableHelper::create(
             size: 1,
             columnDefinitions: [
                 new SwooleTableColumnDefinition(
-                    name: self::LAST_RUN,
+                    name: self::COLUMN_NAME_LAST_RUN,
                     type: SwooleTableColumnType::String,
                     size: 15,
                 ),
@@ -53,16 +55,18 @@ final readonly class EasyScheduleSwooleRunner implements RunnerInterface
 
         $server->addProcess(new Process(static function () use ($app, $table): void {
             $now = Carbon::now('UTC')->format('YmdHi');
-            $lastRun = $table->exists(self::LAST_RUN) ? $table->get(self::LAST_RUN, self::LAST_RUN) : null;
+            $lastRunAt = $table->exists(self::KEY_LAST_RUN_AT)
+                ? $table->get(self::KEY_LAST_RUN_AT, self::COLUMN_NAME_LAST_RUN)
+                : null;
 
             // Run schedule only once per minute
-            if ($lastRun === $now) {
+            if ($lastRunAt === $now) {
                 \sleep(OptionHelper::getInteger('schedule_sleep', 'SWOOLE_SCHEDULE_SLEEP'));
 
                 return;
             }
 
-            $table->set(self::LAST_RUN, [self::LAST_RUN => $now]);
+            $table->set(self::KEY_LAST_RUN_AT, [self::COLUMN_NAME_LAST_RUN => $now]);
 
             $app->run(new ArrayInput(['command' => 'schedule:run']));
 

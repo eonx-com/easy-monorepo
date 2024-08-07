@@ -7,7 +7,7 @@ use Carbon\CarbonImmutable;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasySwoole\Caching\Helper\CacheTableHelper;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
-use EonX\EasySwoole\Common\Helper\AppRuntimeHelper;
+use EonX\EasySwoole\Common\Enum\SwooleServerEvent;
 use EonX\EasySwoole\Common\Helper\ErrorResponseHelper;
 use EonX\EasySwoole\Common\Helper\HttpFoundationHelper;
 use EonX\EasySwoole\Common\Helper\OptionHelper;
@@ -27,25 +27,6 @@ use function Symfony\Component\String\u;
 
 final readonly class EasySwooleRunner implements RunnerInterface
 {
-    private const SERVER_EVENTS = [
-        AppRuntimeHelper::EVENT_AFTER_RELOAD,
-        AppRuntimeHelper::EVENT_BEFORE_RELOAD,
-        AppRuntimeHelper::EVENT_CLOSE,
-        AppRuntimeHelper::EVENT_CONNECT,
-        AppRuntimeHelper::EVENT_FINISH,
-        AppRuntimeHelper::EVENT_MANAGER_START,
-        AppRuntimeHelper::EVENT_MANAGER_STOP,
-        AppRuntimeHelper::EVENT_PIPE_MESSAGE,
-        AppRuntimeHelper::EVENT_RECEIVE,
-        AppRuntimeHelper::EVENT_REQUEST,
-        AppRuntimeHelper::EVENT_SHUTDOWN,
-        AppRuntimeHelper::EVENT_TASK,
-        AppRuntimeHelper::EVENT_WORKER_ERROR,
-        AppRuntimeHelper::EVENT_WORKER_EXIT,
-        AppRuntimeHelper::EVENT_WORKER_START,
-        AppRuntimeHelper::EVENT_WORKER_STOP,
-    ];
-
     public function __construct(
         private HttpKernelInterface $app,
     ) {
@@ -63,7 +44,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
         );
 
         $server->on(
-            AppRuntimeHelper::EVENT_REQUEST,
+            SwooleServerEvent::Request->value,
             static function (Request $request, Response $response) use ($app, $server, $responseChunkSize): void {
                 $responded = false;
                 $hfRequest = null;
@@ -172,7 +153,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
         }
 
         foreach (OptionHelper::getArray('callbacks') as $event => $fn) {
-            if (\in_array($event, self::SERVER_EVENTS, true) === false) {
+            if (SwooleServerEvent::hasCase($event) === false) {
                 continue;
             }
 
@@ -257,14 +238,14 @@ final readonly class EasySwooleRunner implements RunnerInterface
     private function registerDefaultCallbacks(Server $server): void
     {
         $server->on(
-            AppRuntimeHelper::EVENT_WORKER_START,
+            SwooleServerEvent::WorkerStart->value,
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
             }
         );
 
         $server->on(
-            AppRuntimeHelper::EVENT_WORKER_STOP,
+            SwooleServerEvent::WorkerStop->value,
             static function (Server $server, int $workerId): void {
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
             }

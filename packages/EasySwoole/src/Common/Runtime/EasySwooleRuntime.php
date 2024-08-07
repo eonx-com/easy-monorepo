@@ -5,7 +5,7 @@ namespace EonX\EasySwoole\Common\Runtime;
 
 use EonX\EasyBugsnag\Enum\ServerParam as EasyBugsnagServerParam;
 use EonX\EasySwoole\Caching\Helper\AppCacheWarmupHelper;
-use EonX\EasySwoole\Common\Helper\AppRuntimeHelper;
+use EonX\EasySwoole\Common\Enum\SwooleRunnerEvent;
 use EonX\EasySwoole\Common\Helper\EnvVarHelper;
 use EonX\EasySwoole\Common\Helper\FunctionHelper;
 use EonX\EasySwoole\Common\Helper\OptionHelper;
@@ -54,8 +54,8 @@ final class EasySwooleRuntime extends SymfonyRuntime
 
         $callbacks = OptionHelper::getArray('callbacks');
 
-        if (\array_key_exists(AppRuntimeHelper::EVENT_ENV_VARS_LOADED, $callbacks)) {
-            $callbacks[AppRuntimeHelper::EVENT_ENV_VARS_LOADED]($_SERVER, $application);
+        if (\array_key_exists(SwooleRunnerEvent::EnvVarsLoaded->value, $callbacks)) {
+            $callbacks[SwooleRunnerEvent::EnvVarsLoaded->value]($_SERVER, $application);
         }
 
         if (OptionHelper::getBoolean('app_cache_warmup_enabled')) {

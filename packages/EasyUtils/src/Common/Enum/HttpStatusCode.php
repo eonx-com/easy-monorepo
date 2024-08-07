@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Common\Enum;
 
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
+
 enum HttpStatusCode: int
 {
     case Accepted = 202;
@@ -130,4 +132,9 @@ enum HttpStatusCode: int
     case VariantAlsoNegotiatesExperimental = 506;
 
     case VersionNotSupported = 505;
+
+    public function description(): ?string
+    {
+        return HttpFoundationResponse::$statusTexts[$this->value] ?? null;
+    }
 }

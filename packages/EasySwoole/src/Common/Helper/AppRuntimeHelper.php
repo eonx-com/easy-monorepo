@@ -3,45 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Helper;
 
+use EonX\EasySwoole\Common\Enum\SwooleRunnerEvent;
 use EonX\EasySwoole\Common\Runtime\EasySwooleRuntime;
 use EonX\EasySwoole\EasySchedule\Runner\EasyScheduleSwooleRunner;
 
 final class AppRuntimeHelper
 {
-    public const EVENT_AFTER_RELOAD = 'beforeReload';
-
-    public const EVENT_BEFORE_RELOAD = 'beforeReload';
-
-    public const EVENT_CLOSE = 'close';
-
-    public const EVENT_CONNECT = 'connect';
-
-    public const EVENT_ENV_VARS_LOADED = 'envVarsLoaded';
-
-    public const EVENT_FINISH = 'finish';
-
-    public const EVENT_MANAGER_START = 'managerStart';
-
-    public const EVENT_MANAGER_STOP = 'managerStop';
-
-    public const EVENT_PIPE_MESSAGE = 'pipeMessage';
-
-    public const EVENT_RECEIVE = 'receive';
-
-    public const EVENT_REQUEST = 'request';
-
-    public const EVENT_SHUTDOWN = 'shutdown';
-
-    public const EVENT_TASK = 'task';
-
-    public const EVENT_WORKER_ERROR = 'workerError';
-
-    public const EVENT_WORKER_EXIT = 'workerExit';
-
-    public const EVENT_WORKER_START = 'workerStart';
-
-    public const EVENT_WORKER_STOP = 'workerStop';
-
     private const APP_RUNTIME = 'APP_RUNTIME';
 
     private const APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
@@ -77,7 +44,7 @@ final class AppRuntimeHelper
     public static function onEnvVarsLoaded(callable $callback): void
     {
         $callbacks = self::getOption('callbacks', []);
-        $callbacks[self::EVENT_ENV_VARS_LOADED] = $callback;
+        $callbacks[SwooleRunnerEvent::EnvVarsLoaded->value] = $callback;
 
         self::addOptions(['callbacks' => $callbacks]);
     }

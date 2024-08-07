@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Helper;
 
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Swoole\Http\Response;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Throwable;
 
 final class ErrorResponseHelper
@@ -13,8 +13,8 @@ final class ErrorResponseHelper
     public static function sendErrorResponse(Throwable $throwable, Response $response): void
     {
         $response->status(
-            HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR,
-            HttpFoundationResponse::$statusTexts[HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR]
+            HttpStatusCode::InternalServerError->value,
+            HttpStatusCode::InternalServerError->description()
         );
 
         $response->header('Content-Type', 'application/json');
