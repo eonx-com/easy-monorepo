@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyDecision\Tests\Unit\Decision;
 
 use EonX\EasyDecision\Decision\AffirmativeDecision;
-use EonX\EasyDecision\Rule\RuleInterface;
 use EonX\EasyDecision\Tests\Stub\Rule\OutputFromInputRuleStub;
 use EonX\EasyDecision\Tests\Unit\AbstractUnitTestCase;
 
@@ -27,7 +26,7 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
         $expected = [
             'false-1' => false,
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
         ];
 
         self::assertFalse($decision->make([]));
@@ -45,9 +44,9 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
         $expected = [
             'true-1' => true,
-            'true-2' => RuleInterface::OUTPUT_SKIPPED,
-            'true-3' => RuleInterface::OUTPUT_SKIPPED,
-            'unsupported-1' => RuleInterface::OUTPUT_SKIPPED,
+            'true-2' => 'skipped',
+            'true-3' => 'skipped',
+            'unsupported-1' => 'skipped',
         ];
 
         self::assertTrue($decision->make([]));
@@ -66,8 +65,8 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
         $expected = [
             'false-1' => false,
             'true-1' => true,
-            'true-2' => RuleInterface::OUTPUT_SKIPPED,
-            'unsupported-1' => RuleInterface::OUTPUT_SKIPPED,
+            'true-2' => 'skipped',
+            'unsupported-1' => 'skipped',
         ];
 
         self::assertTrue($decision->make([]));
@@ -83,7 +82,7 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
         $expected = [
             'true-1' => true,
-            'false-1' => RuleInterface::OUTPUT_SKIPPED,
+            'false-1' => 'skipped',
         ];
 
         self::assertTrue($decision->make([]));

@@ -23,12 +23,7 @@ abstract class AbstractApplicationTestCase extends ApiTestCase
 
     protected function setUp(): void
     {
-        static::$client = static::createClient(
-            [],
-            [
-                'headers' => ['accept' => ['application/json']],
-            ]
-        );
+        self::setUpClient();
     }
 
     public static function tearDownAfterClass(): void
@@ -46,6 +41,16 @@ abstract class AbstractApplicationTestCase extends ApiTestCase
     protected static function getKernelClass(): string
     {
         return ApplicationKernel::class;
+    }
+
+    protected static function setUpClient(?array $kernelOptions = null): void
+    {
+        self::$client = self::createClient(
+            $kernelOptions ?? [],
+            [
+                'headers' => ['accept' => ['application/json']],
+            ]
+        );
     }
 
     protected function initDatabase(): void

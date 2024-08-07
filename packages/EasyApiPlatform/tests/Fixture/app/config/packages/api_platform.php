@@ -44,6 +44,7 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
         ->paths([
             param('kernel.project_dir') . '/src/AdvancedSearchFilter/ApiResource/',
             param('kernel.project_dir') . '/src/CustomPaginator/ApiResource/',
+            param('kernel.project_dir') . '/src/EasyErrorHandler/ApiResource/',
             param('kernel.project_dir') . '/src/ReadListener/ApiResource/',
         ]);
 

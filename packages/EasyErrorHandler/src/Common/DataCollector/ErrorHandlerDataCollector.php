@@ -6,15 +6,13 @@ namespace EonX\EasyErrorHandler\Common\DataCollector;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Exception\TranslatableExceptionInterface;
+use EonX\EasyUtils\Common\DataCollector\AbstractDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
-final class ErrorHandlerDataCollector extends DataCollector
+final class ErrorHandlerDataCollector extends AbstractDataCollector
 {
-    public const NAME = 'error_handler.error_handler_collector';
-
     public function __construct(
         private readonly ErrorHandlerInterface $errorHandler,
     ) {
@@ -72,11 +70,6 @@ final class ErrorHandlerDataCollector extends DataCollector
         return $this->data['builders'] ?? [];
     }
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
     /**
      * @return \Symfony\Component\HttpFoundation\Response[]
      */
@@ -99,10 +92,5 @@ final class ErrorHandlerDataCollector extends DataCollector
     public function getReporters(): array
     {
         return $this->data['reporters'] ?? [];
-    }
-
-    public function reset(): void
-    {
-        $this->data = [];
     }
 }

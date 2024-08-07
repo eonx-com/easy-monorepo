@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyEventDispatcher\Tests\Unit\Laravel;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use EonX\EasyEventDispatcher\Tests\Stub\Even\EventStub;
+use EonX\EasyEventDispatcher\Tests\Stub\Event\EventStub;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 
 final class EasyEventDispatcherServiceProviderTest extends AbstractLaravelTestCase

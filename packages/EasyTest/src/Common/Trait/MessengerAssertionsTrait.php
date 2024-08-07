@@ -116,7 +116,7 @@ trait MessengerAssertionsTrait
 
     /**
      * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
-     * @param array<int> $expectedDelays Expected delays in seconds between worker runs
+     * @param array<int|float> $expectedDelays Expected delays in seconds between worker runs
      */
     public static function consumeAsyncMessages(array $expectedExceptions = [], array $expectedDelays = []): void
     {

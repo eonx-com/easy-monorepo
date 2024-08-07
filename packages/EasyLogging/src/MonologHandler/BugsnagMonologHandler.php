@@ -15,8 +15,8 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
      * @inheritdoc
      */
     public function __construct(
-        private BugsnagSeverityResolverInterface $bugsnagSeverityResolver,
-        private Client $bugsnagClient,
+        private readonly BugsnagSeverityResolverInterface $bugsnagSeverityResolver,
+        private readonly Client $bugsnagClient,
         $level = null,
         ?bool $bubble = null,
     ) {
@@ -38,7 +38,7 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
                 (string)$record['message'],
                 (string)$record['formatted'],
                 static function (Report $report) use ($record, $severity): void {
-                    $report->setSeverity($severity);
+                    $report->setSeverity($severity->value);
                     $report->setMetaData(['context' => $record['context'], 'extra' => $record['extra']]);
                 }
             );

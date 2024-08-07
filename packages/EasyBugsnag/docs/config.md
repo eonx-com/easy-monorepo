@@ -16,7 +16,7 @@ The only configuration required is the Bugsnag Integration API Key for your proj
 For Laravel applications, the EasyBugsnag configuration file must be called `easy-bugsnag.php` and be located in the
 `config` directory.
 
-For Symfony applications, the EasyBugnag configuration file can be a YAML, XML or PHP file located under the
+For Symfony applications, the EasyBugsnag configuration file can be a YAML, XML or PHP file located under the
 `config/packages` directory, with a name like `easy_bugsnag.<format>`. The root node of the configuration must be called
 `easy_bugsnag`.
 
@@ -66,36 +66,56 @@ Symfony has the following additional configuration options:
 
 ### Symfony
 
-In Symfony, you could have a configuration file called `easy_bugsnag.yaml` that looks like the following:
+In Symfony, you could have a configuration file called `easy_bugsnag.php` that looks like the following:
 
-``` yaml
-easy_bugsnag:
-    enabled: true
-    api_key: '%env(BUGSNAG_API_KEY)%'
-    project_root: '%kernel.project_dir%/src'
-    release_stage: '%env(APP_ENV)%'
-    strip_path: '%kernel.project_dir%'
-    runtime: 'symfony'
-    runtime_version: Symfony\Component\HttpKernel\Kernel::VERSION
-    aws_ecs_fargate:
-        enabled: true
-        meta_url: '%env(ECS_CONTAINER_METADATA_URI_V4)%/task'
-        meta_storage_filename: '%kernel.cache_dir%/aws_ecs_fargate_meta.json'
-    doctrine_dbal:
-        enabled: true
-        connections:
-            - 'default'
-    session_tracking:
-        enabled: true
-        cache_directory: '%kernel.cache_dir%'
-        cache_expires_after: 3600
-        cache_namespace: 'easy_bugsnag_sessions'
-        exclude_urls:
-        exclude_urls_delimiter: '#'
-        messenger_message_count_for_sessions: false
-    worker_info:
-        enabled: true
-    use_default_configurators: true
+```php
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Config\EasyBugsnagConfig;
+
+return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
+    $easyBugsnagConfig
+        ->enabled(true)
+        ->apiKey(env('BUGSNAG_API_KEY'))
+        ->projectRoot(param('kernel.project_dir') . '/src')
+        ->releaseStage(env('APP_ENV'))
+        ->stripPath(param('kernel.project_dir'))
+        ->runtime('symfony')
+        ->runtimeVersion(Kernel::VERSION);
+
+    $awsEcsFargate = $easyBugsnagConfig->awsEcsFargate();
+    $awsEcsFargate
+        ->enabled(true)
+        ->metaUrl(env('ECS_CONTAINER_METADATA_URI_V4') . '/task')
+        ->metaStorageFilename(param('kernel.cache_dir') . '/aws_ecs_fargate_meta.json');
+
+    $doctrineDbal = $easyBugsnagConfig->doctrineDbal();
+    $doctrineDbal
+        ->enabled(true)
+        ->connections([
+            'default',
+        ]);
+
+    $sessionTracking = $easyBugsnagConfig->sessionTracking();
+    $sessionTracking
+        ->enabled(true)
+        ->cacheDirectory(param('kernel.cache_dir'))
+        ->cacheExpiresAfter(3600)
+        ->cacheNamespace('easy_bugsnag_sessions')
+        ->excludeUrls([])
+        ->excludeUrlsDelimiter('#')
+        ->messengerMessageCountForSessions(false);
+
+    $easyBugsnagConfig->workerInfo()
+        ->enabled(true);
+
+    $easyBugsnagConfig->useDefaultConfigurators(true);
+};
+
 ```
 
 ### Laravel

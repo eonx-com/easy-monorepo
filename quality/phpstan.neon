@@ -22,16 +22,16 @@ parameters:
         - %currentWorkingDirectory%/tests
 
     excludePaths:
+        - %currentWorkingDirectory%/packages/*/config/definition.php
+        - %currentWorkingDirectory%/packages/*/tests/*/config/*
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/*/tests/*/config/*
 
     ignoreErrors:
         -
             identifier: missingType.iterableValue
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
         - message: '#Class .* implements generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types: T#'
@@ -39,17 +39,14 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
-        - message: '#Method EonX\\EasyApiPlatform\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Filter/AdvancedSearchFilter.php
-
-        - message: '#Class EonX\\EasyApiPlatform\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizer/CarbonImmutableNormalizer.php
+        - message: '#Method EonX\\EasyApiPlatform\\Common\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Common/Filter/AdvancedSearchFilter.php
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Common/Filter/AdvancedSearchFilterTest.php
 
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Filter/AdvancedSearchFilterTest.php
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Common/Filter/AdvancedSearchFilterTest.php
 
         # ---- EasyApiToken ----
 
@@ -184,6 +181,9 @@ parameters:
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----
         # ---- EasyUtils ----
+        - message: '#Class EonX\\EasyUtils\\Common\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
+          path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Normalizer/CarbonImmutableNormalizer.php
+
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 

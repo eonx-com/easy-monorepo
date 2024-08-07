@@ -9,12 +9,14 @@ use EonX\EasyRandom\Generator\RandomIntegerGenerator;
 use EonX\EasyRandom\Generator\RandomIntegerGeneratorInterface;
 use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Generator\RandomStringGeneratorInterface;
-use EonX\EasyRandom\Generator\SymfonyUuidV4Generator;
-use EonX\EasyRandom\Generator\SymfonyUuidV6Generator;
+use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRandom\Generator\UuidGeneratorInterface;
+use EonX\EasyRandom\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Uid\UuidV4;
+use Symfony\Component\Uid\UuidV6;
 
-final class EasyRandomBundleTest extends AbstractSymfonyTestCase
+final class EasyRandomBundleTest extends AbstractUnitTestCase
 {
     /**
      * @see testUuidGeneratorInstance
@@ -22,68 +24,56 @@ final class EasyRandomBundleTest extends AbstractSymfonyTestCase
     public static function provideConfigsForUuidGenerator(): iterable
     {
         yield 'UUID v4' => [
-            'configs' => [__DIR__ . '/../../Fixture/config/uuid_version_4.php'],
-            'expectedUuidGeneratorClass' => SymfonyUuidV4Generator::class,
+            'environment' => 'test_v4',
+            'expectedUuidFactoryClass' => UuidV4::class,
         ];
 
         yield 'UUID v6' => [
-            'configs' => [__DIR__ . '/../../Fixture/config/uuid_version_6.php'],
-            'expectedUuidGeneratorClass' => SymfonyUuidV6Generator::class,
+            'environment' => 'test_v6',
+            'expectedUuidFactoryClass' => UuidV6::class,
         ];
     }
 
     public function testRandomGeneratorInstance(): void
     {
-        $sut = $this->getKernel([])
-            ->getContainer();
+        $sut = self::getService(RandomGeneratorInterface::class);
 
-        $result = $sut->get(RandomGeneratorInterface::class);
-
-        self::assertInstanceOf(RandomGenerator::class, $result);
+        self::assertInstanceOf(RandomGenerator::class, $sut);
         self::assertInstanceOf(
             RandomStringGenerator::class,
-            self::getPrivatePropertyValue($result, 'randomStringGenerator')
+            self::getPrivatePropertyValue($sut, 'randomStringGenerator')
         );
         self::assertInstanceOf(
             RandomIntegerGenerator::class,
-            self::getPrivatePropertyValue($result, 'randomIntegerGenerator')
+            self::getPrivatePropertyValue($sut, 'randomIntegerGenerator')
         );
-        self::assertInstanceOf(SymfonyUuidV6Generator::class, self::getPrivatePropertyValue($result, 'uuidGenerator'));
+        self::assertInstanceOf(UuidGenerator::class, self::getPrivatePropertyValue($sut, 'uuidGenerator'));
     }
 
     public function testRandomIntegerGeneratorInstance(): void
     {
-        $sut = $this->getKernel([])
-            ->getContainer();
+        $sut = self::getService(RandomIntegerGeneratorInterface::class);
 
-        $result = $sut->get(RandomIntegerGeneratorInterface::class);
-
-        self::assertInstanceOf(RandomIntegerGenerator::class, $result);
+        self::assertInstanceOf(RandomIntegerGenerator::class, $sut);
     }
 
     public function testRandomStringGeneratorInstance(): void
     {
-        $sut = $this->getKernel([])
-            ->getContainer();
+        $sut = self::getService(RandomStringGeneratorInterface::class);
 
-        $result = $sut->get(RandomStringGeneratorInterface::class);
-
-        self::assertInstanceOf(RandomStringGenerator::class, $result);
+        self::assertInstanceOf(RandomStringGenerator::class, $sut);
     }
 
-    /**
-     * @param string[] $configs
-     *
-     * @psalm-param class-string $expectedUuidGeneratorClass
-     */
     #[DataProvider('provideConfigsForUuidGenerator')]
-    public function testUuidGeneratorInstance(array $configs, string $expectedUuidGeneratorClass): void
+    public function testUuidGeneratorInstance(string $environment, string $expectedUuidFactoryClass): void
     {
-        $sut = $this->getKernel($configs)
-            ->getContainer();
+        self::bootKernel([
+            'environment' => $environment,
+        ]);
+        $uuidGenerator = self::getService(UuidGeneratorInterface::class);
 
-        $result = $sut->get(UuidGeneratorInterface::class);
+        $sut = self::getPrivatePropertyValue($uuidGenerator, 'uuidFactory');
 
-        self::assertInstanceOf($expectedUuidGeneratorClass, $result);
+        self::assertSame($expectedUuidFactoryClass, self::getPrivatePropertyValue($sut, 'defaultClass'));
     }
 }

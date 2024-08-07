@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class PermissionFromApiKeyConfiguratorStub extends AbstractFromApiKeyConfigurator
 {
     public function __construct(
-        private string $permission,
+        private readonly string $permission,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

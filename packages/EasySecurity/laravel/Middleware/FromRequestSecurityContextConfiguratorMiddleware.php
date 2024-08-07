@@ -8,7 +8,7 @@ use EonX\EasySecurity\Common\Configurator\FromRequestConfigurator;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
 use Illuminate\Http\Request;
 
-final class FromRequestSecurityContextConfiguratorMiddleware
+final readonly class FromRequestSecurityContextConfiguratorMiddleware
 {
     /**
      * @param iterable<\EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface> $configurators

@@ -30,9 +30,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ExpressionLanguageRuleFactoryInterface::class, ExpressionLanguageRuleFactory::class);
 
-    $services->set(DecisionDataCollector::class)
-        ->tag('data_collector', [
-            'id' => DecisionDataCollector::NAME,
-            'template' => '@EasyDecisionBundle/collector/decision_collector.html.twig',
-        ]);
+    $services->set(DecisionDataCollector::class);
 };

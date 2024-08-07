@@ -12,13 +12,6 @@ abstract class AbstractMessage implements MessageInterface
     ) {
     }
 
-    public function body(array $body): self
-    {
-        $this->body = $body;
-
-        return $this;
-    }
-
     public function getBody(): string
     {
         return Json::encode($this->body);
@@ -27,6 +20,13 @@ abstract class AbstractMessage implements MessageInterface
     public function mergeBody(array $body): self
     {
         $this->body = \array_merge($this->body ?? [], $body);
+
+        return $this;
+    }
+
+    public function setBody(array $body): self
+    {
+        $this->body = $body;
 
         return $this;
     }

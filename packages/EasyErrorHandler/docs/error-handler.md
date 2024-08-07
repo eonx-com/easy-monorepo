@@ -31,4 +31,4 @@ reporters, e.g. to send email.
 If you use the [easy-bugsnag][1] package, then the ErrorHandler will also notify Bugsnag based on the log level of the
 exception.
 
-[1]: https://packages.eonx.com/projects/eonx-com/easy-bugsnag/
+[1]: https://packages.eonx.com/packages/easy-bugsnag/

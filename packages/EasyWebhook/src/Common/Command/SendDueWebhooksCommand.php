@@ -23,8 +23,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SendDueWebhooksCommand extends Command
 {
     public function __construct(
-        private WebhookClientInterface $client,
-        private StoreInterface $store,
+        private readonly WebhookClientInterface $client,
+        private readonly StoreInterface $store,
     ) {
         parent::__construct();
     }

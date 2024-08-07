@@ -8,7 +8,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
-final class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWorkerInterface
+final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWorkerInterface
 {
     private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Tests\Stub\Kernel;
 
 use EonX\EasySwoole\Bundle\EasySwooleBundle;
-use EonX\EasySwoole\Tests\Stub\Service\ServicesResetterStub;
+use EonX\EasySwoole\Tests\Stub\Resetter\ServicesResetterStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,7 +19,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private array $configs;
+    private readonly array $configs;
 
     /**
      * @param string[]|null $configs

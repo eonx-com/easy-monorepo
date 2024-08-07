@@ -13,8 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ScheduleRunCommand extends Command
 {
     public function __construct(
-        private ScheduleRunnerInterface $runner,
-        private ScheduleInterface $schedule,
+        private readonly ScheduleRunnerInterface $runner,
+        private readonly ScheduleInterface $schedule,
     ) {
         parent::__construct();
     }

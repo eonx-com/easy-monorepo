@@ -17,7 +17,7 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
     {
         yield 'Txt file but coverage too low' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage-70.txt',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage_70.txt',
                 '--coverage' => 71,
             ],
             '[ERROR] Coverage "70%" is lower than expectation "71%"',
@@ -25,7 +25,7 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
 
         yield 'Txf file and good coverage' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage-70.txt',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage_70.txt',
                 '--coverage' => 70,
             ],
             '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
@@ -33,7 +33,7 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
 
         yield 'Clover file but coverage too low' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage-70.clover',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage_70.clover',
                 '--coverage' => 71,
             ],
             '[ERROR] Coverage "70%" is lower than expectation "71%"',
@@ -41,7 +41,7 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
 
         yield 'Clover file but coverage too low and violations are shown' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage-70.clover',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage_70.clover',
                 '--coverage' => 71,
             ],
             '[ERROR] Violations:',
@@ -49,7 +49,7 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
 
         yield 'Clover file and good coverage' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage-70.clover',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage_70.clover',
                 '--coverage' => 70,
             ],
             '[OK] Yeah nah yeah nah yeah!! Good coverage mate! "70%"',
@@ -70,21 +70,21 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
 
         yield 'Txt file but no coverage' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/no-coverage.txt',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/no_coverage.txt',
             ],
             UnableToResolveCoverageException::class,
         ];
 
         yield 'Txt file and Lines but no coverage' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/lines-but-no-coverage.txt',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/lines_but_no_coverage.txt',
             ],
             UnableToResolveCoverageException::class,
         ];
 
         yield 'Clover file but wrong format' => [
             [
-                'file' => __DIR__ . '/../../../../Fixture/Coverage/wrong-format.clover',
+                'file' => __DIR__ . '/../../../../Fixture/Coverage/wrong_format.clover',
             ],
             UnableToResolveCoverageException::class,
         ];

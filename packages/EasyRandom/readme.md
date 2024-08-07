@@ -15,7 +15,7 @@ All the randomness you need!
 
 ### Require package (Composer)
 
-The recommended way to install this package is to use [Composer][1]:
+The recommended way to install this package is to use [Composer](https://getcomposer.org/):
 
 ```bash
 $ composer require eonx-com/easy-random
@@ -67,15 +67,9 @@ $reference = (new \EonX\EasyRandom\Generator\RandomGenerator(...))
 ### UUID
 
 The random generator allows you to generate UUID.
-This package comes with built-in implementations for: [ramsey/uuid][3], [symfony/uid][2].
+This package comes with built-in implementations for: [symfony/uid](https://symfony.com/doc/current/components/uid.html).
 If you want to use your own, then you will need to make sure it implements `EonX\EasyRandom\Generator\UuidGeneratorInterface`.
 
 ```php
 $uuid = (new \EonX\EasyRandom\Generator\RandomGenerator(...))->uuid();
 ```
-
-[1]: https://getcomposer.org/
-
-[2]: https://symfony.com/doc/current/components/uid.html
-
-[3]: https://github.com/ramsey/uuid

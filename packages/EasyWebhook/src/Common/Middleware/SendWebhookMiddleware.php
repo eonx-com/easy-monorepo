@@ -17,7 +17,7 @@ use Throwable;
 final class SendWebhookMiddleware extends AbstractMiddleware
 {
     public function __construct(
-        private HttpClientInterface $httpClient,
+        private readonly HttpClientInterface $httpClient,
         ?int $priority = null,
     ) {
         parent::__construct($priority);

@@ -9,7 +9,6 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
-use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -19,6 +18,7 @@ return RectorConfig::configure()
         __DIR__ . '/../monorepo-builder.php',
         __DIR__ . '/../packages',
         __DIR__ . '/../tests',
+        __DIR__ . '/tests',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
@@ -43,7 +43,10 @@ return RectorConfig::configure()
         'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
 
         // Skip rules
-        ClassPropertyAssignToConstructorPromotionRector::class,
+        ClassPropertyAssignToConstructorPromotionRector::class => [
+            'packages/*/ApiResource/*',
+            'packages/*/Entity/*',
+        ],
         FirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
@@ -52,7 +55,6 @@ return RectorConfig::configure()
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
-        ReadOnlyPropertyRector::class,
     ])
     ->withRules([
         AddSeeAnnotationRector::class,

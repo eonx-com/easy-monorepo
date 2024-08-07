@@ -9,7 +9,7 @@ use EonX\EasyWebhook\Common\Middleware\MiddlewareInterface;
 use EonX\EasyWebhook\Common\Stack\Stack;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
 use EonX\EasyWebhook\Tests\Stub\Middleware\MiddlewareStub;
-use EonX\EasyWebhook\Tests\Stub\Stack\StackThrowStub;
+use EonX\EasyWebhook\Tests\Stub\Stack\WithThrowableStackStub;
 use EonX\EasyWebhook\Tests\Unit\AbstractUnitTestCase;
 use Throwable;
 
@@ -29,6 +29,6 @@ abstract class AbstractMiddlewareTestCase extends AbstractUnitTestCase
         WebhookInterface $webhook,
         Throwable $throwable,
     ): WebhookResultInterface {
-        return $middleware->process($webhook, new StackThrowStub($throwable));
+        return $middleware->process($webhook, new WithThrowableStackStub($throwable));
     }
 }

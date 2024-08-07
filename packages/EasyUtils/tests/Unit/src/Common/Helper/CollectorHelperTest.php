@@ -5,7 +5,7 @@ namespace EonX\EasyUtils\Tests\Unit\Common\Helper;
 
 use EonX\EasyUtils\Common\Exception\InvalidArgumentException;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
-use EonX\EasyUtils\Tests\Stub\Helper\HasPriorityStub;
+use EonX\EasyUtils\Tests\Stub\Helper\HasPriorityHelperStub;
 use EonX\EasyUtils\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -21,7 +21,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
 
         yield 'basic object' => [[new stdClass()], false];
 
-        yield 'interface based' => [[new HasPriorityStub(), new stdClass()], true];
+        yield 'interface based' => [[new HasPriorityHelperStub(), new stdClass()], true];
     }
 
     /**
@@ -33,7 +33,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
 
         yield 'basic object' => [[new stdClass()], 1];
 
-        yield 'interface based' => [[new HasPriorityStub(), new stdClass()], 1];
+        yield 'interface based' => [[new HasPriorityHelperStub(), new stdClass()], 1];
     }
 
     /**
@@ -114,8 +114,8 @@ final class CollectorHelperTest extends AbstractUnitTestCase
         self::assertEquals($expected, CollectorHelper::orderLowerPriorityFirstAsArray($items));
     }
 
-    private static function hasPriorityStub(?int $priority = null): HasPriorityStub
+    private static function hasPriorityStub(?int $priority = null): HasPriorityHelperStub
     {
-        return new HasPriorityStub($priority);
+        return new HasPriorityHelperStub($priority);
     }
 }

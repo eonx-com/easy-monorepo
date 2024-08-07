@@ -7,8 +7,10 @@ use Symfony\Config\EasyErrorHandlerConfig;
 
 return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
     $easyErrorHandlerConfig
-        ->translationDomain('violations')
-        ->bugsnagEnabled(false);
+        ->translationDomain('violations');
+
+    $bugsnagConfig = $easyErrorHandlerConfig->bugsnag();
+    $bugsnagConfig->enabled(false);
 
     $response = $easyErrorHandlerConfig->response();
     $response

@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Tests\Unit\Common\Provider;
 
 use EonX\EasyRandom\Generator\RandomGenerator;
-use EonX\EasyRandom\Generator\SymfonyUuidV6Generator;
+use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRequestId\Common\Provider\RequestIdProvider;
-use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 use EonX\EasyRequestId\Common\Resolver\HttpFoundationRequestResolver;
 use EonX\EasyRequestId\Common\Resolver\UuidFallbackResolver;
 use EonX\EasyRequestId\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Component\Uid\Uuid;
 
 final class RequestIdProviderTest extends AbstractUnitTestCase
@@ -34,8 +34,8 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
 
         yield 'Default resolver with default values' => [
             self::getRequestWithHeaders([
-                RequestIdProviderInterface::DEFAULT_HTTP_HEADER_CORRELATION_ID => 'correlation-id',
-                RequestIdProviderInterface::DEFAULT_HTTP_HEADER_REQUEST_ID => 'request-id',
+                'some-correlation-id-header' => 'correlation-id',
+                'some-request-id-header' => 'request-id',
             ]),
             'request-id',
             'correlation-id',
@@ -51,7 +51,11 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
         ?FallbackResolverInterface $fallbackResolver = null,
     ): void {
         $fallbackResolver ??= $this->defaultFallbackResolver();
-        $requestIdProvider = new RequestIdProvider($fallbackResolver);
+        $requestIdProvider = new RequestIdProvider(
+            $fallbackResolver,
+            'some-correlation-id-header',
+            'some-request-id-header',
+        );
         $requestIdProvider->setResolver(new HttpFoundationRequestResolver($request, $requestIdProvider));
 
         // For caching coverage
@@ -74,7 +78,7 @@ final class RequestIdProviderTest extends AbstractUnitTestCase
     private function defaultFallbackResolver(): FallbackResolverInterface
     {
         return new UuidFallbackResolver(
-            new RandomGenerator(new SymfonyUuidV6Generator())
+            new RandomGenerator(new UuidGenerator(new UuidFactory()))
         );
     }
 }

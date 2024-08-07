@@ -33,4 +33,4 @@ Provide your error reporters to the ErrorHandler by using
 which returns a collection of your `EonX\EasyErrorHandler\Common\Reporter\ErrorReporterInterface` implementations. The
 ErrorHandler accepts a collection of all error reporter providers via its constructor.
 
-[1]: https://packages.eonx.com/projects/eonx-com/easy-bugsnag/
+[1]: https://packages.eonx.com/packages/easy-bugsnag/

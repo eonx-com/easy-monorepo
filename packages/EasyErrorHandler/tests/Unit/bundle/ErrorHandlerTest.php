@@ -5,7 +5,6 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Bundle;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Strategy\VerboseStrategyInterface;
-use EonX\EasyErrorHandler\Tests\Unit\Common\Builder\TestRenderWithDefaultBuildersDataProvider;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Symfony\Component\Translation\Loader\ArrayLoader;
@@ -14,7 +13,7 @@ use Throwable;
 
 final class ErrorHandlerTest extends AbstractSymfonyTestCase
 {
-    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provide')]
+    #[DataProviderExternal(TestRenderWithDefaultBuilderDataProvider::class, 'provide')]
     public function testRenderWithDefaultBuilders(
         Request $request,
         Throwable $exception,
@@ -31,7 +30,7 @@ final class ErrorHandlerTest extends AbstractSymfonyTestCase
         $assertResponse($sut->render($request, $exception));
     }
 
-    #[DataProviderExternal(TestRenderWithDefaultBuildersDataProvider::class, 'provideWithExtendedResponse')]
+    #[DataProviderExternal(TestRenderWithDefaultBuilderDataProvider::class, 'provideWithExtendedResponse')]
     public function testRenderWithDefaultBuildersAndExtendedResponse(
         Request $request,
         Throwable $exception,

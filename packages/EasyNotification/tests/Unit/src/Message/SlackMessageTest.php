@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Unit\Message;
 
-use EonX\EasyNotification\Message\MessageInterface;
+use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Message\SlackMessage;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
 use Nette\Utils\Json;
@@ -41,8 +41,8 @@ final class SlackMessageTest extends AbstractUnitTestCase
 
         yield 'Create method + text + body' => [
             static function (): SlackMessage {
-                $message = SlackMessage::create('channel')->text('text');
-                $message->body([
+                $message = SlackMessage::create('channel')->setText('text');
+                $message->setBody([
                     'option' => 'value',
                 ]);
 
@@ -62,7 +62,7 @@ final class SlackMessageTest extends AbstractUnitTestCase
         /** @var \EonX\EasyNotification\Message\SlackMessage $message */
         $message = $getMessage();
 
-        self::assertSame(MessageInterface::TYPE_SLACK, $message->getType());
+        self::assertSame(MessageType::Slack, $message->getType());
         self::assertSame(Json::encode($body), $message->getBody());
     }
 }

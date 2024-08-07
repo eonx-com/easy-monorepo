@@ -13,8 +13,8 @@ use Throwable;
 final class MiddlewareStub extends AbstractMiddleware
 {
     public function __construct(
-        private ?WebhookResultInterface $webhookResult = null,
-        private ?Throwable $throwable = null,
+        private readonly ?WebhookResultInterface $webhookResult = null,
+        private readonly ?Throwable $throwable = null,
     ) {
         parent::__construct();
     }

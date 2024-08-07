@@ -14,7 +14,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @var string[]
      */
-    private array $configs;
+    private readonly array $configs;
 
     public function __construct(string $environment, bool $debug, ?array $configs = null)
     {

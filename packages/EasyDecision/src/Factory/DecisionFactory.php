@@ -18,7 +18,7 @@ final class DecisionFactory implements DecisionFactoryInterface
     /**
      * @var \EonX\EasyDecision\Configurator\DecisionConfiguratorInterface[]
      */
-    private array $configurators;
+    private readonly array $configurators;
 
     /**
      * @var \EonX\EasyDecision\Decision\DecisionInterface[]
@@ -31,7 +31,7 @@ final class DecisionFactory implements DecisionFactoryInterface
     private array $decisionConfigurators = [];
 
     public function __construct(
-        private MappingProviderInterface $mappingProvider,
+        private readonly MappingProviderInterface $mappingProvider,
         ?iterable $configurators = null,
     ) {
         /** @var \EonX\EasyDecision\Configurator\DecisionConfiguratorInterface[] $filteredAndSortedConfigurators */

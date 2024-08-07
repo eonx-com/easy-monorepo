@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Common\Resolver;
 
+use EonX\EasyEncryption\Common\Enum\EncryptionKeyOption;
 use EonX\EasyEncryption\Common\Exception\CouldNotResolveEncryptionKeyException;
-use EonX\EasyEncryption\Common\Factory\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Common\Helper\KeyLengthHelper;
 use ParagonIE\Halite\EncryptionKeyPair;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
@@ -12,9 +12,9 @@ use ParagonIE\Halite\Symmetric\EncryptionKey;
 final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
 {
     public function __construct(
-        private string $keyName,
-        private string $encryptionKey,
-        private ?string $salt = null,
+        private readonly string $keyName,
+        private readonly string $encryptionKey,
+        private readonly ?string $salt = null,
     ) {
     }
 
@@ -35,8 +35,8 @@ final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
         // Key itself wasn't enough, derive from salt or key itself if not salt provided
         if (KeyLengthHelper::isSaltLength($salt)) {
             return [
-                EncryptionKeyFactoryInterface::OPTION_KEY => $this->encryptionKey,
-                EncryptionKeyFactoryInterface::OPTION_SALT => $salt,
+                EncryptionKeyOption::Key->value => $this->encryptionKey,
+                EncryptionKeyOption::Salt->value => $salt,
             ];
         }
 

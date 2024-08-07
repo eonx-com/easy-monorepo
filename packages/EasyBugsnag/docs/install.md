@@ -96,6 +96,6 @@ information about configuration options.
 
 [1]: https://getcomposer.org/
 
-[2]: https://flex.symfony.com/
+[2]: https://symfony.com/doc/current/setup/flex.html
 
-[3]: https://laravel.com/docs/8.x/providers
+[3]: https://laravel.com/docs/10.x/providers

@@ -5,12 +5,6 @@ namespace EonX\EasyNotification\Message;
 
 interface QueueMessageInterface
 {
-    public const HEADER_PROVIDER = 'provider';
-
-    public const HEADER_SIGNATURE = 'signature';
-
-    public const HEADER_TYPE = 'type';
-
     public function addHeader(string $name, string $value): self;
 
     public function getBody(): string;

@@ -9,7 +9,7 @@ use EonX\EasyDecision\Exception\MissingValueIndexException;
 use EonX\EasyDecision\Exception\ReservedContextIndexException;
 use EonX\EasyDecision\Exception\UnableToMakeDecisionException;
 use EonX\EasyDecision\Rule\RuleInterface;
-use EonX\EasyDecision\Tests\Stub\Rule\RuleWithNonBlockingErrorExceptionStub;
+use EonX\EasyDecision\Tests\Stub\Rule\WithNonBlockingErrorExceptionRuleStub;
 use EonX\EasyDecision\Tests\Unit\AbstractUnitTestCase;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -74,7 +74,7 @@ final class ValueDecisionTest extends AbstractUnitTestCase
 
     public function testNonBlockingRuleErrorException(): void
     {
-        $decision = (new ValueDecision())->addRule(new RuleWithNonBlockingErrorExceptionStub());
+        $decision = (new ValueDecision())->addRule(new WithNonBlockingErrorExceptionRuleStub());
 
         $output = $decision->make([
             'value' => 10,
@@ -120,7 +120,7 @@ final class ValueDecisionTest extends AbstractUnitTestCase
         $expected = 10;
 
         $expectedRuleOutput = [
-            'unsupported-1' => RuleInterface::OUTPUT_UNSUPPORTED,
+            'unsupported-1' => 'unsupported',
             $modifyRule->toString() => 10,
         ];
 

@@ -29,21 +29,21 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     /**
      * @var \SplObjectStorage<\Throwable, null>
      */
-    private SplObjectStorage $handledExceptions;
+    private readonly SplObjectStorage $handledExceptions;
 
     /**
      * @var class-string[]
      */
     private readonly array $ignoredExceptionsForReport;
 
-    private bool $reportRetryableExceptionAttempts;
+    private readonly bool $reportRetryableExceptionAttempts;
 
     /**
      * @var \EonX\EasyErrorHandler\Common\Reporter\ErrorReporterInterface[]
      */
     private array $reporters;
 
-    private bool $skipReportedExceptions;
+    private readonly bool $skipReportedExceptions;
 
     /**
      * @param class-string[]|null $ignoredExceptionsForReport

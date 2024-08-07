@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyRequestId\Laravel\Listeners;
 
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
-use EonX\EasyRequestId\Common\Resolver\ResolvesFromHttpFoundationRequestTrait;
+use EonX\EasyRequestId\Common\Resolver\HttpFoundationRequestResolverTrait;
 use Illuminate\Routing\Events\RouteMatched;
 
 final class RequestIdRouteMatchedListener
 {
-    use ResolvesFromHttpFoundationRequestTrait;
+    use HttpFoundationRequestResolverTrait;
 
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,

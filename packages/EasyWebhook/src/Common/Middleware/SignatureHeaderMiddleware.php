@@ -11,11 +11,11 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class SignatureHeaderMiddleware extends AbstractConfigureOnceMiddleware
 {
-    private string $signatureHeader;
+    private readonly string $signatureHeader;
 
     public function __construct(
-        private WebhookSignerInterface $signer,
-        private ?string $secret = null,
+        private readonly WebhookSignerInterface $signer,
+        private readonly ?string $secret = null,
         ?string $signatureHeader = null,
         ?int $priority = null,
     ) {

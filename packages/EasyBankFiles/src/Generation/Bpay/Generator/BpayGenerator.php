@@ -17,9 +17,9 @@ final class BpayGenerator extends AbstractGenerator
      * @throws \EonX\EasyBankFiles\Generation\Common\Exception\InvalidArgumentException
      */
     public function __construct(
-        private Header $header,
+        private readonly Header $header,
         private array $transactions,
-        private ?Trailer $trailer = null,
+        private readonly ?Trailer $trailer = null,
     ) {
         if (\count($transactions) === 0) {
             throw new InvalidArgumentException('No transactions provided.');

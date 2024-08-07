@@ -16,13 +16,13 @@ use Doctrine\DBAL\Types\DateTimeImmutableType;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
-    public const FORMAT_DB_DATETIME = 'DATETIME(6)';
+    private const FORMAT_DB_DATETIME = 'DATETIME(6)';
 
-    public const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+    private const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
 
-    public const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
+    private const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
 
-    public const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+    private const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
 
     private static ?DateTimeZone $utc = null;
 
@@ -32,7 +32,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
-            return $value;
+            return null;
         }
 
         if ($value instanceof DateTimeImmutable || $value instanceof DateTime) {
@@ -68,7 +68,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
         throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
     }
 
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
         $platformClassNameDbal2 = PostgreSQL94Platform::class;
         $platformClassNameDbal3 = PostgreSQLPlatform::class;
@@ -76,7 +76,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }
 
-        if (isset($fieldDeclaration['version']) && $fieldDeclaration['version'] === true) {
+        if (isset($column['version']) && $column['version'] === true) {
             return self::FORMAT_DB_TIMESTAMP;
         }
 

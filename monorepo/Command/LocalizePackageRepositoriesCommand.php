@@ -18,7 +18,7 @@ use Symfony\Component\Finder\SplFileInfo;
 final class LocalizePackageRepositoriesCommand extends Command
 {
     public function __construct(
-        private GitHelper $gitHelper,
+        private readonly GitHelper $gitHelper,
     ) {
         parent::__construct();
     }

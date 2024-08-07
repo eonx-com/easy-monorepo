@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Tests\Stub\Entity;
 
 use EonX\EasySecurity\SymfonySecurity\Voter\ProviderRestrictedInterface;
 
-final class ProviderRestrictedStub implements ProviderRestrictedInterface
+final readonly class ProviderRestrictedStub implements ProviderRestrictedInterface
 {
     public function __construct(
         private int|string $providerId,

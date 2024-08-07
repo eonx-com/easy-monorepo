@@ -12,25 +12,23 @@ use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
 use EonX\EasySecurity\Common\Entity\ProviderInterface;
 use EonX\EasySecurity\Common\Entity\UserInterface;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
+use EonX\EasyUtils\Common\DataCollector\AbstractDataCollector;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
-final class SecurityContextDataCollector extends DataCollector
+final class SecurityContextDataCollector extends AbstractDataCollector
 {
-    public const NAME = 'easy_security.security_context_collector';
-
     /**
      * @var \EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface[]
      */
-    private array $configurators;
+    private readonly array $configurators;
 
     public function __construct(
-        private AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
-        private SecurityContextResolverInterface $securityContextResolver,
+        private readonly AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
+        private readonly SecurityContextResolverInterface $securityContextResolver,
         iterable $configurators,
     ) {
         $this->configurators = CollectorHelper::orderLowerPriorityFirstAsArray(
@@ -56,11 +54,6 @@ final class SecurityContextDataCollector extends DataCollector
     public function getAuthorizationMatrix(): AuthorizationMatrixProviderInterface
     {
         return $this->data['authorization_matrix'];
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
     }
 
     /**
@@ -107,11 +100,6 @@ final class SecurityContextDataCollector extends DataCollector
     public function getUser(): ?UserInterface
     {
         return $this->data['user'] ?? null;
-    }
-
-    public function reset(): void
-    {
-        $this->data = [];
     }
 
     private function setContextConfigurators(): void

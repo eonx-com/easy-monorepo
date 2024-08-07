@@ -15,8 +15,8 @@ final class AbaGenerator extends AbstractGenerator
      * @throws \EonX\EasyBankFiles\Generation\Common\Exception\InvalidArgumentException
      */
     public function __construct(
-        private DescriptiveRecord $descriptiveRecord,
-        private array $transactions,
+        private readonly DescriptiveRecord $descriptiveRecord,
+        private readonly array $transactions,
         private ?FileTotalRecord $fileTotalRecord = null,
     ) {
         if (\count($transactions) === 0) {
@@ -49,10 +49,10 @@ final class AbaGenerator extends AbstractGenerator
 
             $objects[] = $transaction;
 
-            if ((int)$transaction->getTransactionCode() === Transaction::CODE_GENERAL_CREDIT) {
+            if ($transaction->isCredit()) {
                 $creditTotal += (int)$transaction->getAmount();
             }
-            if ((int)$transaction->getTransactionCode() === Transaction::CODE_GENERAL_DEBIT) {
+            if ($transaction->isDebit()) {
                 $debitTotal += (int)$transaction->getAmount();
             }
         }

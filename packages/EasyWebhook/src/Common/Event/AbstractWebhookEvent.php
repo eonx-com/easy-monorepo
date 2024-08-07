@@ -8,7 +8,7 @@ use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 abstract class AbstractWebhookEvent implements WebhookEventInterface
 {
     public function __construct(
-        private WebhookResultInterface $result,
+        private readonly WebhookResultInterface $result,
     ) {
     }
 
