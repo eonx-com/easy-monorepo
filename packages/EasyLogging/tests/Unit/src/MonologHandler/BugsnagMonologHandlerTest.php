@@ -50,15 +50,15 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
         $sut->setFormatter(new LineFormatter('formatted'));
 
         $sut->handle(new LogRecord(
-            new DateTimeImmutable(),
-            'app',
-            Level::Warning,
-            'message',
-            [
+            datetime: new DateTimeImmutable(),
+            channel: 'app',
+            level: Level::Warning,
+            message: 'message',
+            context: [
                 'exception_reported_by_error_handler' => true,
             ],
-            [],
-            'formatted'
+            extra: [],
+            formatted: 'formatted'
         ));
 
         $reports = self::getPrivatePropertyValue(
