@@ -79,8 +79,10 @@ final class CacheTableHelper
             ]
         );
         $tickCountTable->set(self::TICK_COUNT_COLUMN_CURRENT, [CacheTableColumn::Value->value => 0]);
-        $tickCountTable->set(self::TICK_COUNT_COLUMN_MAXIMUM,
-            [CacheTableColumn::Value->value => $cacheClearAfterTickCount]);
+        $tickCountTable->set(
+            self::TICK_COUNT_COLUMN_MAXIMUM,
+            [CacheTableColumn::Value->value => $cacheClearAfterTickCount]
+        );
 
         $_SERVER[self::SERVER_TICK_COUNT_TABLE_NAME] = $tickCountTable;
         $_SERVER[self::SERVER_TABLE_NAMES] = $tables;

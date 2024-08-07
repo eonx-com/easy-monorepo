@@ -76,6 +76,7 @@ return ECSConfig::configure()
             'packages/*/tests/Stub/Model/*',
             'packages/*/tests/Fixture/*/ApiResource/*',
             'packages/*/tests/Fixture/*/DataTransferObject/*',
+            'packages/EasySwoole/src/Common/ValueObject/SwooleTableColumnDefinition.php',
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
