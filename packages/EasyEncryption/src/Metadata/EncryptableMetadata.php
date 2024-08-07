@@ -6,15 +6,10 @@ namespace EonX\EasyEncryption\Metadata;
 use EonX\EasyEncryption\Attributes\EncryptableField;
 use ReflectionClass;
 
-final class EncryptableMetadata
+final class EncryptableMetadata implements EncryptableMetadataInterface
 {
     private array $metadata = [];
 
-    /**
-     * @param class-string|object $entity
-     *
-     * @return array<string, string>
-     */
     public function getEncryptableFieldNames(string|object $entity): array
     {
         $entityClass = \is_object($entity) ? $entity::class : $entity;

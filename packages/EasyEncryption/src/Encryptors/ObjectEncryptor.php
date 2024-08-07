@@ -7,23 +7,23 @@ use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
 use EonX\EasyEncryption\Interfaces\EncryptableInterface;
 use EonX\EasyEncryption\ValueObjects\EncryptedText;
 
-final class ObjectEncryptor
+final class ObjectEncryptor implements ObjectEncryptorInterface
 {
     public function __construct(
-        private StringEncryptor $encryptor,
+        private StringEncryptorInterface $stringEncryptor,
         private HashCalculatorInterface $hashCalculator,
     ) {
     }
 
     public function decrypt(EncryptableInterface $encryptable): void
     {
-        $encryptable->decrypt(fn (string $value): string => $this->encryptor->decrypt($value));
+        $encryptable->decrypt(fn (string $value): string => $this->stringEncryptor->decrypt($value));
     }
 
     public function encrypt(EncryptableInterface $encryptable): void
     {
         $encryptable->encrypt(
-            fn (string $value): EncryptedText => $this->encryptor->encrypt($value),
+            fn (string $value): EncryptedText => $this->stringEncryptor->encrypt($value),
             fn (string $value): string => $this->hashCalculator->calculate($value)
         );
     }

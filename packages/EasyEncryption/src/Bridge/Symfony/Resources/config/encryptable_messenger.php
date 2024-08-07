@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
+use EonX\EasyEncryption\Metadata\EncryptableMetadata;
+use EonX\EasyEncryption\Metadata\EncryptableMetadataInterface;
 use EonX\EasyEncryption\Serializers\EncryptableAwareMessengerSerializer;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -11,6 +13,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure();
+
+    $services
+        ->set(EncryptableMetadataInterface::class, EncryptableMetadata::class);
 
     $services->set(EncryptableAwareMessengerSerializer::class)
         ->arg('$serializer', service('messenger.transport.native_php_serializer'))

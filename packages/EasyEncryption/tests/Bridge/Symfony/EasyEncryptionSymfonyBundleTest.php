@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Tests\Bridge\Symfony;
 
-use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
 
 final class EasyEncryptionSymfonyBundleTest extends AbstractSymfonyTestCase
@@ -14,7 +13,7 @@ final class EasyEncryptionSymfonyBundleTest extends AbstractSymfonyTestCase
 
         $container = $this->getKernel()
             ->getContainer();
-        $encryptor = $container->get(Encryptor::class);
+        $encryptor = $container->get(EncryptorInterface::class);
         $message = 'my message to encrypt';
 
         self::assertInstanceOf(EncryptorInterface::class, $encryptor);

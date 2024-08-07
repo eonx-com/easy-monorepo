@@ -7,7 +7,7 @@ use EonX\EasyEncryption\Interfaces\EncryptorInterface;
 use EonX\EasyEncryption\ValueObjects\EncryptedText;
 use InvalidArgumentException;
 
-final class StringEncryptor
+final class StringEncryptor implements StringEncryptorInterface
 {
     private const CHUNKED_TEXT_PREFIX = 'chunked:';
 

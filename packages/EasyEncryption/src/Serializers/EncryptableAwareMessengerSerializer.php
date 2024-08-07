@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Serializers;
 
-use EonX\EasyEncryption\Encryptors\ObjectEncryptor;
-use EonX\EasyEncryption\Encryptors\StringEncryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptorInterface;
+use EonX\EasyEncryption\Encryptors\StringEncryptorInterface;
 use EonX\EasyEncryption\Interfaces\EncryptableInterface;
-use EonX\EasyEncryption\Metadata\EncryptableMetadata;
+use EonX\EasyEncryption\Metadata\EncryptableMetadataInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
@@ -27,9 +27,9 @@ final class EncryptableAwareMessengerSerializer implements SerializerInterface
     private const ENVELOPE_HEADER_TYPE = 'type';
 
     public function __construct(
-        private StringEncryptor $encryptor,
-        private ObjectEncryptor $encryptableEncryptor,
-        private EncryptableMetadata $encryptableMetadata,
+        private StringEncryptorInterface $stringEncryptor,
+        private ObjectEncryptorInterface $objectEncryptor,
+        private EncryptableMetadataInterface $encryptableMetadata,
         private SerializerInterface $serializer,
         private array $fullyEncryptedMessages,
     ) {
@@ -47,14 +47,14 @@ final class EncryptableAwareMessengerSerializer implements SerializerInterface
         if ($encryptionType === self::ENCRYPTION_TYPE_FULL) {
             $encryptedBody = $encodedEnvelope['body']
                 ?? throw new MessageDecodingFailedException('Encoded envelope should have a "body" value.');
-            $encodedEnvelope['body'] = $this->encryptor->decrypt($encryptedBody);
+            $encodedEnvelope['body'] = $this->stringEncryptor->decrypt($encryptedBody);
         }
 
         $envelope = $this->serializer->decode($encodedEnvelope);
         $message = $envelope->getMessage();
 
         if ($message instanceof EncryptableInterface) {
-            $this->encryptableEncryptor->decrypt($message);
+            $this->objectEncryptor->decrypt($message);
         }
 
         return $envelope;
@@ -83,7 +83,7 @@ final class EncryptableAwareMessengerSerializer implements SerializerInterface
         ];
 
         if ($message instanceof EncryptableInterface) {
-            $this->encryptableEncryptor->encrypt($message);
+            $this->objectEncryptor->encrypt($message);
             $headers[self::ENVELOPE_HEADER_ENCRYPTED] = true;
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_PARTIAL;
             $headers[self::ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES] = \json_encode(
@@ -96,7 +96,7 @@ final class EncryptableAwareMessengerSerializer implements SerializerInterface
         if (\in_array($message::class, $this->fullyEncryptedMessages, true)) {
             $encodedBody = $encodedEnvelope['body']
                 ?? throw new UnexpectedValueException('Encoded envelope should have a "body" value.');
-            $encodedEnvelope['body'] = $this->encryptor->encrypt((string)$encodedBody)->value;
+            $encodedEnvelope['body'] = $this->stringEncryptor->encrypt((string)$encodedBody)->value;
             $headers[self::ENVELOPE_HEADER_ENCRYPTED] = true;
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_FULL;
         }

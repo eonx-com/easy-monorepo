@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Tests\Encryptors;
 
-use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Encryptors\StringEncryptor;
+use EonX\EasyEncryption\Interfaces\EncryptorInterface;
 use EonX\EasyEncryption\Tests\Bridge\Symfony\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -55,7 +55,7 @@ final class StringEncryptorTest extends AbstractSymfonyTestCase
     {
         $container = $this->getKernel()
             ->getContainer();
-        $encryptor = $container->get(Encryptor::class);
+        $encryptor = $container->get(EncryptorInterface::class);
         $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
 
         $encryptedText = $sut->encrypt($text);
@@ -72,7 +72,7 @@ final class StringEncryptorTest extends AbstractSymfonyTestCase
     {
         $container = $this->getKernel()
             ->getContainer();
-        $encryptor = $container->get(Encryptor::class);
+        $encryptor = $container->get(EncryptorInterface::class);
         $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
 
         $encryptedText = $sut->encrypt($text);

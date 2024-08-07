@@ -9,6 +9,7 @@ use EonX\EasyEncryption\Builder\AwsCloudHsmSdkOptionsBuilder;
 use EonX\EasyEncryption\Configurator\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Encryptors\StringEncryptor;
+use EonX\EasyEncryption\Encryptors\StringEncryptorInterface;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\HashCalculators\AwsCloudHsmHashCalculator;
 use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
@@ -89,8 +90,8 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            StringEncryptor::class,
-            static fn (Container $app): StringEncryptor => new StringEncryptor(
+            StringEncryptorInterface::class,
+            static fn (Container $app): StringEncryptorInterface => new StringEncryptor(
                 encryptor: $app->make(AwsPkcs11EncryptorInterface::class),
                 encryptionKeyName: \config('easy-encryption.default_key_name'),
                 maxChunkSize: \config('easy-encryption.max_chunk_size')

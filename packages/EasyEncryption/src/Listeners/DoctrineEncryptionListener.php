@@ -9,7 +9,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PostLoadEventArgs;
 use Doctrine\ORM\Events;
-use EonX\EasyEncryption\Encryptors\ObjectEncryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptorInterface;
 use EonX\EasyEncryption\Interfaces\EncryptableInterface;
 use WeakMap;
 
@@ -25,7 +25,7 @@ final class DoctrineEncryptionListener
     private WeakMap $weakMap;
 
     public function __construct(
-        private ObjectEncryptor $encryptableEncryptor,
+        private ObjectEncryptorInterface $objectEncryptor,
     ) {
         $this->weakMap = new WeakMap();
     }
@@ -78,7 +78,7 @@ final class DoctrineEncryptionListener
 
     private function decryptEntity(EntityManagerInterface $objectManager, EncryptableInterface $entity): void
     {
-        $this->encryptableEncryptor->decrypt($entity);
+        $this->objectEncryptor->decrypt($entity);
 
         // When we decrypt the entity, we have to trick Doctrine into thinking that the entity has not changed
         $entityMetadata = $objectManager->getClassMetadata($entity::class);
@@ -97,7 +97,7 @@ final class DoctrineEncryptionListener
 
     private function encryptEntity(EntityManagerInterface $objectManager, EncryptableInterface $entity): void
     {
-        $this->encryptableEncryptor->encrypt($entity);
+        $this->objectEncryptor->encrypt($entity);
 
         // We run this code in onFlush and the change set is already computed
         // So we have to recompute the change set to include the encrypted data

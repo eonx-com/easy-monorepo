@@ -6,7 +6,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
 use EonX\EasyEncryption\Encryptor;
 use EonX\EasyEncryption\Encryptors\ObjectEncryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptorInterface;
 use EonX\EasyEncryption\Encryptors\StringEncryptor;
+use EonX\EasyEncryption\Encryptors\StringEncryptorInterface;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
 use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
 use EonX\EasyEncryption\HashCalculators\HmacSha512HashCalculator;
@@ -14,7 +16,6 @@ use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
 use EonX\EasyEncryption\Listeners\DoctrineEncryptionListener;
-use EonX\EasyEncryption\Metadata\EncryptableMetadata;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -39,13 +40,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(HashCalculatorInterface::class, HmacSha512HashCalculator::class)
         ->arg('$secret', env('APP_SECRET'));
 
-    $services->set(StringEncryptor::class)
-        ->arg('$encryptor', service(EncryptorInterface::class))
+    $services->set(StringEncryptorInterface::class, StringEncryptor::class)
         ->arg('$encryptionKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME))
         ->arg('$maxChunkSize', param(BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE));
 
-    $services->set(Encryptor::class);
-    $services->set(EncryptableMetadata::class);
-    $services->set(ObjectEncryptor::class);
+    $services->set(ObjectEncryptorInterface::class, ObjectEncryptor::class);
+
     $services->set(DoctrineEncryptionListener::class);
 };
