@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyLogging\Processor;
 
 use Closure;
+use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 
 final class WrappingProcessor implements ProcessorInterface
@@ -15,7 +16,7 @@ final class WrappingProcessor implements ProcessorInterface
         $this->wrapped = $wrapped(...);
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
         $wrapped = $this->wrapped;
 

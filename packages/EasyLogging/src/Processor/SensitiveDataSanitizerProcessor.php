@@ -5,6 +5,7 @@ namespace EonX\EasyLogging\Processor;
 
 use EonX\EasyLogging\Config\ProcessorConfigInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
+use Monolog\LogRecord;
 
 final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingProcessor
 {
@@ -13,9 +14,9 @@ final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingP
     ) {
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
-        return $this->sensitiveDataSanitizer->sanitize($record);
+        return $record->with($this->sensitiveDataSanitizer->sanitize($record->toArray()));
     }
 
     protected function configure(ProcessorConfigInterface $processorConfig): void

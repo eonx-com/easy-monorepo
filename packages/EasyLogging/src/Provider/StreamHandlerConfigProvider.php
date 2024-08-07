@@ -6,11 +6,11 @@ namespace EonX\EasyLogging\Provider;
 use EonX\EasyLogging\Config\HandlerConfig;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use Monolog\Level;
 
 final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
-    private readonly int $level;
+    private readonly Level $level;
 
     /**
      * @var resource|string
@@ -24,7 +24,7 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
      */
     public function __construct(
         mixed $stream = null,
-        ?int $level = null,
+        ?Level $level = null,
         private readonly ?array $channels = null,
         private readonly ?array $exceptChannels = null,
         private readonly ?int $priority = null,
@@ -37,7 +37,7 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
         }
 
         $this->stream = $stream ?? 'php://stdout';
-        $this->level = $level ?? Logger::DEBUG;
+        $this->level = $level ?? Level::Debug;
     }
 
     /**

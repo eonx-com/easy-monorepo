@@ -14,6 +14,7 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use LogicException;
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 
 final class EasyLoggingServiceProvider extends ServiceProvider
@@ -43,7 +44,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
                 if (\config('easy-logging.stream_handler', true) && \count($handlerConfigProviders) < 1) {
                     $level = \config('easy-logging.stream_handler_level')
-                        ? (int)\config('easy-logging.stream_handler_level')
+                        ? Level::tryFrom((int)\config('easy-logging.stream_handler_level'))
                         : null;
 
                     $handlerConfigProviders = [new StreamHandlerConfigProvider(null, $level)];

@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Tests\Unit\Resolver;
 use EonX\EasyLogging\Enum\BugsnagSeverity;
 use EonX\EasyLogging\Resolver\BugsnagSeverityResolver;
 use EonX\EasyLogging\Tests\Unit\AbstractSymfonyTestCase;
-use Monolog\Logger;
+use Monolog\Level;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class BugsnagSeverityResolverTest extends AbstractSymfonyTestCase
@@ -16,18 +16,18 @@ final class BugsnagSeverityResolverTest extends AbstractSymfonyTestCase
      */
     public static function provideLevels(): iterable
     {
-        yield 'debug' => [Logger::DEBUG, BugsnagSeverity::Info];
-        yield 'info' => [Logger::INFO, BugsnagSeverity::Info];
-        yield 'notice' => [Logger::NOTICE, BugsnagSeverity::Info];
-        yield 'warning' => [Logger::WARNING, BugsnagSeverity::Info];
-        yield 'error' => [Logger::ERROR, BugsnagSeverity::Warning];
-        yield 'critical' => [Logger::CRITICAL, BugsnagSeverity::Error];
-        yield 'alert' => [Logger::ALERT, BugsnagSeverity::Error];
-        yield 'emergency' => [Logger::EMERGENCY, BugsnagSeverity::Error];
+        yield 'debug' => [Level::Debug, BugsnagSeverity::Info];
+        yield 'info' => [Level::Info, BugsnagSeverity::Info];
+        yield 'notice' => [Level::Notice, BugsnagSeverity::Info];
+        yield 'warning' => [Level::Warning, BugsnagSeverity::Info];
+        yield 'error' => [Level::Error, BugsnagSeverity::Warning];
+        yield 'critical' => [Level::Critical, BugsnagSeverity::Error];
+        yield 'alert' => [Level::Alert, BugsnagSeverity::Error];
+        yield 'emergency' => [Level::Emergency, BugsnagSeverity::Error];
     }
 
     #[DataProvider('provideLevels')]
-    public function testItSucceeds(int $level, BugsnagSeverity $expected): void
+    public function testItSucceeds(Level $level, BugsnagSeverity $expected): void
     {
         $sut = new BugsnagSeverityResolver();
 

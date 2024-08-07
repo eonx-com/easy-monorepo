@@ -10,6 +10,8 @@ use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 use EonX\EasyLogging\Resolver\BugsnagSeverityResolver;
 use EonX\EasyLogging\Tests\Unit\AbstractSymfonyTestCase;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Level;
+use Monolog\LogRecord;
 
 final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
 {
@@ -19,16 +21,15 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
         $sut = new BugsnagMonologHandler(new BugsnagSeverityResolver(), $client);
         $sut->setFormatter(new LineFormatter('formatted'));
 
-        $sut->handle([
-            'channel' => 'app',
-            'context' => [],
-            'datetime' => new DateTimeImmutable(),
-            'extra' => [],
-            'formatted' => 'formatted',
-            'level' => 300,
-            'level_name' => 'WARNING',
-            'message' => 'message',
-        ]);
+        $sut->handle(new LogRecord(
+            datetime: new DateTimeImmutable(),
+            channel: 'app',
+            level: Level::Warning,
+            message: 'message',
+            context: [],
+            extra: [],
+            formatted: 'formatted',
+        ));
 
         $reports = self::getPrivatePropertyValue(
             self::getPrivatePropertyValue($client, 'http'),
@@ -48,18 +49,17 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
         $sut = new BugsnagMonologHandler(new BugsnagSeverityResolver(), $client);
         $sut->setFormatter(new LineFormatter('formatted'));
 
-        $sut->handle([
-            'channel' => 'app',
-            'context' => [
+        $sut->handle(new LogRecord(
+            datetime: new DateTimeImmutable(),
+            channel: 'app',
+            level: Level::Warning,
+            message: 'message',
+            context: [
                 'exception_reported_by_error_handler' => true,
             ],
-            'datetime' => new DateTimeImmutable(),
-            'extra' => [],
-            'formatted' => 'formatted',
-            'level' => 300,
-            'level_name' => 'WARNING',
-            'message' => 'message',
-        ]);
+            extra: [],
+            formatted: 'formatted'
+        ));
 
         $reports = self::getPrivatePropertyValue(
             self::getPrivatePropertyValue($client, 'http'),

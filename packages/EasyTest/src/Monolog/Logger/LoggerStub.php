@@ -6,6 +6,7 @@ namespace EonX\EasyTest\Monolog\Logger;
 use BadMethodCallException;
 use DateTimeZone;
 use Monolog\Handler\TestHandler;
+use Monolog\Level;
 use Monolog\Logger;
 
 /**
@@ -32,7 +33,6 @@ final class LoggerStub extends Logger
     ) {
         $this->testHandler = new TestHandler();
         $this->testHandler->setSkipReset(true);
-        unset($handlers);
 
         parent::__construct(
             name: $name,
@@ -50,9 +50,8 @@ final class LoggerStub extends Logger
         $pattern = '/(.*)(Debug|Info|Notice|Warning|Error|Critical|Alert|Emergency)(.*)/';
         if (\preg_match($pattern, $method, $matches) > 0) {
             $genericMethod = $matches[1] . ($matches[3] !== 'Records' ? 'Record' : '') . $matches[3];
-            $level = \strtolower((string)$matches[2]);
             if (\method_exists($this->testHandler, $genericMethod)) {
-                $args[] = $level;
+                $args[] = Level::fromName((string)$matches[2]);
 
                 return $this->testHandler->$genericMethod(...$args);
             }

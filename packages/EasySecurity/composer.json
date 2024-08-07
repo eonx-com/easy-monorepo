@@ -20,7 +20,7 @@
     "require-dev": {
         "eonx-com/easy-bugsnag": "^5.12",
         "eonx-com/easy-logging": "^5.12",
-        "laravel/lumen-framework": "^9.1",
+        "laravel/lumen-framework": "^10.0",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",

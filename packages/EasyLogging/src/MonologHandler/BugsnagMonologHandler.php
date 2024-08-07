@@ -7,7 +7,8 @@ use Bugsnag\Client;
 use Bugsnag\Report;
 use EonX\EasyLogging\Resolver\BugsnagSeverityResolverInterface;
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\Logger;
+use Monolog\Level;
+use Monolog\LogRecord;
 
 final class BugsnagMonologHandler extends AbstractProcessingHandler
 {
@@ -17,29 +18,29 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
     public function __construct(
         private readonly BugsnagSeverityResolverInterface $bugsnagSeverityResolver,
         private readonly Client $bugsnagClient,
-        $level = null,
+        int|string|null|Level $level = null,
         ?bool $bubble = null,
     ) {
-        parent::__construct($level ?? Logger::WARNING, $bubble ?? true);
+        parent::__construct($level ?? Level::Warning, $bubble ?? true);
     }
 
-    protected function write(array $record): void
+    protected function write(LogRecord $record): void
     {
         if (
-            isset($record['context']['exception_reported_by_error_handler'])
-            && $record['context']['exception_reported_by_error_handler'] === true
+            isset($record->context['exception_reported_by_error_handler'])
+            && $record->context['exception_reported_by_error_handler'] === true
         ) {
             return;
         }
 
-        $severity = $this->bugsnagSeverityResolver->resolve((int)$record['level']);
+        $severity = $this->bugsnagSeverityResolver->resolve($record->level);
         $this->bugsnagClient
             ->notifyError(
-                (string)$record['message'],
-                (string)$record['formatted'],
+                $record->message,
+                (string)$record->formatted,
                 static function (Report $report) use ($record, $severity): void {
                     $report->setSeverity($severity->value);
-                    $report->setMetaData(['context' => $record['context'], 'extra' => $record['extra']]);
+                    $report->setMetaData(['context' => $record->context, 'extra' => $record->extra]);
                 }
             );
     }

@@ -19,7 +19,7 @@
     "require-dev": {
         "auth0/auth0-php": "^8.6",
         "firebase/php-jwt": "^6.5",
-        "laravel/lumen-framework": "^9.1",
+        "laravel/lumen-framework": "^10.0",
         "nyholm/psr7": "^1.8",
         "phpseclib/phpseclib": "^3.0",
         "phpunit/phpunit": "^10.2",

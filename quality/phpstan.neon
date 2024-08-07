@@ -81,9 +81,6 @@ parameters:
         # ---- EasyHttpClient ----
         # ---- EasyLock ----
         # ---- EasyLogging ----
-        - message: '#Parameter \#2 \$level of class Monolog\\Handler\\StreamHandler constructor expects (.*?), int given#'
-          path: %currentWorkingDirectory%/packages/EasyLogging/src/Provider/StreamHandlerConfigProvider.php
-
         # ---- EasyNotification ----
         # ---- EasyPagination ----
         - '#Parameter \#2 \$alias of method Doctrine\\ORM\\QueryBuilder\:\:from\(\) expects string, string\|null given#'
@@ -136,9 +133,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyRepository/src/Repository/AbstractOptimizedDoctrineOrmRepository.php
 
         # ---- EasyRequestId ----
-        - message: "#Offset 'extra' on array{message: string, context: array, level: 100|200|250|300|400|500|550|600, level_name: 'ALERT'|'CRITICAL'|'DEBUG'|'EMERGENCY'|'ERROR'|'INFO'|'NOTICE'|'WARNING', channel: string, datetime: DateTimeImmutable, extra: array} on left side of ?? always exists and is not nullable#"
-          path: %currentWorkingDirectory%/packages/EasyRequestId/src/EasyLogging/Processor/RequestIdProcessor.php
-
         # ---- EasySchedule ----
         - message: '#Cannot cast Symfony\\Component\\Console\\Input\\InputInterface to string#'
           path: %currentWorkingDirectory%/packages/EasySchedule/src/Entry/ScheduleEntry.php
@@ -180,6 +174,15 @@ parameters:
 
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----
+        - message: '#Class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub extends @final class Monolog\\Logger#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
+
+        - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
+
+        - message: '#Parameter \#1 \$name of static method Monolog\\Level\:\:fromName\(\) expects .*, string given#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
+
         # ---- EasyUtils ----
         - message: '#Class EonX\\EasyUtils\\Common\\Normalizer\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Normalizer/CarbonImmutableNormalizer.php
