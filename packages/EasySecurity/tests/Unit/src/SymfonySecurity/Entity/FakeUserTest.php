@@ -15,6 +15,6 @@ final class FakeUserTest extends AbstractSymfonyTestCase
         $user->eraseCredentials();
 
         self::assertEmpty($user->getRoles());
-        self::assertEquals(FakeUser::ID_USERNAME, $user->getUserIdentifier());
+        self::assertSame('easy_security.fake_user', $user->getUserIdentifier());
     }
 }
