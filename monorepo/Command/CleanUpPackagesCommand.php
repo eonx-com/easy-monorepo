@@ -11,9 +11,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 #[AsCommand(
-    name: 'clean-up-packages-vendor-dirs'
+    name: 'clean-up-packages'
 )]
-final class CleanUpPackagesVendorDirsCommand extends Command
+final class CleanUpPackagesCommand extends Command
 {
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -22,6 +22,8 @@ final class CleanUpPackagesVendorDirsCommand extends Command
         $filesystem->remove($this->getComposerLockFiles());
 
         $filesystem->remove($this->getVendorDirs());
+
+        $filesystem->remove($this->getVarDirs());
 
         return self::SUCCESS;
     }
@@ -32,6 +34,14 @@ final class CleanUpPackagesVendorDirsCommand extends Command
             ->in([__DIR__ . '/../../packages'])
             ->files()
             ->name('composer.lock');
+    }
+
+    private function getVarDirs(): Finder
+    {
+        return (new Finder())
+            ->in([__DIR__ . '/../../packages'])
+            ->directories()
+            ->name('var');
     }
 
     private function getVendorDirs(): Finder
