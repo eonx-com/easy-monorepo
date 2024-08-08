@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyRandom\Tests\Unit\Generator;
 
 use EonX\EasyRandom\Constraint\CallbackRandomStringConstraint;
+use EonX\EasyRandom\Enum\Alphabet;
 use EonX\EasyRandom\Exception\InvalidAlphabetException;
-use EonX\EasyRandom\Exception\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exception\InvalidRandomStringException;
 use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Tests\Stub\Constraint\AlwaysValidRandomStringConstraintStub;
@@ -31,25 +31,25 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
             'length' => null,
         ];
 
-        foreach (RandomStringInterface::ALPHABET_NAMES as $name) {
-            yield \sprintf('Exclude %s', $name) => [
-                'configure' => static function (RandomStringInterface $randomString) use ($name): void {
-                    $randomString->{\sprintf('exclude%s', \ucfirst($name))}();
+        foreach (Alphabet::cases() as $alphabet) {
+            yield \sprintf('Exclude %s', $alphabet->name) => [
+                'configure' => static function (RandomStringInterface $randomString) use ($alphabet): void {
+                    $randomString->{\sprintf('exclude%s', $alphabet->name)}();
                 },
-                'assert' => static function (string $randomString) use ($name): void {
-                    self::assertAlphabetExcluded($name, $randomString);
+                'assert' => static function (string $randomString) use ($alphabet): void {
+                    self::assertAlphabetExcluded($alphabet, $randomString);
                 },
                 'length' => null,
             ];
 
-            yield \sprintf('Include only %s', $name) => [
-                'configure' => static function (RandomStringInterface $randomString) use ($name): void {
+            yield \sprintf('Include only %s', $alphabet->name) => [
+                'configure' => static function (RandomStringInterface $randomString) use ($alphabet): void {
                     $randomString
                         ->clear()
-                        ->{\sprintf('include%s', \ucfirst($name))}();
+                        ->{\sprintf('include%s', $alphabet->name)}();
                 },
-                'assert' => static function (string $randomString) use ($name): void {
-                    self::assertIncludesOnly(RandomStringInterface::ALPHABETS[$name], $randomString);
+                'assert' => static function (string $randomString) use ($alphabet): void {
+                    self::assertIncludesOnly($alphabet, $randomString);
                 },
                 'length' => null,
             ];
@@ -73,11 +73,11 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
                     ->userFriendly();
             },
             'assert' => static function (string $randomString): void {
-                self::assertAlphabetExcluded(RandomStringInterface::AMBIGUOUS, $randomString);
-                self::assertAlphabetExcluded(RandomStringInterface::LOWERCASE, $randomString);
-                self::assertAlphabetExcluded(RandomStringInterface::SYMBOL, $randomString);
-                self::assertAlphabetExcluded(RandomStringInterface::SIMILAR, $randomString);
-                self::assertAlphabetExcluded(RandomStringInterface::VOWEL, $randomString);
+                self::assertAlphabetExcluded(Alphabet::Ambiguous, $randomString);
+                self::assertAlphabetExcluded(Alphabet::Lowercase, $randomString);
+                self::assertAlphabetExcluded(Alphabet::Symbol, $randomString);
+                self::assertAlphabetExcluded(Alphabet::Similar, $randomString);
+                self::assertAlphabetExcluded(Alphabet::Vowel, $randomString);
             },
             'length' => null,
         ];
@@ -130,16 +130,6 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         $sut->__toString();
     }
 
-    public function testInvalidAlphabetNameExceptionThrown(): void
-    {
-        $this->expectException(InvalidAlphabetNameException::class);
-        $sut = (new RandomStringGenerator())
-            ->generate(8)
-            ->exclude('invalid');
-
-        $sut->__toString();
-    }
-
     public function testInvalidRandomStringExceptionThrown(): void
     {
         $this->expectException(InvalidRandomStringException::class);
@@ -173,17 +163,17 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         $assert($result2);
     }
 
-    private static function assertAlphabetExcluded(string $alphabetName, string $randomString): void
+    private static function assertAlphabetExcluded(Alphabet $alphabet, string $randomString): void
     {
-        foreach (\str_split(RandomStringInterface::ALPHABETS[$alphabetName]) as $char) {
+        foreach (\str_split($alphabet->value) as $char) {
             self::assertFalse(\str_contains($randomString, $char));
         }
     }
 
-    private static function assertIncludesOnly(string $alphabet, string $randomString): void
+    private static function assertIncludesOnly(Alphabet|string $alphabet, string $randomString): void
     {
-        $alphabet = \preg_quote($alphabet, '#');
+        $alphabet = \preg_quote(\is_string($alphabet) ? $alphabet : $alphabet->value, '#');
 
-        self::assertSame(0, \preg_match(\sprintf('#[^%s]#', $alphabet), $randomString));
+        self::assertDoesNotMatchRegularExpression(\sprintf('#[^%s]#', $alphabet), $randomString);
     }
 }

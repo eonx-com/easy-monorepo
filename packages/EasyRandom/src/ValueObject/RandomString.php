@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\ValueObject;
 
+use EonX\EasyRandom\Enum\Alphabet;
 use EonX\EasyRandom\Exception\InvalidAlphabetException;
-use EonX\EasyRandom\Exception\InvalidAlphabetNameException;
 use EonX\EasyRandom\Exception\InvalidRandomStringException;
+use SplObjectStorage;
 use Symfony\Component\String\ByteString;
 use Symfony\Component\String\UnicodeString;
 
@@ -17,14 +18,14 @@ final class RandomString implements RandomStringInterface
     private ?array $constraints = [];
 
     /**
-     * @var bool[]
+     * @var \SplObjectStorage<\EonX\EasyRandom\Enum\Alphabet, null>
      */
-    private array $excludes = [];
+    private SplObjectStorage $excludes;
 
     /**
-     * @var bool[]
+     * @var \SplObjectStorage<\EonX\EasyRandom\Enum\Alphabet, null>
      */
-    private array $includes = [];
+    private SplObjectStorage $includes;
 
     private int $maxAttempts = 100;
 
@@ -41,7 +42,10 @@ final class RandomString implements RandomStringInterface
     public function __construct(
         private int $length,
     ) {
-        foreach (self::ALPHABET_NAMES as $alphabet) {
+        $this->includes = new SplObjectStorage();
+        $this->excludes = new SplObjectStorage();
+
+        foreach (Alphabet::cases() as $alphabet) {
             $this->include($alphabet);
         }
     }
@@ -60,8 +64,8 @@ final class RandomString implements RandomStringInterface
 
     public function clear(): RandomStringInterface
     {
-        $this->includes = [];
-        $this->excludes = [];
+        $this->includes = new SplObjectStorage();
+        $this->excludes = new SplObjectStorage();
 
         return $this;
     }
@@ -76,116 +80,115 @@ final class RandomString implements RandomStringInterface
         return $this;
     }
 
-    public function exclude(string $alphabetName): RandomStringInterface
+    public function exclude(Alphabet $alphabet): RandomStringInterface
     {
-        $this->excludes[$alphabetName] = true;
+        $this->excludes->attach($alphabet);
 
         return $this;
     }
 
     public function excludeAmbiguous(): RandomStringInterface
     {
-        $this->exclude(self::AMBIGUOUS);
+        $this->exclude(Alphabet::Ambiguous);
 
         return $this;
     }
 
     public function excludeLowercase(): RandomStringInterface
     {
-        $this->exclude(self::LOWERCASE);
+        $this->exclude(Alphabet::Lowercase);
 
         return $this;
     }
 
     public function excludeNumeric(): RandomStringInterface
     {
-        $this->exclude(self::NUMERIC);
+        $this->exclude(Alphabet::Numeric);
 
         return $this;
     }
 
     public function excludeSimilar(): RandomStringInterface
     {
-        $this->exclude(self::SIMILAR);
+        $this->exclude(Alphabet::Similar);
 
         return $this;
     }
 
     public function excludeSymbol(): RandomStringInterface
     {
-        $this->exclude(self::SYMBOL);
+        $this->exclude(Alphabet::Symbol);
 
         return $this;
     }
 
     public function excludeUppercase(): RandomStringInterface
     {
-        $this->exclude(self::UPPERCASE);
+        $this->exclude(Alphabet::Uppercase);
 
         return $this;
     }
 
     public function excludeVowel(): RandomStringInterface
     {
-        $this->exclude(self::VOWEL);
+        $this->exclude(Alphabet::Vowel);
 
         return $this;
     }
 
-    public function include(string $alphabetName): RandomStringInterface
+    public function include(Alphabet $alphabet): RandomStringInterface
     {
-        $this->includes[$alphabetName] = true;
-
-        unset($this->excludes[$alphabetName]);
+        $this->includes->attach($alphabet);
+        $this->excludes->detach($alphabet);
 
         return $this;
     }
 
     public function includeAmbiguous(): RandomStringInterface
     {
-        $this->include(self::AMBIGUOUS);
+        $this->include(Alphabet::Ambiguous);
 
         return $this;
     }
 
     public function includeLowercase(): RandomStringInterface
     {
-        $this->include(self::LOWERCASE);
+        $this->include(Alphabet::Lowercase);
 
         return $this;
     }
 
     public function includeNumeric(): RandomStringInterface
     {
-        $this->include(self::NUMERIC);
+        $this->include(Alphabet::Numeric);
 
         return $this;
     }
 
     public function includeSimilar(): RandomStringInterface
     {
-        $this->include(self::SIMILAR);
+        $this->include(Alphabet::Similar);
 
         return $this;
     }
 
     public function includeSymbol(): RandomStringInterface
     {
-        $this->include(self::SYMBOL);
+        $this->include(Alphabet::Symbol);
 
         return $this;
     }
 
     public function includeUppercase(): RandomStringInterface
     {
-        $this->include(self::UPPERCASE);
+        $this->include(Alphabet::Uppercase);
 
         return $this;
     }
 
     public function includeVowel(): RandomStringInterface
     {
-        $this->include(self::VOWEL);
+        $this->include(Alphabet::Vowel);
 
         return $this;
     }
@@ -214,14 +217,14 @@ final class RandomString implements RandomStringInterface
     public function userFriendly(): RandomStringInterface
     {
         $this
-            ->include(self::NUMERIC)
-            ->include(self::UPPERCASE)
-            ->exclude(self::AMBIGUOUS)
-            ->exclude(self::LOWERCASE)
-            ->exclude(self::SYMBOL)
-            ->exclude(self::SIMILAR)
+            ->include(Alphabet::Numeric)
+            ->include(Alphabet::Uppercase)
+            ->exclude(Alphabet::Ambiguous)
+            ->exclude(Alphabet::Lowercase)
+            ->exclude(Alphabet::Symbol)
+            ->exclude(Alphabet::Similar)
             // Pretty useful to avoid "bad words" in generated strings
-            ->exclude(self::VOWEL);
+            ->exclude(Alphabet::Vowel);
 
         return $this;
     }
@@ -272,32 +275,20 @@ final class RandomString implements RandomStringInterface
         $currentAlphabet = [];
 
         // Includes
-        foreach (\array_keys($this->includes) as $alphabet) {
-            foreach ($this->resolveAlphabetCharacters($alphabet) as $char) {
+        foreach ($this->includes as $alphabet) {
+            foreach (\str_split($alphabet->value) as $char) {
                 $currentAlphabet[] = $char;
             }
         }
 
         // Excludes
-        foreach (\array_keys($this->excludes) as $alphabet) {
-            $currentAlphabet = \array_diff($currentAlphabet, $this->resolveAlphabetCharacters($alphabet));
+        foreach ($this->excludes as $alphabet) {
+            $currentAlphabet = \array_diff($currentAlphabet, \str_split($alphabet->value));
         }
 
         $currentAlphabet = \array_unique($currentAlphabet);
 
         return $this->resolvedAlphabet = $this->validateAlphabet(\implode('', $currentAlphabet));
-    }
-
-    /**
-     * @return string[]
-     */
-    private function resolveAlphabetCharacters(string $alphabetName): array
-    {
-        if (isset(self::ALPHABETS[$alphabetName])) {
-            return \str_split(self::ALPHABETS[$alphabetName]);
-        }
-
-        throw new InvalidAlphabetNameException(\sprintf('Alphabet with name "%s" does not exist', $alphabetName));
     }
 
     private function resolveLength(): int
