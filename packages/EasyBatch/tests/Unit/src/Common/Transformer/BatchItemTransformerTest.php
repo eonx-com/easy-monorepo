@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Unit\Common\Transformer;
 
-use EonX\EasyBatch\Common\Serializer\MessageSerializer;
-use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
 use EonX\EasyBatch\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyEncryption\Common\Encryptor\Encryptor;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
@@ -36,7 +34,7 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         $batchItem->setId('my-id');
         $batchItem->setEncrypted($encrypted);
 
-        $transformer = new BatchItemTransformer(new MessageSerializer());
+        $transformer = $this->getBatchItemTransformer();
         if ($encrypted) {
             $transformer->setEncryptor($this->getEncryptor());
         }

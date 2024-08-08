@@ -13,13 +13,18 @@ use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
-    private readonly string $datetimeFormat;
+    private const DATE_TIMES = [
+        'cancelled_at' => 'setCancelledAt',
+        'created_at' => 'setCreatedAt',
+        'finished_at' => 'setFinishedAt',
+        'started_at' => 'setStartedAt',
+        'updated_at' => 'setUpdatedAt',
+    ];
 
     public function __construct(
         private readonly string $class,
-        ?string $datetimeFormat = null,
+        private readonly string $dateTimeFormat,
     ) {
-        $this->datetimeFormat = $datetimeFormat ?? BatchObjectInterface::DATETIME_FORMAT;
     }
 
     public function instantiateForClass(?string $class = null): BatchObjectInterface
@@ -78,7 +83,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             }
 
             if ($value instanceof DateTimeInterface) {
-                $data[$name] = $value->format($this->datetimeFormat);
+                $data[$name] = $value->format($this->dateTimeFormat);
             }
 
             if ($value instanceof Throwable) {
@@ -95,12 +100,12 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
     private function setDateTimes(BatchObjectInterface $batchObject, array $data): void
     {
-        foreach (BatchObjectInterface::DATE_TIMES as $name => $setter) {
+        foreach (self::DATE_TIMES as $name => $setter) {
             if (isset($data[$name])) {
                 // Allow DateTimes to be instantiated already
                 $datetime = $data[$name] instanceof Carbon
                     ? $data[$name]
-                    : Carbon::createFromFormat($this->datetimeFormat, $data[$name]);
+                    : Carbon::createFromFormat($this->dateTimeFormat, $data[$name]);
 
                 if ($datetime instanceof Carbon) {
                     $batchObject->{$setter}($datetime);

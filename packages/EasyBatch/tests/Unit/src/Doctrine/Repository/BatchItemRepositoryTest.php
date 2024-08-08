@@ -6,8 +6,6 @@ namespace EonX\EasyBatch\Tests\Unit\Doctrine\Repository;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\Serializer\MessageSerializer;
-use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
 use EonX\EasyBatch\Doctrine\Repository\BatchItemRepository;
 use EonX\EasyBatch\Tests\Unit\Common\Repository\AbstractRepositoriesTestCase;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
@@ -112,7 +110,7 @@ final class BatchItemRepositoryTest extends AbstractRepositoriesTestCase
         return new BatchItemRepository(
             $batchItemFactory,
             $this->getIdStrategy(),
-            new BatchItemTransformer(new MessageSerializer()),
+            $this->getBatchItemTransformer(),
             $this->getDoctrineDbalConnection(),
             'easy_batch_items'
         );

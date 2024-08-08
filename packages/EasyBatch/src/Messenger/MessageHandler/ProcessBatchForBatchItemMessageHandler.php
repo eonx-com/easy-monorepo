@@ -9,7 +9,6 @@ use EonX\EasyBatch\Common\Processor\BatchProcessor;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -21,6 +20,7 @@ final readonly class ProcessBatchForBatchItemMessageHandler
         private BatchObjectManagerInterface $batchObjectManager,
         private BatchProcessor $batchProcessor,
         private BatchRepositoryInterface $batchRepository,
+        private string $dateTimeFormat,
     ) {
     }
 
@@ -39,11 +39,12 @@ final readonly class ProcessBatchForBatchItemMessageHandler
             return;
         }
 
+        $dateTimeFormat = $this->dateTimeFormat;
         // Update batch metadata to reflect emergency flow triggered
-        $updateFreshBatch = static function (BatchInterface $freshBatch) use ($message): void {
+        $updateFreshBatch = static function (BatchInterface $freshBatch) use ($message, $dateTimeFormat): void {
             $metadata = $freshBatch->getMetadata() ?? [];
             $internal = $metadata['_internal'] ?? [];
-            $now = Carbon::now('UTC')->format(BatchObjectInterface::DATETIME_FORMAT);
+            $now = Carbon::now('UTC')->format($dateTimeFormat);
 
             if (isset($internal['process_batch_emergency']) === false) {
                 $internal['process_batch_emergency'] = [];

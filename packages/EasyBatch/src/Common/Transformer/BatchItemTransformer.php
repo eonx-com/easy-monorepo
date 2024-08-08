@@ -6,7 +6,6 @@ namespace EonX\EasyBatch\Common\Transformer;
 use EonX\EasyBatch\Common\Enum\BatchItemType;
 use EonX\EasyBatch\Common\Exception\BatchItemCannotBeEncryptedException;
 use EonX\EasyBatch\Common\Serializer\MessageSerializerInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 
@@ -16,10 +15,10 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
 
     public function __construct(
         private readonly MessageSerializerInterface $messageSerializer,
-        ?string $class = null,
-        ?string $datetimeFormat = null,
+        string $class,
+        string $dateTimeFormat,
     ) {
-        parent::__construct($class ?? BatchItem::class, $datetimeFormat);
+        parent::__construct($class, $dateTimeFormat);
     }
 
     public function setEncryptor(EncryptorInterface $encryptor): void

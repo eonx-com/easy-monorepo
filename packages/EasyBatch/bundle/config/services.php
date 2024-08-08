@@ -38,16 +38,12 @@ use EonX\EasyBatch\Messenger\MessageHandler\UpdateBatchItemMessageHandler;
 use EonX\EasyBatch\Messenger\Middleware\DispatchBatchMiddleware;
 use EonX\EasyBatch\Messenger\Middleware\ProcessBatchItemMiddleware;
 use EonX\EasyBatch\Messenger\Serializer\HandlerFailedExceptionMessageSerializer;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
     $services->defaults()
         ->autowire()
-        ->autoconfigure()
-        ->bind('$batchItemsPerPage', param(ConfigParam::BatchItemPerPage->value))
-        ->bind('$datetimeFormat', param(ConfigParam::DateTimeFormat->value))
-        ->bind('$eventDispatcher', service(EventDispatcherInterface::class));
+        ->autoconfigure();
 
     // AsyncDispatcher
     $services->set(AsyncDispatcherInterface::class, AsyncDispatcher::class);
@@ -70,11 +66,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Internals
     $services
         ->set(BatchItemDispatcher::class)
-        ->set(BatchItemIteratorInterface::class, BatchItemIterator::class)
         ->set(BatchItemPersister::class)
         ->set(BatchPersister::class)
         ->set(BatchItemProcessor::class)
         ->set(BatchProcessor::class);
+    $services
+        ->set(BatchItemIteratorInterface::class, BatchItemIterator::class)
+        ->arg('$batchItemsPerPage', param(ConfigParam::BatchItemPerPage->value));
 
     // Manager
     $services
@@ -92,9 +90,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(DispatchBatchMiddleware::class)
-        ->set(ProcessBatchItemMiddleware::class)
+        ->set(ProcessBatchItemMiddleware::class);
+    $services
         ->set(ProcessBatchForBatchItemMessageHandler::class)
-        ->set(UpdateBatchItemMessageHandler::class);
+        ->arg('$dateTimeFormat', param(ConfigParam::DateTimeFormat->value));
+    $services
+        ->set(UpdateBatchItemMessageHandler::class)
+        ->arg('$dateTimeFormat', param(ConfigParam::DateTimeFormat->value));
 
     // Repositories
     $services
@@ -123,10 +125,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Transformers
     $services
         ->set(ConfigServiceId::BatchTransformer->value, BatchTransformer::class)
-        ->arg('$class', param(ConfigParam::BatchClass->value));
+        ->arg('$class', param(ConfigParam::BatchClass->value))
+        ->arg('$dateTimeFormat', param(ConfigParam::DateTimeFormat->value));
 
     $services
         ->set(ConfigServiceId::BatchItemTransformer->value, BatchItemTransformer::class)
         ->arg('$messageSerializer', service(ConfigServiceId::BatchMessageSerializer->value))
-        ->arg('$class', param(ConfigParam::BatchItemClass->value));
+        ->arg('$class', param(ConfigParam::BatchItemClass->value))
+        ->arg('$dateTimeFormat', param(ConfigParam::DateTimeFormat->value));
 };
