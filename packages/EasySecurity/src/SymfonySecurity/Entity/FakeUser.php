@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
  */
 final class FakeUser implements UserInterface, SymfonyUserInterface
 {
-    privates const ID_USERNAME = 'easy_security.fake_user';
+    private const ID_USERNAME = 'easy_security.fake_user';
 
     public function eraseCredentials(): void
     {
