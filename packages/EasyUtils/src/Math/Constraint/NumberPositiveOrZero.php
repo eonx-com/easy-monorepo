@@ -12,10 +12,7 @@ final class NumberPositiveOrZero extends AbstractComparison
 {
     use ZeroComparisonConstraintTrait;
 
-    /**
-     * @var string
-     */
-    public $message = 'number.should_be_positive_or_zero';
+    public string $message = 'number.should_be_positive_or_zero';
 
     public function validatedBy(): string
     {

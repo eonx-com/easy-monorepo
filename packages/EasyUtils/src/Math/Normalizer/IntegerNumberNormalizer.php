@@ -41,12 +41,16 @@ final class IntegerNumberNormalizer implements DenormalizerInterface, Normalizer
         return (string)$object;
     }
 
-    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
-    {
+    public function supportsDenormalization(
+        mixed $data,
+        string $type,
+        ?string $format = null,
+        ?array $context = null,
+    ): bool {
         return ($data === null || \is_string($data)) && $type === Number::class;
     }
 
-    public function supportsNormalization(mixed $data, ?string $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, ?array $context = null): bool
     {
         return $data instanceof Number;
     }

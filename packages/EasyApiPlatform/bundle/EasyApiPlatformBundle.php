@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Bundle;
 
-use EonX\EasyApiPlatform\Bundle\CompilerPass\EasyErrorHandlerCompilerPass;
 use EonX\EasyApiPlatform\Bundle\CompilerPass\ReadListenerCompilerPass;
 use EonX\EasyApiPlatform\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -36,7 +35,6 @@ final class EasyApiPlatformBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new EasyErrorHandlerCompilerPass())
             ->addCompilerPass(new ReadListenerCompilerPass());
     }
 

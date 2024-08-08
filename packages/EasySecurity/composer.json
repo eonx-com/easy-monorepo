@@ -8,23 +8,23 @@
         "eonx-com/easy-api-token": "^5.12",
         "eonx-com/easy-utils": "^5.12",
         "nette/utils": "^3.2",
-        "symfony/cache": "^6.4",
-        "symfony/config": "^6.4",
-        "symfony/dependency-injection": "^6.4",
-        "symfony/expression-language": "^6.4",
-        "symfony/http-foundation": "^6.4",
-        "symfony/http-kernel": "^6.4",
-        "symfony/security-core": "^6.4",
-        "symfony/security-http": "^6.4"
+        "symfony/cache": "^7.0",
+        "symfony/config": "^7.0",
+        "symfony/dependency-injection": "^7.0",
+        "symfony/expression-language": "^7.0",
+        "symfony/http-foundation": "^7.0",
+        "symfony/http-kernel": "^7.0",
+        "symfony/security-core": "^7.0",
+        "symfony/security-http": "^7.0"
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^5.12",
         "eonx-com/easy-logging": "^5.12",
-        "laravel/lumen-framework": "^10.0",
+        "laravel/lumen-framework": "^11.0",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/framework-bundle": "^6.4"
+        "symfony/framework-bundle": "^7.0"
     },
     "autoload": {
         "psr-4": {
