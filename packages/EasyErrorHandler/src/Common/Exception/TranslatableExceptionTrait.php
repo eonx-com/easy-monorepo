@@ -9,7 +9,7 @@ trait TranslatableExceptionTrait
 
     protected array $messageParams = [];
 
-    protected string $userMessage = TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
+    protected string $userMessage = 'exceptions.default_user_message';
 
     protected array $userMessageParams = [];
 
@@ -56,9 +56,9 @@ trait TranslatableExceptionTrait
     /**
      * Sets the user-friendly message.
      */
-    public function setUserMessage(?string $userMessage = null): self
+    public function setUserMessage(string $userMessage): self
     {
-        $this->userMessage = $userMessage ?? TranslatableExceptionInterface::USER_MESSAGE_DEFAULT;
+        $this->userMessage = $userMessage;
 
         return $this;
     }

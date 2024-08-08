@@ -16,6 +16,8 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
 {
     private const DEFAULT_INTERNAL_MESSAGES_LOCALE = 'en';
 
+    private const DEFAULT_MAX_DEPTH = 10;
+
     /**
      * @var string[]
      */

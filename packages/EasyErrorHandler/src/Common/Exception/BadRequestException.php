@@ -9,5 +9,5 @@ abstract class BadRequestException extends BaseException
 {
     protected HttpStatusCode $statusCode = HttpStatusCode::BadRequest;
 
-    protected string $userMessage = self::USER_MESSAGE_BAD_REQUEST;
+    protected string $userMessage = 'exceptions.bad_request';
 }

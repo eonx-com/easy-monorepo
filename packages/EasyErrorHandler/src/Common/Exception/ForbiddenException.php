@@ -9,5 +9,5 @@ abstract class ForbiddenException extends BaseException
 {
     protected HttpStatusCode $statusCode = HttpStatusCode::Forbidden;
 
-    protected string $userMessage = self::USER_MESSAGE_FORBIDDEN;
+    protected string $userMessage = 'exceptions.forbidden';
 }

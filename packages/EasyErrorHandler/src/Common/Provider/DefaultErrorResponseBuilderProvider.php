@@ -17,7 +17,19 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final readonly class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
-    private const KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
+    private const ERROR_RESPONSE_KEY_CODE = 'code';
+
+    private const ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION = 'exception';
+
+    private const ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
+
+    private const ERROR_RESPONSE_KEY_SUB_CODE = 'sub_code';
+
+    private const ERROR_RESPONSE_KEY_TIME = 'time';
+
+    private const ERROR_RESPONSE_KEY_USER_MESSAGE = 'message';
+
+    private const ERROR_RESPONSE_KEY_VIOLATIONS = 'violations';
 
     public function __construct(
         private ErrorDetailsResolverInterface $errorDetailsResolver,
@@ -31,29 +43,29 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
      */
     public function getBuilders(): iterable
     {
-        yield new CodeErrorResponseBuilder($this->getKey(CodeErrorResponseBuilder::DEFAULT_KEY));
+        yield new CodeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_CODE));
         yield new ExtendedExceptionErrorResponseBuilder(
             $this->errorDetailsResolver,
             $this->translator,
-            $this->keys[self::KEY_EXTENDED_EXCEPTION_KEYS] ?? [],
-            $this->getKey(ExtendedExceptionErrorResponseBuilder::DEFAULT_KEY)
+            $this->keys[self::ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION_KEYS] ?? [],
+            $this->getKey(self::ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION)
         );
         yield new StatusCodeErrorResponseBuilder();
-        yield new SubCodeErrorResponseBuilder($this->getKey(SubCodeErrorResponseBuilder::DEFAULT_KEY));
-        yield new TimeErrorResponseBuilder($this->getKey(TimeErrorResponseBuilder::DEFAULT_KEY));
+        yield new SubCodeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_SUB_CODE));
+        yield new TimeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_TIME));
         yield new UserMessageErrorResponseBuilder(
             $this->translator,
-            $this->getKey(UserMessageErrorResponseBuilder::DEFAULT_KEY)
+            $this->getKey(self::ERROR_RESPONSE_KEY_USER_MESSAGE)
         );
-        yield new ViolationsErrorResponseBuilder($this->getKey(ViolationsErrorResponseBuilder::DEFAULT_KEY));
+        yield new ViolationsErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_VIOLATIONS));
 
         if (\interface_exists(HttpExceptionInterface::class)) {
             yield new HttpExceptionErrorResponseBuilder($this->keys);
         }
     }
 
-    private function getKey(string $name): string
+    private function getKey(string $key): string
     {
-        return $this->keys[$name] ?? $name;
+        return $this->keys[$key] ?? $key;
     }
 }

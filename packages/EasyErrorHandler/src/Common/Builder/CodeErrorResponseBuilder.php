@@ -7,8 +7,6 @@ use Throwable;
 
 final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
-    public const DEFAULT_KEY = 'code';
-
     /**
      * Some exceptions have the code as string, so we need return type to be int or string.
      *
@@ -17,10 +15,5 @@ final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuild
     protected function doBuildValue(Throwable $throwable, array $data): int|string
     {
         return $throwable->getCode();
-    }
-
-    protected function getDefaultKey(): string
-    {
-        return self::DEFAULT_KEY;
     }
 }
