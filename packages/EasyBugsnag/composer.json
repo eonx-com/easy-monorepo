@@ -24,6 +24,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/orm": "^3.2",
         "eonx-com/easy-test": "^5.12",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"
@@ -46,6 +47,7 @@
     },
     "suggest": {
         "doctrine/doctrine-bundle": "To log SQL queries in Bugsnag",
+        "doctrine/orm": "To log SQL queries in Bugsnag",
         "illuminate/contracts": "To use this package with Laravel/Lumen",
         "illuminate/http": "To use this package with Laravel/Lumen",
         "illuminate/queue": "To use this package with Laravel/Lumen",
