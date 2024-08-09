@@ -5,10 +5,17 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyEncryption\Bridge\BridgeConstantsInterface;
 use EonX\EasyEncryption\Encryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptor;
+use EonX\EasyEncryption\Encryptors\ObjectEncryptorInterface;
+use EonX\EasyEncryption\Encryptors\StringEncryptor;
+use EonX\EasyEncryption\Encryptors\StringEncryptorInterface;
 use EonX\EasyEncryption\Factories\DefaultEncryptionKeyFactory;
+use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
+use EonX\EasyEncryption\HashCalculators\HmacSha512HashCalculator;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyFactoryInterface;
 use EonX\EasyEncryption\Interfaces\EncryptionKeyProviderInterface;
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
+use EonX\EasyEncryption\Listeners\DoctrineEncryptionListener;
 use EonX\EasyEncryption\Providers\DefaultEncryptionKeyProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -28,5 +35,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Encryptor
     $services
         ->set(EncryptorInterface::class, Encryptor::class)
-        ->arg('$defaultKeyName', '%' . BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME . '%');
+        ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
+
+    $services->set(HashCalculatorInterface::class, HmacSha512HashCalculator::class)
+        ->arg('$secret', env('APP_SECRET'));
+
+    $services->set(StringEncryptorInterface::class, StringEncryptor::class)
+        ->arg('$encryptionKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME))
+        ->arg('$maxChunkSize', param(BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE));
+
+    $services->set(ObjectEncryptorInterface::class, ObjectEncryptor::class);
+
+    $services->set(DoctrineEncryptionListener::class);
 };

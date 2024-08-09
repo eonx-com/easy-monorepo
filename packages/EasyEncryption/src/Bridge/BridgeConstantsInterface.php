@@ -35,6 +35,10 @@ interface BridgeConstantsInterface
 
     public const PARAM_DEFAULT_SALT = 'easy_encryption.default_salt';
 
+    public const PARAM_FULLY_ENCRYPTED_MESSAGES = 'easy_encryption.fully_encrypted_messages';
+
+    public const PARAM_MAX_CHUNK_SIZE = 'easy_encryption.max_chunk_size';
+
     public const SERVICE_DEFAULT_KEY_RESOLVER = 'easy_encryption.default_key_resolver';
 
     public const TAG_ENCRYPTION_KEY_RESOLVER = 'easy_encryption.encryption_key_resolver';
