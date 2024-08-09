@@ -24,7 +24,8 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
         $this->app->instance(
             ConfigServiceId::Connection->value,
             DriverManager::getConnection([
-                'url' => 'sqlite:///:memory:',
+                'driver' => 'pdo_sqlite',
+                'memory' => true,
             ])
         );
 

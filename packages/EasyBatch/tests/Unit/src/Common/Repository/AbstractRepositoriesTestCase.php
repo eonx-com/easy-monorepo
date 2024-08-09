@@ -17,7 +17,6 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
     protected function setUp(): void
     {
         $conn = $this->getDoctrineDbalConnection();
-        $conn->connect();
 
         foreach ($this->getStatementsProvider()->migrateStatements() as $statement) {
             $conn->executeStatement($statement);
@@ -49,7 +48,8 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
         }
 
         $this->doctrineDbal = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
 
         return $this->doctrineDbal;

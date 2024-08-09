@@ -22,7 +22,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     public function findCountsForBatch(int|string $batchId): BatchCounts
     {
         $queryBuilder = $this->conn->createQueryBuilder()
-            ->select(['status', 'count(id) as _count'])
+            ->select('status', 'count(id) as _count')
             ->from($this->table)
             ->where('batch_id = :batchId')
             ->setParameter('batchId', $batchId, \is_string($batchId) ? Types::STRING : Types::INTEGER)

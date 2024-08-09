@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Tests\Unit\Laravel;
 
 use Bugsnag\Client;
-use EonX\EasyBugsnag\Configurator\BasicsClientConfigurator;
-use EonX\EasyBugsnag\Configurator\RuntimeVersionClientConfigurator;
-use EonX\EasyBugsnag\Tracker\SessionTracker;
+use EonX\EasyBugsnag\Common\Configurator\BasicsClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\RuntimeVersionClientConfigurator;
+use EonX\EasyBugsnag\Common\Tracker\SessionTracker;
 
 final class EasyBugsnagServiceProviderTest extends AbstractLaravelTestCase
 {

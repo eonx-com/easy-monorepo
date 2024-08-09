@@ -5,5 +5,7 @@ return [
     /**
      * Add a listener for TransactionalExceptionEvent
      */
-    'easy_error_handler_enabled' => true,
+    'easy_error_handler' => [
+        'enabled' => true,
+    ],
 ];

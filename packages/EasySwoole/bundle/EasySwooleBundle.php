@@ -5,7 +5,7 @@ namespace EonX\EasySwoole\Bundle;
 
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
-use EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface;
+use EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
 use EonX\EasySwoole\Bundle\CompilerPass\AddDoctrineDbalConnectionNameToParamsCompilerPass;
 use EonX\EasySwoole\Bundle\CompilerPass\EasyErrorHandlerPublicCompilerPass;

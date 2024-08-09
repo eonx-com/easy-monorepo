@@ -7,7 +7,7 @@
         "php": "^8.2",
         "ext-openssl": "*",
         "eonx-com/easy-utils": "^5.12",
-        "nette/utils": "^3.2",
+        "nette/utils": "^4.0",
         "psr/log": "^3.0",
         "symfony/dependency-injection": "^7.0",
         "symfony/http-foundation": "^7.0",

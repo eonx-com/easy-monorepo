@@ -22,7 +22,6 @@ abstract class AbstractDoctrineDbalStoreTestCase extends AbstractUnitTestCase
     protected function setUp(): void
     {
         $conn = $this->getDoctrineDbalConnection();
-        $conn->connect();
 
         $stmtsProvider = $this->getStmtsProvider();
         $stmtsProvider->extendWebhooksTable(static function (Table $table): void {
@@ -74,7 +73,8 @@ abstract class AbstractDoctrineDbalStoreTestCase extends AbstractUnitTestCase
     protected function getDoctrineDbalConnection(): Connection
     {
         $this->doctrineDbal ??= DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
 
         return $this->doctrineDbal;

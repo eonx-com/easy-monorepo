@@ -11,6 +11,11 @@ trait DoctrineOrmPaginatorTrait
 {
     use DoctrineCommonPaginatorTrait;
 
+    /**
+     * @var class-string
+     */
+    private string $from;
+
     private ?string $indexBy = null;
 
     private EntityManagerInterface $manager;

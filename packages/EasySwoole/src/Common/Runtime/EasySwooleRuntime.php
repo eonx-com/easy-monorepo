@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Runtime;
 
-use EonX\EasyBugsnag\Enum\ServerParam as EasyBugsnagServerParam;
+use EonX\EasyBugsnag\Common\Enum\ServerParam as EasyBugsnagServerParam;
 use EonX\EasySwoole\Caching\Helper\AppCacheWarmupHelper;
 use EonX\EasySwoole\Common\Enum\SwooleRunnerEvent;
 use EonX\EasySwoole\Common\Helper\EnvVarHelper;

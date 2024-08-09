@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Doctrine\Repository;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use EonX\EasyBatch\Common\Exception\BatchNotFoundException;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
@@ -109,13 +110,17 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         $this->beginTransaction();
 
         try {
-            $sql = \sprintf(
-                'SELECT * FROM %s WHERE id = :id %s',
-                $this->table,
-                $this->conn->getDatabasePlatform()
-                    ->getForUpdateSQL()
-            );
-            $data = $this->conn->fetchAssociative($sql, ['id' => $batch->getId()]);
+            $queryBuilder = $this->conn->createQueryBuilder();
+
+            if ($this->conn->getDatabasePlatform() instanceof SQLitePlatform === false) {
+                $queryBuilder->forUpdate();
+            }
+
+            $queryBuilder->select('*')
+                ->from($this->table)
+                ->where('id = :id');
+
+            $data = $this->conn->fetchAssociative($queryBuilder->getSQL(), ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
 
             if ($freshBatch === null) {

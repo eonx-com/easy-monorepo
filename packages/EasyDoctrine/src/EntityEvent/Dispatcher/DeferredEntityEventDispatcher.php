@@ -45,13 +45,13 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     {
         if ($transactionNestingLevel !== null) {
             foreach (\array_keys($this->entityChangeSets) as $level) {
-                if ($level >= $transactionNestingLevel) {
+                if ($level > $transactionNestingLevel) {
                     $this->entityChangeSets[$level] = [];
                 }
             }
 
             foreach (\array_keys($this->collectionChangeSets) as $level) {
-                if ($level >= $transactionNestingLevel) {
+                if ($level > $transactionNestingLevel) {
                     $this->collectionChangeSets[$level] = [];
                 }
             }

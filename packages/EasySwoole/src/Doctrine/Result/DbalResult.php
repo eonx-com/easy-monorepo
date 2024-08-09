@@ -35,7 +35,7 @@ final readonly class DbalResult implements Result
         return $this->fetchAll(PDO::FETCH_NUM);
     }
 
-    public function fetchAssociative()
+    public function fetchAssociative(): false|array
     {
         return $this->fetch(PDO::FETCH_ASSOC);
     }
@@ -45,12 +45,12 @@ final readonly class DbalResult implements Result
         return $this->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function fetchNumeric()
+    public function fetchNumeric(): false|array
     {
         return $this->fetch(PDO::FETCH_NUM);
     }
 
-    public function fetchOne()
+    public function fetchOne(): mixed
     {
         return $this->fetch(PDO::FETCH_COLUMN);
     }

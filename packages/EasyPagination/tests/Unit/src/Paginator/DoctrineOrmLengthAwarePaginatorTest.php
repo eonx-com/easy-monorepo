@@ -226,7 +226,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @param class-string $from
      */
     #[DataProvider('providePaginatorData')]
     public function testPaginator(

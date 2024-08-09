@@ -3,63 +3,23 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Unit\Common\Function;
 
-use Doctrine\ORM\Query\AST\Literal;
-use Doctrine\ORM\Query\AST\PathExpression;
-use Doctrine\ORM\Query\Lexer;
-use Doctrine\ORM\Query\Parser;
-use Doctrine\ORM\Query\SqlWalker;
 use EonX\EasyDoctrine\Common\Function\Cast;
+use EonX\EasyDoctrine\Tests\Fixture\App\Entity\Category;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(Cast::class)]
 final class CastTest extends AbstractUnitTestCase
 {
-    /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    public function testGetSqlSucceeds(): void
+    public function testItSucceeds(): void
     {
-        $path = 'some-path';
-        $typeValue = 'some-value';
-        $expression = new PathExpression(PathExpression::TYPE_STATE_FIELD, 'no-matter');
-        $type = new Literal(Literal::STRING, $typeValue);
-        $sqlWalker = $this->prophesize(SqlWalker::class);
-        $sqlWalker->walkPathExpression($expression)
-            ->willReturn($path);
-        /** @var \Doctrine\ORM\Query\SqlWalker $sqlWalkerReveal */
-        $sqlWalkerReveal = $sqlWalker->reveal();
-        $cast = new Cast('no-matter');
-        self::setPrivatePropertyValue($cast, 'expression', $expression);
-        self::setPrivatePropertyValue($cast, 'type', $type);
+        $entityManager = self::getEntityManager();
 
-        $result = $cast->getSql($sqlWalkerReveal);
+        $sql = $entityManager->getRepository(Category::class)->createQueryBuilder('c')
+            ->select("CAST(c.id, 'text')")
+            ->getQuery()
+            ->getSQL();
 
-        self::assertSame(\sprintf('CAST(%s AS %s)', $path, $typeValue), $result);
-    }
-
-    /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    public function testParseSucceeds(): void
-    {
-        $type = new Literal(Literal::STRING, 'no-matter');
-        $pathExpression = new PathExpression(PathExpression::TYPE_STATE_FIELD, 'no-matter');
-        $parser = $this->prophesize(Parser::class);
-        $parser->match(Lexer::T_IDENTIFIER)->shouldBeCalled();
-        $parser->match(Lexer::T_OPEN_PARENTHESIS)->shouldBeCalled();
-        $parser->PathExpression(PathExpression::TYPE_STATE_FIELD)->willReturn($pathExpression);
-        $parser->match(Lexer::T_COMMA)->shouldBeCalled();
-        $parser->StringPrimary()
-            ->willReturn($type);
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS)->shouldBeCalled();
-        $cast = new Cast('no-matter');
-
-        /** @var \Doctrine\ORM\Query\Parser $parserReveal */
-        $parserReveal = $parser->reveal();
-        $cast->parse($parserReveal);
-
-        self::assertSame($type, self::getPrivatePropertyValue($cast, 'type'));
-        self::assertSame($pathExpression, self::getPrivatePropertyValue($cast, 'expression'));
+        self::assertSame('SELECT CAST(c0_.id AS text) AS sclr_0 FROM category c0_', $sql);
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
-use EonX\EasyBugsnag\Configurator\BasicsClientConfigurator;
-use EonX\EasyBugsnag\Configurator\RuntimeVersionClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\BasicsClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\RuntimeVersionClientConfigurator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

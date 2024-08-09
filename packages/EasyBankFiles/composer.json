@@ -10,7 +10,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "eonx-com/easy-error-handler": "^5.12",
-        "nette/utils": "^3.2"
+        "nette/utils": "^4.0"
     },
     "require-dev": {
         "eonx-com/easy-test": "^5.12",

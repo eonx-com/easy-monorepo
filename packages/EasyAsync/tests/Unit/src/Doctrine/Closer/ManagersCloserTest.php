@@ -28,7 +28,7 @@ final class ManagersCloserTest extends AbstractUnitTestCase
     public function testCloseSuccessful(): void
     {
         $connection = self::getService(EntityManagerInterface::class)->getConnection();
-        $connection->connect();
+        $connection->getDatabase();
         $sut = self::getService(ManagersCloser::class);
 
         $sut->close();

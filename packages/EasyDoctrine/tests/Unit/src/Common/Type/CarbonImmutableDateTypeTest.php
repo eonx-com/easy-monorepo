@@ -5,8 +5,7 @@ namespace EonX\EasyDoctrine\Tests\Unit\Common\Type;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use EonX\EasyDoctrine\Common\Type\CarbonImmutableDateType;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,13 +14,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(CarbonImmutableDateType::class)]
 final class CarbonImmutableDateTypeTest extends AbstractUnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType((new CarbonImmutableDateType())->getName(), CarbonImmutableDateType::class);
-    }
-
     /**
      * @see testConvertToPhpValueSucceeds
      */
@@ -46,13 +38,8 @@ final class CarbonImmutableDateTypeTest extends AbstractUnitTestCase
     #[DataProvider('provideConvertToPhpValues')]
     public function testConvertToPhpValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateType $type */
-        $type = Type::getType((new CarbonImmutableDateType())->getName());
-        $platform = $this->prophesize(AbstractPlatform::class);
-        $platform->getDateFormatString()
-            ->willReturn('Y-m-d');
-        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
-        $platform = $platform->reveal();
+        $type = new CarbonImmutableDateType();
+        $platform = new SQLitePlatform();
 
         $phpValue = $type->convertToPHPValue($value, $platform);
 

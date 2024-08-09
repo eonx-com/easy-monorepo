@@ -5,9 +5,6 @@ namespace EonX\EasyBatch\Doctrine\Repository;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use EonX\EasyBatch\Common\Exception\BatchObjectNotSavedException;
 use EonX\EasyBatch\Common\Factory\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Common\Strategy\BatchObjectIdStrategyInterface;
@@ -94,35 +91,9 @@ abstract class AbstractBatchObjectRepository
         return \is_array($result) ? $result : null;
     }
 
-    /**
-     * @return string[]
-     *
-     * @throws \Doctrine\DBAL\Exception
-     */
     private function resolveTableColumns(): array
     {
-        if ($this->tableColumns !== null) {
-            return $this->tableColumns;
-        }
-
-        $sql = $this->conn->getDatabasePlatform()
-            ->getListTableColumnsSQL($this->table);
-
-        $columns = $this->conn->fetchAllAssociative($sql);
-
-        $nameColumnKey = 'name';
-
-        if (\is_a($this->conn->getDatabasePlatform(), PostgreSQLPlatform::class)) {
-            $nameColumnKey = 'field';
-        }
-
-        if (
-            \is_a($this->conn->getDatabasePlatform(), MySQLPlatform::class)
-            || \is_a($this->conn->getDatabasePlatform(), AbstractMySQLPlatform::class)
-        ) {
-            $nameColumnKey = 'Field';
-        }
-
-        return $this->tableColumns = \array_column($columns, $nameColumnKey);
+        return $this->tableColumns
+            ?? ($this->tableColumns = \array_keys($this->conn->createSchemaManager()->listTableColumns($this->table)));
     }
 }

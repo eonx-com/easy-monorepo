@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Common\Resolver;
 
-use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Common\Entity\ActivitySubject;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Exception\UnableToResolveActivitySubjectException;
@@ -12,6 +12,7 @@ final readonly class DefaultActivitySubjectResolver implements ActivitySubjectRe
 {
     public function __construct(
         private array $subjects,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -21,7 +22,7 @@ final readonly class DefaultActivitySubjectResolver implements ActivitySubjectRe
             return $object;
         }
 
-        $subjectClass = ClassUtils::getRealClass($object::class);
+        $subjectClass = $this->entityManager->getClassMetadata($object::class)->getName();
         $subjectConfig = $this->subjects[$subjectClass] ?? null;
         if ($subjectConfig === null) {
             return null;

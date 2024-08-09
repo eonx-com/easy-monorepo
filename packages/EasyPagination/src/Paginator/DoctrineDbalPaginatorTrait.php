@@ -12,6 +12,8 @@ trait DoctrineDbalPaginatorTrait
 
     private Connection $conn;
 
+    private string $from;
+
     private function createQueryBuilder(): QueryBuilder
     {
         return $this->conn->createQueryBuilder()

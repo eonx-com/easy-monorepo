@@ -126,6 +126,9 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
      */
     abstract protected function getEntityClass(): string;
 
+    /**
+     * @param class-string|null $from
+     */
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,

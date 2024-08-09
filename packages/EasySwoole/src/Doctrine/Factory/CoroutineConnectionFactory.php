@@ -61,8 +61,7 @@ final class CoroutineConnectionFactory extends ConnectionFactory
         $coroutineConnection = new $connectionClass(
             $connection->getParams(),
             $driver,
-            $connection->getConfiguration(),
-            $connection->getEventManager()
+            $connection->getConfiguration()
         );
 
         if (\count($mappingTypes ?? []) > 0) {
