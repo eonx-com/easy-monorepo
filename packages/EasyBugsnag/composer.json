@@ -9,7 +9,7 @@
         "eonx-com/easy-utils": "^5.12",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.7",
-        "nette/utils": "^3.2",
+        "nette/utils": "^4.0",
         "symfony/cache": "^7.0",
         "symfony/cache-contracts": "^3.5",
         "symfony/config": "^7.0",
