@@ -40,7 +40,7 @@ trait EncryptableTrait
     }
 
     /**
-     * @param callable(string): \EonX\EasyEncryption\ValueObjects\EncryptedText $encryptor
+     * @param callable(string): \EonX\EasyEncryption\ValueObjects\EncryptedString $encryptor
      * @param callable(string): string $hashCalculator
      */
     public function encrypt(callable $encryptor, callable $hashCalculator): void

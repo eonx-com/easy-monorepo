@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Encryptors;
 
 use EonX\EasyEncryption\Interfaces\EncryptorInterface;
-use EonX\EasyEncryption\ValueObjects\EncryptedText;
+use EonX\EasyEncryption\ValueObjects\EncryptedString;
 use InvalidArgumentException;
 
 final class StringEncryptor implements StringEncryptorInterface
@@ -49,10 +49,10 @@ final class StringEncryptor implements StringEncryptorInterface
         return \implode('', $decryptedTextChunks);
     }
 
-    public function encrypt(string $text): EncryptedText
+    public function encrypt(string $text): EncryptedString
     {
         if (\strlen($text) <= $this->maxChunkSize) {
-            return new EncryptedText($this->encryptionKeyName, $this->doEncrypt($text));
+            return new EncryptedString($this->encryptionKeyName, $this->doEncrypt($text));
         }
 
         /** @var string[] $textChunks */
@@ -63,7 +63,7 @@ final class StringEncryptor implements StringEncryptorInterface
             $encryptedTextChunks[] = $this->doEncrypt($textChunk);
         }
 
-        return new EncryptedText(
+        return new EncryptedString(
             $this->encryptionKeyName,
             self::CHUNKED_TEXT_PREFIX . \implode(self::TEXT_CHUNKS_SEPARATOR, $encryptedTextChunks)
         );

@@ -5,7 +5,7 @@ namespace EonX\EasyEncryption\Encryptors;
 
 use EonX\EasyEncryption\HashCalculators\HashCalculatorInterface;
 use EonX\EasyEncryption\Interfaces\EncryptableInterface;
-use EonX\EasyEncryption\ValueObjects\EncryptedText;
+use EonX\EasyEncryption\ValueObjects\EncryptedString;
 
 final class ObjectEncryptor implements ObjectEncryptorInterface
 {
@@ -23,7 +23,7 @@ final class ObjectEncryptor implements ObjectEncryptorInterface
     public function encrypt(EncryptableInterface $encryptable): void
     {
         $encryptable->encrypt(
-            fn (string $value): EncryptedText => $this->stringEncryptor->encrypt($value),
+            fn (string $value): EncryptedString => $this->stringEncryptor->encrypt($value),
             fn (string $value): string => $this->hashCalculator->calculate($value)
         );
     }
