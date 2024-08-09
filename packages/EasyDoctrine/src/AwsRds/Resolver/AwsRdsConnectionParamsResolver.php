@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\AwsRds\Resolver;
 
 use EonX\EasyDoctrine\AwsRds\Enum\AwsRdsOption;
-use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProvider;
+use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProviderInterface;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsCertificateAuthorityProvider;
 use PDO;
 
 final readonly class AwsRdsConnectionParamsResolver
 {
     public function __construct(
-        private ?AwsRdsAuthTokenProvider $authTokenProvider = null,
+        private ?AwsRdsAuthTokenProviderInterface $authTokenProvider = null,
         private ?string $sslMode = null,
         private ?AwsRdsCertificateAuthorityProvider $certificateAuthorityProvider = null,
         private ?string $awsUsername = null,
@@ -21,7 +21,7 @@ final readonly class AwsRdsConnectionParamsResolver
     /**
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getParams(array $params): array
+    public function resolve(array $params): array
     {
         $driverOptions = $params['driverOptions'] ?? [];
         $rdsIamEnabled = $driverOptions[AwsRdsOption::IamEnabled->value] ?? true;
@@ -35,7 +35,7 @@ final readonly class AwsRdsConnectionParamsResolver
                 ?? $this->awsUsername
                 ?? $params['user'];
 
-            $params['password'] = $this->authTokenProvider->getAuthToken($params);
+            $params['password'] = $this->authTokenProvider->provide($params);
         }
 
         if ($rdsSslEnabled

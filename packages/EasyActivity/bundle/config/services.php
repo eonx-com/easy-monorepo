@@ -16,12 +16,12 @@ use EonX\EasyActivity\Common\Logger\AsyncActivityLogger;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
+use EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectDataResolver;
 use EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectResolver;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Common\Serializer\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Common\Store\StoreInterface;
-use EonX\EasyActivity\Doctrine\Resolver\DoctrineActivitySubjectDataResolver;
 use EonX\EasyActivity\Doctrine\Store\DoctrineDbalStore;
 use EonX\EasyActivity\Messenger\Dispatcher\AsyncDispatcher;
 use EonX\EasyActivity\Messenger\MessageHandler\ActivityLogEntryMessageHandler;
@@ -47,7 +47,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$subjects', param(ConfigParam::Subjects->value));
 
     $services
-        ->set(ActivitySubjectDataResolverInterface::class, DoctrineActivitySubjectDataResolver::class);
+        ->set(ActivitySubjectDataResolverInterface::class, DefaultActivitySubjectDataResolver::class);
 
     $services
         ->set(ActivityLoggerInterface::class, AsyncActivityLogger::class);

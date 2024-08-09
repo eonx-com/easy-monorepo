@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\EntityEvent\EntityManager;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\ORM\Decorator\EntityManagerDecorator as DoctrineEntityManagerDecorator;
+use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
-use EonX\EasyDoctrine\EntityEvent\Event\TransactionalExceptionEvent;
+use EonX\EasyDoctrine\EntityEvent\Event\WrapInTransactionExceptionEvent;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Throwable;
 
-final class WithEventsEntityManager extends DoctrineEntityManagerDecorator
+final class WithEventsEntityManager extends EntityManagerDecorator
 {
     public function __construct(
         private readonly DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
@@ -33,21 +33,11 @@ final class WithEventsEntityManager extends DoctrineEntityManagerDecorator
 
     public function rollback(): void
     {
-        $transactionNestingLevel = $this->getConnection()
-            ->getTransactionNestingLevel();
+        parent::rollback();
 
-        if ($transactionNestingLevel > 0) {
-            parent::rollback();
-        }
-
-        $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
+        $this->deferredEntityEventDispatcher->clear($this->getConnection()->getTransactionNestingLevel());
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Throwable
-     */
     public function wrapInTransaction(callable $func): mixed
     {
         $this->beginTransaction();
@@ -61,7 +51,7 @@ final class WithEventsEntityManager extends DoctrineEntityManagerDecorator
             return $return;
         } catch (Throwable $throwable) {
             // Dispatch event before calling close() or rollback() as they throw exception too
-            $this->eventDispatcher->dispatch(new TransactionalExceptionEvent($throwable));
+            $this->eventDispatcher->dispatch(new WrapInTransactionExceptionEvent($throwable));
 
             if ($throwable instanceof ORMException || $throwable instanceof DBALException) {
                 $this->close();

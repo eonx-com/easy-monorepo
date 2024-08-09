@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Common\Listener;
 
-use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use EonX\EasyDoctrine\Common\Entity\TimestampableInterface;
@@ -41,7 +41,7 @@ final class TimestampableListener
                 $classMetadata->mapField([
                     'fieldName' => $field,
                     'nullable' => false,
-                    'type' => CarbonImmutable::class,
+                    'type' => Types::DATETIME_IMMUTABLE,
                 ]);
             }
         }

@@ -5,7 +5,7 @@ namespace EonX\EasyBugsnag\Bundle\CompilerPass;
 
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
-use EonX\EasyBugsnag\Configurator\SensitiveDataSanitizerClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\SensitiveDataSanitizerClientConfigurator;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

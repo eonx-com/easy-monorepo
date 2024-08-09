@@ -7,13 +7,11 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 use EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -22,16 +20,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(CarbonImmutableDateTimeMicrosecondsType::class)]
 final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Type::overrideType(
-            (new CarbonImmutableDateTimeMicrosecondsType())->getName(),
-            CarbonImmutableDateTimeMicrosecondsType::class
-        );
-    }
-
     /**
      * @see testConvertToDatabaseValueSucceeds
      */
@@ -101,18 +89,14 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
             'DATETIME(6)',
         ];
 
-        $platformClassNameDbal2 = PostgreSQL94Platform::class;
-        $platformClassNameDbal3 = PostgreSQLPlatform::class;
-        $platformClassName = \class_exists($platformClassNameDbal2) ? $platformClassNameDbal2 : $platformClassNameDbal3;
-
         yield 'postgresql' => [
-            $platformClassName,
+            PostgreSQLPlatform::class,
             [],
             'TIMESTAMP(6) WITHOUT TIME ZONE',
         ];
 
         yield 'postgresql, with version = true' => [
-            $platformClassName,
+            PostgreSQLPlatform::class,
             [
                 'version' => true,
             ],
@@ -120,7 +104,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         ];
 
         yield 'postgresql, with version = false' => [
-            $platformClassName,
+            PostgreSQLPlatform::class,
             [
                 'version' => false,
             ],
@@ -131,26 +115,23 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
     #[DataProvider('provideConvertToDatabaseValues')]
     public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType $type */
-        $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
-        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
-        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+        $type = new CarbonImmutableDateTimeMicrosecondsType();
+        $platform = new SQLitePlatform();
 
         $databaseValue = $type->convertToDatabaseValue($value, $platform);
 
         self::assertSame($expectedValue, $databaseValue);
     }
 
-    public function testConvertToDatabaseValueThrowsConversionException(): void
+    public function testConvertToDatabaseValueThrowsInvalidTypeException(): void
     {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType $type */
-        $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
-        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
-        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+        $type = new CarbonImmutableDateTimeMicrosecondsType();
+        $platform = new SQLitePlatform();
         $value = 'some-ineligible-value';
-        $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            'to type datetime_immutable. Expected one of the following types: null, DateTimeInterface');
+        $this->expectException(InvalidType::class);
+        $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' to type" .
+            " EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType." .
+            ' Expected one of the following types: null, DateTimeImmutable.');
 
         $type->convertToDatabaseValue($value, $platform);
     }
@@ -158,49 +139,37 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
     #[DataProvider('provideConvertToPHPValues')]
     public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType $type */
-        $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
-        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
-        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+        $type = new CarbonImmutableDateTimeMicrosecondsType();
+        $platform = new SQLitePlatform();
 
         $phpValue = $type->convertToPHPValue($value, $platform);
 
         self::assertEquals($expectedValue, $phpValue);
     }
 
-    public function testConvertToPHPValueThrowsConversionException(): void
+    public function testConvertToPHPValueThrowsInvalidFormatException(): void
     {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType $type */
-        $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
-        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
-        $platform = $this->prophesize(AbstractPlatform::class)->reveal();
+        $type = new CarbonImmutableDateTimeMicrosecondsType();
+        $platform = new SQLitePlatform();
         $value = 'ineligible-value';
-        $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
-            'to Doctrine Type datetime_immutable. Expected format: Y-m-d H:i:s.u');
+        $this->expectException(InvalidFormat::class);
+        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type' .
+            ' EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.' .
+            ' Expected format "Y-m-d H:i:s.u".');
 
         $type->convertToPHPValue($value, $platform);
     }
 
-    public function testGetNameSucceeds(): void
-    {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType $type */
-        $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
-
-        $name = $type->getName();
-
-        self::assertSame(Types::DATETIME_IMMUTABLE, $name);
-    }
-
+    /**
+     * @param class-string<\Doctrine\DBAL\Platforms\AbstractPlatform> $platformClass
+     */
     #[DataProvider('provideFieldDeclarationValues')]
     public function testGetSqlDeclarationSucceeds(
         string $platformClass,
         array $fieldDeclaration,
         string $declaration,
     ): void {
-        /** @var \EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType $type */
-        $type = Type::getType((new CarbonImmutableDateTimeMicrosecondsType())->getName());
-        /** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
+        $type = new CarbonImmutableDateTimeMicrosecondsType();
         $platform = new $platformClass();
 
         $actualDeclaration = $type->getSqlDeclaration($fieldDeclaration, $platform);

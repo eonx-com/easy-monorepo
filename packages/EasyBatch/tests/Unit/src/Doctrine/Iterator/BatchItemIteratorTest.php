@@ -125,9 +125,6 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
         ];
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
     #[DataProvider('provideIterateThroughItemsData')]
     public function testIterateThroughItems(
         callable $setup,
@@ -143,7 +140,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
         $batchItemFactory = $container->get(BatchItemFactoryInterface::class);
         $batchItemRepo = $container->get(BatchItemRepositoryInterface::class);
 
-        \call_user_func($setup, $batchItemFactory, $batchItemRepo);
+        $setup($batchItemFactory, $batchItemRepo);
 
         $iteratorConfig = (BatchItemIteratorConfig::create($batchId ?? 'batch-id', $iterateFunc))
             ->setBatchItemsPerPage($batchItemPerPage ?? 2)
@@ -160,7 +157,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 
     private static function assertIterateFuncCalls(int $calls): void
     {
-        self::assertEquals($calls, self::$iterateFuncCalls);
+        self::assertSame($calls, self::$iterateFuncCalls);
         self::$iterateFuncCalls = 0;
     }
 }

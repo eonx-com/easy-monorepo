@@ -5,9 +5,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigServiceId;
-use EonX\EasyBugsnag\Configurator\SessionTrackingClientConfigurator;
-use EonX\EasyBugsnag\Listener\SessionTrackingListener;
-use EonX\EasyBugsnag\Tracker\SessionTracker;
+use EonX\EasyBugsnag\Common\Configurator\SessionTrackingClientConfigurator;
+use EonX\EasyBugsnag\Common\Listener\SessionTrackingListener;
+use EonX\EasyBugsnag\Common\Tracker\SessionTracker;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
 return static function (ContainerConfigurator $container): void {

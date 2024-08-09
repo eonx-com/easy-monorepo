@@ -23,7 +23,7 @@
         "symfony/var-dumper": "^7.0"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.0",
+        "doctrine/doctrine-bundle": "^2.12",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"
     },
@@ -37,13 +37,14 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyBugsnag\\Tests\\": "tests",
+            "EonX\\EasyBugsnag\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
             "EonX\\EasyBugsnag\\Tests\\Unit\\": "tests/Unit/src",
             "EonX\\EasyBugsnag\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
             "EonX\\EasyBugsnag\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {
-        "doctrine/dbal": "To log SQL queries in Bugsnag",
+        "doctrine/doctrine-bundle": "To log SQL queries in Bugsnag",
         "illuminate/contracts": "To use this package with Laravel/Lumen",
         "illuminate/http": "To use this package with Laravel/Lumen",
         "illuminate/queue": "To use this package with Laravel/Lumen",

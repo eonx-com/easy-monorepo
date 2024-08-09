@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 
@@ -13,8 +13,6 @@ use function Symfony\Component\String\u;
 trait DoctrineCommonPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
-
-    private string $from;
 
     private ?string $fromAlias = null;
 
@@ -142,7 +140,7 @@ trait DoctrineCommonPaginatorTrait
         $platform = $conn->getDatabasePlatform();
 
         if ($platform instanceof PostgreSQLPlatform === false
-            && $platform instanceof SqlitePlatform === false) {
+            && $platform instanceof SQLitePlatform === false) {
             return null;
         }
 
@@ -175,7 +173,7 @@ trait DoctrineCommonPaginatorTrait
         if ($platform instanceof PostgreSQLPlatform) {
             $sql = \sprintf('EXPLAIN %s', $sql);
         }
-        if ($platform instanceof SqlitePlatform) {
+        if ($platform instanceof SQLitePlatform) {
             $sql = \sprintf('EXPLAIN QUERY PLAN %s', $sql);
         }
 
@@ -194,7 +192,7 @@ trait DoctrineCommonPaginatorTrait
     private function hasJoinInQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): bool
     {
         return ($queryBuilder instanceof OrmQueryBuilder && \count($queryBuilder->getDQLPart('join')) > 0)
-            || ($queryBuilder instanceof DbalQueryBuilder && \count($queryBuilder->getQueryPart('join')) > 0)
+            || ($queryBuilder instanceof DbalQueryBuilder && \str_contains($queryBuilder->getSQL(), 'JOIN '))
             || $this->hasJoinsInQuery;
     }
 }

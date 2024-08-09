@@ -92,7 +92,8 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
         }
 
         $this->conn = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
 
         return $this->conn;

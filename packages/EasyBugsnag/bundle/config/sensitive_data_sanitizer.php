@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyBugsnag\Configurator\SensitiveDataSanitizerClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\SensitiveDataSanitizerClientConfigurator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

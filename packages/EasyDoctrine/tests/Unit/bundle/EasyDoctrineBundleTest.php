@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Unit\Bundle;
 
-final class EasyDoctrineBundleTest extends AbstractSymfonyTestCase
+use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
+
+final class EasyDoctrineBundleTest extends AbstractUnitTestCase
 {
     /**
      * Make sure we can boot the kernel correctly.
      */
-    public function testSanity(): void
+    public function testItSucceeds(): void
     {
-        $this->getKernel()
-            ->getContainer();
+        self::bootKernel();
 
         self::assertTrue(true);
     }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Tests\Unit\Laravel;
 
 use EonX\EasyBugsnag\Laravel\EasyBugsnagServiceProvider;
-use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
 use Laravel\Lumen\Application;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
+abstract class AbstractLaravelTestCase extends TestCase
 {
     private ?Application $app = null;
 

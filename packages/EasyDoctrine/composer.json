@@ -8,9 +8,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "doctrine/dbal": "^3.0",
-        "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/orm": "^2.14",
+        "doctrine/dbal": "^4.0",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/orm": "^3.2",
         "eonx-com/easy-event-dispatcher": "^5.12",
         "eonx-com/easy-utils": "^5.12",
         "myclabs/deep-copy": "^1.11",
@@ -39,6 +39,7 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyDoctrine\\Tests\\": "tests",
+            "EonX\\EasyDoctrine\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
             "EonX\\EasyDoctrine\\Tests\\Unit\\": "tests/Unit/src",
             "EonX\\EasyDoctrine\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }

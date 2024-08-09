@@ -53,7 +53,8 @@ abstract class AbstractEloquentPaginatorTestCase extends AbstractUnitTestCase
         }
 
         $doctrineConn = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
 
         /** @var \PDO $pdo */

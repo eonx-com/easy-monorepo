@@ -11,6 +11,9 @@ final class DoctrineOrmPaginator extends AbstractPaginator implements Extendable
 {
     use DoctrineOrmPaginatorTrait;
 
+    /**
+     * @param class-string $from
+     */
     public function __construct(
         PaginationInterface $pagination,
         EntityManagerInterface $manager,
