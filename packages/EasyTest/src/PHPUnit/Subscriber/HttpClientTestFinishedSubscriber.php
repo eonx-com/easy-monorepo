@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\PHPUnit\Subscriber;
 
-use EonX\EasyTest\EasyErrorHandler\TraceableErrorHandlerStub;
+use EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
 

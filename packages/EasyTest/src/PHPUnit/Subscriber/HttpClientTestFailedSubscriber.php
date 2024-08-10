@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\PHPUnit\Subscriber;
 
-use EonX\EasyTest\EasyErrorHandler\TraceableErrorHandlerStub;
+use EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\FailedSubscriber;
@@ -27,9 +27,9 @@ final class HttpClientTestFailedSubscriber implements FailedSubscriber
 
                 if ($throwable instanceof ExpectationFailedException) {
                     echo '  comparison failure: ' . \PHP_EOL;
-                    echo '    diff: ' . $throwable->getComparisonFailure()->getDiff() . \PHP_EOL;
-                    echo '    expected: ' . $throwable->getComparisonFailure()->getExpectedAsString() . \PHP_EOL;
-                    echo '    actual: ' . $throwable->getComparisonFailure()->getActualAsString() . \PHP_EOL;
+                    echo '    diff: ' . $throwable->getComparisonFailure()?->getDiff() . \PHP_EOL;
+                    echo '    expected: ' . $throwable->getComparisonFailure()?->getExpectedAsString() . \PHP_EOL;
+                    echo '    actual: ' . $throwable->getComparisonFailure()?->getActualAsString() . \PHP_EOL;
                 }
             }
         }

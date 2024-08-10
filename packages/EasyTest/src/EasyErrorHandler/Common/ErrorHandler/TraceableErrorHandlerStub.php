@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\EasyErrorHandler;
+namespace EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\FormatAwareInterface;
 use EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface;
@@ -24,8 +24,9 @@ final class TraceableErrorHandlerStub implements TraceableErrorHandlerInterface,
      */
     private static array $allReportedErrors = [];
 
-    public function __construct(private readonly TraceableErrorHandlerInterface $decorated)
-    {
+    public function __construct(
+        private readonly TraceableErrorHandlerInterface $decorated,
+    ) {
     }
 
     public static function getAllRenderedErrors(): array
