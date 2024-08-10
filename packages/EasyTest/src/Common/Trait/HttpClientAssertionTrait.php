@@ -8,6 +8,8 @@ use PHPUnit\Framework\Assert;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
+ * @deprecated Since 6.0, will be removed in 7.0. Use TestResponseFactory instead.
+ *
  * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
  */
 trait HttpClientAssertionTrait

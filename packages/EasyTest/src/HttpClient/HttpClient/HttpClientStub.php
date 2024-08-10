@@ -11,6 +11,9 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
+/**
+ * @deprecated Since 6.0, will be removed in 7.0. Use TestResponseFactory instead.
+ */
 final class HttpClientStub extends MockHttpClient
 {
     use HttpClientTrait;

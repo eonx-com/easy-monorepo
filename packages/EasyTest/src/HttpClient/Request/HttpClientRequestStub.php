@@ -7,6 +7,9 @@ use Closure;
 use EonX\EasyTest\HttpClient\HttpClient\HttpClientStub;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
+/**
+ * @deprecated Since 6.0, will be removed in 7.0. Use TestResponseFactory instead.
+ */
 final class HttpClientRequestStub
 {
     private ?string $hash = null;
