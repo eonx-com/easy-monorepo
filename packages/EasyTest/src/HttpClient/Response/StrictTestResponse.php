@@ -20,7 +20,7 @@ final class StrictTestResponse extends AbstractTestResponse
      * @param int|null $responseCode If null, 200 will be used
      */
     public function __construct(
-        private string $method,
+        private readonly string $method,
         string $url,
         protected ?array $query = null,
         private ?array $body = null,
