@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Common\ValueObject;
 
-final class TextBlock extends AbstractTemplatingBlock implements TextBlockInterface
+final class TextBlock extends AbstractTemplatingBlock
 {
     private string $contents;
 
-    public static function create(string $name, string $contents): TextBlockInterface
+    public static function create(string $name, string $contents): self
     {
         return (new self($name))->setContents($contents);
     }

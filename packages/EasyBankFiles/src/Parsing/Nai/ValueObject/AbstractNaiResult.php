@@ -8,7 +8,7 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 abstract class AbstractNaiResult extends AbstractResult
 {
     public function __construct(
-        protected ResultsContextInterface $context,
+        protected ResultsContext $context,
         ?array $data = null,
     ) {
         parent::__construct($data);

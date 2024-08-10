@@ -6,7 +6,7 @@ namespace EonX\EasyPagination\ValueObject;
 use Closure;
 use Spatie\Url\Url;
 
-final class Pagination implements PaginationInterface
+final class Pagination
 {
     private const DEFAULT_PAGE_ATTRIBUTE = 'page';
 
@@ -71,7 +71,7 @@ final class Pagination implements PaginationInterface
         return (string)$urlResolver(Url::fromString($this->url), $this, $page);
     }
 
-    public function setUrlResolver(?callable $urlResolver = null): PaginationInterface
+    public function setUrlResolver(?callable $urlResolver = null): self
     {
         $this->urlResolver = $urlResolver === null ? null : $urlResolver(...);
 
@@ -80,7 +80,7 @@ final class Pagination implements PaginationInterface
 
     private function getDefaultUrlResolver(): callable
     {
-        return static function (Url $url, PaginationInterface $pagination, int $page): Url {
+        return static function (Url $url, Pagination $pagination, int $page): Url {
             $query = $url->getAllQueryParameters();
 
             $query[$pagination->getPageAttribute()] = $page > 0 ? $page : 1;

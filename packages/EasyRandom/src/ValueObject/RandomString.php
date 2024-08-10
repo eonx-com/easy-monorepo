@@ -7,10 +7,11 @@ use EonX\EasyRandom\Enum\Alphabet;
 use EonX\EasyRandom\Exception\InvalidAlphabetException;
 use EonX\EasyRandom\Exception\InvalidRandomStringException;
 use SplObjectStorage;
+use Stringable;
 use Symfony\Component\String\ByteString;
 use Symfony\Component\String\UnicodeString;
 
-final class RandomString implements RandomStringInterface
+final class RandomString implements Stringable
 {
     /**
      * @var \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]|null
@@ -55,14 +56,14 @@ final class RandomString implements RandomStringInterface
         return $this->randomString();
     }
 
-    public function alphabet(string $alphabet): RandomStringInterface
+    public function alphabet(string $alphabet): self
     {
         $this->overrideAlphabet = $this->validateAlphabet($alphabet);
 
         return $this;
     }
 
-    public function clear(): RandomStringInterface
+    public function clear(): self
     {
         $this->includes = new SplObjectStorage();
         $this->excludes = new SplObjectStorage();
@@ -73,70 +74,70 @@ final class RandomString implements RandomStringInterface
     /**
      * @param \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[] $constraints
      */
-    public function constraints(array $constraints): RandomStringInterface
+    public function constraints(array $constraints): self
     {
         $this->constraints = $constraints;
 
         return $this;
     }
 
-    public function exclude(Alphabet $alphabet): RandomStringInterface
+    public function exclude(Alphabet $alphabet): self
     {
         $this->excludes->attach($alphabet);
 
         return $this;
     }
 
-    public function excludeAmbiguous(): RandomStringInterface
+    public function excludeAmbiguous(): self
     {
         $this->exclude(Alphabet::Ambiguous);
 
         return $this;
     }
 
-    public function excludeLowercase(): RandomStringInterface
+    public function excludeLowercase(): self
     {
         $this->exclude(Alphabet::Lowercase);
 
         return $this;
     }
 
-    public function excludeNumeric(): RandomStringInterface
+    public function excludeNumeric(): self
     {
         $this->exclude(Alphabet::Numeric);
 
         return $this;
     }
 
-    public function excludeSimilar(): RandomStringInterface
+    public function excludeSimilar(): self
     {
         $this->exclude(Alphabet::Similar);
 
         return $this;
     }
 
-    public function excludeSymbol(): RandomStringInterface
+    public function excludeSymbol(): self
     {
         $this->exclude(Alphabet::Symbol);
 
         return $this;
     }
 
-    public function excludeUppercase(): RandomStringInterface
+    public function excludeUppercase(): self
     {
         $this->exclude(Alphabet::Uppercase);
 
         return $this;
     }
 
-    public function excludeVowel(): RandomStringInterface
+    public function excludeVowel(): self
     {
         $this->exclude(Alphabet::Vowel);
 
         return $this;
     }
 
-    public function include(Alphabet $alphabet): RandomStringInterface
+    public function include(Alphabet $alphabet): self
     {
         $this->includes->attach($alphabet);
         $this->excludes->detach($alphabet);
@@ -144,77 +145,77 @@ final class RandomString implements RandomStringInterface
         return $this;
     }
 
-    public function includeAmbiguous(): RandomStringInterface
+    public function includeAmbiguous(): self
     {
         $this->include(Alphabet::Ambiguous);
 
         return $this;
     }
 
-    public function includeLowercase(): RandomStringInterface
+    public function includeLowercase(): self
     {
         $this->include(Alphabet::Lowercase);
 
         return $this;
     }
 
-    public function includeNumeric(): RandomStringInterface
+    public function includeNumeric(): self
     {
         $this->include(Alphabet::Numeric);
 
         return $this;
     }
 
-    public function includeSimilar(): RandomStringInterface
+    public function includeSimilar(): self
     {
         $this->include(Alphabet::Similar);
 
         return $this;
     }
 
-    public function includeSymbol(): RandomStringInterface
+    public function includeSymbol(): self
     {
         $this->include(Alphabet::Symbol);
 
         return $this;
     }
 
-    public function includeUppercase(): RandomStringInterface
+    public function includeUppercase(): self
     {
         $this->include(Alphabet::Uppercase);
 
         return $this;
     }
 
-    public function includeVowel(): RandomStringInterface
+    public function includeVowel(): self
     {
         $this->include(Alphabet::Vowel);
 
         return $this;
     }
 
-    public function maxAttempts(int $maxAttempts): RandomStringInterface
+    public function maxAttempts(int $maxAttempts): self
     {
         $this->maxAttempts = $maxAttempts;
 
         return $this;
     }
 
-    public function prefix(string $prefix): RandomStringInterface
+    public function prefix(string $prefix): self
     {
         $this->prefix = $prefix;
 
         return $this;
     }
 
-    public function suffix(string $suffix): RandomStringInterface
+    public function suffix(string $suffix): self
     {
         $this->suffix = $suffix;
 
         return $this;
     }
 
-    public function userFriendly(): RandomStringInterface
+    public function userFriendly(): self
     {
         $this
             ->include(Alphabet::Numeric)

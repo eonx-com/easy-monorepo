@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Messenger\Dispatcher;
 use EonX\EasyBatch\Common\Dispatcher\AsyncDispatcherInterface;
 use EonX\EasyBatch\Common\Enum\BatchItemType;
 use EonX\EasyBatch\Common\Exception\BatchItemInvalidException;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Messenger\Stamp\BatchItemStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -21,7 +21,7 @@ final readonly class AsyncDispatcher implements AsyncDispatcherInterface
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemInvalidException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function dispatchItem(BatchItemInterface $batchItem): void
+    public function dispatchItem(BatchItem $batchItem): void
     {
         $batchItemId = $batchItem->getIdOrFail();
 

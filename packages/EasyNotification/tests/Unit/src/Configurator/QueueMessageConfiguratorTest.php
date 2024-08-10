@@ -20,7 +20,6 @@ use EonX\EasyNotification\Message\SlackMessage;
 use EonX\EasyNotification\Tests\Stub\Message\MessageStub;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyNotification\ValueObject\Config;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
 use Error;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -141,7 +140,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
     #[DataProvider('provideConfigureData')]
     public function testConfigure(
         QueueMessageConfiguratorInterface $configurator,
-        ConfigInterface $config,
+        Config $config,
         MessageInterface $message,
         callable $test,
         ?QueueMessageInterface $queueMessage = null,

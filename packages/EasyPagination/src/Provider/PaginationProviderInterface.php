@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Provider;
 
-use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 
 interface PaginationProviderInterface
 {
-    public function getPagination(): PaginationInterface;
+    public function getPagination(): Pagination;
 
-    public function getPaginationConfig(): PaginationConfigInterface;
+    public function getPaginationConfig(): PaginationConfigProviderInterface;
 
     public function setResolver(callable $resolver): self;
 }

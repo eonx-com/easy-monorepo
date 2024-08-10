@@ -5,10 +5,10 @@ namespace EonX\EasyPagination\Laravel;
 
 use EonX\EasyPagination\Laravel\Listeners\PaginationFromRequestListener;
 use EonX\EasyPagination\Laravel\Middleware\PaginationFromRequestMiddleware;
+use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use EonX\EasyPagination\Provider\PaginationProvider;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
-use EonX\EasyPagination\ValueObject\PaginationConfig;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
@@ -72,7 +72,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         $this->app->singleton(
             PaginationProviderInterface::class,
             static function (): PaginationProviderInterface {
-                $config = new PaginationConfig(
+                $config = new PaginationConfigProvider(
                     \config('easy-pagination.pagination.page_attribute'),
                     (int)\config('easy-pagination.pagination.page_default'),
                     \config('easy-pagination.pagination.per_page_attribute'),
@@ -84,8 +84,8 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            PaginationInterface::class,
-            static fn (Container $app): PaginationInterface => $app->make(PaginationProviderInterface::class)
+            Pagination::class,
+            static fn (Container $app): Pagination => $app->make(PaginationProviderInterface::class)
                 ->getPagination()
         );
     }

@@ -8,7 +8,6 @@ use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
-use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
 
 final readonly class DoctrineActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
@@ -21,7 +20,7 @@ final readonly class DoctrineActivitySubjectDataResolver implements ActivitySubj
         ActivityAction $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
-    ): ?ActivitySubjectDataInterface {
+    ): ?ActivitySubjectData {
         [$oldData, $data] = $this->resolveChangeData($action, $changeSet);
 
         $serializedData = $data !== null ? $this->serializer->serialize($data, $subject) : null;

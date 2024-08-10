@@ -11,7 +11,6 @@ use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\Batch;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
 use EonX\EasyBatch\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -114,7 +113,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
 
                 $batchRepo->save($batch);
             },
-            static function (BatchInterface $batch, array $events): void {
+            static function (Batch $batch, array $events): void {
                 self::assertEquals(BatchObjectStatus::Processing, $batch->getStatus());
                 self::assertCount(5, $events);
             },
@@ -142,7 +141,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
 
                 $batchRepo->save($batch);
             },
-            static function (BatchInterface $batch, array $events): void {
+            static function (Batch $batch, array $events): void {
                 self::assertEquals(BatchObjectStatus::Failed, $batch->getStatus());
                 self::assertInstanceOf(BatchCompletedEvent::class, \end($events));
             },

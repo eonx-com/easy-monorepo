@@ -7,9 +7,8 @@ use EonX\EasyBankFiles\Parsing\Nai\ValueObject\AbstractNaiResult;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\Account;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\AccountIdentifier;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\AccountTrailer;
-use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContextInterface;
+use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContext;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AbstractNaiResult::class)]
@@ -28,23 +27,7 @@ final class AccountTest extends AbstractUnitTestCase
             'trailer' => new AccountTrailer(),
         ];
 
-        $setExpectations = static function (MockInterface $context) use ($data): void {
-            $context
-                ->shouldReceive('getGroup')
-                ->once()
-                ->withArgs([$data['group']])
-                ->andReturn(null);
-            $context
-                ->shouldReceive('getTransactionsForAccount')
-                ->once()
-                ->withArgs([$data['index']])
-                ->andReturn([]);
-        };
-
-        /** @var \EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContextInterface $context */
-        $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
-
-        $account = new Account($context, $data);
+        $account = new Account(new ResultsContext([], [], [], [], []), $data);
 
         self::assertInstanceOf(AccountIdentifier::class, $account->getIdentifier());
         self::assertNull($account->getGroup());

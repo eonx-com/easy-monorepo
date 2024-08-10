@@ -17,12 +17,11 @@ This resolver will look for pagination data in the request query parameters:
 # Usage
 
 ```php
-use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
-use EonX\EasyPagination\ValueObject\PaginationConfig;
+use EonX\EasyPagination\Provider\PaginationConfigProvider;use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 
 // Request: <url>?page=2&perPage=30
 
-$config = new PaginationConfig('page', 1, 'perPage', 15); // Instantiate config according to your needs
+$config = new PaginationConfigProvider('page', 1, 'perPage', 15); // Instantiate config according to your needs
 $resolver = new FromHttpFoundationRequestPaginationResolver($config); // Instantiate the resolver with your config
 
 $data = $resolver->resolve($request); // Then resolve the data for the given request

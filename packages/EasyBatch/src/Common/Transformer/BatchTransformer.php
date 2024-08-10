@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Transformer;
 
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 
 final class BatchTransformer extends AbstractBatchObjectTransformer
 {
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchInterface $batchObject
+     * @param \EonX\EasyBatch\Common\ValueObject\Batch $batchObject
      */
-    protected function hydrateBatchObject(BatchObjectInterface $batchObject, array $data): void
+    protected function hydrateBatchObject(AbstractBatchObject $batchObject, array $data): void
     {
         $batchObject
             ->setCancelled((int)($data['cancelled'] ?? 0))

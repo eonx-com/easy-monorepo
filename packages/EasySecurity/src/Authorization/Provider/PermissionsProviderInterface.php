@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Authorization\Provider;
 interface PermissionsProviderInterface
 {
     /**
-     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array;
 }

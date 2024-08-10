@@ -12,7 +12,7 @@ use EonX\EasyBatch\Common\Exception\BatchObjectNotSavedException;
 use EonX\EasyBatch\Common\Factory\BatchObjectFactoryInterface;
 use EonX\EasyBatch\Common\Strategy\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Common\Transformer\BatchObjectTransformerInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 
 abstract class AbstractBatchObjectRepository
 {
@@ -34,7 +34,7 @@ abstract class AbstractBatchObjectRepository
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected function doFind(int|string $id): ?BatchObjectInterface
+    protected function doFind(int|string $id): ?AbstractBatchObject
     {
         $data = $this->fetchData($id);
 
@@ -45,7 +45,7 @@ abstract class AbstractBatchObjectRepository
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectNotSavedException
      */
-    protected function doSave(BatchObjectInterface $batchObject): void
+    protected function doSave(AbstractBatchObject $batchObject): void
     {
         $batchObjectId = $batchObject->getId() ?? $this->idStrategy->generateId();
         $now = Carbon::now('UTC');

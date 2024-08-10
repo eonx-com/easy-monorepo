@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Unit\Common\Decoder;
 
 use EonX\EasyApiToken\Common\Decoder\BearerTokenDecoder;
-use EonX\EasyApiToken\Common\ValueObject\Jwt;
+use EonX\EasyApiToken\Common\ValueObject\JwtToken;
 
 final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestCase
 {
@@ -20,14 +20,14 @@ final class FirebaseBearerTokenDecoderTest extends AbstractFirebaseJwtTokenTestC
 
             $jwtDriver = $this->createFirebaseJwtDriver($algo, $key);
 
-            /** @var \EonX\EasyApiToken\Common\ValueObject\JwtInterface $token */
-            $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
+            /** @var \EonX\EasyApiToken\Common\ValueObject\JwtToken $jwtToken */
+            $jwtToken = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken($algo),
             ]));
 
-            $payload = $token->getPayload();
+            $payload = $jwtToken->getPayload();
 
-            self::assertInstanceOf(Jwt::class, $token);
+            self::assertInstanceOf(JwtToken::class, $jwtToken);
 
             foreach (self::$tokenPayload as $key => $value) {
                 self::assertArrayHasKey($key, $payload);

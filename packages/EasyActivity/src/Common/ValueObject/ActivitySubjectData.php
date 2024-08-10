@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Common\ValueObject;
 
-final readonly class ActivitySubjectData implements ActivitySubjectDataInterface
+final readonly class ActivitySubjectData
 {
     public function __construct(
         private ?string $data = null,

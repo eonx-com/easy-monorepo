@@ -5,14 +5,14 @@ namespace EonX\EasyPagination\Paginator;
 
 use Doctrine\DBAL\Connection;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface as ExtendableInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 
 final class DoctrineDbalPaginator extends AbstractPaginator implements ExtendableInterface
 {
     use DoctrineDbalPaginatorTrait;
 
     public function __construct(
-        PaginationInterface $pagination,
+        Pagination $pagination,
         Connection $conn,
         string $from,
         ?string $fromAlias = null,

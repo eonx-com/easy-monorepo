@@ -5,7 +5,7 @@ namespace EonX\EasyTemplatingBlock\Common\Renderer;
 
 use EonX\EasyTemplatingBlock\Common\Exception\NoRendererFoundForBlockException;
 use EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface;
-use EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface;
+use EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class TemplatingEventRenderer implements TemplatingEventRendererInterface
@@ -40,7 +40,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
         return $this->renderBlocks($event, $this->resolveBlocksForEvent($event, $context));
     }
 
-    private function renderBlock(TemplatingBlockInterface $block): string
+    private function renderBlock(AbstractTemplatingBlock $block): string
     {
         foreach ($this->renderers as $renderer) {
             if ($renderer->supports($block)) {
@@ -56,7 +56,7 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     }
 
     /**
-     * @param \EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface[] $blocks
+     * @param \EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock[] $blocks
      */
     private function renderBlocks(string $event, array $blocks): string
     {
@@ -87,17 +87,17 @@ final class TemplatingEventRenderer implements TemplatingEventRendererInterface
     }
 
     /**
-     * @return \EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface[]
+     * @return \EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock[]
      */
     private function resolveBlocksForEvent(string $event, ?array $context = null): array
     {
         $blocks = [];
 
         foreach ($this->providers as $provider) {
-            /** @var iterable<\EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface> $providedBlocks */
+            /** @var iterable<\EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock> $providedBlocks */
             $providedBlocks = CollectorHelper::filterByClass(
                 $provider->getBlocksForEvent($event, $context),
-                TemplatingBlockInterface::class
+                AbstractTemplatingBlock::class
             );
 
             foreach ($providedBlocks as $block) {

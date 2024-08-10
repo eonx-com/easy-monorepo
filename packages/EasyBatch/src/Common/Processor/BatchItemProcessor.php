@@ -12,8 +12,8 @@ use EonX\EasyBatch\Common\Exception\BatchItemProcessedButNotSavedException;
 use EonX\EasyBatch\Common\Exception\BatchItemSavedButBatchNotProcessedException;
 use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use Throwable;
 
 final readonly class BatchItemProcessor
@@ -34,7 +34,7 @@ final readonly class BatchItemProcessor
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      * @throws \Throwable
      */
-    public function processBatchItem(BatchInterface $batch, BatchItemInterface $batchItem, callable $func): mixed
+    public function processBatchItem(Batch $batch, BatchItem $batchItem, callable $func): mixed
     {
         // If process prevented, batchItem message shouldn't be retried
         $this->preventProcessIfNeeded($batch, $batchItem);
@@ -101,7 +101,7 @@ final readonly class BatchItemProcessor
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemCannotBeRetriedException
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemCompletedException
      */
-    private function preventProcessIfNeeded(BatchInterface $batch, BatchItemInterface $batchItem): void
+    private function preventProcessIfNeeded(Batch $batch, BatchItem $batchItem): void
     {
         if ($batchItem->isCompleted()) {
             throw new BatchItemCompletedException(\sprintf(

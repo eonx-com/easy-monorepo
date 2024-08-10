@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Entity\Webhook;
@@ -44,7 +44,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
     }
 
     public function findDueWebhooks(
-        PaginationInterface $pagination,
+        Pagination $pagination,
         ?DateTimeInterface $sendAfter = null,
         ?string $timezone = null,
     ): LengthAwarePaginatorInterface {

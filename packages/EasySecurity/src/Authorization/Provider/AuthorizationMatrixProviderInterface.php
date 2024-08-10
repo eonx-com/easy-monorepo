@@ -6,26 +6,26 @@ namespace EonX\EasySecurity\Authorization\Provider;
 interface AuthorizationMatrixProviderInterface
 {
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array;
 
     /**
      * @param string[] $identifiers
      *
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissionsByIdentifiers(array $identifiers): array;
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRoles(): array;
 
     /**
      * @param string[] $identifiers
      *
-     * @return \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRolesByIdentifiers(array $identifiers): array;
 

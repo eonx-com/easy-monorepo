@@ -39,7 +39,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
                 $paginator = $newPaginator instanceof LengthAwarePaginatorInterface ? $newPaginator : $paginator;
             }
 
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $items */
+            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem[] $items */
             $items = $paginator->getItems();
 
             // Check hasNextPage before iterating through items in case the logic modifies the pagination,
@@ -74,7 +74,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $batchItems
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem[] $batchItems
      */
     private function generateItemPageHash(int $page, array $batchItems): string
     {

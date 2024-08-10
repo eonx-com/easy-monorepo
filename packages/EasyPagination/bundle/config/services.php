@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyPagination\Bundle\Enum\ConfigParam;
+use EonX\EasyPagination\Provider\PaginationConfigProvider;
+use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Provider\PaginationProvider;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
-use EonX\EasyPagination\ValueObject\PaginationConfig;
-use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -17,7 +17,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services
-        ->set(PaginationConfigInterface::class, PaginationConfig::class)
+        ->set(PaginationConfigProviderInterface::class, PaginationConfigProvider::class)
         ->arg('$pageAttribute', param(ConfigParam::PageAttribute->value))
         ->arg('$pageDefault', param(ConfigParam::PageDefault->value))
         ->arg('$perPageAttribute', param(ConfigParam::PerPageAttribute->value))
@@ -26,6 +26,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(PaginationProviderInterface::class, PaginationProvider::class);
 
     $services
-        ->set(PaginationInterface::class)
+        ->set(Pagination::class)
         ->factory([service(PaginationProviderInterface::class), 'getPagination']);
 };

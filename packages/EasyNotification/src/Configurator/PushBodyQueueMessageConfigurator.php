@@ -6,13 +6,13 @@ namespace EonX\EasyNotification\Configurator;
 use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\PushMessage;
 use EonX\EasyNotification\Message\QueueMessageInterface;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
+use EonX\EasyNotification\ValueObject\Config;
 use Nette\Utils\Json;
 
 final class PushBodyQueueMessageConfigurator extends AbstractQueueMessageConfigurator
 {
     public function configure(
-        ConfigInterface $config,
+        Config $config,
         QueueMessageInterface $queueMessage,
         MessageInterface $message,
     ): QueueMessageInterface {

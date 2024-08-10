@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Unit\Common\ValueObject;
 
 use EonX\EasyApiToken\Common\Exception\InvalidArgumentException;
-use EonX\EasyApiToken\Common\ValueObject\Jwt;
+use EonX\EasyApiToken\Common\ValueObject\JwtToken;
 use EonX\EasyApiToken\Tests\Unit\AbstractUnitTestCase;
 use stdClass;
 
@@ -13,7 +13,7 @@ final class JwtTest extends AbstractUnitTestCase
     public function testGetClaimForceArraySuccessfully(): void
     {
         $claim = new stdClass();
-        $token = new Jwt([
+        $token = new JwtToken([
             'claim' => $claim,
         ], 'original');
 
@@ -31,7 +31,7 @@ final class JwtTest extends AbstractUnitTestCase
 
         $claim->subClaim = $subClaim;
 
-        $token = new Jwt([
+        $token = new JwtToken([
             'claim' => $claim,
         ], 'original');
 
@@ -47,7 +47,7 @@ final class JwtTest extends AbstractUnitTestCase
 
     public function testGetClaimSuccessfully(): void
     {
-        $token = new Jwt([
+        $token = new JwtToken([
             'claim' => 'claim',
         ], 'original');
 
@@ -59,7 +59,7 @@ final class JwtTest extends AbstractUnitTestCase
         $payload = [
             'claim' => 'claim',
         ];
-        $token = new Jwt($payload, 'original');
+        $token = new JwtToken($payload, 'original');
 
         self::assertEquals($payload, $token->getPayload());
         self::assertSame('original', $token->getOriginalToken());
@@ -67,7 +67,7 @@ final class JwtTest extends AbstractUnitTestCase
 
     public function testHasClaimSuccessfully(): void
     {
-        $token = new Jwt([
+        $token = new JwtToken([
             'claim' => 'claim',
         ], 'original');
 
@@ -79,6 +79,6 @@ final class JwtTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new Jwt([], ''))->getClaim('invalid');
+        (new JwtToken([], ''))->getClaim('invalid');
     }
 }

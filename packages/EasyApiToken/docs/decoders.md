@@ -8,7 +8,7 @@ Let's have a look at the built-in decoders!
 ### Basic
 
 This decoder will handle BasicAuth using the Authorization header and return a
-`\EonX\EasyApiToken\Common\ValueObject\BasicAuthInterface` instance. This interface allows you to retrieve
+`\EonX\EasyApiToken\Common\ValueObject\BasicAuth` instance. This interface allows you to retrieve
 the username and password provided on the request.
 
 <br>
@@ -16,7 +16,7 @@ the username and password provided on the request.
 ### User ApiKey
 
 This decoder will handle an ApiKey passed as the BasicAuth username in the Authorization header and return a
-`\EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface` instance.
+`\EonX\EasyApiToken\Common\ValueObject\ApiToken` instance.
 This interface allows you to retrieve the ApiKey given on the request.
 
 <p style="display: none">Required otherwise it breaks the warning format below</p>
@@ -30,7 +30,7 @@ If a password is given as part of the BasicAuth this decoder will not consider i
 ### JWT Header
 
 This decoder will handle Bearer token using the Authorization header and return a
-`\EonX\EasyApiToken\Common\ValueObject\JwtInterface` instance. This interface allows you to retrieve any
+`\EonX\EasyApiToken\Common\ValueObject\Jwt` instance. This interface allows you to retrieve any
 claim on the JWT, retrieve claims as array (useful for hash) and check the presence of a claim.
 
 <br>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Tests\Unit\Authorization\Configurator;
 
 use EonX\EasyApiToken\Common\ValueObject\ApiKey;
-use EonX\EasyApiToken\Common\ValueObject\Jwt;
+use EonX\EasyApiToken\Common\ValueObject\JwtToken;
 use EonX\EasySecurity\Authorization\Configurator\RolesFromJwtConfigurator;
 use EonX\EasySecurity\Authorization\Provider\AuthorizationMatrixProvider;
 use EonX\EasySecurity\Authorization\ValueObject\Role;
@@ -30,11 +30,11 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
 
         yield 'No role resolved because token not jwt' => [[], $context];
 
-        $context->setToken(new Jwt([], 'jwt'));
+        $context->setToken(new JwtToken([], 'jwt'));
 
         yield 'No role resolved because no roles in token' => [[], $context];
 
-        $context->setToken(new Jwt([
+        $context->setToken(new JwtToken([
             static::$mainJwtClaim => [
                 'roles' => ['app:role'],
             ],
@@ -42,7 +42,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
 
         yield 'No role resolved because provider return empty array' => [[], $context];
 
-        $context->setToken(new Jwt([
+        $context->setToken(new JwtToken([
             static::$mainJwtClaim => [
                 'roles' => ['app:role'],
             ],
@@ -59,7 +59,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
     }
 
     /**
-     * @param \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[] $authorizationRoles
+     * @param \EonX\EasySecurity\Authorization\ValueObject\Role[] $authorizationRoles
      */
     #[DataProvider('provideConfigureData')]
     public function testConfigure(

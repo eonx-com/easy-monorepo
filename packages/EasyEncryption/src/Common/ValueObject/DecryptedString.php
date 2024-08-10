@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Common\ValueObject;
 
-final readonly class DecryptedString implements DecryptedStringInterface
+use Stringable;
+
+final readonly class DecryptedString implements Stringable
 {
     public function __construct(
         private string $decryptedString,

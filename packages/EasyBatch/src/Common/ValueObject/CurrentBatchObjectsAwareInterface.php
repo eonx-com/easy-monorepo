@@ -5,7 +5,7 @@ namespace EonX\EasyBatch\Common\ValueObject;
 
 interface CurrentBatchObjectsAwareInterface
 {
-    public function setCurrentBatchObjects(BatchInterface $batch, BatchItemInterface $batchItem): void;
+    public function setCurrentBatchObjects(Batch $batch, BatchItem $batchItem): void;
 
     public function unsetCurrentBatchObjects(): void;
 }

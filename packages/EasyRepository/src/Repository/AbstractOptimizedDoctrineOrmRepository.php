@@ -13,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyRepository\Exception\EasyPaginationNotInstalledException;
 use EonX\EasyRepository\Repository\PaginatedObjectRepositoryInterface as PaginatedObjRepoInterface;
 use Throwable;
@@ -22,7 +22,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 {
     private ?EntityManagerInterface $manager = null;
 
-    private ?PaginationInterface $pagination = null;
+    private ?Pagination $pagination = null;
 
     private ?EntityRepository $repository = null;
 
@@ -72,7 +72,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
             ->flush();
     }
 
-    public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface
+    public function paginate(?Pagination $pagination = null): LengthAwarePaginatorInterface
     {
         return $this->createLengthAwarePaginator(null, null, $pagination);
     }
@@ -91,7 +91,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         $this->callManagerMethodForObjects('persist', $object);
     }
 
-    public function setPagination(PaginationInterface $pagination): void
+    public function setPagination(Pagination $pagination): void
     {
         $this->pagination = $pagination;
     }
@@ -129,7 +129,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,
-        ?PaginationInterface $pagination = null,
+        ?Pagination $pagination = null,
     ): DoctrineOrmLengthAwarePaginator {
         return new DoctrineOrmLengthAwarePaginator(
             $pagination ?? $this->getPagination(),
@@ -163,7 +163,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
         return $this->manager ??= $this->registry->getManagerForClass($this->getEntityClass());
     }
 
-    protected function getPagination(): PaginationInterface
+    protected function getPagination(): Pagination
     {
         if ($this->pagination !== null) {
             return $this->pagination;

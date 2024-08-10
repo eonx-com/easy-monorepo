@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginator;
 
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class IterablePaginator extends AbstractPaginator
 {
     public function __construct(
-        PaginationInterface $pagination,
+        Pagination $pagination,
         private readonly iterable $iterable,
     ) {
         parent::__construct($pagination);

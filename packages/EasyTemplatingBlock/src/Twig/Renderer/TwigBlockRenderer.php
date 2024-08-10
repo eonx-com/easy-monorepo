@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyTemplatingBlock\Twig\Renderer;
 
 use EonX\EasyTemplatingBlock\Common\Renderer\AbstractSimpleTemplatingBlockRenderer;
-use EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlockInterface;
-use EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface;
+use EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock;
+use EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlock;
 use EonX\EasyTemplatingBlock\Twig\Exception\UnableToRenderBlockException;
 use Throwable;
 use Twig\Environment;
@@ -18,9 +18,9 @@ final class TwigBlockRenderer extends AbstractSimpleTemplatingBlockRenderer
     }
 
     /**
-     * @param \EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlockInterface $block
+     * @param \EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlock $block
      */
-    public function renderBlock(TemplatingBlockInterface $block): string
+    public function renderBlock(AbstractTemplatingBlock $block): string
     {
         try {
             return $this->twig->render($block->getTemplateName(), $block->getTemplateContext() ?? []);
@@ -34,6 +34,6 @@ final class TwigBlockRenderer extends AbstractSimpleTemplatingBlockRenderer
      */
     protected function getSupportedBlockClasses(): array
     {
-        return [TemplateBlockInterface::class];
+        return [TemplateBlock::class];
     }
 }

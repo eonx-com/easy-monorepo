@@ -10,7 +10,7 @@ use EonX\EasyRandom\Exception\InvalidRandomStringException;
 use EonX\EasyRandom\Generator\RandomStringGenerator;
 use EonX\EasyRandom\Tests\Stub\Constraint\AlwaysValidRandomStringConstraintStub;
 use EonX\EasyRandom\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyRandom\ValueObject\RandomStringInterface;
+use EonX\EasyRandom\ValueObject\RandomString;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\String\UnicodeString;
 
@@ -22,7 +22,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
     public static function provideRandomStringData(): iterable
     {
         yield 'Default configs' => [
-            'configure' => static function (RandomStringInterface $randomString): void {
+            'configure' => static function (RandomString $randomString): void {
                 // No body needed
             },
             'assert' => static function (string $randomString): void {
@@ -33,7 +33,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
 
         foreach (Alphabet::cases() as $alphabet) {
             yield \sprintf('Exclude %s', $alphabet->name) => [
-                'configure' => static function (RandomStringInterface $randomString) use ($alphabet): void {
+                'configure' => static function (RandomString $randomString) use ($alphabet): void {
                     $randomString->{\sprintf('exclude%s', $alphabet->name)}();
                 },
                 'assert' => static function (string $randomString) use ($alphabet): void {
@@ -43,7 +43,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
             ];
 
             yield \sprintf('Include only %s', $alphabet->name) => [
-                'configure' => static function (RandomStringInterface $randomString) use ($alphabet): void {
+                'configure' => static function (RandomString $randomString) use ($alphabet): void {
                     $randomString
                         ->clear()
                         ->{\sprintf('include%s', $alphabet->name)}();
@@ -56,7 +56,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         }
 
         yield 'Override alphabet' => [
-            'configure' => static function (RandomStringInterface $randomString): void {
+            'configure' => static function (RandomString $randomString): void {
                 $randomString->alphabet('EONX');
             },
             'assert' => static function (string $randomString): void {
@@ -66,7 +66,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         ];
 
         yield 'User friendly' => [
-            'configure' => static function (RandomStringInterface $randomString): void {
+            'configure' => static function (RandomString $randomString): void {
                 $randomString
                     ->constraints([new AlwaysValidRandomStringConstraintStub()])
                     ->maxAttempts(10)
@@ -83,7 +83,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         ];
 
         yield 'Prefix respect length' => [
-            'configure' => static function (RandomStringInterface $randomString): void {
+            'configure' => static function (RandomString $randomString): void {
                 $randomString
                     ->prefix('eonx_')
                     ->userFriendly();
@@ -95,7 +95,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         ];
 
         yield 'Suffix respect length' => [
-            'configure' => static function (RandomStringInterface $randomString): void {
+            'configure' => static function (RandomString $randomString): void {
                 $randomString
                     ->suffix('_eonx')
                     ->userFriendly();
@@ -107,7 +107,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         ];
 
         yield 'Prefix and Suffix respect length' => [
-            'configure' => static function (RandomStringInterface $randomString): void {
+            'configure' => static function (RandomString $randomString): void {
                 $randomString
                     ->prefix('eonx_')
                     ->suffix('_eonx')

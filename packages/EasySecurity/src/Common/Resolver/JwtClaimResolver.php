@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Common\Resolver;
 
 use EonX\EasyApiToken\Common\Exception\InvalidArgumentException;
-use EonX\EasyApiToken\Common\ValueObject\JwtInterface;
+use EonX\EasyApiToken\Common\ValueObject\JwtToken;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -15,20 +15,20 @@ final readonly class JwtClaimResolver implements JwtClaimResolverInterface
     ) {
     }
 
-    public function getArrayClaim(JwtInterface $token, string $claim, ?array $default = null): array
+    public function getArrayClaim(JwtToken $jwtToken, string $claim, ?array $default = null): array
     {
-        return $this->doGetClaim($token, $claim, $default ?? []);
+        return $this->doGetClaim($jwtToken, $claim, $default ?? []);
     }
 
-    public function getClaim(JwtInterface $token, string $claim, mixed $default = null): mixed
+    public function getClaim(JwtToken $jwtToken, string $claim, mixed $default = null): mixed
     {
-        return $this->doGetClaim($token, $claim, $default);
+        return $this->doGetClaim($jwtToken, $claim, $default);
     }
 
-    private function doGetClaim(JwtInterface $token, string $claim, mixed $default): mixed
+    private function doGetClaim(JwtToken $jwtToken, string $claim, mixed $default): mixed
     {
         try {
-            return $token->getClaimForceArray($claim);
+            return $jwtToken->getClaimForceArray($claim);
         } catch (InvalidArgumentException $exception) {
             $this->logger->info(\sprintf(
                 '[%s] Exception while getting claim "%s": %s',

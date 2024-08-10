@@ -6,9 +6,8 @@ namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Nai\ValueObject;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\File;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\FileHeader;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\FileTrailer;
-use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContextInterface;
+use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContext;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(File::class)]
@@ -24,19 +23,7 @@ final class FileTest extends AbstractUnitTestCase
             'trailer' => new FileTrailer(),
         ];
 
-        /** @var \EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContextInterface $context */
-        $context = $this->getMockWithExpectations(
-            ResultsContextInterface::class,
-            static function (MockInterface $context): void {
-                $context
-                    ->shouldReceive('getGroups')
-                    ->once()
-                    ->withNoArgs()
-                    ->andReturn([]);
-            }
-        );
-
-        $file = new File($context, $data);
+        $file = new File(new ResultsContext([], [], [], [], []), $data);
 
         self::assertInstanceOf(FileHeader::class, $file->getHeader());
         self::assertIsArray($file->getGroups());

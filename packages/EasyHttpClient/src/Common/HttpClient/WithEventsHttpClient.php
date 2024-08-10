@@ -11,9 +11,7 @@ use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
 use EonX\EasyHttpClient\Common\ValueObject\Config;
 use EonX\EasyHttpClient\Common\ValueObject\RequestData;
-use EonX\EasyHttpClient\Common\ValueObject\RequestDataInterface;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
-use EonX\EasyHttpClient\Common\ValueObject\ResponseDataInterface;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
@@ -80,8 +78,8 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
 
     private function dispatchEvent(
         Config $config,
-        RequestDataInterface $requestData,
-        ?ResponseDataInterface $responseData = null,
+        RequestData $requestData,
+        ?ResponseData $responseData = null,
         ?Throwable $throwable = null,
     ): void {
         if ($config->isEventsEnabled()) {
@@ -95,7 +93,7 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
         }
     }
 
-    private function getPassThruClosure(RequestDataInterface $requestData, Config $config): Closure
+    private function getPassThruClosure(RequestData $requestData, Config $config): Closure
     {
         return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
             // Get chunk content here, so we can handle transport/timeout exceptions
@@ -132,10 +130,10 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
      * @param \EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface[] $modifiers
      */
     private function modifyRequestData(
-        RequestDataInterface $data,
+        RequestData $data,
         array $modifiersWhitelist,
         array $modifiers,
-    ): RequestDataInterface {
+    ): RequestData {
         // No explicitly allowed modifiers, execute all of them
         if (\count($modifiersWhitelist) < 1) {
             foreach ($modifiers as $modifier) {

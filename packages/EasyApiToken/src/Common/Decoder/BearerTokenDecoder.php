@@ -5,7 +5,7 @@ namespace EonX\EasyApiToken\Common\Decoder;
 
 use EonX\EasyApiToken\Common\Driver\JwtDriverInterface;
 use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
-use EonX\EasyApiToken\Common\ValueObject\Jwt;
+use EonX\EasyApiToken\Common\ValueObject\JwtToken;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
@@ -30,7 +30,7 @@ final class BearerTokenDecoder extends AbstractDecoder
         }
 
         try {
-            return new Jwt((array)$this->jwtDriver->decode(\trim($authorization)), $authorization);
+            return new JwtToken((array)$this->jwtDriver->decode(\trim($authorization)), $authorization);
         } catch (Throwable $throwable) {
             $this->logger?->info(\sprintf('Invalid JWT token from request: "%s"', $throwable->getMessage()));
 

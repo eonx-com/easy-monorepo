@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bundle\CompilerPass;
 
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyRepository\Bundle\Enum\ConfigTag;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,14 +19,14 @@ final class SetPaginationOnRepositoryCompilerPass implements CompilerPassInterfa
     public function process(ContainerBuilder $container): void
     {
         // Works only if package installed and bundle registered
-        if (\interface_exists(PaginationInterface::class) === false
-            || $container->hasDefinition(PaginationInterface::class) === false) {
+        if (\class_exists(Pagination::class) === false
+            || $container->hasDefinition(Pagination::class) === false) {
             return;
         }
 
         // Find all paginated repo, if they have setPagination method, then add the method call
         $paginatedRepoDefs = $container->findTaggedServiceIds(ConfigTag::PaginatedRepository->value);
-        $paginationRef = new Reference(PaginationInterface::class);
+        $paginationRef = new Reference(Pagination::class);
 
         foreach ($paginatedRepoDefs as $id => $tags) {
             $repoDef = $container->getDefinition($id);

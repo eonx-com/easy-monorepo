@@ -7,7 +7,6 @@ use EonX\EasyEncryption\Common\Exception\CouldNotDecryptException;
 use EonX\EasyEncryption\Common\Exception\CouldNotEncryptException;
 use EonX\EasyEncryption\Common\Exception\EasyEncryptionExceptionInterface;
 use EonX\EasyEncryption\Common\ValueObject\DecryptedString;
-use EonX\EasyEncryption\Common\ValueObject\DecryptedStringInterface;
 use ParagonIE\ConstantTime\Encoding;
 use Throwable;
 
@@ -24,7 +23,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
     ) {
     }
 
-    public function decrypt(string $text): DecryptedStringInterface
+    public function decrypt(string $text): DecryptedString
     {
         $toDecrypt = $this->execSafely(CouldNotDecryptException::class, static function () use ($text): array {
             $toDecryptArray = \json_decode(Encoding::base64Decode($text), true);
@@ -38,7 +37,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
 
         return $this->execSafely(
             CouldNotDecryptException::class,
-            function () use ($toDecrypt): DecryptedStringInterface {
+            function () use ($toDecrypt): DecryptedString {
                 $keyName = $toDecrypt[self::ENCRYPTED_KEY_NAME];
 
                 return new DecryptedString(

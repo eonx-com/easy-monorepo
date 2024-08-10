@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use Closure;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\ValueObject\Pagination;
 
 abstract class AbstractPaginator implements PaginatorInterface
 {
@@ -20,7 +20,7 @@ abstract class AbstractPaginator implements PaginatorInterface
     private array $urls = [];
 
     public function __construct(
-        protected PaginationInterface $pagination,
+        protected Pagination $pagination,
     ) {
         // No body needed
     }

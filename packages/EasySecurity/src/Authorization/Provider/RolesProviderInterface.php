@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Authorization\Provider;
 interface RolesProviderInterface
 {
     /**
-     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRoles(): array;
 }
