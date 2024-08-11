@@ -11,8 +11,8 @@
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-event-dispatcher": "^5.12",
-        "eonx-com/easy-utils": "^5.12",
+        "eonx-com/easy-event-dispatcher": "^5.13",
+        "eonx-com/easy-utils": "^5.13",
         "myclabs/deep-copy": "^1.11",
         "nesbot/carbon": "^3.7",
         "symfony/config": "^7.0",
@@ -23,8 +23,8 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.269",
-        "eonx-com/easy-error-handler": "^5.12",
-        "eonx-com/easy-test": "^5.12",
+        "eonx-com/easy-error-handler": "^5.13",
+        "eonx-com/easy-test": "^5.13",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2"
@@ -50,7 +50,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.12-dev"
+            "dev-master": "5.13-dev"
         }
     }
 }
