@@ -13,9 +13,6 @@ final class SetEncryptorOnBatchItemTransformerCompilerPass implements CompilerPa
 {
     private const ENCRYPTOR_SETTER = 'setEncryptor';
 
-    /**
-     * @throws \ReflectionException
-     */
     public function process(ContainerBuilder $container): void
     {
         // Works only if eonx-com/easy-encryption is installed

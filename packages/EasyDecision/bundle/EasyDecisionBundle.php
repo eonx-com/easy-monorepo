@@ -28,12 +28,6 @@ final class EasyDecisionBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/services.php');
-
-        if ($config['use_expression_language'] ?? false) {
-            $container->import('config/use_expression_language.php');
-        }
-
         $builder
             ->registerForAutoconfiguration(DecisionConfiguratorInterface::class)
             ->addTag(ConfigTag::DecisionConfigurator->value);
@@ -44,7 +38,13 @@ final class EasyDecisionBundle extends AbstractBundle
 
         $builder
             ->autowire(MappingProviderInterface::class, ConfigMappingProvider::class)
-            ->setArgument('$decisionsConfig', $config['type_mapping'] ?? []);
+            ->setArgument('$decisionsConfig', $config['type_mapping']);
+
+        $container->import('config/services.php');
+
+        if ($config['use_expression_language']) {
+            $container->import('config/use_expression_language.php');
+        }
 
         // Register middleware if messenger present
         if (\class_exists(MessengerPass::class)) {

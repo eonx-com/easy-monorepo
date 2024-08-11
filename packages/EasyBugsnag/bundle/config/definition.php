@@ -7,19 +7,14 @@ use Symfony\Component\HttpKernel\Kernel;
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->booleanNode('enabled')
-                ->defaultTrue()
-                ->info('Enable/Disable the entire package')
-            ->end()
             ->scalarNode('api_key')
                 ->isRequired()
                 ->info('Bugsnag Notifier API key, can be found in project settings')
             ->end()
             // Application Name
             ->arrayNode('app_name')
-                ->addDefaultsIfNotSet()
+                ->canBeEnabled()
                 ->children()
-                    ->booleanNode('enabled')->defaultFalse()->end()
                     ->scalarNode('env_var')->defaultValue('APP_NAME')->end()
                 ->end()
             ->end()
@@ -41,9 +36,8 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             // AWS ECS FARGATE
             ->arrayNode('aws_ecs_fargate')
-                ->addDefaultsIfNotSet()
+                ->canBeEnabled()
                 ->children()
-                    ->booleanNode('enabled')->defaultFalse()->end()
                     ->scalarNode('meta_url')
                         ->defaultNull()
                         ->info('URL used to fetch AWS ECS Fargate task metadata')
@@ -56,14 +50,8 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             // Doctrine DBAL
             ->arrayNode('doctrine_dbal')
-                ->beforeNormalization()
-                    ->always(static fn ($v): array => \is_array($v) ? $v : [
-                        'enabled' => (bool)$v,
-                    ])
-                ->end()
-                ->addDefaultsIfNotSet()
+                ->canBeDisabled()
                 ->children()
-                    ->booleanNode('enabled')->defaultTrue()->end()
                     ->arrayNode('connections')
                         ->beforeNormalization()->castToArray()->end()
                         ->defaultValue(['default'])
@@ -73,16 +61,12 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             // Sensitive Data
             ->arrayNode('sensitive_data_sanitizer')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->booleanNode('enabled')->defaultTrue()->end()
-                ->end()
+                ->canBeDisabled()
             ->end()
             // Session Tracking
             ->arrayNode('session_tracking')
-                ->addDefaultsIfNotSet()
+                ->canBeEnabled()
                 ->children()
-                    ->booleanNode('enabled')->defaultFalse()->end()
                     ->scalarNode('cache_directory')
                         ->defaultValue('%kernel.cache_dir%')
                         ->info('Directory used by default cache adapter provided by the package')
@@ -112,10 +96,7 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             // Worker Info
             ->arrayNode('worker_info')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->booleanNode('enabled')->defaultFalse()->end()
-                ->end()
+                ->canBeEnabled()
             ->end()
             ->booleanNode('use_default_configurators')->defaultTrue()->end()
         ->end();

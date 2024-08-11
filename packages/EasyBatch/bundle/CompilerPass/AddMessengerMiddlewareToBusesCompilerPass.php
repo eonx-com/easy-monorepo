@@ -5,6 +5,7 @@ namespace EonX\EasyBatch\Bundle\CompilerPass;
 
 use EonX\EasyBatch\Messenger\Middleware\DispatchBatchMiddleware;
 use EonX\EasyBatch\Messenger\Middleware\ProcessBatchItemMiddleware;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,8 +26,8 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
             $busDef = $container->getDefinition($busId);
             $middleware = $busDef->getArgument(0);
 
-            if (($middleware instanceof IteratorArgument) === false) {
-                continue;
+            if ($middleware instanceof IteratorArgument === false) {
+                throw new RuntimeException(\sprintf('Middleware for bus "%s" must be an IteratorArgument', $busId));
             }
 
             // Remove easy batch middleware if added in the app config

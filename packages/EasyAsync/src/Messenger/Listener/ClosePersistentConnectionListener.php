@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Messenger\Listener;
 
-use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
+use EonX\EasyAsync\Doctrine\Closer\ConnectionCloser;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
 final class ClosePersistentConnectionListener
@@ -16,7 +16,7 @@ final class ClosePersistentConnectionListener
      * @param string[]|null $managers
      */
     public function __construct(
-        private readonly ManagersCloser $managersCloser,
+        private readonly ConnectionCloser $managersCloser,
         private readonly float $maxIdleTime,
         private readonly ?array $managers = null,
     ) {

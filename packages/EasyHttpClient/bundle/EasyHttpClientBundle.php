@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Bundle;
 
-use Bugsnag\Client;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateDefaultClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateEasyWebhookClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateMessengerSqsClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -42,46 +40,20 @@ final class EasyHttpClientBundle extends AbstractBundle
             ->registerForAutoconfiguration(RequestDataModifierInterface::class)
             ->addTag(ConfigTag::RequestDataModifier->value);
 
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DecorateDefaultClient->value,
-                $config['decorate_default_client'] ?? false
-            );
-
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DecorateEasyWebhookClient->value,
-                $config['decorate_easy_webhook_client'] ?? false
-            );
-
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DecorateMessengerSqsClient->value,
-                $config['decorate_messenger_sqs_client'] ?? false
-            );
-
-        $container
-            ->parameters()
-            ->set(ConfigParam::ModifiersEnabled->value, $config['modifiers']['enabled'] ?? true);
-
-        $modifiersWhitelist = $config['modifiers']['whitelist'] ?? [null];
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::ModifiersWhitelist->value,
-                \count($modifiersWhitelist) === 1 && ($modifiersWhitelist[0] === null) ? null : $modifiersWhitelist
-            );
+        $container->parameters()
+            ->set(ConfigParam::DecorateDefaultClient->value, $config['decorate_default_client'])
+            ->set(ConfigParam::DecorateEasyWebhookClient->value, $config['decorate_easy_webhook_client'])
+            ->set(ConfigParam::DecorateMessengerSqsClient->value, $config['decorate_messenger_sqs_client'])
+            ->set(ConfigParam::ModifiersEnabled->value, $config['modifiers']['enabled'])
+            ->set(ConfigParam::ModifiersWhitelist->value, $config['modifiers']['whitelist']);
 
         $container->import('config/http_client.php');
 
-        if (($config['easy_bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
+        if (($config['easy_bugsnag']['enabled'])) {
             $container->import('config/easy_bugsnag.php');
         }
 
-        if (($config['psr_logger_enabled'] ?? true) && \interface_exists(LoggerInterface::class)) {
+        if (($config['psr_logger']['enabled'])) {
             $container->import('config/psr_logger.php');
         }
     }

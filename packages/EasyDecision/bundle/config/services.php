@@ -24,7 +24,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$rules', tagged_iterator(ConfigTag::DecisionRule->value));
 
     $services->set(DecisionFactoryInterface::class, DecisionFactory::class)
-        ->arg('$configurators', tagged_iterator('easy_decision.decision_configurator'));
+        ->arg('$configurators', tagged_iterator(ConfigTag::DecisionConfigurator->value));
 
     $services->set(ExpressionLanguageFactoryInterface::class, ExpressionLanguageFactory::class);
 

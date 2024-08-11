@@ -7,7 +7,7 @@ use Symfony\Config\EasySecurityConfig;
 
 return static function (EasySecurityConfig $securityConfig): void {
     $securityConfig->voters()
-        ->permissionEnabled(true)
-        ->providerEnabled(true)
-        ->roleEnabled(true);
+        ->permissionVoter(true)
+        ->providerVoter(true)
+        ->roleVoter(true);
 };

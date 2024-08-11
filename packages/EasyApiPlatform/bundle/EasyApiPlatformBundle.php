@@ -13,20 +13,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyApiPlatformBundle extends AbstractBundle
 {
-    private const ADVANCED_SEARCH_FILTER_CONFIG = [
-        'iri_fields' => ConfigParam::AdvancedSearchFilterIriFields,
-    ];
-
-    private const CUSTOM_PAGINATOR_CONFIG = [
-        'enabled' => ConfigParam::CustomPaginatorEnabled,
-    ];
-
-    private const EASY_ERROR_HANDLER_CONFIG = [
-        'custom_serializer_exceptions' => ConfigParam::EasyErrorHandlerCustomSerializerExceptions,
-        'enabled' => ConfigParam::EasyErrorHandlerEnabled,
-        'report_exceptions_to_bugsnag' => ConfigParam::EasyErrorHandlerReportExceptionsToBugsnag,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -45,23 +31,9 @@ final class EasyApiPlatformBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::ADVANCED_SEARCH_FILTER_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['advanced_search_filter'][$name]);
-        }
-
-        foreach (self::CUSTOM_PAGINATOR_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['custom_paginator'][$name]);
-        }
-
-        foreach (self::EASY_ERROR_HANDLER_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['easy_error_handler'][$name]);
-        }
+        $container
+            ->parameters()
+            ->set(ConfigParam::AdvancedSearchFilterIriFields->value, $config['advanced_search_filter']['iri_fields']);
 
         $container->import('config/services.php');
         $container->import('config/filters.php');
@@ -70,13 +42,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
             $container->import('config/pagination.php');
         }
 
-        if ($config['easy_error_handler']['enabled']) {
-            $container->import('config/easy_error_handler.php');
-        }
-
-        if ($config['easy_error_handler']['report_exceptions_to_bugsnag'] === false) {
-            $container->import('config/bugsnag.php');
-        }
+        $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -88,5 +54,31 @@ final class EasyApiPlatformBundle extends AbstractBundle
         $builder->prependExtensionConfig('twig', [
             'paths' => [$apiPlatformBundleViewsFolder => 'ApiPlatform'],
         ]);
+    }
+
+    private function registerEasyErrorHandlerConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $config = $config['easy_error_handler'];
+
+        if ($config['enabled'] === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(
+                ConfigParam::EasyErrorHandlerCustomSerializerExceptions->value,
+                $config['custom_serializer_exceptions']
+            );
+
+        $container->import('config/easy_error_handler.php');
+
+        // If report_exceptions_to_bugsnag is set to false, import the bugsnag configuration with exception ignorer
+        if ($config['report_exceptions_to_bugsnag'] === false) {
+            $container->import('config/bugsnag.php');
+        }
     }
 }

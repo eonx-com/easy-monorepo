@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Messenger\Middleware;
 
-use EonX\EasyAsync\Doctrine\Closer\ManagersCloser;
+use EonX\EasyAsync\Doctrine\Closer\ConnectionCloser;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -15,7 +15,7 @@ final readonly class DoctrineManagersCloseConnectionMiddleware implements Middle
      * @param string[]|null $managers
      */
     public function __construct(
-        private ManagersCloser $managersCloser,
+        private ConnectionCloser $connectionCloser,
         private ?array $managers = null,
     ) {
     }
@@ -27,7 +27,7 @@ final readonly class DoctrineManagersCloseConnectionMiddleware implements Middle
                 ->handle($envelope, $stack);
         } finally {
             if ($envelope->last(ConsumedByWorkerStamp::class) !== null) {
-                $this->managersCloser->close($this->managers);
+                $this->connectionCloser->close($this->managers);
             }
         }
     }

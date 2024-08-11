@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -8,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->arrayNode('bugsnag')
+            ->arrayNode('easy_bugsnag')
                 ->canBeDisabled()
                 ->children()
                     ->integerNode('threshold')->defaultNull()->end()
@@ -33,6 +34,10 @@ return static function (DefinitionConfigurator $definition) {
                         ->useAttributeAsKey('class')
                         ->beforeNormalization()->castToArray()->end()
                         ->integerPrototype()->end()
+                        ->defaultValue([
+                            HttpExceptionInterface::class => Logger::DEBUG,
+                            RequestExceptionInterface::class => Logger::DEBUG,
+                        ])
                     ->end()
                     ->arrayNode('ignored_exceptions')
                         ->beforeNormalization()->castToArray()->end()

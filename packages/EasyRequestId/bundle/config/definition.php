@@ -21,9 +21,17 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
 
             // Integrations
-            ->booleanNode('easy_error_handler')->defaultTrue()->end()
-            ->booleanNode('easy_logging')->defaultTrue()->end()
-            ->booleanNode('easy_http_client')->defaultTrue()->end()
-            ->booleanNode('easy_webhook')->defaultTrue()->end()
+            ->arrayNode('easy_error_handler')
+                ->canBeDisabled()
+            ->end()
+            ->arrayNode('easy_logging')
+                ->canBeDisabled()
+            ->end()
+            ->arrayNode('easy_http_client')
+                ->canBeDisabled()
+            ->end()
+            ->arrayNode('easy_webhook')
+                ->canBeDisabled()
+            ->end()
         ->end();
 };

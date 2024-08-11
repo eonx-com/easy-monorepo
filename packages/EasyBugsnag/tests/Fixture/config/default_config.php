@@ -10,9 +10,6 @@ use Symfony\Config\EasyBugsnagConfig;
 return static function (EasyBugsnagConfig $easyBugsnagConfig, ContainerConfigurator $containerConfigurator): void {
     $easyBugsnagConfig->apiKey('my-bugsnag-api-key');
 
-    $easyBugsnagConfig->sensitiveDataSanitizer()
-        ->enabled(true);
-
     $easyBugsnagConfig->sessionTracking()
         ->enabled(true)
         ->excludeUrls(['^/ping']);

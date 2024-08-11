@@ -34,6 +34,9 @@
             "EonX\\EasyBatch\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
+    "suggest": {
+        "eonx-com/easy-encryption": "To encrypt/decrypt batch items"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "5.12-dev"

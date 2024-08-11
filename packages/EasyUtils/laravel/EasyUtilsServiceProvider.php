@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Laravel;
 
 use EonX\EasyUtils\Bundle\EasyUtilsBundle;
-use EonX\EasyUtils\Bundle\Enum\BundleParam;
 use EonX\EasyUtils\Bundle\Enum\ConfigTag;
 use EonX\EasyUtils\Common\Trimmer\RecursiveStringTrimmer;
 use EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface;
@@ -139,8 +138,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
         $keysToMask = \config('easy-utils.sensitive_data.keys_to_mask', []);
 
-        $maskPattern = \config('easy-utils.sensitive_data.mask_pattern')
-            ?? BundleParam::SensitiveDataDefaultMaskPattern->value;
+        $maskPattern = \config('easy-utils.sensitive_data.mask_pattern');
 
         $this->app->singleton(
             SensitiveDataSanitizerInterface::class,

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Bundle;
 
-use EonX\EasyUtils\Bundle\Enum\BundleParam;
 use EonX\EasyUtils\Bundle\Enum\ConfigParam;
 use EonX\EasyUtils\Bundle\Enum\ConfigTag;
 use EonX\EasyUtils\SensitiveData\Sanitizer\StringSanitizerInterface;
@@ -42,18 +41,6 @@ final class EasyUtilsBundle extends AbstractBundle
         '40292', // Value of the CURLOPT_SSLKEY_BLOB constant
     ];
 
-    private const MATH_CONFIG = [
-        'format_decimal_separator' => ConfigParam::MathFormatDecimalSeparator,
-        'format_thousands_separator' => ConfigParam::MathFormatThousandsSeparator,
-        'round_mode' => ConfigParam::MathRoundMode,
-        'round_precision' => ConfigParam::MathRoundPrecision,
-        'scale' => ConfigParam::MathScale,
-    ];
-
-    private const STRING_TRIMMER_CONFIG = [
-        'except_keys' => ConfigParam::StringTrimmerExceptKeys,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -66,36 +53,31 @@ final class EasyUtilsBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::MATH_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['math'][$name]);
-        }
-
-        foreach (self::STRING_TRIMMER_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['string_trimmer'][$name]);
-        }
+        $container
+            ->parameters()
+            ->set(ConfigParam::MathFormatDecimalSeparator->value, $config['math']['format_decimal_separator'])
+            ->set(ConfigParam::MathFormatThousandsSeparator->value, $config['math']['format_thousands_separator'])
+            ->set(ConfigParam::MathRoundMode->value, $config['math']['round_mode'])
+            ->set(ConfigParam::MathRoundPrecision->value, $config['math']['round_precision'])
+            ->set(ConfigParam::MathScale->value, $config['math']['scale']);
 
         $container->import('config/services.php');
 
-        // SensitiveData
-        if ($config['sensitive_data']['enabled'] ?? true) {
-            $this->configureSensitiveDataSanitizer($config, $container, $builder);
-        }
-
-        // StringTrimmer
-        if ($config['string_trimmer']['enabled'] ?? false) {
-            $container->import('config/string_trimmer.php');
-        }
+        $this->registerSensitiveDataSanitizerConfiguration($config, $container, $builder);
+        $this->registerStringTrimmerConfiguration($config, $container, $builder);
     }
 
-    private function configureSensitiveDataSanitizer(
+    private function registerSensitiveDataSanitizerConfiguration(
         array $config,
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
+        $config = $config['sensitive_data_sanitizer'];
+
+        if ($config['enabled'] === false) {
+            return;
+        }
+
         $builder
             ->registerForAutoconfiguration(ObjectTransformerInterface::class)
             ->addTag(ConfigTag::SensitiveDataObjectTransformer->value);
@@ -104,34 +86,38 @@ final class EasyUtilsBundle extends AbstractBundle
             ->registerForAutoconfiguration(StringSanitizerInterface::class)
             ->addTag(ConfigTag::SensitiveDataStringSanitizer->value);
 
-        if ($config['sensitive_data']['use_default_object_transformers'] ?? true) {
-            $container->import('config/sensitive_data_default_object_transformers.php');
-        }
-
-        if ($config['sensitive_data']['use_default_string_sanitizers'] ?? true) {
-            $container->import('config/sensitive_data_default_string_sanitizers.php');
-        }
-
-        $container->import('config/sensitive_data.php');
-
-        $defaultKeysToMask = ($config['sensitive_data']['use_default_keys_to_mask'] ?? true)
-            ? self::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK
-            : [];
-
-        $keysToMask = $config['sensitive_data']['keys_to_mask'] ?? [];
-
         $container
             ->parameters()
             ->set(
                 ConfigParam::SensitiveDataKeysToMask->value,
-                \array_unique(\array_merge($defaultKeysToMask, $keysToMask))
-            );
+                \array_unique(\array_merge(self::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK, $config['keys_to_mask']))
+            )
+            ->set(ConfigParam::SensitiveDataMaskPattern->value, $config['mask_pattern']);
+
+        $container->import('config/sensitive_data.php');
+
+        if ($config['use_default_object_transformers']) {
+            $container->import('config/sensitive_data_default_object_transformers.php');
+        }
+
+        if ($config['use_default_string_sanitizers']) {
+            $container->import('config/sensitive_data_default_string_sanitizers.php');
+        }
+    }
+
+    private function registerStringTrimmerConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['string_trimmer']['enabled'] === false) {
+            return;
+        }
 
         $container
             ->parameters()
-            ->set(
-                ConfigParam::SensitiveDataMaskPattern->value,
-                $config['sensitive_data']['mask_pattern'] ?? BundleParam::SensitiveDataDefaultMaskPattern->value
-            );
+            ->set(ConfigParam::StringTrimmerExceptKeys->value, $config['string_trimmer']['except_keys']);
+
+        $container->import('config/string_trimmer.php');
     }
 }

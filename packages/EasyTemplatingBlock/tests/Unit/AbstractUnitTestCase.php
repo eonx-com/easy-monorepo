@@ -12,15 +12,15 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractUnitTestCase extends TestCase
 {
-    protected function tearDown(): void
+    public static function tearDownAfterClass(): void
     {
-        $fs = new Filesystem();
+        parent::tearDownAfterClass();
+
+        $filesystem = new Filesystem();
         $var = __DIR__ . '/../../var';
 
-        if ($fs->exists($var)) {
-            $fs->remove($var);
+        if ($filesystem->exists($var)) {
+            $filesystem->remove($var);
         }
-
-        parent::tearDown();
     }
 }

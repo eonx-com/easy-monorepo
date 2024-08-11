@@ -7,5 +7,5 @@ use Symfony\Config\EasySecurityConfig;
 
 return static function (EasySecurityConfig $securityConfig): void {
     $securityConfig->voters()
-        ->providerEnabled(true);
+        ->providerVoter(true);
 };

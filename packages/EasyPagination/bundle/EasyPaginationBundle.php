@@ -11,13 +11,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyPaginationBundle extends AbstractBundle
 {
-    private const PAGINATION_PARAMS = [
-        'page_attribute' => ConfigParam::PageAttribute,
-        'page_default' => ConfigParam::PageDefault,
-        'per_page_attribute' => ConfigParam::PerPageAttribute,
-        'per_page_default' => ConfigParam::PerPageDefault,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -30,15 +23,16 @@ final class EasyPaginationBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::PAGINATION_PARAMS as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['pagination'][$name]);
-        }
+        $container
+            ->parameters()
+            ->set(ConfigParam::PageAttribute->value, $config['pagination']['page_attribute'])
+            ->set(ConfigParam::PageDefault->value, $config['pagination']['page_default'])
+            ->set(ConfigParam::PerPageAttribute->value, $config['pagination']['per_page_attribute'])
+            ->set(ConfigParam::PerPageDefault->value, $config['pagination']['per_page_default']);
 
         $container->import('config/services.php');
 
-        if ($config['use_default_resolver'] ?? true) {
+        if ($config['use_default_resolver']) {
             $container->import('config/default_resolver.php');
         }
     }

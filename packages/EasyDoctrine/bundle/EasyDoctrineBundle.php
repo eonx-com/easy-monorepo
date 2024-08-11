@@ -11,17 +11,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyDoctrineBundle extends AbstractBundle
 {
-    private const AWS_RDS_IAM_CONFIG = [
-        'auth_token_lifetime_in_minutes' => ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes,
-        'aws_region' => ConfigParam::AwsRdsIamAwsRegion,
-        'aws_username' => ConfigParam::AwsRdsIamAwsUsername,
-    ];
-
-    private const AWS_RDS_SSL_CONFIG = [
-        'ca_path' => ConfigParam::AwsRdsSslCaPath,
-        'mode' => ConfigParam::AwsRdsSslMode,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -36,98 +25,75 @@ final class EasyDoctrineBundle extends AbstractBundle
     {
         $container
             ->parameters()
-            ->set(
-                ConfigParam::DeferredDispatcherEntities->value,
-                $config['deferred_dispatcher_entities']
-            );
+            ->set(ConfigParam::DeferredDispatcherEntities->value, $config['deferred_dispatcher_entities']);
 
         $container->import('config/services.php');
 
-        /** @var array<string, string> $bundles */
-        $bundles = $builder->getParameter('kernel.bundles');
+        $this->registerAwsRdsConfiguration($config, $container, $builder);
+        $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
+    }
 
-        if ($config['easy_error_handler_enabled'] && isset($bundles['EasyErrorHandlerSymfonyBundle']) === true) {
-            $container->import('config/easy_error_handler_listener.php');
-        }
-
-        $awsRdsSslEnabled = $this->loadAwsRdsSsl($container, $config);
-        $awsRdsIamEnabled = $this->loadAwsRdsIam($container, $config);
-
-        if ($awsRdsSslEnabled || $awsRdsIamEnabled) {
-            if ($builder->hasParameter(ConfigParam::AwsRdsSslMode->value) === false) {
-                $container
-                    ->parameters()
-                    ->set(ConfigParam::AwsRdsSslMode->value, null);
-            }
-
+    private function registerAwsRdsConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['aws_rds']['iam']['enabled'] || $config['aws_rds']['ssl']['enabled']) {
             $container->import('config/aws_rds.php');
         }
+
+        $this->registerAwsRdsIamConfiguration($config, $container, $builder);
+        $this->registerAwsRdsSslConfiguration($config, $container, $builder);
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function loadAwsRdsIam(ContainerConfigurator $container, array $config): bool
-    {
-        $awsRdsIamEnabled = $config['aws_rds']['iam']['enabled']
-            ?? $config['aws_rds_iam']['enabled']
-            ?? false;
+    private function registerAwsRdsIamConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $config = $config['aws_rds']['iam'];
 
-        // Always set AWS Username parameter so AwsRdsConnectionParamsResolver gets a default value
+        if ($config['enabled'] === false) {
+            return;
+        }
+
         $container
             ->parameters()
-            ->set(ConfigParam::AwsRdsIamAwsUsername->value, null);
+            ->set(ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes->value, $config['auth_token_lifetime_in_minutes'])
+            ->set(ConfigParam::AwsRdsIamAwsRegion->value, $config['aws_region'])
+            ->set(ConfigParam::AwsRdsIamAwsUsername->value, $config['aws_username']);
 
-        if ($awsRdsIamEnabled) {
-            foreach (self::AWS_RDS_IAM_CONFIG as $configName => $param) {
-                $value = $config['aws_rds']['iam'][$configName]
-                    ?? $config['aws_rds_iam'][$configName]
-                    ?? null;
-
-                if ($configName === 'auth_token_lifetime_in_minutes') {
-                    $value ??= (int)$config['aws_rds_iam']['cache_expiry_in_seconds'] / 60;
-                }
-
-                $container
-                    ->parameters()
-                    ->set($param->value, $value);
-            }
-
-            $container->import('config/aws_rds_iam.php');
-        }
-
-        return $awsRdsIamEnabled;
+        $container->import('config/aws_rds_iam.php');
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function loadAwsRdsSsl(ContainerConfigurator $container, array $config): bool
-    {
-        $awsRdsSslEnabled = $config['aws_rds']['ssl']['enabled']
-            ?? $config['aws_rds_iam']['ssl_enabled']
-            ?? false;
+    private function registerAwsRdsSslConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $config = $config['aws_rds']['ssl'];
 
-        if ($awsRdsSslEnabled) {
-            foreach (self::AWS_RDS_SSL_CONFIG as $configName => $param) {
-                $value = $config['aws_rds']['ssl'][$configName] ?? null;
-
-                if ($configName === 'ca_path') {
-                    $value ??= $config['aws_rds_iam']['ssl_cert_dir'] . '/rds-combined-ca-bundle.pem';
-                }
-
-                if ($configName === 'mode') {
-                    $value ??= $config['aws_rds_iam']['ssl_mode'];
-                }
-
-                $container
-                    ->parameters()
-                    ->set($param->value, $value);
-            }
-
-            $container->import('config/aws_rds_ssl.php');
+        if ($config['enabled'] === false) {
+            return;
         }
 
-        return $awsRdsSslEnabled;
+        $container
+            ->parameters()
+            ->set(ConfigParam::AwsRdsSslCaPath->value, $config['ca_path'])
+            ->set(ConfigParam::AwsRdsSslMode->value, $config['mode']);
+
+        $container->import('config/aws_rds_ssl.php');
+    }
+
+    private function registerEasyErrorHandlerConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['easy_error_handler']['enabled'] === false) {
+            return;
+        }
+
+        $container->import('config/easy_error_handler_listener.php');
     }
 }

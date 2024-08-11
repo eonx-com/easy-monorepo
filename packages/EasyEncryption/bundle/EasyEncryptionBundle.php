@@ -13,27 +13,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyEncryptionBundle extends AbstractBundle
 {
-    private const AWS_CLOUD_HSM_CONFIGS_TO_PARAMS = [
-        'aad' => ConfigParam::AwsCloudHsmAad,
-        'ca_cert_file' => ConfigParam::AwsCloudHsmCaCertFile,
-        'cluster_id' => ConfigParam::AwsCloudHsmClusterId,
-        'disable_key_availability_check' => ConfigParam::AwsCloudHsmDisableKeyAvailabilityCheck,
-        'ip_address' => ConfigParam::AwsCloudHsmIpAddress,
-        'region' => ConfigParam::AwsCloudHsmRegion,
-        'role_arn' => ConfigParam::AwsCloudHsmRoleArn,
-        'sdk_options' => ConfigParam::AwsCloudHsmSdkOptions,
-        'server_client_cert_file' => ConfigParam::AwsCloudHsmServerClientCertFile,
-        'server_client_key_file' => ConfigParam::AwsCloudHsmServerClientKeyFile,
-        'use_aws_cloud_hsm_configure_tool' => ConfigParam::AwsCloudHsmUseConfigureTool,
-        'user_pin' => ConfigParam::AwsCloudHsmUserPin,
-    ];
-
-    private const CONFIGS_TO_PARAMS = [
-        'default_encryption_key' => ConfigParam::DefaultEncryptionKey,
-        'default_key_name' => ConfigParam::DefaultKeyName,
-        'default_salt' => ConfigParam::DefaultSalt,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -46,30 +25,51 @@ final class EasyEncryptionBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/services.php');
-
-        foreach (self::CONFIGS_TO_PARAMS as $configName => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config[$configName]);
-        }
-
-        foreach (self::AWS_CLOUD_HSM_CONFIGS_TO_PARAMS as $configName => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config['aws_cloud_hsm_encryptor'][$configName]);
-        }
-
         $builder
             ->registerForAutoconfiguration(EncryptionKeyResolverInterface::class)
             ->addTag(ConfigTag::EncryptionKeyResolver->value);
 
-        if ($config['use_default_key_resolvers'] ?? true) {
+        $container
+            ->parameters()
+            ->set(ConfigParam::DefaultEncryptionKey->value, $config['default_encryption_key'])
+            ->set(ConfigParam::DefaultKeyName->value, $config['default_key_name'])
+            ->set(ConfigParam::DefaultSalt->value, $config['default_salt']);
+
+        $container->import('config/services.php');
+
+        if ($config['use_default_key_resolvers']) {
             $container->import('config/default_key_resolvers.php');
         }
 
-        if ($config['aws_cloud_hsm_encryptor']['enabled'] ?? false) {
-            $container->import('config/aws_cloud_hsm_encryptor.php');
+        $this->registerAwsCloudHsmConfiguration($config, $container, $builder);
+    }
+
+    private function registerAwsCloudHsmConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $config = $config['aws_cloud_hsm_encryptor'];
+
+        if ($config['enabled'] === false) {
+            return;
         }
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::AwsCloudHsmAad->value, $config['aad'])
+            ->set(ConfigParam::AwsCloudHsmCaCertFile->value, $config['ca_cert_file'])
+            ->set(ConfigParam::AwsCloudHsmClusterId->value, $config['cluster_id'])
+            ->set(ConfigParam::AwsCloudHsmDisableKeyAvailabilityCheck->value, $config['disable_key_availability_check'])
+            ->set(ConfigParam::AwsCloudHsmIpAddress->value, $config['ip_address'])
+            ->set(ConfigParam::AwsCloudHsmRegion->value, $config['region'])
+            ->set(ConfigParam::AwsCloudHsmRoleArn->value, $config['role_arn'])
+            ->set(ConfigParam::AwsCloudHsmSdkOptions->value, $config['sdk_options'])
+            ->set(ConfigParam::AwsCloudHsmServerClientCertFile->value, $config['server_client_cert_file'])
+            ->set(ConfigParam::AwsCloudHsmServerClientKeyFile->value, $config['server_client_key_file'])
+            ->set(ConfigParam::AwsCloudHsmUseConfigureTool->value, $config['use_aws_cloud_hsm_configure_tool'])
+            ->set(ConfigParam::AwsCloudHsmUserPin->value, $config['user_pin']);
+
+        $container->import('config/aws_cloud_hsm_encryptor.php');
     }
 }

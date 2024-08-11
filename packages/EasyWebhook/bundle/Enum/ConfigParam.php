@@ -5,7 +5,7 @@ namespace EonX\EasyWebhook\Bundle\Enum;
 
 enum ConfigParam: string
 {
-    case Async = 'easy_webhooks.async';
+    case AsyncEnabled = 'easy_webhooks.async_enabled';
 
     case Bus = 'easy_webhooks.bus';
 

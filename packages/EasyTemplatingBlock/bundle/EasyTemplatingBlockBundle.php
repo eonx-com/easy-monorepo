@@ -11,7 +11,6 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Twig\Environment as TwigEnvironment;
 
 final class EasyTemplatingBlockBundle extends AbstractBundle
 {
@@ -37,11 +36,11 @@ final class EasyTemplatingBlockBundle extends AbstractBundle
 
         $container
             ->parameters()
-            ->set(ConfigParam::IsDebug->value, (bool)($config['is_debug'] ?? false));
+            ->set(ConfigParam::IsDebug->value, $config['is_debug']);
 
         $container->import('config/services.php');
 
-        if (($config['use_twig'] ?? true) && \class_exists(TwigEnvironment::class)) {
+        if ($config['use_twig']) {
             $container->import('config/twig.php');
         }
     }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySchedule\Bundle;
 
-use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasySchedule\Bundle\CompilerPass\ScheduleCompilerPass;
 use EonX\EasySchedule\Provider\ScheduleProviderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -20,8 +19,6 @@ final class EasyScheduleBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
-        parent::build($container);
-
         $container->addCompilerPass(new ScheduleCompilerPass());
     }
 
@@ -32,15 +29,14 @@ final class EasyScheduleBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/services.php');
-
-        if ($config['clear_entity_manager_on_command_execution'] &&
-            \interface_exists(EntityManagerInterface::class)) {
-            $container->import('config/doctrine.php');
-        }
-
         $builder
             ->registerForAutoconfiguration(ScheduleProviderInterface::class)
             ->addTag('easy_schedule.schedule_provider');
+
+        $container->import('config/services.php');
+
+        if ($config['clear_entity_manager_on_command_execution']) {
+            $container->import('config/doctrine.php');
+        }
     }
 }

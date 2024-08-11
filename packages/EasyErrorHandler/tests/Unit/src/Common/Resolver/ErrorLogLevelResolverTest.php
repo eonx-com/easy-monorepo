@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Common\Resolver;
 
-use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolver;
+use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 use InvalidArgumentException;
@@ -23,48 +23,41 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
         yield 'Error because default' => [
             'throwable' => new InvalidArgumentException(),
             'expectedLogLevel' => Logger::ERROR,
-            'exceptionLogLevels' => null,
+            'environment' => 'test',
         ];
 
         yield 'Debug default Symfony HTTP exception' => [
             'throwable' => new NotFoundHttpException(),
             'expectedLogLevel' => Logger::DEBUG,
-            'exceptionLogLevels' => null,
+            'environment' => 'test',
         ];
 
         yield 'Debug default Symfony request exception' => [
             'throwable' => new SuspiciousOperationException(),
             'expectedLogLevel' => Logger::DEBUG,
-            'exceptionLogLevels' => null,
+            'environment' => 'test',
         ];
 
         yield 'Info from log levels mapping' => [
             'throwable' => new InvalidArgumentException(),
             'expectedLogLevel' => Logger::INFO,
-            'exceptionLogLevels' => [
-                InvalidArgumentException::class => Logger::INFO,
-            ],
+            'environment' => 'set_ignored_exceptions',
         ];
 
         yield 'Critical from exception log level aware' => [
             'throwable' => (new BaseExceptionStub())->setCriticalLogLevel(),
             'expectedLogLevel' => Logger::CRITICAL,
-            'exceptionLogLevels' => null,
+            'environment' => 'test',
         ];
     }
 
-    /**
-     * @param array<class-string, int> $exceptionLogLevels
-     */
     #[DataProvider('provideGetErrorLogLevelData')]
-    public function testGetErrorLogLevel(
-        Throwable $throwable,
-        int $expectedLogLevel,
-        ?array $exceptionLogLevels = null,
-    ): void {
-        $resolver = new ErrorLogLevelResolver($exceptionLogLevels);
+    public function testGetErrorLogLevel(Throwable $throwable, int $expectedLogLevel, string $environment): void
+    {
+        self::bootKernel(['environment' => $environment]);
+        $sut = self::getService(ErrorLogLevelResolverInterface::class);
 
-        $logLevel = $resolver->getLogLevel($throwable);
+        $logLevel = $sut->getLogLevel($throwable);
 
         self::assertSame($expectedLogLevel, $logLevel);
     }

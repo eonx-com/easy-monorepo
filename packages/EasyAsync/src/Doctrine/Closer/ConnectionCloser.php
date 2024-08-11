@@ -8,7 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final readonly class ManagersCloser
+final readonly class ConnectionCloser
 {
     public function __construct(
         private ManagerRegistry $registry,

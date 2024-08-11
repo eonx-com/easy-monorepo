@@ -7,8 +7,7 @@ use Symfony\Config\EasyBugsnagConfig;
 
 return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
     $easyBugsnagConfig
-        ->apiKey('')
-        ->enabled(true);
+        ->apiKey('');
 
     $sensitiveDataSanitizerConfig = $easyBugsnagConfig->sensitiveDataSanitizer();
     $sensitiveDataSanitizerConfig->enabled(false);

@@ -13,11 +13,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyNotificationBundle extends AbstractBundle
 {
-    private static array $configToParam = [
-        'api_url' => ConfigParam::ApiUrl,
-        'config_expires_after' => ConfigParam::ConfigCacheExpiresAfter,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -30,16 +25,15 @@ final class EasyNotificationBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/services.php');
-
         $builder
             ->registerForAutoconfiguration(QueueMessageConfiguratorInterface::class)
             ->addTag(ConfigTag::QueueMessageConfigurator->value);
 
-        foreach (self::$configToParam as $configName => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config[$configName]);
-        }
+        $container
+            ->parameters()
+            ->set(ConfigParam::ApiUrl->value, $config['api_url'])
+            ->set(ConfigParam::ConfigCacheExpiresAfter->value, $config['config_expires_after']);
+
+        $container->import('config/services.php');
     }
 }

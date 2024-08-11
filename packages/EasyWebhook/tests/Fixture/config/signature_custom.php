@@ -8,6 +8,6 @@ use Symfony\Config\EasyWebhookConfig;
 return static function (EasyWebhookConfig $easyWebhookConfig): void {
     $easyWebhookConfig->signature()
         ->enabled(true)
-        ->signatureHeader('X-My-Header')
+        ->header('X-My-Header')
         ->secret('my-secret');
 };

@@ -177,6 +177,7 @@
             "EonX\\EasyActivity\\Tests\\": "packages/EasyActivity/tests",
             "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "packages/EasyActivity/tests/Fixture/app/src",
             "EonX\\EasyActivity\\Tests\\Unit\\": "packages/EasyActivity/tests/Unit/src",
+            "EonX\\EasyActivity\\Tests\\Unit\\Bundle\\": "packages/EasyActivity/tests/Unit/bundle",
             "EonX\\EasyApiPlatform\\Tests\\": "packages/EasyApiPlatform/tests",
             "EonX\\EasyApiPlatform\\Tests\\Application\\": "packages/EasyApiPlatform/tests/Application/src",
             "EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\": "packages/EasyApiPlatform/tests/Fixture/app/src",

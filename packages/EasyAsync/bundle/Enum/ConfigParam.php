@@ -5,9 +5,10 @@ namespace EonX\EasyAsync\Bundle\Enum;
 
 enum ConfigParam: string
 {
-    case DoctrinePersistentConnectionsMaxIdleTime = 'easy_async.doctrine_persistent_connections_max_idle_time';
+    case DoctrineClosePersistentConnectionsMaxIdleTime
+    = 'easy_async.doctrine_close_persistent_connections_max_idle_time';
 
-    case MessengerMiddlewareAutoRegister = 'easy_async.messenger_middleware_auto_register';
+    case MessengerWorkerMiddlewareAutoRegister = 'easy_async.messenger_worker_middleware_auto_register';
 
     case MessengerWorkerStopMaxMessages = 'easy_async.messenger_worker_stop_max_messages';
 
