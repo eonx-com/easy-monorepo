@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyTest\HttpClient\HttpClient;
 
 use EonX\EasyTest\HttpClient\Request\HttpClientRequestStub;
-use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\HttpClientTrait;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -150,17 +149,6 @@ final class HttpClientStub extends MockHttpClient
     public function setDefaultResponse(array $body): void
     {
         $this->defaultResponse = new MockResponse((string)\json_encode($body));
-    }
-
-    /**
-     * @deprecated Since 5.7.2, will be removed in 6.0.0. Use addResponse() with proper HTTP status code instead.
-     */
-    public function willThrowException(?Throwable $expectedException = null): self
-    {
-        $this->expectedException = $expectedException
-            ?? new TransportException('This is an expected exception.');
-
-        return $this;
     }
 
     protected function normalizeUrl(string $url): string
