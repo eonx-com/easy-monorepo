@@ -7,7 +7,7 @@ use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolver;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 use InvalidArgumentException;
-use Monolog\Logger;
+use Monolog\Level;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,33 +22,33 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
     {
         yield 'Error because default' => [
             'throwable' => new InvalidArgumentException(),
-            'expectedLogLevel' => Logger::ERROR,
+            'expectedLogLevel' => Level::Error,
             'exceptionLogLevels' => null,
         ];
 
         yield 'Debug default Symfony HTTP exception' => [
             'throwable' => new NotFoundHttpException(),
-            'expectedLogLevel' => Logger::DEBUG,
+            'expectedLogLevel' => Level::Debug,
             'exceptionLogLevels' => null,
         ];
 
         yield 'Debug default Symfony request exception' => [
             'throwable' => new SuspiciousOperationException(),
-            'expectedLogLevel' => Logger::DEBUG,
+            'expectedLogLevel' => Level::Debug,
             'exceptionLogLevels' => null,
         ];
 
         yield 'Info from log levels mapping' => [
             'throwable' => new InvalidArgumentException(),
-            'expectedLogLevel' => Logger::INFO,
+            'expectedLogLevel' => Level::Info,
             'exceptionLogLevels' => [
-                InvalidArgumentException::class => Logger::INFO,
+                InvalidArgumentException::class => Level::Info,
             ],
         ];
 
         yield 'Critical from exception log level aware' => [
             'throwable' => (new BaseExceptionStub())->setCriticalLogLevel(),
-            'expectedLogLevel' => Logger::CRITICAL,
+            'expectedLogLevel' => Level::Critical,
             'exceptionLogLevels' => null,
         ];
     }
@@ -59,7 +59,7 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
     #[DataProvider('provideGetErrorLogLevelData')]
     public function testGetErrorLogLevel(
         Throwable $throwable,
-        int $expectedLogLevel,
+        Level $expectedLogLevel,
         ?array $exceptionLogLevels = null,
     ): void {
         $resolver = new ErrorLogLevelResolver($exceptionLogLevels);

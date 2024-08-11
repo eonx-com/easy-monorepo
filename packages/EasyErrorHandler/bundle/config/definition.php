@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Monolog\Level;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -11,7 +12,10 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('bugsnag')
                 ->canBeDisabled()
                 ->children()
-                    ->integerNode('threshold')->defaultNull()->end()
+                    ->enumNode('threshold')
+                        ->values(Level::cases())
+                        ->defaultNull()
+                    ->end()
                     ->arrayNode('handled_exceptions')
                         ->beforeNormalization()->castToArray()->end()
                         ->scalarPrototype()->end()

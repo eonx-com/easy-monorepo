@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Common\Resolver;
 
 use EonX\EasyErrorHandler\Common\Exception\LogLevelAwareExceptionInterface;
-use Monolog\Logger;
+use Monolog\Level;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
@@ -23,12 +23,12 @@ final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
         ?array $exceptionLogLevels = null,
     ) {
         $this->exceptionLogLevels = $exceptionLogLevels ?? [
-            HttpExceptionInterface::class => Logger::DEBUG,
-            RequestExceptionInterface::class => Logger::DEBUG,
+            HttpExceptionInterface::class => Level::Debug,
+            RequestExceptionInterface::class => Level::Debug,
         ];
     }
 
-    public function getLogLevel(Throwable $throwable): int
+    public function getLogLevel(Throwable $throwable): Level
     {
         if ($throwable instanceof LogLevelAwareExceptionInterface) {
             return $throwable->getLogLevel();
@@ -41,6 +41,6 @@ final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
         }
 
         // Default to error as exceptions not aware of their log level is unexpected
-        return Logger::ERROR;
+        return Level::Error;
     }
 }
