@@ -432,11 +432,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
     private function getType(?string $doctrineType = null): string
     {
-        // @todo Remove this test when doctrine/dbal:3 support is removed
-        if (\defined(Types::class . '::ARRAY') && $doctrineType === Types::ARRAY) {
-            return 'array';
-        }
-
         return match ($doctrineType) {
             Types::BIGINT,
             Types::INTEGER,
