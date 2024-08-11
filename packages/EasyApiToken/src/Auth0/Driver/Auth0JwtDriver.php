@@ -67,7 +67,7 @@ final readonly class Auth0JwtDriver implements JwtDriverInterface
             'domain' => $this->domain,
             'strategy' => Auth0V8SdkConfiguration::STRATEGY_API,
         ]);
-        $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_TOKEN);
+        $verifier = new Auth0V8Token($config, $token, Auth0V8Token::TYPE_ACCESS_TOKEN);
         $exceptions = [];
 
         foreach ($this->allowedAlgorithms as $allowedAlgo) {
