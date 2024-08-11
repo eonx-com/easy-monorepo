@@ -23,7 +23,7 @@
     "require-dev": {
         "eonx-com/easy-bugsnag": "^5.13",
         "eonx-com/easy-test": "^5.13",
-        "eonx-com/easy-webhook": "^5.12",
+        "eonx-com/easy-webhook": "^5.13",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
         "symfony/framework-bundle": "^7.0"
