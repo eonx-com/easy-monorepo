@@ -24,16 +24,16 @@ abstract class AbstractUnitTestCase extends TestCase
 
     private ?ExpressionLanguageFactoryInterface $expressionLanguageFactory = null;
 
-    public static function tearDownAfterClass(): void
+    protected function tearDown(): void
     {
-        parent::tearDownAfterClass();
-
         $filesystem = new Filesystem();
         $var = __DIR__ . '/../../var';
 
         if ($filesystem->exists($var)) {
             $filesystem->remove($var);
         }
+
+        parent::tearDown();
     }
 
     protected static function createLanguageRule(
