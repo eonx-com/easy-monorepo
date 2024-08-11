@@ -12,12 +12,12 @@ use Throwable;
 final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
 {
     /**
-     * @var array<class-string, int>
+     * @var array<class-string, \Monolog\Level>
      */
     private readonly array $exceptionLogLevels;
 
     /**
-     * @param array<class-string, int>|null $exceptionLogLevels
+     * @param array<class-string, \Monolog\Level>|null $exceptionLogLevels
      */
     public function __construct(
         ?array $exceptionLogLevels = null,

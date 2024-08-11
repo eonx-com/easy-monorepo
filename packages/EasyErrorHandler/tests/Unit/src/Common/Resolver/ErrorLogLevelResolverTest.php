@@ -54,7 +54,7 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
     }
 
     /**
-     * @param array<class-string, int> $exceptionLogLevels
+     * @param array<class-string, \Monolog\Level> $exceptionLogLevels
      */
     #[DataProvider('provideGetErrorLogLevelData')]
     public function testGetErrorLogLevel(
