@@ -18,10 +18,10 @@
     "require-dev": {
         "doctrine/annotations": "^1.14",
         "doctrine/doctrine-bundle": "^2.8",
-        "eonx-com/easy-event-dispatcher": "^5.12",
-        "eonx-com/easy-logging": "^5.12",
-        "eonx-com/easy-random": "^5.12",
-        "eonx-com/easy-test": "^5.12",
+        "eonx-com/easy-event-dispatcher": "^5.13",
+        "eonx-com/easy-logging": "^5.13",
+        "eonx-com/easy-random": "^5.13",
+        "eonx-com/easy-test": "^5.13",
         "phpunit/phpunit": "^10.2",
         "symfony/framework-bundle": "^7.0"
     },
@@ -49,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.12-dev"
+            "dev-master": "5.13-dev"
         }
     }
 }

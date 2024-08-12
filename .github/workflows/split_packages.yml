@@ -45,7 +45,7 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 5.11.3
+                    - 5.12.0
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'
