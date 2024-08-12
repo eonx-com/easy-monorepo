@@ -15,12 +15,17 @@ final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
     private readonly array $exceptionLogLevels;
 
     /**
-     * @param array<class-string, \Monolog\Level>|null $exceptionLogLevels
+     * @param array<class-string, int>|null $exceptionLogLevels
      */
     public function __construct(
         ?array $exceptionLogLevels = null,
     ) {
-        $this->exceptionLogLevels = $exceptionLogLevels ?? [];
+        $exceptionLogLevelsAsEnums = [];
+        foreach ($exceptionLogLevels ?? [] as $class => $logLevel) {
+            $exceptionLogLevelsAsEnums[$class] = Level::from($logLevel);
+        }
+
+        $this->exceptionLogLevels = $exceptionLogLevelsAsEnums;
     }
 
     public function getLogLevel(Throwable $throwable): Level

@@ -38,8 +38,8 @@ return static function (DefinitionConfigurator $definition) {
                         ->beforeNormalization()->castToArray()->end()
                         ->integerPrototype()->end()
                         ->defaultValue([
-                            HttpExceptionInterface::class => Level::Debug,
-                            RequestExceptionInterface::class => Level::Debug,
+                            HttpExceptionInterface::class => Level::Debug->value,
+                            RequestExceptionInterface::class => Level::Debug->value,
                         ])
                     ->end()
                     ->arrayNode('ignored_exceptions')
