@@ -69,7 +69,7 @@ final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterf
 
     private function isEnabled(ContainerBuilder $container): bool
     {
-        return $container->hasParameter(ConfigParam::MessengerMiddlewareAutoRegister->value)
-            && $container->getParameter(ConfigParam::MessengerMiddlewareAutoRegister->value);
+        return $container->hasParameter(ConfigParam::MessengerMiddlewareEnabled->value)
+            && $container->getParameter(ConfigParam::MessengerMiddlewareEnabled->value);
     }
 }

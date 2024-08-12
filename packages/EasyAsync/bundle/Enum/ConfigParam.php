@@ -8,7 +8,7 @@ enum ConfigParam: string
     case DoctrineClosePersistentConnectionsMaxIdleTime
     = 'easy_async.doctrine_close_persistent_connections_max_idle_time';
 
-    case MessengerWorkerMiddlewareAutoRegister = 'easy_async.messenger_worker_middleware_auto_register';
+    case MessengerWorkerMiddlewareEnabled = 'easy_async.messenger_worker_middleware_enabled';
 
     case MessengerWorkerStopMaxMessages = 'easy_async.messenger_worker_stop_max_messages';
 

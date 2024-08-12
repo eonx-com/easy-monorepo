@@ -73,11 +73,11 @@ final class EasyAsyncBundle extends AbstractBundle
         $container
             ->parameters()
             ->set(
-                ConfigParam::MessengerWorkerMiddlewareAutoRegister->value,
-                $config['messenger']['middleware']['auto_register']
+                ConfigParam::MessengerWorkerMiddlewareEnabled->value,
+                $config['messenger']['middleware']['enabled']
             );
 
-        if ($config['messenger']['middleware']['auto_register'] === false) {
+        if ($config['messenger']['middleware']['enabled'] === false) {
             return;
         }
 

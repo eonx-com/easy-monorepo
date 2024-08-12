@@ -39,10 +39,6 @@ final class EasyActivityBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if ($config['easy_doctrine']['enabled'] === false) {
-            return;
-        }
-
         $container
             ->parameters()
             ->set(ConfigParam::EasyDoctrineSubscriberEnabled->value, $config['easy_doctrine']['subscriber']['enabled']);

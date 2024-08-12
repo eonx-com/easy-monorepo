@@ -8,7 +8,7 @@ return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
             ->arrayNode('easy_doctrine')
-                ->canBeDisabled()
+                ->addDefaultsIfNotSet()
                 ->children()
                     ->arrayNode('subscriber')
                         ->canBeDisabled()

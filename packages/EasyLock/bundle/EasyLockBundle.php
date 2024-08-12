@@ -50,11 +50,11 @@ final class EasyLockBundle extends AbstractBundle
         $container
             ->parameters()
             ->set(
-                ConfigParam::MessengerMiddlewareAutoRegister->value,
-                $config['messenger']['middleware']['auto_register']
+                ConfigParam::MessengerMiddlewareEnabled->value,
+                $config['messenger']['middleware']['enabled']
             );
 
-        if ($config['messenger']['middleware']['auto_register'] === false) {
+        if ($config['messenger']['middleware']['enabled'] === false) {
             return;
         }
 
