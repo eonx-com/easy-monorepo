@@ -5,7 +5,6 @@ namespace EonX\EasyPagination\Tests\Unit\Laravel;
 
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
-use EonX\EasyPagination\ValueObject\Pagination;
 
 final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
 {
@@ -18,6 +17,5 @@ final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
             ->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfigProvider()));
 
         self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
-        self::assertInstanceOf(Pagination::class, $app->make(Pagination::class));
     }
 }

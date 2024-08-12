@@ -8,7 +8,6 @@ use EonX\EasyPagination\Laravel\Middleware\PaginationFromRequestMiddleware;
 use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use EonX\EasyPagination\Provider\PaginationProvider;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
@@ -81,12 +80,6 @@ final class EasyPaginationServiceProvider extends ServiceProvider
 
                 return new PaginationProvider($paginationConfigProvider);
             }
-        );
-
-        $this->app->singleton(
-            Pagination::class,
-            static fn (Container $app): Pagination => $app->make(PaginationProviderInterface::class)
-                ->getPagination()
         );
     }
 }
