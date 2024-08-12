@@ -14,10 +14,10 @@ final class HttpClientExtension implements Extension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
-        // When test fails, PHPUnit will not call the `tearDown` method, wo we register a subscriber to show errors
+        // When test fails, PHPUnit will not call the `tearDown` method, so we register a subscriber to show errors
         $facade->registerSubscriber(new HttpClientTestFailedSubscriber());
 
-        // Reset stubs here just to this in the same place
+        // Reset stubs here to do this in the same place
         $facade->registerSubscriber(new HttpClientTestFinishedSubscriber());
     }
 }

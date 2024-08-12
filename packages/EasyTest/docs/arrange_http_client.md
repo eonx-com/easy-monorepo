@@ -5,7 +5,7 @@ weight: 1001
 
 # Arrange HTTP Client
 
-Add `\Test\Util\HttpClient\TestResponseFactory` and `\EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub`
+Add `\EonX\EasyTest\HttpClient\Factory\TestResponseFactory` and `\EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub`
 to you test services.
 
 ```php
