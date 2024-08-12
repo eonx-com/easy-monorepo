@@ -309,18 +309,6 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
 
     public function yieldInvalidFloat(int $minPrecision, int $maxPrecision, ?int $integerPart = null): iterable
     {
-        /*
-         * @todo add types validation and invalid relationships validation cases if/when API Platform starts
-         * to return 400 instead of 500
-         * @see https://github.com/api-platform/api-platform/issues/788
-         *
-         * $value = 'abc';
-         * yield from $this->create("{$this->property} is a string", $value);
-         *
-         * $value = 10;
-         *
-         * yield from $this->create("{$this->property} is an integer", $value);
-         */
         $message = $this->translateMessage(
             (new Decimal(\compact('minPrecision', 'maxPrecision')))->message,
             [
