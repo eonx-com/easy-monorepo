@@ -34,12 +34,20 @@ final class EasyActivityBundle extends AbstractBundle
         $this->registerEasyDoctrineConfiguration($config, $container, $builder);
     }
 
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
+    }
+
     private function registerEasyDoctrineConfiguration(
         array $config,
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if ($builder->hasExtension('easy_doctrine') === false) {
+        if ($this->isBundleEnabled('EasyDoctrineBundle', $builder) === false) {
             return;
         }
 

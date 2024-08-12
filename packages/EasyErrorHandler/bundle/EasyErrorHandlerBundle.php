@@ -82,9 +82,17 @@ final class EasyErrorHandlerBundle extends AbstractBundle
 
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
 
-        if ($builder->hasExtension('easy_webhook')) {
+        if ($this->isBundleEnabled('EasyWebhookBundle', $builder)) {
             $container->import('config/easy_webhook.php');
         }
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 
     private function registerEasyBugsnagConfiguration(
