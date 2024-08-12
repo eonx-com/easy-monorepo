@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bundle;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
+use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -34,6 +36,24 @@ final class EasyActivityBundle extends AbstractBundle
         $this->registerEasyDoctrineConfiguration($config, $container, $builder);
     }
 
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        if ($this->isBundleEnabled('EasyDoctrineBundle', $builder) === false) {
+            return;
+        }
+
+        $config = (new Processor())->processConfiguration(
+            new Configuration($this, $builder, $this->extensionAlias),
+            $builder->getExtensionConfig($this->extensionAlias)
+        );
+
+        $easyDoctrinePrependedConfig = [
+            'deferred_dispatcher_entities' => \array_keys($config['subjects']),
+        ];
+
+        $builder->prependExtensionConfig('easy_doctrine', $easyDoctrinePrependedConfig);
+    }
+
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
     {
         /** @var array $bundles */
@@ -56,12 +76,5 @@ final class EasyActivityBundle extends AbstractBundle
             ->set(ConfigParam::EasyDoctrineSubscriberEnabled->value, $config['easy_doctrine']['subscriber']['enabled']);
 
         $container->import('config/easy_doctrine.php');
-
-        $builder->prependExtensionConfig(
-            'easy_doctrine',
-            [
-                'deferred_dispatcher_entities' => \array_keys($config['subjects']),
-            ]
-        );
     }
 }

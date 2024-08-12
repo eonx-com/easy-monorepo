@@ -19,10 +19,10 @@ final class EasyActivityBundleTest extends AbstractUnitTestCase
 
         self::assertSame(
             [
-                Comment::class,
                 Article::class,
+                Comment::class,
             ],
-            $trackableEntities
+            \array_values($trackableEntities)
         );
     }
 }
