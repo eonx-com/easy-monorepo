@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Unit\Common\Decoder;
 
 use EonX\EasyApiToken\Common\Decoder\BearerTokenDecoder;
-use EonX\EasyApiToken\Common\ValueObject\JwtToken;
+use EonX\EasyApiToken\Common\ValueObject\Jwt;
 
 final class BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 {
@@ -12,18 +12,18 @@ final class BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        /** @var \EonX\EasyApiToken\Common\ValueObject\JwtToken $jwtToken */
-        $jwtToken = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
+        /** @var \EonX\EasyApiToken\Common\ValueObject\Jwt $token */
+        $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
 
-        $payload = $jwtToken->getPayload();
+        $payload = $token->getPayload();
 
-        self::assertInstanceOf(JwtToken::class, $jwtToken);
+        self::assertInstanceOf(Jwt::class, $token);
 
-        foreach (static::$tokenPayload as $key => $value) {
+        foreach (self::$tokenPayload as $key => $value) {
             self::assertArrayHasKey($key, $payload);
-            self::assertEquals($value, $payload[$key]);
+            self::assertSame($value, $payload[$key]);
         }
     }
 

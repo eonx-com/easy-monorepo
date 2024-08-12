@@ -5,13 +5,10 @@ namespace EonX\EasyRandom\ValueObject;
 
 use EonX\EasyRandom\Enum\Alphabet;
 use EonX\EasyRandom\Exception\InvalidAlphabetException;
-use EonX\EasyRandom\Exception\InvalidRandomStringException;
 use SplObjectStorage;
-use Stringable;
-use Symfony\Component\String\ByteString;
 use Symfony\Component\String\UnicodeString;
 
-final class RandomString implements Stringable
+final class RandomStringConfig
 {
     /**
      * @var \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]|null
@@ -34,8 +31,6 @@ final class RandomString implements Stringable
 
     private ?string $prefix = null;
 
-    private ?string $randomString = null;
-
     private ?string $resolvedAlphabet = null;
 
     private ?string $suffix = null;
@@ -49,11 +44,6 @@ final class RandomString implements Stringable
         foreach (Alphabet::cases() as $alphabet) {
             $this->include($alphabet);
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->randomString();
     }
 
     public function alphabet(string $alphabet): self
@@ -137,6 +127,29 @@ final class RandomString implements Stringable
         return $this;
     }
 
+    /**
+     * @return \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]|null
+     */
+    public function getConstraints(): ?array
+    {
+        return $this->constraints;
+    }
+
+    public function getMaxAttempts(): int
+    {
+        return $this->maxAttempts;
+    }
+
+    public function getPrefix(): ?string
+    {
+        return $this->prefix;
+    }
+
+    public function getSuffix(): ?string
+    {
+        return $this->suffix;
+    }
+
     public function include(Alphabet $alphabet): self
     {
         $this->includes->attach($alphabet);
@@ -208,62 +221,7 @@ final class RandomString implements Stringable
         return $this;
     }
 
-    public function suffix(string $suffix): self
-    {
-        $this->suffix = $suffix;
-
-        return $this;
-    }
-
-    public function userFriendly(): self
-    {
-        $this
-            ->include(Alphabet::Numeric)
-            ->include(Alphabet::Uppercase)
-            ->exclude(Alphabet::Ambiguous)
-            ->exclude(Alphabet::Lowercase)
-            ->exclude(Alphabet::Symbol)
-            ->exclude(Alphabet::Similar)
-            // Pretty useful to avoid "bad words" in generated strings
-            ->exclude(Alphabet::Vowel);
-
-        return $this;
-    }
-
-    private function randomString(): string
-    {
-        if ($this->randomString !== null) {
-            return $this->randomString;
-        }
-
-        $attempts = 0;
-
-        do {
-            $randomString = ByteString::fromRandom($this->resolveLength(), $this->resolveAlphabet())->toString();
-            $attempts++;
-        } while ($this->validateString($randomString) === false && $attempts < $this->maxAttempts);
-
-        if ($attempts === $this->maxAttempts) {
-            throw new InvalidRandomStringException(\sprintf(
-                'Could not generate valid random string for alphabet "%s"',
-                $this->resolveAlphabet()
-            ));
-        }
-
-        if ($this->prefix !== null) {
-            $randomString = $this->prefix . $randomString;
-        }
-
-        if ($this->suffix !== null) {
-            $randomString .= $this->suffix;
-        }
-
-        $this->randomString = $randomString;
-
-        return $this->randomString;
-    }
-
-    private function resolveAlphabet(): string
+    public function resolveAlphabet(): string
     {
         if ($this->overrideAlphabet !== null) {
             return $this->overrideAlphabet;
@@ -292,7 +250,7 @@ final class RandomString implements Stringable
         return $this->resolvedAlphabet = $this->validateAlphabet(\implode('', $currentAlphabet));
     }
 
-    private function resolveLength(): int
+    public function resolveLength(): int
     {
         $length = $this->length;
 
@@ -306,6 +264,28 @@ final class RandomString implements Stringable
         return $length;
     }
 
+    public function suffix(string $suffix): self
+    {
+        $this->suffix = $suffix;
+
+        return $this;
+    }
+
+    public function userFriendly(): self
+    {
+        $this
+            ->include(Alphabet::Numeric)
+            ->include(Alphabet::Uppercase)
+            ->exclude(Alphabet::Ambiguous)
+            ->exclude(Alphabet::Lowercase)
+            ->exclude(Alphabet::Symbol)
+            ->exclude(Alphabet::Similar)
+            // Pretty useful to avoid "bad words" in generated strings
+            ->exclude(Alphabet::Vowel);
+
+        return $this;
+    }
+
     private function validateAlphabet(string $alphabet): string
     {
         if ($alphabet !== '') {
@@ -313,20 +293,5 @@ final class RandomString implements Stringable
         }
 
         throw new InvalidAlphabetException('Alphabet to generate random string cannot be empty');
-    }
-
-    private function validateString(string $randomString): bool
-    {
-        if ($this->constraints === null) {
-            return true;
-        }
-
-        foreach ($this->constraints as $constraint) {
-            if ($constraint->isValid($randomString) === false) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

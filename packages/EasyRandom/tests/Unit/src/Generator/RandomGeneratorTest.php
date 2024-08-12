@@ -9,7 +9,7 @@ use EonX\EasyRandom\Generator\RandomStringGeneratorInterface;
 use EonX\EasyRandom\Generator\UuidGenerator;
 use EonX\EasyRandom\Generator\UuidGeneratorInterface;
 use EonX\EasyRandom\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyRandom\ValueObject\RandomString;
+use EonX\EasyRandom\ValueObject\RandomStringConfig;
 use Symfony\Component\Uid\Factory\UuidFactory;
 
 final class RandomGeneratorTest extends AbstractUnitTestCase
@@ -35,9 +35,9 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
     public function testStringSucceeds(): void
     {
         $randomStringGenerator = new class() implements RandomStringGeneratorInterface {
-            public function generate(int $length): RandomString
+            public function generate(RandomStringConfig $randomStringConfig): string
             {
-                return new RandomString($length);
+                return 'some-random-string';
             }
         };
         $sut = new RandomGenerator(
@@ -45,9 +45,9 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
             randomStringGenerator: $randomStringGenerator
         );
 
-        $result = $sut->string(100);
+        $result = $sut->string(new RandomStringConfig(100));
 
-        self::assertEquals(new RandomString(100), $result);
+        self::assertSame('some-random-string', $result);
     }
 
     public function testUuidSucceeds(): void

@@ -72,14 +72,14 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         $this->app->singleton(
             PaginationProviderInterface::class,
             static function (): PaginationProviderInterface {
-                $config = new PaginationConfigProvider(
+                $paginationConfigProvider = new PaginationConfigProvider(
                     \config('easy-pagination.pagination.page_attribute'),
                     (int)\config('easy-pagination.pagination.page_default'),
                     \config('easy-pagination.pagination.per_page_attribute'),
                     (int)\config('easy-pagination.pagination.per_page_default')
                 );
 
-                return new PaginationProvider($config);
+                return new PaginationProvider($paginationConfigProvider);
             }
         );
 

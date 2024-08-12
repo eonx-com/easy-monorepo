@@ -9,7 +9,7 @@ interface PaginationProviderInterface
 {
     public function getPagination(): Pagination;
 
-    public function getPaginationConfig(): PaginationConfigProviderInterface;
+    public function getPaginationConfigProvider(): PaginationConfigProviderInterface;
 
     public function setResolver(callable $resolver): self;
 }

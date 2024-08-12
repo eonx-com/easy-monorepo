@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRandom\Generator;
 
-use EonX\EasyRandom\ValueObject\RandomString;
+use EonX\EasyRandom\ValueObject\RandomStringConfig;
 
 final readonly class RandomGenerator implements RandomGeneratorInterface
 {
@@ -19,9 +19,9 @@ final readonly class RandomGenerator implements RandomGeneratorInterface
         return $this->randomIntegerGenerator->generate($min, $max);
     }
 
-    public function string(int $length): RandomString
+    public function string(RandomStringConfig $randomStringConfig): string
     {
-        return $this->randomStringGenerator->generate($length);
+        return $this->randomStringGenerator->generate($randomStringConfig);
     }
 
     public function uuid(): string

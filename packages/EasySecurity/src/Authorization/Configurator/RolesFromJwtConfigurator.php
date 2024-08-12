@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Authorization\Configurator;
 
-use EonX\EasyApiToken\Common\ValueObject\JwtToken;
+use EonX\EasyApiToken\Common\ValueObject\Jwt;
 use EonX\EasySecurity\Common\Configurator\AbstractFromJwtConfigurator;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RolesFromJwtConfigurator extends AbstractFromJwtConfigurator
 {
-    protected function doConfigure(SecurityContextInterface $context, Request $request, JwtToken $jwtToken): void
+    protected function doConfigure(SecurityContextInterface $context, Request $request, Jwt $token): void
     {
         $roles = $context->getAuthorizationMatrix()
-            ->getRolesByIdentifiers($this->getMainClaim($jwtToken)['roles'] ?? []);
+            ->getRolesByIdentifiers($this->getMainClaim($token)['roles'] ?? []);
 
         if (\count($roles) === 0) {
             return;

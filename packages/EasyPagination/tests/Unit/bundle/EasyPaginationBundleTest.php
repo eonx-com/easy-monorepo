@@ -9,7 +9,6 @@ use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use EonX\EasyPagination\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyPagination\ValueObject\Pagination;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -52,8 +51,7 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
             $request
         ));
 
-        /** @var \EonX\EasyPagination\ValueObject\Pagination $pagination */
-        $pagination = $container->get(Pagination::class);
+        $pagination = $paginationProvider->getPagination();
 
         self::assertSame($page, $pagination->getPage());
         self::assertSame($perPage, $pagination->getPerPage());
@@ -72,10 +70,9 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         $container = $kernel->getContainer();
 
         $paginationProvider = $container->get(PaginationProviderInterface::class);
-        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfig()));
+        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfigProvider()));
 
         self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
-        self::assertInstanceOf(Pagination::class, $container->get(Pagination::class));
     }
 
     private static function createRequest(?array $query = null): Request

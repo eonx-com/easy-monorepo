@@ -14,7 +14,7 @@ final class PaginationProvider implements PaginationProviderInterface
     private ?Closure $resolver = null;
 
     public function __construct(
-        private readonly PaginationConfigProviderInterface $config,
+        private readonly PaginationConfigProviderInterface $paginationConfigProvider,
     ) {
     }
 
@@ -34,9 +34,9 @@ final class PaginationProvider implements PaginationProviderInterface
         ));
     }
 
-    public function getPaginationConfig(): PaginationConfigProviderInterface
+    public function getPaginationConfigProvider(): PaginationConfigProviderInterface
     {
-        return $this->config;
+        return $this->paginationConfigProvider;
     }
 
     public function setResolver(callable $resolver): PaginationProviderInterface

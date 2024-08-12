@@ -14,7 +14,8 @@ final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
         $app = $this->getApplication();
 
         $paginationProvider = $app->make(PaginationProviderInterface::class);
-        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfig()));
+        $paginationProvider
+            ->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfigProvider()));
 
         self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
         self::assertInstanceOf(Pagination::class, $app->make(Pagination::class));

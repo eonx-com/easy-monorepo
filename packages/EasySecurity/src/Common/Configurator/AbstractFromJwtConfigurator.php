@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Common\Configurator;
 
-use EonX\EasyApiToken\Common\ValueObject\JwtToken;
+use EonX\EasyApiToken\Common\ValueObject\Jwt;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use EonX\EasySecurity\Common\Resolver\JwtClaimResolver;
 use EonX\EasySecurity\Common\Resolver\JwtClaimResolverInterface;
@@ -22,13 +22,13 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
 
     public function configure(SecurityContextInterface $context, Request $request): void
     {
-        $jwtToken = $context->getToken();
+        $token = $context->getToken();
 
-        if ($jwtToken instanceof JwtToken === false) {
+        if ($token instanceof Jwt === false) {
             return;
         }
 
-        $this->doConfigure($context, $request, $jwtToken);
+        $this->doConfigure($context, $request, $token);
     }
 
     public function setJwtClaimFetcher(JwtClaimResolverInterface $jwtClaimFetcher): void
@@ -39,19 +39,19 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        JwtToken $jwtToken,
+        Jwt $token,
     ): void;
 
-    protected function getClaim(JwtToken $jwtToken, string $claim, mixed $default = null): mixed
+    protected function getClaim(Jwt $token, string $claim, mixed $default = null): mixed
     {
         return $this->getJwtClaimFetcher()
-            ->getClaim($jwtToken, $claim, $default);
+            ->getClaim($token, $claim, $default);
     }
 
-    protected function getMainClaim(JwtToken $jwtToken, ?array $default = null): array
+    protected function getMainClaim(Jwt $token, ?array $default = null): array
     {
         return $this->getJwtClaimFetcher()
-            ->getArrayClaim($jwtToken, $this->jwtClaim, $default);
+            ->getArrayClaim($token, $this->jwtClaim, $default);
     }
 
     private function getJwtClaimFetcher(): JwtClaimResolverInterface

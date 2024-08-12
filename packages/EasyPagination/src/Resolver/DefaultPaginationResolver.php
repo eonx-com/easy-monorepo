@@ -9,7 +9,7 @@ use EonX\EasyPagination\ValueObject\Pagination;
 final readonly class DefaultPaginationResolver
 {
     public function __construct(
-        private PaginationConfigProviderInterface $config,
+        private PaginationConfigProviderInterface $paginationConfigProvider,
     ) {
         // No body needed
     }
@@ -17,10 +17,10 @@ final readonly class DefaultPaginationResolver
     public function __invoke(): Pagination
     {
         return Pagination::create(
-            $this->config->getPageDefault(),
-            $this->config->getPerPageDefault(),
-            $this->config->getPageAttribute(),
-            $this->config->getPerPageAttribute()
+            $this->paginationConfigProvider->getPageDefault(),
+            $this->paginationConfigProvider->getPerPageDefault(),
+            $this->paginationConfigProvider->getPageAttribute(),
+            $this->paginationConfigProvider->getPerPageAttribute()
         );
     }
 }
