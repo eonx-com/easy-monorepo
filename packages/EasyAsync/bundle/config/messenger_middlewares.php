@@ -6,9 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyAsync\Bundle\Enum\BundleParam;
 use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
 use EonX\EasyAsync\Doctrine\Clearer\ManagersClearer;
-use EonX\EasyAsync\Doctrine\Closer\ConnectionCloser;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
-use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersCloseConnectionMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -25,17 +23,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(ManagersSanityChecker::class)
         ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 
-    // Default connection closer
-    $services
-        ->set(ConnectionCloser::class)
-        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
-
     // Default managers clearer middleware (clear all managers)
     $services->set(DoctrineManagersClearMiddleware::class);
 
     // Default managers sanity check middleware (check all managers)
     $services->set(DoctrineManagersSanityCheckMiddleware::class);
-
-    // Default managers close connection middleware (check all managers)
-    $services->set(DoctrineManagersCloseConnectionMiddleware::class);
 };
