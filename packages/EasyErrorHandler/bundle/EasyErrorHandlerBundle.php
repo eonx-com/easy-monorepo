@@ -11,7 +11,6 @@ use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag;
 use EonX\EasyErrorHandler\Common\Driver\VerboseStrategyDriverInterface;
 use EonX\EasyErrorHandler\Common\Provider\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
-use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -83,7 +82,7 @@ final class EasyErrorHandlerBundle extends AbstractBundle
 
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
 
-        if (\class_exists(FinalFailedWebhookEvent::class)) {
+        if ($builder->hasExtension('easy_webhook')) {
             $container->import('config/easy_webhook.php');
         }
     }

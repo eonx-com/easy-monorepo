@@ -41,14 +41,12 @@ final class EasyAsyncBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        $config = $config['doctrine'];
-
-        if ($config['close_persistent_connections']['enabled']) {
+        if ($config['doctrine']['close_persistent_connections']['enabled']) {
             $container
                 ->parameters()
                 ->set(
                     ConfigParam::DoctrineClosePersistentConnectionsMaxIdleTime->value,
-                    $config['close_persistent_connections']['max_idle_time']
+                    $config['doctrine']['close_persistent_connections']['max_idle_time']
                 );
 
             $container->import('config/doctrine_persistent_connections.php');
