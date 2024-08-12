@@ -70,7 +70,9 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         $container = $kernel->getContainer();
 
         $paginationProvider = $container->get(PaginationProviderInterface::class);
-        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfigProvider()));
+        $paginationProvider->setResolver(
+            new DefaultPaginationResolver($paginationProvider->getPaginationConfigProvider())
+        );
 
         self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
     }
