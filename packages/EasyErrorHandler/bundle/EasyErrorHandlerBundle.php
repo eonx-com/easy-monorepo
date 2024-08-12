@@ -96,14 +96,6 @@ final class EasyErrorHandlerBundle extends AbstractBundle
         return isset($bundles[$bundleName]);
     }
 
-    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
-    {
-        /** @var array $bundles */
-        $bundles = $builder->getParameter('kernel.bundles');
-
-        return isset($bundles[$bundleName]);
-    }
-
     private function registerBugsnagConfiguration(
         array $config,
         ContainerConfigurator $container,
