@@ -94,6 +94,9 @@ abstract class AbstractBatchObjectRepository
     private function resolveTableColumns(): array
     {
         return $this->tableColumns
-            ?? ($this->tableColumns = \array_keys($this->connection->createSchemaManager()->listTableColumns($this->table)));
+            ?? ($this->tableColumns = \array_keys(
+                $this->connection->createSchemaManager()
+->listTableColumns($this->table)
+            ));
     }
 }

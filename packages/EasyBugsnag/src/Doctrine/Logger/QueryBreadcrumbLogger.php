@@ -19,11 +19,11 @@ final readonly class QueryBreadcrumbLogger
         $name = 'SQL query | ' . $queryBreadcrumb->getConnectionName();
 
         $metadata = [
+            'Params' => \json_encode($queryBreadcrumb->getQueryParameters()),
             'SQL' => $queryBreadcrumb->getQuerySql(),
             'Time (ms)' => \number_format($queryBreadcrumb->getQueryDuration() * 1000, 2),
-            'Params' => \json_encode($queryBreadcrumb->getQueryParameters()),
-            'Values' => \json_encode($queryBreadcrumb->getQueryValues()),
             'Types' => \json_encode($queryBreadcrumb->getQueryTypes()),
+            'Values' => \json_encode($queryBreadcrumb->getQueryValues()),
         ];
 
         $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, $metadata);

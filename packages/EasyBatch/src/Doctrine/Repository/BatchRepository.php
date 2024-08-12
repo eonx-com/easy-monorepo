@@ -146,7 +146,11 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function beginTransaction(): void
     {
         // If transaction active and savepoint supported, create new savepoint
-        if ($this->connection->isTransactionActive() && $this->connection->getDatabasePlatform()->supportsSavepoints()) {
+        if (
+            $this->connection->isTransactionActive()
+            && $this->connection->getDatabasePlatform()
+                ->supportsSavepoints()
+        ) {
             $this->connection->createSavepoint(self::SAVEPOINT);
             $this->savepointActive = true;
 

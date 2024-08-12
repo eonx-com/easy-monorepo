@@ -85,8 +85,10 @@ final class EasyBugsnagBundle extends AbstractBundle
             foreach ($config['doctrine_dbal']['connections'] as $connection) {
                 $builder->setDefinition(
                     'easy_bugsnag.doctrine.middleware.' . $connection,
-                    (new Definition(BreadcrumbLoggerMiddleware::class,
-                        [$builder->getDefinition(QueryBreadcrumbLogger::class)]))
+                    (new Definition(
+                        BreadcrumbLoggerMiddleware::class,
+                        [$builder->getDefinition(QueryBreadcrumbLogger::class)]
+                    ))
                         ->addTag('doctrine.middleware', ['connection' => $connection])
                 );
             }

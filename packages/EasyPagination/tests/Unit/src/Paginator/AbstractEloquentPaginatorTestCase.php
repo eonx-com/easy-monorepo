@@ -52,13 +52,13 @@ abstract class AbstractEloquentPaginatorTestCase extends AbstractUnitTestCase
             return $this->connection;
         }
 
-        $doctrineConn = DriverManager::getConnection([
+        $doctrineConnection = DriverManager::getConnection([
             'driver' => 'pdo_sqlite',
             'memory' => true,
         ]);
 
         /** @var \PDO $pdo */
-        $pdo = $doctrineConn->getNativeConnection();
+        $pdo = $doctrineConnection->getNativeConnection();
 
         $this->connection = new SQLiteConnection($pdo);
         $this->connection->setSchemaGrammar(new SQLiteGrammar());
