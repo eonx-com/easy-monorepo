@@ -7,7 +7,7 @@ use EonX\EasyErrorHandler\Tests\Stub\Enum\ErrorCode;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
-use Monolog\Logger;
+use Monolog\Level;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class BaseExceptionTest extends AbstractUnitTestCase
@@ -35,27 +35,27 @@ final class BaseExceptionTest extends AbstractUnitTestCase
     {
         yield 'critical' => [
             'method' => 'setCriticalLogLevel',
-            'expectedLogLevel' => Logger::CRITICAL,
+            'expectedLogLevel' => Level::Critical,
         ];
 
         yield 'debug' => [
             'method' => 'setDebugLogLevel',
-            'expectedLogLevel' => Logger::DEBUG,
+            'expectedLogLevel' => Level::Debug,
         ];
 
         yield 'error' => [
             'method' => 'setErrorLogLevel',
-            'expectedLogLevel' => Logger::ERROR,
+            'expectedLogLevel' => Level::Error,
         ];
 
         yield 'info' => [
             'method' => 'setInfoLogLevel',
-            'expectedLogLevel' => Logger::INFO,
+            'expectedLogLevel' => Level::Info,
         ];
 
         yield 'warning' => [
             'method' => 'setWarningLogLevel',
-            'expectedLogLevel' => Logger::WARNING,
+            'expectedLogLevel' => Level::Warning,
         ];
     }
 
@@ -93,7 +93,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
 
     public function testGetLogLevel(): void
     {
-        $logLevel = Logger::CRITICAL;
+        $logLevel = Level::Critical;
         $exception = new BaseExceptionStub();
         self::setPrivatePropertyValue($exception, 'logLevel', $logLevel);
 
@@ -162,7 +162,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
     }
 
     #[DataProvider('provideLogLevelConvenientMethodsData')]
-    public function testLogLevelConvenientMethods(string $method, int $expectedLogLevel): void
+    public function testLogLevelConvenientMethods(string $method, Level $expectedLogLevel): void
     {
         $exception = new BaseExceptionStub();
 
@@ -182,7 +182,7 @@ final class BaseExceptionTest extends AbstractUnitTestCase
 
     public function testSetLogLevel(): void
     {
-        $logLevel = Logger::CRITICAL;
+        $logLevel = Level::Critical;
         $exception = new BaseExceptionStub();
 
         $result = $exception->setLogLevel($logLevel);

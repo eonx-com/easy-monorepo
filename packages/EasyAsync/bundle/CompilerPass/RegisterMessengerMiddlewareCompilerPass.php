@@ -5,7 +5,6 @@ namespace EonX\EasyAsync\Bundle\CompilerPass;
 
 use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
-use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersCloseConnectionMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -17,7 +16,6 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
     private const EASY_ASYNC_MIDDLEWARE_LIST = [
         DoctrineManagersSanityCheckMiddleware::class,
         DoctrineManagersClearMiddleware::class,
-        DoctrineManagersCloseConnectionMiddleware::class,
     ];
 
     private const MESSENGER_BUS_TAG = 'messenger.bus';

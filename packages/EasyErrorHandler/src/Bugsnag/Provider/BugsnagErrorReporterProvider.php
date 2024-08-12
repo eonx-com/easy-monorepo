@@ -7,6 +7,7 @@ use Bugsnag\Client;
 use EonX\EasyErrorHandler\Bugsnag\Reporter\BugsnagErrorReporter;
 use EonX\EasyErrorHandler\Common\Provider\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
+use Monolog\Level;
 
 final readonly class BugsnagErrorReporterProvider implements ErrorReporterProviderInterface
 {
@@ -30,7 +31,7 @@ final readonly class BugsnagErrorReporterProvider implements ErrorReporterProvid
             $this->bugsnag,
             $this->exceptionIgnorers,
             $this->errorLogLevelResolver,
-            $this->threshold
+            $this->threshold ? Level::from($this->threshold) : null
         );
     }
 }

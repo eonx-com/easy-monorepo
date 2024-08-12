@@ -5,6 +5,10 @@ namespace EonX\EasyApiToken\AwsCognito\ValueObject;
 
 final readonly class UserPoolConfig implements UserPoolConfigInterface
 {
+    private const ISSUING_URL_PATTERN = 'https://cognito-idp.%s.amazonaws.com/%s';
+
+    private const JWKS_URL_PATTERN = 'https://cognito-idp.%s.amazonaws.com/%s/.well-known/jwks.json';
+
     public function __construct(
         private string $appClientId,
         private string $region,
