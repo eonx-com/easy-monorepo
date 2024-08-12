@@ -656,7 +656,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager = self::getEntityManager();
         $product = new Product();
         $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
-            $product->setName('Description 1');
+            $product->setName('Name 1');
             $product->setPrice(new Price('1000', 'USD'));
             $entityManager->persist($product);
             $entityManager->flush();
@@ -673,7 +673,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             new EntityCreatedEvent(
                 $product,
                 [
-                    'description' => [null, 'Description 1'],
+                    'name' => [null, 'Name 1'],
                     'price' => [null, new Price('2000', 'USD')],
                     'category' => [null, null],
                 ]
@@ -688,16 +688,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         self::initDatabase();
         $entityManager = self::getEntityManager();
         $product = new Product();
-        $product->setName('Description 1');
+        $product->setName('Name 1');
         $product->setPrice(new Price('1000', 'USD'));
 
         $entityManager->persist($product);
         $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
-            $product->setName('Description 2');
+            $product->setName('Name 2');
 
             $entityManager->flush();
 
-            $product->setName('Description 3');
+            $product->setName('Name 3');
 
             $entityManager->flush();
 
@@ -710,7 +710,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             new EntityCreatedEvent(
                 $product,
                 [
-                    'description' => [null, 'Description 3'],
+                    'name' => [null, 'Name 3'],
                     'price' => [null, new Price('2000', 'AUD')],
                     'category' => [null, null],
                 ]
