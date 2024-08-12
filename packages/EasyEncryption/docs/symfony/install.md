@@ -89,6 +89,9 @@ To make an entity encryptable:
   #[ORM\Column(type: Types::STRING, length: 255)]
   protected string $encryptionKeyName;
 ```
+- Create a database migration with `php bin/console make:migration` and run it with `php bin/console doctrine:migrations:migrate` to add the new columns to the entity table.
+
+
 
 ### Symfony Messenger Integration
 
@@ -100,6 +103,9 @@ First, you need to override the default the serializer in `config/packages/messe
 
 ```php
 // config/packages/messenger.php
+use EonX\EasyEncryption\Serializers\EncryptableAwareMessengerSerializer;
+
+...
 
 $messengerConfig->serializer()
     ->defaultSerializer(EncryptableAwareMessengerSerializer::class);
@@ -128,8 +134,10 @@ final class SomeMessage implements EncryptableInterface
     use EncryptableTrait;
 
     #[EncryptableField]
-    private string $message;
+    public string $message;
 
     #[EncryptableField]
-    private string $name;
+    public string $name;
 ```
+
+Warning: encryptable message fields must not be `readonly`
