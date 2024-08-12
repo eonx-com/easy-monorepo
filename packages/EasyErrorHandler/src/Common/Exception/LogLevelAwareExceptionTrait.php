@@ -3,38 +3,38 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Exception;
 
-use Monolog\Logger;
+use Monolog\Level;
 
 trait LogLevelAwareExceptionTrait
 {
-    protected int $logLevel = Logger::INFO;
+    protected Level $logLevel = Level::Info;
 
-    public function getLogLevel(): int
+    public function getLogLevel(): Level
     {
         return $this->logLevel;
     }
 
     public function setCriticalLogLevel(): self
     {
-        return $this->setLogLevel(Logger::CRITICAL);
+        return $this->setLogLevel(Level::Critical);
     }
 
     public function setDebugLogLevel(): self
     {
-        return $this->setLogLevel(Logger::DEBUG);
+        return $this->setLogLevel(Level::Debug);
     }
 
     public function setErrorLogLevel(): self
     {
-        return $this->setLogLevel(Logger::ERROR);
+        return $this->setLogLevel(Level::Error);
     }
 
     public function setInfoLogLevel(): self
     {
-        return $this->setLogLevel(Logger::INFO);
+        return $this->setLogLevel(Level::Info);
     }
 
-    public function setLogLevel(int $logLevel): self
+    public function setLogLevel(Level $logLevel): self
     {
         $this->logLevel = $logLevel;
 
@@ -43,6 +43,6 @@ trait LogLevelAwareExceptionTrait
 
     public function setWarningLogLevel(): self
     {
-        return $this->setLogLevel(Logger::WARNING);
+        return $this->setLogLevel(Level::Warning);
     }
 }
