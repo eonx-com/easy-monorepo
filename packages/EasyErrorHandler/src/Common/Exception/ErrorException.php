@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Exception;
 
-use Monolog\Logger;
+use Monolog\Level;
 
 abstract class ErrorException extends BaseException
 {
-    protected int $logLevel = Logger::ERROR;
+    protected Level $logLevel = Level::Error;
 }

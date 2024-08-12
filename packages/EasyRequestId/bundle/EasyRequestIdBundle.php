@@ -57,12 +57,12 @@ final class EasyRequestIdBundle extends AbstractBundle
         $this->loadIfEnabled('easy_webhook', EasyWebhookConfigParam::class);
     }
 
-    private function loadIfEnabled(string $configName, ?string $enum = null): void
+    /**
+     * @param class-string<\BackedEnum> $enum
+     */
+    private function loadIfEnabled(string $configName, string $enum): void
     {
-        // Load only if enum exists
-        // @todo Remove \interface_exists after migration to new structure
-        // @todo Remove \interface_exists after migration to new structure
-        if ($enum !== null && (\enum_exists($enum) || \interface_exists($enum)) === false) {
+        if (\enum_exists($enum) === false) {
             return;
         }
 

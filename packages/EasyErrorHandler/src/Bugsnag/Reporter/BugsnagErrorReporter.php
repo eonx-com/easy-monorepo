@@ -6,12 +6,12 @@ namespace EonX\EasyErrorHandler\Bugsnag\Reporter;
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Common\Reporter\AbstractErrorReporter;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
-use Monolog\Logger;
+use Monolog\Level;
 use Throwable;
 
 final class BugsnagErrorReporter extends AbstractErrorReporter
 {
-    private readonly int $threshold;
+    private readonly Level $threshold;
 
     /**
      * @param \EonX\EasyErrorHandler\Bugsnag\Ignorer\BugsnagExceptionIgnorerInterface[] $exceptionIgnorers
@@ -20,10 +20,10 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
         private readonly Client $bugsnag,
         private readonly iterable $exceptionIgnorers,
         ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        ?int $threshold = null,
+        ?Level $threshold = null,
         ?int $priority = null,
     ) {
-        $this->threshold = $threshold ?? Logger::ERROR;
+        $this->threshold = $threshold ?? Level::Error;
 
         parent::__construct($errorLogLevelResolver, $priority);
     }
@@ -38,7 +38,7 @@ final class BugsnagErrorReporter extends AbstractErrorReporter
 
         $logLevel = $this->errorLogLevelResolver->getLogLevel($throwable);
 
-        if ($logLevel >= $this->threshold) {
+        if ($logLevel->value >= $this->threshold->value) {
             $this->bugsnag->notifyException($throwable);
         }
     }
