@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->arrayNode('easy_bugsnag')
+            ->arrayNode('bugsnag')
                 ->canBeDisabled()
                 ->children()
                     ->enumNode('threshold')

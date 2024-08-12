@@ -7,6 +7,7 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Comment;
 use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
+use stdClass;
 
 final class EasyActivityBundleTest extends AbstractUnitTestCase
 {
@@ -19,10 +20,11 @@ final class EasyActivityBundleTest extends AbstractUnitTestCase
 
         self::assertSame(
             [
+                stdClass::class,
                 Article::class,
                 Comment::class,
             ],
-            \array_values($trackableEntities)
+            $trackableEntities
         );
     }
 }

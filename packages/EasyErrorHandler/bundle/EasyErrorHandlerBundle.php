@@ -13,6 +13,7 @@ use EonX\EasyErrorHandler\Common\Provider\ErrorReporterProviderInterface;
 use EonX\EasyErrorHandler\Common\Provider\ErrorResponseBuilderProviderInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -80,7 +81,7 @@ final class EasyErrorHandlerBundle extends AbstractBundle
             $container->import('config/default_reporters.php');
         }
 
-        $this->registerEasyBugsnagConfiguration($config, $container, $builder);
+        $this->registerBugsnagConfiguration($config, $container, $builder);
 
         if ($this->isBundleEnabled('EasyWebhookBundle', $builder)) {
             $container->import('config/easy_webhook.php');
@@ -95,15 +96,27 @@ final class EasyErrorHandlerBundle extends AbstractBundle
         return isset($bundles[$bundleName]);
     }
 
-    private function registerEasyBugsnagConfiguration(
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
+    }
+
+    private function registerBugsnagConfiguration(
         array $config,
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        $config = $config['easy_bugsnag'];
+        $config = $config['bugsnag'];
 
         if ($config['enabled'] === false) {
             return;
+        }
+
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder) === false) {
+            throw new LogicException('Install EasyBugsnagBundle to use Bugsnag integration.');
         }
 
         $builder->registerForAutoconfiguration(BugsnagExceptionIgnorerInterface::class)
@@ -115,6 +128,6 @@ final class EasyErrorHandlerBundle extends AbstractBundle
             ->set(ConfigParam::BugsnagIgnoredExceptions->value, $config['ignored_exceptions'])
             ->set(ConfigParam::BugsnagHandledExceptions->value, $config['handled_exceptions']);
 
-        $container->import('config/easy_bugsnag.php');
+        $container->import('config/bugsnag.php');
     }
 }

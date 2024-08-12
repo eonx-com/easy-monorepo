@@ -8,7 +8,7 @@ use EonX\EasyAsync\Doctrine\Closer\ConnectionCloser;
 use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyTest\Common\Trait\LoggerTrait;
 
-final class ManagersCloserTest extends AbstractUnitTestCase
+final class ConnectionCloserTest extends AbstractUnitTestCase
 {
     use LoggerTrait;
 

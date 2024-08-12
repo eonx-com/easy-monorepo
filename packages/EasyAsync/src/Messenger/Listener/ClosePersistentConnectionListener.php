@@ -8,7 +8,7 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
 final class ClosePersistentConnectionListener
 {
-    private bool $managersClosed = false;
+    private bool $connectionClosed = false;
 
     private ?float $startIdleTime = null;
 
@@ -16,7 +16,7 @@ final class ClosePersistentConnectionListener
      * @param string[]|null $managers
      */
     public function __construct(
-        private readonly ConnectionCloser $managersCloser,
+        private readonly ConnectionCloser $connectionCloser,
         private readonly float $maxIdleTime,
         private readonly ?array $managers = null,
     ) {
@@ -27,22 +27,22 @@ final class ClosePersistentConnectionListener
         // If worker is processing messages then, reset state and skip
         if ($event->isWorkerIdle() === false) {
             $this->startIdleTime = null;
-            $this->managersClosed = false;
+            $this->connectionClosed = false;
 
             return;
         }
 
-        // If manager were closed already, skip
-        if ($this->managersClosed) {
+        // If connection were closed already, skip
+        if ($this->connectionClosed) {
             return;
         }
 
         $this->startIdleTime ??= \microtime(true);
 
-        // Close managers, and update state not to keep calling this logic over and over
+        // Close connection, and update state not to keep calling this logic over and over
         if ((\microtime(true) - $this->startIdleTime) >= $this->maxIdleTime) {
-            $this->managersCloser->close($this->managers);
-            $this->managersClosed = true;
+            $this->connectionCloser->close($this->managers);
+            $this->connectionClosed = true;
         }
     }
 }

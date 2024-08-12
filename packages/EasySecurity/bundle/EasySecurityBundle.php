@@ -16,6 +16,7 @@ use EonX\EasySecurity\SymfonySecurity\Voter\RoleVoter;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -67,15 +68,20 @@ final class EasySecurityBundle extends AbstractBundle
 
         $container->import('config/services.php');
 
-        if (($config['easy_bugsnag']['enabled'])) {
-            $container->import('config/easy_bugsnag.php');
-        }
-
-        $this->registerDefaultConfigurators($config, $container, $builder);
+        $this->registerEasyBugsnagConfiguration($config, $container, $builder);
+        $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
     }
 
-    private function registerDefaultConfigurators(
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
+    }
+
+    private function registerDefaultConfiguratorsConfiguration(
         array $config,
         ContainerConfigurator $container,
         ContainerBuilder $builder,
@@ -89,6 +95,22 @@ final class EasySecurityBundle extends AbstractBundle
             ->set(ConfigParam::DefaultConfiguratorsPriority->value, $config['default_configurators']['priority']);
 
         $container->import('config/default_configurators.php');
+    }
+
+    private function registerEasyBugsnagConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['easy_bugsnag']['enabled'] === false) {
+            return;
+        }
+
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder) === false) {
+            throw new LogicException('EasyBugsnagBundle is required to enable EasyBugsnag integration.');
+        }
+
+        $container->import('config/easy_bugsnag.php');
     }
 
     private function registerVotersConfiguration(

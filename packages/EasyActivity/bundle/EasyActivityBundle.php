@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bundle;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
-use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -42,13 +40,26 @@ final class EasyActivityBundle extends AbstractBundle
             return;
         }
 
-        $config = (new Processor())->processConfiguration(
-            new Configuration($this, $builder, $this->extensionAlias),
-            $builder->getExtensionConfig($this->extensionAlias)
-        );
+        $deferredDispatcherEntities = [];
+        foreach ($builder->getExtensionConfig('easy_doctrine') as $config) {
+            $deferredDispatcherEntities = [
+                ...$deferredDispatcherEntities,
+                ...($config['deferred_dispatcher_entities'] ?? []),
+            ];
+        }
 
+        $subjects = [];
+        foreach ($builder->getExtensionConfig('easy_activity') as $config) {
+            $subjects = [
+                ...$deferredDispatcherEntities,
+                ...\array_keys($config['subjects'] ?? []),
+            ];
+        }
+
+        $deferredDispatcherEntities = \array_unique($deferredDispatcherEntities);
+        $subjects = \array_unique($subjects);
         $easyDoctrinePrependedConfig = [
-            'deferred_dispatcher_entities' => \array_keys($config['subjects']),
+            'deferred_dispatcher_entities' => \array_diff($subjects, $deferredDispatcherEntities),
         ];
 
         $builder->prependExtensionConfig('easy_doctrine', $easyDoctrinePrependedConfig);

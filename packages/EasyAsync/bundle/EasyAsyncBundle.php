@@ -30,8 +30,6 @@ final class EasyAsyncBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/messenger.php');
-
         $this->registerDoctrineConfiguration($config, $container, $builder);
         $this->registerMessengerConfiguration($config, $container, $builder);
     }
@@ -58,6 +56,8 @@ final class EasyAsyncBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
+        $container->import('config/messenger.php');
+
         $this->registerMessengerMiddlewareConfiguration($config, $container, $builder);
         $this->registerStopOnMessagesLimitConfiguration($config, $container, $builder);
         $this->registerStopOnTimeLimitConfiguration($config, $container, $builder);
@@ -79,7 +79,7 @@ final class EasyAsyncBundle extends AbstractBundle
             return;
         }
 
-        $container->import('config/messenger_middlewares.php');
+        $container->import('config/messenger_middleware.php');
     }
 
     private function registerStopOnMessagesLimitConfiguration(
