@@ -6,6 +6,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Symfony\Config\EasyErrorHandlerConfig;
 
 return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
-    $easyBugsnagConfig = $easyErrorHandlerConfig->easyBugsnag();
-    $easyBugsnagConfig->ignoredExceptions([]);
+    $easyErrorHandlerConfig->bugsnag()
+        ->ignoredExceptions([]);
 };

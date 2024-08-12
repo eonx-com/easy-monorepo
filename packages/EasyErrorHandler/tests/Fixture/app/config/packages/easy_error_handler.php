@@ -9,7 +9,7 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
     $easyErrorHandlerConfig
         ->translationDomain('violations');
 
-    $easyErrorHandlerConfig->easyBugsnag()
+    $easyErrorHandlerConfig->bugsnag()
         ->enabled(false);
 
     $response = $easyErrorHandlerConfig->response();
