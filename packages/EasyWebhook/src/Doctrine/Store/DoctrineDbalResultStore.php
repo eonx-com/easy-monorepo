@@ -17,11 +17,11 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
 
     public function __construct(
         RandomGeneratorInterface $random,
-        Connection $conn,
+        Connection $connection,
         DataCleanerInterface $dataCleaner,
         ?string $table = null,
     ) {
-        parent::__construct($random, $conn, $dataCleaner, $table ?? self::DEFAULT_TABLE);
+        parent::__construct($random, $connection, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
@@ -36,7 +36,7 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
             $data['id'] = $result->getId();
             $data['created_at'] = $now;
 
-            $this->conn->insert($this->table, $this->formatData($data));
+            $this->connection->insert($this->table, $this->formatData($data));
 
             return $result;
         }
@@ -46,13 +46,13 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
             $data['id'] = $result->getId();
             $data['created_at'] = $now;
 
-            $this->conn->insert($this->table, $this->formatData($data));
+            $this->connection->insert($this->table, $this->formatData($data));
 
             return $result;
         }
 
         // Update existing result
-        $this->conn->update($this->table, $this->formatData($data), [
+        $this->connection->update($this->table, $this->formatData($data), [
             'id' => $result->getId(),
         ]);
 

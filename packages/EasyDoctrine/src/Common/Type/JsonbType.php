@@ -11,8 +11,6 @@ use JsonException;
 
 final class JsonbType extends Type
 {
-    public const NAME = 'jsonb';
-
     private const FORMAT_DB_JSONB = 'JSONB';
 
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string

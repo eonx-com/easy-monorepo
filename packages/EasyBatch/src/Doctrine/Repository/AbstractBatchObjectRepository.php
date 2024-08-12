@@ -22,7 +22,7 @@ abstract class AbstractBatchObjectRepository
         protected BatchObjectFactoryInterface $factory,
         protected BatchObjectIdStrategyInterface $idStrategy,
         protected BatchObjectTransformerInterface $transformer,
-        protected Connection $conn,
+        protected Connection $connection,
         protected string $table,
     ) {
         // No body needed
@@ -58,8 +58,8 @@ abstract class AbstractBatchObjectRepository
 
         $batchObjectExists = $this->has($batchObjectId);
         $affectedRows = (int)($batchObjectExists === false
-            ? $this->conn->insert($this->table, $data)
-            : $this->conn->update($this->table, $data, ['id' => $batchObjectId]));
+            ? $this->connection->insert($this->table, $data)
+            : $this->connection->update($this->table, $data, ['id' => $batchObjectId]));
 
         // This logic should affect only one row, otherwise something went wrong
         if ($affectedRows !== 1) {
@@ -86,7 +86,7 @@ abstract class AbstractBatchObjectRepository
     private function fetchData(int|string $id): ?array
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
-        $result = $this->conn->fetchAssociative($sql, ['id' => $id]);
+        $result = $this->connection->fetchAssociative($sql, ['id' => $id]);
 
         return \is_array($result) ? $result : null;
     }
@@ -94,6 +94,6 @@ abstract class AbstractBatchObjectRepository
     private function resolveTableColumns(): array
     {
         return $this->tableColumns
-            ?? ($this->tableColumns = \array_keys($this->conn->createSchemaManager()->listTableColumns($this->table)));
+            ?? ($this->tableColumns = \array_keys($this->connection->createSchemaManager()->listTableColumns($this->table)));
     }
 }

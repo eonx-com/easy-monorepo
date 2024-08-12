@@ -14,7 +14,7 @@ use Illuminate\Database\SQLiteConnection;
 
 abstract class AbstractEloquentPaginatorTestCase extends AbstractUnitTestCase
 {
-    private ?ConnectionInterface $conn = null;
+    private ?ConnectionInterface $connection = null;
 
     protected static function createChildItemsTable(Model $model): void
     {
@@ -48,8 +48,8 @@ abstract class AbstractEloquentPaginatorTestCase extends AbstractUnitTestCase
      */
     protected function getEloquentConnection(): ConnectionInterface
     {
-        if ($this->conn !== null) {
-            return $this->conn;
+        if ($this->connection !== null) {
+            return $this->connection;
         }
 
         $doctrineConn = DriverManager::getConnection([
@@ -60,9 +60,9 @@ abstract class AbstractEloquentPaginatorTestCase extends AbstractUnitTestCase
         /** @var \PDO $pdo */
         $pdo = $doctrineConn->getNativeConnection();
 
-        $this->conn = new SQLiteConnection($pdo);
-        $this->conn->setSchemaGrammar(new SQLiteGrammar());
+        $this->connection = new SQLiteConnection($pdo);
+        $this->connection->setSchemaGrammar(new SQLiteGrammar());
 
-        return $this->conn;
+        return $this->connection;
     }
 }

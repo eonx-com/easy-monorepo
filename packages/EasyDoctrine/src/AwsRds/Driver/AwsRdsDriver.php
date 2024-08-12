@@ -9,7 +9,7 @@ use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use SensitiveParameter;
 
-final class Driver extends AbstractDriverMiddleware
+final class AwsRdsDriver extends AbstractDriverMiddleware
 {
     public function __construct(
         DriverInterface $driver,

@@ -47,7 +47,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface
     {
         $sql = \sprintf('SELECT * FROM %s WHERE parent_batch_item_id = :id', $this->table);
-        $data = $this->conn->fetchAssociative($sql, ['id' => $parentBatchItemId]);
+        $data = $this->connection->fetchAssociative($sql, ['id' => $parentBatchItemId]);
 
         if (\is_array($data)) {
             /** @var \EonX\EasyBatch\Common\ValueObject\BatchInterface $batch */
@@ -110,9 +110,9 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         $this->beginTransaction();
 
         try {
-            $queryBuilder = $this->conn->createQueryBuilder();
+            $queryBuilder = $this->connection->createQueryBuilder();
 
-            if ($this->conn->getDatabasePlatform() instanceof SQLitePlatform === false) {
+            if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform === false) {
                 $queryBuilder->forUpdate();
             }
 
@@ -120,7 +120,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
                 ->from($this->table)
                 ->where('id = :id');
 
-            $data = $this->conn->fetchAssociative($queryBuilder->getSQL(), ['id' => $batch->getId()]);
+            $data = $this->connection->fetchAssociative($queryBuilder->getSQL(), ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
 
             if ($freshBatch === null) {
@@ -146,8 +146,8 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function beginTransaction(): void
     {
         // If transaction active and savepoint supported, create new savepoint
-        if ($this->conn->isTransactionActive() && $this->conn->getDatabasePlatform()->supportsSavepoints()) {
-            $this->conn->createSavepoint(self::SAVEPOINT);
+        if ($this->connection->isTransactionActive() && $this->connection->getDatabasePlatform()->supportsSavepoints()) {
+            $this->connection->createSavepoint(self::SAVEPOINT);
             $this->savepointActive = true;
 
             return;
@@ -155,7 +155,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
 
         // Otherwise, create transaction
         $this->savepointActive = false;
-        $this->conn->beginTransaction();
+        $this->connection->beginTransaction();
     }
 
     /**
@@ -164,8 +164,8 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function commit(): void
     {
         $this->savepointActive
-            ? $this->conn->releaseSavepoint(self::SAVEPOINT)
-            : $this->conn->commit();
+            ? $this->connection->releaseSavepoint(self::SAVEPOINT)
+            : $this->connection->commit();
     }
 
     /**
@@ -174,7 +174,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function rollback(): void
     {
         $this->savepointActive
-            ? $this->conn->rollbackSavepoint(self::SAVEPOINT)
-            : $this->conn->rollBack();
+            ? $this->connection->rollbackSavepoint(self::SAVEPOINT)
+            : $this->connection->rollBack();
     }
 }

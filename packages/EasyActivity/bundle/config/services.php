@@ -17,11 +17,11 @@ use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
 use EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectDataResolver;
-use EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectResolver;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Common\Serializer\SymfonyActivitySubjectDataSerializer;
 use EonX\EasyActivity\Common\Store\StoreInterface;
+use EonX\EasyActivity\Doctrine\Resolver\DoctrineActivitySubjectResolver;
 use EonX\EasyActivity\Doctrine\Store\DoctrineDbalStore;
 use EonX\EasyActivity\Messenger\Dispatcher\AsyncDispatcher;
 use EonX\EasyActivity\Messenger\MessageHandler\ActivityLogEntryMessageHandler;
@@ -43,7 +43,7 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActorResolverInterface::class, DefaultActorResolver::class);
 
     $services
-        ->set(ActivitySubjectResolverInterface::class, DefaultActivitySubjectResolver::class)
+        ->set(ActivitySubjectResolverInterface::class, DoctrineActivitySubjectResolver::class)
         ->arg('$subjects', param(ConfigParam::Subjects->value));
 
     $services

@@ -11,8 +11,6 @@ use EonX\EasyUtils\Math\ValueObject\Number;
 
 final class IntegerNumberType extends Type
 {
-    public const NAME = 'integer_number';
-
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {

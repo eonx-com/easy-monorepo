@@ -16,10 +16,10 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
 
     protected function setUp(): void
     {
-        $conn = $this->getDoctrineDbalConnection();
+        $connection = $this->getDoctrineDbalConnection();
 
         foreach ($this->getStatementsProvider()->migrateStatements() as $statement) {
-            $conn->executeStatement($statement);
+            $connection->executeStatement($statement);
         }
 
         parent::setUp();
@@ -27,13 +27,13 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
 
     protected function tearDown(): void
     {
-        $conn = $this->getDoctrineDbalConnection();
+        $connection = $this->getDoctrineDbalConnection();
 
         foreach ($this->getStatementsProvider()->rollbackStatements() as $statement) {
-            $conn->executeStatement($statement);
+            $connection->executeStatement($statement);
         }
 
-        $conn->close();
+        $connection->close();
 
         parent::tearDown();
     }

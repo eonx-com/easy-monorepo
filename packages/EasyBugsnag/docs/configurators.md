@@ -25,7 +25,8 @@ For example, the following configurator sets the *release stage* attribute of th
 
 namespace App\Bugsnag;
 
-use Bugsnag\Client;use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
+use Bugsnag\Client;
+use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
 
 final class ReleaseStageConfigurator extends AbstractClientConfigurator
 {
@@ -80,7 +81,9 @@ Create a class extending `EonX\EasyBugsnag\Common\Configurator\AbstractClientCon
 
 namespace App\Bugsnag;
 
-use Bugsnag\Client;use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;use Illuminate\Contracts\Foundation\Application;
+use Bugsnag\Client;
+use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
+use Illuminate\Contracts\Foundation\Application;
 
 final class RuntimeVersionConfigurator extends AbstractClientConfigurator
 {

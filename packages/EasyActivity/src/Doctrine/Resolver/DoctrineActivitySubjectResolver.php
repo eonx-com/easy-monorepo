@@ -1,14 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Common\Resolver;
+namespace EonX\EasyActivity\Doctrine\Resolver;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Common\Entity\ActivitySubject;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Exception\UnableToResolveActivitySubjectException;
+use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 
-final readonly class DefaultActivitySubjectResolver implements ActivitySubjectResolverInterface
+final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectResolverInterface
 {
     public function __construct(
         private array $subjects,
@@ -29,7 +30,7 @@ final readonly class DefaultActivitySubjectResolver implements ActivitySubjectRe
         }
 
         if (\method_exists($object, 'getId') === false) {
-            throw new UnableToResolveActivitySubjectException('Given object does not have getId() method');
+            throw new UnableToResolveActivitySubjectException('Given object does not have getId() method.');
         }
 
         $allowedProperties = \array_key_exists('allowed_properties', $subjectConfig)

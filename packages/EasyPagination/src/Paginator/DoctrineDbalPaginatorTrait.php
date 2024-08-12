@@ -10,13 +10,13 @@ trait DoctrineDbalPaginatorTrait
 {
     use DoctrineCommonPaginatorTrait;
 
-    private Connection $conn;
+    private Connection $connection;
 
     private string $from;
 
     private function createQueryBuilder(): QueryBuilder
     {
-        return $this->conn->createQueryBuilder()
+        return $this->connection->createQueryBuilder()
             ->from($this->from, $this->fromAlias);
     }
 
@@ -25,7 +25,7 @@ trait DoctrineDbalPaginatorTrait
      */
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
-        return $this->conn->fetchAllAssociative(
+        return $this->connection->fetchAllAssociative(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()
@@ -34,7 +34,7 @@ trait DoctrineDbalPaginatorTrait
 
     private function getConnection(): Connection
     {
-        return $this->conn;
+        return $this->connection;
     }
 
     private function resolveSelect(): mixed

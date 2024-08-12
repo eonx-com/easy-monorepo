@@ -136,8 +136,8 @@ trait DoctrineCommonPaginatorTrait
      */
     private function getTotalItemsForLargeDataset(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): ?int
     {
-        $conn = $this->getConnection();
-        $platform = $conn->getDatabasePlatform();
+        $connection = $this->getConnection();
+        $platform = $connection->getDatabasePlatform();
 
         if ($platform instanceof PostgreSQLPlatform === false
             && $platform instanceof SQLitePlatform === false) {
@@ -177,7 +177,7 @@ trait DoctrineCommonPaginatorTrait
             $sql = \sprintf('EXPLAIN QUERY PLAN %s', $sql);
         }
 
-        $result = $conn->executeQuery($sql, $params, $paramTypes)
+        $result = $connection->executeQuery($sql, $params, $paramTypes)
             ->fetchAssociative();
 
         if (\is_array($result) && isset($result['QUERY PLAN'])) {
@@ -192,7 +192,7 @@ trait DoctrineCommonPaginatorTrait
     private function hasJoinInQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): bool
     {
         return ($queryBuilder instanceof OrmQueryBuilder && \count($queryBuilder->getDQLPart('join')) > 0)
-            || ($queryBuilder instanceof DbalQueryBuilder && \str_contains($queryBuilder->getSQL(), 'JOIN '))
+            || ($queryBuilder instanceof DbalQueryBuilder && \str_contains($queryBuilder->getSQL(), 'JOIN'))
             || $this->hasJoinsInQuery;
     }
 }

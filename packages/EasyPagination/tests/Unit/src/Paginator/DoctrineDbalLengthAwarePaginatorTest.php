@@ -22,8 +22,8 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
+            function (Connection $connection): void {
+                self::createItemsTable($connection);
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -54,8 +54,8 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             'i',
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
+            function (Connection $connection): void {
+                self::createItemsTable($connection);
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -67,8 +67,8 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(10, 15),
             'items',
             null,
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
+            function (Connection $connection): void {
+                self::createItemsTable($connection);
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 self::assertEmpty($paginator->getItems());
@@ -80,9 +80,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connectionection): void {
+                self::createItemsTable($connectionection);
+                self::addItemToTable($connectionection, 'my-title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -94,9 +94,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             'i',
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connectionection): void {
+                self::createItemsTable($connectionection);
+                self::addItemToTable($connectionection, 'my-title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 $paginator->setPrimaryKeyIndex('id');
@@ -110,10 +110,10 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
-                self::addItemToTable($conn, 'my-title-1');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
+                self::addItemToTable($connection, 'my-title-1');
 
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
@@ -131,10 +131,10 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             'i',
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
-                self::addItemToTable($conn, 'my-title-1');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
+                self::addItemToTable($connection, 'my-title-1');
 
                 $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
                     $queryBuilder
@@ -152,9 +152,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 $item = (array)($paginator->getItems()[0] ?? []);
@@ -171,9 +171,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             'i',
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 $item = (array)($paginator->getItems()[0] ?? []);
@@ -190,9 +190,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
 
                 $paginator->setSelect('*');
             },
@@ -211,9 +211,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             'i',
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
 
                 $paginator->setSelect('*');
             },
@@ -232,9 +232,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
 
                 $paginator->setSelect('title');
             },
@@ -253,9 +253,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             'i',
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
 
                 $paginator->setSelect('title');
             },
@@ -274,9 +274,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'items',
             null,
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
 
                 $paginator->setTransformer(static function (array $item): stdClass {
                     $obj = new stdClass();
@@ -303,11 +303,11 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'child_items',
             'ci',
-            function (Connection $conn, DoctrineDbalLengthAwarePaginator $paginator): void {
-                self::createItemsTable($conn);
-                self::createChildItemsTable($conn);
-                self::addItemToTable($conn, 'my-parent');
-                self::addChildItemToTable($conn, 'my-child', 1);
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::createChildItemsTable($connection);
+                self::addItemToTable($connection, 'my-parent');
+                self::addChildItemToTable($connection, 'my-child', 1);
 
                 // $paginator->hasJoinsInQuery();
                 $paginator->setPrimaryKeyIndex('id');
@@ -336,10 +336,10 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 1),
             'items',
             null,
-            function (Connection $conn): void {
-                self::createItemsTable($conn);
-                self::addItemToTable($conn, 'my-title');
-                self::addItemToTable($conn, 'my-title-1');
+            function (Connection $connection): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title');
+                self::addItemToTable($connection, 'my-title-1');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -359,11 +359,11 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
         callable $setup,
         callable $assert,
     ): void {
-        $conn = $this->getDoctrineDbalConnection();
-        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $conn, $from, $fromAlias);
+        $connection = $this->getDoctrineDbalConnection();
+        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $connection, $from, $fromAlias);
         $paginator->setLargeDatasetEnabled();
 
-        $setup($conn, $paginator);
+        $setup($connection, $paginator);
         $assert($paginator);
     }
 }

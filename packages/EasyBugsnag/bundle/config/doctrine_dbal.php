@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyBugsnag\Doctrine\Logger\BreadcrumbLogger;
+use EonX\EasyBugsnag\Doctrine\Logger\QueryBreadcrumbLogger;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -12,5 +12,5 @@ return static function (ContainerConfigurator $container): void {
         ->autowire();
 
     $services
-        ->set(BreadcrumbLogger::class);
+        ->set(QueryBreadcrumbLogger::class);
 };

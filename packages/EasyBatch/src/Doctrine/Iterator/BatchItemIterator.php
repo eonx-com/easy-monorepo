@@ -17,7 +17,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
 {
     public function __construct(
         private BatchItemRepositoryInterface $batchItemRepository,
-        private Connection $conn,
+        private Connection $connection,
         private int $batchItemsPerPage,
     ) {
     }
@@ -95,7 +95,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
             QueryBuilder $queryBuilder,
             array $statuses,
         ): array => \array_map(
-            fn (BatchObjectStatus $status): string => $this->conn->quote($status->value),
+            fn (BatchObjectStatus $status): string => $this->connection->quote($status->value),
             $statuses
         );
 

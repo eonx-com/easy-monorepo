@@ -25,18 +25,18 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
 
     public function __construct(
         RandomGeneratorInterface $random,
-        Connection $conn,
+        Connection $connection,
         DataCleanerInterface $dataCleaner,
         ?string $table = null,
     ) {
-        parent::__construct($random, $conn, $dataCleaner, $table ?? self::DEFAULT_TABLE);
+        parent::__construct($random, $connection, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
 
     public function find(string $id): ?WebhookInterface
     {
         $sql = \sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
 
-        $data = $this->conn->fetchAssociative($sql, [
+        $data = $this->connection->fetchAssociative($sql, [
             'id' => $id,
         ]);
 
@@ -60,7 +60,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             ));
         }
 
-        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
+        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->connection, $this->table);
 
         $paginator
             ->setFilterCriteria(static function (QueryBuilder $queryBuilder) use ($sendAfter): void {
@@ -97,7 +97,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             $data['id'] = $webhook->getId();
             $data['created_at'] = $now;
 
-            $this->conn->insert($this->table, $this->formatData($data));
+            $this->connection->insert($this->table, $this->formatData($data));
 
             return $webhook;
         }
@@ -107,13 +107,13 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             $data['id'] = $webhook->getId();
             $data['created_at'] = $now;
 
-            $this->conn->insert($this->table, $this->formatData($data));
+            $this->connection->insert($this->table, $this->formatData($data));
 
             return $webhook;
         }
 
         // Update existing result
-        $this->conn->update($this->table, $this->formatData($data), [
+        $this->connection->update($this->table, $this->formatData($data), [
             'id' => $webhook->getId(),
         ]);
 

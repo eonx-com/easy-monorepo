@@ -7,8 +7,8 @@ use EonX\EasyBugsnag\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
 use EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface;
-use EonX\EasyBugsnag\Doctrine\Logger\BreadcrumbLogger;
-use EonX\EasyBugsnag\Doctrine\Middleware\Middleware;
+use EonX\EasyBugsnag\Doctrine\Logger\QueryBreadcrumbLogger;
+use EonX\EasyBugsnag\Doctrine\Middleware\BreadcrumbLoggerMiddleware;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -85,7 +85,8 @@ final class EasyBugsnagBundle extends AbstractBundle
             foreach ($config['doctrine_dbal']['connections'] as $connection) {
                 $builder->setDefinition(
                     'easy_bugsnag.doctrine.middleware.' . $connection,
-                    (new Definition(Middleware::class, [$builder->getDefinition(BreadcrumbLogger::class)]))
+                    (new Definition(BreadcrumbLoggerMiddleware::class,
+                        [$builder->getDefinition(QueryBreadcrumbLogger::class)]))
                         ->addTag('doctrine.middleware', ['connection' => $connection])
                 );
             }

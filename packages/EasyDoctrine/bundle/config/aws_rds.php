@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyDoctrine\AwsRds\Middleware\Middleware;
+use EonX\EasyDoctrine\AwsRds\Middleware\AwsRdsMiddleware;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProviderInterface;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsCertificateAuthorityProvider;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
@@ -24,5 +24,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$awsUsername', param(ConfigParam::AwsRdsIamAwsUsername->value));
 
     $services
-        ->set(Middleware::class);
+        ->set(AwsRdsMiddleware::class);
 };

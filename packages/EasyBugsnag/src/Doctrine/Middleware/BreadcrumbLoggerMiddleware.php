@@ -6,15 +6,15 @@ namespace EonX\EasyBugsnag\Doctrine\Middleware;
 use Doctrine\Bundle\DoctrineBundle\Middleware\ConnectionNameAwareInterface;
 use Doctrine\DBAL\Driver as DriverInterface;
 use Doctrine\DBAL\Driver\Middleware as MiddlewareInterface;
-use EonX\EasyBugsnag\Doctrine\Driver\Driver;
-use EonX\EasyBugsnag\Doctrine\Logger\BreadcrumbLogger;
+use EonX\EasyBugsnag\Doctrine\Driver\BreadcrumbLoggerDriver;
+use EonX\EasyBugsnag\Doctrine\Logger\QueryBreadcrumbLogger;
 
-final class Middleware implements MiddlewareInterface, ConnectionNameAwareInterface
+final class BreadcrumbLoggerMiddleware implements MiddlewareInterface, ConnectionNameAwareInterface
 {
     private string $connectionName;
 
     public function __construct(
-        private readonly BreadcrumbLogger $breadcrumbLogger,
+        private readonly QueryBreadcrumbLogger $queryBreadcrumbLogger,
     ) {
     }
 
@@ -25,6 +25,6 @@ final class Middleware implements MiddlewareInterface, ConnectionNameAwareInterf
 
     public function wrap(DriverInterface $driver): DriverInterface
     {
-        return new Driver($driver, $this->breadcrumbLogger, $this->connectionName);
+        return new BreadcrumbLoggerDriver($driver, $this->queryBreadcrumbLogger, $this->connectionName);
     }
 }

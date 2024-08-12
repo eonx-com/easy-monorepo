@@ -21,7 +21,7 @@ abstract class AbstractDoctrineDbalStoreTestCase extends AbstractUnitTestCase
 
     protected function setUp(): void
     {
-        $conn = $this->getDoctrineDbalConnection();
+        $connection = $this->getDoctrineDbalConnection();
 
         $stmtsProvider = $this->getStmtsProvider();
         $stmtsProvider->extendWebhooksTable(static function (Table $table): void {
@@ -31,7 +31,7 @@ abstract class AbstractDoctrineDbalStoreTestCase extends AbstractUnitTestCase
         });
 
         foreach ($stmtsProvider->migrateStatements() as $statement) {
-            $conn->executeStatement($statement);
+            $connection->executeStatement($statement);
         }
 
         parent::setUp();
@@ -39,13 +39,13 @@ abstract class AbstractDoctrineDbalStoreTestCase extends AbstractUnitTestCase
 
     protected function tearDown(): void
     {
-        $conn = $this->getDoctrineDbalConnection();
+        $connection = $this->getDoctrineDbalConnection();
 
         foreach ($this->getStmtsProvider()->rollbackStatements() as $statement) {
-            $conn->executeStatement($statement);
+            $connection->executeStatement($statement);
         }
 
-        $conn->close();
+        $connection->close();
 
         parent::tearDown();
     }

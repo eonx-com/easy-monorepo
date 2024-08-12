@@ -24,11 +24,11 @@ final class EasyLockServiceProvider extends ServiceProvider
             ConfigServiceId::Store->value,
             static function (Container $app): PersistingStoreInterface {
                 // If connection from config doesn't exist in container, use flock by default
-                $conn = $app->has(ConfigServiceId::Connection->value)
+                $connection = $app->has(ConfigServiceId::Connection->value)
                     ? $app->make(ConfigServiceId::Connection->value)
                     : self::DEFAULT_CONNECTION_ID;
 
-                return StoreFactory::createStore($conn);
+                return StoreFactory::createStore($connection);
             }
         );
 

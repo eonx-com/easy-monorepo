@@ -13,11 +13,11 @@ final class DoctrineDbalPaginator extends AbstractPaginator implements Extendabl
 
     public function __construct(
         PaginationInterface $pagination,
-        Connection $conn,
+        Connection $connection,
         string $from,
         ?string $fromAlias = null,
     ) {
-        $this->conn = $conn;
+        $this->conn = $connection;
         $this->from = $from;
         $this->fromAlias = $fromAlias;
 

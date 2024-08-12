@@ -6,11 +6,11 @@ namespace EonX\EasyDoctrine\AwsRds\Middleware;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsMiddleware;
 use Doctrine\DBAL\Driver as DriverInterface;
 use Doctrine\DBAL\Driver\Middleware as MiddlewareInterface;
-use EonX\EasyDoctrine\AwsRds\Driver\Driver;
+use EonX\EasyDoctrine\AwsRds\Driver\AwsRdsDriver;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 
 #[AsMiddleware(priority: 100)]
-final readonly class Middleware implements MiddlewareInterface
+final readonly class AwsRdsMiddleware implements MiddlewareInterface
 {
     public function __construct(
         protected AwsRdsConnectionParamsResolver $connectionParamsResolver,
@@ -19,6 +19,6 @@ final readonly class Middleware implements MiddlewareInterface
 
     public function wrap(DriverInterface $driver): DriverInterface
     {
-        return new Driver($driver, $this->connectionParamsResolver);
+        return new AwsRdsDriver($driver, $this->connectionParamsResolver);
     }
 }
