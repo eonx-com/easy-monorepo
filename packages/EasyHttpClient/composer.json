@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-event-dispatcher": "^5.12",
-        "eonx-com/easy-utils": "^5.12",
+        "eonx-com/easy-event-dispatcher": "^5.13",
+        "eonx-com/easy-utils": "^5.13",
         "nesbot/carbon": "^3.7",
         "symfony/config": "^7.0",
         "symfony/contracts": "^3.5",
@@ -19,9 +19,9 @@
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-lock": "^5.12",
-        "eonx-com/easy-test": "^5.12",
-        "eonx-com/easy-webhook": "^5.12",
+        "eonx-com/easy-lock": "^5.13",
+        "eonx-com/easy-test": "^5.13",
+        "eonx-com/easy-webhook": "^5.13",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
@@ -52,7 +52,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.12-dev"
+            "dev-master": "5.13-dev"
         }
     }
 }

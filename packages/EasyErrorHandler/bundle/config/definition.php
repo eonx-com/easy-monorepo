@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Monolog\Logger;
+use Monolog\Level;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -12,7 +12,10 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('easy_bugsnag')
                 ->canBeDisabled()
                 ->children()
-                    ->integerNode('threshold')->defaultNull()->end()
+                    ->enumNode('threshold')
+                        ->values(Level::cases())
+                        ->defaultNull()
+                    ->end()
                     ->arrayNode('handled_exceptions')
                         ->beforeNormalization()->castToArray()->end()
                         ->scalarPrototype()->end()
@@ -35,8 +38,8 @@ return static function (DefinitionConfigurator $definition) {
                         ->beforeNormalization()->castToArray()->end()
                         ->integerPrototype()->end()
                         ->defaultValue([
-                            HttpExceptionInterface::class => Logger::DEBUG,
-                            RequestExceptionInterface::class => Logger::DEBUG,
+                            HttpExceptionInterface::class => Level::Debug,
+                            RequestExceptionInterface::class => Level::Debug,
                         ])
                     ->end()
                     ->arrayNode('ignored_exceptions')

@@ -10,15 +10,15 @@ use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
 use EonX\EasyErrorHandler\Common\Enum\ExceptionSeverity;
 use EonX\EasyErrorHandler\Common\Exception\SeverityAwareExceptionInterface;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
-use Monolog\Logger;
+use Monolog\Level;
 use Throwable;
 
 final class SeverityClientConfigurator extends AbstractClientConfigurator
 {
     private const MAPPING = [
-        Logger::ERROR => ExceptionSeverity::Error,
-        Logger::INFO => ExceptionSeverity::Info,
-        Logger::WARNING => ExceptionSeverity::Warning,
+        Level::Error->value => ExceptionSeverity::Error,
+        Level::Info->value => ExceptionSeverity::Info,
+        Level::Warning->value => ExceptionSeverity::Warning,
     ];
 
     public function __construct(
@@ -52,6 +52,6 @@ final class SeverityClientConfigurator extends AbstractClientConfigurator
 
         $logLevel = $this->errorLogLevelResolver->getLogLevel($throwable);
 
-        return self::MAPPING[$logLevel] ?? null;
+        return self::MAPPING[$logLevel->value] ?? null;
     }
 }

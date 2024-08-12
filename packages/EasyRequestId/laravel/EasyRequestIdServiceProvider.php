@@ -136,11 +136,13 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @param class-string<\BackedEnum> $enum
+     */
     private function packageEnabled(string $config, string $enum): bool
     {
         $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
 
-        // @todo Remove \interface_exists after migration to new structure
-        return $enabled && (\enum_exists($enum) || \interface_exists($enum));
+        return $enabled && \enum_exists($enum);
     }
 }
