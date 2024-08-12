@@ -9,7 +9,7 @@
     "require-dev": {
         "doctrine/orm": "^2.14",
         "doctrine/persistence": "^3.0",
-        "eonx-com/easy-pagination": "^5.12",
+        "eonx-com/easy-pagination": "^5.13",
         "laravel/lumen-framework": "^9.1",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
@@ -38,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.12-dev"
+            "dev-master": "5.13-dev"
         }
     }
 }
