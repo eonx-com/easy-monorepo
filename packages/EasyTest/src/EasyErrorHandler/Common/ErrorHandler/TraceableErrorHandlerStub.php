@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
- * This stub used to preserve all errors during container reset.
+ * This stub is used to preserve all errors during container reset.
  */
 final class TraceableErrorHandlerStub implements TraceableErrorHandlerInterface, FormatAwareInterface
 {
