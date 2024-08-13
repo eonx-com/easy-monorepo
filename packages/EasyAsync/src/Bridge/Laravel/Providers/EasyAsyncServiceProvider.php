@@ -17,7 +17,6 @@ use EonX\EasyErrorHandler\Bridge\Laravel\Provider\EasyErrorHandlerServiceProvide
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use EonX\EasyLogging\Bridge\BridgeConstantsInterface as EasyLoggingBridgeConstantsInterface;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\WorkerStopping;
@@ -55,22 +54,10 @@ final class EasyAsyncServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/easy-async.php', 'easy-async');
 
-        $this->clearDoctrineEmBeforeJob();
         $this->logQueueWorkerStopping();
         $this->registerAsyncLogger();
         $this->registerEasyErrorHandlerBridge();
         $this->registerQueueListeners();
-        $this->restartQueueOnEmClose();
-    }
-
-    private function clearDoctrineEmBeforeJob(): void
-    {
-        if ((bool)\config('easy-async.clear_doctrine_em_before_job', false) === false) {
-            return;
-        }
-
-        $this->app->get('events')
-            ->listen(JobProcessing::class, DoctrineManagersClearListener::class);
     }
 
     private function logQueueWorkerStopping(): void
@@ -147,15 +134,5 @@ final class EasyAsyncServiceProvider extends ServiceProvider
                 $app->make(BridgeConstantsInterface::SERVICE_LOGGER)
             )
         );
-    }
-
-    private function restartQueueOnEmClose(): void
-    {
-        if ((bool)\config('easy-async.restart_queue_on_doctrine_em_close', true) === false) {
-            return;
-        }
-
-        $this->app->get('events')
-            ->listen(JobExceptionOccurred::class, DoctrineManagersSanityCheckListener::class);
     }
 }
