@@ -6,7 +6,9 @@ namespace EonX\EasyBugsnag\Tests\Unit\Bundle;
 use Bugsnag\Client;
 use Doctrine\DBAL\Configuration;
 use EonX\EasyBugsnag\Configurator\BasicsClientConfigurator;
+use EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface;
 use EonX\EasyBugsnag\Configurator\RuntimeVersionClientConfigurator;
+use EonX\EasyBugsnag\Configurator\SensitiveDataSanitizerClientConfigurator;
 use EonX\EasyBugsnag\SqlLogger\DoctrineSqlLogger;
 use EonX\EasyBugsnag\Tests\Stub\SqlLogger\SqlLoggerStub;
 use EonX\EasyBugsnag\Tracker\SessionTracker;
@@ -29,6 +31,10 @@ final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(Client::class, $container->get(Client::class));
         self::assertInstanceOf(SessionTracker::class, $container->get(SessionTracker::class));
+        self::assertInstanceOf(
+            ClientConfiguratorInterface::class,
+            $container->get(SensitiveDataSanitizerClientConfigurator::class)
+        );
     }
 
     public function testSetSqlLoggerOnConfigNoMethodCall(): void

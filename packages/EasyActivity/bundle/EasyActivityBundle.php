@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bundle;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
+use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -40,26 +42,27 @@ final class EasyActivityBundle extends AbstractBundle
             return;
         }
 
-        $deferredDispatcherEntities = [];
+        $easyDoctrineEntities = [];
         foreach ($builder->getExtensionConfig('easy_doctrine') as $config) {
-            $deferredDispatcherEntities = [
-                ...$deferredDispatcherEntities,
+            $easyDoctrineEntities = [
+                ...$easyDoctrineEntities,
                 ...($config['deferred_dispatcher_entities'] ?? []),
             ];
         }
+        $easyDoctrineEntities = \array_unique($easyDoctrineEntities);
 
-        $subjects = [];
-        foreach ($builder->getExtensionConfig('easy_activity') as $config) {
-            $subjects = [
-                ...$deferredDispatcherEntities,
-                ...\array_keys($config['subjects'] ?? []),
-            ];
-        }
+        $configs = $builder->getExtensionConfig($this->extensionAlias);
 
-        $deferredDispatcherEntities = \array_unique($deferredDispatcherEntities);
-        $subjects = \array_unique($subjects);
+        $resolvingBag = $builder->getParameterBag();
+        $configs = $resolvingBag->resolveValue($configs);
+
+        $config = (new Processor())->processConfiguration(
+            new Configuration($this, $builder, $this->extensionAlias),
+            $configs
+        );
+
         $easyDoctrinePrependedConfig = [
-            'deferred_dispatcher_entities' => \array_diff($subjects, $deferredDispatcherEntities),
+            'deferred_dispatcher_entities' => \array_diff(\array_keys($config['subjects']), $easyDoctrineEntities),
         ];
 
         $builder->prependExtensionConfig('easy_doctrine', $easyDoctrinePrependedConfig);
