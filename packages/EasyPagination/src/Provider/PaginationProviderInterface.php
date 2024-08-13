@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Provider;
 
-use EonX\EasyPagination\Pagination\Pagination;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 
 interface PaginationProviderInterface
 {
-    public function getPagination(): Pagination;
+    public function getPagination(): PaginationInterface;
 
     public function getPaginationConfigProvider(): PaginationConfigProviderInterface;
 
