@@ -9,6 +9,7 @@ use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPaginatorTestCase
@@ -229,7 +230,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
      */
     #[DataProvider('providePaginatorData')]
     public function testPaginator(
-        Pagination $pagination,
+        PaginationInterface $pagination,
         string $from,
         string $fromAlias,
         ?string $indexBy,

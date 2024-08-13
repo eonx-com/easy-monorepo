@@ -7,6 +7,7 @@ use EonX\EasyPagination\Paginator\EloquentPaginator;
 use EonX\EasyPagination\Tests\Stub\Model\ChildItemModel;
 use EonX\EasyPagination\Tests\Stub\Model\ItemModel;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -193,7 +194,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
      */
     #[DataProvider('providePaginatorData')]
     public function testPaginator(
-        Pagination $pagination,
+        PaginationInterface $pagination,
         Model $model,
         callable $setup,
         callable $assert,

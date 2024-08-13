@@ -5,14 +5,14 @@ namespace EonX\EasyPagination\Paginator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface as ExtendableInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final class DoctrineOrmPaginator extends AbstractPaginator implements ExtendableInterface
 {
     use DoctrineOrmPaginatorTrait;
 
     public function __construct(
-        Pagination $pagination,
+        PaginationInterface $pagination,
         EntityManagerInterface $manager,
         string $from,
         string $fromAlias,

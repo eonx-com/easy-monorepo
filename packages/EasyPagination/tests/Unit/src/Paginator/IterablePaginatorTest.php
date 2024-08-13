@@ -7,6 +7,7 @@ use ArrayIterator;
 use EonX\EasyPagination\Paginator\IterablePaginator;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IterablePaginatorTest extends AbstractUnitTestCase
@@ -85,7 +86,7 @@ final class IterablePaginatorTest extends AbstractUnitTestCase
     #[DataProvider('providePaginatorPageMethodsData')]
     public function testPaginatorPageMethods(
         iterable $items,
-        Pagination $pagination,
+        PaginationInterface $pagination,
         string $previousPageUrl,
         string $nextPageUrl,
     ): void {

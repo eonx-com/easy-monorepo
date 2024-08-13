@@ -5,6 +5,7 @@ namespace EonX\EasyPagination\Tests\Unit\ValueObject;
 
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use Spatie\Url\Url;
 
 final class PaginationTest extends AbstractUnitTestCase
@@ -12,7 +13,7 @@ final class PaginationTest extends AbstractUnitTestCase
     public function testGetUrlWithArrayInQuery(): void
     {
         $pagination = Pagination::create(1, 15);
-        $pagination->setUrlResolver(static function (Url $uri, Pagination $pagination, int $page): Url {
+        $pagination->setUrlResolver(static function (Url $uri, PaginationInterface $pagination, int $page): Url {
             $query = $uri->getAllQueryParameters();
 
             $query['page'] = [

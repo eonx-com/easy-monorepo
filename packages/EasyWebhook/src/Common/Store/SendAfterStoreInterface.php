@@ -5,12 +5,12 @@ namespace EonX\EasyWebhook\Common\Store;
 
 use DateTimeInterface;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 interface SendAfterStoreInterface extends StoreInterface
 {
     public function findDueWebhooks(
-        Pagination $pagination,
+        PaginationInterface $pagination,
         ?DateTimeInterface $sendAfter = null,
         ?string $timezone = null,
     ): LengthAwarePaginatorInterface;

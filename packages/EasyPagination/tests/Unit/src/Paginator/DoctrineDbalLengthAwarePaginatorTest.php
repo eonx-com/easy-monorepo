@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
@@ -352,7 +353,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
      */
     #[DataProvider('providePaginatorData')]
     public function testPaginator(
-        Pagination $pagination,
+        PaginationInterface $pagination,
         string $from,
         ?string $fromAlias,
         callable $setup,

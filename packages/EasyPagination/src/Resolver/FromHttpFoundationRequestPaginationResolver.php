@@ -5,6 +5,7 @@ namespace EonX\EasyPagination\Resolver;
 
 use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final readonly class FromHttpFoundationRequestPaginationResolver
@@ -16,7 +17,7 @@ final readonly class FromHttpFoundationRequestPaginationResolver
         // No body needed
     }
 
-    public function __invoke(): Pagination
+    public function __invoke(): PaginationInterface
     {
         $query = $this->request->query;
 

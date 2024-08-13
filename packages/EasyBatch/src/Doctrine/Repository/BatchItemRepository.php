@@ -12,7 +12,7 @@ use EonX\EasyBatch\Common\ValueObject\BatchCounts;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
 {
@@ -94,7 +94,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     }
 
     public function paginateItems(
-        Pagination $pagination,
+        PaginationInterface $pagination,
         int|string $batchId,
         ?string $dependsOnName = null,
     ): LengthAwarePaginatorInterface {

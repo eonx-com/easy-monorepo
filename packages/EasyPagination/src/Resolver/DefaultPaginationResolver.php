@@ -5,6 +5,7 @@ namespace EonX\EasyPagination\Resolver;
 
 use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final readonly class DefaultPaginationResolver
 {
@@ -14,7 +15,7 @@ final readonly class DefaultPaginationResolver
         // No body needed
     }
 
-    public function __invoke(): Pagination
+    public function __invoke(): PaginationInterface
     {
         return Pagination::create(
             $this->paginationConfigProvider->getPageDefault(),
