@@ -33,9 +33,12 @@ final class WithEventsEntityManager extends EntityManagerDecorator
 
     public function rollback(): void
     {
+        $transactionNestingLevel = $this->getConnection()
+            ->getTransactionNestingLevel();
+
         parent::rollback();
 
-        $this->deferredEntityEventDispatcher->clear($this->getConnection()->getTransactionNestingLevel());
+        $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
     }
 
     public function wrapInTransaction(callable $func): mixed
