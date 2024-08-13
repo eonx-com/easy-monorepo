@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Paginator\IterableLengthAwarePaginator;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyPagination\ValueObject\Pagination;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IterableLengthAwarePaginatorTest extends AbstractUnitTestCase

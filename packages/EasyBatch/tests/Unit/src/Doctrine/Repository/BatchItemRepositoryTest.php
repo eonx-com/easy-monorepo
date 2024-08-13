@@ -8,8 +8,8 @@ use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Doctrine\Repository\BatchItemRepository;
 use EonX\EasyBatch\Tests\Unit\Common\Repository\AbstractRepositoriesTestCase;
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 

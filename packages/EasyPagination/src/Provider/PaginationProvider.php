@@ -5,7 +5,7 @@ namespace EonX\EasyPagination\Provider;
 
 use Closure;
 use EonX\EasyPagination\Exception\NoPaginationResolverSetException;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 
 final class PaginationProvider implements PaginationProviderInterface
 {

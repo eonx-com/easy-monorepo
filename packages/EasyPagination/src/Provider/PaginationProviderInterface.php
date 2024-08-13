@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Provider;
 
-use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\Pagination\Pagination;
 
 interface PaginationProviderInterface
 {

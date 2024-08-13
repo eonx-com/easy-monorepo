@@ -8,9 +8,9 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
 
 final readonly class BatchItemIterator implements BatchItemIteratorInterface
 {

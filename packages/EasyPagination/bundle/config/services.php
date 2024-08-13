@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyPagination\Bundle\Enum\ConfigParam;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Provider\PaginationProvider;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use Doctrine\ORM\EntityManagerInterface;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface as ExtendableInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final class DoctrineOrmLengthAwarePaginator extends AbstractLengthAwarePaginator implements ExtendableInterface
 {
