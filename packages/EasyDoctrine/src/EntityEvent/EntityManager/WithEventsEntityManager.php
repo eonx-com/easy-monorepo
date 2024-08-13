@@ -36,7 +36,9 @@ final class WithEventsEntityManager extends EntityManagerDecorator
         $transactionNestingLevel = $this->getConnection()
             ->getTransactionNestingLevel();
 
-        parent::rollback();
+        if ($transactionNestingLevel > 0) {
+            parent::rollback();
+        }
 
         $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
     }
