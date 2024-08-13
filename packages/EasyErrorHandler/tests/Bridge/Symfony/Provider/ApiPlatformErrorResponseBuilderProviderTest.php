@@ -169,7 +169,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 ' : "$name", "$age".',
         ];
 
-        yield 'missing constructor argument in DTO with serializedName attribute' => [
+        yield 'missing constructor argument in input DTO with serializedName attribute' => [
             'url' => '/payments-dto-with-constructor',
             'json' => [],
             'violations' => [
@@ -182,6 +182,17 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApiTestC
                 '\\PaymentInputDtoWithConstructor"' .
                 ' from serialized data because its constructor requires the following parameters to be present' .
                 ' : "$paymentType".',
+        ];
+
+        yield 'null constructor argument in input DTO with serializedName attribute' => [
+            'url' => '/payments-dto-with-constructor',
+            'json' => ['type' => null],
+            'violations' => [
+                'type' => [
+                    'The type of the value should be "string", "null" given.',
+                ],
+            ],
+            'exceptionMessage' => 'The input data is misformatted.',
         ];
 
         yield 'invalid constructor argument type' => [

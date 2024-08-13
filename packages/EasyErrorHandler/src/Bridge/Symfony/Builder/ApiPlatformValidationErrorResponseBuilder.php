@@ -175,8 +175,9 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                     );
 
                     if ($hasAttributeTypeError === true) {
+                        $propertyName = $this->nameConverter->normalize($matches[1], $matches[2]);
                         $data[$violationsKey] = [
-                            $matches[1] => [
+                            $propertyName => [
                                 $matches[4] === self::VALUE_NULL
                                     ? (new NotNull())->message
                                     : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[3], $matches[4]),
