@@ -7,7 +7,7 @@
         "php": "^8.1",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "eonx-com/easy-error-handler": "^5.12.1",
+        "eonx-com/easy-error-handler": "^5.13",
         "nette/utils": "^3.2"
     },
     "require-dev": {
