@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\AwsCognito\ValueObject;
 
-final readonly class UserPoolConfig implements UserPoolConfigInterface
+final readonly class UserPoolConfig
 {
     private const ISSUING_URL_PATTERN = 'https://cognito-idp.%s.amazonaws.com/%s';
 

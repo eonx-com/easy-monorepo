@@ -5,7 +5,7 @@ namespace EonX\EasyBatch\Common\Factory;
 
 use EonX\EasyBatch\Common\Event\AbstractBatchObjectEvent;
 use EonX\EasyBatch\Common\Transformer\BatchObjectTransformerInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 abstract class AbstractBatchObjectFactory
@@ -16,7 +16,7 @@ abstract class AbstractBatchObjectFactory
     ) {
     }
 
-    public function createFromArray(array $data): BatchObjectInterface
+    public function createFromArray(array $data): AbstractBatchObject
     {
         $batchObject = $this->transformer->transformToObject($data);
         $eventClass = $this->getCreatedFromArrayEventClass();
@@ -28,7 +28,7 @@ abstract class AbstractBatchObjectFactory
 
     abstract protected function getCreatedFromArrayEventClass(): string;
 
-    protected function modifyBatchObject(AbstractBatchObjectEvent $event): BatchObjectInterface
+    protected function modifyBatchObject(AbstractBatchObjectEvent $event): AbstractBatchObject
     {
         $this->dispatcher?->dispatch($event);
 

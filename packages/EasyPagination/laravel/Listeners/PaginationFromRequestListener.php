@@ -17,7 +17,7 @@ final readonly class PaginationFromRequestListener
     public function handle(RouteMatched $event): void
     {
         $resolver = new FromHttpFoundationRequestPaginationResolver(
-            $this->paginationProvider->getPaginationConfig(),
+            $this->paginationProvider->getPaginationConfigProvider(),
             $event->request
         );
 

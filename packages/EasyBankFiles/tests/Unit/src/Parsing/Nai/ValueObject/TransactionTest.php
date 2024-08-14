@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Nai\ValueObject;
 
-use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContextInterface;
+use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContext;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\Transaction;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\TransactionDetails;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(Transaction::class)]
@@ -29,18 +28,7 @@ final class TransactionTest extends AbstractUnitTestCase
             'transactionDetails' => new TransactionDetails(),
         ];
 
-        $setExpectations = static function (MockInterface $context) use ($data): void {
-            $context
-                ->shouldReceive('getAccount')
-                ->once()
-                ->withArgs([$data['account']])
-                ->andReturn(null);
-        };
-
-        /** @var \EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContextInterface $context */
-        $context = $this->getMockWithExpectations(ResultsContextInterface::class, $setExpectations);
-
-        $transaction = new Transaction($context, $data);
+        $transaction = new Transaction(new ResultsContext([], [], [], [], []), $data);
 
         self::assertNull($transaction->getAccount());
         self::assertSame($data['amount'], $transaction->getAmount());

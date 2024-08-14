@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Bundle;
 
+use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use EonX\EasyPagination\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -48,12 +47,11 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         /** @var \EonX\EasyPagination\Provider\PaginationProviderInterface $paginationProvider */
         $paginationProvider = $container->get(PaginationProviderInterface::class);
         $paginationProvider->setResolver(new FromHttpFoundationRequestPaginationResolver(
-            $container->get(PaginationConfigInterface::class),
+            $container->get(PaginationConfigProviderInterface::class),
             $request
         ));
 
-        /** @var \EonX\EasyPagination\ValueObject\PaginationInterface $pagination */
-        $pagination = $container->get(PaginationInterface::class);
+        $pagination = $paginationProvider->getPagination();
 
         self::assertSame($page, $pagination->getPage());
         self::assertSame($perPage, $pagination->getPerPage());
@@ -72,10 +70,11 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         $container = $kernel->getContainer();
 
         $paginationProvider = $container->get(PaginationProviderInterface::class);
-        $paginationProvider->setResolver(new DefaultPaginationResolver($paginationProvider->getPaginationConfig()));
+        $paginationProvider->setResolver(
+            new DefaultPaginationResolver($paginationProvider->getPaginationConfigProvider())
+        );
 
         self::assertInstanceOf(PaginationProviderInterface::class, $paginationProvider);
-        self::assertInstanceOf(PaginationInterface::class, $container->get(PaginationInterface::class));
     }
 
     private static function createRequest(?array $query = null): Request

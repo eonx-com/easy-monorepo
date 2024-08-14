@@ -8,7 +8,7 @@ use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 final readonly class AuthorizationPermissionsProviderStub implements PermissionsProviderInterface
 {
     /**
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]|null $permissions
      */
     public function __construct(
         private ?array $permissions = null,
@@ -16,7 +16,7 @@ final readonly class AuthorizationPermissionsProviderStub implements Permissions
     }
 
     /**
-     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array
     {

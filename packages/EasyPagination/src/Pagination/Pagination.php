@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyPagination\ValueObject;
+namespace EonX\EasyPagination\Pagination;
 
 use Closure;
 use Spatie\Url\Url;

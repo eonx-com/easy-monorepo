@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiToken\Tests\Unit\Common\Driver;
 
 use EonX\EasyApiToken\Common\Driver\HashedApiKeyDriver;
-use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
+use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasyApiToken\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -32,11 +32,11 @@ final class HashedApiKeyDriverTest extends AbstractUnitTestCase
         $expectedPayload = [
             'id' => $id,
             'secret' => $secret,
-            'version' => $version ?? HashedApiKeyInterface::DEFAULT_VERSION,
+            'version' => $version ?? HashedApiKey::DEFAULT_VERSION,
         ];
 
-        self::assertInstanceOf(HashedApiKeyInterface::class, $hashedApiKey);
-        if ($hashedApiKey instanceof HashedApiKeyInterface) {
+        self::assertInstanceOf(HashedApiKey::class, $hashedApiKey);
+        if ($hashedApiKey instanceof HashedApiKey) {
             self::assertEquals($expectedPayload['id'], $hashedApiKey->getId());
             self::assertEquals($expectedPayload['secret'], $hashedApiKey->getSecret());
             self::assertEquals($expectedPayload['version'], $hashedApiKey->getVersion());

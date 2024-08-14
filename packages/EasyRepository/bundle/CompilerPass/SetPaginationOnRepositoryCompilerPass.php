@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRepository\Bundle\CompilerPass;
 
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyRepository\Bundle\Enum\ConfigTag;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

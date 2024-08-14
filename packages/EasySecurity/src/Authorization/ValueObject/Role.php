@@ -4,16 +4,17 @@ declare(strict_types=1);
 namespace EonX\EasySecurity\Authorization\ValueObject;
 
 use EonX\EasySecurity\Authorization\Formatter\AuthorizationMatrixFormatter;
+use Stringable;
 
-final class Role implements RoleInterface
+final class Role implements Stringable
 {
     /**
-     * @var \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @var \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     private readonly array $permissions;
 
     /**
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]|null $permissions
      */
     public function __construct(
         private readonly string $identifier,
@@ -29,7 +30,7 @@ final class Role implements RoleInterface
         return $this->identifier;
     }
 
-    public function addMetadata(string $name, mixed $value): RoleInterface
+    public function addMetadata(string $name, mixed $value): self
     {
         if ($this->metadata === null) {
             $this->metadata = [];
@@ -56,7 +57,7 @@ final class Role implements RoleInterface
     }
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array
     {
@@ -68,7 +69,7 @@ final class Role implements RoleInterface
         return \is_array($this->metadata) && isset($this->metadata[$name]);
     }
 
-    public function removeMetadata(string $name): RoleInterface
+    public function removeMetadata(string $name): self
     {
         if ($this->metadata !== null) {
             unset($this->metadata[$name]);
@@ -77,7 +78,7 @@ final class Role implements RoleInterface
         return $this;
     }
 
-    public function setMetadata(array $metadata): RoleInterface
+    public function setMetadata(array $metadata): self
     {
         $this->metadata = $metadata;
 

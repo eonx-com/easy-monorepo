@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Common\ValueObject;
 
+use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 
-abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
+abstract class AbstractTemplatingBlock implements HasPriorityInterface
 {
     use HasPriorityTrait;
 
@@ -26,14 +27,14 @@ abstract class AbstractTemplatingBlock implements TemplatingBlockInterface
         return $this->name;
     }
 
-    public function setContext(?array $context = null): TemplatingBlockInterface
+    public function setContext(?array $context = null): static
     {
         $this->context = $context;
 
         return $this;
     }
 
-    public function setPriority(int $priority): TemplatingBlockInterface
+    public function setPriority(int $priority): static
     {
         $this->priority = $priority;
 

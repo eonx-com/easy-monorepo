@@ -16,10 +16,10 @@ use EonX\EasyBatch\Common\Persister\BatchPersister;
 use EonX\EasyBatch\Common\Processor\BatchProcessor;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
+use EonX\EasyBatch\Common\ValueObject\Batch;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final readonly class BatchObjectManager implements BatchObjectManagerInterface
@@ -41,7 +41,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectNotSupportedException
      */
-    public function approve(BatchObjectInterface $batchObject): BatchObjectInterface
+    public function approve(AbstractBatchObject $batchObject): AbstractBatchObject
     {
         if ($batchObject->isSucceeded()) {
             return $batchObject;
@@ -67,7 +67,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         }
 
         // Batch
-        if ($batchObject instanceof BatchInterface) {
+        if ($batchObject instanceof Batch) {
             $this->batchRepository->save($batchObject);
 
             // If nested batch, approve parent batchItem
@@ -83,7 +83,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         }
 
         // BatchItem
-        if ($batchObject instanceof BatchItemInterface) {
+        if ($batchObject instanceof BatchItem) {
             if ($batchObject->getAttempts() === 0) {
                 $batchObject->setAttempts(1);
             }
@@ -115,7 +115,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         throw new BatchObjectNotSupportedException(\sprintf(
             'BatchObject of type "%s" not supported. Supported types: ["%s"]',
             $batchObject::class,
-            \implode('", "', [BatchInterface::class, BatchItemInterface::class])
+            \implode('", "', [Batch::class, BatchItem::class])
         ));
     }
 
@@ -126,7 +126,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectInvalidException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectNotSupportedException
      */
-    public function cancel(BatchObjectInterface $batchObject): BatchObjectInterface
+    public function cancel(AbstractBatchObject $batchObject): AbstractBatchObject
     {
         if ($batchObject->isCancelled()) {
             return $batchObject;
@@ -144,7 +144,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
             ->setStatus(BatchObjectStatus::Cancelled);
 
         // Batch
-        if ($batchObject instanceof BatchInterface) {
+        if ($batchObject instanceof Batch) {
             $this->batchRepository->save($batchObject);
 
             // Cancel remaining batchItems
@@ -164,7 +164,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         }
 
         // BatchItem
-        if ($batchObject instanceof BatchItemInterface) {
+        if ($batchObject instanceof BatchItem) {
             if ($batchObject->getAttempts() === 0) {
                 $batchObject->setAttempts(1);
             }
@@ -202,7 +202,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         throw new BatchObjectNotSupportedException(\sprintf(
             'BatchObject of type "%s" not supported. Supported types: ["%s"]',
             $batchObject::class,
-            \implode('", "', [BatchInterface::class, BatchItemInterface::class])
+            \implode('", "', [Batch::class, BatchItem::class])
         ));
     }
 
@@ -212,7 +212,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectNotSupportedException
      */
-    public function dispatchBatch(BatchInterface $batch, ?callable $beforeFirstDispatch = null): BatchInterface
+    public function dispatchBatch(Batch $batch, ?callable $beforeFirstDispatch = null): Batch
     {
         if ($batch->getId() === null) {
             $batch = $this->batchPersister->persistBatch($batch);
@@ -230,7 +230,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
             // Explicitly set the batch status to pending approval
             $batch->setStatus(BatchObjectStatus::SucceededPendingApproval);
 
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchInterface $batch */
+            /** @var \EonX\EasyBatch\Common\ValueObject\Batch $batch */
             $batch = $this->approve($batch);
         }
 
@@ -242,7 +242,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
      * @throws \EonX\EasyBatch\Common\Exception\BatchNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function restoreBatchState(int|string $batchId): BatchInterface
+    public function restoreBatchState(int|string $batchId): Batch
     {
         return $this->batchProcessor->restoreState(
             $this,
@@ -252,7 +252,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
 
     private function getCancelBatchItemClosure(): Closure
     {
-        return function (BatchItemInterface $batchItem): void {
+        return function (BatchItem $batchItem): void {
             $this->cancel($batchItem);
         };
     }

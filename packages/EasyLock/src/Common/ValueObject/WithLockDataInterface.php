@@ -5,5 +5,5 @@ namespace EonX\EasyLock\Common\ValueObject;
 
 interface WithLockDataInterface
 {
-    public function getLockData(): LockDataInterface;
+    public function getLockData(): LockData;
 }

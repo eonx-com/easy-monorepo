@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Common\Configurator;
 
-use EonX\EasyApiToken\Common\ValueObject\JwtInterface;
+use EonX\EasyApiToken\Common\ValueObject\Jwt;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use EonX\EasySecurity\Common\Resolver\JwtClaimResolver;
 use EonX\EasySecurity\Common\Resolver\JwtClaimResolverInterface;
@@ -24,7 +24,7 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     {
         $token = $context->getToken();
 
-        if ($token instanceof JwtInterface === false) {
+        if ($token instanceof Jwt === false) {
             return;
         }
 
@@ -39,16 +39,16 @@ abstract class AbstractFromJwtConfigurator extends AbstractSecurityContextConfig
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        JwtInterface $token,
+        Jwt $token,
     ): void;
 
-    protected function getClaim(JwtInterface $token, string $claim, mixed $default = null): mixed
+    protected function getClaim(Jwt $token, string $claim, mixed $default = null): mixed
     {
         return $this->getJwtClaimFetcher()
             ->getClaim($token, $claim, $default);
     }
 
-    protected function getMainClaim(JwtInterface $token, ?array $default = null): array
+    protected function getMainClaim(Jwt $token, ?array $default = null): array
     {
         return $this->getJwtClaimFetcher()
             ->getArrayClaim($token, $this->jwtClaim, $default);

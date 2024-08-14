@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Common\Configurator;
 
-use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
+use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,7 +13,7 @@ abstract class AbstractFromHashedApiKeyConfigurator extends AbstractSecurityCont
     {
         $token = $context->getToken();
 
-        if ($token instanceof HashedApiKeyInterface === false) {
+        if ($token instanceof HashedApiKey === false) {
             return;
         }
 
@@ -23,6 +23,6 @@ abstract class AbstractFromHashedApiKeyConfigurator extends AbstractSecurityCont
     abstract protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        HashedApiKeyInterface $apiKey,
+        HashedApiKey $apiKey,
     ): void;
 }

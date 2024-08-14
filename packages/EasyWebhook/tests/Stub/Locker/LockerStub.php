@@ -5,7 +5,7 @@ namespace EonX\EasyWebhook\Tests\Stub\Locker;
 
 use Closure;
 use EonX\EasyLock\Common\Locker\LockerInterface;
-use EonX\EasyLock\Common\ValueObject\LockDataInterface;
+use EonX\EasyLock\Common\ValueObject\LockData;
 use RuntimeException;
 use Symfony\Component\Lock\LockInterface;
 
@@ -13,7 +13,7 @@ final class LockerStub implements LockerInterface
 {
     private readonly bool $canProcess;
 
-    private ?LockDataInterface $lockData = null;
+    private ?LockData $lockData = null;
 
     public function __construct(?bool $canProcess = null)
     {
@@ -25,12 +25,12 @@ final class LockerStub implements LockerInterface
         throw new RuntimeException('Not required.');
     }
 
-    public function getLockData(): ?LockDataInterface
+    public function getLockData(): ?LockData
     {
         return $this->lockData;
     }
 
-    public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
+    public function processWithLock(LockData $lockData, Closure $func): mixed
     {
         $this->lockData = $lockData;
 

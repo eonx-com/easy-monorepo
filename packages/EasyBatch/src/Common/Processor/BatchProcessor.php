@@ -12,8 +12,8 @@ use EonX\EasyBatch\Common\Event\BatchItemCompletedEvent;
 use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
 final class BatchProcessor
@@ -36,17 +36,17 @@ final class BatchProcessor
      */
     public function processBatchForBatchItem(
         BatchObjectManagerInterface $batchObjectManager,
-        BatchInterface $batch,
-        BatchItemInterface $batchItem,
+        Batch $batch,
+        BatchItem $batchItem,
         ?callable $updateFreshBatch = null,
-    ): BatchInterface {
+    ): Batch {
         // Prevent same batchItem to be process twice within the same message lifecycle
         if (isset($this->cache[$batchItem->getIdOrFail()])) {
             return $batch;
         }
         $this->cache[$batchItem->getIdOrFail()] = true;
 
-        $updateFunc = function (BatchInterface $freshBatch) use ($batchItem, $updateFreshBatch): BatchInterface {
+        $updateFunc = function (Batch $freshBatch) use ($batchItem, $updateFreshBatch): Batch {
             // Update counts only when processed not matching total
             if ($freshBatch->countProcessed() < $freshBatch->countTotal()) {
                 if ($batchItem->isCompleted()) {
@@ -96,9 +96,9 @@ final class BatchProcessor
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function restoreState(BatchObjectManagerInterface $batchObjectManager, BatchInterface $batch): BatchInterface
+    public function restoreState(BatchObjectManagerInterface $batchObjectManager, Batch $batch): Batch
     {
-        $restoreFunc = function (BatchInterface $freshBatch): BatchInterface {
+        $restoreFunc = function (Batch $freshBatch): Batch {
             $counts = $this->batchItemRepository->findCountsForBatch($freshBatch->getIdOrFail());
 
             $freshBatch
@@ -123,7 +123,7 @@ final class BatchProcessor
         return $freshBatch;
     }
 
-    private function areBatchesIdentical(BatchInterface $batch1, BatchInterface $batch2): bool
+    private function areBatchesIdentical(Batch $batch1, Batch $batch2): bool
     {
         return $batch1->countCancelled() === $batch2->countCancelled()
             && $batch1->countFailed() === $batch2->countFailed()
@@ -133,7 +133,7 @@ final class BatchProcessor
             && $batch1->getStatus() === $batch2->getStatus();
     }
 
-    private function dispatchBatchEvent(BatchInterface $batch): void
+    private function dispatchBatchEvent(Batch $batch): void
     {
         // Dispatch batch cancelled event only once
         if ($batch->isCancelled() && $batch->countCancelled() === 1) {
@@ -147,7 +147,7 @@ final class BatchProcessor
         }
     }
 
-    private function dispatchBatchItemEvent(BatchItemInterface $batchItem): void
+    private function dispatchBatchItemEvent(BatchItem $batchItem): void
     {
         if ($batchItem->isCancelled()) {
             $this->eventDispatcher->dispatch(new BatchItemCancelledEvent($batchItem));
@@ -162,7 +162,7 @@ final class BatchProcessor
 
     private function handleBatchItemDependentObjects(
         BatchObjectManagerInterface $batchObjectManager,
-        BatchItemInterface $batchItem,
+        BatchItem $batchItem,
     ): void {
         $currentStatus = $batchItem->getStatus();
 
@@ -180,7 +180,7 @@ final class BatchProcessor
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      */
-    private function handleParentBatchItem(BatchObjectManagerInterface $batchObjectManager, BatchInterface $batch): void
+    private function handleParentBatchItem(BatchObjectManagerInterface $batchObjectManager, Batch $batch): void
     {
         if ($batch->getParentBatchItemId() === null) {
             return;
@@ -198,7 +198,7 @@ final class BatchProcessor
         }
     }
 
-    private function updateCommonBatchProperties(BatchInterface $freshBatch): void
+    private function updateCommonBatchProperties(Batch $freshBatch): void
     {
         // Start the batch timer
         if ($freshBatch->getStartedAt() === null) {

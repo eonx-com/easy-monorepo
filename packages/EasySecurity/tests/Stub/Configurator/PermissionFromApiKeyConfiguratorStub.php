@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Tests\Stub\Configurator;
 
-use EonX\EasyApiToken\Common\ValueObject\ApiKeyInterface;
+use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasySecurity\Common\Configurator\AbstractFromApiKeyConfigurator;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ final class PermissionFromApiKeyConfiguratorStub extends AbstractFromApiKeyConfi
     protected function doConfigure(
         SecurityContextInterface $context,
         Request $request,
-        ApiKeyInterface $apiKey,
+        ApiKey $apiKey,
     ): void {
         $context->addPermissions($this->permission);
     }

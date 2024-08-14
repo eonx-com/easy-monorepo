@@ -11,7 +11,7 @@ use EonX\EasyBankFiles\Parsing\Nai\ValueObject\FileTrailer as FileTrailer;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\GroupHeader as GroupHeader;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\GroupTrailer as GroupTrailer;
 
-final class ResultsContext implements ResultsContextInterface
+final class ResultsContext
 {
     use AccountSummaryCodesTrait;
     use TransactionDetailCodesTrait;

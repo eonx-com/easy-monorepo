@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Common\Event;
 
 use DateTimeInterface;
-use EonX\EasyHttpClient\Common\ValueObject\RequestDataInterface;
-use EonX\EasyHttpClient\Common\ValueObject\ResponseDataInterface;
+use EonX\EasyHttpClient\Common\ValueObject\RequestData;
+use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
 use Throwable;
 
 final class HttpRequestSentEvent
@@ -13,8 +13,8 @@ final class HttpRequestSentEvent
     private readonly array $extra;
 
     public function __construct(
-        private readonly RequestDataInterface $requestData,
-        private readonly ?ResponseDataInterface $responseData = null,
+        private readonly RequestData $requestData,
+        private readonly ?ResponseData $responseData = null,
         private readonly ?Throwable $throwable = null,
         private readonly ?DateTimeInterface $throwableThrownAt = null,
         ?array $extra = null,
@@ -27,12 +27,12 @@ final class HttpRequestSentEvent
         return $this->extra;
     }
 
-    public function getRequestData(): RequestDataInterface
+    public function getRequestData(): RequestData
     {
         return $this->requestData;
     }
 
-    public function getResponseData(): ?ResponseDataInterface
+    public function getResponseData(): ?ResponseData
     {
         return $this->responseData;
     }

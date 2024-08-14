@@ -35,7 +35,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
         yield 'No role resolved because no roles in token' => [[], $context];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => [
+            self::$mainJwtClaim => [
                 'roles' => ['app:role'],
             ],
         ], 'jwt'));
@@ -43,7 +43,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
         yield 'No role resolved because provider return empty array' => [[], $context];
 
         $context->setToken(new Jwt([
-            static::$mainJwtClaim => [
+            self::$mainJwtClaim => [
                 'roles' => ['app:role'],
             ],
         ], 'jwt'));
@@ -59,7 +59,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
     }
 
     /**
-     * @param \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[] $authorizationRoles
+     * @param \EonX\EasySecurity\Authorization\ValueObject\Role[] $authorizationRoles
      */
     #[DataProvider('provideConfigureData')]
     public function testConfigure(
@@ -70,7 +70,7 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
     ): void {
         $context ??= new SecurityContext();
         $context->setAuthorizationMatrix(new AuthorizationMatrixProvider($authorizationRoles, []));
-        $configurator = new RolesFromJwtConfigurator(static::$mainJwtClaim);
+        $configurator = new RolesFromJwtConfigurator(self::$mainJwtClaim);
 
         if ($jwtClaimFetcher !== null) {
             $configurator->setJwtClaimFetcher($jwtClaimFetcher);
@@ -83,8 +83,8 @@ final class RolesFromJwtConfiguratorTest extends AbstractUnitTestCase
 
     public function testGetPriority(): void
     {
-        $configurator = new RolesFromJwtConfigurator(static::$mainJwtClaim, 15);
+        $configurator = new RolesFromJwtConfigurator(self::$mainJwtClaim, 15);
 
-        self::assertEquals(15, $configurator->getPriority());
+        self::assertSame(15, $configurator->getPriority());
     }
 }
