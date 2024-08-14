@@ -192,7 +192,10 @@ trait DoctrineCommonPaginatorTrait
     private function hasJoinInQuery(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): bool
     {
         return ($queryBuilder instanceof OrmQueryBuilder && \count($queryBuilder->getDQLPart('join')) > 0)
-            || ($queryBuilder instanceof DbalQueryBuilder && \str_contains($queryBuilder->getSQL(), 'JOIN'))
+            || (
+                $queryBuilder instanceof DbalQueryBuilder
+                && \str_contains(\strtoupper($queryBuilder->getSQL()), 'JOIN')
+            )
             || $this->hasJoinsInQuery;
     }
 }

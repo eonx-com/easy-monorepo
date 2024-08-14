@@ -96,7 +96,7 @@ abstract class AbstractBatchObjectRepository
         return $this->tableColumns
             ?? ($this->tableColumns = \array_keys(
                 $this->connection->createSchemaManager()
-->listTableColumns($this->table)
+                    ->listTableColumns($this->table)
             ));
     }
 }

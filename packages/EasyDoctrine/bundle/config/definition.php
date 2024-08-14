@@ -13,7 +13,7 @@ return static function (DefinitionConfigurator $definition) {
                         ->canBeEnabled()
                         ->children()
                             ->scalarNode('aws_region')->defaultValue('ap-southeast-2')->end()
-                            ->scalarNode('aws_username')->defaultValue('disabled')->end()
+                            ->scalarNode('aws_username')->defaultNull()->end()
                             ->integerNode('auth_token_lifetime_in_minutes')->defaultValue(10)->end()
                         ->end()
                     ->end()
