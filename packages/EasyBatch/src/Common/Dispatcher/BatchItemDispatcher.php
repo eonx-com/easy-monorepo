@@ -8,8 +8,8 @@ use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
 
 final readonly class BatchItemDispatcher
@@ -24,7 +24,7 @@ final readonly class BatchItemDispatcher
 
     public function dispatchDependItems(
         BatchObjectManagerInterface $batchObjectManager,
-        BatchItemInterface $batchItem,
+        BatchItem $batchItem,
     ): void {
         $this->doDispatch($batchObjectManager, $batchItem->getBatchId(), $batchItem->getName());
     }
@@ -32,7 +32,7 @@ final readonly class BatchItemDispatcher
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function dispatchItemsForBatch(BatchObjectManagerInterface $batchObjectManager, BatchInterface $batch): void
+    public function dispatchItemsForBatch(BatchObjectManagerInterface $batchObjectManager, Batch $batch): void
     {
         $this->doDispatch($batchObjectManager, $batch->getIdOrFail());
     }
@@ -47,7 +47,7 @@ final readonly class BatchItemDispatcher
             $this->batchItemRepository->updateStatusToPending($items);
         };
 
-        $func = function (BatchItemInterface $batchItem) use ($batchObjectManager): void {
+        $func = function (BatchItem $batchItem) use ($batchObjectManager): void {
             if ($batchItem->getType() === BatchItemType::Message->value) {
                 $this->asyncDispatcher->dispatchItem($batchItem);
 

@@ -9,10 +9,10 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Exception\BatchItemNotFoundException;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchCounts;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
 {
@@ -21,14 +21,14 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      */
     public function findCountsForBatch(int|string $batchId): BatchCounts
     {
-        $queryBuilder = $this->conn->createQueryBuilder()
-            ->select(['status', 'count(id) as _count'])
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('status', 'count(id) as _count')
             ->from($this->table)
             ->where('batch_id = :batchId')
             ->setParameter('batchId', $batchId, \is_string($batchId) ? Types::STRING : Types::INTEGER)
             ->groupBy('status');
 
-        $results = $this->conn->fetchAllAssociative(
+        $results = $this->connection->fetchAllAssociative(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()
@@ -66,7 +66,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function findForProcess(int|string $batchItemId): BatchItemInterface
+    public function findForProcess(int|string $batchItemId): BatchItem
     {
         $batchItem = $this->findOrFail($batchItemId);
 
@@ -81,9 +81,9 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      */
-    public function findOrFail(int|string $batchItemId): BatchItemInterface
+    public function findOrFail(int|string $batchItemId): BatchItem
     {
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface|null $batchItem */
+        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem|null $batchItem */
         $batchItem = $this->doFind($batchItemId);
 
         if ($batchItem !== null) {
@@ -98,7 +98,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         int|string $batchId,
         ?string $dependsOnName = null,
     ): LengthAwarePaginatorInterface {
-        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
+        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->connection, $this->table);
 
         $paginator->setFilterCriteria(
             static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {
@@ -124,8 +124,8 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $queryBuilder->orderBy('created_at');
         });
 
-        $paginator->setTransformer(function (array $item): BatchItemInterface {
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchItem */
+        $paginator->setTransformer(function (array $item): BatchItem {
+            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem $batchItem */
             $batchItem = $this->factory->createFromArray($item);
 
             return $batchItem;
@@ -137,7 +137,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function save(BatchItemInterface $batchItem): BatchItemInterface
+    public function save(BatchItem $batchItem): BatchItem
     {
         $this->doSave($batchItem);
 
@@ -145,7 +145,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $batchItems
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem[] $batchItems
      *
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
@@ -159,11 +159,11 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }
 
         $batchItemIds = \array_map(
-            static fn (BatchItemInterface $batchItem): int|string => $batchItem->getIdOrFail(),
+            static fn (BatchItem $batchItem): int|string => $batchItem->getIdOrFail(),
             $batchItems
         );
 
-        $queryBuilder = $this->conn->createQueryBuilder();
+        $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->update($this->table)
             ->set('status', ':statusPending')
@@ -181,14 +181,14 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         // Handle more than 1 batchItem
         if ($count > 1) {
             $batchItemIds = \array_map(
-                fn (string $batchItemId): string => $this->conn->quote($batchItemId),
+                fn (string $batchItemId): string => $this->connection->quote($batchItemId),
                 $batchItemIds
             );
 
             $queryBuilder->andWhere($queryBuilder->expr()->in('id', $batchItemIds));
         }
 
-        $this->conn->executeStatement(
+        $this->connection->executeStatement(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()

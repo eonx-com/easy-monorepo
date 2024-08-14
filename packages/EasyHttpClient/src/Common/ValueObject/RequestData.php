@@ -5,7 +5,7 @@ namespace EonX\EasyHttpClient\Common\ValueObject;
 
 use DateTimeInterface;
 
-final class RequestData implements RequestDataInterface
+final class RequestData
 {
     public function __construct(
         private readonly string $method,
@@ -35,7 +35,7 @@ final class RequestData implements RequestDataInterface
         return $this->url;
     }
 
-    public function setOptions(array $options): RequestDataInterface
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 

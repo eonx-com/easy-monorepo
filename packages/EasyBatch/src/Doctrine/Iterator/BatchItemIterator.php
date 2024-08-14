@@ -3,19 +3,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Doctrine\Iterator;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
 
 final readonly class BatchItemIterator implements BatchItemIteratorInterface
 {
     public function __construct(
         private BatchItemRepositoryInterface $batchItemRepository,
+        private Connection $connection,
         private int $batchItemsPerPage,
     ) {
     }
@@ -39,7 +41,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
                 $paginator = $newPaginator instanceof LengthAwarePaginatorInterface ? $newPaginator : $paginator;
             }
 
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $items */
+            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem[] $items */
             $items = $paginator->getItems();
 
             // Check hasNextPage before iterating through items in case the logic modifies the pagination,
@@ -74,7 +76,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $batchItems
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem[] $batchItems
      */
     private function generateItemPageHash(int $page, array $batchItems): string
     {
@@ -89,12 +91,11 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
 
     private function processConfig(BatchItemIteratorConfig $config): void
     {
-        $quote = static fn (
+        $quote = fn (
             QueryBuilder $queryBuilder,
             array $statuses,
         ): array => \array_map(
-            static fn (BatchObjectStatus $status): string => $queryBuilder->getConnection()
-                ->quote($status->value),
+            fn (BatchObjectStatus $status): string => $this->connection->quote($status->value),
             $statuses
         );
 

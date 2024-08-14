@@ -6,7 +6,7 @@ namespace EonX\EasyTemplatingBlock\Common\Provider;
 final class ArrayTemplatingBlockProvider implements TemplatingBlockProviderInterface
 {
     /**
-     * @param \EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface[][] $blocks
+     * @param \EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock[][] $blocks
      */
     public function __construct(
         private array $blocks,
@@ -14,7 +14,7 @@ final class ArrayTemplatingBlockProvider implements TemplatingBlockProviderInter
     }
 
     /**
-     * @return iterable<\EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface>
+     * @return iterable<\EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock>
      */
     public function getBlocksForEvent(string $event, ?array $context = null): iterable
     {

@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Common\Type;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\BigIntType as DoctrineBigIntType;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Type;
 use EonX\EasyUtils\Math\ValueObject\Number;
 
-final class IntegerNumberType extends DoctrineBigIntType
+final class IntegerNumberType extends Type
 {
-    public const NAME = 'integer_number';
-
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -22,11 +21,7 @@ final class IntegerNumberType extends DoctrineBigIntType
             return (string)$value;
         }
 
-        throw ConversionException::conversionFailedInvalidType(
-            $value,
-            $this->getName(),
-            ['null', Number::class]
-        );
+        throw InvalidType::new($value, self::class, ['null', Number::class]);
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Number
@@ -34,18 +29,19 @@ final class IntegerNumberType extends DoctrineBigIntType
         if ($value === null) {
             return null;
         }
+
         $value = parent::convertToPHPValue($value, $platform);
 
         return new Number($value);
     }
 
-    public function getName(): string
+    public function getBindingType(): ParameterType
     {
-        return self::NAME;
+        return ParameterType::STRING;
     }
 
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return true;
+        return $platform->getBigIntTypeDeclarationSQL($column);
     }
 }

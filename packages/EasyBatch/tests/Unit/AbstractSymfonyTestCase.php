@@ -21,11 +21,11 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
         $container = $this->getKernel()
             ->getContainer();
 
-        /** @var \Doctrine\DBAL\Connection $conn */
-        $conn = $container->get(Connection::class);
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $container->get(Connection::class);
 
-        foreach ((new DoctrineDbalStatementProvider($conn))->migrateStatements() as $sql) {
-            $conn->executeStatement($sql);
+        foreach ((new DoctrineDbalStatementProvider($connection))->migrateStatements() as $sql) {
+            $connection->executeStatement($sql);
         }
 
         parent::setUp();
@@ -39,11 +39,11 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
         $container = $this->getKernel()
             ->getContainer();
 
-        /** @var \Doctrine\DBAL\Connection $conn */
-        $conn = $container->get(Connection::class);
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $container->get(Connection::class);
 
-        foreach ((new DoctrineDbalStatementProvider($conn))->rollbackStatements() as $sql) {
-            $conn->executeStatement($sql);
+        foreach ((new DoctrineDbalStatementProvider($connection))->rollbackStatements() as $sql) {
+            $connection->executeStatement($sql);
         }
 
         parent::tearDown();

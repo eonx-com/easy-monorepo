@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Messenger\Middleware;
 
 use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -22,7 +22,7 @@ final readonly class DispatchBatchMiddleware implements MiddlewareInterface
         $consumedByWorker = $envelope->last(ConsumedByWorkerStamp::class);
         $message = $envelope->getMessage();
 
-        if ($consumedByWorker === null && $message instanceof BatchInterface) {
+        if ($consumedByWorker === null && $message instanceof Batch) {
             $this->batchObjectManager->dispatchBatch($message);
 
             return $envelope;

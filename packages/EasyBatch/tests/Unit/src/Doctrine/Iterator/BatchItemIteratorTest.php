@@ -8,7 +8,7 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
 use EonX\EasyBatch\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -108,7 +108,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                     'batchItem3',
                 ], self::$iteratedItems);
             },
-            static function (BatchItemInterface $batchItem): void {
+            static function (BatchItem $batchItem): void {
                 self::$iteratedItems[] = (string)$batchItem->getName();
                 self::$iterateFuncCalls++;
             },
@@ -125,9 +125,6 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
         ];
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
     #[DataProvider('provideIterateThroughItemsData')]
     public function testIterateThroughItems(
         callable $setup,
@@ -143,7 +140,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
         $batchItemFactory = $container->get(BatchItemFactoryInterface::class);
         $batchItemRepo = $container->get(BatchItemRepositoryInterface::class);
 
-        \call_user_func($setup, $batchItemFactory, $batchItemRepo);
+        $setup($batchItemFactory, $batchItemRepo);
 
         $iteratorConfig = (BatchItemIteratorConfig::create($batchId ?? 'batch-id', $iterateFunc))
             ->setBatchItemsPerPage($batchItemPerPage ?? 2)
@@ -160,7 +157,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
 
     private static function assertIterateFuncCalls(int $calls): void
     {
-        self::assertEquals($calls, self::$iterateFuncCalls);
+        self::assertSame($calls, self::$iterateFuncCalls);
         self::$iterateFuncCalls = 0;
     }
 }

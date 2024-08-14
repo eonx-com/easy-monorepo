@@ -9,7 +9,7 @@ The core functionality of the EasyBugsnag package is to create a Bugsnag client 
 application, so you can focus on notifying your errors/exceptions instead of the boilerplate Bugsnag setup. It uses a
 **client factory** to do this.
 
-This factory implements `EonX\EasyBugsnag\Factory\ClientFactoryInterface` which is able to create the client from
+This factory implements `EonX\EasyBugsnag\Common\Factory\ClientFactoryInterface` which is able to create the client from
 just your Bugsnag Integration API key.
 
 However, if needed you can set your own implementations of the following additional objects used by the Bugsnag client:
@@ -30,7 +30,7 @@ The Bugsnag client's **request resolver** determines information about the reque
 in your application, such as the request's method and headers.
 
 By default, the EasyBugsnag package uses a framework-specific request resolver for the Bugsnag client. Thus Symfony uses
-`EonX\EasyBugsnag\Resolver\SymfonyRequestResolver` and Laravel uses
+`EonX\EasyBugsnag\Common\Resolver\SymfonyRequestResolver` and Laravel uses
 `EonX\EasyBugsnag\Laravel\Resolvers\LaravelRequestResolver`.
 
 If required, you can create your own request resolver that implements `Bugsnag\Request\ResolverInterface` and set the
@@ -48,7 +48,7 @@ events:
 - console terminate
 - worker running a new job
 
-The default EasyBugsnag shutdown strategy (`EonX\EasyBugsnag\Strategy\ShutdownStrategy`) will call `flush()` and
+The default EasyBugsnag shutdown strategy (`EonX\EasyBugsnag\Common\Strategy\ShutdownStrategy`) will call `flush()` and
 `clearBreadcrumbs()` on the Bugsnag client.
 
 You can create your own shutdown strategy that implements `Bugsnag\Shutdown\ShutdownStrategyInterface` and set the

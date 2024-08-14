@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProvider;
+use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProviderInterface;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
 use Psr\Log\LoggerInterface;
@@ -19,7 +20,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ConfigServiceId::AwsRdsIamCache->value, ArrayAdapter::class);
 
     $services
-        ->set(AwsRdsAuthTokenProvider::class)
+        ->set(AwsRdsAuthTokenProviderInterface::class, AwsRdsAuthTokenProvider::class)
         ->arg('$awsRegion', param(ConfigParam::AwsRdsIamAwsRegion->value))
         ->arg(
             '$authTokenLifetimeInMinutes',

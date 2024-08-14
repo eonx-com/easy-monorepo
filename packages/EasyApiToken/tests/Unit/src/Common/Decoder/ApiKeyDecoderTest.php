@@ -5,8 +5,8 @@ namespace EonX\EasyApiToken\Tests\Unit\Common\Decoder;
 
 use EonX\EasyApiToken\Common\Decoder\ApiKeyDecoder;
 use EonX\EasyApiToken\Common\Driver\HashedApiKeyDriver;
-use EonX\EasyApiToken\Common\ValueObject\ApiKeyInterface;
-use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
+use EonX\EasyApiToken\Common\ValueObject\ApiKey;
+use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasyApiToken\Tests\Unit\AbstractUnitTestCase;
 
 final class ApiKeyDecoderTest extends AbstractUnitTestCase
@@ -45,13 +45,13 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
         ];
 
         foreach ($tests as $test => $expected) {
-            /** @var \EonX\EasyApiToken\Common\ValueObject\ApiKeyInterface $token */
+            /** @var \EonX\EasyApiToken\Common\ValueObject\ApiKey $token */
             $token = $this->getDecoder()
                 ->decode($this->createRequest([
                     'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
                 ]));
 
-            self::assertInstanceOf(ApiKeyInterface::class, $token);
+            self::assertInstanceOf(ApiKey::class, $token);
             self::assertEquals($expected[0], $token->getPayload()['api_key']);
         }
     }
@@ -68,8 +68,8 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($tokenMissingId . ':')),
             ]));
 
-        self::assertInstanceOf(ApiKeyInterface::class, $token);
-        if ($token instanceof ApiKeyInterface) {
+        self::assertInstanceOf(ApiKey::class, $token);
+        if ($token instanceof ApiKey) {
             self::assertEquals($tokenMissingId, $token->getPayload()['api_key']);
         }
     }
@@ -88,8 +88,8 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($hashedApiKey . ':')),
             ]));
 
-        self::assertInstanceOf(HashedApiKeyInterface::class, $token);
-        if ($token instanceof HashedApiKeyInterface) {
+        self::assertInstanceOf(HashedApiKey::class, $token);
+        if ($token instanceof HashedApiKey) {
             self::assertEquals($expected, $token->getPayload());
         }
     }

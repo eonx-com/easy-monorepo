@@ -23,11 +23,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '../src/**/Entity',
         ]);
 
-    $services->set(WithEventsEntityManager::class)
+    $services
+        ->set(WithEventsEntityManager::class)
         ->arg('$decorated', service('.inner'))
         ->decorate('doctrine.orm.default_entity_manager');
 
-    $services->set(EntityEventListener::class)
-        ->arg('$trackableEntities', param(ConfigParam::DeferredDispatcherEntities->value))
-        ->tag('doctrine.event_subscriber', ['connection' => 'default']);
+    $services
+        ->set(EntityEventListener::class)
+        ->arg('$trackableEntities', param(ConfigParam::DeferredDispatcherEntities->value));
 };

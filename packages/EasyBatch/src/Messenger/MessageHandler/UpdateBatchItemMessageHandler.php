@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Messenger\MessageHandler;
 use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -47,7 +47,7 @@ final readonly class UpdateBatchItemMessageHandler
         return $newDateTime;
     }
 
-    private function updateBatchItem(BatchItemInterface $batchItem, array $data, ?array $errorDetails = null): void
+    private function updateBatchItem(BatchItem $batchItem, array $data, ?array $errorDetails = null): void
     {
         $batchItem
             ->setAttempts($data['attempts'])

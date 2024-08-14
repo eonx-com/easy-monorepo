@@ -24,7 +24,7 @@ final class DoctrineDbalStatementProvider
      * @throws \Doctrine\DBAL\Exception
      */
     public function __construct(
-        private readonly Connection $conn,
+        private readonly Connection $connection,
         private readonly string $batchesTable = self::DEFAULT_BATCH_TABLE,
         private readonly string $batchItemsTable = self::DEFAULT_BATCH_ITEM_TABLE,
     ) {
@@ -94,7 +94,7 @@ final class DoctrineDbalStatementProvider
             \call_user_func($this->extendBatchItemsTable, $batchItemsTable);
         }
 
-        return $schema->toSql($this->conn->getDatabasePlatform());
+        return $schema->toSql($this->connection->getDatabasePlatform());
     }
 
     /**

@@ -9,18 +9,18 @@ use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 final class RolesAndPermissionsProviderStub implements RolesProviderInterface, PermissionsProviderInterface
 {
     /**
-     * @var string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @var string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     private readonly array $permissions;
 
     /**
-     * @var string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @var string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     private readonly array $roles;
 
     /**
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]|null $roles
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]|null $roles
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]|null $permissions
      */
     public function __construct(?array $roles = null, ?array $permissions = null)
     {
@@ -29,7 +29,7 @@ final class RolesAndPermissionsProviderStub implements RolesProviderInterface, P
     }
 
     /**
-     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array
     {
@@ -37,7 +37,7 @@ final class RolesAndPermissionsProviderStub implements RolesProviderInterface, P
     }
 
     /**
-     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRoles(): array
     {

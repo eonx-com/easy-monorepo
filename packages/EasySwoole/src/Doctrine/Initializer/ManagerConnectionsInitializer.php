@@ -27,10 +27,10 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
         // It should help prevent a request because of lost connection
         foreach ($this->managerRegistry->getManagers() as $manager) {
             if ($manager instanceof EntityManagerInterface) {
-                $conn = $manager->getConnection();
+                $connection = $manager->getConnection();
 
                 // If connection is not connected, nothing to do
-                if ($conn->isConnected() === false) {
+                if ($connection->isConnected() === false) {
                     continue;
                 }
 
@@ -38,12 +38,12 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
                 // keepReplica: true, the connection will stay connected to the last one used which could be the primary
                 // In most cases, applications will first read data from the database before writing, so it makes sense
                 // to ensure it uses replica
-                if ($conn instanceof PrimaryReadReplicaConnection) {
-                    $conn->ensureConnectedToReplica();
+                if ($connection instanceof PrimaryReadReplicaConnection) {
+                    $connection->ensureConnectedToReplica();
                 }
 
                 try {
-                    $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());
+                    $connection->fetchAllAssociative($connection->getDatabasePlatform()->getDummySelectSQL());
                 } catch (Throwable $throwable) {
                     $this->logger->debug(\sprintf(
                         'Close DB Connection because compromised: %s',
@@ -51,7 +51,7 @@ final class ManagerConnectionsInitializer extends AbstractAppStateInitializer
                     ));
 
                     // If connection is compromised, simply close it, so it can be re-opened
-                    $conn->close();
+                    $connection->close();
                 }
             }
         }

@@ -57,7 +57,7 @@ final class SecurityContextDataCollector extends AbstractDataCollector
     }
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array
     {
@@ -75,7 +75,7 @@ final class SecurityContextDataCollector extends AbstractDataCollector
     }
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRoles(): array
     {

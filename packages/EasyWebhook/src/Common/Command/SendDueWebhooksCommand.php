@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Common\Command;
 
 use Carbon\Carbon;
-use EonX\EasyPagination\ValueObject\Pagination;
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 use EonX\EasyWebhook\Common\Exception\InvalidDateTimeException;
 use EonX\EasyWebhook\Common\Store\SendAfterStoreInterface;

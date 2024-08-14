@@ -5,7 +5,7 @@ namespace EonX\EasyActivity\Common\Entity;
 
 use DateTimeInterface;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
-use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
+use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 final class ActivityLogEntry
 {
@@ -110,7 +110,7 @@ final class ActivityLogEntry
         return $this;
     }
 
-    public function setSubjectData(ActivitySubjectDataInterface $subjectData): self
+    public function setSubjectData(ActivitySubjectData $subjectData): self
     {
         $this->subjectData = $subjectData->getSubjectData();
         $this->subjectOldData = $subjectData->getSubjectOldData();

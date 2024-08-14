@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
-use EonX\EasyBugsnag\Configurator\AwsEcsFargateClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\AwsEcsFargateClientConfigurator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

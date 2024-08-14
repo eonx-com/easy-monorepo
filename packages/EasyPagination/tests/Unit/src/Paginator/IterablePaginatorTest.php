@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use ArrayIterator;
+use EonX\EasyPagination\Pagination\Pagination;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\IterablePaginator;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyPagination\ValueObject\Pagination;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class IterablePaginatorTest extends AbstractUnitTestCase

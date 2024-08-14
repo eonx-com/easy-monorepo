@@ -5,7 +5,6 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Common\Factory;
 
 use EonX\EasyErrorHandler\Common\Factory\SymfonySerializerErrorResponseFactory;
 use EonX\EasyErrorHandler\Common\ValueObject\ErrorResponseData;
-use EonX\EasyErrorHandler\Common\ValueObject\ErrorResponseDataInterface;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +45,7 @@ final class SymfonySerializerErrorResponseFactoryTest extends AbstractUnitTestCa
     #[DataProvider('provideCreateData')]
     public function testCreate(
         Request $request,
-        ErrorResponseDataInterface $errorResponseData,
+        ErrorResponseData $errorResponseData,
         SerializerInterface $serializer,
         string $expectedContent,
         ?array $errorFormats = null,

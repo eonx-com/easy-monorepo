@@ -7,7 +7,7 @@ use EonX\EasyApiToken\Common\Exception\InvalidArgumentException;
 use Nette\Utils\Json;
 use stdClass;
 
-final readonly class Jwt implements JwtInterface
+final readonly class Jwt implements ApiTokenInterface
 {
     public function __construct(
         private array $payload,
@@ -38,7 +38,7 @@ final readonly class Jwt implements JwtInterface
         $claim = $this->getClaim($claim);
 
         if ($claim instanceof stdClass) {
-            $claim = Json::decode(Json::encode($claim), Json::FORCE_ARRAY);
+            $claim = Json::decode(Json::encode($claim), true);
         }
 
         return $claim;

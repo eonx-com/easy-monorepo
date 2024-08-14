@@ -7,7 +7,7 @@ use Aws\Sqs\SqsClient;
 use EonX\EasyNotification\Factory\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Transport\QueueTransportInterface;
 use EonX\EasyNotification\Transport\SqsQueueTransport;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
+use EonX\EasyNotification\ValueObject\Config;
 
 final readonly class SqsQueueTransportFactoryStub implements QueueTransportFactoryInterface
 {
@@ -16,7 +16,7 @@ final readonly class SqsQueueTransportFactoryStub implements QueueTransportFacto
     ) {
     }
 
-    public function create(ConfigInterface $config): QueueTransportInterface
+    public function create(Config $config): QueueTransportInterface
     {
         return new SqsQueueTransport($this->sqsClient);
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Common\ValueObject;
 
-final class LockData implements LockDataInterface
+final class LockData
 {
     private bool $retry;
 
@@ -15,7 +15,7 @@ final class LockData implements LockDataInterface
         $this->retry = $retry ?? false;
     }
 
-    public static function create(string $resource, ?float $ttl = null, ?bool $retry = null): LockDataInterface
+    public static function create(string $resource, ?float $ttl = null, ?bool $retry = null): self
     {
         return new self($resource, $ttl, $retry);
     }
@@ -35,7 +35,7 @@ final class LockData implements LockDataInterface
         return $this->retry;
     }
 
-    public function update(?string $resource = null, ?float $ttl = null, ?bool $shouldRetry = null): LockDataInterface
+    public function update(?string $resource = null, ?float $ttl = null, ?bool $shouldRetry = null): self
     {
         $this->resource = $resource ?? $this->resource;
         $this->ttl = $ttl ?? $this->ttl;

@@ -12,7 +12,7 @@ abstract class AbstractDoctrineDbalStore extends AbstractStore
 {
     public function __construct(
         RandomGeneratorInterface $random,
-        protected Connection $conn,
+        protected Connection $connection,
         DataCleanerInterface $dataCleaner,
         protected string $table,
     ) {
@@ -23,6 +23,6 @@ abstract class AbstractDoctrineDbalStore extends AbstractStore
     {
         $sql = \sprintf('SELECT id FROM %s WHERE id = :id', $this->table);
 
-        return \is_array($this->conn->fetchAssociative($sql, \compact('id')));
+        return \is_array($this->connection->fetchAssociative($sql, \compact('id')));
     }
 }

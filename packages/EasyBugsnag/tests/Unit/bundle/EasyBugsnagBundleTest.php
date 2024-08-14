@@ -4,66 +4,24 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Tests\Unit\Bundle;
 
 use Bugsnag\Client;
-use Doctrine\DBAL\Configuration;
-use EonX\EasyBugsnag\Configurator\BasicsClientConfigurator;
-use EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface;
-use EonX\EasyBugsnag\Configurator\RuntimeVersionClientConfigurator;
-use EonX\EasyBugsnag\Configurator\SensitiveDataSanitizerClientConfigurator;
-use EonX\EasyBugsnag\SqlLogger\DoctrineSqlLogger;
-use EonX\EasyBugsnag\Tests\Stub\SqlLogger\SqlLoggerStub;
-use EonX\EasyBugsnag\Tracker\SessionTracker;
+use EonX\EasyBugsnag\Common\Configurator\BasicsClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\RuntimeVersionClientConfigurator;
+use EonX\EasyBugsnag\Common\Tracker\SessionTracker;
+use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 
-final class EasyBugsnagBundleTest extends AbstractSymfonyTestCase
+final class EasyBugsnagBundleTest extends AbstractUnitTestCase
 {
     public function testDefaultConfiguratorsOff(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_configurators_off.php'])
-            ->getContainer();
+        self::bootKernel(['environment' => 'default_configurators_off']);
 
-        self::assertFalse($container->has(BasicsClientConfigurator::class));
-        self::assertFalse($container->has(RuntimeVersionClientConfigurator::class));
+        self::assertFalse(self::getContainer()->has(BasicsClientConfigurator::class));
+        self::assertFalse(self::getContainer()->has(RuntimeVersionClientConfigurator::class));
     }
 
     public function testSanityCheck(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_config.php'])
-            ->getContainer();
-
-        self::assertInstanceOf(Client::class, $container->get(Client::class));
-        self::assertInstanceOf(SessionTracker::class, $container->get(SessionTracker::class));
-        self::assertInstanceOf(
-            ClientConfiguratorInterface::class,
-            $container->get(SensitiveDataSanitizerClientConfigurator::class)
-        );
-    }
-
-    public function testSetSqlLoggerOnConfigNoMethodCall(): void
-    {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/sql_logger_no_method_call.php'])
-            ->getContainer();
-
-        self::assertInstanceOf(
-            Configuration::class,
-            $container->get('doctrine.dbal.default_connection.configuration')
-        );
-    }
-
-    /**
-     * @throws \ReflectionException
-     */
-    public function testSetSqlLoggerOnConfigWithMethodCall(): void
-    {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/sql_logger_with_method_call.php'])
-            ->getContainer();
-        /** @var \Doctrine\DBAL\Configuration $configuration */
-        $configuration = $container->get('doctrine.dbal.default_connection.configuration');
-        $sqlLogger = $configuration->getSQLLogger();
-
-        self::assertInstanceOf(Configuration::class, $configuration);
-        self::assertInstanceOf(DoctrineSqlLogger::class, $sqlLogger);
-
-        if ($sqlLogger instanceof DoctrineSqlLogger) {
-            self::assertInstanceOf(SqlLoggerStub::class, $sqlLogger->getDecorated());
-        }
+        self::assertInstanceOf(Client::class, self::getService(Client::class));
+        self::assertInstanceOf(SessionTracker::class, self::getService(SessionTracker::class));
     }
 }

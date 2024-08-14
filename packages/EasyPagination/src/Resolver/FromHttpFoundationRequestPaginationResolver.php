@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Resolver;
 
-use EonX\EasyPagination\ValueObject\Pagination;
-use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\Pagination\Pagination;
+use EonX\EasyPagination\Pagination\PaginationInterface;
+use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final readonly class FromHttpFoundationRequestPaginationResolver
 {
     public function __construct(
-        private PaginationConfigInterface $config,
+        private PaginationConfigProviderInterface $paginationConfigProvider,
         private Request $request,
     ) {
         // No body needed
@@ -22,10 +22,16 @@ final readonly class FromHttpFoundationRequestPaginationResolver
         $query = $this->request->query;
 
         return Pagination::create(
-            (int)$query->get($this->config->getPageAttribute(), $this->config->getPageDefault()),
-            (int)$query->get($this->config->getPerPageAttribute(), $this->config->getPerPageDefault()),
-            $this->config->getPageAttribute(),
-            $this->config->getPerPageAttribute(),
+            (int)$query->get(
+                $this->paginationConfigProvider->getPageAttribute(),
+                $this->paginationConfigProvider->getPageDefault()
+            ),
+            (int)$query->get(
+                $this->paginationConfigProvider->getPerPageAttribute(),
+                $this->paginationConfigProvider->getPerPageDefault()
+            ),
+            $this->paginationConfigProvider->getPageAttribute(),
+            $this->paginationConfigProvider->getPerPageAttribute(),
             $this->request->getUri()
         );
     }

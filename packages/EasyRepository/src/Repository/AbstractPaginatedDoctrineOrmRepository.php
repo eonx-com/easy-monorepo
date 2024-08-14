@@ -5,9 +5,9 @@ namespace EonX\EasyRepository\Repository;
 
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 use EonX\EasyRepository\Repository\PaginatedObjectRepositoryInterface as RepoInterface;
 
 abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOrmRepository implements RepoInterface
@@ -36,6 +36,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
             ->setMaxResults($perPage);
     }
 
+    /**
+     * @param class-string|null $from
+     */
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,

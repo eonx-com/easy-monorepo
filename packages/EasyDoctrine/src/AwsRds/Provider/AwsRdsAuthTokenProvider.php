@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final readonly class AwsRdsAuthTokenProvider
+final readonly class AwsRdsAuthTokenProvider implements AwsRdsAuthTokenProviderInterface
 {
     private const CACHE_HASH_PATTERN = '%s_%s_%s_%s';
 
@@ -27,10 +27,7 @@ final readonly class AwsRdsAuthTokenProvider
         $this->authTokenGenerator = new AuthTokenGenerator(CredentialProvider::defaultProvider());
     }
 
-    /**
-     * @throws \Psr\Cache\InvalidArgumentException
-     */
-    public function getAuthToken(array $params): string
+    public function provide(array $params): string
     {
         $region = $params['driverOptions'][AwsRdsOption::Region->value] ?? $this->awsRegion;
         $key = \sprintf(self::CACHE_KEY_PATTERN, \hash('xxh128', \sprintf(

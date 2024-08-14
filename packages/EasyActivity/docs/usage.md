@@ -27,7 +27,7 @@ interface to provide the required values (e.g. from a Security Context).
 To resolve a subject's identifier, type, data and old data, the package relies on
 `EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface`.
 
-The package provides a default implementation (`EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectResolver`), but you
+The package provides a default implementation (`EonX\EasyActivity\Doctrine\Resolver\DoctrineActivitySubjectResolver`), but you
 can implement your own instead.
 
 ## Creating activity log entries

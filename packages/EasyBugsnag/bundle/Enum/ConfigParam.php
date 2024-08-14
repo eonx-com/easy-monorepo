@@ -15,8 +15,6 @@ enum ConfigParam: string
 
     case DoctrineDbalConnections = 'easy_bugsnag.doctrine_dbal.connections';
 
-    case DoctrineDbalEnabled = 'easy_bugsnag.doctrine_dbal.enabled';
-
     case ProjectRoot = 'easy_bugsnag.project_root';
 
     case ReleaseStage = 'easy_bugsnag.release_stage';

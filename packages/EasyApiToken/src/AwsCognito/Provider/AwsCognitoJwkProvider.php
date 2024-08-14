@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiToken\AwsCognito\Provider;
 
-use EonX\EasyApiToken\AwsCognito\ValueObject\UserPoolConfigInterface;
+use EonX\EasyApiToken\AwsCognito\ValueObject\UserPoolConfig;
 use Firebase\JWT\JWT;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Math\BigInteger;
@@ -31,7 +31,7 @@ final readonly class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInter
     /**
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getJwks(UserPoolConfigInterface $userPoolConfig): array
+    public function getJwks(UserPoolConfig $userPoolConfig): array
     {
         return $this->cache->get(
             \md5($userPoolConfig->getJwksUrl()),
@@ -64,7 +64,7 @@ final readonly class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInter
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    private function fetchKeysFromAws(UserPoolConfigInterface $userPoolConfig): array
+    private function fetchKeysFromAws(UserPoolConfig $userPoolConfig): array
     {
         $response = $this->httpClient
             ->request('GET', $userPoolConfig->getJwksUrl())

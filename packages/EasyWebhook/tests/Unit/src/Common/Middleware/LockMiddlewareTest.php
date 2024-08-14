@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 
-use EonX\EasyLock\Common\ValueObject\LockDataInterface;
+use EonX\EasyLock\Common\ValueObject\LockData;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResult;
@@ -60,7 +60,7 @@ final class LockMiddlewareTest extends AbstractMiddlewareTestCase
 
         switch ($shouldLock) {
             case true:
-                self::assertInstanceOf(LockDataInterface::class, $lockData);
+                self::assertInstanceOf(LockData::class, $lockData);
                 self::assertSame($expectedResource, $lockData->getResource());
 
                 break;

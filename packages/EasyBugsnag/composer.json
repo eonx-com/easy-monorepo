@@ -6,10 +6,10 @@
     "require": {
         "php": "^8.2",
         "bugsnag/bugsnag": "^3.29",
-        "eonx-com/easy-utils": "^5.13",
+        "eonx-com/easy-utils": "^5.14",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.7",
-        "nette/utils": "^3.2",
+        "nette/utils": "^4.0",
         "symfony/cache": "^7.0",
         "symfony/cache-contracts": "^3.5",
         "symfony/config": "^7.0",
@@ -23,9 +23,12 @@
         "symfony/var-dumper": "^7.0"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.0",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/orm": "^3.2",
+        "eonx-com/easy-test": "^5.14",
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2"
+        "phpunit/phpunit": "^10.2",
+        "symfony/uid": "^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -37,13 +40,15 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyBugsnag\\Tests\\": "tests",
+            "EonX\\EasyBugsnag\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
             "EonX\\EasyBugsnag\\Tests\\Unit\\": "tests/Unit/src",
             "EonX\\EasyBugsnag\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
             "EonX\\EasyBugsnag\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {
-        "doctrine/dbal": "To log SQL queries in Bugsnag",
+        "doctrine/doctrine-bundle": "To log SQL queries in Bugsnag",
+        "doctrine/orm": "To log SQL queries in Bugsnag",
         "illuminate/contracts": "To use this package with Laravel/Lumen",
         "illuminate/http": "To use this package with Laravel/Lumen",
         "illuminate/queue": "To use this package with Laravel/Lumen",
@@ -53,7 +58,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.13-dev"
+            "dev-master": "5.14-dev"
         }
     }
 }

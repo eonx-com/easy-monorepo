@@ -8,7 +8,7 @@ use EonX\EasyBatch\Common\Manager\BatchObjectManagerInterface;
 use EonX\EasyBatch\Common\Processor\BatchProcessor;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -41,7 +41,7 @@ final readonly class ProcessBatchForBatchItemMessageHandler
 
         $dateTimeFormat = $this->dateTimeFormat;
         // Update batch metadata to reflect emergency flow triggered
-        $updateFreshBatch = static function (BatchInterface $freshBatch) use ($message, $dateTimeFormat): void {
+        $updateFreshBatch = static function (Batch $freshBatch) use ($message, $dateTimeFormat): void {
             $metadata = $freshBatch->getMetadata() ?? [];
             $internal = $metadata['_internal'] ?? [];
             $now = Carbon::now('UTC')->format($dateTimeFormat);
