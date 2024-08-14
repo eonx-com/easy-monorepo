@@ -52,36 +52,46 @@ Here's an example of the configuration for the AWS CloudHSM:
 
 ```php
 // config/packages/easy_encryption.php
+<?php
+declare(strict_types=1);
 
-$easyEncryptionConfig->defaultKeyName(env('ENCRYPTION_AWS_CLOUD_HSM_ENCRYPTION_KEY_NAME'));
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyEncryptionConfig;
+
+return static function (EasyEncryptionConfig $easyEncryptionConfig): void {
+    $easyEncryptionConfig->defaultKeyName(env('ENCRYPTION_AWS_CLOUD_HSM_ENCRYPTION_KEY_NAME'));
     $easyEncryptionConfig->maxChunkSize(env('ENCRYPTION_AWS_CLOUD_HSM_MAXIMUM_DATA_SIZE')->int());
     $easyEncryptionConfig->fullyEncryptedMessages([
         EmailMessage::class,
         SendEmailMessage::class,
         SmsMessage::class,
     ]);
-    $easyEncryptionConfig->awsPkcs11Encryptor()
+    $easyEncryptionConfig->awsCloudHsmEncryptor()
         ->enabled(true)
-        ->awsCloudHsmSdkOptions([
+        ->sdkOptions([
             '--log-level' => 'warn',
             '--log-type' => 'term',
         ])
         ->disableKeyAvailabilityCheck(true)
-        ->hsmCaCert('/var/www/var/tmp/certificates/cloudhsmca.crt')
-        ->hsmIpAddress(env('ENCRYPTION_AWS_CLOUD_HSM_IP'))
+        ->caCertFile('/var/www/var/tmp/certificates/cloudhsmca.crt')
+        ->ipAddress(env('ENCRYPTION_AWS_CLOUD_HSM_IP'))
         ->serverClientCertFile('/var/www/var/tmp/certificates/cloudhsmclient.crt')
         ->serverClientKeyFile('/var/www/var/tmp/certificates/cloudhsmclient.key')
         ->useAwsCloudHsmConfigureTool(false)
         ->userPin(env('ENCRYPTION_AWS_CLOUD_HSM_USER_PIN'));
+}
 ```
 
 ### Encryptable Entity
 
 To make an entity encryptable:
-- implement the `\EonX\EasyEncryption\Interfaces\EncryptableInterface`
-- add the `\EonX\EasyEncryption\Traits\EncryptableTrait` trait to the entity class
+
+- implement the `\EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface`
+- add the `\EonX\EasyEncryption\Encryptable\Encryptable\EncryptableTrait` trait to the entity class
 - add the `#[EncryptableField]` attribute to the properties you want to encrypt
 - add the following properties to the entity
+
 ```php
   #[ORM\Column(type: Types::TEXT)]
   protected string $encryptedData;
@@ -89,13 +99,13 @@ To make an entity encryptable:
   #[ORM\Column(type: Types::STRING, length: 255)]
   protected string $encryptionKeyName;
 ```
+
 - Create a database migration with `php bin/console make:migration` and run it with `php bin/console doctrine:migrations:migrate` to add the new columns to the entity table.
-
-
 
 ### Symfony Messenger Integration
 
 There are 2 ways to encrypt messages in Symfony Messenger:
+
 - Encrypt the whole message, this will encrypt all the properties of the message. Best to use for third-party messages, where you don't have control over the message class.
 - Encrypt only the required properties of the message. Best to use for your own application messages, where you have control over the message class.
 
@@ -103,7 +113,7 @@ First, you need to override the default the serializer in `config/packages/messe
 
 ```php
 // config/packages/messenger.php
-use EonX\EasyEncryption\Serializers\EncryptableAwareMessengerSerializer;
+use EonX\EasyEncryption\Encryptable\Serializer\EncryptableAwareMessengerSerializer;
 
 ...
 
@@ -112,6 +122,7 @@ $messengerConfig->serializer()
 ```
 
 Then, you can configure the messages you want to be fully encrypted for the messages in `config/packages/easy_encryption.php`:
+
 ```php
 // config/packages/easy_encryption.php
 
@@ -122,12 +133,13 @@ $easyEncryptionConfig->fullyEncryptedMessages([
 ]);
 ```
 
-For the messages you want to encrypt only the required properties, you can add the `#[EncryptableField]` attribute to the properties you want to encrypt and implement the `\EonX\EasyEncryption\Interfaces\EncryptableInterface` in the message class and add the `\EonX\EasyEncryption\Traits\EncryptableTrait` trait to it.
+For the messages you want to encrypt only the required properties, you can add the `#[EncryptableField]` attribute to the properties you want to encrypt and implement the `\EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface` in the
+message class and
+add the `\EonX\EasyEncryption\Encryptable\Encryptable\EncryptableTrait` trait to it.
+
 ```php
 
-use EonX\EasyEncryption\Attributes\EncryptableField;
-use EonX\EasyEncryption\Interfaces\EncryptableInterface;
-use EonX\EasyEncryption\Traits\EncryptableTrait;
+use EonX\EasyEncryption\Encryptable\Attribute\EncryptableField;use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface;use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableTrait;
 
 final class SomeMessage implements EncryptableInterface
 {

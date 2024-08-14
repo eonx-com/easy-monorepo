@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Bundle;
 
+use EonX\EasyEncryption\Bundle\CompilerPass\AwsCloudHsmCompilerPass;
 use EonX\EasyEncryption\Bundle\Enum\ConfigParam;
 use EonX\EasyEncryption\Bundle\Enum\ConfigTag;
 use EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface;
@@ -10,6 +11,7 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyEncryptionBundle extends AbstractBundle
 {
@@ -18,6 +20,7 @@ final class EasyEncryptionBundle extends AbstractBundle
         'ca_cert_file' => ConfigParam::AwsCloudHsmCaCertFile,
         'cluster_id' => ConfigParam::AwsCloudHsmClusterId,
         'disable_key_availability_check' => ConfigParam::AwsCloudHsmDisableKeyAvailabilityCheck,
+        'enabled' => ConfigParam::AwsCloudHsmEnabled,
         'ip_address' => ConfigParam::AwsCloudHsmIpAddress,
         'region' => ConfigParam::AwsCloudHsmRegion,
         'role_arn' => ConfigParam::AwsCloudHsmRoleArn,
@@ -32,11 +35,19 @@ final class EasyEncryptionBundle extends AbstractBundle
         'default_encryption_key' => ConfigParam::DefaultEncryptionKey,
         'default_key_name' => ConfigParam::DefaultKeyName,
         'default_salt' => ConfigParam::DefaultSalt,
+        'fully_encrypted_messages' => ConfigParam::FullyEncryptedMessages,
+        'max_chunk_size' => ConfigParam::MaxChunkSize,
     ];
 
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        $container
+            ->addCompilerPass(new AwsCloudHsmCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -70,6 +81,10 @@ final class EasyEncryptionBundle extends AbstractBundle
 
         if ($config['aws_cloud_hsm_encryptor']['enabled'] ?? false) {
             $container->import('config/aws_cloud_hsm_encryptor.php');
+        }
+
+        if (\class_exists(MessengerPass::class, false)) {
+            $container->import(__DIR__ . '/Resources/config/encryptable_messenger.php');
         }
     }
 }

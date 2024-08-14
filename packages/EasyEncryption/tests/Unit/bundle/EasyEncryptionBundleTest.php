@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Tests\Unit\Bundle;
 
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
+use EonX\EasyEncryption\Tests\Unit\AbstractSymfonyTestCase;
 
 final class EasyEncryptionBundleTest extends AbstractSymfonyTestCase
 {
