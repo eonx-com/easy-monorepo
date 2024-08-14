@@ -12,3 +12,11 @@ $ composer require eonx-com/easy-encryption
 ```
 
 [1]: https://getcomposer.org/
+
+Integration with Symfony
+------------------------
+Read the [Symfony integration documentation](docs/symfony/install.md) to learn how to integrate the package with Symfony.
+
+Known issues
+------------
+- The package is not compatible with `doctrine/orm:^3.0`

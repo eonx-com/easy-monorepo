@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyEncryptionSymfonyBundle extends AbstractBundle
 {
@@ -31,6 +32,8 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         'default_encryption_key' => BridgeConstantsInterface::PARAM_DEFAULT_ENCRYPTION_KEY,
         'default_key_name' => BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME,
         'default_salt' => BridgeConstantsInterface::PARAM_DEFAULT_SALT,
+        'fully_encrypted_messages' => BridgeConstantsInterface::PARAM_FULLY_ENCRYPTED_MESSAGES,
+        'max_chunk_size' => BridgeConstantsInterface::PARAM_MAX_CHUNK_SIZE,
     ];
 
     protected string $extensionAlias = 'easy_encryption';
@@ -70,7 +73,11 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         }
 
         if ($config['aws_pkcs11_encryptor']['enabled'] ?? false) {
-            $container->import(__DIR__ . '/Resources/config/aws_pkcs11_encryptor.php');
+            $container->import(__DIR__ . '/Resources/config/aws_cloud_hsm_encryptor.php');
+        }
+
+        if (\class_exists(MessengerPass::class, false)) {
+            $container->import(__DIR__ . '/Resources/config/encryptable_messenger.php');
         }
     }
 }
