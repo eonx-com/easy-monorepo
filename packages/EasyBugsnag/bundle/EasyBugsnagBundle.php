@@ -101,12 +101,11 @@ final class EasyBugsnagBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        $parameters = $container->parameters();
-        $parameters->set(ConfigParam::DoctrineDbalEnabled->value, $config['doctrine_dbal']['enabled']);
-
         if ($config['doctrine_dbal']['enabled'] === false) {
             return;
         }
+
+        $container->import('config/doctrine_dbal.php');
 
         foreach ($config['doctrine_dbal']['connections'] as $connection) {
             $builder->setDefinition(
