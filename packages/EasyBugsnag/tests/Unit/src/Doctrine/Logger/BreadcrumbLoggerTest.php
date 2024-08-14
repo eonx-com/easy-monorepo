@@ -16,7 +16,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         $author = (new Author())
             ->setName('Some Name')
             ->setPosition(1);
-        
+
         $entityManager->persist($author);
         $entityManager->flush();
 
