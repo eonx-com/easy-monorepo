@@ -7,8 +7,8 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
-use EonX\EasyPagination\ValueObject\Pagination;
 use EonX\EasyRepository\Tests\Unit\AbstractUnitTestCase;
 use Mockery\LegacyMockInterface;
 

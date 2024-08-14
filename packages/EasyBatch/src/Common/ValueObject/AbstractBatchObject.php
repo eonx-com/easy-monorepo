@@ -8,7 +8,7 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use Throwable;
 
-abstract class AbstractBatchObject implements BatchObjectInterface
+abstract class AbstractBatchObject
 {
     private bool $approvalRequired = false;
 
@@ -138,91 +138,91 @@ abstract class AbstractBatchObject implements BatchObjectInterface
         return $this->getStatus() === BatchObjectStatus::Succeeded;
     }
 
-    public function setApprovalRequired(?bool $approvalRequired = null): BatchObjectInterface
+    public function setApprovalRequired(?bool $approvalRequired = null): static
     {
         $this->approvalRequired = $approvalRequired ?? true;
 
         return $this;
     }
 
-    public function setCancelledAt(DateTimeInterface $cancelledAt): BatchObjectInterface
+    public function setCancelledAt(DateTimeInterface $cancelledAt): static
     {
         $this->cancelledAt = $cancelledAt;
 
         return $this;
     }
 
-    public function setCreatedAt(DateTimeInterface $createdAt): BatchObjectInterface
+    public function setCreatedAt(DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function setFinishedAt(DateTimeInterface $finishedAt): BatchObjectInterface
+    public function setFinishedAt(DateTimeInterface $finishedAt): static
     {
         $this->finishedAt = $finishedAt;
 
         return $this;
     }
 
-    public function setId(int|string $id): BatchObjectInterface
+    public function setId(int|string $id): static
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function setMetadata(array $metadata): BatchObjectInterface
+    public function setMetadata(array $metadata): static
     {
         $this->metadata = $metadata;
 
         return $this;
     }
 
-    public function setName(?string $name = null): BatchObjectInterface
+    public function setName(?string $name = null): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setStartedAt(DateTimeInterface $startedAt): BatchObjectInterface
+    public function setStartedAt(DateTimeInterface $startedAt): static
     {
         $this->startedAt = $startedAt;
 
         return $this;
     }
 
-    public function setStatus(BatchObjectStatus $status): BatchObjectInterface
+    public function setStatus(BatchObjectStatus $status): static
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function setThrowable(Throwable $throwable): BatchObjectInterface
+    public function setThrowable(Throwable $throwable): static
     {
         $this->throwable = $throwable;
 
         return $this;
     }
 
-    public function setThrowableDetails(array $throwableDetails): BatchObjectInterface
+    public function setThrowableDetails(array $throwableDetails): static
     {
         $this->throwableDetails = $throwableDetails;
 
         return $this;
     }
 
-    public function setType(string $type): BatchObjectInterface
+    public function setType(string $type): static
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function setUpdatedAt(DateTimeInterface $updatedAt): BatchObjectInterface
+    public function setUpdatedAt(DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 

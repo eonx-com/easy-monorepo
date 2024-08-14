@@ -5,7 +5,7 @@ namespace EonX\EasyNotification\ValueObject;
 
 use EonX\EasyNotification\Helper\StringHelper;
 
-final readonly class Config implements ConfigInterface
+final readonly class Config
 {
     public function __construct(
         private string $algorithm,
@@ -18,7 +18,7 @@ final readonly class Config implements ConfigInterface
     ) {
     }
 
-    public static function fromArray(array $config): ConfigInterface
+    public static function fromArray(array $config): self
     {
         return new self(
             algorithm: $config['algorithm'],

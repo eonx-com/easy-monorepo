@@ -5,7 +5,6 @@ namespace EonX\EasyNotification\Provider;
 
 use EonX\EasyNotification\Helper\StringHelper;
 use EonX\EasyNotification\ValueObject\SubscribeInfo;
-use EonX\EasyNotification\ValueObject\SubscribeInfoInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -29,7 +28,7 @@ final class SubscribeInfoProvider implements SubscribeInfoProviderInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function provide(string $apiKey, string $providerExternalId, array $topics): SubscribeInfoInterface
+    public function provide(string $apiKey, string $providerExternalId, array $topics): SubscribeInfo
     {
         $options = [
             'auth_basic' => [$apiKey],

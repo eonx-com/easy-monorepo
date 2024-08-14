@@ -5,7 +5,7 @@ namespace EonX\EasyBatch\Common\Persister;
 
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\MessageWrapper;
 
 final readonly class BatchItemPersister
@@ -20,7 +20,7 @@ final readonly class BatchItemPersister
         int|string $batchId,
         MessageWrapper $item,
         ?object $message = null,
-    ): BatchItemInterface {
+    ): BatchItem {
         $batchItem = $this->batchItemFactory->create($batchId, $message, $item->getClass());
 
         $batchItem->setApprovalRequired($item->isApprovalRequired());

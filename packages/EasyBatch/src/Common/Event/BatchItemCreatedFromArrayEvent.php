@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Event;
 
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 
 final class BatchItemCreatedFromArrayEvent extends AbstractBatchItemEvent
 {
     public function __construct(
-        BatchItemInterface $batchItem,
+        BatchItem $batchItem,
         private readonly array $array,
     ) {
         parent::__construct($batchItem);

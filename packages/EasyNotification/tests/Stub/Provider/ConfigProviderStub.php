@@ -5,7 +5,6 @@ namespace EonX\EasyNotification\Tests\Stub\Provider;
 
 use EonX\EasyNotification\Provider\ConfigProviderInterface;
 use EonX\EasyNotification\ValueObject\Config;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
 
 final class ConfigProviderStub implements ConfigProviderInterface
 {
@@ -21,7 +20,7 @@ final class ConfigProviderStub implements ConfigProviderInterface
         return $this->called;
     }
 
-    public function provide(string $apiKey, string $providerExternalId): ConfigInterface
+    public function provide(string $apiKey, string $providerExternalId): Config
     {
         $this->called++;
 

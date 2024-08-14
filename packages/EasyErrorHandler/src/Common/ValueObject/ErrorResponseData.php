@@ -5,7 +5,7 @@ namespace EonX\EasyErrorHandler\Common\ValueObject;
 
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 
-final class ErrorResponseData implements ErrorResponseDataInterface
+final class ErrorResponseData
 {
     private readonly array $headers;
 

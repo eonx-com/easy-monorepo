@@ -18,7 +18,7 @@ final readonly class PaginationFromRequestMiddleware
     public function handle(Request $request, Closure $next): mixed
     {
         $resolver = new FromHttpFoundationRequestPaginationResolver(
-            $this->paginationProvider->getPaginationConfig(),
+            $this->paginationProvider->getPaginationConfigProvider(),
             $request
         );
 

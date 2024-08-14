@@ -60,8 +60,8 @@ final class AuthorizationMatrixProviderTest extends AbstractUnitTestCase
     }
 
     /**
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]|null $roles
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null $permissions
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]|null $roles
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]|null $permissions
      */
     #[DataProvider('provideMatrixData')]
     public function testMatrix(callable $test, ?array $roles = null, ?array $permissions = null): void

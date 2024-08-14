@@ -7,13 +7,13 @@ use EonX\EasyBatch\Common\Enum\BatchItemType;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Event\BatchItemCreatedEvent;
 use EonX\EasyBatch\Common\Event\BatchItemCreatedFromArrayEvent;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 
 final class BatchItemFactory extends AbstractBatchObjectFactory implements BatchItemFactoryInterface
 {
-    public function create(int|string $batchId, ?object $message = null, ?string $class = null): BatchItemInterface
+    public function create(int|string $batchId, ?object $message = null, ?string $class = null): BatchItem
     {
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchItem */
+        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem $batchItem */
         $batchItem = $this->transformer->instantiateForClass($class);
         $batchItem->setBatchId($batchId);
 
@@ -27,7 +27,7 @@ final class BatchItemFactory extends AbstractBatchObjectFactory implements Batch
                 ->setType(BatchItemType::NestedBatch->value);
         }
 
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchItem */
+        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem $batchItem */
         $batchItem = $this->modifyBatchObject(new BatchItemCreatedEvent($batchItem));
 
         return $batchItem;

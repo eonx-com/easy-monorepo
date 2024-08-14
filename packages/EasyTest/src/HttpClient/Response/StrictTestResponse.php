@@ -4,21 +4,17 @@ declare(strict_types=1);
 namespace EonX\EasyTest\HttpClient\Response;
 
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
+use JsonException;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpClient\Exception\TransportException;
-use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Throwable;
 use UnexpectedValueException;
 
-/**
- * @internal  Use `self::arrangeHttpResponse(...) ` instead
- */
 final class StrictTestResponse extends AbstractTestResponse
 {
     /**
      * @param \Symfony\Component\HttpFoundation\Request::METHOD_* $method
-     * @param array<string, string>|null $requestHeaders
+     * @param array<string, string>|null $headers
      * @param array|string|\Symfony\Component\HttpClient\Exception\TransportException|null $responseData If null, empty array will be used for JSON or empty string otherwise
      * @param array<string, string>|null $responseHeaders
      * @param int|null $responseCode If null, 200 will be used
@@ -26,81 +22,63 @@ final class StrictTestResponse extends AbstractTestResponse
     public function __construct(
         private readonly string $method,
         string $url,
-        protected readonly ?array $queryData = null,
-        private readonly ?array $requestData = null,
-        private readonly ?array $requestHeaders = null,
+        protected ?array $query = null,
+        private ?array $body = null,
+        private ?array $json = null,
+        ?array $headers = null,
         array|string|TransportException|null $responseData = null,
         ?array $responseHeaders = null,
         ?int $responseCode = null,
     ) {
-        parent::__construct($url, $queryData, $responseData, $responseHeaders, $responseCode);
+        parent::__construct($url, $query, $responseData, $responseHeaders, $responseCode);
+
+        $this->headers = $headers ?? [];
     }
 
-    public function __invoke(string $method, string $url, ?array $options = null): MockResponse
+    final protected function checkParameters(string $method, string $url, array $options): void
     {
         $this->checkUrl($url);
 
         $this->checkMethod($method);
 
-        $this->checkOptions($options ?? []);
+        $this->checkData($options);
 
-        return $this->createResponse($method, $url, $options ?? []);
+        $this->checkHeaders($options);
     }
 
-    private function checkMethod(string $method): void
+    private function checkData(array $options): void
     {
-        try {
-            Assert::assertSame(
-                $this->method,
-                $method,
-                \sprintf('Request method for %s does not match', $this->url)
-            );
-        } catch (Throwable $exception) {
-            TestResponseFactory::throwException($exception);
-        }
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    private function checkOptions(array $options): void
-    {
-        $headers = $this->requestHeaders ?? [];
-        if (isset($headers[self::HEADER_ACCEPT]) === false) {
-            $headers[self::HEADER_ACCEPT] = self::CONTENT_TYPE_JSON;
-        }
-
-        if ($this->requestData !== null || isset($options['body'])) {
-            if (isset($headers[self::HEADER_CONTENT_TYPE]) === false) {
-                $headers[self::HEADER_CONTENT_TYPE] = self::CONTENT_TYPE_JSON;
-            }
-
+        if (isset($options['body'])) {
+            $expectedRequestData = null;
             $actualRequestData = [];
-            $requestBody = '';
-            $contentTypeHeader = \preg_replace(
-                '/^application\/vnd\..*?(\bjson\b).*/',
-                'application/json',
-                $headers[self::HEADER_CONTENT_TYPE]
-            );
-            switch ($contentTypeHeader) {
-                case self::CONTENT_TYPE_FORM:
-                    \parse_str((string)$options['body'], $actualRequestData);
-                    $requestBody = \http_build_query($this->requestData ?? []);
 
-                    break;
-                case self::CONTENT_TYPE_JSON:
-                    $actualRequestData = \json_decode((string)$options['body'], true);
-                    $requestBody = (string)\json_encode($this->requestData, JsonResponse::DEFAULT_ENCODING_OPTIONS);
-
-                    break;
-                default:
-                    TestResponseFactory::throwException(new UnexpectedValueException(\sprintf(
-                        'Unsupported Content-Type [%s]',
-                        $headers[self::HEADER_CONTENT_TYPE]
-                    )));
+            if ($this->body !== null) {
+                $expectedRequestData = $this->body;
+                \parse_str((string)($options['body']), $actualRequestData);
             }
 
-            $expectedRequestData = $this->requestData;
+            if ($this->json !== null) {
+                $expectedRequestData = $this->json;
+
+                try {
+                    $actualRequestData = \json_decode((string)$options['body'], true, 512, \JSON_THROW_ON_ERROR);
+                } catch (JsonException) {
+                    TestResponseFactory::throwException(new UnexpectedValueException(\sprintf(
+                        'Invalid JSON in request body, probably you should pass `body` instead of `json` for %s',
+                        $this->url
+                    )));
+                }
+            }
+
+            try {
+                Assert::assertIsArray(
+                    $expectedRequestData,
+                    \sprintf('You should provide request data for %s', $this->url)
+                );
+            } catch (Throwable $exception) {
+                TestResponseFactory::throwException($exception);
+            }
+
             $this->sortArray($expectedRequestData);
             $this->sortArray($actualRequestData);
 
@@ -113,23 +91,16 @@ final class StrictTestResponse extends AbstractTestResponse
             } catch (Throwable $exception) {
                 TestResponseFactory::throwException($exception);
             }
-
-            $headers[self::HEADER_CONTENT_LENGTH] = (string)\strlen($requestBody);
         }
+    }
 
-        $normalizedHeaders = [];
-        foreach ($headers as $header => $value) {
-            $normalizedHeaders[\strtolower((string)$header)] = [\sprintf('%s: %s', $header, $value)];
-        }
-
-        \ksort($normalizedHeaders);
-        \ksort($options['normalized_headers']);
-
+    private function checkMethod(string $method): void
+    {
         try {
             Assert::assertSame(
-                $normalizedHeaders,
-                $options['normalized_headers'],
-                \sprintf('Request headers for %s do not match', $this->url)
+                $this->method,
+                $method,
+                \sprintf('Request method for %s does not match', $this->url)
             );
         } catch (Throwable $exception) {
             TestResponseFactory::throwException($exception);

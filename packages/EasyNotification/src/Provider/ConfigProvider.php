@@ -5,7 +5,6 @@ namespace EonX\EasyNotification\Provider;
 
 use EonX\EasyNotification\Helper\StringHelper;
 use EonX\EasyNotification\ValueObject\Config;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -20,7 +19,7 @@ final class ConfigProvider implements ConfigProviderInterface
         $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
-    public function provide(string $apiKey, string $providerExternalId): ConfigInterface
+    public function provide(string $apiKey, string $providerExternalId): Config
     {
         $options = [
             'auth_basic' => [$apiKey],

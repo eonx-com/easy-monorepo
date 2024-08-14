@@ -10,7 +10,7 @@ use EonX\EasyNotification\Exception\ConfigRequiredException;
 use EonX\EasyNotification\Factory\QueueTransportFactoryInterface;
 use EonX\EasyNotification\Message\MessageInterface;
 use EonX\EasyNotification\Message\QueueMessage;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
+use EonX\EasyNotification\ValueObject\Config;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -18,7 +18,7 @@ use Throwable;
 
 final class NotificationClient implements NotificationClientInterface
 {
-    private ?ConfigInterface $config = null;
+    private ?Config $config = null;
 
     /**
      * @var \EonX\EasyNotification\Configurator\QueueMessageConfiguratorInterface[]
@@ -102,7 +102,7 @@ final class NotificationClient implements NotificationClientInterface
         ]);
     }
 
-    public function withConfig(?ConfigInterface $config = null): NotificationClientInterface
+    public function withConfig(?Config $config = null): NotificationClientInterface
     {
         $this->config = $config;
 

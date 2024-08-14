@@ -6,9 +6,7 @@ namespace EonX\EasySecurity\Tests\Unit\Common\Context;
 use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasySecurity\Authorization\Provider\AuthorizationMatrixProvider;
 use EonX\EasySecurity\Authorization\ValueObject\Permission;
-use EonX\EasySecurity\Authorization\ValueObject\PermissionInterface;
 use EonX\EasySecurity\Authorization\ValueObject\Role;
-use EonX\EasySecurity\Authorization\ValueObject\RoleInterface;
 use EonX\EasySecurity\Common\Context\SecurityContext;
 use EonX\EasySecurity\Common\Exception\NoProviderInContextException;
 use EonX\EasySecurity\Common\Exception\NoUserInContextException;
@@ -161,11 +159,11 @@ final class SecurityContextTest extends AbstractUnitTestCase
         self::assertEquals($hasPermission, $context->hasPermission($permission));
 
         $hasRole
-            ? self::assertInstanceOf(RoleInterface::class, $context->getRole($role))
+            ? self::assertInstanceOf(Role::class, $context->getRole($role))
             : self::assertNull($context->getRole($role));
 
         $hasPermission
-            ? self::assertInstanceOf(PermissionInterface::class, $context->getPermission($permission))
+            ? self::assertInstanceOf(Permission::class, $context->getPermission($permission))
             : self::assertNull($context->getPermission($permission));
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit;
 
-use EonX\EasyPagination\ValueObject\PaginationConfig;
+use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,8 +31,8 @@ abstract class AbstractUnitTestCase extends TestCase
         ?int $pageDefault = null,
         ?string $perPageAttr = null,
         ?int $perPageDefault = null,
-    ): PaginationConfig {
-        return new PaginationConfig(
+    ): PaginationConfigProvider {
+        return new PaginationConfigProvider(
             $pageAttr ?? 'page',
             $pageDefault ?? 1,
             $perPageAttr ?? 'perPage',

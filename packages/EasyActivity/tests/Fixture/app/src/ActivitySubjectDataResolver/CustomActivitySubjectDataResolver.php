@@ -7,7 +7,6 @@ use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
-use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
 
 final readonly class CustomActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
@@ -15,7 +14,7 @@ final readonly class CustomActivitySubjectDataResolver implements ActivitySubjec
         ActivityAction $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
-    ): ?ActivitySubjectDataInterface {
+    ): ?ActivitySubjectData {
         $data = [];
         $oldData = [];
         foreach ($changeSet as $key => [$newValue, $oldValue]) {

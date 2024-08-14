@@ -5,7 +5,6 @@ namespace EonX\EasyBatch\Messenger\Factory;
 
 use EonX\EasyBatch\Messenger\Stamp\BatchItemStamp;
 use EonX\EasyLock\Common\ValueObject\LockData;
-use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use Symfony\Component\Messenger\Envelope;
 
 final readonly class BatchItemLockFactory implements BatchItemLockFactoryInterface
@@ -15,7 +14,7 @@ final readonly class BatchItemLockFactory implements BatchItemLockFactoryInterfa
     ) {
     }
 
-    public function createFromEnvelope(Envelope $envelope): LockDataInterface
+    public function createFromEnvelope(Envelope $envelope): LockData
     {
         /** @var \EonX\EasyBatch\Messenger\Stamp\BatchItemStamp $batchItemStamp */
         $batchItemStamp = $envelope->last(BatchItemStamp::class);

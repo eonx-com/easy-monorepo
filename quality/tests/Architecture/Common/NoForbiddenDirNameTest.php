@@ -30,6 +30,7 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
     private const SKIP_DIRS = [
         '/EasyBatch/src/Common/Manager',
         '/EasyTest/src/Common/Trait',
+        '/EasyTest/src/HttpClient/Trait',
     ];
 
     #[DataProvider('provideSubject')]

@@ -5,7 +5,7 @@ namespace EonX\EasyNotification\Client;
 
 use EonX\EasyNotification\Enum\MessageStatus;
 use EonX\EasyNotification\Message\MessageInterface;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
+use EonX\EasyNotification\ValueObject\Config;
 
 interface NotificationClientInterface
 {
@@ -24,5 +24,5 @@ interface NotificationClientInterface
      */
     public function updateMessagesStatus(array $messages, MessageStatus $status): void;
 
-    public function withConfig(?ConfigInterface $config = null): self;
+    public function withConfig(?Config $config = null): self;
 }

@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Transformer;
 
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 
 interface BatchObjectTransformerInterface
 {
-    public function instantiateForClass(?string $class = null): BatchObjectInterface;
+    public function instantiateForClass(?string $class = null): AbstractBatchObject;
 
-    public function transformToArray(BatchObjectInterface $batchObject): array;
+    public function transformToArray(AbstractBatchObject $batchObject): array;
 
-    public function transformToObject(array $data): BatchObjectInterface;
+    public function transformToObject(array $data): AbstractBatchObject;
 }

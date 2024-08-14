@@ -7,7 +7,7 @@ use BackedEnum;
 use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use Throwable;
 
@@ -27,21 +27,21 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     ) {
     }
 
-    public function instantiateForClass(?string $class = null): BatchObjectInterface
+    public function instantiateForClass(?string $class = null): AbstractBatchObject
     {
         $class ??= $this->class;
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchObjectInterface $classInstance */
+        /** @var \EonX\EasyBatch\Common\ValueObject\AbstractBatchObject $classInstance */
         $classInstance = new $class();
 
         return $classInstance;
     }
 
-    public function transformToArray(BatchObjectInterface $batchObject): array
+    public function transformToArray(AbstractBatchObject $batchObject): array
     {
         return $this->formatData($this->doTransformToArray($batchObject));
     }
 
-    public function transformToObject(array $data): BatchObjectInterface
+    public function transformToObject(array $data): AbstractBatchObject
     {
         $object = $this->instantiateForClass($data['class'] ?? null);
         $object
@@ -68,9 +68,9 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         return $object;
     }
 
-    abstract protected function hydrateBatchObject(BatchObjectInterface $batchObject, array $data): void;
+    abstract protected function hydrateBatchObject(AbstractBatchObject $batchObject, array $data): void;
 
-    protected function doTransformToArray(BatchObjectInterface $batchObject): array
+    protected function doTransformToArray(AbstractBatchObject $batchObject): array
     {
         return $batchObject->toArray();
     }
@@ -98,7 +98,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         return $data;
     }
 
-    private function setDateTimes(BatchObjectInterface $batchObject, array $data): void
+    private function setDateTimes(AbstractBatchObject $batchObject, array $data): void
     {
         foreach (self::DATE_TIMES as $name => $setter) {
             if (isset($data[$name])) {
