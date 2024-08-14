@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.2",
         "bugsnag/bugsnag": "^3.29",
-        "eonx-com/easy-utils": "^5.13",
+        "eonx-com/easy-utils": "^5.14",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.7",
         "nette/utils": "^4.0",
@@ -25,7 +25,7 @@
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^3.2",
-        "eonx-com/easy-test": "^5.13",
+        "eonx-com/easy-test": "^5.14",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
         "symfony/uid": "^7.0"
@@ -58,7 +58,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.13-dev"
+            "dev-master": "5.14-dev"
         }
     }
 }

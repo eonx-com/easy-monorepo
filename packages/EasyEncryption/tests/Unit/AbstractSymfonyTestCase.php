@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Tests\Unit\Bundle;
+namespace EonX\EasyEncryption\Tests\Unit;
 
 use EonX\EasyEncryption\Tests\Stub\Kernel\KernelStub;
-use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase

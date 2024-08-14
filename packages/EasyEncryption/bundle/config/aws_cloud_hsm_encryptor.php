@@ -7,7 +7,9 @@ use EonX\EasyEncryption\AwsCloudHsm\Builder\AwsCloudHsmSdkOptionsBuilder;
 use EonX\EasyEncryption\AwsCloudHsm\Configurator\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\AwsCloudHsm\Encryptor\AwsCloudHsmEncryptor;
 use EonX\EasyEncryption\AwsCloudHsm\Encryptor\AwsCloudHsmEncryptorInterface;
+use EonX\EasyEncryption\AwsCloudHsm\HashCalculator\AwsCloudHsmHashCalculator;
 use EonX\EasyEncryption\Bundle\Enum\ConfigParam;
+use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -42,4 +44,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$userPin', param(ConfigParam::AwsCloudHsmUserPin->value))
         ->arg('$aad', param(ConfigParam::AwsCloudHsmAad->value))
         ->arg('$defaultKeyName', param(ConfigParam::DefaultKeyName->value));
+
+    $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
+        ->arg('$signKeyName', param(ConfigParam::DefaultKeyName->value));
 };

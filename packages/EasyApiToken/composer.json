@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.2",
         "ext-openssl": "*",
-        "eonx-com/easy-utils": "^5.13",
+        "eonx-com/easy-utils": "^5.14",
         "nette/utils": "^4.0",
         "psr/log": "^3.0",
         "symfony/dependency-injection": "^7.0",
@@ -57,7 +57,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.13-dev"
+            "dev-master": "5.14-dev"
         }
     }
 }

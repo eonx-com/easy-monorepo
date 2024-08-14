@@ -673,9 +673,9 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             new EntityCreatedEvent(
                 $product,
                 [
+                    'category' => [null, null],
                     'name' => [null, 'Name 1'],
                     'price' => [null, new Price('2000', 'USD')],
-                    'category' => [null, null],
                 ]
             ),
             $events[0]
@@ -710,9 +710,9 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             new EntityCreatedEvent(
                 $product,
                 [
+                    'category' => [null, null],
                     'name' => [null, 'Name 3'],
                     'price' => [null, new Price('2000', 'AUD')],
-                    'category' => [null, null],
                 ]
             ),
             $events[0]

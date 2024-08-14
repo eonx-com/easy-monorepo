@@ -12,7 +12,7 @@
         "symfony/uid": "^7.0"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^5.13",
+        "eonx-com/easy-test": "^5.14",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
         "symfony/framework-bundle": "^7.0"
@@ -35,7 +35,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.13-dev"
+            "dev-master": "5.14-dev"
         }
     }
 }

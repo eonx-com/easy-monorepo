@@ -13,6 +13,8 @@ enum ConfigParam: string
 
     case AwsCloudHsmDisableKeyAvailabilityCheck = 'easy_encryption.aws_cloud_hsm.disable_key_availability_check';
 
+    case AwsCloudHsmEnabled = 'easy_encryption.aws_cloud_hsm.enabled';
+
     case AwsCloudHsmIpAddress = 'easy_encryption.aws_cloud_hsm.ip_address';
 
     case AwsCloudHsmRegion = 'easy_encryption.aws_cloud_hsm.region';
@@ -34,4 +36,8 @@ enum ConfigParam: string
     case DefaultKeyName = 'easy_encryption.default_key_name';
 
     case DefaultSalt = 'easy_encryption.default_salt';
+
+    case FullyEncryptedMessages = 'easy_encryption.fully_encrypted_messages';
+
+    case MaxChunkSize = 'easy_encryption.max_chunk_size';
 }
