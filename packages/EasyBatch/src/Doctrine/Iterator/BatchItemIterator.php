@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Doctrine\Iterator;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
@@ -16,6 +17,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
 {
     public function __construct(
         private BatchItemRepositoryInterface $batchItemRepository,
+        private Connection $connection,
         private int $batchItemsPerPage,
     ) {
     }
@@ -89,12 +91,11 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
 
     private function processConfig(BatchItemIteratorConfig $config): void
     {
-        $quote = static fn (
+        $quote = fn (
             QueryBuilder $queryBuilder,
             array $statuses,
         ): array => \array_map(
-            static fn (BatchObjectStatus $status): string => $queryBuilder->getConnection()
-                ->quote($status->value),
+            fn (BatchObjectStatus $status): string => $this->connection->quote($status->value),
             $statuses
         );
 

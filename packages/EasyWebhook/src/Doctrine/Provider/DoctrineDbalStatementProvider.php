@@ -20,7 +20,7 @@ final class DoctrineDbalStatementProvider
     private readonly string $webhooksTable;
 
     public function __construct(
-        private readonly Connection $conn,
+        private readonly Connection $connection,
         ?string $webhooksTable = null,
         ?string $webhookResultsTable = null,
     ) {
@@ -119,7 +119,7 @@ final class DoctrineDbalStatementProvider
             \call_user_func($this->extendWebhookResultsTable, $webhookResultsTable);
         }
 
-        return $schema->toSql($this->conn->getDatabasePlatform());
+        return $schema->toSql($this->connection->getDatabasePlatform());
     }
 
     /**

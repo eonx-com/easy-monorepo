@@ -38,7 +38,7 @@ final readonly class Jwt implements ApiTokenInterface
         $claim = $this->getClaim($claim);
 
         if ($claim instanceof stdClass) {
-            $claim = Json::decode(Json::encode($claim), Json::FORCE_ARRAY);
+            $claim = Json::decode(Json::encode($claim), true);
         }
 
         return $claim;

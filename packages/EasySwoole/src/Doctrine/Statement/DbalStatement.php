@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Doctrine\Statement;
 
 use Doctrine\DBAL\Driver\PDO\Exception;
-use Doctrine\DBAL\Driver\PDO\ParameterTypeMap;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
@@ -19,39 +18,19 @@ final readonly class DbalStatement implements Statement
     ) {
     }
 
-    public function bindParam(
-        $param,
-        &$variable,
-        $type = ParameterType::STRING,
-        $length = null,
-        ?array $driverOptions = null,
-    ): bool {
+    public function bindValue($param, $value, $type = ParameterType::STRING): void
+    {
         try {
-            return $this->pdoStatement->bindParam(
-                $param,
-                $variable,
-                ParameterTypeMap::convertParamType($type),
-                $length ?? 0,
-                ...\array_slice(\func_get_args(), 4),
-            );
+            $this->pdoStatement->bindValue($param, $value, $type);
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
     }
 
-    public function bindValue($param, $value, $type = ParameterType::STRING): bool
+    public function execute(): Result
     {
         try {
-            return $this->pdoStatement->bindValue($param, $value, ParameterTypeMap::convertParamType($type));
-        } catch (PDOException $exception) {
-            throw Exception::new($exception);
-        }
-    }
-
-    public function execute($params = null): Result
-    {
-        try {
-            $this->pdoStatement->execute($params);
+            $this->pdoStatement->execute();
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }

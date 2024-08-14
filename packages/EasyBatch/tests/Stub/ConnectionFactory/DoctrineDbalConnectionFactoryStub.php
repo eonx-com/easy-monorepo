@@ -14,7 +14,8 @@ final class DoctrineDbalConnectionFactoryStub
     public static function create(): Connection
     {
         return DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
     }
 }

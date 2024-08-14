@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Doctrine\Repository;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use EonX\EasyBatch\Common\Exception\BatchNotFoundException;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
@@ -46,7 +47,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     public function findNestedOrFail(int|string $parentBatchItemId): Batch
     {
         $sql = \sprintf('SELECT * FROM %s WHERE parent_batch_item_id = :id', $this->table);
-        $data = $this->conn->fetchAssociative($sql, ['id' => $parentBatchItemId]);
+        $data = $this->connection->fetchAssociative($sql, ['id' => $parentBatchItemId]);
 
         if (\is_array($data)) {
             /** @var \EonX\EasyBatch\Common\ValueObject\Batch $batch */
@@ -109,13 +110,17 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         $this->beginTransaction();
 
         try {
-            $sql = \sprintf(
-                'SELECT * FROM %s WHERE id = :id %s',
-                $this->table,
-                $this->conn->getDatabasePlatform()
-                    ->getForUpdateSQL()
-            );
-            $data = $this->conn->fetchAssociative($sql, ['id' => $batch->getId()]);
+            $queryBuilder = $this->connection->createQueryBuilder();
+
+            if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform === false) {
+                $queryBuilder->forUpdate();
+            }
+
+            $queryBuilder->select('*')
+                ->from($this->table)
+                ->where($queryBuilder->expr()->eq('id', ':id'));
+
+            $data = $this->connection->fetchAssociative($queryBuilder->getSQL(), ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
 
             if ($freshBatch === null) {
@@ -141,8 +146,12 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function beginTransaction(): void
     {
         // If transaction active and savepoint supported, create new savepoint
-        if ($this->conn->isTransactionActive() && $this->conn->getDatabasePlatform()->supportsSavepoints()) {
-            $this->conn->createSavepoint(self::SAVEPOINT);
+        if (
+            $this->connection->isTransactionActive()
+            && $this->connection->getDatabasePlatform()
+                ->supportsSavepoints()
+        ) {
+            $this->connection->createSavepoint(self::SAVEPOINT);
             $this->savepointActive = true;
 
             return;
@@ -150,7 +159,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
 
         // Otherwise, create transaction
         $this->savepointActive = false;
-        $this->conn->beginTransaction();
+        $this->connection->beginTransaction();
     }
 
     /**
@@ -159,8 +168,8 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function commit(): void
     {
         $this->savepointActive
-            ? $this->conn->releaseSavepoint(self::SAVEPOINT)
-            : $this->conn->commit();
+            ? $this->connection->releaseSavepoint(self::SAVEPOINT)
+            : $this->connection->commit();
     }
 
     /**
@@ -169,7 +178,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private function rollback(): void
     {
         $this->savepointActive
-            ? $this->conn->rollbackSavepoint(self::SAVEPOINT)
-            : $this->conn->rollBack();
+            ? $this->connection->rollbackSavepoint(self::SAVEPOINT)
+            : $this->connection->rollBack();
     }
 }

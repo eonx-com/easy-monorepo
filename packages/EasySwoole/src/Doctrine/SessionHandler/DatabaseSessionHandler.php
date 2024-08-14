@@ -79,23 +79,23 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
             return $this->decorated;
         }
 
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         // The PdoSessionHandler is executing raw SQL queries,
         // so we need to ensure we are using the primary connection
-        if ($conn instanceof PrimaryReadReplicaConnection) {
-            $conn->ensureConnectedToPrimary();
+        if ($connection instanceof PrimaryReadReplicaConnection) {
+            $connection->ensureConnectedToPrimary();
         }
 
-        $nativeConnGetter = \method_exists($conn, 'getNativeConnection')
+        $nativeConnGetter = \method_exists($connection, 'getNativeConnection')
             ? 'getNativeConnection'
             : 'getWrappedConnection';
 
-        $this->decorated = new PdoSessionHandler($conn->{$nativeConnGetter}(), $this->options ?? []);
+        $this->decorated = new PdoSessionHandler($connection->{$nativeConnGetter}(), $this->options ?? []);
 
         // Restore replica connection once PdoSessionHandler instantiated for the rest of the app
-        if ($conn instanceof PrimaryReadReplicaConnection) {
-            $conn->ensureConnectedToReplica();
+        if ($connection instanceof PrimaryReadReplicaConnection) {
+            $connection->ensureConnectedToReplica();
         }
 
         return $this->decorated;

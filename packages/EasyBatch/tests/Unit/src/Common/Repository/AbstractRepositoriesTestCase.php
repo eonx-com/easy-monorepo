@@ -16,11 +16,10 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
 
     protected function setUp(): void
     {
-        $conn = $this->getDoctrineDbalConnection();
-        $conn->connect();
+        $connection = $this->getDoctrineDbalConnection();
 
         foreach ($this->getStatementsProvider()->migrateStatements() as $statement) {
-            $conn->executeStatement($statement);
+            $connection->executeStatement($statement);
         }
 
         parent::setUp();
@@ -28,13 +27,13 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
 
     protected function tearDown(): void
     {
-        $conn = $this->getDoctrineDbalConnection();
+        $connection = $this->getDoctrineDbalConnection();
 
         foreach ($this->getStatementsProvider()->rollbackStatements() as $statement) {
-            $conn->executeStatement($statement);
+            $connection->executeStatement($statement);
         }
 
-        $conn->close();
+        $connection->close();
 
         parent::tearDown();
     }
@@ -49,7 +48,8 @@ abstract class AbstractRepositoriesTestCase extends AbstractUnitTestCase
         }
 
         $this->doctrineDbal = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
 
         return $this->doctrineDbal;

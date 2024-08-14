@@ -36,6 +36,9 @@ abstract class AbstractPaginatedDoctrineOrmRepository extends AbstractDoctrineOr
             ->setMaxResults($perPage);
     }
 
+    /**
+     * @param class-string|null $from
+     */
     protected function createLengthAwarePaginator(
         ?string $from = null,
         ?string $fromAlias = null,

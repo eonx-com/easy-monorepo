@@ -16,9 +16,9 @@
     },
     "require-dev": {
         "bugsnag/bugsnag": "^3.29",
-        "doctrine/dbal": "^3.0",
-        "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/orm": "^2.14",
+        "doctrine/dbal": "^4.0",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/orm": "^3.2",
         "eonx-com/easy-lock": "^5.14",
         "eonx-com/easy-test": "^5.14",
         "eonx-com/easy-webhook": "^5.14",

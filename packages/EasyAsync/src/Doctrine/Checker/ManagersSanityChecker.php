@@ -59,10 +59,10 @@ final readonly class ManagersSanityChecker
             throw new DoctrineManagerClosedException(\sprintf('Manager "%s" closed', $name));
         }
 
-        $conn = $entityManager->getConnection();
+        $connection = $entityManager->getConnection();
 
         // No need to check connection if not connected
-        if ($conn->isConnected() === false) {
+        if ($connection->isConnected() === false) {
             return;
         }
 
@@ -70,13 +70,13 @@ final readonly class ManagersSanityChecker
         // keepReplica: true, the connection will stay connected to the last one used which could be the primary
         // In most cases, applications will first read data from the database before writing, so it makes sense
         // to ensure it uses replica
-        if ($conn instanceof PrimaryReadReplicaConnection) {
-            $conn->ensureConnectedToReplica();
+        if ($connection instanceof PrimaryReadReplicaConnection) {
+            $connection->ensureConnectedToReplica();
         }
 
         // Check connection ok
         try {
-            $conn->fetchAllAssociative($conn->getDatabasePlatform()->getDummySelectSQL());
+            $connection->fetchAllAssociative($connection->getDatabasePlatform()->getDummySelectSQL());
         } catch (Throwable $throwable) {
             throw new DoctrineConnectionNotOkException(
                 \sprintf('Connection for manager "%s" not ok: %s', $name, $throwable->getMessage()),

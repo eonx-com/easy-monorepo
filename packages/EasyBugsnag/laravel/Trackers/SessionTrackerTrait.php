@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Laravel\Trackers;
 
-use EonX\EasyBugsnag\Tracker\SessionTracker;
+use EonX\EasyBugsnag\Common\Tracker\SessionTracker;
 use Illuminate\Http\Request;
 
 trait SessionTrackerTrait

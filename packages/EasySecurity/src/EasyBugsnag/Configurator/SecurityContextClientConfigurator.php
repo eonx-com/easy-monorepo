@@ -7,7 +7,7 @@ use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
-use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
 use EonX\EasySecurity\Authorization\ValueObject\Permission;
 use EonX\EasySecurity\Authorization\ValueObject\Role;
 use EonX\EasySecurity\Common\Entity\ProviderInterface;

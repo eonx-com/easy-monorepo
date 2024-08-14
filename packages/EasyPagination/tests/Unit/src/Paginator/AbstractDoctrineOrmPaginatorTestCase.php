@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,51 +38,37 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         return $item;
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\ORMException
-     */
     protected static function createItemsTable(EntityManagerInterface $manager): void
     {
         self::createEntityTable($manager, Item::class);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\ORMException
-     */
     protected static function createParentsTable(EntityManagerInterface $manager): void
     {
         self::createEntityTable($manager, ChildItem::class);
     }
 
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     */
     protected function getEntityManager(): EntityManagerInterface
     {
         if ($this->manager !== null) {
             return $this->manager;
         }
 
-        $conn = [
-            'url' => 'sqlite:///:memory:',
-        ];
+        $manager = DriverManager::getConnection([
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
+        ]);
 
         $config = new Configuration();
         $config->setMetadataDriverImpl(new AttributeDriver([]));
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
-        $this->manager = EntityManager::create($conn, $config);
+        $this->manager = new EntityManager($manager, $config);
 
         return $this->manager;
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\ORMException
-     */
     private static function createEntityTable(EntityManagerInterface $manager, string $entity): void
     {
         $schemaTool = new SchemaTool($manager);
