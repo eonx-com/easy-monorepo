@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.2",
         "bugsnag/bugsnag": "^3.29",
-        "eonx-com/easy-utils": "^5.13",
+        "eonx-com/easy-utils": "^5.14",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.7",
         "nette/utils": "^3.2",
@@ -53,7 +53,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.13-dev"
+            "dev-master": "5.14-dev"
         }
     }
 }

@@ -21,4 +21,34 @@ return [
      * Enable key resolve for default encryption key.
      */
     'use_default_key_resolvers' => true,
+
+    'aws_pkcs11_hsm_ca_cert' => '',
+
+    'aws_pkcs11_disable_key_availability_check' => false,
+
+    'aws_pkcs11_hsm_ip_address' => '',
+
+    'aws_pkcs11_cloud_hsm_cluster_id' => '',
+
+    'aws_pkcs11_aws_region' => '',
+
+    'aws_pkcs11_server_client_cert_file' => '',
+
+    'aws_pkcs11_server_client_key_file' => '',
+
+    'aws_pkcs11_cloud_hsm_sdk_options' => [],
+
+    'aws_pkcs11_aws_role_arn' => '',
+
+    'aws_pkcs11_use_cloud_hsm_configure_tool' => false,
+
+    'aws_pkcs11_user_pin' => '',
+
+    'aws_pkcs11_aad' => '',
+
+    'max_chunk_size' => 16224,
+
+    'aws_pkcs11_encryptor' => [
+        'enabled' => false,
+    ],
 ];
