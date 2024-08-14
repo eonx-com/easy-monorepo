@@ -11,7 +11,7 @@
         "eonx-com/easy-random": "^5.13",
         "eonx-com/easy-utils": "^5.13",
         "nesbot/carbon": "^3.7",
-        "nette/utils": "^3.2",
+        "nette/utils": "^4.0",
         "symfony/config": "^7.0",
         "symfony/console": "^7.0",
         "symfony/dependency-injection": "^7.0",
@@ -20,7 +20,7 @@
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.0",
+        "doctrine/dbal": "^4.0",
         "illuminate/database": "^11.0",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"

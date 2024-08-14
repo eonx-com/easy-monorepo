@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Laravel;
 
-use EonX\EasyDoctrine\EasyErrorHandler\Listener\TransactionalExceptionListener;
-use EonX\EasyDoctrine\EntityEvent\Event\TransactionalExceptionEvent;
+use EonX\EasyDoctrine\EasyErrorHandler\Listener\WrapInTransactionExceptionListener;
+use EonX\EasyDoctrine\EntityEvent\Event\WrapInTransactionExceptionEvent;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyDoctrineServiceProvider extends ServiceProvider
@@ -18,11 +18,14 @@ final class EasyDoctrineServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        if ((bool)\config('easy-doctrine.easy_error_handler_enabled', true) === false) {
+        if ((bool)\config('easy-doctrine.easy_error_handler.enabled', true) === false) {
             return;
         }
 
         $this->app->get('events')
-            ->listen(TransactionalExceptionEvent::class, [TransactionalExceptionListener::class, '__invoke']);
+            ->listen(
+                WrapInTransactionExceptionEvent::class,
+                [WrapInTransactionExceptionListener::class, '__invoke']
+            );
     }
 }

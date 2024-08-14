@@ -10,14 +10,14 @@ use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 
 abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCase
 {
-    protected ?Connection $conn = null;
+    protected ?Connection $connection = null;
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function addChildItemToTable(Connection $conn, string $title, int $itemId): void
+    protected static function addChildItemToTable(Connection $connection, string $title, int $itemId): void
     {
-        $conn->insert('child_items', [
+        $connection->insert('child_items', [
             'child_title' => $title,
             'item_id' => $itemId,
         ]);
@@ -26,15 +26,15 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function addItemToTable(Connection $conn, string $title): void
+    protected static function addItemToTable(Connection $connection, string $title): void
     {
-        $conn->insert('items', ['title' => $title]);
+        $connection->insert('items', ['title' => $title]);
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function createChildItemsTable(Connection $conn): void
+    protected static function createChildItemsTable(Connection $connection): void
     {
         $schema = new Schema();
 
@@ -54,15 +54,15 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
         $table->setPrimaryKey(['id']);
         $table->addForeignKeyConstraint('items', ['item_id'], ['id']);
 
-        foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
-            $conn->executeStatement($sql);
+        foreach ($schema->toSql($connection->getDatabasePlatform()) as $sql) {
+            $connection->executeStatement($sql);
         }
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function createItemsTable(Connection $conn): void
+    protected static function createItemsTable(Connection $connection): void
     {
         $schema = new Schema();
 
@@ -77,8 +77,8 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
 
         $table->setPrimaryKey(['id']);
 
-        foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
-            $conn->executeStatement($sql);
+        foreach ($schema->toSql($connection->getDatabasePlatform()) as $sql) {
+            $connection->executeStatement($sql);
         }
     }
 
@@ -87,14 +87,15 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
      */
     protected function getDoctrineDbalConnection(): Connection
     {
-        if ($this->conn !== null) {
-            return $this->conn;
+        if ($this->connection !== null) {
+            return $this->connection;
         }
 
-        $this->conn = DriverManager::getConnection([
-            'url' => 'sqlite:///:memory:',
+        $this->connection = DriverManager::getConnection([
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
 
-        return $this->conn;
+        return $this->connection;
     }
 }

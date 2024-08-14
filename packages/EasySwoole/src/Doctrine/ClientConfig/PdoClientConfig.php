@@ -26,6 +26,6 @@ final readonly class PdoClientConfig implements ClientConfigInterface
      */
     public function getParams(): array
     {
-        return $this->connectionParamsResolver?->getParams($this->params) ?? $this->params;
+        return $this->connectionParamsResolver?->resolve($this->params) ?? $this->params;
     }
 }

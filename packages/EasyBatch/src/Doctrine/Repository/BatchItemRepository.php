@@ -21,14 +21,14 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      */
     public function findCountsForBatch(int|string $batchId): BatchCounts
     {
-        $queryBuilder = $this->conn->createQueryBuilder()
-            ->select(['status', 'count(id) as _count'])
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('status', 'count(id) as _count')
             ->from($this->table)
             ->where('batch_id = :batchId')
             ->setParameter('batchId', $batchId, \is_string($batchId) ? Types::STRING : Types::INTEGER)
             ->groupBy('status');
 
-        $results = $this->conn->fetchAllAssociative(
+        $results = $this->connection->fetchAllAssociative(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()
@@ -98,7 +98,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         int|string $batchId,
         ?string $dependsOnName = null,
     ): LengthAwarePaginatorInterface {
-        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->conn, $this->table);
+        $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->connection, $this->table);
 
         $paginator->setFilterCriteria(
             static function (QueryBuilder $queryBuilder) use ($batchId, $dependsOnName): void {
@@ -163,7 +163,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $batchItems
         );
 
-        $queryBuilder = $this->conn->createQueryBuilder();
+        $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->update($this->table)
             ->set('status', ':statusPending')
@@ -181,14 +181,14 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         // Handle more than 1 batchItem
         if ($count > 1) {
             $batchItemIds = \array_map(
-                fn (string $batchItemId): string => $this->conn->quote($batchItemId),
+                fn (string $batchItemId): string => $this->connection->quote($batchItemId),
                 $batchItemIds
             );
 
             $queryBuilder->andWhere($queryBuilder->expr()->in('id', $batchItemIds));
         }
 
-        $this->conn->executeStatement(
+        $this->connection->executeStatement(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()

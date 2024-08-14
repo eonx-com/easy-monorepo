@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBugsnag\Laravel\Configurators;
 
 use Bugsnag\Client;
-use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
 use Illuminate\Contracts\Cache\Repository;
 
 final class SessionTrackingClientConfigurator extends AbstractClientConfigurator

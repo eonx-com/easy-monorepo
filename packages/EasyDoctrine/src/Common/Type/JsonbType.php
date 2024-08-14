@@ -4,19 +4,15 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Common\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
 use JsonException;
 
 final class JsonbType extends Type
 {
-    public const NAME = 'jsonb';
-
     private const FORMAT_DB_JSONB = 'JSONB';
 
-    /**
-     * @throws \Doctrine\DBAL\Types\ConversionException
-     */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -26,17 +22,10 @@ final class JsonbType extends Type
         try {
             return \json_encode($value, \JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw ConversionException::conversionFailedSerialization(
-                $value,
-                $this->getName(),
-                $exception->getMessage()
-            );
+            throw InvalidType::new($value, self::class, ['mixed'], $exception);
         }
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Types\ConversionException
-     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value === '') {
@@ -52,13 +41,8 @@ final class JsonbType extends Type
 
             return \is_array($decodedValue) ? $this->sortByKey($decodedValue) : $decodedValue;
         } catch (JsonException $exception) {
-            throw ConversionException::conversionFailed($value, $this->getName(), $exception);
+            throw InvalidFormat::new($value, self::class, 'json', $exception);
         }
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string

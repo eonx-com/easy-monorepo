@@ -5,11 +5,8 @@ namespace EonX\EasySwoole\Doctrine\Connection;
 
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\PDO\Exception;
-use Doctrine\DBAL\Driver\PDO\ParameterTypeMap;
-use Doctrine\DBAL\Driver\PDO\PDOException as DriverPDOException;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\ParameterType;
 use EonX\EasySwoole\Doctrine\Client\PdoClient;
 use EonX\EasySwoole\Doctrine\Pool\PdoClientPool;
 use EonX\EasySwoole\Doctrine\Result\DbalResult;
@@ -33,24 +30,16 @@ final class DbalConnection implements Connection
         }
     }
 
-    public function beginTransaction(): bool
+    public function beginTransaction(): void
     {
-        try {
-            return $this->getPdo()
-                ->beginTransaction();
-        } catch (PDOException $exception) {
-            throw DriverPDOException::new($exception);
-        }
+        $this->getPdo()
+            ->beginTransaction();
     }
 
-    public function commit(): bool
+    public function commit(): void
     {
-        try {
-            return $this->getPdo()
-                ->commit();
-        } catch (PDOException $exception) {
-            throw DriverPDOException::new($exception);
-        }
+        $this->getPdo()
+            ->commit();
     }
 
     public function exec(string $sql): int
@@ -74,14 +63,17 @@ final class DbalConnection implements Connection
         return $basePdo;
     }
 
-    public function lastInsertId($name = null)
+    public function getServerVersion(): string
+    {
+        return $this->getPdo()
+            ->getAttribute(PDO::ATTR_SERVER_VERSION);
+    }
+
+    public function lastInsertId(): int|string
     {
         try {
-            return $name === null
-                ? $this->getPdo()
-                    ->lastInsertId()
-                : $this->getPdo()
-                    ->lastInsertId($name);
+            return $this->getPdo()
+                ->lastInsertId();
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
@@ -105,26 +97,16 @@ final class DbalConnection implements Connection
         }
     }
 
-    /**
-     * @param string $value
-     * @param int $type
-     *
-     * @throws \Doctrine\DBAL\Driver\Exception\UnknownParameterType
-     */
-    public function quote($value, $type = ParameterType::STRING): mixed
+    public function quote(string $value): string
     {
         return $this->getPdo()
-            ->quote($value, ParameterTypeMap::convertParamType($type));
+            ->quote($value);
     }
 
-    public function rollBack(): bool
+    public function rollBack(): void
     {
-        try {
-            return $this->getPdo()
-                ->rollBack();
-        } catch (PDOException $exception) {
-            throw DriverPDOException::new($exception);
-        }
+        $this->getPdo()
+            ->rollBack();
     }
 
     private function getPdo(): PdoClient

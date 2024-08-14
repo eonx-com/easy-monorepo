@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bundle;
 
-use EonX\EasyBugsnag\Bundle\CompilerPass\DoctrineSqlLoggerConfiguratorCompilerPass;
 use EonX\EasyBugsnag\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
-use EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface;
+use EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface;
+use EonX\EasyBugsnag\Doctrine\Logger\QueryBreadcrumbLogger;
+use EonX\EasyBugsnag\Doctrine\Middleware\BreadcrumbLoggerMiddleware;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -44,7 +46,6 @@ final class EasyBugsnagBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new DoctrineSqlLoggerConfiguratorCompilerPass())
             ->addCompilerPass(new SensitiveDataSanitizerCompilerPass());
     }
 
@@ -77,15 +78,21 @@ final class EasyBugsnagBundle extends AbstractBundle
         $container
             ->parameters()
             ->set(ConfigParam::ApiKey->value, $config['api_key']);
-        $container
-            ->parameters()
-            ->set(ConfigParam::DoctrineDbalEnabled->value, $config['doctrine_dbal']['enabled'] ?? false);
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DoctrineDbalConnections->value,
-                $config['doctrine_dbal']['connections'] ?? 'default'
-            );
+
+        if ($config['doctrine_dbal']['enabled']) {
+            $container->import('config/doctrine_dbal.php');
+
+            foreach ($config['doctrine_dbal']['connections'] as $connection) {
+                $builder->setDefinition(
+                    'easy_bugsnag.doctrine.middleware.' . $connection,
+                    (new Definition(
+                        BreadcrumbLoggerMiddleware::class,
+                        [$builder->getDefinition(QueryBreadcrumbLogger::class)]
+                    ))
+                        ->addTag('doctrine.middleware', ['connection' => $connection])
+                );
+            }
+        }
 
         $builder
             ->registerForAutoconfiguration(ClientConfiguratorInterface::class)

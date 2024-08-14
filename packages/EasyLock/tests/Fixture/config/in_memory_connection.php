@@ -14,5 +14,8 @@ return static function (EasyLockConfig $easyLockConfig, ContainerConfigurator $c
 
     $services->set('in_memory_connection', Connection::class)
         ->factory([DriverManager::class, 'getConnection'])
-        ->arg('$params', ['url' => 'sqlite:///:memory:']);
+        ->arg('$params', [
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
+        ]);
 };

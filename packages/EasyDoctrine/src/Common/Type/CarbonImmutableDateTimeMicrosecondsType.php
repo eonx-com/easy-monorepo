@@ -9,10 +9,10 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
@@ -26,9 +26,6 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
 
     private static ?DateTimeZone $utc = null;
 
-    /**
-     * @throws \Doctrine\DBAL\Types\ConversionException
-     */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -39,12 +36,9 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return $value->setTimezone(self::getUtc())->format(self::FORMAT_PHP_DATETIME);
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTimeInterface']);
+        throw InvalidType::new($value, self::class, ['null', DateTimeImmutable::class]);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Types\ConversionException
-     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?CarbonImmutable
     {
         if ($value === null || $value instanceof CarbonImmutable) {
@@ -65,14 +59,12 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return CarbonImmutable::instance($dateTime);
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
+        throw InvalidFormat::new($value, self::class, self::FORMAT_PHP_DATETIME);
     }
 
     public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
-        $platformClassNameDbal2 = PostgreSQL94Platform::class;
-        $platformClassNameDbal3 = PostgreSQLPlatform::class;
-        if (\is_a($platform, $platformClassNameDbal3) || \is_a($platform, $platformClassNameDbal2)) {
+        if ($platform instanceof PostgreSQLPlatform) {
             return self::FORMAT_DB_TIMESTAMP_WO_TIMEZONE;
         }
 

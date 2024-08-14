@@ -8,14 +8,14 @@ weight: 1002
 The client factory allows you to set a collection of **client configurators**. Once the client has been instantiated,
 the client factory will loop through the configurators, providing them the client instance to be configured.
 
-A configurator is a PHP class implementing `EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface`. When used within
+A configurator is a PHP class implementing `EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface`. When used within
 your favourite PHP framework, the configurators will be set on the factory for you so that any Bugsnag client will be
 configured before being injected into your services. Each configurator must define a priority (an integer value) which
 will be used to define the order of execution of the entire configurator collection.
 
 :::tip
 To simplify the process of creating configurators, you can extend
-`EonX\EasyBugsnag\Configurator\AbstractClientConfigurator`, which uses a default priority of 0.
+`EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator`, which uses a default priority of 0.
 :::
 
 For example, the following configurator sets the *release stage* attribute of the application data for Bugsnag:
@@ -26,7 +26,7 @@ For example, the following configurator sets the *release stage* attribute of th
 namespace App\Bugsnag;
 
 use Bugsnag\Client;
-use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
 
 final class ReleaseStageConfigurator extends AbstractClientConfigurator
 {
@@ -62,7 +62,7 @@ The default configurators are:
 ### Symfony
 
 To register additional client configurators in Symfony, you simply register a new service implementing the
-`EonX\EasyBugsnag\Configurator\ClientConfiguratorInterface`. The EasyBugsnag package registers the interface for
+`EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface`. The EasyBugsnag package registers the interface for
 auto-configuration by default, so you have nothing else to worry about.
 
 ### Laravel/Lumen
@@ -74,7 +74,7 @@ To register additional client configurators in Laravel/Lumen, you must explicitl
 The following example configurator adds the Laravel version to the *runtime versions* attribute of the device data for
 Bugsnag.
 
-Create a class extending `EonX\EasyBugsnag\Configurator\AbstractClientConfigurator` and add your version logic:
+Create a class extending `EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator` and add your version logic:
 
 ```php
 // app/Bugsnag/RuntimeVersionConfigurator.php
@@ -82,7 +82,7 @@ Create a class extending `EonX\EasyBugsnag\Configurator\AbstractClientConfigurat
 namespace App\Bugsnag;
 
 use Bugsnag\Client;
-use EonX\EasyBugsnag\Configurator\AbstractClientConfigurator;
+use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
 use Illuminate\Contracts\Foundation\Application;
 
 final class RuntimeVersionConfigurator extends AbstractClientConfigurator
