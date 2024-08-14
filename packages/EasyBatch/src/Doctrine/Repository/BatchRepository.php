@@ -7,7 +7,7 @@ use Doctrine\DBAL\Platforms\SQLitePlatform;
 use EonX\EasyBatch\Common\Exception\BatchNotFoundException;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
 use Throwable;
 
 final class BatchRepository extends AbstractBatchObjectRepository implements BatchRepositoryInterface
@@ -15,7 +15,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     private const SAVEPOINT = 'easy_batch_conn_savepoint';
 
     /**
-     * @var \EonX\EasyBatch\Common\ValueObject\BatchInterface[]
+     * @var \EonX\EasyBatch\Common\ValueObject\Batch[]
      */
     private array $cache = [];
 
@@ -24,13 +24,13 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function find(int|string $id): ?BatchInterface
+    public function find(int|string $id): ?Batch
     {
         if (isset($this->cache[$id])) {
             return $this->cache[$id];
         }
 
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchInterface|null $batch */
+        /** @var \EonX\EasyBatch\Common\ValueObject\Batch|null $batch */
         $batch = $this->doFind($id);
 
         if ($batch !== null) {
@@ -44,13 +44,13 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Common\Exception\BatchNotFoundException
      */
-    public function findNestedOrFail(int|string $parentBatchItemId): BatchInterface
+    public function findNestedOrFail(int|string $parentBatchItemId): Batch
     {
         $sql = \sprintf('SELECT * FROM %s WHERE parent_batch_item_id = :id', $this->table);
         $data = $this->connection->fetchAssociative($sql, ['id' => $parentBatchItemId]);
 
         if (\is_array($data)) {
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchInterface $batch */
+            /** @var \EonX\EasyBatch\Common\ValueObject\Batch $batch */
             $batch = $this->factory->createFromArray($data);
 
             return $batch;
@@ -66,7 +66,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
      * @throws \EonX\EasyBatch\Common\Exception\BatchNotFoundException
      * @throws \Doctrine\DBAL\Exception
      */
-    public function findOrFail(int|string $id): BatchInterface
+    public function findOrFail(int|string $id): Batch
     {
         $batch = $this->find($id);
 
@@ -87,7 +87,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function save(BatchInterface $batch): BatchInterface
+    public function save(Batch $batch): Batch
     {
         $this->doSave($batch);
 
@@ -101,7 +101,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      * @throws \Throwable
      */
-    public function updateAtomic(BatchInterface $batch, callable $func): BatchInterface
+    public function updateAtomic(Batch $batch, callable $func): Batch
     {
         if ($batch->getId() === null) {
             throw new BatchObjectIdRequiredException('Batch ID is required to update it.');

@@ -5,7 +5,6 @@ namespace EonX\EasyActivity\Messenger\Message;
 
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyLock\Common\ValueObject\LockData;
-use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 
 final readonly class ActivityLogEntryMessage implements WithLockDataInterface
@@ -19,7 +18,7 @@ final readonly class ActivityLogEntryMessage implements WithLockDataInterface
     ) {
     }
 
-    public function getLockData(): LockDataInterface
+    public function getLockData(): LockData
     {
         $resource = \sprintf(
             self::LOCK_RESOURCE,

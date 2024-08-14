@@ -9,10 +9,10 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Exception\BatchItemNotFoundException;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchCounts;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 
 final class BatchItemRepository extends AbstractBatchObjectRepository implements BatchItemRepositoryInterface
 {
@@ -66,7 +66,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function findForProcess(int|string $batchItemId): BatchItemInterface
+    public function findForProcess(int|string $batchItemId): BatchItem
     {
         $batchItem = $this->findOrFail($batchItemId);
 
@@ -81,9 +81,9 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException
      */
-    public function findOrFail(int|string $batchItemId): BatchItemInterface
+    public function findOrFail(int|string $batchItemId): BatchItem
     {
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface|null $batchItem */
+        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem|null $batchItem */
         $batchItem = $this->doFind($batchItemId);
 
         if ($batchItem !== null) {
@@ -124,8 +124,8 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $queryBuilder->orderBy('created_at');
         });
 
-        $paginator->setTransformer(function (array $item): BatchItemInterface {
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchItem */
+        $paginator->setTransformer(function (array $item): BatchItem {
+            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem $batchItem */
             $batchItem = $this->factory->createFromArray($item);
 
             return $batchItem;
@@ -137,7 +137,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function save(BatchItemInterface $batchItem): BatchItemInterface
+    public function save(BatchItem $batchItem): BatchItem
     {
         $this->doSave($batchItem);
 
@@ -145,7 +145,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $batchItems
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem[] $batchItems
      *
      * @throws \Doctrine\DBAL\Exception
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
@@ -159,7 +159,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }
 
         $batchItemIds = \array_map(
-            static fn (BatchItemInterface $batchItem): int|string => $batchItem->getIdOrFail(),
+            static fn (BatchItem $batchItem): int|string => $batchItem->getIdOrFail(),
             $batchItems
         );
 

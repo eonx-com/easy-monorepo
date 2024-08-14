@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\Csv\ValueObject;
 
-final readonly class CsvParserConfig implements CsvParserConfigInterface
+final readonly class CsvParserConfig
 {
     /**
      * @param string[]|null $requiredHeaders

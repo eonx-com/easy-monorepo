@@ -5,7 +5,7 @@ namespace EonX\EasyApiToken\AwsCognito\Driver;
 
 use EonX\EasyApiToken\AwsCognito\Provider\AwsCognitoJwkProvider;
 use EonX\EasyApiToken\AwsCognito\Provider\AwsCognitoJwkProviderInterface;
-use EonX\EasyApiToken\AwsCognito\ValueObject\UserPoolConfigInterface;
+use EonX\EasyApiToken\AwsCognito\ValueObject\UserPoolConfig;
 use EonX\EasyApiToken\Common\Driver\JwtDriverInterface;
 use EonX\EasyApiToken\Common\Exception\InvalidJwtException;
 use EonX\EasyApiToken\Common\Exception\MethodNotSupportedException;
@@ -21,7 +21,7 @@ final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
     private const TOKEN_TYPE_ID = 'id';
 
     public function __construct(
-        private UserPoolConfigInterface $userPoolConfig,
+        private UserPoolConfig $userPoolConfig,
         private AwsCognitoJwkProviderInterface $jwkFetcher = new AwsCognitoJwkProvider(),
         private ?int $leeway = null,
         private string $defaultJwkAlgo = self::DEFAULT_JWK_ALGO,

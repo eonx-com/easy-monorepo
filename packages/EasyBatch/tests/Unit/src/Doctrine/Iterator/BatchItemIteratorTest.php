@@ -8,7 +8,7 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchItemInterface;
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
 use EonX\EasyBatch\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -108,7 +108,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                     'batchItem3',
                 ], self::$iteratedItems);
             },
-            static function (BatchItemInterface $batchItem): void {
+            static function (BatchItem $batchItem): void {
                 self::$iteratedItems[] = (string)$batchItem->getName();
                 self::$iterateFuncCalls++;
             },

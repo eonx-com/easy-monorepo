@@ -5,29 +5,29 @@ namespace EonX\EasySecurity\Common\Context;
 
 use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
 use EonX\EasySecurity\Authorization\Provider\AuthorizationMatrixProviderInterface;
-use EonX\EasySecurity\Authorization\ValueObject\PermissionInterface;
-use EonX\EasySecurity\Authorization\ValueObject\RoleInterface;
+use EonX\EasySecurity\Authorization\ValueObject\Permission;
+use EonX\EasySecurity\Authorization\ValueObject\Role;
 use EonX\EasySecurity\Common\Entity\ProviderInterface;
 use EonX\EasySecurity\Common\Entity\UserInterface;
 
 interface SecurityContextInterface
 {
     /**
-     * @param string|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|string[] $permissions
+     * @param string|\EonX\EasySecurity\Authorization\ValueObject\Permission[]|string[] $permissions
      */
     public function addPermissions(array|string $permissions): void;
 
     /**
-     * @param string|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]|string[] $roles
+     * @param string|\EonX\EasySecurity\Authorization\ValueObject\Role[]|string[] $roles
      */
     public function addRoles(array|string $roles): void;
 
     public function getAuthorizationMatrix(): AuthorizationMatrixProviderInterface;
 
-    public function getPermission(string $identifier): ?PermissionInterface;
+    public function getPermission(string $identifier): ?Permission;
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array;
 
@@ -35,10 +35,10 @@ interface SecurityContextInterface
 
     public function getProviderOrFail(): ProviderInterface;
 
-    public function getRole(string $identifier): ?RoleInterface;
+    public function getRole(string $identifier): ?Role;
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRoles(): array;
 
@@ -55,14 +55,14 @@ interface SecurityContextInterface
     public function setAuthorizationMatrix(AuthorizationMatrixProviderInterface $authorizationMatrix): void;
 
     /**
-     * @param string|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|string[]|null $permissions
+     * @param string|\EonX\EasySecurity\Authorization\ValueObject\Permission[]|string[]|null $permissions
      */
     public function setPermissions(array|string|null $permissions): void;
 
     public function setProvider(?ProviderInterface $provider = null): void;
 
     /**
-     * @param string|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]|string[] $roles
+     * @param string|\EonX\EasySecurity\Authorization\ValueObject\Role[]|string[] $roles
      */
     public function setRoles(array|string $roles): void;
 

@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Event;
 
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 
 abstract class AbstractBatchObjectEvent
 {
     public function __construct(
-        private BatchObjectInterface $batchObject,
+        private AbstractBatchObject $batchObject,
     ) {
     }
 
-    public function getBatchObject(): BatchObjectInterface
+    public function getBatchObject(): AbstractBatchObject
     {
         return $this->batchObject;
     }
 
-    public function setBatchObject(BatchObjectInterface $batchObject): void
+    public function setBatchObject(AbstractBatchObject $batchObject): void
     {
         $this->batchObject = $batchObject;
     }

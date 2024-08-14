@@ -8,8 +8,8 @@ use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
 use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
-use EonX\EasySecurity\Authorization\ValueObject\PermissionInterface;
-use EonX\EasySecurity\Authorization\ValueObject\RoleInterface;
+use EonX\EasySecurity\Authorization\ValueObject\Permission;
+use EonX\EasySecurity\Authorization\ValueObject\Role;
 use EonX\EasySecurity\Common\Entity\ProviderInterface;
 use EonX\EasySecurity\Common\Entity\UserInterface;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
@@ -75,11 +75,11 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
     }
 
     /**
-     * @param \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[] $permissions
+     * @param \EonX\EasySecurity\Authorization\ValueObject\Permission[] $permissions
      */
     private function formatPermissions(array $permissions): array
     {
-        $map = static fn (PermissionInterface $permission): string => (string)$permission;
+        $map = static fn (Permission $permission): string => (string)$permission;
 
         return \array_values(\array_map($map, $permissions));
     }
@@ -93,11 +93,11 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
     }
 
     /**
-     * @param \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[] $roles
+     * @param \EonX\EasySecurity\Authorization\ValueObject\Role[] $roles
      */
     private function formatRoles(array $roles): array
     {
-        $map = static fn (RoleInterface $role): string => (string)$role;
+        $map = static fn (Role $role): string => (string)$role;
 
         return \array_values(\array_map($map, $roles));
     }

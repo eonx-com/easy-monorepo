@@ -6,7 +6,7 @@ namespace EonX\EasyBatch\Common\Transformer;
 use EonX\EasyBatch\Common\Enum\BatchItemType;
 use EonX\EasyBatch\Common\Exception\BatchItemCannotBeEncryptedException;
 use EonX\EasyBatch\Common\Serializer\MessageSerializerInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchObjectInterface;
+use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 
 final class BatchItemTransformer extends AbstractBatchObjectTransformer
@@ -27,11 +27,11 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchObject
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem $batchObject
      *
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemCannotBeEncryptedException
      */
-    protected function doTransformToArray(BatchObjectInterface $batchObject): array
+    protected function doTransformToArray(AbstractBatchObject $batchObject): array
     {
         $array = parent::doTransformToArray($batchObject);
 
@@ -50,11 +50,11 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $batchObject
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem $batchObject
      *
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemCannotBeEncryptedException
      */
-    protected function hydrateBatchObject(BatchObjectInterface $batchObject, array $data): void
+    protected function hydrateBatchObject(AbstractBatchObject $batchObject, array $data): void
     {
         $batchObject
             ->setAttempts((int)($data['attempts'] ?? 0))

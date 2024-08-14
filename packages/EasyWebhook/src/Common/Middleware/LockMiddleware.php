@@ -5,7 +5,6 @@ namespace EonX\EasyWebhook\Common\Middleware;
 
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyLock\Common\ValueObject\LockData;
-use EonX\EasyLock\Common\ValueObject\LockDataInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResult;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
@@ -38,7 +37,7 @@ final class LockMiddleware extends AbstractMiddleware
         return $result instanceof WebhookResultInterface ? $result : new WebhookResult($webhook);
     }
 
-    private function getLockData(WebhookInterface $webhook): LockDataInterface
+    private function getLockData(WebhookInterface $webhook): LockData
     {
         return LockData::create(\sprintf($this->resourcePattern, $webhook->getId()));
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Factory;
 
-use EonX\EasyErrorHandler\Common\ValueObject\ErrorResponseDataInterface;
+use EonX\EasyErrorHandler\Common\ValueObject\ErrorResponseData;
 use EonX\EasyErrorHandler\Common\ValueObject\ErrorResponseFormat;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ final class SymfonySerializerErrorResponseFactory implements ErrorResponseFactor
         $this->errorFormats = $errorFormats ?? [];
     }
 
-    public function create(Request $request, ErrorResponseDataInterface $data): Response
+    public function create(Request $request, ErrorResponseData $data): Response
     {
         $format = $this->getFormat($request);
 

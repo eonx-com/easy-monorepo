@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyTemplatingBlock\Tests\Unit\Common\Renderer;
 
 use EonX\EasyTemplatingBlock\Common\Renderer\TextBlockRenderer;
+use EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock;
 use EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlock;
-use EonX\EasyTemplatingBlock\Common\ValueObject\TemplatingBlockInterface;
 use EonX\EasyTemplatingBlock\Common\ValueObject\TextBlock;
 use EonX\EasyTemplatingBlock\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -48,7 +48,7 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
     }
 
     #[DataProvider('provideSupportsData')]
-    public function testSupports(TemplatingBlockInterface $block, bool $expected): void
+    public function testSupports(AbstractTemplatingBlock $block, bool $expected): void
     {
         $renderer = new TextBlockRenderer();
 

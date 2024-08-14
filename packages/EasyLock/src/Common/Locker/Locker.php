@@ -8,7 +8,7 @@ use Doctrine\DBAL\Driver\PDO\Exception as PdoException;
 use EonX\EasyAsync\Common\Exception\ShouldKillWorkerExceptionInterface;
 use EonX\EasyLock\Common\Exception\LockAcquiringException;
 use EonX\EasyLock\Common\Exception\ShouldRetryException;
-use EonX\EasyLock\Common\ValueObject\LockDataInterface;
+use EonX\EasyLock\Common\ValueObject\LockData;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Lock\Exception\LockAcquiringException as BaseLockAcquiringException;
@@ -32,7 +32,7 @@ final class Locker implements LockerInterface
             ->createLock($resource, $ttl ?? 300.0);
     }
 
-    public function processWithLock(LockDataInterface $lockData, Closure $func): mixed
+    public function processWithLock(LockData $lockData, Closure $func): mixed
     {
         $lock = $this->createLock($lockData->getResource(), $lockData->getTtl());
 

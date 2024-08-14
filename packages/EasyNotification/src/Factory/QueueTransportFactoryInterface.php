@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Factory;
 
 use EonX\EasyNotification\Transport\QueueTransportInterface;
-use EonX\EasyNotification\ValueObject\ConfigInterface;
+use EonX\EasyNotification\ValueObject\Config;
 
 interface QueueTransportFactoryInterface
 {
-    public function create(ConfigInterface $config): QueueTransportInterface;
+    public function create(Config $config): QueueTransportInterface;
 }

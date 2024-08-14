@@ -6,14 +6,14 @@ namespace EonX\EasyApiToken\Common\Decoder;
 use EonX\EasyApiToken\Common\Driver\HashedApiKeyDriverInterface;
 use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasyApiToken\Common\ValueObject\ApiTokenInterface;
-use EonX\EasyApiToken\Common\ValueObject\HashedApiKeyInterface;
+use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ApiKeyDecoder extends AbstractDecoder
 {
     private ?HashedApiKeyDriverInterface $hashedApiKeyDriver = null;
 
-    public function decode(Request $request): null|ApiTokenInterface|HashedApiKeyInterface
+    public function decode(Request $request): null|ApiTokenInterface|HashedApiKey
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 

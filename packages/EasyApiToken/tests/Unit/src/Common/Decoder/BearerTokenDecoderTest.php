@@ -12,7 +12,7 @@ final class BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
     {
         $jwtDriver = $this->createAuth0JwtDriver();
 
-        /** @var \EonX\EasyApiToken\Common\ValueObject\JwtInterface $token */
+        /** @var \EonX\EasyApiToken\Common\ValueObject\Jwt $token */
         $token = (new BearerTokenDecoder($jwtDriver))->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'Bearer ' . $this->createToken(),
         ]));
@@ -21,9 +21,9 @@ final class BearerTokenDecoderTest extends AbstractAuth0JwtTokenTestCase
 
         self::assertInstanceOf(Jwt::class, $token);
 
-        foreach (static::$tokenPayload as $key => $value) {
+        foreach (self::$tokenPayload as $key => $value) {
             self::assertArrayHasKey($key, $payload);
-            self::assertEquals($value, $payload[$key]);
+            self::assertSame($value, $payload[$key]);
         }
     }
 

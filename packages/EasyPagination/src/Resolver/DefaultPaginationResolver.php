@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Resolver;
 
-use EonX\EasyPagination\ValueObject\Pagination;
-use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\Pagination\Pagination;
+use EonX\EasyPagination\Pagination\PaginationInterface;
+use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 
 final readonly class DefaultPaginationResolver
 {
     public function __construct(
-        private PaginationConfigInterface $config,
+        private PaginationConfigProviderInterface $paginationConfigProvider,
     ) {
         // No body needed
     }
@@ -18,10 +18,10 @@ final readonly class DefaultPaginationResolver
     public function __invoke(): PaginationInterface
     {
         return Pagination::create(
-            $this->config->getPageDefault(),
-            $this->config->getPerPageDefault(),
-            $this->config->getPageAttribute(),
-            $this->config->getPerPageAttribute()
+            $this->paginationConfigProvider->getPageDefault(),
+            $this->paginationConfigProvider->getPerPageDefault(),
+            $this->paginationConfigProvider->getPageAttribute(),
+            $this->paginationConfigProvider->getPerPageAttribute()
         );
     }
 }

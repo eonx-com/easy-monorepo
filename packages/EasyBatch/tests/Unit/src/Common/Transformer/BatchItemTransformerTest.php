@@ -40,7 +40,7 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         }
 
         $array = $transformer->transformToArray($batchItem);
-        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface $newBatchItem */
+        /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem $newBatchItem */
         $newBatchItem = $transformer->transformToObject($array);
         $expectedEncryptionKeyName = $encrypted ? 'app' : null;
 

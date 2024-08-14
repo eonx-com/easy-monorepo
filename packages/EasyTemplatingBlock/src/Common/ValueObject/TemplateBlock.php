@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTemplatingBlock\Common\ValueObject;
 
-final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlockInterface
+final class TemplateBlock extends AbstractTemplatingBlock
 {
     private ?array $templateContext = null;
 
@@ -13,7 +13,7 @@ final class TemplateBlock extends AbstractTemplatingBlock implements TemplateBlo
         string $name,
         string $templateName,
         ?array $templateContext = null,
-    ): TemplateBlockInterface {
+    ): self {
         return (new self($name))
             ->setTemplateName($templateName)
             ->setTemplateContext($templateContext);

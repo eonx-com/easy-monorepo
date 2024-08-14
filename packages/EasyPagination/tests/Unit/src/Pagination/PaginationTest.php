@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyPagination\Tests\Unit\ValueObject;
+namespace EonX\EasyPagination\Tests\Unit\Pagination;
 
+use EonX\EasyPagination\Pagination\Pagination;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyPagination\ValueObject\Pagination;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
 use Spatie\Url\Url;
 
 final class PaginationTest extends AbstractUnitTestCase

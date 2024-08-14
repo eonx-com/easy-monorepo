@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Common\Encryptor;
 
-use EonX\EasyEncryption\Common\ValueObject\DecryptedStringInterface;
+use EonX\EasyEncryption\Common\ValueObject\DecryptedString;
 
 interface EncryptorInterface
 {
     /**
      * Accepts a base64 encoded json string containing the key name, and the encrypted string.
      */
-    public function decrypt(string $text): DecryptedStringInterface;
+    public function decrypt(string $text): DecryptedString;
 
     public function decryptRaw(
         string $text,

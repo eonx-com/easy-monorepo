@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Common\Persister;
 
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
-use EonX\EasyBatch\Common\ValueObject\BatchInterface;
+use EonX\EasyBatch\Common\ValueObject\Batch;
 use EonX\EasyBatch\Common\ValueObject\MessageWrapper;
 
 final readonly class BatchPersister
@@ -18,7 +18,7 @@ final readonly class BatchPersister
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException
      */
-    public function persistBatch(BatchInterface $batch): BatchInterface
+    public function persistBatch(Batch $batch): Batch
     {
         $batch = $this->batchRepository->save($batch);
 
@@ -32,7 +32,7 @@ final readonly class BatchPersister
             $item = MessageWrapper::wrap($item);
             $message = $item->getMessage();
 
-            if ($message instanceof BatchInterface) {
+            if ($message instanceof Batch) {
                 $batchItem = $this->batchItemPersister->persistBatchItem($batchId, $item);
                 $message->setApprovalRequired($item->isApprovalRequired());
                 $message->setParentBatchItemId($batchItem->getIdOrFail());

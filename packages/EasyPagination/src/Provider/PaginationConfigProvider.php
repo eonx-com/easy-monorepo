@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyPagination\ValueObject;
+namespace EonX\EasyPagination\Provider;
 
-final readonly class PaginationConfig implements PaginationConfigInterface
+final readonly class PaginationConfigProvider implements PaginationConfigProviderInterface
 {
     public function __construct(
         private string $pageAttribute,

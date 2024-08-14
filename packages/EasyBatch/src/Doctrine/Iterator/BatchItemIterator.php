@@ -9,9 +9,9 @@ use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\Iterator\BatchItemIteratorInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItemIteratorConfig;
+use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Paginator\ExtendablePaginatorInterface;
 use EonX\EasyPagination\Paginator\LengthAwarePaginatorInterface;
-use EonX\EasyPagination\ValueObject\Pagination;
 
 final readonly class BatchItemIterator implements BatchItemIteratorInterface
 {
@@ -41,7 +41,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
                 $paginator = $newPaginator instanceof LengthAwarePaginatorInterface ? $newPaginator : $paginator;
             }
 
-            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $items */
+            /** @var \EonX\EasyBatch\Common\ValueObject\BatchItem[] $items */
             $items = $paginator->getItems();
 
             // Check hasNextPage before iterating through items in case the logic modifies the pagination,
@@ -76,7 +76,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
     }
 
     /**
-     * @param \EonX\EasyBatch\Common\ValueObject\BatchItemInterface[] $batchItems
+     * @param \EonX\EasyBatch\Common\ValueObject\BatchItem[] $batchItems
      */
     private function generateItemPageHash(int $page, array $batchItems): string
     {

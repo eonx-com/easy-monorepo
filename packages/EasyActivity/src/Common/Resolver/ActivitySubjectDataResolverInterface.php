@@ -5,7 +5,7 @@ namespace EonX\EasyActivity\Common\Resolver;
 
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
-use EonX\EasyActivity\Common\ValueObject\ActivitySubjectDataInterface;
+use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 interface ActivitySubjectDataResolverInterface
 {
@@ -13,5 +13,5 @@ interface ActivitySubjectDataResolverInterface
         ActivityAction $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
-    ): ?ActivitySubjectDataInterface;
+    ): ?ActivitySubjectData;
 }

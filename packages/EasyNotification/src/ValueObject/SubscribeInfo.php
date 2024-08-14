@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\ValueObject;
 
-final readonly class SubscribeInfo implements SubscribeInfoInterface
+final readonly class SubscribeInfo
 {
     /**
      * @param string[] $topics
@@ -15,7 +15,7 @@ final readonly class SubscribeInfo implements SubscribeInfoInterface
     ) {
     }
 
-    public static function fromArray(array $info): SubscribeInfoInterface
+    public static function fromArray(array $info): self
     {
         return new self($info['jwt'], $info['topics'], $info['url']);
     }

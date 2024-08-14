@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyPagination\ValueObject;
+namespace EonX\EasyPagination\Provider;
 
-interface PaginationConfigInterface
+interface PaginationConfigProviderInterface
 {
     public function getPageAttribute(): string;
 

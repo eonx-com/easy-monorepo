@@ -5,11 +5,11 @@ namespace EonX\EasyBatch\Common\ValueObject;
 
 trait CurrentBatchObjectsAwareTrait
 {
-    protected ?BatchInterface $currentBatch = null;
+    protected ?Batch $currentBatch = null;
 
-    protected ?BatchItemInterface $currentBatchItem = null;
+    protected ?BatchItem $currentBatchItem = null;
 
-    public function setCurrentBatchObjects(BatchInterface $batch, BatchItemInterface $batchItem): void
+    public function setCurrentBatchObjects(Batch $batch, BatchItem $batchItem): void
     {
         $this->currentBatch = $batch;
         $this->currentBatchItem = $batchItem;

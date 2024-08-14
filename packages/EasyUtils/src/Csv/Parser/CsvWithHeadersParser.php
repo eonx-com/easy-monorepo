@@ -7,7 +7,6 @@ use EonX\EasyUtils\Csv\Exception\MissingRequiredHeadersException;
 use EonX\EasyUtils\Csv\Exception\MissingValueForRequiredHeadersException;
 use EonX\EasyUtils\Csv\Provider\CsvContentsProviderInterface;
 use EonX\EasyUtils\Csv\ValueObject\CsvParserConfig;
-use EonX\EasyUtils\Csv\ValueObject\CsvParserConfigInterface;
 
 final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
 {
@@ -17,7 +16,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
      */
     public function parse(
         CsvContentsProviderInterface $contentsProvider,
-        ?CsvParserConfigInterface $config = null,
+        ?CsvParserConfig $config = null,
     ): iterable {
         $config ??= CsvParserConfig::create();
         $index = 0;
@@ -60,7 +59,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
         }
     }
 
-    private function handlePrefixes(array $record, CsvParserConfigInterface $config): array
+    private function handlePrefixes(array $record, CsvParserConfig $config): array
     {
         if ($config->hasGroupPrefixes() === false) {
             return $record;
@@ -112,7 +111,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     /**
      * @throws \EonX\EasyUtils\Csv\Exception\MissingRequiredHeadersException
      */
-    private function resolveHeaders(array $headers, CsvParserConfigInterface $config): array
+    private function resolveHeaders(array $headers, CsvParserConfig $config): array
     {
         // Sanitize given headers first
         $headers = \array_map(static function (string $header): string {
@@ -140,7 +139,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
     /**
      * @throws \EonX\EasyUtils\Csv\Exception\MissingValueForRequiredHeadersException
      */
-    private function validateMissingValues(array $record, int $index, CsvParserConfigInterface $config): void
+    private function validateMissingValues(array $record, int $index, CsvParserConfig $config): void
     {
         if ($config->hasRequiredHeaders() === false) {
             return;

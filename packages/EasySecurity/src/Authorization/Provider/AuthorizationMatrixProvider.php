@@ -8,25 +8,25 @@ use EonX\EasySecurity\Authorization\Formatter\AuthorizationMatrixFormatter;
 final class AuthorizationMatrixProvider implements AuthorizationMatrixProviderInterface
 {
     /**
-     * @var \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]|null
+     * @var \EonX\EasySecurity\Authorization\ValueObject\Permission[]|null
      */
     private ?array $cachePermissions = null;
 
     /**
-     * @var \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @var \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     private array $permissions = [];
 
     /**
-     * @var \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @var \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     private array $roles = [];
 
     /**
      * AuthorizationMatrix constructor.
      *
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\RoleInterface[] $roles
-     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[] $permissions
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[] $roles
+     * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[] $permissions
      */
     public function __construct(array $roles, array $permissions)
     {
@@ -40,7 +40,7 @@ final class AuthorizationMatrixProvider implements AuthorizationMatrixProviderIn
     }
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissions(): array
     {
@@ -66,7 +66,7 @@ final class AuthorizationMatrixProvider implements AuthorizationMatrixProviderIn
     /**
      * @param string[] $identifiers
      *
-     * @return \EonX\EasySecurity\Authorization\ValueObject\PermissionInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
     public function getPermissionsByIdentifiers(array $identifiers): array
     {
@@ -84,7 +84,7 @@ final class AuthorizationMatrixProvider implements AuthorizationMatrixProviderIn
     }
 
     /**
-     * @return \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRoles(): array
     {
@@ -94,7 +94,7 @@ final class AuthorizationMatrixProvider implements AuthorizationMatrixProviderIn
     /**
      * @param string[] $identifiers
      *
-     * @return \EonX\EasySecurity\Authorization\ValueObject\RoleInterface[]
+     * @return \EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
     public function getRolesByIdentifiers(array $identifiers): array
     {

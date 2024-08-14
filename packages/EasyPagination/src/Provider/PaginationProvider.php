@@ -5,8 +5,7 @@ namespace EonX\EasyPagination\Provider;
 
 use Closure;
 use EonX\EasyPagination\Exception\NoPaginationResolverSetException;
-use EonX\EasyPagination\ValueObject\PaginationConfigInterface;
-use EonX\EasyPagination\ValueObject\PaginationInterface;
+use EonX\EasyPagination\Pagination\PaginationInterface;
 
 final class PaginationProvider implements PaginationProviderInterface
 {
@@ -15,7 +14,7 @@ final class PaginationProvider implements PaginationProviderInterface
     private ?Closure $resolver = null;
 
     public function __construct(
-        private readonly PaginationConfigInterface $config,
+        private readonly PaginationConfigProviderInterface $paginationConfigProvider,
     ) {
     }
 
@@ -35,9 +34,9 @@ final class PaginationProvider implements PaginationProviderInterface
         ));
     }
 
-    public function getPaginationConfig(): PaginationConfigInterface
+    public function getPaginationConfigProvider(): PaginationConfigProviderInterface
     {
-        return $this->config;
+        return $this->paginationConfigProvider;
     }
 
     public function setResolver(callable $resolver): PaginationProviderInterface

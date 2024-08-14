@@ -7,7 +7,6 @@ use EonX\EasyUtils\Csv\Exception\MissingValueForRequiredHeadersException;
 use EonX\EasyUtils\Csv\Parser\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\Provider\FromFileCsvContentsProvider;
 use EonX\EasyUtils\Csv\ValueObject\CsvParserConfig;
-use EonX\EasyUtils\Csv\ValueObject\CsvParserConfigInterface;
 use EonX\EasyUtils\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Traversable;
@@ -124,7 +123,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
      * @throws \EonX\EasyUtils\Csv\Exception\MissingValueForRequiredHeadersException
      */
     #[DataProvider('provideFromFileData')]
-    public function testFromFile(string $filename, CsvParserConfigInterface $config, array $expected): void
+    public function testFromFile(string $filename, CsvParserConfig $config, array $expected): void
     {
         $parser = new CsvWithHeadersParser();
         $result = $parser->parse(new FromFileCsvContentsProvider($filename), $config);
@@ -142,7 +141,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
     #[DataProvider('provideFromFileForExceptionData')]
     public function testFromFileForException(
         string $filename,
-        CsvParserConfigInterface $config,
+        CsvParserConfig $config,
         string $expectedException,
     ): void {
         $this->expectException($expectedException);
