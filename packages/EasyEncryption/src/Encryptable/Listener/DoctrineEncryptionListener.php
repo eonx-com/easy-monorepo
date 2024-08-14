@@ -25,7 +25,7 @@ final class DoctrineEncryptionListener
     private WeakMap $weakMap;
 
     public function __construct(
-        private ObjectEncryptorInterface $objectEncryptor,
+        private readonly ObjectEncryptorInterface $objectEncryptor,
     ) {
         $this->weakMap = new WeakMap();
     }
@@ -91,7 +91,8 @@ final class DoctrineEncryptionListener
         // the previous step this call does not create "entityUpdates" for the entity in the UnitOfWork
         $unitOfWork->recomputeSingleEntityChangeSet($entityMetadata, $entity);
         // Then we call "clearEntityChangeSet" to remove any changes from the entity
-        $unitOfWork->clearEntityChangeSet(\spl_object_id($entity));
+        $changeSet = &$unitOfWork->getEntityChangeSet($entity);
+        $changeSet = [];
         // As a result Doctrine does not think that the entity has changed
     }
 

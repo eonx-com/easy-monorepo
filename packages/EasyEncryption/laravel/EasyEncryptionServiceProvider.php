@@ -49,11 +49,14 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             return;
         }
 
+        $disableKeyAvailabilityCheck
+            = \config('easy-encryption.aws_cloud_hsm_encryptor.disable_key_availability_check');
+
         $this->app->singleton(
             AwsCloudHsmSdkOptionsBuilder::class,
             static fn (): AwsCloudHsmSdkOptionsBuilder => new AwsCloudHsmSdkOptionsBuilder(
                 caCertFile: \config('easy-encryption.aws_cloud_hsm_encryptor.ca_cert_file'),
-                disableKeyAvailabilityCheck: \config('easy-encryption.aws_cloud_hsm_encryptor.disable_key_availability_check'),
+                disableKeyAvailabilityCheck: $disableKeyAvailabilityCheck,
                 ipAddress: \config('easy-encryption.aws_cloud_hsm_encryptor.ip_address'),
                 clusterId: \config('easy-encryption.aws_cloud_hsm_encryptor.cluster_id'),
                 region: \config('easy-encryption.aws_cloud_hsm_encryptor.region'),
@@ -63,12 +66,15 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             )
         );
 
+        $useConfigureTool
+            = (bool)\config('easy-encryption.aws_cloud_hsm_encryptor.use_aws_cloud_hsm_configure_tool');
+
         $this->app->singleton(
             AwsCloudHsmSdkConfigurator::class,
             static fn (Container $app): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
                 awsCloudHsmSdkOptionsBuilder: $app->make(AwsCloudHsmSdkOptionsBuilder::class),
                 roleArn: \config('easy-encryption.aws_cloud_hsm_encryptor.role_arn'),
-                useConfigureTool: (bool)\config('easy-encryption.aws_cloud_hsm_encryptor.use_aws_cloud_hsm_configure_tool')
+                useConfigureTool: $useConfigureTool
             )
         );
 

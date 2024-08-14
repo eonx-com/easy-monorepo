@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Encryptable\HashCalculator;
 
-final class HmacSha512HashCalculator implements HashCalculatorInterface
+final readonly class HmacSha512HashCalculator implements HashCalculatorInterface
 {
     public function __construct(
         private string $secret,

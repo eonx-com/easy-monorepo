@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use UnexpectedValueException;
 
-final class EncryptableAwareMessengerSerializer implements SerializerInterface
+final readonly class EncryptableAwareMessengerSerializer implements SerializerInterface
 {
     private const ENCRYPTION_TYPE_FULL = 'full';
 

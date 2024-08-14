@@ -6,7 +6,7 @@ namespace EonX\EasyEncryption\Encryptable\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class EncryptableField
+final readonly class EncryptableField
 {
     public function __construct(
         private ?string $fieldName = null,

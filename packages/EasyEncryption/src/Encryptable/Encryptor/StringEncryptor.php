@@ -18,11 +18,11 @@ final class StringEncryptor implements StringEncryptorInterface
     /**
      * @phpstan-var int<1, max>
      */
-    private int $maxChunkSize;
+    private readonly int $maxChunkSize;
 
     public function __construct(
-        private EncryptorInterface $encryptor,
-        private string $encryptionKeyName,
+        private readonly EncryptorInterface $encryptor,
+        private readonly string $encryptionKeyName,
         int $maxChunkSize,
     ) {
         if ($maxChunkSize < 1) {

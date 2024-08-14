@@ -6,7 +6,7 @@ namespace EonX\EasyEncryption\AwsCloudHsm\HashCalculator;
 use EonX\EasyEncryption\AwsCloudHsm\Encryptor\AwsCloudHsmEncryptorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 
-final class AwsCloudHsmHashCalculator implements HashCalculatorInterface
+final readonly class AwsCloudHsmHashCalculator implements HashCalculatorInterface
 {
     private const DEFAULT_ENCODING = 'UTF-8';
 

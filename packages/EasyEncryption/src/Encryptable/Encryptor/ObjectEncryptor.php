@@ -7,7 +7,7 @@ use EonX\EasyEncryption\Common\ValueObject\EncryptedString;
 use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 
-final class ObjectEncryptor implements ObjectEncryptorInterface
+final readonly class ObjectEncryptor implements ObjectEncryptorInterface
 {
     public function __construct(
         private StringEncryptorInterface $stringEncryptor,
