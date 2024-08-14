@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Encryptable\Encryptor;
 
-use EonX\EasyEncryption\Common\ValueObject\EncryptedString;
+use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
 
 interface StringEncryptorInterface
 {

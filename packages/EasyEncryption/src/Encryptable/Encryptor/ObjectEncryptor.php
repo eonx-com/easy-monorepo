@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Encryptable\Encryptor;
 
-use EonX\EasyEncryption\Common\ValueObject\EncryptedString;
 use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
+use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
 
 final readonly class ObjectEncryptor implements ObjectEncryptorInterface
 {
