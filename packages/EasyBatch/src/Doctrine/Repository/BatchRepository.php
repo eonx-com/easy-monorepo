@@ -118,7 +118,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
 
             $queryBuilder->select('*')
                 ->from($this->table)
-                ->where('id = :id');
+                ->where($queryBuilder->expr()->eq('id', ':id'));
 
             $data = $this->connection->fetchAssociative($queryBuilder->getSQL(), ['id' => $batch->getId()]);
             $freshBatch = \is_array($data) ? $this->factory->createFromArray($data) : null;
