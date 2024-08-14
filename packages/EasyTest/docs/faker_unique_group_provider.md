@@ -1,14 +1,21 @@
+---eonx_docs---
+title: UniqueGroupProvider for Faker
+weight: 1001
+---eonx_docs---
+
 # UniqueGroupProvider for Faker
 
 This provider is useful for creating entities where some property or combination of properties must be unique among all entities in the table.
 
-By creating multiple entities without this provider and without setting unique properties (combinations of properties) manually for each entity, there is a risk that due to random generation of values, the next entity will receive the same value (or combination of values) as one of the already created entities, which will result in a unique constraint violation.
+By creating multiple entities without this provider and without setting unique properties (combinations of properties) manually for each entity, there is a risk that due to random generation of values, the next entity will receive the same value (or
+combination of values) as one of the already created entities, which will result in a unique constraint violation.
 
 With the unique group generator you are guaranteed to never get the same combination of values within the same group in tests or fixtures.
 
 ### Example:
 
-The `ReferralCode` entity has the `code` and `status` fields. The status can be `active` or `inactive`. There can be 2 identical referral codes in the table, but only with different statuses (only one can be `active`). Thus, we need a unique constraint on columns (`code`, `status`).
+The `ReferralCode` entity has the `code` and `status` fields. The status can be `active` or `inactive`. There can be 2 identical referral codes in the table, but only with different statuses (only one can be `active`). Thus, we need a unique
+constraint on columns (`code`, `status`).
 
 In the `ReferralCodeFactory` we can use `UniqueGroupProvider` like this:
 

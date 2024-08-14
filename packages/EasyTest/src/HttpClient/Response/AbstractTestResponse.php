@@ -8,24 +8,10 @@ use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Throwable;
-use UnexpectedValueException;
 
-/**
- * @internal Use `self::arrangeHttpResponse(...)` or `self::arrangeHttpResponseWithTransportException(...)` instead
- */
 abstract class AbstractTestResponse
 {
-    public const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
-
-    public const CONTENT_TYPE_JSON = 'application/json';
-
-    public const HEADER_ACCEPT = 'Accept';
-
-    public const HEADER_CONTENT_LENGTH = 'Content-Length';
-
-    public const HEADER_CONTENT_TYPE = 'Content-Type';
-
-    protected readonly string $url;
+    protected array $headers;
 
     /**
      * @param array|string|\Symfony\Component\HttpClient\Exception\TransportException|null $responseData If null, empty array will be used for JSON or empty string otherwise
@@ -33,14 +19,14 @@ abstract class AbstractTestResponse
      * @param int|null $responseCode If null, 200 will be used
      */
     public function __construct(
-        string $url,
-        ?array $queryData = null,
+        protected string $url,
+        ?array $query = null,
         protected readonly array|string|TransportException|null $responseData = null,
-        protected readonly ?array $responseHeaders = null,
-        protected readonly ?int $responseCode = null,
+        protected ?array $responseHeaders = null,
+        protected ?int $responseCode = null,
     ) {
-        if (\is_array($queryData)) {
-            $queryString = \http_build_query($queryData, '', '&', \PHP_QUERY_RFC3986);
+        if (\is_array($query)) {
+            $queryString = \http_build_query($query, '', '&', \PHP_QUERY_RFC3986);
 
             if (\str_contains($queryString, '%')) {
                 $queryString = \strtr($queryString, [
@@ -58,13 +44,41 @@ abstract class AbstractTestResponse
                 ]);
             }
 
-            $url .= '?' . $queryString;
+            $this->url .= '?' . $queryString;
         }
 
-        $this->url = $url;
+        $this->responseHeaders ??= [];
+        $this->responseCode ??= 200;
     }
 
-    abstract public function __invoke(string $method, string $url, ?array $options = null): MockResponse;
+    final public function __invoke(string $method, string $url, ?array $options = null): MockResponse
+    {
+        $options ??= [];
+
+        $this->checkParameters($method, $url, $options);
+
+        return $this->createResponse($method, $url, $options);
+    }
+
+    abstract protected function checkParameters(string $method, string $url, array $options): void;
+
+    protected function checkHeaders(array $options): void
+    {
+        $normalizedHeaders = $this->getNormalizeHeaders($options);
+
+        \ksort($normalizedHeaders);
+        \ksort($options['normalized_headers']);
+
+        try {
+            Assert::assertSame(
+                $normalizedHeaders,
+                $options['normalized_headers'],
+                \sprintf('Request headers for %s do not match', $this->url)
+            );
+        } catch (Throwable $exception) {
+            TestResponseFactory::throwException($exception);
+        }
+    }
 
     protected function checkUrl(string $url): void
     {
@@ -92,22 +106,22 @@ abstract class AbstractTestResponse
         }
 
         if (\is_array($this->responseData)) {
-            $acceptHeader = $options['normalized_headers'][\strtolower(self::HEADER_ACCEPT)][0] ?? null;
-
-            if ($acceptHeader !== self::HEADER_ACCEPT . ': ' . self::CONTENT_TYPE_JSON) {
-                TestResponseFactory::throwException(new UnexpectedValueException(\sprintf(
-                    'Response body for "%s" is an array, but the Accept header is not "%s".',
-                    $url,
-                    self::CONTENT_TYPE_JSON,
-                )));
-            }
-
             $responseBody = (string)\json_encode($this->responseData);
         }
 
         return new MockResponse($responseBody, [
-            'http_code' => $this->responseCode ?? 200,
-            'response_headers' => $this->responseHeaders ?? [],
+            'http_code' => $this->responseCode,
+            'response_headers' => $this->responseHeaders,
         ]);
+    }
+
+    protected function getNormalizeHeaders(array $options): array
+    {
+        $normalizedHeaders = [];
+        foreach ($this->headers as $header => $value) {
+            $normalizedHeaders[\strtolower($header)] = [\sprintf('%s: %s', $header, $value)];
+        }
+
+        return \array_merge($options['normalized_headers'], $normalizedHeaders);
     }
 }
