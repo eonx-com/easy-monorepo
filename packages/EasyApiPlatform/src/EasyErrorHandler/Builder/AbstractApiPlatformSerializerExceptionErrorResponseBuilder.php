@@ -43,7 +43,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
         \preg_match(self::MESSAGE_PATTERN_CLASS, $throwable->getMessage(), $matches);
 
         if (isset($matches[1])) {
-            $path = $this->nameConverter->normalize($path, $matches[1]);
+            $path = $this->nameConverter->normalize((string)$path, (string)$matches[1]);
         }
 
         return [

@@ -8,7 +8,8 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 final class PaymentInputDtoWithConstructor
 {
     public function __construct(
-        #[SerializedName('type')] public string $paymentType,
+        #[SerializedName('type')]
+        public string $paymentType,
     ) {
     }
 }
