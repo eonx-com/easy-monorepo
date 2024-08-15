@@ -5,6 +5,7 @@ namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Throwable;
 
 final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
@@ -12,11 +13,12 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
 {
     public function __construct(
         TranslatorInterface $translator,
+        MetadataAwareNameConverter $nameConverter,
         array $keys,
         ?int $priority = null,
         private readonly array $customSerializerExceptions = [],
     ) {
-        parent::__construct($translator, $keys, $priority);
+        parent::__construct($translator, $nameConverter, $keys, $priority);
     }
 
     protected function doBuildViolations(Throwable $throwable): array

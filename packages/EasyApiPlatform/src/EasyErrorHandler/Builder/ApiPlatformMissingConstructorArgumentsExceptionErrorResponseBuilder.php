@@ -15,7 +15,7 @@ final class ApiPlatformMissingConstructorArgumentsExceptionErrorResponseBuilder 
 
         if ($throwable instanceof MissingConstructorArgumentsException) {
             foreach ($throwable->getMissingConstructorArguments() as $argument) {
-                $violations[$argument] = [
+                $violations[$this->nameConverter->normalize($argument, $throwable->getClass())] = [
                     $this->translator->trans('violations.missing_constructor_argument', []),
                 ];
             }

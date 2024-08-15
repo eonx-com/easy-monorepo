@@ -22,26 +22,32 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(ApiPlatformValidationExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 99]);
 
     $services->set(ApiPlatformNotNormalizableValueExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 98]);
 
     $services->set(ApiPlatformMissingConstructorArgumentsExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 97]);
 
     $services->set(ApiPlatformUnexpectedValueExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 96]);
 
     $services->set(ApiPlatformTypeErrorExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 95]);
 
     $services->set(ApiPlatformCustomSerializerExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->arg('$customSerializerExceptions', param(ConfigParam::EasyErrorHandlerCustomSerializerExceptions->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 94]);
