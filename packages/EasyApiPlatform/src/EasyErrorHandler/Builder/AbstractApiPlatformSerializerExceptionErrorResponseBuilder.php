@@ -11,6 +11,8 @@ use Throwable;
 abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extends
     AbstractApiPlatformExceptionErrorResponseBuilder
 {
+    private const MESSAGE_PATTERN_CLASS = '/The type of the .* attribute for class "(.*)" must be.*/';
+
     final public function buildData(Throwable $throwable, array $data): array
     {
         $violations = $this->buildViolations($throwable);
@@ -36,8 +38,16 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
 
     protected function buildViolationsForNotNormalizableValueException(NotNormalizableValueException $throwable): array
     {
+        $path = $throwable->getPath();
+        $matches = [];
+        \preg_match(self::MESSAGE_PATTERN_CLASS, $throwable->getMessage(), $matches);
+
+        if (isset($matches[1])) {
+            $path = $this->nameConverter->normalize($path, $matches[1]);
+        }
+
         return [
-            $throwable->getPath() => [
+            $path => [
                 match (true) {
                     \array_reduce(
                         [

@@ -363,6 +363,54 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => 'Nested documents for attribute "category" are not allowed. Use IRIs instead.',
         ];
+
+        yield 'missing constructor argument with serializedName attribute' => [
+            'url' => '/payments',
+            'json' => [],
+            'violations' => [
+                'type' => [
+                    'This value should be present.',
+                ],
+            ],
+            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
+                '\\EasyErrorHandler\\ApiResource\\Payment" from serialized data because its constructor requires' .
+                ' the following parameters to be present : "$paymentType".',
+        ];
+
+        yield 'null constructor argument with serializedName attribute' => [
+            'url' => '/payments',
+            'json' => ['type' => null],
+            'violations' => [
+                'type' => [
+                    'The type of the value should be "string", "null" given.',
+                ],
+            ],
+            'exceptionMessage' => 'The type of the "paymentType" attribute must be "string", "NULL" given.',
+        ];
+
+        yield 'missing constructor argument in input DTO with serializedName attribute' => [
+            'url' => '/payments-dto-with-constructor',
+            'json' => [],
+            'violations' => [
+                'type' => [
+                    'This value should be present.',
+                ],
+            ],
+            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
+                '\\EasyErrorHandler\\DataTransferObject\\PaymentInputDtoWithConstructor" from serialized data' .
+                ' because its constructor requires the following parameters to be present : "$paymentType".',
+        ];
+
+        yield 'null constructor argument in input DTO with serializedName attribute' => [
+            'url' => '/payments-dto-with-constructor',
+            'json' => ['type' => null],
+            'violations' => [
+                'type' => [
+                    'The type of the value should be "string", "null" given.',
+                ],
+            ],
+            'exceptionMessage' => 'The input data is misformatted.',
+        ];
     }
 
     /**

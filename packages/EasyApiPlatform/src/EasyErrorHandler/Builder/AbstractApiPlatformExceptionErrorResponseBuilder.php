@@ -6,6 +6,7 @@ namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 use EonX\EasyErrorHandler\Common\Builder\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
+use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Throwable;
 
 abstract class AbstractApiPlatformExceptionErrorResponseBuilder extends AbstractErrorResponseBuilder implements
@@ -13,6 +14,7 @@ abstract class AbstractApiPlatformExceptionErrorResponseBuilder extends Abstract
 {
     public function __construct(
         protected readonly TranslatorInterface $translator,
+        protected readonly MetadataAwareNameConverter $nameConverter,
         private readonly array $keys,
         ?int $priority = null,
     ) {
