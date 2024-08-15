@@ -140,15 +140,15 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $throwable->getMessage(), $matches);
             $explodedProperties = \explode('", "', $matches[2] ?? '');
 
-            foreach ($explodedProperties as $property) {
-                if ($property === '') {
+            foreach ($explodedProperties as $propertyName) {
+                if ($propertyName === '') {
                     continue;
                 }
 
-                $property = \str_replace('$', '', $property);
-                $property = $this->nameConverter->normalize($property, $matches[1]);
+                $propertyName = \str_replace('$', '', $propertyName);
+                $propertyName = $this->nameConverter->normalize($propertyName, $matches[1]);
 
-                $data[$violationsKey][$property] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+                $data[$violationsKey][$propertyName] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
             }
         }
 
