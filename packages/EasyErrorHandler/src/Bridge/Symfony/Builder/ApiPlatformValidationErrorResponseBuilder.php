@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Throwable;
 use TypeError;
@@ -66,6 +67,7 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private readonly AdvancedNameConverterInterface $nameConverter,
         ?array $keys = null,
         ?int $priority = null,
     ) {
@@ -111,13 +113,17 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
         if ($throwable instanceof InvalidArgumentException || $throwable instanceof NotNormalizableValueException) {
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_TYPE_ERROR, $throwable->getMessage(), $matches);
+            $propertyName = $throwable instanceof NotNormalizableValueException ? $throwable->getPath() : $matches[1];
+            $propertyName ??= $matches[1];
             $data[$violationsKey] = [
-                $matches[1] => [
+                $propertyName => [
                     $matches[3] === self::VALUE_NULL
                         ? (new NotNull())->message
                         : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[2], $matches[3]),
                 ],
             ];
+
+            return parent::buildData($throwable, $data);
         }
 
         if ($throwable instanceof MissingConstructorArgumentsException) {
@@ -125,20 +131,24 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_API_PLATFORM, $throwable->getMessage(), $matches);
             if ($matches !== []) {
-                $data[$violationsKey][$matches[2]] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+                $propertyName = $this->nameConverter->normalize($matches[2], $matches[1]);
+                $data[$violationsKey][$propertyName] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
             }
 
             // If exception thrown in Symfony's AbstractNormalizer
             $matches = [];
             \preg_match(self::MESSAGE_PATTERN_NO_PARAMETER_SYMFONY, $throwable->getMessage(), $matches);
-            $matches = \explode('", "', $matches[2] ?? '');
-            foreach ($matches as $match) {
-                if ($match === '') {
+            $explodedProperties = \explode('", "', $matches[2] ?? '');
+
+            foreach ($explodedProperties as $propertyName) {
+                if ($propertyName === '') {
                     continue;
                 }
 
-                $match = \str_replace('$', '', $match);
-                $data[$violationsKey][$match] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
+                $propertyName = \str_replace('$', '', $propertyName);
+                $propertyName = $this->nameConverter->normalize($propertyName, $matches[1]);
+
+                $data[$violationsKey][$propertyName] = [self::VIOLATION_VALUE_SHOULD_BE_PRESENT];
             }
         }
 
@@ -165,8 +175,9 @@ final class ApiPlatformValidationErrorResponseBuilder extends AbstractErrorRespo
                     );
 
                     if ($hasAttributeTypeError === true) {
+                        $propertyName = $this->nameConverter->normalize($matches[1], $matches[2]);
                         $data[$violationsKey] = [
-                            $matches[1] => [
+                            $propertyName => [
                                 $matches[4] === self::VALUE_NULL
                                     ? (new NotNull())->message
                                     : \sprintf(self::VIOLATION_PATTERN_TYPE_ERROR, $matches[3], $matches[4]),
