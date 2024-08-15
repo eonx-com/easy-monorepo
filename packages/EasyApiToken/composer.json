@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.1",
         "ext-openssl": "*",
-        "eonx-com/easy-utils": "^5.13.1",
+        "eonx-com/easy-utils": "^5.14",
         "nette/utils": "^3.2",
         "psr/log": "^3.0",
         "symfony/http-foundation": "^6.3"
