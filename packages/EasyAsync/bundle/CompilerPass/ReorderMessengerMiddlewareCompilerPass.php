@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInterface
+final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterface
 {
     private const EASY_ASYNC_MIDDLEWARE_LIST = [
         DoctrineManagersSanityCheckMiddleware::class,
@@ -71,7 +71,7 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
 
     private function isEnabled(ContainerBuilder $container): bool
     {
-        return $container->hasParameter(ConfigParam::MessengerMiddlewareAutoRegister->value)
-            && $container->getParameter(ConfigParam::MessengerMiddlewareAutoRegister->value);
+        return $container->hasParameter(ConfigParam::MessengerWorkerMiddlewareEnabled->value)
+            && $container->getParameter(ConfigParam::MessengerWorkerMiddlewareEnabled->value);
     }
 }

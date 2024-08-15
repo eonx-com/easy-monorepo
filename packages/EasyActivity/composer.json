@@ -35,7 +35,8 @@
         "psr-4": {
             "EonX\\EasyActivity\\Tests\\": "tests",
             "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
-            "EonX\\EasyActivity\\Tests\\Unit\\": "tests/Unit/src"
+            "EonX\\EasyActivity\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyActivity\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
     "extra": {

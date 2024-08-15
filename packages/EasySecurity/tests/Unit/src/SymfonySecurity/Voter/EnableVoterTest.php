@@ -17,7 +17,7 @@ final class EnableVoterTest extends AbstractSymfonyTestCase
     public static function provideVotersEnabledData(): iterable
     {
         yield 'All disabled by default' => [
-            [],
+            [__DIR__ . '/../../../../Fixture/config/default.php'],
             [
                 PermissionVoter::class => false,
                 ProviderVoter::class => false,

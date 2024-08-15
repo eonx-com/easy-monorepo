@@ -6,10 +6,10 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Laravel\EasyErrorHandlerServiceProvider;
 use EonX\EasyErrorHandler\Tests\Stub\Client\BugsnagClientStub;
-use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
 use Laravel\Lumen\Application;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
+abstract class AbstractLaravelTestCase extends TestCase
 {
     private ?Application $app = null;
 

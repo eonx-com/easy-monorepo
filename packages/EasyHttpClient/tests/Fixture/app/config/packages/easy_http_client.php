@@ -8,7 +8,11 @@ use Symfony\Config\EasyHttpClientConfig;
 return static function (EasyHttpClientConfig $easyHttpClientConfig): void {
     $easyHttpClientConfig
         ->decorateDefaultClient(true)
-        ->decorateEasyWebhookClient(true)
-        ->easyBugsnagEnabled(false)
-        ->psrLoggerEnabled(false);
+        ->decorateEasyWebhookClient(true);
+
+    $easyHttpClientConfig->easyBugsnag()
+        ->enabled(false);
+
+    $easyHttpClientConfig->psrLogger()
+        ->enabled(false);
 };

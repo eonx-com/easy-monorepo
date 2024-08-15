@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Common\ValueObject;
+namespace EonX\EasyEncryption\Encryptable\ValueObject;
 
 final class EncryptedString
 {

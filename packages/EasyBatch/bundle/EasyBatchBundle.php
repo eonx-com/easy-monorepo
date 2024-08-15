@@ -14,16 +14,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyBatchBundle extends AbstractBundle
 {
-    private const CONFIGS_TO_PARAMS = [
-        'batch_class' => ConfigParam::BatchClass,
-        'batch_item_class' => ConfigParam::BatchItemClass,
-        'batch_item_per_page' => ConfigParam::BatchItemPerPage,
-        'batch_item_table' => ConfigParam::BatchItemTable,
-        'batch_table' => ConfigParam::BatchTable,
-        'date_time_format' => ConfigParam::DateTimeFormat,
-        'lock_ttl' => ConfigParam::LockTtl,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -44,11 +34,15 @@ final class EasyBatchBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::CONFIGS_TO_PARAMS as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config[$name]);
-        }
+        $container
+            ->parameters()
+            ->set(ConfigParam::BatchClass->value, $config['batch_class'])
+            ->set(ConfigParam::BatchItemClass->value, $config['batch_item_class'])
+            ->set(ConfigParam::BatchItemPerPage->value, $config['batch_item_per_page'])
+            ->set(ConfigParam::BatchItemTable->value, $config['batch_item_table'])
+            ->set(ConfigParam::BatchTable->value, $config['batch_table'])
+            ->set(ConfigParam::DateTimeFormat->value, $config['date_time_format'])
+            ->set(ConfigParam::LockTtl->value, $config['lock_ttl']);
 
         $container->import('config/services.php');
     }

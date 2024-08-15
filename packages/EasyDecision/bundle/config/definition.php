@@ -14,12 +14,12 @@ return static function (DefinitionConfigurator $definition) {
                 ->prototype('scalar')
                 ->validate()
                     ->ifTrue(static fn ($class): bool => \class_exists($class) === false)
-                    ->thenInvalid('Class %s does not exist.')
-                ->end()
+                        ->thenInvalid('Class %s does not exist.')
+                    ->end()
                 ->end()
                 ->info(
                     'Decision type mapping to be used by ' .
-                    '\EonX\EasyDecision\Interfaces\DecisionFactoryInterface::createByName'
+                    '\EonX\EasyDecision\Factory\DecisionFactoryInterface::createByName'
                 )
             ->end()
         ->end();

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bundle;
 
-use EonX\EasyBugsnag\Bundle\Enum\ConfigTag as EasyBugsnagConfigTag;
 use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCompilerPass;
@@ -17,6 +16,7 @@ use EonX\EasySecurity\SymfonySecurity\Voter\RoleVoter;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -54,31 +54,74 @@ final class EasySecurityBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/services.php');
-
-        $permissionsLocations = $config['permissions_locations'] ?? [];
-        $rolesLocations = $config['roles_locations'] ?? [];
-
-        $container
-            ->parameters()
-            ->set(ConfigParam::PermissionsLocations->value, $permissionsLocations);
-        $container
-            ->parameters()
-            ->set(ConfigParam::RolesLocations->value, $rolesLocations);
-        $container
-            ->parameters()
-            ->set(ConfigParam::TokenDecoder->value, $config['token_decoder'] ?? null);
-
         foreach (self::AUTO_CONFIG_TAGS as $interface => $tag) {
             $builder
                 ->registerForAutoconfiguration($interface)
                 ->addTag($tag->value);
         }
 
-        foreach (self::VOTERS as $name => $class) {
-            $configName = \sprintf('%s_enabled', $name);
+        $container
+            ->parameters()
+            ->set(ConfigParam::PermissionsLocations->value, $config['permissions_locations'])
+            ->set(ConfigParam::RolesLocations->value, $config['roles_locations'])
+            ->set(ConfigParam::TokenDecoder->value, $config['token_decoder']);
 
-            if (($config['voters'][$configName] ?? false) === false) {
+        $container->import('config/services.php');
+
+        $this->registerEasyBugsnagConfiguration($config, $container, $builder);
+        $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
+        $this->registerVotersConfiguration($config, $container, $builder);
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
+    }
+
+    private function registerDefaultConfiguratorsConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['default_configurators']['enabled'] === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::DefaultConfiguratorsPriority->value, $config['default_configurators']['priority']);
+
+        $container->import('config/default_configurators.php');
+    }
+
+    private function registerEasyBugsnagConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['easy_bugsnag']['enabled'] === false) {
+            return;
+        }
+
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder) === false) {
+            throw new LogicException('EasyBugsnagBundle is required to enable EasyBugsnag integration.');
+        }
+
+        $container->import('config/easy_bugsnag.php');
+    }
+
+    private function registerVotersConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        foreach (self::VOTERS as $name => $class) {
+            $configName = \sprintf('%s_voter', $name);
+
+            if ($config['voters'][$configName] === false) {
                 continue;
             }
 
@@ -94,20 +137,6 @@ final class EasySecurityBundle extends AbstractBundle
                 ]);
 
             $builder->setDefinition($class, $voterDefinition);
-        }
-
-        // EasyBugsnag
-        if (($config['easy_bugsnag'] ?? false) && \enum_exists(EasyBugsnagConfigTag::class)) {
-            $container->import('config/easy_bugsnag.php');
-        }
-
-        // Default configurators
-        if ($config['use_default_configurators'] ?? true) {
-            $container
-                ->parameters()
-                ->set(ConfigParam::DefaultConfiguratorsPriority->value, $config['default_configurators_priority']);
-
-            $container->import('config/default_configurators.php');
         }
     }
 }

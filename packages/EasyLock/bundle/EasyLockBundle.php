@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyLock\Bundle;
 
 use EonX\EasyLock\Bundle\CompilerPass\RegisterLockStoreServiceCompilerPass;
-use EonX\EasyLock\Bundle\CompilerPass\RegisterMessengerMiddlewareCompilerPass;
+use EonX\EasyLock\Bundle\CompilerPass\ReorderMessengerMiddlewareCompilerPass;
 use EonX\EasyLock\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\Messenger\DependencyInjection\MessengerPass;
 
 final class EasyLockBundle extends AbstractBundle
 {
@@ -24,7 +23,7 @@ final class EasyLockBundle extends AbstractBundle
         $container
             ->addCompilerPass(new RegisterLockStoreServiceCompilerPass())
             // -9 to run before easy-async and easy-batch so middleware is after
-            ->addCompilerPass(new RegisterMessengerMiddlewareCompilerPass(), priority: -9);
+            ->addCompilerPass(new ReorderMessengerMiddlewareCompilerPass(), priority: -9);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -34,21 +33,31 @@ final class EasyLockBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('config/services.php');
-
         $container
             ->parameters()
             ->set(ConfigParam::Connection->value, $config['connection']);
 
-        if (\class_exists(MessengerPass::class)) {
-            $container
-                ->parameters()
-                ->set(
-                    ConfigParam::MessengerMiddlewareAutoRegister->value,
-                    $config['messenger_middleware_auto_register'] ?? true
-                );
+        $container->import('config/services.php');
 
-            $container->import('config/messenger_middleware.php');
+        $this->registerMessengerConfiguration($config, $container, $builder);
+    }
+
+    private function registerMessengerConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $container
+            ->parameters()
+            ->set(
+                ConfigParam::MessengerMiddlewareEnabled->value,
+                $config['messenger']['middleware']['enabled']
+            );
+
+        if ($config['messenger']['middleware']['enabled'] === false) {
+            return;
         }
+
+        $container->import('config/messenger_middleware.php');
     }
 }

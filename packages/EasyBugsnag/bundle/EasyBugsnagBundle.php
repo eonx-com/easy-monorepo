@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Bundle;
 
-use EonX\EasyBugsnag\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
 use EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface;
@@ -17,36 +16,9 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyBugsnagBundle extends AbstractBundle
 {
-    private const AWS_ECS_FARGATE_CONFIG = [
-        'meta_storage_filename' => ConfigParam::AwsEcsFargateMetaStorageFilename,
-        'meta_url' => ConfigParam::AwsEcsFargateMetaUrl,
-    ];
-
-    private const BASICS_CONFIG = [
-        'project_root' => ConfigParam::ProjectRoot,
-        'release_stage' => ConfigParam::ReleaseStage,
-        'runtime' => ConfigParam::Runtime,
-        'runtime_version' => ConfigParam::RuntimeVersion,
-        'strip_path' => ConfigParam::StripPath,
-    ];
-
-    private const SESSION_TRACKING_CONFIG = [
-        'cache_directory' => ConfigParam::SessionTrackingCacheDirectory,
-        'cache_expires_after' => ConfigParam::SessionTrackingCacheExpiresAfter,
-        'cache_namespace' => ConfigParam::SessionTrackingCacheNamespace,
-        'exclude_urls' => ConfigParam::SessionTrackingExcludeUrls,
-        'exclude_urls_delimiter' => ConfigParam::SessionTrackingExcludeUrlsDelimiter,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
-    }
-
-    public function build(ContainerBuilder $container): void
-    {
-        $container
-            ->addCompilerPass(new SensitiveDataSanitizerCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -56,89 +28,120 @@ final class EasyBugsnagBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        // Disabled completely
-        if (($config['enabled'] ?? true) === false) {
-            return;
-        }
-
-        // Basics config
-        foreach (self::BASICS_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config[$name]);
-        }
-
-        $container->import('config/services.php');
-
-        // Default configurators
-        if ($config['use_default_configurators'] ?? true) {
-            $container->import('config/default_configurators.php');
-        }
-
-        $container
-            ->parameters()
-            ->set(ConfigParam::ApiKey->value, $config['api_key']);
-
-        if ($config['doctrine_dbal']['enabled']) {
-            $container->import('config/doctrine_dbal.php');
-
-            foreach ($config['doctrine_dbal']['connections'] as $connection) {
-                $builder->setDefinition(
-                    'easy_bugsnag.doctrine.middleware.' . $connection,
-                    (new Definition(
-                        BreadcrumbLoggerMiddleware::class,
-                        [$builder->getDefinition(QueryBreadcrumbLogger::class)]
-                    ))
-                        ->addTag('doctrine.middleware', ['connection' => $connection])
-                );
-            }
-        }
-
         $builder
             ->registerForAutoconfiguration(ClientConfiguratorInterface::class)
             ->addTag(ConfigTag::ClientConfigurator->value);
 
-        if ($config['app_name']['enabled'] ?? false) {
-            $container
-                ->parameters()
-                ->set(ConfigParam::AppNameEnvVar->value, $config['app_name']['env_var']);
+        $container
+            ->parameters()
+            ->set(ConfigParam::ApiKey->value, $config['api_key'])
+            ->set(ConfigParam::ProjectRoot->value, $config['project_root'])
+            ->set(ConfigParam::ReleaseStage->value, $config['release_stage'])
+            ->set(ConfigParam::Runtime->value, $config['runtime'])
+            ->set(ConfigParam::RuntimeVersion->value, $config['runtime_version'])
+            ->set(ConfigParam::StripPath->value, $config['strip_path']);
 
-            $container->import('config/app_name.php');
+        $container->import('config/services.php');
+
+        if ($config['use_default_configurators']) {
+            $container->import('config/default_configurators.php');
         }
 
-        if ($config['aws_ecs_fargate']['enabled'] ?? false) {
-            foreach (self::AWS_ECS_FARGATE_CONFIG as $name => $param) {
-                $container
-                    ->parameters()
-                    ->set($param->value, $config['aws_ecs_fargate'][$name]);
-            }
+        if ($config['sensitive_data_sanitizer']['enabled']) {
+            $container->import('config/sensitive_data_sanitizer.php');
+        }
 
-            $container->import('config/aws_ecs_fargate.php');
+        if ($config['worker_info']['enabled']) {
+            $container->import('config/worker.php');
+        }
+
+        $this->registerAppNameConfiguration($config, $container, $builder);
+        $this->registerAwsEcsFargateConfiguration($config, $container, $builder);
+        $this->registerDoctrineDbalConfiguration($config, $container, $builder);
+        $this->registerSessionTrackingConfiguration($config, $container, $builder);
+    }
+
+    private function registerAppNameConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['app_name']['enabled'] === false) {
+            return;
         }
 
         $container
             ->parameters()
-            ->set(
-                ConfigParam::SensitiveDataSanitizerEnabled->value,
-                $config['sensitive_data_sanitizer']['enabled'] ?? true
-            );
+            ->set(ConfigParam::AppNameEnvVar->value, $config['app_name']['env_var']);
 
-        if ($config['session_tracking']['enabled'] ?? false) {
-            foreach (self::SESSION_TRACKING_CONFIG as $name => $param) {
-                $container
-                    ->parameters()
-                    ->set($param->value, $config['session_tracking'][$name]);
-            }
+        $container->import('config/app_name.php');
+    }
 
-            $container->import('config/sessions.php');
+    private function registerAwsEcsFargateConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $config = $config['aws_ecs_fargate'];
 
-            if ($config['session_tracking']['messenger_message_count_for_sessions'] ?? false) {
-                $container->import('config/sessions_messenger.php');
-            }
+        if ($config['enabled'] === false) {
+            return;
         }
 
-        if ($config['worker_info']['enabled'] ?? false) {
-            $container->import('config/worker.php');
+        $container
+            ->parameters()
+            ->set(ConfigParam::AwsEcsFargateMetaStorageFilename->value, $config['meta_storage_filename'])
+            ->set(ConfigParam::AwsEcsFargateMetaUrl->value, $config['meta_url']);
+
+        $container->import('config/aws_ecs_fargate.php');
+    }
+
+    private function registerDoctrineDbalConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['doctrine_dbal']['enabled'] === false) {
+            return;
+        }
+
+        $container->import('config/doctrine_dbal.php');
+
+        foreach ($config['doctrine_dbal']['connections'] as $connection) {
+            $builder->setDefinition(
+                'easy_bugsnag.doctrine.middleware.' . $connection,
+                (new Definition(
+                    BreadcrumbLoggerMiddleware::class,
+                    [$builder->getDefinition(QueryBreadcrumbLogger::class)]
+                ))
+                    ->addTag('doctrine.middleware', ['connection' => $connection])
+            );
+        }
+    }
+
+    private function registerSessionTrackingConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        $config = $config['session_tracking'];
+
+        if ($config['enabled'] === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::SessionTrackingCacheDirectory->value, $config['cache_directory'])
+            ->set(ConfigParam::SessionTrackingCacheExpiresAfter->value, $config['cache_expires_after'])
+            ->set(ConfigParam::SessionTrackingCacheNamespace->value, $config['cache_namespace'])
+            ->set(ConfigParam::SessionTrackingExcludeUrls->value, $config['exclude_urls'])
+            ->set(ConfigParam::SessionTrackingExcludeUrlsDelimiter->value, $config['exclude_urls_delimiter']);
+
+        $container->import('config/sessions.php');
+
+        if ($config['messenger_message_count_for_sessions']) {
+            $container->import('config/sessions_messenger.php');
         }
     }
 }

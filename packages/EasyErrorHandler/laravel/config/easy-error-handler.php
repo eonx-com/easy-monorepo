@@ -48,7 +48,7 @@ return [
         /**
          * List of Exceptions and their associated log levels.
          */
-        'exception_log_levels' => null,
+        'exception_log_levels' => [],
 
         /**
          * List of Ignored Exceptions that'll not be reported to logger.

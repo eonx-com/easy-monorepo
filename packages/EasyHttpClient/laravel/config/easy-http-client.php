@@ -10,7 +10,9 @@ return [
     /**
      * Enables listener to add Bugsnag breadcrumbs on each HTTP request.
      */
-    'easy_bugsnag_enabled' => true,
+    'easy_bugsnag' => [
+        'enabled' => true,
+    ],
 
     'modifiers' => [
         /**
@@ -27,5 +29,7 @@ return [
     /**
      * Enables listener to log messages on each HTTP request.
      */
-    'psr_logger_enabled' => true,
+    'psr_logger' => [
+        'enabled' => true,
+    ],
 ];

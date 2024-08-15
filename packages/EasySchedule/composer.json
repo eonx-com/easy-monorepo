@@ -33,7 +33,7 @@
         }
     },
     "suggest": {
-        "doctrine/orm": "To clear the Doctrine Entity Manager"
+        "doctrine/persistence": "To clear the Doctrine Object Managers"
     },
     "extra": {
         "branch-alias": {

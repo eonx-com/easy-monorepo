@@ -28,16 +28,16 @@ abstract class AbstractUnitTestCase extends TestCase
 
     private ?BatchObjectIdStrategyInterface $batchObjectIdStrategy = null;
 
-    protected function tearDown(): void
+    public static function tearDownAfterClass(): void
     {
-        $fs = new Filesystem();
+        parent::tearDownAfterClass();
+
+        $filesystem = new Filesystem();
         $var = __DIR__ . '/../../var';
 
-        if ($fs->exists($var)) {
-            $fs->remove($var);
+        if ($filesystem->exists($var)) {
+            $filesystem->remove($var);
         }
-
-        parent::tearDown();
     }
 
     protected function getBatchFactory(): BatchFactoryInterface

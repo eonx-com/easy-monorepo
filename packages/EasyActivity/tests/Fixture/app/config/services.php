@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
 
@@ -29,5 +30,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(EntityEventListener::class)
-        ->arg('$trackableEntities', param('easy_doctrine.deferred_dispatcher_entities'));
+        ->arg('$trackableEntities', param(ConfigParam::DeferredDispatcherEntities->value));
 };

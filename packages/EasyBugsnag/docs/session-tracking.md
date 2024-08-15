@@ -59,4 +59,4 @@ For Laravel applications, you can enable session tracking for queue jobs by sett
 ## Tracking messages in Symfony
 
 For Symfony applications, you can enable session tracking for messenger messages by setting the
-`session_tracking.messenger_message_count_for_sessions` configuration option to `true`.
+`session_tracking.messenger_message_count_for_sessions.enbaled` configuration option to `true`.

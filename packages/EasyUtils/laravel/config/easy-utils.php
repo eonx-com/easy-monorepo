@@ -12,7 +12,7 @@ return [
     'sensitive_data' => [
         'enabled' => \env('EASY_UTILS_SENSITIVE_DATA_ENABLED', true),
         'keys_to_mask' => [],
-        'mask_pattern' => null,
+        'mask_pattern' => '*REDACTED*',
         'use_default_keys_to_mask' => true,
         'use_default_object_transformers' => true,
         'use_default_string_sanitizers' => true,

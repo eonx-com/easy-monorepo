@@ -7,6 +7,13 @@ return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
             ->scalarNode('connection')->defaultValue('doctrine.dbal.default_connection')->end()
-            ->booleanNode('messenger_middleware_auto_register')->defaultTrue()->end()
+            ->arrayNode('messenger')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('middleware')
+                        ->canBeDisabled()
+                    ->end()
+                ->end()
+            ->end()
         ->end();
 };

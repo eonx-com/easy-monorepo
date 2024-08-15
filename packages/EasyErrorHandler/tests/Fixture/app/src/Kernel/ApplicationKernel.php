@@ -20,7 +20,9 @@ final class ApplicationKernel extends Kernel
     private function configureContainer(ContainerConfigurator $container): void
     {
         $container->import($this->getProjectDir() . '/config/{packages}/*.php');
+        $container->import($this->getProjectDir() . '/config/{packages}/' . $this->environment . '/*.php');
         $container->import($this->getProjectDir() . '/config/{services}.php');
+        $container->import($this->getProjectDir() . '/config/{services}_' . $this->environment . '.php');
     }
 
     private function configureRoutes(RoutingConfigurator $routes): void

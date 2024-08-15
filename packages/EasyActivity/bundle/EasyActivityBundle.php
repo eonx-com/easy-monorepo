@@ -13,13 +13,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyActivityBundle extends AbstractBundle
 {
-    private const EASY_ACTIVITY_CONFIG = [
-        'disallowed_properties' => ConfigParam::DisallowedProperties,
-        'easy_doctrine_subscriber_enabled' => ConfigParam::EasyDoctrineSubscriberEnabled,
-        'subjects' => ConfigParam::Subjects,
-        'table_name' => ConfigParam::TableName,
-    ];
-
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -32,27 +25,31 @@ final class EasyActivityBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (self::EASY_ACTIVITY_CONFIG as $name => $param) {
-            $container
-                ->parameters()
-                ->set($param->value, $config[$name]);
-        }
+        $container
+            ->parameters()
+            ->set(ConfigParam::TableName->value, $config['table_name'])
+            ->set(ConfigParam::DisallowedProperties->value, $config['disallowed_properties'])
+            ->set(ConfigParam::Subjects->value, $config['subjects']);
 
         $container->import('config/services.php');
 
-        if ($this->easyDoctrineBundleIsRegistered($builder)) {
-            $container->import('config/easy_doctrine.php');
-        }
+        $this->registerEasyDoctrineConfiguration($config, $container, $builder);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if ($this->easyDoctrineBundleIsRegistered($builder) === false) {
+        if ($this->isBundleEnabled('EasyDoctrineBundle', $builder) === false) {
             return;
         }
 
-        $easyDoctrineBundleConfig = $builder->getExtensionConfig('easy_doctrine')[0] ?? [];
-        $easyDoctrineEntities = $easyDoctrineBundleConfig['deferred_dispatcher_entities'] ?? [];
+        $easyDoctrineEntities = [];
+        foreach ($builder->getExtensionConfig('easy_doctrine') as $config) {
+            $easyDoctrineEntities = [
+                ...$easyDoctrineEntities,
+                ...($config['deferred_dispatcher_entities'] ?? []),
+            ];
+        }
+        $easyDoctrineEntities = \array_unique($easyDoctrineEntities);
 
         $configs = $builder->getExtensionConfig($this->extensionAlias);
 
@@ -71,11 +68,27 @@ final class EasyActivityBundle extends AbstractBundle
         $builder->prependExtensionConfig('easy_doctrine', $easyDoctrinePrependedConfig);
     }
 
-    private function easyDoctrineBundleIsRegistered(ContainerBuilder $builder): bool
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
     {
-        /** @var array<string, string> $bundles */
+        /** @var array $bundles */
         $bundles = $builder->getParameter('kernel.bundles');
 
-        return isset($bundles['EasyDoctrineBundle']);
+        return isset($bundles[$bundleName]);
+    }
+
+    private function registerEasyDoctrineConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($this->isBundleEnabled('EasyDoctrineBundle', $builder) === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::EasyDoctrineSubscriberEnabled->value, $config['easy_doctrine']['subscriber']['enabled']);
+
+        $container->import('config/easy_doctrine.php');
     }
 }

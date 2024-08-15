@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Bundle;
 
-use Bugsnag\Client;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateDefaultClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateEasyWebhookClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateMessengerSqsClientCompilerPass;
@@ -13,6 +12,7 @@ use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -42,47 +42,56 @@ final class EasyHttpClientBundle extends AbstractBundle
             ->registerForAutoconfiguration(RequestDataModifierInterface::class)
             ->addTag(ConfigTag::RequestDataModifier->value);
 
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DecorateDefaultClient->value,
-                $config['decorate_default_client'] ?? false
-            );
-
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DecorateEasyWebhookClient->value,
-                $config['decorate_easy_webhook_client'] ?? false
-            );
-
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::DecorateMessengerSqsClient->value,
-                $config['decorate_messenger_sqs_client'] ?? false
-            );
-
-        $container
-            ->parameters()
-            ->set(ConfigParam::ModifiersEnabled->value, $config['modifiers']['enabled'] ?? true);
-
-        $modifiersWhitelist = $config['modifiers']['whitelist'] ?? [null];
-        $container
-            ->parameters()
-            ->set(
-                ConfigParam::ModifiersWhitelist->value,
-                \count($modifiersWhitelist) === 1 && ($modifiersWhitelist[0] === null) ? null : $modifiersWhitelist
-            );
+        $container->parameters()
+            ->set(ConfigParam::DecorateDefaultClient->value, $config['decorate_default_client'])
+            ->set(ConfigParam::DecorateEasyWebhookClient->value, $config['decorate_easy_webhook_client'])
+            ->set(ConfigParam::DecorateMessengerSqsClient->value, $config['decorate_messenger_sqs_client'])
+            ->set(ConfigParam::ModifiersEnabled->value, $config['modifiers']['enabled'])
+            ->set(ConfigParam::ModifiersWhitelist->value, $config['modifiers']['whitelist']);
 
         $container->import('config/http_client.php');
 
-        if (($config['easy_bugsnag_enabled'] ?? true) && \class_exists(Client::class)) {
-            $container->import('config/easy_bugsnag.php');
+        $this->registerEasyBugsnagConfiguration($config, $container, $builder);
+        $this->registerPsrLoggerConfiguration($config, $container, $builder);
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
+    }
+
+    private function registerEasyBugsnagConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['easy_bugsnag']['enabled'] === false) {
+            return;
         }
 
-        if (($config['psr_logger_enabled'] ?? true) && \interface_exists(LoggerInterface::class)) {
-            $container->import('config/psr_logger.php');
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder) === false) {
+            throw new LogicException('EasyBugsnagBundle is not enabled.');
         }
+
+        $container->import('config/easy_bugsnag.php');
+    }
+
+    private function registerPsrLoggerConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['psr_logger']['enabled'] === false) {
+            return;
+        }
+
+        if (\interface_exists(LoggerInterface::class) === false) {
+            throw new LogicException(LoggerInterface::class . ' is not available.');
+        }
+
+        $container->import('config/psr_logger.php');
     }
 }

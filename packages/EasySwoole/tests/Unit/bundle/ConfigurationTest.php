@@ -127,6 +127,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
             ],
             'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
                 'static_php_files' => [
+                    'enabled' => true,
                     'allowed_filenames' => ['/hash.php'],
                 ],
             ]),
@@ -142,6 +143,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
             ],
             'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
                 'static_php_files' => [
+                    'enabled' => true,
                     'allowed_filenames' => ['/hash.php'],
                 ],
             ]),
@@ -155,7 +157,11 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
                     ],
                 ],
             ],
-            'expectedConfig' => self::DEFAULT_CONFIG,
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'static_php_files' => [
+                    'enabled' => true,
+                ],
+            ]),
         ];
 
         yield 'Normalize allowed static php dirs - support null' => [
@@ -166,7 +172,11 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
                     ],
                 ],
             ],
-            'expectedConfig' => self::DEFAULT_CONFIG,
+            'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
+                'static_php_files' => [
+                    'enabled' => true,
+                ],
+            ]),
         ];
 
         yield 'Normalize allowed static php dirs - filter empty strings' => [
@@ -179,6 +189,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
             ],
             'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
                 'static_php_files' => [
+                    'enabled' => true,
                     'allowed_dirs' => ['%kernel.project_dir%/public'],
                 ],
             ]),
@@ -194,6 +205,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
             ],
             'expectedConfig' => ArrayHelper::smartReplace(self::DEFAULT_CONFIG, [
                 'static_php_files' => [
+                    'enabled' => true,
                     'allowed_dirs' => ['/path/to/dir'],
                 ],
             ]),

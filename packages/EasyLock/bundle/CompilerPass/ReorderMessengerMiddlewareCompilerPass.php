@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInterface
+final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterface
 {
     private const EASY_LOCK_MIDDLEWARE_LIST = [
         ProcessWithLockMiddleware::class,
@@ -69,7 +69,7 @@ final class RegisterMessengerMiddlewareCompilerPass implements CompilerPassInter
 
     private function isEnabled(ContainerBuilder $container): bool
     {
-        return $container->hasParameter(ConfigParam::MessengerMiddlewareAutoRegister->value)
-            && $container->getParameter(ConfigParam::MessengerMiddlewareAutoRegister->value);
+        return $container->hasParameter(ConfigParam::MessengerMiddlewareEnabled->value)
+            && $container->getParameter(ConfigParam::MessengerMiddlewareEnabled->value);
     }
 }

@@ -26,7 +26,6 @@ The common configuration options for Laravel and Symfony are as follows:
 
 | Configuration                             | Default                                                                                                                           | Description                                                                                                     |
 |-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `enabled`                                 | `true`                                                                                                                            | Enable/disable the entire EasyBugsnag package.                                                                  |
 | `api_key`                                 | N/A                                                                                                                               | Bugsnag Integration API Key of your project.                                                                    |
 | `project_root`                            | `%kernel.project_dir%/src` (Symfony)<br/>`\base_path('app')` (Laravel)                                                            | Project root.                                                                                                   |
 | `release_stage`                           | `%env(APP_ENV)%` (Symfony)<br/>`\env('APP_ENV')` (Laravel)                                                                        | Release stage.                                                                                                  |
@@ -46,21 +45,22 @@ Laravel has the following additional configuration option:
 
 | Configuration                                   | Default | Description                                                                   |
 |-------------------------------------------------|---------|-------------------------------------------------------------------------------|
+| `enabled`                                       | `true`  | Enable/disable the entire EasyBugsnag package.                                |
 | `session_tracking.cache_store`                  | `file`  | Cache store used by the default cache implementation provided by the package. |
 | `session_tracking.queue_job_count_for_sessions` | `false` | Enable/disable session tracking for queue jobs.                               |
 
 Symfony has the following additional configuration options:
 
-| Configuration                                           | Default                 | Description                                                                                                       |
-|---------------------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `runtime`                                               | `symfony`               | Set the Symfony runtime.                                                                                          |
-| `runtime_version`                                       | `Kernel::VERSION`       | Set the Symfony runtime version.                                                                                  |
-| `doctrine_dbal.enabled`                                 | `true`                  | Enable SQL query logging (see [SQL query logging](sql-logging.md)).                                               |
-| `doctrine_dbal.connections`                             | `['default']`           | Connections to log SQL queries for.                                                                               |
-| `session_tracking.cache_directory`                      | `%kernel.cache_dir%`    | Directory used by the default cache implementation provided by the package.                                       |
-| `session_tracking.cache_namespace`                      | `easy_bugsnag_sessions` | Namespace used by the default cache implementation provided by the package.                                       |
-| `session_tracking.messenger_message_count_for_sessions` | `false`                 | Enable/disable session tracking for messenger messages.                                                           |
-| `worker_info.enabled`                                   | `false`                 | Enable/disable worker information data in Bugsnag. See [Worker information](worker-info.md) for more information. |
+| Configuration                                                   | Default                 | Description                                                                                                       |
+|-----------------------------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `runtime`                                                       | `symfony`               | Set the Symfony runtime.                                                                                          |
+| `runtime_version`                                               | `Kernel::VERSION`       | Set the Symfony runtime version.                                                                                  |
+| `doctrine_dbal.enabled`                                         | `true`                  | Enable SQL query logging (see [SQL query logging](sql-logging.md)).                                               |
+| `doctrine_dbal.connections`                                     | `['default']`           | Connections to log SQL queries for.                                                                               |
+| `session_tracking.cache_directory`                              | `%kernel.cache_dir%`    | Directory used by the default cache implementation provided by the package.                                       |
+| `session_tracking.cache_namespace`                              | `easy_bugsnag_sessions` | Namespace used by the default cache implementation provided by the package.                                       |
+| `session_tracking.messenger_message_count_for_sessions.enbaled` | `false`                 | Enable/disable session tracking for messenger messages.                                                           |
+| `worker_info.enabled`                                           | `false`                 | Enable/disable worker information data in Bugsnag. See [Worker information](worker-info.md) for more information. |
 
 ## Example configuration files
 
@@ -79,7 +79,6 @@ use Symfony\Config\EasyBugsnagConfig;
 
 return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
     $easyBugsnagConfig
-        ->enabled(true)
         ->apiKey(env('BUGSNAG_API_KEY'))
         ->projectRoot(param('kernel.project_dir') . '/src')
         ->releaseStage(env('APP_ENV'))

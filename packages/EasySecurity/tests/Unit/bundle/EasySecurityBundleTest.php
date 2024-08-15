@@ -13,7 +13,8 @@ final class EasySecurityBundleTest extends AbstractSymfonyTestCase
 {
     public function testSanity(): void
     {
-        $container = $this->getKernel([])->getContainer();
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default.php'])
+            ->getContainer();
 
         /** @var \EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface $result */
         $result = $container->get(SecurityContextResolverInterface::class)

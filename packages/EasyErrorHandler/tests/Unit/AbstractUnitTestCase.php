@@ -3,29 +3,36 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit;
 
+use EonX\EasyErrorHandler\Tests\Fixture\App\Kernel\ApplicationKernel;
+use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
 use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * This class has for objective to provide common features to all tests without having to update
- * the class they all extend.
- */
-abstract class AbstractUnitTestCase extends TestCase
+abstract class AbstractUnitTestCase extends KernelTestCase
 {
+    use ContainerServiceTrait;
     use PrivatePropertyAccessTrait;
 
-    protected function tearDown(): void
+    public static function tearDownAfterClass(): void
     {
-        parent::tearDown();
+        parent::tearDownAfterClass();
 
-        $fs = new Filesystem();
-        $files = [__DIR__ . '/../../var'];
+        $filesystem = new Filesystem();
+        $var = __DIR__ . '/../Fixture/app/var';
 
-        foreach ($files as $file) {
-            if ($fs->exists($file)) {
-                $fs->remove($file);
-            }
+        if ($filesystem->exists($var)) {
+            $filesystem->remove($var);
         }
+    }
+
+    protected function setUp(): void
+    {
+        self::bootKernel();
+    }
+
+    protected static function getKernelClass(): string
+    {
+        return ApplicationKernel::class;
     }
 }

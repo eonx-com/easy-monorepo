@@ -67,12 +67,12 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(AsyncMiddleware::class)
-        ->arg('$enabled', param(ConfigParam::Async->value))
+        ->arg('$enabled', param(ConfigParam::AsyncEnabled->value))
         ->arg('$priority', MiddlewarePriority::CoreAfter->value + 2);
 
     $services
         ->set(SyncRetryMiddleware::class)
-        ->arg('$asyncEnabled', param(ConfigParam::Async->value))
+        ->arg('$asyncEnabled', param(ConfigParam::AsyncEnabled->value))
         ->arg('$priority', MiddlewarePriority::CoreAfter->value + 3)
         ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 

@@ -10,21 +10,21 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractApplicationTestCase extends KernelTestCase
 {
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        $filesystem = new Filesystem();
+        $var = __DIR__ . '/../Fixture/app/var';
+
+        if ($filesystem->exists($var)) {
+            $filesystem->remove($var);
+        }
+    }
+
     protected function setUp(): void
     {
         self::bootKernel();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $fs = new Filesystem();
-        $var = __DIR__ . '/../Fixture/app/var';
-
-        if ($fs->exists($var)) {
-            $fs->remove($var);
-        }
     }
 
     protected static function createKernel(array $options = []): KernelInterface

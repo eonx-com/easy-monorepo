@@ -232,7 +232,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(
             EventHeaderMiddleware::class,
             static fn (): EventHeaderMiddleware => new EventHeaderMiddleware(
-                \config('easy-webhook.event.event_header')
+                \config('easy-webhook.event.header')
             )
         );
 
@@ -249,7 +249,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             IdHeaderMiddleware::class,
             static fn (Container $app): IdHeaderMiddleware => new IdHeaderMiddleware(
                 $app->make(StoreInterface::class),
-                \config('easy-webhook.id.id_header')
+                \config('easy-webhook.id.header')
             )
         );
 
@@ -272,7 +272,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
             static fn (Container $app): SignatureHeaderMiddleware => new SignatureHeaderMiddleware(
                 $app->make(WebhookSignerInterface::class),
                 \config('easy-webhook.signature.secret'),
-                \config('easy-webhook.signature.signature_header'),
+                \config('easy-webhook.signature.header'),
                 100
             )
         );

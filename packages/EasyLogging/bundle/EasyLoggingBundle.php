@@ -50,7 +50,7 @@ final class EasyLoggingBundle extends AbstractBundle
 
         $params = $container->parameters();
 
-        $params->set(ConfigParam::LazyLoggers->value, $config['lazy_loggers'] ?? []);
+        $params->set(ConfigParam::LazyLoggers->value, $config['lazy_loggers']);
 
         $params->set(ConfigParam::DefaultChannel->value, $config['default_channel']);
 
@@ -64,16 +64,10 @@ final class EasyLoggingBundle extends AbstractBundle
                 ->addTag($tag->value);
         }
 
-        $params->set(
-            ConfigParam::SensitiveDataSanitizerEnabled->value,
-            $config['sensitive_data_sanitizer']['enabled'] ?? false
-        );
+        $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
 
-        if ($config['bugsnag_handler'] ?? false) {
-            $params->set(
-                ConfigParam::BugsnagHandlerLevel->value,
-                $config['bugsnag_handler_level'] ?? null
-            );
+        if ($config['bugsnag_handler']) {
+            $params->set(ConfigParam::BugsnagHandlerLevel->value, $config['bugsnag_handler_level']);
 
             $container->import('config/bugsnag_handler.php');
         }

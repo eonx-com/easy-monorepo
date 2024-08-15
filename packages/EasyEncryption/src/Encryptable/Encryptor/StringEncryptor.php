@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Encryptable\Encryptor;
 
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
-use EonX\EasyEncryption\Common\ValueObject\EncryptedString;
+use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
 use InvalidArgumentException;
 
 final class StringEncryptor implements StringEncryptorInterface

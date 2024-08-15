@@ -39,10 +39,6 @@ final class EasyDoctrineBundle extends AbstractBundle
         ContainerBuilder $builder,
     ): void {
         if ($config['aws_rds']['iam']['enabled'] || $config['aws_rds']['ssl']['enabled']) {
-            $container
-                ->parameters()
-                ->set(ConfigParam::AwsRdsSslMode->value, $config['mode']);
-
             $container->import('config/aws_rds.php');
         }
 
@@ -83,7 +79,8 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $container
             ->parameters()
-            ->set(ConfigParam::AwsRdsSslCaPath->value, $config['ca_path']);
+            ->set(ConfigParam::AwsRdsSslCaPath->value, $config['ca_path'])
+            ->set(ConfigParam::AwsRdsSslMode->value, $config['mode']);
 
         $container->import('config/aws_rds_ssl.php');
     }

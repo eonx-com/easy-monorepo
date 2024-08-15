@@ -23,8 +23,6 @@ enum ConfigParam: string
 
     case RuntimeVersion = 'easy_bugsnag.runtime_version';
 
-    case SensitiveDataSanitizerEnabled = 'easy_bugsnag.sensitive_data_sanitizer_enabled';
-
     case SessionTrackingCacheDirectory = 'easy_bugsnag.session_tracking_cache_directory';
 
     case SessionTrackingCacheExpiresAfter = 'easy_bugsnag.session_tracking_cache_expires_after';
