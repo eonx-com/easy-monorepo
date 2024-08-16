@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Messenger\Worker;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -118,8 +119,11 @@ trait MessengerAssertionsTrait
      * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
      * @param array<int|float> $expectedDelays Expected delays in seconds between worker runs
      */
-    public static function consumeAsyncMessages(array $expectedExceptions = [], array $expectedDelays = []): void
-    {
+    public static function consumeAsyncMessages(
+        array $expectedExceptions = [],
+        array $expectedDelays = [],
+        array $transports = ['async'],
+    ): void {
         /**
          * If some exception occurs during message handling, it will be caught by Symfony Messenger Worker,
          * and the message will be sent to failed transport.
@@ -135,7 +139,7 @@ trait MessengerAssertionsTrait
             );
         }
 
-        self::runMessengerWorker('async', 'default', $expectedExceptions, $expectedDelays);
+        self::runMessengerWorker($transports, 'default', $expectedExceptions, $expectedDelays);
     }
 
     /**
@@ -192,6 +196,18 @@ trait MessengerAssertionsTrait
         return $messages;
     }
 
+    /**
+     * @param \Symfony\Component\Messenger\Transport\TransportInterface[] $transports
+     */
+    private static function countMessagesInTransports(array $transports): int
+    {
+        return \array_reduce(
+            $transports,
+            static fn (int $count, TransportInterface $transport): int => $count + \count((array)$transport->get()),
+            0
+        );
+    }
+
     private static function printExceptionDetails(ErrorDetailsStamp $errorDetailsStamp): void
     {
         echo "\n";
@@ -209,16 +225,21 @@ trait MessengerAssertionsTrait
     }
 
     /**
+     * @param array<int, string> $transportNames
      * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int, int> $expectedDelays
      */
     private static function runMessengerWorker(
-        string $transportName,
+        array $transportNames,
         string $busName,
         array $expectedExceptions = [],
         array $expectedDelays = [],
     ): void {
-        /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
-        $transport = self::getContainer()->get('messenger.transport.' . $transportName);
+        /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport[] $transports */
+        $transports = [];
+        foreach ($transportNames ?: ['async'] as $transportName) {
+            $transports[$transportName] = self::getContainer()->get('messenger.transport.' . $transportName);
+        }
 
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
@@ -233,8 +254,7 @@ trait MessengerAssertionsTrait
         $resetServicesListener = self::getContainer()->get('messenger.listener.reset_services');
         $eventDispatcher->addSubscriber($resetServicesListener);
         while (++$tries < 10) {
-            $messagesCount = \count((array)$transport->get());
-
+            $messagesCount = self::countMessagesInTransports($transports);
             if ($messagesCount === 0) {
                 break;
             }
@@ -247,7 +267,7 @@ trait MessengerAssertionsTrait
             $eventDispatcher->addSubscriber($messageLimitListener);
             $clock = Clock::get();
 
-            $worker = new Worker(['async' => $transport], $messageBus, $eventDispatcher, clock: $clock);
+            $worker = new Worker($transports, $messageBus, $eventDispatcher, clock: $clock);
             $worker->run();
 
             if (isset($expectedDelays[$tries - 1])) {
@@ -255,47 +275,49 @@ trait MessengerAssertionsTrait
             }
         }
 
-        // Message handler may dispatch new messages to async transport and this can happen multiple times.
-        // We need to consume all messages from async transport to make sure that all messages were processed.
-        // By default, we try to consume messages from async transport 10 times, and this is enough for most cases.
+        // Message handler may dispatch new messages to specified transports and this can happen multiple times.
+        // We need to consume all messages from specified transports to make sure that all messages were processed.
+        // By default, we try to consume messages from specified transports 10 times, and this is enough for most cases.
         // If we don't do this, we may get false positive results
-        if (\count((array)$transport->get()) > 0) {
-            throw new RuntimeException('Unable to consume all messages from async transport.');
+        if (self::countMessagesInTransports($transports) > 0) {
+            throw new RuntimeException('Unable to consume all messages from specified transports.');
         }
 
         // Symfony Messenger does not throw exceptions when message handler throws an exception.
         // Instead, it stores exception details in ErrorDetailsStamp, and we need to check it manually.
         // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException,
         // and we can't get original exception
-        foreach ($transport->getRejected() as $envelope) {
-            /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
-            foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
-                foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
-                    // If $expectedExceptionPairOrClass is a string = exceptionClass
-                    if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
-                        $errorDetailsStamp->getExceptionCode() === 0
-                    ) {
-                        unset($expectedExceptions[$key]);
+        foreach ($transports as $transport) {
+            foreach ($transport->getRejected() as $envelope) {
+                /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
+                foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
+                    foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
+                        // If $expectedExceptionPairOrClass is a string = exceptionClass
+                        if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
+                            $errorDetailsStamp->getExceptionCode() === 0
+                        ) {
+                            unset($expectedExceptions[$key]);
 
-                        continue 2;
-                    }
-                    // If $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
-                    if (
-                        isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
-                        && (
-                            $expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()]
-                            === $errorDetailsStamp->getExceptionCode()
-                        )
-                    ) {
-                        unset($expectedExceptions[$key]);
+                            continue 2;
+                        }
+                        // If $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
+                        if (
+                            isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
+                            && (
+                                $expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()]
+                                === $errorDetailsStamp->getExceptionCode()
+                            )
+                        ) {
+                            unset($expectedExceptions[$key]);
 
-                        continue 2;
+                            continue 2;
+                        }
                     }
+
+                    self::printExceptionDetails($errorDetailsStamp);
+
+                    throw new RuntimeException('Exception was thrown during messages processing.');
                 }
-
-                self::printExceptionDetails($errorDetailsStamp);
-
-                throw new RuntimeException('Exception was thrown during async messages processing.');
             }
         }
 
