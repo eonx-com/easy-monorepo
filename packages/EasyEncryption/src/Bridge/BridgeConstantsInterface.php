@@ -25,6 +25,8 @@ interface BridgeConstantsInterface
 
     public const PARAM_AWS_PKCS11_SERVER_CLIENT_KEY_FILE = 'easy_encryption.aws_pkcs11_server_client_key_file';
 
+    public const PARAM_AWS_PKCS11_SIGN_KEY_NAME = 'easy_encryption.aws_pkcs11_sign_key_name';
+
     public const PARAM_AWS_PKCS11_USER_PIN = 'easy_encryption.aws_pkcs11_user_pin';
 
     public const PARAM_AWS_PKCS11_USE_CLOUD_HSM_CONFIGURE_TOOL = 'easy_encryption.aws_pkcs11_use_cloud_hsm_configure_tool';

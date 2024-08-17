@@ -42,6 +42,8 @@ return [
 
     'aws_pkcs11_aws_role_arn' => '',
 
+    'aws_pkcs11_sign_key_name' => '',
+
     'aws_pkcs11_use_cloud_hsm_configure_tool' => false,
 
     'aws_pkcs11_user_pin' => '',

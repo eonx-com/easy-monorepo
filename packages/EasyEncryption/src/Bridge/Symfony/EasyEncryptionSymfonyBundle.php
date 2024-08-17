@@ -24,6 +24,7 @@ final class EasyEncryptionSymfonyBundle extends AbstractBundle
         'hsm_ip_address' => BridgeConstantsInterface::PARAM_AWS_PKCS11_HSM_IP_ADDRESS,
         'server_client_cert_file' => BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_CERT_FILE,
         'server_client_key_file' => BridgeConstantsInterface::PARAM_AWS_PKCS11_SERVER_CLIENT_KEY_FILE,
+        'sign_key_name' => BridgeConstantsInterface::PARAM_AWS_PKCS11_SIGN_KEY_NAME,
         'use_aws_cloud_hsm_configure_tool' => BridgeConstantsInterface::PARAM_AWS_PKCS11_USE_CLOUD_HSM_CONFIGURE_TOOL,
         'user_pin' => BridgeConstantsInterface::PARAM_AWS_PKCS11_USER_PIN,
     ];

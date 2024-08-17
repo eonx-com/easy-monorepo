@@ -47,7 +47,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$defaultKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
 
     $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
-        ->arg('$signKeyName', param(BridgeConstantsInterface::PARAM_DEFAULT_KEY_NAME));
+        ->arg('$signKeyName', param(BridgeConstantsInterface::PARAM_AWS_PKCS11_SIGN_KEY_NAME));
 
     $services->set(StringEncryptor::class)
         ->arg('$encryptor', service(AwsPkcs11EncryptorInterface::class))
