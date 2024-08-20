@@ -119,10 +119,20 @@ trait MessengerAssertionsTrait
      * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
      * @param array<int|float> $expectedDelays Expected delays in seconds between worker runs
      */
-    public static function consumeAsyncMessages(
+    public static function consumeAsyncMessages(array $expectedExceptions = [], array $expectedDelays = []): void
+    {
+        self::consumeMessages($expectedExceptions, $expectedDelays, ['async']);
+    }
+
+    /**
+     * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int|float> $expectedDelays Expected delays in seconds between worker runs
+     * @param array<int, string> $transports Transports to consume messages from
+     */
+    public static function consumeMessages(
         array $expectedExceptions = [],
         array $expectedDelays = [],
-        array $transports = ['async'],
+        array $transports = [],
     ): void {
         /**
          * If some exception occurs during message handling, it will be caught by Symfony Messenger Worker,
@@ -135,7 +145,7 @@ trait MessengerAssertionsTrait
          */
         if (isset(self::$isInsideSafeCall) && self::$isInsideSafeCall) {
             throw new RuntimeException(
-                "You can't use MessengerAssertionsTrait::consumeAsyncMessages() in ExceptionTrait::safeCall()"
+                "You can't use MessengerAssertionsTrait::consumeMessages() in ExceptionTrait::safeCall()"
             );
         }
 
@@ -237,7 +247,7 @@ trait MessengerAssertionsTrait
     ): void {
         /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport[] $transports */
         $transports = [];
-        foreach ($transportNames ?: ['async'] as $transportName) {
+        foreach ($transportNames as $transportName) {
             $transports[$transportName] = self::getContainer()->get('messenger.transport.' . $transportName);
         }
 
