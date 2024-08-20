@@ -118,12 +118,23 @@ trait MessengerAssertionsTrait
     /**
      * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
      * @param array<int|float> $expectedDelays Expected delays in seconds between worker runs
-     * @param array<string> $transports Transports to consume messages from
      */
     public static function consumeAsyncMessages(
         array $expectedExceptions = [],
         array $expectedDelays = [],
-        array $transports = ['async'],
+    ): void {
+        self::consumeMessages($expectedExceptions, $expectedDelays, ['async']);
+    }
+
+    /**
+     * @param array<int, class-string<\Throwable>|array<class-string<\Throwable>, int|string>> $expectedExceptions
+     * @param array<int|float> $expectedDelays Expected delays in seconds between worker runs
+     * @param array<int, string> $transports Transports to consume messages from
+     */
+    public static function consumeMessages(
+        array $expectedExceptions = [],
+        array $expectedDelays = [],
+        array $transports = [],
     ): void {
         /**
          * If some exception occurs during message handling, it will be caught by Symfony Messenger Worker,
@@ -140,7 +151,9 @@ trait MessengerAssertionsTrait
             );
         }
 
-        self::runMessengerWorker($transports, 'default', $expectedExceptions, $expectedDelays);
+        $realDelays = \array_map(static fn (int|float $value): float => $value + 0.000001, $expectedDelays ?? []);
+
+        self::runMessengerWorker($transports, 'default', $expectedExceptions, $realDelays);
     }
 
     /**
