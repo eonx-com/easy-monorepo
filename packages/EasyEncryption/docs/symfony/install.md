@@ -43,10 +43,6 @@ To connect to the CloudHSM cluster on your local machine do the following:
     - `ENCRYPTION_AWS_CLOUD_HSM_IP`
     - `ENCRYPTION_AWS_CLOUD_HSM_SIGN_KEY_NAME`
     - `ENCRYPTION_AWS_CLOUD_HSM_USER_PIN`
-- Delete the `./src/config/packages/local/easy_encryption.php` config.
-- Update the `.src/config/services_local.php` config:
-    - Delete the `App\Infrastructure\Encryption\Encryptor\Encryptor` service definition.
-    - Delete the `App\Infrastructure\Encryption\HashCalculator\HashCalculatorInterface` service definition.
 
 Here's an example of the configuration for the AWS CloudHSM:
 
@@ -71,6 +67,7 @@ $easyEncryptionConfig->defaultKeyName(env('ENCRYPTION_AWS_CLOUD_HSM_ENCRYPTION_K
         ->hsmIpAddress(env('ENCRYPTION_AWS_CLOUD_HSM_IP'))
         ->serverClientCertFile('/var/www/var/tmp/certificates/cloudhsmclient.crt')
         ->serverClientKeyFile('/var/www/var/tmp/certificates/cloudhsmclient.key')
+        ->signKeyName(env('ENCRYPTION_AWS_CLOUD_HSM_SIGN_KEY_NAME'))
         ->useAwsCloudHsmConfigureTool(false)
         ->userPin(env('ENCRYPTION_AWS_CLOUD_HSM_USER_PIN'));
 ```

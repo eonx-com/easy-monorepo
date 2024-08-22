@@ -10,6 +10,8 @@ interface EncryptorInterface
 {
     public const DEFAULT_KEY_NAME = 'app';
 
+    public const DEFAULT_SIGN_KEY_NAME = 'app-sign';
+
     public const ENCRYPTED_KEY_NAME = 'keyName';
 
     public const ENCRYPTED_KEY_VALUE = 'value';

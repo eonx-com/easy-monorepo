@@ -85,7 +85,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             HashCalculatorInterface::class,
             static fn (Container $app): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
                 encryptor: $app->make(AwsPkcs11EncryptorInterface::class),
-                signKeyName: \config('easy-encryption.default_key_name')
+                signKeyName: \config('easy-encryption.aws_pkcs11_sign_key_name')
             )
         );
 
