@@ -80,7 +80,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
             ->addComment($comment2);
 
         $result = $sut->create(
-            ActivityAction::Create,
+            ActivityAction::Create->value,
             $article,
             [
                 'content' => [null, $article->getContent()],
