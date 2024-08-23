@@ -21,7 +21,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
     {
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
-        $result = $sut->create(ActivityAction::Update, new Article(), ['key' => 'value']);
+        $result = $sut->create(ActivityAction::Update->value, new Article(), ['key' => 'value']);
 
         self::assertNull($result);
     }
@@ -37,7 +37,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
-            ActivityAction::Create,
+            ActivityAction::Create->value,
             (new Article())->setId((string)(new NilUuid())),
             ['title' => [null, 'New Title']]
         );
@@ -112,7 +112,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
-            ActivityAction::Update,
+            ActivityAction::Update->value,
             $author,
             ['field' => [1, 2]]
         );
@@ -130,7 +130,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
-            ActivityAction::Update,
+            ActivityAction::Update->value,
             $activityLogEntity,
             [
                 'field1' => [1, 2],
@@ -162,7 +162,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $article->setAuthor($author);
 
         $result = $sut->create(
-            ActivityAction::Create,
+            ActivityAction::Create->value,
             $article,
             [
                 'title' => [null, $article->getTitle()],
@@ -197,7 +197,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $article->setAuthor($author);
 
         $result = $sut->create(
-            ActivityAction::Create,
+            ActivityAction::Create->value,
             $article,
             [
                 'title' => [null, 'Related objects'],

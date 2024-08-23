@@ -9,7 +9,7 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 final class ActivityLogEntry
 {
-    private ActivityAction $action;
+    private string $action;
 
     private ?string $actorId = null;
 
@@ -29,7 +29,7 @@ final class ActivityLogEntry
 
     private DateTimeInterface $updatedAt;
 
-    public function getAction(): ActivityAction
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -79,9 +79,9 @@ final class ActivityLogEntry
         return $this->updatedAt;
     }
 
-    public function setAction(ActivityAction $action): self
+    public function setAction(ActivityAction|string $action): self
     {
-        $this->action = $action;
+        $this->action = \is_string($action) ? $action : $action->value;
 
         return $this;
     }

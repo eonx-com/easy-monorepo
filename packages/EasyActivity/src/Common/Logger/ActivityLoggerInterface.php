@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Common\Logger;
 
-use EonX\EasyActivity\Common\Enum\ActivityAction;
-
 interface ActivityLoggerInterface
 {
-    public function addActivityLogEntry(ActivityAction $action, object $object, array $changeSet): void;
+    public function addActivityLogEntry(string $action, object $object, array $changeSet): void;
 }
