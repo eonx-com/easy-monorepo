@@ -51,7 +51,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         );
         self::assertNull($result->getSubjectOldData());
         self::assertSame(DefaultActorResolver::DEFAULT_ACTOR_TYPE, $result->getActorType());
-        self::assertSame(ActivityAction::Create, $result->getAction());
+        self::assertSame(ActivityAction::Create->value, $result->getAction());
         self::assertNull($result->getActorName());
         self::assertSame((string)(new NilUuid()), $result->getSubjectId());
         self::assertSame(Article::class, $result->getSubjectType());
