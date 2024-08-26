@@ -5,7 +5,6 @@ namespace EonX\EasyLogging\Processor;
 
 use EonX\EasyLogging\Config\ProcessorConfigInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
-use Monolog\Level;
 use Monolog\LogRecord;
 
 final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingProcessor
