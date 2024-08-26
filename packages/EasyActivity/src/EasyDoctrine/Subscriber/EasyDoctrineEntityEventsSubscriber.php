@@ -57,6 +57,6 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
             return;
         }
 
-        $this->activityLogger->addActivityLogEntry($action->value, $object, $changeSet);
+        $this->activityLogger->addActivityLogEntry($action, $object, $changeSet);
     }
 }

@@ -16,7 +16,7 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
     }
 
     public function resolve(
-        string $action,
+        ActivityAction|string $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
     ): ?ActivitySubjectData {
@@ -32,7 +32,7 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
         return new ActivitySubjectData($serializedData, $serializedOldData);
     }
 
-    private function resolveChangeData(string $action, array $changeSet): array
+    private function resolveChangeData(ActivityAction|string $action, array $changeSet): array
     {
         $oldData = [];
         $data = [];
@@ -41,11 +41,11 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
             $oldData[$field] = $oldValue;
         }
 
-        if ($action === ActivityAction::Create->value) {
+        if ($action === ActivityAction::Create) {
             $oldData = null;
         }
 
-        if ($action === ActivityAction::Delete->value) {
+        if ($action === ActivityAction::Delete) {
             $data = null;
         }
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Common\Logger;
 
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Factory\ActivityLogEntryFactoryInterface;
 use EonX\EasyActivity\Common\Store\StoreInterface;
 
@@ -14,7 +15,7 @@ final readonly class SyncActivityLogger implements ActivityLoggerInterface
     ) {
     }
 
-    public function addActivityLogEntry(string $action, object $object, array $changeSet): void
+    public function addActivityLogEntry(ActivityAction|string $action, object $object, array $changeSet): void
     {
         $logEntry = $this->activityLogEntryFactory->create($action, $object, $changeSet);
 
