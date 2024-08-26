@@ -12,6 +12,8 @@ use Throwable;
 
 abstract class AbstractEncryptor implements EncryptorInterface
 {
+    public const DEFAULT_SIGN_KEY_NAME = 'app-sign';
+
     private const DEFAULT_KEY_NAME = 'app';
 
     private const ENCRYPTED_KEY_NAME = 'keyName';
