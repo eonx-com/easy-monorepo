@@ -17,11 +17,21 @@ final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingP
 
     public function __invoke(LogRecord $record): LogRecord
     {
-        $recordData = $this->sensitiveDataSanitizer->sanitize($record->toArray());
-        unset($recordData['level_name']);
-        $recordData['level'] = Level::fromValue($recordData['level']);
+        $recordData = $record->toArray();
+        $sanitizedData = $this->sensitiveDataSanitizer->sanitize([
+            'context' => $recordData['context'],
+            'extra' => $recordData['extra'],
+            'message' => $recordData['message'],
+        ]);
 
-        return $record->with(...$recordData);
+        return $record->with(
+            message: $sanitizedData['message'],
+            context: $sanitizedData['context'],
+            level: Level::fromValue($recordData['level']),
+            channel: $recordData['channel'],
+            datetime: $recordData['datetime'],
+            extra: $sanitizedData['extra']
+        );
     }
 
     protected function configure(ProcessorConfigInterface $processorConfig): void
