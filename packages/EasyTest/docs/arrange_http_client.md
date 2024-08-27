@@ -5,7 +5,7 @@ weight: 1001
 
 # Arrange HTTP Client
 
-Add `\EonX\EasyTest\HttpClient\Factory\TestResponseFactory` and `\EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub`
+Add `\EonX\EasyTest\HttpClient\Factory\TestResponseFactory` and `\EonX\EasyTest\EasyErrorHandler\ErrorHandler\TraceableErrorHandlerStub`
 to you test services.
 
 ```php
@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface;
-use EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub;
+use EonX\EasyTest\EasyErrorHandler\ErrorHandler\TraceableErrorHandlerStub;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

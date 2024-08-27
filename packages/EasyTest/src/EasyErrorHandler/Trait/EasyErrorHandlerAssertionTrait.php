@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\EasyErrorHandler\Common\Trait;
+namespace EonX\EasyTest\EasyErrorHandler\Trait;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 
