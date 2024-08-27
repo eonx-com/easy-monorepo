@@ -28,7 +28,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(TestResponseFactory::class);
 
     $services->set(TraceableErrorHandlerStub::class)
-        ->decorate(TraceableErrorHandlerInterface::class);
+        ->decorate(TraceableErrorHandlerInterface::class)
+        ->arg('$decorated', service('.inner'));
 };
 ```
 
@@ -51,13 +52,13 @@ return static function (FrameworkConfig $frameworkConfig): void {
 };
 ```
 
-Register `\EonX\EasyTest\PHPUnit\Extension\HttpClientExtension` in PHPUnit configuration.
+Register `EonX\EasyTest\PHPUnit\Extension\EasyTestExtension` in PHPUnit configuration.
 
 ```xml
 <!-- phpunit.xml.dist -->
     ...
 <extensions>
-    <bootstrap class="EonX\EasyTest\PHPUnit\Extension\HttpClientExtension"/>
+    <bootstrap class="EonX\EasyTest\PHPUnit\Extension\EasyTestExtension"/>
 </extensions>
     ...
 ```
