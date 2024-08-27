@@ -5,6 +5,7 @@ namespace EonX\EasyTest\Tests\Unit\HttpClient\Response;
 
 use EonX\EasyTest\HttpClient\Response\StrictTestResponse;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class StrictTestResponseTest extends TestCase
 {
@@ -48,6 +49,7 @@ final class StrictTestResponseTest extends TestCase
             ]
         );
 
+        self::assertInstanceOf(MockResponse::class, $mockResponse);
         self::assertSame(200, $mockResponse->getInfo()['http_code']);
     }
 }
