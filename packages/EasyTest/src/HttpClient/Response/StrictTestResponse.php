@@ -114,7 +114,8 @@ final class StrictTestResponse extends AbstractTestResponse
                 $this->sortArray($value);
             }
         }
-
         unset($value);
+
+        array_is_list($array) ? sort($array) : ksort($array);
     }
 }
