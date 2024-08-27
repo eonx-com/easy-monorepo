@@ -11,7 +11,7 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 final readonly class CustomActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
     public function resolve(
-        ActivityAction $action,
+        ActivityAction|string $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
     ): ?ActivitySubjectData {

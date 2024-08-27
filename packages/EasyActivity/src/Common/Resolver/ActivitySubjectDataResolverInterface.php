@@ -10,7 +10,7 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 interface ActivitySubjectDataResolverInterface
 {
     public function resolve(
-        ActivityAction $action,
+        ActivityAction|string $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
     ): ?ActivitySubjectData;

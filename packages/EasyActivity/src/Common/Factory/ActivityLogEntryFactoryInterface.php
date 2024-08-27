@@ -8,5 +8,5 @@ use EonX\EasyActivity\Common\Enum\ActivityAction;
 
 interface ActivityLogEntryFactoryInterface
 {
-    public function create(ActivityAction $action, object $object, array $changeSet): ?ActivityLogEntry;
+    public function create(ActivityAction|string $action, object $object, array $changeSet): ?ActivityLogEntry;
 }

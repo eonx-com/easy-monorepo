@@ -15,7 +15,7 @@ final readonly class SyncActivityLogger implements ActivityLoggerInterface
     ) {
     }
 
-    public function addActivityLogEntry(ActivityAction $action, object $object, array $changeSet): void
+    public function addActivityLogEntry(ActivityAction|string $action, object $object, array $changeSet): void
     {
         $logEntry = $this->activityLogEntryFactory->create($action, $object, $changeSet);
 
