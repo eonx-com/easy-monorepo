@@ -12,6 +12,7 @@
         "symfony/console": "^7.0",
         "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.0",
+        "symfony/http-client": "^7.0",
         "symfony/http-kernel": "^7.0"
     },
     "autoload": {
