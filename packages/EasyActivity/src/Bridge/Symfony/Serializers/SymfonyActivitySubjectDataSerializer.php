@@ -5,6 +5,7 @@ namespace EonX\EasyActivity\Bridge\Symfony\Serializers;
 
 use EonX\EasyActivity\Interfaces\ActivitySubjectDataSerializerInterface;
 use EonX\EasyActivity\Interfaces\ActivitySubjectInterface;
+use EonX\EasyActivity\Interfaces\AllowAllPropertiesInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
@@ -20,7 +21,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
     ) {
     }
 
-    public function serialize(array $data, ActivitySubjectInterface $subject): ?string
+    public function serialize(array $data, ActivitySubjectInterface $subject, ?array $context = null): ?string
     {
         $allowedProperties = $subject->getAllowedActivityProperties();
 
@@ -37,7 +38,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
             );
         }
 
-        $context = [];
+        $context ??= [];
 
         foreach ($data as $key => $value) {
             if (\count($allowedProperties) > 0
@@ -55,7 +56,7 @@ final class SymfonyActivitySubjectDataSerializer implements ActivitySubjectDataS
                 continue;
             }
 
-            if (\is_object($value)) {
+            if (\is_object($value) && $value instanceof AllowAllPropertiesInterface === false) {
                 $objectClass = $value::class;
 
                 $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
