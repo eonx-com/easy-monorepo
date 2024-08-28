@@ -85,6 +85,7 @@ final class EasyEncryptionBundle extends AbstractBundle
             ->set(ConfigParam::AwsCloudHsmUseConfigureTool->value, $config['use_aws_cloud_hsm_configure_tool'])
             ->set(ConfigParam::AwsCloudHsmSignKeyName->value, $config['sign_key_name'])
             ->set(ConfigParam::AwsCloudHsmUserPin->value, $config['user_pin']);
+
         $container->import('config/aws_cloud_hsm_encryptor.php');
     }
 }
