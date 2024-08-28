@@ -41,6 +41,9 @@ parameters:
           path: %currentWorkingDirectory%/packages/*/tests/Bridge/Symfony/Fixtures/app/src/StateProvider/*
 
         # ---- EasyActivity ----
+        - message: '#Method EonX\\EasyActivity\\Interfaces\\ActivitySubjectDataSerializerInterface\:\:serialize\(\) invoked with 3 parameters, 2 required#'
+          path: %currentWorkingDirectory%/packages/EasyActivity/src/Bridge/Doctrine/DoctrineActivitySubjectDataResolver.php
+
         # ---- EasyApiPlatform ----
         - message: '#Class EonX\\EasyApiPlatform\\Normalizers\\CarbonImmutableNormalizer extends @final class Symfony\\Component\\Serializer\\Normalizer\\DateTimeNormalizer#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Normalizers/CarbonImmutableNormalizer.php
