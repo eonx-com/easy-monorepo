@@ -5,6 +5,7 @@ namespace EonX\EasyActivity\Common\Serializer;
 
 use EonX\EasyActivity\Common\CircularReferenceHandler\CircularReferenceHandlerInterface;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
+use EonX\EasyActivity\Common\Object\FullySerializableObjectInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -55,7 +56,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
                 continue;
             }
 
-            if (\is_object($value) && $value instanceof AllowAllPropertiesSerializerInterface === false) {
+            if (\is_object($value) && $value instanceof FullySerializableObjectInterface === false) {
                 $objectClass = $value::class;
 
                 $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]
