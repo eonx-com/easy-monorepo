@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Common\Constraint;
 
 use Attribute;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
@@ -12,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
-final class AlphanumericHyphen extends Constraint
+final class AlphanumericHyphen extends AbstractConstraint
 {
     public const INVALID_ALPHANUMERIC_HYPHEN_ERROR = 'INVALID_ALPHANUMERIC_HYPHEN_ERROR';
 
