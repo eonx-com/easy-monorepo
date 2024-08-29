@@ -46,5 +46,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$defaultKeyName', param(ConfigParam::DefaultKeyName->value));
 
     $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
-        ->arg('$signKeyName', param(ConfigParam::DefaultKeyName->value));
+        ->arg('$signKeyName', param(ConfigParam::AwsCloudHsmSignKeyName->value));
 };

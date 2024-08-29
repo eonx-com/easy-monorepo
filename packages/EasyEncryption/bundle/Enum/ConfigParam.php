@@ -27,6 +27,8 @@ enum ConfigParam: string
 
     case AwsCloudHsmServerClientKeyFile = 'easy_encryption.aws_cloud_hsm.server_client_key_file';
 
+    case AwsCloudHsmSignKeyName = 'easy_encryption.aws_cloud_hsm.sign_key_name';
+
     case AwsCloudHsmUseConfigureTool = 'easy_encryption.aws_cloud_hsm.use_configure_tool';
 
     case AwsCloudHsmUserPin = 'easy_encryption.aws_cloud_hsm.user_pin';

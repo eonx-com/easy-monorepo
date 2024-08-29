@@ -32,6 +32,7 @@ return static function (DefinitionConfigurator $definition) {
                     ->scalarNode('ip_address')->defaultNull()->end()
                     ->scalarNode('server_client_cert_file')->defaultNull()->end()
                     ->scalarNode('server_client_key_file')->defaultNull()->end()
+                    ->scalarNode('sign_key_name')->defaultValue('app-sign')->end()
                     ->booleanNode('use_aws_cloud_hsm_configure_tool')->defaultTrue()->end()
                     ->scalarNode('user_pin')->defaultNull()->end()
                 ->end()
