@@ -9,9 +9,4 @@ use Attribute;
 final class NumberLessOrEqual extends AbstractNumberComparison
 {
     public string $message = 'number.should_be_less_or_equal';
-
-    public function validatedBy(): string
-    {
-        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
-    }
 }

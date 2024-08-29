@@ -22,4 +22,9 @@ abstract class AbstractNumberComparison extends AbstractComparison
 
         parent::__construct($value, $propertyPath, $message, $groups, $payload, $options ?? []);
     }
+
+    public function validatedBy(): string
+    {
+        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
+    }
 }
