@@ -10,11 +10,9 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 final readonly class DefaultActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
-    public const CONTEXT_SERIALIZE_LOG_DATA_KEY = 'easy_activity_serialize_log_data';
+    public const CONTEXT_KEY_SUBJECT_DATA_SERIALIZATION = 'easy_activity_subject_data_serialization';
 
-    public const CONTEXT_SERIALIZE_LOG_DATA_NEW = 'new';
-
-    public const CONTEXT_SERIALIZE_LOG_DATA_OLD = 'old';
+    public const CONTEXT_KEY_SUBJECT_OLD_DATA_SERIALIZATION = 'easy_activity_subject_old_data_serialization';
 
     public function __construct(
         private ActivitySubjectDataSerializerInterface $serializer,
@@ -30,12 +28,12 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
 
         $serializedData = $data !== null
             ? $this->serializer->serialize($data, $subject, [
-                self::CONTEXT_SERIALIZE_LOG_DATA_KEY => self::CONTEXT_SERIALIZE_LOG_DATA_NEW,
+                self::CONTEXT_KEY_SUBJECT_DATA_SERIALIZATION => true,
             ])
             : null;
         $serializedOldData = $oldData !== null
             ? $this->serializer->serialize($oldData, $subject, [
-                self::CONTEXT_SERIALIZE_LOG_DATA_KEY => self::CONTEXT_SERIALIZE_LOG_DATA_OLD,
+                self::CONTEXT_KEY_SUBJECT_OLD_DATA_SERIALIZATION => true,
             ])
             : null;
 
