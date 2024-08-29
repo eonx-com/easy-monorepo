@@ -10,7 +10,11 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 final readonly class DefaultActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
-    public const CONTEXT_KEY_IS_SERIALIZE_OLD_DATA = 'easy_activity_is_serialize_old_data';
+    public const CONTEXT_SERIALIZE_LOG_DATA_KEY = 'easy_activity_serialize_log_data';
+
+    public const CONTEXT_SERIALIZE_LOG_DATA_NEW = 'new';
+
+    public const CONTEXT_SERIALIZE_LOG_DATA_OLD = 'old';
 
     public function __construct(
         private ActivitySubjectDataSerializerInterface $serializer,
@@ -24,9 +28,15 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
     ): ?ActivitySubjectData {
         [$oldData, $data] = $this->resolveChangeData($action, $changeSet);
 
-        $serializedData = $data !== null ? $this->serializer->serialize($data, $subject, []) : null;
+        $serializedData = $data !== null
+            ? $this->serializer->serialize($data, $subject, [
+                self::CONTEXT_SERIALIZE_LOG_DATA_KEY => self::CONTEXT_SERIALIZE_LOG_DATA_NEW,
+            ])
+            : null;
         $serializedOldData = $oldData !== null
-            ? $this->serializer->serialize($oldData, $subject, [self::CONTEXT_KEY_IS_SERIALIZE_OLD_DATA => true])
+            ? $this->serializer->serialize($oldData, $subject, [
+                self::CONTEXT_SERIALIZE_LOG_DATA_KEY => self::CONTEXT_SERIALIZE_LOG_DATA_OLD,
+            ])
             : null;
 
         if ($serializedData === null && $serializedOldData === null) {
