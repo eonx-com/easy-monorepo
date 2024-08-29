@@ -5,7 +5,7 @@ weight: 1001
 
 # Arrange HTTP Client
 
-Add `\EonX\EasyTest\HttpClient\Factory\TestResponseFactory` and `\EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub`
+Add `\EonX\EasyTest\HttpClient\Factory\TestResponseFactory` and `\EonX\EasyTest\EasyErrorHandler\ErrorHandler\TraceableErrorHandlerStub`
 to you test services.
 
 ```php
@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface;
-use EonX\EasyTest\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerStub;
+use EonX\EasyTest\EasyErrorHandler\ErrorHandler\TraceableErrorHandlerStub;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -28,7 +28,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(TestResponseFactory::class);
 
     $services->set(TraceableErrorHandlerStub::class)
-        ->decorate(TraceableErrorHandlerInterface::class);
+        ->decorate(TraceableErrorHandlerInterface::class)
+        ->arg('$decorated', service('.inner'));
 };
 ```
 
@@ -51,13 +52,13 @@ return static function (FrameworkConfig $frameworkConfig): void {
 };
 ```
 
-Register `\EonX\EasyTest\PHPUnit\Extension\HttpClientExtension` in PHPUnit configuration.
+Register `EonX\EasyTest\PHPUnit\Extension\EasyTestExtension` in PHPUnit configuration.
 
 ```xml
 <!-- phpunit.xml.dist -->
     ...
 <extensions>
-    <bootstrap class="EonX\EasyTest\PHPUnit\Extension\HttpClientExtension"/>
+    <bootstrap class="EonX\EasyTest\PHPUnit\Extension\EasyTestExtension"/>
 </extensions>
     ...
 ```

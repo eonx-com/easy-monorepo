@@ -31,6 +31,7 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         '/EasyBatch/src/Common/Manager',
         '/EasyTest/src/Common/Trait',
         '/EasyTest/src/HttpClient/Trait',
+        '/EasyTest/src/EasyErrorHandler/Trait',
     ];
 
     #[DataProvider('provideSubject')]
