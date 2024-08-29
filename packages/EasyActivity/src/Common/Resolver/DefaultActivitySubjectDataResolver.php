@@ -10,6 +10,8 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 final readonly class DefaultActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
+    public const CONTEXT_KEY_IS_SERIALIZE_OLD_DATA = 'easy_activity_is_serialize_old_data';
+
     public function __construct(
         private ActivitySubjectDataSerializerInterface $serializer,
     ) {
@@ -22,8 +24,10 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
     ): ?ActivitySubjectData {
         [$oldData, $data] = $this->resolveChangeData($action, $changeSet);
 
-        $serializedData = $data !== null ? $this->serializer->serialize($data, $subject) : null;
-        $serializedOldData = $oldData !== null ? $this->serializer->serialize($oldData, $subject) : null;
+        $serializedData = $data !== null ? $this->serializer->serialize($data, $subject, []) : null;
+        $serializedOldData = $oldData !== null
+            ? $this->serializer->serialize($oldData, $subject, [self::CONTEXT_KEY_IS_SERIALIZE_OLD_DATA => true])
+            : null;
 
         if ($serializedData === null && $serializedOldData === null) {
             return null;
