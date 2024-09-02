@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Doctrine\Repository;
 
-use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use EonX\EasyBatch\Common\Exception\BatchNotFoundException;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
@@ -112,7 +112,7 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         try {
             $queryBuilder = $this->connection->createQueryBuilder();
 
-            if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform === false) {
+            if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform === false) {
                 $queryBuilder->forUpdate();
             }
 

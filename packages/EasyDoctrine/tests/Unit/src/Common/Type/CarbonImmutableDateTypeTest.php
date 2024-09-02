@@ -5,7 +5,7 @@ namespace EonX\EasyDoctrine\Tests\Unit\Common\Type;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use EonX\EasyDoctrine\Common\Type\CarbonImmutableDateType;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -39,7 +39,7 @@ final class CarbonImmutableDateTypeTest extends AbstractUnitTestCase
     public function testConvertToPhpValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
     {
         $type = new CarbonImmutableDateType();
-        $platform = new SQLitePlatform();
+        $platform = new SqlitePlatform();
 
         $phpValue = $type->convertToPHPValue($value, $platform);
 

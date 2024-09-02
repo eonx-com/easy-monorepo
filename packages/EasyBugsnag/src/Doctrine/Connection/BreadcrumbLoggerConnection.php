@@ -20,39 +20,37 @@ final class BreadcrumbLoggerConnection extends AbstractConnectionMiddleware
         parent::__construct($connection);
     }
 
-    public function beginTransaction(): void
+    public function beginTransaction(): bool
     {
         $queryBreadcrumb = new QueryBreadcrumb('"START TRANSACTION"', $this->connectionName);
 
         try {
-            parent::beginTransaction();
+            return parent::beginTransaction();
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
         $queryBreadcrumb = new QueryBreadcrumb('"COMMIT"', $this->connectionName);
 
         try {
-            parent::commit();
+            return parent::commit();
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }
     }
 
-    public function exec(string $sql): int|string
+    public function exec(string $sql): int
     {
         $queryBreadcrumb = new QueryBreadcrumb($sql, $this->connectionName);
 
         try {
-            $affectedRows = parent::exec($sql);
+            return parent::exec($sql);
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }
-
-        return $affectedRows;
     }
 
     public function prepare(string $sql): BreadcrumbLoggerStatement
@@ -76,12 +74,12 @@ final class BreadcrumbLoggerConnection extends AbstractConnectionMiddleware
         }
     }
 
-    public function rollBack(): void
+    public function rollBack(): bool
     {
         $queryBreadcrumb = new QueryBreadcrumb('"ROLLBACK"', $this->connectionName);
 
         try {
-            parent::rollBack();
+            return parent::rollBack();
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }

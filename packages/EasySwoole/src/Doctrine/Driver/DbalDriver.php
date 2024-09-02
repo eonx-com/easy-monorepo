@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Doctrine\Driver;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\ServerVersionProvider;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use EonX\EasySwoole\Doctrine\ClientConfig\PdoClientConfig;
@@ -74,14 +75,22 @@ final readonly class DbalDriver implements Driver
         return new DbalConnection($pool);
     }
 
-    public function getDatabasePlatform(ServerVersionProvider $versionProvider): AbstractPlatform
+    public function getDatabasePlatform(): AbstractPlatform
     {
-        return $this->decorated->getDatabasePlatform($versionProvider);
+        return $this->decorated->getDatabasePlatform();
     }
 
     public function getExceptionConverter(): ExceptionConverter
     {
         return $this->decorated->getExceptionConverter();
+    }
+
+    /**
+     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager<\Doctrine\DBAL\Platforms\AbstractPlatform>
+     */
+    public function getSchemaManager(Connection $conn, AbstractPlatform $platform): AbstractSchemaManager
+    {
+        return $this->decorated->getSchemaManager($conn, $platform);
     }
 
     private function getOption(CoroutinePdoDriverOption $driverOption, array $params): mixed
