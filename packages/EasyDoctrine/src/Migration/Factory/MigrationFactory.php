@@ -9,7 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyDoctrine\Migration\Migration\EnvironmentAwareMigrationInterface;
 use EonX\EasyDoctrine\Migration\Migration\ExpectedConnectionAwareMigrationInterface;
 
-final class MigrationFactory implements DoctrineMigrationFactory
+final readonly class MigrationFactory implements DoctrineMigrationFactory
 {
     public function __construct(
         private MigrationFactory $decorated,
