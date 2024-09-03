@@ -7,6 +7,9 @@ use EonX\EasyLock\Messenger\Middleware\ProcessWithLockMiddleware;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
+    $services->defaults()
+        ->autowire()
+        ->autoconfigure();
 
     $services->set(ProcessWithLockMiddleware::class);
 };
