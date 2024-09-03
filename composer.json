@@ -68,6 +68,7 @@
     "require-dev": {
         "auth0/auth0-php": "^8.6",
         "doctrine/annotations": "^2.0",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^4.0",
         "fakerphp/faker": "^1.19",
         "firebase/php-jwt": "^6.5",
