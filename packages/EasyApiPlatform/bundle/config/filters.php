@@ -8,6 +8,9 @@ use EonX\EasyApiPlatform\Common\Filter\AdvancedSearchFilter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
+    $services->defaults()
+        ->autowire()
+        ->autoconfigure();
 
     $services->set('eonx.api_platform.doctrine.orm.advanced_search_filter', AdvancedSearchFilter::class)
         ->autoconfigure(false)
