@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Common\Type;
 
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use EonX\EasyUtils\Math\ValueObject\Number;
 
@@ -23,7 +22,11 @@ final class IntegerNumberType extends Type
             return (string)$value;
         }
 
-        throw InvalidType::new($value, self::class, ['null', Number::class]);
+        throw ConversionException::conversionFailedInvalidType(
+            $value,
+            $this->getName(),
+            ['null', Number::class]
+        );
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Number
@@ -37,9 +40,9 @@ final class IntegerNumberType extends Type
         return new Number($value);
     }
 
-    public function getBindingType(): ParameterType
+    public function getName(): string
     {
-        return ParameterType::STRING;
+        return self::NAME;
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string

@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "doctrine/dbal": "^4.0",
-        "doctrine/orm": "^3.2",
+        "doctrine/dbal": "^3.0",
+        "doctrine/orm": "^2.14",
         "eonx-com/easy-doctrine": "^6.0",
         "eonx-com/easy-lock": "^6.0",
         "nesbot/carbon": "^3.7",

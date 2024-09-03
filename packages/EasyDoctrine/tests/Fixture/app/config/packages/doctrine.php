@@ -21,8 +21,8 @@ return static function (DoctrineConfig $doctrineConfig): void {
         ->class(CarbonImmutableDateTimeMicrosecondsType::class);
 
     $connection = $dbal->connection('default');
-
     $connection
+        ->useSavepoints(true)
         ->driver('pdo_sqlite')
         ->url('sqlite:///:memory:');
 
