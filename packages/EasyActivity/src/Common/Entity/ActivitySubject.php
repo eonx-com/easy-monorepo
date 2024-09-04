@@ -8,7 +8,7 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
     /**
      * @param list<string> $disallowedProperties
      * @param array<string, list<string>> $nestedObjectAllowedProperties
-     * @param list<string>|array<string, list<string>>|null $allowedProperties
+     * @param list<string>|array<string, list<string>> $allowedProperties
      */
     public function __construct(
         private string $id,

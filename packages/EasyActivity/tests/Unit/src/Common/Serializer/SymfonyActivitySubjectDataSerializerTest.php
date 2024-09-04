@@ -204,7 +204,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             ),
         ];
 
-        $authorExtra = (new AuthorExtra)
+        $authorExtra = (new AuthorExtra())
             ->setPhone('1234567890');
 
         yield 'Default config when nested object' => [
