@@ -19,7 +19,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     private array $events = [];
 
     public function __construct(
-        private EventDispatcherInterface $decorated,
+        private readonly EventDispatcherInterface $decorated,
     ) {
     }
 

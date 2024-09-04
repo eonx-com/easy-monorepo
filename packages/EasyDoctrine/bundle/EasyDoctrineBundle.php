@@ -87,7 +87,7 @@ final class EasyDoctrineBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if (count($config['deferred_dispatcher_entities']) === 0) {
+        if (\count($config['deferred_dispatcher_entities']) === 0) {
             return;
         }
 

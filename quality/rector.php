@@ -50,7 +50,7 @@ return RectorConfig::configure()
         FirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
-            'packages/EasyDoctrine/bundle/config/services.php',
+            'packages/EasyDoctrine/bundle/config/deferred_dispatcher.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
