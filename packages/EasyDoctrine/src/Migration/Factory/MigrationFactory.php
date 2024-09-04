@@ -12,7 +12,7 @@ use EonX\EasyDoctrine\Migration\Migration\ExpectedConnectionAwareMigrationInterf
 final readonly class MigrationFactory implements DoctrineMigrationFactory
 {
     public function __construct(
-        private MigrationFactory $decorated,
+        private DoctrineMigrationFactory $decorated,
         private ManagerRegistry $managerRegistry,
         private string $environment,
     ) {
