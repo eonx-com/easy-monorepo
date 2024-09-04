@@ -23,7 +23,7 @@ final readonly class AwsCloudHsmCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition(StringEncryptorInterface::class);
 
         $definition->replaceArgument(
-            0,
+            '$encryptor',
             $container->getDefinition(AwsCloudHsmEncryptorInterface::class)
         );
     }
