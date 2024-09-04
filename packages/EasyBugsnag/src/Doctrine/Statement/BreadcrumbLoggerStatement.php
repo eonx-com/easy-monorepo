@@ -25,20 +25,26 @@ final class BreadcrumbLoggerStatement extends AbstractStatementMiddleware
         $this->queryBreadcrumb = new QueryBreadcrumb($sql, $this->connectionName);
     }
 
-    public function bindValue(int|string $param, mixed $value, ParameterType $type): void
+    /**
+     * {@inheritdoc}
+     */
+    public function bindValue($param, mixed $value, $type = ParameterType::STRING): bool
     {
         $this->queryBreadcrumb->setQueryParameter($param, $value, $type);
 
-        parent::bindValue($param, $value, $type);
+        return parent::bindValue($param, $value, $type);
     }
 
-    public function execute(): ResultInterface
+    /**
+     * {@inheritdoc}
+     */
+    public function execute($params = null): ResultInterface
     {
         // Clone to prevent variables by reference to change
         $sqlBreadcrumb = clone $this->queryBreadcrumb;
 
         try {
-            return parent::execute();
+            return parent::execute($params);
         } finally {
             $this->queryBreadcrumbLogger->log($sqlBreadcrumb);
         }

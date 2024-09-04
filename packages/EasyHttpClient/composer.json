@@ -15,9 +15,9 @@
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
-        "doctrine/dbal": "^4.0",
+        "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^3.2",
+        "doctrine/orm": "^2.14",
         "eonx-com/easy-bugsnag": "^6.0",
         "eonx-com/easy-lock": "^6.0",
         "eonx-com/easy-test": "^6.0",

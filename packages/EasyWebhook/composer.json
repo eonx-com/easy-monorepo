@@ -20,7 +20,7 @@
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
-        "doctrine/dbal": "^4.0",
+        "doctrine/dbal": "^3.0",
         "illuminate/database": "^11.0",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"

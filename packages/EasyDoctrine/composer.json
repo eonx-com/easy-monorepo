@@ -1,14 +1,16 @@
 {
     "name": "eonx-com/easy-doctrine",
     "description": "Provides functionalities to enhance Doctrine integration in your project",
-    "keywords": ["doctrine"],
+    "keywords": [
+        "doctrine"
+    ],
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "doctrine/dbal": "^4.0",
+        "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^3.2",
+        "doctrine/orm": "^2.14",
         "eonx-com/easy-event-dispatcher": "^6.0",
         "eonx-com/easy-utils": "^6.0",
         "myclabs/deep-copy": "^1.11",
@@ -21,6 +23,7 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.269",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
         "eonx-com/easy-bugsnag": "^6.0",
         "eonx-com/easy-error-handler": "^6.0",
         "eonx-com/easy-test": "^6.0",
@@ -45,6 +48,7 @@
     },
     "suggest": {
         "aws/aws-sdk-php": "To use AWS RDS integration",
+        "doctrine/doctrine-migrations-bundle": "To use integration with Doctrine Migrations",
         "eonx-com/easy-error-handler": "To report transactional errors",
         "illuminate/support": "To use this package with Laravel/Lumen"
     },

@@ -12,6 +12,11 @@ final class DateTimeWithMicroSecondsType extends Type
 {
     public const NAME = 'datetime_with_microseconds';
 
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if ($platform instanceof PostgreSQLPlatform) {
