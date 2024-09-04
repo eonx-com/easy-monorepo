@@ -61,7 +61,8 @@ return static function (ContainerConfigurator $container): void {
         ->set(ActivitySubjectDataSerializerInterface::class, SymfonyActivitySubjectDataSerializer::class)
         ->arg('$serializer', service(ConfigServiceId::Serializer->value))
         ->arg('$circularReferenceHandler', service(ConfigServiceId::CircularReferenceHandler->value))
-        ->arg('$disallowedProperties', param(ConfigParam::DisallowedProperties->value));
+        ->arg('$disallowedProperties', param(ConfigParam::DisallowedProperties->value))
+        ->arg('$fullySerializableProperties', param(ConfigParam::FullySerializableProperties->value));
 
     $services
         ->set(ActivityLogEntryFactoryInterface::class, ActivityLogEntryFactory::class);

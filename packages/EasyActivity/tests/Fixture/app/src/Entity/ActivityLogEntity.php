@@ -34,6 +34,11 @@ final readonly class ActivityLogEntity implements ActivitySubjectInterface
         return [];
     }
 
+    public function getFullySerializableActivityProperties(): array
+    {
+        return [];
+    }
+
     public function getNestedObjectAllowedActivityProperties(): array
     {
         return [];

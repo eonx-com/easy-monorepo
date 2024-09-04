@@ -5,7 +5,6 @@ namespace EonX\EasyActivity\Common\Serializer;
 
 use EonX\EasyActivity\Common\CircularReferenceHandler\CircularReferenceHandlerInterface;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
-use EonX\EasyActivity\Common\Object\FullySerializableObjectInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -18,6 +17,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
         private SerializerInterface $serializer,
         private CircularReferenceHandlerInterface $circularReferenceHandler,
         private array $disallowedProperties,
+        private array $fullySerializableProperties,
     ) {
     }
 
@@ -30,11 +30,18 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
         }
 
         $disallowedProperties = $subject->getDisallowedActivityProperties();
+        $fullySerializableProperties = $subject->getFullySerializableActivityProperties();
         $nestedObjectAllowedProperties = $subject->getNestedObjectAllowedActivityProperties();
 
         if ($this->disallowedProperties !== []) {
             $disallowedProperties = \array_filter(
                 \array_merge($this->disallowedProperties, $disallowedProperties)
+            );
+        }
+
+        if ($this->fullySerializableProperties !== []) {
+            $fullySerializableProperties = \array_filter(
+                \array_merge($this->fullySerializableProperties, $fullySerializableProperties)
             );
         }
 
@@ -56,7 +63,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
                 continue;
             }
 
-            if (\is_object($value) && $value instanceof FullySerializableObjectInterface === false) {
+            if (\is_object($value) && \in_array($key, $fullySerializableProperties, true) === false) {
                 $objectClass = $value::class;
 
                 $context[AbstractNormalizer::ATTRIBUTES][$key] = $nestedObjectAllowedProperties[$objectClass]

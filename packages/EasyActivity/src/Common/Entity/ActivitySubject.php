@@ -15,7 +15,8 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
         private string $type,
         private array $disallowedProperties,
         private array $nestedObjectAllowedProperties,
-        private ?array $allowedProperties = null,
+        private array $allowedProperties,
+        private array $fullySerializableProperties,
     ) {
     }
 
@@ -37,6 +38,11 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
     public function getDisallowedActivityProperties(): array
     {
         return $this->disallowedProperties;
+    }
+
+    public function getFullySerializableActivityProperties(): array
+    {
+        return $this->fullySerializableProperties;
     }
 
     public function getNestedObjectAllowedActivityProperties(): array

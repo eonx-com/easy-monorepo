@@ -19,6 +19,8 @@ interface ActivitySubjectInterface
      */
     public function getDisallowedActivityProperties(): array;
 
+    public function getFullySerializableActivityProperties(): array;
+
     /**
      * @return array<string, list<string>>
      */

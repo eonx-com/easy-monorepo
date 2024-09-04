@@ -29,6 +29,7 @@ final class EasyActivityBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::TableName->value, $config['table_name'])
             ->set(ConfigParam::DisallowedProperties->value, $config['disallowed_properties'])
+            ->set(ConfigParam::FullySerializableProperties->value, $config['fully_serializable_properties'])
             ->set(ConfigParam::Subjects->value, $config['subjects']);
 
         $container->import('config/services.php');
