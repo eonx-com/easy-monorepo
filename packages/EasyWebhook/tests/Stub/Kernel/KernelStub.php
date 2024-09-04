@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stub\Kernel;
 
 use Doctrine\DBAL\Connection;
+use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
@@ -75,6 +76,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
+        yield new EasyEventDispatcherBundle();
         yield new EasyWebhookBundle();
     }
 
