@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Stub\Kernel;
 
 use Doctrine\DBAL\Connection;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcher;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
@@ -50,12 +49,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(
             SymfonyEventDispatcherInterface::class,
             new Definition(SymfonyEventDispatcher::class)
-        );
-        $container->setDefinition(
-            EventDispatcherInterface::class,
-            (new Definition(EventDispatcher::class))
-                ->setDecoratedService(SymfonyEventDispatcherInterface::class)
-                ->setArgument('$decorated', new Reference('.inner'))
         );
         $container->setDefinition(
             EventDispatcherStub::class,

@@ -9,7 +9,6 @@ use EonX\EasyBatch\Tests\Stub\ConnectionFactory\DoctrineDbalConnectionFactoryStu
 use EonX\EasyBatch\Tests\Stub\MessageBus\MessageBusStub;
 use EonX\EasyEncryption\Bundle\EasyEncryptionBundle;
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcher;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyRandom\Bundle\EasyRandomBundle;
@@ -34,12 +33,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(
             SymfonyEventDispatcherInterface::class,
             new Definition(SymfonyEventDispatcher::class)
-        );
-        $container->setDefinition(
-            EventDispatcherInterface::class,
-            (new Definition(EventDispatcher::class))
-                ->setDecoratedService(SymfonyEventDispatcherInterface::class)
-                ->setArgument('$decorated', new Reference('.inner'))
         );
         $container->setDefinition(
             EventDispatcherStub::class,
