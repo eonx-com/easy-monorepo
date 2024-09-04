@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Bundle;
 
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
+use EonX\EasyDoctrine\Migration\Factory\MigrationFactory;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyDoctrineBundle extends AbstractBundle
@@ -31,6 +33,7 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $this->registerAwsRdsConfiguration($config, $container, $builder);
         $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
+        $this->registerMigrationConfiguration($config, $container, $builder);
     }
 
     private function registerAwsRdsConfiguration(
@@ -95,5 +98,24 @@ final class EasyDoctrineBundle extends AbstractBundle
         }
 
         $container->import('config/easy_error_handler_listener.php');
+    }
+
+    private function registerMigrationConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($builder->hasDefinition('doctrine.migrations.migrations_factory') === false) {
+            return;
+        }
+
+        $builder
+            ->register('easy_doctrine.migrations.migrations_factory', MigrationFactory::class)
+            ->setDecoratedService('doctrine.migrations.migrations_factory')
+            ->setArguments([
+                new Reference('easy_doctrine.migrations.migrations_factory.inner'),
+                new Reference('doctrine'),
+                '%kernel.environment%',
+            ]);
     }
 }
