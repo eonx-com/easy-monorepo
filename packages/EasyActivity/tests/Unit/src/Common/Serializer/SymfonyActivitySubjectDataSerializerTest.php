@@ -207,7 +207,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
         $authorExtra = (new AuthorExtra())
             ->setPhone('1234567890');
 
-        yield 'Default config when nested object' => [
+        yield 'Default config with nested object' => [
             'data' => [
                 'name' => $authorName,
                 'authorExtra' => $authorExtra,
@@ -218,7 +218,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             'expectedResult' => '{"name":"John Doe","authorExtra":[]}',
         ];
 
-        yield 'Config wit global fullySerializableProperties' => [
+        yield 'Config with global fullySerializableProperties' => [
             'data' => [
                 'name' => $authorName,
                 'authorExtra' => $authorExtra,
@@ -229,7 +229,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             'expectedResult' => '{"name":"John Doe","authorExtra":{"phone":"1234567890"}}',
         ];
 
-        yield 'Config wit subject fullySerializableProperties' => [
+        yield 'Config with subject fullySerializableProperties' => [
             'data' => [
                 'name' => $authorName,
                 'authorExtra' => $authorExtra,
