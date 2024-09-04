@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcher;
+use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResult;
@@ -11,8 +13,8 @@ use EonX\EasyWebhook\Common\Event\FailedWebhookEvent;
 use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use EonX\EasyWebhook\Common\Event\SuccessWebhookEvent;
 use EonX\EasyWebhook\Common\Middleware\EventsMiddleware;
-use EonX\EasyWebhook\Tests\Stub\Dispatcher\EventDispatcherStub;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
 {
@@ -48,11 +50,15 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
     #[DataProvider('provideProcessData')]
     public function testProcess(?WebhookInterface $webhook = null, ?string $eventClass = null): void
     {
-        $dispatcher = new EventDispatcherStub();
+        $dispatcher = new EventDispatcherStub(
+            new EventDispatcher(
+                new SymfonyEventDispatcher()
+            )
+        );
         $middleware = new EventsMiddleware($dispatcher);
 
         $this->process($middleware, new Webhook(), new WebhookResult($webhook ?? new Webhook()));
-        $dispatched = $dispatcher->getDispatched();
+        $dispatched = $dispatcher->getDispatchedEvents();
 
         if ($eventClass !== null) {
             self::assertCount(1, $dispatched);

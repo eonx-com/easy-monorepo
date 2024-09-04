@@ -14,5 +14,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(EventDispatcherInterface::class, EventDispatcher::class)
-        ->args([service(SymfonyEventDispatcherInterface::class)]);
+        ->decorate(SymfonyEventDispatcherInterface::class)
+        ->arg('$decorated', service('.inner'));
 };

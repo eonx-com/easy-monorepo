@@ -5,6 +5,7 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
 use EonX\EasyDoctrine\Bundle\EasyDoctrineBundle;
 use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
+use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 
@@ -16,6 +17,9 @@ return [
         'all' => true,
     ],
     EasyErrorHandlerBundle::class => [
+        'all' => true,
+    ],
+    EasyEventDispatcherBundle::class => [
         'all' => true,
     ],
     EasyDoctrineBundle::class => [

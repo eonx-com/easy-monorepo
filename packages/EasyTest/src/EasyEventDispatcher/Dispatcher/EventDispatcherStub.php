@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Tests\Fixture\App\Dispatcher;
+namespace EonX\EasyTest\EasyEventDispatcher\Dispatcher;
 
 use Closure;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 
-final class EventDispatcher implements EventDispatcherInterface
+final class EventDispatcherStub implements EventDispatcherInterface
 {
     /**
      * @var array<string, callable>
@@ -17,6 +17,11 @@ final class EventDispatcher implements EventDispatcherInterface
      * @var object[]
      */
     private array $events = [];
+
+    public function __construct(
+        private EventDispatcherInterface $decorated,
+    ) {
+    }
 
     /**
      * @param class-string<object> $class
@@ -36,7 +41,7 @@ final class EventDispatcher implements EventDispatcherInterface
             $callback($event);
         }
 
-        return $event;
+        return $this->decorated->dispatch($event);
     }
 
     /**
