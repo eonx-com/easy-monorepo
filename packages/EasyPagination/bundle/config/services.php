@@ -9,6 +9,7 @@ use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Provider\PaginationProvider;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
+use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -23,7 +24,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$perPageAttribute', param(ConfigParam::PerPageAttribute->value))
         ->arg('$perPageDefault', param(ConfigParam::PerPageDefault->value));
 
-    $services->set(PaginationProviderInterface::class, PaginationProvider::class);
+    $services->set(DefaultPaginationResolver::class);
+
+    $services->set(PaginationProviderInterface::class, PaginationProvider::class)
+        ->call('setResolver', [service(DefaultPaginationResolver::class)]);
 
     $services
         ->set(PaginationInterface::class)
