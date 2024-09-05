@@ -33,15 +33,13 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
             throw new UnableToResolveActivitySubjectException('Given object does not have getId() method.');
         }
 
-        $allowedProperties = \array_key_exists('allowed_properties', $subjectConfig)
-            ? $subjectConfig['allowed_properties'] : [];
-
         return new ActivitySubject(
             (string)$object->getId(),
             $subjectConfig['type'] ?? $subjectClass,
             $subjectConfig['disallowed_properties'] ?? [],
             $subjectConfig['nested_object_allowed_properties'] ?? [],
-            $allowedProperties
+            $subjectConfig['allowed_properties'] ?? [],
+            $subjectConfig['fully_serializable_properties'] ?? [],
         );
     }
 }

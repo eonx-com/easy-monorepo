@@ -9,6 +9,8 @@ enum ConfigParam: string
 
     case EasyDoctrineSubscriberEnabled = 'easy_activity.easy_doctrine_subscriber_enabled';
 
+    case FullySerializableProperties = 'easy_activity.fully_serializable_properties';
+
     case Subjects = 'easy_activity.subjects';
 
     case TableName = 'easy_activity.table_name';
