@@ -65,6 +65,6 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
 
     public function supportsNormalization(mixed $data, ?string $format = null, ?array $context = null): bool
     {
-        return $data instanceof \DateTimeInterface;
+        return $data instanceof DateTimeInterface;
     }
 }
