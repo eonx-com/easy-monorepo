@@ -40,7 +40,7 @@
         "ext-iconv": "To support CSV parsing",
         "ext-mbstring": "To support sensitive data sanitization",
         "symfony/framework-bundle": "To use Symfony Framework integration",
-        "symfony/serializer": "To support string trimming",
+        "symfony/serializer": "To use custom normalizers",
         "symfony/translation": "To use Symfony Translator integration",
         "symfony/validator": "To support custom constraints"
     },

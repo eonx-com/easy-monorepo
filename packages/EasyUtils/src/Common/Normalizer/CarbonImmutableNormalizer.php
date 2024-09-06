@@ -4,13 +4,25 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Common\Normalizer;
 
 use Carbon\CarbonImmutable;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final readonly class CarbonImmutableNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    private const SUPPORTED_TYPES = [
+        CarbonImmutable::class => true,
+        DateTime::class => true,
+        DateTimeImmutable::class => true,
+        DateTimeInterface::class => true,
+    ];
+
     public function __construct(
+        #[Autowire(service: 'serializer.normalizer.datetime')]
         private DateTimeNormalizer $dateTimeNormalizer,
     ) {
     }
@@ -26,9 +38,7 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
 
     public function getSupportedTypes(?string $format): array
     {
-        return [
-            CarbonImmutable::class => true,
-        ];
+        return self::SUPPORTED_TYPES;
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -50,12 +60,11 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
         ?string $format = null,
         ?array $context = null,
     ): bool {
-        return $type === CarbonImmutable::class
-            || $this->dateTimeNormalizer->supportsDenormalization($data, $type, $format, $context ?? []);
+        return isset(self::SUPPORTED_TYPES[$type]);
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, ?array $context = null): bool
     {
-        return $this->dateTimeNormalizer->supportsNormalization($data, $format, $context ?? []);
+        return $data instanceof DateTimeInterface;
     }
 }
