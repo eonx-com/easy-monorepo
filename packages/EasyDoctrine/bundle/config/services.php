@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory;
-use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
-use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
-use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
+use EonX\EasyDoctrine\Common\Listener\TimestampableListener;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -15,9 +12,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services
-        ->set(ObjectCopierInterface::class)
-        ->factory([ObjectCopierFactory::class, 'create']);
-
-    $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class);
+    $services->set(TimestampableListener::class);
 };

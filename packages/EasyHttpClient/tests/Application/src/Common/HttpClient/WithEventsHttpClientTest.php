@@ -23,7 +23,7 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
 
         $sut->makeRequest();
 
-        /** @var \EonX\EasyHttpClient\Tests\Stub\Dispatcher\EventDispatcherStub $eventDispatcher */
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
         self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]);
@@ -51,7 +51,7 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
             self::assertInstanceOf(TransportException::class, $throwable);
         }
 
-        /** @var \EonX\EasyHttpClient\Tests\Stub\Dispatcher\EventDispatcherStub $eventDispatcher */
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
         self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]);

@@ -25,13 +25,10 @@ final class EasyDoctrineBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container
-            ->parameters()
-            ->set(ConfigParam::DeferredDispatcherEntities->value, $config['deferred_dispatcher_entities']);
-
         $container->import('config/services.php');
 
         $this->registerAwsRdsConfiguration($config, $container, $builder);
+        $this->registerDeferredDispatcherConfiguration($config, $container, $builder);
         $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
         $this->registerMigrationConfiguration($config, $container, $builder);
     }
@@ -86,6 +83,22 @@ final class EasyDoctrineBundle extends AbstractBundle
             ->set(ConfigParam::AwsRdsSslMode->value, $config['mode']);
 
         $container->import('config/aws_rds_ssl.php');
+    }
+
+    private function registerDeferredDispatcherConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if (\count($config['deferred_dispatcher_entities']) === 0) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::DeferredDispatcherEntities->value, $config['deferred_dispatcher_entities']);
+
+        $container->import('config/deferred_dispatcher.php');
     }
 
     private function registerEasyErrorHandlerConfiguration(

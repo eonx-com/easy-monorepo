@@ -166,7 +166,7 @@ final class EasyBatchBundleTest extends AbstractSymfonyTestCase
         $batchItemRepo = $container->get(BatchItemRepositoryInterface::class);
         $batchRepo = $container->get(BatchRepositoryInterface::class);
         $batchObjectManager = $container->get(BatchObjectManagerInterface::class);
-        /** @var \EonX\EasyBatch\Tests\Stub\EventDispatcher\SymfonyEventDispatcherStub $eventDispatcher */
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
 
         \call_user_func($setupFunc, $batchItemFactory, $batchItemRepo, $batchRepo);

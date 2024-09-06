@@ -19,6 +19,7 @@
         "symfony/messenger": "^7.0"
     },
     "require-dev": {
+        "eonx-com/easy-test": "^6.0",
         "phpunit/phpunit": "^10.2"
     },
     "autoload": {

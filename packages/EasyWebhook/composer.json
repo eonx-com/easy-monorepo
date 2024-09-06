@@ -21,6 +21,8 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
+        "eonx-com/easy-event-dispatcher": "^6.0",
+        "eonx-com/easy-test": "^6.0",
         "illuminate/database": "^11.0",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"

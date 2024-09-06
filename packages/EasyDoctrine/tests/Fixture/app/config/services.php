@@ -4,14 +4,10 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProviderInterface;
-use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
-use EonX\EasyDoctrine\Common\Listener\TimestampableListener;
-use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
-use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
-use EonX\EasyDoctrine\Tests\Fixture\App\Dispatcher\EventDispatcher;
 use EonX\EasyDoctrine\Tests\Fixture\App\Processor\WithEntityManagerProcessor;
 use EonX\EasyDoctrine\Tests\Fixture\App\Provider\DummyAwsRdsAuthTokenProvider;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -34,17 +30,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(WithEntityManagerProcessor::class)
         ->public();
 
-    $services
-        ->set(EventDispatcherInterface::class, EventDispatcher::class)
-        ->alias(EventDispatcherInterface::class, EventDispatcher::class);
-
-    $services->set(TimestampableListener::class);
-
-    $services->set(WithEventsEntityManager::class)
+    $services->set(EventDispatcherStub::class)
+        ->decorate(EventDispatcherInterface::class)
         ->arg('$decorated', service('.inner'))
-        ->decorate('doctrine.orm.default_entity_manager');
-
-    $services
-        ->set(EntityEventListener::class)
-        ->arg('$trackableEntities', param(ConfigParam::DeferredDispatcherEntities->value));
+        ->public();
 };

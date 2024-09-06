@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Tests\Fixture\App\Client\SomeClient;
-use EonX\EasyHttpClient\Tests\Stub\Dispatcher\EventDispatcherStub;
+use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -16,7 +16,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(TestResponseFactory::class);
-    $services->set(EventDispatcherInterface::class, EventDispatcherStub::class);
+
+    $services->set(EventDispatcherStub::class)
+        ->decorate(EventDispatcherInterface::class)
+        ->arg('$decorated', service('.inner'))
+        ->public();
 
     $services->set(SomeClient::class)
         ->public();

@@ -12,12 +12,12 @@ use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
-use EonX\EasyDoctrine\Tests\Fixture\App\Dispatcher\EventDispatcher;
 use EonX\EasyDoctrine\Tests\Fixture\App\Entity\Category;
 use EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product;
 use EonX\EasyDoctrine\Tests\Fixture\App\Entity\Tag;
 use EonX\EasyDoctrine\Tests\Fixture\App\ValueObject\Price;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
@@ -51,7 +51,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         });
 
         $this->assertThrownException(RuntimeException::class, 1);
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(2, $events);
     }
 
@@ -81,7 +81,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->persist($category);
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
@@ -129,7 +129,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(0, $events);
     }
 
@@ -149,7 +149,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
     }
 
@@ -178,7 +178,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             }
         });
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(2, $events);
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
@@ -211,7 +211,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(2, $events);
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
@@ -273,7 +273,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->persist($product);
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(2, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
@@ -302,7 +302,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $now = CarbonImmutable::now();
         CarbonImmutable::setTestNow($now);
         $entityManager = self::getEntityManager();
-        $eventDispatcher = self::getService(EventDispatcher::class);
+        $eventDispatcher = self::getService(EventDispatcherStub::class);
         $eventDispatcher->addDispatchCallback(
             class: EntityCreatedEvent::class,
             callback: static function (EntityCreatedEvent $event) use ($entityManager): void {
@@ -368,7 +368,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
@@ -425,7 +425,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $tag2->setName('New Tag 2 Name');
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
@@ -452,7 +452,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $product->setPrice(new Price('2000', 'USD'));
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(0, $events);
     }
 
@@ -464,7 +464,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(0, $events);
     }
 
@@ -502,7 +502,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(0, $events);
     }
 
@@ -517,7 +517,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(0, $events);
     }
 
@@ -571,7 +571,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->remove($product);
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         /** @var \EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent $actualEvent */
         $actualEvent = $events[0];
@@ -635,7 +635,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         });
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
@@ -667,7 +667,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         });
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
@@ -704,7 +704,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             $product->setPrice(new Price('2000', 'AUD'));
         });
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
@@ -764,7 +764,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $product->addTag($tag3);
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
@@ -833,7 +833,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             ->clear();
         $entityManager->flush();
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
@@ -900,7 +900,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             });
         });
 
-        $events = self::getService(EventDispatcher::class)->getDispatchedEvents();
+        $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
         self::assertEqualsCanonicalizing(
             new EntityUpdatedEvent(
