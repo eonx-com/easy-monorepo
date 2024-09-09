@@ -79,8 +79,8 @@ final class StrictTestResponse extends AbstractTestResponse
                 TestResponseFactory::throwException($exception);
             }
 
-            $this->sortArray($expectedRequestData);
-            $this->sortArray($actualRequestData);
+            self::sortArray($expectedRequestData);
+            self::sortArray($actualRequestData);
 
             try {
                 Assert::assertSame(
@@ -105,17 +105,5 @@ final class StrictTestResponse extends AbstractTestResponse
         } catch (Throwable $exception) {
             TestResponseFactory::throwException($exception);
         }
-    }
-
-    private function sortArray(array &$array): void
-    {
-        foreach ($array as &$value) {
-            if (\is_array($value)) {
-                $this->sortArray($value);
-            }
-        }
-        unset($value);
-
-        \array_is_list($array) ? \sort($array) : \ksort($array);
     }
 }
