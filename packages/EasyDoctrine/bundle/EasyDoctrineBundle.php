@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Bundle;
 
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use EonX\EasyDoctrine\Migration\Factory\MigrationFactory;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -118,7 +119,7 @@ final class EasyDoctrineBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if ($builder->hasDefinition('doctrine.migrations.migrations_factory') === false) {
+        if (\class_exists(DoctrineMigrationsBundle::class) === false) {
             return;
         }
 
