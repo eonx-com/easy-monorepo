@@ -26,6 +26,8 @@ abstract class AbstractTestResponse
         protected ?int $responseCode = null,
     ) {
         if (\is_array($query)) {
+            self::sortArray($query);
+
             $queryString = \http_build_query($query, '', '&', \PHP_QUERY_RFC3986);
 
             if (\str_contains($queryString, '%')) {
@@ -58,6 +60,18 @@ abstract class AbstractTestResponse
         $this->checkParameters($method, $url, $options);
 
         return $this->createResponse($method, $url, $options);
+    }
+
+    protected static function sortArray(array &$array): void
+    {
+        foreach ($array as &$value) {
+            if (\is_array($value)) {
+                self::sortArray($value);
+            }
+        }
+        unset($value);
+
+        \array_is_list($array) ? \sort($array) : \ksort($array);
     }
 
     abstract protected function checkParameters(string $method, string $url, array $options): void;

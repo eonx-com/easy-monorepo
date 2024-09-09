@@ -13,7 +13,6 @@ trait HttpClientUnitTestTrait
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request::METHOD_* $method
-     * @param array<string, string>|null $query
      * @param array<string, string>|null $headers
      * @param array|string|null $responseData If null, empty array will be used for JSON or empty string otherwise
      * @param array<string, string>|null $responseHeaders
@@ -52,7 +51,6 @@ trait HttpClientUnitTestTrait
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request::METHOD_* $method
-     * @param array<string, string>|null $query
      * @param array<string, string>|null $headers
      *
      * @noinspection PhpTooManyParametersInspection
