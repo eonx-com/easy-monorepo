@@ -6,8 +6,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProviderInterface;
 use EonX\EasyDoctrine\Tests\Fixture\App\Processor\WithEntityManagerProcessor;
 use EonX\EasyDoctrine\Tests\Fixture\App\Provider\DummyAwsRdsAuthTokenProvider;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();

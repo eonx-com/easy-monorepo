@@ -9,13 +9,13 @@ use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcherContract;
 final readonly class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
-        private IlluminateDispatcherContract $decorated,
+        private IlluminateDispatcherContract $dispatcher,
     ) {
     }
 
     public function dispatch(object $event): object
     {
-        $this->decorated->dispatch($event);
+        $this->dispatcher->dispatch($event);
 
         return $event;
     }

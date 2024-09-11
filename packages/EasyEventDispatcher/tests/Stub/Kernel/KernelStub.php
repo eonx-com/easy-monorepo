@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyEventDispatcher\Tests\Stub\Kernel;
 
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -26,7 +25,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setDefinition(
             EventDispatcherStub::class,
             (new Definition(EventDispatcherStub::class))
-                ->setDecoratedService(EventDispatcherInterface::class)
+                ->setDecoratedService(SymfonyEventDispatcherInterface::class)
                 ->setArgument('$decorated', new Reference('.inner'))
         );
 

@@ -8,12 +8,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 final readonly class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
-        private SymfonyEventDispatcherInterface $decorated,
+        private SymfonyEventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function dispatch(object $event): object
     {
-        return $this->decorated->dispatch($event);
+        return $this->eventDispatcher->dispatch($event);
     }
 }

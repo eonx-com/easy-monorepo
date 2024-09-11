@@ -15,37 +15,4 @@ The recommended way to install this package is to use [Composer][1]:
 $ composer require eonx-com/easy-event-dispatcher
 ```
 
-<br>
-
-### Usage
-
-This package will register the `EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface` within the DI container,
-allowing you to use dependency injection to dispatch your events.
-
-```php
-// src/MyService.php
-
-namespace App;
-
-use App\MyEvent;use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-
-final class MyService
-{
-    /**
-     * @var \EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function myMethod(string $myParam): void
-    {
-        $this->eventDispatcher->dispatch(new MyEvent($myParam));
-    }
-}
-```
-
 [1]: https://getcomposer.org/
