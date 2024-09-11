@@ -18,7 +18,7 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
     private readonly array $keys;
 
     public function __construct(
-        private TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator,
         ?array $keys = null,
         ?int $priority = null,
     ) {
