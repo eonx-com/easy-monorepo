@@ -50,15 +50,13 @@ final class EventsMiddlewareTest extends AbstractMiddlewareTestCase
     #[DataProvider('provideProcessData')]
     public function testProcess(?WebhookInterface $webhook = null, ?string $eventClass = null): void
     {
-        $dispatcher = new EventDispatcherStub(
-            new EventDispatcher(
-                new SymfonyEventDispatcher()
-            )
+        $eventDispatcherStub = new EventDispatcherStub(
+            new SymfonyEventDispatcher()
         );
-        $middleware = new EventsMiddleware($dispatcher);
+        $middleware = new EventsMiddleware(new EventDispatcher($eventDispatcherStub));
 
         $this->process($middleware, new Webhook(), new WebhookResult($webhook ?? new Webhook()));
-        $dispatched = $dispatcher->getDispatchedEvents();
+        $dispatched = $eventDispatcherStub->getDispatchedEvents();
 
         if ($eventClass !== null) {
             self::assertCount(1, $dispatched);
