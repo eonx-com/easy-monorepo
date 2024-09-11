@@ -54,6 +54,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
                             '/The data is either not an string, an empty string, or null; you should pass a string' .
                             ' that can be parsed with the passed format or a valid DateTime string./',
                             '/Failed to parse time string \(.*\) at position .* \(.*\): .*/',
+                            '/Parsing datetime string "[^"]+" using format "[^"]+" resulted in [0-9] error.*/',
                         ],
                         static fn ($carry, $regex): bool => $carry || \preg_match($regex, $throwable->getMessage()),
                         false

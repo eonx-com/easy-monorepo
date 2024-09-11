@@ -271,7 +271,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ' string that can be parsed with the passed format or a valid DateTime string.',
         ];
 
-        yield 'invalid date format' => [
+        yield 'invalid date' => [
             'url' => '/books',
             'json' => [
                 'description' => 'some description',
@@ -286,6 +286,23 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => 'Failed to parse time string (some invalid date) at position 0 (s):' .
                 ' The timezone could not be found in the database',
+        ];
+
+        yield 'invalid date format' => [
+            'url' => '/books',
+            'json' => [
+                'availableFrom' => '2024-04-22Т01:01:00+11:00',
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/1',
+                'weight' => 11,
+            ],
+            'violations' => [
+                'availableFrom' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
+            'exceptionMessage' => 'Parsing datetime string "2024-04-22Т01:01:00+11:00" using format "Y-m-d|"' .
+                ' resulted in 1 errors: ' . "\n" . 'at position 10: Trailing data',
         ];
 
         yield 'invalid constructor argument in DTO' => [
