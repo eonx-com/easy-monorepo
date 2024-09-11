@@ -24,7 +24,7 @@ final class SwooleWorkerIdProcessor extends AbstractSelfConfigProvidingProcessor
             $context = $record->context;
             $context['X-SWOOLE-WORKER-ID'] = $workerId;
 
-            return $record->with(['context' => $context]);
+            return $record->with(...['context' => $context]);
         }
 
         return $record;
