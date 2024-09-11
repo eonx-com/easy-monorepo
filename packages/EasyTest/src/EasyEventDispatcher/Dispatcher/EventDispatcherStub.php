@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\EasyEventDispatcher\Dispatcher;
 
 use Closure;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EventDispatcherStub implements EventDispatcherInterface
 {
@@ -31,17 +31,17 @@ final class EventDispatcherStub implements EventDispatcherInterface
         $this->dispatchCallbacks[$class] = $callback;
     }
 
-    public function dispatch(object $event): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         $this->events[] = $event;
 
         $callback = $this->dispatchCallbacks[$event::class] ?? null;
 
         if ($callback !== null) {
-            $callback($event);
+            $callback($event, $eventName);
         }
 
-        return $this->decorated->dispatch($event);
+        return $this->decorated->dispatch($event, $eventName);
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Tests\Application\Common\HttpClient;
 
 use DateTimeInterface;
-use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
 use EonX\EasyHttpClient\Tests\Application\AbstractApplicationTestCase;
@@ -12,6 +11,7 @@ use EonX\EasyHttpClient\Tests\Fixture\App\Client\SomeClient;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 use EonX\EasyTest\HttpClient\Response\SimpleTestResponse;
 use Symfony\Component\HttpClient\Exception\TransportException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Throwable;
 
 final class WithEventsHttpClientTest extends AbstractApplicationTestCase
