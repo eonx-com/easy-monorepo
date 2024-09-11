@@ -94,6 +94,7 @@ final class SwooleTableAdapter extends AbstractAdapter
 
     protected function doSave(array $values, int $lifetime): array|bool
     {
+        $failed = [];
         $table = $this->getSwooleTable();
         $expiresAt = $lifetime !== 0 ? (\time() + $lifetime) : 0;
         $values = $this->marshaller->marshall($values, $failed);
