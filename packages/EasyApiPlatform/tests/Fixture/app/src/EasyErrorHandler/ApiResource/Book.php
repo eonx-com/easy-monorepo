@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\ApiResource;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\Author;
+use Symfony\Component\Serializer\Attribute\Context;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
@@ -14,6 +16,12 @@ final class Book
 {
     #[Assert\Valid]
     public Author $author;
+
+    #[Context(
+        normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'],
+        denormalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d|'],
+    )]
+    public ?DateTimeImmutable $availableFrom = null;
 
     public Category $category;
 
@@ -30,19 +38,9 @@ final class Book
     public string $title;
 
     public function __construct(
-        private readonly string $description,
-        private readonly int $weight,
+        public readonly string $description,
+        public readonly int $weight,
         public PrintingHouse $printingHouse,
     ) {
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getWeight(): int
-    {
-        return $this->weight;
     }
 }
