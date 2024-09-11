@@ -3,17 +3,22 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Builder;
 
+use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
+    private const ERROR_HTTP_NOT_FOUND_MESSAGE = 'exceptions.not_found';
+
     private const KEY_MESSAGE = 'message';
 
     private readonly array $keys;
 
     public function __construct(
+        private TranslatorInterface $translator,
         ?array $keys = null,
         ?int $priority = null,
     ) {
@@ -26,7 +31,13 @@ final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuild
     {
         if ($throwable instanceof HttpExceptionInterface) {
             $key = $this->keys[self::KEY_MESSAGE] ?? self::KEY_MESSAGE;
-            $data[$key] = $throwable->getMessage();
+            $message = $throwable->getMessage();
+
+            if ($throwable instanceof NotFoundHttpException) {
+                $message = $this->translator->trans(self::ERROR_HTTP_NOT_FOUND_MESSAGE, []);
+            }
+
+            $data[$key] = $message;
         }
 
         return parent::buildData($throwable, $data);
