@@ -109,11 +109,17 @@ final readonly class EasySwooleRunner implements RunnerInterface
 
                     CacheTableHelper::tick();
                 } catch (Throwable $throwable) {
-                    // If something happens before the response was sent, we must respond not to let the client hang
-                    $hasEasyErrorHandler = \interface_exists(ErrorHandlerInterface::class)
-                        && $app instanceof KernelInterface
-                        && $app->getContainer()
-                            ->has(ErrorHandlerInterface::class);
+                    try {
+                        // If something happens before the response was sent, we must respond not to let the client hang
+                        $hasEasyErrorHandler = \interface_exists(ErrorHandlerInterface::class)
+                            && $app instanceof KernelInterface
+                            && $app->getContainer()
+                                ->has(ErrorHandlerInterface::class);
+                    } catch (Throwable) {
+                        // The kernel may not be booted yet, so KernelInterface::getContainer may fail
+                        $hasEasyErrorHandler = false;
+                    }
+
 
                     // If eonx-com/easy-error-handler is installed and configured, let's report the error
                     if ($hasEasyErrorHandler) {
