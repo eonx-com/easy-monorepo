@@ -14,8 +14,8 @@ use Symfony\Component\Uid\Uuid;
 class ChildItem
 {
     #[ORM\Column(type: SqliteStringUuidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Id]
     private Uuid $id;
 
