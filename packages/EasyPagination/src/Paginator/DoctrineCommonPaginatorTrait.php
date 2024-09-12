@@ -114,7 +114,7 @@ trait DoctrineCommonPaginatorTrait
 
         // Filter records on their primary keys
         $queryBuilder
-            ->andWhere($queryBuilder->expr()->in($select, ' :primary_keys'))
+            ->andWhere($queryBuilder->expr()->in($select, ':primary_keys'))
             ->setParameter('primary_keys', $primaryKeys);
 
         return $this->fetchResults($queryBuilder);

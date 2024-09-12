@@ -9,8 +9,8 @@ use Symfony\Component\Uid\AbstractUid;
 use Symfony\Component\Uid\Uuid;
 
 /**
- * We could not use \Symfony\Bridge\Doctrine\Types\UuidType because it create BLOB column type,
- * which not support `WHERE IN (...)` clause in SQLite.
+ * We can't use `\Symfony\Bridge\Doctrine\Types\UuidType` because it creates a BLOB column,
+ * which is not supported in `WHERE IN (...)` clauses in SQLite.
  */
 final class SqliteStringUuidType extends Type
 {
