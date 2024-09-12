@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
+use EonX\EasyPagination\Tests\Stub\Type\SqliteStringUuidType;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 
 abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
@@ -63,6 +65,14 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $config->setMetadataDriverImpl(new AttributeDriver([]));
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
+
+//        if (Type::hasType(UuidType::NAME) === false) {
+//            Type::addType(UuidType::NAME, UuidType::class);
+//        }
+
+        if (Type::hasType(SqliteStringUuidType::NAME) === false) {
+            Type::addType(SqliteStringUuidType::NAME, SqliteStringUuidType::class);
+        }
 
         $this->manager = new EntityManager($manager, $config);
 

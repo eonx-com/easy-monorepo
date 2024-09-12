@@ -104,10 +104,8 @@ trait DoctrineCommonPaginatorTrait
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
-        $primaryKeysMap = static fn (array $row): string => (string)$row[$primaryKeyIndex];
-
         /** @var string[] $primaryKeys */
-        $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));
+        $primaryKeys = \array_column($this->fetchResults($fetchPrimaryKeysQueryBuilder), $primaryKeyIndex);
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {
@@ -115,7 +113,9 @@ trait DoctrineCommonPaginatorTrait
         }
 
         // Filter records on their primary keys
-        $queryBuilder->andWhere($queryBuilder->expr()->in($select, $primaryKeys));
+        $queryBuilder
+            ->andWhere($queryBuilder->expr()->in($select, ' :primary_keys'))
+            ->setParameter('primary_keys', $primaryKeys);
 
         return $this->fetchResults($queryBuilder);
     }
