@@ -110,6 +110,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
                     CacheTableHelper::tick();
                 } catch (Throwable $throwable) {
                     $hasEasyErrorHandler = false;
+
                     try {
                         // If something happens before the response was sent, we must respond not to let the client hang
                         $hasEasyErrorHandler = \interface_exists(ErrorHandlerInterface::class)
