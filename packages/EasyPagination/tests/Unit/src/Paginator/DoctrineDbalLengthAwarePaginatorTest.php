@@ -10,6 +10,7 @@ use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
+use Symfony\Component\Uid\Uuid;
 
 final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPaginatorTestCase
 {
@@ -18,6 +19,8 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
      */
     public static function providePaginatorData(): iterable
     {
+        $childItemId = Uuid::v6();
+
         yield 'Default 0 items' => [
             Pagination::create(1, 15),
             'items',
@@ -303,11 +306,11 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             Pagination::create(1, 15),
             'child_items',
             'ci',
-            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator) use ($childItemId): void {
                 self::createItemsTable($connection);
                 self::createChildItemsTable($connection);
                 self::addItemToTable($connection, 'my-parent');
-                self::addChildItemToTable($connection, 'my-child', 1);
+                self::addChildItemToTable($connection, 'my-child', $childItemId);
 
                 // $paginator->hasJoinsInQuery();
                 $paginator->setPrimaryKeyIndex('id');
@@ -319,14 +322,14 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                     $queryBuilder->addSelect('i.*');
                 });
             },
-            static function (DoctrineDbalLengthAwarePaginator $paginator): void {
+            static function (DoctrineDbalLengthAwarePaginator $paginator) use ($childItemId): void {
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertIsArray($item);
                 self::assertEquals(1, $item['id']);
-                self::assertEquals(1, $item['item_id']);
+                self::assertEquals($childItemId, $item['item_id']);
                 self::assertEquals('my-parent', $item['title']);
                 self::assertEquals('my-child', $item['child_title']);
             },

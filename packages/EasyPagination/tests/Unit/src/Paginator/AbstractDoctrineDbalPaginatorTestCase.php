@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCase
 {
@@ -15,7 +16,7 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function addChildItemToTable(Connection $connection, string $title, int $itemId): void
+    protected static function addChildItemToTable(Connection $connection, string $title, Uuid $itemId): void
     {
         $connection->insert('child_items', [
             'child_title' => $title,
