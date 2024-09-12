@@ -15,7 +15,7 @@ abstract class AbstractDataCollector extends DataCollector implements TemplateAw
         $lastPart = \array_pop($fqcnParts);
         $collectorName = (new ByteString(\substr($lastPart, 0, -\strlen('DataCollector'))))->snake();
 
-        return '@' . $fqcnParts[1] . 'Bundle/collector/' . $collectorName . '_collector.html.twig';
+        return '@' . $fqcnParts[1] . '/collector/' . $collectorName . '_collector.html.twig';
     }
 
     public function getName(): string
