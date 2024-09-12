@@ -11,6 +11,7 @@ use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Uid\UuidV6;
 
 final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPaginatorTestCase
 {
@@ -201,7 +202,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertInstanceOf(ChildItem::class, $childItem);
                 self::assertInstanceOf(Item::class, $childItem->getItem());
-                self::assertEquals(1, $childItem->getId());
+                self::assertInstanceOf(UuidV6::class, $childItem->getId());
                 self::assertEquals(1, $childItem->getItem()->getId());
                 self::assertEquals('my-parent', $childItem->getItem()->getTitle());
                 self::assertEquals('my-child', $childItem->getTitle());
