@@ -147,9 +147,11 @@ final readonly class EasySwooleRunner implements RunnerInterface
             if (
                 \interface_exists(ErrorHandlerInterface::class) &&
                 $app instanceof KernelInterface &&
-                $app->getContainer()->has(ErrorHandlerInterface::class)
+                $app->getContainer()
+                    ->has(ErrorHandlerInterface::class)
             ) {
-                return $app->getContainer()->get(ErrorHandlerInterface::class);
+                return $app->getContainer()
+                    ->get(ErrorHandlerInterface::class);
             }
         } catch (Throwable) {
             // The kernel may not be booted yet (because of the invalid application configuration),
