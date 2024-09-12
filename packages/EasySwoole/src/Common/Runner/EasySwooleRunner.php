@@ -91,20 +91,13 @@ final readonly class EasySwooleRunner implements RunnerInterface
                     CacheTableHelper::tick();
                 } catch (Throwable $throwable) {
                     // If something happens before the response was sent, we must respond not to let the client hang
-                    $hasEasyErrorHandler = \interface_exists(ErrorHandlerInterface::class)
-                        && $app instanceof KernelInterface
-                        && $app->getContainer()
-                            ->has(ErrorHandlerInterface::class);
+                    $errorHandler = self::getErrorHandlerIfAvailable($app);
 
                     // If eonx-com/easy-error-handler is installed and configured, let's report the error
-                    if ($hasEasyErrorHandler) {
-                        /** @var \EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface|null $errorHandler */
-                        $errorHandler = $app->getContainer()
-                            ->get(ErrorHandlerInterface::class);
+                    if ($errorHandler !== null) {
+                        $errorHandler->report($throwable);
 
-                        $errorHandler?->report($throwable);
-
-                        if ($errorHandler !== null && $hfRequest !== null && $responded === false) {
+                        if ($hfRequest !== null && $responded === false) {
                             $hfResponse = $errorHandler->render($hfRequest, $throwable);
 
                             HttpFoundationHelper::reflectHttpFoundationResponse(
@@ -127,6 +120,26 @@ final readonly class EasySwooleRunner implements RunnerInterface
         $server->start();
 
         return 0;
+    }
+
+    private static function getErrorHandlerIfAvailable(mixed $app): ?ErrorHandlerInterface
+    {
+        try {
+            if (
+                \interface_exists(ErrorHandlerInterface::class) &&
+                $app instanceof KernelInterface &&
+                $app->getContainer()
+                    ->has(ErrorHandlerInterface::class)
+            ) {
+                return $app->getContainer()
+                    ->get(ErrorHandlerInterface::class);
+            }
+        } catch (Throwable) {
+            // The kernel may not be booted yet (because of the invalid application configuration),
+            // so KernelInterface::getContainer may fail
+        }
+
+        return null;
     }
 
     private function createSwooleHttpServer(): Server
