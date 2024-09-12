@@ -66,10 +66,6 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
-//        if (Type::hasType(UuidType::NAME) === false) {
-//            Type::addType(UuidType::NAME, UuidType::class);
-//        }
-
         if (Type::hasType(SqliteStringUuidType::NAME) === false) {
             Type::addType(SqliteStringUuidType::NAME, SqliteStringUuidType::class);
         }
