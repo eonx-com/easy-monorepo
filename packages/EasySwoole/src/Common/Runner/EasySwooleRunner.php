@@ -141,6 +141,24 @@ final readonly class EasySwooleRunner implements RunnerInterface
         return 0;
     }
 
+    private static function getErrorHandlerIfAvailable(mixed $app): ?ErrorHandlerInterface
+    {
+        try {
+            if (
+                \interface_exists(ErrorHandlerInterface::class) &&
+                $app instanceof KernelInterface &&
+                $app->getContainer()->has(ErrorHandlerInterface::class)
+            ) {
+                return $app->getContainer()->get(ErrorHandlerInterface::class);
+            }
+        } catch (Throwable) {
+            // The kernel may not be booted yet (because of the invalid application configuration),
+            // so KernelInterface::getContainer may fail
+        }
+
+        return null;
+    }
+
     private function createSwooleHttpServer(): Server
     {
         $host = OptionHelper::getString('host');
@@ -262,23 +280,5 @@ final readonly class EasySwooleRunner implements RunnerInterface
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
             }
         );
-    }
-
-    private static function getErrorHandlerIfAvailable(mixed $app): ?ErrorHandlerInterface
-    {
-        try {
-            if (
-                \interface_exists(ErrorHandlerInterface::class) &&
-                $app instanceof KernelInterface &&
-                $app->getContainer()->has(ErrorHandlerInterface::class)
-            ) {
-                return $app->getContainer()->get(ErrorHandlerInterface::class);
-            }
-        } catch (Throwable) {
-            // The kernel may not be booted yet (because of the invalid application configuration),
-            // so KernelInterface::getContainer may fail
-        }
-
-        return null;
     }
 }
