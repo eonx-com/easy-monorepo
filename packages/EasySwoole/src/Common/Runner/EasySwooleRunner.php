@@ -116,10 +116,10 @@ final readonly class EasySwooleRunner implements RunnerInterface
                             && $app->getContainer()
                                 ->has(ErrorHandlerInterface::class);
                     } catch (Throwable) {
-                        // The kernel may not be booted yet, so KernelInterface::getContainer may fail
+                        // The kernel may not be booted yet (because of the invalid application configuration),
+                        // so KernelInterface::getContainer may fail
                         $hasEasyErrorHandler = false;
                     }
-
 
                     // If eonx-com/easy-error-handler is installed and configured, let's report the error
                     if ($hasEasyErrorHandler) {
