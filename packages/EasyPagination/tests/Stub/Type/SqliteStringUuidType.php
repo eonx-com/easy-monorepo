@@ -8,6 +8,10 @@ use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Uid\AbstractUid;
 use Symfony\Component\Uid\Uuid;
 
+/**
+ * We could not use \Symfony\Bridge\Doctrine\Types\UuidType because it create BLOB column type,
+ * which not support `WHERE IN (...)` clause in SQLite.
+ */
 final class SqliteStringUuidType extends Type
 {
     public const NAME = 'sqlite_string_uuid';
