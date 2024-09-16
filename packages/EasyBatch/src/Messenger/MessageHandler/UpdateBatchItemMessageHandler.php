@@ -11,6 +11,7 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
+use RuntimeException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -48,6 +49,10 @@ final readonly class UpdateBatchItemMessageHandler
 
         if ($dateTime === false) {
             $dateTime = \date_create($dateTimeString, $timezone);
+        }
+
+        if ($dateTime === false) {
+            throw new RuntimeException('Failed to create DateTime from format');
         }
 
         return Carbon::instance($dateTime);

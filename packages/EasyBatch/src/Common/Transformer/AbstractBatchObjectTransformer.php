@@ -11,6 +11,7 @@ use DateTimeZone;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
+use RuntimeException;
 use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
@@ -88,6 +89,10 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
         if ($newDateTime === false) {
             $newDateTime = \date_create($dateTime, $timezone);
+        }
+
+        if ($newDateTime === false) {
+            throw new RuntimeException('Failed to create DateTime from format');
         }
 
         return Carbon::instance($newDateTime);
