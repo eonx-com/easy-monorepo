@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Messenger\MessageHandler;
 
 use Carbon\Carbon;
+use DateTime;
 use DateTimeInterface;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
@@ -39,12 +40,15 @@ final readonly class UpdateBatchItemMessageHandler
         $processBatchForBatchItemHandler(new ProcessBatchForBatchItemMessage($message->getBatchItemId()));
     }
 
-    private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
+    private function createDateTimeFromFormat(string $dateTimeString): DateTimeInterface
     {
-        /** @var \DateTimeInterface $newDateTime */
-        $newDateTime = Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
+        $dateTime = DateTime::createFromFormat($this->dateTimeFormat, $dateTimeString, 'UTC');
 
-        return $newDateTime;
+        if ($dateTime === false) {
+            $dateTime = \date_create($dateTimeString, 'UTC');
+        }
+
+        return Carbon::instance($dateTime);
     }
 
     private function updateBatchItem(BatchItem $batchItem, array $data, ?array $errorDetails = null): void
