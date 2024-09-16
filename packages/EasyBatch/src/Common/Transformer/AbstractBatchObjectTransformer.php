@@ -7,6 +7,7 @@ use BackedEnum;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeInterface;
+use DateTimeZone;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
@@ -82,10 +83,11 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             return $dateTime;
         }
 
-        $newDateTime = DateTime::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
+        $timezone = new DateTimeZone('UTC');
+        $newDateTime = DateTime::createFromFormat($this->dateTimeFormat, $dateTime, $timezone);
 
         if ($newDateTime === false) {
-            $newDateTime = \date_create($dateTime, 'UTC');
+            $newDateTime = \date_create($dateTime, $timezone);
         }
 
         return Carbon::instance($newDateTime);
