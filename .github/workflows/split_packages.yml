@@ -3,7 +3,6 @@ on:
     push:
         branches:
             - master
-            - 6.x
 jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
@@ -11,36 +10,30 @@ jobs:
             PHP_EXTENSIONS: 'pdo_sqlite, openswoole, pkcs11'
             PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
         steps:
-            -
-                name: Checkout
+            -   name: Checkout
                 uses: actions/checkout@v4
-            -
-                name: 'Setup cache environment'
+            -   name: 'Setup cache environment'
                 id: cache-extensions
                 uses: shivammathur/cache-extensions@v1
                 with:
                     php-version: '${{ matrix.php }}'
                     extensions: '${{ env.PHP_EXTENSIONS }}'
                     key: '${{ env.PHP_EXTENSIONS_CACHE_KEY }}'
-            -
-                name: 'Cache extensions'
+            -   name: 'Cache extensions'
                 uses: actions/cache@v4
                 with:
                     path: '${{ steps.cache-extensions.outputs.dir }}'
                     key: '${{ steps.cache-extensions.outputs.key }}'
                     restore-keys: '${{ steps.cache-extensions.outputs.key }}'
-            -
-                name: 'Setup PHP 8.2'
+            -   name: 'Setup PHP 8.2'
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.2
                     coverage: none
                     extensions: '${{ env.PHP_EXTENSIONS }}'
-            -
-                name: 'Install Composer dependencies'
+            -   name: 'Install Composer dependencies'
                 uses: ramsey/composer-install@v3
-            -
-                id: output_data
+            -   id: output_data
                 run: 'echo "matrix=$(bin/monorepo export-packages)" >> $GITHUB_OUTPUT'
         outputs:
             matrix: '${{ steps.output_data.outputs.matrix }}'
@@ -58,30 +51,23 @@ jobs:
             DIR: 'packages/${{ matrix.mapping.dir }}'
             TAG: '${{ matrix.tag }}'
         steps:
-            -
-                uses: actions/checkout@v4
-            -
-                run: 'git fetch --prune --unshallow'
-            -
-                name: 'Remove Git Extra Header'
+            -   uses: actions/checkout@v4
+            -   run: 'git fetch --prune --unshallow'
+            -   name: 'Remove Git Extra Header'
                 run: 'git config -l | grep ''http\..*\.extraheader'' | cut -d= -f1 | xargs -L1 git config --unset-all'
-            -
-                name: 'Resolve current branch'
+            -   name: 'Resolve current branch'
                 id: branch_name
                 run: 'echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT'
-            -
-                name: 'Add Repo Remote'
+            -   name: 'Add Repo Remote'
                 run: 'git remote add split-remote https://natepage:${{ secrets.MONOREPO_GITHUB_TOKEN }}@github.com/eonx-com/${{ matrix.mapping.repo }}.git'
-            -
-                name: 'Split packages/${{ matrix.mapping.dir }}'
+            -   name: 'Split packages/${{ matrix.mapping.dir }}'
                 env:
                     BRANCH: '${{ steps.branch_name.outputs.branch }}'
                 run: |
                     git checkout -b "local-$BRANCH-checkout" "$BRANCH"
                     git subtree split --prefix="packages/${{ matrix.mapping.dir }}" --branch="local-$BRANCH" "$BRANCH"
                     git push --force split-remote local-$BRANCH:$BRANCH
-            -
-                if: 'contains(github.event.head_commit.message, ''[Release]'')'
+            -   if: 'contains(github.event.head_commit.message, ''[Release]'')'
                 name: 'Release eonx-com/${{ matrix.mapping.repo }}:${{ matrix.tag }}'
                 shell: bash
                 run: |

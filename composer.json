@@ -336,7 +336,5 @@
         "eonx_docs": {
             "ignore": true
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
