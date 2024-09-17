@@ -9,6 +9,7 @@ use DateTimeInterface;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
+use RuntimeException;
 use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
@@ -82,7 +83,8 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         }
 
         try {
-            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
+            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC')
+                ?? throw new RuntimeException('Failed to create DateTime from format');
         } catch (Throwable) {
             return Carbon::parse($dateTime, 'UTC');
         }

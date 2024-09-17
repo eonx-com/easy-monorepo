@@ -9,6 +9,7 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
+use RuntimeException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
 
@@ -43,7 +44,8 @@ final readonly class UpdateBatchItemMessageHandler
     private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
         try {
-            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
+            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC')
+                ?? throw new RuntimeException('Failed to create DateTime from format');
         } catch (Throwable) {
             return Carbon::parse($dateTime, 'UTC');
         }
