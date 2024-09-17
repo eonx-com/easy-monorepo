@@ -5,13 +5,10 @@ namespace EonX\EasyBatch\Common\Transformer;
 
 use BackedEnum;
 use Carbon\Carbon;
-use DateTime;
 use DateTimeInterface;
-use DateTimeZone;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
-use RuntimeException;
 use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
@@ -84,18 +81,11 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             return $dateTime;
         }
 
-        $timezone = new DateTimeZone('UTC');
-        $newDateTime = DateTime::createFromFormat($this->dateTimeFormat, $dateTime, $timezone);
-
-        if ($newDateTime === false) {
-            $newDateTime = \date_create($dateTime, $timezone);
+        try {
+            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
+        } catch (Throwable) {
+            return Carbon::parse($dateTime, 'UTC');
         }
-
-        if ($newDateTime === false) {
-            throw new RuntimeException('Failed to create DateTime from format');
-        }
-
-        return Carbon::instance($newDateTime);
     }
 
     private function formatData(array $data): array

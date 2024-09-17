@@ -4,15 +4,13 @@ declare(strict_types=1);
 namespace EonX\EasyBatch\Messenger\MessageHandler;
 
 use Carbon\Carbon;
-use DateTime;
 use DateTimeInterface;
-use DateTimeZone;
 use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Messenger\Message\ProcessBatchForBatchItemMessage;
 use EonX\EasyBatch\Messenger\Message\UpdateBatchItemMessage;
-use RuntimeException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Throwable;
 
 #[AsMessageHandler]
 final readonly class UpdateBatchItemMessageHandler
@@ -42,20 +40,13 @@ final readonly class UpdateBatchItemMessageHandler
         $processBatchForBatchItemHandler(new ProcessBatchForBatchItemMessage($message->getBatchItemId()));
     }
 
-    private function createDateTimeFromFormat(string $dateTimeString): DateTimeInterface
+    private function createDateTimeFromFormat(string $dateTime): DateTimeInterface
     {
-        $timezone = new DateTimeZone('UTC');
-        $dateTime = DateTime::createFromFormat($this->dateTimeFormat, $dateTimeString, $timezone);
-
-        if ($dateTime === false) {
-            $dateTime = \date_create($dateTimeString, $timezone);
+        try {
+            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC');
+        } catch (Throwable) {
+            return Carbon::parse($dateTime, 'UTC');
         }
-
-        if ($dateTime === false) {
-            throw new RuntimeException('Failed to create DateTime from format');
-        }
-
-        return Carbon::instance($dateTime);
     }
 
     private function updateBatchItem(BatchItem $batchItem, array $data, ?array $errorDetails = null): void
