@@ -60,7 +60,7 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
         yield new ViolationsErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_VIOLATIONS));
 
         if (\interface_exists(HttpExceptionInterface::class)) {
-            yield new HttpExceptionErrorResponseBuilder($this->keys);
+            yield new HttpExceptionErrorResponseBuilder($this->translator, $this->keys);
         }
     }
 
