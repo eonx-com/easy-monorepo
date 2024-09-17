@@ -9,6 +9,7 @@ use DateTimeInterface;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
+use RuntimeException;
 use Throwable;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
@@ -75,6 +76,20 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         return $batchObject->toArray();
     }
 
+    private function createDateTimeFromFormat(Carbon|string $dateTime): DateTimeInterface
+    {
+        if ($dateTime instanceof Carbon) {
+            return $dateTime;
+        }
+
+        try {
+            return Carbon::createFromFormat($this->dateTimeFormat, $dateTime, 'UTC')
+                ?? throw new RuntimeException('Failed to create DateTime from format');
+        } catch (Throwable) {
+            return Carbon::parse($dateTime, 'UTC');
+        }
+    }
+
     private function formatData(array $data): array
     {
         foreach ($data as $name => $value) {
@@ -103,13 +118,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         foreach (self::DATE_TIMES as $name => $setter) {
             if (isset($data[$name])) {
                 // Allow DateTimes to be instantiated already
-                $datetime = $data[$name] instanceof Carbon
-                    ? $data[$name]
-                    : Carbon::createFromFormat($this->dateTimeFormat, $data[$name]);
-
-                if ($datetime instanceof Carbon) {
-                    $batchObject->{$setter}($datetime);
-                }
+                $batchObject->{$setter}($this->createDateTimeFromFormat($data[$name]));
             }
         }
     }
