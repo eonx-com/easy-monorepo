@@ -5,11 +5,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-event-dispatcher": "^6.0",
-        "eonx-com/easy-lock": "^6.0",
-        "eonx-com/easy-pagination": "^6.0",
-        "eonx-com/easy-random": "^6.0",
-        "eonx-com/easy-utils": "^6.0",
+        "eonx-com/easy-event-dispatcher": "^6.1",
+        "eonx-com/easy-lock": "^6.1",
+        "eonx-com/easy-pagination": "^6.1",
+        "eonx-com/easy-random": "^6.1",
+        "eonx-com/easy-utils": "^6.1",
         "nesbot/carbon": "^3.7",
         "nette/utils": "^4.0",
         "symfony/config": "^7.0",
@@ -21,8 +21,8 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.0",
-        "eonx-com/easy-event-dispatcher": "^6.0",
-        "eonx-com/easy-test": "^6.0",
+        "eonx-com/easy-event-dispatcher": "^6.1",
+        "eonx-com/easy-test": "^6.1",
         "illuminate/database": "^11.0",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"
@@ -48,7 +48,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.0-dev"
+            "dev-master": "6.1-dev"
         }
     },
     "minimum-stability": "dev",
