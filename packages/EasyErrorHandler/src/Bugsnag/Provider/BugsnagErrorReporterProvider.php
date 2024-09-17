@@ -18,7 +18,7 @@ final readonly class BugsnagErrorReporterProvider implements ErrorReporterProvid
         private Client $bugsnag,
         private readonly iterable $exceptionIgnorers,
         private ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        private ?int $threshold = null,
+        private ?Level $threshold = null,
     ) {
     }
 
@@ -31,7 +31,7 @@ final readonly class BugsnagErrorReporterProvider implements ErrorReporterProvid
             $this->bugsnag,
             $this->exceptionIgnorers,
             $this->errorLogLevelResolver,
-            $this->threshold ? Level::from($this->threshold) : null
+            $this->threshold
         );
     }
 }
