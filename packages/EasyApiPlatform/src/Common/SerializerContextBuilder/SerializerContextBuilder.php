@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Common\SerializerContextBuilder;
 
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\State\SerializerContextBuilderInterface;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use EonX\EasyApiPlatform\Common\Paginator\CustomPaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
