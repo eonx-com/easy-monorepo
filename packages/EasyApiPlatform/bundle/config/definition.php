@@ -25,6 +25,9 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('custom_paginator')
                 ->canBeDisabled()
             ->end()
+            ->arrayNode('return_404_on_post')
+                ->canBeDisabled()
+            ->end()
         ->end();
 
     if (\class_exists(EasyErrorHandlerBundle::class)) {

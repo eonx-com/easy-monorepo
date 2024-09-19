@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixture\App\ReadListener\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixture\App\Return404OnPost\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(
             uriTemplate: '/questions/{id}/mark-as-answered',
             status: 200,
+            security: 'is_granted("SOME_NOT_EXISTING_PERMISSION")',
             input: false,
         ),
     ]

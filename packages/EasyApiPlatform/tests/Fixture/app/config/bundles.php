@@ -8,6 +8,7 @@ use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
 use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
 use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 
 return [
@@ -33,6 +34,9 @@ return [
         'all' => true,
     ],
     TwigBundle::class => [
+        'all' => true,
+    ],
+    SecurityBundle::class => [
         'all' => true,
     ],
 ];

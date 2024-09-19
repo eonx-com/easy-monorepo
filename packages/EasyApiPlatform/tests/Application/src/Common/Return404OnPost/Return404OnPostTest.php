@@ -1,13 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Application\Common\Listener;
+namespace EonX\EasyApiPlatform\Tests\Application\Common\Return404OnPost;
 
-use EonX\EasyApiPlatform\Common\Listener\ReadListener;
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ReadListenerTest extends AbstractApplicationTestCase
+final class Return404OnPostTest extends AbstractApplicationTestCase
 {
     public function testItSucceeds(): void
     {
@@ -26,13 +24,10 @@ final class ReadListenerTest extends AbstractApplicationTestCase
         self::assertSame(404, $response->getStatusCode());
     }
 
-    public function testItSucceedsWithoutReadListener(): void
+    public function testItSucceedsWhenReturn404OnPostDisabled(): void
     {
+        self::setUpClient(['environment' => 'return_404_on_post', 'debug' => true]);
         $this->initDatabase();
-        self::getService(EventDispatcherInterface::class)->removeListener(
-            'kernel.request',
-            [self::getService(ReadListener::class), '__invoke']
-        );
 
         $response = self::$client->request(
             'POST',
@@ -43,7 +38,8 @@ final class ReadListenerTest extends AbstractApplicationTestCase
                 ],
             ]
         );
-
-        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(500, $response->getStatusCode());
+        $responseData = \json_decode($response->getContent(false), true);
+        self::assertSame(403, $responseData['custom_code']);
     }
 }

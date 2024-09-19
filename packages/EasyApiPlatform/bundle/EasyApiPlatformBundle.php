@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Bundle;
 
-use EonX\EasyApiPlatform\Bundle\CompilerPass\ReadListenerCompilerPass;
 use EonX\EasyApiPlatform\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Config\FileLocator;
@@ -18,12 +17,6 @@ final class EasyApiPlatformBundle extends AbstractBundle
         $this->path = \realpath(__DIR__);
     }
 
-    public function build(ContainerBuilder $container): void
-    {
-        $container
-            ->addCompilerPass(new ReadListenerCompilerPass());
-    }
-
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import('config/definition.php');
@@ -35,11 +28,14 @@ final class EasyApiPlatformBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::AdvancedSearchFilterIriFields->value, $config['advanced_search_filter']['iri_fields']);
 
-        $container->import('config/services.php');
         $container->import('config/filters.php');
 
         if ($config['custom_paginator']['enabled']) {
             $container->import('config/pagination.php');
+        }
+
+        if ($config['return_404_on_post']['enabled']) {
+            $container->import('config/return_404_on_post.php');
         }
 
         $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
