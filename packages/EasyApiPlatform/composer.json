@@ -29,6 +29,7 @@
         "symfony/browser-kit": "^7.0",
         "symfony/framework-bundle": "^7.0",
         "symfony/http-client": "^7.0",
+        "symfony/security-bundle": "^7.0",
         "symfony/twig-bundle": "^7.0",
         "symfony/validator": "^7.0"
     },
