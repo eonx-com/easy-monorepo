@@ -7,7 +7,8 @@ use Symfony\Config\EasyErrorHandlerConfig;
 
 return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
     $easyErrorHandlerConfig
-        ->translationDomain('violations');
+        ->translationDomain('violations')
+        ->verbose(true);
 
     $response = $easyErrorHandlerConfig->response();
     $response

@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
             security: 'is_granted("SOME_NOT_EXISTING_PERMISSION")',
             input: false,
         ),
+        new Post(),
     ]
 )]
 #[ORM\Entity]

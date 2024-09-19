@@ -42,4 +42,24 @@ final class Return404OnPostTest extends AbstractApplicationTestCase
         $responseData = \json_decode($response->getContent(false), true);
         self::assertSame(403, $responseData['custom_code']);
     }
+
+    public function testItSucceedsWithoutUriVariables(): void
+    {
+        $this->initDatabase();
+
+        $response = self::$client->request(
+            'POST',
+            '/questions',
+            [
+                'headers' => [
+                    'content-type' => 'application/json',
+                ],
+                'json' => [],
+            ]
+        );
+
+        self::assertSame(201, $response->getStatusCode());
+        $responseData = \json_decode($response->getContent(false), true);
+        self::assertSame(1, $responseData['id']);
+    }
 }
