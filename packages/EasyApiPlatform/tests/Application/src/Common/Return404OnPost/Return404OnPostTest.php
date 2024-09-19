@@ -26,7 +26,7 @@ final class Return404OnPostTest extends AbstractApplicationTestCase
 
     public function testItSucceedsWhenReturn404OnPostDisabled(): void
     {
-        self::setUpClient(['environment' => 'return_404_on_post', 'debug' => true]);
+        self::setUpClient(['environment' => 'return_404_on_post']);
         $this->initDatabase();
 
         $response = self::$client->request(
