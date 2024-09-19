@@ -36,7 +36,7 @@ final class CacheConfigFinder implements ConfigFinderInterface
 
     public function find(string $apiKey, string $providerExternalId): ConfigInterface
     {
-        $key = BridgeConstantsInterface::CONFIG_CACHE_KEY;
+        $key = \sprintf('%s-%s', BridgeConstantsInterface::CONFIG_CACHE_KEY, $providerExternalId);
 
         return $this->cache->get(
             $key,
