@@ -25,9 +25,6 @@ use Doctrine\ORM\Mapping as ORM;
             input: false,
             allowCreate: true,
         ),
-        new Put(
-            allowCreate: true,
-        ),
     ]
 )]
 #[ORM\Entity]
