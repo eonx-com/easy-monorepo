@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Tests\Application\Common\ReturnNotFoundOnReadOper
 
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 
-final class ReturnNotFoundOnReadOperationWhenPostTest extends AbstractApplicationTestCase
+final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicationTestCase
 {
     public function testItSucceeds(): void
     {
