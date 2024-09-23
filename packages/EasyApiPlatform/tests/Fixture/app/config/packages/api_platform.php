@@ -45,7 +45,7 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
             param('kernel.project_dir') . '/src/AdvancedSearchFilter/ApiResource/',
             param('kernel.project_dir') . '/src/CustomPaginator/ApiResource/',
             param('kernel.project_dir') . '/src/EasyErrorHandler/ApiResource/',
-            param('kernel.project_dir') . '/src/ReturnNotFoundOnReadOperations/ApiResource/',
+            param('kernel.project_dir') . '/src/ReturnNotFoundOnReadOperation/ApiResource/',
         ]);
 
     $apiPlatformConfig->swagger()

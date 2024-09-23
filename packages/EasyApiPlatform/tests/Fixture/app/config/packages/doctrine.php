@@ -31,9 +31,9 @@ return static function (DoctrineConfig $doctrineConfig, ContainerConfigurator $c
         ->prefix('EonX\EasyApiPlatform\Tests\Fixture\App\CustomPaginator\ApiResource')
         ->type('attribute');
 
-    $entityManager->mapping('AppReturnNotFoundOnReadOperationsApiResource')
-        ->dir(param('kernel.project_dir') . '/src/ReturnNotFoundOnReadOperations/ApiResource')
+    $entityManager->mapping('AppReturnNotFoundOnReadOperationApiResource')
+        ->dir(param('kernel.project_dir') . '/src/ReturnNotFoundOnReadOperation/ApiResource')
         ->isBundle(false)
-        ->prefix('EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperations\ApiResource')
+        ->prefix('EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\ApiResource')
         ->type('attribute');
 };

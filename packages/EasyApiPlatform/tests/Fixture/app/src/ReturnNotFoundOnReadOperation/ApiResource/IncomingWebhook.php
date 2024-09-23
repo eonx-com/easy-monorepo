@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperations\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperations\Controller\IncomingWebhookController;
+use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\Controller\IncomingWebhookController;
 
 #[ApiResource(
     operations: [

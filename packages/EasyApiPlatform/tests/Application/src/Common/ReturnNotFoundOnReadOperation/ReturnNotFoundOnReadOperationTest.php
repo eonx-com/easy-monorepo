@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Application\Common\ReturnNotFoundOnReadOperations;
+namespace EonX\EasyApiPlatform\Tests\Application\Common\ReturnNotFoundOnReadOperation;
 
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 
-final class ReturnNotFoundOnReadOperationsTest extends AbstractApplicationTestCase
+final class ReturnNotFoundOnReadOperationTest extends AbstractApplicationTestCase
 {
     public function testItSucceeds(): void
     {
