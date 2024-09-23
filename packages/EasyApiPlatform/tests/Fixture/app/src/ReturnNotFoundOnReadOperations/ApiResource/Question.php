@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixture\App\Return404OnPost\ApiResource;
+namespace EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperations\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;

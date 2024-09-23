@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Fixture\App\Return404OnPost\Controller;
+namespace EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperations\Controller;
 
 use stdClass;
 use Symfony\Component\HttpKernel\Attribute\AsController;

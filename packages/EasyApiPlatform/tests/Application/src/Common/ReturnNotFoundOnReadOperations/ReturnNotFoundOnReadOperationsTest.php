@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyApiPlatform\Tests\Application\Common\Return404OnPost;
+namespace EonX\EasyApiPlatform\Tests\Application\Common\ReturnNotFoundOnReadOperations;
 
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 
-final class Return404OnPostTest extends AbstractApplicationTestCase
+final class ReturnNotFoundOnReadOperationsTest extends AbstractApplicationTestCase
 {
     public function testItSucceeds(): void
     {
@@ -42,9 +42,9 @@ final class Return404OnPostTest extends AbstractApplicationTestCase
         self::assertSame(204, $response->getStatusCode());
     }
 
-    public function testItSucceedsWhenReturn404OnPostDisabled(): void
+    public function testItSucceedsWhenReturnNotFoundOnReadOperationsIsDisabled(): void
     {
-        self::setUpClient(['environment' => 'return_404_on_post']);
+        self::setUpClient(['environment' => 'disable_return_not_found_on_read_operations']);
         $this->initDatabase();
 
         $response = self::$client->request(

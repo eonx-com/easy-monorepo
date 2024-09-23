@@ -34,8 +34,8 @@ final class EasyApiPlatformBundle extends AbstractBundle
             $container->import('config/pagination.php');
         }
 
-        if ($config['return_404_on_post']['enabled']) {
-            $container->import('config/return_404_on_post.php');
+        if ($config['return_not_found_on_read_operations']['enabled']) {
+            $container->import('config/state_provider.php');
         }
 
         $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
