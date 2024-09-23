@@ -13,6 +13,6 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure();
 
     $services->set(ReadStateProvider::class)
-        ->decorate('api_platform.state_provider.read', null, 1)
+        ->decorate('api_platform.state_provider.read', priority: 1)
         ->arg('$decorated', service('.inner'));
 };
