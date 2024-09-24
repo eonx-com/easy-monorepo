@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Bundle;
 
-use EonX\EasyEncryption\Bundle\CompilerPass\AwsCloudHsmCompilerPass;
 use EonX\EasyEncryption\Bundle\Enum\ConfigParam;
 use EonX\EasyEncryption\Bundle\Enum\ConfigTag;
 use EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface;
@@ -18,12 +17,6 @@ final class EasyEncryptionBundle extends AbstractBundle
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
-    }
-
-    public function build(ContainerBuilder $container): void
-    {
-        $container
-            ->addCompilerPass(new AwsCloudHsmCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
