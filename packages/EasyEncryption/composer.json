@@ -7,7 +7,7 @@
         "php": "^8.2",
         "ext-sodium": "*",
         "doctrine/orm": "^2.14",
-        "eonx-com/easy-utils": "^6.1",
+        "eonx-com/easy-utils": "^6.0.2",
         "paragonie/halite": "^5.1",
         "symfony/config": "^7.0",
         "symfony/dependency-injection": "^7.0",
@@ -15,7 +15,7 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.269",
-        "eonx-com/easy-test": "^6.1",
+        "eonx-com/easy-test": "^6.0.2",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
         "symfony/filesystem": "^7.0",
