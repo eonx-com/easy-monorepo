@@ -20,8 +20,6 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
 
     private const ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES = 'encryptable_field_names';
 
-    private const ENVELOPE_HEADER_ENCRYPTED = 'encrypted';
-
     private const ENVELOPE_HEADER_ENCRYPTION_TYPE = 'encryption_type';
 
     private const ENVELOPE_HEADER_TYPE = 'type';
@@ -37,10 +35,9 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
 
     public function decode(array $encodedEnvelope): Envelope
     {
-        $isEncrypted = (bool)($encodedEnvelope['headers'][self::ENVELOPE_HEADER_ENCRYPTED] ?? false);
         $encryptionType = $encodedEnvelope['headers'][self::ENVELOPE_HEADER_ENCRYPTION_TYPE] ?? null;
 
-        if ($isEncrypted === false) {
+        if ($encryptionType === null) {
             return $this->serializer->decode($encodedEnvelope);
         }
 
@@ -78,13 +75,11 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         }
 
         $headers = [
-            self::ENVELOPE_HEADER_ENCRYPTED => false,
             self::ENVELOPE_HEADER_TYPE => $message::class,
         ];
 
         if ($message instanceof EncryptableInterface) {
             $this->objectEncryptor->encrypt($message);
-            $headers[self::ENVELOPE_HEADER_ENCRYPTED] = true;
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_PARTIAL;
             $headers[self::ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES] = \json_encode(
                 $this->encryptableMetadata->getEncryptableFieldNames($message::class)
@@ -97,7 +92,6 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
             $encodedBody = $encodedEnvelope['body']
                 ?? throw new UnexpectedValueException('Encoded envelope should have a "body" value.');
             $encodedEnvelope['body'] = $this->stringEncryptor->encrypt((string)$encodedBody)->value;
-            $headers[self::ENVELOPE_HEADER_ENCRYPTED] = true;
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_FULL;
         }
 
