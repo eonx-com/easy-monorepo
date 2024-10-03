@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Common\Trait;
 
+use EonX\EasyLogging\Logger\LazyLogger;
 use EonX\EasyTest\Monolog\Logger\LoggerStub;
 use Psr\Log\LoggerInterface;
 
@@ -44,8 +45,14 @@ trait LoggerTrait
 
     protected static function getLoggerService(): LoggerStub
     {
+        $loggerService = self::getService(LoggerInterface::class);
+
+        if ($loggerService instanceof LazyLogger) {
+            $loggerService = $loggerService->getLogger();
+        }
+
         /** @var \EonX\EasyTest\Monolog\Logger\LoggerStub $logger */
-        $logger = self::getService(LoggerInterface::class);
+        $logger = $loggerService;
 
         return $logger;
     }
