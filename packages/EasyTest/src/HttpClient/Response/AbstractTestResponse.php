@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\HttpClient\Response;
 
+use BackedEnum;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpClient\Exception\TransportException;
@@ -20,35 +21,12 @@ abstract class AbstractTestResponse
      */
     public function __construct(
         protected string $url,
-        ?array $query = null,
+        protected ?array $query = null,
         protected readonly array|string|TransportException|null $responseData = null,
         protected ?array $responseHeaders = null,
         protected ?int $responseCode = null,
     ) {
-        if (\is_array($query)) {
-            self::sortArray($query);
-
-            $queryString = \http_build_query($query, '', '&', \PHP_QUERY_RFC3986);
-
-            if (\str_contains($queryString, '%')) {
-                $queryString = \strtr($queryString, [
-                    '%21' => '!',
-                    '%24' => '$',
-                    '%28' => '(',
-                    '%29' => ')',
-                    '%2A' => '*',
-                    '%2F' => '/',
-                    '%3A' => ':',
-                    '%3B' => ';',
-                    '%40' => '@',
-                    '%5B' => '[',
-                    '%5D' => ']',
-                ]);
-            }
-
-            $this->url .= '?' . $queryString;
-        }
-
+        $this->query ??= [];
         $this->responseHeaders ??= [];
         $this->responseCode ??= 200;
     }
@@ -62,11 +40,21 @@ abstract class AbstractTestResponse
         return $this->createResponse($method, $url, $options);
     }
 
-    protected static function sortArray(array &$array): void
+    protected static function normalizeData(array &$array): void
     {
         foreach ($array as &$value) {
             if (\is_array($value)) {
-                self::sortArray($value);
+                self::normalizeData($value);
+            }
+
+            if (\is_string($value) === false) {
+                if ($value instanceof BackedEnum) {
+                    $value = $value->value;
+
+                    continue;
+                }
+
+                $value = (string)$value;
             }
         }
         unset($value);
@@ -97,7 +85,59 @@ abstract class AbstractTestResponse
     protected function checkUrl(string $url): void
     {
         try {
-            Assert::assertSame($this->url, $url, \sprintf('Request URL for %s does not match.', $url));
+            $expectedUrl = \parse_url($this->url);
+            Assert::assertNotFalse($expectedUrl, \sprintf('Invalid URL for %s', $this->url));
+            $actualUrl = \parse_url($url);
+            Assert::assertNotFalse($actualUrl, \sprintf('Invalid URL for %s', $url));
+
+            Assert::assertSame(
+                $expectedUrl['scheme'] ?? '',
+                $actualUrl['scheme'] ?? '',
+                \sprintf('URL scheme for %s does not match', $this->url)
+            );
+            Assert::assertSame(
+                $expectedUrl['host'] ?? '',
+                $actualUrl['host'] ?? '',
+                \sprintf('URL host for %s does not match', $this->url)
+            );
+            Assert::assertSame(
+                $expectedUrl['port'] ?? '',
+                $actualUrl['port'] ?? '',
+                \sprintf('URL port for %s does not match', $this->url)
+            );
+            Assert::assertSame(
+                $expectedUrl['user'] ?? '',
+                $actualUrl['user'] ?? '',
+                \sprintf('URL user for %s does not match', $this->url)
+            );
+            Assert::assertSame(
+                $expectedUrl['pass'] ?? '',
+                $actualUrl['pass'] ?? '',
+                \sprintf('URL pass for %s does not match', $this->url)
+            );
+            Assert::assertSame(
+                $expectedUrl['path'] ?? '',
+                $actualUrl['path'] ?? '',
+                \sprintf('URL path for %s does not match', $this->url)
+            );
+            Assert::assertSame(
+                $expectedUrl['fragment'] ?? '',
+                $actualUrl['fragment'] ?? '',
+                \sprintf('URL fragment for %s does not match', $this->url)
+            );
+
+            \parse_str($expectedUrl['query'] ?? '', $expectedQuery);
+            \parse_str($actualUrl['query'] ?? '', $actualQuery);
+
+            $expectedQuery = [
+                ...$expectedQuery,
+                ...($this->query ?? []),
+            ];
+
+            self::normalizeData($expectedQuery);
+            self::normalizeData($actualQuery);
+
+            Assert::assertSame($expectedQuery, $actualQuery, \sprintf('URL query for %s does not match', $this->url));
         } catch (Throwable $exception) {
             TestResponseFactory::throwException($exception);
         }
