@@ -79,8 +79,8 @@ final class StrictTestResponse extends AbstractTestResponse
                 TestResponseFactory::throwException($exception);
             }
 
-            self::sortArray($expectedRequestData);
-            self::sortArray($actualRequestData);
+            self::normalizeData($expectedRequestData);
+            self::normalizeData($actualRequestData);
 
             try {
                 Assert::assertSame(
