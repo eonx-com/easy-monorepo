@@ -131,7 +131,7 @@ abstract class AbstractTestResponse
 
             $expectedQuery = [
                 ...$expectedQuery,
-                ...$this->query,
+                ...($this->query ?? []),
             ];
 
             self::normalizeData($expectedQuery);

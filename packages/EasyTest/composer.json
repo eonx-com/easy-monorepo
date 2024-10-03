@@ -15,6 +15,9 @@
         "symfony/http-client": "^7.0",
         "symfony/http-kernel": "^7.0"
     },
+    "require-dev": {
+        "symfony/uid": "^7.0"
+    },
     "autoload": {
         "psr-4": {
             "EonX\\EasyTest\\": "src"
