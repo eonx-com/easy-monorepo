@@ -48,6 +48,12 @@ final class LazyLogger implements LoggerInterface, ResettableInterface
             ->error($message, $context ?? []);
     }
 
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger ??= $this->loggerFactory->initLazyLogger($this->channel)
+            ->create($this->channel);
+    }
+
     public function info(string|Stringable $message, ?array $context = null): void
     {
         $this->getLogger()
@@ -74,11 +80,5 @@ final class LazyLogger implements LoggerInterface, ResettableInterface
     {
         $this->getLogger()
             ->warning($message, $context ?? []);
-    }
-
-    private function getLogger(): LoggerInterface
-    {
-        return $this->logger ??= $this->loggerFactory->initLazyLogger($this->channel)
-            ->create($this->channel);
     }
 }
