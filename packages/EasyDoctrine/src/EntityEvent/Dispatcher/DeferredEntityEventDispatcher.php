@@ -26,6 +26,8 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     private array $deletedEntities = [];
 
+    private readonly ObjectCopierInterface $deletedEntityCopier;
+
     private bool $enabled;
 
     private array $entityChangeSets = [];
@@ -39,14 +41,22 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         private readonly EventDispatcherInterface $eventDispatcher,
         #[Deprecated('Will be removed in 7.0, use $deletedEntityCopier instead')]
         ?ObjectCopierInterface $objectCopier = null,
-        private ?ObjectCopierInterface $deletedEntityCopier = null
+        ?ObjectCopierInterface $deletedEntityCopier = null,
     ) {
         $this->enabled = true;
-        $this->deletedEntityCopier ??= $objectCopier;
 
-        if ($this->deletedEntityCopier === null) {
-            throw new LogicException('ObjectCopierInterface is required.');
+        if ($objectCopier !== null) {
+            @\trigger_error(
+                'Argument $objectCopier is deprecated and will be removed in 7.0, use $deletedEntityCopier instead.',
+                \E_USER_DEPRECATED
+            );
         }
+
+        if ($objectCopier === null && $deletedEntityCopier === null) {
+            throw new LogicException('At least one of $objectCopier or $deletedEntityCopier must be provided.');
+        }
+
+        $this->deletedEntityCopier = $objectCopier ?? $deletedEntityCopier;
     }
 
     public function clear(?int $transactionNestingLevel = null): void
