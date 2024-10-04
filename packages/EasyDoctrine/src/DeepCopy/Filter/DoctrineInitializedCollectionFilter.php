@@ -12,11 +12,10 @@ final class DoctrineInitializedCollectionFilter implements Filter
     /**
      * @inheritdoc
      */
-    public function apply($object, $property, $objectCopier)
+    public function apply($object, $property, $objectCopier): void
     {
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
 
-        /** @var \Doctrine\Common\Collections\Collection $oldCollection */
         $oldCollection = $reflectionProperty->getValue($object);
         $newCollection = $oldCollection;
 
