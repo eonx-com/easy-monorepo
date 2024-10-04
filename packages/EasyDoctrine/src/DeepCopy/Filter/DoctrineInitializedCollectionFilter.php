@@ -19,7 +19,7 @@ final class DoctrineInitializedCollectionFilter implements Filter
         $oldCollection = $reflectionProperty->getValue($object);
         $newCollection = $oldCollection;
 
-        if ($oldCollection instanceof AbstractLazyCollection && $oldCollection->isInitialized()) {
+        if ($oldCollection instanceof AbstractLazyCollection === false || $oldCollection->isInitialized()) {
             $newCollection = $oldCollection->map(static fn ($item) => $objectCopier($item));
         }
 
