@@ -19,7 +19,7 @@ interface DeferredEntityEventDispatcherInterface
 
     public function deferInsert(int $transactionNestingLevel, object $entity, array $entityChangeSet): void;
 
-    public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void;
+    public function deferUpdate(int $transactionNestingLevel, object $entity, array $entityChangeSet): void;
 
     public function disable(): void;
 

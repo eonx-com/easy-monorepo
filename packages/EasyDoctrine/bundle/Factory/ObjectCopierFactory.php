@@ -12,7 +12,21 @@ use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
 
 final class ObjectCopierFactory
 {
+    /**
+     * @deprecated since 6.0.3, will be removed in 7.0.0. Use createForDeletedEntityCopier
+     */
     public static function create(): ObjectCopierInterface
+    {
+        $deepCopy = new DeepCopy();
+        $deepCopy->addFilter(
+            new DoctrineInitializedCollectionFilter(),
+            new PropertyTypeMatcher(Collection::class)
+        );
+
+        return new ObjectCopier($deepCopy);
+    }
+
+    public static function createForDeletedEntityCopier(): ObjectCopierInterface
     {
         $deepCopy = new DeepCopy();
         $deepCopy->addFilter(

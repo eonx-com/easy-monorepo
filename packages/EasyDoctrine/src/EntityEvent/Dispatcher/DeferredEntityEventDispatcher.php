@@ -9,6 +9,7 @@ use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use JetBrains\PhpStorm\Deprecated;
 use LogicException;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
@@ -36,9 +37,16 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ObjectCopierInterface $objectCopier,
+        #[Deprecated('Will be removed in 7.0, use $deletedEntityCopier instead')]
+        ?ObjectCopierInterface $objectCopier = null,
+        private ?ObjectCopierInterface $deletedEntityCopier = null
     ) {
         $this->enabled = true;
+        $this->deletedEntityCopier ??= $objectCopier;
+
+        if ($this->deletedEntityCopier === null) {
+            throw new LogicException('ObjectCopierInterface is required.');
+        }
     }
 
     public function clear(?int $transactionNestingLevel = null): void
@@ -119,7 +127,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         $entityObjectId = \spl_object_id($entity);
         // \EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface is used to preserve the identifier that is removed after deleting entity
-        $this->deletedEntities[$entityObjectId] = $this->objectCopier->copy($entity);
+        $this->deletedEntities[$entityObjectId] = $this->deletedEntityCopier->copy($entity);
         $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
     }
 

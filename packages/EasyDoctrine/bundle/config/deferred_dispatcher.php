@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
+use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
 use EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
@@ -19,10 +20,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services
-        ->set(ObjectCopierInterface::class)
-        ->factory([ObjectCopierFactory::class, 'create']);
+        ->set(ConfigServiceId::DeletedEntityCopier->value, ObjectCopierInterface::class)
+        ->factory([ObjectCopierFactory::class, 'createForDeletedEntityCopier']);
 
-    $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class);
+    $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class)
+        ->arg('$deletedEntityCopier', service(ConfigServiceId::DeletedEntityCopier->value));
 
     $services->set(WithEventsEntityManager::class)
         ->arg('$decorated', service('.inner'))

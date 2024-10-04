@@ -6,6 +6,7 @@ namespace EonX\EasyDoctrine\DeepCopy\Filter;
 use DeepCopy\Filter\Filter;
 use DeepCopy\Reflection\ReflectionHelper;
 use Doctrine\Common\Collections\AbstractLazyCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 final class DoctrineInitializedCollectionFilter implements Filter
 {
@@ -17,7 +18,7 @@ final class DoctrineInitializedCollectionFilter implements Filter
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
 
         $oldCollection = $reflectionProperty->getValue($object);
-        $newCollection = $oldCollection;
+        $newCollection = new ArrayCollection();
 
         if ($oldCollection instanceof AbstractLazyCollection === false || $oldCollection->isInitialized()) {
             $newCollection = $oldCollection->map(static fn ($item) => $objectCopier($item));
