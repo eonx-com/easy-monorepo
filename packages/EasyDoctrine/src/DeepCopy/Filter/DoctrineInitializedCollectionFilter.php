@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\AbstractLazyCollection;
 final class DoctrineInitializedCollectionFilter implements Filter
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function apply($object, $property, $objectCopier)
     {
@@ -21,11 +21,7 @@ final class DoctrineInitializedCollectionFilter implements Filter
         $newCollection = $oldCollection;
 
         if ($oldCollection instanceof AbstractLazyCollection && $oldCollection->isInitialized()) {
-            $newCollection = $oldCollection->map(
-                function ($item) use ($objectCopier) {
-                    return $objectCopier($item);
-                }
-            );
+            $newCollection = $oldCollection->map(static fn ($item) => $objectCopier($item));
         }
 
         $reflectionProperty->setValue($object, $newCollection);
