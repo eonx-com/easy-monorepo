@@ -428,6 +428,20 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => 'The input data is misformatted.',
         ];
+
+        yield 'Item not found by IRI' => [
+            'url' => '/books',
+            'json' => [
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/2',
+                'title' => 'some title',
+                'weight' => 11,
+            ],
+            'violations' => [
+                'Item not found for "/printing-houses/2".',
+            ],
+            'exceptionMessage' => 'Item not found for "/printing-houses/2".',
+        ];
     }
 
     /**

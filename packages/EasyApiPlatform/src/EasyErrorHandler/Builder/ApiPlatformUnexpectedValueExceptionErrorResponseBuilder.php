@@ -31,6 +31,10 @@ final class ApiPlatformUnexpectedValueExceptionErrorResponseBuilder extends
                     $throwable->getMessage(),
                 ],
 
+                \preg_match('/Item not found for "(.+)"./', $throwable->getMessage()) === 1 => [
+                    $throwable->getMessage(),
+                ],
+
                 \preg_match(
                     '/Nested documents for attribute "(.*)" are not allowed. Use IRIs instead./',
                     $throwable->getMessage(),
