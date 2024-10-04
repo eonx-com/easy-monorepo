@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-utils": "^6.1",
+        "eonx-com/easy-utils": "^6.0.3",
         "symfony/config": "^7.0",
         "symfony/dependency-injection": "^7.0",
         "symfony/http-kernel": "^7.0",
