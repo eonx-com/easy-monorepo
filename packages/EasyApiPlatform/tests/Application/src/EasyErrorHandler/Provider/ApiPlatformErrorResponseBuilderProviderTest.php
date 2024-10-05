@@ -431,6 +431,29 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     }
 
     /**
+     * @see testBuildErrorResponseWhenInvalidFormat
+     * @see testBuildExtendedErrorResponseWhenInvalidFormat
+     */
+    public static function provideDataForBuildErrorResponseWhenInvalidFormat(): iterable
+    {
+        yield 'Body is null' => [
+            'body' => null,
+        ];
+
+        yield 'Body is empty string' => [
+            'body' => '',
+        ];
+
+        yield 'Body is not a valid JSON' => [
+            'body' => 'some invalid JSON',
+        ];
+
+        yield 'Body is malformed JSON' => [
+            'body' => '{"some": "invalid" "json": "format"}',
+        ];
+    }
+
+    /**
      * @see testDoNotBuildErrorResponse
      * @see testDoNotBuildExtendedErrorResponse
      */
@@ -491,6 +514,40 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         );
     }
 
+    #[DataProvider('provideDataForBuildErrorResponseWhenInvalidFormat')]
+    public function testBuildErrorResponseWhenInvalidFormat(mixed $body): void
+    {
+        $response = self::$client->request('POST', '/books', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body,
+        ]);
+
+        $responseData = $response->toArray(false);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertArrayStructure(
+            [
+                'custom_code',
+                'custom_message',
+                'custom_time',
+                'custom_violations' => [],
+            ],
+            $responseData
+        );
+        self::assertArraySubset(
+            [
+                'custom_code' => 0,
+                'custom_message' => 'Validation failed.',
+                'custom_violations' => [
+                    'The input data is misformatted.',
+                ],
+            ],
+            $responseData
+        );
+    }
+
     #[DataProvider('provideDataForBuildErrorResponse')]
     public function testBuildExtendedErrorResponse(
         string $url,
@@ -530,6 +587,53 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => $violations,
+            ],
+            $responseData
+        );
+    }
+
+    #[DataProvider('provideDataForBuildErrorResponseWhenInvalidFormat')]
+    public function testBuildExtendedErrorResponseWhenInvalidFormat(mixed $body): void
+    {
+        $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
+        self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
+
+        $response = self::$client->request('POST', '/books', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body,
+        ]);
+
+        $responseData = $response->toArray(false);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertArrayStructure(
+            [
+                'custom_code',
+                'custom_exception' => [
+                    'custom_class',
+                    'custom_file',
+                    'custom_line',
+                    'custom_message',
+                    'custom_trace' => [],
+                ],
+                'custom_message',
+                'custom_time',
+                'custom_violations' => [],
+            ],
+            $responseData
+        );
+        self::assertArraySubset(
+            [
+                'custom_code' => 0,
+                'custom_exception' => [
+                    'custom_message' => 'Syntax error',
+                ],
+                'custom_message' => 'Validation failed.',
+                'custom_violations' => [
+                    'The input data is misformatted.',
+                ],
             ],
             $responseData
         );
