@@ -56,7 +56,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             throw new LogicException('At least one of $objectCopier or $deletedEntityCopier must be provided.');
         }
 
-        $this->deletedEntityCopier = $objectCopier ?? $deletedEntityCopier;
+        $this->deletedEntityCopier = $deletedEntityCopier ?? $objectCopier;
     }
 
     public function clear(?int $transactionNestingLevel = null): void
