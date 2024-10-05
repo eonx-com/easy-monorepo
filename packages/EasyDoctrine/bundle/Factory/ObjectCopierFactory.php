@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Bundle\Factory;
 
 use DeepCopy\DeepCopy;
+use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
 use DeepCopy\Matcher\PropertyTypeMatcher;
 use Doctrine\Common\Collections\Collection;
 use EonX\EasyDoctrine\DeepCopy\Filter\DoctrineInitializedCollectionFilter;
@@ -19,7 +20,7 @@ final class ObjectCopierFactory
     {
         $deepCopy = new DeepCopy();
         $deepCopy->addFilter(
-            new DoctrineInitializedCollectionFilter(),
+            new DoctrineCollectionFilter(),
             new PropertyTypeMatcher(Collection::class)
         );
 
