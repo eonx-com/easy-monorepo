@@ -5,8 +5,8 @@ namespace EonX\EasyTest\HttpClient\Response;
 
 use BackedEnum;
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
+use Exception;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Throwable;
 
@@ -15,14 +15,14 @@ abstract class AbstractTestResponse
     protected array $headers;
 
     /**
-     * @param array|string|\Symfony\Component\HttpClient\Exception\TransportException|null $responseData If null, empty array will be used for JSON or empty string otherwise
+     * @param array|string|\Exception|null $responseData If null, empty array will be used for JSON or empty string otherwise
      * @param array<string, string>|null $responseHeaders
      * @param int|null $responseCode If null, 200 will be used
      */
     public function __construct(
         protected string $url,
         protected ?array $query = null,
-        protected readonly array|string|TransportException|null $responseData = null,
+        protected readonly array|string|Exception|null $responseData = null,
         protected ?array $responseHeaders = null,
         protected ?int $responseCode = null,
     ) {
@@ -145,7 +145,7 @@ abstract class AbstractTestResponse
 
     protected function createResponse(string $method, string $url, array $options): MockResponse
     {
-        if ($this->responseData instanceof TransportException) {
+        if ($this->responseData instanceof Exception) {
             throw $this->responseData;
         }
 
