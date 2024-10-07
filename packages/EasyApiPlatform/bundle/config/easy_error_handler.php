@@ -7,6 +7,7 @@ use EonX\EasyApiPlatform\Bundle\Enum\ConfigParam;
 use EonX\EasyApiPlatform\Bundle\Enum\ConfigTag;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformCustomSerializerExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformMissingConstructorArgumentsExceptionErrorResponseBuilder;
+use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformNotEncodableValueExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformNotNormalizableValueExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformTypeErrorExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformUnexpectedValueExceptionErrorResponseBuilder;
@@ -51,6 +52,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
         ->arg('$customSerializerExceptions', param(ConfigParam::EasyErrorHandlerCustomSerializerExceptions->value))
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 94]);
+
+    $services->set(ApiPlatformNotEncodableValueExceptionErrorResponseBuilder::class)
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
+        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
+        ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 93]);
 
     $services->set(ApiPlatformErrorResponseBuilderProvider::class)
         ->arg('$builders', tagged_iterator(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value))

@@ -18,5 +18,6 @@ return [
         'invalid_iri' => 'This value should be an IRI.',
         'invalid_type' => 'The type of the value should be "%expected_types%", "%current_type%" given.',
         'missing_constructor_argument' => 'This value should be present.',
+        'not_encodable' => 'The input data is misformatted.',
     ],
 ];
