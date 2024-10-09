@@ -8,7 +8,7 @@ use DeepCopy\Reflection\ReflectionHelper;
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-final class DoctrineInitializedCollectionFilter implements Filter
+final class DoctrineInitializedCollectionDeepCopyFilter implements Filter
 {
     /**
      * @inheritdoc
