@@ -13,4 +13,9 @@ final class NumberPositiveOrZero extends AbstractComparison
     use ZeroComparisonConstraintTrait;
 
     public string $message = 'number.should_be_positive_or_zero';
+
+    public function validatedBy(): string
+    {
+        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
+    }
 }
