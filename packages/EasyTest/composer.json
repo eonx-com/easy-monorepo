@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-utils": "^6.1",
+        "eonx-com/easy-utils": "^6.2",
         "nette/utils": "^4.0",
         "phpunit/phpunit": "^10.2",
         "symfony/config": "^7.0",
@@ -53,7 +53,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.1-dev"
+            "dev-master": "6.2-dev"
         }
     }
 }
