@@ -14,7 +14,7 @@ use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
 final class ObjectCopierFactory
 {
     /**
-     * @deprecated since 6.0.3, will be removed in 7.0.0. Use createForDeletedEntityCopier
+     * @deprecated since 6.0.3, will be removed in 7.0.0. Use createForDeletedEntity
      */
     public static function create(): ObjectCopierInterface
     {
