@@ -31,7 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(ConfigServiceId::DeletedEntityCopier->value, ObjectCopierInterface::class)
-        ->factory([ObjectCopierFactory::class, 'createForDeletedEntityCopier']);
+        ->factory([ObjectCopierFactory::class, 'createForDeletedEntity']);
 
     $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class)
         ->arg('$deletedEntityCopier', service(ConfigServiceId::DeletedEntityCopier->value));

@@ -27,7 +27,7 @@ final class ObjectCopierFactory
         return new ObjectCopier($deepCopy);
     }
 
-    public static function createForDeletedEntityCopier(): ObjectCopierInterface
+    public static function createForDeletedEntity(): ObjectCopierInterface
     {
         $deepCopy = new DeepCopy();
         $deepCopy->addFilter(
