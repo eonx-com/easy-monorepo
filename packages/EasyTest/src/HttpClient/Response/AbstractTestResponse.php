@@ -44,7 +44,7 @@ abstract class AbstractTestResponse
     {
         foreach ($array as &$value) {
             if (\is_array($value)) {
-                self::normalizeData($value);
+                $value = self::normalizeData($value);
             }
 
             if (\is_string($value) === false) {
