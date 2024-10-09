@@ -9,6 +9,7 @@ use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use JetBrains\PhpStorm\Deprecated;
 use LogicException;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
@@ -25,6 +26,8 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     private array $deletedEntities = [];
 
+    private readonly ObjectCopierInterface $deletedEntityCopier;
+
     private bool $enabled;
 
     private array $entityChangeSets = [];
@@ -36,9 +39,24 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ObjectCopierInterface $objectCopier,
+        #[Deprecated('Will be removed in 7.0, use $deletedEntityCopier instead')]
+        ?ObjectCopierInterface $objectCopier = null,
+        ?ObjectCopierInterface $deletedEntityCopier = null,
     ) {
         $this->enabled = true;
+
+        if ($objectCopier !== null) {
+            @\trigger_error(
+                'Argument $objectCopier is deprecated and will be removed in 7.0, use $deletedEntityCopier instead.',
+                \E_USER_DEPRECATED
+            );
+        }
+
+        if ($objectCopier === null && $deletedEntityCopier === null) {
+            throw new LogicException('At least one of $objectCopier or $deletedEntityCopier must be provided.');
+        }
+
+        $this->deletedEntityCopier = $deletedEntityCopier ?? $objectCopier;
     }
 
     public function clear(?int $transactionNestingLevel = null): void
@@ -119,7 +137,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         $entityObjectId = \spl_object_id($entity);
         // \EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface is used to preserve the identifier that is removed after deleting entity
-        $this->deletedEntities[$entityObjectId] = $this->objectCopier->copy($entity);
+        $this->deletedEntities[$entityObjectId] = $this->deletedEntityCopier->copy($entity);
         $this->entityChangeSets[$transactionNestingLevel][$entityObjectId] = $entityChangeSet;
     }
 

@@ -548,6 +548,22 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             );
         $entityManager->getConnection()
             ->insert(
+                'offer',
+                [
+                    'id' => 1,
+                    'name' => 'Offer 1',
+                ]
+            );
+        $entityManager->getConnection()
+            ->insert(
+                'product_offer',
+                [
+                    'product_id' => 1,
+                    'offer_id' => 1,
+                ],
+            );
+        $entityManager->getConnection()
+            ->insert(
                 'tag',
                 [
                     'id' => 1,
@@ -604,6 +620,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $tag2 = $product->getTags()[1];
         self::assertSame(2, $tag2->getId());
         self::assertSame('Tag 2', $tag2->getName());
+        self::assertCount(0, $product->getOffers());
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void

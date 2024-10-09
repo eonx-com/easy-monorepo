@@ -19,6 +19,9 @@ interface DeferredEntityEventDispatcherInterface
 
     public function deferInsert(int $transactionNestingLevel, object $entity, array $entityChangeSet): void;
 
+    /**
+     * @todo Rename $object to $entity in next major release
+     */
     public function deferUpdate(int $transactionNestingLevel, object $object, array $entityChangeSet): void;
 
     public function disable(): void;
