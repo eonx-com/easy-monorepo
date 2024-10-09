@@ -62,6 +62,9 @@ final class StrictTestResponseTest extends TestCase
             json: [
                 'enum' => $enum,
                 'uuid' => $uuid,
+                'some-data' => [
+                    'some-data' => 'some-value',
+                ],
             ],
         );
 
@@ -73,6 +76,9 @@ final class StrictTestResponseTest extends TestCase
                 'body' => \json_encode([
                     'enum' => $enum,
                     'uuid' => $uuid,
+                    'some-data' => [
+                        'some-data' => 'some-value',
+                    ],
                 ]),
             ]
         );

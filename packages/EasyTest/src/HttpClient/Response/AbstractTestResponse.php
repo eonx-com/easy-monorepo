@@ -44,10 +44,10 @@ abstract class AbstractTestResponse
     {
         foreach ($array as &$value) {
             if (\is_array($value)) {
-                $value = self::normalizeData($value);
+                self::normalizeData($value);
             }
 
-            if (\is_string($value) === false) {
+            if (\is_array($value) === false) {
                 if ($value instanceof BackedEnum) {
                     $value = $value->value;
 
