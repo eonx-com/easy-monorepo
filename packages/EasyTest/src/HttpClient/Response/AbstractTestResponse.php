@@ -47,7 +47,7 @@ abstract class AbstractTestResponse
                 self::normalizeData($value);
             }
 
-            if (\is_string($value) === false) {
+            if (\is_array($value) === false) {
                 if ($value instanceof BackedEnum) {
                     $value = $value->value;
 
