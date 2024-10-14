@@ -4,7 +4,7 @@ declare(strict_types=1);
 use Monolog\Level;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;use Symfony\Component\HttpKernel\Exception\ConflictHttpException;use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
@@ -87,5 +87,16 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             ->scalarNode('error_codes_interface')->defaultNull()->end()
             ->scalarNode('error_codes_category_size')->defaultValue(100)->end()
+            ->arrayNode('exception_messages')
+                ->useAttributeAsKey('class')
+                ->scalarPrototype()->end()
+                ->defaultValue([
+                    AccessDeniedHttpException::class => 'exceptions.forbidden',
+                    BadRequestHttpException::class => 'exceptions.bad_request',
+                    ConflictHttpException::class => 'exceptions.conflict',
+                    NotFoundHttpException::class => 'exceptions.not_found',
+                    UnauthorizedHttpException::class => 'exceptions.unauthorized',
+                ])
+            ->end()
         ->end();
 };

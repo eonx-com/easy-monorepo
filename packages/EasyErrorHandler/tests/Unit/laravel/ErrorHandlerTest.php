@@ -11,6 +11,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class ErrorHandlerTest extends AbstractLaravelTestCase
 {
@@ -100,7 +101,13 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
         callable $assertResponse,
         ?array $translations = null,
     ): void {
-        $app = $this->getApplication();
+        $app = $this->getApplication([
+            'easy-error-handler' => [
+                'exception_messages' => [
+                    NotFoundHttpException::class => 'exceptions.not_found',
+                ],
+            ],
+        ]);
         /** @var \Illuminate\Contracts\Debug\ExceptionHandler $handler */
         $handler = $app->make(ExceptionHandler::class);
 

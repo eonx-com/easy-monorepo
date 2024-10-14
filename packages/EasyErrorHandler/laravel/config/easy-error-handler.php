@@ -107,4 +107,6 @@ return [
         'enabled' => \env('EASY_ERROR_HANDLER_TRANSLATE_INTERNAL_ERROR_MESSAGES_ENABLED', false),
         'locale' => \env('EASY_ERROR_HANDLER_TRANSLATE_INTERNAL_ERROR_MESSAGES_LOCALE', 'en'),
     ],
+
+    'exception_messages' => [],
 ];

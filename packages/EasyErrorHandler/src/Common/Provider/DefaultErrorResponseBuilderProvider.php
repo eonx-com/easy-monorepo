@@ -6,6 +6,7 @@ namespace EonX\EasyErrorHandler\Common\Provider;
 use EonX\EasyErrorHandler\Common\Builder\CodeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\ExtendedExceptionErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\HttpExceptionErrorResponseBuilder;
+use EonX\EasyErrorHandler\Common\Builder\MessageErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\StatusCodeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\SubCodeErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Builder\TimeErrorResponseBuilder;
@@ -23,11 +24,11 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
 
     private const ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
 
+    private const ERROR_RESPONSE_KEY_MESSAGE = 'message';
+
     private const ERROR_RESPONSE_KEY_SUB_CODE = 'sub_code';
 
     private const ERROR_RESPONSE_KEY_TIME = 'time';
-
-    private const ERROR_RESPONSE_KEY_USER_MESSAGE = 'message';
 
     private const ERROR_RESPONSE_KEY_VIOLATIONS = 'violations';
 
@@ -35,6 +36,7 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
         private ErrorDetailsResolverInterface $errorDetailsResolver,
         private TranslatorInterface $translator,
         private array $keys,
+        private ?array $exceptionMessages = null,
     ) {
     }
 
@@ -55,13 +57,20 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
         yield new TimeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_TIME));
         yield new UserMessageErrorResponseBuilder(
             $this->translator,
-            $this->getKey(self::ERROR_RESPONSE_KEY_USER_MESSAGE)
+            $this->getKey(self::ERROR_RESPONSE_KEY_MESSAGE)
         );
         yield new ViolationsErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_VIOLATIONS));
 
         if (\interface_exists(HttpExceptionInterface::class)) {
             yield new HttpExceptionErrorResponseBuilder($this->keys);
         }
+
+        yield new MessageErrorResponseBuilder(
+            $this->translator,
+            $this->getKey(self::ERROR_RESPONSE_KEY_MESSAGE),
+            null,
+            $this->exceptionMessages
+        );
     }
 
     private function getKey(string $key): string
