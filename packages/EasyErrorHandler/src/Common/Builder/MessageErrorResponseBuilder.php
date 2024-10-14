@@ -14,7 +14,7 @@ final class MessageErrorResponseBuilder extends AbstractSingleKeyErrorResponseBu
         ?int $priority = null,
         private ?array $exceptionMessages = null,
     ) {
-        $this->exceptionMessages = $this->exceptionMessages ?? [];
+        $this->exceptionMessages ??= [];
 
         parent::__construct($key, $priority);
     }

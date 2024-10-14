@@ -4,7 +4,12 @@ declare(strict_types=1);
 use Monolog\Level;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;use Symfony\Component\HttpKernel\Exception\ConflictHttpException;use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
