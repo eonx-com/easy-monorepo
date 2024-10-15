@@ -13,5 +13,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(DefaultErrorResponseBuilderProvider::class)
-        ->arg('$keys', param(ConfigParam::ResponseKeys->value));
+        ->arg('$keys', param(ConfigParam::ResponseKeys->value))
+        ->arg('$exceptionMessages', param(ConfigParam::ExceptionMessages->value));
 };

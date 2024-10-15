@@ -73,19 +73,16 @@ final class EasyErrorHandlerBundle extends AbstractBundle
 
         $container->import('config/services.php');
 
-        if ($config['use_default_builders']) {
-            $container->import('config/default_builders.php');
-        }
-
         if ($config['use_default_reporters']) {
             $container->import('config/default_reporters.php');
         }
 
-        $this->registerBugsnagConfiguration($config, $container, $builder);
-
         if ($this->isBundleEnabled('EasyWebhookBundle', $builder)) {
             $container->import('config/easy_webhook.php');
         }
+
+        $this->registerBugsnagConfiguration($config, $container, $builder);
+        $this->registerDefaultBuildersConfiguration($config, $container, $builder);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -121,5 +118,21 @@ final class EasyErrorHandlerBundle extends AbstractBundle
             ->set(ConfigParam::BugsnagHandledExceptions->value, $config['handled_exceptions']);
 
         $container->import('config/bugsnag.php');
+    }
+
+    private function registerDefaultBuildersConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['use_default_builders'] === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::ExceptionMessages->value, $config['exception_messages']);
+
+        $container->import('config/default_builders.php');
     }
 }

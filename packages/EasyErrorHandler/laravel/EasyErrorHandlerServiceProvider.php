@@ -134,7 +134,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 ): DefaultErrorResponseBuilderProvider => new DefaultErrorResponseBuilderProvider(
                     $app->make(ErrorDetailsResolverInterface::class),
                     $app->make(TranslatorInterface::class),
-                    \config('easy-error-handler.response')
+                    \config('easy-error-handler.response'),
+                    \config('easy-error-handler.exception_messages')
                 )
             );
             $this->app->tag(
