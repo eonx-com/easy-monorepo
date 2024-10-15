@@ -17,8 +17,9 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
         array $keys,
         ?int $priority = null,
         private readonly array $customSerializerExceptions = [],
+        mixed $validationErrorCode = null,
     ) {
-        parent::__construct($translator, $nameConverter, $keys, $priority);
+        parent::__construct($translator, $nameConverter, $keys, $priority, $validationErrorCode);
     }
 
     protected function doBuildViolations(Throwable $throwable): array

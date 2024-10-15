@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyErrorHandler\Tests\Stub\Enum\ErrorCode;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Config\EasyErrorHandlerConfig;
 
 return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
@@ -27,4 +29,6 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
         ->line('custom_line')
         ->message('custom_message')
         ->trace('custom_trace');
+
+    $easyErrorHandlerConfig->exceptionCodes(NotFoundHttpException::class, ErrorCode::Code1);
 };

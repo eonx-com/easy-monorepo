@@ -38,25 +38,31 @@ return static function (DefinitionConfigurator $definition) {
 
         $easyErrorHandlerDefinition->append(
             (new NodeBuilder())
-            ->arrayNode('custom_serializer_exceptions')
-                ->info('Custom serializer exceptions to be handled by '
-                   . ApiPlatformErrorResponseBuilderInterface::class)
-                ->arrayPrototype()
-                    ->children()
-                        ->scalarNode('class')->isRequired()->end()
-                        ->scalarNode('message_pattern')->isRequired()->end()
-                        ->scalarNode('violation_message')->isRequired()->end()
+                ->arrayNode('custom_serializer_exceptions')
+                    ->info('Custom serializer exceptions to be handled by '
+                       . ApiPlatformErrorResponseBuilderInterface::class)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('class')->isRequired()->end()
+                            ->scalarNode('message_pattern')->isRequired()->end()
+                            ->scalarNode('violation_message')->isRequired()->end()
+                        ->end()
                     ->end()
-                ->end()
+        );
+
+        $easyErrorHandlerDefinition->append(
+            (new NodeBuilder())
+                ->variableNode('validation_error_code')
+                ->defaultNull()
         );
 
         if (\class_exists(EasyBugsnagBundle::class)) {
             $easyErrorHandlerDefinition->append(
                 (new NodeBuilder())
-                ->booleanNode('report_exceptions_to_bugsnag')
-                    ->info('Report exceptions handled by '
-                    . ApiPlatformErrorResponseBuilderInterface::class . ' to Bugsnag')
-                    ->defaultFalse()
+                    ->booleanNode('report_exceptions_to_bugsnag')
+                        ->info('Report exceptions handled by '
+                        . ApiPlatformErrorResponseBuilderInterface::class . ' to Bugsnag')
+                        ->defaultFalse()
             );
         }
     }

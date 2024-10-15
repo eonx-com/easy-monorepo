@@ -17,6 +17,7 @@ abstract class AbstractApiPlatformExceptionErrorResponseBuilder extends Abstract
         protected readonly MetadataAwareNameConverter $nameConverter,
         private readonly array $keys,
         ?int $priority = null,
+        protected readonly mixed $validationErrorCode = null,
     ) {
         parent::__construct($priority);
     }

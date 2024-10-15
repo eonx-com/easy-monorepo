@@ -520,7 +520,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         self::assertCount(\count($responseData['custom_violations']), $violations, 'Please arrange violations.');
         self::assertArraySubset(
             [
-                'custom_code' => 0,
+                'custom_code' => 123,
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => $violations,
             ],
@@ -552,7 +552,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         );
         self::assertArraySubset(
             [
-                'custom_code' => 0,
+                'custom_code' => 123,
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => [
                     'The input data is misformatted.',
@@ -595,7 +595,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         self::assertCount(\count($responseData['custom_violations']), $violations, 'Please arrange violations.');
         self::assertArraySubset(
             [
-                'custom_code' => 0,
+                'custom_code' => 123,
                 'custom_exception' => [
                     'custom_message' => $exceptionMessage,
                 ],
@@ -640,7 +640,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         );
         self::assertArraySubset(
             [
-                'custom_code' => 0,
+                'custom_code' => 123,
                 'custom_exception' => [
                     'custom_message' => 'Syntax error',
                 ],

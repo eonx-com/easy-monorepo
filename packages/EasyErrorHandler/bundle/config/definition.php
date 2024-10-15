@@ -103,5 +103,10 @@ return static function (DefinitionConfigurator $definition) {
                     UnauthorizedHttpException::class => 'exceptions.unauthorized',
                 ])
             ->end()
+            ->arrayNode('exception_codes')
+                ->useAttributeAsKey('class')
+                ->variablePrototype()->end()
+                ->defaultValue([])
+            ->end()
         ->end();
 };
