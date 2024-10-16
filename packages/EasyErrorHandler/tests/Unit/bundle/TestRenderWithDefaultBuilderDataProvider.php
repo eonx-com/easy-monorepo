@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Unit\Bundle;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
+use EonX\EasyErrorHandler\Tests\Stub\Exception\DummyException;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Exception;
@@ -185,6 +186,15 @@ final class TestRenderWithDefaultBuilderDataProvider
                 'test.exception_message' => 'Exception message with $param',
                 'test.user_message' => 'User-friendly error message with $param',
             ],
+        ];
+
+        yield 'Response with configured status code for exception' => [
+            'request' => new Request(),
+            'exception' => new DummyException(),
+            'assertResponse' => static function (Response $response): void {
+                TestCase::assertSame(Response::HTTP_INSUFFICIENT_STORAGE, $response->getStatusCode());
+            },
+            'translations' => null,
         ];
     }
 }

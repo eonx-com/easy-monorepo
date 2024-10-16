@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Builder;
 
+use BackedEnum;
 use EonX\EasyErrorHandler\Common\Exception\StatusCodeAwareExceptionInterface;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Throwable;
@@ -34,7 +35,11 @@ final class StatusCodeErrorResponseBuilder extends AbstractErrorResponseBuilder
 
         foreach ($this->exceptionToStatusCode as $class => $setStatusCode) {
             if (\is_a($throwable, $class)) {
-                $statusCode = $setStatusCode;
+                $statusCode = $setStatusCode instanceof HttpStatusCode
+                    ? $setStatusCode
+                    : HttpStatusCode::from($setStatusCode instanceof BackedEnum
+                        ? $setStatusCode->value
+                        : $setStatusCode);
 
                 break;
             }

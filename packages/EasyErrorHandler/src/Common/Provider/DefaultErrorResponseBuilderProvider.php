@@ -37,6 +37,7 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
         private TranslatorInterface $translator,
         private array $keys,
         private ?array $exceptionMessages = null,
+        private ?array $exceptionToStatusCode = null,
     ) {
     }
 
@@ -52,7 +53,7 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
             $this->keys[self::ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION_KEYS] ?? [],
             $this->getKey(self::ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION)
         );
-        yield new StatusCodeErrorResponseBuilder();
+        yield new StatusCodeErrorResponseBuilder($this->exceptionToStatusCode);
         yield new SubCodeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_SUB_CODE));
         yield new TimeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_TIME));
         yield new UserMessageErrorResponseBuilder(

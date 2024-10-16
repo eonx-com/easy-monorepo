@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
+use EonX\EasyErrorHandler\Tests\Stub\Exception\DummyExceptionInterface;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
 use EonX\EasyErrorHandler\Tests\Unit\Bundle\TestRenderWithDefaultBuilderDataProvider;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
@@ -130,6 +132,9 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
         $app = $this->getApplication([
             'easy-error-handler' => [
                 'use_extended_response' => true,
+                'exception_to_status_code' => [
+                    DummyExceptionInterface::class => HttpStatusCode::InsufficientStorage,
+                ],
             ],
         ]);
         /** @var \Illuminate\Contracts\Debug\ExceptionHandler $handler */
