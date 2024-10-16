@@ -93,7 +93,7 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             ->scalarNode('error_codes_interface')->defaultNull()->end()
             ->scalarNode('error_codes_category_size')->defaultValue(100)->end()
-            ->arrayNode('exception_messages')
+            ->arrayNode('exception_to_message')
                 ->useAttributeAsKey('class')
                 ->scalarPrototype()->end()
                 ->defaultValue([
