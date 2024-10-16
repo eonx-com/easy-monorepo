@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyUtils\Common\Enum\HttpStatusCode;use Monolog\Level;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
+use Monolog\Level;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
