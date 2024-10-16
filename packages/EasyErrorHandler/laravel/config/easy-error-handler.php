@@ -109,5 +109,5 @@ return [
     ],
 
     'exception_messages' => [],
-    'exception_codes' => [],
+    'exception_to_code' => [],
 ];

@@ -136,7 +136,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                     $app->make(TranslatorInterface::class),
                     \config('easy-error-handler.response'),
                     \config('easy-error-handler.exception_messages'),
-                    \config('easy-error-handler.exception_codes')
+                    \config('easy-error-handler.exception_to_code')
                 )
             );
             $this->app->tag(

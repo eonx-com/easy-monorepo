@@ -8,12 +8,14 @@ use Throwable;
 
 final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    private readonly array $exceptionToCode;
+
     public function __construct(
         string $key,
         ?int $priority = null,
-        private ?array $exceptionCodes = null,
+        ?array $exceptionToCode = null,
     ) {
-        $this->exceptionCodes ??= [];
+        $this->exceptionToCode = $exceptionToCode ?? [];
 
         parent::__construct($key, $priority);
     }
@@ -25,10 +27,10 @@ final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuild
      */
     protected function doBuildValue(Throwable $throwable, array $data): int|string
     {
-        if (isset($this->exceptionCodes[$throwable::class])) {
-            return $this->exceptionCodes[$throwable::class] instanceof BackedEnum
-                ? $this->exceptionCodes[$throwable::class]->value
-                : $this->exceptionCodes[$throwable::class];
+        foreach ($this->exceptionToCode as $class => $code) {
+            if (\is_a($throwable, $class)) {
+                return $code instanceof BackedEnum ? $code->value : $code;
+            }
         }
 
         return $throwable->getCode();

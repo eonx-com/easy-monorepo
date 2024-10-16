@@ -107,7 +107,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
                 'exception_messages' => [
                     NotFoundHttpException::class => 'exceptions.not_found',
                 ],
-                'exception_codes' => [
+                'exception_to_code' => [
                     NotFoundHttpException::class => ErrorCode::Code1,
                 ],
             ],

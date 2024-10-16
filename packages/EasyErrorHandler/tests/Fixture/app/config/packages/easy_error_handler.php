@@ -30,5 +30,5 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
         ->message('custom_message')
         ->trace('custom_trace');
 
-    $easyErrorHandlerConfig->exceptionCodes(NotFoundHttpException::class, ErrorCode::Code1);
+    $easyErrorHandlerConfig->exceptionToCode(NotFoundHttpException::class, ErrorCode::Code1);
 };
