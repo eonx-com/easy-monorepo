@@ -8,21 +8,25 @@ use Throwable;
 
 final class MessageErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    private readonly array $exceptionToMessage;
+
     public function __construct(
         private readonly TranslatorInterface $translator,
         string $key,
         ?int $priority = null,
-        private ?array $exceptionMessages = null,
+        ?array $exceptionToMessage = null,
     ) {
-        $this->exceptionMessages ??= [];
+        $this->exceptionToMessage = $exceptionToMessage ?? [];
 
         parent::__construct($key, $priority);
     }
 
     protected function doBuildValue(Throwable $throwable, array $data): string
     {
-        if (isset($this->exceptionMessages[$throwable::class])) {
-            return $this->translator->trans($this->exceptionMessages[$throwable::class], []);
+        foreach ($this->exceptionToMessage as $class => $message) {
+            if (\is_a($throwable, $class)) {
+                return $this->translator->trans($message, []);
+            }
         }
 
         return $data[$this->key] ?? '';
