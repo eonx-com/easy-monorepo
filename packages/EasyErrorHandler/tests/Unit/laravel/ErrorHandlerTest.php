@@ -104,7 +104,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
     ): void {
         $app = $this->getApplication([
             'easy-error-handler' => [
-                'exception_messages' => [
+                'exception_to_message' => [
                     NotFoundHttpException::class => 'exceptions.not_found',
                 ],
                 'exception_to_code' => [
