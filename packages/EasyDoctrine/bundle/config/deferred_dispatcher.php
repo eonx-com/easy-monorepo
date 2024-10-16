@@ -11,6 +11,7 @@ use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -38,7 +39,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(WithEventsEntityManager::class)
         ->arg('$decorated', service('.inner'))
-        ->decorate('doctrine.orm.default_entity_manager');
+        ->decorate(
+            'doctrine.orm.default_entity_manager',
+            invalidBehavior: ContainerInterface::IGNORE_ON_INVALID_REFERENCE
+        );
 
     $services
         ->set(EntityEventListener::class)
