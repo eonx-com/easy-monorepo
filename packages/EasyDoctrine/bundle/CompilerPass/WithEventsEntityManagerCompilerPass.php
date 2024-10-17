@@ -8,6 +8,7 @@ use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
@@ -31,7 +32,10 @@ final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
                 ->setDecoratedService($entityManagerServiceId)
                 ->setArgument(
                     '$deferredEntityEventDispatcher',
-                    new Reference(DeferredEntityEventDispatcherInterface::class)
+                    new Reference(
+                        DeferredEntityEventDispatcherInterface::class,
+                        ContainerInterface::NULL_ON_INVALID_REFERENCE
+                    )
                 )
                 ->setArgument('$eventDispatcher', new Reference(EventDispatcherInterface::class))
                 ->setArgument('$decorated', new Reference($withEventsEntityManagerServiceId . '.inner'));
