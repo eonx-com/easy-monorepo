@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Enum\ErrorCode;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Config\EasyApiPlatformConfig;
@@ -19,4 +20,6 @@ return static function (EasyApiPlatformConfig $easyApiPlatformConfig): void {
         ->class(NotNormalizableValueException::class)
         ->messagePattern('/Failed to parse time string \(.*\) at position .* \(.*\): .*/')
         ->violationMessage('Some custom violation message for datetime parsing error.');
+
+    $easyErrorHandlerConfig->validationErrorCode(ErrorCode::ValidationError);
 };

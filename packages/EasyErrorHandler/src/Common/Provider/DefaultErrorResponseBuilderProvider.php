@@ -37,6 +37,7 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
         private TranslatorInterface $translator,
         private array $keys,
         private ?array $exceptionToMessage = null,
+        private ?array $exceptionToCode = null,
     ) {
     }
 
@@ -45,7 +46,11 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
      */
     public function getBuilders(): iterable
     {
-        yield new CodeErrorResponseBuilder($this->getKey(self::ERROR_RESPONSE_KEY_CODE));
+        yield new CodeErrorResponseBuilder(
+            $this->getKey(self::ERROR_RESPONSE_KEY_CODE),
+            null,
+            $this->exceptionToCode
+        );
         yield new ExtendedExceptionErrorResponseBuilder(
             $this->errorDetailsResolver,
             $this->translator,

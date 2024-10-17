@@ -123,13 +123,14 @@ final class TestRenderWithDefaultBuilderDataProvider
             'translations' => null,
         ];
 
-        yield 'HttpException statusCode and message' => [
+        yield 'HttpException code, statusCode and message' => [
             'request' => new Request(),
             'exception' => new NotFoundHttpException('my-message'),
             'assertResponse' => static function (Response $response): void {
                 $content = (array)\json_decode((string)$response->getContent(), true);
                 TestCase::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
                 TestCase::assertSame('Not found.', $content['custom_message']);
+                TestCase::assertSame(1, $content['custom_code']);
             },
             'translations' => null,
         ];

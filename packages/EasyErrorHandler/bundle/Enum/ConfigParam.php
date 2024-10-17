@@ -15,6 +15,8 @@ enum ConfigParam: string
 
     case ErrorCodesInterface = 'easy_error_handler.error_codes_interface';
 
+    case ExceptionToCode = 'easy_error_handler.exception_to_code';
+
     case ExceptionToMessage = 'easy_error_handler.exception_to_message';
 
     case IgnoredExceptions = 'easy_error_handler.ignored_exceptions';

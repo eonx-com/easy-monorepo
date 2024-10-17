@@ -3,10 +3,23 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Common\Builder;
 
+use BackedEnum;
 use Throwable;
 
 final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuilder
 {
+    private readonly array $exceptionToCode;
+
+    public function __construct(
+        string $key,
+        ?int $priority = null,
+        ?array $exceptionToCode = null,
+    ) {
+        $this->exceptionToCode = $exceptionToCode ?? [];
+
+        parent::__construct($key, $priority);
+    }
+
     /**
      * Some exceptions have the code as string, so we need return type to be int or string.
      *
@@ -14,6 +27,12 @@ final class CodeErrorResponseBuilder extends AbstractSingleKeyErrorResponseBuild
      */
     protected function doBuildValue(Throwable $throwable, array $data): int|string
     {
+        foreach ($this->exceptionToCode as $class => $code) {
+            if (\is_a($throwable, $class)) {
+                return $code instanceof BackedEnum ? $code->value : $code;
+            }
+        }
+
         return $throwable->getCode();
     }
 }

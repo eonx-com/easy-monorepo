@@ -5,6 +5,7 @@ namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
 use ApiPlatform\State\Provider\DeserializeProvider;
 use ApiPlatform\Symfony\EventListener\DeserializeListener;
+use BackedEnum;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Throwable;
 
@@ -20,6 +21,12 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
         if (\count($violations) > 0) {
             $data[$this->getKey('message')] = $this->translator->trans('exceptions.not_valid', []);
             $data[$this->getKey('violations')] = $violations;
+
+            if ($this->validationErrorCode !== null) {
+                $data[$this->getKey('code')] = $this->validationErrorCode instanceof BackedEnum
+                    ? $this->validationErrorCode->value
+                    : $this->validationErrorCode;
+            }
         }
 
         return parent::buildData($throwable, $data);
