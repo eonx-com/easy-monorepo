@@ -9,9 +9,7 @@ use EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
-use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyDoctrine\EntityEvent\Listener\EntityEventListener;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -36,13 +34,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(DeferredEntityEventDispatcherInterface::class, DeferredEntityEventDispatcher::class)
         ->arg('$deletedEntityCopier', service(ConfigServiceId::DeletedEntityCopier->value));
-
-    $services->set(WithEventsEntityManager::class)
-        ->arg('$decorated', service('.inner'))
-        ->decorate(
-            'doctrine.orm.default_entity_manager',
-            invalidBehavior: ContainerInterface::IGNORE_ON_INVALID_REFERENCE
-        );
 
     $services
         ->set(EntityEventListener::class)
