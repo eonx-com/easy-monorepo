@@ -15,7 +15,7 @@ use Throwable;
 final class WithEventsEntityManager extends EntityManagerDecorator
 {
     public function __construct(
-        private readonly ?DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
+        private readonly DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
         private readonly EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $decorated,
     ) {
@@ -27,7 +27,7 @@ final class WithEventsEntityManager extends EntityManagerDecorator
         parent::commit();
 
         if ($this->getConnection()->getTransactionNestingLevel() === 0) {
-            $this->deferredEntityEventDispatcher?->dispatch();
+            $this->deferredEntityEventDispatcher->dispatch();
         }
     }
 
@@ -40,7 +40,7 @@ final class WithEventsEntityManager extends EntityManagerDecorator
             parent::rollback();
         }
 
-        $this->deferredEntityEventDispatcher?->clear($transactionNestingLevel);
+        $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
     }
 
     public function wrapInTransaction(callable $func): mixed
