@@ -30,15 +30,15 @@ final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
             $container
                 ->register($withEventsEntityManagerServiceId, WithEventsEntityManager::class)
                 ->setDecoratedService($entityManagerServiceId)
-                ->setArgument('$decorated', new Reference($withEventsEntityManagerServiceId . '.inner'))
-                ->setArgument('$eventDispatcher', new Reference(EventDispatcherInterface::class))
                 ->setArgument(
                     '$deferredEntityEventDispatcher',
                     new Reference(
                         DeferredEntityEventDispatcherInterface::class,
                         ContainerInterface::NULL_ON_INVALID_REFERENCE
                     )
-                );
+                )
+                ->setArgument('$eventDispatcher', new Reference(EventDispatcherInterface::class))
+                ->setArgument('$decorated', new Reference($withEventsEntityManagerServiceId . '.inner'));
         }
     }
 }

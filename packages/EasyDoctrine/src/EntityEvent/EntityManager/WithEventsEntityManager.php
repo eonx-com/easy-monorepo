@@ -15,9 +15,9 @@ use Throwable;
 final class WithEventsEntityManager extends EntityManagerDecorator
 {
     public function __construct(
-        EntityManagerInterface $decorated,
+        private readonly ?DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ?DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher = null,
+        EntityManagerInterface $decorated,
     ) {
         parent::__construct($decorated);
     }
