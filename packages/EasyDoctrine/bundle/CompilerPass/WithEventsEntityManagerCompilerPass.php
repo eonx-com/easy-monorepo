@@ -14,7 +14,9 @@ final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $connectionNames = \array_keys($container->getParameter('doctrine.connections'));
+        /** @var array<string, string> $connections */
+        $connections = $container->getParameter('doctrine.connections');
+        $connectionNames = \array_keys($connections);
 
         foreach ($connectionNames as $connectionName) {
             $entityManagerServiceId = 'doctrine.orm.' . $connectionName . '_entity_manager';
