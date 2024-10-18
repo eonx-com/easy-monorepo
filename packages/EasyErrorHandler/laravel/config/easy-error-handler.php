@@ -109,5 +109,6 @@ return [
     ],
 
     'exception_to_message' => [],
+    'exception_to_status_code' => [],
     'exception_to_code' => [],
 ];
