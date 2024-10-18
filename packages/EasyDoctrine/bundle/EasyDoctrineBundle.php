@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Bundle;
 
 use EonX\EasyDoctrine\Bundle\CompilerPass\MigrationsFactoryCompilerPass;
+use EonX\EasyDoctrine\Bundle\CompilerPass\WithEventsEntityManagerCompilerPass;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,7 +21,8 @@ final class EasyDoctrineBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new MigrationsFactoryCompilerPass());
+            ->addCompilerPass(new MigrationsFactoryCompilerPass())
+            ->addCompilerPass(new WithEventsEntityManagerCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
