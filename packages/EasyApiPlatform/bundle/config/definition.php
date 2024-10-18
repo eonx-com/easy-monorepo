@@ -53,6 +53,16 @@ return static function (DefinitionConfigurator $definition) {
         $easyErrorHandlerDefinition->append(
             (new NodeBuilder())
                 ->variableNode('validation_error_code')
+                ->validate()
+                    ->ifTrue(
+                        function($value)  {
+                            return \is_int($value) === false
+                                && \is_string($value) === false
+                                && ($value instanceof BackedEnum) === false;
+                        }
+                    )
+                    ->thenInvalid('The validation_error_code must be an int, string, or BackedEnum.')
+                ->end()
                 ->defaultNull()
         );
 

@@ -105,7 +105,18 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             ->arrayNode('exception_to_code')
                 ->useAttributeAsKey('class')
-                ->variablePrototype()->end()
+                ->variablePrototype()
+                    ->validate()
+                        ->ifTrue(
+                            function($value)  {
+                                return \is_int($value) === false
+                                    && \is_string($value) === false
+                                    && ($value instanceof BackedEnum) === false;
+                            }
+                        )
+                        ->thenInvalid('The validation_error_code must be an int, string, or BackedEnum.')
+                    ->end()
+                ->end()
                 ->defaultValue([])
             ->end()
         ->end();
