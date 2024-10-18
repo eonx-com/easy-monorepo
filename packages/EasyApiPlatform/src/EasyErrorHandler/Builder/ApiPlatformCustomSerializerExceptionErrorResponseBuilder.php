@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
+use BackedEnum;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
@@ -17,8 +18,9 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
         array $keys,
         ?int $priority = null,
         private readonly array $customSerializerExceptions = [],
+        int|string|BackedEnum|null $validationErrorCode = null,
     ) {
-        parent::__construct($translator, $nameConverter, $keys, $priority);
+        parent::__construct($translator, $nameConverter, $keys, $priority, $validationErrorCode);
     }
 
     protected function doBuildViolations(Throwable $throwable): array

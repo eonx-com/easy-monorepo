@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
+use BackedEnum;
 use EonX\EasyErrorHandler\Common\Builder\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
@@ -17,6 +18,7 @@ abstract class AbstractApiPlatformExceptionErrorResponseBuilder extends Abstract
         protected readonly MetadataAwareNameConverter $nameConverter,
         private readonly array $keys,
         ?int $priority = null,
+        protected readonly int|string|BackedEnum|null $validationErrorCode = null,
     ) {
         parent::__construct($priority);
     }

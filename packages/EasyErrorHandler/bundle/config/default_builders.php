@@ -15,5 +15,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DefaultErrorResponseBuilderProvider::class)
         ->arg('$keys', param(ConfigParam::ResponseKeys->value))
         ->arg('$exceptionToMessage', param(ConfigParam::ExceptionToMessage->value))
-        ->arg('$exceptionToStatusCode', param(ConfigParam::ExceptionToStatusCode->value));
+        ->arg('$exceptionToStatusCode', param(ConfigParam::ExceptionToStatusCode->value))
+        ->arg('$exceptionToCode', param(ConfigParam::ExceptionToCode->value));
 };

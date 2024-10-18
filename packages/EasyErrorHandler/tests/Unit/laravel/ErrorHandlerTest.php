@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 
+use EonX\EasyErrorHandler\Tests\Stub\Enum\ErrorCode;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\BaseExceptionStub;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\DummyExceptionInterface;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\ValidationExceptionStub;
@@ -107,6 +108,9 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
             'easy-error-handler' => [
                 'exception_to_message' => [
                     NotFoundHttpException::class => 'exceptions.not_found',
+                ],
+                'exception_to_code' => [
+                    NotFoundHttpException::class => ErrorCode::Code1,
                 ],
             ],
         ]);

@@ -68,7 +68,8 @@ final class EasyApiPlatformBundle extends AbstractBundle
             ->set(
                 ConfigParam::EasyErrorHandlerCustomSerializerExceptions->value,
                 $config['custom_serializer_exceptions']
-            );
+            )
+            ->set(ConfigParam::EasyErrorHandlerValidationErrorCode->value, $config['validation_error_code']);
 
         $container->import('config/easy_error_handler.php');
 
