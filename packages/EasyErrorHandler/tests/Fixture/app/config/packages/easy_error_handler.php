@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyErrorHandler\Tests\Stub\Enum\ErrorCode;
 use EonX\EasyErrorHandler\Tests\Stub\Exception\DummyExceptionInterface;
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
-use EonX\EasyErrorHandler\Tests\Stub\Enum\ErrorCode;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Config\EasyErrorHandlerConfig;
 

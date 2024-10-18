@@ -116,11 +116,9 @@ return static function (DefinitionConfigurator $definition) {
                 ->variablePrototype()
                     ->validate()
                         ->ifTrue(
-                            function($value)  {
-                                return \is_int($value) === false
-                                    && \is_string($value) === false
-                                    && ($value instanceof BackedEnum) === false;
-                            }
+                            static fn ($value): bool => \is_int($value) === false
+                                && \is_string($value) === false
+                                && ($value instanceof BackedEnum) === false
                         )
                         ->thenInvalid('The validation_error_code must be an int, string, or BackedEnum.')
                     ->end()
