@@ -131,7 +131,8 @@ final class EasyErrorHandlerBundle extends AbstractBundle
 
         $container
             ->parameters()
-            ->set(ConfigParam::ExceptionToMessage->value, $config['exception_to_message']);
+            ->set(ConfigParam::ExceptionToMessage->value, $config['exception_to_message'])
+            ->set(ConfigParam::ExceptionToStatusCode->value, $config['exception_to_status_code']);
 
         $container->import('config/default_builders.php');
     }

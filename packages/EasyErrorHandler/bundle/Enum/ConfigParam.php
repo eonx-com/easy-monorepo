@@ -17,6 +17,8 @@ enum ConfigParam: string
 
     case ExceptionToMessage = 'easy_error_handler.exception_to_message';
 
+    case ExceptionToStatusCode = 'easy_error_handler.exception_to_status_code';
+
     case IgnoredExceptions = 'easy_error_handler.ignored_exceptions';
 
     case IsVerbose = 'easy_error_handler.is_verbose';

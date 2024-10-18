@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyErrorHandler\Tests\Stub\Exception\DummyExceptionInterface;
+use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 use Symfony\Config\EasyErrorHandlerConfig;
 
 return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
@@ -27,4 +29,7 @@ return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
         ->line('custom_line')
         ->message('custom_message')
         ->trace('custom_trace');
+
+    $easyErrorHandlerConfig
+        ->exceptionToStatusCode(DummyExceptionInterface::class, HttpStatusCode::InsufficientStorage);
 };
