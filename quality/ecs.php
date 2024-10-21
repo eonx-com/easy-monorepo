@@ -104,6 +104,7 @@ return ECSConfig::configure()
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
             'packages/*/config/*',
+            'packages/EasyTest/src/Common/Trait/.phpstorm.meta.php',
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
