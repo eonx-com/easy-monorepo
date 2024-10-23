@@ -25,6 +25,7 @@ abstract class AbstractTestResponse
         protected readonly array|string|TransportException|null $responseData = null,
         protected ?array $responseHeaders = null,
         protected ?int $responseCode = null,
+        protected ?bool $ignoreOrder = null,
     ) {
         $this->query ??= [];
         $this->responseHeaders ??= [];
@@ -38,6 +39,31 @@ abstract class AbstractTestResponse
         $this->checkParameters($method, $url, $options);
 
         return $this->createResponse($method, $url, $options);
+    }
+
+    public function isIgnoreOrder(): bool
+    {
+        return $this->ignoreOrder === true;
+    }
+
+    public function isUrlMatched(string $url): bool
+    {
+        $actualUrl = (array)\parse_url($url);
+        $expectedUrl = (array)\parse_url($this->url);
+
+        \parse_str($actualUrl['query'] ?? '', $actualQuery);
+        \parse_str($expectedUrl['query'] ?? '', $expectedQuery);
+
+        $actualUrl['query'] = $actualQuery;
+
+        $expectedQuery = [
+            ...$expectedQuery,
+            ...($this->query ?? []),
+        ];
+
+        $expectedUrl['query'] = $expectedQuery;
+
+        return $actualUrl === $expectedUrl;
     }
 
     protected static function normalizeData(array &$array): void
