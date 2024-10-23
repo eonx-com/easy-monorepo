@@ -19,8 +19,8 @@ final class HttpClientTestFailedSubscriber implements FailedSubscriber
         ) {
             echo \PHP_EOL;
             echo Color::colorize('fg-red', 'HTTP client reported the following exception:');
-
-            throw TestResponseFactory::getException();
+            echo \PHP_EOL;
+            echo TestResponseFactory::getException()->getMessage();
         }
     }
 }
