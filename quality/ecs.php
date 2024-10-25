@@ -16,6 +16,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
+use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
@@ -80,6 +81,9 @@ return ECSConfig::configure()
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
+        BracesFixer::class => [
+            'packages/EasyTest/.phpstorm.meta.php',
+        ],
         ClassDefinitionFixer::class => [
             'packages/EasyDecision/src/Configurator/AbstractNameRestrictedDecisionConfigurator.php',
             'packages/EasyDecision/src/Configurator/AbstractTypeRestrictedDecisionConfigurator.php',
@@ -100,6 +104,7 @@ return ECSConfig::configure()
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
             'packages/*/config/*',
+            'packages/EasyTest/.phpstorm.meta.php',
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
