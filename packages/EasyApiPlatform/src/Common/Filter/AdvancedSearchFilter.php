@@ -141,7 +141,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     /**
      * Adds where clause according to the strategy.
      *
-     * @throws \ApiPlatform\Exception\InvalidArgumentException If strategy does not exist
+     * @throws \ApiPlatform\Metadata\Exception\InvalidArgumentException If strategy does not exist
      */
     protected function addWhereByStrategy(
         string $strategy,

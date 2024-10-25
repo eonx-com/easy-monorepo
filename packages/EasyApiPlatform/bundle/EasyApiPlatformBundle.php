@@ -50,6 +50,12 @@ final class EasyApiPlatformBundle extends AbstractBundle
         $builder->prependExtensionConfig('twig', [
             'paths' => [$apiPlatformBundleViewsFolder => 'ApiPlatform'],
         ]);
+
+        // The use_symfony_listeners should be true as we use controllers and rely on Symfony event listeners.
+        // See https://github.com/api-platform/core/blob/main/CHANGELOG.md#v332
+        $builder->prependExtensionConfig('api_platform', [
+            'use_symfony_listeners' => true,
+        ]);
     }
 
     private function registerEasyErrorHandlerConfiguration(

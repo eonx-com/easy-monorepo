@@ -6,6 +6,7 @@ namespace EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\A
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\Controller\IncomingWebhookController;
 
 #[ApiResource(
@@ -14,17 +15,8 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\Control
             uriTemplate: '/incoming-webhooks/{someExtraVariable}',
             status: 204,
             controller: IncomingWebhookController::class,
-            openapiContext: [
-                'parameters' => [
-                    [
-                        'description' => 'Some extra variable',
-                        'in' => 'path',
-                        'name' => 'someExtraVariable',
-                        'required' => true,
-                        'schema' => ['type' => 'string'],
-                    ],
-                ],
-                'responses' => [
+            openapi: new OpenApiOperation(
+                responses: [
                     204 => [
                         'content' => [
                             'application/json' => [
@@ -35,24 +27,24 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\Control
                         ],
                     ],
                 ],
-            ],
+                parameters: [
+                    [
+                        'description' => 'Some extra variable',
+                        'in' => 'path',
+                        'name' => 'someExtraVariable',
+                        'required' => true,
+                        'schema' => ['type' => 'string'],
+                    ],
+                ]
+            ),
             read: false,
         ),
         new Put(
             uriTemplate: '/incoming-webhooks/{someExtraVariable}',
             status: 204,
             controller: IncomingWebhookController::class,
-            openapiContext: [
-                'parameters' => [
-                    [
-                        'description' => 'Some extra variable',
-                        'in' => 'path',
-                        'name' => 'someExtraVariable',
-                        'required' => true,
-                        'schema' => ['type' => 'string'],
-                    ],
-                ],
-                'responses' => [
+            openapi: new OpenApiOperation(
+                responses: [
                     204 => [
                         'content' => [
                             'application/json' => [
@@ -63,7 +55,16 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\Control
                         ],
                     ],
                 ],
-            ],
+                parameters: [
+                    [
+                        'description' => 'Some extra variable',
+                        'in' => 'path',
+                        'name' => 'someExtraVariable',
+                        'required' => true,
+                        'schema' => ['type' => 'string'],
+                    ],
+                ]
+            ),
             read: false,
         ),
     ]

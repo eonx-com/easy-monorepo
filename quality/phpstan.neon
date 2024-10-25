@@ -39,9 +39,6 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
-        - message: '#Method EonX\\EasyApiPlatform\\Common\\Filter\\AdvancedSearchFilter\:\:getIriConverter\(\) should return ApiPlatform\\Metadata\\IriConverterInterface but returns ApiPlatform\\Api\\IriConverterInterface#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/Common/Filter/AdvancedSearchFilter.php
-
         - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
           path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Common/Filter/AdvancedSearchFilterTest.php
 
