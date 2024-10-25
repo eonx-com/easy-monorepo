@@ -6,7 +6,7 @@ namespace EonX\EasyUtils\Math\Helper;
 use DivisionByZeroError;
 use EonX\EasyUtils\Math\Exception\InvalidDivisionByZeroException;
 
-final class MathHelper implements MathHelperInterface
+final readonly class MathHelper implements MathHelperInterface
 {
     private const ROUND_DECIMAL_SEPARATOR = '.';
 
@@ -18,15 +18,15 @@ final class MathHelper implements MathHelperInterface
 
     private const SCALE = 99;
 
-    private readonly string $decimalSeparator;
+    private string $decimalSeparator;
 
-    private readonly int $roundMode;
+    private int $roundMode;
 
-    private readonly int $roundPrecision;
+    private int $roundPrecision;
 
-    private readonly int $scale;
+    private int $scale;
 
-    private readonly string $thousandsSeparator;
+    private string $thousandsSeparator;
 
     /**
      * @param int|null $roundMode [optional] <p>

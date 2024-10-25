@@ -17,20 +17,20 @@ use Stringable;
 
 #[AsDoctrineListener(event: Events::onFlush)]
 #[AsDoctrineListener(event: Events::postFlush)]
-final class EntityEventListener
+final readonly class EntityEventListener
 {
     private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**
      * @var class-string[] $trackableEntities
      */
-    private readonly array $trackableEntities;
+    private array $trackableEntities;
 
     /**
      * @param class-string[]|null $trackableEntities
      */
     public function __construct(
-        private readonly DeferredEntityEventDispatcherInterface $eventDispatcher,
+        private DeferredEntityEventDispatcherInterface $eventDispatcher,
         ?array $trackableEntities = null,
     ) {
         $this->trackableEntities = $trackableEntities ?? throw new InvalidArgumentException(

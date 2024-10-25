@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Coverage\ValueObject;
 
-final class CoverageReport
+final readonly class CoverageReport
 {
     /**
      * @var string[]
      */
-    private readonly array $violations;
+    private array $violations;
 
     /**
      * @param string[] $violations
      */
     public function __construct(
-        private readonly float $coverage,
+        private float $coverage,
         ?array $violations = null,
     ) {
         $this->violations = $violations ?? [];

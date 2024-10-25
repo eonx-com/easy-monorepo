@@ -23,8 +23,10 @@ use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
+use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
+use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedClassNameInAnnotationSniff;
@@ -113,6 +115,9 @@ return ECSConfig::configure()
         MethodChainingNewlineFixer::class => [
             'packages/*/definition.php',
         ],
+        NoExtraBlankLinesFixer::class => [
+            'packages/EasyTest/.phpstorm.meta.php',
+        ],
         OrderedClassElementsFixer::class => [
             'packages/EasyApiPlatform/tests/Application/AbstractApplicationTestCase.php',
         ],
@@ -132,6 +137,7 @@ return ECSConfig::configure()
             'quality/tests/*',
         ],
         SingleSpaceAfterConstructFixer::class => null,
+        SingleSpaceAroundConstructFixer::class => null,
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],

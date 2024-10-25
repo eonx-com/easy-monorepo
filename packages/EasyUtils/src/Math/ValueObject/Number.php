@@ -9,15 +9,15 @@ use UnexpectedValueException;
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) We need many public methods
  */
-final class Number implements Stringable
+final readonly class Number implements Stringable
 {
     private const DEFAULT_PRECISION = 0;
 
     private const SCALE = 99;
 
-    private readonly int $precision;
+    private int $precision;
 
-    private readonly string $value;
+    private string $value;
 
     public function __construct(int|string|self $value, ?int $precision = null)
     {
@@ -201,7 +201,7 @@ final class Number implements Stringable
             $previousDigit = $value[\strlen($value) - 2] === '.'
                 ? $value[\strlen($value) - 3]
                 : $value[\strlen($value) - 2];
-            $isEven = ($previousDigit % 2 === 0);
+            $isEven = ((int)$previousDigit % 2 === 0);
             $delta = $isEven ? '-' . $delta : $delta;
         }
 

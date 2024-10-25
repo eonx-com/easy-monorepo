@@ -7,7 +7,7 @@ use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
 use InvalidArgumentException;
 
-final class StringEncryptor implements StringEncryptorInterface
+final readonly class StringEncryptor implements StringEncryptorInterface
 {
     private const CHUNKED_TEXT_PREFIX = 'chunked:';
 
@@ -18,11 +18,11 @@ final class StringEncryptor implements StringEncryptorInterface
     /**
      * @phpstan-var int<1, max>
      */
-    private readonly int $maxChunkSize;
+    private int $maxChunkSize;
 
     public function __construct(
-        private readonly EncryptorInterface $encryptor,
-        private readonly string $encryptionKeyName,
+        private EncryptorInterface $encryptor,
+        private string $encryptionKeyName,
         int $maxChunkSize,
     ) {
         if ($maxChunkSize < 1) {

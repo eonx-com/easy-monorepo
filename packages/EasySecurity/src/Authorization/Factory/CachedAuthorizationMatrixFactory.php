@@ -7,15 +7,15 @@ use EonX\EasySecurity\Authorization\Provider\AuthorizationMatrixProviderInterfac
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
+final readonly class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
     private const CACHE_KEY = 'easy_security.authorization_matrix_key';
 
-    private readonly string $key;
+    private string $key;
 
     public function __construct(
-        private readonly CacheInterface $cache,
-        private readonly AuthorizationMatrixFactoryInterface $decorated,
+        private CacheInterface $cache,
+        private AuthorizationMatrixFactoryInterface $decorated,
         ?string $key = null,
     ) {
         $this->key = $key ?? self::CACHE_KEY;

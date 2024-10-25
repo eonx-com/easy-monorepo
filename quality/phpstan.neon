@@ -114,7 +114,7 @@ parameters:
         - message: '#Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert::assertInstanceOf\(\) expects class-string<object>, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
 
-        - message: '#Parameter \#1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
+        - message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.#'
           path: %currentWorkingDirectory%/packages/EasyRepository/tests
 
         - message: '#Property EonX\\EasyRepository\\Repository\\AbstractDoctrineOrmRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T#'
@@ -181,9 +181,6 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
 
         - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
-          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
-
-        - message: '#Parameter \#1 \$name of static method Monolog\\Level\:\:fromName\(\) expects .*, string given#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
 
         - message: '#Parameter \#1 \$schemes of class Symfony\\Component\\Validator\\Constraints\\CardScheme constructor expects array<string>\|string\|null, array<string, null> given#'

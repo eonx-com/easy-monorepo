@@ -18,16 +18,16 @@ use EonX\EasyWebhook\Common\Entity\WebhookInterface;
  *
  * @author Ryan Weaver <ryan@symfonycasts.com>
  */
-final class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
+final readonly class MultiplierWebhookRetryStrategy implements WebhookRetryStrategyInterface
 {
-    private readonly int $delayMilliseconds;
+    private int $delayMilliseconds;
 
-    private readonly float $multiplier;
+    private float $multiplier;
 
     public function __construct(
         ?int $delayMilliseconds = null,
         ?float $multiplier = null,
-        private readonly ?int $maxDelayMilliseconds = null,
+        private ?int $maxDelayMilliseconds = null,
     ) {
         $this->delayMilliseconds = $delayMilliseconds ?? 1000;
         $this->multiplier = $multiplier ?? 1.0;

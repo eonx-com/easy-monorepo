@@ -5,9 +5,9 @@ namespace EonX\EasyRandom\Constraint;
 
 use Closure;
 
-final class CallbackRandomStringConstraint implements RandomStringConstraintInterface
+final readonly class CallbackRandomStringConstraint implements RandomStringConstraintInterface
 {
-    private readonly Closure $callback;
+    private Closure $callback;
 
     public function __construct(callable $callback)
     {

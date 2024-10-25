@@ -9,17 +9,17 @@ use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
-final class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
+final readonly class AuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
     /**
      * @var \EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface[]
      */
-    private readonly array $permissionsProviders;
+    private array $permissionsProviders;
 
     /**
      * @var \EonX\EasySecurity\Authorization\Provider\RolesProviderInterface[]
      */
-    private readonly array $rolesProviders;
+    private array $rolesProviders;
 
     /**
      * @param iterable<\EonX\EasySecurity\Authorization\Provider\RolesProviderInterface> $rolesProviders
