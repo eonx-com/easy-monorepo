@@ -61,7 +61,7 @@ jobs:
                 dependencies: ['latest', 'lowest']
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
-        name: ${{ matrix.package.dir }} (${{ matrix.php }} - ${{ matrix.dependencies }} dependencies)
+        name: ${{ matrix.package.dir }} (${{ matrix.php }} -${{ matrix.dependencies == 'lowest' && ' lowest dependencies' || '' }})
 
         steps:
             -   name: Checkout

@@ -16,13 +16,13 @@ jobs:
                 actions:
                     - {name: composer, run: make check-composer}
                     - {name: monorepo, run: make check-monorepo}
-                    - {name: security, run: make check-security}
+                    - {name: security, run: make check-security ${{matrix.dependencies == 'lowest' && 'options="--abandoned=report"' || ''}}}
                     - {name: packages-architecture, run: make check-packages-architecture}
                     - {name: ecs, run: make check-ecs, cache: ecs}
                     - {name: rector, run: make check-rector, cache: rector}
                     - {name: phpstan, run: make check-phpstan, cache: phpstan}
 
-        name: ${{ matrix.actions.name }} (${{ matrix.php }} - ${{ matrix.dependencies }} dependencies)
+        name: ${{ matrix.actions.name }} (${{ matrix.php }} -${{ matrix.dependencies == 'lowest' && ' lowest dependencies' || '' }})
 
         env:
             EONX_EASY_QUALITY_JOB_SIZE: 20
@@ -81,4 +81,3 @@ jobs:
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
                 run: ${{ matrix.actions.run }}
                 shell: bash
-                continue-on-error: ${{ matrix.dependencies == 'lowest' }}
