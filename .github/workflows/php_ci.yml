@@ -16,7 +16,7 @@ jobs:
                 actions:
                     - {name: composer, run: make check-composer}
                     - {name: monorepo, run: make check-monorepo}
-                    - {name: security, run: make check-security ${{matrix.dependencies == 'lowest' && 'options="--abandoned=report"' || ''}}}
+                    - {name: security, run: make check-security}
                     - {name: packages-architecture, run: make check-packages-architecture}
                     - {name: ecs, run: make check-ecs, cache: ecs}
                     - {name: rector, run: make check-rector, cache: rector}

@@ -73,7 +73,7 @@ check-rector: ## Check App with Rector
 	$(call runCommand,quality/vendor/bin/rector process --ansi --config=quality/rector.php --dry-run)
 
 check-security: ## Check packages for known vulnerabilities
-	$(call runCommand,composer audit $(options))
+	$(call runCommand,composer audit)
 
 fix-ecs: ## Fix issues found by ECS
 	$(call runCommand,quality/vendor/bin/ecs check --fix --ansi --config=quality/ecs.php --memory-limit=2000M)
