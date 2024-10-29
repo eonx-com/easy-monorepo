@@ -93,7 +93,7 @@ jobs:
             -   name: Install Composer dependencies
                 uses: ramsey/composer-install@v3
                 with:
-                    args: ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
+                    composer-options: ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
 
             -   run: bin/monorepo localize-monorepo-packages
 
