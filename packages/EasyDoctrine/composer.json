@@ -22,7 +22,7 @@
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.269",
+        "aws/aws-sdk-php": "^3.288.1",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "eonx-com/easy-bugsnag": "^6.3",
         "eonx-com/easy-error-handler": "^6.3",
