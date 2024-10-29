@@ -61,7 +61,7 @@ jobs:
                 dependencies: ['latest', 'lowest']
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
-        name: ${{ matrix.package.dir }} (${{ matrix.php }} -${{ matrix.dependencies == 'lowest' && ' lowest dependencies' || '' }})
+        name: ${{ matrix.package.dir }} (${{ matrix.php }}${{ matrix.dependencies == 'lowest' && ' - lowest dependencies' || '' }})
 
         steps:
             -   name: Checkout
@@ -97,6 +97,6 @@ jobs:
 
             -   run: bin/monorepo localize-monorepo-packages
 
-            -   run: cd packages/${{ matrix.package.dir }}; composer update --prefer-dist --no-progress --ansi
+            -   run: cd packages/${{ matrix.package.dir }}; composer update ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-progress --ansi
 
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit --coverage-text tests

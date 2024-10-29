@@ -92,7 +92,7 @@
         "symfony/twig-bundle": "^7.0",
         "symfony/validator": "^7.0",
         "symfony/yaml": "^7.0",
-        "symplify/monorepo-builder": "^11.0"
+        "symplify/monorepo-builder": "^11.2.22"
     },
     "autoload": {
         "files": [
