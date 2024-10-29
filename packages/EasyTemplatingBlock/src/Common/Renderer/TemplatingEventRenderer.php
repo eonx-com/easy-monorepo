@@ -8,19 +8,19 @@ use EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface;
 use EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
-final class TemplatingEventRenderer implements TemplatingEventRendererInterface
+final readonly class TemplatingEventRenderer implements TemplatingEventRendererInterface
 {
-    private readonly bool $isDebug;
+    private bool $isDebug;
 
     /**
      * @var \EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface[]
      */
-    private readonly array $providers;
+    private array $providers;
 
     /**
      * @var \EonX\EasyTemplatingBlock\Common\Renderer\TemplatingBlockRendererInterface[]
      */
-    private readonly array $renderers;
+    private array $renderers;
 
     /**
      * @param iterable<\EonX\EasyTemplatingBlock\Common\Provider\TemplatingBlockProviderInterface> $providers

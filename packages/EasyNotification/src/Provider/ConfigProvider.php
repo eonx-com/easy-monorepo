@@ -8,12 +8,12 @@ use EonX\EasyNotification\ValueObject\Config;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class ConfigProvider implements ConfigProviderInterface
+final readonly class ConfigProvider implements ConfigProviderInterface
 {
-    private readonly HttpClientInterface $httpClient;
+    private HttpClientInterface $httpClient;
 
     public function __construct(
-        private readonly string $apiUrl,
+        private string $apiUrl,
         ?HttpClientInterface $httpClient = null,
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();

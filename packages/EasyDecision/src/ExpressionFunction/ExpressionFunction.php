@@ -5,14 +5,14 @@ namespace EonX\EasyDecision\ExpressionFunction;
 
 use Closure;
 
-final class ExpressionFunction implements ExpressionFunctionInterface
+final readonly class ExpressionFunction implements ExpressionFunctionInterface
 {
-    private readonly Closure $evaluator;
+    private Closure $evaluator;
 
     public function __construct(
-        private readonly string $name,
+        private string $name,
         callable $evaluator,
-        private readonly ?string $description = null,
+        private ?string $description = null,
     ) {
         $this->evaluator = $evaluator(...);
     }

@@ -48,7 +48,7 @@ final class LoggerStub extends Logger
     public function __call(string $method, array $args): mixed
     {
         $pattern = '/(.*)(Debug|Info|Notice|Warning|Error|Critical|Alert|Emergency)(.*)/';
-        if (\preg_match($pattern, $method, $matches) > 0) {
+        if (\preg_match($pattern, $method, $matches) > 0 && isset($matches[1], $matches[2], $matches[3])) {
             $genericMethod = $matches[1] . ($matches[3] !== 'Records' ? 'Record' : '') . $matches[3];
             if (\method_exists($this->testHandler, $genericMethod)) {
                 $args[] = Level::fromName((string)$matches[2]);

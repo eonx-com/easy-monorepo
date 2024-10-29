@@ -9,12 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final class SymfonySerializerErrorResponseFactory implements ErrorResponseFactoryInterface
+final readonly class SymfonySerializerErrorResponseFactory implements ErrorResponseFactoryInterface
 {
-    private readonly array $errorFormats;
+    private array $errorFormats;
 
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private SerializerInterface $serializer,
         ?array $errorFormats = null,
     ) {
         $this->errorFormats = $errorFormats ?? [];

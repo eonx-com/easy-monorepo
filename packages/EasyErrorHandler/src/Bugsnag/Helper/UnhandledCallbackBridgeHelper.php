@@ -6,9 +6,9 @@ namespace EonX\EasyErrorHandler\Bugsnag\Helper;
 use Bugsnag\Report;
 use Closure;
 
-final class UnhandledCallbackBridgeHelper
+final readonly class UnhandledCallbackBridgeHelper
 {
-    private readonly Closure $callback;
+    private Closure $callback;
 
     public function __construct(callable $callback)
     {
