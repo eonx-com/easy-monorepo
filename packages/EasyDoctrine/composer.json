@@ -8,9 +8,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "doctrine/dbal": "^3.0",
+        "doctrine/dbal": "^3.8",
         "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^2.20",
         "eonx-com/easy-event-dispatcher": "^6.3",
         "eonx-com/easy-utils": "^6.3",
         "myclabs/deep-copy": "^1.11",
@@ -22,7 +22,7 @@
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.269",
+        "aws/aws-sdk-php": "^3.288.1",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "eonx-com/easy-bugsnag": "^6.3",
         "eonx-com/easy-error-handler": "^6.3",
