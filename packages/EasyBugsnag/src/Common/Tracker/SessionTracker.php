@@ -8,16 +8,16 @@ use Bugsnag\SessionTracker as BugsnagSessionTracker;
 use Nette\Utils\Strings;
 use Symfony\Component\HttpFoundation\Request;
 
-final class SessionTracker
+final readonly class SessionTracker
 {
     /**
      * @var string[]
      */
-    private readonly array $exclude;
+    private array $exclude;
 
-    private readonly string $excludeDelimiter;
+    private string $excludeDelimiter;
 
-    private readonly BugsnagSessionTracker $sessionTracker;
+    private BugsnagSessionTracker $sessionTracker;
 
     /**
      * @param string[]|null $exclude

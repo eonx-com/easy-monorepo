@@ -8,15 +8,15 @@ use EonX\EasyHttpClient\Common\ValueObject\RequestData;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
 use Throwable;
 
-final class HttpRequestSentEvent
+final readonly class HttpRequestSentEvent
 {
-    private readonly array $extra;
+    private array $extra;
 
     public function __construct(
-        private readonly RequestData $requestData,
-        private readonly ?ResponseData $responseData = null,
-        private readonly ?Throwable $throwable = null,
-        private readonly ?DateTimeInterface $throwableThrownAt = null,
+        private RequestData $requestData,
+        private ?ResponseData $responseData = null,
+        private ?Throwable $throwable = null,
+        private ?DateTimeInterface $throwableThrownAt = null,
         ?array $extra = null,
     ) {
         $this->extra = $extra ?? [];

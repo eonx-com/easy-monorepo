@@ -8,12 +8,12 @@ use EonX\EasyNotification\ValueObject\SubscribeInfo;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class SubscribeInfoProvider implements SubscribeInfoProviderInterface
+final readonly class SubscribeInfoProvider implements SubscribeInfoProviderInterface
 {
-    private readonly HttpClientInterface $httpClient;
+    private HttpClientInterface $httpClient;
 
     public function __construct(
-        private readonly string $apiUrl,
+        private string $apiUrl,
         ?HttpClientInterface $httpClient = null,
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();

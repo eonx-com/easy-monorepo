@@ -8,14 +8,14 @@ use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 
-final class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
+final readonly class StreamHandlerConfigProvider implements HandlerConfigProviderInterface
 {
-    private readonly Level $level;
+    private Level $level;
 
     /**
      * @var resource|string
      */
-    private readonly mixed $stream;
+    private mixed $stream;
 
     /**
      * @param resource|string|null $stream
@@ -25,9 +25,9 @@ final class StreamHandlerConfigProvider implements HandlerConfigProviderInterfac
     public function __construct(
         mixed $stream = null,
         ?Level $level = null,
-        private readonly ?array $channels = null,
-        private readonly ?array $exceptChannels = null,
-        private readonly ?int $priority = null,
+        private ?array $channels = null,
+        private ?array $exceptChannels = null,
+        private ?int $priority = null,
     ) {
         if ($stream !== null && \is_string($stream) === false && \is_resource($stream) === false) {
             throw new InvalidArgumentException(\sprintf(

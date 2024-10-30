@@ -7,29 +7,29 @@ use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use EonX\EasyUtils\SensitiveData\Hydrator\ObjectHydratorInterface;
 use EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface;
 
-final class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
+final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 {
     /**
      * @var string[]
      */
-    private readonly array $keysToMask;
+    private array $keysToMask;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface[]
      */
-    private readonly array $objectTransformers;
+    private array $objectTransformers;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\Sanitizer\StringSanitizerInterface[]
      */
-    private readonly array $stringSanitizers;
+    private array $stringSanitizers;
 
     /**
      * @param string[] $keysToMask
      */
     public function __construct(
         array $keysToMask,
-        private readonly string $maskPattern,
+        private string $maskPattern,
         ?iterable $objectTransformers = null,
         ?iterable $stringSanitizers = null,
     ) {

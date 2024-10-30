@@ -8,20 +8,20 @@ use EonX\EasyErrorHandler\Common\Resolver\ErrorDetailsResolverInterface;
 use EonX\EasyErrorHandler\Common\Resolver\ErrorLogLevelResolverInterface;
 use Psr\Log\LoggerInterface;
 
-final class DefaultErrorReporterProvider implements ErrorReporterProviderInterface
+final readonly class DefaultErrorReporterProvider implements ErrorReporterProviderInterface
 {
     /**
      * @var class-string[]
      */
-    private readonly array $ignoredExceptions;
+    private array $ignoredExceptions;
 
     /**
      * @param class-string[]|null $ignoredExceptions
      */
     public function __construct(
-        private readonly ErrorDetailsResolverInterface $errorDetailsResolver,
-        private readonly ErrorLogLevelResolverInterface $errorLogLevelResolver,
-        private readonly LoggerInterface $logger,
+        private ErrorDetailsResolverInterface $errorDetailsResolver,
+        private ErrorLogLevelResolverInterface $errorLogLevelResolver,
+        private LoggerInterface $logger,
         ?array $ignoredExceptions = null,
     ) {
         $this->ignoredExceptions = $ignoredExceptions ?? [];

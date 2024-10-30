@@ -5,14 +5,14 @@ namespace EonX\EasyErrorHandler\Common\ValueObject;
 
 use EonX\EasyUtils\Common\Enum\HttpStatusCode;
 
-final class ErrorResponseData
+final readonly class ErrorResponseData
 {
-    private readonly array $headers;
+    private array $headers;
 
-    private readonly HttpStatusCode $statusCode;
+    private HttpStatusCode $statusCode;
 
     public function __construct(
-        private readonly array $rawData,
+        private array $rawData,
         ?HttpStatusCode $statusCode = null,
         ?array $headers = null,
     ) {
