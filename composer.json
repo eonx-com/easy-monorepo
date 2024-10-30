@@ -67,6 +67,7 @@
     },
     "require-dev": {
         "auth0/auth0-php": "^8.6",
+        "composer/semver": "^3.0",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^4.0",
@@ -85,6 +86,8 @@
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^1.11",
+        "psr-mock/http-client-implementation": "^1.0",
+        "psr-mock/http-factory-implementation": "^1.0",
         "symfony/amazon-sqs-messenger": "^7.0",
         "symfony/browser-kit": "^7.0",
         "symfony/process": "^7.0",

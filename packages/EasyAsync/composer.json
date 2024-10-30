@@ -23,6 +23,7 @@
         "eonx-com/easy-random": "^6.3",
         "eonx-com/easy-test": "^6.3",
         "phpunit/phpunit": "^10.2",
+        "symfony/doctrine-bridge": "^7.0",
         "symfony/framework-bundle": "^7.0"
     },
     "autoload": {

@@ -25,7 +25,8 @@
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/amazon-sqs-messenger": "^7.0"
+        "symfony/amazon-sqs-messenger": "^7.0",
+        "symfony/doctrine-bridge": "^7.0"
     },
     "autoload": {
         "psr-4": {
