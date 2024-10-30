@@ -242,9 +242,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldInvalidCreditCardNumber(): iterable
     {
         $value = '1111222233334444';
-        /** @var array $schemes */
-        $schemes = ['schemes' => null];
-        $message = $this->translateMessage((new CardScheme($schemes))->message);
+        $message = $this->translateMessage((new CardScheme(null))->message);
 
         yield from $this->create("{$this->property} is not a valid credit card number", $value, $message);
     }

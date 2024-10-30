@@ -18,15 +18,13 @@
     },
     "require-dev": {
         "auth0/auth0-php": "^8.6",
-        "composer/semver": "^3.0",
         "firebase/php-jwt": "^6.5",
         "laravel/lumen-framework": "^11.0",
         "nyholm/psr7": "^1.8",
         "paragonie/random_compat": "^2.0",
         "phpseclib/phpseclib": "^3.0.36",
         "phpunit/phpunit": "^10.2",
-        "psr-mock/http-client-implementation": "^1.0",
-        "psr-mock/http-factory-implementation": "^1.0",
+        "psr-discovery/discovery": "^1.0.2",
         "symfony/cache": "^7.0",
         "symfony/http-client": "^7.0"
     },
