@@ -33,7 +33,6 @@ final class ScheduleCompilerPass implements CompilerPassInterface
             $container
                 ->register(TraceableScheduleInterface::class, TraceableSchedule::class)
                 ->setDecoratedService(ScheduleInterface::class)
-                ->addArgument(new Reference(\sprintf('%s.inner', TraceableScheduleInterface::class)))
                 ->addMethodCall('addProviders', [$this->getProviderReferences($container)]);
 
             return;

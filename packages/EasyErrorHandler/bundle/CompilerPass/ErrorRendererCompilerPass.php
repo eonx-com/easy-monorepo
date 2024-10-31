@@ -22,7 +22,6 @@ final class ErrorRendererCompilerPass implements CompilerPassInterface
 
         $def = (new Definition(TranslateInternalErrorMessageErrorRenderer::class))
             ->setArgument('$errorDetailsResolver', new Reference(ErrorDetailsResolverInterface::class))
-            ->setArgument('$decorated', new Reference('.inner'))
             ->setDecoratedService(self::ERROR_RENDERER_ID);
 
         $container->setDefinition(TranslateInternalErrorMessageErrorRenderer::class, $def);

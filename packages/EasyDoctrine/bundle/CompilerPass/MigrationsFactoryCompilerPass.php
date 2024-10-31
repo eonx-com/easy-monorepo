@@ -19,10 +19,7 @@ final class MigrationsFactoryCompilerPass implements CompilerPassInterface
         $container
             ->register('easy_doctrine.migrations.migrations_factory', MigrationFactory::class)
             ->setDecoratedService('doctrine.migrations.migrations_factory')
-            ->setArguments([
-                new Reference('easy_doctrine.migrations.migrations_factory.inner'),
-                new Reference('doctrine'),
-                '%kernel.environment%',
-            ]);
+            ->setArgument('$managerRegistry', new Reference('doctrine'))
+            ->setArgument('$environment', '%kernel.environment%');
     }
 }
