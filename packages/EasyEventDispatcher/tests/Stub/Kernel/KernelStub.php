@@ -9,6 +9,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
@@ -25,6 +26,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             EventDispatcherStub::class,
             (new Definition(EventDispatcherStub::class))
                 ->setDecoratedService(SymfonyEventDispatcherInterface::class)
+                ->setArgument('$decorated', new Reference('.inner'))
         );
 
         foreach ($container->getDefinitions() as $def) {

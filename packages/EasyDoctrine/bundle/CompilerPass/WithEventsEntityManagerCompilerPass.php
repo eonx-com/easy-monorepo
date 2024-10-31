@@ -33,7 +33,8 @@ final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
                     '$deferredEntityEventDispatcher',
                     new Reference(DeferredEntityEventDispatcherInterface::class)
                 )
-                ->setArgument('$eventDispatcher', new Reference(EventDispatcherInterface::class));
+                ->setArgument('$eventDispatcher', new Reference(EventDispatcherInterface::class))
+                ->setArgument('$decorated', new Reference($withEventsEntityManagerServiceId . '.inner'));
         }
     }
 }

@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandler;
 use EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterTraceableErrorHandlerCompilerPass implements CompilerPassInterface
 {
@@ -19,7 +20,8 @@ final class RegisterTraceableErrorHandlerCompilerPass implements CompilerPassInt
         ) {
             $container
                 ->register(TraceableErrorHandlerInterface::class, TraceableErrorHandler::class)
-                ->setDecoratedService(ErrorHandlerInterface::class);
+                ->setDecoratedService(ErrorHandlerInterface::class)
+                ->addArgument(new Reference(\sprintf('%s.inner', TraceableErrorHandlerInterface::class)));
         }
     }
 }
