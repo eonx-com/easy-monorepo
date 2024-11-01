@@ -119,8 +119,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias(ConfigServiceId::BatchMessageSerializer->value, MessageSerializerInterface::class);
 
     $services->set(HandlerFailedExceptionMessageSerializer::class)
-        ->decorate(ConfigServiceId::BatchMessageSerializer->value)
-        ->args([service('.inner')]);
+        ->decorate(ConfigServiceId::BatchMessageSerializer->value);
 
     // Transformers
     $services

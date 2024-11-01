@@ -28,8 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(TestResponseFactory::class);
 
     $services->set(TraceableErrorHandlerStub::class)
-        ->decorate(TraceableErrorHandlerInterface::class)
-        ->arg('$decorated', service('.inner'));
+        ->decorate(TraceableErrorHandlerInterface::class);
 };
 ```
 
