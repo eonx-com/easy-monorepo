@@ -53,6 +53,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
     ];
 
     private const SKIP_FILE_NAMES = [
+        'EasyApiPlatform/src/Common/Filter/IriConverterTrait.php',
         'EasyApiPlatform/tests/Application/src/Common/Twig/TemplateOverrideTest.php',
         'EasyErrorHandler/src/Common/ErrorHandler/FormatAwareInterface.php',
         'EasyLock/src/Common/Locker/ProcessWithLockTrait.php',

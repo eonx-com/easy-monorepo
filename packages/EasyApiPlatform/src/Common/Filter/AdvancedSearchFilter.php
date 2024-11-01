@@ -43,6 +43,7 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  */
 final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterInterface
 {
+    use IriConverterTrait;
     use SearchFilterTrait;
 
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
@@ -418,11 +419,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $values,
             $caseSensitive
         );
-    }
-
-    protected function getIriConverter(): IriConverterInterface
-    {
-        return $this->iriConverter;
     }
 
     protected function getPropertyAccessor(): PropertyAccessorInterface
