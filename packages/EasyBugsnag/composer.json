@@ -24,10 +24,11 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^2.20",
         "eonx-com/easy-test": "^6.3",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
+        "symfony/doctrine-bridge": "^7.0",
         "symfony/uid": "^7.0"
     },
     "autoload": {
