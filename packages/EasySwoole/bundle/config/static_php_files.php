@@ -16,6 +16,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(ConfigServiceId::Filesystem->value, Filesystem::class);
 
+    // @todo Change priority to 30010 in 7.0 to allow other listeners in the middle
     $services
         ->set(StaticPhpFileListener::class)
         ->arg('$filesystem', service(ConfigServiceId::Filesystem->value))

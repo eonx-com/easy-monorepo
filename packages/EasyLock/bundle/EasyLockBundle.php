@@ -23,6 +23,7 @@ final class EasyLockBundle extends AbstractBundle
         $container
             ->addCompilerPass(new RegisterLockStoreServiceCompilerPass())
             // -9 to run before easy-async and easy-batch so middleware is after
+            // @todo change to -10 in 7.0 to allow adding more middleware in the middle
             ->addCompilerPass(new ReorderMessengerMiddlewareCompilerPass(), priority: -9);
     }
 
