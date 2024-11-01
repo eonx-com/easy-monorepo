@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$appStateResetters', tagged_iterator(ConfigTag::AppStateResetter->value))
         ->tag('kernel.event_listener', ['priority' => -10000]);
 
+    // @todo Change priority to -10020 in 7.0 to allow other listeners in the middle
     $services
         ->set(ApplicationStateCheckListener::class)
         ->arg('$appStateCheckers', tagged_iterator(ConfigTag::AppStateChecker->value))
