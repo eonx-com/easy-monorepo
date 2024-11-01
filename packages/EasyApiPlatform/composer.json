@@ -6,8 +6,8 @@
     "require": {
         "php": "^8.2",
         "api-platform/core": "^3.3.9 || ^4.0",
-        "doctrine/dbal": "^3.0",
-        "doctrine/orm": "^2.14",
+        "doctrine/dbal": "^3.8",
+        "doctrine/orm": "^2.20",
         "doctrine/persistence": "^3.3",
         "nesbot/carbon": "^3.7",
         "psr/log": "^3.0",

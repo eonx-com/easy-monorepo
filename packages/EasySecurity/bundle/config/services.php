@@ -47,6 +47,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$configurators', tagged_iterator(ConfigTag::ContextConfigurator->value));
 
     // Request
+    // @todo Change priority to 9990 in 7.0 to allow other listeners in the middle
     $services
         ->set(FromRequestSecurityContextConfiguratorListener::class)
         ->arg('$configurators', tagged_iterator(ConfigTag::ContextConfigurator->value))

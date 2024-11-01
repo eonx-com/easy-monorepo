@@ -71,7 +71,8 @@ final class EnvVarSubstitutionHelper
                 return $matches[0];
             }
 
-            if ($matches['opening_brace'] === '{' && isset($matches['closing_brace']) === false) {
+            $openingBrace = $matches['opening_brace'] ?? '';
+            if ($openingBrace === '{' && isset($matches['closing_brace']) === false) {
                 throw new RuntimeException('Unclosed braces on variable expansion');
             }
 
@@ -96,7 +97,7 @@ final class EnvVarSubstitutionHelper
                 }
             }
 
-            if ($matches['opening_brace'] === '' && isset($matches['closing_brace'])) {
+            if ($openingBrace === '' && isset($matches['closing_brace'])) {
                 $value .= '}';
             }
 

@@ -22,7 +22,6 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$defaultPoolSize', param(ConfigParam::DoctrineCoroutinePdoDefaultPoolSize->value))
         ->arg('$defaultHeartbeat', param(ConfigParam::DoctrineCoroutinePdoDefaultHeartbeat->value))
         ->arg('$defaultMaxIdleTime', param(ConfigParam::DoctrineCoroutinePdoDefaultMaxIdleTime->value))
-        ->arg('$factory', service('.inner'))
         ->arg('$connectionParamsResolver', service(AwsRdsConnectionParamsResolver::class)->nullOnInvalid())
         ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
 };

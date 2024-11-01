@@ -7,12 +7,12 @@ use EonX\EasyErrorHandler\Common\Exception\LogLevelAwareExceptionInterface;
 use Monolog\Level;
 use Throwable;
 
-final class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
+final readonly class ErrorLogLevelResolver implements ErrorLogLevelResolverInterface
 {
     /**
      * @var array<class-string, \Monolog\Level>
      */
-    private readonly array $exceptionLogLevels;
+    private array $exceptionLogLevels;
 
     /**
      * @param array<class-string, int>|null $exceptionLogLevels

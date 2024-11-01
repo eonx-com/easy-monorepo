@@ -21,6 +21,5 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(SerializerContextBuilder::class)
         ->autoconfigure(false)
-        ->decorate('api_platform.serializer.context_builder')
-        ->arg('$decorated', service('.inner'));
+        ->decorate('api_platform.serializer.context_builder');
 };

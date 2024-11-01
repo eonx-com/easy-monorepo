@@ -19,7 +19,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(EventDispatcherStub::class)
         ->decorate(EventDispatcherInterface::class)
-        ->arg('$decorated', service('.inner'))
         ->public();
 
     $services->set(SomeClient::class)

@@ -23,7 +23,9 @@ final class EasyBatchBundle extends AbstractBundle
     {
         $container
             ->addCompilerPass(new SetEncryptorOnBatchItemTransformerCompilerPass())
+            // @todo change to -20 in 7.0 to allow adding more middleware in the middle
             ->addCompilerPass(new AddMessengerMiddlewareToBusesCompilerPass(), priority: -10)
+            // @todo remove `priority` in 7.0
             ->addCompilerPass(new MakeMessengerReceiversPublicCompilerPass(), priority: -10);
     }
 

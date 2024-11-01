@@ -35,7 +35,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services->set(WithEventsEntityManager::class)
-        ->arg('$decorated', service('.inner'))
         ->decorate('doctrine.orm.default_entity_manager');
 };
 

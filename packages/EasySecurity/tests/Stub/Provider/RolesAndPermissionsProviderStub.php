@@ -6,17 +6,17 @@ namespace EonX\EasySecurity\Tests\Stub\Provider;
 use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 
-final class RolesAndPermissionsProviderStub implements RolesProviderInterface, PermissionsProviderInterface
+final readonly class RolesAndPermissionsProviderStub implements RolesProviderInterface, PermissionsProviderInterface
 {
     /**
      * @var string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]
      */
-    private readonly array $permissions;
+    private array $permissions;
 
     /**
      * @var string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]
      */
-    private readonly array $roles;
+    private array $roles;
 
     /**
      * @param string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]|null $roles

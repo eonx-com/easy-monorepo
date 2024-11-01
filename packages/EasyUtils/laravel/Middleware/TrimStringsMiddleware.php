@@ -8,18 +8,18 @@ use EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-final class TrimStringsMiddleware
+final readonly class TrimStringsMiddleware
 {
     /**
      * @var string[]
      */
-    private readonly array $exceptKeys;
+    private array $exceptKeys;
 
     /**
      * @param string[]|null $exceptKeys
      */
     public function __construct(
-        private readonly StringTrimmerInterface $trimmer,
+        private StringTrimmerInterface $trimmer,
         ?array $exceptKeys = null,
     ) {
         $this->exceptKeys = $exceptKeys ?? [];
