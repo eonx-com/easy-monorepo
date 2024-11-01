@@ -18,6 +18,7 @@ if (\interface_exists(LegacyIriConverterInterface::class) === false) {
     {
         protected function getIriConverter(): IriConverterInterface
         {
+            // @phpstan-ignore return.type
             return $this->iriConverter;
         }
     }
