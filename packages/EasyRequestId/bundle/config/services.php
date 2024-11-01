@@ -30,7 +30,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$requestIdHeaderName', param(ConfigParam::HttpHeaderRequestId->value));
 
     // Listener
-    // @todo Change priority to 10010 in 7.0 to allow other listeners in the middle
     $services
         ->set(RequestListener::class)
         ->tag('kernel.event_listener', [
