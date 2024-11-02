@@ -83,10 +83,10 @@ abstract class AbstractPaginator implements PaginatorInterface
         return [
             'items' => $this->getItems(),
             'pagination' => [
-                $this->pagination->getPageAttribute() => $this->getCurrentPage(),
-                $this->pagination->getPerPageAttribute() => $this->getItemsPerPage(),
                 'nextPageUrl' => $this->getNextPageUrl(),
                 'previousPageUrl' => $this->getPreviousPageUrl(),
+                $this->pagination->getPageAttribute() => $this->getCurrentPage(),
+                $this->pagination->getPerPageAttribute() => $this->getItemsPerPage(),
             ],
         ];
     }

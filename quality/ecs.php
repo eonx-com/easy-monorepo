@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
-use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
+use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArraySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
@@ -19,7 +19,6 @@ use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
-use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
@@ -60,19 +59,12 @@ return ECSConfig::configure()
         EasyQualitySetList::ECS,
     ])
     ->withSkip([
-        // Skip entire files or directories
-        'packages/*/var/*', // Cache files
-        'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
-
-        // Skip rules
-        AlphabeticallySortedArrayKeysSniff::class => [
+        AlphabeticallySortedArraySniff::class => [
             'packages/*/laravel/config/*',
             'packages/*/tests/*',
             'packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php',
             'packages/EasyUtils/src/CreditCard/Validator/CreditCardNumberValidator.php',
             'packages/EasyWebhook/laravel/EasyWebhookServiceProvider.php',
-            'quality/ecs.php',
-            'quality/rector.php',
         ],
         AvoidPublicPropertiesSniff::class => [
             'packages/*/src/*/Constraint/*',
@@ -103,14 +95,14 @@ return ECSConfig::configure()
             'packages/EasySecurity/src/Common/Context/SecurityContext.php',
             'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
         ],
+        FullyQualifiedClassNameInAnnotationSniff::class => [
+            'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
+            'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
+        ],
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
             'packages/*/config/*',
             'packages/EasyTest/.phpstorm.meta.php',
-        ],
-        FullyQualifiedClassNameInAnnotationSniff::class => [
-            'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
-            'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
         ],
         MethodChainingNewlineFixer::class => [
             'packages/*/definition.php',
@@ -118,9 +110,8 @@ return ECSConfig::configure()
         NoExtraBlankLinesFixer::class => [
             'packages/EasyTest/.phpstorm.meta.php',
         ],
-        OrderedClassElementsFixer::class => [
-            'packages/EasyApiPlatform/tests/Application/AbstractApplicationTestCase.php',
-        ],
+        'packages/*/var/*',
+        'packages/*/vendor/*',
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
             'packages/EasyUtils/src/Math/Helper/MathHelper.php',
@@ -154,7 +145,7 @@ return ECSConfig::configure()
         StaticClosureSniff::class,
         UselessConstantTypeHintSniff::class,
     ])
-    ->withConfiguredRule(AlphabeticallySortedArrayKeysSniff::class, [
+    ->withConfiguredRule(AlphabeticallySortedArraySniff::class, [
         'skipPatterns' => [\T_ATTRIBUTE => []],
     ])
     ->withConfiguredRule(ArrangeActAssertSniff::class, [
