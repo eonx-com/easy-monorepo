@@ -31,7 +31,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     public function instantiateForClass(?string $class = null): AbstractBatchObject
     {
         $class ??= $this->class;
-        $class = $this->fixClassFqcn($class);
+        $class = $this->fixFqcn($class);
         /** @var \EonX\EasyBatch\Common\ValueObject\AbstractBatchObject $classInstance */
         $classInstance = new $class();
 
@@ -92,16 +92,17 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     }
 
     /**
-     * We need to fix the class when migrating from EasyBatch < 6.0
+     * We need to fix the FQCN when migrating from EasyBatch < 6.0
      *
      * @deprecated Remove in 7.0
      */
-    private function fixClassFqcn(string $class): string
+    private function fixFqcn(string $class): string
     {
         if (\str_starts_with($class, 'EonX\EasyBatch\Objects\\')) {
             $class = \str_replace(
                 'EonX\EasyBatch\Objects\\',
-                'EonX\EasyBatch\Common\ValueObject\\', $class
+                'EonX\EasyBatch\Common\ValueObject\\',
+                $class
             );
         }
 

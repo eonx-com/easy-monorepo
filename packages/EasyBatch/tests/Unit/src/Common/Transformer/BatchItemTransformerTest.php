@@ -15,7 +15,10 @@ use stdClass;
 
 final class BatchItemTransformerTest extends AbstractUnitTestCase
 {
-    public static function provideEncryptedBatchItemClass(): iterable
+    /**
+     * @see testInstantiateForClass
+     */
+    public static function provideBatchItemClass(): iterable
     {
         yield 'Current BatchItem' => [
             'class' => BatchItem::class,
@@ -62,7 +65,7 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         self::assertInstanceOf(stdClass::class, $newBatchItem->getMessage());
     }
 
-    #[DataProvider('provideEncryptedBatchItemClass')]
+    #[DataProvider('provideBatchItemClass')]
     public function testInstantiateForClass(string $class): void
     {
         $transformer = $this->getBatchItemTransformer();
