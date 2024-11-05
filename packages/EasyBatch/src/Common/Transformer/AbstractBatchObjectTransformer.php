@@ -31,6 +31,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     public function instantiateForClass(?string $class = null): AbstractBatchObject
     {
         $class ??= $this->class;
+        $class = $this->fixFqcn($class);
         /** @var \EonX\EasyBatch\Common\ValueObject\AbstractBatchObject $classInstance */
         $classInstance = new $class();
 
@@ -88,6 +89,24 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         } catch (Throwable) {
             return Carbon::parse($dateTime, 'UTC');
         }
+    }
+
+    /**
+     * We need to fix the FQCN when migrating from EasyBatch < 6.0
+     *
+     * @deprecated Remove in 7.0
+     */
+    private function fixFqcn(string $class): string
+    {
+        if (\str_starts_with($class, 'EonX\EasyBatch\Objects\\')) {
+            $class = \str_replace(
+                'EonX\EasyBatch\Objects\\',
+                'EonX\EasyBatch\Common\ValueObject\\',
+                $class
+            );
+        }
+
+        return $class;
     }
 
     private function formatData(array $data): array

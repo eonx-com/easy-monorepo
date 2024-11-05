@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Unit\Common\Transformer;
 
+use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyEncryption\Common\Encryptor\Encryptor;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
@@ -14,6 +15,20 @@ use stdClass;
 
 final class BatchItemTransformerTest extends AbstractUnitTestCase
 {
+    /**
+     * @see testInstantiateForClass
+     */
+    public static function provideBatchItemClass(): iterable
+    {
+        yield 'Current BatchItem' => [
+            'class' => BatchItem::class,
+        ];
+
+        yield 'Old BatchItem' => [
+            'class' => 'EonX\EasyBatch\Objects\BatchItem',
+        ];
+    }
+
     /**
      * @see testEncryptedBatchItem
      */
@@ -48,6 +63,15 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         self::assertEquals($encrypted, $newBatchItem->isEncrypted());
         self::assertEquals($expectedEncryptionKeyName, $newBatchItem->getEncryptionKeyName());
         self::assertInstanceOf(stdClass::class, $newBatchItem->getMessage());
+    }
+
+    #[DataProvider('provideBatchItemClass')]
+    public function testInstantiateForClass(string $class): void
+    {
+        $transformer = $this->getBatchItemTransformer();
+        $batchItem = $transformer->instantiateForClass($class);
+
+        self::assertInstanceOf(BatchItem::class, $batchItem);
     }
 
     private function getEncryptor(): EncryptorInterface
