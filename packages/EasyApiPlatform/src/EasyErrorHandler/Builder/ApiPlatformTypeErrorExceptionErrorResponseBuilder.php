@@ -16,18 +16,18 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
         if (
             $throwable instanceof TypeError
             && \preg_match(
-                '/.*::__construct\(\): Argument #\d+ \(\$(.*)\) must be of type (.*), (.*) given/',
+                '/(?<class>.*)::__construct\(\): Argument #\d+ \(\$(?<property>.*)\) must' .
+                ' be of type (?<expectedType>.*), .* given/',
                 $throwable->getMessage(),
                 $matches
             ) === 1
         ) {
-            $explodedArgumentType = \explode('\\', $matches[2]);
             $violations = [
-                $matches[1] => [
+                $this->normalizePropertyName($matches['property'], $matches['class']) => [
                     $this->translator->trans(
-                        'violations.another_iri',
+                        'violations.invalid_type',
                         [
-                            '%iri%' => \end($explodedArgumentType),
+                            '%expected_type%' => $this->normalizeTypeName($matches['expectedType']),
                         ]
                     ),
                 ],

@@ -8,18 +8,18 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-filter": "*",
-        "symfony/config": "^7.0",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/http-kernel": "^7.0",
-        "symfony/string": "^7.0"
+        "symfony/config": "^7.1",
+        "symfony/dependency-injection": "^7.1",
+        "symfony/http-kernel": "^7.1",
+        "symfony/string": "^7.1"
     },
     "require-dev": {
         "eonx-com/easy-test": "^6.3",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/serializer": "^7.0",
-        "symfony/validator": "^7.0"
+        "symfony/serializer": "^7.1",
+        "symfony/validator": "^7.1"
     },
     "autoload": {
         "psr-4": {

@@ -3,24 +3,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
-use BackedEnum;
-use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
+use Symfony\Contracts\Service\Attribute\Required;
 use Throwable;
 
 final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
     AbstractApiPlatformSerializerExceptionErrorResponseBuilder
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        MetadataAwareNameConverter $nameConverter,
-        array $keys,
-        ?int $priority = null,
-        private readonly array $customSerializerExceptions = [],
-        int|string|BackedEnum|null $validationErrorCode = null,
-    ) {
-        parent::__construct($translator, $nameConverter, $keys, $priority, $validationErrorCode);
+    private array $customSerializerExceptions = [];
+
+    #[Required]
+    public function setCustomSerializerExceptions(array $customSerializerExceptions): void
+    {
+        $this->customSerializerExceptions = $customSerializerExceptions;
     }
 
     protected function doBuildViolations(Throwable $throwable): array
@@ -32,9 +27,10 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
 
             if (\preg_match($exception['message_pattern'], $throwable->getMessage()) === 1) {
                 $violation = $this->translator->trans($exception['violation_message'], []);
-                if ($throwable instanceof NotNormalizableValueException) {
+
+                if ($throwable instanceof NotNormalizableValueException && $throwable->getPath() !== null) {
                     return [
-                        $throwable->getPath() => [
+                        $this->normalizePropertyName($throwable->getPath()) => [
                             $violation,
                         ],
                     ];

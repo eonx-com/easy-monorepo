@@ -5,18 +5,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "api-platform/core": "^3.3.9",
+        "api-platform/core": "3.4.x-dev",
         "doctrine/dbal": "^3.8",
         "doctrine/orm": "^2.20",
         "doctrine/persistence": "^3.3",
         "nesbot/carbon": "^3.7",
         "psr/log": "^3.0",
-        "symfony/config": "^7.0",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/http-foundation": "^7.0",
-        "symfony/http-kernel": "^7.0",
-        "symfony/property-access": "^7.0",
-        "symfony/serializer": "^7.0"
+        "symfony/config": "^7.1",
+        "symfony/dependency-injection": "^7.1",
+        "symfony/http-foundation": "^7.1",
+        "symfony/http-kernel": "^7.1",
+        "symfony/property-access": "^7.1",
+        "symfony/serializer": "^7.1"
     },
     "require-dev": {
         "doctrine/annotations": "^2.0",
@@ -26,13 +26,13 @@
         "eonx-com/easy-test": "^6.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/browser-kit": "^7.0",
-        "symfony/expression-language": "^7.0",
-        "symfony/framework-bundle": "^7.0",
-        "symfony/http-client": "^7.0",
-        "symfony/security-bundle": "^7.0",
-        "symfony/twig-bundle": "^7.0",
-        "symfony/validator": "^7.0"
+        "symfony/browser-kit": "^7.1",
+        "symfony/expression-language": "^7.1",
+        "symfony/framework-bundle": "^7.1",
+        "symfony/http-client": "^7.1",
+        "symfony/security-bundle": "^7.1",
+        "symfony/twig-bundle": "^7.1",
+        "symfony/validator": "^7.1"
     },
     "autoload": {
         "psr-4": {

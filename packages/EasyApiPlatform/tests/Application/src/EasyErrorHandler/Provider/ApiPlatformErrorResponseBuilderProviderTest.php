@@ -31,7 +31,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should not be null.',
                 ],
             ],
-            'exceptionMessage' => 'Entity validation failed.',
+            'exceptionMessage' => "title: This value should not be blank.\ntitle: This value should not be null.",
         ];
 
         yield 'Carbon date with custom Normalizer is empty string' => [
@@ -46,7 +46,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'violations' => [
                 'This value is not a valid date/time.',
             ],
-            'exceptionMessage' => 'This value is not a valid date/time.',
+            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
         ];
 
         yield 'Carbon date with custom Normalizer is NULL' => [
@@ -60,7 +60,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'violations' => [
                 'This value is not a valid date/time.',
             ],
-            'exceptionMessage' => 'This value is not a valid date/time.',
+            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
         ];
 
         yield 'invalid Carbon date format with custom Normalizer' => [
@@ -74,7 +74,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'violations' => [
                 'This value is not a valid date/time.',
             ],
-            'exceptionMessage' => 'This value is not a valid date/time.',
+            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
         ];
 
         yield 'invalid argument type' => [
@@ -87,10 +87,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'pageCount' => [
-                    'The type of the value should be "int", "string" given.',
+                    'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "pageCount" attribute must be "int", "string" given.',
+            'exceptionMessage' => 'pageCount: This value should be of type int.',
         ];
 
         yield 'NULL value' => [
@@ -103,10 +103,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'pageCount' => [
-                    'The type of the value should be "int", "null" given.',
+                    'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "pageCount" attribute must be "int", "NULL" given.',
+            'exceptionMessage' => 'pageCount: This value should be of type int.',
         ];
 
         yield 'missing constructor argument' => [
@@ -114,13 +114,18 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'json' => [],
             'violations' => [
                 'description' => [
-                    'This value should be present.',
+                    'This value should be of type string.',
+                ],
+                'printingHouse' => [
+                    'This value should be of type /printing-houses IRI.',
+                ],
+                'weight' => [
+                    'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => 'Cannot create an instance of ' .
-                '"EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Book"' .
-                ' from serialized data because its constructor requires' .
-                ' the following parameters to be present : "$description".',
+            'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
+                " be of type int.\nprintingHouse: This value should be of type" .
+                " EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\ApiResource\PrintingHouse.",
         ];
 
         yield 'missing constructor argument in DTO' => [
@@ -133,31 +138,30 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'age' => [
-                    'This value should be present.',
+                'author.age' => [
+                    'This value should be of type int.',
                 ],
-                'name' => [
-                    'This value should be present.',
+                'author.name' => [
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'Cannot create an instance of ' .
-                '"EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\DataTransferObject\\Author"' .
-                ' from serialized data because its constructor requires the following parameters to be present' .
-                ' : "$name", "$age".',
+            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
+                ' This value should be of type int.',
         ];
 
         yield 'invalid constructor argument type' => [
             'url' => '/books',
             'json' => [
                 'description' => 'some description',
+                'printingHouse' => '/printing-houses/1',
                 'weight' => 'some string',
             ],
             'violations' => [
                 'weight' => [
-                    'The type of the value should be "int", "string" given.',
+                    'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "weight" attribute must be "int", "string" given.',
+            'exceptionMessage' => 'weight: This value should be of type int.',
         ];
 
         yield 'input data is misformatted when invalid argument in DTO' => [
@@ -168,10 +172,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'rank' => [
-                    'The type of the value should be "int", "string" given.',
+                    'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => 'The input data is misformatted.',
+            'exceptionMessage' => 'rank: This value should be of type int.',
         ];
 
         yield 'missing constructor argument in DTO when input DTO' => [
@@ -181,12 +185,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'rank' => [
-                    'This value should be present.',
+                    'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
-                '\\EasyErrorHandler\\DataTransferObject\\CategoryInputDtoWithConstructor" from serialized' .
-                ' data because its constructor requires the following parameters to be present : "$rank".',
+            'exceptionMessage' => 'rank: This value should be of type int.',
         ];
 
         yield 'invalid IRI format' => [
@@ -199,9 +201,12 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'Invalid IRI "some invalid IRI".',
+                'category' => [
+                    'This value should be of type /categories IRI.',
+                ],
             ],
-            'exceptionMessage' => 'Invalid IRI "some invalid IRI".',
+            'exceptionMessage' => 'category: This value should be of type' .
+                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Category.',
         ];
 
         yield 'invalid IRI type when constructor parameter' => [
@@ -213,9 +218,12 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => 'some string',
             ],
             'violations' => [
-                'Invalid IRI "some string".',
+                'printingHouse' => [
+                    'This value should be of type /printing-houses IRI.',
+                ],
             ],
-            'exceptionMessage' => 'Invalid IRI "some string".',
+            'exceptionMessage' => 'printingHouse: This value should be of type' .
+                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
         ];
 
         yield 'different object IRI when constructor parameter' => [
@@ -228,7 +236,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'printingHouse' => [
-                    'This value should be PrintingHouse IRI.',
+                    'This value should be of type /printing-houses IRI.',
                 ],
             ],
             'exceptionMessage' => 'EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
@@ -250,8 +258,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value is not a valid date/time.',
                 ],
             ],
-            'exceptionMessage' => 'The data is either not an string, an empty string, or null; you should pass a' .
-                ' string that can be parsed with the passed format or a valid DateTime string.',
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
         ];
 
         yield 'date is NULL' => [
@@ -267,8 +274,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value is not a valid date/time.',
                 ],
             ],
-            'exceptionMessage' => 'The data is either not an string, an empty string, or null; you should pass a' .
-                ' string that can be parsed with the passed format or a valid DateTime string.',
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
         ];
 
         yield 'invalid date' => [
@@ -281,11 +287,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'publishedAt' => [
-                    'Some custom violation message for datetime parsing error.',
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'Failed to parse time string (some invalid date) at position 0 (s):' .
-                ' The timezone could not be found in the database',
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
         ];
 
         yield 'invalid date format' => [
@@ -301,8 +306,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value is not a valid date/time.',
                 ],
             ],
-            'exceptionMessage' => 'Parsing datetime string "2024-04-22Т01:01:00+11:00" using format "Y-m-d|"' .
-                ' resulted in 1 errors: ' . "\n" . 'at position 10: Trailing data',
+            'exceptionMessage' => 'availableFrom: This value should be of type string.',
         ];
 
         yield 'invalid constructor argument in DTO' => [
@@ -318,12 +322,14 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'author.age' => [
-                    'The type of the value should be "int", "string" given.',
+                    'This value should be of type int.',
+                ],
+                'author.name' => [
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "age" attribute for class ' .
-                '"EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\DataTransferObject\\Author"' .
-                ' must be one of "int" ("string" given).',
+            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
+                ' This value should be of type int.',
         ];
 
         yield 'invalid IRI type' => [
@@ -337,11 +343,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'category' => [
-                    'The type of the value should be "array|string", "int" given.',
+                    'This value should be an IRI.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "category" attribute must be "array" (nested document) or "string"' .
-                ' (IRI), "integer" given.',
+            'exceptionMessage' => 'category: This value should be of type array|string.',
         ];
 
         yield 'null IRI when constructor parameter' => [
@@ -354,11 +359,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'printingHouse' => [
-                    'The type of the value should be "array|string", "null" given.',
+                    'This value should be an IRI.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "printingHouse" attribute must be "array" (nested document)' .
-                ' or "string" (IRI), "NULL" given.',
+            'exceptionMessage' => 'printingHouse: This value should be of type array|string.',
         ];
 
         yield 'nested document' => [
@@ -378,7 +382,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be an IRI.',
                 ],
             ],
-            'exceptionMessage' => 'Nested documents for attribute "category" are not allowed. Use IRIs instead.',
+            'exceptionMessage' => 'category: This value should be of type array|string.',
         ];
 
         yield 'missing constructor argument with serializedName attribute' => [
@@ -386,12 +390,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'json' => [],
             'violations' => [
                 'type' => [
-                    'This value should be present.',
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
-                '\\EasyErrorHandler\\ApiResource\\Payment" from serialized data because its constructor requires' .
-                ' the following parameters to be present : "$paymentType".',
+            'exceptionMessage' => 'paymentType: This value should be of type string.',
         ];
 
         yield 'null constructor argument with serializedName attribute' => [
@@ -399,10 +401,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'json' => ['type' => null],
             'violations' => [
                 'type' => [
-                    'The type of the value should be "string", "null" given.',
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'The type of the "paymentType" attribute must be "string", "NULL" given.',
+            'exceptionMessage' => 'type: This value should be of type string.',
         ];
 
         yield 'missing constructor argument in input DTO with serializedName attribute' => [
@@ -410,12 +412,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'json' => [],
             'violations' => [
                 'type' => [
-                    'This value should be present.',
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'Cannot create an instance of "EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
-                '\\EasyErrorHandler\\DataTransferObject\\PaymentInputDtoWithConstructor" from serialized data' .
-                ' because its constructor requires the following parameters to be present : "$paymentType".',
+            'exceptionMessage' => 'paymentType: This value should be of type string.',
         ];
 
         yield 'null constructor argument in input DTO with serializedName attribute' => [
@@ -423,10 +423,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'json' => ['type' => null],
             'violations' => [
                 'type' => [
-                    'The type of the value should be "string", "null" given.',
+                    'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'The input data is misformatted.',
+            'exceptionMessage' => 'paymentType: This value should be of type string.',
         ];
 
         yield 'Item not found by IRI' => [
@@ -438,9 +438,12 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'weight' => 11,
             ],
             'violations' => [
-                'Item not found for "/printing-houses/2".',
+                'printingHouse' => [
+                    'Item not found for "/printing-houses/2".',
+                ],
             ],
-            'exceptionMessage' => 'Item not found for "/printing-houses/2".',
+            'exceptionMessage' => 'printingHouse: This value should be of type' .
+                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
         ];
     }
 

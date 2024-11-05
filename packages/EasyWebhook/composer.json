@@ -12,12 +12,12 @@
         "eonx-com/easy-utils": "^6.3",
         "nesbot/carbon": "^3.7",
         "nette/utils": "^4.0",
-        "symfony/config": "^7.0",
-        "symfony/console": "^7.0",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/http-client": "^7.0",
-        "symfony/http-foundation": "^7.0",
-        "symfony/http-kernel": "^7.0"
+        "symfony/config": "^7.1",
+        "symfony/console": "^7.1",
+        "symfony/dependency-injection": "^7.1",
+        "symfony/http-client": "^7.1",
+        "symfony/http-foundation": "^7.1",
+        "symfony/http-kernel": "^7.1"
     },
     "require-dev": {
         "doctrine/dbal": "^3.8",
