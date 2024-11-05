@@ -38,11 +38,6 @@ return RectorConfig::configure()
         EasyQualitySetList::RECTOR_PHPUNIT_10,
     ])
     ->withSkip([
-        // Skip entire files or directories
-        'packages/*/var/*', // Cache files
-        'packages/*/vendor/*', // Composer dependencies installed locally for development and testing
-
-        // Skip rules
         ClassPropertyAssignToConstructorPromotionRector::class => [
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
@@ -55,6 +50,8 @@ return RectorConfig::configure()
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
+        'packages/*/var/*',
+        'packages/*/vendor/*',
     ])
     ->withRules([
         AddSeeAnnotationRector::class,

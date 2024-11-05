@@ -21,11 +21,6 @@ abstract class AbstractApplicationTestCase extends ApiTestCase
 
     protected static Client $client;
 
-    protected function setUp(): void
-    {
-        self::setUpClient();
-    }
-
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
@@ -36,6 +31,11 @@ abstract class AbstractApplicationTestCase extends ApiTestCase
         if ($filesystem->exists($varDir)) {
             $filesystem->remove($varDir);
         }
+    }
+
+    protected function setUp(): void
+    {
+        self::setUpClient();
     }
 
     protected static function getKernelClass(): string

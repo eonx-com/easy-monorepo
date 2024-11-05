@@ -23,8 +23,8 @@ abstract class AbstractWebhook implements WebhookInterface
      * @var string[]
      */
     protected static array $setters = [
-        WebhookOption::Body->value => 'body',
         WebhookOption::BodyAsString->value => 'bodyAsString',
+        WebhookOption::Body->value => 'body',
         WebhookOption::CurrentAttempt->value => 'currentAttempt',
         WebhookOption::Event->value => 'event',
         WebhookOption::HttpOptions->value => 'httpClientOptions',
