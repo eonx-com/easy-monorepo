@@ -21,9 +21,9 @@
     "require-dev": {
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.12",
-        "eonx-com/easy-bugsnag": "^6.3",
-        "eonx-com/easy-error-handler": "^6.3",
-        "eonx-com/easy-test": "^6.3",
+        "eonx-com/easy-bugsnag": "^6.4",
+        "eonx-com/easy-error-handler": "^6.4",
+        "eonx-com/easy-test": "^6.4",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
         "symfony/browser-kit": "^7.1",
@@ -54,7 +54,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.3-dev"
+            "dev-master": "6.4-dev"
         }
     }
 }
