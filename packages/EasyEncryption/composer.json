@@ -9,8 +9,8 @@
         "doctrine/orm": "^2.20",
         "eonx-com/easy-utils": "^6.4",
         "paragonie/halite": "^5.1",
-        "symfony/config": "^7.0",
-        "symfony/dependency-injection": "^7.0",
+        "symfony/config": "^7.1.7",
+        "symfony/dependency-injection": "^7.1.7",
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
@@ -18,7 +18,7 @@
         "eonx-com/easy-test": "^6.4",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/filesystem": "^7.0",
+        "symfony/filesystem": "^7.1.7",
         "symfony/process": "^7.0"
     },
     "autoload": {

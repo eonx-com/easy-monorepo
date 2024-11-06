@@ -8,9 +8,9 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-filter": "*",
-        "symfony/config": "^7.0",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/http-kernel": "^7.0",
+        "symfony/config": "^7.1.7",
+        "symfony/dependency-injection": "^7.1.7",
+        "symfony/http-kernel": "^7.1.7",
         "symfony/string": "^7.0"
     },
     "require-dev": {
@@ -18,7 +18,7 @@
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/serializer": "^7.0",
+        "symfony/serializer": "^7.1.7",
         "symfony/validator": "^7.0"
     },
     "autoload": {

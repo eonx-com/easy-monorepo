@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.2",
         "symfony/contracts": "^3.5",
-        "symfony/dependency-injection": "^7.0",
+        "symfony/dependency-injection": "^7.1.7",
         "symfony/http-kernel": "^7.0"
     },
     "require-dev": {
