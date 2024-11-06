@@ -32,7 +32,7 @@
         "symfony/http-client": "^7.1.7",
         "symfony/security-bundle": "^7.1.4",
         "symfony/twig-bundle": "^7.1",
-        "symfony/validator": "^7.1"
+        "symfony/validator": "^7.1.5"
     },
     "autoload": {
         "psr-4": {

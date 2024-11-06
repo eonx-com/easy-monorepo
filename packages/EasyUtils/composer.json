@@ -19,7 +19,7 @@
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
         "symfony/serializer": "^7.1",
-        "symfony/validator": "^7.1"
+        "symfony/validator": "^7.1.5"
     },
     "autoload": {
         "psr-4": {
