@@ -14,7 +14,7 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-sodium": "*",
-        "api-platform/core": "^3.3.9",
+        "api-platform/core": "^3.3.9 || ^4.0",
         "aws/aws-sdk-php": "^3.288.1",
         "bugsnag/bugsnag": "^3.29",
         "doctrine/dbal": "^3.8",
