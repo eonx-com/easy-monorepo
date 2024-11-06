@@ -11,14 +11,16 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\C
 
 #[ApiResource(
     operations: [
-        new GetCollection(),
+        new GetCollection(
+            uriTemplate: 'book-categories',
+        ),
         new Post(),
         new Post(
-            uriTemplate: 'categories-dto',
+            uriTemplate: 'book-categories-dto',
             input: CategoryInputDto::class
         ),
         new Post(
-            uriTemplate: 'categories-dto-with-constructor',
+            uriTemplate: 'book-categories-dto-with-constructor',
             input: CategoryInputDtoWithConstructor::class,
         ),
     ]

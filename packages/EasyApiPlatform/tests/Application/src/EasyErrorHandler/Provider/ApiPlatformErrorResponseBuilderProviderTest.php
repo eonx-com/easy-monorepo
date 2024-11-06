@@ -165,7 +165,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         ];
 
         yield 'input data is misformatted when invalid argument in DTO' => [
-            'url' => '/categories-dto',
+            'url' => '/book-categories-dto',
             'json' => [
                 'name' => 'some name',
                 'rank' => 'some string',
@@ -179,7 +179,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         ];
 
         yield 'missing constructor argument in DTO when input DTO' => [
-            'url' => '/categories-dto-with-constructor',
+            'url' => '/book-categories-dto-with-constructor',
             'json' => [
                 'name' => 'some name',
             ],
@@ -202,7 +202,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'category' => [
-                    'This value should be of type /categories IRI.',
+                    'This value should be of type /book-categories IRI.',
                 ],
             ],
             'exceptionMessage' => 'category: This value should be of type' .
