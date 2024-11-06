@@ -18,6 +18,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use EonX\EasyApiPlatform\Common\IriConverter\IriConverterTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -43,6 +44,7 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  */
 final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterInterface
 {
+    use IriConverterTrait;
     use SearchFilterTrait;
 
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
@@ -141,7 +143,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     /**
      * Adds where clause according to the strategy.
      *
-     * @throws \ApiPlatform\Exception\InvalidArgumentException If strategy does not exist
+     * @throws \ApiPlatform\Metadata\Exception\InvalidArgumentException If strategy does not exist
      */
     protected function addWhereByStrategy(
         string $strategy,
@@ -418,11 +420,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $values,
             $caseSensitive
         );
-    }
-
-    protected function getIriConverter(): IriConverterInterface
-    {
-        return $this->iriConverter;
     }
 
     protected function getPropertyAccessor(): PropertyAccessorInterface
