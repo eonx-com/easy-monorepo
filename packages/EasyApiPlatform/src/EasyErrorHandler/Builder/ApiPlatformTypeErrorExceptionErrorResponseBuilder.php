@@ -53,7 +53,7 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
             $violations = [
                 $this->normalizePropertyName($matches['property'], $matches['class']) => [
                     $this->translator->trans(
-                        'violations.invalid_type',
+                        'violations.invalid_type_new',
                         [
                             '%expected_type%' => $this->normalizeTypeName($matches['expectedType']),
                         ]

@@ -145,7 +145,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             ) === 1
         ) {
             $message = $this->translator->trans(
-                'violations.invalid_type',
+                'violations.invalid_type_new',
                 [
                     '%expected_type%' => $this->normalizeTypeName($matches['expectedType']),
                 ]
