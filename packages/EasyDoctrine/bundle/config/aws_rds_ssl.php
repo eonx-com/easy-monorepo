@@ -6,7 +6,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyDoctrine\AwsRds\CacheWarmer\AwsRdsCertificateAuthorityCacheWarmer;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsCertificateAuthorityProvider;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
-use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
