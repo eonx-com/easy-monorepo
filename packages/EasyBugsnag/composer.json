@@ -17,7 +17,7 @@
         "symfony/dependency-injection": "^7.1",
         "symfony/event-dispatcher": "^7.1",
         "symfony/filesystem": "^7.1",
-        "symfony/http-foundation": "^7.1",
+        "symfony/http-foundation": "^7.1.7",
         "symfony/http-kernel": "^7.1",
         "symfony/messenger": "^7.1",
         "symfony/var-dumper": "^7.1"

@@ -15,8 +15,8 @@
         "symfony/config": "^7.1",
         "symfony/console": "^7.1",
         "symfony/dependency-injection": "^7.1",
-        "symfony/http-client": "^7.1",
-        "symfony/http-foundation": "^7.1",
+        "symfony/http-client": "^7.1.7",
+        "symfony/http-foundation": "^7.1.7",
         "symfony/http-kernel": "^7.1"
     },
     "require-dev": {
