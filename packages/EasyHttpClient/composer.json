@@ -8,11 +8,11 @@
         "eonx-com/easy-event-dispatcher": "^6.4",
         "eonx-com/easy-utils": "^6.4",
         "nesbot/carbon": "^3.7",
-        "symfony/config": "^7.0",
+        "symfony/config": "^7.1",
         "symfony/contracts": "^3.5",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/http-client": "^7.0",
-        "symfony/http-kernel": "^7.0"
+        "symfony/dependency-injection": "^7.1",
+        "symfony/http-client": "^7.1.7",
+        "symfony/http-kernel": "^7.1"
     },
     "require-dev": {
         "doctrine/dbal": "^3.8",
@@ -25,8 +25,8 @@
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2",
-        "symfony/amazon-sqs-messenger": "^7.0",
-        "symfony/doctrine-bridge": "^7.0"
+        "symfony/amazon-sqs-messenger": "^7.1",
+        "symfony/doctrine-bridge": "^7.1"
     },
     "autoload": {
         "psr-4": {

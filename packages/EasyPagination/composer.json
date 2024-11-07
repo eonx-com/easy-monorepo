@@ -9,17 +9,17 @@
         "doctrine/orm": "^2.20",
         "eonx-com/easy-utils": "^6.4",
         "spatie/url": "^2.2",
-        "symfony/config": "^7.0",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/http-foundation": "^7.0",
-        "symfony/http-kernel": "^7.0",
-        "symfony/string": "^7.0"
+        "symfony/config": "^7.1",
+        "symfony/dependency-injection": "^7.1",
+        "symfony/http-foundation": "^7.1.7",
+        "symfony/http-kernel": "^7.1",
+        "symfony/string": "^7.1"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/uid": "^7.0"
+        "symfony/uid": "^7.1"
     },
     "autoload": {
         "psr-4": {
