@@ -63,7 +63,7 @@
         "symfony/translation": "^7.1",
         "symfony/uid": "^7.1",
         "symfony/var-dumper": "^7.1",
-        "twig/twig": "^3.14"
+        "twig/twig": "^3.14.1"
     },
     "require-dev": {
         "auth0/auth0-php": "^8.6",
