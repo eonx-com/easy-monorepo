@@ -242,9 +242,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     public function yieldInvalidCreditCardNumber(): iterable
     {
         $value = '1111222233334444';
-        // @todo Remove phpstan-ignore-next-line when drop support Symfony 7.1
-        // @phpstan-ignore-next-line
-        $message = $this->translateMessage((new CardScheme(['schemes' => null]))->message);
+        $message = $this->translateMessage((new CardScheme(['schemes' => 'non-existed-card-schema']))->message);
 
         yield from $this->create("{$this->property} is not a valid credit card number", $value, $message);
     }
