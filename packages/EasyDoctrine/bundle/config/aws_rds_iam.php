@@ -27,5 +27,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             param(ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes->value)
         )
         ->arg('$cache', service(ConfigServiceId::AwsRdsIamCache->value))
-        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
+        ->arg('$logger', service(ConfigParam::AwsRdsIamLogger->value)->nullOnInvalid());
 };

@@ -18,7 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(AwsRdsCertificateAuthorityProvider::class)
         ->arg('$caPath', param(ConfigParam::AwsRdsSslCaPath->value))
-        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
+        ->arg('$logger', service(ConfigParam::AwsRdsSslLogger->value)->nullOnInvalid());
 
     $services->set(AwsRdsCertificateAuthorityCacheWarmer::class);
 };
