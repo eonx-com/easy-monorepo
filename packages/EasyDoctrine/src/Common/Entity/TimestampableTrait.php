@@ -29,6 +29,8 @@ trait TimestampableTrait
             $this->createdAt = $dateTime;
         }
 
-        $this->updatedAt = $dateTime;
+        if (isset($this->updatedAt) === false) {
+            $this->updatedAt = $dateTime;
+        }
     }
 }
