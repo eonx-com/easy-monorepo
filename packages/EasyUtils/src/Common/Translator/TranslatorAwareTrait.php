@@ -8,7 +8,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 trait TranslatorAwareTrait
 {
-    protected TranslatorInterface $translator;
+    protected readonly TranslatorInterface $translator;
 
     #[Required]
     public function setTranslator(TranslatorInterface $translator): void
