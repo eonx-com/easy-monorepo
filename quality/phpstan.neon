@@ -37,6 +37,7 @@ parameters:
         - '#Class .* implements generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types: T#'
         - '#Method .*\:\:__construct\(\) has parameter \$decorated with generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types\: T#'
         - '#Readonly property .* is assigned outside of the constructor#'
+        - '#Class .* has an uninitialized readonly property .*. Assign it in the constructor#'
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
