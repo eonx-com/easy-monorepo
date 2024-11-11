@@ -8,7 +8,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 trait EntityManagerAwareTrait
 {
-    protected EntityManagerInterface $entityManager;
+    protected readonly EntityManagerInterface $entityManager;
 
     #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void

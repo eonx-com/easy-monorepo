@@ -7,7 +7,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 trait ErrorHandlerAwareTrait
 {
-    protected ErrorHandlerInterface $errorHandler;
+    protected readonly ErrorHandlerInterface $errorHandler;
 
     #[Required]
     public function setErrorHandler(ErrorHandlerInterface $errorHandler): void
