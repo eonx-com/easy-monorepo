@@ -10,7 +10,7 @@ final readonly class Translator implements TranslatorInterface
     private const DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
 
     public function __construct(
-        private SymfonyTranslatorInterface $decorated,
+        private SymfonyTranslatorInterface $translator,
         private ?string $domain = null,
     ) {
     }
@@ -18,19 +18,16 @@ final readonly class Translator implements TranslatorInterface
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
         /** @var \Symfony\Component\Translation\TranslatorBagInterface $translatorBag */
-        $translatorBag = $this->decorated;
+        $translatorBag = $this->translator;
         $catalogue = $translatorBag->getCatalogue();
         if (
-            $catalogue->has($message, self::DEFAULT_DOMAIN)
-            && $catalogue->has($message, $this->domain ?? 'messages')
+            $catalogue->has($message, self::DEFAULT_DOMAIN) === false
+            || ($catalogue->has($message, self::DEFAULT_DOMAIN)
+            && $catalogue->has($message, $this->domain ?? 'messages'))
         ) {
-            return $this->decorated->trans($message, $parameters, $this->domain, $locale);
+            return $this->translator->trans($message, $parameters, $this->domain, $locale);
         }
 
-        if ($catalogue->has($message, self::DEFAULT_DOMAIN) === false) {
-            return $this->decorated->trans($message, $parameters, $this->domain, $locale);
-        }
-
-        return $this->decorated->trans($message, $parameters, self::DEFAULT_DOMAIN, $locale);
+        return $this->translator->trans($message, $parameters, self::DEFAULT_DOMAIN, $locale);
     }
 }
