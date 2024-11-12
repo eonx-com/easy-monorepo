@@ -19,7 +19,7 @@ final readonly class Translator implements TranslatorInterface
     {
         /** @var \Symfony\Component\Translation\TranslatorBagInterface $translatorBag */
         $translatorBag = $this->decorated;
-        $catalogue = $translatorBag->getCatalogue($locale ?? 'en');
+        $catalogue = $translatorBag->getCatalogue();
         if (
             $catalogue->has($message, self::DEFAULT_DOMAIN)
             && $catalogue->has($message, $this->domain ?? 'messages')
