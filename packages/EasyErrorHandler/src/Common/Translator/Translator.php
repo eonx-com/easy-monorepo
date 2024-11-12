@@ -17,8 +17,9 @@ final readonly class Translator implements TranslatorInterface
 
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {
-        /** @var \Symfony\Component\Translation\MessageCatalogueInterface $catalogue */
-        $catalogue = $this->decorated->getCatalogue($locale);
+        /** @var \EonX\EasyErrorHandler\Common\Translator\TranslatorInterface|\Symfony\Component\Translation\TranslatorBagInterface $translator */
+        $translator = $this->decorated;
+        $catalogue = $translator->getCatalogue($locale);
         if ($catalogue->has($message, self::DEFAULT_DOMAIN) && $catalogue->has($message, $this->domain)) {
             return $this->decorated->trans($message, $parameters, $this->domain, $locale);
         }
