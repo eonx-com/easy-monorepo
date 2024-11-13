@@ -22,8 +22,7 @@ final readonly class Translator implements TranslatorInterface
         $catalogue = $translatorBag->getCatalogue();
         if (
             $catalogue->has($message, self::DEFAULT_DOMAIN) === false
-            || ($catalogue->has($message, self::DEFAULT_DOMAIN)
-            && $catalogue->has($message, $this->domain ?? 'messages'))
+            || $catalogue->has($message, $this->domain ?? 'messages')
         ) {
             return $this->translator->trans($message, $parameters, $this->domain, $locale);
         }
