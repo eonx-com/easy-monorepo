@@ -11,6 +11,7 @@ final readonly class Translator implements TranslatorInterface
     private const DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
 
     public function __construct(
+        // @todo: Rename to `$translator` in next major release (7.0) as it's not a decoration
         private SymfonyTranslatorInterface&TranslatorBagInterface $decorated,
         private ?string $domain = null,
     ) {
