@@ -9,7 +9,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 trait ProcessWithLockTrait
 {
-    private LockerInterface $locker;
+    private readonly LockerInterface $locker;
 
     #[Required]
     public function setLocker(LockerInterface $locker): void

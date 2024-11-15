@@ -79,6 +79,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Translator
     $services
         ->set(TranslatorInterface::class, Translator::class)
+        ->arg('$decorated', service('translator'))
         ->arg('$domain', param(ConfigParam::TranslationDomain->value));
 
     // Verbose
