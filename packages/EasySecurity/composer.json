@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-api-token": "^6.3.1",
-        "eonx-com/easy-utils": "^6.3.1",
+        "eonx-com/easy-api-token": "^6.4",
+        "eonx-com/easy-utils": "^6.4",
         "nette/utils": "^4.0",
         "symfony/cache": "^7.1",
         "symfony/config": "^7.1",
@@ -18,8 +18,8 @@
         "symfony/security-http": "^7.1.8"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^6.3.1",
-        "eonx-com/easy-logging": "^6.3.1",
+        "eonx-com/easy-bugsnag": "^6.4",
+        "eonx-com/easy-logging": "^6.4",
         "laravel/lumen-framework": "^11.0",
         "phpspec/prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
