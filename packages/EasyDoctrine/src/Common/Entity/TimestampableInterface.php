@@ -11,5 +11,5 @@ interface TimestampableInterface
 
     public function getUpdatedAt(): CarbonImmutable;
 
-    public function updateTimestamps(?CarbonImmutable $dateTime = null): void;
+    public function updateTimestamps(): void;
 }

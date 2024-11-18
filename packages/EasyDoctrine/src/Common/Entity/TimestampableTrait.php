@@ -21,9 +21,9 @@ trait TimestampableTrait
         return $this->updatedAt;
     }
 
-    public function updateTimestamps(?CarbonImmutable $dateTime = null): void
+    public function updateTimestamps(): void
     {
-        $dateTime ??= CarbonImmutable::now();
+        $dateTime = CarbonImmutable::now();
 
         if (isset($this->createdAt) === false) {
             $this->createdAt = $dateTime;
