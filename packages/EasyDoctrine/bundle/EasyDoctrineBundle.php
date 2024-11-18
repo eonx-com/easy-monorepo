@@ -67,7 +67,8 @@ final class EasyDoctrineBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes->value, $config['auth_token_lifetime_in_minutes'])
             ->set(ConfigParam::AwsRdsIamAwsRegion->value, $config['aws_region'])
-            ->set(ConfigParam::AwsRdsIamAwsUsername->value, $config['aws_username']);
+            ->set(ConfigParam::AwsRdsIamAwsUsername->value, $config['aws_username'])
+            ->set(ConfigParam::AwsRdsIamLogger->value, $config['logger']);
 
         $container->import('config/aws_rds_iam.php');
     }
@@ -86,7 +87,8 @@ final class EasyDoctrineBundle extends AbstractBundle
         $container
             ->parameters()
             ->set(ConfigParam::AwsRdsSslCaPath->value, $config['ca_path'])
-            ->set(ConfigParam::AwsRdsSslMode->value, $config['mode']);
+            ->set(ConfigParam::AwsRdsSslMode->value, $config['mode'])
+            ->set(ConfigParam::AwsRdsSslLogger->value, $config['logger']);
 
         $container->import('config/aws_rds_ssl.php');
     }

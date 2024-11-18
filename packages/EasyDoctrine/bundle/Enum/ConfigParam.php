@@ -11,7 +11,11 @@ enum ConfigParam: string
 
     case AwsRdsIamAwsUsername = 'easy_doctrine.aws_rds.iam.aws_username';
 
+    case AwsRdsIamLogger = 'easy_doctrine.aws_rds.iam.logger';
+
     case AwsRdsSslCaPath = 'easy_doctrine.aws_rds.ssl.ca_path';
+
+    case AwsRdsSslLogger = 'easy_doctrine.aws_rds.ssl.logger';
 
     case AwsRdsSslMode = 'easy_doctrine.aws_rds.ssl.mode';
 

@@ -7,7 +7,6 @@ use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProvider;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsAuthTokenProviderInterface;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -27,5 +26,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             param(ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes->value)
         )
         ->arg('$cache', service(ConfigServiceId::AwsRdsIamCache->value))
-        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
+        ->arg('$logger', service(ConfigParam::AwsRdsIamLogger->value)->nullOnInvalid());
 };
