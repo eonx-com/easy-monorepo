@@ -63,7 +63,11 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         }
 
         $message = $throwable->getMessage();
-        if ($this->translateInternalMessages && $throwable instanceof TranslatableExceptionInterface) {
+        if (
+            $this->translateInternalMessages
+            && $throwable instanceof TranslatableExceptionInterface
+            && $throwable->isTranslatable()
+        ) {
             $message = $this->translator->trans(
                 $message,
                 $throwable->getMessageParams(),

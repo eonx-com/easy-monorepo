@@ -7,6 +7,8 @@ trait TranslatableExceptionTrait
 {
     protected ?string $domain = null;
 
+    protected bool $isTranslatable = true;
+
     protected array $messageParams = [];
 
     protected string $userMessage = 'exceptions.default_user_message';
@@ -31,6 +33,11 @@ trait TranslatableExceptionTrait
     public function getUserMessageParams(): array
     {
         return $this->userMessageParams;
+    }
+
+    public function isTranslatable(): bool
+    {
+        return $this->isTranslatable;
     }
 
     /**
