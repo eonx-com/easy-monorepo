@@ -24,4 +24,6 @@ interface TranslatableExceptionInterface
      * Returns the user-friendly message parameters.
      */
     public function getUserMessageParams(): array;
+
+    public function isTranslatable(): bool;
 }
