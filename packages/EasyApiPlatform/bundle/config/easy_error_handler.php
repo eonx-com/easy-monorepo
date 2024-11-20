@@ -5,6 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyApiPlatform\Bundle\Enum\ConfigParam;
 use EonX\EasyApiPlatform\Bundle\Enum\ConfigTag;
+use EonX\EasyApiPlatform\EasyErrorHandler\Builder\AbstractApiPlatformExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformCustomSerializerExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformMissingConstructorArgumentsExceptionErrorResponseBuilder;
 use EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformNotEncodableValueExceptionErrorResponseBuilder;
@@ -23,47 +24,50 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     // @todo Update priority with step 10 in 7.0 to allow adding more builders in the middle
-    $services->set(ApiPlatformValidationExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
+    $services->set(AbstractApiPlatformExceptionErrorResponseBuilder::class)
+        ->abstract()
         ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        // @todo Replace $nameConverter with service('api_platform.name_converter')->ignoreOnInvalid() in 7.0
+        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
+        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value));
+
+    $services->set(ApiPlatformValidationExceptionErrorResponseBuilder::class)
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
+        ->call('setIriConverter', [service('api_platform.symfony.iri_converter')])
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 99]);
 
     $services->set(ApiPlatformNotNormalizableValueExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
-        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        ->deprecate('eonx_com/easy-api-platform', '6.4.0', 'The %service_id% will be removed in 7.0.')
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 98]);
 
     $services->set(ApiPlatformMissingConstructorArgumentsExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
-        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        ->deprecate('eonx_com/easy-api-platform', '6.4.0', 'The %service_id% will be removed in 7.0.')
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 97]);
 
     $services->set(ApiPlatformUnexpectedValueExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
-        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        ->deprecate('eonx_com/easy-api-platform', '6.4.0', 'The %service_id% will be removed in 7.0.')
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 96]);
 
     $services->set(ApiPlatformTypeErrorExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
-        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
+        ->call('setIriConverter', [service('api_platform.symfony.iri_converter')])
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 95]);
 
     $services->set(ApiPlatformCustomSerializerExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
-        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$customSerializerExceptions', param(ConfigParam::EasyErrorHandlerCustomSerializerExceptions->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
+        ->call(
+            'setCustomSerializerExceptions',
+            [
+                param(ConfigParam::EasyErrorHandlerCustomSerializerExceptions->value),
+            ]
+        )
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 94]);
 
     $services->set(ApiPlatformNotEncodableValueExceptionErrorResponseBuilder::class)
-        ->arg('$nameConverter', service('serializer.name_converter.metadata_aware'))
-        ->arg('$keys', param(EasyErrorHandlerConfigParam::ResponseKeys->value))
-        ->arg('$validationErrorCode', param(ConfigParam::EasyErrorHandlerValidationErrorCode->value))
+        ->parent(AbstractApiPlatformExceptionErrorResponseBuilder::class)
         ->tag(ConfigTag::EasyErrorHandlerErrorResponseBuilder->value, ['priority' => 93]);
 
     $services->set(ApiPlatformErrorResponseBuilderProvider::class)

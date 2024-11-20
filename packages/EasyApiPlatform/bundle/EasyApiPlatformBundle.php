@@ -9,6 +9,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class EasyApiPlatformBundle extends AbstractBundle
 {
@@ -56,6 +57,35 @@ final class EasyApiPlatformBundle extends AbstractBundle
         $builder->prependExtensionConfig('api_platform', [
             'use_symfony_listeners' => true,
         ]);
+
+        if ($this->isBundleEnabled('EasyErrorHandlerBundle', $builder)) {
+            $easyErrorHandlerEnabled = true;
+            foreach ($builder->getExtensionConfig('easy_api_platform') as $config) {
+                if (($config['easy_error_handler']['enabled'] ?? true) !== true) {
+                    $easyErrorHandlerEnabled = false;
+
+                    break;
+                }
+            }
+
+            if ($easyErrorHandlerEnabled) {
+                $builder->prependExtensionConfig('api_platform', [
+                    'defaults' => [
+                        'denormalization_context' => [
+                            DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
+                        ],
+                    ],
+                ]);
+            }
+        }
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 
     private function registerEasyErrorHandlerConfiguration(
@@ -63,6 +93,10 @@ final class EasyApiPlatformBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
+        if ($this->isBundleEnabled('EasyErrorHandlerBundle', $builder) === false) {
+            return;
+        }
+
         $config = $config['easy_error_handler'];
 
         if ($config['enabled'] === false) {

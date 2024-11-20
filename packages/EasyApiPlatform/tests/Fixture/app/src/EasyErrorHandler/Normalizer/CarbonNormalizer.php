@@ -25,7 +25,7 @@ final class CarbonNormalizer implements DenormalizerInterface
             return new CarbonImmutable($data);
         }
 
-        throw new UnexpectedValueException('This value is not a valid date/time.');
+        throw new UnexpectedValueException('Custom message from custom CarbonNormalizer.');
     }
 
     public function getSupportedTypes(?string $format): array
