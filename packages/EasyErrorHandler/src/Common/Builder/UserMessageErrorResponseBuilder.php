@@ -25,6 +25,10 @@ final class UserMessageErrorResponseBuilder extends AbstractSingleKeyErrorRespon
         if ($throwable instanceof TranslatableExceptionInterface) {
             $message = $throwable->getUserMessage();
             $parameters = $throwable->getUserMessageParams();
+
+            if ($throwable->skipTranslation()) {
+                return $message;
+            }
         }
 
         return $this->translator->trans($message, $parameters);

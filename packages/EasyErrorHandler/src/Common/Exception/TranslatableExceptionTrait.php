@@ -9,6 +9,8 @@ trait TranslatableExceptionTrait
 
     protected array $messageParams = [];
 
+    protected bool $skipTranslation = false;
+
     protected string $userMessage = 'exceptions.default_user_message';
 
     protected array $userMessageParams = [];
@@ -71,5 +73,10 @@ trait TranslatableExceptionTrait
         $this->userMessageParams = $userMessageParams;
 
         return $this;
+    }
+
+    public function skipTranslation(): bool
+    {
+        return $this->skipTranslation;
     }
 }
