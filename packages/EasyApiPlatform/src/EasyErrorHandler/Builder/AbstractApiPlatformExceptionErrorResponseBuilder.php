@@ -15,6 +15,7 @@ abstract class AbstractApiPlatformExceptionErrorResponseBuilder extends Abstract
 {
     public function __construct(
         protected readonly TranslatorInterface $translator,
+        // @todo Make $nameConverter nullable and change type to `AdvancedNameConverterInterface` in 7.0
         protected readonly MetadataAwareNameConverter $nameConverter,
         private readonly array $keys,
         ?int $priority = null,

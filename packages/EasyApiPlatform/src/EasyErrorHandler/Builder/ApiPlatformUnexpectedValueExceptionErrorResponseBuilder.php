@@ -7,6 +7,9 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Throwable;
 
+/**
+ * @deprecated Deprecated since 6.4.0, will be removed in 7.0
+ */
 final class ApiPlatformUnexpectedValueExceptionErrorResponseBuilder extends
     AbstractApiPlatformSerializerExceptionErrorResponseBuilder
 {

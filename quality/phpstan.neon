@@ -1,6 +1,7 @@
 includes:
     - vendor/eonx-com/easy-quality/config/phpstan/eonx.neon
     - vendor/symplify/phpstan-extensions/config/config.neon
+    - vendor/jangregor/phpstan-prophecy/extension.neon
 
 services:
     - class: EonX\EasyMonorepo\TypeExtension\SymfonyMessengerEnvelopeLastReturnTypeExtension
@@ -30,7 +31,6 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.iterableValue
-        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[\w\\]+\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureContainer\(\) is unused#'
         - '#Method EonX\\.*\\Fixture\\App\\Kernel\\ApplicationKernel\:\:configureRoutes\(\) is unused#'
@@ -41,16 +41,8 @@ parameters:
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<ApiPlatform\\Metadata\\IriConverterInterface>\:\:getResourceFromIri\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Common/Filter/AdvancedSearchFilterTest.php
-
-        - message: '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy<EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\AdvancedSearchFilter\\ApiResource\\RelatedDummy>\:\:getId\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyApiPlatform/tests/Unit/src/Common/Filter/AdvancedSearchFilterTest.php
-
         # ---- EasyApiToken ----
-
         # ---- EasyAsync ----
-
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
           path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Unit/src/Parsing/Nai/Parser/NaiParserTest.php

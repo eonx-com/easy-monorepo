@@ -12,8 +12,14 @@ use Throwable;
 abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extends
     AbstractApiPlatformExceptionErrorResponseBuilder
 {
+    /**
+     * @deprecated Deprecated since 6.4.0, will be removed in 7.0
+     */
     private const MESSAGE_PATTERN_CLASS = '/The type of the .* attribute for class "(.*)" must be.*/';
 
+    /**
+     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
+     */
     final public function buildData(Throwable $throwable, array $data): array
     {
         $violations = $this->buildViolations($throwable);
@@ -43,6 +49,9 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
         return $this->doBuildViolations($throwable);
     }
 
+    /**
+     * @deprecated Deprecated since 6.4.0, will be removed in 7.0
+     */
     protected function buildViolationsForNotNormalizableValueException(NotNormalizableValueException $throwable): array
     {
         $path = $throwable->getPath();

@@ -3,24 +3,31 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
-use BackedEnum;
-use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
+use Symfony\Contracts\Service\Attribute\Required;
 use Throwable;
 
 final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
     AbstractApiPlatformSerializerExceptionErrorResponseBuilder
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        MetadataAwareNameConverter $nameConverter,
-        array $keys,
-        ?int $priority = null,
-        private readonly array $customSerializerExceptions = [],
-        int|string|BackedEnum|null $validationErrorCode = null,
-    ) {
-        parent::__construct($translator, $nameConverter, $keys, $priority, $validationErrorCode);
+    private array $customSerializerExceptions = [];
+
+    /**
+     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
+     */
+    private RequestStack $requestStack;
+
+    #[Required]
+    public function setCustomSerializerExceptions(array $customSerializerExceptions): void
+    {
+        $this->customSerializerExceptions = $customSerializerExceptions;
+    }
+
+    #[Required]
+    public function setRequestStack(RequestStack $requestStack): void
+    {
+        $this->requestStack = $requestStack;
     }
 
     protected function doBuildViolations(Throwable $throwable): array
@@ -32,9 +39,10 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
 
             if (\preg_match($exception['message_pattern'], $throwable->getMessage()) === 1) {
                 $violation = $this->translator->trans($exception['violation_message'], []);
-                if ($throwable instanceof NotNormalizableValueException) {
+
+                if ($throwable instanceof NotNormalizableValueException && $throwable->getPath() !== null) {
                     return [
-                        $throwable->getPath() => [
+                        $this->normalizePropertyName($throwable->getPath()) => [
                             $violation,
                         ],
                     ];
@@ -47,5 +55,27 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
         }
 
         return [];
+    }
+
+    /**
+     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
+     */
+    protected function normalizePropertyName(string $name, ?string $class = null): string
+    {
+        if ($class === null) {
+            $mainRequest = $this->requestStack->getMainRequest();
+
+            if ($mainRequest !== null) {
+                /** @var string|null $apiResourceClass */
+                $apiResourceClass = $mainRequest->attributes->get('_api_resource_class');
+                $class = $apiResourceClass;
+            }
+        }
+
+        if ($this->nameConverter !== null && $class !== null) {
+            return $this->nameConverter->normalize($name, $class);
+        }
+
+        return $name;
     }
 }

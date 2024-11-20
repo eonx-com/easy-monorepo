@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "api-platform/core": "^3.3.9 || ^4.0",
+        "api-platform/core": "^3.4.6 || ^4.0.7",
         "doctrine/dbal": "^3.8",
         "doctrine/orm": "^2.20",
         "doctrine/persistence": "^3.3",
