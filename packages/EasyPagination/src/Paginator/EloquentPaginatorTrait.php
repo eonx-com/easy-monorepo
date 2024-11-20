@@ -6,6 +6,7 @@ namespace EonX\EasyPagination\Paginator;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 
 trait EloquentPaginatorTrait
 {
@@ -41,7 +42,10 @@ trait EloquentPaginatorTrait
         $this->applyCommonCriteria($queryBuilder);
         $this->applyFilterCriteria($queryBuilder);
 
-        $this->totalItems = $queryBuilder->count();
+        /** @var \Illuminate\Support\Collection<array-key, object>|int $count */
+        $count = $queryBuilder->count();
+
+        $this->totalItems = $count instanceof Collection ? $count->count() : $count;
 
         return $this->totalItems;
     }
