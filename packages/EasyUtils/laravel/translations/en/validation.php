@@ -15,7 +15,8 @@ return [
         'not_valid' => 'This value is not a valid DateInterval.',
     ],
     'decimal' => [
-        'not_valid' => 'This value is not a valid decimal or integer number, has less than { minPrecision } or more than { maxPrecision } digits in precision.',
+        'not_valid' => 'This value is not a valid decimal or integer number, has less than { minPrecision } ' .
+            'or more than { maxPrecision } digits in precision.',
     ],
     'integer' => [
         'not_valid' => 'This value should be of type integer.',
