@@ -15,5 +15,5 @@ final class AlphanumericHyphen extends AbstractConstraint
 {
     public const INVALID_ALPHANUMERIC_HYPHEN_ERROR = 'INVALID_ALPHANUMERIC_HYPHEN_ERROR';
 
-    public string $message = 'This value may only contain letters, numbers, and hyphens.';
+    public string $message = 'alphanumeric_hyphen.not_valid';
 }
