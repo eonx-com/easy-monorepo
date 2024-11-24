@@ -6,6 +6,7 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use EonX\EasyUtils\SensitiveData\Hydrator\ObjectHydratorInterface;
 use EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface;
+use Throwable;
 
 final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 {
@@ -67,7 +68,7 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
                 if (\is_array($encodedJson)) {
                     return \json_encode($this->sanitizeArray($encodedJson), \JSON_THROW_ON_ERROR);
                 }
-            } catch (\Exception) {
+            } catch (Throwable) {
             }
 
             return $this->sanitizeString($data);
