@@ -273,7 +273,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     '"booleanValue":true,"nullValue":null,"arrayValue":["test",1,1.23,true,null],' .
                     '"objectValue":{"foo":"bar"}}}',
                 'multipleNested' =>
-                    '{"test":{"arrayValue":[[1,2,3],[4,5,6]],"objectValue":{"foo":{"baz":"bar"}}}}',
+                    '{"test":{"arrayValue":[[1,2,3],[4,5,6]],"objectValue":{"foo":{"baz":"bar","foo":{"baz":"bar"}}}}}',
                 'maskNestedWithEscaping' =>
                     '{\"test\":{\"stringValue\":\"will be masked\",\"integerValue\":123,\"doubleValue\":123.45,' .
                     '\"booleanValue\":true,\"nullValue\":null,\"arrayValue\":[\"test\",1,1.23,true,null],' .
