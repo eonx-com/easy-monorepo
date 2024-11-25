@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 return [
+    // @todo Make translations consistent with \Symfony\Component\HttpFoundation\Response::$statusTexts and \GuzzleHttp\Psr7\Response::PHRASES in 7.0
     'exceptions' => [
         // @todo Remove `entity_not_valid` in 7.0
         'entity_not_valid' => 'Entity validation failed.',
