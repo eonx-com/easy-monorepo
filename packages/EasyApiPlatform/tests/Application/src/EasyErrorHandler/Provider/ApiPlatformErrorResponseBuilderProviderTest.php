@@ -296,7 +296,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         yield 'invalid date format' => [
             'url' => '/books',
             'json' => [
-                'availableFrom' => '2024-04-22Т01:01:00+11:00',
+                'availableFrom' => '2024-04-22T01:01:00+11:00',
                 'description' => 'some description',
                 'printingHouse' => '/printing-houses/1',
                 'weight' => 11,
