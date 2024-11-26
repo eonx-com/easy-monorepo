@@ -11,6 +11,7 @@ use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidator;
 use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidatorInterface;
 use EonX\EasyUtils\Csv\Parser\CsvWithHeadersParser;
 use EonX\EasyUtils\Csv\Parser\CsvWithHeadersParserInterface;
+use EonX\EasyUtils\Laravel\Enums\TranslationParam;
 use EonX\EasyUtils\Laravel\Middleware\TrimStringsMiddleware;
 use EonX\EasyUtils\Math\Helper\MathHelper;
 use EonX\EasyUtils\Math\Helper\MathHelperInterface;
@@ -32,6 +33,8 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->loadTranslationsFrom(__DIR__ . '/translations', TranslationParam::Namespace->value);
+
         $this->publishes([
             __DIR__ . '/config/easy-utils.php' => \base_path('config/easy-utils.php'),
         ]);
