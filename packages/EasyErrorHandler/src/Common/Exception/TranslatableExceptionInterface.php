@@ -25,5 +25,5 @@ interface TranslatableExceptionInterface
      */
     public function getUserMessageParams(): array;
 
-    public function skipTranslation(): bool;
+    public function isSkipTranslation(): bool;
 }
