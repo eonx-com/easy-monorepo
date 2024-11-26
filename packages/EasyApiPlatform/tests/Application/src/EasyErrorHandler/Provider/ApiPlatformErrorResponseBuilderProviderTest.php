@@ -309,6 +309,62 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'exceptionMessage' => 'availableFrom: This value should be of type string.',
         ];
 
+        yield 'date is empty string, when constructor parameter' => [
+            'url' => '/notes',
+            'json' => [
+                'text' => 'some text',
+                'publishedAt' => '',
+            ],
+            'violations' => [
+                'publishedAt' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
+        ];
+
+        yield 'date is NULL, when constructor parameter' => [
+            'url' => '/notes',
+            'json' => [
+                'text' => 'some text',
+                'publishedAt' => null,
+            ],
+            'violations' => [
+                'publishedAt' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
+        ];
+
+        yield 'invalid date, when constructor parameter' => [
+            'url' => '/notes',
+            'json' => [
+                'text' => 'some text',
+                'publishedAt' => 'some invalid date',
+            ],
+            'violations' => [
+                'publishedAt' => [
+                    'This value should be of type string.',
+                ],
+            ],
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
+        ];
+
+        yield 'invalid date format, when constructor parameter' => [
+            'url' => '/notes',
+            'json' => [
+                'text' => 'some text',
+                'publishedAt' => '2024-04-22T01:01:00+11:00',
+            ],
+            'violations' => [
+                'publishedAt' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
+            'exceptionMessage' => 'publishedAt: This value should be of type string.',
+        ];
+
         yield 'invalid constructor argument in DTO' => [
             'url' => '/books',
             'json' => [
