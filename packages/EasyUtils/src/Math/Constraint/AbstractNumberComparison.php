@@ -25,6 +25,6 @@ abstract class AbstractNumberComparison extends AbstractComparison
 
     public function validatedBy(): string
     {
-        return \str_replace('Constraint', 'Validator', self::class) . 'Validator';
+        return \str_replace('Constraint', 'Validator', static::class) . 'Validator';
     }
 }
