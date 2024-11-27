@@ -66,7 +66,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         if (
             $this->translateInternalMessages
             && $throwable instanceof TranslatableExceptionInterface
-            && $throwable->isSkipTranslation() === false
+            && $throwable->shouldSkipTranslation() === false
         ) {
             $message = $this->translator->trans(
                 $message,

@@ -35,11 +35,6 @@ trait TranslatableExceptionTrait
         return $this->userMessageParams;
     }
 
-    public function isSkipTranslation(): bool
-    {
-        return $this->skipTranslation;
-    }
-
     /**
      * Sets the translation domain for Symfony integration.
      */
@@ -61,16 +56,6 @@ trait TranslatableExceptionTrait
     }
 
     /**
-     * Enables or disables translation skipping for the exception..
-     */
-    public function setSkipTranslation(bool $skipTranslation): self
-    {
-        $this->skipTranslation = $skipTranslation;
-
-        return $this;
-    }
-
-    /**
      * Sets the user-friendly message.
      */
     public function setUserMessage(string $userMessage): self
@@ -86,6 +71,21 @@ trait TranslatableExceptionTrait
     public function setUserMessageParams(array $userMessageParams): self
     {
         $this->userMessageParams = $userMessageParams;
+
+        return $this;
+    }
+
+    public function shouldSkipTranslation(): bool
+    {
+        return $this->skipTranslation;
+    }
+
+    /**
+     * Enables or disables translation skipping for the exception.
+     */
+    public function skipTranslation(bool $skipTranslation): self
+    {
+        $this->skipTranslation = $skipTranslation;
 
         return $this;
     }
