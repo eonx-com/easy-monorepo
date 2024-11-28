@@ -6,9 +6,9 @@
     "require": {
         "php": "^8.2",
         "dragonmantank/cron-expression": "^3.3",
-        "eonx-com/easy-event-dispatcher": "^6.4.2",
-        "eonx-com/easy-lock": "^6.4.2",
-        "eonx-com/easy-utils": "^6.4.2",
+        "eonx-com/easy-event-dispatcher": "^6.5",
+        "eonx-com/easy-lock": "^6.5",
+        "eonx-com/easy-utils": "^6.5",
         "nesbot/carbon": "^3.7",
         "symfony/config": "^7.1",
         "symfony/console": "^7.1",
