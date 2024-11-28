@@ -75,8 +75,18 @@ trait TranslatableExceptionTrait
         return $this;
     }
 
-    public function skipTranslation(): bool
+    public function shouldSkipTranslation(): bool
     {
         return $this->skipTranslation;
+    }
+
+    /**
+     * Enables or disables translation skipping for the exception.
+     */
+    public function skipTranslation(bool $skipTranslation): self
+    {
+        $this->skipTranslation = $skipTranslation;
+
+        return $this;
     }
 }
