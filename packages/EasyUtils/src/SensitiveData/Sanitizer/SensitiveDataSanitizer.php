@@ -56,6 +56,16 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         }
 
         if (\is_string($data)) {
+            $encodedJson = \json_decode(
+                json: \stripslashes($data),
+                associative: true,
+                flags: \JSON_BIGINT_AS_STRING
+            );
+
+            if (\is_array($encodedJson)) {
+                return \json_encode($this->sanitizeArray($encodedJson), \JSON_THROW_ON_ERROR);
+            }
+
             return $this->sanitizeString($data);
         }
 

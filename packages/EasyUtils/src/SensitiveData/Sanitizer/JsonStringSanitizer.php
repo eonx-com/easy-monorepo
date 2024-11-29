@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
+/**
+ * @deprecated Since 6.4, will be removed in 7.0
+ */
 final class JsonStringSanitizer extends AbstractStringSanitizer
 {
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
