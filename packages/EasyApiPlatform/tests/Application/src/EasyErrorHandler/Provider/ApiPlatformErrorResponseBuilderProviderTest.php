@@ -345,7 +345,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'publishedAt' => [
-                    'This value should be of type string.',
+                    'This value is not a valid date/time.',
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
@@ -460,7 +460,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => 'type: This value should be of type string.',
+            'exceptionMessage' => 'paymentType: This value should be of type string.',
         ];
 
         yield 'missing constructor argument in input DTO with serializedName attribute' => [

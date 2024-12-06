@@ -17,7 +17,7 @@ final class Note
             normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'],
             denormalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d|'],
         )]
-        public DateTimeImmutable $publishedAt
+        public DateTimeImmutable $publishedAt,
     ) {
     }
 }
