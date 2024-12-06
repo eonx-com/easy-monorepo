@@ -18,9 +18,7 @@ final class Decimal extends AbstractConstraint
 
     public int $maxPrecision;
 
-    public string $message
-        = 'This value is not a valid decimal or integer number, has less than {{ minPrecision }}' .
-        ' or more than {{ maxPrecision }} digits in precision.';
+    public string $message = 'decimal.not_valid';
 
     public int $minPrecision;
 

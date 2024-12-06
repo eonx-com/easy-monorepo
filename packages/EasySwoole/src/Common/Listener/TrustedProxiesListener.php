@@ -34,7 +34,7 @@ final class TrustedProxiesListener extends AbstractRequestListener
                 : $trustedProxy;
         }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', (string)$trustedProxies));
 
-        /** @var int $trustedHeaders */
+        /** @var int-mask-of<\Symfony\Component\HttpFoundation\Request::HEADER_*> $trustedHeaders */
         $trustedHeaders = $this->container->getParameter('kernel.trusted_headers');
 
         Request::setTrustedProxies($trustedProxies, $trustedHeaders);

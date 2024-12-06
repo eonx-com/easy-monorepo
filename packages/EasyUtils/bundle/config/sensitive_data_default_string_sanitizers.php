@@ -5,7 +5,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyUtils\SensitiveData\Sanitizer\AuthorizationStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\CreditCardNumberStringSanitizer;
-use EonX\EasyUtils\SensitiveData\Sanitizer\JsonStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\UrlStringSanitizer;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -17,7 +16,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $sanitizers = [
         AuthorizationStringSanitizer::class,
         CreditCardNumberStringSanitizer::class,
-        JsonStringSanitizer::class,
         UrlStringSanitizer::class,
     ];
 

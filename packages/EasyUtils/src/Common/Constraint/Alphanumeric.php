@@ -15,5 +15,5 @@ final class Alphanumeric extends AbstractConstraint
 {
     public const INVALID_ALPHANUMERIC_ERROR = 'INVALID_ALPHANUMERIC_ERROR';
 
-    public string $message = 'This value may only contain letters and numbers.';
+    public string $message = 'alphanumeric.not_valid';
 }
