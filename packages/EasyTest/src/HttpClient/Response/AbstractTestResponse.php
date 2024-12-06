@@ -54,7 +54,7 @@ abstract class AbstractTestResponse
                     continue;
                 }
 
-                $value = (string)$value;
+                $value = \is_scalar($value) ? $value : (string)$value;
             }
         }
         unset($value);
