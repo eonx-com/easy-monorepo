@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyDoctrine\AwsRds\CacheWarmer\AwsRdsCertificateAuthorityCacheWarmer;
 use EonX\EasyDoctrine\AwsRds\Provider\AwsRdsCertificateAuthorityProvider;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
+use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -17,7 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(AwsRdsCertificateAuthorityProvider::class)
         ->arg('$caPath', param(ConfigParam::AwsRdsSslCaPath->value))
-        ->arg('$logger', service(ConfigParam::AwsRdsSslLogger->value)->nullOnInvalid());
+        ->arg('$logger', service(ConfigServiceId::AwsRdsSslLogger->value));
 
     $services->set(AwsRdsCertificateAuthorityCacheWarmer::class);
 };
