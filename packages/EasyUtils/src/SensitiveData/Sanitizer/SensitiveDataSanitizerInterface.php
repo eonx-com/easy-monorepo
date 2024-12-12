@@ -6,11 +6,11 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 interface SensitiveDataSanitizerInterface
 {
     /**
+     * @template T
+     *
      * @param T $data
      *
      * @return T
-     *
-     * @template T
      */
     public function sanitize(mixed $data): mixed;
 }
