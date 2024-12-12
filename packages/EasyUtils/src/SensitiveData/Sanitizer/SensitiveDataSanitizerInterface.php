@@ -5,5 +5,12 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
 interface SensitiveDataSanitizerInterface
 {
+    /**
+     * @param T $data
+     *
+     * @return T
+     *
+     * @template T
+     */
     public function sanitize(mixed $data): mixed;
 }
