@@ -83,6 +83,13 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         return $data;
     }
 
+    /**
+     * @template T of object
+     *
+     * @param T $object
+     *
+     * @return array|T
+     */
     private function sanitizeObject(object $object): array|object
     {
         foreach ($this->objectTransformers as $objectTransformer) {

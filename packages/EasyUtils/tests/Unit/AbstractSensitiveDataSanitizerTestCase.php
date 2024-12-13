@@ -540,6 +540,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         $sanitizer = $this->getSanitizer($maskPattern, $keysToMask);
         $exception = new RuntimeException($message);
 
+        /** @var array $sanitizedException */
         $sanitizedException = $sanitizer->sanitize($exception);
 
         self::assertSame($expectedMessage, $sanitizedException['message']);
