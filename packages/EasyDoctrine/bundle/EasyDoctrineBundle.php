@@ -6,6 +6,8 @@ namespace EonX\EasyDoctrine\Bundle;
 use EonX\EasyDoctrine\Bundle\CompilerPass\MigrationsFactoryCompilerPass;
 use EonX\EasyDoctrine\Bundle\CompilerPass\WithEventsEntityManagerCompilerPass;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
+use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -64,11 +66,14 @@ final class EasyDoctrineBundle extends AbstractBundle
         }
 
         $container
+            ->services()
+            ->alias(ConfigServiceId::AwsRdsIamLogger->value, $config['logger'] ?? LoggerInterface::class);
+
+        $container
             ->parameters()
             ->set(ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes->value, $config['auth_token_lifetime_in_minutes'])
             ->set(ConfigParam::AwsRdsIamAwsRegion->value, $config['aws_region'])
-            ->set(ConfigParam::AwsRdsIamAwsUsername->value, $config['aws_username'])
-            ->set(ConfigParam::AwsRdsIamLogger->value, $config['logger']);
+            ->set(ConfigParam::AwsRdsIamAwsUsername->value, $config['aws_username']);
 
         $container->import('config/aws_rds_iam.php');
     }
@@ -85,10 +90,13 @@ final class EasyDoctrineBundle extends AbstractBundle
         }
 
         $container
+            ->services()
+            ->alias(ConfigServiceId::AwsRdsSslLogger->value, $config['logger'] ?? LoggerInterface::class);
+
+        $container
             ->parameters()
             ->set(ConfigParam::AwsRdsSslCaPath->value, $config['ca_path'])
-            ->set(ConfigParam::AwsRdsSslMode->value, $config['mode'])
-            ->set(ConfigParam::AwsRdsSslLogger->value, $config['logger']);
+            ->set(ConfigParam::AwsRdsSslMode->value, $config['mode']);
 
         $container->import('config/aws_rds_ssl.php');
     }
