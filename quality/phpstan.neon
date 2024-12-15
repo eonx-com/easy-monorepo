@@ -71,8 +71,6 @@ parameters:
         # ---- EasyBugsnag ----
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
-        - message: '#Parameter \#1 \$func of method Doctrine\\Common\\Collections\\Collection<\(int\|string\),object>\:\:map\(\) expects Closure\(object\=\)\: mixed, Closure\(mixed\)\: mixed given#'
-          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/DeepCopy/Filter/DoctrineInitializedCollectionDeepCopyFilter.php
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
