@@ -40,7 +40,9 @@ final readonly class MessageSerializer implements SerializerInterface
             $message = $this->messageFactory->createMessage($queueEnvelope);
 
             if ($queueEnvelope->getHeader(self::HEADER_RETRY) !== null) {
-                $stamps[] = new RedeliveryStamp((int)$queueEnvelope->getHeader(self::HEADER_RETRY));
+                /** @var scalar $retry */
+                $retry = $queueEnvelope->getHeader(self::HEADER_RETRY);
+                $stamps[] = new RedeliveryStamp((int)$retry);
             }
 
             return Envelope::wrap($message, $stamps);

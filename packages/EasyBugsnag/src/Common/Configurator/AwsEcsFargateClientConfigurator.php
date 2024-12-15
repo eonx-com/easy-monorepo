@@ -68,7 +68,10 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
                 $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($url));
             }
 
-            return \json_decode((string)\file_get_contents($this->storageFilename), true);
+            /** @var array $result */
+            $result = \json_decode((string)\file_get_contents($this->storageFilename), true);
+
+            return $result;
         } catch (Throwable $throwable) {
             $this->throwable = $throwable;
 

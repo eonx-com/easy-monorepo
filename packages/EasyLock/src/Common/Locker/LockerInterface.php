@@ -11,5 +11,12 @@ interface LockerInterface
 {
     public function createLock(string $resource, ?float $ttl = null): LockInterface;
 
+    /**
+     * @template T
+     *
+     * @param \Closure(): T $func
+     *
+     * @return T|null
+     */
     public function processWithLock(LockData $lockData, Closure $func): mixed;
 }

@@ -16,11 +16,17 @@ final class SqliteStringUuidType extends Type
 {
     public const NAME = 'sqlite_string_uuid';
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    /**
+     * @param \Symfony\Component\Uid\AbstractUid $value
+     */
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
     {
         return (string)$value;
     }
 
+    /**
+     * @param \Symfony\Component\Uid\AbstractUid|string|null $value
+     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?AbstractUid
     {
         if ($value instanceof AbstractUid || $value === null) {

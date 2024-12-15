@@ -26,6 +26,7 @@ final class JsonFormatterTest extends AbstractUnitTestCase
             static function (string $logContents): void {
                 self::assertJson($logContents);
 
+                /** @var array $json */
                 $json = \json_decode($logContents, true);
 
                 self::assertInstanceOf(

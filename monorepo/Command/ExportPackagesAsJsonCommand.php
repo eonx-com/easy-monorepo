@@ -51,11 +51,15 @@ final class ExportPackagesAsJsonCommand extends Command
 
     private function getDir(SplFileInfo $composerJson): string
     {
-        return \last(\explode('/', $composerJson->getRelativePath()));
+        /** @var string $dir */
+        $dir = \last(\explode('/', $composerJson->getRelativePath()));
+
+        return $dir;
     }
 
     private function getRepoShortname(SplFileInfo $composerJson): string
     {
+        /** @var array $json */
         $json = \json_decode($composerJson->getContents(), true);
 
         return \str_replace('eonx-com/', '', (string)$json['name']);

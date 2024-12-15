@@ -26,6 +26,7 @@ final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWo
 
     public function work(Version $version): void
     {
+        /** @var array $workflow */
         $workflow = Yaml::parseFile(self::WORKFLOW_FILENAME);
         $workflow['jobs']['split_packages']['strategy']['matrix']['tag'][0] = $version->getVersionString();
 

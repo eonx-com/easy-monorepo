@@ -23,6 +23,9 @@ final class MessageSerializer implements MessageSerializerInterface
             $message = \base64_decode($message, true);
         }
 
-        return \unserialize(\stripslashes($message));
+        /** @var object $result */
+        $result = \unserialize(\stripslashes($message));
+
+        return $result;
     }
 }

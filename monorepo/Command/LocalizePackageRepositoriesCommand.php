@@ -78,7 +78,10 @@ final class LocalizePackageRepositoriesCommand extends Command
 
     private function getComposerJsonFileContents(SplFileInfo $composerJsonFile): array
     {
-        return \json_decode($composerJsonFile->getContents(), true);
+        /** @var array $fileContents */
+        $fileContents = \json_decode($composerJsonFile->getContents(), true);
+
+        return $fileContents;
     }
 
     private function getComposerJsonFiles(): Finder
@@ -90,7 +93,10 @@ final class LocalizePackageRepositoriesCommand extends Command
 
     private function getDir(SplFileInfo $composerJson): string
     {
-        return \last(\explode('/', $composerJson->getRelativePath()));
+        /** @var string $dir */
+        $dir = \last(\explode('/', $composerJson->getRelativePath()));
+
+        return $dir;
     }
 
     /**

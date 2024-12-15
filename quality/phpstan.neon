@@ -10,7 +10,7 @@ services:
 parameters:
     tmpDir: var/cache/phpstan
 
-    level: 8
+    level: 9
 
     bootstrapFiles:
         - %currentWorkingDirectory%/vendor/autoload.php
@@ -38,6 +38,14 @@ parameters:
         - '#Method .*\:\:__construct\(\) has parameter \$decorated with generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types\: T#'
         - '#Readonly property .* is assigned outside of the constructor#'
         - '#Class .* has an uninitialized readonly property .*. Assign it in the constructor#'
+        - message: '#Parameter .* of .* expects .*, .* given#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
+        - message: '#Cannot call method .* on mixed#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
+        - message: '#Anonymous function should return .* but returns mixed#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
+        - message: '#Cannot cast mixed to .*#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
@@ -53,6 +61,9 @@ parameters:
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Unit/src/Parsing/Nai/Parser/NaiParserTest.php
 
+        - message: '#Cannot cast mixed to string#'
+          path: %currentWorkingDirectory%/packages/EasyBankFiles/src/Parsing/Common/Converter/XmlConverter.php
+
         # ---- EasyBatch ----
         - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
           path: %currentWorkingDirectory%/packages/EasyBatch/src/Doctrine/Repository/BatchItemRepository.php
@@ -60,6 +71,8 @@ parameters:
         # ---- EasyBugsnag ----
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
+        - message: '#Parameter \#1 \$func of method Doctrine\\Common\\Collections\\Collection<\(int\|string\),object>\:\:map\(\) expects Closure\(object\=\)\: mixed, Closure\(mixed\)\: mixed given#'
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/DeepCopy/Filter/DoctrineInitializedCollectionDeepCopyFilter.php
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
@@ -93,10 +106,10 @@ parameters:
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/ChildItem.php
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/Item.php
 
-        # ---- EasyPipeline ----
-        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Factory\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
-          path: %currentWorkingDirectory%/packages/EasyPipeline/laravel
+        - message: '#Parameter \#1 \$value of function count expects array\|Countable, mixed given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/src/Paginator/DoctrineCommonPaginatorTrait.php
 
+        # ---- EasyPipeline ----
         # ---- EasyRandom ----
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'
@@ -173,6 +186,9 @@ parameters:
 
         - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
+
+        - message: '#Cannot cast mixed to string#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/InvalidData/Maker/AbstractInvalidDataMaker.php
 
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'

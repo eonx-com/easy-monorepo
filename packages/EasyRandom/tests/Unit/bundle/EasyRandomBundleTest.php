@@ -72,6 +72,7 @@ final class EasyRandomBundleTest extends AbstractUnitTestCase
         ]);
         $uuidGenerator = self::getService(UuidGeneratorInterface::class);
 
+        /** @var object $sut */
         $sut = self::getPrivatePropertyValue($uuidGenerator, 'uuidFactory');
 
         self::assertSame($expectedUuidFactoryClass, self::getPrivatePropertyValue($sut, 'defaultClass'));

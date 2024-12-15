@@ -7,6 +7,9 @@ final class JsonMessageBodyDecoder implements MessageBodyDecoderInterface
 {
     public function decode(string $body): ?array
     {
-        return \json_decode($body, true);
+        /** @var array|null $result */
+        $result = \json_decode($body, true);
+
+        return $result;
     }
 }

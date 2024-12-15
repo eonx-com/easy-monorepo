@@ -209,12 +209,8 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
         $this->reporters = CollectorHelper::orderLowerPriorityFirstAsArray($reporters);
     }
 
-    private function sortRecursive(mixed $items): mixed
+    private function sortRecursive(array $items): array
     {
-        if (\is_array($items) === false) {
-            return $items;
-        }
-
         \ksort($items);
 
         foreach ($items as $key => $value) {

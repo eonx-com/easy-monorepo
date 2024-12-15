@@ -17,7 +17,10 @@ final readonly class JwtClaimResolver implements JwtClaimResolverInterface
 
     public function getArrayClaim(Jwt $token, string $claim, ?array $default = null): array
     {
-        return $this->doGetClaim($token, $claim, $default ?? []);
+        /** @var array $result */
+        $result = $this->doGetClaim($token, $claim, $default ?? []);
+
+        return $result;
     }
 
     public function getClaim(Jwt $token, string $claim, mixed $default = null): mixed

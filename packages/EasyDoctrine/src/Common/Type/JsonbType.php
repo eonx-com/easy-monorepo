@@ -31,6 +31,9 @@ final class JsonbType extends Type
         }
     }
 
+    /**
+     * @param resource|scalar|null $value
+     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value === '') {

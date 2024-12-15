@@ -109,12 +109,14 @@ final readonly class EntityEventListener
                 $unitOfWork::class,
                 'pendingCollectionElementRemovals'
             );
+            /** @var array $pendingCollectionElementRemovals */
             $pendingCollectionElementRemovals = $pendingCollectionElementRemovalsReflection->getValue($unitOfWork);
 
             $visitedCollectionsReflection = new ReflectionProperty(
                 $unitOfWork::class,
                 'visitedCollections'
             );
+            /** @var array<\Doctrine\ORM\PersistentCollection<int, object>> $visitedCollections */
             $visitedCollections = $visitedCollectionsReflection->getValue($unitOfWork);
 
             foreach (\array_keys($pendingCollectionElementRemovals) as $collectionObjectId) {
@@ -129,8 +131,10 @@ final readonly class EntityEventListener
             }
         }
 
+        /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($scheduledCollectionUpdates as $collectionObjectId => $collection) {
             $snapshotIds = [];
+            /** @var object $entity */
             foreach ($collection->getSnapshot() as $entity) {
                 $snapshotIds[] = $unitOfWork->getSingleIdentifierValue($entity)
                     ?? static fn (): mixed => $unitOfWork->getSingleIdentifierValue($entity);
@@ -155,10 +159,12 @@ final readonly class EntityEventListener
 
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
                 $mapping = $collection->getMapping();
+                /** @var object $owner */
+                $owner = $collection->getOwner();
 
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
-                    $collection->getOwner(),
+                    $owner,
                     $mapping['fieldName'],
                     $snapshotIds,
                     $actualIds
@@ -171,10 +177,12 @@ final readonly class EntityEventListener
             if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
                 /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
+                /** @var object $owner */
+                $owner = $collection->getOwner();
 
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
-                    $collection->getOwner(),
+                    $owner,
                     $mapping['fieldName'],
                     ['Not available'],
                     ['Collection was cleared']
