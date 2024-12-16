@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyMonorepo\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,8 +60,11 @@ final class ExportPackagesAsJsonCommand extends Command
 
     private function getRepoShortname(SplFileInfo $composerJson): string
     {
-        /** @var array $json */
         $json = \json_decode($composerJson->getContents(), true);
+
+        if (\is_array($json) === false) {
+            throw new RuntimeException('Invalid ' . $composerJson->getRealPath() . ' content.');
+        }
 
         return \str_replace('eonx-com/', '', (string)$json['name']);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyMonorepo\Command;
 
 use EonX\EasyMonorepo\Helper\GitHelper;
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -78,8 +79,11 @@ final class LocalizePackageRepositoriesCommand extends Command
 
     private function getComposerJsonFileContents(SplFileInfo $composerJsonFile): array
     {
-        /** @var array $fileContents */
         $fileContents = \json_decode($composerJsonFile->getContents(), true);
+
+        if (\is_array($fileContents) === false) {
+            throw new RuntimeException('Invalid ' . $composerJsonFile->getRealPath() . ' content.');
+        }
 
         return $fileContents;
     }

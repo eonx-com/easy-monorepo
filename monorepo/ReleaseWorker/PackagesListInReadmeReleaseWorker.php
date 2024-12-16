@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyMonorepo\ReleaseWorker;
 
 use PharIo\Version\Version;
+use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
@@ -51,8 +52,11 @@ final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerI
 
         foreach ($composerFiles as $composerFile) {
             $packageName = \last(\explode('/', $composerFile->getPath()));
-            /** @var array $json */
             $json = \json_decode($composerFile->getContents(), true);
+
+            if (\is_array($json) === false) {
+                throw new RuntimeException('Invalid ' . $composerFile->getRealPath() . ' content.');
+            }
 
             yield $packageName => [
                 'description' => $json['description'],
