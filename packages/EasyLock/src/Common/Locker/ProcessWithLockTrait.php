@@ -17,6 +17,13 @@ trait ProcessWithLockTrait
         $this->locker = $locker;
     }
 
+    /**
+     * @template T
+     *
+     * @param \Closure(): T $func
+     *
+     * @return T|null
+     */
     protected function processWithLock(WithLockDataInterface $withLockData, Closure $func): mixed
     {
         return $this->locker->processWithLock($withLockData->getLockData(), $func);
