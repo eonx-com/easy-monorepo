@@ -27,6 +27,6 @@ final class OutputSanitizerListener
             return;
         }
 
-        $response->setContent(\htmlspecialchars($content, \ENT_QUOTES));
+        $response->setContent(\htmlspecialchars($content));
     }
 }
