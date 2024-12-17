@@ -27,6 +27,6 @@ final class OutputSanitizerListener
             return;
         }
 
-        $response->setContent(\htmlspecialchars($content));
+        $response->setContent(\str_replace(['<', '>'], ['&lt;', '&gt;'], $content));
     }
 }
