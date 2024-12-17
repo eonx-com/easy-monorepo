@@ -182,9 +182,6 @@ parameters:
         - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
 
-        - message: '#Cannot cast mixed to string#'
-          path: %currentWorkingDirectory%/packages/EasyTest/src/InvalidData/Maker/AbstractInvalidDataMaker.php
-
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
