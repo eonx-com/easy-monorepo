@@ -6,9 +6,9 @@ namespace EonX\EasyBugsnag\Common\Configurator;
 use Bugsnag\Client;
 use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
-use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
+use UnexpectedValueException;
 
 final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
 {
@@ -72,7 +72,7 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
             $result = \json_decode((string)\file_get_contents($this->storageFilename), true);
 
             if (\is_array($result) === false) {
-                throw new RuntimeException('Failed to decode task data.');
+                throw new UnexpectedValueException('Failed to decode task data.');
             }
 
             return $result;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Serializer;
 
-use RuntimeException;
+use UnexpectedValueException;
 
 final class MessageSerializer implements MessageSerializerInterface
 {
@@ -28,7 +28,7 @@ final class MessageSerializer implements MessageSerializerInterface
         $result = \unserialize(\stripslashes($message));
 
         if (\is_object($result) === false) {
-            throw new RuntimeException('Failed to unserialize message.');
+            throw new UnexpectedValueException('Failed to unserialize message.');
         }
 
         return $result;

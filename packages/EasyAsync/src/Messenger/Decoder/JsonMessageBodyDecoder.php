@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Messenger\Decoder;
 
-use RuntimeException;
+use UnexpectedValueException;
 
 final class JsonMessageBodyDecoder implements MessageBodyDecoderInterface
 {
@@ -12,7 +12,7 @@ final class JsonMessageBodyDecoder implements MessageBodyDecoderInterface
         $result = \json_decode($body, true);
 
         if (\is_array($result) === false && $result !== null) {
-            throw new RuntimeException('Failed to decode message body.');
+            throw new UnexpectedValueException('Failed to decode message body.');
         }
 
         return $result;

@@ -6,9 +6,9 @@ namespace EonX\EasyUtils\Laravel\Middleware;
 use Closure;
 use EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface;
 use Illuminate\Http\Request;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use UnexpectedValueException;
 
 final readonly class TrimStringsMiddleware
 {
@@ -42,7 +42,7 @@ final readonly class TrimStringsMiddleware
             $json = $request->json();
 
             if ($json instanceof InputBag === false) {
-                throw new RuntimeException('Request json should be an instance of ' . InputBag::class);
+                throw new UnexpectedValueException('Request json should be an instance of ' . InputBag::class);
             }
 
             $this->cleanParameterBag($json);

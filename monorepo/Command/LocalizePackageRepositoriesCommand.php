@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyMonorepo\Command;
 
 use EonX\EasyMonorepo\Helper\GitHelper;
-use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use UnexpectedValueException;
 
 #[AsCommand(
     name: 'localize-monorepo-packages'
@@ -82,7 +82,7 @@ final class LocalizePackageRepositoriesCommand extends Command
         $fileContents = \json_decode($composerJsonFile->getContents(), true);
 
         if (\is_array($fileContents) === false) {
-            throw new RuntimeException('Invalid ' . $composerJsonFile->getRealPath() . ' content.');
+            throw new UnexpectedValueException('Invalid ' . $composerJsonFile->getRealPath() . ' content.');
         }
 
         return $fileContents;

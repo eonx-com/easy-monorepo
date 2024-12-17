@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyMonorepo\ReleaseWorker;
 
 use PharIo\Version\Version;
-use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use UnexpectedValueException;
 
 final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWorkerInterface
 {
@@ -30,7 +30,7 @@ final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWo
         $workflow = Yaml::parseFile(self::WORKFLOW_FILENAME);
 
         if (\is_array($workflow) === false) {
-            throw new RuntimeException('Invalid ' . self::WORKFLOW_FILENAME . ' content.');
+            throw new UnexpectedValueException('Invalid ' . self::WORKFLOW_FILENAME . ' content.');
         }
 
         $workflow['jobs']['split_packages']['strategy']['matrix']['tag'][0] = $version->getVersionString();
