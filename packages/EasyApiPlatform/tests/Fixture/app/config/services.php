@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyApiPlatform\Common\Listener\OutputSanitizerListener;
 use EonX\EasyApiPlatform\Tests\Fixture\App\BugsnagExceptionIgnorer\Helper\IgnorerHelper;
 use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag;
 
@@ -28,4 +29,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(IgnorerHelper::class)
         ->arg('$exceptionIgnorers', tagged_iterator(ConfigTag::BugsnagExceptionIgnorer->value))
         ->public();
+
+    $services->set(OutputSanitizerListener::class);
 };
