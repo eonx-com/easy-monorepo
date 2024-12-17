@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Application\src\Common\Listener;
+namespace EonX\EasyApiPlatform\Tests\Application\src\Common\Listener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
