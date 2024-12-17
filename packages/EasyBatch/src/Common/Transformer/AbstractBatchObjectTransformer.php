@@ -11,6 +11,7 @@ use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use RuntimeException;
 use Throwable;
+use UnexpectedValueException;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
@@ -53,11 +54,23 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
             ->setStatus(isset($data['status']) ? BatchObjectStatus::from($data['status']) : BatchObjectStatus::Pending);
 
         if (\is_string($data['metadata'] ?? null)) {
-            $object->setMetadata(\json_decode($data['metadata'], true));
+            $metadata = \json_decode($data['metadata'], true);
+
+            if (\is_array($metadata) === false) {
+                throw new UnexpectedValueException('Failed to decode metadata.');
+            }
+
+            $object->setMetadata($metadata);
         }
 
         if (isset($data['throwable'])) {
-            $object->setThrowableDetails(\json_decode((string)$data['throwable'], true) ?? []);
+            $throwableDetails = \json_decode((string)$data['throwable'], true);
+
+            if (\is_array($throwableDetails) === false) {
+                $throwableDetails = [];
+            }
+
+            $object->setThrowableDetails($throwableDetails);
         }
 
         if (isset($data['type'])) {

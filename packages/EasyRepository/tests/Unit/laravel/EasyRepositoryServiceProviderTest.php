@@ -24,11 +24,12 @@ final class EasyRepositoryServiceProviderTest extends AbstractLumenTestCase
     {
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
-        \config()
-            ->set('easy-repository.repositories', [
-                'interface-1' => ARepositoryStub::class,
-                'interface-2' => BRepositoryStub::class,
-            ]);
+        /** @var \Illuminate\Config\Repository $config */
+        $config = \config();
+        $config->set('easy-repository.repositories', [
+            'interface-1' => ARepositoryStub::class,
+            'interface-2' => BRepositoryStub::class,
+        ]);
 
         $provider = new EasyRepositoryServiceProvider($app);
         $provider->boot();

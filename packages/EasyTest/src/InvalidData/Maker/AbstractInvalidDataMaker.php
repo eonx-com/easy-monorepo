@@ -10,6 +10,7 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use UnexpectedValueException;
 
 abstract class AbstractInvalidDataMaker
 {
@@ -105,6 +106,10 @@ abstract class AbstractInvalidDataMaker
     final protected function create(string $caseName, mixed $value, ?string $message = null): array
     {
         if ($this->asString === true) {
+            if (\is_scalar($value) === false) {
+                throw new UnexpectedValueException('Value must be scalar when using asString().');
+            }
+
             $value = (string)$value;
         }
 

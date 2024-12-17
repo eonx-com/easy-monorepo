@@ -38,6 +38,9 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
         throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTimeInterface']);
     }
 
+    /**
+     * @param \DateTimeInterface|string|null $value
+     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?CarbonImmutable
     {
         if ($value === null || $value instanceof CarbonImmutable) {

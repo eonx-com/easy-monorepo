@@ -22,8 +22,10 @@ final readonly class CircularReferenceHandler implements CircularReferenceHandle
             $identifier = $this->entityManager->getClassMetadata($className)
                 ->getSingleIdentifierFieldName();
             $reflectionProperty = new ReflectionProperty($className, $identifier);
+            /** @var string $value */
+            $value = $reflectionProperty->getValue($object);
 
-            return \sprintf('%s#%s (circular reference)', $className, $reflectionProperty->getValue($object));
+            return \sprintf('%s#%s (circular reference)', $className, $value);
         } catch (Exception) {
             return \sprintf('%s (circular reference)', $className);
         }

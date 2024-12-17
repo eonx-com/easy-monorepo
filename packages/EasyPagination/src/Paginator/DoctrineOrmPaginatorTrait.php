@@ -28,8 +28,11 @@ trait DoctrineOrmPaginatorTrait
 
     private function fetchResults(QueryBuilder $queryBuilder): array
     {
-        return $queryBuilder->getQuery()
+        /** @var array $result */
+        $result = $queryBuilder->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     private function getConnection(): Connection

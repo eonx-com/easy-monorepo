@@ -21,10 +21,13 @@ final class Cast extends FunctionNode
      */
     public function getSql(SqlWalker $sqlWalker): string
     {
+        /** @var string $type */
+        $type = $this->type->value;
+
         return \sprintf(
             'CAST(%s AS %s)',
             $sqlWalker->walkPathExpression($this->expression),
-            $this->type->value
+            $type
         );
     }
 

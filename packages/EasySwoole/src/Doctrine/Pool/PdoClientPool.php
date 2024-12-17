@@ -45,7 +45,10 @@ final class PdoClientPool
         }
 
         // If we just created a new PDOClient return it, otherwise get one from the pool
-        return $pdo ?? $this->pool->pop();
+        /** @var \EonX\EasySwoole\Doctrine\Client\PdoClient $result */
+        $result = $pdo ?? $this->pool->pop();
+
+        return $result;
     }
 
     public function put(PdoClient $client): void

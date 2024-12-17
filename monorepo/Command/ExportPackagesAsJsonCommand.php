@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use UnexpectedValueException;
 
 #[AsCommand(
     name: 'export-packages'
@@ -51,12 +52,19 @@ final class ExportPackagesAsJsonCommand extends Command
 
     private function getDir(SplFileInfo $composerJson): string
     {
-        return \last(\explode('/', $composerJson->getRelativePath()));
+        /** @var string $dir */
+        $dir = \last(\explode('/', $composerJson->getRelativePath()));
+
+        return $dir;
     }
 
     private function getRepoShortname(SplFileInfo $composerJson): string
     {
         $json = \json_decode($composerJson->getContents(), true);
+
+        if (\is_array($json) === false) {
+            throw new UnexpectedValueException('Invalid ' . $composerJson->getRealPath() . ' content.');
+        }
 
         return \str_replace('eonx-com/', '', (string)$json['name']);
     }

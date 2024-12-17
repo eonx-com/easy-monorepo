@@ -113,8 +113,10 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
             }
 
             if ($chunk->isLast()) {
+                /** @var resource|string|null $content */
+                $content = $asyncContext->getInfo('temp_content');
                 $this->dispatchEvent($config, $requestData, new ResponseData(
-                    (string)($asyncContext->getInfo('temp_content') ?? ''),
+                    (string)($content ?? ''),
                     $asyncContext->getHeaders(),
                     Carbon::now('UTC'),
                     $asyncContext->getStatusCode()

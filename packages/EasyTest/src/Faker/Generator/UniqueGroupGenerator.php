@@ -13,7 +13,7 @@ final class UniqueGroupGenerator
     ) {
     }
 
-    public function __call(string $name, mixed $arguments): UniqueGroupPropertyValueGenerator
+    public function __call(string $name, array $arguments): UniqueGroupPropertyValueGenerator
     {
         return new UniqueGroupPropertyValueGenerator($this->generator, $arguments, $name, $this->groupName);
     }

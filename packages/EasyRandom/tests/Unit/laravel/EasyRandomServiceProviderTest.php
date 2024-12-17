@@ -88,6 +88,7 @@ final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
 
         $result = $sut->get(UuidGeneratorInterface::class);
 
+        /** @var object $uuidFactory */
         $uuidFactory = self::getPrivatePropertyValue($result, 'uuidFactory');
         self::assertSame($expectedUuidClass, self::getPrivatePropertyValue($uuidFactory, 'defaultClass'));
     }

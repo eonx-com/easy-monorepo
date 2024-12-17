@@ -24,6 +24,7 @@ final class SensitiveDataSanitizerClientConfiguratorTest extends AbstractUnitTes
         /** @var \Bugsnag\Report[] $reports */
         $reports = self::getPrivatePropertyValue($httpClient, 'queue');
         $report = $reports[0];
+        /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($report, 'breadcrumbs');
         self::assertSame('4111111111111111', $breadcrumbs[0]['metaData']['card_number']);
     }
@@ -42,6 +43,7 @@ final class SensitiveDataSanitizerClientConfiguratorTest extends AbstractUnitTes
         /** @var \Bugsnag\Report[] $reports */
         $reports = self::getPrivatePropertyValue($httpClient, 'queue');
         $report = $reports[0];
+        /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($report, 'breadcrumbs');
         self::assertSame('*REDACTED*', $breadcrumbs[0]['metaData']['card_number']);
     }

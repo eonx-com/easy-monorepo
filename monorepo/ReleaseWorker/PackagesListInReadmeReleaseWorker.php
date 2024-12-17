@@ -7,6 +7,7 @@ use PharIo\Version\Version;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use UnexpectedValueException;
 
 final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {
@@ -50,8 +51,12 @@ final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerI
             ->sortByName();
 
         foreach ($composerFiles as $composerFile) {
-            $packageName = \last(\explode('/', (string)$composerFile->getPath()));
-            $json = \json_decode((string)$composerFile->getContents(), true);
+            $packageName = \last(\explode('/', $composerFile->getPath()));
+            $json = \json_decode($composerFile->getContents(), true);
+
+            if (\is_array($json) === false) {
+                throw new UnexpectedValueException('Invalid ' . $composerFile->getRealPath() . ' content.');
+            }
 
             yield $packageName => [
                 'description' => $json['description'],

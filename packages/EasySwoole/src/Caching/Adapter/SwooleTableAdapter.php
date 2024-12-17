@@ -36,6 +36,7 @@ final class SwooleTableAdapter extends AbstractAdapter
     {
         $table = $this->getSwooleTable();
 
+        /** @var string $id */
         foreach ($table as $id => $value) {
             $table->del($id);
         }
@@ -72,6 +73,7 @@ final class SwooleTableAdapter extends AbstractAdapter
                 continue;
             }
 
+            /** @var string[] $item */
             $item = $table->get($id);
 
             if ($now >= $item[CacheTableColumn::Expiry->value]) {

@@ -139,6 +139,7 @@ final readonly class AwsCloudHsmSdkConfigurator
             }
 
             $cloudHsmClusters = (array)$awsResult->get('Clusters');
+            /** @var array $cloudHsmCluster */
             $cloudHsmCluster = $cloudHsmClusters[0]
                 ?? throw new AwsCloudHsmCouldNotConfigureSdkException(
                     \sprintf('No CloudHSM cluster found for the cluster ID "%s"', $options['--cluster-id'])
@@ -148,6 +149,7 @@ final readonly class AwsCloudHsmSdkConfigurator
                     \sprintf('No HSMs found for the cluster ID "%s"', $options['--cluster-id'])
                 );
 
+            /** @var array $cloudHsmClusterServer */
             foreach ((array)$cloudHsmClusterServers as $cloudHsmClusterServer) {
                 $servers[] = [
                     'enable' => true,

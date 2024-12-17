@@ -7,6 +7,7 @@
         "php": "^8.2"
     },
     "require-dev": {
+        "doctrine/collections": "^1.7.2",
         "doctrine/orm": "^2.20",
         "doctrine/persistence": "^3.3",
         "eonx-com/easy-pagination": "^6.5",

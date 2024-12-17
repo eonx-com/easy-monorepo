@@ -14,6 +14,9 @@ final readonly class ObjectCopier implements ObjectCopierInterface
 
     public function copy(object $object): object
     {
-        return $this->deepCopy->copy($object);
+        /** @var object $copy */
+        $copy = $this->deepCopy->copy($object);
+
+        return $copy;
     }
 }

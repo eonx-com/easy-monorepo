@@ -95,7 +95,12 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
             QueryBuilder $queryBuilder,
             array $statuses,
         ): array => \array_map(
-            fn (BatchObjectStatus $status): string => $this->connection->quote($status->value),
+            function (BatchObjectStatus $status): string {
+                /** @var string $result */
+                $result = $this->connection->quote($status->value);
+
+                return $result;
+            },
             $statuses
         );
 

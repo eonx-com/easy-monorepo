@@ -44,9 +44,14 @@ final readonly class DbalDriver implements Driver
             return $this->decorated->connect($params);
         }
 
-        $poolName = \sprintf(self::POOL_NAME_PATTERN, $this->getOption(CoroutinePdoDriverOption::PoolName, $params));
+        /** @var string $poolNameOptionValue */
+        $poolNameOptionValue = $this->getOption(CoroutinePdoDriverOption::PoolName, $params);
+        $poolName = \sprintf(self::POOL_NAME_PATTERN, $poolNameOptionValue);
+        /** @var int|null $poolSize */
         $poolSize = $this->getOption(CoroutinePdoDriverOption::PoolSize, $params);
+        /** @var bool|null $poolHeartbeat */
         $poolHeartbeat = $this->getOption(CoroutinePdoDriverOption::PoolHeartbeat, $params);
+        /** @var float|null $poolMaxIdleTime */
         $poolMaxIdleTime = $this->getOption(CoroutinePdoDriverOption::PoolMaxIdleTime, $params);
 
         unset(

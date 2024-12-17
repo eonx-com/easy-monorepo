@@ -139,6 +139,8 @@ final class CacheTableHelper
                     continue;
                 }
 
+                /** @var string $key */
+                /** @var array $row */
                 foreach ($table as $key => $row) {
                     if ($now >= $row[CacheTableColumn::Expiry->value]) {
                         $table->del($key);
