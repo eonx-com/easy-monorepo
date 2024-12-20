@@ -21,13 +21,6 @@ final class RecursiveStringTrimmer implements StringTrimmerInterface
         return $this->transform($data, '');
     }
 
-    /**
-     * @template T of array
-     *
-     * @param T $data
-     *
-     * @return T
-     */
     private function cleanArray(array $data, ?string $keyPrefix = null): array
     {
         foreach ($data as $key => $value) {

@@ -11,7 +11,7 @@ interface StringTrimmerInterface
      * @param T $data
      * @param string[]|null $exceptKeys
      *
-     * @return T
+     * @return (T is array ? array : T)
      */
     public function trim(mixed $data, ?array $exceptKeys = null): mixed;
 }
