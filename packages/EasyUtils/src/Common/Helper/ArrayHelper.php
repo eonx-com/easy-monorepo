@@ -27,23 +27,23 @@ final class ArrayHelper
         return \count($flattened) ? \array_merge(...$flattened) : [];
     }
 
-    public static function set(array &$array, mixed $key, mixed $value): void
+    public static function set(array &$array, int|string $key, mixed $value): void
     {
         $keys = \explode('/', (string)$key);
 
         // Iterate through key parts to find the position to set the value
         while (\count($keys) > 1) {
-            $key = \array_shift($keys);
+            $firstKey = \array_shift($keys);
 
-            if ($key === '') {
+            if ($firstKey === '') {
                 continue;
             }
 
-            if (isset($array[$key]) === false || \is_array($array[$key]) === false) {
-                $array[$key] = [];
+            if (isset($array[$firstKey]) === false || \is_array($array[$firstKey]) === false) {
+                $array[$firstKey] = [];
             }
 
-            $array = &$array[$key];
+            $array = &$array[$firstKey];
         }
 
         // Set value
@@ -67,7 +67,7 @@ final class ArrayHelper
 
         // The set() method recurses the array and unflattens dot notations correctly, so just pass-through
         foreach ($array as $key => $value) {
-            self::set($unpacked, (string)$key, $value);
+            self::set($unpacked, $key, $value);
         }
 
         return $unpacked;

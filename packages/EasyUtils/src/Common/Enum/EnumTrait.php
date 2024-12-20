@@ -23,7 +23,7 @@ trait EnumTrait
         return \array_map(static fn (self $enum) => $enum->value, $cases);
     }
 
-    public static function hasCase(mixed $case): bool
+    public static function hasCase(string $case): bool
     {
         return static::tryFrom($case) !== null;
     }

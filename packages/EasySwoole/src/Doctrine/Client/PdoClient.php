@@ -64,6 +64,7 @@ final class PdoClient extends BasePDOClient
         $config->getLogger()?->debug('Making new Coroutine PDO Client', ['params' => $params]);
 
         $pdoDsnFactory = new ReflectionMethod($driverClass, 'constructPdoDsn');
+        /** @var string $pdoDsn */
         $pdoDsn = $pdoDsnFactory->invoke(new $driverClass(), $params);
 
         $this->__object = new PDO(

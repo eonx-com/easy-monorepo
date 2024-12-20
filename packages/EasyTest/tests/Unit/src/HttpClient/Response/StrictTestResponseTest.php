@@ -83,7 +83,7 @@ final class StrictTestResponseTest extends TestCase
             ]
         );
 
-        self::assertSame(200, $mockResponse->getInfo()['http_code']);
+        self::assertSame(200, $mockResponse->getStatusCode());
     }
 
     #[DataProvider('provideQueryData')]
@@ -103,7 +103,7 @@ final class StrictTestResponseTest extends TestCase
             ]
         );
 
-        self::assertSame(200, $mockResponse->getInfo()['http_code']);
+        self::assertSame(200, $mockResponse->getStatusCode());
     }
 
     public function testItSucceedsWithUnsortedRequestData(): void
@@ -131,6 +131,6 @@ final class StrictTestResponseTest extends TestCase
             ]
         );
 
-        self::assertSame(200, $mockResponse->getInfo()['http_code']);
+        self::assertSame(200, $mockResponse->getStatusCode());
     }
 }

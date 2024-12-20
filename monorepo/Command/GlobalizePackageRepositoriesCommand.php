@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use UnexpectedValueException;
 
 #[AsCommand(
     name: 'globalize-monorepo-packages'
@@ -66,7 +67,13 @@ final class GlobalizePackageRepositoriesCommand extends Command
 
     private function getComposerJsonFileContents(SplFileInfo $composerJsonFile): array
     {
-        return \json_decode($composerJsonFile->getContents(), true);
+        $fileContents = \json_decode($composerJsonFile->getContents(), true);
+
+        if (\is_array($fileContents) === false) {
+            throw new UnexpectedValueException('Invalid ' . $composerJsonFile->getRealPath() . ' content.');
+        }
+
+        return $fileContents;
     }
 
     private function getComposerJsonFiles(): Finder

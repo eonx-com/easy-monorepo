@@ -34,8 +34,8 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             $queryBuilder->getParameterTypes()
         );
 
-        $completed = 0;
-        $total = 0;
+        $countProcessed = 0;
+        $countTotal = 0;
         $results = \array_column($results, '_count', 'status');
 
         foreach ($results as $status => $count) {
@@ -46,18 +46,25 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
                     true
                 )
             ) {
-                $completed += $count;
+                $countProcessed += $count;
             }
 
-            $total += $count;
+            $countTotal += $count;
         }
 
+        /** @var int $countCancelled */
+        $countCancelled = $results[BatchObjectStatus::Cancelled->value] ?? 0;
+        /** @var int $countFailed */
+        $countFailed = $results[BatchObjectStatus::Failed->value] ?? 0;
+        /** @var int $countSucceeded */
+        $countSucceeded = $results[BatchObjectStatus::Succeeded->value] ?? 0;
+
         return new BatchCounts(
-            $results[BatchObjectStatus::Cancelled->value] ?? 0,
-            $results[BatchObjectStatus::Failed->value] ?? 0,
-            $completed,
-            $results[BatchObjectStatus::Succeeded->value] ?? 0,
-            $total
+            $countCancelled,
+            $countFailed,
+            $countProcessed,
+            $countSucceeded,
+            $countTotal
         );
     }
 
@@ -181,7 +188,12 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         // Handle more than 1 batchItem
         if ($count > 1) {
             $batchItemIds = \array_map(
-                fn (string $batchItemId): string => $this->connection->quote($batchItemId),
+                function (string $batchItemId): string {
+                    /** @var string $result */
+                    $result = $this->connection->quote($batchItemId);
+
+                    return $result;
+                },
                 $batchItemIds
             );
 

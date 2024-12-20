@@ -26,6 +26,12 @@ final readonly class BatchItemProcessor
     }
 
     /**
+     * @template T
+     *
+     * @param callable(): T $func
+     *
+     * @return T
+     *
      * @throws \EonX\EasyBatch\Common\Exception\BatchCancelledException
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemCannotBeRetriedException
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemCompletedException

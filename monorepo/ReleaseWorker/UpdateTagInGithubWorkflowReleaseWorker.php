@@ -7,6 +7,7 @@ use PharIo\Version\Version;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
+use UnexpectedValueException;
 
 final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWorkerInterface
 {
@@ -27,6 +28,11 @@ final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWo
     public function work(Version $version): void
     {
         $workflow = Yaml::parseFile(self::WORKFLOW_FILENAME);
+
+        if (\is_array($workflow) === false) {
+            throw new UnexpectedValueException('Invalid ' . self::WORKFLOW_FILENAME . ' content.');
+        }
+
         $workflow['jobs']['split_packages']['strategy']['matrix']['tag'][0] = $version->getVersionString();
 
         $newWorkflowContent = Yaml::dump(

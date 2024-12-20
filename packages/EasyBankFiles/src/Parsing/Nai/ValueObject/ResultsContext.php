@@ -439,8 +439,14 @@ final class ResultsContext
 
     /**
      * Instantiate Nai result object and pass the context as parameter.
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $resultClass
+     *
+     * @return T
      */
-    private function instantiateNaiResult(string $resultClass, array $data): mixed
+    private function instantiateNaiResult(string $resultClass, array $data): object
     {
         return new $resultClass($this, $data);
     }
@@ -448,9 +454,14 @@ final class ResultsContext
     /**
      * Instantiate simple item for given attributes, class and array.
      *
+     * @template T of object
+     *
      * @param string[] $attributes
+     * @param class-string<T> $class
+     *
+     * @return T|null
      */
-    private function instantiateSimpleItem(array $attributes, string $class, array $item): mixed
+    private function instantiateSimpleItem(array $attributes, string $class, array $item): ?object
     {
         $data = $this->getDataFromLine($attributes, $item['line'], $item['line_number']);
 

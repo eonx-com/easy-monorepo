@@ -35,6 +35,7 @@ final class IntegerNumberType extends Type
             return null;
         }
 
+        /** @var int|string $value */
         $value = parent::convertToPHPValue($value, $platform);
 
         return new Number($value);

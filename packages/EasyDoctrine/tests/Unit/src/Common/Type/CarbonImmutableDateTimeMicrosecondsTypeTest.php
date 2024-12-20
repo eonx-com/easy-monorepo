@@ -135,8 +135,10 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
     }
 
     #[DataProvider('provideConvertToPHPValues')]
-    public function testConvertToPHPValueSucceeds(mixed $value, ?DateTimeInterface $expectedValue = null): void
-    {
+    public function testConvertToPHPValueSucceeds(
+        DateTimeInterface|string|null $value = null,
+        ?DateTimeInterface $expectedValue = null,
+    ): void {
         $type = new CarbonImmutableDateTimeMicrosecondsType();
         $platform = new SqlitePlatform();
 

@@ -31,12 +31,11 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
             formatted: 'formatted',
         ));
 
-        $reports = self::getPrivatePropertyValue(
-            self::getPrivatePropertyValue($client, 'http'),
-            'queue'
-        );
+        /** @var object $clientHttp */
+        $clientHttp = self::getPrivatePropertyValue($client, 'http');
+        /** @var \Bugsnag\Report[] $reports */
+        $reports = self::getPrivatePropertyValue($clientHttp, 'queue');
         self::assertCount(1, $reports);
-        /** @var \Bugsnag\Report $report */
         $report = $reports[0];
         self::assertSame('info', $report->getSeverity());
         self::assertSame('message', $report->getName());
@@ -61,10 +60,9 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
             formatted: 'formatted'
         ));
 
-        $reports = self::getPrivatePropertyValue(
-            self::getPrivatePropertyValue($client, 'http'),
-            'queue'
-        );
+        /** @var object $clientHttp */
+        $clientHttp = self::getPrivatePropertyValue($client, 'http');
+        $reports = self::getPrivatePropertyValue($clientHttp, 'queue');
         self::assertEmpty($reports);
     }
 }

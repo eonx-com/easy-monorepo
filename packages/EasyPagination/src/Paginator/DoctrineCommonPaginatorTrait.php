@@ -74,8 +74,10 @@ trait DoctrineCommonPaginatorTrait
      */
     private function fetchItems(): array
     {
+        /** @var string|string[]|null $select */
+        $select = $this->resolveSelect();
         $queryBuilder = $this->createQueryBuilder()
-            ->select($this->resolveSelect());
+            ->select($select);
 
         // Common and GetItems criteria are applied regardless of fetching method
         $this->applyCommonCriteria($queryBuilder);
@@ -148,6 +150,7 @@ trait DoctrineCommonPaginatorTrait
 
         $sql = null;
         $params = [];
+        /** @var array<array-key, \Doctrine\DBAL\Types\Type|int|string|null> $paramTypes */
         $paramTypes = [];
 
         if ($queryBuilder instanceof OrmQueryBuilder) {
@@ -181,7 +184,10 @@ trait DoctrineCommonPaginatorTrait
             ->fetchAssociative();
 
         if (\is_array($result) && isset($result['QUERY PLAN'])) {
-            $matches = u($result['QUERY PLAN'])->match('/rows=(\d+)/');
+            /** @var string $queryPlan */
+            $queryPlan = $result['QUERY PLAN'];
+            $matches = u($queryPlan)
+                ->match('/rows=(\d+)/');
 
             return isset($matches[1]) ? (int)$matches[1] : null;
         }

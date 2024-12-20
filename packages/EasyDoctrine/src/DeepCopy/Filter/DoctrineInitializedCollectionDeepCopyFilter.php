@@ -17,6 +17,7 @@ final class DoctrineInitializedCollectionDeepCopyFilter implements Filter
     {
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
 
+        /** @var \Doctrine\Common\Collections\Collection<array-key, object> $oldCollection */
         $oldCollection = $reflectionProperty->getValue($object);
         $newCollection = new ArrayCollection();
 
