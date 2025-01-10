@@ -10,7 +10,7 @@ services:
 parameters:
     tmpDir: var/cache/phpstan
 
-    level: 8
+    level: 9
 
     bootstrapFiles:
         - %currentWorkingDirectory%/vendor/autoload.php
@@ -38,6 +38,14 @@ parameters:
         - '#Method .*\:\:__construct\(\) has parameter \$decorated with generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types\: T#'
         - '#Readonly property .* is assigned outside of the constructor#'
         - '#Class .* has an uninitialized readonly property .*. Assign it in the constructor#'
+        - message: '#Parameter .* of .* expects .*, .* given#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
+        - message: '#Cannot call method .* on mixed#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
+        - message: '#Anonymous function should return .* but returns mixed#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
+        - message: '#Cannot cast mixed to .*#'
+          path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
 
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
@@ -93,10 +101,10 @@ parameters:
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/ChildItem.php
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/Item.php
 
-        # ---- EasyPipeline ----
-        - message: '#Parameter \#2 \$pipelines of class EonX\\EasyPipeline\\Factory\\IlluminatePipelineFactory constructor expects array<string>, array<int, int\|string> given.#'
-          path: %currentWorkingDirectory%/packages/EasyPipeline/laravel
+        - message: '#Parameter \#1 \$value of function count expects array\|Countable, mixed given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/src/Paginator/DoctrineCommonPaginatorTrait.php
 
+        # ---- EasyPipeline ----
         # ---- EasyRandom ----
         # ---- EasyRepository ----
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::find\(\).#'

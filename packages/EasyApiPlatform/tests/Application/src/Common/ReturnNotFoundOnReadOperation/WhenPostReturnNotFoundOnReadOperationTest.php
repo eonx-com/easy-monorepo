@@ -57,6 +57,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
             ]
         );
         self::assertSame(500, $response->getStatusCode());
+        /** @var array $responseData */
         $responseData = \json_decode($response->getContent(false), true);
         self::assertSame(403, $responseData['custom_code']);
     }
@@ -77,6 +78,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
         );
 
         self::assertSame(201, $response->getStatusCode());
+        /** @var array $responseData */
         $responseData = \json_decode($response->getContent(false), true);
         self::assertSame(1, $responseData['id']);
     }

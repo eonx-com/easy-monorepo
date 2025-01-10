@@ -11,6 +11,9 @@ final class PriceType extends StringType
 {
     public const NAME = 'price';
 
+    /**
+     * @param int|string|null $value
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform): Price
     {
         $price = \explode(' ', (string)$value);

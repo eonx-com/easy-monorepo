@@ -23,14 +23,27 @@ final class Decimal extends AbstractConstraint
     public int $minPrecision;
 
     public function __construct(
-        $options = null,
+        mixed $options = null,
         ?int $minPrecision = null,
         ?int $maxPrecision = null,
         ?array $groups = null,
-        $payload = null,
+        mixed $payload = null,
     ) {
-        $minPrecision = (int)($minPrecision ?? $options['minPrecision'] ?? 0);
-        $maxPrecision = (int)($maxPrecision ?? $options['maxPrecision'] ?? 0);
+        if ($minPrecision === null) {
+            $minPrecision = 0;
+
+            if (\is_array($options) && isset($options['minPrecision'])) {
+                $minPrecision = \intval($options['minPrecision']);
+            }
+        }
+
+        if ($maxPrecision === null) {
+            $maxPrecision = 0;
+
+            if (\is_array($options) && isset($options['maxPrecision'])) {
+                $maxPrecision = \intval($options['maxPrecision']);
+            }
+        }
 
         if ($minPrecision < 1) {
             throw new ConstraintDefinitionException('The "minPrecision" option must be an integer greater than zero.');

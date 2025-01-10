@@ -21,6 +21,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $client = self::getService(Client::class);
+        /** @var object $recoder */
         $recoder = self::getPrivatePropertyValue($client, 'recorder');
         /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($recoder, 'breadcrumbs');

@@ -8,6 +8,7 @@ use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
+use UnexpectedValueException;
 
 final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
 {
@@ -68,7 +69,13 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
                 $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($url));
             }
 
-            return \json_decode((string)\file_get_contents($this->storageFilename), true);
+            $result = \json_decode((string)\file_get_contents($this->storageFilename), true);
+
+            if (\is_array($result) === false) {
+                throw new UnexpectedValueException('Failed to decode task data.');
+            }
+
+            return $result;
         } catch (Throwable $throwable) {
             $this->throwable = $throwable;
 

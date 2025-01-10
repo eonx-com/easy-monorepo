@@ -34,7 +34,9 @@ final class EnvVarHelper
         foreach (\array_keys($_SERVER) as $envVarName) {
             foreach ($jsonSecrets as $jsonSecret) {
                 if (u($envVarName)->ignoreCase()->match($jsonSecret)) {
-                    foreach (\json_decode($_SERVER[$envVarName] ?? '', true) ?? [] as $name => $value) {
+                    /** @var array|null $envVarValue */
+                    $envVarValue = \json_decode($_SERVER[$envVarName] ?? '', true);
+                    foreach ($envVarValue ?? [] as $name => $value) {
                         $name = u($name)
                             ->upper()
                             ->toString();

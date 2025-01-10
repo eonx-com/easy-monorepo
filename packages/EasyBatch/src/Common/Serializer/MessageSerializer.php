@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Common\Serializer;
 
+use UnexpectedValueException;
+
 final class MessageSerializer implements MessageSerializerInterface
 {
     public function serialize(object $message): string
@@ -23,6 +25,12 @@ final class MessageSerializer implements MessageSerializerInterface
             $message = \base64_decode($message, true);
         }
 
-        return \unserialize(\stripslashes($message));
+        $result = \unserialize(\stripslashes($message));
+
+        if (\is_object($result) === false) {
+            throw new UnexpectedValueException('Failed to unserialize message.');
+        }
+
+        return $result;
     }
 }

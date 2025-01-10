@@ -68,6 +68,9 @@ final readonly class RetrySendWebhookMiddleware implements MiddlewareInterface
 
     private function getTransport(string $transportName): TransportInterface
     {
-        return $this->container->get($transportName);
+        /** @var \Symfony\Component\Messenger\Transport\TransportInterface $transport */
+        $transport = $this->container->get($transportName);
+
+        return $transport;
     }
 }

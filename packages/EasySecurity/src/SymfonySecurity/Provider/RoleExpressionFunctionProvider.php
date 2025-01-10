@@ -46,10 +46,11 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                         $constant = \sprintf('%s::%s', $location, $role);
 
                         try {
+                            /** @var string|\BackedEnum $value */
                             $value = \constant($constant);
 
                             if ($value instanceof BackedEnum) {
-                                $value = $value->value;
+                                $value = (string)$value->value;
                             }
 
                             $this->cached[$role] = $value;

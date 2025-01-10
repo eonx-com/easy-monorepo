@@ -44,6 +44,7 @@ final class EasyActivityBundle extends AbstractBundle
         }
 
         $easyDoctrineEntities = [];
+        /** @var array $config */
         foreach ($builder->getExtensionConfig('easy_doctrine') as $config) {
             $easyDoctrineEntities = [
                 ...$easyDoctrineEntities,
@@ -55,11 +56,12 @@ final class EasyActivityBundle extends AbstractBundle
         $configs = $builder->getExtensionConfig($this->extensionAlias);
 
         $resolvingBag = $builder->getParameterBag();
-        $configs = $resolvingBag->resolveValue($configs);
+        /** @var array $resolvedConfigs */
+        $resolvedConfigs = $resolvingBag->resolveValue($configs);
 
         $config = (new Processor())->processConfiguration(
             new Configuration($this, $builder, $this->extensionAlias),
-            $configs
+            $resolvedConfigs
         );
 
         $easyDoctrinePrependedConfig = [

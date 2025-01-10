@@ -8,6 +8,7 @@ use DOMElement;
 use DOMNode;
 use EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlException;
 use EonX\EasyBankFiles\Parsing\Common\Exception\InvalidXmlTagException;
+use UnexpectedValueException;
 
 final class XmlConverter
 {
@@ -385,6 +386,10 @@ final class XmlConverter
         // Convert booleans to string true/false as (string) converts to 1/0
         if (\is_bool($value)) {
             return $value ? 'true' : 'false';
+        }
+
+        if (\is_scalar($value) === false) {
+            throw new UnexpectedValueException('Value must be scalar.');
         }
 
         // Cast to string

@@ -76,7 +76,10 @@ final class OptionHelper
 
     public static function getInteger(string $option, ?string $env = null): int
     {
-        return (int)self::getOption($option, $env);
+        /** @var scalar $option */
+        $option = self::getOption($option, $env);
+
+        return (int)$option;
     }
 
     public static function getOptions(): array
@@ -86,7 +89,10 @@ final class OptionHelper
 
     public static function getString(string $option, ?string $env = null): string
     {
-        return (string)self::getOption($option, $env);
+        /** @var scalar $option */
+        $option = self::getOption($option, $env);
+
+        return (string)$option;
     }
 
     public static function getStringNullable(string $option, ?string $env = null): ?string

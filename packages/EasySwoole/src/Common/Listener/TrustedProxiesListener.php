@@ -27,10 +27,12 @@ final class TrustedProxiesListener extends AbstractRequestListener
         $trustedProxies = $this->container->getParameter('kernel.trusted_proxies');
         $trustedProxies = \array_map(static function (string $trustedProxy) use ($request): string {
             $trustedProxy = \trim($trustedProxy);
+            /** @var scalar $remoteAddr */
+            $remoteAddr = $request->server->get('REMOTE_ADDR', '');
 
             // Replace REMOTE_ADDR using request object instead of globals
             return $trustedProxy === 'REMOTE_ADDR'
-                ? (string)$request->server->get('REMOTE_ADDR', '')
+                ? (string)$remoteAddr
                 : $trustedProxy;
         }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', (string)$trustedProxies));
 

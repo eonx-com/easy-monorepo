@@ -34,6 +34,7 @@ final readonly class ErrorCodesFromInterfaceProvider implements ErrorCodesProvid
 
         $constants = $reflection->getConstants();
         $errorCodes = [];
+        /** @var int $code */
         foreach ($constants as $name => $code) {
             if (\str_starts_with($name, self::ERROR_CODE_NAME_PREFIX) === false) {
                 continue;

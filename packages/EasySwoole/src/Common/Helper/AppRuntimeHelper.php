@@ -43,6 +43,7 @@ final class AppRuntimeHelper
 
     public static function onEnvVarsLoaded(callable $callback): void
     {
+        /** @var array $callbacks */
         $callbacks = self::getOption('callbacks', []);
         $callbacks[SwooleRunnerEvent::EnvVarsLoaded->value] = $callback;
 
