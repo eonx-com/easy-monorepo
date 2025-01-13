@@ -16,40 +16,21 @@ final class AbnProvider extends Base
      */
     public function abn(): string
     {
-        $digits = [];
+        $randomNumber = \str_pad(
+            (string)\random_int(1, 999999999),
+            9,
+            '0',
+            \STR_PAD_LEFT
+        );
 
-        do {
-            for ($position = 0; $position < 11; $position++) {
-                if ($position === 0) {
-                    $digits[$position] = \random_int(1, 9);
-                }
-                if ($position > 0) {
-                    $digits[$position] = \random_int(0, 9);
-                }
-            }
-        } while ($this->validateAbn($digits) === false);
+        $abn = '10' . $randomNumber;
 
-        return \implode('', $digits);
-    }
-
-    /**
-     * @param int[] $digits
-     */
-    private function validateAbn(array $digits): bool
-    {
-        $clone = [];
-
-        foreach ($digits as $index => $digit) {
-            $clone[$index] = $digit;
+        $sum = 0;
+        foreach (self::WEIGHTS as $position => $weight) {
+            $digit = (int)$abn[$position] - ($position !== 0 ? 0 : 1);
+            $sum += $weight * $digit;
         }
 
-        --$clone[0];
-
-        $checksum = 0;
-        foreach ($clone as $index => $digit) {
-            $checksum += self::WEIGHTS[$index] * $digit;
-        }
-
-        return $checksum % self::MASK === 0;
+        return ((self::MASK - ($sum % 89)) + 10) . $randomNumber;
     }
 }
