@@ -20,9 +20,11 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Common\IriConverter\IriConverterTrait;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Uid\Uuid as SymfonyUuid;
 
 /**
  * Filter the collection by given properties.
@@ -48,6 +50,10 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     use SearchFilterTrait;
 
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
+
+    private const DOCTRINE_UUID_TYPE = 'uuid';
+
+    private const NIL_UUID = '00000000-0000-0000-0000-000000000000';
 
     /**
      * @param string[] $iriFields
@@ -354,6 +360,10 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 return $value;
             }
 
+            if ($this->isValidUuid($value)) {
+                return $value;
+            }
+
             try {
                 $item = $this->getIriConverter()
                     ->getResourceFromIri($value, ['fetch_data' => false]);
@@ -373,7 +383,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         )),
                     ]);
 
-                    return null;
+                    return self::NIL_UUID;
                 }
 
                 return $value;
@@ -422,9 +432,79 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         );
     }
 
+    protected function getIdFromValue(string $value): mixed
+    {
+        if (is_numeric($value)) {
+            return $value;
+        }
+
+        if ($this->isValidUuid($value)) {
+            return $value;
+        }
+
+        try {
+            $iriConverter = $this->getIriConverter();
+            $item = $iriConverter->getResourceFromIri($value, ['fetch_data' => false]);
+
+            if (null === $this->identifiersExtractor) {
+                return $this->getPropertyAccessor()->getValue($item, 'id');
+            }
+
+            $identifiers = $this->identifiersExtractor->getIdentifiersFromItem($item);
+
+            return 1 === \count($identifiers) ? array_pop($identifiers) : $identifiers;
+        } catch (InvalidArgumentException) {
+            return self::NIL_UUID;
+        }
+
+        return $value;
+    }
+
     protected function getPropertyAccessor(): PropertyAccessorInterface
     {
         return $this->propertyAccessor;
+    }
+
+    protected function hasValidValues(array $values, ?string $type = null): bool
+    {
+        foreach ($values as $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            if (
+                \in_array($type, (array)self::DOCTRINE_INTEGER_TYPE, true)
+                && \filter_var($value, \FILTER_VALIDATE_INT) === false
+            ) {
+                return false;
+            }
+
+            if (self::DOCTRINE_UUID_TYPE === $type && $this->isValidUuid($value) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function isValidUuid(mixed $value): bool
+    {
+        if (\is_string($value) === false) {
+            return false;
+        }
+
+        if (\class_exists(SymfonyUuid::class)) {
+            return SymfonyUuid::isValid($value);
+        }
+
+        if (\class_exists(RamseyUuid::class)) {
+            return RamseyUuid::isValid($value);
+        }
+
+        return \preg_match(
+                '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
+                $value
+            ) === 1;
     }
 
     private function getType(?string $doctrineType = null): string
