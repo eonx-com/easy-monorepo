@@ -20,11 +20,11 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyApiPlatform\Common\IriConverter\IriConverterTrait;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid as RamseyUuid;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
-use Symfony\Component\Uid\Uuid as SymfonyUuid;
+use Symfony\Component\Uid\NilUuid;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * Filter the collection by given properties.
@@ -52,8 +52,6 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     private const DOCTRINE_UUID_TYPE = 'uuid';
-
-    private const NIL_UUID = '00000000-0000-0000-0000-000000000000';
 
     /**
      * @param string[] $iriFields
@@ -383,7 +381,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         )),
                     ]);
 
-                    return self::NIL_UUID;
+                    return (new NilUuid())->toString();
                 }
 
                 return $value;
@@ -455,7 +453,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             return \count($identifiers) === 1 ? \array_pop($identifiers) : $identifiers;
         } catch (InvalidArgumentException) {
-            return self::NIL_UUID;
+            return (new NilUuid())->toString();
         }
     }
 
@@ -492,18 +490,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             return false;
         }
 
-        if (\class_exists(SymfonyUuid::class)) {
-            return SymfonyUuid::isValid($value);
-        }
-
-        if (\class_exists(RamseyUuid::class)) {
-            return RamseyUuid::isValid($value);
-        }
-
-        return \preg_match(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
-            $value
-        ) === 1;
+        return Uuid::isValid($value);
     }
 
     private function getType(?string $doctrineType = null): string
