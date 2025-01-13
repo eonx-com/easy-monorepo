@@ -18,7 +18,7 @@
         "symfony/http-kernel": "^7.1",
         "symfony/property-access": "^7.1",
         "symfony/serializer": "^7.1",
-        "synmfony/uuid": "^7.1"
+        "symfony/uid": "^7.1"
     },
     "require-dev": {
         "doctrine/annotations": "^2.0",
