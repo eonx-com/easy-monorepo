@@ -12,12 +12,12 @@ use Symfony\Component\Uid\Uuid;
 /**
  * UUID identifier dummy.
  */
-#[ApiResource]
 #[ApiFilter(SearchFilter::class, properties: [
     'id' => 'exact',
     'uuidField' => 'exact',
     'relatedUuidIdentifierDummy' => 'exact',
 ])]
+#[ApiResource]
 #[ORM\Entity]
 class UuidIdentifierDummy
 {

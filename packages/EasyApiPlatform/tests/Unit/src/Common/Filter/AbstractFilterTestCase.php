@@ -27,6 +27,9 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
      */
     protected EntityRepository $repository;
 
+    /**
+     * @var class-string
+     */
     protected string $resourceClass;
 
     protected function setUp(): void
@@ -94,7 +97,9 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
         }
 
         self::assertCount(
-            $queryBuilder->getQuery()->getParameters()->count(),
+            $queryBuilder->getQuery()
+->getParameters()
+->count(),
             $expectedParameters,
             'Please assert query parameters.'
         );

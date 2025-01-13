@@ -434,7 +434,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
     protected function getIdFromValue(string $value): mixed
     {
-        if (is_numeric($value)) {
+        if (\is_numeric($value)) {
             return $value;
         }
 
@@ -446,18 +446,17 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $iriConverter = $this->getIriConverter();
             $item = $iriConverter->getResourceFromIri($value, ['fetch_data' => false]);
 
-            if (null === $this->identifiersExtractor) {
-                return $this->getPropertyAccessor()->getValue($item, 'id');
+            if ($this->identifiersExtractor === null) {
+                return $this->getPropertyAccessor()
+                    ->getValue($item, 'id');
             }
 
             $identifiers = $this->identifiersExtractor->getIdentifiersFromItem($item);
 
-            return 1 === \count($identifiers) ? array_pop($identifiers) : $identifiers;
+            return \count($identifiers) === 1 ? \array_pop($identifiers) : $identifiers;
         } catch (InvalidArgumentException) {
             return self::NIL_UUID;
         }
-
-        return $value;
     }
 
     protected function getPropertyAccessor(): PropertyAccessorInterface
@@ -479,7 +478,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 return false;
             }
 
-            if (self::DOCTRINE_UUID_TYPE === $type && $this->isValidUuid($value) === false) {
+            if ($type === self::DOCTRINE_UUID_TYPE && $this->isValidUuid($value) === false) {
                 return false;
             }
         }
@@ -502,9 +501,9 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         }
 
         return \preg_match(
-                '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
-                $value
-            ) === 1;
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
+            $value
+        ) === 1;
     }
 
     private function getType(?string $doctrineType = null): string

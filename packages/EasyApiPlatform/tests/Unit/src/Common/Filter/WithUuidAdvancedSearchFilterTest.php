@@ -12,7 +12,7 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\NameConverter\Cu
 use Prophecy\Argument;
 use Prophecy\Prophet;
 
-final class AdvancedSearchFilterWithUuidTest extends AbstractFilterTestCase
+final class WithUuidAdvancedSearchFilterTest extends AbstractFilterTestCase
 {
     protected string $filterClass = AdvancedSearchFilter::class;
 
