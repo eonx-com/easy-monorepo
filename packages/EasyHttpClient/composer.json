@@ -7,7 +7,7 @@
         "php": "^8.2",
         "eonx-com/easy-event-dispatcher": "^6.5",
         "eonx-com/easy-utils": "^6.5",
-        "nesbot/carbon": "^3.7",
+        "nesbot/carbon": "^3.8.4",
         "symfony/config": "^7.1",
         "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.1",

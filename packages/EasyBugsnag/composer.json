@@ -8,7 +8,7 @@
         "bugsnag/bugsnag": "^3.29",
         "eonx-com/easy-utils": "^6.5",
         "guzzlehttp/guzzle": "^7.0",
-        "nesbot/carbon": "^3.7",
+        "nesbot/carbon": "^3.8.4",
         "nette/utils": "^4.0",
         "symfony/cache": "^7.1",
         "symfony/cache-contracts": "^3.5",

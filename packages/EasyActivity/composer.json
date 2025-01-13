@@ -10,7 +10,7 @@
         "doctrine/orm": "^2.20",
         "eonx-com/easy-doctrine": "^6.5",
         "eonx-com/easy-lock": "^6.5",
-        "nesbot/carbon": "^3.7",
+        "nesbot/carbon": "^3.8.4",
         "symfony/config": "^7.1",
         "symfony/dependency-injection": "^7.1",
         "symfony/event-dispatcher": "^7.1",
