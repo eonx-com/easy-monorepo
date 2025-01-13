@@ -207,8 +207,15 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
                 'relatedDummy' => ['some-invalid-value'],
                 'relatedDummies' => [['some-invalid-value']],
             ],
-            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1', self::$alias, Dummy::class),
-            [],
+            \sprintf(
+                'SELECT %s FROM %s %1$s WHERE %1$s.name = :name_p1 AND %1$s.relatedDummy = :relatedDummy_p2',
+                self::$alias,
+                Dummy::class
+            ),
+            [
+                'name_p1' => 'foo',
+                'relatedDummy_p2' => '00000000-0000-0000-0000-000000000000',
+            ],
             $filterFactory,
         ];
 
@@ -579,8 +586,10 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy' => 'some-invalid-value',
             ],
-            \sprintf('SELECT %s FROM %s %1$s', self::$alias, Dummy::class),
-            [],
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.relatedDummy = :relatedDummy_p1', self::$alias, Dummy::class),
+            [
+                'relatedDummy_p1' => '00000000-0000-0000-0000-000000000000',
+            ],
             $filterFactory,
         ];
 
@@ -593,8 +602,10 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             [
                 'relatedDummy' => '/some-invalid-iri/1',
             ],
-            \sprintf('SELECT %s FROM %s %1$s', self::$alias, Dummy::class),
-            [],
+            \sprintf('SELECT %s FROM %s %1$s WHERE %1$s.relatedDummy = :relatedDummy_p1', self::$alias, Dummy::class),
+            [
+                'relatedDummy_p1' => '00000000-0000-0000-0000-000000000000',
+            ],
             $filterFactory,
         ];
 
