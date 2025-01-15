@@ -15,7 +15,7 @@ use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use SplObjectStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Exception\WrappedExceptionsInterface;
 use Throwable;
 
@@ -124,7 +124,11 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             return;
         }
 
-        if ($throwable instanceof UnrecoverableExceptionInterface) {
+        // We especially want to check UnrecoverableMessageHandlingException, not UnrecoverableExceptionInterface
+        if (\class_exists(UnrecoverableMessageHandlingException::class)
+            && $throwable instanceof UnrecoverableMessageHandlingException
+            && $throwable->getPrevious() instanceof Throwable
+        ) {
             $throwable = $throwable->getPrevious();
         }
 
