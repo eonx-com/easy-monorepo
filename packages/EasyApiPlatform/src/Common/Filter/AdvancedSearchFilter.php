@@ -23,6 +23,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Uid\NilUuid;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * Filter the collection by given properties.
@@ -48,6 +50,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     use SearchFilterTrait;
 
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
+
+    private const DOCTRINE_UUID_TYPE = 'uuid';
 
     /**
      * @param string[] $iriFields
@@ -354,6 +358,10 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 return $value;
             }
 
+            if ($this->isValidUuid($value)) {
+                return $value;
+            }
+
             try {
                 $item = $this->getIriConverter()
                     ->getResourceFromIri($value, ['fetch_data' => false]);
@@ -373,7 +381,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         )),
                     ]);
 
-                    return null;
+                    return (new NilUuid())->toString();
                 }
 
                 return $value;
@@ -422,9 +430,67 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         );
     }
 
+    protected function getIdFromValue(string $value): mixed
+    {
+        if (\is_numeric($value)) {
+            return $value;
+        }
+
+        if ($this->isValidUuid($value)) {
+            return $value;
+        }
+
+        try {
+            $iriConverter = $this->getIriConverter();
+            $item = $iriConverter->getResourceFromIri($value, ['fetch_data' => false]);
+
+            if ($this->identifiersExtractor === null) {
+                return $this->getPropertyAccessor()
+                    ->getValue($item, 'id');
+            }
+
+            $identifiers = $this->identifiersExtractor->getIdentifiersFromItem($item);
+
+            return \count($identifiers) === 1 ? \array_pop($identifiers) : $identifiers;
+        } catch (InvalidArgumentException) {
+            return (new NilUuid())->toString();
+        }
+    }
+
     protected function getPropertyAccessor(): PropertyAccessorInterface
     {
         return $this->propertyAccessor;
+    }
+
+    protected function hasValidValues(array $values, ?string $type = null): bool
+    {
+        foreach ($values as $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            if (
+                \in_array($type, (array)self::DOCTRINE_INTEGER_TYPE, true)
+                && \filter_var($value, \FILTER_VALIDATE_INT) === false
+            ) {
+                return false;
+            }
+
+            if ($type === self::DOCTRINE_UUID_TYPE && $this->isValidUuid($value) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function isValidUuid(mixed $value): bool
+    {
+        if (\is_string($value) === false) {
+            return false;
+        }
+
+        return Uuid::isValid($value);
     }
 
     private function getType(?string $doctrineType = null): string
