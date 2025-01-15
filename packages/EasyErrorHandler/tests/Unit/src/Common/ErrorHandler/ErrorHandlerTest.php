@@ -10,7 +10,6 @@ use EonX\EasyErrorHandler\Common\Provider\FromIterableErrorReporterProvider;
 use EonX\EasyErrorHandler\Common\Strategy\ChainVerboseStrategy;
 use EonX\EasyErrorHandler\Tests\Stub\Reporter\ErrorReporterStub;
 use EonX\EasyErrorHandler\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyWebhook\Messenger\Exception\UnrecoverableWebhookMessageException;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -87,16 +86,8 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
             'reportRetryableExceptionAttempts' => true,
         ];
 
-        yield 'Symfony Messenger UnrecoverableMessageHandlingException' => [
+        yield 'Symfony Messenger and EasyWebhook UnrecoverableMessageHandlingException' => [
             'throwable' => new UnrecoverableMessageHandlingException(previous: new Exception()),
-            'assertions' => static function (ErrorReporterStub $reporter): void {
-                self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
-            },
-        ];
-
-        yield 'EasyWebhook UnrecoverableWebhookMessageException' => [
-            'throwable' => new UnrecoverableWebhookMessageException(previous: new Exception()),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
                 self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
