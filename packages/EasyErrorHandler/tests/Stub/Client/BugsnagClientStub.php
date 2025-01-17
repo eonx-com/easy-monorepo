@@ -20,7 +20,7 @@ final class BugsnagClientStub extends Client
         return $this->calls;
     }
 
-    public function notifyException(mixed $throwable, ?callable $callback = null): void
+    public function notifyException(mixed $throwable, $callback = null): void
     {
         $this->calls[] = [$throwable, $callback];
     }

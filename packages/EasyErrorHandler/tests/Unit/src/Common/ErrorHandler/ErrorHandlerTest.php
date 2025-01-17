@@ -99,7 +99,7 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
             'throwable' => new UnrecoverableWebhookMessageException(previous: new Exception()),
             'assertions' => static function (ErrorReporterStub $reporter): void {
                 self::assertCount(1, $reporter->getReportedErrors());
-                self::assertSame(Exception::class, $reporter->getReportedErrors()[0]::class);
+                self::assertSame(UnrecoverableWebhookMessageException::class, $reporter->getReportedErrors()[0]::class);
             },
         ];
     }

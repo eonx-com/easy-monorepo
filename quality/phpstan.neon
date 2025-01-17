@@ -76,9 +76,6 @@ parameters:
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
           path: %currentWorkingDirectory%/packages/EasyErrorHandler/src/ErrorCodes/Provider/ErrorCodesFromInterfaceProvider.php
 
-        - message: '#Parameter \#2 \$callback \(\(callable\)\|null\) of method EonX\\EasyErrorHandler\\Tests\\Stub\\Client\\BugsnagClientStub\:\:notifyException\(\) is not contravariant with parameter \#2 \$callback \(mixed\) of method Bugsnag\\Client\:\:notifyException\(\)#'
-          path: %currentWorkingDirectory%/packages/EasyErrorHandler/tests/Stub/Client/BugsnagClientStub.php
-
         # ---- EasyEventDispatcher ----
         # ---- EasyHttpClient ----
         # ---- EasyLock ----
