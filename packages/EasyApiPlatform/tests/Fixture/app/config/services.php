@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyApiPlatform\Common\Listener\OutputSanitizerListener;
 use EonX\EasyApiPlatform\Tests\Fixture\App\BugsnagExceptionIgnorer\Helper\IgnorerHelper;
 use EonX\EasyErrorHandler\Bundle\Enum\ConfigTag;
 

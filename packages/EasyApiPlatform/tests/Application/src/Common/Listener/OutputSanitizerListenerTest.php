@@ -9,22 +9,6 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\CustomPaginator\ApiResource\Category;
 
 final class OutputSanitizerListenerTest extends AbstractApplicationTestCase
 {
-    public function testItSucceedsAndDoesNothingWhenEnabled(): void
-    {
-        self::setUpClient(['environment' => 'enable_output_sanitizer']);
-        $this->initDatabase();
-        $entityManager = self::getService(EntityManagerInterface::class);
-        $category = (new Category())->setTitle('<Some category>');
-        $entityManager->persist($category);
-        $entityManager->flush();
-
-        $response = self::$client->request('GET', '/categories/' . $category->getId());
-
-        $responseData = $response->toArray(false);
-
-        self::assertSame('&lt;Some category&gt;', $responseData['title']);
-    }
-
     public function testItSucceedsAndDoesNothingWhenDisabled(): void
     {
         $this->initDatabase();
@@ -39,5 +23,21 @@ final class OutputSanitizerListenerTest extends AbstractApplicationTestCase
         $responseData = $response->toArray(false);
 
         self::assertSame($title, $responseData['title']);
+    }
+
+    public function testItSucceedsAndDoesNothingWhenEnabled(): void
+    {
+        self::setUpClient(['environment' => 'enable_output_sanitizer']);
+        $this->initDatabase();
+        $entityManager = self::getService(EntityManagerInterface::class);
+        $category = (new Category())->setTitle('<Some category>');
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        $response = self::$client->request('GET', '/categories/' . $category->getId());
+
+        $responseData = $response->toArray(false);
+
+        self::assertSame('&lt;Some category&gt;', $responseData['title']);
     }
 }
