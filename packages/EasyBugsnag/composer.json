@@ -8,7 +8,7 @@
         "bugsnag/bugsnag": "^3.29",
         "eonx-com/easy-utils": "^6.5",
         "guzzlehttp/guzzle": "^7.0",
-        "nesbot/carbon": "^3.7",
+        "nesbot/carbon": "^3.8.4",
         "nette/utils": "^4.0",
         "symfony/cache": "^7.1",
         "symfony/cache-contracts": "^3.5",
@@ -24,6 +24,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/orm": "^2.20",
         "eonx-com/easy-test": "^6.5",
         "laravel/lumen-framework": "^11.0",

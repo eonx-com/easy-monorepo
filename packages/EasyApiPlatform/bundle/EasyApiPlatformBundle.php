@@ -60,6 +60,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
 
         if ($this->isBundleEnabled('EasyErrorHandlerBundle', $builder)) {
             $easyErrorHandlerEnabled = true;
+            /** @var array $config */
             foreach ($builder->getExtensionConfig('easy_api_platform') as $config) {
                 if (($config['easy_error_handler']['enabled'] ?? true) !== true) {
                     $easyErrorHandlerEnabled = false;

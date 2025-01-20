@@ -70,12 +70,17 @@ final readonly class DbalResult implements Result
     }
 
     /**
+     * @return false|array
+     *
      * @throws \Doctrine\DBAL\Driver\PDO\Exception
      */
     private function fetch(int $mode): mixed
     {
         try {
-            return $this->pdoStatement->fetch($mode);
+            /** @var false|array $result */
+            $result = $this->pdoStatement->fetch($mode);
+
+            return $result;
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }

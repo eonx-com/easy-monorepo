@@ -8,7 +8,6 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyApiPlatform\Tests\Fixture\App\AdvancedSearchFilter\ApiResource\Dummy;
 use EonX\EasyApiPlatform\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -28,6 +27,9 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
      */
     protected EntityRepository $repository;
 
+    /**
+     * @var class-string
+     */
     protected string $resourceClass;
 
     protected function setUp(): void
@@ -39,9 +41,9 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
 
         $this->managerRegistry = $managerRegistry;
         /** @var \Doctrine\Persistence\ObjectManager $manager */
-        $manager = $this->managerRegistry->getManagerForClass(Dummy::class);
+        $manager = $this->managerRegistry->getManagerForClass($this->resourceClass);
         /** @var \Doctrine\ORM\EntityRepository<\stdClass> $repository */
-        $repository = $manager->getRepository(Dummy::class);
+        $repository = $manager->getRepository($this->resourceClass);
         $this->repository = $repository;
     }
 
@@ -93,6 +95,14 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
         if ($expectedParameters === null) {
             return;
         }
+
+        self::assertCount(
+            $queryBuilder->getQuery()
+->getParameters()
+->count(),
+            $expectedParameters,
+            'Please assert query parameters.'
+        );
 
         foreach ($expectedParameters as $parameterName => $expectedParameterValue) {
             /** @var \Doctrine\ORM\Query\Parameter $queryParameter */

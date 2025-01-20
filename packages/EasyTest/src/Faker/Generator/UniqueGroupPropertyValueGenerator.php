@@ -11,7 +11,7 @@ final class UniqueGroupPropertyValueGenerator
 
     public function __construct(
         private readonly Generator $generator,
-        private readonly mixed $arguments,
+        private readonly array $arguments,
         private readonly string $name,
         private readonly string $uniqueGroupName,
     ) {

@@ -6,6 +6,7 @@
     "require": {
         "php": "^8.2",
         "ext-sodium": "*",
+        "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/orm": "^2.20",
         "eonx-com/easy-utils": "^6.5",
         "paragonie/halite": "^5.1",

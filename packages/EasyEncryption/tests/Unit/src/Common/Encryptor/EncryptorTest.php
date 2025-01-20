@@ -123,7 +123,7 @@ final class EncryptorTest extends AbstractUnitTestCase
      * @param \EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface[]|null $resolvers
      */
     #[DataProvider('provideEncryptData')]
-    public function testEncrypt(string $text, mixed $key = null, ?array $resolvers = null): void
+    public function testEncrypt(string $text, ?string $key = null, ?array $resolvers = null): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);
@@ -138,7 +138,7 @@ final class EncryptorTest extends AbstractUnitTestCase
      * @param \EonX\EasyEncryption\Common\Resolver\EncryptionKeyResolverInterface[]|null $resolvers
      */
     #[DataProvider('provideEncryptRawData')]
-    public function testEncryptRaw(string $text, mixed $key = null, ?array $resolvers = null): void
+    public function testEncryptRaw(string $text, array|string|null $key = null, ?array $resolvers = null): void
     {
         $keyFactory = new DefaultEncryptionKeyFactory();
         $keyProvider = new DefaultEncryptionKeyProvider($keyFactory, $resolvers ?? []);

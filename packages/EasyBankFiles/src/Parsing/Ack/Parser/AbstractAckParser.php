@@ -69,7 +69,7 @@ abstract class AbstractAckParser extends AbstractParser
      *
      * @return \EonX\EasyBankFiles\Parsing\Ack\ValueObject\Issue[]
      */
-    protected function extractIssues(mixed $issues): array
+    protected function extractIssues(?array $issues = null): array
     {
         // If there are no issues, return
         if ($issues === null) {
@@ -83,6 +83,7 @@ abstract class AbstractAckParser extends AbstractParser
 
         // Process issues array
         $objects = [];
+        /** @var array $issue */
         foreach ($issues as $issue) {
             $objects[] = new Issue([
                 'attributes' => $issue['@attributes'] ?? null,
