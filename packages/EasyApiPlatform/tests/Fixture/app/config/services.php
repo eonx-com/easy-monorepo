@@ -29,6 +29,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(IgnorerHelper::class)
         ->arg('$exceptionIgnorers', tagged_iterator(ConfigTag::BugsnagExceptionIgnorer->value))
         ->public();
-
-    $services->set(OutputSanitizerListener::class);
 };
