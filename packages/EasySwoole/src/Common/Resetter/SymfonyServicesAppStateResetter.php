@@ -4,13 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Common\Resetter;
 
 use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 use Traversable;
-
 use function Symfony\Component\String\u;
 
-#[Autoconfigure()]
 final class SymfonyServicesAppStateResetter extends ServicesResetter implements AppStateResetterInterface
 {
     use HasPriorityTrait;
