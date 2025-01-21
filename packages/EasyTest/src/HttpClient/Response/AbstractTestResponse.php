@@ -129,9 +129,13 @@ abstract class AbstractTestResponse
             \parse_str($expectedUrl['query'] ?? '', $expectedQuery);
             \parse_str($actualUrl['query'] ?? '', $actualQuery);
 
+            // Cast all integer values from queryString to strings
+            $queryString = \http_build_query($this->query ?? []);
+            \parse_str($queryString, $queryStringAsArray);
+
             $expectedQuery = [
                 ...$expectedQuery,
-                ...($this->query ?? []),
+                ...$queryStringAsArray,
             ];
 
             self::normalizeData($expectedQuery);
