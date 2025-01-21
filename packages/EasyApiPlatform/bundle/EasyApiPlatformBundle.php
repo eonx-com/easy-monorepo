@@ -35,6 +35,10 @@ final class EasyApiPlatformBundle extends AbstractBundle
             $container->import('config/pagination.php');
         }
 
+        if ($config['output_sanitizer']['enabled']) {
+            $container->import('config/output_sanitizer.php');
+        }
+
         if ($config['return_not_found_on_read_operations']['enabled']) {
             $container->import('config/state_provider.php');
         }
