@@ -7,6 +7,10 @@
                     <metrics complexity="24" methods="19" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="100" coveredelements="70"/>
                 </class>
                 <metrics loc="315" ncloc="182" classes="1" methods="19" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="90" coveredelements="0"/>
+                <line num="57" type="stmt" count="0"/>
+                <line num="58" type="stmt" count="0"/>
+                <line num="59" type="stmt" count="0"/>
+                <line num="100" type="stmt" count="0"/>
             </file>
             <file name="/var/www/src/Foo/Bar/Fizz.php">
                 <class name="Foo\Bar\Fizz" namespace="Foo\Bar">
