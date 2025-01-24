@@ -27,6 +27,7 @@ parameters:
         - %currentWorkingDirectory%/packages/*/tests/*/config/*
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Common/Resetter/SymfonyServicesAppStateResetter.php
 
     ignoreErrors:
         -
@@ -170,9 +171,6 @@ parameters:
 
         - message: '#Call to an undefined method EonX\\EasySwoole\\Doctrine\\Client\\PdoClient\:\:.*\(\)#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php
-
-        - message: '#Class EonX\\EasySwoole\\Common\\Resetter\\SymfonyServicesAppStateResetter extends @final class Symfony\\Component\\HttpKernel\\DependencyInjection\\ServicesResetter#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Resetter/SymfonyServicesAppStateResetter.php
 
         - message: '#While loop condition is always true#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Pool/PdoClientPool.php
