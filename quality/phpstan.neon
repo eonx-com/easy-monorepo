@@ -27,6 +27,7 @@ parameters:
         - %currentWorkingDirectory%/packages/*/tests/*/config/*
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Common/Resetter/SymfonyServicesAppStateResetter.php
 
     ignoreErrors:
         -
