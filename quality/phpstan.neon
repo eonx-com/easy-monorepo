@@ -9,6 +9,7 @@ services:
 
 parameters:
     tmpDir: var/cache/phpstan
+    reportUnmatchedIgnoredErrors: false
 
     level: 9
 
