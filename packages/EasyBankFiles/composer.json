@@ -9,11 +9,11 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "eonx-com/easy-error-handler": "^6.6",
+        "eonx-com/easy-error-handler": "^6.7",
         "nette/utils": "^4.0"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^6.6",
+        "eonx-com/easy-test": "^6.7",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2"
     },
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.6-dev"
+            "dev-master": "6.7-dev"
         }
     }
 }
