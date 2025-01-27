@@ -35,7 +35,7 @@ final class CheckCoverageCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $style = new SymfonyStyle($input, $output);
+        $inputOutput = new SymfonyStyle($input, $output);
         /** @var string $coverageValue */
         $coverageValue = $input->getOption('coverage');
         $checkCoverage = (float)$coverageValue;
@@ -46,7 +46,7 @@ final class CheckCoverageCommand extends Command
         $coverageReport = $coverageResolver->resolve($this->coverageLoader->load($fileArgumentValue));
 
         if ($checkCoverage > $coverageReport->getCoverage()) {
-            $style->error(
+            $inputOutput->error(
                 \sprintf(
                     'Coverage "%d%%" is lower than expectation "%d%%"',
                     $coverageReport->getCoverage(),
@@ -55,15 +55,14 @@ final class CheckCoverageCommand extends Command
             );
 
             if ($coverageReport->hasViolations()) {
-                $style->error(
-                    \sprintf('Violations: %s', \implode(\PHP_EOL, $coverageReport->getViolations()))
-                );
+                $inputOutput->section('Violations');
+                $inputOutput->text($coverageReport->getViolations());
             }
 
             return 1;
         }
 
-        $style->success(
+        $inputOutput->success(
             \sprintf('Yeah nah yeah nah yeah!! Good coverage mate! "%d%%"', $coverageReport->getCoverage())
         );
 

@@ -44,7 +44,16 @@ final class CheckCoverageCommandTest extends AbstractUnitTestCase
                 'file' => __DIR__ . '/../../../../Fixture/Coverage/coverage_70.clover',
                 '--coverage' => 71,
             ],
-            '[ERROR] Violations:',
+            <<<TEXT
+Violations
+----------
+
+ File: /var/www/src/Foo/Bar/Baz.php
+ Line: 57
+ Line: 58
+ Line: 59
+ Line: 100
+TEXT,
         ];
 
         yield 'Clover file and good coverage' => [

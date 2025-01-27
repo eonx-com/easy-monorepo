@@ -10,11 +10,15 @@ use SimpleXMLElement;
 
 final class CloverCoverageResolver implements CoverageResolverInterface
 {
+    private const ATTRIBUTE_NAME_COUNT = 'count';
+
     private const ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
 
     private const ATTRIBUTE_NAME_ELEMENTS = 'elements';
 
     private const ATTRIBUTE_NAME_FILE_NAME = 'name';
+
+    private const ATTRIBUTE_NAME_NUM = 'num';
 
     public function resolve(string $coverageOutput): CoverageReport
     {
@@ -29,15 +33,22 @@ final class CloverCoverageResolver implements CoverageResolverInterface
             ));
         }
 
-        $metrics = $xml->xpath('//file/metrics');
+        $files = $xml->xpath('//file');
 
-        foreach ($metrics as $metric) {
-            $elements = (int)$this->extractXmlAttribute($metric, self::ATTRIBUTE_NAME_ELEMENTS);
-            $coveredElements = (int)$this->extractXmlAttribute($metric, self::ATTRIBUTE_NAME_COVERED_ELEMENTS);
+        foreach ($files as $file) {
+            $elements = (int)$this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_ELEMENTS);
+            $coveredElements = (int)$this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_COVERED_ELEMENTS);
 
             if ($elements !== $coveredElements) {
-                $file = $metric->xpath('parent::*')[0];
-                $violations[] = $this->extractXmlAttribute($file, self::ATTRIBUTE_NAME_FILE_NAME);
+                $violations[] = 'File: ' . $this->extractXmlAttribute($file, self::ATTRIBUTE_NAME_FILE_NAME);
+
+                foreach ($file->line as $line) {
+                    $count = (int)$this->extractXmlAttribute($line, self::ATTRIBUTE_NAME_COUNT);
+
+                    if ($count === 0) {
+                        $violations[] = 'Line: ' . $this->extractXmlAttribute($line, self::ATTRIBUTE_NAME_NUM);
+                    }
+                }
             }
         }
 
