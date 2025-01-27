@@ -36,4 +36,19 @@ final class SqsQueueTransportTest extends AbstractTestCase
 
         self::assertEquals($expected, $stub->getCalls()[0]);
     }
+
+    public function testSendFifo(): void
+    {
+        $queueUrl = 'https://sqs.my-queue.fifo';
+        $stub = new SqsClientStub();
+        $queueMessage = (new QueueMessage())
+            ->addHeader('my-header', 'my-value')
+            ->setBody('my-body')
+            ->setQueueUrl($queueUrl);
+
+        (new SqsQueueTransport($stub))->send($queueMessage);
+
+        self::assertNotNull($stub->getCalls()[0]['MessageDeduplicationId']);
+        self::assertNotNull($stub->getCalls()[0]['MessageGroupId']);
+    }
 }
