@@ -118,6 +118,8 @@ final class NotificationClientTest extends AbstractTestCase
                 ],
             ],
             'MessageBody' => '{"body":"{\"name\":\"nathan\"}","topics":["topic"]}',
+            'MessageDeduplicationId' => null,
+            'MessageGroupId' => null,
         ];
 
         self::assertEquals($expected, $sqsClientStub->getCalls()[0]);
