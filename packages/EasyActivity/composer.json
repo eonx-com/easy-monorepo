@@ -5,15 +5,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "eonx-com/easy-random": "^4.6",
+        "eonx-com/easy-random": "^4.5.7",
         "nesbot/carbon": "^2.22"
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
         "doctrine/dbal": "^2.6",
         "doctrine/orm": "^2.6",
-        "eonx-com/easy-doctrine": "^4.6",
-        "eonx-com/easy-lock": "^4.6",
+        "eonx-com/easy-doctrine": "^4.5.7",
+        "eonx-com/easy-lock": "^4.5.7",
         "phpunit/phpunit": "^9.5 || ^10.0",
         "ramsey/uuid": "^3.9 || ^4.0",
         "symfony/symfony": "^5.4 || ^6.0",
