@@ -30,8 +30,6 @@ final class SqsQueueTransportTest extends AbstractTestCase
                 ],
             ],
             'MessageBody' => 'my-body',
-            'MessageDeduplicationId' => null,
-            'MessageGroupId' => null,
         ];
 
         self::assertEquals($expected, $stub->getCalls()[0]);
