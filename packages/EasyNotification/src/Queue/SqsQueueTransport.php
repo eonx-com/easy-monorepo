@@ -24,19 +24,18 @@ final class SqsQueueTransport implements QueueTransportInterface
     public function send(QueueMessageInterface $queueMessage): void
     {
         $queueUrl = $queueMessage->getQueueUrl();
-
-        if (\str_ends_with($queueUrl, '.fifo')) {
-            $messageDeduplicationId = (string)Uuid::v4();
-            $messageGroupId = (string)Uuid::v4();
-        }
-
-        $this->sqs->sendMessage([
+        $args = [
             'QueueUrl' => $queueUrl,
             'MessageAttributes' => $this->formatHeaders($queueMessage->getHeaders()),
             'MessageBody' => $queueMessage->getBody(),
-            'MessageDeduplicationId' => $messageDeduplicationId ?? null,
-            'MessageGroupId' => $messageGroupId ?? null,
-        ]);
+        ];
+
+        if (\str_ends_with($queueUrl, '.fifo')) {
+            $args['MessageDeduplicationId'] = (string)Uuid::v4();
+            $args['MessageGroupId'] = (string)Uuid::v4();
+        }
+
+        $this->sqs->sendMessage($args);
     }
 
     /**
