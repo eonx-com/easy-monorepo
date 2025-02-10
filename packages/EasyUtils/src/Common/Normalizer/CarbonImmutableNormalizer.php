@@ -33,7 +33,9 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
         ?string $format = null,
         ?array $context = null,
     ): CarbonImmutable {
-        return new CarbonImmutable($this->dateTimeNormalizer->denormalize($data, $type, $format, $context ?? []));
+        return new CarbonImmutable(
+            $this->dateTimeNormalizer->denormalize($data, DateTimeInterface::class, $format, $context ?? [])
+        );
     }
 
     public function getSupportedTypes(?string $format): array
