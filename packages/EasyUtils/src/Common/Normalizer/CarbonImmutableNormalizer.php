@@ -34,7 +34,7 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
         ?array $context = null,
     ): CarbonImmutable {
         return new CarbonImmutable(
-            $this->dateTimeNormalizer->denormalize($data, DateTimeInterface::class, $format, $context ?? [])
+            $this->dateTimeNormalizer->denormalize($data, DateTimeImmutable::class, $format, $context ?? [])
         );
     }
 
