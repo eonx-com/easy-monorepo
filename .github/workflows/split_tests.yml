@@ -31,10 +31,10 @@ jobs:
                 with:
                     path: ${{ steps.cache-extensions.outputs.dir }}
                     key: ${{ steps.cache-extensions.outputs.key }}
-                    restore-keys: ${{ steps.cache-extensions.outputs.key }}
 
+            # TODO: Change the version of the action after 2.33 is released
             -   name: Setup PHP 8.2
-                uses: shivammathur/setup-php@v2
+                uses: shivammathur/setup-php@297b3cde3c3c3202e03cd5e9b679a74c06f72214
                 with:
                     php-version: 8.2
                     coverage: none
