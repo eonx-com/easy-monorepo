@@ -14,6 +14,8 @@ trait DoctrineCommonPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
 
+    private const MORE_PRECISE_ROWS_COUNT = 100000;
+
     private ?string $fromAlias = null;
 
     private ?int $totalItems = null;
@@ -136,6 +138,32 @@ trait DoctrineCommonPaginatorTrait
     /**
      * @throws \Doctrine\DBAL\Exception
      */
+    private function getMorePreciseCount(string $sql, ?int $count): ?int
+    {
+        if ($count !== null && $count > self::MORE_PRECISE_ROWS_COUNT) {
+            return $count;
+        }
+
+        $matches = u($sql)
+            ->match('/FROM (?P<table>[a-z_]+)/i');
+
+        $sql = \sprintf(
+            'SELECT COUNT(*) FROM (SELECT 1 FROM %s LIMIT %d) AS t',
+            $matches['table'],
+            self::MORE_PRECISE_ROWS_COUNT + 1
+        );
+
+        /** @var int|false $result */
+        $result = $this->getConnection()
+            ->executeQuery($sql)
+            ->fetchOne();
+
+        return $result !== false ? (int)$result : null;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     private function getTotalItemsForLargeDataset(OrmQueryBuilder|DbalQueryBuilder $queryBuilder): ?int
     {
         $connection = $this->getConnection();
@@ -189,7 +217,11 @@ trait DoctrineCommonPaginatorTrait
             $matches = u($queryPlan)
                 ->match('/rows=(\d+)/');
 
-            return isset($matches[1]) ? (int)$matches[1] : null;
+            $count = isset($matches[1]) ? (int)$matches[1] : null;
+
+            return $platform instanceof PostgreSQLPlatform
+                ? $this->getMorePreciseCount($sql, $count)
+                : $count;
         }
 
         return null;
