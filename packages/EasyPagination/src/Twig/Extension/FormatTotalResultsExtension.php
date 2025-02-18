@@ -39,7 +39,7 @@ final class FormatTotalResultsExtension extends AbstractExtension
         }
 
         $suffix = '';
-        if ($numResults > 100_000 && $numResults < 1000_000) {
+        if ($numResults < 1000_000) {
             $numResults = \round($numResults / 1000);
             $suffix = 'K';
         }
