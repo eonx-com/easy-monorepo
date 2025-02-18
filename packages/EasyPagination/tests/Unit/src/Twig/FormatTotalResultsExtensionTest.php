@@ -65,7 +65,8 @@ final class FormatTotalResultsExtensionTest extends AbstractUnitTestCase
     public function testFormatTotalResults(int $numResults, array $expectedResult): void
     {
         $formatTotalResultsExtension = new FormatTotalResultsExtension(110_000);
-        $formatTotalResults = $formatTotalResultsExtension->getFunctions()[0]->getCallable();
+        $formatTotalResults = $formatTotalResultsExtension->getFunctions()[0]
+            ->getCallable();
         $result = $formatTotalResults($numResults);
 
         self::assertSame($expectedResult, $result);

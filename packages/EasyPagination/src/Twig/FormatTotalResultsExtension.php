@@ -30,7 +30,7 @@ final class FormatTotalResultsExtension extends AbstractExtension
      */
     private function formatTotalResults(int $numResults): array
     {
-        if($numResults <= $this->maxPreciseNumResults || $numResults <= 100_000){
+        if ($numResults <= $this->maxPreciseNumResults || $numResults <= 100_000) {
             return [
                 'numResults' => (string)$numResults,
                 'prefix' => null,
@@ -39,21 +39,21 @@ final class FormatTotalResultsExtension extends AbstractExtension
         }
 
         $suffix = '';
-        if($numResults > 100_000 && $numResults < 1000_000){
+        if ($numResults > 100_000 && $numResults < 1000_000) {
             $numResults = \round($numResults / 1000);
             $suffix = 'K';
         }
-        if($numResults >= 1000_000 && $numResults < 1000_000_000){
+        if ($numResults >= 1000_000 && $numResults < 1000_000_000) {
             $numResults = \round($numResults / 1000_000, 1);
             $suffix = 'M';
         }
-        if($numResults >= 1000_000_000){
+        if ($numResults >= 1000_000_000) {
             $numResults = \round($numResults / 1000_000_000, 2);
             $suffix = 'B';
         }
 
         $numResults = (string)$numResults;
-        if(\str_contains($numResults, '.') === true) {
+        if (\str_contains($numResults, '.') === true) {
             $numResults = \rtrim($numResults, '0');
         }
 
@@ -63,5 +63,4 @@ final class FormatTotalResultsExtension extends AbstractExtension
             'suffix' => $suffix,
         ];
     }
-
 }
