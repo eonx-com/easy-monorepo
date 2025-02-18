@@ -7,7 +7,7 @@ jobs:
     provide_packages_json:
         runs-on: ubuntu-latest
         env:
-            PHP_EXTENSIONS: 'pdo_sqlite, sockets, openswoole, pkcs11'
+            PHP_EXTENSIONS: 'pdo_sqlite, openswoole, pkcs11'
             PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
         steps:
             -
