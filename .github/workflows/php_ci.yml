@@ -28,7 +28,7 @@ jobs:
             EONX_EASY_QUALITY_JOB_SIZE: 20
             EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS: 32
             EONX_EASY_QUALITY_TIMEOUT_SECONDS: 120
-            PHP_EXTENSIONS: pdo_sqlite, openswoole, pkcs11
+            PHP_EXTENSIONS: pdo_sqlite, sockets, openswoole, pkcs11
             PHP_EXTENSIONS_CACHE_KEY: cache-extensions-pdo_sqlite-openswoole-pkcs11
 
         steps:
