@@ -52,7 +52,10 @@ final class FormatTotalResultsExtension extends AbstractExtension
             $suffix = 'B';
         }
 
-        $numResults = \rtrim((string)$numResults, '0');
+        $numResults = (string)$numResults;
+        if(\str_contains($numResults, '.') === true) {
+            $numResults = \rtrim($numResults, '0');
+        }
 
         return [
             'numResults' => \rtrim($numResults, '.'),

@@ -14,7 +14,7 @@ trait DoctrineCommonPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
 
-    private const DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION = 100000;
+    private const DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION = 100_000;
 
     private ?string $fromAlias = null;
 
@@ -22,9 +22,10 @@ trait DoctrineCommonPaginatorTrait
 
     private ?int $totalItems = null;
 
-    public function setMaxTotalCountForPreciseCalculation(int $maxTotalCountForPreciseCalculation): void
+    public function setMaxTotalCountForPreciseCalculation(?int $maxTotalCountForPreciseCalculation = null): void
     {
-        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation;
+        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation ??
+            self::DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION;
     }
 
     /**
@@ -228,7 +229,7 @@ trait DoctrineCommonPaginatorTrait
             $approximateTotalCount = isset($matches[1]) ? (int)$matches[1] : null;
 
             return $approximateTotalCount !== null &&
-                $approximateTotalCount <= $this->getMaxTotalCountForPreciseCalculation()
+            $approximateTotalCount <= $this->getMaxTotalCountForPreciseCalculation()
                 ? $this->calculatePreciseTotalCount($sql)
                 : $approximateTotalCount;
         }
