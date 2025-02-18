@@ -8,7 +8,7 @@ use Twig\TwigFunction;
 
 final class FormatTotalResultsExtension extends AbstractExtension
 {
-    private int $maxPreciseNumResults;
+    private readonly int $maxPreciseNumResults;
 
     public function __construct(?int $maxPreciseNumResults = null)
     {
@@ -53,7 +53,7 @@ final class FormatTotalResultsExtension extends AbstractExtension
         }
 
         $numResults = (string)$numResults;
-        if (\str_contains($numResults, '.') === true) {
+        if (\str_contains($numResults, '.')) {
             $numResults = \rtrim($numResults, '0');
         }
 
