@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyPagination\Tests\Unit\Twig;
+namespace EonX\EasyPagination\Tests\Unit\Twig\Extension;
 
-use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
-use EonX\EasyPagination\Twig\FormatTotalResultsExtension;
+use EonX\EasyPagination\Twig\Extension\FormatTotalResultsExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class FormatTotalResultsExtensionTest extends AbstractUnitTestCase
