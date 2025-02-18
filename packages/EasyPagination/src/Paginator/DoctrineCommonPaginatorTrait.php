@@ -14,11 +14,18 @@ trait DoctrineCommonPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
 
-    private const MORE_PRECISE_ROWS_COUNT = 100000;
+    private const DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION = 100000;
 
     private ?string $fromAlias = null;
 
+    private ?int $maxTotalCountForPreciseCalculation = null;
+
     private ?int $totalItems = null;
+
+    public function setMaxTotalCountForPreciseCalculation(int $maxTotalCountForPreciseCalculation): void
+    {
+        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation;
+    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -33,6 +40,28 @@ trait DoctrineCommonPaginatorTrait
         $queryBuilder
             ->setFirstResult(($this->getCurrentPage() - 1) * $this->getItemsPerPage())
             ->setMaxResults($this->getItemsPerPage());
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function calculatePreciseTotalCount(string $sql): ?int
+    {
+        $matches = u($sql)
+            ->match('/FROM (?P<table>[a-z_]+)/i');
+
+        $sql = \sprintf(
+            'SELECT COUNT(*) FROM (SELECT 1 FROM %s LIMIT %d) AS t',
+            $matches['table'],
+            $this->getMaxTotalCountForPreciseCalculation() + 1
+        );
+
+        /** @var int|false $result */
+        $result = $this->getConnection()
+            ->executeQuery($sql)
+            ->fetchOne();
+
+        return $result !== false ? (int)$result : null;
     }
 
     /**
@@ -135,30 +164,9 @@ trait DoctrineCommonPaginatorTrait
         return $this->fetchResults($queryBuilder);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function getMorePreciseCount(string $sql, ?int $count): ?int
+    private function getMaxTotalCountForPreciseCalculation(): int
     {
-        if ($count !== null && $count > self::MORE_PRECISE_ROWS_COUNT) {
-            return $count;
-        }
-
-        $matches = u($sql)
-            ->match('/FROM (?P<table>[a-z_]+)/i');
-
-        $sql = \sprintf(
-            'SELECT COUNT(*) FROM (SELECT 1 FROM %s LIMIT %d) AS t',
-            $matches['table'],
-            self::MORE_PRECISE_ROWS_COUNT + 1
-        );
-
-        /** @var int|false $result */
-        $result = $this->getConnection()
-            ->executeQuery($sql)
-            ->fetchOne();
-
-        return $result !== false ? (int)$result : null;
+        return $this->maxTotalCountForPreciseCalculation ?? self::DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION;
     }
 
     /**
@@ -217,11 +225,12 @@ trait DoctrineCommonPaginatorTrait
             $matches = u($queryPlan)
                 ->match('/rows=(\d+)/');
 
-            $count = isset($matches[1]) ? (int)$matches[1] : null;
+            $approximateTotalCount = isset($matches[1]) ? (int)$matches[1] : null;
 
-            return $platform instanceof PostgreSQLPlatform
-                ? $this->getMorePreciseCount($sql, $count)
-                : $count;
+            return $approximateTotalCount !== null &&
+                $approximateTotalCount <= $this->getMaxTotalCountForPreciseCalculation()
+                ? $this->calculatePreciseTotalCount($sql)
+                : $approximateTotalCount;
         }
 
         return null;

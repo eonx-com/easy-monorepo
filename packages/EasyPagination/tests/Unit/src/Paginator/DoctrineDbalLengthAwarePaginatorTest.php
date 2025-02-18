@@ -4,16 +4,22 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Result;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 use Symfony\Component\Uid\Uuid;
 
 final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPaginatorTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @see testPaginator
      */
@@ -352,6 +358,24 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
     }
 
     /**
+     * @see testPaginatorGetTotalItems
+     */
+    public static function provideRowsCount(): iterable
+    {
+        yield 'With precise calculation' => [
+            'approximateRowsCount' => 10000,
+            'preciseRowsCount' => 10,
+            'expectedRowsCount' => 10000,
+        ];
+
+        yield 'Without precise calculation' => [
+            'approximateRowsCount' => 99,
+            'preciseRowsCount' => 97,
+            'expectedRowsCount' => 97,
+        ];
+    }
+
+    /**
      * @throws \Doctrine\DBAL\Exception
      */
     #[DataProvider('providePaginatorData')]
@@ -368,5 +392,46 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
 
         $setup($connection, $paginator);
         $assert($paginator);
+    }
+
+    #[DataProvider('provideRowsCount')]
+    public function testPaginatorGetTotalItems(
+        int $approximateRowsCount,
+        int $preciseRowsCount,
+        int $expectedRowsCount,
+    ): void {
+        $connection = $this->prophesize(Connection::class);
+        $connection
+            ->createQueryBuilder()
+            ->willReturn($this->getDoctrineDbalConnection()->createQueryBuilder());
+        $connection
+            ->getDatabasePlatform()
+            ->willReturn(new SqlitePlatform());
+        $result = $this->prophesize(Result::class);
+        $connection
+            ->executeQuery(Argument::any(), [], [])
+            ->willReturn($result->reveal());
+        $result
+            ->fetchAssociative()
+            ->willReturn([
+                'QUERY PLAN' => \sprintf('rows=%d', $approximateRowsCount),
+            ]);
+        $connection
+            ->executeQuery('SELECT COUNT(*) FROM (SELECT 1 FROM items LIMIT 101) AS t')
+            ->willReturn($result->reveal());
+        $result
+            ->fetchOne()
+            ->willReturn($preciseRowsCount);
+        $paginator = new DoctrineDbalLengthAwarePaginator(
+            Pagination::create(1, 1),
+            $connection->reveal(),
+            'items',
+            'i'
+        );
+        self::createItemsTable($this->getDoctrineDbalConnection());
+        $paginator->setLargeDatasetEnabled();
+        $paginator->setMaxTotalCountForPreciseCalculation(100);
+
+        self::assertEquals($expectedRowsCount, $paginator->getTotalItems());
     }
 }
