@@ -16,7 +16,14 @@ trait DoctrineCommonPaginatorTrait
 
     private ?string $fromAlias = null;
 
+    private int $maxTotalCountForPreciseCalculation = 100_000;
+
     private ?int $totalItems = null;
+
+    public function setMaxTotalCountForPreciseCalculation(int $maxTotalCountForPreciseCalculation): void
+    {
+        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation;
+    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -31,6 +38,28 @@ trait DoctrineCommonPaginatorTrait
         $queryBuilder
             ->setFirstResult(($this->getCurrentPage() - 1) * $this->getItemsPerPage())
             ->setMaxResults($this->getItemsPerPage());
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function calculatePreciseTotalCount(string $sql): ?int
+    {
+        $matches = u($sql)
+            ->match('/FROM (?P<table>[a-z_]+)/i');
+
+        $sql = \sprintf(
+            'SELECT COUNT(*) FROM (SELECT 1 FROM %s LIMIT %d) AS t',
+            $matches['table'],
+            $this->maxTotalCountForPreciseCalculation + 1
+        );
+
+        /** @var int|false $result */
+        $result = $this->getConnection()
+            ->executeQuery($sql)
+            ->fetchOne();
+
+        return $result !== false ? (int)$result : null;
     }
 
     /**
@@ -189,7 +218,12 @@ trait DoctrineCommonPaginatorTrait
             $matches = u($queryPlan)
                 ->match('/rows=(\d+)/');
 
-            return isset($matches[1]) ? (int)$matches[1] : null;
+            $approximateTotalCount = isset($matches[1]) ? (int)$matches[1] : null;
+
+            return $approximateTotalCount !== null &&
+            $approximateTotalCount <= $this->maxTotalCountForPreciseCalculation
+                ? $this->calculatePreciseTotalCount($sql)
+                : $approximateTotalCount;
         }
 
         return null;

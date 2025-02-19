@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Pagination\Pagination;
@@ -11,10 +14,14 @@ use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Uid\UuidV6;
 
 final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPaginatorTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @see testPaginator
      */
@@ -227,6 +234,24 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
     }
 
     /**
+     * @see testPaginatorGetTotalItems
+     */
+    public static function provideRowsCount(): iterable
+    {
+        yield 'With precise calculation' => [
+            'approximateRowsCount' => 10000,
+            'preciseRowsCount' => 10,
+            'expectedRowsCount' => 10000,
+        ];
+
+        yield 'Without precise calculation' => [
+            'approximateRowsCount' => 99,
+            'preciseRowsCount' => 97,
+            'expectedRowsCount' => 97,
+        ];
+    }
+
+    /**
      * @param class-string $from
      */
     #[DataProvider('providePaginatorData')]
@@ -244,5 +269,51 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
 
         $setup($entityManager, $paginator);
         $assert($paginator);
+    }
+
+    #[DataProvider('provideRowsCount')]
+    public function testPaginatorGetTotalItems(
+        int $approximateRowsCount,
+        int $preciseRowsCount,
+        int $expectedRowsCount,
+    ): void {
+        $connection = $this->prophesize(Connection::class);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $entityManager
+            ->createQueryBuilder()
+            ->willReturn($this->getEntityManager()->createQueryBuilder());
+        $entityManager
+            ->getConnection()
+            ->willReturn($connection->reveal());
+        $connection
+            ->getDatabasePlatform()
+            ->willReturn(new PostgreSQLPlatform());
+        $result = $this->prophesize(Result::class);
+        $connection
+            ->executeQuery(Argument::any(), [], [])
+            ->willReturn($result->reveal());
+        $result
+            ->fetchAssociative()
+            ->willReturn([
+                'QUERY PLAN' => \sprintf('rows=%d', $approximateRowsCount),
+            ]);
+        $connection
+            ->executeQuery('SELECT COUNT(*) FROM (SELECT 1 FROM items LIMIT 101) AS t')
+            ->willReturn($result->reveal());
+        $result
+            ->fetchOne()
+            ->willReturn($preciseRowsCount);
+        $paginator = new DoctrineOrmLengthAwarePaginator(
+            Pagination::create(1, 1),
+            $entityManager->reveal(),
+            Item::class,
+            'i',
+            null
+        );
+        self::createItemsTable($this->getEntityManager());
+        $paginator->setLargeDatasetEnabled();
+        $paginator->setMaxTotalCountForPreciseCalculation(100);
+
+        self::assertEquals($expectedRowsCount, $paginator->getTotalItems());
     }
 }

@@ -19,6 +19,7 @@
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
         "laravel/lumen-framework": "^11.0",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2",
         "symfony/uid": "^7.1"
     },
