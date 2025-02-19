@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\EasyErrorHandler\Trait;
 
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
+use EonX\EasyTest\EasyErrorHandler\ErrorHandler\TraceableErrorHandlerStub;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
 
@@ -22,6 +23,7 @@ trait EasyErrorHandlerAssertionTrait
     public function setUpEasyErrorHandler(): void
     {
         self::$errorHandlerReportedErrors = null;
+        TraceableErrorHandlerStub::reset();
     }
 
     #[After]
@@ -118,11 +120,9 @@ trait EasyErrorHandlerAssertionTrait
             return self::$errorHandlerReportedErrors;
         }
 
-        /** @var \EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface $errorHandler */
-        $errorHandler = self::getService(ErrorHandlerInterface::class);
         self::$errorHandlerReportedErrors = [];
 
-        foreach ($errorHandler->getReportedErrors() as $exception) {
+        foreach (TraceableErrorHandlerStub::getAllReportedErrors() as $exception) {
             if (\is_int($exception->getCode()) && $exception->getCode() !== 0) {
                 self::$errorHandlerReportedErrors[] = $exception->getCode();
             }
