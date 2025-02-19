@@ -80,7 +80,10 @@ final class EasyAsyncServiceProvider extends ServiceProvider
                     ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel->value]
                     : [];
 
-                return $app->make(LoggerInterface::class, $loggerParams);
+                /** @var \Psr\Log\LoggerInterface $logger */
+                $logger = $app->make(LoggerInterface::class, $loggerParams);
+
+                return $logger;
             }
         );
     }
