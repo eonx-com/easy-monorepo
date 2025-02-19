@@ -231,22 +231,6 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 self::assertEquals(2, $paginator->getTotalItems());
             },
         ];
-
-        yield '2 items, 1 perPage 2' => [
-            Pagination::create(1, 1),
-            Item::class,
-            'i',
-            null,
-            function (EntityManagerInterface $manager): void {
-                self::createItemsTable($manager);
-                self::addItemToTable($manager, 'my-title');
-                self::addItemToTable($manager, 'my-title-1');
-            },
-            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
-                self::assertCount(1, $paginator->getItems());
-                self::assertEquals(2, $paginator->getTotalItems());
-            },
-        ];
     }
 
     /**

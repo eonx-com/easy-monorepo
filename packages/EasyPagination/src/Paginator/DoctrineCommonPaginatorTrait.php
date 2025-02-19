@@ -14,18 +14,15 @@ trait DoctrineCommonPaginatorTrait
 {
     use DatabaseCommonPaginatorTrait;
 
-    private const DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION = 100_000;
-
     private ?string $fromAlias = null;
 
-    private ?int $maxTotalCountForPreciseCalculation = null;
+    private int $maxTotalCountForPreciseCalculation = 100_000;
 
     private ?int $totalItems = null;
 
-    public function setMaxTotalCountForPreciseCalculation(?int $maxTotalCountForPreciseCalculation = null): void
+    public function setMaxTotalCountForPreciseCalculation(int $maxTotalCountForPreciseCalculation): void
     {
-        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation ??
-            self::DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION;
+        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation;
     }
 
     /**
@@ -54,7 +51,7 @@ trait DoctrineCommonPaginatorTrait
         $sql = \sprintf(
             'SELECT COUNT(*) FROM (SELECT 1 FROM %s LIMIT %d) AS t',
             $matches['table'],
-            $this->getMaxTotalCountForPreciseCalculation() + 1
+            $this->maxTotalCountForPreciseCalculation + 1
         );
 
         /** @var int|false $result */
@@ -165,11 +162,6 @@ trait DoctrineCommonPaginatorTrait
         return $this->fetchResults($queryBuilder);
     }
 
-    private function getMaxTotalCountForPreciseCalculation(): int
-    {
-        return $this->maxTotalCountForPreciseCalculation ?? self::DEFAULT_MAX_TOTAL_COUNT_FOR_PRECISE_CALCULATION;
-    }
-
     /**
      * @throws \Doctrine\DBAL\Exception
      */
@@ -229,7 +221,7 @@ trait DoctrineCommonPaginatorTrait
             $approximateTotalCount = isset($matches[1]) ? (int)$matches[1] : null;
 
             return $approximateTotalCount !== null &&
-            $approximateTotalCount <= $this->getMaxTotalCountForPreciseCalculation()
+            $approximateTotalCount <= $this->maxTotalCountForPreciseCalculation
                 ? $this->calculatePreciseTotalCount($sql)
                 : $approximateTotalCount;
         }
