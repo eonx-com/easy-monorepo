@@ -20,7 +20,8 @@
     },
     "autoload": {
         "psr-4": {
-            "EonX\\EasyTest\\": "src"
+            "EonX\\EasyTest\\": "src",
+            "EonX\\EasyTest\\Bundle\\": "bundle"
         }
     },
     "autoload-dev": {
