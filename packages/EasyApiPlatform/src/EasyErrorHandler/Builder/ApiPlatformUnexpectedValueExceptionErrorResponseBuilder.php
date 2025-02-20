@@ -62,6 +62,7 @@ final class ApiPlatformUnexpectedValueExceptionErrorResponseBuilder extends
     {
         $message = $this->translator->trans('violations.invalid_iri', []);
 
+        dump($throwable->getTrace());
         if (
             isset($throwable->getTrace()[0]['args'])
             && \is_array($throwable->getTrace()[0]['args'][3])
