@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
+use ReflectionMethod;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Throwable;
@@ -60,9 +61,27 @@ final class ApiPlatformUnexpectedValueExceptionErrorResponseBuilder extends
 
     private function buildViolationForInvalidIri(UnexpectedValueException $throwable): array
     {
+        $frame = $throwable->getTrace()[0];
+
+//        foreach ($trace as $frame) {
+        if (isset($frame['class']) && isset($frame['function'])) {
+            $method = new ReflectionMethod($frame['class'], $frame['function']);
+            $params = $method->getParameters();
+            $args = $frame['args'] ?? [];
+
+            $namedArgs = [];
+            foreach ($params as $index => $param) {
+                $paramName = $param->getName();
+                $paramValue = $args[$index] ?? null;
+                $namedArgs[$paramName] = $paramValue;
+            }
+
+            print_r($namedArgs);
+        }
+//        }
+
         $message = $this->translator->trans('violations.invalid_iri', []);
 
-        dump($throwable->getTrace());
         if (
             isset($throwable->getTrace()[0]['args'])
             && \is_array($throwable->getTrace()[0]['args'][3])
