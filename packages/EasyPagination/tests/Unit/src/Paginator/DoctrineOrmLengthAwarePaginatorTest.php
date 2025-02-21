@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Pagination\PaginationInterface;
@@ -279,9 +280,22 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
     ): void {
         $connection = $this->prophesize(Connection::class);
         $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $queryBuilder = $this->prophesize(QueryBuilder::class);
+        $query = $this->prophesize(Query::class);
+        $queryBuilder
+            ->from(Item::class, 'i', null)
+            ->willReturn($queryBuilder->reveal());
         $entityManager
             ->createQueryBuilder()
-            ->willReturn($this->getEntityManager()->createQueryBuilder());
+            ->willReturn($queryBuilder->reveal());
+        $queryBuilder
+            ->getQuery()
+            ->willReturn($query->reveal());
+        $query->getSQL()
+            ->willReturn('some sql');
+        $queryBuilder
+            ->getParameters()
+            ->willReturn([]);
         $entityManager
             ->getConnection()
             ->willReturn($connection->reveal());
@@ -297,12 +311,15 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn([
                 'QUERY PLAN' => \sprintf('rows=%d', $approximateRowsCount),
             ]);
-        $connection
-            ->executeQuery('SELECT COUNT(*) FROM (SELECT 1 FROM items LIMIT 101) AS t')
-            ->willReturn($result->reveal());
-        $result
-            ->fetchOne()
-            ->willReturn($preciseRowsCount);
+        $queryBuilder
+            ->select(1)
+            ->shouldBeCalled();
+        $queryBuilder
+            ->select('COUNT(DISTINCT i.id) as _count_i')
+            ->willReturn($queryBuilder->reveal());
+        $query
+            ->getResult()
+            ->willReturn([['_count_i' => $preciseRowsCount]]);
         $paginator = new DoctrineOrmLengthAwarePaginator(
             Pagination::create(1, 1),
             $entityManager->reveal(),

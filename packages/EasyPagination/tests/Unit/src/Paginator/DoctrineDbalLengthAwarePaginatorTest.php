@@ -417,11 +417,8 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 'QUERY PLAN' => \sprintf('rows=%d', $approximateRowsCount),
             ]);
         $connection
-            ->executeQuery('SELECT COUNT(*) FROM (SELECT 1 FROM items LIMIT 101) AS t')
-            ->willReturn($result->reveal());
-        $result
-            ->fetchOne()
-            ->willReturn($preciseRowsCount);
+            ->fetchAllAssociative('SELECT COUNT(DISTINCT i.id) as _count_i FROM items i', [], [])
+            ->willReturn([['_count_i' => $preciseRowsCount]]);
         $paginator = new DoctrineDbalLengthAwarePaginator(
             Pagination::create(1, 1),
             $connection->reveal(),
