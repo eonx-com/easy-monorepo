@@ -16,7 +16,21 @@ trait DoctrineCommonPaginatorTrait
 
     private ?string $fromAlias = null;
 
+    private int $largeDatasetPaginationPreciseResultsLimit = 100_000;
+
     private ?int $totalItems = null;
+
+    public function getLargeDatasetPaginationPreciseResultsLimit(): int
+    {
+        return $this->largeDatasetPaginationPreciseResultsLimit;
+    }
+
+    public function setLargeDatasetPaginationPreciseResultsLimit(int $largeDatasetPaginationPreciseResultsLimit): self
+    {
+        $this->largeDatasetPaginationPreciseResultsLimit = $largeDatasetPaginationPreciseResultsLimit;
+
+        return $this;
+    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -205,17 +219,5 @@ trait DoctrineCommonPaginatorTrait
                 && \str_contains(\strtoupper($queryBuilder->getSQL()), 'JOIN')
             )
             || $this->hasJoinsInQuery;
-    }
-
-    public function setLargeDatasetPaginationPreciseResultsLimit(int $largeDatasetPaginationPreciseResultsLimit): self
-    {
-        $this->largeDatasetPaginationPreciseResultsLimit = $largeDatasetPaginationPreciseResultsLimit;
-
-        return $this;
-    }
-
-    public function getLargeDatasetPaginationPreciseResultsLimit(): int
-    {
-        return $this->largeDatasetPaginationPreciseResultsLimit;
     }
 }

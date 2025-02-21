@@ -20,8 +20,4 @@ interface LengthAwarePaginatorInterface extends PaginatorInterface
     public function isLargeDatasetEnabled(): bool;
 
     public function setLargeDatasetEnabled(?bool $largeDatasetEnabled = null): self;
-
-    public function getLargeDatasetPaginationPreciseResultsLimit(): int;
-
-    public function setLargeDatasetPaginationPreciseResultsLimit(int $largeDatasetPaginationPreciseResultsLimit): self;
 }
