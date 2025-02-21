@@ -88,6 +88,7 @@ parameters:
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineDbalLengthAwarePaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Parameter \#1 \$queryBuilder of method EonX\\EasyPagination\\Paginator\\DoctrineDbalPaginator\:\:fetchResults\(\) expects Doctrine\\DBAL\\Query\\QueryBuilder, Doctrine\\DBAL\\Query\\QueryBuilder\|Doctrine\\ORM\\QueryBuilder given#'
         - '#Call to an undefined method EonX\\EasyPagination\\Paginator\\Doctrine(Dbal|Orm)Paginator\:\:isLargeDatasetEnabled\(\)#'
+        - '#Call to an undefined method EonX\\EasyPagination\\Paginator\\Doctrine(Dbal|Orm)Paginator\:\:getMaxTotalCountForPreciseCalculation\(\)#'
 
         - message: '#Method EonX\\EasyPagination\\Paginator\\.* with generic class Illuminate\\Database\\.* does not specify its types.*#'
           path: %currentWorkingDirectory%/packages/EasyPagination/src/Paginator

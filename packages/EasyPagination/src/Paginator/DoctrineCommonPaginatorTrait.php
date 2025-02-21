@@ -7,6 +7,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
+
 use function Symfony\Component\String\u;
 
 trait DoctrineCommonPaginatorTrait
@@ -14,8 +15,6 @@ trait DoctrineCommonPaginatorTrait
     use DatabaseCommonPaginatorTrait;
 
     private ?string $fromAlias = null;
-
-    private int $maxTotalCountForPreciseCalculation = 100_000;
 
     private ?int $totalItems = null;
 
