@@ -7,7 +7,6 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-
 use function Symfony\Component\String\u;
 
 trait DoctrineCommonPaginatorTrait
@@ -19,11 +18,6 @@ trait DoctrineCommonPaginatorTrait
     private int $maxTotalCountForPreciseCalculation = 100_000;
 
     private ?int $totalItems = null;
-
-    public function setMaxTotalCountForPreciseCalculation(int $maxTotalCountForPreciseCalculation): void
-    {
-        $this->maxTotalCountForPreciseCalculation = $maxTotalCountForPreciseCalculation;
-    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -43,28 +37,6 @@ trait DoctrineCommonPaginatorTrait
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    private function calculatePreciseTotalCount(string $sql): ?int
-    {
-        $matches = u($sql)
-            ->match('/FROM (?P<table>[a-z_]+)/i');
-
-        $sql = \sprintf(
-            'SELECT COUNT(*) FROM (SELECT 1 FROM %s LIMIT %d) AS t',
-            $matches['table'],
-            $this->maxTotalCountForPreciseCalculation + 1
-        );
-
-        /** @var int|false $result */
-        $result = $this->getConnection()
-            ->executeQuery($sql)
-            ->fetchOne();
-
-        return $result !== false ? (int)$result : null;
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
     private function doGetTotalItems(): int
     {
         if ($this->totalItems !== null) {
@@ -77,10 +49,12 @@ trait DoctrineCommonPaginatorTrait
         $this->applyFilterCriteria($queryBuilder);
 
         if ($this->isLargeDatasetEnabled()) {
-            $totalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
+            $approximateTotalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
 
-            if ($totalItems !== null) {
-                return $this->totalItems = $totalItems;
+            if ($approximateTotalItems !== null &&
+                $approximateTotalItems > $this->getMaxTotalCountForPreciseCalculation()
+            ) {
+                return $this->totalItems = $approximateTotalItems;
             }
         }
 
@@ -218,12 +192,7 @@ trait DoctrineCommonPaginatorTrait
             $matches = u($queryPlan)
                 ->match('/rows=(\d+)/');
 
-            $approximateTotalCount = isset($matches[1]) ? (int)$matches[1] : null;
-
-            return $approximateTotalCount !== null &&
-            $approximateTotalCount <= $this->maxTotalCountForPreciseCalculation
-                ? $this->calculatePreciseTotalCount($sql)
-                : $approximateTotalCount;
+            return isset($matches[1]) ? (int)$matches[1] : null;
         }
 
         return null;
