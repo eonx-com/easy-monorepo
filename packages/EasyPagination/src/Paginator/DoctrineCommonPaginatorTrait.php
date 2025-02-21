@@ -206,4 +206,16 @@ trait DoctrineCommonPaginatorTrait
             )
             || $this->hasJoinsInQuery;
     }
+
+    public function setLargeDatasetPaginationPreciseResultsLimit(int $largeDatasetPaginationPreciseResultsLimit): self
+    {
+        $this->largeDatasetPaginationPreciseResultsLimit = $largeDatasetPaginationPreciseResultsLimit;
+
+        return $this;
+    }
+
+    public function getLargeDatasetPaginationPreciseResultsLimit(): int
+    {
+        return $this->largeDatasetPaginationPreciseResultsLimit;
+    }
 }

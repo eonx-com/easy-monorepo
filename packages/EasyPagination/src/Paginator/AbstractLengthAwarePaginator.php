@@ -21,10 +21,7 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
         return $this->getPageUrl($this->getTotalPages());
     }
 
-    public function getLargeDatasetPaginationPreciseResultsLimit(): int
-    {
-        return $this->largeDatasetPaginationPreciseResultsLimit;
-    }
+
 
     public function getTotalPages(): int
     {
@@ -53,13 +50,6 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
     public function setLargeDatasetEnabled(?bool $largeDatasetEnabled = null): self
     {
         $this->largeDatasetEnabled = $largeDatasetEnabled ?? true;
-
-        return $this;
-    }
-
-    public function setLargeDatasetPaginationPreciseResultsLimit(int $largeDatasetPaginationPreciseResultsLimit): self
-    {
-        $this->largeDatasetPaginationPreciseResultsLimit = $largeDatasetPaginationPreciseResultsLimit;
 
         return $this;
     }
