@@ -329,7 +329,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
         );
         self::createItemsTable($this->getEntityManager());
         $paginator->setLargeDatasetEnabled();
-        $paginator->setMaxTotalCountForPreciseCalculation(100);
+        $paginator->setLargeDatasetPaginationPreciseResultsLimit(100);
 
         self::assertEquals($expectedRowsCount, $paginator->getTotalItems());
     }

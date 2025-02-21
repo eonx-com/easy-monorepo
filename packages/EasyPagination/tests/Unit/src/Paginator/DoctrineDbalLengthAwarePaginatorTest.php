@@ -427,7 +427,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
         );
         self::createItemsTable($this->getDoctrineDbalConnection());
         $paginator->setLargeDatasetEnabled();
-        $paginator->setMaxTotalCountForPreciseCalculation(100);
+        $paginator->setLargeDatasetPaginationPreciseResultsLimit(100);
 
         self::assertEquals($expectedRowsCount, $paginator->getTotalItems());
     }

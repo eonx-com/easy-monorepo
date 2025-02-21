@@ -51,7 +51,7 @@ trait DoctrineCommonPaginatorTrait
             $approximateTotalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
 
             if ($approximateTotalItems !== null &&
-                $approximateTotalItems > $this->getMaxTotalCountForPreciseCalculation()
+                $approximateTotalItems > $this->getLargeDatasetPaginationPreciseResultsLimit()
             ) {
                 return $this->totalItems = $approximateTotalItems;
             }
