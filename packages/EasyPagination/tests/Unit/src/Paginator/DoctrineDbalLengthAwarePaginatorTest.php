@@ -362,13 +362,13 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
      */
     public static function provideRowsCount(): iterable
     {
-        yield 'With precise calculation' => [
+        yield 'Without precise calculation' => [
             'approximateRowsCount' => 10000,
             'preciseRowsCount' => 10,
             'expectedRowsCount' => 10000,
         ];
 
-        yield 'Without precise calculation' => [
+        yield 'With precise calculation' => [
             'approximateRowsCount' => 99,
             'preciseRowsCount' => 97,
             'expectedRowsCount' => 97,
