@@ -16,7 +16,21 @@ trait DoctrineCommonPaginatorTrait
 
     private ?string $fromAlias = null;
 
+    private int $largeDatasetPaginationPreciseResultsLimit = 100_000;
+
     private ?int $totalItems = null;
+
+    public function getLargeDatasetPaginationPreciseResultsLimit(): int
+    {
+        return $this->largeDatasetPaginationPreciseResultsLimit;
+    }
+
+    public function setLargeDatasetPaginationPreciseResultsLimit(int $largeDatasetPaginationPreciseResultsLimit): self
+    {
+        $this->largeDatasetPaginationPreciseResultsLimit = $largeDatasetPaginationPreciseResultsLimit;
+
+        return $this;
+    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -48,10 +62,12 @@ trait DoctrineCommonPaginatorTrait
         $this->applyFilterCriteria($queryBuilder);
 
         if ($this->isLargeDatasetEnabled()) {
-            $totalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
+            $approximateTotalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
 
-            if ($totalItems !== null) {
-                return $this->totalItems = $totalItems;
+            if ($approximateTotalItems !== null &&
+                $approximateTotalItems > $this->getLargeDatasetPaginationPreciseResultsLimit()
+            ) {
+                return $this->totalItems = $approximateTotalItems;
             }
         }
 
