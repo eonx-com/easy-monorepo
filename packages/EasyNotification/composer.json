@@ -13,7 +13,8 @@
         "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.1",
         "symfony/http-client": "^7.1.8",
-        "symfony/http-kernel": "^7.1"
+        "symfony/http-kernel": "^7.1",
+        "symfony/uid": "^7.1"
     },
     "require-dev": {
         "laravel/lumen-framework": "^11.0",

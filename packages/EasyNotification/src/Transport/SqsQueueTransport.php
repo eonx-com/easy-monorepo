@@ -5,6 +5,7 @@ namespace EonX\EasyNotification\Transport;
 
 use Aws\Sqs\SqsClient;
 use EonX\EasyNotification\Message\QueueMessageInterface;
+use Symfony\Component\Uid\Uuid;
 
 final readonly class SqsQueueTransport implements QueueTransportInterface
 {
@@ -15,15 +16,25 @@ final readonly class SqsQueueTransport implements QueueTransportInterface
 
     public function send(QueueMessageInterface $queueMessage): void
     {
-        $this->sqs->sendMessage([
+        $queueUrl = $queueMessage->getQueueUrl();
+        $args = [
             'MessageAttributes' => $this->formatHeaders($queueMessage->getHeaders()),
             'MessageBody' => $queueMessage->getBody(),
-            'QueueUrl' => $queueMessage->getQueueUrl(),
-        ]);
+            'QueueUrl' => $queueUrl,
+        ];
+
+        if (\str_ends_with($queueUrl, '.fifo')) {
+            $args['MessageDeduplicationId'] = (string)Uuid::v4();
+            $args['MessageGroupId'] = (string)Uuid::v4();
+        }
+
+        $this->sqs->sendMessage($args);
     }
 
     /**
      * @param string[] $headers
+     *
+     * @return array
      */
     private function formatHeaders(array $headers): array
     {
