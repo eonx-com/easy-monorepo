@@ -5,10 +5,13 @@ namespace EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\InvoiceInputDtoWithConstructor;
 
 #[ApiResource(
     operations: [
-        new Post(),
+        new Post(
+            input: InvoiceInputDtoWithConstructor::class
+        ),
     ]
 )]
 final class Invoice

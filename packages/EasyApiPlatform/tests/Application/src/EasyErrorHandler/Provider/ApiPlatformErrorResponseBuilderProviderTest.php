@@ -226,6 +226,19 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
         ];
 
+        yield 'invalid IRI type when input dto' => [
+            'url' => '/invoices',
+            'json' => [
+                'payment' => 'some invalid iri',
+            ],
+            'violations' => [
+                'payment' => [
+                    'This value should be an IRI.',
+                ],
+            ],
+            'exceptionMessage' => 'Invalid IRI "some invalid iri".',
+        ];
+
         yield 'different object IRI when constructor parameter' => [
             'url' => '/books',
             'json' => [
