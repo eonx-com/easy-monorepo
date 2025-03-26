@@ -18,6 +18,7 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
     ];
 
     private const SKIP_DIRS = [
+        'Aws',
         'AwsRds',
         'CompilerPass',
         'bundles',
