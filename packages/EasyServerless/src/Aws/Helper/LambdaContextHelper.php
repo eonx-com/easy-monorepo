@@ -7,12 +7,12 @@ final class LambdaContextHelper
 {
     public static function getInvocationContext(): array
     {
-        return \json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]', true);
+        return (array)\json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]', true);
     }
 
     public static function getRequestContext(): array
     {
-        return \json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]', true);
+        return (array)\json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]', true);
     }
 
     public static function inLambda(): bool

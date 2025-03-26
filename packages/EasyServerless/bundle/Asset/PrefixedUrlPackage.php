@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Bundle\Asset;
 
 use Symfony\Component\Asset\PackageInterface;
+
 use function Symfony\Component\String\u;
 
 final readonly class PrefixedUrlPackage implements PackageInterface

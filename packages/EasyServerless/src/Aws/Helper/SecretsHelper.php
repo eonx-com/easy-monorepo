@@ -18,7 +18,7 @@ final class SecretsHelper
             ->getSecretString();
 
         if (\json_validate($value ?? '')) {
-            foreach (\json_decode($value ?? '{}') as $key => $value) {
+            foreach ((array)\json_decode($value ?? '{}', true) as $key => $value) {
                 $_ENV[$key] = $value;
                 $_SERVER[$key] = $value;
             }

@@ -25,7 +25,7 @@ final class DecoratePathPackagesToUseUrlCompilerPass implements CompilerPassInte
             $packageDefinition = $container->getDefinition($id);
             $packageClass = $packageDefinition->getClass();
 
-            if (\is_a($packageClass, UrlPackage::class, true)) {
+            if (\is_string($packageClass) === false || \is_a($packageClass, UrlPackage::class, true)) {
                 continue;
             }
 
