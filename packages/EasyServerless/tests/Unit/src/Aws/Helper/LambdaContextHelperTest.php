@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Unit\src\Aws\Helper;
+namespace EonX\EasyServerless\Tests\Unit\src\Aws\Helper;
 
 use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;

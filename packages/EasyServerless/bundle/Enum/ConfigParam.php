@@ -9,4 +9,3 @@ enum ConfigParam: string
 
     case AssetsSeparateDomainUrl = 'easy_serverless.assets_separate_domain.url';
 }
-
