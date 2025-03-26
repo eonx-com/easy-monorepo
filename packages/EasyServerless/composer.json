@@ -26,6 +26,11 @@
             "EonX\\EasyServerless\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "6.9-dev"
