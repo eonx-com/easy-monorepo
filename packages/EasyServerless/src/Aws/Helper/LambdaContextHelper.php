@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Aws;
+namespace EonX\EasyServerless\Aws\Helper;
 
 final class LambdaContextHelper
 {

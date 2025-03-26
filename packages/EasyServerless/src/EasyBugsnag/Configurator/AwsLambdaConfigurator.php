@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\EasyBugsnag;
+namespace EonX\EasyServerless\EasyBugsnag\Configurator;
 
 use Bugsnag\Client;
 use EonX\EasyBugsnag\Common\Configurator\AbstractClientConfigurator;
-use EonX\EasyServerless\Aws\LambdaContextHelper;
+use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 
 final class AwsLambdaConfigurator extends AbstractClientConfigurator
 {
