@@ -1,0 +1,34 @@
+{
+    "name": "eonx-com/easy-serverless",
+    "description": "Reusable functionalities to ease running PHP applications in serverless context",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "async-aws/secrets-manager": "^2.5"
+    },
+    "require-dev": {
+        "bref/bref": "^2.3.15",
+        "bref/symfony-bridge": "^1.0.3",
+        "bref/symfony-messenger": "^1.3.4",
+        "phpunit/phpunit": "^10.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyServerless\\": "src",
+            "EonX\\EasyServerless\\Bundle\\": "bundle"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyServerless\\Tests\\": "tests",
+            "EonX\\EasyServerless\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyServerless\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "6.9-dev"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasyServerless\Bundle\Asset;
+
+use Symfony\Component\Asset\PackageInterface;
+use function Symfony\Component\String\u;
+
+final readonly class UrlPackageDecorator implements PackageInterface
+{
+    public function __construct(private string $assetsUrl, private PackageInterface $decorated)
+    {
+    }
+
+    public function getVersion(string $path): string
+    {
+        return $this->decorated->getVersion($path);
+    }
+
+    public function getUrl(string $path): string
+    {
+        $baseUrl = u($this->assetsUrl)->trimEnd('/');
+        $path = u($this->decorated->getUrl($path))->trimStart('/');
+
+        return \sprintf('%s/%s', $baseUrl, $path);
+    }
+}
