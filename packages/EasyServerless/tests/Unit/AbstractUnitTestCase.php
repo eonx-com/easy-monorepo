@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -13,8 +12,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractUnitTestCase extends TestCase
 {
-    use ProphecyTrait;
-
     protected function tearDown(): void
     {
         $filesystem = new Filesystem();
