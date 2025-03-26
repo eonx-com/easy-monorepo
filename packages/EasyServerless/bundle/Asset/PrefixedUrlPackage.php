@@ -6,7 +6,7 @@ namespace EonX\EasyServerless\Bundle\Asset;
 use Symfony\Component\Asset\PackageInterface;
 use function Symfony\Component\String\u;
 
-final readonly class UrlPackageDecorator implements PackageInterface
+final readonly class PrefixedUrlPackage implements PackageInterface
 {
     public function __construct(private string $assetsUrl, private PackageInterface $decorated)
     {

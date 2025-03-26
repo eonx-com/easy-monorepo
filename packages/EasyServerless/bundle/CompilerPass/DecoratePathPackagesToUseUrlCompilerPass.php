@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle\CompilerPass;
 
-use EonX\EasyServerless\Bundle\Asset\UrlPackageDecorator;
+use EonX\EasyServerless\Bundle\Asset\PrefixedUrlPackage;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -29,7 +29,7 @@ final class DecoratePathPackagesToUseUrlCompilerPass implements CompilerPassInte
                 continue;
             }
 
-            $decoratorDefinition = (new Definition(UrlPackageDecorator::class))
+            $decoratorDefinition = (new Definition(PrefixedUrlPackage::class))
                 ->setDecoratedService($id)
                 ->setArgument('$assetsUrl', $container->getParameter(ConfigParam::AssetsSeparateDomainUrl->value))
                 ->setArgument('$decorated', new Reference('.inner'));
