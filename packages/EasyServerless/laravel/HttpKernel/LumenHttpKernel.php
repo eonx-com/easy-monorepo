@@ -1,14 +1,17 @@
 <?php
 declare(strict_types=1);
 
+namespace EonX\EasyServerless\Laravel\HttpKernel;
+
 use Illuminate\Contracts\Http\Kernel;
 use Laravel\Lumen\Application;
 use Symfony\Component\HttpFoundation\Response;
 
 final readonly class LumenHttpKernel implements Kernel
 {
-    public function __construct(private Application $app)
-    {
+    public function __construct(
+        private Application $app,
+    ) {
     }
 
     public function bootstrap(): void
