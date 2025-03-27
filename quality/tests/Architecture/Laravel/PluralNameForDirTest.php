@@ -17,7 +17,6 @@ final class PluralNameForDirTest extends AbstractArchitectureTestCase
     ];
 
     private const SKIP_DIRS = [
-        'HttpKernel',
         'Middleware',
     ];
 

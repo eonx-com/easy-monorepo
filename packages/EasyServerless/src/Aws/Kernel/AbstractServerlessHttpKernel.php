@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Bundle\HttpKernel;
+namespace EonX\EasyServerless\Aws\Kernel;
 
 use Bref\SymfonyBridge\BrefKernel;
 use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;

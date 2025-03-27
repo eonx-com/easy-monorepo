@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\HttpKernel;
+namespace EonX\EasyServerless\Laravel\Kernels;
 
 use Illuminate\Contracts\Http\Kernel;
 use Laravel\Lumen\Application;
