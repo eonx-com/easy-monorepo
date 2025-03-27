@@ -5,6 +5,7 @@ namespace EonX\EasyServerless\Laravel\Kernels;
 
 use Illuminate\Contracts\Http\Kernel;
 use Laravel\Lumen\Application;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 final readonly class LumenHttpKernel implements Kernel
@@ -16,12 +17,12 @@ final readonly class LumenHttpKernel implements Kernel
 
     public function bootstrap(): void
     {
-        throw new \RuntimeException('Method should not be called.');
+        throw new RuntimeException('Method should not be called.');
     }
 
     public function getApplication()
     {
-        throw new \RuntimeException('Method should not be called.');
+        throw new RuntimeException('Method should not be called.');
     }
 
     public function handle($request): Response
