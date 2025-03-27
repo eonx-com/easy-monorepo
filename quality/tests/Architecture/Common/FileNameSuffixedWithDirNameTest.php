@@ -57,7 +57,6 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'EasyErrorHandler/src/Common/ErrorHandler/FormatAwareInterface.php',
         'EasyLock/src/Common/Locker/ProcessWithLockTrait.php',
         'EasySecurity/src/SymfonySecurity/Voter/ProviderRestrictedInterface.php',
-        'EasyServerless/bundle/Asset/PrefixedUrlPackage.php',
         'EasyTest/config/services.php',
         'EasyUtils/src/Common/Helper/HasPriorityInterface.php',
         'EasyUtils/src/Common/Helper/HasPriorityTrait.php',

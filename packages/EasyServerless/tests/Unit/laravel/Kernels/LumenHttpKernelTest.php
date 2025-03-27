@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Unit\Laravel\HttpKernel;
+namespace EonX\EasyServerless\Tests\Unit\Laravel\Kernels;
 
 use EonX\EasyServerless\Laravel\Kernels\LumenHttpKernel;
 use EonX\EasyServerless\Tests\Unit\Laravel\AbstractLumenTestCase;
