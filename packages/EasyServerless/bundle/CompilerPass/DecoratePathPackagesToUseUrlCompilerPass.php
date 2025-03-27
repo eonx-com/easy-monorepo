@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle\CompilerPass;
 
-use EonX\EasyServerless\Bundle\Asset\PrefixedUrlPackage;
+use EonX\EasyServerless\Asset\Package\PrefixedUrlPackage;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

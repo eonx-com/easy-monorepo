@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Bundle\Asset;
+namespace EonX\EasyServerless\Asset\Package;
 
 use Symfony\Component\Asset\PackageInterface;
 
