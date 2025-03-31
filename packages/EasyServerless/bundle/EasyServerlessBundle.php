@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle;
 
+use EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle;
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use Monolog\Logger;
@@ -31,6 +32,10 @@ final class EasyServerlessBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
+
+        if (\class_exists(EasyAdminBundle::class)) {
+            $container->import('config/easy_admin.php');
+        }
 
         if (\class_exists(Logger::class)) {
             $container->import('config/monolog.php');
