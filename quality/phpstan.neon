@@ -144,7 +144,7 @@ parameters:
 
         # ---- EasyServerless ----
         - message: '#Access to an undefined property EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber\:\:\$requestAlreadyProcessedAsPrettyUrl#'
-          path: %currentWorkerDirectory%/packages/EasyServerless/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
+          path: %currentWorkingDirectory%/packages/EasyServerless/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
 
         # ---- EasySwoole ----
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
