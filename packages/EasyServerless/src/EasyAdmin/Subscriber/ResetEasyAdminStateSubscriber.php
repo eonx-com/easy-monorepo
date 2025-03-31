@@ -33,7 +33,6 @@ final readonly class ResetEasyAdminStateSubscriber implements EventSubscriberInt
     public function onRequest(RequestEvent $event): void
     {
         // This is needed for EasyAdmin prior to pretty URLs feature
-
         // EasyAdmin sets the twig global "ea" as part of its extension,
         // because the stateful nature of swoole, this logic is executed only once,
         // this listener explicitly sets the admin context as twig global to prevent side effects
@@ -43,9 +42,10 @@ final readonly class ResetEasyAdminStateSubscriber implements EventSubscriberInt
     public function onTerminate(TerminateEvent $event): void
     {
         // This is needed for EasyAdmin after pretty URLs feature
-
-        Closure::bind(function (): void {
-            $this->requestAlreadyProcessedAsPrettyUrl = false;
-        }, $this->adminRouterSubscriber, AdminRouterSubscriber::class)();
+        if (\property_exists($this->adminRouterSubscriber, 'requestAlreadyProcessedAsPrettyUrl')) {
+            Closure::bind(function (): void {
+                $this->requestAlreadyProcessedAsPrettyUrl = false;
+            }, $this->adminRouterSubscriber, AdminRouterSubscriber::class)();
+        }
     }
 }
