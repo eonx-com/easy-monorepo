@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\EasyAdmin\Subscriber;
 
+use Closure;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\EventListener\AdminRouterSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,7 +44,7 @@ final readonly class ResetEasyAdminStateSubscriber implements EventSubscriberInt
     {
         // This is needed for EasyAdmin after pretty URLs feature
 
-        \Closure::bind(function (): void {
+        Closure::bind(function (): void {
             $this->requestAlreadyProcessedAsPrettyUrl = false;
         }, $this->adminRouterSubscriber, AdminRouterSubscriber::class)();
     }
