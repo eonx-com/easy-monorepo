@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\EasyAdmin\Listener;
+namespace EonX\EasyServerless\EasyAdmin\Subscriber;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\EventListener\AdminRouterSubscriber;

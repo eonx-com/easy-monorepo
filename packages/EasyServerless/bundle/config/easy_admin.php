@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyServerless\EasyAdmin\Listener\ResetEasyAdminStateSubscriber;
+use EonX\EasyServerless\EasyAdmin\Subscriber\ResetEasyAdminStateSubscriber;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
