@@ -5,6 +5,7 @@ namespace EonX\EasyServerless\Bundle;
 
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
+use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -30,5 +31,9 @@ final class EasyServerlessBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
+
+        if (\class_exists(Logger::class)) {
+            $container->import('config/monolog.php');
+        }
     }
 }
