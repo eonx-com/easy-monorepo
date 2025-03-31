@@ -19,7 +19,7 @@ final readonly class ResetEasyAdminStateSubscriber implements EventSubscriberInt
     }
 
     /**
-     * @return string[]
+     * @return array<string, array<int, int|string>|string>
      */
     public static function getSubscribedEvents(): array
     {
