@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle;
 
-use EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle;
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use Monolog\Logger;
