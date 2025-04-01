@@ -33,12 +33,20 @@ final class EasyServerlessBundle extends AbstractBundle
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
 
-        if (\class_exists(EasyAdminBundle::class)) {
+        if ($this->isBundleEnabled('EasyAdminBundle', $builder)) {
             $container->import('config/easy_admin.php');
         }
 
         if (\class_exists(Logger::class)) {
             $container->import('config/monolog.php');
         }
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 }

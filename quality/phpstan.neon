@@ -142,10 +142,6 @@ parameters:
         - message: '#Parameter \#2 \$permissions of class EonX\\EasySecurity\\Authorization\\ValueObject\\Role constructor expects array<EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|string>\|null, array<int, EonX\\EasySecurity\\Authorization\\ValueObject\\Permission\|stdClass\|string> given#'
           path: %currentWorkingDirectory%/packages/EasySecurity/tests/Unit/src/Authorization/ValueObject/RoleTest.php
 
-        # ---- EasyServerless ----
-#        - message: '#Access to an undefined property EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber\:\:\$requestAlreadyProcessedAsPrettyUrl#'
-#          path: %currentWorkingDirectory%/packages/EasyServerless/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
-
         # ---- EasySwoole ----
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Logging/Function/dump.php
