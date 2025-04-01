@@ -5,6 +5,11 @@ namespace EonX\EasyServerless\Aws\Helper;
 
 final class LambdaContextHelper
 {
+    public static function getAbsolutePath(string $path): string
+    {
+        return \sprintf('%s/%s', \getenv('LAMBDA_TASK_ROOT'), $path);
+    }
+
     public static function getInvocationContext(): array
     {
         return (array)\json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]', true);
