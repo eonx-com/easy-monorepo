@@ -8,28 +8,16 @@ use Symfony\Component\Finder\Finder;
 
 final class SecretsHelper
 {
+    private const PREFIX_SECRETS_MANAGER = 'resolve:secretsmanager:';
+
     private static ?SecretsManagerClient $secretsManager = null;
 
-    public static function load(string $paramName): void
+    public static function load(): void
     {
-        self::$secretsManager ??= new SecretsManagerClient();
-
-        $value = self::$secretsManager
-            ->getSecretValue(['SecretId' => $paramName])
-            ->getSecretString();
-
-        if (\json_validate($value ?? '')) {
-            self::doLoad((array)\json_decode($value ?? '{}', true));
-        }
-    }
-
-    public static function loadFromEnvWithPrefix(string $prefix): void
-    {
-        foreach ($_SERVER as $name => $value) {
-            if (\str_starts_with($name, $prefix)) {
-                self::doLoad($value);
-            }
-        }
+        self::doLoad(\array_filter(
+            $_SERVER,
+            static fn ($value): bool => \is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)
+        ));
     }
 
     public static function loadFromJsonFiles(string $dir): void
@@ -48,14 +36,44 @@ final class SecretsHelper
         }
     }
 
-    public static function setSecretsManager(SecretsManagerClient $secretsManager): void
+    public static function loadFromSecretsManager(string $paramName): void
     {
-        self::$secretsManager = $secretsManager;
+        self::$secretsManager ??= new SecretsManagerClient();
+
+        if (\str_starts_with($paramName, self::PREFIX_SECRETS_MANAGER)) {
+            $paramName = \str_replace(self::PREFIX_SECRETS_MANAGER, '', $paramName);
+        }
+
+        $input = ['SecretId' => $paramName];
+
+        // Support specific versionId as <SecretId>:<VersionId>
+        if (\str_contains($paramName, ':')) {
+            $exploded = \explode(':', $paramName);
+
+            $input = [
+                'SecretId' => $exploded[0],
+                'VersionId' => $exploded[1],
+            ];
+        }
+
+        $value = self::$secretsManager
+            ->getSecretValue($input)
+            ->getSecretString();
+
+        if (\json_validate($value ?? '')) {
+            self::doLoad((array)\json_decode($value ?? '{}', true));
+        }
     }
 
     private static function doLoad(array $envVars): void
     {
         foreach ($envVars as $key => $value) {
+            if (\is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)) {
+                self::loadFromSecretsManager($value);
+
+                continue;
+            }
+
             $_ENV[$key] = $value;
             $_SERVER[$key] = $value;
         }
