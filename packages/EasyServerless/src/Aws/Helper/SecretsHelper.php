@@ -64,11 +64,6 @@ final class SecretsHelper
         }
     }
 
-    public static function setSecretsManager(SecretsManagerClient $secretsManager): void
-    {
-        self::$secretsManager = $secretsManager;
-    }
-
     private static function doLoad(array $envVars): void
     {
         foreach ($envVars as $key => $value) {
