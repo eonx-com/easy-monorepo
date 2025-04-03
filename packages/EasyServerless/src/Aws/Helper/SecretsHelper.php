@@ -14,7 +14,10 @@ final class SecretsHelper
 
     public static function load(): void
     {
-        self::doLoad(\array_filter($_SERVER, static fn ($value): bool => \is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)));
+        self::doLoad(\array_filter(
+            $_SERVER,
+            static fn ($value): bool => \is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)
+        ));
     }
 
     public static function loadFromJsonFiles(string $dir): void
