@@ -24,6 +24,8 @@ The configuration options are as follows:
 - `disallowed_properties`: An optional array of subject property names to be excluded from activity log entries globally
   (i.e. the list will be applied to all subjects defined in the `subjects` configuration option).
 - `subjects`: A set of subject classes to be logged. Each subject can contain the following parameters:
+    - `allowed_actions`: An optional array of action names to be allowed for activity log entries. If the
+      option is present, only activity log entries with the specified actions will be stored for the relevant subject.
     - `allowed_properties`: An optional array of subject property names to be allowed for activity log entries. If the
       option is present, only the specified properties will be included in activity log entries for the relevant subject.
     - `disallowed_properties`: An optional array of subject property names to be excluded from activity log entries for
@@ -55,8 +57,12 @@ return static function (EasyActivityConfig $easyActivityConfig): void {
         ->disallowedProperties([
             'updatedAt',
         ]);
-        
+
     $easyActivityConfig->subjects(SomeEntity::class)
+        ->allowedActions([
+            ActivityAction::Create,
+            'some_custom_action',
+        ])
         ->allowedProperties([
             'content',
             'description',

@@ -21,7 +21,7 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
 
     public function create(ActivityAction|string $action, object $object, array $changeSet): ?ActivityLogEntry
     {
-        $subject = $this->subjectResolver->resolve($object);
+        $subject = $this->subjectResolver->resolve($action, $object);
         if ($subject === null) {
             return null;
         }

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
@@ -35,6 +36,28 @@ return static function (DefinitionConfigurator $definition) {
                     ->children()
                         ->scalarNode('type')
                             ->info('Subject type. Defaults to short class name of subject.')
+                        ->end()
+                        ->arrayNode('allowed_actions')
+                            ->defaultValue([])
+                            ->info('Subjects with the specified action names allowed to be stored in store.')
+                            ->validate()
+                                ->ifArray()
+                                ->then(static function (array $actions) {
+                                    foreach ($actions as $action) {
+                                        if (\is_string($action) === false &&
+                                            $action instanceof ActivityAction === false
+                                        ) {
+                                            $errorMessage = 'Value of allowed action should be a string type or ' .
+                                                'instance of ActivityAction.';
+
+                                            throw new InvalidTypeException($errorMessage);
+                                        }
+                                    }
+
+                                    return $actions;
+                                })
+                            ->end()
+                            ->prototype('variable')->end()
                         ->end()
                         ->arrayNode('disallowed_properties')
                             ->defaultValue([])
