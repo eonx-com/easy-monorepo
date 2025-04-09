@@ -6,7 +6,6 @@ namespace EonX\EasyActivity\Doctrine\Resolver;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyActivity\Common\Entity\ActivitySubject;
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
-use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Exception\UnableToResolveActivitySubjectException;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 
@@ -18,7 +17,7 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
     ) {
     }
 
-    public function resolve(ActivityAction|string $action, object $object): ?ActivitySubjectInterface
+    public function resolve(object $object): ?ActivitySubjectInterface
     {
         if ($object instanceof ActivitySubjectInterface) {
             return $object;
@@ -27,12 +26,6 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
         $subjectClass = $this->entityManager->getClassMetadata($object::class)->getName();
         $subjectConfig = $this->subjects[$subjectClass] ?? null;
         if ($subjectConfig === null) {
-            return null;
-        }
-
-        if(\count($subjectConfig['allowed_actions']) > 0 &&
-            \in_array($action, $subjectConfig['allowed_actions'], true) === false
-        ) {
             return null;
         }
 
@@ -47,6 +40,7 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
             $subjectConfig['nested_object_allowed_properties'] ?? [],
             $subjectConfig['allowed_properties'] ?? [],
             $subjectConfig['fully_serializable_properties'] ?? [],
+            $subjectConfig['allowed_actions'] ?? []
         );
     }
 }

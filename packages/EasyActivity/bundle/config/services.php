@@ -13,9 +13,11 @@ use EonX\EasyActivity\Common\Factory\IdFactoryInterface;
 use EonX\EasyActivity\Common\Factory\UuidFactory;
 use EonX\EasyActivity\Common\Logger\ActivityLoggerInterface;
 use EonX\EasyActivity\Common\Logger\AsyncActivityLogger;
+use EonX\EasyActivity\Common\Resolver\ActivityActionResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
+use EonX\EasyActivity\Common\Resolver\DefaultActivityActionResolver;
 use EonX\EasyActivity\Common\Resolver\DefaultActivitySubjectDataResolver;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
@@ -45,6 +47,9 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(ActivitySubjectResolverInterface::class, DoctrineActivitySubjectResolver::class)
         ->arg('$subjects', param(ConfigParam::Subjects->value));
+
+    $services
+        ->set(ActivityActionResolverInterface::class, DefaultActivityActionResolver::class);
 
     $services
         ->set(ActivitySubjectDataResolverInterface::class, DefaultActivitySubjectDataResolver::class);
