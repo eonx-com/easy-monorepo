@@ -6,7 +6,6 @@ namespace EonX\EasyActivity\Common\Factory;
 use Carbon\Carbon;
 use EonX\EasyActivity\Common\Entity\ActivityLogEntry;
 use EonX\EasyActivity\Common\Enum\ActivityAction;
-use EonX\EasyActivity\Common\Resolver\ActivityActionResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectDataResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActivitySubjectResolverInterface;
 use EonX\EasyActivity\Common\Resolver\ActorResolverInterface;
@@ -16,7 +15,6 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
     public function __construct(
         private ActorResolverInterface $actorResolver,
         private ActivitySubjectResolverInterface $subjectResolver,
-        private ActivityActionResolverInterface $actionResolver,
         private ActivitySubjectDataResolverInterface $subjectDataResolver,
     ) {
     }
@@ -28,8 +26,9 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
             return null;
         }
 
-        $action = $this->actionResolver->resolve($action, $subject);
-        if ($action === null) {
+        if (\count($subject->getAllowedActivityActions()) > 0 &&
+            \in_array($action, $subject->getAllowedActivityActions(), true) === false
+        ) {
             return null;
         }
 
