@@ -26,6 +26,12 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
             return null;
         }
 
+        if (\count($subject->getAllowedActivityActions()) > 0 &&
+            \in_array($action, $subject->getAllowedActivityActions(), true) === false
+        ) {
+            return null;
+        }
+
         $subjectData = $this->subjectDataResolver->resolve($action, $subject, $changeSet);
         if ($subjectData === null) {
             return null;

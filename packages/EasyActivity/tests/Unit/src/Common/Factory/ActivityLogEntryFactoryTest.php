@@ -60,6 +60,35 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
     }
 
     /**
+     * @see packages/EasyActivity/tests/Fixture/app/config/packages/only_allowed_actions
+     */
+    public function testCreateSucceedsWithAllowedActions(): void
+    {
+        self::bootKernel(['environment' => 'only_allowed_actions']);
+        $sut = self::getService(ActivityLogEntryFactoryInterface::class);
+        $article = new Article();
+        $article->setId('00000000-0000-0000-0000-000000000001');
+        $article->setTitle('Some title');
+        $createActionResult = $sut->create(
+            ActivityAction::Create,
+            $article,
+            [
+                'title' => [null, $article->getTitle()],
+            ]
+        );
+        $updateActionResult = $sut->create(
+            ActivityAction::Update,
+            $article,
+            [
+                'title' => [null, 'some other title'],
+            ]
+        );
+
+        self::assertNull($createActionResult);
+        self::assertNotNull($updateActionResult);
+    }
+
+    /**
      * @see packages/EasyActivity/tests/Fixture/app/config/packages/default_subject_config
      */
     public function testCreateSucceedsWithCollections(): void

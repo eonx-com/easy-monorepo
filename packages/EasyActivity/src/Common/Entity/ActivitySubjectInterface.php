@@ -9,6 +9,8 @@ interface ActivitySubjectInterface
 
     public function getActivitySubjectType(): string;
 
+    public function getAllowedActivityActions(): array;
+
     /**
      * @return list<string>|array<string, list<string>>|null
      */

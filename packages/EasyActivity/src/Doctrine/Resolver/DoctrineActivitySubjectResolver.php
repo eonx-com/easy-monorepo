@@ -40,6 +40,7 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
             $subjectConfig['nested_object_allowed_properties'] ?? [],
             $subjectConfig['allowed_properties'] ?? [],
             $subjectConfig['fully_serializable_properties'] ?? [],
+            $subjectConfig['allowed_actions'] ?? []
         );
     }
 }
