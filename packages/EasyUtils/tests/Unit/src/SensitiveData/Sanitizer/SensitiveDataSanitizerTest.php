@@ -6,7 +6,6 @@ namespace EonX\EasyUtils\Tests\Unit\SensitiveData\Sanitizer;
 use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidator;
 use EonX\EasyUtils\SensitiveData\Sanitizer\AuthorizationStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\CreditCardNumberStringSanitizer;
-use EonX\EasyUtils\SensitiveData\Sanitizer\JsonStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\UrlStringSanitizer;
@@ -28,7 +27,6 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
 
         $stringSanitizers = [
             new UrlStringSanitizer(),
-            new JsonStringSanitizer(),
             new AuthorizationStringSanitizer(),
             new CreditCardNumberStringSanitizer(new CreditCardNumberValidator()),
         ];

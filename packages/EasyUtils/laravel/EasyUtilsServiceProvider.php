@@ -16,7 +16,6 @@ use EonX\EasyUtils\Math\Helper\MathHelper;
 use EonX\EasyUtils\Math\Helper\MathHelperInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\AuthorizationStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\CreditCardNumberStringSanitizer;
-use EonX\EasyUtils\SensitiveData\Sanitizer\JsonStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\StringSanitizerInterface;
@@ -108,16 +107,6 @@ final class EasyUtilsServiceProvider extends ServiceProvider
                 )
             );
             $this->app->tag(CreditCardNumberStringSanitizer::class, [
-                ConfigTag::SensitiveDataStringSanitizer->value,
-            ]);
-
-            $this->app->singleton(
-                JsonStringSanitizer::class,
-                static fn (): StringSanitizerInterface => new JsonStringSanitizer(
-                    self::STRING_SANITIZER_DEFAULT_PRIORITY
-                )
-            );
-            $this->app->tag(JsonStringSanitizer::class, [
                 ConfigTag::SensitiveDataStringSanitizer->value,
             ]);
 
