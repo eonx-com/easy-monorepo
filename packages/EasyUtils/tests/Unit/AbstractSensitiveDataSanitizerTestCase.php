@@ -192,6 +192,8 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'maskDoubleWithBothSpaces' => '{"doubleValue" : 123.45,"anotherDoubleValue" : 123.45}',
                 'maskDoubleWithDoubleSpaces' => '{"doubleValue"  :  123.45,"anotherDoubleValue"  :  123.45}',
                 'maskDoubleWithEscaping' => '{\"doubleValue\":123.45,\"anotherDoubleValue\":123.45}',
+                'maskDoubleWithValueEscaping' => '{"someKey":"{\"doubleValue\":123.45,\"anotherDoubleValue\":123.45}"}',
+                'maskDoubleWithDoubleEscaping' => '{\\"doubleValue\\":123.45,\\"anotherDoubleValue\\":123.45}',
                 'maskDoubleWithOneKeyAndEscaping' => '{\"doubleValue\":123.45}',
                 'maskDoubleSpaceBeforeValueAndEscaping' => '{\"doubleValue\": 123.45,\"anotherDoubleValue\": 123.45}',
                 'maskDoubleSpaceAfterKeyAndEscaping' => '{\"doubleValue\" :123.45,\"anotherDoubleValue\" :123.45}',
@@ -327,6 +329,9 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'maskDoubleWithBothSpaces' => '{"doubleValue":"*REDACTED*","anotherDoubleValue":123.45}',
                 'maskDoubleWithDoubleSpaces' => '{"doubleValue":"*REDACTED*","anotherDoubleValue":123.45}',
                 'maskDoubleWithEscaping' => '{"doubleValue":"*REDACTED*","anotherDoubleValue":123.45}',
+                'maskDoubleWithValueEscaping' =>
+                    '{"someKey":"{\"doubleValue\":\"*REDACTED*\",\"anotherDoubleValue\":123.45}"}',
+                'maskDoubleWithDoubleEscaping' => '{"doubleValue":"*REDACTED*","anotherDoubleValue":123.45}',
                 'maskDoubleWithOneKeyAndEscaping' => '{"doubleValue":"*REDACTED*"}',
                 'maskDoubleSpaceBeforeValueAndEscaping' =>
                     '{"doubleValue":"*REDACTED*","anotherDoubleValue":123.45}',
