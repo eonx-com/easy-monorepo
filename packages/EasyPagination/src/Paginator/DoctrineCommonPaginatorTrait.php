@@ -92,8 +92,12 @@ trait DoctrineCommonPaginatorTrait
     {
         /** @var string|string[]|null $select */
         $select = $this->resolveSelect();
-        $queryBuilder = $this->createQueryBuilder()
-            ->select($select);
+        $queryBuilder = $this->createQueryBuilder();
+
+        if ($select !== null) {
+            $select = \is_array($select) ? $select : [$select];
+            $queryBuilder->select(...$select);
+        }
 
         // Common and GetItems criteria are applied regardless of fetching method
         $this->applyCommonCriteria($queryBuilder);
