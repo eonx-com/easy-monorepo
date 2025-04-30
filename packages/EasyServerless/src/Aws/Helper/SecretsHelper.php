@@ -8,20 +8,44 @@ use Symfony\Component\Finder\Finder;
 
 final class SecretsHelper
 {
-    private const PREFIX_SECRETS_MANAGER = 'resolve:secretsmanager:';
+    private const ALREADY_LOADED = 'easy_serverless.secrets.already_loaded';
+
+    private const PREFIX_JSON_FILES = 'resolve:json_files:';
+
+    private const PREFIX_SECRETS_MANAGER = 'resolve:secrets_manager:';
 
     private static ?SecretsManagerClient $secretsManager = null;
 
     public static function load(): void
     {
+        // Some cases will trigger the startup logic multiple times, such as scheduler events
+        if (isset($_SERVER[self::ALREADY_LOADED])) {
+            return;
+        }
+
+        self::logToStderr('Start loading secrets...');
+
         self::doLoad(\array_filter(
             $_SERVER,
-            static fn ($value): bool => \is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)
+            static function ($value): bool {
+                if (\is_string($value) === false) {
+                    return false;
+                }
+
+                return \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)
+                    || \str_starts_with($value, self::PREFIX_JSON_FILES);
+            }
         ));
+
+        $_SERVER[self::ALREADY_LOADED] = true;
     }
 
     public static function loadFromJsonFiles(string $dir): void
     {
+        if (\str_starts_with($dir, self::PREFIX_JSON_FILES)) {
+            $dir = \str_replace(self::PREFIX_JSON_FILES, '', $dir);
+        }
+
         $files = (new Finder())
             ->in($dir)
             ->files()
@@ -68,14 +92,31 @@ final class SecretsHelper
     private static function doLoad(array $envVars): void
     {
         foreach ($envVars as $key => $value) {
+            if (\is_string($value) && \str_starts_with($value, self::PREFIX_JSON_FILES)) {
+                self::logToStderr(\sprintf('Found secret to resolve from local filesystem: %s => %s', $key, $value));
+
+                self::loadFromJsonFiles($value);
+
+                continue;
+            }
+
             if (\is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)) {
+                self::logToStderr(\sprintf('Found secret to resolve from SecretsManager: %s => %s', $key, $value));
+
                 self::loadFromSecretsManager($value);
 
                 continue;
             }
 
+            self::logToStderr(\sprintf('Loading secret %s...', $key));
+
             $_ENV[$key] = $value;
             $_SERVER[$key] = $value;
         }
+    }
+
+    private static function logToStderr(string $message): void
+    {
+        \file_put_contents('php://stderr', \date('[c] ') . $message . \PHP_EOL, \FILE_APPEND);
     }
 }
