@@ -8,16 +8,27 @@ use Symfony\Component\Finder\Finder;
 
 final class SecretsHelper
 {
+    private const ALREADY_LOADED = 'easy_serverless.secrets.already_loaded';
+
     private const PREFIX_SECRETS_MANAGER = 'resolve:secretsmanager:';
 
     private static ?SecretsManagerClient $secretsManager = null;
 
     public static function load(): void
     {
+        // Some cases will trigger the startup logic multiple times, such as scheduler events
+        if (isset($_SERVER[self::ALREADY_LOADED])) {
+            return;
+        }
+
+        self::logToStderr('Start loading secrets...');
+
         self::doLoad(\array_filter(
             $_SERVER,
             static fn ($value): bool => \is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)
         ));
+
+        $_SERVER[self::ALREADY_LOADED] = true;
     }
 
     public static function loadFromJsonFiles(string $dir): void
@@ -69,13 +80,22 @@ final class SecretsHelper
     {
         foreach ($envVars as $key => $value) {
             if (\is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)) {
+                self::logToStderr(\sprintf('Found secret to resolve from SecretsManager: %s => %s', $key, $value));
+
                 self::loadFromSecretsManager($value);
 
                 continue;
             }
 
+            self::logToStderr(\sprintf('Loading secret %s...', $key));
+
             $_ENV[$key] = $value;
             $_SERVER[$key] = $value;
         }
+    }
+
+    private static function logToStderr(string $message): void
+    {
+        \file_put_contents('php://stderr', \date('[c] ') . $message . \PHP_EOL, \FILE_APPEND);
     }
 }
