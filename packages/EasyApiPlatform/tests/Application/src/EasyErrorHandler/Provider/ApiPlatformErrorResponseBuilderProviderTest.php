@@ -615,7 +615,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         string $exceptionMessage,
         ?string $minimalVersion = null,
     ): void {
-        if ($minimalVersion !== null) {
+        if ($minimalVersion !== null && \class_exists(InstalledVersions::class)) {
             $installedVersion = InstalledVersions::getVersion('api-platform/core');
 
             if ($installedVersion !== null && \version_compare($installedVersion, $minimalVersion, '<')) {
@@ -688,7 +688,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         string $exceptionMessage,
         ?string $minimalVersion = null,
     ): void {
-        if ($minimalVersion !== null) {
+        if ($minimalVersion !== null && \class_exists(InstalledVersions::class)) {
             $installedVersion = InstalledVersions::getVersion('api-platform/core');
 
             if ($installedVersion !== null && \version_compare($installedVersion, $minimalVersion, '<')) {
