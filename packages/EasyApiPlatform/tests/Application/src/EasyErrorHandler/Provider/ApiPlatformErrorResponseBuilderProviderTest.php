@@ -615,11 +615,12 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         string $exceptionMessage,
         ?string $minimalVersion = null,
     ): void {
-        if (
-            $minimalVersion !== null
-            && \version_compare(InstalledVersions::getVersion('api-platform/core'), $minimalVersion, '<')
-        ) {
-            self::markTestSkipped('This test requires API Platform version ' . $minimalVersion . ' or higher.');
+        if ($minimalVersion !== null) {
+            $installedVersion = InstalledVersions::getVersion('api-platform/core');
+
+            if ($installedVersion !== null && \version_compare($installedVersion, $minimalVersion, '<')) {
+                self::markTestSkipped('This test requires API Platform version ' . $minimalVersion . ' or higher.');
+            }
         }
         $response = self::$client->request('POST', $url, ['json' => $json]);
 
@@ -687,11 +688,12 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         string $exceptionMessage,
         ?string $minimalVersion = null,
     ): void {
-        if (
-            $minimalVersion !== null
-            && \version_compare(InstalledVersions::getVersion('api-platform/core'), $minimalVersion, '<')
-        ) {
-            self::markTestSkipped('This test requires API Platform version ' . $minimalVersion . ' or higher.');
+        if ($minimalVersion !== null) {
+            $installedVersion = InstalledVersions::getVersion('api-platform/core');
+
+            if ($installedVersion !== null && \version_compare($installedVersion, $minimalVersion, '<')) {
+                self::markTestSkipped('This test requires API Platform version ' . $minimalVersion . ' or higher.');
+            }
         }
         $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
         self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
