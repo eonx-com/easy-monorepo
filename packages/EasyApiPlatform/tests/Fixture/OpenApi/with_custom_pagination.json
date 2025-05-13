@@ -27,36 +27,36 @@
                                     "type": "object",
                                     "properties": {
                                         "items": {
-                                            "type": "array",
                                             "items": {
                                                 "$ref": "#/components/schemas/Category"
-                                            }
+                                            },
+                                            "type": "array"
                                         },
                                         "pagination": {
-                                            "type": "object",
                                             "properties": {
                                                 "currentPage": {
-                                                    "type": "integer",
-                                                    "minimum": 1
-                                                },
-                                                "itemsPerPage": {
+                                                    "minimum": 1,
                                                     "type": "integer"
-                                                },
-                                                "totalItems": {
-                                                    "type": "integer",
-                                                    "minimum": 0
-                                                },
-                                                "totalPages": {
-                                                    "type": "integer",
-                                                    "minimum": 0
                                                 },
                                                 "hasNextPage": {
                                                     "type": "boolean"
                                                 },
                                                 "hasPreviousPage": {
                                                     "type": "boolean"
+                                                },
+                                                "itemsPerPage": {
+                                                    "type": "integer"
+                                                },
+                                                "totalItems": {
+                                                    "minimum": 0,
+                                                    "type": "integer"
+                                                },
+                                                "totalPages": {
+                                                    "minimum": 0,
+                                                    "type": "integer"
                                                 }
-                                            }
+                                            },
+                                            "type": "object"
                                         }
                                     }
                                 }
