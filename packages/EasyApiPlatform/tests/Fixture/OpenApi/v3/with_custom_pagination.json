@@ -65,17 +65,17 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "member": {
+                                        "hydra:member": {
                                             "type": "array",
                                             "items": {
                                                 "$ref": "#/components/schemas/Category.jsonld"
                                             }
                                         },
-                                        "totalItems": {
+                                        "hydra:totalItems": {
                                             "type": "integer",
                                             "minimum": 0
                                         },
-                                        "view": {
+                                        "hydra:view": {
                                             "type": "object",
                                             "properties": {
                                                 "@id": {
@@ -85,19 +85,19 @@
                                                 "@type": {
                                                     "type": "string"
                                                 },
-                                                "first": {
+                                                "hydra:first": {
                                                     "type": "string",
                                                     "format": "iri-reference"
                                                 },
-                                                "last": {
+                                                "hydra:last": {
                                                     "type": "string",
                                                     "format": "iri-reference"
                                                 },
-                                                "previous": {
+                                                "hydra:previous": {
                                                     "type": "string",
                                                     "format": "iri-reference"
                                                 },
-                                                "next": {
+                                                "hydra:next": {
                                                     "type": "string",
                                                     "format": "iri-reference"
                                                 }
@@ -105,25 +105,25 @@
                                             "example": {
                                                 "@id": "string",
                                                 "type": "string",
-                                                "first": "string",
-                                                "last": "string",
-                                                "previous": "string",
-                                                "next": "string"
+                                                "hydra:first": "string",
+                                                "hydra:last": "string",
+                                                "hydra:previous": "string",
+                                                "hydra:next": "string"
                                             }
                                         },
-                                        "search": {
+                                        "hydra:search": {
                                             "type": "object",
                                             "properties": {
                                                 "@type": {
                                                     "type": "string"
                                                 },
-                                                "template": {
+                                                "hydra:template": {
                                                     "type": "string"
                                                 },
-                                                "variableRepresentation": {
+                                                "hydra:variableRepresentation": {
                                                     "type": "string"
                                                 },
-                                                "mapping": {
+                                                "hydra:mapping": {
                                                     "type": "array",
                                                     "items": {
                                                         "type": "object",
@@ -150,7 +150,7 @@
                                         }
                                     },
                                     "required": [
-                                        "member"
+                                        "hydra:member"
                                     ]
                                 }
                             },
@@ -227,6 +227,99 @@
                 ],
                 "deprecated": false
             },
+            "put": {
+                "operationId": "api_open-api-categories_put",
+                "tags": [
+                    "Category"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category resource updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            },
+                            "application/ld+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.jsonld"
+                                }
+                            },
+                            "application/vnd.api+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.jsonapi"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            },
+                            "text/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            },
+                            "text/html": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        },
+                        "links": {}
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "Unprocessable entity"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Replaces the Category resource.",
+                "description": "Replaces the Category resource.",
+                "parameters": [],
+                "requestBody": {
+                    "description": "The updated Category resource",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        },
+                        "application/ld+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category.jsonld"
+                            }
+                        },
+                        "application/vnd.api+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category.jsonapi"
+                            }
+                        },
+                        "application/xml": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        },
+                        "text/xml": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        },
+                        "text/html": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "deprecated": false
+            },
             "post": {
                 "operationId": "api_open-api-categories_post",
                 "tags": [
@@ -270,46 +363,10 @@
                         "links": {}
                     },
                     "400": {
-                        "description": "Invalid input",
-                        "content": {
-                            "application/ld+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error.jsonld"
-                                }
-                            },
-                            "application/problem+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        },
-                        "links": {}
+                        "description": "Invalid input"
                     },
                     "422": {
-                        "description": "An error occurred",
-                        "content": {
-                            "application/ld+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation.jsonld-jsonld"
-                                }
-                            },
-                            "application/problem+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
-                                }
-                            }
-                        },
-                        "links": {}
+                        "description": "Unprocessable entity"
                     }
                 },
                 "summary": "Creates a Category resource.",
@@ -363,25 +420,7 @@
                         "description": "Category resource deleted"
                     },
                     "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/ld+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error.jsonld"
-                                }
-                            },
-                            "application/problem+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        },
-                        "links": {}
+                        "description": "Resource not found"
                     }
                 },
                 "summary": "Removes the Category resource.",
@@ -432,67 +471,13 @@
                         "links": {}
                     },
                     "400": {
-                        "description": "Invalid input",
-                        "content": {
-                            "application/ld+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error.jsonld"
-                                }
-                            },
-                            "application/problem+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        },
-                        "links": {}
+                        "description": "Invalid input"
                     },
                     "422": {
-                        "description": "An error occurred",
-                        "content": {
-                            "application/ld+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation.jsonld-jsonld"
-                                }
-                            },
-                            "application/problem+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
-                                }
-                            }
-                        },
-                        "links": {}
+                        "description": "Unprocessable entity"
                     },
                     "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/ld+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error.jsonld"
-                                }
-                            },
-                            "application/problem+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        },
-                        "links": {}
+                        "description": "Resource not found"
                     }
                 },
                 "summary": "Updates the Category resource.",
@@ -604,273 +589,6 @@
                         "type": "string"
                     }
                 }
-            },
-            "ConstraintViolation-json": {
-                "type": "object",
-                "description": "Unprocessable entity",
-                "deprecated": false,
-                "properties": {
-                    "status": {
-                        "default": 422,
-                        "example": 422,
-                        "type": "integer"
-                    },
-                    "violations": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "propertyPath": {
-                                    "type": "string",
-                                    "description": "The property path of the violation"
-                                },
-                                "message": {
-                                    "type": "string",
-                                    "description": "The message associated with the violation"
-                                }
-                            }
-                        }
-                    },
-                    "detail": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "type": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "title": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "instance": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
-                }
-            },
-            "ConstraintViolation.jsonld-jsonld": {
-                "type": "object",
-                "description": "Unprocessable entity",
-                "deprecated": false,
-                "properties": {
-                    "@context": {
-                        "readOnly": true,
-                        "oneOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "@vocab": {
-                                        "type": "string"
-                                    },
-                                    "hydra": {
-                                        "type": "string",
-                                        "enum": [
-                                            "http://www.w3.org/ns/hydra/core#"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "@vocab",
-                                    "hydra"
-                                ],
-                                "additionalProperties": true
-                            }
-                        ]
-                    },
-                    "@id": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "@type": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "status": {
-                        "default": 422,
-                        "example": 422,
-                        "type": "integer"
-                    },
-                    "violations": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "propertyPath": {
-                                    "type": "string",
-                                    "description": "The property path of the violation"
-                                },
-                                "message": {
-                                    "type": "string",
-                                    "description": "The message associated with the violation"
-                                }
-                            }
-                        }
-                    },
-                    "detail": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "description": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "type": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "title": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "instance": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
-                }
-            },
-            "Error": {
-                "type": "object",
-                "description": "A representation of common errors.",
-                "deprecated": false,
-                "properties": {
-                    "title": {
-                        "readOnly": true,
-                        "description": "A short, human-readable summary of the problem.",
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "detail": {
-                        "readOnly": true,
-                        "description": "A human-readable explanation specific to this occurrence of the problem.",
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "status": {
-                        "type": "number",
-                        "examples": [
-                            404
-                        ],
-                        "default": 400
-                    },
-                    "instance": {
-                        "readOnly": true,
-                        "description": "A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "type": {
-                        "readOnly": true,
-                        "description": "A URI reference that identifies the problem type",
-                        "type": "string"
-                    }
-                }
-            },
-            "Error.jsonld": {
-                "type": "object",
-                "description": "A representation of common errors.",
-                "deprecated": false,
-                "properties": {
-                    "@context": {
-                        "readOnly": true,
-                        "oneOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "@vocab": {
-                                        "type": "string"
-                                    },
-                                    "hydra": {
-                                        "type": "string",
-                                        "enum": [
-                                            "http://www.w3.org/ns/hydra/core#"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "@vocab",
-                                    "hydra"
-                                ],
-                                "additionalProperties": true
-                            }
-                        ]
-                    },
-                    "@id": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "@type": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "title": {
-                        "readOnly": true,
-                        "description": "A short, human-readable summary of the problem.",
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "detail": {
-                        "readOnly": true,
-                        "description": "A human-readable explanation specific to this occurrence of the problem.",
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "status": {
-                        "type": "number",
-                        "examples": [
-                            404
-                        ],
-                        "default": 400
-                    },
-                    "instance": {
-                        "readOnly": true,
-                        "description": "A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "type": {
-                        "readOnly": true,
-                        "description": "A URI reference that identifies the problem type",
-                        "type": "string"
-                    },
-                    "description": {
-                        "readOnly": true,
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
-                }
             }
         },
         "responses": {},
@@ -892,10 +610,6 @@
             "Some_Authorization_Name": []
         }
     ],
-    "tags": [
-        {
-            "name": "Category"
-        }
-    ],
+    "tags": [],
     "webhooks": {}
 }

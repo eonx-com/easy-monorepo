@@ -40,6 +40,12 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
     $apiPlatformConfig->patchFormats('json')
         ->mimeTypes(['application/merge-patch+json']);
 
+    $apiPlatformConfig->errorFormats('json')
+        ->mimeTypes(['application/json']);
+
+    $apiPlatformConfig->serializer()
+        ->hydraPrefix(true);
+
     $apiPlatformConfig->mapping()
         ->paths([
             param('kernel.project_dir') . '/src/AdvancedSearchFilter/ApiResource/',
