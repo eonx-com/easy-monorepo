@@ -7,7 +7,10 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource(types: ['https://schema.org/Product'])]
+#[ApiResource(
+    types: ['https://schema.org/Product'],
+    openapi: false,
+)]
 #[ORM\Entity]
 class RelatedOwningDummy
 {

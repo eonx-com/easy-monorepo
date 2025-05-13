@@ -23,7 +23,8 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\C
             uriTemplate: 'book-categories-dto-with-constructor',
             input: CategoryInputDtoWithConstructor::class,
         ),
-    ]
+    ],
+    openapi: false,
 )]
 final class Category
 {

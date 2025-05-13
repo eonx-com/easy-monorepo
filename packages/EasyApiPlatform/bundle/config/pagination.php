@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyApiPlatform\Common\Factory\PaginationSchemaFactory;
 use EonX\EasyApiPlatform\Common\Listener\HttpKernelViewListener;
 use EonX\EasyApiPlatform\Common\SerializerContextBuilder\SerializerContextBuilder;
 
@@ -22,4 +23,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(SerializerContextBuilder::class)
         ->autoconfigure(false)
         ->decorate('api_platform.serializer.context_builder');
+
+    $services->set(PaginationSchemaFactory::class)
+        ->decorate('api_platform.json_schema.schema_factory');
 };

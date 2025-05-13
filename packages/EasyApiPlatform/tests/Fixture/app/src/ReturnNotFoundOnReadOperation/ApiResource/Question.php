@@ -25,7 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
             input: false,
             allowCreate: true,
         ),
-    ]
+    ],
+    openapi: false,
 )]
 #[ORM\Entity]
 class Question

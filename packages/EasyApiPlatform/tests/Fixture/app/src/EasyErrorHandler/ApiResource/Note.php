@@ -8,7 +8,9 @@ use DateTimeImmutable;
 use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 final class Note
 {
     public function __construct(

@@ -16,7 +16,9 @@ use EonX\EasyApiPlatform\Common\Filter\AdvancedSearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 #[ORM\Entity]
 class RelatedDummy extends ParentDummy
 {

@@ -15,7 +15,8 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
             uriTemplate: 'payments-dto-with-constructor',
             input: PaymentInputDtoWithConstructor::class,
         ),
-    ]
+    ],
+    openapi: false,
 )]
 final class Payment
 {

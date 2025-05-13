@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 #[ORM\Entity]
 class RelatedUuidIdentifierDummy
 {
