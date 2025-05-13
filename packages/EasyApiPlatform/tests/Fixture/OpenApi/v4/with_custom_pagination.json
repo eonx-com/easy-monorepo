@@ -46,8 +46,8 @@
                                                 },
                                                 "itemsPerPage": {
                                                     "default": 25,
-                                                    "type": "integer",
                                                     "minimum": 0,
+                                                    "type": "integer",
                                                     "maximum": 50
                                                 },
                                                 "totalItems": {
