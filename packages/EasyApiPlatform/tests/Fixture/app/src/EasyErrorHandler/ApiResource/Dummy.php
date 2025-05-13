@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\ApiResource;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\DummyA;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\DummyB;
 
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 final class Dummy
 {
     public DummyA $dummyA;

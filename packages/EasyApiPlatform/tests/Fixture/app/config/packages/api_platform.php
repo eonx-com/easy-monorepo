@@ -40,11 +40,18 @@ return static function (ApiPlatformConfig $apiPlatformConfig): void {
     $apiPlatformConfig->patchFormats('json')
         ->mimeTypes(['application/merge-patch+json']);
 
+    $apiPlatformConfig->errorFormats('json')
+        ->mimeTypes(['application/json']);
+
+    $apiPlatformConfig->serializer()
+        ->hydraPrefix(true);
+
     $apiPlatformConfig->mapping()
         ->paths([
             param('kernel.project_dir') . '/src/AdvancedSearchFilter/ApiResource/',
             param('kernel.project_dir') . '/src/CustomPaginator/ApiResource/',
             param('kernel.project_dir') . '/src/EasyErrorHandler/ApiResource/',
+            param('kernel.project_dir') . '/src/OpenApi/ApiResource/',
             param('kernel.project_dir') . '/src/ReturnNotFoundOnReadOperation/ApiResource/',
         ]);
 

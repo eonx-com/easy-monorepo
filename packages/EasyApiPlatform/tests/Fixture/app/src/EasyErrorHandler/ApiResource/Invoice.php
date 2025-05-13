@@ -12,7 +12,8 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\I
         new Post(
             input: InvoiceInputDtoWithConstructor::class
         ),
-    ]
+    ],
+    openapi: false,
 )]
 final class Invoice
 {

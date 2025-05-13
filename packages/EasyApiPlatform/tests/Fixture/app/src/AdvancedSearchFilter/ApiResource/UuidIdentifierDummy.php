@@ -17,7 +17,9 @@ use Symfony\Component\Uid\Uuid;
     'uuidField' => 'exact',
     'relatedUuidIdentifierDummy' => 'exact',
 ])]
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 #[ORM\Entity]
 class UuidIdentifierDummy
 {

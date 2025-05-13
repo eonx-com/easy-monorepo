@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 #[ORM\Entity]
 class Category
 {

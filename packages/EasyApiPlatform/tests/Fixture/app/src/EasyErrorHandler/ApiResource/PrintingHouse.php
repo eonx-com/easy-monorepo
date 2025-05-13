@@ -8,7 +8,8 @@ use ApiPlatform\Metadata\ApiResource;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\StateProvider\PrintingHouseStateProvider;
 
 #[ApiResource(
-    provider: PrintingHouseStateProvider::class
+    openapi: false,
+    provider: PrintingHouseStateProvider::class,
 )]
 final class PrintingHouse
 {

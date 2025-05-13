@@ -15,7 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(SearchFilter::class)]
-#[ApiResource]
+#[ApiResource(
+    openapi: false,
+)]
 #[ORM\Entity]
 class Dummy
 {
