@@ -25,5 +25,6 @@ return static function (ContainerConfigurator $container): void {
         ->decorate('api_platform.serializer.context_builder');
 
     $services->set(PaginationSchemaFactory::class)
+        ->arg('1', service('api_platform.pagination_options'))
         ->decorate('api_platform.json_schema.schema_factory');
 };

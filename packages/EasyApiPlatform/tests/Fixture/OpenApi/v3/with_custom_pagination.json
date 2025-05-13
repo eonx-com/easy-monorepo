@@ -45,7 +45,10 @@
                                                     "type": "boolean"
                                                 },
                                                 "itemsPerPage": {
-                                                    "type": "integer"
+                                                    "default": 25,
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "maximum": 50
                                                 },
                                                 "totalItems": {
                                                     "minimum": 0,

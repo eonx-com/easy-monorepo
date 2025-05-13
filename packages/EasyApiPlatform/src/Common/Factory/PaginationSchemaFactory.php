@@ -7,11 +7,13 @@ use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\JsonSchema\SchemaFactoryAwareInterface;
 use ApiPlatform\JsonSchema\SchemaFactoryInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\Pagination\PaginationOptions;
 
 final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, SchemaFactoryAwareInterface
 {
     public function __construct(
         private SchemaFactoryInterface $decorated,
+        private ?PaginationOptions $paginationOptions = new PaginationOptions(),
     ) {
     }
 
@@ -39,6 +41,20 @@ final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, 
         }
 
         if ($forceCollection) {
+            $itemsPerPageSchema = [
+                'default' => $operation?->getPaginationItemsPerPage()
+                    ?? $this->paginationOptions->getItemsPerPage(),
+                'type' => 'integer',
+                'minimum' => 0,
+            ];
+
+            $itemsPerPageMaximum = $operation?->getPaginationMaximumItemsPerPage()
+                ?? $this->paginationOptions->getMaximumItemsPerPage();
+
+            if ($itemsPerPageMaximum !== null) {
+                $itemsPerPageSchema['maximum'] = $itemsPerPageMaximum;
+            }
+
             $schema['type'] = 'object';
             $schema['properties'] = [
                 'items' => [
@@ -57,9 +73,7 @@ final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, 
                         'hasPreviousPage' => [
                             'type' => 'boolean',
                         ],
-                        'itemsPerPage' => [
-                            'type' => 'integer',
-                        ],
+                        'itemsPerPage' => $itemsPerPageSchema,
                         'totalItems' => [
                             'minimum' => 0,
                             'type' => 'integer',
