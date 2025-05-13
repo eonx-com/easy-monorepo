@@ -13,7 +13,7 @@ final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, 
 {
     public function __construct(
         private SchemaFactoryInterface $decorated,
-        private ?PaginationOptions $paginationOptions = new PaginationOptions(),
+        private PaginationOptions $paginationOptions = new PaginationOptions(),
     ) {
     }
 
@@ -42,10 +42,9 @@ final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, 
 
         if ($forceCollection) {
             $itemsPerPageSchema = [
-                'default' => $operation?->getPaginationItemsPerPage()
-                    ?? $this->paginationOptions->getItemsPerPage(),
-                'type' => 'integer',
+                'default' => $operation?->getPaginationItemsPerPage() ?? $this->paginationOptions->getItemsPerPage(),
                 'minimum' => 0,
+                'type' => 'integer',
             ];
 
             $itemsPerPageMaximum = $operation?->getPaginationMaximumItemsPerPage()
