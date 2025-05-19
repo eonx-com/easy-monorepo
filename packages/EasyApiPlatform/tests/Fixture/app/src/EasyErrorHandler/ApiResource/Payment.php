@@ -3,13 +3,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\ApiResource;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\PaymentInputDtoWithConstructor;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\StateProvider\PaymentStateProvider;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ApiResource(
     operations: [
+        new Get(
+            provider: PaymentStateProvider::class,
+        ),
         new Post(),
         new Post(
             uriTemplate: 'payments-dto-with-constructor',
@@ -20,6 +26,9 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 )]
 final class Payment
 {
+    #[ApiProperty(identifier: true)]
+    public int $id;
+
     #[SerializedName('type')]
     public string $paymentType;
 

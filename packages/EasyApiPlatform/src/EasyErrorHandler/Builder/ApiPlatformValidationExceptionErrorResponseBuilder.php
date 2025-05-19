@@ -187,6 +187,10 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             if (\preg_match('/Item not found for "(.+)"./', $hint)) {
                 return $hint;
             }
+
+            if (\preg_match('/Invalid IRI "(.+)"./', $hint)) {
+                return $hint;
+            }
         }
 
         return null;

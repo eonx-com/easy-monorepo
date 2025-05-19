@@ -214,7 +214,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'category' => [
-                    'This value should be of type /book-categories IRI.',
+                    'Invalid IRI "some invalid IRI".',
                 ],
             ],
             'exceptionMessage' => 'category: This value should be of type' .
@@ -232,7 +232,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'printingHouse' => [
-                    'This value should be of type /printing-houses IRI.',
+                    'Invalid IRI "some string".',
                 ],
             ],
             'exceptionMessage' => 'printingHouse: This value should be of type' .
@@ -247,7 +247,22 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'payment' => [
-                    'This value should be of type Payment.',
+                    'Invalid IRI "some invalid iri".',
+                ],
+            ],
+            'exceptionMessage' => 'payment: This value should be of type ' .
+                'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Payment.',
+            'minimalVersion' => '4.1.8',
+        ];
+
+        yield 'item not found by IRI type when input dto' => [
+            'url' => '/invoices',
+            'json' => [
+                'payment' => '/payments/123',
+            ],
+            'violations' => [
+                'payment' => [
+                    'Item not found for "/payments/123".',
                 ],
             ],
             'exceptionMessage' => 'payment: This value should be of type ' .
