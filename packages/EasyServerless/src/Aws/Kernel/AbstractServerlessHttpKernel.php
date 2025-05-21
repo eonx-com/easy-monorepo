@@ -18,8 +18,8 @@ abstract class AbstractServerlessHttpKernel extends BrefKernel
     ): Response {
         // Symfony requires $_SERVER['REMOTE_ADDR'] to be set in order to set trusted proxies properly
         // Because we are within the Lambda context behind ApiGateway, we can safely trust the one from the request
-        if (LambdaContextHelper::inRemoteLambda() && isset($_SERVER['REMOTE_ADDR']) === false) {
-            $_SERVER['REMOTE_ADDR'] = $request->server->get('REMOTE_ADDR');
+        if (LambdaContextHelper::inRemoteLambda()) {
+            $_SERVER['REMOTE_ADDR'] = $request->server->get('REMOTE_ADDR', '127.0.0.1');
 
             Request::setTrustedProxies(
                 ['REMOTE_ADDR'],
