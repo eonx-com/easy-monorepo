@@ -124,15 +124,14 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type string.',
                 ],
                 'printingHouse' => [
-                    'This value should be of type /printing-houses IRI.',
+                    'This value should be of type PrintingHouse.',
                 ],
                 'weight' => [
                     'This value should be of type int.',
                 ],
             ],
             'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
-                " be of type int.\nprintingHouse: This value should be of type" .
-                " EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\ApiResource\PrintingHouse.",
+                " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
             'minimalVersion' => null,
         ];
 
@@ -217,8 +216,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'Invalid IRI "some invalid IRI".',
                 ],
             ],
-            'exceptionMessage' => 'category: This value should be of type' .
-                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Category.',
+            'exceptionMessage' => 'category: This value should be of type Category.',
             'minimalVersion' => null,
         ];
 
@@ -235,8 +233,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'Invalid IRI "some string".',
                 ],
             ],
-            'exceptionMessage' => 'printingHouse: This value should be of type' .
-                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
+            'exceptionMessage' => 'printingHouse: This value should be of type PrintingHouse.',
             'minimalVersion' => null,
         ];
 
@@ -250,8 +247,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'Invalid IRI "some invalid iri".',
                 ],
             ],
-            'exceptionMessage' => 'payment: This value should be of type ' .
-                'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Payment.',
+            'exceptionMessage' => 'payment: This value should be of type Payment.',
             'minimalVersion' => '4.1.8',
         ];
 
@@ -265,8 +261,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'Item not found for "/payments/123".',
                 ],
             ],
-            'exceptionMessage' => 'payment: This value should be of type ' .
-                'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Payment.',
+            'exceptionMessage' => 'payment: This value should be of type Payment.',
             'minimalVersion' => '4.1.8',
         ];
 
@@ -559,8 +554,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'Item not found for "/printing-houses/2".',
                 ],
             ],
-            'exceptionMessage' => 'printingHouse: This value should be of type' .
-                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
+            'exceptionMessage' => 'printingHouse: This value should be of type PrintingHouse.',
             'minimalVersion' => null,
         ];
     }
