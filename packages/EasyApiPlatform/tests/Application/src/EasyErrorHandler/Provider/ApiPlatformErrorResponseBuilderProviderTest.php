@@ -709,7 +709,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     && \version_compare($installedVersion, (string)($version + 1), '<')
                 ) === false
             ) {
-                self::markTestSkipped('This test requires API Platform version >=' . $version . ' and < ' . ($version + 1) . '.');
+                self::markTestSkipped(
+                    'This test requires API Platform version >=' . $version . ' and < ' . ($version + 1) . '.'
+                );
             }
         }
         $response = self::$client->request('POST', $url, ['json' => $json]);
@@ -788,7 +790,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     && \version_compare($installedVersion, (string)($version + 1), '<')
                 ) === false
             ) {
-                self::markTestSkipped('This test requires API Platform version >=' . $version . ' and < ' . ($version + 1) . '.');
+                self::markTestSkipped(
+                    'This test requires API Platform version >=' . $version . ' and < ' . ($version + 1) . '.'
+                );
             }
         }
         $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
