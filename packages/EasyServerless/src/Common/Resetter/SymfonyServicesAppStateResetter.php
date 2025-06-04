@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Common\Resetter;
 
-use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
+use Symfony\Contracts\Service\ResetInterface;
 use Traversable;
 
 use function Symfony\Component\String\u;
 
-final class SymfonyServicesAppStateResetter extends ServicesResetter
+final readonly class SymfonyServicesAppStateResetter implements ResetInterface
 {
     /**
      * @param string[] $resetMethods
@@ -17,7 +17,6 @@ final class SymfonyServicesAppStateResetter extends ServicesResetter
         private Traversable $resettableServices,
         private array $resetMethods,
     ) {
-        parent::__construct($resettableServices, $resetMethods);
     }
 
     public function reset(): void
