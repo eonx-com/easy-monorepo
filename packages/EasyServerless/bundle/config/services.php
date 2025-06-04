@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyServerless\Bundle\CompilerPass\SymfonyServicesResetCompilerPass;
+use EonX\EasyServerless\Common\Resetter\SymfonyServicesAppStateResetter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -11,5 +11,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(SymfonyServicesResetCompilerPass::class);
+    $services->set(SymfonyServicesAppStateResetter::class);
 };
