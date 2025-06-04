@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Bundle;
 
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
+use EonX\EasyServerless\Bundle\CompilerPass\SymfonyServicesResetCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -17,7 +18,9 @@ final class EasyServerlessBundle extends AbstractBundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass());
+        $container
+            ->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass())
+            ->addCompilerPass(new SymfonyServicesResetCompilerPass(), priority: -33);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -31,6 +34,8 @@ final class EasyServerlessBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
+
+        $container->import('config/services.php');
 
         if ($this->isBundleEnabled('EasyAdminBundle', $builder)) {
             $container->import('config/easy_admin.php');
