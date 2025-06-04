@@ -14,8 +14,8 @@ final class SymfonyServicesAppStateResetter extends ServicesResetter
      * @param string[] $resetMethods
      */
     public function __construct(
-        private Traversable $resettableServices,
-        private array $resetMethods,
+        private readonly Traversable $resettableServices,
+        private readonly array $resetMethods,
     ) {
         parent::__construct($resettableServices, $resetMethods);
     }
