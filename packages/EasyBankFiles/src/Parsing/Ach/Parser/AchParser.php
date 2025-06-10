@@ -162,8 +162,8 @@ final class AchParser extends AbstractLineByLineParser
     private function setAddenda(string $line): void
     {
         $this->currentEntryDetail->addAddendaRecord(new Addenda([
-            'addendaTypeCode' => \substr($line, 1, 2),
             'addendaSequenceNumber' => \substr($line, 83, 4),
+            'addendaTypeCode' => \substr($line, 1, 2),
             'code' => \substr($line, 0, 1),
             'entryDetailSequenceNumber' => \substr($line, 87, 7),
             'paymentRelatedInformation' => \substr($line, 3, 80),
@@ -192,8 +192,8 @@ final class AchParser extends AbstractLineByLineParser
         $this->currentBatch->setHeader(new BatchHeader([
             'batchNumber' => \substr($line, 87, 7),
             'code' => \substr($line, 0, 1),
-            'companyDiscretionaryData' => \substr($line, 20, 20),
             'companyDescriptiveDate' => \substr($line, 63, 6),
+            'companyDiscretionaryData' => \substr($line, 20, 20),
             'companyEntryDescription' => \substr($line, 53, 10),
             'companyIdentification' => \substr($line, 40, 10),
             'companyName' => \substr($line, 4, 16),
@@ -247,16 +247,16 @@ final class AchParser extends AbstractLineByLineParser
         $this->fileHeader = new FileHeader([
             'blockingFactor' => \substr($line, 37, 2),
             'code' => \substr($line, 0, 1),
-            'immediateDestination' => \substr($line, 3, 10),
-            'immediateDestinationName' => \substr($line, 40, 23),
-            'immediateOrigin' => \substr($line, 13, 10),
-            'immediateOriginName' => \substr($line, 63, 23),
             'fileCreationDate' => \substr($line, 23, 6),
             'fileCreationTime' => \substr($line, 29, 4),
             'fileIdModifier' => \substr($line, 33, 1),
             'formatCode' => \substr($line, 39, 1),
-            'recordSize' => \substr($line, 34, 3),
+            'immediateDestination' => \substr($line, 3, 10),
+            'immediateDestinationName' => \substr($line, 40, 23),
+            'immediateOrigin' => \substr($line, 13, 10),
+            'immediateOriginName' => \substr($line, 63, 23),
             'priorityCode' => \substr($line, 1, 2),
+            'recordSize' => \substr($line, 34, 3),
             'referenceCode' => \substr($line, 88, 8),
         ]);
     }
