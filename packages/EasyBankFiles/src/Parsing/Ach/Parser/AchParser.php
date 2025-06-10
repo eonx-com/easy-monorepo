@@ -6,7 +6,7 @@ namespace EonX\EasyBankFiles\Parsing\Ach\Parser;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\Addenda;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\Batch;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\BatchControl;
-use EonX\EasyBankFiles\Parsing\Ach\ValueObject\batchHeader;
+use EonX\EasyBankFiles\Parsing\Ach\ValueObject\BatchHeader;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\EntryDetail;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\FileControl;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\FileHeader;
@@ -26,8 +26,6 @@ final class AchParser extends AbstractLineByLineParser
     private const CODE_FILE_CONTROL = '9';
 
     private const CODE_FILE_HEADER = '1';
-
-    private const MAX_LINE_LENGTH = 94;
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Ach\ValueObject\Batch[]
@@ -105,10 +103,12 @@ final class AchParser extends AbstractLineByLineParser
         switch ($code) {
             case self::CODE_ADDENDA:
                 $this->setAddenda($line);
+
                 break;
 
             case self::CODE_BATCH_CONTROL:
                 $this->setBatchControl($line);
+
                 break;
 
             case self::CODE_BATCH_HEADER:
@@ -117,18 +117,22 @@ final class AchParser extends AbstractLineByLineParser
                 $this->currentBatch = $batch;
 
                 $this->setBatchHeader($line);
+
                 break;
 
             case self::CODE_ENTRY_DETAIL:
                 $this->setEntryDetail($line);
+
                 break;
 
             case self::CODE_FILE_CONTROL:
                 $this->setFileControl($line);
+
                 break;
 
             case self::CODE_FILE_HEADER:
                 $this->setFileHeader($line);
+
                 break;
         }
     }
@@ -166,6 +170,23 @@ final class AchParser extends AbstractLineByLineParser
         ]));
     }
 
+    private function setBatchControl(string $line): void
+    {
+        $this->currentBatch->setControl(new BatchControl([
+            'batchNumber' => \substr($line, 87, 7),
+            'code' => \substr($line, 0, 1),
+            'companyIdentification' => \substr($line, 44, 10),
+            'entryAddendaCount' => \substr($line, 4, 6),
+            'entryHash' => \substr($line, 10, 10),
+            'messageAuthenticationCode' => \substr($line, 54, 19),
+            'originatingDfiIdentification' => \substr($line, 79, 8),
+            'reserved' => \substr($line, 73, 6),
+            'serviceClassCode' => \substr($line, 1, 3),
+            'totalCreditAmount' => \substr($line, 32, 12),
+            'totalDebitAmount' => \substr($line, 20, 12),
+        ]));
+    }
+
     private function setBatchHeader(string $line): void
     {
         $this->currentBatch->setHeader(new BatchHeader([
@@ -182,23 +203,6 @@ final class AchParser extends AbstractLineByLineParser
             'serviceClassCode' => \substr($line, 0, 1),
             'settlementDate' => \substr($line, 75, 3),
             'standardEntryClassCode' => \substr($line, 50, 3),
-        ]));
-    }
-
-    private function setBatchControl(string $line): void
-    {
-        $this->currentBatch->setControl(new BatchControl([
-            'batchNumber' => \substr($line, 87, 7),
-            'code' => \substr($line, 0, 1),
-            'companyIdentification' => \substr($line, 44, 10),
-            'entryAddendaCount' => \substr($line, 4, 6),
-            'entryHash' => \substr($line, 10, 10),
-            'messageAuthenticationCode' => \substr($line, 54, 19),
-            'originatingDfiIdentification' => \substr($line, 79, 8),
-            'reserved' => \substr($line, 73, 6),
-            'serviceClassCode' => \substr($line, 1, 3),
-            'totalCreditAmount' => \substr($line, 32, 12),
-            'totalDebitAmount' => \substr($line, 20, 12),
         ]));
     }
 

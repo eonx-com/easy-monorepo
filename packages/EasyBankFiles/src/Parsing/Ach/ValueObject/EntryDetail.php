@@ -24,7 +24,7 @@ final class EntryDetail extends AbstractResult
 
     public function __construct(
         private readonly Batch $batch,
-        ?array $data = null
+        ?array $data = null,
     ) {
         $batch->addEntryDetailRecord($this);
 

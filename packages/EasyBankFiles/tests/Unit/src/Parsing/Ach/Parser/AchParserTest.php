@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Unit\src\Parsing\Ach\Parser;
+namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Ach\Parser;
 
 use EonX\EasyBankFiles\Parsing\Ach\Parser\AchParser;
 use EonX\EasyBankFiles\Parsing\Ach\ValueObject\Batch;
