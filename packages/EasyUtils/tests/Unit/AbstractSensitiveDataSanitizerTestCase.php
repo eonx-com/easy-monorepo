@@ -136,9 +136,13 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         yield 'Mask keys in URL' => [
             'input' => [
                 'maskToken' => 'tcp://my-name@yeah?token=token-to-be-masked&PhoneNumber=61000000001&test=1',
+                'maskTokenInPath' => 'some text, https://example.com/path/to/token/to-be-masked?query=1',
+                'maskTokenInPath end with #' => 'some text, https://example.com/path/to/token/to-be-masked#query=1',
             ],
             'expectedOutput' => [
                 'maskToken' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
+                'maskTokenInPath' => 'some text, https://example.com/path/to/token/*REDACTED*?query=1',
+                'maskTokenInPath end with #' => 'some text, https://example.com/path/to/token/*REDACTED*#query=1',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [
