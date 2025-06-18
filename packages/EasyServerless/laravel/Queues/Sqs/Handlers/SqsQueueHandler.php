@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\Queues;
+namespace EonX\EasyServerless\Laravel\Queues\Sqs\Handlers;
 
 use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
@@ -10,6 +10,7 @@ use Bref\Event\Sqs\SqsHandler;
 use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
 use Bref\LaravelBridge\Queue\Worker;
+use EonX\EasyServerless\Laravel\Queues\Sqs\Jobs\SqsQueueJob;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Queue\QueueManager;

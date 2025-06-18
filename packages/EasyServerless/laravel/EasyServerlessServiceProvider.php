@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Laravel;
 
-use EonX\EasyServerless\Laravel\Queues\SqsQueueHandler;
+use EonX\EasyServerless\Laravel\Queues\Sqs\Handlers\SqsQueueHandler;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
