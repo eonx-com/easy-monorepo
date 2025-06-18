@@ -36,6 +36,7 @@ final class AcnValidatorTest extends AbstractUnitTestCase
         yield 'Invalid Acn #2' => ['530040856'];
         yield 'Invalid Acn #3' => ['530040856'];
         yield 'Invalid Acn #4' => ['100000000'];
+        yield 'Invalid Acn #5' => ['000000000'];
     }
 
     /**

@@ -59,7 +59,7 @@ final class AcnValidator extends ConstraintValidator
             $complement = '0';
         }
 
-        if ($acn[8] !== $complement) {
+        if ($acn[8] !== $complement || $acn === '000000000') {
             $this->context->buildViolation($constraint->message)
                 ->setCode(Acn::COMPLEMENT_CALCULATION_FAILED_ERROR)
                 ->addViolation();
