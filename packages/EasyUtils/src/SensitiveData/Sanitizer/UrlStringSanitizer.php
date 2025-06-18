@@ -9,7 +9,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
     {
         foreach ($keysToMask as $key) {
             $string = (string)\preg_replace(
-                \sprintf('/(%s=|\[%s\]=)([^&]+)/i', $key, $key),
+                \sprintf('/(%s=|\[%s\]=|\/%s\/)([^&\/?#]+)/i', $key, $key, $key),
                 '$1' . $maskPattern,
                 $string
             );
