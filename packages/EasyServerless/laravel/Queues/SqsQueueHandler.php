@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\Queue;
+namespace EonX\EasyServerless\Laravel\Queues;
 
 use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
@@ -10,12 +10,13 @@ use Bref\Event\Sqs\SqsHandler;
 use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
 use Bref\LaravelBridge\Queue\Worker;
-use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Queue\WorkerOptions;
 use Illuminate\Support\Facades\Facade;
+use RuntimeException;
 
 /**
  * The purpose of this class and related SqsQueueJob is to handle SQS events in a way that delegates retries to SQS
@@ -27,7 +28,7 @@ final class SqsQueueHandler extends SqsHandler
 {
     private const JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
 
-    private SqsClient $sqsClient;
+    private readonly SqsClient $sqsClient;
 
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -41,7 +42,7 @@ final class SqsQueueHandler extends SqsHandler
             ->connection($this->connectionName);
 
         if ($queue instanceof SqsQueue === false) {
-            throw new \RuntimeException('Default queue connection is not a SQS connection');
+            throw new RuntimeException('Default queue connection is not a SQS connection');
         }
 
         $this->sqsClient = $queue->getSqs();
@@ -56,19 +57,19 @@ final class SqsQueueHandler extends SqsHandler
     {
         $worker = $this->makeWorker();
 
-        $isFifoQueue = null;
+        $isFifo = null;
         $hasPreviousMessageFailed = false;
         $failingMessageGroupIds = [];
 
         foreach ($event->getRecords() as $sqsRecord) {
-            $isFifoQueue ??= \str_ends_with($sqsRecord->toArray()['eventSourceARN'], '.fifo');
+            $isFifo ??= \str_ends_with((string)$sqsRecord->toArray()['eventSourceARN'], '.fifo');
             $messageGroupId = $sqsRecord->toArray()['attributes']['MessageGroupId'] ?? null;
 
             /**
              * When using FIFO queues, preserving order is important.
              * If a previous message has failed in the batch, we need to skip the next ones and requeue them.
              */
-            if ($isFifoQueue && $hasPreviousMessageFailed && \in_array($messageGroupId, $failingMessageGroupIds, true)) {
+            if ($isFifo && $hasPreviousMessageFailed && \in_array($messageGroupId, $failingMessageGroupIds, true)) {
                 $this->markAsFailed($sqsRecord);
 
                 continue;
@@ -82,7 +83,7 @@ final class SqsQueueHandler extends SqsHandler
 
             if ($job->hasFailed()) {
                 if ($this->partialBatchFailure === false) {
-                    throw $job->getThrowable() ?? new \RuntimeException('Job failed without an exception');
+                    throw $job->getThrowable() ?? new RuntimeException('Job failed without an exception');
                 }
 
                 $failingMessageGroupIds[] = $messageGroupId;
@@ -96,6 +97,25 @@ final class SqsQueueHandler extends SqsHandler
     private function calculateJobTimeout(int $remainingInvocationTimeInMs): int
     {
         return \max((int)(($remainingInvocationTimeInMs - self::JOB_TIMEOUT_SAFETY_MARGIN) / 1000), 0);
+    }
+
+    private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
+    {
+        $job = [
+            'MessageId' => $sqsRecord->getMessageId(),
+            'ReceiptHandle' => $sqsRecord->getReceiptHandle(),
+            'Body' => $sqsRecord->getBody(),
+            'Attributes' => $sqsRecord->toArray()['attributes'] ?? [],
+            'MessageAttributes' => $sqsRecord->getMessageAttributes(),
+        ];
+
+        return new SqsQueueJob(
+            container: $this->container,
+            sqs: $this->sqsClient,
+            job: $job,
+            connectionName: $this->connectionName,
+            queue: $sqsRecord->getQueueName(),
+        );
     }
 
     /**
@@ -128,25 +148,6 @@ final class SqsQueueHandler extends SqsHandler
             stopWhenEmpty: false,
             maxJobs: 0,
             maxTime: 0,
-        );
-    }
-
-    private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
-    {
-        $job = [
-            'MessageId' => $sqsRecord->getMessageId(),
-            'ReceiptHandle' => $sqsRecord->getReceiptHandle(),
-            'Body' => $sqsRecord->getBody(),
-            'Attributes' => $sqsRecord->toArray()['attributes'] ?? [],
-            'MessageAttributes' => $sqsRecord->getMessageAttributes(),
-        ];
-
-        return new SqsQueueJob(
-            container: $this->container,
-            sqs: $this->sqsClient,
-            job: $job,
-            connectionName: $this->connectionName,
-            queue: $sqsRecord->getQueueName(),
         );
     }
 
