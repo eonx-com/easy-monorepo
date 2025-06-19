@@ -13,7 +13,7 @@ use Bref\LaravelBridge\Queue\Worker;
 use EonX\EasyServerless\Laravel\Queues\Sqs\Jobs\SqsQueueJob;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Log\Logger;
+use Illuminate\Log\LogManager;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Queue\WorkerOptions;
@@ -30,7 +30,7 @@ final class SqsQueueHandler extends SqsHandler
 {
     private const JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
 
-    private readonly Logger $logger;
+    private readonly LogManager $logger;
 
     private readonly SqsClient $sqsClient;
 
@@ -184,16 +184,6 @@ final class SqsQueueHandler extends SqsHandler
 
         /** @var \Illuminate\Database\DatabaseManager $db */
         $db = $this->container->make('db');
-        /** @var \Illuminate\Log\Logger $logger */
-        $logger = $this->container->make('log');
-
-        if (\method_exists($logger, 'flushSharedContext')) {
-            $logger->flushSharedContext();
-        }
-
-        if (\method_exists($logger, 'withoutContext')) {
-            $logger->withoutContext();
-        }
 
         if (\method_exists($db, 'getConnections')) {
             foreach ($db->getConnections() as $connection) {
