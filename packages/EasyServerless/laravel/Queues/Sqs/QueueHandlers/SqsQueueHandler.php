@@ -13,6 +13,7 @@ use Bref\LaravelBridge\Queue\Worker;
 use EonX\EasyServerless\Laravel\Queues\Sqs\Jobs\SqsQueueJob;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
+use Illuminate\Log\Logger;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Queue\WorkerOptions;
@@ -28,6 +29,8 @@ use RuntimeException;
 final class SqsQueueHandler extends SqsHandler
 {
     private const JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
+
+    private readonly Logger $logger;
 
     private readonly SqsClient $sqsClient;
 
@@ -46,6 +49,7 @@ final class SqsQueueHandler extends SqsHandler
             throw new RuntimeException('Default queue connection is not a SQS connection');
         }
 
+        $this->logger = $this->container->make('log');
         $this->sqsClient = $queue->getSqs();
     }
 
@@ -83,6 +87,13 @@ final class SqsQueueHandler extends SqsHandler
             $worker->runSqsJob($job, $this->connectionName, $workerOptions);
 
             if ($job->hasFailed()) {
+                // If the job explicitly prevents retries, then let lambda acknowledge it
+                if ($job->maxTries() === 1) {
+                    $this->logger->error(\sprintf($this->getUnrecoverableJobMessage(), $sqsRecord->getMessageId()));
+
+                    continue;
+                }
+
                 if ($this->partialBatchFailure === false) {
                     throw $job->getThrowable() ?? new RuntimeException('Job failed without an exception');
                 }
@@ -98,6 +109,12 @@ final class SqsQueueHandler extends SqsHandler
     private function calculateJobTimeout(int $remainingInvocationTimeInMs): int
     {
         return \max((int)(($remainingInvocationTimeInMs - self::JOB_TIMEOUT_SAFETY_MARGIN) / 1000), 0);
+    }
+
+    private function getUnrecoverableJobMessage(): string
+    {
+        return 'SQS record with id "%s" failed to be processed. But Job::$tries was set to 1 not to re-attempt.'
+            . ' Message will be acknowledged';
     }
 
     private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
@@ -157,6 +174,14 @@ final class SqsQueueHandler extends SqsHandler
      */
     private function resetWorkerScope(): void
     {
+        if (\method_exists($this->logger, 'flushSharedContext')) {
+            $this->logger->flushSharedContext();
+        }
+
+        if (\method_exists($this->logger, 'withoutContext')) {
+            $this->logger->withoutContext();
+        }
+
         /** @var \Illuminate\Database\DatabaseManager $db */
         $db = $this->container->make('db');
         /** @var \Illuminate\Log\Logger $logger */
