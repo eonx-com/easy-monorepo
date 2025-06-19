@@ -28,4 +28,11 @@ final class SqsQueueJob extends SqsJob
     {
         return $this->throwable;
     }
+
+    public function release($delay = 0): void
+    {
+        // DO NOT release the job, just mark it as released
+        // Releasing the job prevents SQS from retrying it
+        $this->released = true;
+    }
 }
