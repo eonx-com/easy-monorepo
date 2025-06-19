@@ -114,7 +114,7 @@ final class SqsQueueHandler extends SqsHandler
     private function getUnrecoverableJobMessage(): string
     {
         return 'SQS record with id "%s" failed to be processed. But Job::$tries was set to 1 not to re-attempt.'
-            .' Message will be acknowledged';
+            . ' Message will be acknowledged';
     }
 
     private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
