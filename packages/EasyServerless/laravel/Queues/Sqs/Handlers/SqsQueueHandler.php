@@ -103,11 +103,11 @@ final class SqsQueueHandler extends SqsHandler
     private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
     {
         $job = [
+            'Attributes' => $sqsRecord->toArray()['attributes'] ?? [],
+            'Body' => $sqsRecord->getBody(),
+            'MessageAttributes' => $sqsRecord->getMessageAttributes(),
             'MessageId' => $sqsRecord->getMessageId(),
             'ReceiptHandle' => $sqsRecord->getReceiptHandle(),
-            'Body' => $sqsRecord->getBody(),
-            'Attributes' => $sqsRecord->toArray()['attributes'] ?? [],
-            'MessageAttributes' => $sqsRecord->getMessageAttributes(),
         ];
 
         return new SqsQueueJob(
@@ -125,7 +125,7 @@ final class SqsQueueHandler extends SqsHandler
     private function makeWorker(): Worker
     {
         $worker = $this->container->make(Worker::class, [
-            'isDownForMaintenance' => fn (): bool => MaintenanceMode::active(),
+            'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
             'resetScope' => fn () => $this->resetWorkerScope(),
         ]);
 
@@ -157,7 +157,9 @@ final class SqsQueueHandler extends SqsHandler
      */
     private function resetWorkerScope(): void
     {
+        /** @var \Illuminate\Database\DatabaseManager $db */
         $db = $this->container->make('db');
+        /** @var \Illuminate\Log\Logger $logger */
         $logger = $this->container->make('log');
 
         if (\method_exists($logger, 'flushSharedContext')) {
