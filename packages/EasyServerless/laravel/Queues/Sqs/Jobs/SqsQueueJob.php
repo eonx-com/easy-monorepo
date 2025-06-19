@@ -17,7 +17,7 @@ final class SqsQueueJob extends SqsJob
         $this->deleted = true;
     }
 
-    public function fail(?Throwable $e = null): void
+    public function fail($e = null): void
     {
         $this->throwable = $e;
 
