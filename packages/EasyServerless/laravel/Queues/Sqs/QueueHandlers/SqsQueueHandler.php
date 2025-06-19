@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\Queues\Sqs\Handlers;
+namespace EonX\EasyServerless\Laravel\Queues\Sqs\QueueHandlers;
 
 use Aws\Sqs\SqsClient;
 use Bref\Context\Context;

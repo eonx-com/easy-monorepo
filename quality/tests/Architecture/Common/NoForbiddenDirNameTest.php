@@ -28,7 +28,6 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
     ];
 
     private const SKIP_DIRS = [
-        '/EasyServerless/laravel/Queues/Sqs/Handlers',
         '/EasyBatch/src/Common/Manager',
         '/EasyTest/src/Common/Trait',
         '/EasyTest/src/HttpClient/Trait',
