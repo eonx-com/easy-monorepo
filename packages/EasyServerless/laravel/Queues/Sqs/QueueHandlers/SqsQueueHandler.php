@@ -184,6 +184,16 @@ final class SqsQueueHandler extends SqsHandler
 
         /** @var \Illuminate\Database\DatabaseManager $db */
         $db = $this->container->make('db');
+        /** @var \Illuminate\Log\Logger $logger */
+        $logger = $this->container->make('log');
+
+        if (\method_exists($logger, 'flushSharedContext')) {
+            $logger->flushSharedContext();
+        }
+
+        if (\method_exists($logger, 'withoutContext')) {
+            $logger->withoutContext();
+        }
 
         if (\method_exists($db, 'getConnections')) {
             foreach ($db->getConnections() as $connection) {
