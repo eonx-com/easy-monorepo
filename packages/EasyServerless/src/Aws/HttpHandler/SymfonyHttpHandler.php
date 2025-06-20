@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\TerminableInterface;
  */
 final class SymfonyHttpHandler implements RequestHandlerInterface
 {
-    private HttpMessageFactoryInterface $psrHttpFactory;
+    private readonly HttpMessageFactoryInterface $psrHttpFactory;
 
     private ?Request $symfonyRequest = null;
 
