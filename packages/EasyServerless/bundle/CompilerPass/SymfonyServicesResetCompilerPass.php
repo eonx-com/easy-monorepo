@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle\CompilerPass;
 
-use EonX\EasyServerless\Common\Resetter\SymfonyServicesAppStateResetter;
+use EonX\EasyServerless\State\Resetter\SymfonyServicesAppStateResetter;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -6,6 +6,8 @@ namespace EonX\EasyServerless\Bundle;
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
 use EonX\EasyServerless\Bundle\CompilerPass\SymfonyServicesResetCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
+use EonX\EasyServerless\Bundle\Enum\ConfigTag;
+use EonX\EasyServerless\State\Checker\StateCheckerInterface;
 use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,10 +37,22 @@ final class EasyServerlessBundle extends AbstractBundle
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
 
+        $builder
+            ->registerForAutoconfiguration(StateCheckerInterface::class)
+            ->addTag(ConfigTag::StateChecker->value);
+
         $container->import('config/services.php');
+
+        if ($config['state'] && $config['state']['check']) {
+            $container->import('config/state.php');
+        }
 
         if ($this->isBundleEnabled('EasyAdminBundle', $builder)) {
             $container->import('config/easy_admin.php');
+        }
+
+        if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
+            $container->import('config/doctrine.php');
         }
 
         if (\class_exists(Logger::class)) {

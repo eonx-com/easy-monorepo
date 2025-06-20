@@ -14,5 +14,13 @@ return static function (DefinitionConfigurator $definition) {
                     ->end()
                 ->end()
             ->end()
+            ->arrayNode('state')
+                ->canBeDisabled()
+                ->children()
+                    ->booleanNode('check')
+                        ->defaultTrue()
+                        ->info('Enable state check after each invocation.')
+                    ->end()
+                ->end()
         ->end();
 };
