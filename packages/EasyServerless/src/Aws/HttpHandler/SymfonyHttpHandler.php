@@ -24,6 +24,8 @@ use Symfony\Component\HttpKernel\TerminableInterface;
  */
 final class SymfonyHttpHandler implements RequestHandlerInterface
 {
+    private HttpMessageFactoryInterface $psrHttpFactory;
+
     private ?Request $symfonyRequest = null;
 
     private ?Response $symfonyResponse = null;
@@ -31,12 +33,14 @@ final class SymfonyHttpHandler implements RequestHandlerInterface
     public function __construct(
         private readonly KernelInterface $kernel,
         private readonly HttpFoundationFactoryInterface $httpFoundationFactory = new HttpFoundationFactory(),
-        private ?HttpMessageFactoryInterface $psrHttpFactory = null
+        ?HttpMessageFactoryInterface $psrHttpFactory = null,
     ) {
-        if ($this->psrHttpFactory === null) {
+        if ($psrHttpFactory === null) {
             $psr17Factory = new Psr17Factory();
-            $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+            $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
         }
+
+        $this->psrHttpFactory = $psrHttpFactory;
     }
 
     public function afterInvoke(): void

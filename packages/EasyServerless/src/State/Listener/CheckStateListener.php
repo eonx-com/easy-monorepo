@@ -5,13 +5,14 @@ namespace EonX\EasyServerless\State\Listener;
 
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
-final class CheckStateListener
+final readonly class CheckStateListener
 {
     /**
      * @param iterable<\EonX\EasyServerless\State\Checker\StateCheckerInterface> $stateCheckers
      */
-    public function __construct(private readonly iterable $stateCheckers)
-    {
+    public function __construct(
+        private iterable $stateCheckers,
+    ) {
     }
 
     public function __invoke(TerminateEvent $event): void

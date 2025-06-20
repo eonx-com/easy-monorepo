@@ -8,6 +8,7 @@ use Bref\Event\Handler;
 use Bref\Listener\BrefEventSubscriber;
 use EonX\EasyServerless\Aws\HttpHandler\SymfonyHttpHandler;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 
 final class InvocationLifecycleSubscriber extends BrefEventSubscriber
 {
@@ -16,7 +17,7 @@ final class InvocationLifecycleSubscriber extends BrefEventSubscriber
         mixed $event,
         Context $context,
         mixed $result,
-        ?\Throwable $error = null
+        ?Throwable $error = null,
     ): void {
         if ($handler instanceof SymfonyHttpHandler) {
             $handler->afterInvoke();
