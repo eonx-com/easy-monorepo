@@ -7,7 +7,7 @@ use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use EonX\EasyServerless\Aws\Helper\SecretsHelper;
 use Symfony\Component\Runtime\SymfonyRuntime;
 
-final class ServerlessSymfonyRuntime extends SymfonyRuntime
+class ServerlessSymfonyRuntime extends SymfonyRuntime
 {
     public function __construct(?array $options = null)
     {
