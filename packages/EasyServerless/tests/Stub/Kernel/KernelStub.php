@@ -8,6 +8,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -31,8 +32,14 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->setAlias(KernelInterface::class, 'kernel');
+
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
+        }
+
+        foreach ($container->getAliases() as $alias) {
+            $alias->setPublic(true);
         }
     }
 
