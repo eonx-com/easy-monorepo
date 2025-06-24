@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use EonX\EasyEncryption\Bundle\Enum\ConfigParam;
 use EonX\EasyEncryption\Bundle\Enum\ConfigTag;
 use EonX\EasyEncryption\Common\Encryptor\Encryptor;
@@ -48,5 +49,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ObjectEncryptorInterface::class, ObjectEncryptor::class);
 
-    $services->set(DoctrineEncryptionListener::class);
+    if (\class_exists(AsDoctrineListener::class)) {
+        $services->set(DoctrineEncryptionListener::class);
+    }
 };
