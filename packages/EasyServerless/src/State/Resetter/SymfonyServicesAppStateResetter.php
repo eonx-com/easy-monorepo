@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Common\Resetter;
+namespace EonX\EasyServerless\State\Resetter;
 
 use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 use Traversable;

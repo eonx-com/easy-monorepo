@@ -7,7 +7,9 @@ use EonX\EasyServerless\Bundle\EasyServerlessBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
@@ -31,8 +33,18 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $container->setDefinition(
+            'kernel',
+            (new Definition(KernelInterface::class))->setSynthetic(true)
+        );
+        $container->setAlias(KernelInterface::class, 'kernel');
+
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
+        }
+
+        foreach ($container->getAliases() as $alias) {
+            $alias->setPublic(true);
         }
     }
 

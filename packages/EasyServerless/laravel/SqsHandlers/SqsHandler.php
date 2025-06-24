@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\Queues\Sqs\QueueHandlers;
+namespace EonX\EasyServerless\Laravel\SqsHandlers;
 
 use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsEvent;
-use Bref\Event\Sqs\SqsHandler;
+use Bref\Event\Sqs\SqsHandler as BaseSqsHandler;
 use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
 use Bref\LaravelBridge\Queue\Worker;
-use EonX\EasyServerless\Laravel\Queues\Sqs\Jobs\SqsQueueJob;
+use EonX\EasyServerless\Laravel\Jobs\SqsQueueJob;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Log\LogManager;
@@ -26,7 +26,7 @@ use RuntimeException;
  * It also allows us to handle partial batch failures, which is useful when processing multiple messages in a single
  * batch.
  */
-final class SqsQueueHandler extends SqsHandler
+final class SqsHandler extends BaseSqsHandler
 {
     private const JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
 
