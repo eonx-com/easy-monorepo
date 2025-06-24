@@ -15,7 +15,7 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {
-        if ($this->kernel !== null) {
+        if ($this->kernel !== null && $configs === null) {
             return $this->kernel;
         }
 
