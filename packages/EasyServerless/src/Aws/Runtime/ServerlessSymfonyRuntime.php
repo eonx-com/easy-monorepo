@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Runtime;
+namespace EonX\EasyServerless\Aws\Runtime;
 
 use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use EonX\EasyServerless\Aws\Helper\SecretsHelper;

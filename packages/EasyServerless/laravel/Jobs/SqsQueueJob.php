@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\Queues\Sqs\Jobs;
+namespace EonX\EasyServerless\Laravel\Jobs;
 
 use Bref\LaravelBridge\Queue\SqsJob;
 use Throwable;
