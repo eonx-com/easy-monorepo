@@ -17,7 +17,9 @@ final readonly class ManagersChecker implements StateCheckerInterface
 
     public function check(): void
     {
-        foreach ($this->managerRegistry->getManagerNames() as $managerName) {
+        $managerNames = \array_keys($this->managerRegistry->getManagerNames());
+
+        foreach ($managerNames as $managerName) {
             $manager = $this->managerRegistry->getManager($managerName);
 
             if ($manager instanceof EntityManagerInterface && $manager->isOpen() === false) {
