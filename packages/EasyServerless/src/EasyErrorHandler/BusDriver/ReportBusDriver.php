@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EasyServerless\EasyErrorHandler\BusDriver;
+namespace EonX\EasyServerless\EasyErrorHandler\BusDriver;
 
 use Bref\Symfony\Messenger\Service\BusDriver;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
