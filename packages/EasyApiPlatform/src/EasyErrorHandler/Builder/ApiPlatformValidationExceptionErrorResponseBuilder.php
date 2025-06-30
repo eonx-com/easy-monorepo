@@ -191,6 +191,10 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             if (\preg_match('/Invalid IRI "(.+)"./', $hint)) {
                 return $hint;
             }
+
+            if (\preg_match('/The data must belong to a backed enumeration of type (.+)/', $hint)) {
+                return $this->translator->trans('violations.invalid_enum', []);
+            }
         }
 
         return null;

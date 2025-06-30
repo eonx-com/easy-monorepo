@@ -20,6 +20,7 @@ return [
         // @todo Remove `missing_constructor_argument` in 7.0
         'missing_constructor_argument' => 'This value should be present.',
         'invalid_datetime' => 'This value is not a valid date/time.',
+        'invalid_enum' => 'The value should be a valid choice.',
         'invalid_iri' => 'This value should be an IRI.',
         'invalid_type' => 'This value should be of type %expected_types%.',
         'not_encodable' => 'The input data is misformatted.',
