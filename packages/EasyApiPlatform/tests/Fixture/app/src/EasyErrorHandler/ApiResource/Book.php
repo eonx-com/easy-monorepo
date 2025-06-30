@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\Author;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Enum\Status;
 use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,6 +35,9 @@ final class Book
     public PublishingHouse $publishingHouse;
 
     public CarbonImmutable $someCarbonImmutableDate;
+
+    #[Assert\NotBlank]
+    public Status $status;
 
     #[Assert\NotBlank]
     #[Assert\NotNull]

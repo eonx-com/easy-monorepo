@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\ApiResource\PrintingHouse;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Enum\Status;
 use LogicException;
 
 final class PrintingHouseStateProvider implements ProviderInterface
@@ -15,7 +16,7 @@ final class PrintingHouseStateProvider implements ProviderInterface
     {
         if ($operation instanceof Get) {
             if ($uriVariables['id'] === 1) {
-                $printingHouse = new PrintingHouse('Some name');
+                $printingHouse = new PrintingHouse('Some name', Status::Active);
                 $printingHouse->id = 1;
 
                 return $printingHouse;

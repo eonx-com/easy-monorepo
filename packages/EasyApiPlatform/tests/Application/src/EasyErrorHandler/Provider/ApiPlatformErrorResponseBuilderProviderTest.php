@@ -23,8 +23,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'url' => '/books',
             'json' => [
                 'description' => 'some description',
-                'weight' => 11,
                 'printingHouse' => '/printing-houses/1',
+                'status' => 'active',
+                'weight' => 11,
             ],
             'violations' => [
                 'title' => [
@@ -34,6 +35,41 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => "title: This value should not be blank.\ntitle: This value should not be null.",
             'version' => null,
+        ];
+
+        yield 'ValidationException when enum v3' => [
+            'url' => '/books',
+            'json' => [
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/1',
+                'status' => 'some-non-existing-status',
+                'weight' => 11,
+            ],
+            'violations' => [
+                'status' => [
+                    'The value should be a valid choice.',
+                ],
+            ],
+            'exceptionMessage' => 'status: This value should be of type EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
+                '\\EasyErrorHandler\\Enum\\Status.',
+            'version' => 3,
+        ];
+
+        yield 'ValidationException when enum' => [
+            'url' => '/books',
+            'json' => [
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/1',
+                'status' => 'some-non-existing-status',
+                'weight' => 11,
+            ],
+            'violations' => [
+                'status' => [
+                    'The value should be a valid choice.',
+                ],
+            ],
+            'exceptionMessage' => 'status: This value should be of type Status.',
+            'version' => 4,
         ];
 
         yield 'Carbon date with custom Normalizer is empty string' => [
@@ -152,6 +188,37 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
                 " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
+            'version' => 4,
+        ];
+
+        yield 'invalid constructor Enum argument v3' => [
+            'url' => '/printing-houses',
+            'json' => [
+                'name' => 'some name',
+                'status' => 'some-non-existing-status',
+            ],
+            'violations' => [
+                'status' => [
+                    'The value should be a valid choice.',
+                ],
+            ],
+            'exceptionMessage' => 'status: This value should be of type EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
+                '\\EasyErrorHandler\\Enum\\Status.',
+            'version' => 3,
+        ];
+
+        yield 'invalid constructor Enum argument' => [
+            'url' => '/printing-houses',
+            'json' => [
+                'name' => 'some name',
+                'status' => 'some-non-existing-status',
+            ],
+            'violations' => [
+                'status' => [
+                    'The value should be a valid choice.',
+                ],
+            ],
+            'exceptionMessage' => 'status: This value should be of type Status.',
             'version' => 4,
         ];
 
