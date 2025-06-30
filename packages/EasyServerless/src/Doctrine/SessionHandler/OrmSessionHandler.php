@@ -6,6 +6,8 @@ namespace EonX\EasyServerless\Doctrine\SessionHandler;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use PDO;
+use RuntimeException;
 use SessionHandlerInterface;
 use SessionUpdateTimestampHandlerInterface as SessionUpdateTimestampHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
@@ -90,7 +92,7 @@ final class OrmSessionHandler implements ResetInterface, SessionHandlerInterface
         $manager = $this->managerRegistry->getManager($managerName);
 
         if ($manager instanceof EntityManagerInterface === false) {
-            throw new \RuntimeException(\sprintf(
+            throw new RuntimeException(\sprintf(
                 'Manager "%s" is not an instance of EntityManagerInterface.',
                 $managerName
             ));
@@ -106,8 +108,8 @@ final class OrmSessionHandler implements ResetInterface, SessionHandlerInterface
 
         $nativeConnection = $connection->getNativeConnection();
 
-        if ($nativeConnection instanceof \PDO === false) {
-            throw new \RuntimeException(\sprintf(
+        if ($nativeConnection instanceof PDO === false) {
+            throw new RuntimeException(\sprintf(
                 'Native connection for manager "%s" is not an instance of \PDO.',
                 $managerName
             ));
