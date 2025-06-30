@@ -47,7 +47,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'status' => [
-                    'This value should be of type Status.',
+                    'The value should be a valid choice.',
                 ],
             ],
             'exceptionMessage' => 'status: This value should be of type EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
@@ -65,7 +65,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'status' => [
-                    'This value should be of type Status.',
+                    'The value should be a valid choice.',
                 ],
             ],
             'exceptionMessage' => 'status: This value should be of type Status.',
@@ -199,7 +199,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'status' => [
-                    'This value should be of type Status.',
+                    'The value should be a valid choice.',
                 ],
             ],
             'exceptionMessage' => 'status: This value should be of type EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
@@ -215,7 +215,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'status' => [
-                    'This value should be of type Status.',
+                    'The value should be a valid choice.',
                 ],
             ],
             'exceptionMessage' => 'status: This value should be of type Status.',
