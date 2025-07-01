@@ -204,9 +204,9 @@ final class DynamoDbAdapter extends AbstractAdapter
                     $writeRequests[] = new WriteRequest([
                         'PutRequest' => new PutRequest([
                             'Item' => [
-                                $this->idAttr => new AttributeValue(['S' => $id]),
                                 $this->dataAttr => new AttributeValue(['S' => $data]),
                                 $this->expirationAttr => new AttributeValue(['N' => (string)$expiration]),
+                                $this->idAttr => new AttributeValue(['S' => $id]),
                             ],
                         ]),
                     ]);
