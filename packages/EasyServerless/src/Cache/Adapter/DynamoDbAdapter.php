@@ -125,7 +125,7 @@ final class DynamoDbAdapter extends AbstractAdapter
                  $this->tableName => new KeysAndAttributes([
                      'ConsistentRead' => true,
                      'Keys' => \array_map(fn (string $id): array => [
-                         $this->idAttr => new AttributeValue(['S' => $id])
+                         $this->idAttr => new AttributeValue(['S' => $id]),
                      ], $ids),
                  ]),
              ],
