@@ -26,13 +26,13 @@ final class DynamoDbAdapter extends AbstractAdapter
         'table_name' => 'cache_items',
     ];
 
-    private string $dataAttr;
+    private readonly string $dataAttr;
 
-    private string $expirationAttr;
+    private readonly string $expirationAttr;
 
-    private string $idAttr;
+    private readonly string $idAttr;
 
-    private string $tableName;
+    private readonly string $tableName;
 
     public function __construct(
         private readonly DynamoDbClient $dynamoDbClient = new DynamoDbClient(),
@@ -67,7 +67,7 @@ final class DynamoDbAdapter extends AbstractAdapter
             $ids = [];
 
             foreach ($response->getItems(true) as $item) {
-                $id = $item[$this->idAttr]?->getS();
+                $id = isset($item[$this->idAttr]) ? $item[$this->idAttr]->getS() : null;
 
                 if ($id !== null) {
                     $ids[] = $id;
@@ -89,15 +89,13 @@ final class DynamoDbAdapter extends AbstractAdapter
         do {
             if ($requestItems === null) {
                 $requestItems = [
-                    $this->tableName => \array_map(function (string $id): WriteRequest {
-                        return new WriteRequest([
-                            'DeleteRequest' => new DeleteRequest([
-                                'Key' => [
-                                    $this->idAttr => new AttributeValue(['S' => $id]),
-                                ],
-                            ]),
-                        ]);
-                    }, $ids),
+                    $this->tableName => \array_map(fn (string $id): WriteRequest => new WriteRequest([
+                        'DeleteRequest' => new DeleteRequest([
+                            'Key' => [
+                                $this->idAttr => new AttributeValue(['S' => $id]),
+                            ],
+                        ]),
+                    ]), $ids),
                 ];
             }
 
@@ -126,11 +124,9 @@ final class DynamoDbAdapter extends AbstractAdapter
              'RequestItems' => [
                  $this->tableName => new KeysAndAttributes([
                      'ConsistentRead' => true,
-                     'Keys' => \array_map(function (string $id): array {
-                        return [
-                            $this->idAttr => new AttributeValue(['S' => $id]),
-                        ];
-                     }, $ids)
+                     'Keys' => \array_map(fn (string $id): array => [
+                         $this->idAttr => new AttributeValue(['S' => $id])
+                     ], $ids)
                  ]),
              ],
         ]);
@@ -143,12 +139,12 @@ final class DynamoDbAdapter extends AbstractAdapter
             }
 
             foreach ($items as $item) {
-                $idAttr = $item[$this->idAttr]?->getS() ?? null;
-                $dataAttr = $item[$this->dataAttr]?->getS() ?? null;
-                $expirationAttr = $item[$this->expirationAttr]?->getN() ?? null;
+                $idAttr = isset($item[$this->idAttr]) ? $item[$this->idAttr]->getS() : null;
+                $dataAttr = isset($item[$this->dataAttr]) ? $item[$this->dataAttr]?->getS() : null;
+                $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
 
                 // Skip item if expired, dynamodb will remove it automatically
-                if ($expirationAttr !== null && ((float) $expirationAttr) < \microtime(true)) {
+                if ($expirationAttr !== null && ((float)$expirationAttr) < \microtime(true)) {
                     continue;
                 }
 
@@ -179,10 +175,10 @@ final class DynamoDbAdapter extends AbstractAdapter
             return false;
         }
 
-        $expirationAttr = $item[$this->expirationAttr]?->getN() ?? null;
+        $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
 
         // Treat expired items as not existing
-        return $expirationAttr !== null && ((float) $expirationAttr) > \microtime(true);
+        return $expirationAttr !== null && ((float)$expirationAttr) > \microtime(true);
     }
 
     protected function doSave(array $values, int $lifetime): array|bool
@@ -203,14 +199,14 @@ final class DynamoDbAdapter extends AbstractAdapter
                     $expiration = \microtime(true) + $lifetime;
 
                     // Prevent malformed utf-8 data error from DynamoDB
-                    $data = \strtr(\base64_encode($data), '/+', '._');
+                    $data = \strtr(\base64_encode((string)$data), '/+', '._');
 
                     $writeRequests[] = new WriteRequest([
                         'PutRequest' => new PutRequest([
                             'Item' => [
                                 $this->idAttr => new AttributeValue(['S' => $id]),
                                 $this->dataAttr => new AttributeValue(['S' => $data]),
-                                $this->expirationAttr => new AttributeValue(['N' => (string) $expiration]),
+                                $this->expirationAttr => new AttributeValue(['N' => (string)$expiration]),
                             ],
                         ]),
                     ]);
