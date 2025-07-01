@@ -39,7 +39,7 @@ final class DynamoDbAdapter extends AbstractAdapter
         private readonly MarshallerInterface $marshaller = new DefaultMarshaller(),
         ?array $options = null,
         ?string $namespace = null,
-        ?int $defaultLifetime = null
+        ?int $defaultLifetime = null,
     ) {
         parent::__construct($namespace ?? '', $defaultLifetime ?? 0);
 
@@ -47,6 +47,70 @@ final class DynamoDbAdapter extends AbstractAdapter
         $this->expirationAttr = $options['expiration_attr'] ?? self::DEFAULT_OPTIONS['expiration_attr'];
         $this->idAttr = $options['id_attr'] ?? self::DEFAULT_OPTIONS['id_attr'];
         $this->tableName = $options['table_name'] ?? self::DEFAULT_OPTIONS['table_name'];
+    }
+
+    protected function doClear(string $namespace): bool
+    {
+        $input = new ScanInput([
+            'ConsistentRead' => true,
+            'TableName' => $this->tableName,
+        ]);
+
+        if ($namespace !== '') {
+            $input->setFilterExpression('begins_with(#idAttr, :namespace)');
+            $input->setExpressionAttributeNames(['#idAttr' => $this->idAttr]);
+            $input->setExpressionAttributeValues([':namespace' => new AttributeValue(['S' => $namespace])]);
+        }
+
+        do {
+            $response = $this->dynamoDbClient->scan($input);
+            $ids = [];
+
+            foreach ($response->getItems(true) as $item) {
+                $id = $item[$this->idAttr]?->getS();
+
+                if ($id !== null) {
+                    $ids[] = $id;
+                }
+            }
+
+            if (\count($ids) > 0) {
+                $this->doDelete($ids);
+            }
+        } while (\count($response->getLastEvaluatedKey()) > 0);
+
+        return true;
+    }
+
+    protected function doDelete(array $ids): bool
+    {
+        $requestItems = null;
+
+        do {
+            if ($requestItems === null) {
+                $requestItems = [
+                    $this->tableName => \array_map(function (string $id): WriteRequest {
+                        return new WriteRequest([
+                            'DeleteRequest' => new DeleteRequest([
+                                'Key' => [
+                                    $this->idAttr => new AttributeValue(['S' => $id]),
+                                ],
+                            ]),
+                        ]);
+                    }, $ids),
+                ];
+            }
+
+            $response = $this->dynamoDbClient->batchWriteItem(new BatchWriteItemInput([
+                'RequestItems' => $requestItems,
+            ]));
+
+            // If there are unprocessed items, we need to retry them
+            $requestItems = $response->getUnprocessedItems();
+            $hasUnprocessedItems = \count($requestItems) > 0;
+        } while ($hasUnprocessedItems);
+
+        return true;
     }
 
     /**
@@ -119,70 +183,6 @@ final class DynamoDbAdapter extends AbstractAdapter
 
         // Treat expired items as not existing
         return $expirationAttr !== null && ((float) $expirationAttr) > \microtime(true);
-    }
-
-    protected function doClear(string $namespace): bool
-    {
-        $input = new ScanInput([
-            'ConsistentRead' => true,
-            'TableName' => $this->tableName,
-        ]);
-
-        if ($namespace !== '') {
-            $input->setFilterExpression('begins_with(#idAttr, :namespace)');
-            $input->setExpressionAttributeNames(['#idAttr' => $this->idAttr]);
-            $input->setExpressionAttributeValues([':namespace' => new AttributeValue(['S' => $namespace])]);
-        }
-
-        do {
-            $response = $this->dynamoDbClient->scan($input);
-            $ids = [];
-
-            foreach ($response->getItems(true) as $item) {
-                $id = $item[$this->idAttr]?->getS();
-
-                if ($id !== null) {
-                    $ids[] = $id;
-                }
-            }
-
-            if (\count($ids) > 0) {
-                $this->doDelete($ids);
-            }
-        } while (\count($response->getLastEvaluatedKey()) > 0);
-
-        return true;
-    }
-
-    protected function doDelete(array $ids): bool
-    {
-        $requestItems = null;
-
-        do {
-            if ($requestItems === null) {
-                $requestItems = [
-                    $this->tableName => \array_map(function (string $id): WriteRequest {
-                        return new WriteRequest([
-                            'DeleteRequest' => new DeleteRequest([
-                                'Key' => [
-                                    $this->idAttr => new AttributeValue(['S' => $id]),
-                                ],
-                            ]),
-                        ]);
-                    }, $ids),
-                ];
-            }
-
-            $response = $this->dynamoDbClient->batchWriteItem(new BatchWriteItemInput([
-                'RequestItems' => $requestItems,
-            ]));
-
-            // If there are unprocessed items, we need to retry them
-            $requestItems = $response->getUnprocessedItems();
-            $hasUnprocessedItems = \count($requestItems) > 0;
-        } while ($hasUnprocessedItems);
-
-        return true;
     }
 
     protected function doSave(array $values, int $lifetime): array|bool
