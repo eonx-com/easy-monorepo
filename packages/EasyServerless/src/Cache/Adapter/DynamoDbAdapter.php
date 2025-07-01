@@ -126,7 +126,7 @@ final class DynamoDbAdapter extends AbstractAdapter
                      'ConsistentRead' => true,
                      'Keys' => \array_map(fn (string $id): array => [
                          $this->idAttr => new AttributeValue(['S' => $id])
-                     ], $ids)
+                     ], $ids),
                  ]),
              ],
         ]);
@@ -140,7 +140,7 @@ final class DynamoDbAdapter extends AbstractAdapter
 
             foreach ($items as $item) {
                 $idAttr = isset($item[$this->idAttr]) ? $item[$this->idAttr]->getS() : null;
-                $dataAttr = isset($item[$this->dataAttr]) ? $item[$this->dataAttr]?->getS() : null;
+                $dataAttr = isset($item[$this->dataAttr]) ? $item[$this->dataAttr]->getS() : null;
                 $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
 
                 // Skip item if expired, dynamodb will remove it automatically
@@ -152,7 +152,7 @@ final class DynamoDbAdapter extends AbstractAdapter
                     // Decoding the data attribute from base64
                     $dataAttr = \base64_decode(\strtr($dataAttr, '._', '/+'), true);
 
-                    yield $idAttr => $this->marshaller->unmarshall($dataAttr);
+                    yield $idAttr => $this->marshaller->unmarshall((string)$dataAttr);
                 }
             }
         }
