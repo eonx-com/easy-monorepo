@@ -30,8 +30,10 @@ final class SymfonyServicesResetCompilerPass implements CompilerPassInterface
         }
 
         if ($container->hasDefinition(self::SERVICES_RESETTER) === false) {
-            $symfonyServicesAppStateResetter->setArgument('$resettableServices', new IteratorArgument([]));
-            $symfonyServicesAppStateResetter->setArgument('$resetMethods', []);
+            $symfonyServicesAppStateResetter->setArguments([
+                new IteratorArgument([]),
+                [],
+            ]);
         }
     }
 }
