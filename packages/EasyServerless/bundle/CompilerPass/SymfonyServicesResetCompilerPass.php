@@ -19,6 +19,7 @@ final class SymfonyServicesResetCompilerPass implements CompilerPassInterface
         if ($container->hasDefinition(self::SERVICES_RESETTER)) {
             $servicesResetter = $container->getDefinition(self::SERVICES_RESETTER);
 
+            // It is important to call `setArguments` instead of `setArgument` here
             $symfonyServicesAppStateResetter->setArguments([
                 $servicesResetter->getArgument(0),
                 $servicesResetter->getArgument(1),
@@ -30,10 +31,8 @@ final class SymfonyServicesResetCompilerPass implements CompilerPassInterface
         }
 
         if ($container->hasDefinition(self::SERVICES_RESETTER) === false) {
-            $symfonyServicesAppStateResetter->setArguments([
-                new IteratorArgument([]),
-                [],
-            ]);
+            $symfonyServicesAppStateResetter->setArgument('$resettableServices', new IteratorArgument([]));
+            $symfonyServicesAppStateResetter->setArgument('$resetMethods', []);
         }
     }
 }
