@@ -35,11 +35,11 @@ final class DynamoDbAdapter extends AbstractAdapter
     private readonly string $tableName;
 
     public function __construct(
+        ?string $namespace = null,
+        ?int $defaultLifetime = null,
         private readonly DynamoDbClient $dynamoDbClient = new DynamoDbClient(),
         private readonly MarshallerInterface $marshaller = new DefaultMarshaller(),
         ?array $options = null,
-        ?string $namespace = null,
-        ?int $defaultLifetime = null,
     ) {
         parent::__construct($namespace ?? '', $defaultLifetime ?? 0);
 
@@ -121,14 +121,14 @@ final class DynamoDbAdapter extends AbstractAdapter
         }
 
         $input = new BatchGetItemInput([
-             'RequestItems' => [
-                 $this->tableName => new KeysAndAttributes([
-                     'ConsistentRead' => true,
-                     'Keys' => \array_map(fn (string $id): array => [
-                         $this->idAttr => new AttributeValue(['S' => $id]),
-                     ], $ids),
-                 ]),
-             ],
+            'RequestItems' => [
+                $this->tableName => new KeysAndAttributes([
+                    'ConsistentRead' => true,
+                    'Keys' => \array_map(fn (string $id): array => [
+                        $this->idAttr => new AttributeValue(['S' => $id]),
+                    ], $ids),
+                ]),
+            ],
         ]);
 
         $response = $this->dynamoDbClient->batchGetItem($input);
