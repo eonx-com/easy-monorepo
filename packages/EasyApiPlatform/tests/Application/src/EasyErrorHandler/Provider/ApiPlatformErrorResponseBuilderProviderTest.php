@@ -378,11 +378,25 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         yield 'item not found by IRI type when input dto' => [
             'url' => '/invoices',
             'json' => [
+                'payment' => '/payments/435411d5-72cb-4169-ae44-4e0deb742d9a',
+            ],
+            'violations' => [
+                'payment' => [
+                    'Item not found for "/payments/435411d5-72cb-4169-ae44-4e0deb742d9a".',
+                ],
+            ],
+            'exceptionMessage' => 'payment: This value should be of type Payment.',
+            'version' => 4,
+        ];
+
+        yield 'invalid IRI when input dto' => [
+            'url' => '/invoices',
+            'json' => [
                 'payment' => '/payments/123',
             ],
             'violations' => [
                 'payment' => [
-                    'Item not found for "/payments/123".',
+                    'Invalid IRI "/payments/123".',
                 ],
             ],
             'exceptionMessage' => 'payment: This value should be of type Payment.',

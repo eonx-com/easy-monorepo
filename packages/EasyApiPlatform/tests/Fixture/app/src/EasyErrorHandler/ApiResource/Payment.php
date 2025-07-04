@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Post;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\PaymentInputDtoWithConstructor;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\StateProvider\PaymentStateProvider;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
@@ -27,7 +28,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 final class Payment
 {
     #[ApiProperty(identifier: true)]
-    public int $id;
+    public Uuid $id;
 
     #[SerializedName('type')]
     public string $paymentType;
