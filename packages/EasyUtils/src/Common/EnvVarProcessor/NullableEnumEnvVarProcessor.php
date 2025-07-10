@@ -32,7 +32,7 @@ final class NullableEnumEnvVarProcessor implements EnvVarProcessorInterface
             );
         }
 
-        /** @var class-string<\BackedEnum> $backedEnumClassName */
+        /** @var class-string $backedEnumClassName */
         $backedEnumClassName = \substr($name, 0, $colonPosition);
 
         if (\is_subclass_of($backedEnumClassName, BackedEnum::class) === false) {
