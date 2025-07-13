@@ -26,7 +26,7 @@ final readonly class FromFileCsvContentsProvider implements CsvContentsProviderI
             ));
         }
 
-        while (($row = \fgetcsv($handle)) !== false) {
+        while (($row = \fgetcsv($handle, escape: '\\')) !== false) {
             yield $row;
         }
 
