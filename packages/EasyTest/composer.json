@@ -10,10 +10,12 @@
         "phpunit/phpunit": "^10.2",
         "symfony/config": "^7.1",
         "symfony/console": "^7.1",
-        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.1",
+        "symfony/event-dispatcher-contracts": "^3.5",
         "symfony/http-client": "^7.1.8",
-        "symfony/http-kernel": "^7.1"
+        "symfony/http-kernel": "^7.1",
+        "symfony/service-contracts": "^3.5",
+        "symfony/translation-contracts": "^3.5"
     },
     "require-dev": {
         "symfony/uid": "^7.1"

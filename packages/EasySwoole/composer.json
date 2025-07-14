@@ -9,14 +9,15 @@
         "nesbot/carbon": "^3.8.4",
         "openswoole/core": "^22.1",
         "symfony/cache": "^7.1",
+        "symfony/cache-contracts": "^3.5",
         "symfony/config": "^7.1",
-        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.1",
         "symfony/filesystem": "^7.1",
         "symfony/framework-bundle": "^7.1",
         "symfony/http-foundation": "^7.1.7",
         "symfony/http-kernel": "^7.1",
         "symfony/runtime": "^7.1.7",
+        "symfony/service-contracts": "^3.5",
         "symfony/string": "^7.1"
     },
     "require-dev": {

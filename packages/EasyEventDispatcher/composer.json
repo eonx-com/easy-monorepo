@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.1",
+        "symfony/event-dispatcher-contracts": "^3.5",
         "symfony/http-kernel": "^7.1"
     },
     "require-dev": {
