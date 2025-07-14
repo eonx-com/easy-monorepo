@@ -9,10 +9,11 @@
         "eonx-com/easy-utils": "^6.15",
         "nette/utils": "^4.0",
         "symfony/cache": "^7.1",
+        "symfony/cache-contracts": "^3.5",
         "symfony/config": "^7.1",
-        "symfony/contracts": "^3.5",
         "symfony/dependency-injection": "^7.1",
         "symfony/http-client": "^7.1.8",
+        "symfony/http-client-contracts": "^3.5",
         "symfony/http-kernel": "^7.1",
         "symfony/uid": "^7.1"
     },
