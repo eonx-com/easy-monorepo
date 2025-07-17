@@ -38,7 +38,10 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
                 throw $throwable;
             }
 
-            throw new AuthenticationException($throwable->getMessage());
+            throw new AuthenticationException(
+                message: $throwable->getMessage(),
+                previous: $throwable,
+            );
         }
 
         // From here we know we have a user, simply fake it in symfony
