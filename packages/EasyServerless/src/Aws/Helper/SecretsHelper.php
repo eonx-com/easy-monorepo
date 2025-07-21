@@ -46,17 +46,28 @@ final class SecretsHelper
             $dir = \str_replace(self::PREFIX_JSON_FILES, '', $dir);
         }
 
-        $files = (new Finder())
-            ->in($dir)
-            ->files()
-            ->name('*.json');
+        // Support more than one directory, separated by commas
+        $dirs = \explode(',', $dir);
 
-        foreach ($files as $file) {
-            if (\json_validate($file->getContents()) === false) {
+        foreach ($dirs as $dir) {
+            $dir = \trim($dir);
+
+            if ($dir === '') {
                 continue;
             }
 
-            self::doLoad((array)\json_decode($file->getContents(), true));
+            $files = (new Finder())
+                ->in($dir)
+                ->files()
+                ->name('*.json');
+
+            foreach ($files as $file) {
+                if (\json_validate($file->getContents()) === false) {
+                    continue;
+                }
+
+                self::doLoad((array)\json_decode($file->getContents(), true));
+            }
         }
     }
 
@@ -68,24 +79,35 @@ final class SecretsHelper
             $paramName = \str_replace(self::PREFIX_SECRETS_MANAGER, '', $paramName);
         }
 
-        $input = ['SecretId' => $paramName];
+        // Support more than one secret, separated by commas
+        $params = \explode(',', $paramName);
 
-        // Support specific versionId as <SecretId>:<VersionId>
-        if (\str_contains($paramName, ':')) {
-            $exploded = \explode(':', $paramName);
+        foreach ($params as $param) {
+            $param = \trim($param);
 
-            $input = [
-                'SecretId' => $exploded[0],
-                'VersionId' => $exploded[1],
-            ];
-        }
+            if ($param === '') {
+                continue;
+            }
 
-        $value = self::$secretsManager
-            ->getSecretValue($input)
-            ->getSecretString();
+            $input = ['SecretId' => $param];
 
-        if (\json_validate($value ?? '')) {
-            self::doLoad((array)\json_decode($value ?? '{}', true));
+            // Support specific versionId as <SecretId>:<VersionId>
+            if (\str_contains($param, ':')) {
+                $exploded = \explode(':', $param);
+
+                $input = [
+                    'SecretId' => $exploded[0],
+                    'VersionId' => $exploded[1],
+                ];
+            }
+
+            $value = self::$secretsManager
+                ->getSecretValue($input)
+                ->getSecretString();
+
+            if (\json_validate($value ?? '')) {
+                self::doLoad((array)\json_decode($value ?? '{}', true));
+            }
         }
     }
 
