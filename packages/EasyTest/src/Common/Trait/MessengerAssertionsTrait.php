@@ -195,7 +195,7 @@ trait MessengerAssertionsTrait
      */
     public static function getMessagesSentToTransport(string $transportName, ?string $messageClass = null): array
     {
-        /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport $transport */
+        /** @var \Symfony\Component\Messenger\Transport\TransportInterface $transport */
         $transport = self::getContainer()->get('messenger.transport.' . $transportName);
 
         $messages = [];
@@ -248,7 +248,7 @@ trait MessengerAssertionsTrait
         array $expectedExceptions = [],
         array $expectedDelays = [],
     ): void {
-        /** @var \Symfony\Component\Messenger\Transport\InMemoryTransport[] $transports */
+        /** @var \Symfony\Component\Messenger\Transport\TransportInterface[] $transports */
         $transports = [];
         foreach ($transportNames ?: ['async'] as $transportName) {
             $transports[$transportName] = self::getContainer()->get('messenger.transport.' . $transportName);
@@ -261,7 +261,8 @@ trait MessengerAssertionsTrait
 
         $tries = 0;
         $messageLimitListener = null;
-        $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener(2));
+        $stopWorkerOnTimeLimitListener = new StopWorkerOnTimeLimitListener(2);
+        $eventDispatcher->addSubscriber($stopWorkerOnTimeLimitListener);
         /** @var \Symfony\Component\Messenger\EventListener\ResetServicesListener $resetServicesListener */
         $resetServicesListener = self::getContainer()->get('messenger.listener.reset_services');
         $eventDispatcher->addSubscriber($resetServicesListener);
@@ -286,6 +287,12 @@ trait MessengerAssertionsTrait
             if (isset($expectedDelays[$tries - 1])) {
                 $clock->sleep($expectedDelays[$tries - 1]);
             }
+        }
+
+        $eventDispatcher->removeSubscriber($stopWorkerOnTimeLimitListener);
+        $eventDispatcher->removeSubscriber($resetServicesListener);
+        if ($messageLimitListener !== null) {
+            $eventDispatcher->removeSubscriber($messageLimitListener);
         }
 
         // Message handler may dispatch new messages to specified transports and this can happen multiple times.
