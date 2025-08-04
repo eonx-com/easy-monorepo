@@ -216,7 +216,7 @@ final class AchParser extends AbstractLineByLineParser
             'discretionaryData' => \substr($line, 76, 2),
             'dollarAmount' => \substr($line, 29, 10),
             'identificationNumber' => \substr($line, 39, 15),
-            'individualOrReceivingCompanyName' => \substr($line, 54, 26),
+            'individualOrReceivingCompanyName' => \substr($line, 54, 22),
             'receivingDfiId' => \substr($line, 3, 8),
             'traceNumber' => \substr($line, 79, 15),
             'transactionCode' => \substr($line, 1, 2),
