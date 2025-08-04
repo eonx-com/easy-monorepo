@@ -10,7 +10,8 @@
         "symfony/dependency-injection": "^7.1",
         "symfony/http-foundation": "^7.1.7",
         "symfony/http-kernel": "^7.1",
-        "symfony/messenger": "^7.1"
+        "symfony/messenger": "^7.1",
+        "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
         "laravel/lumen-framework": "^11.0",

@@ -5,8 +5,9 @@ namespace EonX\EasyRequestId\Common\Provider;
 
 use EonX\EasyRequestId\Common\Resolver\FallbackResolverInterface;
 use EonX\EasyRequestId\Common\Resolver\ResolverInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class RequestIdProvider implements RequestIdProviderInterface
+final class RequestIdProvider implements RequestIdProviderInterface, ResetInterface
 {
     private ?string $correlationId = null;
 
@@ -37,6 +38,12 @@ final class RequestIdProvider implements RequestIdProviderInterface
     public function getRequestIdHeaderName(): string
     {
         return $this->requestIdHeaderName;
+    }
+
+    public function reset(): void
+    {
+        $this->correlationId = null;
+        $this->requestId = null;
     }
 
     public function setResolver(ResolverInterface|callable $resolver): RequestIdProviderInterface
