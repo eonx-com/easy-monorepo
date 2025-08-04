@@ -200,7 +200,7 @@ final class AchParser extends AbstractLineByLineParser
             'effectiveEntryDate' => \substr($line, 69, 6),
             'originatingDfiIdentification' => \substr($line, 79, 8),
             'originatorStatusCode' => \substr($line, 78, 1),
-            'serviceClassCode' => \substr($line, 0, 1),
+            'serviceClassCode' => \substr($line, 1, 3),
             'settlementDate' => \substr($line, 75, 3),
             'standardEntryClassCode' => \substr($line, 50, 3),
         ]));
@@ -257,7 +257,7 @@ final class AchParser extends AbstractLineByLineParser
             'immediateOriginName' => \substr($line, 63, 23),
             'priorityCode' => \substr($line, 1, 2),
             'recordSize' => \substr($line, 34, 3),
-            'referenceCode' => \substr($line, 88, 8),
+            'referenceCode' => \substr($line, 86, 8),
         ]);
     }
 
