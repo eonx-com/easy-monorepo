@@ -9,11 +9,11 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "eonx-com/easy-error-handler": "^6.14.10",
+        "eonx-com/easy-error-handler": "^6.15",
         "nette/utils": "^4.0"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^6.14.10",
+        "eonx-com/easy-test": "^6.15",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2"
     },
