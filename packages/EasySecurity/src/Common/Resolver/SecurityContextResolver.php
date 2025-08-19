@@ -10,8 +10,9 @@ use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use EonX\EasySecurity\Common\Factory\SecurityContextFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class SecurityContextResolver implements SecurityContextResolverInterface
+final class SecurityContextResolver implements SecurityContextResolverInterface, ResetInterface
 {
     private ?Closure $configurator = null;
 
@@ -22,6 +23,12 @@ final class SecurityContextResolver implements SecurityContextResolverInterface
         private readonly SecurityContextFactoryInterface $factory,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {
+    }
+
+    public function reset(): void
+    {
+        $this->configurator = null;
+        $this->securityContext = null;
     }
 
     public function resolveContext(): SecurityContextInterface
