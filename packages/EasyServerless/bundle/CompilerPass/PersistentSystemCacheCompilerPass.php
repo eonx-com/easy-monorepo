@@ -26,7 +26,7 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
                 throw new InvalidArgumentException(\sprintf(
                     'For Serverless, "%s" service must be a ChildDefinition, got "%s".',
                     $serviceId,
-                    \get_class($definition)
+                    $definition::class
                 ));
             }
 
@@ -41,7 +41,6 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
 
         $serviceIds = $container->findTaggedServiceIds('cache.pool');
         foreach ($serviceIds as $serviceId => $tags) {
-            /** @var \Symfony\Component\DependencyInjection\ChildDefinition $definition */
             $definition = $container->getDefinition($serviceId);
 
             if ($definition instanceof ChildDefinition === false) {
