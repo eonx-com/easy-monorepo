@@ -20,6 +20,10 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         foreach (self::SYSTEM_CACHES as $serviceId) {
+            if ($container->hasDefinition($serviceId) === false) {
+                continue;
+            }
+
             $definition = $container->getDefinition($serviceId);
 
             if ($definition instanceof ChildDefinition === false) {
