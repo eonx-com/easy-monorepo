@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Bundle;
 
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
-use EonX\EasyServerless\Bundle\CompilerPass\SymfonyServicesResetCompilerPass;
+use EonX\EasyServerless\Bundle\CompilerPass\PersistentSystemCacheCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\State\Checker\StateCheckerInterface;
@@ -22,7 +22,7 @@ final class EasyServerlessBundle extends AbstractBundle
 
         $container
             ->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass())
-            ->addCompilerPass(new SymfonyServicesResetCompilerPass(), priority: -33);
+            ->addCompilerPass(new PersistentSystemCacheCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
