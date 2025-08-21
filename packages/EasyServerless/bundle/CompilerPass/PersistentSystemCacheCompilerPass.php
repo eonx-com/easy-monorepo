@@ -6,6 +6,7 @@ namespace EonX\EasyServerless\Bundle\CompilerPass;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
@@ -41,6 +42,8 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
                     $definition->getParent()
                 ));
             }
+
+            $this->removeKernelResetTag($definition);
         }
 
         $serviceIds = $container->findTaggedServiceIds('cache.pool');
@@ -52,12 +55,17 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
             }
 
             if (\in_array($definition->getParent(), self::SYSTEM_CACHES, true)) {
-                $tags = $definition->getTags();
-
-                unset($tags['kernel.reset']);
-
-                $definition->setTags($tags);
+                $this->removeKernelResetTag($definition);
             }
         }
+    }
+
+    private function removeKernelResetTag(Definition $definition): void
+    {
+        $tags = $definition->getTags();
+
+        unset($tags['kernel.reset']);
+
+        $definition->setTags($tags);
     }
 }
