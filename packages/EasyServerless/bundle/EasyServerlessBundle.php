@@ -22,7 +22,7 @@ final class EasyServerlessBundle extends AbstractBundle
 
         $container
             ->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass())
-            ->addCompilerPass(new PersistentSystemCacheCompilerPass());
+            ->addCompilerPass(new PersistentSystemCacheCompilerPass(), priority: -33);
     }
 
     public function configure(DefinitionConfigurator $definition): void
