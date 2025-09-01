@@ -9,8 +9,20 @@ abstract class AbstractSecurityContextConfigurator implements SecurityContextCon
 {
     use HasPriorityTrait;
 
+    private bool $propagationStopped = false;
+
     public function __construct(?int $priority = null)
     {
         $this->doSetPriority($priority);
+    }
+
+    public function isPropagationStopped(): bool
+    {
+        return $this->propagationStopped;
+    }
+
+    public function stopPropagation(): void
+    {
+        $this->propagationStopped = true;
     }
 }

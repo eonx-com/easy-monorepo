@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyLogging\Interfaces\LoggerFactoryInterface;
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Authorization\Factory\CachedAuthorizationMatrixFactory;
 use EonX\EasySecurity\Bundle\Enum\BundleParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigServiceId;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
+use EonX\EasySecurity\Common\Command\ListSecurityContextConfiguratorsCommand;
 use EonX\EasySecurity\Common\DataCollector\SecurityContextDataCollector;
 use EonX\EasySecurity\Common\Factory\SecurityContextFactory;
 use EonX\EasySecurity\Common\Factory\SecurityContextFactoryInterface;
@@ -63,6 +64,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $responseFactory = $services
         ->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
     $services->set(SecurityContextAuthenticator::class);
+
+    // Command
+    $services
+        ->set(ListSecurityContextConfiguratorsCommand::class)
+        ->arg('$configurators', tagged_iterator(ConfigTag::ContextConfigurator->value));
 
     // Logger
     if (\interface_exists(LoggerFactoryInterface::class)) {
