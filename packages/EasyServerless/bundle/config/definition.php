@@ -9,7 +9,7 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('assets_separate_domain')
                 ->canBeDisabled()
                 ->children()
-                    ->scalarNode('url')
+                    ->stringNode('url')
                         ->defaultValue('%env(ASSETS_URL)%')
                     ->end()
                 ->end()

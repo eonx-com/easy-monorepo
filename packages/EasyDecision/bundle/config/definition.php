@@ -11,7 +11,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->info('If set to true, the expression language will be set on all decisions automatically')
             ->end()
             ->arrayNode('type_mapping')
-                ->prototype('scalar')
+                ->stringPrototype()
                 ->validate()
                     ->ifTrue(static fn ($class): bool => \class_exists($class) === false)
                         ->thenInvalid('Class %s does not exist.')

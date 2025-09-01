@@ -26,9 +26,9 @@ return static function (DefinitionConfigurator $definition) {
                                 );
                             })
                         ->end()
-                        ->scalarPrototype()->end()
+                        ->stringPrototype()->end()
                     ->end()
-                    ->scalarNode('timezone')->defaultValue('UTC')->end()
+                    ->stringNode('timezone')->defaultValue('UTC')->end()
                 ->end()
             ->end()
             ->arrayNode('doctrine')
@@ -104,7 +104,7 @@ return static function (DefinitionConfigurator $definition) {
                                 return \count($dirs) > 0 ? $dirs : ['%kernel.project_dir%/public'];
                             })
                         ->end()
-                        ->scalarPrototype()->end()
+                        ->stringPrototype()->end()
                     ->end()
                     ->arrayNode('allowed_filenames')
                         ->beforeNormalization()
@@ -129,7 +129,7 @@ return static function (DefinitionConfigurator $definition) {
                                 }, \is_array($value) ? $value : [$value]);
                             })
                         ->end()
-                        ->scalarPrototype()->end()
+                        ->stringPrototype()->end()
                     ->end()
                 ->end()
             ->end()
