@@ -9,7 +9,6 @@ use EonX\EasyUtils\Common\Helper\StoppableTrait;
 abstract class AbstractSecurityContextConfigurator implements SecurityContextConfiguratorInterface
 {
     use HasPriorityTrait;
-
     use StoppableTrait;
 
     public function __construct(?int $priority = null)
