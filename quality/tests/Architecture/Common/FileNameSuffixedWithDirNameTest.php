@@ -60,6 +60,8 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'EasyTest/config/services.php',
         'EasyUtils/src/Common/Helper/HasPriorityInterface.php',
         'EasyUtils/src/Common/Helper/HasPriorityTrait.php',
+        'EasyUtils/src/Common/Helper/StoppableInterface.php',
+        'EasyUtils/src/Common/Helper/StoppableTrait.php',
         'EasyUtils/tests/Fixture/SensitiveData/DummyObject.php',
     ];
 
