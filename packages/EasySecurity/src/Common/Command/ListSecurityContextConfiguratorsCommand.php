@@ -27,9 +27,6 @@ final class ListSecurityContextConfiguratorsCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * @noinspection PhpMissingParentCallCommonInspection
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $configurators = CollectorHelper::filterByClassAsArray(
