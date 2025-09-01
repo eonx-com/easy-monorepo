@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasySecurity\Common\Configurator;
+namespace EonX\EasyUtils\Common\Helper;
 
-interface StoppableSecurityContextConfiguratorInterface
+interface StoppableInterface
 {
     public function isPropagationStopped(): bool;
 
