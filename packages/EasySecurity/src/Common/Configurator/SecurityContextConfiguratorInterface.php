@@ -7,7 +7,7 @@ use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use EonX\EasyUtils\Common\Helper\HasPriorityInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-interface SecurityContextConfiguratorInterface extends HasPriorityInterface
+interface SecurityContextConfiguratorInterface extends HasPriorityInterface, StoppableSecurityContextConfiguratorInterface
 {
     public function configure(SecurityContextInterface $context, Request $request): void;
 }
