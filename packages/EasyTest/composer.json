@@ -8,17 +8,17 @@
         "eonx-com/easy-utils": "^6.15",
         "nette/utils": "^4.0",
         "phpunit/phpunit": "^10.2",
-        "symfony/config": "^7.1",
-        "symfony/console": "^7.1",
-        "symfony/dependency-injection": "^7.1",
+        "symfony/config": "^7.2",
+        "symfony/console": "^7.2",
+        "symfony/dependency-injection": "^7.2",
         "symfony/event-dispatcher-contracts": "^3.5",
-        "symfony/http-client": "^7.1.8",
-        "symfony/http-kernel": "^7.1",
+        "symfony/http-client": "^7.2",
+        "symfony/http-kernel": "^7.2",
         "symfony/service-contracts": "^3.5",
         "symfony/translation-contracts": "^3.5"
     },
     "require-dev": {
-        "symfony/uid": "^7.1"
+        "symfony/uid": "^7.2"
     },
     "autoload": {
         "psr-4": {
