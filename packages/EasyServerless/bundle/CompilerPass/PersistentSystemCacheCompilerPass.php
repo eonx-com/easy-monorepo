@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle\CompilerPass;
 
+use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,6 +21,10 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        if (LambdaContextHelper::inLambda() === false) {
+            return;
+        }
+
         foreach (self::SYSTEM_CACHES as $serviceId) {
             if ($container->hasDefinition($serviceId) === false) {
                 continue;
