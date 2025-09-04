@@ -21,7 +21,7 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        if (LambdaContextHelper::inLambda() === false) {
+        if (LambdaContextHelper::inLambda() === false && LambdaContextHelper::inLocalLambda() === false) {
             return;
         }
 
