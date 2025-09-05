@@ -35,15 +35,23 @@ final class ResultsContext
      */
     private array $groups = [];
 
-    private bool $isBai = false;
+    private bool $isBai;
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Nai\ValueObject\Transaction[]
      */
     private array $transactions = [];
 
-    public function __construct(array $accounts, array $errors, array $file, array $groups, array $transactions)
-    {
+    public function __construct(
+        array $accounts,
+        array $errors,
+        array $file,
+        array $groups,
+        array $transactions,
+        bool $isBai
+    ) {
+        $this->isBai = $isBai;
+
         // Not proud of that, but the order matters, DO NOT change it
         $this
             ->initTransactions($transactions)
@@ -185,27 +193,37 @@ final class ResultsContext
      */
     private function getTransactionDataFromLine(string $line, int $lineNumber): ?array
     {
+        $lineArray = \explode(',', $line);
+        $cloneLineArray = $lineArray;
+        $fundsType = \strtolower($lineArray[3] ?? '');
+
         $required = ['code', 'transactionCode', 'amount', 'fundsType'];
-        $optional = ['referenceNumber', 'text'];
+        // Keep fundsType Z check for backward compatibility for NAB files in AU
+        $optional = $this->isBai || $fundsType === 'z'
+            ? ['referenceNumber', 'customerReferenceNumber', 'text']
+            : ['referenceNumber', 'text'];
+
+        if ($fundsType === 's') {
+            $required[] = 'immediateAvailabilityAmount';
+            $required[] = 'oneDayAvailabilityAmount';
+            $required[] = 'plusTwoDayAvailabilityAmount';
+        }
+
+        if ($fundsType === 'v') {
+            $required[] = 'valueDate';
+            $required[] = 'valueTime';
+        }
 
         $data = [];
-        /** @var string[] $lineArray */
-        $lineArray = \explode(',', $line);
         $attributes = [...$required, ...$optional];
-
-        // Remove CustomerReferenceNumber for BAI because always empty
-        if (\strtolower($lineArray[3] ?? '') === 'z') {
-            $this->isBai = true;
-
-            unset($lineArray[5]);
-            // Reset array keys
-            $lineArray = \array_values($lineArray);
-        }
 
         foreach ($attributes as $index => $attribute) {
             $value = $lineArray[$index] ?? '';
             $endsWithSlash = \str_ends_with($value, '/');
             $data[$attribute] = $endsWithSlash ? \substr($value, 0, -1) : $value;
+
+            // Remove processed item from clone array, so we can use remaining ones for text at the end
+            unset($cloneLineArray[$index]);
 
             // If attribute ends with slash, it's the last one of line, exit
             if ($endsWithSlash) {
@@ -230,6 +248,11 @@ final class ResultsContext
 
             // Otherwise set a default value to it
             $data[$attribute] = '';
+        }
+
+        // Text field in BAI files can contain commas, so we need to join remaining items in the array
+        if (\count($cloneLineArray) > 0) {
+            $data['text'] .= ',' . \implode(',', $cloneLineArray);
         }
 
         // Trim text
