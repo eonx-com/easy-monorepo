@@ -11,6 +11,11 @@ trait TransactionDetailCodesTrait
             'description' => 'Deposit',
             'particulars' => '',
         ],
+        165 => [
+            'cdrd' => 'CR',
+            'description' => 'Pre-authorized ACH Credit',
+            'particulars' => '',
+        ],
         175 => [
             'cdrd' => 'CR',
             'description' => 'Cheques',
@@ -50,6 +55,16 @@ trait TransactionDetailCodesTrait
             'cdrd' => 'CR',
             'description' => 'Miscellaneous credits',
             'particulars' => 'Miscellaneous credit',
+        ],
+        455 => [
+            'cdrd' => 'DR',
+            'description' => 'Preauthorized ACH Debit',
+            'particulars' => '',
+        ],
+        466 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Settlement',
+            'particulars' => '',
         ],
         475 => [
             'cdrd' => 'DR',
