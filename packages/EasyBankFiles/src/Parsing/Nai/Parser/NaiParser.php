@@ -41,6 +41,8 @@ final class NaiParser extends AbstractLineByLineParser
 
     private array $groups = [];
 
+    private readonly bool $isBai;
+
     private string $previousCode;
 
     private bool $previousFull = true;
@@ -48,6 +50,13 @@ final class NaiParser extends AbstractLineByLineParser
     private ResultsContext $resultsContext;
 
     private array $transactions = [];
+
+    public function __construct(string $contents, ?bool $isBai = null)
+    {
+        $this->isBai = $isBai ?? false;
+
+        parent::__construct($contents);
+    }
 
     /**
      * Get accounts.
@@ -109,7 +118,8 @@ final class NaiParser extends AbstractLineByLineParser
             $this->errors,
             $this->file,
             $this->groups,
-            $this->transactions
+            $this->transactions,
+            $this->isBai
         );
     }
 
@@ -142,7 +152,7 @@ final class NaiParser extends AbstractLineByLineParser
             return;
         }
 
-        // Current code becomes then previous one for next continuation
+        // Current code becomes the previous one for next continuation
         $this->previousCode = $code;
         $this->previousFull = $currentLineIsFull;
 

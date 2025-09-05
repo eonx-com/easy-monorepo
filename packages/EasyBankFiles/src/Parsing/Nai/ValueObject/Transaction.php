@@ -6,11 +6,17 @@ namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
 /**
  * @method string getAmount()
  * @method string getCode()
+ * @method ?string getCustomerReferenceNumber()
  * @method string getFundsType()
+ * @method ?string getImmediateAvailabilityAmount()
+ * @method ?string getOneDayAvailabilityAmount()
+ * @method ?string getPlusTwoDayAvailabilityAmount()
  * @method string getReferenceNumber()
  * @method string getText()
  * @method string getTransactionCode()
  * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\TransactionDetails getTransactionDetails()
+ * @method ?string getValueDate()
+ * @method ?string getValueTime()
  */
 final class Transaction extends AbstractNaiResult
 {
@@ -33,11 +39,17 @@ final class Transaction extends AbstractNaiResult
             'account',
             'amount',
             'code',
+            'customerReferenceNumber',
             'fundsType',
+            'immediateAvailabilityAmount',
+            'oneDayAvailabilityAmount',
+            'plusTwoDayAvailabilityAmount',
             'referenceNumber',
             'text',
             'transactionCode',
             'transactionDetails',
+            'valueDate',
+            'valueTime',
         ];
     }
 }
