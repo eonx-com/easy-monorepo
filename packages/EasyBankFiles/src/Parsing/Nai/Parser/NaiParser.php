@@ -41,7 +41,7 @@ final class NaiParser extends AbstractLineByLineParser
 
     private array $groups = [];
 
-    private bool $isBai;
+    private readonly bool $isBai;
 
     private string $previousCode;
 

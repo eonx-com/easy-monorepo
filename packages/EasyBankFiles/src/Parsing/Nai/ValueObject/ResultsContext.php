@@ -35,8 +35,6 @@ final class ResultsContext
      */
     private array $groups = [];
 
-    private bool $isBai;
-
     /**
      * @var \EonX\EasyBankFiles\Parsing\Nai\ValueObject\Transaction[]
      */
@@ -48,10 +46,8 @@ final class ResultsContext
         array $file,
         array $groups,
         array $transactions,
-        bool $isBai
+        private readonly bool $isBai = false,
     ) {
-        $this->isBai = $isBai;
-
         // Not proud of that, but the order matters, DO NOT change it
         $this
             ->initTransactions($transactions)

@@ -20,6 +20,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(TransactionDetailCodesTrait::class)]
 final class NaiParserTest extends AbstractUnitTestCase
 {
+    public function testBai2FromUSSucceeds(): void
+    {
+        $parser = new NaiParser($this->getSampleFileContents('fundsTypesCases.BAI'), true);
+
+        self::assertEquals('100', $parser->getTransactions()[0]->getImmediateAvailabilityAmount());
+        self::assertEquals('', $parser->getTransactions()[1]->getImmediateAvailabilityAmount());
+        self::assertCount(2, $parser->getTransactions());
+    }
+
     /**
      * ControlTotal should format amount as expected.
      */
@@ -270,15 +279,6 @@ final class NaiParserTest extends AbstractUnitTestCase
 
         self::assertCount(1, $parser->getTransactions());
         self::assertEquals($expected, $parser->getTransactions()[0]->getText());
-    }
-
-    public function testBai2FromUS(): void
-    {
-        $parser = new NaiParser($this->getSampleFileContents('fundsTypesCases.BAI'), true);
-
-        self::assertEquals('100', $parser->getTransactions()[0]->getImmediateAvailabilityAmount());
-        self::assertEquals('', $parser->getTransactions()[1]->getImmediateAvailabilityAmount());
-        self::assertCount(2, $parser->getTransactions());
     }
 
     private function getSampleFileContents(string $file): string
