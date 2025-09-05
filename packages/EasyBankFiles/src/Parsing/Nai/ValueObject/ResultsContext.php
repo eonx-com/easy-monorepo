@@ -46,7 +46,7 @@ final class ResultsContext
         array $file,
         array $groups,
         array $transactions,
-        private readonly bool $isBai = false,
+        private bool $isBai = false,
     ) {
         // Not proud of that, but the order matters, DO NOT change it
         $this
@@ -193,9 +193,13 @@ final class ResultsContext
         $cloneLineArray = $lineArray;
         $fundsType = \strtolower($lineArray[3] ?? '');
 
-        $required = ['code', 'transactionCode', 'amount', 'fundsType'];
         // Keep fundsType Z check for backward compatibility for NAB files in AU
-        $optional = $this->isBai || $fundsType === 'z'
+        if ($fundsType === 'z') {
+            $this->isBai = true;
+        }
+
+        $required = ['code', 'transactionCode', 'amount', 'fundsType'];
+        $optional = $this->isBai
             ? ['referenceNumber', 'customerReferenceNumber', 'text']
             : ['referenceNumber', 'text'];
 
