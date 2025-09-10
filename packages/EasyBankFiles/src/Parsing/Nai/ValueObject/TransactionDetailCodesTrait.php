@@ -5,15 +5,63 @@ namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
 
 trait TransactionDetailCodesTrait
 {
+    /**
+     * @see https://cdn.bai.org/migrated-from-www/docs/default-source/libraries/site-general-downloads/cash_management_2005.pdf
+     */
     private static array $transactionCodes = [
         108 => [
             'cdrd' => 'CR',
             'description' => 'Deposit',
             'particulars' => '',
         ],
+        140 => [
+            'cdrd' => 'CR',
+            'description' => 'Total ACH Credits',
+            'particulars' => '',
+        ],
+        142 => [
+            'cdrd' => 'CR',
+            'description' => 'ACH Credit Received',
+            'particulars' => '',
+        ],
+        143 => [
+            'cdrd' => 'CR',
+            'description' => 'Item in ACH Deposit',
+            'particulars' => '',
+        ],
+        145 => [
+            'cdrd' => 'CR',
+            'description' => 'ACH Concentration Credit',
+            'particulars' => '',
+        ],
+        160 => [
+            'cdrd' => 'CR',
+            'description' => 'Total ACH Disbursing Funding Credits',
+            'particulars' => '',
+        ],
         165 => [
             'cdrd' => 'CR',
             'description' => 'Pre-authorized ACH Credit',
+            'particulars' => '',
+        ],
+        166 => [
+            'cdrd' => 'CR',
+            'description' => 'ACH Settlement',
+            'particulars' => '',
+        ],
+        167 => [
+            'cdrd' => 'CR',
+            'description' => 'ACH Settlement Credits',
+            'particulars' => '',
+        ],
+        168 => [
+            'cdrd' => 'CR',
+            'description' => 'ACH Return Item or Adjustment Settlement',
+            'particulars' => '',
+        ],
+        169 => [
+            'cdrd' => 'CR',
+            'description' => 'Miscellaneous ACH Credit',
             'particulars' => '',
         ],
         175 => [
@@ -36,6 +84,21 @@ trait TransactionDetailCodesTrait
             'description' => 'Reversal Entry',
             'particulars' => 'Reversal',
         ],
+        256 => [
+            'cdrd' => 'CR',
+            'description' => 'Total ACH Return Items',
+            'particulars' => '',
+        ],
+        257 => [
+            'cdrd' => 'CR',
+            'description' => 'Individual ACH Return Item',
+            'particulars' => '',
+        ],
+        258 => [
+            'cdrd' => 'CR',
+            'description' => 'ACH Reversal Credit',
+            'particulars' => '',
+        ],
         305 => [
             'cdrd' => 'CR',
             'description' => 'Interest Paid',
@@ -56,14 +119,64 @@ trait TransactionDetailCodesTrait
             'description' => 'Miscellaneous credits',
             'particulars' => 'Miscellaneous credit',
         ],
+        445 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Concentration Debit',
+            'particulars' => '',
+        ],
+        446 => [
+            'cdrd' => 'DR',
+            'description' => 'Total ACH Disbursement Funding Debits',
+            'particulars' => '',
+        ],
+        447 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Disbursement Funding Debit',
+            'particulars' => '',
+        ],
+        450 => [
+            'cdrd' => 'DR',
+            'description' => 'Total ACH Debits',
+            'particulars' => '',
+        ],
+        451 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Debit Received',
+            'particulars' => '',
+        ],
+        452 => [
+            'cdrd' => 'DR',
+            'description' => 'Item in ACH Disbursement or Debit',
+            'particulars' => '',
+        ],
         455 => [
             'cdrd' => 'DR',
             'description' => 'Preauthorized ACH Debit',
             'particulars' => '',
         ],
+        462 => [
+            'cdrd' => 'DR',
+            'description' => 'Account Holder Initiated ACH Debit',
+            'particulars' => '',
+        ],
         466 => [
             'cdrd' => 'DR',
             'description' => 'ACH Settlement',
+            'particulars' => '',
+        ],
+        467 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Settlement Debits',
+            'particulars' => '',
+        ],
+        468 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Return Item or Adjustment Settlement',
+            'particulars' => '',
+        ],
+        469 => [
+            'cdrd' => 'DR',
+            'description' => 'Miscellaneous ACH Debit',
             'particulars' => '',
         ],
         475 => [
@@ -95,6 +208,21 @@ trait TransactionDetailCodesTrait
             'cdrd' => 'DR',
             'description' => 'Dishonoured cheques ',
             'particulars' => 'Dishonoured cheques',
+        ],
+        556 => [
+            'cdrd' => 'DR',
+            'description' => 'Total ACH Return Items',
+            'particulars' => '',
+        ],
+        557 => [
+            'cdrd' => 'DR',
+            'description' => 'Individual ACH Return Item',
+            'particulars' => '',
+        ],
+        558 => [
+            'cdrd' => 'DR',
+            'description' => 'ACH Reversal Debit',
+            'particulars' => '',
         ],
         564 => [
             'cdrd' => 'DR',
