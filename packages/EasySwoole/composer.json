@@ -24,7 +24,7 @@
         "eonx-com/easy-bugsnag": "^6.15",
         "eonx-com/easy-logging": "^6.15",
         "openswoole/ide-helper": "^22.0",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^11.4",
         "symfony/twig-bundle": "^7.2"
     },
     "autoload": {
