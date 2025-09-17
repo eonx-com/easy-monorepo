@@ -285,12 +285,12 @@ final class NaiParser extends AbstractLineByLineParser
      * Check if this line has full contents in it. If the line ends with a /
      * it means it's a full line.
      */
-    private function checkFullLine(string $line, ?string $code = null): bool
+    private function checkFullLine(string $line, string $code): bool
     {
         $endWithSlash = \str_ends_with($line, '/');
 
         // In BAI files, transaction detail lines can end with a / or ,/ and be considered full,
-        // and will require adding a coma at the start of the continuation line even in the case of ,/.
+        // and will require adding a coma at the start of the continuation line even in the case of ,/
         if ($this->isBai && $code === self::TRANSACTION_DETAIL && $endWithSlash) {
             return true;
         }
