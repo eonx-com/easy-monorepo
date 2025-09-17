@@ -26,7 +26,8 @@ final class NaiParserTest extends AbstractUnitTestCase
 
         self::assertEquals('100', $parser->getTransactions()[0]->getImmediateAvailabilityAmount());
         self::assertEquals('', $parser->getTransactions()[1]->getImmediateAvailabilityAmount());
-        self::assertCount(2, $parser->getTransactions());
+        self::assertEquals('REMARK=ACCT SERVICE FEE', $parser->getTransactions()[2]->getText());
+        self::assertCount(3, $parser->getTransactions());
     }
 
     /**
@@ -37,7 +38,7 @@ final class NaiParserTest extends AbstractUnitTestCase
         $trait = $this->getObjectForTrait(ControlTotalTrait::class);
 
         self::assertIsFloat($this->callPrivateMethod($trait, 'formatAmount', '100000'));
-        self::assertSame((float)100, $this->callPrivateMethod($trait, 'formatAmount', '10000'));
+        self::assertSame(100.0, $this->callPrivateMethod($trait, 'formatAmount', '10000'));
     }
 
     public function testParserCanParseBaiFile(): void
