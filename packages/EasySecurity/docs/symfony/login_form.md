@@ -17,7 +17,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security) : void {
-    $someFirewall = $securityConfig->firewall('some_firewall_name');
+    $someFirewall = $security->firewall('some_firewall_name');
     // Make sure you include `easy-security` in the pattern to protect your login form
     $someFirewall->pattern('^/(docs|easy-security)')
         ->security(true)
