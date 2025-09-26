@@ -74,7 +74,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
 ### Configure controller
 
-You need ti register the `EasySecurityLoginController` in your services configuration file and pass the authentication success handler for your firewall.
+You need to register the `EasySecurityLoginController` in your services configuration file and pass the authentication success handler for your firewall.
 
 ```php
 # src/config/services.php
