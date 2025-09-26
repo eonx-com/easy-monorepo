@@ -79,7 +79,6 @@ You need to register the `EasySecurityLoginController` in your services configur
 ```php
 # src/config/services.php
 <?php
-<?php
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
