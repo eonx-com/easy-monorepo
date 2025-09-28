@@ -5,10 +5,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/dbal": "^3.8",
-        "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^2.20",
         "psr/log": "^3.0",
         "symfony/config": "^7.2",
         "symfony/dependency-injection": "^7.2",
@@ -17,6 +13,10 @@
         "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
+        "doctrine/collections": "^1.7.2 || ^2.1",
+        "doctrine/dbal": "^3.8",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/orm": "^2.20",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2"
     },
