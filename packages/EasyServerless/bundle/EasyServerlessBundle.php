@@ -51,11 +51,6 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/easy_admin.php');
         }
 
-        if ($config['easy_error_handler']['enabled']
-            && $this->isBundleEnabled('EasyErrorHandlerBundle', $builder)) {
-            $container->import('config/easy_error_handler.php');
-        }
-
         if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
             $container->import('config/doctrine.php');
         }
