@@ -474,6 +474,23 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'version' => null,
         ];
 
+        yield 'invalid date format v3' => [
+            'url' => '/books',
+            'json' => [
+                'availableFrom' => '2024-04-22T01:01:00+11:00',
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/1',
+                'weight' => 11,
+            ],
+            'violations' => [
+                'availableFrom' => [
+                    'This value is not a valid date/time.',
+                ],
+            ],
+            'exceptionMessage' => 'availableFrom: This value should be of type string.',
+            'version' => 3,
+        ];
+
         yield 'invalid date format' => [
             'url' => '/books',
             'json' => [
@@ -488,7 +505,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'availableFrom: This value should be of type DateTimeImmutable|null.',
-            'version' => null,
+            'version' => 4,
         ];
 
         yield 'date is empty string, when constructor parameter' => [

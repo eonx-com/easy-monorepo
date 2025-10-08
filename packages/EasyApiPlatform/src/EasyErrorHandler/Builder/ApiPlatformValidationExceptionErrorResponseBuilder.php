@@ -145,8 +145,8 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             ) === 1
         ) {
             $message = match (true) {
-                str_contains($matches['expectedType'], 'DateTime')
-                || str_contains($matches['expectedType'], 'Carbon') => $this->translator->trans(
+                \str_contains($matches['expectedType'], 'DateTime')
+                || \str_contains($matches['expectedType'], 'Carbon') => $this->translator->trans(
                     'violations.invalid_datetime',
                     []
                 ),
