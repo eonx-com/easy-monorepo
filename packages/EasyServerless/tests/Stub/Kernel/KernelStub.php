@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Tests\Stub\Kernel;
 
+use Bref\Symfony\Messenger\Service\BusDriver;
 use EonX\EasyServerless\Bundle\EasyServerlessBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -38,6 +39,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             (new Definition(KernelInterface::class))->setSynthetic(true)
         );
         $container->setAlias(KernelInterface::class, 'kernel');
+        $container->setDefinition(BusDriver::class, new Definition(BusDriver::class));
 
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
