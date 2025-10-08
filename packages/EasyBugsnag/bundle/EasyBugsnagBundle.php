@@ -47,6 +47,10 @@ final class EasyBugsnagBundle extends AbstractBundle
             $container->import('config/default_configurators.php');
         }
 
+        if ($this->isBundleEnabled('EasyServerlessBundle', $builder)) {
+            $container->import('config/easy_serverless.php');
+        }
+
         if ($config['sensitive_data_sanitizer']['enabled']) {
             $container->import('config/sensitive_data_sanitizer.php');
         }
@@ -59,6 +63,14 @@ final class EasyBugsnagBundle extends AbstractBundle
         $this->registerAwsEcsFargateConfiguration($config, $container, $builder);
         $this->registerDoctrineDbalConfiguration($config, $container, $builder);
         $this->registerSessionTrackingConfiguration($config, $container, $builder);
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 
     private function registerAppNameConfiguration(
