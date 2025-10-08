@@ -139,17 +139,24 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
 
         if (
             \preg_match(
-                '/^This value should be of type (?<expectedType>[A-Za-z_\\\\]+[A-Za-z_])\.$/',
+                '/^This value should be of type (?<expectedType>[A-Za-z_|\\\\]+[A-Za-z_])\.$/',
                 $message,
                 $matches
             ) === 1
         ) {
-            $message = $this->translator->trans(
-                'violations.invalid_type',
-                [
-                    '%expected_types%' => $this->normalizeTypeName($matches['expectedType']),
-                ]
-            );
+            $message = match (true) {
+                \str_contains($matches['expectedType'], 'DateTime')
+                || \str_contains($matches['expectedType'], 'Carbon') => $this->translator->trans(
+                    'violations.invalid_datetime',
+                    []
+                ),
+                default => $this->translator->trans(
+                    'violations.invalid_type',
+                    [
+                        '%expected_types%' => $this->normalizeTypeName($matches['expectedType']),
+                    ]
+                )
+            };
         }
 
         return $this->resolveMessageFromHint($violation) ?? $message;
