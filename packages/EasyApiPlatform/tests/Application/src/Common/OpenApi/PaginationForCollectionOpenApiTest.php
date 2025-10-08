@@ -14,8 +14,7 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
             . self::getApiPlatformVersion() . '/with_custom_pagination.json';
 
         $result = self::generateOpenApiJson();
-
-        self::assertStringEqualsFile($filename, $result);
+        self::assertStringEqualsFile($filename, $result . "\n");
     }
 
     public function testWithDefaultPaginator(): void
@@ -25,8 +24,7 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
             . self::getApiPlatformVersion() . '/with_default_pagination.json';
 
         $result = self::generateOpenApiJson();
-
-        self::assertStringEqualsFile($filename, $result);
+        self::assertStringEqualsFile($filename, $result . "\n");
     }
 
     private static function generateOpenApiJson(): string
