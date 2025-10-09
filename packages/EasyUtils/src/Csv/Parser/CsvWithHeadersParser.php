@@ -34,10 +34,17 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             }
 
             foreach ($row as $key => $value) {
+                $trimmedValue = \trim((string)$value);
+
                 // Accept only value for known headers and no empty string
-                if (isset($headers[$key]) && $value !== '') {
-                    $record[$headers[$key]] = \trim((string)$value);
+                if (isset($headers[$key]) && $trimmedValue !== '') {
+                    $record[$headers[$key]] = $trimmedValue;
                 }
+            }
+
+            // Ignore empty records even if the config has required headers
+            if ($config->ignoreEmptyRecordsWithRequiredHeaders() && \count($record) < 1) {
+                continue;
             }
 
             \ksort($record);

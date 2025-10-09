@@ -104,6 +104,12 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
             CsvParserConfig::create(null, null, true),
             [],
         ];
+
+        yield 'Empty records ignored with required headers' => [
+            __DIR__ . '/../../../../Fixture/Csv/empty_records.csv',
+            CsvParserConfig::create(['header1'], null, null, null, true),
+            [],
+        ];
     }
 
     /**
