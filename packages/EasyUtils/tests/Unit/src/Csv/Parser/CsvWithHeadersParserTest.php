@@ -96,6 +96,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
             [
                 [],
                 [],
+                [],
             ],
         ];
 
