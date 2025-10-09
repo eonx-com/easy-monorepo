@@ -15,6 +15,7 @@ final readonly class CsvParserConfig
         private ?array $groupPrefixes = null,
         private ?bool $ignoreEmptyRecords = null,
         private ?array $recordTransformers = null,
+        private ?bool $ignoreEmptyRecordsWithRequiredHeaders = null,
     ) {
     }
 
@@ -28,8 +29,15 @@ final readonly class CsvParserConfig
         ?array $groupPrefixes = null,
         ?bool $ignoreEmptyRecords = null,
         ?array $recordTransformers = null,
+        ?bool $ignoreEmptyRecordsWithRequiredHeaders = null,
     ): self {
-        return new self($requiredHeaders, $groupPrefixes, $ignoreEmptyRecords, $recordTransformers);
+        return new self(
+            $requiredHeaders,
+            $groupPrefixes,
+            $ignoreEmptyRecords,
+            $recordTransformers,
+            $ignoreEmptyRecordsWithRequiredHeaders
+        );
     }
 
     /**
@@ -69,6 +77,11 @@ final readonly class CsvParserConfig
     public function ignoreEmptyRecords(): bool
     {
         return $this->ignoreEmptyRecords ?? false;
+    }
+
+    public function ignoreEmptyRecordsWithRequiredHeaders(): bool
+    {
+        return $this->ignoreEmptyRecordsWithRequiredHeaders ?? false;
     }
 
     private function hasValuesInArray(?array $array = null): bool
