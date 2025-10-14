@@ -203,12 +203,12 @@
                         },
                         "application/ld+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category.jsonld"
+                                "$ref": "#/components/schemas/Category"
                             }
                         },
                         "application/vnd.api+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category.jsonapi"
+                                "$ref": "#/components/schemas/Category"
                             }
                         },
                         "application/xml": {},
@@ -335,12 +335,12 @@
                     "content": {
                         "application/merge-patch+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category"
+                                "$ref": "#/components/schemas/Category.jsonMergePatch"
                             }
                         },
                         "application/vnd.api+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category.jsonapi"
+                                "$ref": "#/components/schemas/Category.jsonMergePatch"
                             }
                         }
                     },
@@ -352,6 +352,14 @@
     "components": {
         "schemas": {
             "Category": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Category.jsonMergePatch": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -493,7 +501,10 @@
                 ],
                 "properties": {
                     "hydra:member": {
-                        "type": "array"
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
                     },
                     "hydra:totalItems": {
                         "type": "integer",
@@ -575,10 +586,6 @@
                 }
             },
             "HydraItemBaseSchema": {
-                "required": [
-                    "@id",
-                    "@type"
-                ],
                 "type": "object",
                 "properties": {
                     "@context": {
@@ -613,7 +620,11 @@
                     "@type": {
                         "type": "string"
                     }
-                }
+                },
+                "required": [
+                    "@id",
+                    "@type"
+                ]
             },
             "JsonApiCollectionBaseSchema": {
                 "type": "object",
