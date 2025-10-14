@@ -119,8 +119,8 @@ final class EasySecurityBundle extends AbstractBundle
     private function registerLoginFormConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder
-    ) {
+        ContainerBuilder $builder,
+    ): void {
         if ($config['login_form']['enabled'] === false) {
             return;
         }
