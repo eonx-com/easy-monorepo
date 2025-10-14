@@ -7,6 +7,7 @@ use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterRoleExpressionFunctionCompilerPass;
+use EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController;
 use EonX\EasySecurity\Bundle\Enum\ConfigParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasySecurityBundle extends AbstractBundle
@@ -71,6 +73,7 @@ final class EasySecurityBundle extends AbstractBundle
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
         $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
+        $this->registerLoginFormConfiguration($config, $container, $builder);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -111,6 +114,30 @@ final class EasySecurityBundle extends AbstractBundle
         }
 
         $container->import('config/easy_bugsnag.php');
+    }
+
+    private function registerLoginFormConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder
+    ) {
+        if ($config['login_form']['enabled'] === false) {
+            return;
+        }
+
+        $builder->setDefinition(
+            EasySecurityLoginController::class,
+            (new Definition(EasySecurityLoginController::class))
+                ->setAutowired(true)
+                ->setAutoconfigured(true)
+                ->setArgument(
+                    '$authenticationSuccessHandler',
+                    new Reference(\sprintf(
+                        'security.authentication.success_handler.%s.form_login',
+                        $config['login_form']['firewall_name']
+                    ))
+                )
+        );
     }
 
     private function registerVotersConfiguration(

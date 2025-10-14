@@ -72,24 +72,22 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 };
 ```
 
-### Configure controller
+### Configure package
 
-You need to register the `EasySecurityLoginController` in your services configuration file and pass the authentication success handler for your firewall.
+You need to enable Login Form authentication in the package configuration file.
 
 ```php
-# src/config/services.php
+# src/config/packages/easy_security.php
 <?php
 declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Config\EasySecurityConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-
-    $services->set(EasySecurityLoginController::class)
-        ->arg('$authenticationSuccessHandler', service('security.authentication.success_handler.<YOUR FIREWALL NAME>.form_login'));
+return static function (EasySecurityConfig $easySecurityConfig): void {
+    $easySecurityConfig->loginForm()
+        ->firewallName('some_firewall_name');
 };
+
 ```

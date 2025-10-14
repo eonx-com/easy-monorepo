@@ -33,5 +33,11 @@ return static function (DefinitionConfigurator $definition) {
                     ->integerNode('priority')->defaultValue(-100)->end()
                 ->end()
             ->end()
+            ->arrayNode('login_form')
+                ->canBeEnabled()
+                ->children()
+                    ->stringNode('firewall_name')->end()
+                ->end()
+            ->end()
         ->end();
 };
