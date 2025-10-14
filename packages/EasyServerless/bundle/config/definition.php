@@ -15,6 +15,11 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->arrayNode('easy_error_handler')
+                ->setDeprecated(
+                    'eonx-com/easy-serverless',
+                    '6.15',
+                    'The "%node%" option is deprecated and will be removed in 7.0.'
+                )
                 ->canBeDisabled()
             ->end()
             ->arrayNode('monolog')
