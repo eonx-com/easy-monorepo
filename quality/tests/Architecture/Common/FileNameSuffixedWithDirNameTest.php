@@ -26,6 +26,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'bundle/config',
         'bundle/translations',
         'laravel/config',
+        'laravel/routes',
         'laravel/translations',
         'tests/Fixture/app/config',
         'tests/Fixture/app/translations',
