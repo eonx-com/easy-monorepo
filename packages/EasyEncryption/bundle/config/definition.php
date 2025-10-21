@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyEncryption\AwsCloudHsm\Configurator\AwsCloudHsmSdkConfigurator;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -27,11 +28,25 @@ return static function (DefinitionConfigurator $definition) {
                     ->stringNode('region')->defaultValue('ap-southeast-2')->end()
                     ->stringNode('role_arn')->defaultNull()->end()
                     ->stringNode('cluster_id')->defaultNull()->end()
+                    ->stringNode('cluster_type')
+                        ->defaultValue(AwsCloudHsmSdkConfigurator::SUPPORTED_CLUSTER_TYPES[0])
+                        ->info(\sprintf(
+                            'Supported types: %s',
+                            \implode(', ', AwsCloudHsmSdkConfigurator::SUPPORTED_CLUSTER_TYPES)
+                        ))
+                    ->end()
                     ->booleanNode('disable_key_availability_check')->defaultFalse()->end()
                     ->stringNode('ca_cert_file')->defaultNull()->end()
                     ->stringNode('ip_address')->defaultNull()->end()
                     ->stringNode('server_client_cert_file')->defaultNull()->end()
                     ->stringNode('server_client_key_file')->defaultNull()->end()
+                    ->stringNode('server_port')
+                        ->defaultValue(AwsCloudHsmSdkConfigurator::SUPPORTED_SERVER_PORTS[0])
+                        ->info(\sprintf(
+                            'Supported ports: %s',
+                            \implode(', ', AwsCloudHsmSdkConfigurator::SUPPORTED_SERVER_PORTS)
+                        ))
+                    ->end()
                     ->stringNode('sign_key_name')->defaultValue('app-sign')->end()
                     ->booleanNode('use_aws_cloud_hsm_configure_tool')->defaultTrue()->end()
                     ->stringNode('user_pin')->defaultNull()->end()
