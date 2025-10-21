@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Laravel;
 
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
+use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
@@ -54,13 +55,16 @@ final class EasyServerlessServiceProvider extends ServiceProvider
             [ConfigTag::HealthChecker->value]
         );
 
-        // Controller
+        // Aggregated Checker
         $this->app->singleton(
-            HealthCheckController::class,
-            static fn (Container $app): HealthCheckController => new HealthCheckController(
+            AggregatedHealthChecker::class,
+            static fn (Container $app): AggregatedHealthChecker => new AggregatedHealthChecker(
                 $app->tagged(ConfigTag::HealthChecker->value),
                 $app->make(LoggerInterface::class)
             )
         );
+
+        // Controller
+        $this->app->singleton(HealthCheckController::class);
     }
 }
