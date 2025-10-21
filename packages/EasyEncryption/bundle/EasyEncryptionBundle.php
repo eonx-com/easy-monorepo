@@ -67,6 +67,7 @@ final class EasyEncryptionBundle extends AbstractBundle
             ->set(ConfigParam::AwsCloudHsmAad->value, $config['aad'])
             ->set(ConfigParam::AwsCloudHsmCaCertFile->value, $config['ca_cert_file'])
             ->set(ConfigParam::AwsCloudHsmClusterId->value, $config['cluster_id'])
+            ->set(ConfigParam::AwsCloudHsmClusterType->value, $config['cluster_type'])
             ->set(ConfigParam::AwsCloudHsmDisableKeyAvailabilityCheck->value, $config['disable_key_availability_check'])
             ->set(ConfigParam::AwsCloudHsmEnabled->value, $config['enabled'])
             ->set(ConfigParam::AwsCloudHsmIpAddress->value, $config['ip_address'])
@@ -75,6 +76,7 @@ final class EasyEncryptionBundle extends AbstractBundle
             ->set(ConfigParam::AwsCloudHsmSdkOptions->value, $config['sdk_options'])
             ->set(ConfigParam::AwsCloudHsmServerClientCertFile->value, $config['server_client_cert_file'])
             ->set(ConfigParam::AwsCloudHsmServerClientKeyFile->value, $config['server_client_key_file'])
+            ->set(ConfigParam::AwsCloudHsmServerPort->value, $config['server_port'])
             ->set(ConfigParam::AwsCloudHsmUseConfigureTool->value, $config['use_aws_cloud_hsm_configure_tool'])
             ->set(ConfigParam::AwsCloudHsmSignKeyName->value, $config['sign_key_name'])
             ->set(ConfigParam::AwsCloudHsmUserPin->value, $config['user_pin']);

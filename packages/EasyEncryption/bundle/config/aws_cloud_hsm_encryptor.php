@@ -35,10 +35,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(AwsCloudHsmSdkConfigurator::class)
         ->arg('$roleArn', param(ConfigParam::AwsCloudHsmRoleArn->value))
-        ->arg(
-            '$useConfigureTool',
-            param(ConfigParam::AwsCloudHsmUseConfigureTool->value)
-        );
+        ->arg('$useConfigureTool', param(ConfigParam::AwsCloudHsmUseConfigureTool->value))
+        ->arg('$clusterType', param(ConfigParam::AwsCloudHsmClusterType->value))
+        ->arg('$serverPort', param(ConfigParam::AwsCloudHsmServerPort->value));
 
     $services
         ->set(AwsCloudHsmEncryptorInterface::class, AwsCloudHsmEncryptor::class)
