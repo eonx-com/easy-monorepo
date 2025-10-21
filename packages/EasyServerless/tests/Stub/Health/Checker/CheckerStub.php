@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Stub\Health\Checker;
+namespace EonX\EasyServerless\Tests\Stub\Health\Checker;
 
 use EonX\EasyServerless\Health\Checker\HealthCheckerInterface;
 use EonX\EasyServerless\Health\ValueObject\HealthCheckResult;

@@ -8,7 +8,7 @@ use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-final class AggregatedHealthChecker
+final readonly class AggregatedHealthChecker
 {
     /**
      * @var \EonX\EasyServerless\Health\Checker\HealthCheckerInterface[]
@@ -20,7 +20,7 @@ final class AggregatedHealthChecker
      */
     public function __construct(
         iterable $checkers,
-        private readonly ?LoggerInterface $logger = null
+        private ?LoggerInterface $logger = null,
     ) {
         $this->checkers = CollectorHelper::filterByClassAsArray($checkers, HealthCheckerInterface::class);
     }

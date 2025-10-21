@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class HealthCheckController
 {
-    public function __construct(private AggregatedHealthChecker $aggregatedHealthChecker)
-    {
+    public function __construct(
+        private AggregatedHealthChecker $aggregatedHealthChecker
+    ) {
     }
 
     public function __invoke(): JsonResponse

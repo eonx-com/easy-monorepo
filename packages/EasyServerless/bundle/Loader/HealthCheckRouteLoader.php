@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Health\RouteLoader;
+namespace EonX\EasyServerless\Bundle\Loader;
 
 use EonX\EasyServerless\Bundle\Enum\BundleParam;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;

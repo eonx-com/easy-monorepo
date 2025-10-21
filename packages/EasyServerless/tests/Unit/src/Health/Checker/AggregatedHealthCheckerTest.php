@@ -7,7 +7,7 @@ use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
 use RuntimeException;
-use Stub\Health\Checker\CheckerStub;
+use EonX\EasyServerless\Tests\Stub\Health\Checker\CheckerStub;
 
 final class AggregatedHealthCheckerTest extends AbstractUnitTestCase
 {

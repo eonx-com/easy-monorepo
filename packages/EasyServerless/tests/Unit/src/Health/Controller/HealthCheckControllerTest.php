@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Unit\src\Health\Controller;
+namespace EonX\EasyServerless\Tests\Unit\src\Health\Controller;
 
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stub\Health\Checker\CheckerStub;
+use EonX\EasyServerless\Tests\Stub\Health\Checker\CheckerStub;
 
 final class HealthCheckControllerTest extends AbstractUnitTestCase
 {
