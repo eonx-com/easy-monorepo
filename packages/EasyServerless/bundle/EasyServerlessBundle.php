@@ -7,6 +7,7 @@ use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompiler
 use EonX\EasyServerless\Bundle\CompilerPass\PersistentSystemCacheCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
+use EonX\EasyServerless\Health\Checker\HealthCheckerInterface;
 use EonX\EasyServerless\State\Checker\StateCheckerInterface;
 use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -38,10 +39,18 @@ final class EasyServerlessBundle extends AbstractBundle
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
 
         $builder
+            ->registerForAutoconfiguration(HealthCheckerInterface::class)
+            ->addTag(ConfigTag::HealthChecker->value);
+
+        $builder
             ->registerForAutoconfiguration(StateCheckerInterface::class)
             ->addTag(ConfigTag::StateChecker->value);
 
         $container->import('config/services.php');
+
+        if ($config['health']['enabled']) {
+            $container->import('config/health.php');
+        }
 
         if ($config['state'] && $config['state']['check']) {
             $container->import('config/state.php');

@@ -5,7 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "async-aws/secrets-manager": "^2.5"
+        "async-aws/secrets-manager": "^2.5",
+        "eonx-com/easy-utils": "^6.15"
     },
     "require-dev": {
         "async-aws/dynamo-db": "^3.6",
