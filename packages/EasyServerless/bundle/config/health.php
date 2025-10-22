@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\Bundle\Loader\HealthCheckRouteLoader;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
+use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
 use Psr\Log\LoggerInterface;
 
@@ -27,4 +28,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(HealthCheckRouteLoader::class)
         ->tag('routing.loader');
+
+    $services->set(SanityChecker::class);
 };
