@@ -28,11 +28,11 @@ final class BreadcrumbLoggerStatement extends AbstractStatementMiddleware
     /**
      * {@inheritdoc}
      */
-    public function bindValue($param, mixed $value, $type = ParameterType::STRING): bool
+    public function bindValue($param, mixed $value, $type = ParameterType::STRING): void
     {
         $this->queryBreadcrumb->setQueryParameter($param, $value, $type);
 
-        return parent::bindValue($param, $value, $type);
+        parent::bindValue($param, $value, $type);
     }
 
     /**

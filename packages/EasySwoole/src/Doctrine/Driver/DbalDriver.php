@@ -8,6 +8,7 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\ServerVersionProvider;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
@@ -80,9 +81,9 @@ final readonly class DbalDriver implements Driver
         return new DbalConnection($pool);
     }
 
-    public function getDatabasePlatform(): AbstractPlatform
+    public function getDatabasePlatform(ServerVersionProvider $versionProvider): AbstractPlatform
     {
-        return $this->decorated->getDatabasePlatform();
+        return $this->decorated->getDatabasePlatform($versionProvider);
     }
 
     public function getExceptionConverter(): ExceptionConverter

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyBugsnag\Doctrine\ValueObject;
 
+use Doctrine\DBAL\ParameterType;
+
 final class QueryBreadcrumb
 {
     private ?float $queryDuration = null;
@@ -75,7 +77,7 @@ final class QueryBreadcrumb
         return $this->queryValues;
     }
 
-    public function setQueryParameter(int|string $parameter, mixed $value, int $type): void
+    public function setQueryParameter(int|string $parameter, mixed $value, ParameterType $type): void
     {
         // Numeric indexes start at 0 in profiler
         $index = \is_int($parameter) ? $parameter - 1 : $parameter;

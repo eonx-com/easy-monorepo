@@ -177,6 +177,11 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             return;
         }
 
+        // Check if there are any changes to dispatch
+        if (\count($this->entityChangeSets) === 0 && \count($this->collectionChangeSets) === 0) {
+            return;
+        }
+
         $events = [];
 
         try {

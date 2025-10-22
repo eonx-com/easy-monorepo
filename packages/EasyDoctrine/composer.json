@@ -9,9 +9,9 @@
     "require": {
         "php": "^8.2",
         "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/dbal": "^3.8",
-        "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^2.20",
+        "doctrine/dbal": "^4.3",
+        "doctrine/doctrine-bundle": "^2.16",
+        "doctrine/orm": "^3.5",
         "eonx-com/easy-event-dispatcher": "^6.15",
         "eonx-com/easy-utils": "^6.15",
         "myclabs/deep-copy": "^1.11",
@@ -25,7 +25,7 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.288.1",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^3.4",
         "eonx-com/easy-bugsnag": "^6.15",
         "eonx-com/easy-error-handler": "^6.15",
         "eonx-com/easy-test": "^6.15",
