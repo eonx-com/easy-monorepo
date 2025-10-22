@@ -20,7 +20,7 @@
         "symfony/http-kernel": "^7.2"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.8",
+        "doctrine/dbal": "^4.3",
         "eonx-com/easy-event-dispatcher": "^6.16",
         "eonx-com/easy-test": "^6.16",
         "illuminate/database": "^11.15",
