@@ -10,7 +10,9 @@ use EonX\EasyEncryption\AwsCloudHsm\Encryptor\AwsCloudHsmEncryptorInterface;
 use EonX\EasyEncryption\AwsCloudHsm\HashCalculator\AwsCloudHsmHashCalculator;
 use EonX\EasyEncryption\Bundle\Enum\ConfigParam;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
+use EonX\EasyEncryption\EasySwoole\Listener\InitAwsCloudHsmEncryptorListener;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
+use EonX\EasySwoole\Common\Event\WorkerStartEvent;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -50,4 +52,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(HashCalculatorInterface::class, AwsCloudHsmHashCalculator::class)
         ->arg('$signKeyName', param(ConfigParam::AwsCloudHsmSignKeyName->value));
+
+    if (\class_exists(WorkerStartEvent::class)) {
+        $services
+            ->set(InitAwsCloudHsmEncryptorListener::class)
+            ->tag('kernel.event_listener');
+    }
 };

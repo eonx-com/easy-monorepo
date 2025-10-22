@@ -57,6 +57,27 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         $this->module = null;
     }
 
+    public function init(): void
+    {
+        if ($this->session !== null) {
+            return;
+        }
+
+        if ($this->cloudHsmSdkConfigured === false) {
+            $this->awsCloudHsmSdkConfigurator->configure();
+            $this->cloudHsmSdkConfigured = true;
+        }
+
+        $this->module ??= new Module(self::CLOUD_HSM_EXTENSION);
+        $slots = $this->module->getSlotList();
+        $firstSlot = $slots[0] ?? throw new UnexpectedValueException('Slot list is empty');
+
+        $session = $this->module->openSession($firstSlot, CKF_RW_SESSION);
+        $session->login(CKU_USER, $this->userPin);
+
+        $this->session = $session;
+    }
+
     public function sign(string $text, ?string $keyName = null): string
     {
         return $this->execSafely(CouldNotEncryptException::class, function () use ($text, $keyName): string {
@@ -137,27 +158,6 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
             CKM_VENDOR_DEFINED | CKM_AES_GCM,
             new GcmParams('', $this->aad, self::GCM_TAG_LENGTH)
         );
-    }
-
-    private function init(): void
-    {
-        if ($this->session !== null) {
-            return;
-        }
-
-        if ($this->cloudHsmSdkConfigured === false) {
-            $this->awsCloudHsmSdkConfigurator->configure();
-            $this->cloudHsmSdkConfigured = true;
-        }
-
-        $this->module ??= new Module(self::CLOUD_HSM_EXTENSION);
-        $slots = $this->module->getSlotList();
-        $firstSlot = $slots[0] ?? throw new UnexpectedValueException('Slot list is empty');
-
-        $session = $this->module->openSession($firstSlot, CKF_RW_SESSION);
-        $session->login(CKU_USER, $this->userPin);
-
-        $this->session = $session;
     }
 
     private function validateKey(array|string|null $key = null): void
