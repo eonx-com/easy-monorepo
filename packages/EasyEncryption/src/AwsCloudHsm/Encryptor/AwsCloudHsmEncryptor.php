@@ -46,17 +46,6 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         parent::__construct($defaultKeyName);
     }
 
-    public function reset(): void
-    {
-        if ($this->session === null) {
-            return;
-        }
-
-        $this->keys = [];
-        $this->session = null;
-        $this->module = null;
-    }
-
     public function init(): void
     {
         if ($this->session !== null) {
@@ -76,6 +65,17 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         $session->login(CKU_USER, $this->userPin);
 
         $this->session = $session;
+    }
+
+    public function reset(): void
+    {
+        if ($this->session === null) {
+            return;
+        }
+
+        $this->keys = [];
+        $this->session = null;
+        $this->module = null;
     }
 
     public function sign(string $text, ?string $keyName = null): string
