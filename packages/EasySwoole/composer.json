@@ -5,6 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "eonx-com/easy-event-dispatcher": "^6.15",
         "eonx-com/easy-utils": "^6.15",
         "nesbot/carbon": "^3.8.4",
         "openswoole/core": "^22.1",

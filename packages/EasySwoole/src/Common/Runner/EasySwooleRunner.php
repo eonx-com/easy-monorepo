@@ -5,9 +5,12 @@ namespace EonX\EasySwoole\Common\Runner;
 
 use Carbon\CarbonImmutable;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
+use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasySwoole\Caching\Helper\CacheTableHelper;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use EonX\EasySwoole\Common\Enum\SwooleServerEvent;
+use EonX\EasySwoole\Common\Event\WorkerStartEvent;
+use EonX\EasySwoole\Common\Event\WorkerStopEvent;
 use EonX\EasySwoole\Common\Helper\ErrorResponseHelper;
 use EonX\EasySwoole\Common\Helper\HttpFoundationHelper;
 use EonX\EasySwoole\Common\Helper\OptionHelper;
@@ -16,6 +19,7 @@ use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
 use Swoole\Process as SwooleProcess;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
@@ -35,7 +39,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
     public function run(): int
     {
         $app = $this->app;
-        $server = $this->createSwooleHttpServer();
+        $server = $this->createSwooleHttpServer($app);
         $responseChunkSize = OptionHelper::getInteger('response_chunk_size');
 
         CacheTableHelper::createCacheTables(
@@ -142,7 +146,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
         return null;
     }
 
-    private function createSwooleHttpServer(): Server
+    private function createSwooleHttpServer(HttpKernelInterface $app): Server
     {
         $host = OptionHelper::getString('host');
         $port = OptionHelper::getInteger('port');
@@ -162,7 +166,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
         $server->set($settings);
 
         if (OptionHelper::getBoolean('use_default_callbacks')) {
-            $this->registerDefaultCallbacks($server);
+            $this->registerDefaultCallbacks($server, $app);
         }
 
         foreach (OptionHelper::getArray('callbacks') as $event => $fn) {
@@ -182,6 +186,21 @@ final readonly class EasySwooleRunner implements RunnerInterface
         }
 
         return $server;
+    }
+
+    private function getEventDispatcher(HttpKernelInterface $app): ?EventDispatcherInterface
+    {
+        try {
+            if ($app instanceof KernelInterface) {
+                $app->boot();
+                $container = $app->getContainer();
+
+                return $container->get(EventDispatcherInterface::class, ContainerInterface::NULL_ON_INVALID_REFERENCE);
+            }
+        } catch (Throwable) {
+        }
+
+        return null;
     }
 
     /**
@@ -248,19 +267,25 @@ final readonly class EasySwooleRunner implements RunnerInterface
         }));
     }
 
-    private function registerDefaultCallbacks(Server $server): void
+    private function registerDefaultCallbacks(Server $server, HttpKernelInterface $app): void
     {
+        $eventDispatcher = $this->getEventDispatcher($app);
+
         $server->on(
             SwooleServerEvent::WorkerStart->value,
-            static function (Server $server, int $workerId): void {
+            static function (Server $server, int $workerId) use ($eventDispatcher): void {
                 OutputHelper::writeln(\sprintf('Starting worker %d', $workerId));
+
+                $eventDispatcher?->dispatch(new WorkerStartEvent($server, $workerId));
             }
         );
 
         $server->on(
             SwooleServerEvent::WorkerStop->value,
-            static function (Server $server, int $workerId): void {
+            static function (Server $server, int $workerId) use ($eventDispatcher): void {
                 OutputHelper::writeln(\sprintf('Stopping worker %d', $workerId));
+
+                $eventDispatcher?->dispatch(new WorkerStopEvent($server, $workerId));
             }
         );
     }
