@@ -16,6 +16,8 @@ final class SecretsHelper
 
     private static ?SecretsManagerClient $secretsManager = null;
 
+    private static bool $verbose = false;
+
     public static function load(): void
     {
         // Some cases will trigger the startup logic multiple times, such as scheduler events
@@ -111,11 +113,19 @@ final class SecretsHelper
         }
     }
 
+    public static function setVerbose(bool $verbose): void
+    {
+        self::$verbose = $verbose;
+    }
+
     private static function doLoad(array $envVars): void
     {
         foreach ($envVars as $key => $value) {
             if (\is_string($value) && \str_starts_with($value, self::PREFIX_JSON_FILES)) {
-                self::logToStderr(\sprintf('Found secret to resolve from local filesystem: %s => %s', $key, $value));
+                self::logToStderr(
+                    message: \sprintf('Found secret to resolve from local filesystem: %s => %s', $key, $value),
+                    forceVerbose: true
+                );
 
                 self::loadFromJsonFiles($value);
 
@@ -123,7 +133,10 @@ final class SecretsHelper
             }
 
             if (\is_string($value) && \str_starts_with($value, self::PREFIX_SECRETS_MANAGER)) {
-                self::logToStderr(\sprintf('Found secret to resolve from SecretsManager: %s => %s', $key, $value));
+                self::logToStderr(
+                    message: \sprintf('Found secret to resolve from SecretsManager: %s => %s', $key, $value),
+                    forceVerbose: true
+                );
 
                 self::loadFromSecretsManager($value);
 
@@ -137,8 +150,12 @@ final class SecretsHelper
         }
     }
 
-    private static function logToStderr(string $message): void
+    private static function logToStderr(string $message, ?bool $forceVerbose = null): void
     {
+        if (self::$verbose === false && ($forceVerbose ?? false) === false) {
+            return;
+        }
+
         \file_put_contents('php://stderr', \date('[c] ') . $message . \PHP_EOL, \FILE_APPEND);
     }
 }
