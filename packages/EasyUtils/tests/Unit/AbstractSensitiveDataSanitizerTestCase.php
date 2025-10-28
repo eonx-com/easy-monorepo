@@ -154,6 +154,12 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         ];
         yield 'Mask keys in JSON' => [
             'input' => [
+                // AuthorizationString
+                'maskAuthorizationString' => 'Authorization: SOME|\/"TOKEN==12345',
+                'maskAuthorizationStringInText' =>
+                    'Some text before Authorization: SOME|\/"TOKEN==12345 some text after',
+                'maskAuthorizationStringInMultilineText' =>
+                    "Some text before\nAuthorization: SOME|\/\"TOKEN==12345\nsome text after",
                 // String
                 'maskString' => '{"stringValue":"will be masked","anotherStringValue":"will not be masked"}',
                 'maskStringWithOneKey' => '{"stringValue":"will be masked"}',
@@ -288,6 +294,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     '\"objectValue\":{\"foo\":\"bar\"}}}',
             ],
             'expectedOutput' => [
+                // AuthorizationString
+                'maskAuthorizationString' => 'Authorization: *REDACTED*',
+                'maskAuthorizationStringInText' => 'Some text before Authorization: *REDACTED*',
+                'maskAuthorizationStringInMultilineText' =>
+                    "Some text before\nAuthorization: *REDACTED*\nsome text after",
                 // String
                 'maskString' => '{"stringValue":"*REDACTED*","anotherStringValue":"will not be masked"}',
                 'maskStringWithOneKey' => '{"stringValue":"*REDACTED*"}',
