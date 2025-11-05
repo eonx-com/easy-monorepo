@@ -18,7 +18,7 @@
         "eonx-com/easy-test": "^6.16",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^11.4",
         "symfony/serializer": "^7.2",
         "symfony/validator": "^7.2"
     },
