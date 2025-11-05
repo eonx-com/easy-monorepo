@@ -28,7 +28,7 @@
         "doctrine/orm": "^2.20",
         "eonx-com/easy-test": "^6.16",
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^11.4",
+        "phpunit/phpunit": "^10.2|^11.4",
         "symfony/doctrine-bridge": "^7.2",
         "symfony/uid": "^7.2"
     },
