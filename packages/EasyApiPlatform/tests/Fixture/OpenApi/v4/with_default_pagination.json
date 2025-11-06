@@ -40,6 +40,9 @@
                                         },
                                         {
                                             "type": "object",
+                                            "required": [
+                                                "hydra:member"
+                                            ],
                                             "properties": {
                                                 "hydra:member": {
                                                     "type": "array",
@@ -496,16 +499,7 @@
             },
             "HydraCollectionBaseSchema": {
                 "type": "object",
-                "required": [
-                    "hydra:member"
-                ],
                 "properties": {
-                    "hydra:member": {
-                        "type": "array",
-                        "items": {
-                            "type": "object"
-                        }
-                    },
                     "hydra:totalItems": {
                         "type": "integer",
                         "minimum": 0

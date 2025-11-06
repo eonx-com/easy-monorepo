@@ -18,7 +18,7 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^2.20",
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2"
+        "phpunit/phpunit": "^10.2|^11.4"
     },
     "autoload": {
         "psr-4": {
