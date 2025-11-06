@@ -33,128 +33,67 @@
                             "application/ld+json": {
                                 "schema": {
                                     "type": "object",
-                                    "properties": {
-                                        "hydra:member": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Category.jsonld"
-                                            }
+                                    "description": "Category.jsonld collection.",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/HydraCollectionBaseSchema"
                                         },
-                                        "hydra:totalItems": {
-                                            "type": "integer",
-                                            "minimum": 0
-                                        },
-                                        "hydra:view": {
+                                        {
                                             "type": "object",
+                                            "required": [
+                                                "hydra:member"
+                                            ],
                                             "properties": {
-                                                "@id": {
-                                                    "type": "string",
-                                                    "format": "iri-reference"
-                                                },
-                                                "@type": {
-                                                    "type": "string"
-                                                },
-                                                "hydra:first": {
-                                                    "type": "string",
-                                                    "format": "iri-reference"
-                                                },
-                                                "hydra:last": {
-                                                    "type": "string",
-                                                    "format": "iri-reference"
-                                                },
-                                                "hydra:previous": {
-                                                    "type": "string",
-                                                    "format": "iri-reference"
-                                                },
-                                                "hydra:next": {
-                                                    "type": "string",
-                                                    "format": "iri-reference"
-                                                }
-                                            },
-                                            "example": {
-                                                "@id": "string",
-                                                "type": "string",
-                                                "hydra:first": "string",
-                                                "hydra:last": "string",
-                                                "hydra:previous": "string",
-                                                "hydra:next": "string"
-                                            }
-                                        },
-                                        "hydra:search": {
-                                            "type": "object",
-                                            "properties": {
-                                                "@type": {
-                                                    "type": "string"
-                                                },
-                                                "hydra:template": {
-                                                    "type": "string"
-                                                },
-                                                "hydra:variableRepresentation": {
-                                                    "type": "string"
-                                                },
-                                                "hydra:mapping": {
+                                                "hydra:member": {
                                                     "type": "array",
                                                     "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "@type": {
-                                                                "type": "string"
-                                                            },
-                                                            "variable": {
-                                                                "type": "string"
-                                                            },
-                                                            "property": {
-                                                                "type": [
-                                                                    "string",
-                                                                    "null"
-                                                                ]
-                                                            },
-                                                            "required": {
-                                                                "type": "boolean"
-                                                            }
-                                                        }
+                                                        "$ref": "#/components/schemas/Category.jsonld"
                                                     }
                                                 }
                                             }
                                         }
-                                    },
-                                    "required": [
-                                        "hydra:member"
                                     ]
                                 }
                             },
                             "application/vnd.api+json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Category.jsonapi"
-                                    }
+                                    "description": "Category.jsonapi collection.",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/JsonApiCollectionBaseSchema"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string"
+                                                            },
+                                                            "attributes": {
+                                                                "$ref": "#/components/schemas/Category"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "type",
+                                                            "id"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
                             },
-                            "application/xml": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Category"
-                                    }
-                                }
-                            },
-                            "text/xml": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Category"
-                                    }
-                                }
-                            },
-                            "text/html": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Category"
-                                    }
-                                }
-                            }
+                            "application/xml": {},
+                            "text/xml": {},
+                            "text/html": {}
                         }
                     }
                 },
@@ -167,14 +106,12 @@
                         "description": "The collection page number",
                         "required": false,
                         "deprecated": false,
-                        "allowEmptyValue": true,
                         "schema": {
                             "type": "integer",
                             "default": 1
                         },
                         "style": "form",
-                        "explode": false,
-                        "allowReserved": false
+                        "explode": false
                     },
                     {
                         "name": "perPage",
@@ -182,7 +119,6 @@
                         "description": "The number of items per page",
                         "required": false,
                         "deprecated": false,
-                        "allowEmptyValue": true,
                         "schema": {
                             "type": "integer",
                             "default": 25,
@@ -190,11 +126,9 @@
                             "maximum": 50
                         },
                         "style": "form",
-                        "explode": false,
-                        "allowReserved": false
+                        "explode": false
                     }
-                ],
-                "deprecated": false
+                ]
             },
             "post": {
                 "operationId": "api_open-api-categories_post",
@@ -220,21 +154,9 @@
                                     "$ref": "#/components/schemas/Category.jsonapi"
                                 }
                             },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category"
-                                }
-                            },
-                            "text/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category"
-                                }
-                            },
-                            "text/html": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category"
-                                }
-                            }
+                            "application/xml": {},
+                            "text/xml": {},
+                            "text/html": {}
                         },
                         "links": {}
                     },
@@ -259,12 +181,12 @@
                         "content": {
                             "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
+                                    "$ref": "#/components/schemas/ConstraintViolation"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
+                                    "$ref": "#/components/schemas/ConstraintViolation"
                                 }
                             }
                         },
@@ -284,33 +206,20 @@
                         },
                         "application/ld+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category.jsonld"
+                                "$ref": "#/components/schemas/Category"
                             }
                         },
                         "application/vnd.api+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category.jsonapi"
-                            }
-                        },
-                        "application/xml": {
-                            "schema": {
                                 "$ref": "#/components/schemas/Category"
                             }
                         },
-                        "text/xml": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Category"
-                            }
-                        },
-                        "text/html": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Category"
-                            }
-                        }
+                        "application/xml": {},
+                        "text/xml": {},
+                        "text/html": {}
                     },
                     "required": true
-                },
-                "deprecated": false
+                }
             },
             "delete": {
                 "operationId": "api_open-api-categories_delete",
@@ -340,8 +249,7 @@
                 },
                 "summary": "Removes the Category resource.",
                 "description": "Removes the Category resource.",
-                "parameters": [],
-                "deprecated": false
+                "parameters": []
             },
             "patch": {
                 "operationId": "api_open-api-categories_patch",
@@ -367,21 +275,9 @@
                                     "$ref": "#/components/schemas/Category.jsonapi"
                                 }
                             },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category"
-                                }
-                            },
-                            "text/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category"
-                                }
-                            },
-                            "text/html": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category"
-                                }
-                            }
+                            "application/xml": {},
+                            "text/xml": {},
+                            "text/html": {}
                         },
                         "links": {}
                     },
@@ -406,12 +302,12 @@
                         "content": {
                             "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
+                                    "$ref": "#/components/schemas/ConstraintViolation"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConstraintViolation-json"
+                                    "$ref": "#/components/schemas/ConstraintViolation"
                                 }
                             }
                         },
@@ -442,18 +338,17 @@
                     "content": {
                         "application/merge-patch+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category"
+                                "$ref": "#/components/schemas/Category.jsonMergePatch"
                             }
                         },
                         "application/vnd.api+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Category.jsonapi"
+                                "$ref": "#/components/schemas/Category.jsonMergePatch"
                             }
                         }
                     },
                     "required": true
-                },
-                "deprecated": false
+                }
             }
         }
     },
@@ -461,8 +356,14 @@
         "schemas": {
             "Category": {
                 "type": "object",
-                "description": "",
-                "deprecated": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Category.jsonMergePatch": {
+                "type": "object",
                 "properties": {
                     "name": {
                         "type": "string"
@@ -470,9 +371,6 @@
                 }
             },
             "Category.jsonapi": {
-                "type": "object",
-                "description": "",
-                "deprecated": false,
                 "properties": {
                     "data": {
                         "type": "object",
@@ -484,12 +382,7 @@
                                 "type": "string"
                             },
                             "attributes": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                }
+                                "$ref": "#/components/schemas/Category"
                             }
                         },
                         "required": [
@@ -500,58 +393,26 @@
                 }
             },
             "Category.jsonld": {
-                "type": "object",
-                "description": "",
-                "deprecated": false,
-                "properties": {
-                    "@context": {
-                        "readOnly": true,
-                        "oneOf": [
-                            {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/HydraItemBaseSchema"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "name": {
                                 "type": "string"
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "@vocab": {
-                                        "type": "string"
-                                    },
-                                    "hydra": {
-                                        "type": "string",
-                                        "enum": [
-                                            "http://www.w3.org/ns/hydra/core#"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "@vocab",
-                                    "hydra"
-                                ],
-                                "additionalProperties": true
                             }
-                        ]
-                    },
-                    "@id": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "@type": {
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
+                        }
                     }
-                }
+                ]
             },
-            "ConstraintViolation-json": {
+            "ConstraintViolation": {
                 "type": "object",
                 "description": "Unprocessable entity",
-                "deprecated": false,
                 "properties": {
                     "status": {
                         "default": 422,
-                        "example": 422,
                         "type": "integer"
                     },
                     "violations": {
@@ -597,7 +458,6 @@
             "Error": {
                 "type": "object",
                 "description": "A representation of common errors.",
-                "deprecated": false,
                 "properties": {
                     "title": {
                         "readOnly": true,
@@ -636,6 +496,189 @@
                         "type": "string"
                     }
                 }
+            },
+            "HydraCollectionBaseSchema": {
+                "type": "object",
+                "properties": {
+                    "hydra:totalItems": {
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    "hydra:view": {
+                        "type": "object",
+                        "properties": {
+                            "@id": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "@type": {
+                                "type": "string"
+                            },
+                            "hydra:first": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "hydra:last": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "hydra:previous": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "hydra:next": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            }
+                        },
+                        "example": {
+                            "@id": "string",
+                            "type": "string",
+                            "hydra:first": "string",
+                            "hydra:last": "string",
+                            "hydra:previous": "string",
+                            "hydra:next": "string"
+                        }
+                    },
+                    "hydra:search": {
+                        "type": "object",
+                        "properties": {
+                            "@type": {
+                                "type": "string"
+                            },
+                            "hydra:template": {
+                                "type": "string"
+                            },
+                            "hydra:variableRepresentation": {
+                                "type": "string"
+                            },
+                            "hydra:mapping": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "@type": {
+                                            "type": "string"
+                                        },
+                                        "variable": {
+                                            "type": "string"
+                                        },
+                                        "property": {
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
+                                        },
+                                        "required": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "HydraItemBaseSchema": {
+                "type": "object",
+                "properties": {
+                    "@context": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "@vocab": {
+                                        "type": "string"
+                                    },
+                                    "hydra": {
+                                        "type": "string",
+                                        "enum": [
+                                            "http://www.w3.org/ns/hydra/core#"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "@vocab",
+                                    "hydra"
+                                ],
+                                "additionalProperties": true
+                            }
+                        ]
+                    },
+                    "@id": {
+                        "type": "string"
+                    },
+                    "@type": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "@id",
+                    "@type"
+                ]
+            },
+            "JsonApiCollectionBaseSchema": {
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "type": "object",
+                        "properties": {
+                            "self": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "first": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "prev": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "next": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            },
+                            "last": {
+                                "type": "string",
+                                "format": "iri-reference"
+                            }
+                        },
+                        "example": {
+                            "self": "string",
+                            "first": "string",
+                            "prev": "string",
+                            "next": "string",
+                            "last": "string"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "totalItems": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "itemsPerPage": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "currentPage": {
+                                "type": "integer",
+                                "minimum": 0
+                            }
+                        }
+                    },
+                    "data": {
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "data"
+                ]
             }
         },
         "responses": {},
@@ -659,7 +702,8 @@
     ],
     "tags": [
         {
-            "name": "Category"
+            "name": "Category",
+            "description": "Resource 'Category' operations."
         }
     ],
     "webhooks": {}
