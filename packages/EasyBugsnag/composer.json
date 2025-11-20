@@ -23,7 +23,7 @@
         "symfony/var-dumper": "^7.2"
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/doctrine-bundle": "^3.0",
         "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/orm": "^2.20",
         "eonx-com/easy-test": "^6.16",
