@@ -32,7 +32,7 @@
         "nikic/php-parser": "^5.0",
         "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^10.2|^11.4",
         "psr/cache": "^3.0",
         "psr/log": "^3.0",
         "spatie/url": "^2.2",

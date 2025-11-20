@@ -15,7 +15,7 @@
     "require-dev": {
         "eonx-com/easy-test": "^6.16",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2"
+        "phpunit/phpunit": "^10.2|^11.4"
     },
     "autoload": {
         "psr-4": {
