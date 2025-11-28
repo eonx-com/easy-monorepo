@@ -6,7 +6,12 @@
       "Bash(composer show:*)",
       "Bash(composer update:*)",
       "Bash(composer validate:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(php -l:*)",
+      "Bash(composer exec phpstan:*)",
+      "Bash(vendor/bin/phpstan:*)",
+      "Bash(./vendor/bin/phpstan:*)"
     ],
     "deny": [],
     "ask": []
