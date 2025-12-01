@@ -125,9 +125,30 @@
                                     ]
                                 }
                             },
-                            "application/xml": {},
-                            "text/xml": {},
-                            "text/html": {}
+                            "application/xml": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Category.xml"
+                                    }
+                                }
+                            },
+                            "text/xml": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Category.xml"
+                                    }
+                                }
+                            },
+                            "text/html": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Category.html"
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -188,9 +209,21 @@
                                     "$ref": "#/components/schemas/Category.jsonapi"
                                 }
                             },
-                            "application/xml": {},
-                            "text/xml": {},
-                            "text/html": {}
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.xml"
+                                }
+                            },
+                            "text/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.xml"
+                                }
+                            },
+                            "text/html": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.html"
+                                }
+                            }
                         },
                         "links": {}
                     },
@@ -248,9 +281,21 @@
                                 "$ref": "#/components/schemas/Category"
                             }
                         },
-                        "application/xml": {},
-                        "text/xml": {},
-                        "text/html": {}
+                        "application/xml": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        },
+                        "text/xml": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        },
+                        "text/html": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        }
                     },
                     "required": true
                 }
@@ -309,9 +354,21 @@
                                     "$ref": "#/components/schemas/Category.jsonapi"
                                 }
                             },
-                            "application/xml": {},
-                            "text/xml": {},
-                            "text/html": {}
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.xml"
+                                }
+                            },
+                            "text/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.xml"
+                                }
+                            },
+                            "text/html": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category.html"
+                                }
+                            }
                         },
                         "links": {}
                     },
@@ -396,6 +453,14 @@
                     }
                 }
             },
+            "Category.html": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
             "Category.jsonMergePatch": {
                 "type": "object",
                 "properties": {
@@ -440,6 +505,14 @@
                         }
                     }
                 ]
+            },
+            "Category.xml": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
             },
             "ConstraintViolation": {
                 "type": "object",
@@ -510,7 +583,10 @@
                         ]
                     },
                     "status": {
-                        "type": "number",
+                        "type": [
+                            "number",
+                            "null"
+                        ],
                         "examples": [
                             404
                         ],
@@ -532,47 +608,59 @@
                 }
             },
             "HydraCollectionBaseSchema": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/HydraCollectionBaseSchemaNoPagination"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "hydra:view": {
+                                "type": "object",
+                                "properties": {
+                                    "@id": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "hydra:first": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "hydra:last": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "hydra:previous": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "hydra:next": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    }
+                                },
+                                "example": {
+                                    "@id": "string",
+                                    "type": "string",
+                                    "hydra:first": "string",
+                                    "hydra:last": "string",
+                                    "hydra:previous": "string",
+                                    "hydra:next": "string"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "HydraCollectionBaseSchemaNoPagination": {
                 "type": "object",
                 "properties": {
                     "hydra:totalItems": {
                         "type": "integer",
                         "minimum": 0
-                    },
-                    "hydra:view": {
-                        "type": "object",
-                        "properties": {
-                            "@id": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "@type": {
-                                "type": "string"
-                            },
-                            "hydra:first": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "hydra:last": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "hydra:previous": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "hydra:next": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            }
-                        },
-                        "example": {
-                            "@id": "string",
-                            "type": "string",
-                            "hydra:first": "string",
-                            "hydra:last": "string",
-                            "hydra:previous": "string",
-                            "hydra:next": "string"
-                        }
                     },
                     "hydra:search": {
                         "type": "object",
@@ -655,6 +743,58 @@
                 ]
             },
             "JsonApiCollectionBaseSchema": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/JsonApiCollectionBaseSchemaNoPagination"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "links": {
+                                "type": "object",
+                                "properties": {
+                                    "first": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "prev": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "next": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    },
+                                    "last": {
+                                        "type": "string",
+                                        "format": "iri-reference"
+                                    }
+                                },
+                                "example": {
+                                    "first": "string",
+                                    "prev": "string",
+                                    "next": "string",
+                                    "last": "string"
+                                }
+                            },
+                            "meta": {
+                                "type": "object",
+                                "properties": {
+                                    "itemsPerPage": {
+                                        "type": "integer",
+                                        "minimum": 0
+                                    },
+                                    "currentPage": {
+                                        "type": "integer",
+                                        "minimum": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "JsonApiCollectionBaseSchemaNoPagination": {
                 "type": "object",
                 "properties": {
                     "links": {
@@ -663,44 +803,16 @@
                             "self": {
                                 "type": "string",
                                 "format": "iri-reference"
-                            },
-                            "first": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "prev": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "next": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            },
-                            "last": {
-                                "type": "string",
-                                "format": "iri-reference"
                             }
                         },
                         "example": {
-                            "self": "string",
-                            "first": "string",
-                            "prev": "string",
-                            "next": "string",
-                            "last": "string"
+                            "self": "string"
                         }
                     },
                     "meta": {
                         "type": "object",
                         "properties": {
                             "totalItems": {
-                                "type": "integer",
-                                "minimum": 0
-                            },
-                            "itemsPerPage": {
-                                "type": "integer",
-                                "minimum": 0
-                            },
-                            "currentPage": {
                                 "type": "integer",
                                 "minimum": 0
                             }
