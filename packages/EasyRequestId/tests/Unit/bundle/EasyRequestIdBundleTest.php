@@ -11,7 +11,7 @@ final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
     public function testSanity(): void
     {
         $container = $this->getKernel([
-            __DIR__ . '/../../Fixture/config/disable_easy_error_handler_config.php',
+            __DIR__ . '/../../Fixture/config/minimal_config.php',
         ])
             ->getContainer();
         $requestIdProvider = $container->get(RequestIdProviderInterface::class);
