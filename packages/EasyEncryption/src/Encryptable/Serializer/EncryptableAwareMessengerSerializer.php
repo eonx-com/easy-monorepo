@@ -81,7 +81,7 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         if ($message instanceof EncryptableInterface) {
             $this->objectEncryptor->encrypt($message);
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_PARTIAL;
-            $headers[self::ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES] = \json_encode(
+            $headers[self::ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES] = (string)\json_encode(
                 $this->encryptableMetadata->getEncryptableFieldNames($message::class)
             );
         }
