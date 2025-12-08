@@ -28,6 +28,7 @@ abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterfa
     {
         $definition = clone $container->getDefinition(ConfigServiceId::HttpClient->value);
 
+        // lower priority than MockHttpClient (-10)
         $definition->setDecoratedService(id: $decorated, priority: -11);
 
         $container->setDefinition($definitionId, $definition);
