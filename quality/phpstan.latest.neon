@@ -19,6 +19,6 @@ parameters:
             message: '#Result of && is always false#'
             path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
         -
-            message: '#Offset >* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
             path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
 
