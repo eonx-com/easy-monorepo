@@ -49,7 +49,7 @@ check-all: ## Check codebase with all checkers
 		check-composer enableNotification="no"\
 		check-ecs enableNotification="no"\
 		check-monorepo enableNotification="no"\
-		check-phpstan enableNotification="no"\
+		check-phpstan-latest enableNotification="no"\
 		check-rector enableNotification="no"\
 		check-packages-architecture enableNotification="no"\
 		check-security enableNotification="no")
@@ -66,8 +66,11 @@ check-ecs: ## Check App with ECS
 check-monorepo: ## Check monorepo
 	$(call runCommand,vendor/bin/monorepo-builder validate --ansi)
 
-check-phpstan: ## Check App with PHPStan
-	$(call runCommand,quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.neon)
+check-phpstan-latest: ## Check App with PHPStan
+	$(call runCommand,quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.latest.neon)
+
+check-phpstan-lowest: ## Check App with PHPStan
+	$(call runCommand,quality/vendor/bin/phpstan analyse --error-format symplify --ansi --memory-limit=2000M --configuration=quality/phpstan.lowest.neon)
 
 check-rector: ## Check App with Rector
 	$(call runCommand,quality/vendor/bin/rector process --ansi --config=quality/rector.php --dry-run)
