@@ -22,6 +22,9 @@
         "symfony/http-kernel": "^7.2",
         "symfony/polyfill-uuid": "^1.31"
     },
+    "conflict": {
+        "easycorp/easyadmin-bundle": "<4.13.1"
+    },
     "autoload": {
         "psr-4": {
             "EonX\\EasyServerless\\": "src",

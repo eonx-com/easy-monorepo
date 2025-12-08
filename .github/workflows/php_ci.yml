@@ -79,5 +79,5 @@ jobs:
                 run: mkdir -p ${{ matrix.actions.cache }}
 
             -   name: '[CI] Check ${{ matrix.actions.name }} [CI]'
-                run: ${{ matrix.actions.run }}
+                run: ${{ matrix.actions.run }}${{ matrix.actions.name == 'phpstan' && format('-{0}', matrix.dependencies) || '' }}
                 shell: bash
