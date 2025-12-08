@@ -39,6 +39,10 @@ final class EasyDoctrineBundle extends AbstractBundle
         $this->registerAwsRdsConfiguration($config, $container, $builder);
         $this->registerDeferredDispatcherConfiguration($config, $container, $builder);
         $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
+
+        $container
+            ->parameters()
+            ->set(ConfigParam::EntityManagerLazy->value, $config['entity_manager']['lazy']);
     }
 
     private function registerAwsRdsConfiguration(

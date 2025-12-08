@@ -38,5 +38,11 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('easy_error_handler')
                 ->canBeDisabled()
             ->end()
+            ->arrayNode('entity_manager')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->booleanNode('lazy')->defaultFalse()->end()
+                ->end()
+            ->end()
         ->end();
 };
