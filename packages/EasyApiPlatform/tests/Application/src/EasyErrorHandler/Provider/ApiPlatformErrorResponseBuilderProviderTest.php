@@ -68,7 +68,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'The value should be a valid choice.',
                 ],
             ],
-            'exceptionMessage' => 'status: This value should be of type Status.',
+            'exceptionMessage' => 'status: This value should be of type int|string.',
             'version' => 4,
         ];
 
@@ -218,7 +218,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'The value should be a valid choice.',
                 ],
             ],
-            'exceptionMessage' => 'status: This value should be of type Status.',
+            'exceptionMessage' => 'status: This value should be of type int|string.',
             'version' => 4,
         ];
 
