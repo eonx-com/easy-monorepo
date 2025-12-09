@@ -51,11 +51,11 @@ return RectorConfig::configure()
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
+        'packages/*/var/*',
+        'packages/*/vendor/*',
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
         ],
-        'packages/*/var/*',
-        'packages/*/vendor/*',
     ])
     ->withRules([
         AddSeeAnnotationRector::class,
