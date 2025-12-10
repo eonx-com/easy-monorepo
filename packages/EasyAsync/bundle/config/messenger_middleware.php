@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyAsync\Bundle\Enum\BundleParam;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;
 
