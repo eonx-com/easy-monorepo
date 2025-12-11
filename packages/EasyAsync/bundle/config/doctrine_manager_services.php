@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyAsync\Bundle\Enum\BundleParam;
-use EonX\EasyAsync\Messenger\Decoder\JsonMessageBodyDecoder;
-use EonX\EasyAsync\Messenger\Decoder\MessageBodyDecoderInterface;
-use EonX\EasyAsync\Messenger\Subscriber\ShouldKillWorkerSubscriber;
+use EonX\EasyAsync\Doctrine\Checker\ManagersSanityChecker;
+use EonX\EasyAsync\Doctrine\Clearer\ManagersClearer;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -14,9 +13,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->set(MessageBodyDecoderInterface::class, JsonMessageBodyDecoder::class);
+    // Default managers clearer
+    $services->set(ManagersClearer::class);
 
+    // Default managers sanity checker
     $services
-        ->set(ShouldKillWorkerSubscriber::class)
+        ->set(ManagersSanityChecker::class)
         ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 };

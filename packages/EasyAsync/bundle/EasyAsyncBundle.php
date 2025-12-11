@@ -58,6 +58,7 @@ final class EasyAsyncBundle extends AbstractBundle
         ContainerBuilder $builder,
     ): void {
         $container->import('config/messenger.php');
+        $container->import('config/doctrine_manager_services.php');
 
         $this->registerMessengerMiddlewareConfiguration($config, $container, $builder);
         $this->registerStopOnMessagesLimitConfiguration($config, $container, $builder);
