@@ -16,4 +16,6 @@ enum ConfigParam: string
     case AwsRdsSslMode = 'easy_doctrine.aws_rds.ssl.mode';
 
     case DeferredDispatcherEntities = 'easy_doctrine.deferred_dispatcher_entities';
+
+    case EntityManagerLazy = 'easy_doctrine.entity_manager.lazy';
 }

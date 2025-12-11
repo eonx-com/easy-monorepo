@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Bundle\CompilerPass;
 
+use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\EntityEvent\EntityManager\WithEventsEntityManager;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
@@ -14,6 +15,9 @@ final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
+        $entityManagerLazy = $container->hasParameter(ConfigParam::EntityManagerLazy->value)
+            && $container->getParameter(ConfigParam::EntityManagerLazy->value);
+
         /** @var array<string, string> $connections */
         $connections = $container->getParameter('doctrine.connections');
         $connectionNames = \array_keys($connections);
@@ -25,9 +29,21 @@ final class WithEventsEntityManagerCompilerPass implements CompilerPassInterface
                 continue;
             }
 
+            if ($entityManagerLazy) {
+                $entityManagerDefinition = $container->getDefinition($entityManagerServiceId);
+                $entityManagerDefinition->setLazy(true);
+                $entityManagerDefinition->setShared(false);
+            }
+
             $withEventsEntityManagerServiceId = 'easy_doctrine.' . $connectionName . '.with_events_entity_manager';
-            $container
-                ->register($withEventsEntityManagerServiceId, WithEventsEntityManager::class)
+            $withEventsEntityManagerDefinition = $container
+                ->register($withEventsEntityManagerServiceId, WithEventsEntityManager::class);
+
+            if ($entityManagerLazy) {
+                $withEventsEntityManagerDefinition->setLazy(true);
+            }
+
+            $withEventsEntityManagerDefinition
                 ->setDecoratedService($entityManagerServiceId)
                 ->setArgument(
                     '$deferredEntityEventDispatcher',
