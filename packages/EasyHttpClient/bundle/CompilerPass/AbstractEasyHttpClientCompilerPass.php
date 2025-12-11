@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Bundle\CompilerPass;
 
-use EonX\EasyHttpClient\Common\HttpClient\WithEventsHttpClient;
+use EonX\EasyHttpClient\Bundle\Enum\ConfigServiceId;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterface
 {
@@ -27,13 +26,12 @@ abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterfa
 
     protected function decorateHttpClient(ContainerBuilder $container, string $decorated, string $definitionId): void
     {
-        $def = (new Definition(WithEventsHttpClient::class))
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            // lower priority than MockHttpClient (-10)
-            ->setDecoratedService(id: $decorated, priority: -11);
+        $definition = clone $container->getDefinition(ConfigServiceId::HttpClient->value);
 
-        $container->setDefinition($definitionId, $def);
+        // Lower priority than MockHttpClient (-10)
+        $definition->setDecoratedService(id: $decorated, priority: -11);
+
+        $container->setDefinition($definitionId, $definition);
     }
 
     protected function hasDefaultClient(ContainerBuilder $container): bool
