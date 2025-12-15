@@ -11,6 +11,7 @@ use Pkcs11\GcmParams;
 use Pkcs11\Mechanism;
 use Pkcs11\Module;
 use Pkcs11\Session;
+use Throwable;
 use UnexpectedValueException;
 
 use const Pkcs11\CKA_LABEL;
@@ -24,9 +25,9 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
 {
     private const CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
 
-    private const EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
-
     private const EXCEPTION_DEFAULT_RETRIES = 3;
+
+    private const EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
 
     private const GCM_TAG_LENGTH = 128;
 
@@ -108,11 +109,9 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        return $this->execWithRetries(function () use ($keyAsString, $text): string {
-            return $this
-                ->findKey($this->getKeyName($keyAsString))
-                ->decrypt($this->getMechanism(), (string)\hex2bin($text));
-        });
+        return $this->execWithRetries(fn(): string => $this
+            ->findKey($this->getKeyName($keyAsString))
+            ->decrypt($this->getMechanism(), (string)\hex2bin($text)));
     }
 
     protected function doEncrypt(
@@ -126,26 +125,24 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        $encrypted = $this->execWithRetries(function () use ($keyAsString, $text): string {
-            return $this
-                ->findKey($this->getKeyName($keyAsString))
-                ->encrypt($this->getMechanism(), $text);
-        });
+        $encrypted = $this->execWithRetries(fn(): string => $this
+            ->findKey($this->getKeyName($keyAsString))
+            ->encrypt($this->getMechanism(), $text));
 
-        return \bin2hex((string)$encrypted);
+        return \bin2hex($encrypted);
     }
 
     /**
      * @throws \Throwable
      */
-    private function execWithRetries(callable $callback): mixed
+    private function execWithRetries(callable $callback): string
     {
         $attempt = 0;
 
         do {
             try {
-                return $callback();
-            } catch (\Throwable $throwable) {
+                return (string)$callback();
+            } catch (Throwable $throwable) {
                 // Reset PKCS11 session on specific error failure
                 if (\str_contains(\strtoupper($throwable->getMessage()), self::EXCEPTION_RETRY_MESSAGE)) {
                     $this->reset();
