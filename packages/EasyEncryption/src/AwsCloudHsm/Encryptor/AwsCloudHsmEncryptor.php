@@ -24,6 +24,10 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
 {
     private const CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
 
+    private const EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
+
+    private const EXCEPTION_DEFAULT_RETRIES = 3;
+
     private const GCM_TAG_LENGTH = 128;
 
     private bool $cloudHsmSdkConfigured = false;
@@ -104,9 +108,11 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        return $this
-            ->findKey($this->getKeyName($keyAsString))
-            ->decrypt($this->getMechanism(), (string)\hex2bin($text));
+        return $this->execWithRetries(function () use ($keyAsString, $text): string {
+            return $this
+                ->findKey($this->getKeyName($keyAsString))
+                ->decrypt($this->getMechanism(), (string)\hex2bin($text));
+        });
     }
 
     protected function doEncrypt(
@@ -120,11 +126,36 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        $encrypted = $this
-            ->findKey($this->getKeyName($keyAsString))
-            ->encrypt($this->getMechanism(), $text);
+        $encrypted = $this->execWithRetries(function () use ($keyAsString, $text): string {
+            return $this
+                ->findKey($this->getKeyName($keyAsString))
+                ->encrypt($this->getMechanism(), $text);
+        });
 
         return \bin2hex((string)$encrypted);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    private function execWithRetries(callable $callback): mixed
+    {
+        $attempt = 0;
+
+        do {
+            try {
+                return $callback();
+            } catch (\Throwable $throwable) {
+                // Reset PKCS11 session on specific error failure
+                if (\str_contains(\strtoupper($throwable->getMessage()), self::EXCEPTION_RETRY_MESSAGE)) {
+                    $this->reset();
+                }
+            }
+
+            $attempt++;
+        } while ($attempt < self::EXCEPTION_DEFAULT_RETRIES);
+
+        throw $throwable;
     }
 
     /**
