@@ -109,7 +109,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        return $this->execWithRetries(fn(): string => $this
+        return $this->execWithRetries(fn (): string => $this
             ->findKey($this->getKeyName($keyAsString))
             ->decrypt($this->getMechanism(), (string)\hex2bin($text)));
     }
@@ -125,7 +125,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        $encrypted = $this->execWithRetries(fn(): string => $this
+        $encrypted = $this->execWithRetries(fn (): string => $this
             ->findKey($this->getKeyName($keyAsString))
             ->encrypt($this->getMechanism(), $text));
 
