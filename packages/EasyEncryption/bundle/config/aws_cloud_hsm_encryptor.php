@@ -8,6 +8,7 @@ use EonX\EasyEncryption\AwsCloudHsm\Configurator\AwsCloudHsmSdkConfigurator;
 use EonX\EasyEncryption\AwsCloudHsm\Encryptor\AwsCloudHsmEncryptor;
 use EonX\EasyEncryption\AwsCloudHsm\Encryptor\AwsCloudHsmEncryptorInterface;
 use EonX\EasyEncryption\AwsCloudHsm\HashCalculator\AwsCloudHsmHashCalculator;
+use EonX\EasyEncryption\Bundle\Enum\BundleParam;
 use EonX\EasyEncryption\Bundle\Enum\ConfigParam;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
@@ -43,7 +44,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(AwsCloudHsmEncryptorInterface::class, AwsCloudHsmEncryptor::class)
         ->arg('$userPin', param(ConfigParam::AwsCloudHsmUserPin->value))
         ->arg('$aad', param(ConfigParam::AwsCloudHsmAad->value))
-        ->arg('$defaultKeyName', param(ConfigParam::DefaultKeyName->value));
+        ->arg('$defaultKeyName', param(ConfigParam::DefaultKeyName->value))
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 
     $services
         ->alias(EncryptorInterface::class, AwsCloudHsmEncryptorInterface::class);
