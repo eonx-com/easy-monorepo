@@ -120,12 +120,22 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
      */
     private function resolveHeaders(array $headers, CsvParserConfig $config): array
     {
-        // Sanitize given headers first
-        $headers = \array_map(static function (string $header): string {
+        $requiredHeaders = [];
+        foreach ($config->getRequiredHeaders() ?? [] as $requiredHeader) {
+            $requiredHeaders[\strtolower($requiredHeader)] = $requiredHeader;
+        }
+
+        $headers = \array_map(static function (string $header) use ($config, $requiredHeaders): string {
+            // Sanitize given headers first
             $header = (string)\iconv('UTF-8', 'ISO-8859-1//IGNORE', $header);
             $header = (string)\iconv('ISO-8859-1', 'UTF-8', $header);
+            $header = \trim($header);
 
-            return \trim($header);
+            if ($config->ignoreHeadersCase() && isset($requiredHeaders[\strtolower($header)])) {
+                $header = $requiredHeaders[\strtolower($header)];
+            }
+
+            return $header;
         }, $headers);
 
         if ($config->hasRequiredHeaders()) {
