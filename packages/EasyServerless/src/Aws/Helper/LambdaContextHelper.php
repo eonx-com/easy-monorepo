@@ -15,6 +15,11 @@ final class LambdaContextHelper
         return (array)\json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]', true);
     }
 
+    public static function getRemainingTimeInMilliseconds(): int
+    {
+        return (self::getInvocationContext()['deadlineMs'] ?? 0) - (int)(\microtime(true) * 1000);
+    }
+
     public static function getRequestContext(): array
     {
         return (array)\json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]', true);
