@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use EonX\EasyPagination\Pagination\PaginationInterface;
-use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class IterablePaginator extends AbstractPaginator
 {
@@ -17,6 +16,6 @@ final class IterablePaginator extends AbstractPaginator
 
     protected function doGetItems(): array
     {
-        return CollectorHelper::convertToArray($this->iterable);
+        return \iterator_to_array($this->iterable);
     }
 }
