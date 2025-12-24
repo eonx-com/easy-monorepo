@@ -14,7 +14,7 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-sodium": "*",
-        "api-platform/core": "^3.4.17 || ^4.2.1",
+        "api-platform/core": "^4.2.1",
         "async-aws/secrets-manager": "^2.5",
         "aws/aws-sdk-php": "^3.288.1",
         "bugsnag/bugsnag": "^3.29",
