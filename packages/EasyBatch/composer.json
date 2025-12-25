@@ -13,10 +13,10 @@
         "eonx-com/easy-random": "^6.18",
         "eonx-com/easy-utils": "^6.18",
         "nesbot/carbon": "^3.8.4",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/messenger": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/messenger": "^7.4"
     },
     "require-dev": {
         "eonx-com/easy-test": "^6.18",

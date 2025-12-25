@@ -10,11 +10,11 @@
         "eonx-com/easy-lock": "^6.18",
         "eonx-com/easy-utils": "^6.18",
         "nesbot/carbon": "^3.8.4",
-        "symfony/config": "^7.2",
-        "symfony/console": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-foundation": "^7.2",
-        "symfony/http-kernel": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",

@@ -17,10 +17,10 @@
         "myclabs/deep-copy": "^1.11",
         "nesbot/carbon": "^3.8.4",
         "symfony/cache-contracts": "^3.5",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/doctrine-bridge": "^7.2",
-        "symfony/http-kernel": "^7.2",
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/doctrine-bridge": "^7.4",
+        "symfony/http-kernel": "^7.4",
         "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
