@@ -5,17 +5,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/string": "^7.2",
-        "symfony/uid": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/string": "^7.4",
+        "symfony/uid": "^7.4"
     },
     "require-dev": {
         "eonx-com/easy-test": "^6.18",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2|^11.4",
-        "symfony/framework-bundle": "^7.2"
+        "symfony/framework-bundle": "^7.4"
     },
     "autoload": {
         "psr-4": {
