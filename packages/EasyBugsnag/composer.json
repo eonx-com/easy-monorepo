@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "bugsnag/bugsnag": "^3.29",
         "eonx-com/easy-utils": "^6.18",
         "guzzlehttp/guzzle": "^7.0",

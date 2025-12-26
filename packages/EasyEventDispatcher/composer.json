@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "symfony/dependency-injection": "^7.2",
         "symfony/event-dispatcher-contracts": "^3.5",
         "symfony/http-kernel": "^7.2"

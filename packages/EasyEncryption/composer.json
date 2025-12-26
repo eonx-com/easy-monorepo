@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-sodium": "*",
         "eonx-com/easy-utils": "^6.18",
         "paragonie/halite": "^5.1",

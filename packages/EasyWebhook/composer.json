@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "eonx-com/easy-event-dispatcher": "^6.18",
         "eonx-com/easy-lock": "^6.18",
         "eonx-com/easy-pagination": "^6.18",

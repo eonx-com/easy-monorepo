@@ -33,10 +33,10 @@ jobs:
                     key: ${{ steps.cache-extensions.outputs.key }}
 
             # TODO: Change the version of the action after 2.33 is released
-            -   name: Setup PHP 8.2
+            -   name: Setup PHP 8.4
                 uses: shivammathur/setup-php@297b3cde3c3c3202e03cd5e9b679a74c06f72214
                 with:
-                    php-version: 8.2
+                    php-version: 8.4
                     coverage: none
                     extensions:
                         ${{ env.PHP_EXTENSIONS }}
@@ -57,7 +57,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['8.2']
+                php: ['8.4']
                 dependencies: ['latest', 'lowest']
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
