@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-openssl": "*",
         "eonx-com/easy-utils": "^6.18",
         "nette/utils": "^4.0",

@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "eonx-com/easy-utils": "^6.18",
         "symfony/config": "^7.2",
         "symfony/dependency-injection": "^7.2",

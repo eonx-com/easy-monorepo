@@ -4,7 +4,7 @@
     "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
