@@ -175,15 +175,18 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 return;
             }
 
+            /** @var callable-string $strtolower */
+            $strtolower = 'strtolower';
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->in($wrapCase($aliasedField), $valueParameter))
-                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map('strtolower', $values));
+                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map($strtolower, $values));
 
             return;
         }
 
         $ors = [];
         $parameters = [];
+        /** @var scalar $value */
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
             $parameters[] = [$caseSensitive ? $value : \strtolower((string)$value), $keyValueParameter];

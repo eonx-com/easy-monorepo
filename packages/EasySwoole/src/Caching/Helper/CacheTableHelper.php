@@ -36,6 +36,7 @@ final class CacheTableHelper
     {
         $tables = [];
 
+        /** @var int[]|string $sizes */
         foreach ($config as $name => $sizes) {
             // Support simple table name to use default sizes
             if (\is_int($name) && (\is_string($sizes) && $sizes !== '')) {
@@ -132,7 +133,9 @@ final class CacheTableHelper
         if ($currentTickCount >= $maximumTickCount) {
             $now = \time();
 
-            foreach (($_SERVER[self::SERVER_TABLE_NAMES] ?? []) as $name) {
+            /** @var string[] $serverTableNames */
+            $serverTableNames = $_SERVER[self::SERVER_TABLE_NAMES] ?? [];
+            foreach ($serverTableNames as $name) {
                 $table = self::get($name);
 
                 if ($table === null) {

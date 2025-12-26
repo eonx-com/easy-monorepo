@@ -235,8 +235,7 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractUnitTestCase
 
     private function mockBugsnagClient(array $expectedMetadata): Client
     {
-        /** @var \Bugsnag\Client $bugsnagClient */
-        $bugsnagClient = $this->mock(
+        return $this->mock(
             Client::class,
             static function (MockInterface $mock) use ($expectedMetadata): void {
                 $mock->shouldReceive('leaveBreadcrumb')
@@ -248,7 +247,5 @@ final class HttpRequestSentBreadcrumbListenerTest extends AbstractUnitTestCase
                     );
             }
         );
-
-        return $bugsnagClient;
     }
 }

@@ -93,7 +93,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             }
         }
 
-        if ($this->nameConverter !== null && $class !== null) {
+        if ($class !== null) {
             return $this->nameConverter->normalize($name, $class);
         }
 

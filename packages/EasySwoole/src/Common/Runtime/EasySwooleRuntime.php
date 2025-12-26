@@ -28,6 +28,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
         // If dotenv_path is not set, set it to "envs/$env.env" if file exists
         if (isset($options['dotenv_path']) === false && isset($options['project_dir'])) {
             $envKey = $options['env_var_name'] ??= 'APP_ENV';
+            /** @var scalar $env */
             $env = $options['env'] ??= $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
             $envPath = \sprintf('envs/%s.env', \strtolower((string)$env));
             $fullEnvPath = \sprintf('%s/%s', $options['project_dir'], $envPath);
@@ -37,6 +38,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
             }
         }
 
+        // @phpstan-ignore argument.type
         parent::__construct($options ?? []);
     }
 
@@ -115,6 +117,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
         $reflection = new ReflectionClass(Constant::class);
         $constants = $reflection->getConstants();
 
+        /** @var array-key $constantValue */
         foreach ($constants as $constant => $constantValue) {
             $constantName = u($constant);
 

@@ -13,6 +13,7 @@ parameters:
     level: 9
 
     bootstrapFiles:
+        - ./stubs/pcntl.php.stub
         - %currentWorkingDirectory%/vendor/autoload.php
 
     paths:
@@ -27,7 +28,6 @@ parameters:
         - %currentWorkingDirectory%/packages/*/tests/*/config/*
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/EasyServerless/src/State/Resetter/SymfonyServicesAppStateResetter.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Common/Resetter/SymfonyServicesAppStateResetter.php
 
     ignoreErrors:
@@ -140,18 +140,6 @@ parameters:
         # ---- EasySwoole ----
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Logging/Function/dump.php
-
-        - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
-
-        - message: '#Anonymous function never returns null so it can be removed from the return type#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
-
-        - message: '#Else branch is unreachable because ternary operator condition is always true#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
-
-        - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SwooleTableHelper.php
 
         - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Result/DbalResult.php
