@@ -38,11 +38,14 @@ use Symfony\Component\Validator\Constraints\Uuid;
  */
 class InvalidDataMaker extends AbstractInvalidDataMaker
 {
+    /**
+     * @param int<0, max> $minElements
+     */
     public function yieldArrayCollectionWithFewerItems(int $minElements): iterable
     {
         $value = new ArrayCollection(\array_fill(0, $minElements - 1, null));
         $message = $this->translateMessage(
-            (new Count(['min' => $minElements]))->minMessage,
+            (new Count(min: $minElements))->minMessage,
             [
                 '{{ limit }}' => $minElements,
             ],
@@ -52,11 +55,14 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too few elements in the collection", $value, $message);
     }
 
+    /**
+     * @param int<0, max> $maxElements
+     */
     public function yieldArrayCollectionWithMoreItems(int $maxElements): iterable
     {
         $value = new ArrayCollection(\array_fill(0, $maxElements - 1, null));
         $message = $this->translateMessage(
-            (new Count(['max' => $maxElements]))->maxMessage,
+            (new Count(max: $maxElements))->maxMessage,
             [
                 '{{ limit }}' => $maxElements,
             ],
@@ -66,11 +72,14 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too many elements in the collection", $value, $message);
     }
 
+    /**
+     * @param int<0, max> $minElements
+     */
     public function yieldArrayWithFewerItems(int $minElements): iterable
     {
         $value = \array_fill(0, $minElements - 1, null);
         $message = $this->translateMessage(
-            (new Count(['min' => $minElements]))->minMessage,
+            (new Count(min: $minElements))->minMessage,
             [
                 '{{ limit }}' => $minElements,
             ],
@@ -80,11 +89,14 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} has too few elements in the array", $value, $message);
     }
 
+    /**
+     * @param int<0, max> $maxElements
+     */
     public function yieldArrayWithMoreItems(int $maxElements, mixed $itemValue = null): iterable
     {
         $value = \array_fill(0, $maxElements + 1, $itemValue);
         $message = $this->translateMessage(
-            (new Count(['max' => $maxElements]))->maxMessage,
+            (new Count(max: $maxElements))->maxMessage,
             [
                 '{{ limit }}' => $maxElements,
             ],
@@ -287,13 +299,13 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is invalid email", $value, $message);
     }
 
+    /**
+     * @param int<1, max> $exactLength
+     */
     public function yieldInvalidExactLengthString(int $exactLength): iterable
     {
         $message = $this->translateMessage(
-            (new Length([
-                'max' => $exactLength,
-                'min' => $exactLength,
-            ]))->exactMessage,
+            (new Length(min: $exactLength, max: $exactLength))->exactMessage,
             ['{{ limit }}' => $exactLength],
             $exactLength
         );
@@ -429,11 +441,14 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is out of range (below)", $value, $message);
     }
 
+    /**
+     * @param int<1, max> $maxLength
+     */
     public function yieldTooLongString(int $maxLength): iterable
     {
         $value = \str_pad('g', $maxLength + 1, 'g');
         $message = $this->translateMessage(
-            (new Length(['max' => $maxLength]))->maxMessage,
+            (new Length(max: $maxLength))->maxMessage,
             [
                 '{{ limit }}' => $maxLength,
             ],
@@ -443,11 +458,14 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
         yield from $this->create("{$this->property} is too long", $value, $message);
     }
 
+    /**
+     * @param int<0, max> $minLength
+     */
     public function yieldTooShortString(int $minLength): iterable
     {
         $value = $minLength > 1 ? \str_pad('g', $minLength - 1, 'g') : '';
         $message = $this->translateMessage(
-            (new Length(['min' => $minLength]))->minMessage,
+            (new Length(min: $minLength))->minMessage,
             [
                 '{{ limit }}' => $minLength,
             ],

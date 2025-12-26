@@ -112,6 +112,7 @@ return ECSConfig::configure()
         NoExtraBlankLinesFixer::class => [
             'packages/EasyTest/.phpstorm.meta.php',
         ],
+        'packages/*/config/reference.php',
         'packages/*/var/*',
         'packages/*/vendor/*',
         PhpdocAlignFixer::class => [

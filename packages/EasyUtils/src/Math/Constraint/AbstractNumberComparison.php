@@ -11,16 +11,15 @@ abstract class AbstractNumberComparison extends AbstractComparison
 
     public function __construct(
         mixed $value = null,
-        mixed $payload = null,
-        ?array $groups = null,
-        ?array $options = null,
-        ?bool $isMoney = null,
-        ?string $message = null,
         ?string $propertyPath = null,
+        ?string $message = null,
+        ?array $groups = null,
+        mixed $payload = null,
+        ?bool $isMoney = null,
     ) {
         $this->isMoney = $isMoney ?? true;
 
-        parent::__construct($value, $propertyPath, $message, $groups, $payload, $options ?? []);
+        parent::__construct($value, $propertyPath, $message, $groups, $payload);
     }
 
     public function validatedBy(): string

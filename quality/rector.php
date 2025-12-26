@@ -51,6 +51,7 @@ return RectorConfig::configure()
             'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
             'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
+        'packages/*/config/reference.php',
         'packages/*/var/*',
         'packages/*/vendor/*',
         ReadOnlyPropertyRector::class => [
