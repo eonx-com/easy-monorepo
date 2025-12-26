@@ -16,7 +16,6 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractUnitTestC
 {
     public function testPaginateSetResultsSuccessfully(): void
     {
-        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (LegacyMockInterface $repository): void {
             $repository
                 ->shouldReceive('getClassName')
@@ -39,7 +38,6 @@ final class AbstractPaginatedDoctrineOrmRepositoryTest extends AbstractUnitTestC
     private function mockQueryBuilderAndQuery(): LegacyMockInterface
     {
         return $this->mock(QueryBuilder::class, function (LegacyMockInterface $queryBuilder): void {
-            /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
             $entityManager = $this->mock(
                 EntityManagerInterface::class,
                 function (LegacyMockInterface $entityManager): void {

@@ -33,6 +33,7 @@ return RectorConfig::configure()
     ->withCache(__DIR__ . '/var/cache/rector', FileCacheStorage::class)
     ->withBootstrapFiles([
         __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/stubs/pcntl.php.stub',
     ])
     ->withSets([
         EasyQualitySetList::RECTOR,

@@ -79,7 +79,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
                         'violations.invalid_type',
                         [
                             '%current_type%' => $throwable->getCurrentType(),
-                            '%expected_types%' => \implode('|', $throwable->getExpectedTypes()),
+                            '%expected_types%' => \implode('|', $throwable->getExpectedTypes() ?? []),
                         ]
                     ),
                 },

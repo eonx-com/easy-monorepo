@@ -7,7 +7,7 @@ use Closure;
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 
-final class WrappingProcessor implements ProcessorInterface
+final readonly class WrappingProcessor implements ProcessorInterface
 {
     private Closure $wrapped;
 

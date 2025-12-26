@@ -6,11 +6,11 @@ namespace EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getBsb()
- * @method string|null getTotalCreditAmount()
- * @method string|null getTotalDebitAmount()
- * @method string|null getTotalNetAmount()
- * @method string|null getTotalRecordCount()
+ * @method string getBsb()
+ * @method string getTotalCreditAmount()
+ * @method string getTotalDebitAmount()
+ * @method string getTotalNetAmount()
+ * @method string getTotalRecordCount()
  */
 final class FileTotalRecord extends AbstractResult
 {

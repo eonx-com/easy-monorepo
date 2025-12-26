@@ -6,18 +6,18 @@ namespace EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getAccountBsb()
- * @method string|null getAccountNumber()
- * @method string|null getAmount()
- * @method string|null getBillerCode()
- * @method string|null getCustomerReferenceNumber()
- * @method string|null getReference1()
- * @method string|null getReference2()
- * @method string|null getReference3()
- * @method string|null getRestOfRecord()
- * @method string|null getReturnCode()
- * @method string|null getReturnCodeDescription()
- * @method string|null getTransactionReferenceNumber()
+ * @method string getAccountBsb()
+ * @method string getAccountNumber()
+ * @method string getAmount()
+ * @method string getBillerCode()
+ * @method string getCustomerReferenceNumber()
+ * @method string getReference1()
+ * @method string getReference2()
+ * @method string getReference3()
+ * @method string getRestOfRecord()
+ * @method string getReturnCode()
+ * @method string getReturnCodeDescription()
+ * @method string getTransactionReferenceNumber()
  */
 final class DetailRecord extends AbstractResult
 {

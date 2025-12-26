@@ -29,7 +29,7 @@ final readonly class ActivityLogEntity implements ActivitySubjectInterface
         return [];
     }
 
-    public function getAllowedActivityProperties(): ?array
+    public function getAllowedActivityProperties(): array
     {
         return $this->allowedProperties;
     }

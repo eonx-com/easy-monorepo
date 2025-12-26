@@ -23,7 +23,7 @@ final class Number extends Composite
         parent::__construct($constraints ?? [], $groups, $payload);
     }
 
-    public function getDefaultOption(): ?string
+    public function getDefaultOption(): string
     {
         return 'constraints';
     }

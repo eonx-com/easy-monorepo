@@ -14,7 +14,7 @@ final class PipelineNameAwareProviderMiddlewareProviderStub implements
 {
     use PipelineNameAwareProviderTrait;
 
-    public function actAsMiddleware(mixed $input, Closure $next): string
+    public function actAsMiddleware(string $input, Closure $next): string
     {
         $input .= $this->pipelineName;
 

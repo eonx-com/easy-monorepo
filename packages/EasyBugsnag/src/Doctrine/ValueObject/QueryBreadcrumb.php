@@ -43,7 +43,7 @@ final class QueryBreadcrumb
     /**
      * Query duration in seconds.
      */
-    public function getQueryDuration(): ?float
+    public function getQueryDuration(): float
     {
         if ($this->queryDuration === null) {
             $this->queryDuration = \microtime(true) - $this->queryStartTime;

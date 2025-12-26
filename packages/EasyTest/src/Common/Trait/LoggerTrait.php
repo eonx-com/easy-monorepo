@@ -30,7 +30,8 @@ trait LoggerTrait
                 return;
             }
         }
-        self::assertTrue(false, "Log message with the '$pattern' not found.");
+
+        self::fail("Log message with the '$pattern' not found.");
     }
 
     protected static function assertLoggerHasWarning(string $message, ?array $context = null): void

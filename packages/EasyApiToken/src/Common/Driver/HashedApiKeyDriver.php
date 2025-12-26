@@ -10,6 +10,7 @@ final readonly class HashedApiKeyDriver implements HashedApiKeyDriverInterface
 {
     public function decode(string $hashedApiKey): ?HashedApiKey
     {
+        /** @var array{id?: int|string, secret?: string, version?: string}|false $jsonDecoded */
         $jsonDecoded = \json_decode(UrlHelper::urlSafeBase64Decode($hashedApiKey), true);
 
         if (\is_array($jsonDecoded) === false) {

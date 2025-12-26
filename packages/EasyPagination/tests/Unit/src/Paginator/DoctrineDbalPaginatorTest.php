@@ -135,7 +135,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertArrayHasKey('id', $item);
                 self::assertArrayHasKey('title', $item);
             },
@@ -153,7 +152,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertArrayHasKey('id', $item);
                 self::assertArrayHasKey('title', $item);
             },
@@ -173,7 +171,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertArrayHasKey('id', $item);
                 self::assertArrayHasKey('title', $item);
             },
@@ -193,7 +190,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertArrayHasKey('id', $item);
                 self::assertArrayHasKey('title', $item);
             },
@@ -213,7 +209,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertArrayNotHasKey('id', $item);
                 self::assertArrayHasKey('title', $item);
             },
@@ -233,7 +228,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertArrayNotHasKey('id', $item);
                 self::assertArrayHasKey('title', $item);
             },
@@ -291,7 +285,6 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
                 $item = (array)($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
-                self::assertIsArray($item);
                 self::assertEquals(1, $item['id']);
                 self::assertEquals($childItemId, $item['item_id']);
                 self::assertEquals('my-parent', $item['title']);
