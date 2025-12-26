@@ -5,11 +5,12 @@ parameters:
     ignoreErrors:
         - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
           path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
-        - message: '#Offset .* on array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}\|null on left side of \?\? does not exist#'
-          path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php
+
         - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
+
         - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
-        - message: '#Parameter \#1 \$options of method Symfony\\Component\\Runtime\\SymfonyRuntime\:\:__construct\(\) expects array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}, array\{\}\|array\{debug\?\: bool\|null, env\?\: mixed, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\} given#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
+
+        - message: '#Offset .* on array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}\|null on left side of \?\? does not exist#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php

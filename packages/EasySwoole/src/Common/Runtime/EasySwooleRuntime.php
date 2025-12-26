@@ -23,14 +23,18 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRuntime extends SymfonyRuntime
 {
-    public function __construct(?array $options = null)
+    public function __construct(array $options = [])
     {
         // If dotenv_path is not set, set it to "envs/$env.env" if file exists
         if (isset($options['dotenv_path']) === false && isset($options['project_dir'])) {
-            $envKey = $options['env_var_name'] ??= 'APP_ENV';
-            /** @var scalar $env */
-            $env = $options['env'] ??= $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
-            $envPath = \sprintf('envs/%s.env', \strtolower((string)$env));
+            $envKey = $options['env_var_name'] ?? 'APP_ENV';
+            $options['env_var_name'] = $envKey;
+
+            /** @var string $env */
+            $env = $options['env'] ?? $_SERVER[$envKey] ?? $_ENV[$envKey] ?? 'local';
+            $options['env'] = $env;
+
+            $envPath = \sprintf('envs/%s.env', \strtolower($env));
             $fullEnvPath = \sprintf('%s/%s', $options['project_dir'], $envPath);
 
             if (\is_file($fullEnvPath) && \is_readable($fullEnvPath)) {
@@ -38,7 +42,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
             }
         }
 
-        parent::__construct($options ?? []);
+        parent::__construct($options);
     }
 
     /**
