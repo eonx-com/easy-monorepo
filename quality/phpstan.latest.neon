@@ -3,39 +3,13 @@ includes:
 
 parameters:
     ignoreErrors:
-        -
-            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
-        -
-            message: '#Offset .* on array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}\|null on left side of \?\? does not exist#'
-            path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php
-        -
-            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
-        -
-            message: '#Parameter \#\d \$.* of function bc.* expects numeric\-string, .*string given#'
-            path : %currentWorkingDirectory%/packages/EasyUtils/src/Math/ValueObject/Number.php
-        -
-            message: '#Method EonX\\EasyUtils\\Common\\Helper\\EnvVarSubstitutionHelper\:\:resolveEnvVarValue\(\) should return string but returns mixed#'
-            path : %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
-        -
-            identifier: trait.unused
-            path: %currentWorkingDirectory%/packages/EasyTest
-        -
-            identifier: trait.unused
-            path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Encryptable/EncryptableTrait.php
-        -
-            identifier: trait.unused
-            path: %currentWorkingDirectory%/packages/EasyDoctrine/src/Migration/Migration/ExpectedConnectionAwareMigrationTrait.php
-        -
-            identifier: trait.unused
-            path: %currentWorkingDirectory%/packages/EasyDoctrine/src/Migration/Migration/EnvironmentAwareMigrationTrait.php
-        -
-            identifier: trait.unused
-            path: %currentWorkingDirectory%/packages/EasyBatch/src/Common/ValueObject/CurrentBatchObjectsAwareTrait.php
-        -
-            message: '#Parameter \#1 \$array of static method EonX\\EasyTest\\HttpClient\\Response\\AbstractTestResponse\:\:normalizeData\(\) expects array, .* given#'
-            path: %currentWorkingDirectory%/packages/EasyTest/src/HttpClient/Response/StrictTestResponse.php
-        -
-            message: '#PHPDoc tag @var with type Illuminate\\Contracts\\Foundation\\Application is not subtype of native type Laravel\\Lumen\\Application#'
-
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
+        - message: '#Offset .* on array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}\|null on left side of \?\? does not exist#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
+        - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
+        - message: '#Parameter \#1 \$options of method Symfony\\Component\\Runtime\\SymfonyRuntime\:\:__construct\(\) expects array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}, array\{\}\|array\{debug\?\: bool\|null, env\?\: mixed, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\} given#'
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php

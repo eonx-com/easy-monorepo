@@ -1,2 +1,9 @@
 includes:
     - phpstan.neon
+
+parameters:
+    ignoreErrors:
+        - message: '#Parameter \#2 \$manager of class EonX\\EasyPagination\\Paginator\\DoctrineOrmLengthAwarePaginator constructor expects Doctrine\\ORM\\EntityManagerInterface, object given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/DoctrineOrmLengthAwarePaginatorTest.php
+        - message: '#Parameter \#2 \$connection of class EonX\\EasyPagination\\Paginator\\DoctrineDbalLengthAwarePaginator constructor expects Doctrine\\DBAL\\Connection, object given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/DoctrineDbalLengthAwarePaginatorTest.php

@@ -28,12 +28,10 @@ final readonly class ResetEasyAdminStateSubscriber implements EventSubscriberInt
     public function onTerminate(TerminateEvent $event): void
     {
         // This is needed for EasyAdmin after pretty URLs feature
-        Closure::bind(
-            function (): void {
+        Closure::bind(function (): void {
+            if (\property_exists($this, 'requestAlreadyProcessedAsPrettyUrl')) {
                 $this->requestAlreadyProcessedAsPrettyUrl = false;
-            },
-            $this->adminRouterSubscriber,
-            AdminRouterSubscriber::class
-        )();
+            }
+        }, $this->adminRouterSubscriber, AdminRouterSubscriber::class)();
     }
 }
