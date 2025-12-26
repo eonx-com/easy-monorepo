@@ -9,7 +9,6 @@ use EonX\EasyLogging\Factory\LoggerFactory;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Provider\StreamHandlerConfigProvider;
-use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
@@ -40,7 +39,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
                 // Add default stream handler only if no handler config providers
                 $handlerConfigProviders = $app->tagged(ConfigTag::HandlerConfigProvider->value);
-                $handlerConfigProviders = CollectorHelper::convertToArray($handlerConfigProviders);
+                $handlerConfigProviders = \iterator_to_array($handlerConfigProviders);
 
                 if (\config('easy-logging.stream_handler', true) && \count($handlerConfigProviders) < 1) {
                     $level = \config('easy-logging.stream_handler_level')
