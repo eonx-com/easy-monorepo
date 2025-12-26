@@ -24,7 +24,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
                 ->andReturn($expected);
         });
 
-        self::assertEquals($expected, (new DoctrineOrmRepositoryStub($registry))->all());
+        self::assertEquals($expected, new DoctrineOrmRepositoryStub($registry)->all());
     }
 
     public function testCreateQueryBuilderReturnsOrmQueryBuilder(): void
@@ -55,7 +55,8 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
             /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('remove', $test));
 
-            (new DoctrineOrmRepositoryStub($registry))->delete($test);
+            new DoctrineOrmRepositoryStub($registry)
+->delete($test);
         }
     }
 
@@ -75,7 +76,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
                     ->andReturn($object);
             });
 
-            self::assertEquals($object, (new DoctrineOrmRepositoryStub($registry))->find($identifier));
+            self::assertEquals($object, new DoctrineOrmRepositoryStub($registry)->find($identifier));
         }
     }
 
@@ -87,7 +88,8 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
             /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('persist', $test));
 
-            (new DoctrineOrmRepositoryStub($registry))->save($test);
+            new DoctrineOrmRepositoryStub($registry)
+->save($test);
         }
     }
 

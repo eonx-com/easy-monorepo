@@ -6,20 +6,17 @@ namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 use ApiPlatform\State\Provider\DeserializeProvider;
 use ApiPlatform\Symfony\EventListener\DeserializeListener;
 use BackedEnum;
+use Deprecated;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Throwable;
 
 abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extends
     AbstractApiPlatformExceptionErrorResponseBuilder
 {
-    /**
-     * @deprecated Deprecated since 6.4.0, will be removed in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be removed in 7.0')]
     private const MESSAGE_PATTERN_CLASS = '/The type of the .* attribute for class "(.*)" must be.*/';
 
-    /**
-     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be moved to the parent class in 7.0')]
     final public function buildData(Throwable $throwable, array $data): array
     {
         $violations = $this->buildViolations($throwable);
@@ -49,9 +46,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
         return $this->doBuildViolations($throwable);
     }
 
-    /**
-     * @deprecated Deprecated since 6.4.0, will be removed in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be removed in 7.0')]
     protected function buildViolationsForNotNormalizableValueException(NotNormalizableValueException $throwable): array
     {
         $path = $throwable->getPath();
@@ -79,7 +74,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
                         'violations.invalid_type',
                         [
                             '%current_type%' => $throwable->getCurrentType(),
-                            '%expected_types%' => \implode('|', $throwable->getExpectedTypes()),
+                            '%expected_types%' => \implode('|', $throwable->getExpectedTypes() ?? []),
                         ]
                     ),
                 },
@@ -89,15 +84,13 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
 
     protected function isThrowableFromApiPlatformSerializer(Throwable $throwable): bool
     {
-        foreach ($throwable->getTrace() as $trace) {
-            if (
-                (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
-                || ((($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide'))
-            ) {
-                return true;
+        return \array_any(
+            $throwable->getTrace(),
+            static function ($trace): bool {
+                return
+                    (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
+                    || (($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide');
             }
-        }
-
-        return false;
+        );
     }
 }

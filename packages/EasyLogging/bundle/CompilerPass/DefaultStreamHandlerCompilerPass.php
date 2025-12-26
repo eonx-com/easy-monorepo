@@ -27,7 +27,7 @@ final class DefaultStreamHandlerCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $def = (new Definition(StreamHandlerConfigProvider::class))
+        $def = new Definition(StreamHandlerConfigProvider::class)
             ->addTag(ConfigTag::HandlerConfigProvider->value)
             ->setAutoconfigured(true)
             ->setAutowired(true)

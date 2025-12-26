@@ -10,7 +10,8 @@ final class UnanimousDecisionTest extends AbstractUnitTestCase
 {
     public function testReturnFalseWhenAtLeastOneFalse(): void
     {
-        $decision = (new UnanimousDecision())->addRules([
+        $decision = new UnanimousDecision()
+->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createFalseRule('false-1'),
@@ -30,7 +31,8 @@ final class UnanimousDecisionTest extends AbstractUnitTestCase
 
     public function testReturnTrueIfOnlyTrues(): void
     {
-        $decision = (new UnanimousDecision())->addRules([
+        $decision = new UnanimousDecision()
+->addRules([
             $this->createTrueRule('true-1'),
             $this->createTrueRule('true-2'),
             $this->createTrueRule('true-3'),
@@ -50,7 +52,8 @@ final class UnanimousDecisionTest extends AbstractUnitTestCase
 
     public function testReturnTrueWhenOnlyUnsupported(): void
     {
-        $decision = (new UnanimousDecision())->addRules([$this->createUnsupportedRule('unsupported-1')]);
+        $decision = new UnanimousDecision()
+->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
         $expected = [
             'unsupported-1' => 'unsupported',

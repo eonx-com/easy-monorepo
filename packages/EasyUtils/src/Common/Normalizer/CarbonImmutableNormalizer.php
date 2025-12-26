@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final readonly class CarbonImmutableNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    private const SUPPORTED_TYPES = [
+    private const array SUPPORTED_TYPES = [
         CarbonImmutable::class => true,
         DateTime::class => true,
         DateTimeImmutable::class => true,

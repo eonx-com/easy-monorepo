@@ -15,17 +15,17 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
 
 final class AchParser extends AbstractLineByLineParser
 {
-    private const CODE_ADDENDA = '7';
+    private const string CODE_ADDENDA = '7';
 
-    private const CODE_BATCH_CONTROL = '8';
+    private const string CODE_BATCH_CONTROL = '8';
 
-    private const CODE_BATCH_HEADER = '5';
+    private const string CODE_BATCH_HEADER = '5';
 
-    private const CODE_ENTRY_DETAIL = '6';
+    private const string CODE_ENTRY_DETAIL = '6';
 
-    private const CODE_FILE_CONTROL = '9';
+    private const string CODE_FILE_CONTROL = '9';
 
-    private const CODE_FILE_HEADER = '1';
+    private const string CODE_FILE_HEADER = '1';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Ach\ValueObject\Batch[]

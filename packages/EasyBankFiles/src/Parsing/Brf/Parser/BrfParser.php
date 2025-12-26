@@ -11,11 +11,11 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
 
 final class BrfParser extends AbstractLineByLineParser
 {
-    private const RECORD_TYPE_DETAIL = '50';
+    private const string RECORD_TYPE_DETAIL = '50';
 
-    private const RECORD_TYPE_HEADER = '00';
+    private const string RECORD_TYPE_HEADER = '00';
 
-    private const RECORD_TYPE_TRAILER = '99';
+    private const string RECORD_TYPE_TRAILER = '99';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\Brf\ValueObject\DetailRecord[] $detailRecords

@@ -23,7 +23,8 @@ final class DecisionFactoryTest extends AbstractUnitTestCase
             new SetExpressionLanguageDecisionConfigurator(new ExpressionLanguageFactory()),
         ];
         $mappingProvider = new ConfigMappingProvider([]);
-        $decision = (new DecisionFactory($mappingProvider, $configurators))->createUnanimousDecision();
+        $decision = new DecisionFactory($mappingProvider, $configurators)
+->createUnanimousDecision();
 
         $expected = [
             'true-1' => true,
@@ -66,6 +67,6 @@ final class DecisionFactoryTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidMappingException::class);
 
-        (new DecisionFactory(new ConfigMappingProvider([])))->createByName('my-decision');
+        new DecisionFactory(new ConfigMappingProvider([]))->createByName('my-decision');
     }
 }

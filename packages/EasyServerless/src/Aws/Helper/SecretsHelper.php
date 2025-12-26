@@ -8,11 +8,11 @@ use Symfony\Component\Finder\Finder;
 
 final class SecretsHelper
 {
-    private const ALREADY_LOADED = 'easy_serverless.secrets.already_loaded';
+    private const string ALREADY_LOADED = 'easy_serverless.secrets.already_loaded';
 
-    private const PREFIX_JSON_FILES = 'resolve:json_files:';
+    private const string PREFIX_JSON_FILES = 'resolve:json_files:';
 
-    private const PREFIX_SECRETS_MANAGER = 'resolve:secrets_manager:';
+    private const string PREFIX_SECRETS_MANAGER = 'resolve:secrets_manager:';
 
     private static ?SecretsManagerClient $secretsManager = null;
 
@@ -58,7 +58,7 @@ final class SecretsHelper
                 continue;
             }
 
-            $files = (new Finder())
+            $files = new Finder()
                 ->in($dir)
                 ->files()
                 ->name('*.json');
@@ -107,8 +107,10 @@ final class SecretsHelper
                 ->getSecretValue($input)
                 ->getSecretString();
 
-            if (\json_validate($value ?? '')) {
-                self::doLoad((array)\json_decode($value ?? '{}', true));
+            $value = \json_decode($value ?? '', true);
+
+            if (\is_array($value)) {
+                self::doLoad($value);
             }
         }
     }

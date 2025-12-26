@@ -49,9 +49,9 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     use IriConverterTrait;
     use SearchFilterTrait;
 
-    public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
+    public const string DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
-    private const DOCTRINE_UUID_TYPE = 'uuid';
+    private const string DOCTRINE_UUID_TYPE = 'uuid';
 
     /**
      * @param string[] $iriFields
@@ -175,15 +175,18 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 return;
             }
 
+            /** @var callable-string $strtolower */
+            $strtolower = 'strtolower';
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->in($wrapCase($aliasedField), $valueParameter))
-                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map('strtolower', $values));
+                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map($strtolower, $values));
 
             return;
         }
 
         $ors = [];
         $parameters = [];
+        /** @var scalar $value */
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
             $parameters[] = [$caseSensitive ? $value : \strtolower((string)$value), $keyValueParameter];
@@ -381,7 +384,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         )),
                     ]);
 
-                    return (new NilUuid())->toString();
+                    return new NilUuid()
+                        ->toString();
                 }
 
                 return $value;
@@ -453,7 +457,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             return \count($identifiers) === 1 ? \array_pop($identifiers) : $identifiers;
         } catch (InvalidArgumentException) {
-            return (new NilUuid())->toString();
+            return new NilUuid()
+                ->toString();
         }
     }
 

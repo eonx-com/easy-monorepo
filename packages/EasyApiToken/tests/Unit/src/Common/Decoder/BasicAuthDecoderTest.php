@@ -11,12 +11,12 @@ final class BasicAuthDecoderTest extends AbstractUnitTestCase
 {
     public function testBasicAuthNullIfAuthorizationHeaderNotSet(): void
     {
-        self::assertNull((new BasicAuthDecoder())->decode($this->createRequest()));
+        self::assertNull(new BasicAuthDecoder()->decode($this->createRequest()));
     }
 
     public function testBasicAuthNullIfDoesntStartWithBasic(): void
     {
-        self::assertNull((new BasicAuthDecoder())->decode($this->createRequest([
+        self::assertNull(new BasicAuthDecoder()->decode($this->createRequest([
             'HTTP_AUTHORIZATION' => 'SomethingElse',
         ])));
     }
@@ -26,7 +26,7 @@ final class BasicAuthDecoderTest extends AbstractUnitTestCase
         $tests = ['', ':', ' : ', 'username', 'username:', ':password'];
 
         foreach ($tests as $test) {
-            self::assertNull((new BasicAuthDecoder())->decode($this->createRequest([
+            self::assertNull(new BasicAuthDecoder()->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => 'Basic ' . \base64_encode($test),
             ])));
         }
@@ -43,7 +43,8 @@ final class BasicAuthDecoderTest extends AbstractUnitTestCase
 
         foreach ($tests as $test => $expected) {
             /** @var \EonX\EasyApiToken\Common\ValueObject\BasicAuth $token */
-            $token = (new BasicAuthDecoder())->decode($this->createRequest([
+            $token = new BasicAuthDecoder()
+->decode($this->createRequest([
                 'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
             ]));
 

@@ -11,7 +11,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends AbstractSymfonyTestCase
 {
-    private const DEFAULT_CONFIG = [
+    private const array DEFAULT_CONFIG = [
         'access_log' => [
             'enabled' => true,
             'do_not_log_paths' => [],
@@ -218,10 +218,11 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     #[DataProvider('provideConfigurationData')]
     public function testConfiguration(array $configs, array $expectedConfig): void
     {
-        $config = (new Processor())->processConfiguration(
-            new Configuration(subject: new EasySwooleBundle(), container: null, alias: 'easy_swoole'),
-            $configs
-        );
+        $config = new Processor()
+->processConfiguration(
+    new Configuration(subject: new EasySwooleBundle(), container: null, alias: 'easy_swoole'),
+    $configs
+);
 
         self::assertEquals($expectedConfig, $config);
     }

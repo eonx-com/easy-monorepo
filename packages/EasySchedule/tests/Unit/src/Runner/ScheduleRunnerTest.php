@@ -21,7 +21,8 @@ final class ScheduleRunnerTest extends AbstractUnitTestCase
     public function testRunSucceedsAndDispatchesEvent(): void
     {
         $app = new Application();
-        $schedule = (new Schedule())->setApplication($app);
+        $schedule = new Schedule()
+->setApplication($app);
         $entry1 = $schedule->command('list', ['-q']);
         $entry2 = $schedule->command('list', ['-q']);
         $lockerProphecy = $this->prophesize(LockerInterface::class);

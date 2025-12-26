@@ -101,7 +101,8 @@ final class DecisionTest extends AbstractUnitTestCase
         ];
 
         yield 'Exit on propagation stopped' => [
-            (new ValueDecision())->setExitOnPropagationStopped(),
+            new ValueDecision()
+->setExitOnPropagationStopped(),
             [
                 self::createLanguageRule('add(5)'),
                 new StopPropagationRuleStub('exit-on-propagation-stopped', 10, true),
@@ -130,7 +131,7 @@ final class DecisionTest extends AbstractUnitTestCase
         array $expectedRulesOutput,
     ): void {
         $expressionLanguage = $this->createExpressionLanguage();
-        $expressionLanguage->addFunctions((new ValueExpressionFunctionProvider())->getFunctions());
+        $expressionLanguage->addFunctions(new ValueExpressionFunctionProvider()->getFunctions());
 
         $decision->setExpressionLanguage($expressionLanguage);
 

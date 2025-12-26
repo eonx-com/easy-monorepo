@@ -11,7 +11,7 @@ use UnexpectedValueException;
 
 final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWorkerInterface
 {
-    private const WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
+    private const string WORKFLOW_FILENAME = __DIR__ . '/../../.github/workflows/split_packages.yml';
 
     private Filesystem $filesystem;
 
@@ -33,6 +33,7 @@ final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWo
             throw new UnexpectedValueException('Invalid ' . self::WORKFLOW_FILENAME . ' content.');
         }
 
+        // @phpstan-ignore-next-line
         $workflow['jobs']['split_packages']['strategy']['matrix']['tag'][0] = $version->getVersionString();
 
         $newWorkflowContent = Yaml::dump(

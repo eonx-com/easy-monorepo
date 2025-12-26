@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final readonly class DbalDriver implements Driver
 {
-    private const POOL_NAME_PATTERN = 'coroutine_pdo_pool_%s';
+    private const string POOL_NAME_PATTERN = 'coroutine_pdo_pool_%s';
 
     public function __construct(
         private Driver $decorated,

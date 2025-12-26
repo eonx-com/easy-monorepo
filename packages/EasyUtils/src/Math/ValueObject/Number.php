@@ -6,14 +6,11 @@ namespace EonX\EasyUtils\Math\ValueObject;
 use Stringable;
 use UnexpectedValueException;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) We need many public methods
- */
 final readonly class Number implements Stringable
 {
-    private const DEFAULT_PRECISION = 0;
+    private const int DEFAULT_PRECISION = 0;
 
-    private const SCALE = 99;
+    private const int SCALE = 99;
 
     private int $precision;
 
@@ -171,7 +168,8 @@ final readonly class Number implements Stringable
 
     public function toMoneyString(bool $truncateZeroCents = true): string
     {
-        $value = (string)(new self($this->value, 2))->divide(100);
+        $value = (string)new self($this->value, 2)
+            ->divide(100);
 
         if ($truncateZeroCents === true && \str_ends_with($value, '.00')) {
             return (string)(int)$value;

@@ -14,23 +14,23 @@ use UnexpectedValueException;
 
 final class CacheTableHelper
 {
-    private const DEFAULT_TABLE_SIZE = 50;
+    private const int DEFAULT_TABLE_SIZE = 50;
 
-    private const DEFAULT_VALUE_COLUMN_SIZE = 10000;
+    private const int DEFAULT_VALUE_COLUMN_SIZE = 10000;
 
-    private const KEY_COLUMN_SIZE = 'column_size';
+    private const string KEY_COLUMN_SIZE = 'column_size';
 
-    private const KEY_TABLE_SIZE = 'table_size';
+    private const string KEY_TABLE_SIZE = 'table_size';
 
-    private const SERVER_TABLE_NAMES = 'easy_swoole_cache_table_names';
+    private const string SERVER_TABLE_NAMES = 'easy_swoole_cache_table_names';
 
-    private const SERVER_TABLE_NAME_PATTERN = 'easy_swoole_cache_table_%s';
+    private const string SERVER_TABLE_NAME_PATTERN = 'easy_swoole_cache_table_%s';
 
-    private const SERVER_TICK_COUNT_TABLE_NAME = 'easy_swoole_tick_count_table';
+    private const string SERVER_TICK_COUNT_TABLE_NAME = 'easy_swoole_tick_count_table';
 
-    private const TICK_COUNT_COLUMN_CURRENT = 'current';
+    private const string TICK_COUNT_COLUMN_CURRENT = 'current';
 
-    private const TICK_COUNT_COLUMN_MAXIMUM = 'maximum';
+    private const string TICK_COUNT_COLUMN_MAXIMUM = 'maximum';
 
     public static function createCacheTables(array $config, int $cacheClearAfterTickCount): void
     {

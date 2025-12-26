@@ -15,7 +15,7 @@ final class GeneratorStub extends AbstractGenerator
      * @throws \EonX\EasyBankFiles\Generation\Common\Exception\LengthMismatchesException
      */
     public function __construct(
-        private array $descriptiveRecord,
+        private readonly array $descriptiveRecord,
         ?array $transactions = null,
     ) {
         $this->transactions = $transactions ?? [];

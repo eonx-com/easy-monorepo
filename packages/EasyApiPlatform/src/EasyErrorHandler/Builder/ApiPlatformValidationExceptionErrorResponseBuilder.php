@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\UrlGeneratorInterface;
 use ApiPlatform\Validator\Exception\ConstraintViolationListAwareExceptionInterface;
 use BackedEnum;
+use Deprecated;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -26,9 +27,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
      */
     private RequestStack $requestStack;
 
-    /**
-     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be moved to the parent class in 7.0')]
     public function buildData(Throwable $throwable, array $data): array
     {
         $violations = $this->buildViolations($throwable);
@@ -78,9 +77,7 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
         return $violations;
     }
 
-    /**
-     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be moved to the parent class in 7.0')]
     protected function normalizePropertyName(string $name, ?string $class = null): string
     {
         if ($class === null) {
@@ -93,16 +90,14 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             }
         }
 
-        if ($this->nameConverter !== null && $class !== null) {
+        if ($class !== null) {
             return $this->nameConverter->normalize($name, $class);
         }
 
         return $name;
     }
 
-    /**
-     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be moved to the parent class in 7.0')]
     protected function normalizeTypeName(string $class): string
     {
         $typeName = $class;

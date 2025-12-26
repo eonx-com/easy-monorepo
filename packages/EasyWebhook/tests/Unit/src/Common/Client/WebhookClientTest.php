@@ -41,14 +41,15 @@ final class WebhookClientTest extends AbstractUnitTestCase
     public static function provideSendData(): iterable
     {
         yield 'Simple URL' => [
-            (new Webhook())->url('https://eonx.com'),
+            new Webhook()
+->url('https://eonx.com'),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
         ];
 
         yield 'Method from Webhook has priority' => [
-            (new Webhook())
+            new Webhook()
                 ->url('https://eonx.com')
                 ->method('PUT'),
             'PUT',
@@ -58,7 +59,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ];
 
         yield 'Body formatter with header' => [
-            (new Webhook())
+            new Webhook()
                 ->url('https://eonx.com')
                 ->body([
                     'key' => 'value',
@@ -75,7 +76,8 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ];
 
         yield 'Configurator priorities run higher last' => [
-            (new Webhook())->url('https://eonx.com'),
+            new Webhook()
+->url('https://eonx.com'),
             'PUT',
             'https://eonx.com',
             [],
@@ -83,7 +85,8 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ];
 
         yield 'Configurators as Traversable' => [
-            (new Webhook())->url('https://eonx.com'),
+            new Webhook()
+->url('https://eonx.com'),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
@@ -91,7 +94,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ];
 
         yield 'RS256 Signature' => [
-            (new Webhook())
+            new Webhook()
                 ->url('https://eonx.com')
                 ->body([
                     'key' => 'value',
@@ -112,7 +115,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ];
 
         yield 'Event header' => [
-            (new Webhook())
+            new Webhook()
                 ->url('https://eonx.com')
                 ->event('my-event'),
             WebhookInterface::DEFAULT_METHOD,
@@ -126,7 +129,8 @@ final class WebhookClientTest extends AbstractUnitTestCase
         ];
 
         yield 'Id header' => [
-            (new Webhook())->url('https://eonx.com'),
+            new Webhook()
+->url('https://eonx.com'),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [

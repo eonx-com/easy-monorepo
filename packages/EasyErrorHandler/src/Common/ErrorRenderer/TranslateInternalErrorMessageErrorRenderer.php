@@ -10,7 +10,7 @@ use Throwable;
 
 final readonly class TranslateInternalErrorMessageErrorRenderer implements ErrorRendererInterface
 {
-    private const PATTERNS = [
+    private const array PATTERNS = [
         '<title>%s',
         '%s</h1>',
     ];

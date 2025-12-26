@@ -36,7 +36,7 @@ final class RandomStringConfig
     private ?string $suffix = null;
 
     public function __construct(
-        private int $length,
+        private readonly int $length,
     ) {
         $this->includes = new SplObjectStorage();
         $this->excludes = new SplObjectStorage();
@@ -256,7 +256,7 @@ final class RandomStringConfig
 
         foreach ([$this->prefix, $this->suffix] as $string) {
             if ($string !== null) {
-                $length -= (new UnicodeString($string))
+                $length -= new UnicodeString($string)
                     ->length();
             }
         }

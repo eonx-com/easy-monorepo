@@ -20,12 +20,13 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
     public function __construct(
         private string $projectDir,
     ) {
-        $this->parser = (new ParserFactory())->createForHostVersion();
+        $this->parser = new ParserFactory()
+->createForHostVersion();
     }
 
     public function locateErrorCodesEnums(): array
     {
-        $files = (new Finder())
+        $files = new Finder()
             ->in($this->projectDir)
             ->name('*.php')
             ->exclude(['vendor', 'var', 'tests'])
@@ -34,7 +35,7 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
         $enums = [];
         foreach ($files as $file) {
             $fqcn = (string)$this->extractFqcn($file->getRealPath());
-            if (\class_exists($fqcn) && \count((new ReflectionClass($fqcn))->getAttributes(AsErrorCodes::class)) > 0) {
+            if (\class_exists($fqcn) && \count(new ReflectionClass($fqcn)->getAttributes(AsErrorCodes::class)) > 0) {
                 $enums[] = $fqcn;
             }
         }

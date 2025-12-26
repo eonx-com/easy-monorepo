@@ -52,7 +52,8 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Response with status code of code aware exception interface' => [
             'request' => new Request(),
-            'exception' => (new BaseExceptionStub())->setStatusCode(HttpStatusCode::IamTeapot),
+            'exception' => new BaseExceptionStub()
+->setStatusCode(HttpStatusCode::IamTeapot),
             'assertResponse' => static function (Response $response): void {
                 TestCase::assertSame(418, $response->getStatusCode());
             },
@@ -61,7 +62,8 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Response with sub_code' => [
             'request' => new Request(),
-            'exception' => (new BaseExceptionStub())->setSubCode(123456),
+            'exception' => new BaseExceptionStub()
+->setSubCode(123456),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -87,7 +89,8 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Response with validation errors' => [
             'request' => new Request(),
-            'exception' => (new ValidationExceptionStub())->setErrors(['foo' => 'bar']),
+            'exception' => new ValidationExceptionStub()
+->setErrors(['foo' => 'bar']),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -110,7 +113,8 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Short response with sub_code' => [
             'request' => new Request(),
-            'exception' => (new BaseExceptionStub())->setSubCode(123),
+            'exception' => new BaseExceptionStub()
+->setSubCode(123),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -122,7 +126,8 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Short response with violations' => [
             'request' => new Request(),
-            'exception' => (new ValidationExceptionStub())->setErrors(['foo' => ['bar']]),
+            'exception' => new ValidationExceptionStub()
+->setErrors(['foo' => ['bar']]),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -168,7 +173,7 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Returns messages as is if translations are absent' => [
             'request' => new Request(),
-            'exception' => (new BaseExceptionStub('Exception message'))
+            'exception' => new BaseExceptionStub('Exception message')
                 ->setUserMessage('User-friendly error message'),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
@@ -181,7 +186,7 @@ final class TestRenderWithDefaultBuilderDataProvider
 
         yield 'Returns message with params' => [
             'request' => new Request(),
-            'exception' => (new BaseExceptionStub('test.exception_message'))
+            'exception' => new BaseExceptionStub('test.exception_message')
                 ->setMessageParams([
                     'param' => 'foo',
                 ])

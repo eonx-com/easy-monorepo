@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\EasyErrorHandler\Trait;
 
+use Deprecated;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyTest\EasyErrorHandler\ErrorHandler\TraceableErrorHandlerStub;
 use PHPUnit\Framework\Attributes\After;
@@ -58,9 +59,7 @@ trait EasyErrorHandlerAssertionTrait
         );
     }
 
-    /**
-     * @deprecated
-     */
+    #[Deprecated]
     protected function assertEmptyReportedErrors(): void
     {
         self::assertCount(
@@ -70,9 +69,7 @@ trait EasyErrorHandlerAssertionTrait
         );
     }
 
-    /**
-     * @deprecated
-     */
+    #[Deprecated]
     protected function assertErrorCodeExistsInReportedErrors(int $errorCode): void
     {
         $errorCodeExists = false;
@@ -92,9 +89,8 @@ trait EasyErrorHandlerAssertionTrait
 
     /**
      * @return \Throwable[]
-     *
-     * @deprecated
      */
+    #[Deprecated]
     protected function getErrorHandlerReportedThrowables(): array
     {
         /** @var \EonX\EasyErrorHandler\Common\ErrorHandler\TraceableErrorHandlerInterface $errorHandler */

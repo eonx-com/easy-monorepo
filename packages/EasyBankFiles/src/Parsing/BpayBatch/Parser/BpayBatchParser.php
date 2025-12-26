@@ -11,11 +11,11 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\Error;
 
 final class BpayBatchParser extends AbstractLineByLineParser
 {
-    private const RECORD_TYPE_DETAIL = '2';
+    private const string RECORD_TYPE_DETAIL = '2';
 
-    private const RECORD_TYPE_HEADER = '1';
+    private const string RECORD_TYPE_HEADER = '1';
 
-    private const RECORD_TYPE_TRAILER = '9';
+    private const string RECORD_TYPE_TRAILER = '9';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject\DetailRecord[]

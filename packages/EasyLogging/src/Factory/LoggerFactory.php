@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
 
 final class LoggerFactory implements LazyLoggerFactoryInterface
 {
-    private const DEFAULT_CHANNEL = 'app';
+    private const string DEFAULT_CHANNEL = 'app';
 
     private readonly string $defaultChannel;
 
@@ -37,7 +37,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
      */
     private array $lazyLoggers = [];
 
-    private string $loggerClass;
+    private readonly string $loggerClass;
 
     /**
      * @var \EonX\EasyLogging\Configurator\LoggerConfiguratorInterface[]

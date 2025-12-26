@@ -59,10 +59,11 @@ final class EasyActivityBundle extends AbstractBundle
         /** @var array $resolvedConfigs */
         $resolvedConfigs = $resolvingBag->resolveValue($configs);
 
-        $config = (new Processor())->processConfiguration(
-            new Configuration($this, $builder, $this->extensionAlias),
-            $resolvedConfigs
-        );
+        $config = new Processor()
+->processConfiguration(
+    new Configuration($this, $builder, $this->extensionAlias),
+    $resolvedConfigs
+);
 
         $easyDoctrinePrependedConfig = [
             'deferred_dispatcher_entities' => \array_diff(\array_keys($config['subjects']), $easyDoctrineEntities),

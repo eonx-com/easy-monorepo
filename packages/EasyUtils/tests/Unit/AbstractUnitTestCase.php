@@ -5,6 +5,7 @@ namespace EonX\EasyUtils\Tests\Unit;
 
 use EonX\EasyTest\Common\Trait\PrivatePropertyAccessTrait;
 use Mockery;
+use Mockery\LegacyMockInterface;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,9 +26,16 @@ abstract class AbstractUnitTestCase extends TestCase
         parent::tearDown();
     }
 
-    protected function mock(mixed $target, ?callable $expectations = null): MockInterface
+    /**
+     * @template TMock of object
+     *
+     * @param class-string<TMock> $target
+     *
+     * @return LegacyMockInterface&MockInterface&TMock
+     */
+    protected function mock(mixed $target, ?callable $expectations = null): object
     {
-        /** @var \Mockery\MockInterface $mock */
+        /** @var LegacyMockInterface&MockInterface&TMock $mock */
         $mock = Mockery::mock($target);
 
         if ($expectations !== null) {

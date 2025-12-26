@@ -28,7 +28,7 @@ use RuntimeException;
  */
 final class SqsHandler extends BaseSqsHandler
 {
-    private const JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
+    private const float JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
 
     private readonly LogManager $logger;
 

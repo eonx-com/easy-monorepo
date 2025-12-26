@@ -44,12 +44,12 @@ use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider
 {
-    private const BUGSNAG_CONFIGURATORS = [
+    private const array BUGSNAG_CONFIGURATORS = [
         ErrorDetailsClientConfigurator::class,
         SeverityClientConfigurator::class,
     ];
 
-    private const DEFAULT_LOCALE = 'en';
+    private const string DEFAULT_LOCALE = 'en';
 
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException

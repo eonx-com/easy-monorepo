@@ -10,15 +10,15 @@ use SimpleXMLElement;
 
 final class CloverCoverageResolver implements CoverageResolverInterface
 {
-    private const ATTRIBUTE_NAME_COUNT = 'count';
+    private const string ATTRIBUTE_NAME_COUNT = 'count';
 
-    private const ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
+    private const string ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
 
-    private const ATTRIBUTE_NAME_ELEMENTS = 'elements';
+    private const string ATTRIBUTE_NAME_ELEMENTS = 'elements';
 
-    private const ATTRIBUTE_NAME_FILE_NAME = 'name';
+    private const string ATTRIBUTE_NAME_FILE_NAME = 'name';
 
-    private const ATTRIBUTE_NAME_NUM = 'num';
+    private const string ATTRIBUTE_NAME_NUM = 'num';
 
     public function resolve(string $coverageOutput): CoverageReport
     {

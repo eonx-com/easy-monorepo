@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestCase
 {
-    private const ALLOWED_FILE_NAMES = [
+    private const array ALLOWED_FILE_NAMES = [
         'Helper.php',
         'HelperStub.php',
         'HelperTest.php',
@@ -37,18 +37,16 @@ final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestC
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->files()
+        return new Finder()
+            ->files()
             ->path('/\/Helper\//');
     }
 
     private function isNameAllowed(string $name): bool
     {
-        foreach (self::ALLOWED_FILE_NAMES as $allowedFileName) {
-            if (\str_ends_with($name, $allowedFileName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            self::ALLOWED_FILE_NAMES,
+            static fn (string $allowedFileName): bool => \str_ends_with($name, $allowedFileName)
+        );
     }
 }

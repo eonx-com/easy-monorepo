@@ -27,7 +27,7 @@ abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterfa
 
     protected function decorateHttpClient(ContainerBuilder $container, string $decorated, string $definitionId): void
     {
-        $def = (new Definition(WithEventsHttpClient::class))
+        $def = new Definition(WithEventsHttpClient::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
             // lower priority than MockHttpClient (-10)
