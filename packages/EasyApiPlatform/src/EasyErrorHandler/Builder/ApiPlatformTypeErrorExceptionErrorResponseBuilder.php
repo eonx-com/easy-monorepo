@@ -50,8 +50,10 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
                 $matches
             ) === 1
         ) {
+            /** @var class-string $class */
+            $class = $matches['class'];
             $violations = [
-                $this->normalizePropertyName($matches['property'], $matches['class']) => [
+                $this->normalizePropertyName($matches['property'], $class) => [
                     $this->translator->trans(
                         'violations.invalid_type',
                         [
@@ -66,7 +68,10 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
     }
 
     /**
+     * @param class-string|null $class
+     *
      * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
+     *
      */
     protected function normalizePropertyName(string $name, ?string $class = null): string
     {
@@ -74,7 +79,7 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
             $mainRequest = $this->requestStack->getMainRequest();
 
             if ($mainRequest !== null) {
-                /** @var string|null $apiResourceClass */
+                /** @var class-string|null $apiResourceClass */
                 $apiResourceClass = $mainRequest->attributes->get('_api_resource_class');
                 $class = $apiResourceClass;
             }

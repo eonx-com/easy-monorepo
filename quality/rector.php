@@ -53,6 +53,7 @@ return RectorConfig::configure()
         ],
         'packages/*/var/*',
         'packages/*/vendor/*',
+        'packages/*/config/reference.php',
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
         ],
