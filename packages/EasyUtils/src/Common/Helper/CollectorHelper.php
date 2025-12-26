@@ -51,7 +51,7 @@ final class CollectorHelper
      *
      * @param class-string<TValue> $class
      *
-     * @return list<TValue>
+     * @return array<TValue>
      *
      * @throws \EonX\EasyUtils\Common\Exception\InvalidArgumentException
      */
@@ -81,7 +81,7 @@ final class CollectorHelper
      *
      * @param class-string<TValue> $class
      *
-     * @return list<TValue>
+     * @return array<TValue>
      */
     public static function filterByClassAsArray(iterable $items, string $class): array
     {
@@ -120,7 +120,7 @@ final class CollectorHelper
      *
      * @param iterable<TValue> $items
      *
-     * @return list<TValue>
+     * @return array<TValue>
      */
     public static function orderHigherPriorityFirstAsArray(iterable $items): array
     {
@@ -159,7 +159,7 @@ final class CollectorHelper
      *
      * @param iterable<TValue> $items
      *
-     * @return list<TValue>
+     * @return array<TValue>
      */
     public static function orderLowerPriorityFirstAsArray(iterable $items): array
     {
