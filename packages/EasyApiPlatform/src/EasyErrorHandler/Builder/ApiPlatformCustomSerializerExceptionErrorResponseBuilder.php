@@ -61,7 +61,6 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
      * @param class-string|null $class
      *
      * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
-     *
      */
     protected function normalizePropertyName(string $name, ?string $class = null): string
     {

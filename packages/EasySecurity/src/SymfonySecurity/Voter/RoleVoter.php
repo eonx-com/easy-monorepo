@@ -30,7 +30,7 @@ final class RoleVoter extends Voter
         string $attribute,
         mixed $subject,
         TokenInterface $token,
-        ?Vote $vote = null
+        ?Vote $vote = null,
     ): bool {
         return $this->securityContextResolver
             ->resolveContext()

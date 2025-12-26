@@ -15,7 +15,7 @@ final class CustomNameConverter extends CamelCaseToSnakeCaseNameConverter
         string $propertyName,
         ?string $class = null,
         ?string $format = null,
-        ?array $context = null
+        ?array $context = null,
     ): string {
         return $propertyName === 'name_converted'
             ? parent::denormalize($propertyName, $class, $format, $context ?? [])
@@ -26,7 +26,7 @@ final class CustomNameConverter extends CamelCaseToSnakeCaseNameConverter
         string $propertyName,
         ?string $class = null,
         ?string $format = null,
-        ?array $context = null
+        ?array $context = null,
     ): string {
         return $propertyName === 'nameConverted'
             ? parent::normalize($propertyName, $class, $format, $context ?? [])

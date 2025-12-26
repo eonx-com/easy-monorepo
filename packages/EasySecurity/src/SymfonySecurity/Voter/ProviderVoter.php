@@ -32,7 +32,7 @@ final class ProviderVoter extends Voter
         string $attribute,
         mixed $subject,
         TokenInterface $token,
-        ?Vote $vote = null
+        ?Vote $vote = null,
     ): bool {
         if ($subject instanceof ProviderRestrictedInterface === false) {
             throw new InvalidArgumentException(\sprintf(
