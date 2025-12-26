@@ -11,6 +11,3 @@ parameters:
 
         - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
-
-        - message: '#Offset .* on array\{debug\?\: bool\|null, env\?\: string\|null, disable_dotenv\?\: bool\|null, project_dir\?\: string\|null, prod_envs\?\: array<string>\|null, dotenv_path\?\: string\|null, test_envs\?\: array<string>\|null, use_putenv\?\: bool\|null, \.\.\.\}\|null on left side of \?\? does not exist#'
-          path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php
