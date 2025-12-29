@@ -348,8 +348,8 @@ XML;
         self::assertSame(
             ['type' => '290049'],
             $parser->getPaymentAcknowledgement()
-->getIssues()[0]
-->getAttributes()
+                ->getIssues()[0]
+                ->getAttributes()
         );
     }
 

@@ -102,8 +102,6 @@ final readonly class EntityEventListener
             }
         }
 
-        // Handle collection deletions when ManyToMany is the owning side
-        // See https://github.com/doctrine/orm/pull/10763
         $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
             $unitOfWork::class,
             'pendingCollectionElementRemovals'

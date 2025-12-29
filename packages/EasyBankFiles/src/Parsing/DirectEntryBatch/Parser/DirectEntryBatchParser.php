@@ -137,7 +137,7 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
 
     private function processDescriptiveRecord(string $line): bool
     {
-        $indictor = $line[17] ?? '';
+        $indicator = $line[17] ?? '';
         $reelSequenceNumber = \substr($line, 18, 2);
         $userFinancialInstitution = \substr($line, 20, 3);
         $nameOfUserSupplyingFile = \substr($line, 30, 26);
@@ -148,7 +148,7 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
         return $this->setDescriptiveRecordToCurrentBatch(new DescriptiveRecord([
             'dateProcessed' => $dateProcessed,
             'descriptionOfEntries' => \trim($descriptionOfEntries),
-            'indicator' => $indictor,
+            'indicator' => $indicator,
             'nameOfUserSupplyingFile' => \trim($nameOfUserSupplyingFile),
             'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile,
             'reelSequenceNumber' => $reelSequenceNumber,

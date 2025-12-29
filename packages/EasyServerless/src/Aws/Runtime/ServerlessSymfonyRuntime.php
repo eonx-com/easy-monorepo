@@ -32,10 +32,8 @@ class ServerlessSymfonyRuntime extends SymfonyRuntime
      *   worker_loop_max?: int, // Use 0 or a negative integer to never restart the worker. Default: 500
      * }|null $options
      */
-    public function __construct(?array $options = null)
+    public function __construct(array $options = [])
     {
-        $options ??= [];
-
         if (LambdaContextHelper::inRemoteLambda()) {
             SecretsHelper::setVerbose($options[self::OPTION_AWS_HELPER_VERBOSE] ?? false);
             SecretsHelper::load();
