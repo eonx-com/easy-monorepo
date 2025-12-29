@@ -30,7 +30,7 @@ class ServerlessSymfonyRuntime extends SymfonyRuntime
      *   dotenv_overload?: ?bool,
      *   dotenv_extra_paths?: ?string[],
      *   worker_loop_max?: int, // Use 0 or a negative integer to never restart the worker. Default: 500
-     * }|null $options
+     * } $options
      */
     public function __construct(array $options = [])
     {
