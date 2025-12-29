@@ -297,7 +297,7 @@ final class AckParserTest extends AbstractUnitTestCase
         $parser = new AbaParser($content);
 
         self::assertInstanceOf(Issue::class, $parser->getIssues()[0]);
-        self::assertIsArray($parser->getIssues()[0]->getAttributes());
+        self::assertSame(['type' => '290049'], $parser->getIssues()[0]->getAttributes());
     }
 
     /**
@@ -342,10 +342,15 @@ XML;
         $parser = new AbaParser($content);
 
         self::assertInstanceOf(Issue::class, $parser->getIssues()[0]);
-        self::assertIsArray($parser->getIssues()[0]->getAttributes());
+        self::assertSame(['type' => '290049'], $parser->getIssues()[0]->getAttributes());
 
         self::assertInstanceOf(Issue::class, $parser->getPaymentAcknowledgement()->getIssues()[0]);
-        self::assertIsArray($parser->getPaymentAcknowledgement()->getIssues()[0]->getAttributes());
+        self::assertSame(
+            ['type' => '290049'],
+            $parser->getPaymentAcknowledgement()
+                ->getIssues()[0]
+                ->getAttributes()
+        );
     }
 
     private function getSampleFileContents(string $file): string

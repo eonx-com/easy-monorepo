@@ -148,6 +148,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
     public function testWeekdaysHourly(): void
     {
         self::assertSame('0 * * * 1-5', $this->entry->weekdays()->hourly()->getCronExpression());
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertIsBool($this->entry->isDue());
     }
 }

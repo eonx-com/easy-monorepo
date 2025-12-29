@@ -106,9 +106,11 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
             }
 
             if ($chunkContent !== '') {
+                /** @var resource|string|null $content */
+                $content = $asyncContext->getInfo('temp_content');
                 $asyncContext->setInfo(
                     'temp_content',
-                    ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent()
+                    ($content ?? '') . $chunk->getContent()
                 );
             }
 

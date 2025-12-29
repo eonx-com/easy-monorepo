@@ -61,6 +61,7 @@ final readonly class DbalDriver implements Driver
             $params['driverOptions'][CoroutinePdoDriverOption::PoolSize->value],
         );
 
+        /** @var \EonX\EasySwoole\Doctrine\Pool\PdoClientPool|null $pool */
         $pool = $_SERVER[$poolName] ?? null;
         if ($pool === null) {
             $this->logger?->debug(\sprintf('Coroutine PDO Pool "%s" not found, instantiating new one', $poolName));

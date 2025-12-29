@@ -60,6 +60,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                     }
 
                     $requestIdProvider->setResolver(static function () use ($body, $requestIdProvider): RequestIdInfo {
+                        /** @var string[] $ids */
                         $ids = $body['easy_request_id'] ?? [];
 
                         return new RequestIdInfo(

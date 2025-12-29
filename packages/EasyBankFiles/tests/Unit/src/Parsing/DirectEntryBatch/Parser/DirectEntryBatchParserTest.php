@@ -105,9 +105,7 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
         self::assertSame($invalidLine, $firstError->getLine());
     }
 
-    /**
-     * @dataProvider provideCorrectFile
-     */
+    #[DataProvider('provideCorrectFile')]
     public function testProcessSucceeds(string $fileName): void
     {
         $parser = new DirectEntryBatchParser($this->getSampleFileContents($fileName));

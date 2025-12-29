@@ -6,9 +6,6 @@ namespace EonX\EasyUtils\Math\ValueObject;
 use Stringable;
 use UnexpectedValueException;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) We need many public methods
- */
 final readonly class Number implements Stringable
 {
     private const DEFAULT_PRECISION = 0;

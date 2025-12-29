@@ -33,6 +33,7 @@ final readonly class UpdateTagInGithubWorkflowReleaseWorker implements ReleaseWo
             throw new UnexpectedValueException('Invalid ' . self::WORKFLOW_FILENAME . ' content.');
         }
 
+        // @phpstan-ignore-next-line
         $workflow['jobs']['split_packages']['strategy']['matrix']['tag'][0] = $version->getVersionString();
 
         $newWorkflowContent = Yaml::dump(

@@ -39,6 +39,7 @@ trait DatabaseEntityTrait
             self::fail($message);
         }
 
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertTrue(true);
     }
 
@@ -62,6 +63,7 @@ trait DatabaseEntityTrait
             self::fail($message);
         }
 
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertTrue(true);
     }
 
@@ -86,6 +88,7 @@ trait DatabaseEntityTrait
             self::fail($message);
         }
 
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertTrue(true);
     }
 

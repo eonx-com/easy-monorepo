@@ -29,7 +29,6 @@ final class TrailerRecordTest extends AbstractUnitTestCase
             'amountOfErrorCorrections' => '00000000000200{',
         ]);
 
-        self::assertIsArray($trailer->getAmountOfErrorCorrections());
         self::assertSame($expected, $trailer->getAmountOfErrorCorrections());
     }
 
@@ -50,7 +49,6 @@ final class TrailerRecordTest extends AbstractUnitTestCase
             'amountOfPayments' => '00000000001201E',
         ]);
 
-        self::assertIsArray($trailer->getAmountOfPayments());
         self::assertSame($expected, $trailer->getAmountOfPayments());
     }
 
@@ -71,7 +69,6 @@ final class TrailerRecordTest extends AbstractUnitTestCase
             'amountOfReversals' => '00000000001251G',
         ]);
 
-        self::assertIsArray($trailer->getAmountOfReversals());
         self::assertSame($expected, $trailer->getAmountOfReversals());
     }
 

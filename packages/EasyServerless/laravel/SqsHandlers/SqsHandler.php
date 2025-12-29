@@ -142,8 +142,8 @@ final class SqsHandler extends BaseSqsHandler
     private function makeWorker(): Worker
     {
         $worker = $this->container->make(Worker::class, [
-            'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
-            'resetScope' => fn () => $this->resetWorkerScope(),
+            'isDownForMaintenance' => MaintenanceMode::active(...),
+            'resetScope' => $this->resetWorkerScope(...),
         ]);
 
         $worker->setCache(
@@ -174,22 +174,15 @@ final class SqsHandler extends BaseSqsHandler
      */
     private function resetWorkerScope(): void
     {
-        if (\method_exists($this->logger, 'flushSharedContext')) {
-            $this->logger->flushSharedContext();
-        }
+        $this->logger->flushSharedContext();
+        $this->logger->withoutContext();
 
-        if (\method_exists($this->logger, 'withoutContext')) {
-            $this->logger->withoutContext();
-        }
+        /** @var \Illuminate\Database\DatabaseManager $databaseManager */
+        $databaseManager = $this->container->make('db');
 
-        /** @var \Illuminate\Database\DatabaseManager $db */
-        $db = $this->container->make('db');
-
-        if (\method_exists($db, 'getConnections')) {
-            foreach ($db->getConnections() as $connection) {
-                $connection->resetTotalQueryDuration();
-                $connection->allowQueryDurationHandlersToRunAgain();
-            }
+        foreach ($databaseManager->getConnections() as $connection) {
+            $connection->resetTotalQueryDuration();
+            $connection->allowQueryDurationHandlersToRunAgain();
         }
 
         $this->container->forgetScopedInstances();

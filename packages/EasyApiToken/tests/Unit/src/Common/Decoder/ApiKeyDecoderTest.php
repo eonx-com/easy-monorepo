@@ -69,9 +69,7 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
             ]));
 
         self::assertInstanceOf(ApiKey::class, $token);
-        if ($token instanceof ApiKey) {
-            self::assertEquals($tokenMissingId, $token->getPayload()['api_key']);
-        }
+        self::assertEquals($tokenMissingId, $token->getPayload()['api_key']);
     }
 
     public function testHashedApiKeyWithValidStructureReturnHashedApiKey(): void
@@ -89,9 +87,7 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
             ]));
 
         self::assertInstanceOf(HashedApiKey::class, $token);
-        if ($token instanceof HashedApiKey) {
-            self::assertEquals($expected, $token->getPayload());
-        }
+        self::assertEquals($expected, $token->getPayload());
     }
 
     private function getDecoder(): ApiKeyDecoder

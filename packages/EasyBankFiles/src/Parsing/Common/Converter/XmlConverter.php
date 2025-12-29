@@ -127,15 +127,21 @@ final class XmlConverter
      * Create the correct xml correct for a value.
      *
      * @param mixed $value The value to create a child from
-     *
-     * @return \DOMNode
      */
     private function createXmlNode(mixed $value): DOMNode
     {
         $value = $this->xToString($value);
 
         // If value contains characters that need to be escaped use CDATA
-        return \strpbrk($value, '\'"<>&') ? $this->xml->createCDATASection($value) : $this->xml->createTextNode($value);
+        $node = \strpbrk($value, '\'"<>&')
+            ? $this->xml->createCDATASection($value)
+            : $this->xml->createTextNode($value);
+
+        if ($node === false) {
+            throw new UnexpectedValueException('Failed to create XML node.');
+        }
+
+        return $node;
     }
 
     /**
@@ -219,7 +225,7 @@ final class XmlConverter
         }
 
         // If attributes exist, add to array
-        if ($element->attributes !== null && $element->attributes->length) {
+        if ($element->attributes->length) {
             $array['@attributes'] = [];
 
             /**

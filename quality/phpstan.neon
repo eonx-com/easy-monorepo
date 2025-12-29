@@ -13,6 +13,7 @@ parameters:
     level: 9
 
     bootstrapFiles:
+        - ./stubs/pcntl.php.stub
         - %currentWorkingDirectory%/vendor/autoload.php
 
     paths:
@@ -27,7 +28,6 @@ parameters:
         - %currentWorkingDirectory%/packages/*/tests/*/config/*
         - %currentWorkingDirectory%/packages/*/var/*
         - %currentWorkingDirectory%/packages/*/vendor/*
-        - %currentWorkingDirectory%/packages/EasyServerless/src/State/Resetter/SymfonyServicesAppStateResetter.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Common/Resetter/SymfonyServicesAppStateResetter.php
 
     ignoreErrors:
@@ -40,6 +40,7 @@ parameters:
         - '#Method .*\:\:__construct\(\) has parameter \$decorated with generic interface ApiPlatform\\State\\ProviderInterface but does not specify its types\: T#'
         - '#Readonly property .* is assigned outside of the constructor#'
         - '#Class .* has an uninitialized readonly property .*. Assign it in the constructor#'
+        - '#PHPDoc tag @var with type Illuminate\\Contracts\\Foundation\\Application is not subtype of native type Laravel\\Lumen\\Application#'
         - message: '#Parameter .* of .* expects .*, .* given#'
           path: %currentWorkingDirectory%/packages/*/laravel/*ServiceProvider.php
         - message: '#Cannot call method .* on mixed#'
@@ -59,12 +60,23 @@ parameters:
         - message: '#Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, Closure\(string\)\: string given#'
           path: %currentWorkingDirectory%/packages/EasyBatch/src/Doctrine/Repository/BatchItemRepository.php
 
+        - identifier: trait.unused
+          path: %currentWorkingDirectory%/packages/EasyBatch/src/Common/ValueObject/CurrentBatchObjectsAwareTrait.php
+
         # ---- EasyBugsnag ----
         # ---- EasyDecision ----
         # ---- EasyDoctrine ----
+        - identifier: trait.unused
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/Migration/Migration/ExpectedConnectionAwareMigrationTrait.php
+
+        - identifier: trait.unused
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/Migration/Migration/EnvironmentAwareMigrationTrait.php
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
+
+        - identifier: trait.unused
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Encryptable/EncryptableTrait.php
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
@@ -141,18 +153,6 @@ parameters:
         - message: '#Function swoole_(dd|dump)\(\) has parameter \$vars with no type specified#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Logging/Function/dump.php
 
-        - message: '#Method Swoole\\Server\:\:stop\(\) invoked with 2 parameters, 0\-1 required#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
-
-        - message: '#Anonymous function never returns null so it can be removed from the return type#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
-
-        - message: '#Else branch is unreachable because ternary operator condition is always true#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runner/EasySwooleRunner.php
-
-        - message: '#Strict comparison using \=\=\= between true and false will always evaluate to false#'
-          path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Helper/SwooleTableHelper.php
-
         - message: '#Call to an undefined method OpenSwoole\\Core\\Coroutine\\Client\\PDOStatementProxy\:\:.*\(\)#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Result/DbalResult.php
 
@@ -173,12 +173,24 @@ parameters:
         - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
 
+        - identifier: trait.unused
+          path: %currentWorkingDirectory%/packages/EasyTest
+
+        - message: '#Parameter \#1 \$array of static method EonX\\EasyTest\\HttpClient\\Response\\AbstractTestResponse\:\:normalizeData\(\) expects array, .* given#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/HttpClient/Response/StrictTestResponse.php
+
         # ---- EasyUtils ----
         - message: '#Comparison operation ">" between 0 and 0 is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 
         - message: '#Result of && is always false#'
           path: %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
+
+        - message: '#Method EonX\\EasyUtils\\Common\\Helper\\EnvVarSubstitutionHelper\:\:resolveEnvVarValue\(\) should return string but returns mixed#'
+          path : %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
+
+        - message: '#Parameter \#\d \$.* of function bc.* expects numeric\-string, .*string given#'
+          path : %currentWorkingDirectory%/packages/EasyUtils/src/Math/ValueObject/Number.php
 
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design

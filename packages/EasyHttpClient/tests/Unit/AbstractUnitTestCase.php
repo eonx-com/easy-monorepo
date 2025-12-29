@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Tests\Unit;
 
 use Mockery;
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -36,11 +35,15 @@ abstract class AbstractUnitTestCase extends TestCase
     }
 
     /**
-     * @param class-string $target
+     * @template TMock of object
+     *
+     * @param class-string<TMock> $target
+     *
+     * @return \Mockery\LegacyMockInterface&\Mockery\MockInterface&TMock
      */
-    protected function mock(string $target, ?callable $expectations = null): MockInterface
+    protected function mock(mixed $target, ?callable $expectations = null): object
     {
-        /** @var \Mockery\MockInterface $mock */
+        /** @var \Mockery\LegacyMockInterface&\Mockery\MockInterface&TMock $mock */
         $mock = Mockery::mock($target);
 
         if ($expectations !== null) {

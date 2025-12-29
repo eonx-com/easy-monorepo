@@ -26,7 +26,7 @@ final class FileTest extends AbstractUnitTestCase
         $file = new File(new ResultsContext([], [], [], [], []), $data);
 
         self::assertInstanceOf(FileHeader::class, $file->getHeader());
-        self::assertIsArray($file->getGroups());
+        self::assertSame([], $file->getGroups());
         self::assertInstanceOf(FileTrailer::class, $file->getTrailer());
     }
 }

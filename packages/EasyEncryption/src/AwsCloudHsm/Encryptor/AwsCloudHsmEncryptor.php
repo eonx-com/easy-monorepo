@@ -182,6 +182,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
             return $this->keys[$keyName];
         }
 
+        /** @var \Pkcs11\Key[]|null $objects */
         $objects = $this->session?->findObjects([
             CKA_LABEL => $keyName,
         ]) ?? [];

@@ -102,32 +102,28 @@ final readonly class EntityEventListener
             }
         }
 
-        // Handle collection deletions when ManyToMany is the owning side
-        // See https://github.com/doctrine/orm/pull/10763
-        if (\property_exists($unitOfWork, 'pendingCollectionElementRemovals')) {
-            $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
-                $unitOfWork::class,
-                'pendingCollectionElementRemovals'
-            );
-            /** @var array $pendingCollectionElementRemovals */
-            $pendingCollectionElementRemovals = $pendingCollectionElementRemovalsReflection->getValue($unitOfWork);
+        $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
+            $unitOfWork::class,
+            'pendingCollectionElementRemovals'
+        );
+        /** @var array $pendingCollectionElementRemovals */
+        $pendingCollectionElementRemovals = $pendingCollectionElementRemovalsReflection->getValue($unitOfWork);
 
-            $visitedCollectionsReflection = new ReflectionProperty(
-                $unitOfWork::class,
-                'visitedCollections'
-            );
-            /** @var array<\Doctrine\ORM\PersistentCollection<int, object>> $visitedCollections */
-            $visitedCollections = $visitedCollectionsReflection->getValue($unitOfWork);
+        $visitedCollectionsReflection = new ReflectionProperty(
+            $unitOfWork::class,
+            'visitedCollections'
+        );
+        /** @var array<\Doctrine\ORM\PersistentCollection<int, object>> $visitedCollections */
+        $visitedCollections = $visitedCollectionsReflection->getValue($unitOfWork);
 
-            foreach (\array_keys($pendingCollectionElementRemovals) as $collectionObjectId) {
-                if (isset($scheduledCollectionUpdates[$collectionObjectId])) {
-                    continue;
-                }
+        foreach (\array_keys($pendingCollectionElementRemovals) as $collectionObjectId) {
+            if (isset($scheduledCollectionUpdates[$collectionObjectId])) {
+                continue;
+            }
 
-                $collection = $visitedCollections[$collectionObjectId];
-                if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
-                    $scheduledCollectionUpdates[$collectionObjectId] = $collection;
-                }
+            $collection = $visitedCollections[$collectionObjectId];
+            if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
+                $scheduledCollectionUpdates[$collectionObjectId] = $collection;
             }
         }
 

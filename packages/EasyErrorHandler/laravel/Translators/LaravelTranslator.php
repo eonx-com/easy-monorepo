@@ -31,8 +31,9 @@ final readonly class LaravelTranslator implements TranslatorInterface
 
     private function doTranslate(string $message, array $parameters, ?string $locale = null): string
     {
-        $method = \method_exists($this->decorated, 'lang') ? 'lang' : 'get';
+        /** @var string $result */
+        $result = $this->decorated->get(\trim($message), $parameters, $locale);
 
-        return $this->decorated->{$method}(\trim($message), $parameters, $locale);
+        return $result;
     }
 }

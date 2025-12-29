@@ -15,10 +15,8 @@ final class AppRuntimeHelper
 
     public static function addOptions(array $options): void
     {
-        $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge(
-            $_SERVER[self::APP_RUNTIME_OPTIONS] ?? [],
-            $options
-        );
+        // @phpstan-ignore argument.type
+        $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge($_SERVER[self::APP_RUNTIME_OPTIONS] ?? [], $options);
     }
 
     public static function enableAppCacheWarmup(): void
@@ -38,6 +36,7 @@ final class AppRuntimeHelper
 
     public static function getOption(string $name, mixed $default = null): mixed
     {
+        // @phpstan-ignore offsetAccess.nonOffsetAccessible
         return $_SERVER[self::APP_RUNTIME_OPTIONS][$name] ?? $default;
     }
 

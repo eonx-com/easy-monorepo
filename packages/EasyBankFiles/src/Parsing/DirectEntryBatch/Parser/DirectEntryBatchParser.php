@@ -110,99 +110,80 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
 
     private function parseCommonRecordAttributes(string $line): array
     {
-        /** @var string|false $bsb */
+        $recordType = $line[0] ?? '';
         $bsb = \substr($line, 1, 7);
-        /** @var string|false $accountNumber */
         $accountNumber = \substr($line, 8, 9);
-        /** @var string|false $transactionCode */
         $transactionCode = \substr($line, 18, 2);
-        /** @var string|false $amount */
         $amount = \substr($line, 20, 10);
-        /** @var string|false $accountName */
         $accountName = \substr($line, 30, 32);
-        /** @var string|false $lodgmentReference */
         $lodgmentReference = \substr($line, 62, 18);
-        /** @var string|false $traceBsb */
         $traceBsb = \substr($line, 80, 7);
-        /** @var string|false $traceAccountNumber */
         $traceAccountNumber = \substr($line, 87, 9);
-        /** @var string|false $remitterName */
         $remitterName = \substr($line, 96, 16);
 
         return [
-            'accountName' => $accountName === false ? null : \trim($accountName),
-            'accountNumber' => $accountNumber === false ? null : $accountNumber,
-            'amount' => $amount === false ? null : $this->trimLeftZeros($amount),
-            'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'lodgmentReference' => $lodgmentReference === false ? null : \trim($lodgmentReference),
-            'recordType' => $line[0] ?? '',
-            'remitterName' => $remitterName === false ? null : \trim($remitterName),
-            'traceAccountNumber' => $traceAccountNumber === false ? null : $traceAccountNumber,
-            'traceBsb' => $traceBsb === false ? null : \str_replace('-', '', $traceBsb),
-            'transactionCode' => $transactionCode === false ? null : $transactionCode,
+            'accountName' => \trim($accountName),
+            'accountNumber' => $accountNumber,
+            'amount' => $this->trimLeftZeros($amount),
+            'bsb' => \str_replace('-', '', $bsb),
+            'lodgmentReference' => \trim($lodgmentReference),
+            'recordType' => $recordType,
+            'remitterName' => \trim($remitterName),
+            'traceAccountNumber' => $traceAccountNumber,
+            'traceBsb' => \str_replace('-', '', $traceBsb),
+            'transactionCode' => $transactionCode,
         ];
     }
 
     private function processDescriptiveRecord(string $line): bool
     {
-        /** @var string|false $reelSequenceNumber */
+        $indicator = $line[17] ?? '';
         $reelSequenceNumber = \substr($line, 18, 2);
-        /** @var string|false $userFinancialInstitution */
         $userFinancialInstitution = \substr($line, 20, 3);
-        /** @var string|false $nameOfUserSupplyingFile */
         $nameOfUserSupplyingFile = \substr($line, 30, 26);
-        /** @var string|false $numberOfUserSupplyingFile */
         $numberOfUserSupplyingFile = \substr($line, 56, 6);
-        /** @var string|false $descriptionOfEntries */
         $descriptionOfEntries = \substr($line, 62, 12);
-        /** @var string|false $dateProcessed */
         $dateProcessed = \substr($line, 74, 6);
 
         return $this->setDescriptiveRecordToCurrentBatch(new DescriptiveRecord([
-            'dateProcessed' => $dateProcessed === false ? null : $dateProcessed,
-            'descriptionOfEntries' => $descriptionOfEntries === false ? null : \trim($descriptionOfEntries),
-            'indicator' => $line[17] ?? '',
-            'nameOfUserSupplyingFile' => $nameOfUserSupplyingFile === false ? null : \trim($nameOfUserSupplyingFile),
-            'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile === false ? null : $numberOfUserSupplyingFile,
-            'reelSequenceNumber' => $reelSequenceNumber === false ? null : $reelSequenceNumber,
-            'userFinancialInstitution' => $userFinancialInstitution === false ? null : $userFinancialInstitution,
+            'dateProcessed' => $dateProcessed,
+            'descriptionOfEntries' => \trim($descriptionOfEntries),
+            'indicator' => $indicator,
+            'nameOfUserSupplyingFile' => \trim($nameOfUserSupplyingFile),
+            'numberOfUserSupplyingFile' => $numberOfUserSupplyingFile,
+            'reelSequenceNumber' => $reelSequenceNumber,
+            'userFinancialInstitution' => $userFinancialInstitution,
         ]));
     }
 
     private function processFileTotalRecord(string $line): bool
     {
-        /** @var string|false $bsb */
         $bsb = \substr($line, 1, 7);
-        /** @var string|false $totalNetAmount */
+        $indicator = $line[17] ?? '';
         $totalNetAmount = \substr($line, 20, 10);
-        /** @var string|false $totalCreditAmount */
         $totalCreditAmount = \substr($line, 30, 10);
-        /** @var string|false $totalDebitAmount */
         $totalDebitAmount = \substr($line, 40, 10);
-        /** @var string|false $totalRecordCount */
         $totalRecordCount = \substr($line, 74, 6);
 
         return $this->setFileTotalRecordToCurrentBatch(new FileTotalRecord([
-            'bsb' => $bsb === false ? null : \str_replace('-', '', $bsb),
-            'indicator' => $line[17] ?? '',
-            'totalCreditAmount' => $totalCreditAmount === false ? null : $this->trimLeftZeros($totalCreditAmount),
-            'totalDebitAmount' => $totalDebitAmount === false ? null : $this->trimLeftZeros($totalDebitAmount),
-            'totalNetAmount' => $totalNetAmount === false ? null : $this->trimLeftZeros($totalNetAmount),
-            'totalRecordCount' => $totalRecordCount === false ? null : $this->trimLeftZeros($totalRecordCount),
+            'bsb' => \str_replace('-', '', $bsb),
+            'indicator' => $indicator,
+            'totalCreditAmount' => $this->trimLeftZeros($totalCreditAmount),
+            'totalDebitAmount' => $this->trimLeftZeros($totalDebitAmount),
+            'totalNetAmount' => $this->trimLeftZeros($totalNetAmount),
+            'totalRecordCount' => $this->trimLeftZeros($totalRecordCount),
         ]));
     }
 
     private function processPaymentDetailRecord(string $line): bool
     {
-        /** @var string|false $amountOfWithholdingTax */
+        $indicator = $line[17] ?? '';
         $amountOfWithholdingTax = \substr($line, 112, 8);
 
         return $this->addRecordToCurrentBatch(new PaymentDetailRecord(\array_merge(
             [
-                'amountOfWithholdingTax' => $amountOfWithholdingTax === false
-                    ? null
-                    : $this->trimLeftZeros($amountOfWithholdingTax),
-                'indicator' => $line[17] ?? '',
+                'amountOfWithholdingTax' => $this->trimLeftZeros($amountOfWithholdingTax),
+                'indicator' => $indicator,
             ],
             $this->parseCommonRecordAttributes($line)
         )));
@@ -210,16 +191,15 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
 
     private function processRefusalDetailRecord(string $line): bool
     {
-        /** @var string|false $originalDayOfReturn */
+        $refusalCode = $line[17] ?? '';
         $originalDayOfReturn = \substr($line, 112, 2);
-        /** @var string|false $originalUserIdNumber */
         $originalUserIdNumber = \substr($line, 114, 6);
 
         return $this->addRecordToCurrentBatch(new RefusalDetailRecord(\array_merge(
             [
-                'originalDayOfReturn' => $originalDayOfReturn === false ? null : $originalDayOfReturn,
-                'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
-                'refusalCode' => $line[17] ?? '',
+                'originalDayOfReturn' => $originalDayOfReturn,
+                'originalUserIdNumber' => \trim($originalUserIdNumber),
+                'refusalCode' => $refusalCode,
             ],
             $this->parseCommonRecordAttributes($line)
         )));
@@ -227,16 +207,15 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
 
     private function processReturnDetailRecord(string $line): bool
     {
-        /** @var string|false $originalDayOfProcessing */
+        $returnCode = $line[17] ?? '';
         $originalDayOfProcessing = \substr($line, 112, 2);
-        /** @var string|false $originalUserIdNumber */
         $originalUserIdNumber = \substr($line, 114, 6);
 
         return $this->addRecordToCurrentBatch(new ReturnDetailRecord(\array_merge(
             [
-                'originalDayOfProcessing' => $originalDayOfProcessing === false ? null : $originalDayOfProcessing,
-                'originalUserIdNumber' => $originalUserIdNumber === false ? null : \trim($originalUserIdNumber),
-                'returnCode' => $line[17] ?? '',
+                'originalDayOfProcessing' => $originalDayOfProcessing,
+                'originalUserIdNumber' => \trim($originalUserIdNumber),
+                'returnCode' => $returnCode,
             ],
             $this->parseCommonRecordAttributes($line)
         )));
