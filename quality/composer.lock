@@ -249,16 +249,16 @@
         },
         {
             "name": "eonx-com/easy-quality",
-            "version": "5.3.2",
+            "version": "5.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eonx-com/easy-quality.git",
-                "reference": "7ff225634275603746b4c920ef1618ea560f10fe"
+                "reference": "a61e76d27a0efbbc82d8877166d05e745f3a1b4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eonx-com/easy-quality/zipball/7ff225634275603746b4c920ef1618ea560f10fe",
-                "reference": "7ff225634275603746b4c920ef1618ea560f10fe",
+                "url": "https://api.github.com/repos/eonx-com/easy-quality/zipball/a61e76d27a0efbbc82d8877166d05e745f3a1b4b",
+                "reference": "a61e76d27a0efbbc82d8877166d05e745f3a1b4b",
                 "shasum": ""
             },
             "require": {
@@ -266,10 +266,10 @@
                 "php": "~8.2",
                 "phpmd/phpmd": "2.15.0",
                 "phpstan/phpdoc-parser": "2.3.0",
-                "phpstan/phpstan": "2.1.31",
+                "phpstan/phpstan": "2.1.33",
                 "phpstan/phpstan-strict-rules": "^2.0",
-                "rector/rector": "2.2.3",
-                "slevomat/coding-standard": "8.16.0",
+                "rector/rector": "2.3.0",
+                "slevomat/coding-standard": "8.18.0",
                 "symplify/easy-coding-standard": "12.5.9",
                 "symplify/phpstan-extensions": "12.0.1",
                 "symplify/phpstan-rules": "14.8.0"
@@ -290,9 +290,9 @@
             "description": "Makes using of code quality tools for PHP projects of EonX easier",
             "support": {
                 "issues": "https://github.com/eonx-com/easy-quality/issues",
-                "source": "https://github.com/eonx-com/easy-quality/tree/5.3.2"
+                "source": "https://github.com/eonx-com/easy-quality/tree/5.3.3"
             },
-            "time": "2025-10-14T08:05:02+00:00"
+            "time": "2025-12-29T09:01:28+00:00"
         },
         {
             "name": "jangregor/phpstan-prophecy",
@@ -875,11 +875,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.31",
+            "version": "2.1.33",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ead89849d879fe203ce9292c6ef5e7e76f867b96",
-                "reference": "ead89849d879fe203ce9292c6ef5e7e76f867b96",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9e800e6bee7d5bd02784d4c6069b48032d16224f",
+                "reference": "9e800e6bee7d5bd02784d4c6069b48032d16224f",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-10T14:14:11+00:00"
+            "time": "2025-12-05T10:24:31+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -1509,21 +1509,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.2.3",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "d27f976a332a87b5d03553c2e6f04adbe5da034f"
+                "reference": "f7166355dcf47482f27be59169b0825995f51c7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/d27f976a332a87b5d03553c2e6f04adbe5da034f",
-                "reference": "d27f976a332a87b5d03553c2e6f04adbe5da034f",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/f7166355dcf47482f27be59169b0825995f51c7d",
+                "reference": "f7166355dcf47482f27be59169b0825995f51c7d",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.1.26"
+                "phpstan/phpstan": "^2.1.33"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -1557,7 +1557,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.2.3"
+                "source": "https://github.com/rectorphp/rector/tree/2.3.0"
             },
             "funding": [
                 {
@@ -1565,7 +1565,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-11T21:50:23+00:00"
+            "time": "2025-12-25T22:00:18+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -2522,32 +2522,32 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.16.0",
+            "version": "8.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "7748a4282df19daf966fda1d8c60a8aec803c83a"
+                "reference": "f3b23cb9b26301b8c3c7bb03035a1bee23974593"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/7748a4282df19daf966fda1d8c60a8aec803c83a",
-                "reference": "7748a4282df19daf966fda1d8c60a8aec803c83a",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/f3b23cb9b26301b8c3c7bb03035a1bee23974593",
+                "reference": "f3b23cb9b26301b8c3c7bb03035a1bee23974593",
                 "shasum": ""
             },
             "require": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7 || ^1.0",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpdoc-parser": "^2.1.0",
-                "squizlabs/php_codesniffer": "^3.11.3"
+                "squizlabs/php_codesniffer": "^3.12.2"
             },
             "require-dev": {
                 "phing/phing": "3.0.1",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpstan/phpstan": "2.1.6",
-                "phpstan/phpstan-deprecation-rules": "2.0.1",
-                "phpstan/phpstan-phpunit": "2.0.4",
-                "phpstan/phpstan-strict-rules": "2.0.3",
-                "phpunit/phpunit": "9.6.8|10.5.45|11.4.4|11.5.9|12.0.4"
+                "phpstan/phpstan": "2.1.13",
+                "phpstan/phpstan-deprecation-rules": "2.0.2",
+                "phpstan/phpstan-phpunit": "2.0.6",
+                "phpstan/phpstan-strict-rules": "2.0.4",
+                "phpunit/phpunit": "9.6.8|10.5.45|11.4.4|11.5.17|12.1.3"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
@@ -2571,7 +2571,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.16.0"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.18.0"
             },
             "funding": [
                 {
@@ -2583,7 +2583,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-23T18:12:49+00:00"
+            "time": "2025-05-01T09:40:50+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

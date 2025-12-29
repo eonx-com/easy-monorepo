@@ -142,8 +142,8 @@ final class SqsHandler extends BaseSqsHandler
     private function makeWorker(): Worker
     {
         $worker = $this->container->make(Worker::class, [
-            'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
-            'resetScope' => fn () => $this->resetWorkerScope(),
+            'isDownForMaintenance' => MaintenanceMode::active(...),
+            'resetScope' => $this->resetWorkerScope(...),
         ]);
 
         $worker->setCache(

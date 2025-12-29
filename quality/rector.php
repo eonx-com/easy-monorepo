@@ -8,7 +8,7 @@ use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Php81\Rector\Array_\FirstClassCallableRector;
+use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 
 return RectorConfig::configure()
@@ -40,17 +40,14 @@ return RectorConfig::configure()
         EasyQualitySetList::RECTOR_PHPUNIT_10,
     ])
     ->withSkip([
+        ArrayToFirstClassCallableRector::class => [
+            'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
+            'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
+            'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
+        ],
         ClassPropertyAssignToConstructorPromotionRector::class => [
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
-        ],
-        FirstClassCallableRector::class => [
-            'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
-            'packages/EasyBugsnag/tests/Stub/Kernel/KernelStub.php',
-            'packages/EasyDoctrine/bundle/config/services.php',
-            'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
-            'packages/EasyLock/tests/Fixture/config/in_memory_connection.php',
-            'packages/EasyPagination/tests/Stub/Kernel/KernelStub.php',
         ],
         'packages/*/var/*',
         'packages/*/vendor/*',
