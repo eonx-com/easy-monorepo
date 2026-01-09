@@ -106,8 +106,8 @@ abstract class AbstractSqsHandler extends SqsHandler
 
             try {
                 $sqsClient->changeMessageVisibilityBatch([
-                    'QueueUrl' => $queueUrl,
                     'Entries' => $entries,
+                    'QueueUrl' => $queueUrl,
                 ]);
             } catch (Throwable $throwable) {
                 // Log only not to impact other chunks, as messages will be retried by SQS after visibility timeout
