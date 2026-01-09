@@ -60,6 +60,10 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/easy_admin.php');
         }
 
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder)) {
+            $container->import('config/easy_bugsnag.php');
+        }
+
         if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
             $container->import('config/doctrine.php');
         }
