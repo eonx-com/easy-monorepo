@@ -131,7 +131,7 @@ abstract class AbstractSqsHandler extends SqsHandler
         // QueueARN: arn:aws:sqs:{AWS_REGION}:{AWS_ACCOUNT_ID}:{AWS_SQS_QUEUE_NAME}
         // QueueUrl: https://sqs.{AWS_REGION}.amazonaws.com/{AWS_ACCOUNT_ID}/{AWS_SQS_QUEUE_NAME}
 
-        $queueArn = \explode(':', (string) $record->toArray()['eventSourceARN']);
+        $queueArn = \explode(':', (string)$record->toArray()['eventSourceARN']);
 
         return \sprintf(
             'https://sqs.%s.amazonaws.com/%s/%s',

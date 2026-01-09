@@ -209,6 +209,7 @@ final class SqsHandler extends AbstractSqsHandler
         $attributes = $record->getMessageAttributes();
 
         if (($attributes[self::SYMFONY_HEADERS_ATTRIBUTE_NAME]['dataType'] ?? null) === 'String') {
+            /** @var array $headers */
             $headers = \json_decode($attributes[self::SYMFONY_HEADERS_ATTRIBUTE_NAME]['stringValue'] ?? '{}', true);
 
             unset($attributes[self::SYMFONY_HEADERS_ATTRIBUTE_NAME]);
