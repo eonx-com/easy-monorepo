@@ -5,11 +5,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-event-dispatcher": "^6.18",
-        "eonx-com/easy-lock": "^6.18",
-        "eonx-com/easy-pagination": "^6.18",
-        "eonx-com/easy-random": "^6.18",
-        "eonx-com/easy-utils": "^6.18",
+        "eonx-com/easy-event-dispatcher": "^6.17.1",
+        "eonx-com/easy-lock": "^6.17.1",
+        "eonx-com/easy-pagination": "^6.17.1",
+        "eonx-com/easy-random": "^6.17.1",
+        "eonx-com/easy-utils": "^6.17.1",
         "nesbot/carbon": "^3.8.4",
         "nette/utils": "^4.0",
         "symfony/config": "^7.2",
@@ -22,8 +22,8 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.8",
-        "eonx-com/easy-event-dispatcher": "^6.18",
-        "eonx-com/easy-test": "^6.18",
+        "eonx-com/easy-event-dispatcher": "^6.17.1",
+        "eonx-com/easy-test": "^6.17.1",
         "illuminate/database": "^11.15",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2|^11.4"
