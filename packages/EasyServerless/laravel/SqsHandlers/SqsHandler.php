@@ -9,7 +9,7 @@ use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
 use Bref\LaravelBridge\Queue\Worker;
 use EonX\EasyServerless\Laravel\Jobs\SqsQueueJob;
-use EonX\EasyServerless\Messenger\SqsHandlers\AbstractSqsHandler;
+use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Queue\QueueManager;
@@ -90,7 +90,7 @@ final class SqsHandler extends AbstractSqsHandler
             if ($shouldRetry || $shouldRequeue) {
                 // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
                 // and if one fails, all are retried creating side effects of reprocessing successful ones.
-                // It is highly recommended to enable partial batch failure, but still support not having it enabled.
+                // It is highly recommended to enable partial batch failure, but still support not having it enabled
                 if ($this->partialBatchFailure === false) {
                     throw $job->getThrowable() ?? new RuntimeException('Job failed without an exception');
                 }
@@ -105,7 +105,7 @@ final class SqsHandler extends AbstractSqsHandler
                 // We consider a message as failed only if we are not triggering this logic because of a requeue
                 $this->scheduleForRetry(
                     sqsRecord: $sqsRecord,
-                    retryDelaySeconds: $job->backoff(),
+                    retryDelaySeconds: \is_int($job->backoff()) ? $job->backoff() : null,
                     forFailure: true
                 );
             }
@@ -174,11 +174,11 @@ final class SqsHandler extends AbstractSqsHandler
      */
     private function resetWorkerScope(): void
     {
-        if (\method_exists($this->logger, 'flushSharedContext')) {
+        if ($this->logger && \method_exists($this->logger, 'flushSharedContext')) {
             $this->logger->flushSharedContext();
         }
 
-        if (\method_exists($this->logger, 'withoutContext')) {
+        if ($this->logger && \method_exists($this->logger, 'withoutContext')) {
             $this->logger->withoutContext();
         }
 

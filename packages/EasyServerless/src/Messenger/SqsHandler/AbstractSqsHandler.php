@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Messenger\SqsHandlers;
+namespace EonX\EasyServerless\Messenger\SqsHandler;
 
-use Aws\Sqs\SqsClient as AwsSqsClient;
 use AsyncAws\Sqs\SqsClient as AsyncAwsSqsClient;
+use Aws\Sqs\SqsClient as AwsSqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsEvent;
 use Bref\Event\Sqs\SqsHandler;
@@ -66,7 +66,7 @@ abstract class AbstractSqsHandler extends SqsHandler
     protected function scheduleForRetry(
         SqsRecord $sqsRecord,
         ?int $retryDelaySeconds = null,
-        ?bool $forFailure = null
+        ?bool $forFailure = null,
     ): void {
         // We keep track of failed records at this level to be able to change their visibility timeout
         // prior to Lambda function completion so they can be retried within the expected delay instead of
@@ -131,7 +131,7 @@ abstract class AbstractSqsHandler extends SqsHandler
         // QueueARN: arn:aws:sqs:{AWS_REGION}:{AWS_ACCOUNT_ID}:{AWS_SQS_QUEUE_NAME}
         // QueueUrl: https://sqs.{AWS_REGION}.amazonaws.com/{AWS_ACCOUNT_ID}/{AWS_SQS_QUEUE_NAME}
 
-        $queueArn = \explode(':', $record->toArray()['eventSourceARN']);
+        $queueArn = \explode(':', (string) $record->toArray()['eventSourceARN']);
 
         return \sprintf(
             'https://sqs.%s.amazonaws.com/%s/%s',

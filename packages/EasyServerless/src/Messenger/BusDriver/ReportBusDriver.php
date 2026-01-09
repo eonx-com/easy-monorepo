@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 /**
- * @deprecated since 6.17, use EonX\EasyServerless\Bundle\SqsHandlers\SqsHandler instead.
+ * @deprecated since 6.17, use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler instead.
  */
 final readonly class ReportBusDriver implements BusDriver
 {

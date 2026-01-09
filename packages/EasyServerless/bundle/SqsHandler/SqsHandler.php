@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Bundle\SqsHandlers;
+namespace EonX\EasyServerless\Bundle\SqsHandler;
 
 use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
@@ -9,7 +9,7 @@ use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
-use EonX\EasyServerless\Messenger\SqsHandlers\AbstractSqsHandler;
+use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -97,7 +97,7 @@ final class SqsHandler extends AbstractSqsHandler
             $envelope = $this->bus->dispatch($envelope);
 
             $this->logger?->info('{class} was handled successfully.', [
-                'class' => \get_class($envelope->getMessage()),
+                'class' => $envelope->getMessage()::class,
                 'message_id' => $envelope->last(TransportMessageIdStamp::class)?->getId(),
                 'transport' => $this->transportName,
             ]);
@@ -129,7 +129,7 @@ final class SqsHandler extends AbstractSqsHandler
             if ($shouldRetry || $shouldRequeue) {
                 // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
                 // and if one fails, all are retried creating side effects of reprocessing successful ones.
-                // It is highly recommended to enable partial batch failure, but still support not having it enabled.
+                // It is highly recommended to enable partial batch failure, but still support not having it enabled
                 if ($this->partialBatchFailure === false) {
                     throw $this->resolveOriginalThrowable($throwable);
                 }
@@ -160,7 +160,9 @@ final class SqsHandler extends AbstractSqsHandler
     private function getRetryStrategyForTransport(string $alias): ?RetryStrategyInterface
     {
         if ($this->retryStrategyLocator->has($alias)) {
-            return $this->retryStrategyLocator->get($alias);
+            $retryStrategy = $this->retryStrategyLocator->get($alias);
+
+            return $retryStrategy instanceof RetryStrategyInterface ? $retryStrategy : null;
         }
 
         return null;
@@ -201,9 +203,6 @@ final class SqsHandler extends AbstractSqsHandler
         return false;
     }
 
-    /**
-     * @return string[]
-     */
     private function resolveHeaders(SqsRecord $record): array
     {
         $headers = [];
@@ -236,7 +235,7 @@ final class SqsHandler extends AbstractSqsHandler
     private function resolveRetryDelay(
         Throwable $throwable,
         Envelope $envelope,
-        RetryStrategyInterface $retryStrategy
+        RetryStrategyInterface $retryStrategy,
     ): int {
         $delayInMilliseconds = null;
 
@@ -259,7 +258,7 @@ final class SqsHandler extends AbstractSqsHandler
             }
         }
 
-        $delayInMilliseconds = $delayInMilliseconds ?? $retryStrategy->getWaitingTime($envelope, $throwable);
+        $delayInMilliseconds ??= $retryStrategy->getWaitingTime($envelope, $throwable);
         $delay = (int)\ceil($delayInMilliseconds / 1000);
 
         // Ensure a minimum delay to ensure the Lambda function has time to complete before the message

@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Bref\Symfony\Messenger\Service\BusDriver;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use EonX\EasyServerless\Bundle\SqsHandlers\SqsHandler;
+use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Messenger\BusDriver\ReportBusDriver;
 use Psr\Log\LoggerInterface;
 
