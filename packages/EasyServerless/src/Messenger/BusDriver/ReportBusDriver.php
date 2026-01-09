@@ -11,6 +11,9 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
+/**
+ * @deprecated since 6.17, use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler instead.
+ */
 final readonly class ReportBusDriver implements BusDriver
 {
     public function __construct(

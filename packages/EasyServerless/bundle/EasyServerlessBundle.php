@@ -64,6 +64,10 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/doctrine.php');
         }
 
+        if ($this->isBundleEnabled('BrefMessengerBundle', $builder)) {
+            $container->import('config/messenger.php');
+        }
+
         if (\class_exists(Logger::class) && $config['monolog']['enabled']) {
             $container->import('config/monolog.php');
         }
