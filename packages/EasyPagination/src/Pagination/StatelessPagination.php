@@ -8,7 +8,7 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 final readonly class StatelessPagination implements PaginationInterface
 {
     public function __construct(
-        private PaginationProviderInterface $paginationProvider
+        private PaginationProviderInterface $paginationProvider,
     ) {
     }
 
