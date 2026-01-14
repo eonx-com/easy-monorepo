@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Laravel;
 
+use EonX\EasyPagination\Pagination\PaginationInterface;
+use EonX\EasyPagination\Pagination\StatelessPagination;
+use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
@@ -30,6 +33,10 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-serverless.php', 'easy-serverless');
 
         $this->registerHealth();
+
+        if (\class_exists(PaginationInterface::class)) {
+            $this->registerPagination();
+        }
 
         $this->app->bind(SqsHandler::class, static function (Container $app): SqsHandler {
             $config = $app->make('config');
@@ -73,5 +80,15 @@ final class EasyServerlessServiceProvider extends ServiceProvider
 
         // Controller
         $this->app->singleton(HealthCheckController::class);
+    }
+
+    private function registerPagination(): void
+    {
+        $this->app->singleton(
+            PaginationInterface::class,
+            static fn (Container $app): PaginationInterface => new StatelessPagination(
+                $app->make(PaginationProviderInterface::class)
+            )
+        );
     }
 }
