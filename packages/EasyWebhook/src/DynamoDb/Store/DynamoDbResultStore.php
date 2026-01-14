@@ -26,7 +26,7 @@ final class DynamoDbResultStore extends AbstractDynamoDbStore implements ResultS
             // If we get here, the item already exists, so we update it
             $this->doPutItem(
                 instance: $result,
-                previousData: $this->doFindRaw('id', $result->getId(), true)
+                previousData: $this->doFindRaw('id', (string)$result->getId(), true)
             );
         }
 

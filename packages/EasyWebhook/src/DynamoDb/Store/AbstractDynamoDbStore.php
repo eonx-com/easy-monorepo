@@ -54,11 +54,11 @@ abstract class AbstractDynamoDbStore extends AbstractStore
     protected function doFindRaw(string $keyName, string $keyValue, ?bool $consistentRead = null): ?array
     {
         $result = $this->dynamoDbClient->getItem(new GetItemInput([
-            'TableName' => $this->table ?? $this->getDefaultTable(),
             'ConsistentRead' => $consistentRead ?? false,
             'Key' => [
                 $keyName => AttributeValue::create(['S' => $keyValue]),
             ],
+            'TableName' => $this->table ?? $this->getDefaultTable(),
         ]));
 
         $item = $result->getItem();
@@ -81,8 +81,8 @@ abstract class AbstractDynamoDbStore extends AbstractStore
         }
 
         $input = [
-            'TableName' => $this->table ?? $this->getDefaultTable(),
             'Item' => $item,
+            'TableName' => $this->table ?? $this->getDefaultTable(),
         ];
 
         if ($uniqueAttr !== null && $uniqueAttr !== '') {

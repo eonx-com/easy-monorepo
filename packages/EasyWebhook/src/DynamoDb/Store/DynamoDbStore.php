@@ -16,7 +16,10 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
 
     public function find(string $id): ?WebhookInterface
     {
-        return $this->doFind('id', $id);
+        /** @var \EonX\EasyWebhook\Common\Entity\WebhookInterface|null $webhook */
+        $webhook = $this->doFind('id', $id);
+
+        return $webhook;
     }
 
     public function generateWebhookId(): string
@@ -35,7 +38,7 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
             // If we get here, the item already exists, so we update it
             $this->doPutItem(
                 instance: $webhook,
-                previousData: $this->doFindRaw('id', $webhook->getId(), true)
+                previousData: $this->doFindRaw('id', (string)$webhook->getId(), true)
             );
         }
 
@@ -55,8 +58,8 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
         $now = CarbonImmutable::now('UTC');
         $data = \array_merge($instance->toArray(), [
             'class' => $instance::class,
-            'id' => $instance->getId(),
             'created_at' => isset($previousData['created_at']) ? $previousData['created_at']->getS() ?? $now : $now,
+            'id' => $instance->getId(),
             'updated_at' => $now,
         ]);
 
