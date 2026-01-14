@@ -64,6 +64,10 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/easy_bugsnag.php');
         }
 
+        if ($this->isBundleEnabled('EasyPaginationBundle', $builder)) {
+            $container->import('config/easy_pagination.php');
+        }
+
         if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
             $container->import('config/doctrine.php');
         }
