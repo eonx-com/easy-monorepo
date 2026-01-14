@@ -111,6 +111,18 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
             CsvParserConfig::create(['header1'], null, null, null, true),
             [],
         ];
+
+        yield 'Ignore case for required headers' => [
+            __DIR__ . '/../../../../Fixture/Csv/ignore_case.csv',
+            CsvParserConfig::create(['requiredHeader'], ignoreHeadersCase: true),
+            [
+                [
+                    'requiredHeader' => 'value1',
+                    'secondheader' => 'value2',
+                    'third_header' => 'value3',
+                ],
+            ],
+        ];
     }
 
     /**
