@@ -21,9 +21,11 @@ final class OctaneHttpHandler extends OctaneHandler
         parent::__construct($path);
     }
 
-    public function handle($event, Context $context): array
+    public function handle(mixed $event, Context $context): array
     {
-        $event = $this->httpEventTransformer->transform($event);
+        if (\is_array($event)) {
+            $event = $this->httpEventTransformer->transform($event);
+        }
 
         return parent::handle($event, $context);
     }

@@ -61,9 +61,11 @@ final class SymfonyHttpHandler extends HttpHandler
         }
     }
 
-    public function handle($event, Context $context): array
+    public function handle(mixed $event, Context $context): array
     {
-        $event = $this->httpEventTransformer->transform($event);
+        if (\is_array($event)) {
+            $event = $this->httpEventTransformer->transform($event);
+        }
 
         return parent::handle($event, $context);
     }
@@ -85,17 +87,17 @@ final class SymfonyHttpHandler extends HttpHandler
         return Psr7Bridge::convertResponse($this->psrHttpFactory->createResponse($symfonyResponse));
     }
 
-    private function setRequestContext(string $value): void
-    {
-        $_SERVER[self::LAMBDA_REQUEST_CONTEXT_KEY] = $_ENV[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
-        \putenv(\sprintf('%s=%s', self::LAMBDA_REQUEST_CONTEXT_KEY, $value));
-    }
-
     private function reset(): void
     {
         $this->symfonyRequest = null;
         $this->symfonyResponse = null;
 
         Psr7Bridge::cleanupUploadedFiles();
+    }
+
+    private function setRequestContext(string $value): void
+    {
+        $_SERVER[self::LAMBDA_REQUEST_CONTEXT_KEY] = $_ENV[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
+        \putenv(\sprintf('%s=%s', self::LAMBDA_REQUEST_CONTEXT_KEY, $value));
     }
 }
