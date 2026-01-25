@@ -15,7 +15,7 @@
         "symfony/string": "^7.2"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^6.18",
+        "eonx-com/easy-test": "^6.17.3",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.2|^11.4",
