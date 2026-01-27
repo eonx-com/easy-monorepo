@@ -36,9 +36,9 @@ final class EasyDoctrineBundle extends AbstractBundle
     {
         $container->import('config/services.php');
 
-        $this->registerAwsRdsConfiguration($config, $container, $builder);
-        $this->registerDeferredDispatcherConfiguration($config, $container, $builder);
-        $this->registerEasyErrorHandlerConfiguration($config, $container, $builder);
+        $this->registerAwsRdsConfiguration($config, $container);
+        $this->registerDeferredDispatcherConfiguration($config, $container);
+        $this->registerEasyErrorHandlerConfiguration($config, $container);
 
         $container
             ->parameters()
@@ -48,20 +48,18 @@ final class EasyDoctrineBundle extends AbstractBundle
     private function registerAwsRdsConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         if ($config['aws_rds']['iam']['enabled'] || $config['aws_rds']['ssl']['enabled']) {
             $container->import('config/aws_rds.php');
         }
 
-        $this->registerAwsRdsIamConfiguration($config, $container, $builder);
-        $this->registerAwsRdsSslConfiguration($config, $container, $builder);
+        $this->registerAwsRdsIamConfiguration($config, $container);
+        $this->registerAwsRdsSslConfiguration($config, $container);
     }
 
     private function registerAwsRdsIamConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         $config = $config['aws_rds']['iam'];
 
@@ -75,6 +73,10 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $container
             ->parameters()
+            ->set(ConfigParam::AwsRdsIamAssumeRoleArn->value, $config['assume_role_arn'])
+            ->set(ConfigParam::AwsRdsIamAssumeRoleDurationSeconds->value, $config['assume_role_duration_seconds'])
+            ->set(ConfigParam::AwsRdsIamAssumeRoleRegion->value, $config['assume_role_region'])
+            ->set(ConfigParam::AwsRdsIamAssumeRoleSessionName->value, $config['assume_role_session_name'])
             ->set(ConfigParam::AwsRdsIamAuthTokenLifetimeInMinutes->value, $config['auth_token_lifetime_in_minutes'])
             ->set(ConfigParam::AwsRdsIamAwsRegion->value, $config['aws_region'])
             ->set(ConfigParam::AwsRdsIamAwsUsername->value, $config['aws_username']);
@@ -85,7 +87,6 @@ final class EasyDoctrineBundle extends AbstractBundle
     private function registerAwsRdsSslConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         $config = $config['aws_rds']['ssl'];
 
@@ -108,7 +109,6 @@ final class EasyDoctrineBundle extends AbstractBundle
     private function registerDeferredDispatcherConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         if (\count($config['deferred_dispatcher_entities']) === 0) {
             return;
@@ -124,7 +124,6 @@ final class EasyDoctrineBundle extends AbstractBundle
     private function registerEasyErrorHandlerConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         if ($config['easy_error_handler']['enabled'] === false) {
             return;
