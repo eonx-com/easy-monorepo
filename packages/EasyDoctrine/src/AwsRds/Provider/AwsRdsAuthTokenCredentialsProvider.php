@@ -5,7 +5,7 @@ namespace EonX\EasyDoctrine\AwsRds\Provider;
 
 use Aws\Credentials\AssumeRoleCredentialProvider;
 use Aws\Credentials\CredentialProvider;
-use Aws\Credentials\CredentialsInterface;
+use Aws\Credentials\Credentials;
 use Aws\Sts\StsClient;
 use EonX\EasyDoctrine\AwsRds\Enum\AwsRdsOption;
 use Psr\Log\LoggerInterface;
@@ -21,30 +21,30 @@ final readonly class AwsRdsAuthTokenCredentialsProvider implements AwsRdsAuthTok
     ) {
     }
 
-    public function provide(string $awsRegion, array $params): callable|CredentialsInterface
+    public function provide(string $awsRegion, array $params): callable|Credentials
     {
         $driverOptions = $params['driverOptions'] ?? [];
         $assumeRoleArn = $driverOptions[AwsRdsOption::AssumeRoleArn->value] ?? $this->assumeRoleArn;
 
         // Support __not_implemented__ value as env vars do not always support null or empty values
         if (\is_string($assumeRoleArn) && $assumeRoleArn !== '' && $assumeRoleArn !== '__not_implemented__') {
-            $assumeRoleDurationSeconds = (int)$driverOptions[AwsRdsOption::AssumeRoleDurationSeconds->value]
+            $assumeRoleDurationSeconds = (int)($driverOptions[AwsRdsOption::AssumeRoleDurationSeconds->value]
                 ?? $this->assumeRoleDurationSeconds
-                ?? 900;
+                ?? 900);
 
-            $assumeRoleRegion = (string)$driverOptions[AwsRdsOption::AssumeRoleRegion->value]
+            $assumeRoleRegion = (string)($driverOptions[AwsRdsOption::AssumeRoleRegion->value]
                 ?? $this->assumeRoleRegion
-                ?? $awsRegion;
+                ?? $awsRegion);
 
-            $assumeRoleSessionName = (string)$driverOptions[AwsRdsOption::AssumeRoleSessionName->value]
+            $assumeRoleSessionName = (string)($driverOptions[AwsRdsOption::AssumeRoleSessionName->value]
                 ?? $this->assumeRoleSessionName
-                ?? \hash('xxh128', $assumeRoleArn . $assumeRoleRegion);
+                ?? \hash('xxh128', $assumeRoleArn . $assumeRoleRegion));
 
             $this->logger?->debug('Using AssumeRoleCredentialProvider for AWS RDS IAM auth', [
                 'durationSeconds' => $assumeRoleDurationSeconds,
                 'region' => $assumeRoleRegion,
                 'roleArn' => $assumeRoleArn,
-                'sessionName' => $assumeRoleSessionName
+                'sessionName' => $assumeRoleSessionName,
             ]);
 
             return new AssumeRoleCredentialProvider([
