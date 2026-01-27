@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\AwsRds\Provider;
 
-use Aws\Credentials\CredentialsInterface;
+use Aws\Credentials\Credentials;
 
 interface AwsRdsAuthTokenCredentialsProviderInterface
 {
-    public function provide(string $awsRegion, array $params): callable|CredentialsInterface;
+    public function provide(string $awsRegion, array $params): callable|Credentials;
 }
