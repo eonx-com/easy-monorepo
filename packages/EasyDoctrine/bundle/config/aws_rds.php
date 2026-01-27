@@ -24,6 +24,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$awsUsername', param(ConfigParam::AwsRdsIamAwsUsername->value));
 
     $services
-        ->set(AwsRdsMiddleware::class)
-        ->tag('doctrine.middleware', ['priority' => 1000]);
+        ->set(AwsRdsMiddleware::class);
 };
