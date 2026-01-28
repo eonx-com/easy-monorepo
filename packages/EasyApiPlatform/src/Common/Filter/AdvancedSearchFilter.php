@@ -18,7 +18,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use EonX\EasyApiPlatform\Common\IriConverter\IriConverterTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -46,7 +45,6 @@ use Symfony\Component\Uid\Uuid;
  */
 final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterInterface
 {
-    use IriConverterTrait;
     use SearchFilterTrait;
 
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
@@ -455,6 +453,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         } catch (InvalidArgumentException) {
             return (new NilUuid())->toString();
         }
+    }
+
+    protected function getIriConverter(): IriConverterInterface
+    {
+        return $this->iriConverter;
     }
 
     protected function getPropertyAccessor(): PropertyAccessorInterface
