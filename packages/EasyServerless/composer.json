@@ -18,8 +18,8 @@
         "monolog/monolog": "^3.7",
         "phpunit/phpunit": "^10.2|^11.4",
         "symfony/cache": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/polyfill-uuid": "^1.31"
+        "symfony/config": "^7.2",
+        "symfony/http-kernel": "^7.2"
     },
     "conflict": {
         "easycorp/easyadmin-bundle": "<4.13.1"
