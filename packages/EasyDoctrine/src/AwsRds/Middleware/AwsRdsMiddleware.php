@@ -9,7 +9,7 @@ use Doctrine\DBAL\Driver\Middleware as MiddlewareInterface;
 use EonX\EasyDoctrine\AwsRds\Driver\AwsRdsDriver;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 
-#[AsMiddleware(priority: 100)]
+#[AsMiddleware(priority: 1000)]
 final readonly class AwsRdsMiddleware implements MiddlewareInterface
 {
     public function __construct(
