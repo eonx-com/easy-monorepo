@@ -72,6 +72,7 @@
     "require-dev": {
         "auth0/auth0-php": "^8.17",
         "async-aws/dynamo-db": "^3.6",
+        "async-aws/sqs": "^2.7",
         "bref/bref": "^2.3.15",
         "bref/laravel-bridge": "^2.6",
         "bref/symfony-bridge": "^1.0.3",
