@@ -8,14 +8,14 @@
         "aws/aws-sdk-php": "^3.288.1",
         "eonx-com/easy-utils": "^6.18",
         "nette/utils": "^4.0",
-        "symfony/cache": "^7.2",
+        "symfony/cache": "^7.4 || ^8.0",
         "symfony/cache-contracts": "^3.5",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-client": "^7.2",
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/http-client": "^7.4 || ^8.0",
         "symfony/http-client-contracts": "^3.5",
-        "symfony/http-kernel": "^7.2",
-        "symfony/uid": "^7.2"
+        "symfony/http-kernel": "^7.4 || ^8.0",
+        "symfony/uid": "^7.4 || ^8.0"
     },
     "require-dev": {
         "laravel/lumen-framework": "^11.0",
