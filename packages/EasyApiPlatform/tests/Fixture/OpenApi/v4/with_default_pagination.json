@@ -510,7 +510,8 @@
                                     "description": "An extra hint to understand the violation"
                                 },
                                 "payload": {
-                                    "type": "array",
+                                    "type": "object",
+                                    "additionalProperties": true,
                                     "description": "The serialized payload of the violation"
                                 }
                             },
