@@ -8,7 +8,7 @@
     },
     "require-dev": {
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4"
+        "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
     "autoload": {
         "psr-4": {
