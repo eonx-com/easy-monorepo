@@ -13,7 +13,7 @@
         "eonx-com/easy-pagination": "^6.18",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2|^11.4"
+        "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
     "autoload": {
         "psr-4": {

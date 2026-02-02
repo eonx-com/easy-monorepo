@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "eonx-com/easy-test": "^6.18",
-        "phpunit/phpunit": "^10.2|^11.4"
+        "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
     "autoload": {
         "psr-4": {
