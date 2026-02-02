@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-utils": "^6.17.6",
+        "eonx-com/easy-utils": "^6.18",
         "monolog/monolog": "^3.7",
         "symfony/config": "^7.2",
         "symfony/dependency-injection": "^7.2",
@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "bugsnag/bugsnag": "^3.29",
-        "eonx-com/easy-test": "^6.17.6",
+        "eonx-com/easy-test": "^6.18",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
