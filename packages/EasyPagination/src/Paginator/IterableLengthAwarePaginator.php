@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use EonX\EasyPagination\Pagination\PaginationInterface;
+use EonX\EasyUtils\Common\Helper\CollectorHelper;
 
 final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
 {
@@ -22,6 +23,6 @@ final class IterableLengthAwarePaginator extends AbstractLengthAwarePaginator
 
     protected function doGetItems(): array
     {
-        return \iterator_to_array($this->iterable);
+        return CollectorHelper::convertToArray($this->iterable);
     }
 }
