@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use AsyncAws\Sqs\SqsClient;
 use Bref\Symfony\Messenger\Service\BusDriver;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
@@ -21,6 +22,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->decorate(BusDriver::class, priority: -1000)
         ->arg('$errorHandler', service(ErrorHandlerInterface::class)->nullOnInvalid())
         ->arg('$eventDispatcher', service(EventDispatcherInterface::class)->nullOnInvalid());
+
+    $services->set(SqsClient::class);
 
     $services->set(SqsHandler::class)
         ->arg('$errorHandler', service(ErrorHandlerInterface::class)->nullOnInvalid())
