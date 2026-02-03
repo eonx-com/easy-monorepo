@@ -92,7 +92,7 @@ final class MyClass
     public function __construct(iterable $workers)
     {
         // $workers could be any type of iterable, convert it to array
-        $workers = \iterator_to_array($workers);
+        $workers = CollectorHelper::convertToArray($workers);
 
         // Now we are sure $workers is an array, we can use array_filter()
         $workers = \array_filter($workers, static function ($worker): bool {

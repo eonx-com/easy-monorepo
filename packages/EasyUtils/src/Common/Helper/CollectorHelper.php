@@ -14,8 +14,6 @@ final class CollectorHelper
      * @param iterable<TKey, TValue> $items
      *
      * @return array<TKey, TValue>|TValue[]
-     *
-     * @deprecated Will be removed in 7.0. Use `iterator_to_array` directly instead.
      */
     public static function convertToArray(iterable $items): array
     {
