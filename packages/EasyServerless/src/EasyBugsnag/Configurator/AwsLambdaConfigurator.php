@@ -15,7 +15,7 @@ final class AwsLambdaConfigurator extends AbstractClientConfigurator
     {
         $bugsnag
             ->getPipeline()
-            ->pipe(new CallbackBridge(function (Report $report): void {
+            ->pipe(new CallbackBridge(static function (Report $report): void {
                 $report->addMetaData([
                     'lambda' => [
                         'handler' => LambdaContextHelper::getHandler(),
