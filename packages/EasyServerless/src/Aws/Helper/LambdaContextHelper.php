@@ -18,6 +18,11 @@ final class LambdaContextHelper
         return (array)\json_decode($lambdaInvocationContext, true);
     }
 
+    public static function getRemainingTimeInMilliseconds(): int
+    {
+        return (self::getInvocationContext()['deadlineMs'] ?? 0) - (int)(\microtime(true) * 1000);
+    }
+
     public static function getRequestContext(): array
     {
         /** @var string $lambdaRequestContext */
