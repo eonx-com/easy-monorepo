@@ -20,7 +20,7 @@ abstract class AbstractDynamoDbStore extends AbstractStore
         RandomGeneratorInterface $random,
         DataCleanerInterface $dataCleaner,
         private readonly DynamoDbClient $dynamoDbClient,
-        private readonly string $table,
+        private readonly ?string $table = null,
         private readonly ?string $ttl = null,
         private readonly ?string $ttlAttribute = null,
     ) {

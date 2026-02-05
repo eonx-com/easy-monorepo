@@ -15,7 +15,7 @@ final readonly class AggregatedHealthChecker
     private array $checkers;
 
     /**
-     * @param iterable<\EonX\EasyServerless\Health\Checker\HealthCheckerInterface> $checkers
+     * @param iterable<\EonX\EasyServerless\Health\Checker\HealthCheckerInterface|object> $checkers
      */
     public function __construct(
         iterable $checkers,

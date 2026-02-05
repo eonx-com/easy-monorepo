@@ -36,7 +36,7 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
         return $this->allowedActions ?? [];
     }
 
-    public function getAllowedActivityProperties(): ?array
+    public function getAllowedActivityProperties(): array
     {
         return $this->allowedProperties;
     }

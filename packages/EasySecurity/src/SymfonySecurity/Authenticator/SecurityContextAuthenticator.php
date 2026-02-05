@@ -53,7 +53,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
         );
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         return $this->responseFactory->create($request, $exception);
     }

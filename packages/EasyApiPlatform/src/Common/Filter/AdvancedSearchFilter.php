@@ -147,6 +147,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     /**
      * Adds where clause according to the strategy.
      *
+     * @param array<string>|string $values
+     *
      * @throws \ApiPlatform\Metadata\Exception\InvalidArgumentException If strategy does not exist
      */
     protected function addWhereByStrategy(
@@ -177,13 +179,14 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->in($wrapCase($aliasedField), $valueParameter))
-                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map('strtolower', $values));
+                ->setParameter($valueParameter, $caseSensitive ? $values : \array_map(\strtolower(...), $values));
 
             return;
         }
 
         $ors = [];
         $parameters = [];
+        /** @var scalar $value */
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
             $parameters[] = [$caseSensitive ? $value : \strtolower((string)$value), $keyValueParameter];
@@ -284,6 +287,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $alias = $queryBuilder->getRootAliases()[0];
         $field = $property;
 
+        /** @var list<string>|null $values */
         $values = $this->normalizeValues((array)$value, $property);
         if ($values === null) {
             return;
@@ -353,7 +357,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $associationFieldIdentifier = $associationMetadata->getIdentifierFieldNames()[0];
         $doctrineTypeField = $this->getDoctrineFieldType($associationFieldIdentifier, $associationResourceClass);
 
-        $values = \array_map(function ($value) use ($associationFieldIdentifier, $doctrineTypeField) {
+        $values = \array_map(function (string $value) use ($associationFieldIdentifier, $doctrineTypeField): string {
             if (\is_numeric($value)) {
                 return $value;
             }
@@ -366,7 +370,10 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 $item = $this->getIriConverter()
                     ->getResourceFromIri($value, ['fetch_data' => false]);
 
-                return $this->propertyAccessor->getValue($item, $associationFieldIdentifier);
+                /** @var \Stringable|int|string|null $propertyValue */
+                $propertyValue = $this->propertyAccessor->getValue($item, $associationFieldIdentifier);
+
+                return (string)$propertyValue;
             } catch (InvalidArgumentException) {
                 /*
                  * Can we do better? This is not the ApiResource the call was made on,
@@ -389,7 +396,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         }, $values);
 
         $expected = \count($values);
-        $values = \array_filter($values, static fn ($value): bool => $value !== null);
+        $values = \array_filter($values, static fn (?string $value): bool => $value !== null && $value !== '');
         if ($expected > \count($values)) {
             /*
              * Shouldn't this actually fail harder?
@@ -430,7 +437,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         );
     }
 
-    protected function getIdFromValue(string $value): mixed
+    protected function getIdFromValue(string $value): string
     {
         if (\is_numeric($value)) {
             return $value;
@@ -445,13 +452,20 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             $item = $iriConverter->getResourceFromIri($value, ['fetch_data' => false]);
 
             if ($this->identifiersExtractor === null) {
-                return $this->getPropertyAccessor()
+                /** @var \Stringable|int|string $value */
+                $value = $this->getPropertyAccessor()
                     ->getValue($item, 'id');
+
+                return (string)$value;
             }
 
+            /** @var array<string, \Stringable|int|string> $identifiers */
             $identifiers = $this->identifiersExtractor->getIdentifiersFromItem($item);
+            if (\count($identifiers) === 1) {
+                return (string)\array_pop($identifiers);
+            }
 
-            return \count($identifiers) === 1 ? \array_pop($identifiers) : $identifiers;
+            throw new InvalidArgumentException('Composite identifiers are not supported.');
         } catch (InvalidArgumentException) {
             return (new NilUuid())->toString();
         }

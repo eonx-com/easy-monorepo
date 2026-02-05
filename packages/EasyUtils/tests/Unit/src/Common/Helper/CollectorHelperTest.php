@@ -85,7 +85,7 @@ final class CollectorHelperTest extends AbstractUnitTestCase
         // Convert to array so it goes through the generator
         CollectorHelper::ensureClassAsArray($items, $class ?? stdClass::class);
 
-        // If it reaches here, test is valid
+        // @phpstan-ignore-next-line
         self::assertTrue(true);
     }
 

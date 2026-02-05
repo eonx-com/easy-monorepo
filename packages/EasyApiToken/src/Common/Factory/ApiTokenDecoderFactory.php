@@ -78,7 +78,11 @@ final class ApiTokenDecoderFactory implements ApiTokenDecoderFactoryInterface
     }
 
     /**
-     * @param class-string $class
+     * @template TValue of object
+     *
+     * @param class-string<TValue> $class
+     *
+     * @return array<TValue>
      */
     private function filter(iterable $collection, string $class): array
     {

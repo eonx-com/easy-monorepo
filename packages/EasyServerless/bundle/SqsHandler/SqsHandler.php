@@ -240,14 +240,14 @@ final class SqsHandler extends AbstractSqsHandler
     ): int {
         $delayInMilliseconds = null;
 
-        if ($throwable instanceof RecoverableExceptionInterface && \method_exists($throwable, 'getRetryDelay')) {
+        if ($throwable instanceof RecoverableExceptionInterface) {
             $delayInMilliseconds = $throwable->getRetryDelay();
         }
 
         if ($throwable instanceof HandlerFailedException) {
             foreach ($throwable->getWrappedExceptions() as $nestedException) {
-                if ($nestedException instanceof RecoverableExceptionInterface === false
-                    || \method_exists($nestedException, 'getRetryDelay') === false
+                if (
+                    $nestedException instanceof RecoverableExceptionInterface === false
                     || 0 > $retryDelay = $nestedException->getRetryDelay() ?? -1
                 ) {
                     continue;

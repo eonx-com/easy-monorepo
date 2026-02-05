@@ -72,7 +72,7 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
             }
         }
 
-        if ($this->nameConverter !== null && $class !== null) {
+        if ($class !== null) {
             return $this->nameConverter->normalize($name, $class);
         }
 

@@ -104,11 +104,13 @@ final class SecretsHelper
             }
 
             $value = self::$secretsManager
-                ->getSecretValue($input)
+                ?->getSecretValue($input)
                 ->getSecretString();
 
-            if (\json_validate($value ?? '')) {
-                self::doLoad((array)\json_decode($value ?? '{}', true));
+            $value = \json_decode($value ?? '', true);
+
+            if (\is_array($value)) {
+                self::doLoad($value);
             }
         }
     }

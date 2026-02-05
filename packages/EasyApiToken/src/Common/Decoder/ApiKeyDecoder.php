@@ -23,7 +23,7 @@ final class ApiKeyDecoder extends AbstractDecoder
         }
 
         $authorization = \explode(':', (string)\base64_decode($authorization, true));
-        $username = \trim($authorization[0] ?? '');
+        $username = \trim($authorization[0]);
         $password = \trim($authorization[1] ?? '');
 
         if ($username === '' || $password !== '') {

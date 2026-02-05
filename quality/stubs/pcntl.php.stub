@@ -1,0 +1,12 @@
+<?php
+declare(strict_types=1);
+
+if (!defined('ITIMER_REAL')) {
+    define('ITIMER_REAL', 0);
+}
+if (!defined('ITIMER_VIRTUAL')) {
+    define('ITIMER_VIRTUAL', 1);
+}
+if (!defined('ITIMER_PROF')) {
+    define('ITIMER_PROF', 2);
+}
