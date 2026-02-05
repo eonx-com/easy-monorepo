@@ -48,6 +48,10 @@ final class EasyServerlessBundle extends AbstractBundle
 
         $container->import('config/services.php');
 
+        if ($config['console']['enabled']) {
+            $container->import('config/console.php');
+        }
+
         if ($config['health']['enabled']) {
             $container->import('config/health.php');
         }
