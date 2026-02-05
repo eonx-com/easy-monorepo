@@ -5,7 +5,6 @@ namespace EonX\EasyServerless\Aws\Console\Output;
 
 use EonX\EasyServerless\Aws\Console\Factory\OutputFactoryInterface;
 use EonX\EasyServerless\Aws\Console\Formatter\OutputMessageFormatterInterface;
-use EonX\EasyServerless\Aws\Console\Trait\FormattedConsoleOutputTrait;
 use Symfony\Component\Console\Output\ConsoleOutput as BaseConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,7 +16,7 @@ final class ConsoleOutput extends BaseConsoleOutput
 
     public static function fromOutput(
         BaseConsoleOutput $output,
-        ?OutputMessageFormatterInterface $messageFormatter = null
+        ?OutputMessageFormatterInterface $messageFormatter = null,
     ): self {
         $self = new self($output->getVerbosity(), $output->isDecorated(), $output->getFormatter());
         $self->setMessageFormatter($messageFormatter);

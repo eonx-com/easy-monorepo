@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Aws\Console\Output;
 
 use EonX\EasyServerless\Aws\Console\Formatter\OutputMessageFormatterInterface;
-use EonX\EasyServerless\Aws\Console\Trait\FormattedConsoleOutputTrait;
 use Symfony\Component\Console\Output\StreamOutput as BaseStreamOutput;
 
 final class StreamOutput extends BaseStreamOutput
@@ -13,7 +12,7 @@ final class StreamOutput extends BaseStreamOutput
 
     public static function fromOutput(
         BaseStreamOutput $output,
-        ?OutputMessageFormatterInterface $messageFormatter = null
+        ?OutputMessageFormatterInterface $messageFormatter = null,
     ): self {
         $self = new self(
             $output->getStream(),

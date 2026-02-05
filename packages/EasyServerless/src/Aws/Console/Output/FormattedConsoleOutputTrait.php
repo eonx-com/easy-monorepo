@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Aws\Console\Trait;
+namespace EonX\EasyServerless\Aws\Console\Output;
 
 use EonX\EasyServerless\Aws\Console\Formatter\OutputMessageFormatterInterface;
 
