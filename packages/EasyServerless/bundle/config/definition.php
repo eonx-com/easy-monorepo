@@ -14,6 +14,9 @@ return static function (DefinitionConfigurator $definition) {
                     ->end()
                 ->end()
             ->end()
+            ->arrayNode('console')
+                ->canBeDisabled()
+            ->end()
             ->arrayNode('easy_error_handler')
                 ->setDeprecated(
                     'eonx-com/easy-serverless',
