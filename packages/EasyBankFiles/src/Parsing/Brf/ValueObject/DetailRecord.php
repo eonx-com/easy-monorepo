@@ -8,17 +8,17 @@ use DateTimeInterface;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getAmount()
- * @method string|null getBillerCode()
- * @method string|null getCustomerReferenceNumber()
- * @method string|null getErrorCorrectionReason()
- * @method string|null getFiller()
- * @method string|null getOriginalReferenceNumber()
- * @method string|null getPaymentDate()
- * @method string|null getPaymentInstructionType()
- * @method string|null getPaymentTime()
- * @method string|null getSettlementDate()
- * @method string|null getTransactionReferenceNumber()
+ * @method string getAmount()
+ * @method string getBillerCode()
+ * @method string getCustomerReferenceNumber()
+ * @method string getErrorCorrectionReason()
+ * @method string getFiller()
+ * @method string getOriginalReferenceNumber()
+ * @method string getPaymentDate()
+ * @method string getPaymentInstructionType()
+ * @method string getPaymentTime()
+ * @method string getSettlementDate()
+ * @method string getTransactionReferenceNumber()
  */
 final class DetailRecord extends AbstractResult
 {

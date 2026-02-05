@@ -69,7 +69,7 @@ final readonly class MathHelper implements MathHelperInterface
 
     public function compareThat(string $leftOperand): MathComparisonHelperInterface
     {
-        return new MathComparisonHelper($leftOperand, (int)$this->scale);
+        return new MathComparisonHelper($leftOperand, $this->scale);
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string

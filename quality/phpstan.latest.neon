@@ -3,22 +3,11 @@ includes:
 
 parameters:
     ignoreErrors:
-        -
-            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
-        -
-            message: '#Offset .* on array\{debug\?\: bool\|null, runtimes\?\: array\|null, error_handler\?\: string\|false, env_var_name\?\: string, debug_var_name\?\: string\}\|null on left side of \?\? does not exist#'
-            path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php
-        -
-            message: '#Offset .* on array\{debug\?\: bool\|null, runtimes\?\: array\|null, error_handler\?\: string\|false, env_var_name\?\: string, debug_var_name\?\: string\}\|null in isset\(\) does not exist#'
-            path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
-        -
-            message: '#Offset .* on \*NEVER\* on left side of \?\?\= always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
-        -
-            message: '#Result of && is always false#'
-            path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
-        -
-            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
 
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
+
+        - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php

@@ -3,22 +3,8 @@ includes:
 
 parameters:
     ignoreErrors:
-        -
-            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
-        -
-            message: '#Offset .* on array\{debug\?\: bool\|null, runtimes\?\: array\|null, error_handler\?\: string\|false, env_var_name\?\: string, debug_var_name\?\: string\}\|null on left side of \?\? does not exist#'
-            path: %currentWorkingDirectory%/packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php
-        -
-            message: '#Offset .* on array\{debug\?\: bool\|null, runtimes\?\: array\|null, error_handler\?\: string\|false, env_var_name\?\: string, debug_var_name\?\: string\}\|null in isset\(\) does not exist#'
-            path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
-        -
-            message: '#Offset .* on \*NEVER\* on left side of \?\?\= always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
-        -
-            message: '#Result of && is always false#'
-            path: %currentWorkingDirectory%/packages/EasySwoole/src/Common/Runtime/EasySwooleRuntime.php
-        -
-            message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-            path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
+        - message: '#Parameter \#2 \$manager of class EonX\\EasyPagination\\Paginator\\DoctrineOrmLengthAwarePaginator constructor expects Doctrine\\ORM\\EntityManagerInterface, object given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/DoctrineOrmLengthAwarePaginatorTest.php
 
+        - message: '#Parameter \#2 \$connection of class EonX\\EasyPagination\\Paginator\\DoctrineDbalLengthAwarePaginator constructor expects Doctrine\\DBAL\\Connection, object given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/DoctrineDbalLengthAwarePaginatorTest.php

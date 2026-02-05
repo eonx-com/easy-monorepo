@@ -37,7 +37,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
      */
     private array $lazyLoggers = [];
 
-    private string $loggerClass;
+    private readonly string $loggerClass;
 
     /**
      * @var \EonX\EasyLogging\Configurator\LoggerConfiguratorInterface[]

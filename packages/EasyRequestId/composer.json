@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-random": "^6.18",
+        "eonx-com/easy-random": "^6.19",
         "symfony/config": "^7.4",
         "symfony/dependency-injection": "^7.4",
         "symfony/http-foundation": "^7.4",
@@ -15,7 +15,7 @@
     },
     "require-dev": {
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4"
+        "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
     "autoload": {
         "psr-4": {
@@ -41,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.18-dev"
+            "dev-master": "6.19-dev"
         }
     }
 }

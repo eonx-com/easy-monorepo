@@ -7,8 +7,8 @@ use EonX\EasyBankFiles\Parsing\Brf\Exception\InvalidSignFieldException;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getBillerCode()
- * @method string|null getFiller()
+ * @method string getBillerCode()
+ * @method string getFiller()
  */
 final class TrailerRecord extends AbstractResult
 {

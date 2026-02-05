@@ -14,6 +14,7 @@ final class EasyDoctrineBundleTest extends AbstractUnitTestCase
     {
         self::bootKernel();
 
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertTrue(true);
     }
 }

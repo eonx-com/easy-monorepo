@@ -342,14 +342,9 @@ trait MessengerAssertionsTrait
         }
 
         if (\count($expectedExceptions) > 0) {
-            $exceptions = \array_map(
-                static fn (array $expectedExceptionPair): string => \key($expectedExceptionPair),
-                $expectedExceptions
-            );
-
             throw new RuntimeException(
                 "The following exceptions were expected but not thrown: \n - "
-                . \implode("\n - ", $exceptions)
+                . \implode("\n - ", \array_map(\key(...), $expectedExceptions))
             );
         }
     }

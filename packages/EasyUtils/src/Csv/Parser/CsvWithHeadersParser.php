@@ -83,7 +83,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
                 // User give prefix without dot, add it
                 $prefixWithDot = \sprintf('%s.', $prefix);
                 // Extract prefix from current key
-                $extractPrefixWithDot = \substr($key, 0, \strlen($prefixWithDot));
+                $extractPrefixWithDot = \substr((string)$key, 0, \strlen($prefixWithDot));
 
                 // If current key, doesn't start with prefix, skip
                 if ($extractPrefixWithDot !== $prefixWithDot) {
