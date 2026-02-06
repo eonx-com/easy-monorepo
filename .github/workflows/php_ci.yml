@@ -60,7 +60,7 @@ jobs:
             -   name: Install Composer dependencies
                 uses: ramsey/composer-install@v3
                 with:
-                    composer-options: ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
+                    composer-options: ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-plugins
 
             -   name: Install Composer dependencies for Quality Tools
                 uses: ramsey/composer-install@v3
