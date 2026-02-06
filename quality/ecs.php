@@ -88,6 +88,7 @@ return ECSConfig::configure()
         DisallowMixedTypeHintSniff::class => [
             'packages/EasyBankFiles/src/Parsing/Common/Converter/XmlConverter.php',
             'packages/EasySecurity/src/SymfonySecurity/Voter/*',
+            'packages/EasySwoole/src/Doctrine/Result/DbalResult.php',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
         FinalClassFixer::class => [
@@ -101,6 +102,9 @@ return ECSConfig::configure()
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
             'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
+            'packages/EasyHttpClient/tests/Unit/AbstractUnitTestCase.php',
+            'packages/EasyRepository/tests/Unit/AbstractUnitTestCase.php',
+            'packages/EasyUtils/tests/Unit/AbstractUnitTestCase.php',
         ],
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',

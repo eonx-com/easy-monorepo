@@ -18,14 +18,14 @@ final class ResultsContextTest extends AbstractUnitTestCase
         $context = new ResultsContext([], [], [], [], []);
 
         self::assertNull($context->getAccount(0));
-        self::assertIsArray($context->getAccounts());
-        self::assertIsArray($context->getAccountsForGroup(1));
-        self::assertIsArray($context->getErrors());
+        self::assertSame([], $context->getAccounts());
+        self::assertSame([], $context->getAccountsForGroup(1));
+        self::assertSame([], $context->getErrors());
         self::assertNull($context->getFile());
         self::assertNull($context->getGroup(0));
-        self::assertIsArray($context->getGroups());
-        self::assertIsArray($context->getTransactions());
-        self::assertIsArray($context->getTransactionsForAccount(1));
+        self::assertSame([], $context->getGroups());
+        self::assertSame([], $context->getTransactions());
+        self::assertSame([], $context->getTransactionsForAccount(1));
     }
 
     /**

@@ -22,6 +22,9 @@ final class Decimal extends AbstractConstraint
 
     public int $minPrecision;
 
+    /**
+     * @param array{minPrecision?: int|string, maxPrecision?: int}|int|null $options
+     */
     public function __construct(
         mixed $options = null,
         ?int $minPrecision = null,
@@ -33,7 +36,7 @@ final class Decimal extends AbstractConstraint
             $minPrecision = 0;
 
             if (\is_array($options) && isset($options['minPrecision'])) {
-                $minPrecision = \intval($options['minPrecision']);
+                $minPrecision = (int)$options['minPrecision'];
             }
         }
 
@@ -41,7 +44,7 @@ final class Decimal extends AbstractConstraint
             $maxPrecision = 0;
 
             if (\is_array($options) && isset($options['maxPrecision'])) {
-                $maxPrecision = \intval($options['maxPrecision']);
+                $maxPrecision = (int)$options['maxPrecision'];
             }
         }
 

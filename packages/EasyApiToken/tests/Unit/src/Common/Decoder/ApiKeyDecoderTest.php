@@ -87,9 +87,7 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
             ]));
 
         self::assertInstanceOf(HashedApiKey::class, $token);
-        if ($token instanceof HashedApiKey) {
-            self::assertEquals($expected, $token->getPayload());
-        }
+        self::assertEquals($expected, $token->getPayload());
     }
 
     private function getDecoder(): ApiKeyDecoder

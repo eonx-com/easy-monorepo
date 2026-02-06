@@ -33,9 +33,8 @@ final class GeneratorStub extends AbstractGenerator
     protected function generate(): void
     {
         $this->writeLinesForObjects($this->transactions);
-        /** @var \EonX\EasyBankFiles\Generation\Aba\ValueObject\DescriptiveRecord $descriptiveRecord */
-        $descriptiveRecord = $this->descriptiveRecord;
-        $this->validateAttributes($descriptiveRecord, []);
+        // @phpstan-ignore argument.type
+        $this->validateAttributes($this->descriptiveRecord, []);
     }
 
     /**

@@ -94,7 +94,7 @@ final class SwooleTableAdapter extends AbstractAdapter
             ->exists($id);
     }
 
-    protected function doSave(array $values, int $lifetime): array|bool
+    protected function doSave(array $values, int $lifetime): array
     {
         $failed = [];
         $table = $this->getSwooleTable();
@@ -112,11 +112,14 @@ final class SwooleTableAdapter extends AbstractAdapter
             }
         }
 
-        if (\count($failed) > 0) {
-            throw new CacheException(\sprintf('Could not save ids %s', \implode(', ', $failed)));
+        /** @var array $result */
+        $result = $failed;
+
+        if (\count($result) > 0) {
+            throw new CacheException(\sprintf('Could not save ids %s', \implode(', ', $result)));
         }
 
-        return $failed;
+        return $result;
     }
 
     private function getSwooleTable(): SwooleTable|OpenSwooleTable

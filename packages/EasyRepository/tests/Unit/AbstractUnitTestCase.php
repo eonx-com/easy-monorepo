@@ -25,8 +25,16 @@ abstract class AbstractUnitTestCase extends TestCase
 ->getMethod($methodName);
     }
 
-    protected function mock(mixed $target, ?callable $expectations = null): LegacyMockInterface
+    /**
+     * @template TMock of object
+     *
+     * @param class-string<TMock> $target
+     *
+     * @return \Mockery\LegacyMockInterface&\Mockery\MockInterface&TMock
+     */
+    protected function mock(mixed $target, ?callable $expectations = null): object
     {
+        /** @var \Mockery\LegacyMockInterface&\Mockery\MockInterface&TMock $mock */
         $mock = Mockery::mock($target);
 
         if ($expectations !== null) {
@@ -36,10 +44,13 @@ abstract class AbstractUnitTestCase extends TestCase
         return $mock;
     }
 
+    /**
+     * @return \Mockery\LegacyMockInterface&\Mockery\MockInterface&\Doctrine\Persistence\ManagerRegistry
+     */
     protected function mockRegistry(
         ?callable $managerExpectations = null,
         ?callable $repositoryExpectations = null,
-    ): LegacyMockInterface {
+    ): object {
         return $this->mock(
             ManagerRegistry::class,
             function (LegacyMockInterface $registry) use ($managerExpectations, $repositoryExpectations): void {

@@ -10,11 +10,17 @@ final class LambdaContextHelperTest extends AbstractUnitTestCase
 {
     public function testGetInvocationContextSucceeds(): void
     {
-        self::assertIsArray(LambdaContextHelper::getInvocationContext());
+        LambdaContextHelper::getInvocationContext();
+
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
+        self::assertTrue(true);
     }
 
     public function testGetRequestContextSucceeds(): void
     {
-        self::assertIsArray(LambdaContextHelper::getRequestContext());
+        LambdaContextHelper::getRequestContext();
+
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
+        self::assertTrue(true);
     }
 }

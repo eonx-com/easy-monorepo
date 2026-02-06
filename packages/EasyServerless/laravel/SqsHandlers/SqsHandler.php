@@ -5,34 +5,24 @@ namespace EonX\EasyServerless\Laravel\SqsHandlers;
 
 use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
-use Bref\Event\Sqs\SqsEvent;
-use Bref\Event\Sqs\SqsHandler as BaseSqsHandler;
 use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
 use Bref\LaravelBridge\Queue\Worker;
 use EonX\EasyServerless\Laravel\Jobs\SqsQueueJob;
+use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Log\LogManager;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Queue\WorkerOptions;
 use Illuminate\Support\Facades\Facade;
 use RuntimeException;
 
-/**
- * The purpose of this class and related SqsQueueJob is to handle SQS events in a way that delegates retries to SQS
- * itself, allowing us to fully utilize its retries and dead-letter queue capabilities.
- * It also allows us to handle partial batch failures, which is useful when processing multiple messages in a single
- * batch.
- */
-final class SqsHandler extends BaseSqsHandler
+final class SqsHandler extends AbstractSqsHandler
 {
-    private const float JOB_TIMEOUT_SAFETY_MARGIN = 1.0;
-
-    private readonly LogManager $logger;
-
     private readonly SqsClient $sqsClient;
+
+    private readonly Worker $worker;
 
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -40,7 +30,9 @@ final class SqsHandler extends BaseSqsHandler
     public function __construct(
         private readonly Container $container,
         private readonly string $connectionName = 'sqs',
-        private readonly bool $partialBatchFailure = false,
+        int $appMaxRetries = 3,
+        int $timeoutThresholdMilliseconds = 1000,
+        bool $partialBatchFailure = false,
     ) {
         $queue = $this->container->make(QueueManager::class)
             ->connection($this->connectionName);
@@ -51,70 +43,78 @@ final class SqsHandler extends BaseSqsHandler
 
         $this->logger = $this->container->make('log');
         $this->sqsClient = $queue->getSqs();
+        $this->worker = $this->makeWorker();
+
+        parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds);
+    }
+
+    protected function getSqsClient(): SqsClient
+    {
+        return $this->sqsClient;
     }
 
     /**
-     * @throws \Bref\Event\InvalidLambdaEvent
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Throwable
      */
-    public function handleSqs(SqsEvent $event, Context $context): void
+    protected function handleSqsRecords(SqsRecord $sqsRecord, Context $context): void
     {
-        $worker = $this->makeWorker();
+        $timeout = $this->calculateJobTimeout($context->getRemainingTimeInMillis());
+        $job = $this->makeSqsQueueJob($sqsRecord);
+        $workerOptions = $this->makeWorkerOptions($timeout);
 
-        $isFifo = null;
-        $hasPreviousMessageFailed = false;
-        $failingMessageGroupIds = [];
+        $this->worker->runSqsJob($job, $this->connectionName, $workerOptions);
 
-        foreach ($event->getRecords() as $sqsRecord) {
-            $isFifo ??= \str_ends_with((string)$sqsRecord->toArray()['eventSourceARN'], '.fifo');
-            $messageGroupId = $sqsRecord->toArray()['attributes']['MessageGroupId'] ?? null;
+        if ($job->hasFailed()) {
+            // The application can explicitly prevent retries by setting maxTries to 1
+            $isJobExplicitlyUnrecoverable = $job->maxTries() === 1;
+            $shouldRetry = $isJobExplicitlyUnrecoverable === false
+                && $sqsRecord->getApproximateReceiveCount() < ($job->maxTries() ?? $this->appMaxRetries);
 
-            /**
-             * When using FIFO queues, preserving order is important.
-             * If a previous message has failed in the batch, we need to skip the next ones and requeue them.
-             */
-            if ($isFifo && $hasPreviousMessageFailed && \in_array($messageGroupId, $failingMessageGroupIds, true)) {
-                $this->markAsFailed($sqsRecord);
+            // As explained in parent::shouldSkipRecord(), in some scenarios we must requeue messages even when
+            // the application will not retry them so they can end up in the DLQ if configured,
+            // except when the application is explicitly preventing retries
+            $shouldRequeue = $isJobExplicitlyUnrecoverable
+                && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
 
-                continue;
+            if ($shouldRetry === false) {
+                $this->logger?->error(\sprintf(
+                    'SQS Record with MessageId "%s" failed to process but will not be retried%s',
+                    $sqsRecord->getMessageId(),
+                    $isJobExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
+                ));
             }
 
-            $timeout = $this->calculateJobTimeout($context->getRemainingTimeInMillis());
-            $job = $this->makeSqsQueueJob($sqsRecord);
-            $workerOptions = $this->makeWorkerOptions($timeout);
-
-            $worker->runSqsJob($job, $this->connectionName, $workerOptions);
-
-            if ($job->hasFailed()) {
-                // If the job explicitly prevents retries, then let lambda acknowledge it
-                if ($job->maxTries() === 1) {
-                    $this->logger->error(\sprintf($this->getUnrecoverableJobMessage(), $sqsRecord->getMessageId()));
-
-                    continue;
-                }
-
+            // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
+            // this is why we mark the record as failed only if we want it to be retried by SQS.
+            // Failure reports should be handled by the application itself (e.g. logging, error tracking, etc.)
+            if ($shouldRetry || $shouldRequeue) {
+                // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
+                // and if one fails, all are retried creating side effects of reprocessing successful ones.
+                // It is highly recommended to enable partial batch failure, but still support not having it enabled
                 if ($this->partialBatchFailure === false) {
                     throw $job->getThrowable() ?? new RuntimeException('Job failed without an exception');
                 }
 
-                $failingMessageGroupIds[] = $messageGroupId;
-                $hasPreviousMessageFailed = true;
+                if ($shouldRequeue) {
+                    $this->scheduleForRetry($sqsRecord);
 
-                $this->markAsFailed($sqsRecord);
+                    return;
+                }
+
+                // We want to add a delay only if we are actually retrying the message
+                // We consider a message as failed only if we are not triggering this logic because of a requeue
+                $this->scheduleForRetry(
+                    sqsRecord: $sqsRecord,
+                    retryDelaySeconds: \is_int($job->backoff()) ? $job->backoff() : null,
+                    forFailure: true
+                );
             }
         }
     }
 
     private function calculateJobTimeout(int $remainingInvocationTimeInMs): int
     {
-        return \max((int)(($remainingInvocationTimeInMs - self::JOB_TIMEOUT_SAFETY_MARGIN) / 1000), 0);
-    }
-
-    private function getUnrecoverableJobMessage(): string
-    {
-        return 'SQS record with id "%s" failed to be processed. But Job::$tries was set to 1 not to re-attempt.'
-            . ' Message will be acknowledged';
+        return \max((int)(($remainingInvocationTimeInMs - self::SAFETY_TIMEOUT_MARGIN_MILLISECONDS) / 1000), 0);
     }
 
     private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
@@ -142,8 +142,8 @@ final class SqsHandler extends BaseSqsHandler
     private function makeWorker(): Worker
     {
         $worker = $this->container->make(Worker::class, [
-            'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
-            'resetScope' => fn () => $this->resetWorkerScope(),
+            'isDownForMaintenance' => MaintenanceMode::active(...),
+            'resetScope' => $this->resetWorkerScope(...),
         ]);
 
         $worker->setCache(
@@ -161,7 +161,7 @@ final class SqsHandler extends BaseSqsHandler
             memory: 512,
             timeout: $timeout,
             sleep: 0,
-            maxTries: 50, // Set high on purpose as we delegate retries to SQS
+            maxTries: $this->appMaxRetries,
             force: false,
             stopWhenEmpty: false,
             maxJobs: 0,
@@ -174,22 +174,20 @@ final class SqsHandler extends BaseSqsHandler
      */
     private function resetWorkerScope(): void
     {
-        if (\method_exists($this->logger, 'flushSharedContext')) {
+        if ($this->logger && \method_exists($this->logger, 'flushSharedContext')) {
             $this->logger->flushSharedContext();
         }
 
-        if (\method_exists($this->logger, 'withoutContext')) {
+        if ($this->logger && \method_exists($this->logger, 'withoutContext')) {
             $this->logger->withoutContext();
         }
 
         /** @var \Illuminate\Database\DatabaseManager $db */
         $db = $this->container->make('db');
 
-        if (\method_exists($db, 'getConnections')) {
-            foreach ($db->getConnections() as $connection) {
-                $connection->resetTotalQueryDuration();
-                $connection->allowQueryDurationHandlersToRunAgain();
-            }
+        foreach ($db->getConnections() as $connection) {
+            $connection->resetTotalQueryDuration();
+            $connection->allowQueryDurationHandlersToRunAgain();
         }
 
         $this->container->forgetScopedInstances();

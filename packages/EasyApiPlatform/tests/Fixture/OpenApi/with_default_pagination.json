@@ -24,43 +24,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "items": {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Category"
-                                            },
-                                            "type": "array"
-                                        },
-                                        "pagination": {
-                                            "properties": {
-                                                "currentPage": {
-                                                    "minimum": 1,
-                                                    "type": "integer"
-                                                },
-                                                "hasNextPage": {
-                                                    "type": "boolean"
-                                                },
-                                                "hasPreviousPage": {
-                                                    "type": "boolean"
-                                                },
-                                                "itemsPerPage": {
-                                                    "default": 25,
-                                                    "minimum": 0,
-                                                    "type": "integer",
-                                                    "maximum": 50
-                                                },
-                                                "totalItems": {
-                                                    "minimum": 0,
-                                                    "type": "integer"
-                                                },
-                                                "totalPages": {
-                                                    "minimum": 0,
-                                                    "type": "integer"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Category"
                                     }
                                 }
                             },
@@ -534,8 +500,25 @@
                                 "message": {
                                     "type": "string",
                                     "description": "The message associated with the violation"
+                                },
+                                "code": {
+                                    "type": "string",
+                                    "description": "The code of the violation"
+                                },
+                                "hint": {
+                                    "type": "string",
+                                    "description": "An extra hint to understand the violation"
+                                },
+                                "payload": {
+                                    "type": "object",
+                                    "additionalProperties": true,
+                                    "description": "The serialized payload of the violation"
                                 }
-                            }
+                            },
+                            "required": [
+                                "propertyPath",
+                                "message"
+                            ]
                         }
                     },
                     "detail": {

@@ -48,6 +48,10 @@ final class EasyServerlessBundle extends AbstractBundle
 
         $container->import('config/services.php');
 
+        if ($config['console']['enabled']) {
+            $container->import('config/console.php');
+        }
+
         if ($config['health']['enabled']) {
             $container->import('config/health.php');
         }
@@ -60,8 +64,20 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/easy_admin.php');
         }
 
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder)) {
+            $container->import('config/easy_bugsnag.php');
+        }
+
+        if ($this->isBundleEnabled('EasyPaginationBundle', $builder)) {
+            $container->import('config/easy_pagination.php');
+        }
+
         if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
             $container->import('config/doctrine.php');
+        }
+
+        if ($this->isBundleEnabled('BrefMessengerBundle', $builder)) {
+            $container->import('config/messenger.php');
         }
 
         if (\class_exists(Logger::class) && $config['monolog']['enabled']) {

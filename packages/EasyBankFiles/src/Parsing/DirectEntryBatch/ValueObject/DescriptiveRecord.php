@@ -7,12 +7,12 @@ use DateTimeImmutable;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getDateProcessed()
- * @method string|null getDescriptionOfEntries()
- * @method string|null getReelSequenceNumber()
- * @method string|null getUserFinancialInstitution()
- * @method string|null getNumberOfUserSupplyingFile()
- * @method string|null getNameOfUserSupplyingFile()
+ * @method string getDateProcessed()
+ * @method string getDescriptionOfEntries()
+ * @method string getReelSequenceNumber()
+ * @method string getUserFinancialInstitution()
+ * @method string getNumberOfUserSupplyingFile()
+ * @method string getNameOfUserSupplyingFile()
  */
 final class DescriptiveRecord extends AbstractResult
 {

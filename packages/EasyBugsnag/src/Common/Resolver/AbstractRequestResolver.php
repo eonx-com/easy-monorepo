@@ -18,6 +18,7 @@ abstract class AbstractRequestResolver implements ResolverInterface
         $resolveInCli = (bool)($_SERVER[ServerParam::ResolveRequestInCli->value] ?? false);
 
         if ($inCli && $resolveInCli === false) {
+            /** @var string[] $argv */
             $argv = $_SERVER['argv'] ?? [];
 
             \array_shift($argv);

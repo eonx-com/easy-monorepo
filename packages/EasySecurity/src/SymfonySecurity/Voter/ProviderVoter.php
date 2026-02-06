@@ -21,11 +21,7 @@ final class ProviderVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if ($subject instanceof ProviderRestrictedInterface === false) {
-            return false;
-        }
-
-        return $subject->getRestrictedProviderUniqueId() !== null;
+        return $subject instanceof ProviderRestrictedInterface;
     }
 
     protected function voteOnAttribute(

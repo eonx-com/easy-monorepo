@@ -11,9 +11,9 @@ use Symfony\Component\String\UnicodeString;
 final class RandomStringConfig
 {
     /**
-     * @var \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]|null
+     * @var \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]
      */
-    private ?array $constraints = [];
+    private array $constraints = [];
 
     /**
      * @var \SplObjectStorage<\EonX\EasyRandom\Enum\Alphabet, null>
@@ -128,9 +128,9 @@ final class RandomStringConfig
     }
 
     /**
-     * @return \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]|null
+     * @return \EonX\EasyRandom\Constraint\RandomStringConstraintInterface[]
      */
-    public function getConstraints(): ?array
+    public function getConstraints(): array
     {
         return $this->constraints;
     }

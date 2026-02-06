@@ -22,7 +22,6 @@ final class TrimStringsMiddlewareTest extends AbstractUnitTestCase
         $expectedResult = [
             'abc' => '123',
         ];
-        /** @var \EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
@@ -56,7 +55,6 @@ final class TrimStringsMiddlewareTest extends AbstractUnitTestCase
         $expectedResult = [
             'abc' => '123',
         ];
-        /** @var \EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {
@@ -91,7 +89,6 @@ final class TrimStringsMiddlewareTest extends AbstractUnitTestCase
         $expectedResult = [
             'abc' => '123',
         ];
-        /** @var \EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface $trimmer */
         $trimmer = $this->mock(
             StringTrimmerInterface::class,
             static function (MockInterface $mock) use ($data, $except, $expectedResult): void {

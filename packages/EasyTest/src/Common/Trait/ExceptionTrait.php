@@ -48,7 +48,7 @@ trait ExceptionTrait
             && $this->thrownException->getCode() !== 0
             && \str_starts_with($expectedException, 'App\\')
         ) {
-            self::assertNotNull($code, "Didn't you forget to define the error code?");
+            self::fail("Didn't you forget to define the error code?");
         }
 
         if ($code !== null) {
@@ -56,11 +56,11 @@ trait ExceptionTrait
         }
 
         if ($previousException === null) {
-            self::assertNull($this->thrownException->getPrevious());
+            self::assertNull($this->thrownException?->getPrevious());
         }
 
         if ($previousException !== null) {
-            self::assertInstanceOf($previousException, $this->thrownException->getPrevious());
+            self::assertInstanceOf($previousException, $this->thrownException?->getPrevious());
         }
     }
 

@@ -104,7 +104,7 @@ final class SecretsHelper
             }
 
             $value = self::$secretsManager
-                ->getSecretValue($input)
+                ?->getSecretValue($input)
                 ->getSecretString();
 
             $value = \json_decode($value ?? '', true);

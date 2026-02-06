@@ -57,7 +57,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
                 continue;
             }
 
-            if (\in_array($key, $disallowedProperties, true) === true) {
+            if (\in_array($key, $disallowedProperties, true)) {
                 unset($data[$key]);
 
                 continue;

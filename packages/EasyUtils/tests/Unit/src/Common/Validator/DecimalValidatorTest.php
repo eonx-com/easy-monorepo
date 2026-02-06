@@ -173,8 +173,7 @@ final class DecimalValidatorTest extends AbstractUnitTestCase
         int $minPrecision,
         int $maxPrecision,
     ): ConstraintViolationBuilderInterface {
-        /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
-        $violationBuilder = $this->mock(
+        return $this->mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code, $minPrecision, $maxPrecision): void {
                 $mock->shouldReceive('setParameter')
@@ -198,16 +197,13 @@ final class DecimalValidatorTest extends AbstractUnitTestCase
                     ->andReturnSelf();
             }
         );
-
-        return $violationBuilder;
     }
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
         ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
-        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
+        return $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder,
         ): void {
@@ -216,18 +212,13 @@ final class DecimalValidatorTest extends AbstractUnitTestCase
                 ->with($message)
                 ->andReturn($violationBuilder);
         });
-
-        return $context;
     }
 
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
-        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
+        return $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();
         });
-
-        return $context;
     }
 }

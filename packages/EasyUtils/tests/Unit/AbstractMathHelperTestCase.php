@@ -211,6 +211,10 @@ abstract class AbstractMathHelperTestCase extends AbstractUnitTestCase
         self::assertSame('20000000000000000000', $actual);
     }
 
+    /**
+     * @param numeric-string $leftOperand
+     * @param numeric-string $rightOperand
+     */
     #[DataProvider('provideCompareThatData')]
     public function testCompareThatSucceeds(
         string $leftOperand,

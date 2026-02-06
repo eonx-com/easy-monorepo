@@ -8,19 +8,19 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-filter": "*",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/framework-bundle": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/string": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/framework-bundle": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/string": "^7.4"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^6.18",
+        "eonx-com/easy-test": "^6.19",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2|^11.4",
-        "symfony/serializer": "^7.2",
-        "symfony/validator": "^7.2"
+        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "symfony/serializer": "^7.4",
+        "symfony/validator": "^7.4"
     },
     "autoload": {
         "psr-4": {
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.18-dev"
+            "dev-master": "6.19-dev"
         }
     }
 }

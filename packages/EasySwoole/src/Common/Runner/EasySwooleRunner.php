@@ -221,6 +221,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
 
         // Format and filter dirs
         $dirs = \array_filter(\array_map(static function (string $dir): ?string {
+            /** @var non-empty-string|false $realpath */
             $realpath = \realpath($dir);
 
             return \is_string($realpath) ? $realpath : null;

@@ -27,12 +27,18 @@ final readonly class DbalResult implements Result
 
     public function fetchAllAssociative(): array
     {
-        return $this->fetchAll(PDO::FETCH_ASSOC);
+        /** @var list<array<string, mixed>> $result */
+        $result = $this->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
     public function fetchAllNumeric(): array
     {
-        return $this->fetchAll(PDO::FETCH_NUM);
+        /** @var list<list<mixed>> $result */
+        $result = $this->fetchAll(PDO::FETCH_NUM);
+
+        return $result;
     }
 
     public function fetchAssociative(): false|array
@@ -42,12 +48,18 @@ final readonly class DbalResult implements Result
 
     public function fetchFirstColumn(): array
     {
-        return $this->fetchAll(PDO::FETCH_COLUMN);
+        /** @var list<mixed> $result */
+        $result = $this->fetchAll(PDO::FETCH_COLUMN);
+
+        return $result;
     }
 
     public function fetchNumeric(): false|array
     {
-        return $this->fetch(PDO::FETCH_NUM);
+        /** @var list<mixed>|false $result */
+        $result = $this->fetch(PDO::FETCH_NUM);
+
+        return $result;
     }
 
     public function fetchOne(): mixed

@@ -6,21 +6,21 @@
     "require": {
         "php": "^8.4",
         "doctrine/dbal": "^3.8",
-        "eonx-com/easy-encryption": "^6.18",
-        "eonx-com/easy-event-dispatcher": "^6.18",
-        "eonx-com/easy-lock": "^6.18",
-        "eonx-com/easy-pagination": "^6.18",
-        "eonx-com/easy-random": "^6.18",
-        "eonx-com/easy-utils": "^6.18",
+        "eonx-com/easy-encryption": "^6.19",
+        "eonx-com/easy-event-dispatcher": "^6.19",
+        "eonx-com/easy-lock": "^6.19",
+        "eonx-com/easy-pagination": "^6.19",
+        "eonx-com/easy-random": "^6.19",
+        "eonx-com/easy-utils": "^6.19",
         "nesbot/carbon": "^3.8.4",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/messenger": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/messenger": "^7.4"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^6.18",
-        "phpunit/phpunit": "^10.2|^11.4"
+        "eonx-com/easy-test": "^6.19",
+        "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
     "autoload": {
         "psr-4": {
@@ -40,7 +40,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.18-dev"
+            "dev-master": "6.19-dev"
         }
     }
 }

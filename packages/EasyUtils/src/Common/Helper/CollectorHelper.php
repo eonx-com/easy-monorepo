@@ -14,11 +14,13 @@ final class CollectorHelper
      * @param iterable<TKey, TValue> $items
      *
      * @return array<TKey, TValue>|TValue[]
-     *
-     * @deprecated Will be removed in 7.0. Use `iterator_to_array` directly instead.
      */
     public static function convertToArray(iterable $items): array
     {
+        if (\is_array($items)) {
+            return $items;
+        }
+
         return \iterator_to_array($items);
     }
 
@@ -51,13 +53,13 @@ final class CollectorHelper
      *
      * @param class-string<TValue> $class
      *
-     * @return list<TValue>
+     * @return array<TValue>
      *
      * @throws \EonX\EasyUtils\Common\Exception\InvalidArgumentException
      */
     public static function ensureClassAsArray(iterable $items, string $class): array
     {
-        return \iterator_to_array(self::ensureClass($items, $class));
+        return self::convertToArray(self::ensureClass($items, $class));
     }
 
     /**
@@ -81,11 +83,11 @@ final class CollectorHelper
      *
      * @param class-string<TValue> $class
      *
-     * @return list<TValue>
+     * @return array<TValue>
      */
     public static function filterByClassAsArray(iterable $items, string $class): array
     {
-        return \iterator_to_array(self::filterByClass($items, $class));
+        return self::convertToArray(self::filterByClass($items, $class));
     }
 
     /**
@@ -97,7 +99,7 @@ final class CollectorHelper
      */
     public static function orderHigherPriorityFirst(iterable $items): iterable
     {
-        $items = \iterator_to_array($items);
+        $items = self::convertToArray($items);
 
         \usort($items, static function ($first, $second): int {
             $firstPriority = $first instanceof HasPriorityInterface ?
@@ -120,11 +122,11 @@ final class CollectorHelper
      *
      * @param iterable<TValue> $items
      *
-     * @return list<TValue>
+     * @return array<TValue>
      */
     public static function orderHigherPriorityFirstAsArray(iterable $items): array
     {
-        return \iterator_to_array(self::orderHigherPriorityFirst($items));
+        return self::convertToArray(self::orderHigherPriorityFirst($items));
     }
 
     /**
@@ -136,7 +138,7 @@ final class CollectorHelper
      */
     public static function orderLowerPriorityFirst(iterable $items): iterable
     {
-        $items = \iterator_to_array($items);
+        $items = self::convertToArray($items);
 
         \usort($items, static function ($first, $second): int {
             $firstPriority = $first instanceof HasPriorityInterface ?
@@ -159,10 +161,10 @@ final class CollectorHelper
      *
      * @param iterable<TValue> $items
      *
-     * @return list<TValue>
+     * @return array<TValue>
      */
     public static function orderLowerPriorityFirstAsArray(iterable $items): array
     {
-        return \iterator_to_array(self::orderLowerPriorityFirst($items));
+        return self::convertToArray(self::orderLowerPriorityFirst($items));
     }
 }

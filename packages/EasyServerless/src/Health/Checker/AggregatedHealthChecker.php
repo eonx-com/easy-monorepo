@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Health\Checker;
 
 use EonX\EasyServerless\Health\ValueObject\HealthCheckResult;
-use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -16,13 +15,16 @@ final readonly class AggregatedHealthChecker
     private array $checkers;
 
     /**
-     * @param iterable<\EonX\EasyServerless\Health\Checker\HealthCheckerInterface> $checkers
+     * @param iterable<\EonX\EasyServerless\Health\Checker\HealthCheckerInterface|object> $checkers
      */
     public function __construct(
         iterable $checkers,
         private ?LoggerInterface $logger = null,
     ) {
-        $this->checkers = CollectorHelper::filterByClassAsArray($checkers, HealthCheckerInterface::class);
+        $this->checkers = \array_filter(
+            \iterator_to_array($checkers),
+            static fn (mixed $checker): bool => $checker instanceof HealthCheckerInterface
+        );
     }
 
     /**
