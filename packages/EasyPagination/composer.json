@@ -21,7 +21,7 @@
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^13.0",
         "symfony/uid": "^7.4"
     },
     "autoload": {
