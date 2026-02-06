@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "bugsnag/bugsnag": "^3.29",
         "eonx-com/easy-utils": "^6.19",
         "guzzlehttp/guzzle": "^7.0",
@@ -27,8 +27,9 @@
         "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/orm": "^2.20",
         "eonx-com/easy-test": "^6.19",
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "laravel/framework": "^11.44.1",
+        "laravel/lumen-framework": "^11.2",
+        "phpunit/phpunit": "^12.5",
         "symfony/doctrine-bridge": "^7.4",
         "symfony/uid": "^7.4"
     },

@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-sodium": "*",
         "eonx-com/easy-utils": "^6.19",
         "paragonie/halite": "^5.1",
@@ -15,8 +15,9 @@
     "require-dev": {
         "aws/aws-sdk-php": "^3.288.1",
         "eonx-com/easy-test": "^6.19",
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "laravel/framework": "^11.44.1",
+        "laravel/lumen-framework": "^11.2",
+        "phpunit/phpunit": "^12.5",
         "symfony/filesystem": "^7.4",
         "symfony/process": "^7.4"
     },

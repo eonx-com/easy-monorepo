@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "eonx-com/easy-event-dispatcher": "^6.19",
         "eonx-com/easy-lock": "^6.19",
         "eonx-com/easy-pagination": "^6.19",
@@ -25,8 +25,9 @@
         "eonx-com/easy-event-dispatcher": "^6.19",
         "eonx-com/easy-test": "^6.19",
         "illuminate/database": "^11.15",
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4"
+        "laravel/framework": "^11.44.1",
+        "laravel/lumen-framework": "^11.2",
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {

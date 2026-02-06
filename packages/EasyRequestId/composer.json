@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "eonx-com/easy-random": "^6.19",
         "symfony/config": "^7.4",
         "symfony/dependency-injection": "^7.4",
@@ -14,8 +14,9 @@
         "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4"
+        "laravel/framework": "^11.44.1",
+        "laravel/lumen-framework": "^11.2",
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {

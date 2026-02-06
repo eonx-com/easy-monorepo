@@ -7,7 +7,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/dbal": "^3.8",
         "doctrine/doctrine-bundle": "^2.12",
@@ -31,7 +31,7 @@
         "eonx-com/easy-test": "^6.19",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^12.5",
         "symfony/event-dispatcher-contracts": "^3.5"
     },
     "autoload": {

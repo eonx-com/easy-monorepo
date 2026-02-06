@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-openssl": "*",
         "eonx-com/easy-utils": "^6.19",
         "nette/utils": "^4.0",
@@ -19,11 +19,12 @@
     "require-dev": {
         "auth0/auth0-php": "^8.17",
         "firebase/php-jwt": "^6.5",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/framework": "^11.44.1",
+        "laravel/lumen-framework": "^11.2",
         "nyholm/psr7": "^1.8",
         "paragonie/random_compat": "^2.0",
         "phpseclib/phpseclib": "^3.0.36",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^12.5",
         "psr-discovery/discovery": "^1.0.2",
         "symfony/cache": "^7.4",
         "symfony/http-client": "^7.4"

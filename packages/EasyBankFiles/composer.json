@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
@@ -15,7 +15,7 @@
     "require-dev": {
         "eonx-com/easy-test": "^6.19",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4"
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {

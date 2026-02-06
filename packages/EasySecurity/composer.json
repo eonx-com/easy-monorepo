@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "eonx-com/easy-api-token": "^6.19",
         "eonx-com/easy-utils": "^6.19",
         "nette/utils": "^4.0",
@@ -22,9 +22,10 @@
     "require-dev": {
         "eonx-com/easy-bugsnag": "^6.19",
         "eonx-com/easy-logging": "^6.19",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/framework": "^11.44.1",
+        "laravel/lumen-framework": "^11.2",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4"
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {

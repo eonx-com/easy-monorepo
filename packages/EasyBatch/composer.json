@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "doctrine/dbal": "^3.8",
         "eonx-com/easy-encryption": "^6.19",
         "eonx-com/easy-event-dispatcher": "^6.19",
@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "eonx-com/easy-test": "^6.19",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4"
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {
