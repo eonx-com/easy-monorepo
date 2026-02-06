@@ -66,6 +66,10 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
             }
 
             if ($this->filesystem->exists($this->storageFilename) === false) {
+                if (\filter_var($url, \FILTER_VALIDATE_URL) === false) {
+                    throw new UnexpectedValueException('Invalid URL for AWS Fargate task data.');
+                }
+
                 $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($url));
             }
 

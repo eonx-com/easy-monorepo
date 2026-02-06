@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "bugsnag/bugsnag": "^3.29",
+        "bugsnag/bugsnag": "^3.29.2",
         "eonx-com/easy-utils": "^6.19",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.8.4",
