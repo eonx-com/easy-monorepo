@@ -20,6 +20,7 @@ use Rector\Php84\Rector\Foreach_\ForeachToArrayAnyRector;
 use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 
+// @todo Consider PHPUnitSetList::PHPUNIT_120 and PHPUnitSetList::PHPUNIT_CODE_QUALITY,
 $temporaryIgnoredRectors = [
     AddArrowFunctionReturnTypeRector::class => null,
     AddTypeToConstRector::class => null,

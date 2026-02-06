@@ -4,6 +4,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
+        "php": "^8.4",
         "eonx-com/easy-quality": "^5.0",
         "phpunit/phpunit": "^12.5",
         "symfony/finder": "^7.1",
