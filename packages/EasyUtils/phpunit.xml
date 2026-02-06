@@ -5,6 +5,7 @@
     colors="true"
     bootstrap="vendor/autoload.php"
     failOnWarning="true"
+    failOnNotice="true"
     displayDetailsOnAllIssues="true"
 >
     <testsuites>
