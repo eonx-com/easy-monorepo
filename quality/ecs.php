@@ -16,6 +16,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
@@ -110,14 +111,15 @@ return ECSConfig::configure()
             'packages/*/config/*',
             'packages/EasyTest/.phpstorm.meta.php',
         ],
+        LineLengthSniff::class => [
+            'quality/rector.php',
+        ],
         MethodChainingNewlineFixer::class => [
             'packages/*/definition.php',
         ],
         NoExtraBlankLinesFixer::class => [
             'packages/EasyTest/.phpstorm.meta.php',
         ],
-        'packages/*/var/*',
-        'packages/*/vendor/*',
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
             'packages/EasyUtils/src/Math/Helper/MathHelper.php',
@@ -138,6 +140,9 @@ return ECSConfig::configure()
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
+        'packages/*/config/reference.php',
+        'packages/*/var/*',
+        'packages/*/vendor/*',
     ])
     ->withRules([
         AvoidPublicPropertiesSniff::class,

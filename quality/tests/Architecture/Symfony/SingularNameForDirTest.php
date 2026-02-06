@@ -11,13 +11,13 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class SingularNameForDirTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'docs',
         'laravel',
         'tests/Fixture/app/config',
     ];
 
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         'Aws',
         'AwsRds',
         'CompilerPass',
@@ -48,7 +48,8 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+->directories()
             ->exclude(self::EXCLUDE_DIRS)
             ->notName(self::SKIP_DIRS);
     }

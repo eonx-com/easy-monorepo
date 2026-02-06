@@ -12,7 +12,7 @@ final class TrimStringsNormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'TRIM_STRINGS_ALREADY_CALLED';
+    private const string ALREADY_CALLED = 'TRIM_STRINGS_ALREADY_CALLED';
 
     /**
      * @var string[]

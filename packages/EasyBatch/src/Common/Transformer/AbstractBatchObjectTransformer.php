@@ -6,6 +6,7 @@ namespace EonX\EasyBatch\Common\Transformer;
 use BackedEnum;
 use Carbon\Carbon;
 use DateTimeInterface;
+use Deprecated;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
@@ -106,9 +107,8 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
 
     /**
      * We need to fix the FQCN when migrating from EasyBatch < 6.0
-     *
-     * @deprecated Remove in 7.0
      */
+    #[Deprecated(message: 'Remove in 7.0')]
     private function fixFqcn(string $class): string
     {
         if (\str_starts_with($class, 'EonX\EasyBatch\Objects\\')) {

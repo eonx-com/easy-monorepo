@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class SymfonyServicesResetCompilerPass implements CompilerPassInterface
 {
-    private const SERVICES_RESETTER = 'services_resetter';
+    private const string SERVICES_RESETTER = 'services_resetter';
 
     public function process(ContainerBuilder $container): void
     {

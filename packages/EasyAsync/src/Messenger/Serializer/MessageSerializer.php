@@ -16,11 +16,11 @@ use Throwable;
 
 final readonly class MessageSerializer implements SerializerInterface
 {
-    private const HEADER_RETRY = 'retry';
+    private const string HEADER_RETRY = 'retry';
 
-    private const KEY_BODY = 'body';
+    private const string KEY_BODY = 'body';
 
-    private const KEY_HEADERS = 'headers';
+    private const string KEY_HEADERS = 'headers';
 
     public function __construct(
         private MessageBodyDecoderInterface $bodyDecoder,

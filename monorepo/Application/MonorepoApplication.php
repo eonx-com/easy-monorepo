@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 
 final class MonorepoApplication extends Application
 {
-    public const TAG_COMMAND = 'console.command';
+    public const string TAG_COMMAND = 'console.command';
 
     /**
      * @param iterable<\Symfony\Component\Console\Command\Command> $commands

@@ -11,7 +11,7 @@ use UnexpectedValueException;
 
 final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {
-    private const GITHUB_URL = 'https://github.com/';
+    private const string GITHUB_URL = 'https://github.com/';
 
     private Filesystem $filesystem;
 
@@ -45,7 +45,7 @@ final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerI
 
     private function getPackagesList(): iterable
     {
-        $composerFiles = (new Finder())
+        $composerFiles = new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->name('composer.json')
             ->sortByName();

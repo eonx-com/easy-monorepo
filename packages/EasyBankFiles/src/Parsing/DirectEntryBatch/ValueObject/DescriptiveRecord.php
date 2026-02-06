@@ -16,7 +16,7 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
  */
 final class DescriptiveRecord extends AbstractResult
 {
-    private const DATE_STRING_PATTERN = 'dmy';
+    private const string DATE_STRING_PATTERN = 'dmy';
 
     public function getDateProcessedObject(): ?DateTimeImmutable
     {

@@ -101,7 +101,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         // Client Factory + Client
         $this->app->singleton(
             ClientFactoryInterface::class,
-            static fn (Container $app): ClientFactoryInterface => (new ClientFactory())
+            static fn (Container $app): ClientFactoryInterface => new ClientFactory()
                 ->setConfigurators($app->tagged(ConfigTag::ClientConfigurator->value))
                 ->setRequestResolver($app->make(ConfigServiceId::RequestResolver->value))
                 ->setShutdownStrategy($app->make(ConfigServiceId::ShutdownStrategy->value))

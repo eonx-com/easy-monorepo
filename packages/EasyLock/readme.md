@@ -33,5 +33,7 @@ If defining the connection doesn't work for you, you can override the store inst
 the `easy_lock.store` id.
 
 [1]: https://getcomposer.org/
+
 [2]: https://symfony.com/doc/current/components/lock.html
+
 [3]: https://github.com/symfony/symfony/blob/master/src/Symfony/Component/Lock/Store/StoreFactory.php

@@ -24,5 +24,7 @@ The [ActivityLogEntry class][2] defines the data that can be recorded in an acti
 See [Usage][3] for information on using the EasyActivity package.
 
 [1]: config.md
+
 [2]: activity-log-entry.md
+
 [3]: usage.md

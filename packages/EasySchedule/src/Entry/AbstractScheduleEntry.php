@@ -97,13 +97,7 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
             }
         }
 
-        foreach ($this->rejects as $reject) {
-            if ((bool)$reject() === true) {
-                return false;
-            }
-        }
-
-        return true;
+        return \array_any($this->rejects, static fn ($reject): bool => (bool)$reject() === true) === false;
     }
 
     public function fridays(): ScheduleEntryInterface
@@ -284,7 +278,8 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
             $date->setTimezone($this->timezone);
         }
 
-        return (new CronExpression($this->expression))->isDue($date->toDateTimeString());
+        return new CronExpression($this->expression)
+            ->isDue($date->toDateTimeString());
     }
 
     protected function getExpression(): string

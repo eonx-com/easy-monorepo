@@ -25,13 +25,13 @@ use const Pkcs11\CKU_USER;
 
 final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHsmEncryptorInterface
 {
-    private const CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
+    private const string CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
 
-    private const EXCEPTION_DEFAULT_RETRIES = 3;
+    private const int EXCEPTION_DEFAULT_RETRIES = 3;
 
-    private const EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
+    private const string EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
 
-    private const GCM_TAG_LENGTH = 128;
+    private const int GCM_TAG_LENGTH = 128;
 
     private bool $cloudHsmSdkConfigured = false;
 

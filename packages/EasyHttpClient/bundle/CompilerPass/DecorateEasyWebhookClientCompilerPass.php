@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class DecorateEasyWebhookClientCompilerPass extends AbstractEasyHttpClientCompilerPass
 {
-    private const DECORATION_SERVICE_ID = 'easy_http_client.decorate_easy_webhook';
+    private const string DECORATION_SERVICE_ID = 'easy_http_client.decorate_easy_webhook';
 
     protected function doProcess(ContainerBuilder $container): void
     {

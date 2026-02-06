@@ -12,7 +12,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class LockMiddleware extends AbstractMiddleware
 {
-    private const DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
+    private const string DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
 
     private readonly string $resourcePattern;
 

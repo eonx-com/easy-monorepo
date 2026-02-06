@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Uuid;
  */
 final class SqliteStringUuidType extends Type
 {
-    public const NAME = 'sqlite_string_uuid';
+    public const string NAME = 'sqlite_string_uuid';
 
     /**
      * @param \Symfony\Component\Uid\AbstractUid $value

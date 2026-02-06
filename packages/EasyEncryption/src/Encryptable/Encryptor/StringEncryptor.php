@@ -9,11 +9,11 @@ use InvalidArgumentException;
 
 final readonly class StringEncryptor implements StringEncryptorInterface
 {
-    private const CHUNKED_TEXT_PREFIX = 'chunked:';
+    private const string CHUNKED_TEXT_PREFIX = 'chunked:';
 
-    private const DEFAULT_ENCODING = 'UTF-8';
+    private const string DEFAULT_ENCODING = 'UTF-8';
 
-    private const TEXT_CHUNKS_SEPARATOR = ',';
+    private const string TEXT_CHUNKS_SEPARATOR = ',';
 
     /**
      * @phpstan-var int<1, max>

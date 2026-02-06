@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class Decimal extends AbstractConstraint
 {
-    public const INVALID_DECIMAL_ERROR = 'INVALID_DECIMAL_ERROR';
+    public const string INVALID_DECIMAL_ERROR = 'INVALID_DECIMAL_ERROR';
 
     public int $maxPrecision;
 

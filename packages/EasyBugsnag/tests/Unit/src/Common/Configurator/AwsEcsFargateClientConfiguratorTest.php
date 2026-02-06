@@ -27,7 +27,8 @@ final class AwsEcsFargateClientConfiguratorTest extends AbstractUnitTestCase
         $bugsnag = new Client(new Configuration('my-api-key'));
         $report = Report::fromPHPThrowable($bugsnag->getConfig(), new RuntimeException('message'));
 
-        (new AwsEcsFargateClientConfigurator('invalid', 'invalid'))->configure($bugsnag);
+        new AwsEcsFargateClientConfigurator('invalid', 'invalid')
+            ->configure($bugsnag);
         $bugsnag->getPipeline()
             ->execute($report, function (): void {
             });

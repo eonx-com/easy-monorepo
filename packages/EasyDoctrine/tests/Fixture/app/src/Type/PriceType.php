@@ -9,7 +9,7 @@ use EonX\EasyDoctrine\Tests\Fixture\App\ValueObject\Price;
 
 final class PriceType extends StringType
 {
-    public const NAME = 'price';
+    public const string NAME = 'price';
 
     /**
      * @param int|string|null $value

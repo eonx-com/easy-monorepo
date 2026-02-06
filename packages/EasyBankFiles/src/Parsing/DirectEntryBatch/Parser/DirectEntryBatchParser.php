@@ -14,9 +14,9 @@ use EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\ReturnDetailRecord;
 
 final class DirectEntryBatchParser extends AbstractLineByLineParser
 {
-    private const FINAL_LINE = 'End-Of-File';
+    private const string FINAL_LINE = 'End-Of-File';
 
-    private const MIN_RECORD_LENGTH = [
+    private const array MIN_RECORD_LENGTH = [
         self::RECORD_TYPE_DESCRIPTIVE => 80,
         self::RECORD_TYPE_FILE_TOTAL => 80,
         self::RECORD_TYPE_PAYMENT => 120,
@@ -24,15 +24,15 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
         self::RECORD_TYPE_RETURN => 120,
     ];
 
-    private const RECORD_TYPE_DESCRIPTIVE = '0';
+    private const string RECORD_TYPE_DESCRIPTIVE = '0';
 
-    private const RECORD_TYPE_FILE_TOTAL = '7';
+    private const string RECORD_TYPE_FILE_TOTAL = '7';
 
-    private const RECORD_TYPE_PAYMENT = '1';
+    private const string RECORD_TYPE_PAYMENT = '1';
 
-    private const RECORD_TYPE_REFUSAL = '3';
+    private const string RECORD_TYPE_REFUSAL = '3';
 
-    private const RECORD_TYPE_RETURN = '2';
+    private const string RECORD_TYPE_RETURN = '2';
 
     /**
      * @var \EonX\EasyBankFiles\Parsing\DirectEntryBatch\ValueObject\Batch[]
@@ -224,7 +224,8 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
     private function setDescriptiveRecordToCurrentBatch(DescriptiveRecord $header): bool
     {
         $recordProcessed = $this->currentBatch === null;
-        $this->currentBatch = (new Batch())->setDescriptiveRecord($header);
+        $this->currentBatch = new Batch()
+            ->setDescriptiveRecord($header);
 
         return $recordProcessed;
     }

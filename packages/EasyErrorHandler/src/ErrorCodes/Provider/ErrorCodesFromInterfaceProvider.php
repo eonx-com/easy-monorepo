@@ -10,7 +10,7 @@ use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 
 final readonly class ErrorCodesFromInterfaceProvider implements ErrorCodesProviderInterface
 {
-    private const ERROR_CODE_NAME_PREFIX = 'ERROR_';
+    private const string ERROR_CODE_NAME_PREFIX = 'ERROR_';
 
     /**
      * @param class-string|null $errorCodesInterface

@@ -256,7 +256,7 @@ final class RandomStringConfig
 
         foreach ([$this->prefix, $this->suffix] as $string) {
             if ($string !== null) {
-                $length -= (new UnicodeString($string))
+                $length -= new UnicodeString($string)
                     ->length();
             }
         }

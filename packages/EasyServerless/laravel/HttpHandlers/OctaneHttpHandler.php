@@ -12,7 +12,7 @@ use EonX\EasyServerless\Aws\Transformer\HttpEventTransformerInterface;
 
 final class OctaneHttpHandler extends OctaneHandler
 {
-    private const LAMBDA_REQUEST_CONTEXT_KEY = 'LAMBDA_REQUEST_CONTEXT';
+    private const string LAMBDA_REQUEST_CONTEXT_KEY = 'LAMBDA_REQUEST_CONTEXT';
 
     public function __construct(
         ?string $path = null,

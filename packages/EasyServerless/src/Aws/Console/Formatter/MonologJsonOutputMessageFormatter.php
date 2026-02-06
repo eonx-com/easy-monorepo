@@ -11,7 +11,7 @@ use Monolog\Logger;
 
 final class MonologJsonOutputMessageFormatter implements OutputMessageFormatterInterface
 {
-    private const LOGGER_NAME = 'easy-serverless.console.json_output';
+    private const string LOGGER_NAME = 'easy-serverless.console.json_output';
 
     public function format(string $message): string
     {
@@ -25,7 +25,7 @@ final class MonologJsonOutputMessageFormatter implements OutputMessageFormatterI
         $streamHandler = new StreamHandler('php://memory');
         $streamHandler->setFormatter(new JsonFormatter());
 
-        (new Logger(self::LOGGER_NAME, [$streamHandler], [new PhpSourceProcessor()]))->debug($message);
+        new Logger(self::LOGGER_NAME, [$streamHandler], [new PhpSourceProcessor()])->debug($message);
 
         $stream = $streamHandler->getStream();
         if (\is_resource($stream) === false) {

@@ -78,7 +78,8 @@ abstract class AbstractWebhook implements WebhookInterface
 
     public static function create(string $url, ?array $body = null, ?string $method = null): WebhookInterface
     {
-        $webhook = (new static())->url($url)
+        $webhook = new static()
+            ->url($url)
             ->method($method ?? self::DEFAULT_METHOD);
 
         if ($body !== null) {

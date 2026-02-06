@@ -16,4 +16,5 @@ $ composer require eonx-com/easy-swoole
 ```
 
 [1]: https://openswoole.com/
+
 [2]: https://getcomposer.org/

@@ -21,7 +21,8 @@ abstract class AbstractUnitTestCase extends TestCase
 {
     protected function getMethodAsPublic(string $className, string $methodName): ReflectionMethod
     {
-        return (new ReflectionClass($className))->getMethod($methodName);
+        return new ReflectionClass($className)
+            ->getMethod($methodName);
     }
 
     /**

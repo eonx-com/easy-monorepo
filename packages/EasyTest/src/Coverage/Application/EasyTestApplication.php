@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 
 final class EasyTestApplication extends Application
 {
-    public const VERSION = '1.0.0';
+    public const string VERSION = '1.0.0';
 
     /**
      * @param iterable<\Symfony\Component\Console\Command\Command> $commands

@@ -10,9 +10,9 @@ use EonX\EasyActivity\Common\ValueObject\ActivitySubjectData;
 
 final readonly class DefaultActivitySubjectDataResolver implements ActivitySubjectDataResolverInterface
 {
-    public const CONTEXT_KEY_SUBJECT_DATA_SERIALIZATION = 'easy_activity_subject_data_serialization';
+    public const string CONTEXT_KEY_SUBJECT_DATA_SERIALIZATION = 'easy_activity_subject_data_serialization';
 
-    public const CONTEXT_KEY_SUBJECT_OLD_DATA_SERIALIZATION = 'easy_activity_subject_old_data_serialization';
+    public const string CONTEXT_KEY_SUBJECT_OLD_DATA_SERIALIZATION = 'easy_activity_subject_old_data_serialization';
 
     public function __construct(
         private ActivitySubjectDataSerializerInterface $serializer,

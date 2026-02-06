@@ -26,11 +26,11 @@ additional properties:
 - `$domain`: Symfony translation domain, set via the `setDomain()` method. This overrides the `translation_domain`
   configuration option (see [Configuration](config.md)) for the exception.
 - `$logLevel`: Log level for reporting, set via the `setLogLevel()` method or one of the following methods:
-  - `setCriticalLogLevel()`
-  - `setDebugLogLevel()`
-  - `setErrorLogLevel()`
-  - `setInfoLogLevel()`
-  - `setWarningLogLevel()`
+    - `setCriticalLogLevel()`
+    - `setDebugLogLevel()`
+    - `setErrorLogLevel()`
+    - `setInfoLogLevel()`
+    - `setWarningLogLevel()`
 - `$messageParams`: Parameters for the exception message, set via the `setMessageParams()` method.
 - `$statusCode`: HTTP status code for HTTP responses, set via the `setStatusCode()` method.
 - `$subCode`: Exception sub-code, set via the `setSubCode()` method.

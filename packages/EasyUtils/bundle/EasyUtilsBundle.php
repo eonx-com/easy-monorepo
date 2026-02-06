@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyUtilsBundle extends AbstractBundle
 {
-    public const SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK = [
+    public const array SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK = [
         'access_key',
         'access_secret',
         'access_token',

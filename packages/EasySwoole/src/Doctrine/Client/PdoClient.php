@@ -12,7 +12,7 @@ use RuntimeException;
 
 final class PdoClient extends BasePDOClient
 {
-    private const DRIVER_MAPPING = [
+    private const array DRIVER_MAPPING = [
         'pdo_mysql' => MySQLDriver::class,
         'pdo_pgsql' => PgSQLDriver::class,
     ];

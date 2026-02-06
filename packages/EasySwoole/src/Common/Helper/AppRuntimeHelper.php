@@ -9,9 +9,9 @@ use EonX\EasySwoole\EasySchedule\Runner\EasyScheduleSwooleRunner;
 
 final class AppRuntimeHelper
 {
-    private const APP_RUNTIME = 'APP_RUNTIME';
+    private const string APP_RUNTIME = 'APP_RUNTIME';
 
-    private const APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
+    private const string APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
 
     public static function addOptions(array $options): void
     {

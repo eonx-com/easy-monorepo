@@ -8,13 +8,13 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class SslCertificateHelper
 {
-    private const DEFAULT_ENV_VAR_CERT = 'CERTIFICATE';
+    private const string DEFAULT_ENV_VAR_CERT = 'CERTIFICATE';
 
-    private const DEFAULT_ENV_VAR_KEY = 'PRIVATE_KEY_PEM';
+    private const string DEFAULT_ENV_VAR_KEY = 'PRIVATE_KEY_PEM';
 
-    private const DEFAULT_FILENAME_CERT = '/var/www/var/tmp/cert.pem';
+    private const string DEFAULT_FILENAME_CERT = '/var/www/var/tmp/cert.pem';
 
-    private const DEFAULT_FILENAME_KEY = '/var/www/var/tmp/key.pem';
+    private const string DEFAULT_FILENAME_KEY = '/var/www/var/tmp/key.pem';
 
     public static function loadSslCertificates(array $options): array
     {

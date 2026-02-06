@@ -12,7 +12,7 @@ final readonly class AwsRdsCertificateAuthorityProvider
     /**
      * @see https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/UsingWithRDS.SSL.html
      */
-    private const RDS_COMBINED_CA_URL = 'https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem';
+    private const string RDS_COMBINED_CA_URL = 'https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem';
 
     private Filesystem $filesystem;
 

@@ -20,12 +20,12 @@ A WebhookResult object has the following properties:
 
 A WebhookResult object provides the following methods:
 
-| Property    | Type      | Setter    | Getter           |
-| ----------- | --------- | --------- | ---------------- |
-| `$id`       | string    | `setId()` | `getId()`        |
-| `$response` | Response  |           | `getResponse()`  |
-| `$throwable`| Throwable |           | `getThrowable()` |
-| `$webhook`  | Webhook   |           | `getWebhook()`   |
+| Property     | Type      | Setter    | Getter           |
+|--------------|-----------|-----------|------------------|
+| `$id`        | string    | `setId()` | `getId()`        |
+| `$response`  | Response  |           | `getResponse()`  |
+| `$throwable` | Throwable |           | `getThrowable()` |
+| `$webhook`   | Webhook   |           | `getWebhook()`   |
 
 It also provides the `isSuccessful()` method, which returns a boolean depending on whether the sending of the webhook
 was successful.

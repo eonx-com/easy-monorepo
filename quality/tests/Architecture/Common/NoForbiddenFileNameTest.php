@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
 {
-    private const FORBIDDEN_FILE_NAMES = [
+    private const array FORBIDDEN_FILE_NAMES = [
         'Decorator.php',
         'EventListener.php',
         'EventListenerInterface.php',
@@ -18,7 +18,7 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         'EventSubscriberInterface.php',
     ];
 
-    private const SKIP_FILES = [
+    private const array SKIP_FILES = [
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
     ];
 
@@ -37,26 +37,25 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->files()
+        return new Finder()
+->files()
             ->filter(static function (\SplFileInfo $file): bool {
-                foreach (self::SKIP_FILES as $skipFile) {
-                    if (\str_ends_with($file->getRealPath(), $skipFile)) {
-                        return false;
-                    }
-                }
+                $hasFileToSkip = \array_any(
+                    self::SKIP_FILES,
+                    static fn (string $skipFile): bool => \str_ends_with($file->getRealPath(), $skipFile)
+                );
 
-                return true;
+                return $hasFileToSkip === false;
             });
     }
 
     private static function isNameAllowed(SplFileInfo $file): bool
     {
-        foreach (self::FORBIDDEN_FILE_NAMES as $forbiddenFileName) {
-            if (\str_ends_with($file->getBasename(), $forbiddenFileName)) {
-                return false;
-            }
-        }
+        $hasForbiddenFileName = \array_any(
+            self::FORBIDDEN_FILE_NAMES,
+            static fn (string $forbiddenFileName): bool => \str_ends_with($file->getBasename(), $forbiddenFileName)
+        );
 
-        return true;
+        return $hasForbiddenFileName === false;
     }
 }

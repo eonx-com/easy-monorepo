@@ -8,7 +8,7 @@ use EonX\EasyActivity\Common\Entity\ActorInterface;
 
 final readonly class DefaultActorResolver implements ActorResolverInterface
 {
-    public const DEFAULT_ACTOR_TYPE = 'system';
+    public const string DEFAULT_ACTOR_TYPE = 'system';
 
     public function resolve(object $object): ActorInterface
     {

@@ -24,13 +24,13 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasySecurityBundle extends AbstractBundle
 {
-    private const AUTO_CONFIG_TAGS = [
+    private const array AUTO_CONFIG_TAGS = [
         PermissionsProviderInterface::class => ConfigTag::PermissionsProvider,
         RolesProviderInterface::class => ConfigTag::RolesProvider,
         SecurityContextConfiguratorInterface::class => ConfigTag::ContextConfigurator,
     ];
 
-    private const VOTERS = [
+    private const array VOTERS = [
         'permission' => PermissionVoter::class,
         'provider' => ProviderVoter::class,
         'role' => RoleVoter::class,
@@ -127,7 +127,7 @@ final class EasySecurityBundle extends AbstractBundle
 
         $builder->setDefinition(
             EasySecurityLoginController::class,
-            (new Definition(EasySecurityLoginController::class))
+            new Definition(EasySecurityLoginController::class)
                 ->setAutowired(true)
                 ->setAutoconfigured(true)
                 ->setArgument(
@@ -152,7 +152,7 @@ final class EasySecurityBundle extends AbstractBundle
                 continue;
             }
 
-            $voterDefinition = (new Definition($class))
+            $voterDefinition = new Definition($class)
                 ->setAutowired(true)
                 ->setAutoconfigured(true)
                 ->setTags([

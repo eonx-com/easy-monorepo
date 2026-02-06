@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCase
 {
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         '/bundle',
         '/docs',
         '/laravel',
@@ -23,7 +23,8 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
     #[DataProvider('provideSubject')]
     public function testItSucceeds(SplFileInfo $subject): void
     {
-        $nestedFileFinder = (new Finder())->files()
+        $nestedFileFinder = new Finder()
+->files()
             ->in($subject->getRealPath())
             ->depth(0);
 
@@ -40,7 +41,8 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+->directories()
             ->filter(static function (SplFileInfo $dir): bool {
                 foreach (self::SKIP_DIRS as $skipDir) {
                     if (\str_ends_with($dir->getRealPath(), $skipDir)) {
@@ -48,7 +50,8 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
                     }
                 }
 
-                $nestedDirFinder = (new Finder())->directories()
+                $nestedDirFinder = new Finder()
+->directories()
                     ->in($dir->getRealPath());
 
                 if ($nestedDirFinder->count() === 0) {

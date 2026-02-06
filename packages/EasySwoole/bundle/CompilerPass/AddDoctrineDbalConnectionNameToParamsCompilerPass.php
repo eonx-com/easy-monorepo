@@ -12,7 +12,7 @@ use function Symfony\Component\String\u;
 
 final class AddDoctrineDbalConnectionNameToParamsCompilerPass implements CompilerPassInterface
 {
-    private const CONNECTION_REGEX = '/doctrine.dbal.(.+)_connection/';
+    private const string CONNECTION_REGEX = '/doctrine.dbal.(.+)_connection/';
 
     public function process(ContainerBuilder $container): void
     {
