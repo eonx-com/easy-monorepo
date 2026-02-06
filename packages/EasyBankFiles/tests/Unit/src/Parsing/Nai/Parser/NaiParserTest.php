@@ -31,10 +31,16 @@ final class NaiParserTest extends AbstractUnitTestCase
      */
     public function testControlTotalTraitReturnFormattedAmount(): void
     {
-        $trait = $this->getObjectForTrait(ControlTotalTrait::class);
+        $sut = new class() {
+            use ControlTotalTrait;
 
-        self::assertIsFloat($this->callPrivateMethod($trait, 'formatAmount', '100000'));
-        self::assertSame(100.0, $this->callPrivateMethod($trait, 'formatAmount', '10000'));
+            public function formatAmountPublic(string $amount): float
+            {
+                return $this->formatAmount($amount);
+            }
+        };
+
+        self::assertSame(100.0, $sut->formatAmountPublic('10000'));
     }
 
     public function testParserCanParseBaiFile(): void
@@ -264,9 +270,11 @@ final class NaiParserTest extends AbstractUnitTestCase
      */
     public function testTransactionCodesTraitReturnNullWhenInvalidCode(): void
     {
-        $trait = $this->getObjectForTrait(TransactionDetailCodesTrait::class);
+        $sut = new class() {
+            use TransactionDetailCodesTrait;
+        };
 
-        self::assertNull($trait->getTransactionCodeDetails('invalid'));
+        self::assertNull($sut->getTransactionCodeDetails('invalid'));
     }
 
     public function testTrickyFile(): void

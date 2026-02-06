@@ -98,6 +98,6 @@ jobs:
 
             -   run: bin/monorepo localize-monorepo-packages
 
-            -   run: cd packages/${{ matrix.package.dir }}; composer update ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-progress --ansi
+            -   run: cd packages/${{ matrix.package.dir }}; composer update ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-progress --ansi --no-plugins
 
             -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit --coverage-text tests
