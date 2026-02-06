@@ -39,7 +39,7 @@ final class MethodMiddlewareTest extends AbstractMiddlewareTestCase
     public function testProcessWithConfiguredWebhook(): void
     {
         $webhook = new Webhook()
-->configured(true);
+            ->configured(true);
         $middleware = new MethodMiddleware(null, 10);
 
         $this->process($middleware, $webhook);

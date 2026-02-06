@@ -20,7 +20,7 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
         );
 
         new ValueDecision()
-->addRule($this->createLanguageRule('value + 10'))
+            ->addRule($this->createLanguageRule('value + 10'))
             ->make([
                 'value' => 1,
             ]);
@@ -30,7 +30,7 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
     {
         $rules = [$this->createLanguageRule('value + 10')];
         $decision = new ValueDecision()
-->addRules($rules);
+            ->addRules($rules);
 
         $this->injectExpressionLanguage($decision);
 
@@ -54,7 +54,7 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
         ];
 
         $decision = new ValueDecision()
-->addRules($rules);
+            ->addRules($rules);
         $expressionLanguage = $this->createExpressionLanguage();
 
         $expressionLanguage->addFunction(new ExpressionFunction(

@@ -50,9 +50,9 @@ final class TemplatingEventRendererTest extends AbstractUnitTestCase
                 new ArrayTemplatingBlockProvider([
                     'my-event' => [
                         new TextBlock('my-text-block-1')
-->setContents('text'),
+                            ->setContents('text'),
                         new TextBlock('my-text-block-1')
-->setContents('text'),
+                            ->setContents('text'),
                     ],
                 ]),
             ],

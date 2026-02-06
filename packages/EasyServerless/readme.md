@@ -26,5 +26,7 @@ $ composer require bref/symfony-bridge
 ```
 
 [1]: https://getcomposer.org/
+
 [2]: https://packagist.org/packages/bref/bref
+
 [3]: https://packagist.org/packages/bref/symfony-bridge

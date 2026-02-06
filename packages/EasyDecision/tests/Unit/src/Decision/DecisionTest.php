@@ -102,7 +102,7 @@ final class DecisionTest extends AbstractUnitTestCase
 
         yield 'Exit on propagation stopped' => [
             new ValueDecision()
-->setExitOnPropagationStopped(),
+                ->setExitOnPropagationStopped(),
             [
                 self::createLanguageRule('add(5)'),
                 new StopPropagationRuleStub('exit-on-propagation-stopped', 10, true),

@@ -16,7 +16,7 @@ use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
  * @method getDetailedMessage()
  * @method getOriginalFilename()
  * @method getOriginalReference()
- * @method \EonX\EasyBankFiles\Parsing\Ack\ValueObject\Issue[] getIssues()
+ * @method Issue[] getIssues()
  */
 final class PaymentAcknowledgement extends AbstractResult
 {

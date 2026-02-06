@@ -73,9 +73,9 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
             ->make(ExceptionHandler::class);
         $output = new BufferedOutput();
         $exception = new ValidationExceptionStub()
-->setErrors([
-            'property' => ['Property must not be null'],
-        ]);
+            ->setErrors([
+                'property' => ['Property must not be null'],
+            ]);
 
         $handler->renderForConsole($output, $exception);
         $result = $output->fetch();

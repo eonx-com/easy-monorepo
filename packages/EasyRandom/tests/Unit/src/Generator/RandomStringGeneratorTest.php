@@ -31,7 +31,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
             $alphabetMethod = \sprintf('exclude%s', $alphabet->name);
             yield \sprintf('Exclude %s', $alphabet->name) => [
                 'randomStringConfig' => new RandomStringConfig(100)
-->$alphabetMethod(),
+                    ->$alphabetMethod(),
                 'assert' => static function (string $randomString) use ($alphabet): void {
                     self::assertAlphabetExcluded($alphabet, $randomString);
                 },
@@ -50,7 +50,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
 
         yield 'Override alphabet' => [
             'randomStringConfig' => new RandomStringConfig(100)
-->alphabet('EONX'),
+                ->alphabet('EONX'),
             'assert' => static function (string $randomString): void {
                 self::assertIncludesOnly('EONX', $randomString);
             },

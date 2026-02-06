@@ -32,12 +32,12 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
     public function testReturnFalseWhenMoreFalseThanTrue(): void
     {
         $decision = new ConsensusDecision()
-->addRules([
-            $this->createTrueRule('true-1'),
-            $this->createFalseRule('false-1'),
-            $this->createFalseRule('false-2'),
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+            ->addRules([
+                $this->createTrueRule('true-1'),
+                $this->createFalseRule('false-1'),
+                $this->createFalseRule('false-2'),
+                $this->createUnsupportedRule('unsupported-1'),
+            ]);
 
         $expected = [
             'true-1' => true,
@@ -53,12 +53,12 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
     public function testReturnTrueWhenMoreTrueThenFalse(): void
     {
         $decision = new ConsensusDecision()
-->addRules([
-            $this->createTrueRule('true-1'),
-            $this->createTrueRule('true-2'),
-            $this->createFalseRule('false-1'),
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+            ->addRules([
+                $this->createTrueRule('true-1'),
+                $this->createTrueRule('true-2'),
+                $this->createFalseRule('false-1'),
+                $this->createUnsupportedRule('unsupported-1'),
+            ]);
 
         $expected = [
             'true-1' => true,
@@ -74,7 +74,7 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
     public function testReturnTrueWhenNoRulesSupported(): void
     {
         $decision = new ConsensusDecision()
-->addRules([$this->createUnsupportedRule('unsupported-1')]);
+            ->addRules([$this->createUnsupportedRule('unsupported-1')]);
 
         $expected = [
             'unsupported-1' => 'unsupported',
@@ -87,13 +87,13 @@ final class ConsensusDecisionTest extends AbstractUnitTestCase
     public function testReturnTrueWhenSameNumberOfTrueAndFalse(): void
     {
         $decision = new ConsensusDecision()
-->addRules([
-            $this->createTrueRule('true-1'),
-            $this->createTrueRule('true-2'),
-            $this->createFalseRule('false-1'),
-            $this->createFalseRule('false-2'),
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+            ->addRules([
+                $this->createTrueRule('true-1'),
+                $this->createTrueRule('true-2'),
+                $this->createFalseRule('false-1'),
+                $this->createFalseRule('false-2'),
+                $this->createUnsupportedRule('unsupported-1'),
+            ]);
 
         $expected = [
             'true-1' => true,

@@ -35,7 +35,7 @@ final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
         ]);
 
         new EasyPipelineServiceProvider($app)
-->register();
+            ->register();
 
         self::assertInstanceOf(PipelineFactoryInterface::class, $app->get(PipelineFactoryInterface::class));
     }
@@ -51,7 +51,7 @@ final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
         ]);
 
         new EasyPipelineServiceProvider($app)
-->register();
+            ->register();
 
         self::assertInstanceOf(
             MiddlewareProviderStub::class,

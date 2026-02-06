@@ -53,7 +53,7 @@ final class TestRenderWithDefaultBuilderDataProvider
         yield 'Response with status code of code aware exception interface' => [
             'request' => new Request(),
             'exception' => new BaseExceptionStub()
-->setStatusCode(HttpStatusCode::IamTeapot),
+                ->setStatusCode(HttpStatusCode::IamTeapot),
             'assertResponse' => static function (Response $response): void {
                 TestCase::assertSame(418, $response->getStatusCode());
             },
@@ -63,7 +63,7 @@ final class TestRenderWithDefaultBuilderDataProvider
         yield 'Response with sub_code' => [
             'request' => new Request(),
             'exception' => new BaseExceptionStub()
-->setSubCode(123456),
+                ->setSubCode(123456),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -90,7 +90,7 @@ final class TestRenderWithDefaultBuilderDataProvider
         yield 'Response with validation errors' => [
             'request' => new Request(),
             'exception' => new ValidationExceptionStub()
-->setErrors(['foo' => 'bar']),
+                ->setErrors(['foo' => 'bar']),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -114,7 +114,7 @@ final class TestRenderWithDefaultBuilderDataProvider
         yield 'Short response with sub_code' => [
             'request' => new Request(),
             'exception' => new BaseExceptionStub()
-->setSubCode(123),
+                ->setSubCode(123),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
@@ -127,7 +127,7 @@ final class TestRenderWithDefaultBuilderDataProvider
         yield 'Short response with violations' => [
             'request' => new Request(),
             'exception' => new ValidationExceptionStub()
-->setErrors(['foo' => ['bar']]),
+                ->setErrors(['foo' => ['bar']]),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);

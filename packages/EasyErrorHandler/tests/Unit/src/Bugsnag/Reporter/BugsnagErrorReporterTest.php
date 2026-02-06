@@ -25,13 +25,13 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
         yield 'Reported' => [
             'shouldIgnore' => false,
             'throwable' => new BaseExceptionStub()
-->setLogLevel(Level::Critical)->setSubCode(1),
+                ->setLogLevel(Level::Critical)->setSubCode(1),
         ];
 
         yield 'Ignored' => [
             'shouldIgnore' => true,
             'throwable' => new BaseExceptionStub()
-->setLogLevel(Level::Critical)->setSubCode(2),
+                ->setLogLevel(Level::Critical)->setSubCode(2),
         ];
     }
 
@@ -50,7 +50,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
         yield 'Report same log level as threshold' => [
             'shouldReport' => true,
             'throwable' => new BaseExceptionStub()
-->setLogLevel(Level::Error),
+                ->setLogLevel(Level::Error),
             'threshold' => Level::Error,
             'ignoredExceptions' => null,
         ];
@@ -58,7 +58,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
         yield 'Report higher log level as threshold' => [
             'shouldReport' => true,
             'throwable' => new BaseExceptionStub()
-->setLogLevel(Level::Critical),
+                ->setLogLevel(Level::Critical),
             'threshold' => Level::Error,
             'ignoredExceptions' => null,
         ];
@@ -66,7 +66,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
         yield 'Do not report lower log level than threshold' => [
             'shouldReport' => false,
             'throwable' => new BaseExceptionStub()
-->setLogLevel(Level::Critical),
+                ->setLogLevel(Level::Critical),
             'threshold' => Level::Emergency,
             'ignoredExceptions' => null,
         ];
@@ -74,7 +74,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
         yield 'Do not report ignored exceptions' => [
             'shouldReport' => false,
             'throwable' => new BaseExceptionStub()
-->setLogLevel(Level::Error),
+                ->setLogLevel(Level::Error),
             'threshold' => Level::Error,
             'ignoredExceptions' => [BaseExceptionStub::class],
         ];

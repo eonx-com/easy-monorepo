@@ -14,7 +14,7 @@ namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
  * @method string getReferenceNumber()
  * @method string getText()
  * @method string getTransactionCode()
- * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\TransactionDetails getTransactionDetails()
+ * @method TransactionDetails getTransactionDetails()
  * @method ?string getValueDate()
  * @method ?string getValueTime()
  */

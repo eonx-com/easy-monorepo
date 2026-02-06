@@ -44,7 +44,7 @@ final class ScheduleTest extends AbstractUnitTestCase
     {
         $app = new Application();
         $schedule = new Schedule()
-->setApplication($app);
+            ->setApplication($app);
 
         self::assertSame($app, $schedule->getApplication());
     }

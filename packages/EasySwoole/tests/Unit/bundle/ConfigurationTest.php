@@ -219,10 +219,10 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
     public function testConfiguration(array $configs, array $expectedConfig): void
     {
         $config = new Processor()
-->processConfiguration(
-    new Configuration(subject: new EasySwooleBundle(), container: null, alias: 'easy_swoole'),
-    $configs
-);
+            ->processConfiguration(
+                new Configuration(subject: new EasySwooleBundle(), container: null, alias: 'easy_swoole'),
+                $configs
+            );
 
         self::assertEquals($expectedConfig, $config);
     }

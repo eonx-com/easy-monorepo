@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
 
 /**
- * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\GroupHeader getHeader()
- * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\GroupTrailer getTrailer()
+ * @method GroupHeader getHeader()
+ * @method GroupTrailer getTrailer()
  */
 final class Group extends AbstractNaiResult
 {

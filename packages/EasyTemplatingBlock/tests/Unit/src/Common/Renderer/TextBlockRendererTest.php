@@ -19,7 +19,7 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
     {
         yield 'Simple text' => [
             new TextBlock('my-text-block')
-->setContents('my simple contents'),
+                ->setContents('my simple contents'),
             'my simple contents',
         ];
     }

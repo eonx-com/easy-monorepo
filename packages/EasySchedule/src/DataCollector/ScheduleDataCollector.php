@@ -34,7 +34,7 @@ final class ScheduleDataCollector extends AbstractDataCollector
                 'class' => $class,
                 'entries_count' => 0,
                 'file' => new ReflectionClass($class)
-->getFileName(),
+                    ->getFileName(),
             ];
         }
 

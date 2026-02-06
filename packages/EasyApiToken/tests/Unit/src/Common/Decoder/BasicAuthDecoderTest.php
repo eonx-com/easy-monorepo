@@ -44,9 +44,9 @@ final class BasicAuthDecoderTest extends AbstractUnitTestCase
         foreach ($tests as $test => $expected) {
             /** @var \EonX\EasyApiToken\Common\ValueObject\BasicAuth $token */
             $token = new BasicAuthDecoder()
-->decode($this->createRequest([
-                'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
-            ]));
+                ->decode($this->createRequest([
+                    'HTTP_AUTHORIZATION' => \sprintf('Basic %s', \base64_encode($test)),
+                ]));
 
             self::assertInstanceOf(BasicAuth::class, $token);
             self::assertEquals($expected[0], $token->getPayload()['username']);

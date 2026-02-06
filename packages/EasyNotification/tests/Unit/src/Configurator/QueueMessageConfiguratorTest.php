@@ -85,7 +85,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
                 self::assertFalse(isset($queueMessage->getHeaders()[MessageHeader::Signature->value]));
             },
             new QueueMessage()
-->setBody(''),
+                ->setBody(''),
         ];
 
         yield 'Signature' => [
@@ -100,7 +100,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
                 self::assertTrue(\hash_equals($hash, $signature));
             },
             new QueueMessage()
-->setBody('my-body'),
+                ->setBody('my-body'),
         ];
 
         yield 'Type with RealTimeMessage' => [
@@ -115,7 +115,7 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
                 );
             },
             new QueueMessage()
-->setBody('my-body'),
+                ->setBody('my-body'),
         ];
 
         yield 'SlackBody with not Slack message' => [

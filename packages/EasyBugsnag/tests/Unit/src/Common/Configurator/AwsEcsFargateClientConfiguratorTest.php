@@ -28,7 +28,7 @@ final class AwsEcsFargateClientConfiguratorTest extends AbstractUnitTestCase
         $report = Report::fromPHPThrowable($bugsnag->getConfig(), new RuntimeException('message'));
 
         new AwsEcsFargateClientConfigurator('invalid', 'invalid')
-->configure($bugsnag);
+            ->configure($bugsnag);
         $bugsnag->getPipeline()
             ->execute($report, function (): void {
             });

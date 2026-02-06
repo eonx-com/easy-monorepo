@@ -42,7 +42,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
     {
         yield 'Simple URL' => [
             new Webhook()
-->url('https://eonx.com'),
+                ->url('https://eonx.com'),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
@@ -77,7 +77,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
 
         yield 'Configurator priorities run higher last' => [
             new Webhook()
-->url('https://eonx.com'),
+                ->url('https://eonx.com'),
             'PUT',
             'https://eonx.com',
             [],
@@ -86,7 +86,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
 
         yield 'Configurators as Traversable' => [
             new Webhook()
-->url('https://eonx.com'),
+                ->url('https://eonx.com'),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [],
@@ -130,7 +130,7 @@ final class WebhookClientTest extends AbstractUnitTestCase
 
         yield 'Id header' => [
             new Webhook()
-->url('https://eonx.com'),
+                ->url('https://eonx.com'),
             WebhookInterface::DEFAULT_METHOD,
             'https://eonx.com',
             [

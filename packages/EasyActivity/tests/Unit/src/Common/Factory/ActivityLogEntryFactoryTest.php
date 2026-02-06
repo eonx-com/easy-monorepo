@@ -39,7 +39,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $result = $sut->create(
             ActivityAction::Create,
             new Article()
-->setId((string)(new NilUuid())),
+                ->setId((string)(new NilUuid())),
             ['title' => [null, 'New Title']]
         );
 

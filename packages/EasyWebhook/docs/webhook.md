@@ -102,7 +102,7 @@ and send the webhook HTTP request.
 The following table summarises the getter and setter methods for a Webhook object's properties:
 
 | Property             | Type     | Setter                | Getter                   |
-| -------------------- | -------- | --------------------- | ------------------------ |
+|----------------------|----------|-----------------------|--------------------------|
 | `$allowRerun`        | bool     | `allowRerun()`        | `isRerunAllowed()`       |
 | `$body`              | array    | `body()`              | `getBody()`              |
 | `$bodyAsString`      | string   | `bodyAsString()`      | `getBodyAsString()`      |

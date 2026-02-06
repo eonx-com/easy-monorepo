@@ -53,7 +53,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
             $registry = $this->mockRegistry($this->getManagerExpectations('remove', $test));
 
             new DoctrineOrmRepositoryStub($registry)
-->delete($test);
+                ->delete($test);
         }
     }
 
@@ -84,7 +84,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
             $registry = $this->mockRegistry($this->getManagerExpectations('persist', $test));
 
             new DoctrineOrmRepositoryStub($registry)
-->save($test);
+                ->save($test);
         }
     }
 

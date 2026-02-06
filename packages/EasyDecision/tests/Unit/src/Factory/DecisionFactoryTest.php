@@ -24,7 +24,7 @@ final class DecisionFactoryTest extends AbstractUnitTestCase
         ];
         $mappingProvider = new ConfigMappingProvider([]);
         $decision = new DecisionFactory($mappingProvider, $configurators)
-->createUnanimousDecision();
+            ->createUnanimousDecision();
 
         $expected = [
             'true-1' => true,

@@ -269,13 +269,13 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         $article->setTitle('Test collections');
         $article->setContent('Content');
         $commentA = new Comment()
-->setMessage('comment 1');
+            ->setMessage('comment 1');
         $commentB = new Comment()
-->setMessage('comment 2');
+            ->setMessage('comment 2');
         $commentC = new Comment()
-->setMessage('comment 3');
+            ->setMessage('comment 3');
         $commentD = new Comment()
-->setMessage('comment 4');
+            ->setMessage('comment 4');
         $article->addComment($commentA);
         $article->addComment($commentB);
         $article->addComment($commentC);
@@ -292,7 +292,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         $commentA->setMessage('comment 1 updated');
         $entityManager->flush();
         $commentE = new Comment()
-->setMessage('comment 5');
+            ->setMessage('comment 5');
         $article->addComment($commentE);
         $entityManager->flush();
 

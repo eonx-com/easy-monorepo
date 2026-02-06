@@ -10,7 +10,7 @@ final class TextBlock extends AbstractTemplatingBlock
     public static function create(string $name, string $contents): self
     {
         return new self($name)
-->setContents($contents);
+            ->setContents($contents);
     }
 
     public function getContents(): string

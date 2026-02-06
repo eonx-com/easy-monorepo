@@ -21,7 +21,7 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
         private string $projectDir,
     ) {
         $this->parser = new ParserFactory()
-->createForHostVersion();
+            ->createForHostVersion();
     }
 
     public function locateErrorCodesEnums(): array

@@ -13,8 +13,7 @@ final class CircularReferenceHandlerTest extends AbstractUnitTestCase
 {
     public function testInvokeSucceedsWithId(): void
     {
-        $article = new Article()
-->setId((string)(new NilUuid()));
+        $article = new Article()->setId((string)(new NilUuid()));
         /** @var \EonX\EasyActivity\Common\CircularReferenceHandler\CircularReferenceHandlerInterface $sut */
         $sut = self::getService(ConfigServiceId::CircularReferenceHandler->value);
 

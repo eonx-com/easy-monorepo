@@ -22,7 +22,7 @@ final class ScheduleRunnerTest extends AbstractUnitTestCase
     {
         $app = new Application();
         $schedule = new Schedule()
-->setApplication($app);
+            ->setApplication($app);
         $entry1 = $schedule->command('list', ['-q']);
         $entry2 = $schedule->command('list', ['-q']);
         $lockerProphecy = $this->prophesize(LockerInterface::class);

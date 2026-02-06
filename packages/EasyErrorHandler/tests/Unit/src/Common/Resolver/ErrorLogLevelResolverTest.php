@@ -46,7 +46,7 @@ final class ErrorLogLevelResolverTest extends AbstractUnitTestCase
 
         yield 'Critical from exception log level aware' => [
             'throwable' => new BaseExceptionStub()
-->setCriticalLogLevel(),
+                ->setCriticalLogLevel(),
             'expectedLogLevel' => Level::Critical,
             'environment' => 'test',
         ];

@@ -19,7 +19,7 @@ final class SqsQueueTransportTest extends AbstractUnitTestCase
             ->setQueueUrl(static::$defaultConfig['queueUrl']);
 
         new SqsQueueTransport($stub)
-->send($queueMessage);
+            ->send($queueMessage);
 
         $expected = [
             'QueueUrl' => static::$defaultConfig['queueUrl'],
@@ -45,7 +45,7 @@ final class SqsQueueTransportTest extends AbstractUnitTestCase
             ->setQueueUrl($queueUrl);
 
         new SqsQueueTransport($stub)
-->send($queueMessage);
+            ->send($queueMessage);
 
         self::assertNotNull($stub->getCalls()[0]['MessageDeduplicationId']);
         self::assertNotNull($stub->getCalls()[0]['MessageGroupId']);
