@@ -5,7 +5,6 @@ namespace EonX\EasyBankFiles\Tests\Unit\Parsing\Nai\Parser;
 
 use EonX\EasyBankFiles\Parsing\Nai\Parser\NaiParser;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\Account;
-use EonX\EasyBankFiles\Parsing\Nai\ValueObject\AccountSummaryCodesTrait;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ControlTotalTrait;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\File;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContext;
@@ -13,11 +12,8 @@ use EonX\EasyBankFiles\Parsing\Nai\ValueObject\TransactionDetailCodesTrait;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(AccountSummaryCodesTrait::class)]
-#[CoversClass(ControlTotalTrait::class)]
 #[CoversClass(NaiParser::class)]
 #[CoversClass(ResultsContext::class)]
-#[CoversClass(TransactionDetailCodesTrait::class)]
 final class NaiParserTest extends AbstractUnitTestCase
 {
     public function testBai2FromUSSucceeds(): void
