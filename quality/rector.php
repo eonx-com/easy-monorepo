@@ -43,13 +43,6 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class => null,
-        ClassPropertyAssignToConstructorPromotionRector::class => [
-            'packages/*/ApiResource/*',
-            'packages/*/Entity/*',
-        ],
-        ClosureToArrowFunctionRector::class => [
-            'packages/EasyApiPlatform/src/EasyErrorHandler/Builder/AbstractApiPlatformSerializerExceptionErrorResponseBuilder.php',
-        ],
         ArrayToFirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
@@ -59,12 +52,15 @@ return RectorConfig::configure()
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
         ],
-        'packages/*/config/reference.php',
-        'packages/*/var/*',
-        'packages/*/vendor/*',
+        ClosureToArrowFunctionRector::class => [
+            'packages/EasyApiPlatform/src/EasyErrorHandler/Builder/AbstractApiPlatformSerializerExceptionErrorResponseBuilder.php',
+        ],
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
         ],
+        'packages/*/config/reference.php',
+        'packages/*/var/*',
+        'packages/*/vendor/*',
     ])
     ->withRules([
         AddSeeAnnotationRector::class,

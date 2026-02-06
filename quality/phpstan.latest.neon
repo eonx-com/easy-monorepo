@@ -11,7 +11,3 @@ parameters:
 
         - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
-
-        - message: '#Parameter \#\d \$.* of function bc.* expects numeric\-string, .*string given#'
-          path : %currentWorkingDirectory%/packages/EasyUtils/src/Math/ValueObject/Number.php
-
