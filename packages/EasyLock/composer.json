@@ -18,6 +18,7 @@
         "doctrine/dbal": "^3.8",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^2.20",
+        "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
         "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },

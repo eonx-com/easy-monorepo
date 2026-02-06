@@ -25,6 +25,7 @@
         "eonx-com/easy-bugsnag": "^6.19",
         "eonx-com/easy-test": "^6.19",
         "eonx-com/easy-webhook": "^6.19",
+        "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
         "symfony/framework-bundle": "^7.4"
