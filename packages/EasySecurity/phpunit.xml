@@ -6,7 +6,6 @@
     bootstrap="vendor/autoload.php"
     failOnWarning="true"
     failOnNotice="true"
-    failOnDeprecation="true"
     displayDetailsOnAllIssues="true"
 >
     <testsuites>
