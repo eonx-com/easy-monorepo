@@ -16,7 +16,7 @@
         "aws/aws-sdk-php": "^3.288.1",
         "eonx-com/easy-test": "^6.19",
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^10.2|^11.4|^12.4|^13.0",
         "symfony/filesystem": "^7.2",
         "symfony/process": "^7.2"
     },
