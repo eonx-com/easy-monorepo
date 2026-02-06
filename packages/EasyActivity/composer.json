@@ -11,20 +11,20 @@
         "eonx-com/easy-doctrine": "^6.19",
         "eonx-com/easy-lock": "^6.19",
         "nesbot/carbon": "^3.8.4",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/event-dispatcher": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/messenger": "^7.2",
-        "symfony/property-access": "^7.2",
-        "symfony/serializer": "^7.2",
-        "symfony/uid": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/event-dispatcher": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/messenger": "^7.4",
+        "symfony/property-access": "^7.4",
+        "symfony/serializer": "^7.4",
+        "symfony/uid": "^7.4"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
         "eonx-com/easy-test": "^6.19",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
-        "symfony/framework-bundle": "^7.2"
+        "symfony/framework-bundle": "^7.4"
     },
     "autoload": {
         "psr-4": {

@@ -8,17 +8,17 @@
         "ext-sodium": "*",
         "eonx-com/easy-utils": "^6.19",
         "paragonie/halite": "^5.1",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-kernel": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-kernel": "^7.4"
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.288.1",
         "eonx-com/easy-test": "^6.19",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
-        "symfony/filesystem": "^7.2",
-        "symfony/process": "^7.2"
+        "symfony/filesystem": "^7.4",
+        "symfony/process": "^7.4"
     },
     "autoload": {
         "psr-4": {

@@ -7,9 +7,9 @@
         "php": "^8.2",
         "eonx-com/easy-utils": "^6.19",
         "monolog/monolog": "^3.7",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/http-kernel": "^7.2",
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-kernel": "^7.4",
         "symfony/service-contracts": "^3.5"
     },
     "require-dev": {

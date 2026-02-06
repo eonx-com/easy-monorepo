@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Application\EasyErrorHandler\Provider;
 
-use Composer\InstalledVersions;
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Exception\DummyBException;
 use EonX\EasyErrorHandler\Common\Strategy\VerboseStrategyInterface;
@@ -34,25 +33,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => "title: This value should not be blank.\ntitle: This value should not be null.",
-            'version' => null,
-        ];
-
-        yield 'ValidationException when enum v3' => [
-            'url' => '/books',
-            'json' => [
-                'description' => 'some description',
-                'printingHouse' => '/printing-houses/1',
-                'status' => 'some-non-existing-status',
-                'weight' => 11,
-            ],
-            'violations' => [
-                'status' => [
-                    'The value should be a valid choice.',
-                ],
-            ],
-            'exceptionMessage' => 'status: This value should be of type EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
-                '\\EasyErrorHandler\\Enum\\Status.',
-            'version' => 3,
         ];
 
         yield 'ValidationException when enum' => [
@@ -69,7 +49,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'status: This value should be of type int|string.',
-            'version' => 4,
         ];
 
         yield 'Carbon date with custom Normalizer is empty string' => [
@@ -85,7 +64,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'This value is not a valid date/time.',
             ],
             'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
-            'version' => null,
         ];
 
         yield 'Carbon date with custom Normalizer is NULL' => [
@@ -100,7 +78,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'This value is not a valid date/time.',
             ],
             'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
-            'version' => null,
         ];
 
         yield 'invalid Carbon date format with custom Normalizer' => [
@@ -115,7 +92,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'This value is not a valid date/time.',
             ],
             'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
-            'version' => null,
         ];
 
         yield 'invalid argument type' => [
@@ -132,7 +108,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'pageCount: This value should be of type int.',
-            'version' => null,
         ];
 
         yield 'NULL value' => [
@@ -149,27 +124,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'pageCount: This value should be of type int.',
-            'version' => null,
-        ];
-
-        yield 'missing constructor argument v3' => [
-            'url' => '/books',
-            'json' => [],
-            'violations' => [
-                'description' => [
-                    'This value should be of type string.',
-                ],
-                'printingHouse' => [
-                    'This value should be of type /printing-houses IRI.',
-                ],
-                'weight' => [
-                    'This value should be of type int.',
-                ],
-            ],
-            'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
-                " be of type int.\nprintingHouse: This value should be of type" .
-                " EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\ApiResource\PrintingHouse.",
-            'version' => 3,
         ];
 
         yield 'missing constructor argument' => [
@@ -188,23 +142,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
                 " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
-            'version' => 4,
-        ];
-
-        yield 'invalid constructor Enum argument v3' => [
-            'url' => '/printing-houses',
-            'json' => [
-                'name' => 'some name',
-                'status' => 'some-non-existing-status',
-            ],
-            'violations' => [
-                'status' => [
-                    'The value should be a valid choice.',
-                ],
-            ],
-            'exceptionMessage' => 'status: This value should be of type EonX\\EasyApiPlatform\\Tests\\Fixture\\App' .
-                '\\EasyErrorHandler\\Enum\\Status.',
-            'version' => 3,
         ];
 
         yield 'invalid constructor Enum argument' => [
@@ -219,7 +156,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'status: This value should be of type int|string.',
-            'version' => 4,
         ];
 
         yield 'missing constructor argument in DTO' => [
@@ -241,7 +177,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
                 ' This value should be of type int.',
-            'version' => null,
         ];
 
         yield 'invalid constructor argument type' => [
@@ -257,7 +192,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'weight: This value should be of type int.',
-            'version' => null,
         ];
 
         yield 'input data is misformatted when invalid argument in DTO' => [
@@ -272,7 +206,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'rank: This value should be of type int.',
-            'version' => null,
         ];
 
         yield 'missing constructor argument in DTO when input DTO' => [
@@ -286,26 +219,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'rank: This value should be of type int.',
-            'version' => null,
-        ];
-
-        yield 'invalid IRI format v3' => [
-            'url' => '/books',
-            'json' => [
-                'title' => 'some title',
-                'description' => 'some description',
-                'weight' => 11,
-                'category' => 'some invalid IRI',
-                'printingHouse' => '/printing-houses/1',
-            ],
-            'violations' => [
-                'category' => [
-                    'This value should be of type /book-categories IRI.',
-                ],
-            ],
-            'exceptionMessage' => 'category: This value should be of type' .
-                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\Category.',
-            'version' => 3,
         ];
 
         yield 'invalid IRI format' => [
@@ -323,25 +236,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'category: This value should be of type Category.',
-            'version' => 4,
-        ];
-
-        yield 'invalid IRI type when constructor parameter v3' => [
-            'url' => '/books',
-            'json' => [
-                'title' => 'some title',
-                'description' => 'some description',
-                'weight' => 11,
-                'printingHouse' => 'some string',
-            ],
-            'violations' => [
-                'printingHouse' => [
-                    'This value should be of type /printing-houses IRI.',
-                ],
-            ],
-            'exceptionMessage' => 'printingHouse: This value should be of type' .
-                ' EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
-            'version' => 3,
         ];
 
         yield 'invalid IRI type when constructor parameter' => [
@@ -358,7 +252,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'printingHouse: This value should be of type PrintingHouse.',
-            'version' => 4,
         ];
 
         yield 'invalid IRI type when input dto' => [
@@ -372,7 +265,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'payment: This value should be of type Payment.',
-            'version' => 4,
         ];
 
         yield 'item not found by IRI type when input dto' => [
@@ -386,7 +278,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'payment: This value should be of type Payment.',
-            'version' => 4,
         ];
 
         yield 'invalid IRI when input dto' => [
@@ -400,7 +291,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'payment: This value should be of type Payment.',
-            'version' => 4,
         ];
 
         yield 'different object IRI when constructor parameter' => [
@@ -420,7 +310,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 '\\EasyErrorHandler\\ApiResource\\Book::__construct(): Argument #3 ($printingHouse) must be of type ' .
                 'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse, ' .
                 'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PublishingHouse given',
-            'version' => null,
         ];
 
         yield 'date is empty string' => [
@@ -437,7 +326,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'date is NULL' => [
@@ -454,7 +342,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'invalid date' => [
@@ -471,24 +358,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
-        ];
-
-        yield 'invalid date format v3' => [
-            'url' => '/books',
-            'json' => [
-                'availableFrom' => '2024-04-22T01:01:00+11:00',
-                'description' => 'some description',
-                'printingHouse' => '/printing-houses/1',
-                'weight' => 11,
-            ],
-            'violations' => [
-                'availableFrom' => [
-                    'This value is not a valid date/time.',
-                ],
-            ],
-            'exceptionMessage' => 'availableFrom: This value should be of type string.',
-            'version' => 3,
         ];
 
         yield 'invalid date format' => [
@@ -505,7 +374,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'availableFrom: This value should be of type DateTimeImmutable|null.',
-            'version' => 4,
         ];
 
         yield 'date is empty string, when constructor parameter' => [
@@ -520,7 +388,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'date is NULL, when constructor parameter' => [
@@ -535,7 +402,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'invalid date, when constructor parameter' => [
@@ -550,7 +416,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'invalid date format, when constructor parameter' => [
@@ -565,7 +430,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'publishedAt: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'invalid constructor argument in DTO' => [
@@ -589,7 +453,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
                 ' This value should be of type int.',
-            'version' => null,
         ];
 
         yield 'invalid IRI type' => [
@@ -607,7 +470,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'category: This value should be of type array|string.',
-            'version' => null,
         ];
 
         yield 'null IRI when constructor parameter' => [
@@ -624,7 +486,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'printingHouse: This value should be of type array|string.',
-            'version' => null,
         ];
 
         yield 'nested document' => [
@@ -645,7 +506,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'category: This value should be of type array|string.',
-            'version' => null,
         ];
 
         yield 'missing constructor argument with serializedName attribute' => [
@@ -657,7 +517,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'paymentType: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'null constructor argument with serializedName attribute' => [
@@ -669,7 +528,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'paymentType: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'missing constructor argument in input DTO with serializedName attribute' => [
@@ -681,7 +539,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'paymentType: This value should be of type string.',
-            'version' => null,
         ];
 
         yield 'null constructor argument in input DTO with serializedName attribute' => [
@@ -693,25 +550,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'paymentType: This value should be of type string.',
-            'version' => null,
-        ];
-
-        yield 'Item not found by IRI v3' => [
-            'url' => '/books',
-            'json' => [
-                'description' => 'some description',
-                'printingHouse' => '/printing-houses/2',
-                'title' => 'some title',
-                'weight' => 11,
-            ],
-            'violations' => [
-                'printingHouse' => [
-                    'Item not found for "/printing-houses/2".',
-                ],
-            ],
-            'exceptionMessage' => 'printingHouse: This value should be of type ' .
-                'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse.',
-            'version' => 3,
         ];
 
         yield 'Item not found by IRI' => [
@@ -728,7 +566,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
             ],
             'exceptionMessage' => 'printingHouse: This value should be of type PrintingHouse.',
-            'version' => 4,
         ];
     }
 
@@ -795,23 +632,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         array $json,
         array $violations,
         string $exceptionMessage,
-        ?int $version = null,
     ): void {
-        if ($version !== null && \class_exists(InstalledVersions::class)) {
-            $installedVersion = InstalledVersions::getVersion('api-platform/core');
-
-            if (
-                $installedVersion !== null
-                && (
-                    \version_compare($installedVersion, (string)$version, '>=')
-                    && \version_compare($installedVersion, (string)($version + 1), '<')
-                ) === false
-            ) {
-                self::markTestSkipped(
-                    'This test requires API Platform version >=' . $version . ' and < ' . ($version + 1) . '.'
-                );
-            }
-        }
         $response = self::$client->request('POST', $url, ['json' => $json]);
 
         $responseData = $response->toArray(false);
@@ -876,23 +697,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         array $json,
         array $violations,
         string $exceptionMessage,
-        ?int $version = null,
     ): void {
-        if ($version !== null && \class_exists(InstalledVersions::class)) {
-            $installedVersion = InstalledVersions::getVersion('api-platform/core');
-
-            if (
-                $installedVersion !== null
-                && (
-                    \version_compare($installedVersion, (string)$version, '>=')
-                    && \version_compare($installedVersion, (string)($version + 1), '<')
-                ) === false
-            ) {
-                self::markTestSkipped(
-                    'This test requires API Platform version >=' . $version . ' and < ' . ($version + 1) . '.'
-                );
-            }
-        }
         $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
         self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
 

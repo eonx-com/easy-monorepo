@@ -9,24 +9,24 @@
         "eonx-com/easy-utils": "^6.19",
         "nesbot/carbon": "^3.8.4",
         "openswoole/core": "^22.1",
-        "symfony/cache": "^7.2",
+        "symfony/cache": "^7.4",
         "symfony/cache-contracts": "^3.5",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/filesystem": "^7.2",
-        "symfony/framework-bundle": "^7.2",
-        "symfony/http-foundation": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/runtime": "^7.2",
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/filesystem": "^7.4",
+        "symfony/framework-bundle": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/runtime": "^7.4",
         "symfony/service-contracts": "^3.5",
-        "symfony/string": "^7.2"
+        "symfony/string": "^7.4"
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^6.19",
         "eonx-com/easy-logging": "^6.19",
         "openswoole/ide-helper": "^22.0",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
-        "symfony/twig-bundle": "^7.2"
+        "symfony/twig-bundle": "^7.4"
     },
     "autoload": {
         "files": [
