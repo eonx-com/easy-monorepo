@@ -28,7 +28,7 @@
         "eonx-com/easy-error-handler": "^6.19",
         "eonx-com/easy-test": "^6.19",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^13.0",
+        "phpunit/phpunit": "^12.4",
         "symfony/browser-kit": "^7.4",
         "symfony/expression-language": "^7.4",
         "symfony/framework-bundle": "^7.4",

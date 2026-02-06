@@ -23,7 +23,7 @@
         "eonx-com/easy-logging": "^6.19",
         "eonx-com/easy-random": "^6.19",
         "eonx-com/easy-test": "^6.19",
-        "phpunit/phpunit": "^13.0",
+        "phpunit/phpunit": "^12.4",
         "symfony/doctrine-bridge": "^7.4",
         "symfony/framework-bundle": "^7.4"
     },

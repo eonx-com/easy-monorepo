@@ -19,7 +19,7 @@
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^13.0",
+        "phpunit/phpunit": "^12.4",
         "symfony/serializer": "^7.4",
         "symfony/validator": "^7.4"
     },

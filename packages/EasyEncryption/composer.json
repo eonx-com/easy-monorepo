@@ -17,7 +17,7 @@
         "eonx-com/easy-test": "^6.19",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
-        "phpunit/phpunit": "^13.0",
+        "phpunit/phpunit": "^12.4",
         "symfony/filesystem": "^7.4",
         "symfony/process": "^7.4"
     },

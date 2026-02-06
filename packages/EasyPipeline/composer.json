@@ -9,7 +9,7 @@
     "require-dev": {
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
-        "phpunit/phpunit": "^13.0"
+        "phpunit/phpunit": "^12.4"
     },
     "autoload": {
         "psr-4": {
