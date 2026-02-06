@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
 
 /**
- * @method AccountIdentifier getIdentifier()
- * @method AccountTrailer getTrailer()
+ * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\AccountIdentifier getIdentifier()
+ * @method \EonX\EasyBankFiles\Parsing\Nai\ValueObject\AccountTrailer getTrailer()
  */
 final class Account extends AbstractNaiResult
 {
