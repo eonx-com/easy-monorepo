@@ -23,9 +23,9 @@
     "require-dev": {
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.12",
-        "eonx-com/easy-bugsnag": "^6.19",
-        "eonx-com/easy-error-handler": "^6.19",
-        "eonx-com/easy-test": "^6.19",
+        "eonx-com/easy-bugsnag": "^6.18.3",
+        "eonx-com/easy-error-handler": "^6.18.3",
+        "eonx-com/easy-test": "^6.18.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
         "symfony/browser-kit": "^7.2",
