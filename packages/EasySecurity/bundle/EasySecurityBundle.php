@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\Bundle;
 
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasySecurity\Authorization\Provider\PermissionsProviderInterface;
 use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCompilerPass;
@@ -71,6 +72,7 @@ final class EasySecurityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
+        $this->registerEasyLoggingConfiguration($container, $builder);
         $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
         $this->registerLoginFormConfiguration($config, $container, $builder);
@@ -114,6 +116,18 @@ final class EasySecurityBundle extends AbstractBundle
         }
 
         $container->import('config/easy_bugsnag.php');
+    }
+
+    private function registerEasyLoggingConfiguration(
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if (\interface_exists(LoggerFactoryInterface::class) === false
+            || $this->isBundleEnabled('EasyLoggingBundle', $builder) === false) {
+            return;
+        }
+
+        $container->import('config/easy_logging.php');
     }
 
     private function registerLoginFormConfiguration(
