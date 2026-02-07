@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-event-dispatcher": "^6.18.3",
-        "eonx-com/easy-utils": "^6.18.3",
+        "eonx-com/easy-event-dispatcher": "^6.19",
+        "eonx-com/easy-utils": "^6.19",
         "nesbot/carbon": "^3.8.4",
         "openswoole/core": "^22.1",
         "symfony/cache": "^7.2",
@@ -22,8 +22,8 @@
         "symfony/string": "^7.2"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^6.18.3",
-        "eonx-com/easy-logging": "^6.18.3",
+        "eonx-com/easy-bugsnag": "^6.19",
+        "eonx-com/easy-logging": "^6.19",
         "openswoole/ide-helper": "^22.0",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
         "symfony/twig-bundle": "^7.2"
