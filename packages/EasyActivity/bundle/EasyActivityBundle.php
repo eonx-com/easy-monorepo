@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bundle;
 
+use EonX\EasyActivity\Bundle\CompilerPass\AddEncryptableFieldsToDisallowedPropertiesCompilerPass;
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -16,6 +17,11 @@ final class EasyActivityBundle extends AbstractBundle
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new AddEncryptableFieldsToDisallowedPropertiesCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
