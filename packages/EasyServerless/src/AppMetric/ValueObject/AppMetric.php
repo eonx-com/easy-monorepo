@@ -15,9 +15,9 @@ final readonly class AppMetric implements AppMetricInterface
     public static function create(
         string $name,
         ?array $dimensions = null,
-        ?string $namespace = null
+        ?string $namespace = null,
     ): self {
-        return new self($name, $dimensions);
+        return new self($name, $dimensions, $namespace);
     }
 
     public function getDimensions(): array
