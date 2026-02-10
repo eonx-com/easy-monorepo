@@ -50,7 +50,7 @@ jobs:
                     key: ${{ steps.cache-extensions.outputs.key }}
 
             -   name: Setup PHP ${{ matrix.php }}
-                uses: shivammathur/setup-php@2
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: ${{ matrix.actions.coverage || 'none' }}

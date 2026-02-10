@@ -28,7 +28,7 @@ jobs:
                     key: '${{ steps.cache-extensions.outputs.key }}'
 
             -   name: 'Setup PHP 8.2'
-                uses: shivammathur/setup-php@2
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.2
                     coverage: none
