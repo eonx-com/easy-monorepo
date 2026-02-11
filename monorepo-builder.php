@@ -12,6 +12,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Symplify\MonorepoBuilder\Config\MBConfig;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\AddTagToChangelogReleaseWorker;
+use Symplify\MonorepoBuilder\Release\ReleaseWorker\PushTagReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorker;
@@ -21,6 +22,8 @@ use Symplify\SmartFileSystem\SmartFileSystem;
 require_once __DIR__ . '/vendor/autoload.php';
 
 return static function (MBConfig $monorepoBuilderConfig): void {
+    MBConfig::disableDefaultWorkers();
+
     $monorepoBuilderConfig->packageDirectories([__DIR__ . '/packages']);
     $monorepoBuilderConfig->packageDirectoriesExcludes([]);
     $monorepoBuilderConfig->workers([
@@ -32,6 +35,7 @@ return static function (MBConfig $monorepoBuilderConfig): void {
         SetNextMutualDependenciesReleaseWorker::class,
         UpdateBranchAliasReleaseWorker::class,
         PushNextDevReleaseWorker::class,
+        PushTagReleaseWorker::class,
     ]);
 
     $services = $monorepoBuilderConfig->services();
