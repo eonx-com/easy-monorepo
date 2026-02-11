@@ -15,8 +15,10 @@ final class MonologJsonOutputMessageFormatter implements OutputMessageFormatterI
 
     public function format(string $message): string
     {
-        if (LambdaContextHelper::inLambda() === false || $message === '' || $message === \PHP_EOL) {
-            return $message;
+        $trimmedMessage = \trim($message);
+
+        if (LambdaContextHelper::inLambda() === false || $trimmedMessage === '' || $trimmedMessage === \PHP_EOL) {
+            return $message; // Return original message on purpose so it doesn't cause side effects
         }
 
         // Using Monolog to format messages as JSON might seem a bit overkill, but it allows console output messages
@@ -25,17 +27,17 @@ final class MonologJsonOutputMessageFormatter implements OutputMessageFormatterI
         $streamHandler = new StreamHandler('php://memory');
         $streamHandler->setFormatter(new JsonFormatter());
 
-        (new Logger(self::LOGGER_NAME, [$streamHandler], [new PhpSourceProcessor()]))->debug($message);
+        (new Logger(self::LOGGER_NAME, [$streamHandler], [new PhpSourceProcessor()]))->debug($trimmedMessage);
 
         $stream = $streamHandler->getStream();
         if (\is_resource($stream) === false) {
-            return $message;
+            return $trimmedMessage;
         }
 
         \rewind($stream);
         $jsonMessage = \stream_get_contents($stream);
         \fclose($stream);
 
-        return \is_string($jsonMessage) ? $jsonMessage : $message;
+        return \is_string($jsonMessage) ? $jsonMessage : $trimmedMessage;
     }
 }

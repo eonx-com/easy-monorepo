@@ -18,7 +18,7 @@ jobs:
                 id: cache-extensions
                 uses: shivammathur/cache-extensions@v1
                 with:
-                    php-version: '${{ matrix.php }}'
+                    php-version: 8.2
                     extensions: '${{ env.PHP_EXTENSIONS }}'
                     key: '${{ env.PHP_EXTENSIONS_CACHE_KEY }}'
             -
@@ -29,7 +29,7 @@ jobs:
                     key: '${{ steps.cache-extensions.outputs.key }}'
             -
                 name: 'Setup PHP 8.2'
-                uses: shivammathur/setup-php@297b3cde3c3c3202e03cd5e9b679a74c06f72214
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.2
                     coverage: none
@@ -50,7 +50,7 @@ jobs:
             matrix:
                 mapping: '${{ fromJson(needs.provide_packages_json.outputs.matrix) }}'
                 tag:
-                    - 6.18.2
+                    - 6.18.4
         name: 'Split ${{ matrix.mapping.dir }}'
         env:
             DIR: 'packages/${{ matrix.mapping.dir }}'
