@@ -35,6 +35,7 @@ final class EasyServerlessBundle extends AbstractBundle
     {
         $container
             ->parameters()
+            ->set(ConfigParam::AppMetricNamespace->value, $config['app_metric']['namespace'])
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
 
@@ -47,6 +48,10 @@ final class EasyServerlessBundle extends AbstractBundle
             ->addTag(ConfigTag::StateChecker->value);
 
         $container->import('config/services.php');
+
+        if ($config['app_metric']['enabled']) {
+            $container->import('config/app_metric.php');
+        }
 
         if ($config['console']['enabled']) {
             $container->import('config/console.php');
