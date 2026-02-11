@@ -40,9 +40,7 @@ final readonly class AppMetricClient implements AppMetricClientInterface
     public function sendMetricsBatch(array $appMetrics): void
     {
         foreach ($appMetrics as $appMetric) {
-            if ($appMetric instanceof AppMetricInterface) {
-                $this->sendMetric($appMetric);
-            }
+            $this->sendMetric($appMetric);
         }
     }
 
