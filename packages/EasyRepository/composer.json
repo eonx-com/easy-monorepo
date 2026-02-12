@@ -4,16 +4,17 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2"
+        "php": "^8.4"
     },
     "require-dev": {
         "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/orm": "^2.20",
         "doctrine/persistence": "^3.3",
         "eonx-com/easy-pagination": "^6.19",
+        "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4"
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {

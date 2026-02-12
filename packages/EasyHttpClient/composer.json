@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "eonx-com/easy-event-dispatcher": "^6.19",
         "eonx-com/easy-utils": "^6.19",
         "nesbot/carbon": "^3.8.4",
@@ -24,9 +24,10 @@
         "eonx-com/easy-lock": "^6.19",
         "eonx-com/easy-test": "^6.19",
         "eonx-com/easy-webhook": "^6.19",
+        "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^12.5",
         "symfony/amazon-sqs-messenger": "^7.4",
         "symfony/doctrine-bridge": "^7.4",
         "symfony/event-dispatcher-contracts": "^3.5"

@@ -4,7 +4,7 @@
     "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
@@ -17,7 +17,7 @@
         "api-platform/core": "^4.2.15",
         "async-aws/secrets-manager": "^2.5",
         "aws/aws-sdk-php": "^3.288.1",
-        "bugsnag/bugsnag": "^3.29",
+        "bugsnag/bugsnag": "^3.29.2",
         "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/dbal": "^3.8",
         "doctrine/doctrine-bundle": "^2.12",
@@ -32,7 +32,7 @@
         "nikic/php-parser": "^5.0",
         "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^12.5",
         "psr/cache": "^3.0",
         "psr/log": "^3.0",
         "spatie/url": "^2.2",
@@ -104,7 +104,7 @@
         "symfony/twig-bundle": "^7.4",
         "symfony/validator": "^7.4",
         "symfony/yaml": "^7.4",
-        "symplify/monorepo-builder": "^11.2.22"
+        "symplify/monorepo-builder": "^12.4.5"
     },
     "autoload": {
         "files": [

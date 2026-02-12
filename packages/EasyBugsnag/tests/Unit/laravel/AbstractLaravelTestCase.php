@@ -12,6 +12,16 @@ abstract class AbstractLaravelTestCase extends TestCase
 {
     private ?Application $app = null;
 
+    protected function tearDown(): void
+    {
+        $this->app = null;
+
+        \restore_error_handler();
+        \restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     protected function getApp(?array $config = null): Application
     {
         if ($this->app !== null) {

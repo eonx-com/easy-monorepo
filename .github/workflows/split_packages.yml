@@ -18,7 +18,7 @@ jobs:
                 id: cache-extensions
                 uses: shivammathur/cache-extensions@v1
                 with:
-                    php-version: 8.2
+                    php-version: 8.4
                     extensions: '${{ env.PHP_EXTENSIONS }}'
                     key: '${{ env.PHP_EXTENSIONS_CACHE_KEY }}'
             -
@@ -28,10 +28,10 @@ jobs:
                     path: '${{ steps.cache-extensions.outputs.dir }}'
                     key: '${{ steps.cache-extensions.outputs.key }}'
             -
-                name: 'Setup PHP 8.2'
+                name: 'Setup PHP 8.4'
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.2
+                    php-version: 8.4
                     coverage: none
                     extensions: '${{ env.PHP_EXTENSIONS }}'
             -

@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-filter": "*",
@@ -16,9 +16,10 @@
     },
     "require-dev": {
         "eonx-com/easy-test": "^6.19",
+        "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^12.5",
         "symfony/serializer": "^7.4",
         "symfony/validator": "^7.4"
     },
