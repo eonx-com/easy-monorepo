@@ -7,9 +7,14 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\User;
 use Symfony\Config\EasyActivityConfig;
 
 return static function (EasyActivityConfig $easyActivityConfig): void {
-    // Configuration for testing when EasyEncryption is not available
-    $easyActivityConfig->subjects(User::class)
+    // Configuration for testing encryptable fields masking integration
+    $easyActivityConfig
         ->disallowedProperties([
-            'password', // Manually configured
+            'email',
+        ]);
+    $easyActivityConfig->subjects(User::class)
+        ->type('User')
+        ->disallowedProperties([
+            'password',
         ]);
 };

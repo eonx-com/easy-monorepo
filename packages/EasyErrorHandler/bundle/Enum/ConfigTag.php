@@ -6,7 +6,6 @@ namespace EonX\EasyErrorHandler\Bundle\Enum;
 enum ConfigTag: string
 {
     case BugsnagExceptionIgnorer = 'easy_error_handler.bugsnag_exception_ignorer';
-
     case ErrorReporterProvider = 'easy_error_handler.error_reporter_provider';
 
     case ErrorResponseBuilderProvider = 'easy_error_handler.error_response_builder_provider';

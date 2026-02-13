@@ -6,7 +6,6 @@ namespace EonX\EasyActivity\Tests\Fixture\App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use EonX\EasyEncryption\Encryptable\Attribute\EncryptableField;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 class User extends UserBase
@@ -16,7 +15,7 @@ class User extends UserBase
     private string $creditCard;
 
     #[ORM\Column(type: Types::GUID)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Id]
     private string $id;
