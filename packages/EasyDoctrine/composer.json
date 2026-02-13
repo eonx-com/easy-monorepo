@@ -31,7 +31,7 @@
         "eonx-com/easy-test": "^6.19",
         "mockery/mockery": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^10.2|^11.4|^12.4|^13.0",
         "symfony/event-dispatcher-contracts": "^3.5"
     },
     "autoload": {
