@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyActivity\Bundle;
 
-use EonX\EasyActivity\Bundle\CompilerPass\AddEncryptableFieldsToDisallowedPropertiesCompilerPass;
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -17,11 +16,6 @@ final class EasyActivityBundle extends AbstractBundle
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
-    }
-
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new AddEncryptableFieldsToDisallowedPropertiesCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -41,6 +35,7 @@ final class EasyActivityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         $this->registerEasyDoctrineConfiguration($config, $container, $builder);
+        $this->registerEasyEncryptionConfiguration($container, $builder);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -99,5 +94,16 @@ final class EasyActivityBundle extends AbstractBundle
             ->set(ConfigParam::EasyDoctrineSubscriberEnabled->value, $config['easy_doctrine']['subscriber']['enabled']);
 
         $container->import('config/easy_doctrine.php');
+    }
+
+    private function registerEasyEncryptionConfiguration(
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($this->isBundleEnabled('EasyEncryptionBundle', $builder) === false) {
+            return;
+        }
+
+        $container->import('config/easy_encryption.php');
     }
 }

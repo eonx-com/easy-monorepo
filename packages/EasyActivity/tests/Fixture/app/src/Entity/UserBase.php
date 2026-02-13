@@ -27,14 +27,14 @@ abstract class UserBase
         return $this->ssn;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function setSsn(string $ssn): self
+    public function setSsn(string $ssn): static
     {
         $this->ssn = $ssn;
 
