@@ -35,6 +35,7 @@ final class EasyActivityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         $this->registerEasyDoctrineConfiguration($config, $container, $builder);
+        $this->registerEasyEncryptionConfiguration($container, $builder);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -93,5 +94,16 @@ final class EasyActivityBundle extends AbstractBundle
             ->set(ConfigParam::EasyDoctrineSubscriberEnabled->value, $config['easy_doctrine']['subscriber']['enabled']);
 
         $container->import('config/easy_doctrine.php');
+    }
+
+    private function registerEasyEncryptionConfiguration(
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($this->isBundleEnabled('EasyEncryptionBundle', $builder) === false) {
+            return;
+        }
+
+        $container->import('config/easy_encryption.php');
     }
 }
