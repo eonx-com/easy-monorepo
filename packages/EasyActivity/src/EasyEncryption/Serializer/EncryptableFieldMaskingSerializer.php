@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Common\Serializer;
+namespace EonX\EasyActivity\EasyEncryption\Serializer;
 
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
+use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
 use EonX\EasyEncryption\Encryptable\Attribute\EncryptableField;
 use ReflectionClass;
 use ReflectionException;

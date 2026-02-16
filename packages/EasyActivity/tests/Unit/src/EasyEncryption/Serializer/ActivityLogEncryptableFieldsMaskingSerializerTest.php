@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyActivity\Tests\Unit\EasyEncryption\Integration;
+namespace EonX\EasyActivity\Tests\Unit\EasyEncryption\Serializer;
 
 use EonX\EasyActivity\Common\Enum\ActivityAction;
 use EonX\EasyActivity\Common\Resolver\DefaultActorResolver;
@@ -9,7 +9,7 @@ use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLog;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\User;
 use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 
-final class EncryptableFieldsMaskingIntegrationTest extends AbstractUnitTestCase
+final class ActivityLogEncryptableFieldsMaskingSerializerTest extends AbstractUnitTestCase
 {
     private bool $appSecretEnvModified = false;
 

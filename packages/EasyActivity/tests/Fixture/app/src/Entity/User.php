@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use EonX\EasyEncryption\Encryptable\Attribute\EncryptableField;
 
 #[ORM\Entity]
-class User extends UserBase
+class User extends BaseUser
 {
     #[EncryptableField]
     #[ORM\Column(type: Types::STRING, length: 255)]
