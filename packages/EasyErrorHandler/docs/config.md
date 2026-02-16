@@ -73,51 +73,49 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use App\Exception\MyCustomException;
 use InvalidArgumentException;
 use Monolog\Logger;
-use Symfony\Config\EasyErrorHandlerConfig;
 
-return static function (EasyErrorHandlerConfig $easyErrorHandlerConfig): void {
-    $bugsnagConfig = $easyErrorHandlerConfig->bugsnag();
-    $bugsnagConfig
-        ->ignoredExceptions([
-            InvalidArgumentException::class,
-        ])
-        ->threshold(Logger::INFO);
-
-    $easyErrorHandlerConfig
-        ->loggerExceptionLogLevels([
-            InvalidArgumentException::class => 300,
-        ])
-        ->loggerIgnoredExceptions([
-            MyCustomException::class,
-        ])
-        ->overrideApiPlatformListener(true)
-        ->transformValidationErrors(true)
-        ->translationDomain('violations')
-        ->useDefaultBuilders(true)
-        ->useDefaultReporters(true)
-        ->verbose(false);
-
-    $response = $easyErrorHandlerConfig->response();
-    $response
-        ->code('custom_code')
-        ->exception('custom_exception')
-        ->message('custom_message')
-        ->subCode('custom_sub_code')
-        ->time('custom_time')
-        ->violations('custom_violations');
-
-    $extendedExceptionKeys = $response->extendedExceptionKeys();
-    $extendedExceptionKeys
-        ->class('custom_class')
-        ->file('custom_file')
-        ->line('custom_line')
-        ->message('custom_message')
-        ->trace('custom_trace');
-
-    $easyErrorHandlerConfig->translateInternalErrorMessages()
-        ->enabled(true)
-        ->locale('en');
-};
+return App::config([
+    'easy_error_handler' => [
+        'bugsnag' => [
+            'ignored_exceptions' => [
+                InvalidArgumentException::class,
+            ],
+            'threshold' => Logger::INFO,
+        ],
+        'logger' => [
+            'exception_log_levels' => [
+                InvalidArgumentException::class => 300,
+            ],
+            'ignored_exceptions' => [
+                MyCustomException::class,
+            ],
+        ],
+        'override_api_platform_listener' => true,
+        'transform_validation_errors' => true,
+        'translation_domain' => 'violations',
+        'use_default_builders' => true,
+        'use_default_reporters' => true,
+        'verbose' => false,
+        'response' => [
+            'code' => 'custom_code',
+            'exception' => 'custom_exception',
+            'message' => 'custom_message',
+            'sub_code' => 'custom_sub_code',
+            'time' => 'custom_time',
+            'violations' => 'custom_violations',
+            'extended_exception_keys' => [
+                'class' => 'custom_class',
+                'file' => 'custom_file',
+                'line' => 'custom_line',
+                'message' => 'custom_message',
+                'trace' => 'custom_trace',
+            ],
+        ],
+        'translate_internal_error_messages' => [
+            'locale' => 'en',
+        ],
+    ],
+]);
 
 ```
 

@@ -49,33 +49,36 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Entity\SomeEntity;
 use App\Entity\SomeOtherEntity;
-use Symfony\Config\EasyActivityConfig;
+use EonX\EasyActivity\Common\Enum\ActivityAction;
 
-return static function (EasyActivityConfig $easyActivityConfig): void {
-    $easyActivityConfig
-        ->tableName('activity_logs')
-        ->disallowedProperties([
+return App::config([
+    'easy_activity' => [
+        'table_name' => 'activity_logs',
+        'disallowed_properties' => [
             'updatedAt',
-        ]);
-
-    $easyActivityConfig->subjects(SomeEntity::class)
-        ->allowedActions([
-            ActivityAction::Create,
-            'some_custom_action',
-        ])
-        ->allowedProperties([
-            'content',
-            'description',
-        ])
-        ->disallowedProperties([
-            'author',
-        ])
-        ->nestedObjectAllowedProperties([
-            SomeOtherEntity::class => [
-                'processingDate',
-            ]
-        ])
-        ->type('SomeEntity');
-};
+        ],
+        'subjects' => [
+            SomeEntity::class => [
+                'allowed_actions' => [
+                    ActivityAction::Create,
+                    'some_custom_action',
+                ],
+                'allowed_properties' => [
+                    'content',
+                    'description',
+                ],
+                'disallowed_properties' => [
+                    'author',
+                ],
+                'nested_object_allowed_properties' => [
+                    SomeOtherEntity::class => [
+                        'processingDate',
+                    ],
+                ],
+                'type' => 'SomeEntity',
+            ],
+        ],
+    ],
+]);
 
 ```
