@@ -8,9 +8,9 @@ use UnexpectedValueException;
 
 final readonly class Number implements Stringable
 {
-    private const DEFAULT_PRECISION = 0;
+    private const int DEFAULT_PRECISION = 0;
 
-    private const SCALE = 99;
+    private const int SCALE = 99;
 
     private int $precision;
 

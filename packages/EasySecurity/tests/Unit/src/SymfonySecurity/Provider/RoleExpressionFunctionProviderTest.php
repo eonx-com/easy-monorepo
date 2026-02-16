@@ -9,7 +9,7 @@ use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
 
 final class RoleExpressionFunctionProviderTest extends AbstractUnitTestCase
 {
-    public const ROLE_VALID = 'role';
+    public const string ROLE_VALID = 'role';
 
     public function testRoleExpressionFunctionFoundWithConstant(): void
     {

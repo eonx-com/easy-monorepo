@@ -12,9 +12,9 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
 {
-    private const CACHE_ADAPTER_ARRAY = 'cache.adapter.array';
+    private const string CACHE_ADAPTER_ARRAY = 'cache.adapter.array';
 
-    private const SYSTEM_CACHES = [
+    private const array SYSTEM_CACHES = [
         'cache.app',
         'cache.system',
     ];

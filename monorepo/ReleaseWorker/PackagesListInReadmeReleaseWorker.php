@@ -11,7 +11,7 @@ use UnexpectedValueException;
 
 final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerInterface
 {
-    private const GITHUB_URL = 'https://github.com/';
+    private const string GITHUB_URL = 'https://github.com/';
 
     private Filesystem $filesystem;
 

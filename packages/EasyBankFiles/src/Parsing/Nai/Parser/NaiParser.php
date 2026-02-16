@@ -9,21 +9,21 @@ use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContext;
 
 final class NaiParser extends AbstractLineByLineParser
 {
-    private const ACCOUNT_IDENTIFIER = '03';
+    private const string ACCOUNT_IDENTIFIER = '03';
 
-    private const ACCOUNT_TRAILER = '49';
+    private const string ACCOUNT_TRAILER = '49';
 
-    private const CONTINUATION = '88';
+    private const string CONTINUATION = '88';
 
-    private const FILE_HEADER = '01';
+    private const string FILE_HEADER = '01';
 
-    private const FILE_TRAILER = '99';
+    private const string FILE_TRAILER = '99';
 
-    private const GROUP_HEADER = '02';
+    private const string GROUP_HEADER = '02';
 
-    private const GROUP_TRAILER = '98';
+    private const string GROUP_TRAILER = '98';
 
-    private const TRANSACTION_DETAIL = '16';
+    private const string TRANSACTION_DETAIL = '16';
 
     private array $accounts = [];
 

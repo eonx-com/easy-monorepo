@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class MakeMessengerReceiversPublicCompilerPass implements CompilerPassInterface
 {
-    private const RECEIVER_TAG = 'messenger.receiver';
+    private const string RECEIVER_TAG = 'messenger.receiver';
 
     public function process(ContainerBuilder $container): void
     {

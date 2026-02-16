@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ErrorResponseFactory implements ErrorResponseFactoryInterface, FormatAwareInterface
 {
-    private const FORMAT_JSON = 'json';
+    private const string FORMAT_JSON = 'json';
 
     public function create(Request $request, ErrorResponseData $data): Response
     {

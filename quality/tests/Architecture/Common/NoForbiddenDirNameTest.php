@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
 {
-    private const FORBIDDEN_DIR_NAMES = [
+    private const array FORBIDDEN_DIR_NAMES = [
         'Bridge',
         'Handler',
         'Handlers',
@@ -27,7 +27,7 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         'Utils',
     ];
 
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         '/EasyBatch/src/Common/Manager',
         '/EasyTest/src/Common/Trait',
         '/EasyTest/src/HttpClient/Trait',

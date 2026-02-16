@@ -19,7 +19,7 @@ use Stringable;
 #[AsDoctrineListener(event: Events::postFlush)]
 final readonly class EntityEventListener
 {
-    private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
+    private const string DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**
      * @var class-string[] $trackableEntities

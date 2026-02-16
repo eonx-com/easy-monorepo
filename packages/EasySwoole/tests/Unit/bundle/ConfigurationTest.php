@@ -11,7 +11,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends AbstractSymfonyTestCase
 {
-    private const DEFAULT_CONFIG = [
+    private const array DEFAULT_CONFIG = [
         'access_log' => [
             'enabled' => true,
             'do_not_log_paths' => [],

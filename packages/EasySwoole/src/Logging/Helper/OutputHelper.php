@@ -10,9 +10,9 @@ use Monolog\Logger;
 
 final class OutputHelper
 {
-    private const PREFIX = '[php.swoole]';
+    private const string PREFIX = '[php.swoole]';
 
-    private const STREAM = 'php://stdout';
+    private const string STREAM = 'php://stdout';
 
     private static ?Closure $writer = null;
 
