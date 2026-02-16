@@ -116,9 +116,6 @@ return ECSConfig::configure()
         NoExtraBlankLinesFixer::class => [
             'packages/EasyTest/.phpstorm.meta.php',
         ],
-        'packages/*/tests/*/config/*',
-        'packages/*/var/*',
-        'packages/*/vendor/*',
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
             'packages/EasyUtils/src/Math/Helper/MathHelper.php',
@@ -139,6 +136,9 @@ return ECSConfig::configure()
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
+        'packages/*/tests/*/config/*',
+        'packages/*/var/*',
+        'packages/*/vendor/*',
     ])
     ->withRules([
         AvoidPublicPropertiesSniff::class,
