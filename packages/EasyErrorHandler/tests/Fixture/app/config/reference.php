@@ -123,6 +123,43 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
+ * @psalm-type EasyBugsnagConfig = array{
+ *     api_key: string, // Bugsnag Notifier API key, can be found in project settings
+ *     app_name?: bool|array{
+ *         enabled?: bool, // Default: false
+ *         env_var?: string, // Default: "APP_NAME"
+ *     },
+ *     project_root?: string, // Default: "%kernel.project_dir%/src"
+ *     release_stage?: string, // Default: "%env(APP_ENV)%"
+ *     runtime?: string, // Default: "symfony"
+ *     runtime_version?: string, // Default: "7.4.0"
+ *     strip_path?: string, // Default: "%kernel.project_dir%"
+ *     aws_ecs_fargate?: bool|array{
+ *         enabled?: bool, // Default: false
+ *         meta_url?: string, // URL used to fetch AWS ECS Fargate task metadata // Default: null
+ *         meta_storage_filename?: string, // Filename to cache AWS ECS Fargate task metadata into // Default: "%kernel.cache_dir%/aws_ecs_fargate_meta.json"
+ *     },
+ *     doctrine_dbal?: bool|array{
+ *         enabled?: bool, // Default: true
+ *         connections?: list<string>,
+ *     },
+ *     sensitive_data_sanitizer?: bool|array{
+ *         enabled?: bool, // Default: true
+ *     },
+ *     session_tracking?: bool|array{
+ *         enabled?: bool, // Default: false
+ *         cache_directory?: string, // Directory used by default cache adapter provided by the package // Default: "%kernel.cache_dir%"
+ *         cache_expires_after?: int, // Expiry for sessions cache in seconds // Default: 3600
+ *         cache_namespace?: string, // Namespace used by default cache adapter provided by the package // Default: "easy_bugsnag_sessions"
+ *         exclude_urls?: list<string>,
+ *         exclude_urls_delimiter?: string, // Delimiter used in Regex to resolve excluded URLs // Default: "#"
+ *         messenger_message_count_for_sessions?: bool, // Enable/Disable session tracking for messenger messages // Default: false
+ *     },
+ *     worker_info?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     use_default_configurators?: bool, // Default: true
+ * }
  * @psalm-type EasyErrorHandlerConfig = array{
  *     bugsnag?: bool|array{
  *         enabled?: bool, // Default: true
@@ -731,56 +768,13 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         enabled?: bool, // Default: false
  *     },
  * }
- * @psalm-type EasyBugsnagConfig = array{
- *     api_key: string, // Bugsnag Notifier API key, can be found in project settings
- *     app_name?: bool|array{
- *         enabled?: bool, // Default: false
- *         env_var?: string, // Default: "APP_NAME"
- *     },
- *     project_root?: string, // Default: "%kernel.project_dir%/src"
- *     release_stage?: string, // Default: "%env(APP_ENV)%"
- *     runtime?: string, // Default: "symfony"
- *     runtime_version?: string, // Default: "7.4.0"
- *     strip_path?: string, // Default: "%kernel.project_dir%"
- *     aws_ecs_fargate?: bool|array{
- *         enabled?: bool, // Default: false
- *         meta_url?: string, // URL used to fetch AWS ECS Fargate task metadata // Default: null
- *         meta_storage_filename?: string, // Filename to cache AWS ECS Fargate task metadata into // Default: "%kernel.cache_dir%/aws_ecs_fargate_meta.json"
- *     },
- *     doctrine_dbal?: bool|array{
- *         enabled?: bool, // Default: true
- *         connections?: list<string>,
- *     },
- *     sensitive_data_sanitizer?: bool|array{
- *         enabled?: bool, // Default: true
- *     },
- *     session_tracking?: bool|array{
- *         enabled?: bool, // Default: false
- *         cache_directory?: string, // Directory used by default cache adapter provided by the package // Default: "%kernel.cache_dir%"
- *         cache_expires_after?: int, // Expiry for sessions cache in seconds // Default: 3600
- *         cache_namespace?: string, // Namespace used by default cache adapter provided by the package // Default: "easy_bugsnag_sessions"
- *         exclude_urls?: list<string>,
- *         exclude_urls_delimiter?: string, // Delimiter used in Regex to resolve excluded URLs // Default: "#"
- *         messenger_message_count_for_sessions?: bool, // Enable/Disable session tracking for messenger messages // Default: false
- *     },
- *     worker_info?: bool|array{
- *         enabled?: bool, // Default: false
- *     },
- *     use_default_configurators?: bool, // Default: true
- * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
  *     services?: ServicesConfig,
+ *     easy_bugsnag?: EasyBugsnagConfig,
  *     easy_error_handler?: EasyErrorHandlerConfig,
  *     framework?: FrameworkConfig,
- *     "when@set_ignored_exceptions"?: array{
- *         imports?: ImportsConfig,
- *         parameters?: ParametersConfig,
- *         services?: ServicesConfig,
- *         easy_error_handler?: EasyErrorHandlerConfig,
- *         framework?: FrameworkConfig,
- *     },
  *     "when@with_easy_bugsnag"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -868,7 +862,6 @@ namespace Symfony\Component\Routing\Loader\Configurator;
  *     deprecated?: array{package:string, version:string, message?:string},
  * }
  * @psalm-type RoutesConfig = array{
- *     "when@set_ignored_exceptions"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     "when@with_easy_bugsnag"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     ...<string, RouteConfig|ImportConfig|AliasConfig>
  * }

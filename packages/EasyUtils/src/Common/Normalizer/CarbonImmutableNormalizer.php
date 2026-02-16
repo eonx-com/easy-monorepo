@@ -16,9 +16,9 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
 {
     private const SUPPORTED_TYPES = [
         CarbonImmutable::class => true,
+        DateTime::class => true,
         DateTimeImmutable::class => true,
         DateTimeInterface::class => true,
-        DateTime::class => true,
     ];
 
     public function __construct(

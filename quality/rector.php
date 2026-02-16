@@ -71,12 +71,12 @@ return RectorConfig::configure()
             'packages/*/Entity/*',
         ],
         DeprecatedAnnotationToDeprecatedAttributeRector::class => null,
-        ReadOnlyPropertyRector::class => [
-            'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
-        ],
         'packages/*/tests/*/config/*',
         'packages/*/var/*',
         'packages/*/vendor/*',
+        ReadOnlyPropertyRector::class => [
+            'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
+        ],
         ...$temporaryIgnoredRectors,
     ])
     ->withRules([
