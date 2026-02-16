@@ -31,12 +31,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyApiPlatformConfig;
-
-return static function (EasyApiPlatformConfig $easyApiPlatformConfig): void {
-    $easyApiPlatformConfig->advancedSearchFilter()
-        ->iriFields(['entityId']);
-};
+return App::config([
+    'easy_api_platform' => [
+        'advanced_search_filter' => [
+            'iri_fields' => ['entityId'],
+        ],
+    ],
+]);
 ```
 
 With this configuration, you can tailor the behavior of EasyApiPlatform to suit your specific requirements in your Symfony project. Feel free to experiment and adjust the settings as needed.

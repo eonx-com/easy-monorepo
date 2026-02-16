@@ -22,16 +22,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyBugsnagConfig;
-
-return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easyBugsnagConfig
-        ->apiKey(env('BUGSNAG_API_KEY'));
-
-    $doctrineDbal = $easyBugsnagConfig->doctrineDbal();
-    $doctrineDbal
-        ->enabled(true);
-};
+return App::config([
+    'easy_bugsnag' => [
+        'api_key' => env('BUGSNAG_API_KEY'),
+        'doctrine_dbal' => true,
+    ],
+]);
 
 ```
 
@@ -45,20 +41,17 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyBugsnagConfig;
-
-return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easyBugsnagConfig
-        ->apiKey(env('BUGSNAG_API_KEY'));
-
-    $doctrineDbal = $easyBugsnagConfig->doctrineDbal();
-    $doctrineDbal
-        ->enabled(true)
-        ->connections([
-            'default',
-            'secure',
-        ]);
-};
+return App::config([
+    'easy_bugsnag' => [
+        'api_key' => env('BUGSNAG_API_KEY'),
+        'doctrine_dbal' => [
+            'connections' => [
+                'default',
+                'secure',
+            ],
+        ],
+    ],
+]);
 
 ```
 

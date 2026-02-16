@@ -56,17 +56,17 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Infrastructure\EasySecurity\Authorization\PermissionsInterface;
 use App\Infrastructure\EasySecurity\Authorization\RolesInterface;
-use Symfony\Config\EasySecurityConfig;
 
-return static function (EasySecurityConfig $easySecurityConfig): void {
-    $easySecurityConfig
-        ->permissionsLocations([
+return App::config([
+    'easy_security' => [
+        'permissions_locations' => [
             PermissionsInterface::class,
-        ])
-        ->rolesLocations([
+        ],
+        'roles_locations' => [
             RolesInterface::class,
-        ]);
-};
+        ],
+    ],
+]);
 
 ```
 

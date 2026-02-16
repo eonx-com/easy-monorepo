@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyBugsnagConfig;
-
-return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easyBugsnagConfig->useDefaultConfigurators(false);
-};
+return App::config([
+    'easy_bugsnag' => [
+        'use_default_configurators' => false,
+    ],
+]);

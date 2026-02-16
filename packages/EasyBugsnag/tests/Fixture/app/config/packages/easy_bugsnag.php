@@ -3,15 +3,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyBugsnagConfig;
-
-return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easyBugsnagConfig->apiKey('my-bugsnag-api-key');
-
-    $easyBugsnagConfig->sensitiveDataSanitizer()
-        ->enabled(true);
-
-    $easyBugsnagConfig->sessionTracking()
-        ->enabled(true)
-        ->excludeUrls(['^/ping']);
-};
+return App::config([
+    'easy_bugsnag' => [
+        'api_key' => 'my-bugsnag-api-key',
+        'sensitive_data_sanitizer' => true,
+        'session_tracking' => [
+            'exclude_urls' => ['^/ping'],
+        ],
+    ],
+]);

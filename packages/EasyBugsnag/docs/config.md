@@ -75,45 +75,36 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Config\EasyBugsnagConfig;
 
-return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easyBugsnagConfig
-        ->apiKey(env('BUGSNAG_API_KEY'))
-        ->projectRoot(param('kernel.project_dir') . '/src')
-        ->releaseStage(env('APP_ENV'))
-        ->stripPath(param('kernel.project_dir'))
-        ->runtime('symfony')
-        ->runtimeVersion(Kernel::VERSION);
-
-    $awsEcsFargate = $easyBugsnagConfig->awsEcsFargate();
-    $awsEcsFargate
-        ->enabled(true)
-        ->metaUrl(env('ECS_CONTAINER_METADATA_URI_V4') . '/task')
-        ->metaStorageFilename(param('kernel.cache_dir') . '/aws_ecs_fargate_meta.json');
-
-    $doctrineDbal = $easyBugsnagConfig->doctrineDbal();
-    $doctrineDbal
-        ->enabled(true)
-        ->connections([
-            'default',
-        ]);
-
-    $sessionTracking = $easyBugsnagConfig->sessionTracking();
-    $sessionTracking
-        ->enabled(true)
-        ->cacheDirectory(param('kernel.cache_dir'))
-        ->cacheExpiresAfter(3600)
-        ->cacheNamespace('easy_bugsnag_sessions')
-        ->excludeUrls([])
-        ->excludeUrlsDelimiter('#')
-        ->messengerMessageCountForSessions(false);
-
-    $easyBugsnagConfig->workerInfo()
-        ->enabled(true);
-
-    $easyBugsnagConfig->useDefaultConfigurators(true);
-};
+return App::config([
+    'easy_bugsnag' => [
+        'api_key' => env('BUGSNAG_API_KEY'),
+        'project_root' => param('kernel.project_dir') . '/src',
+        'release_stage' => env('APP_ENV'),
+        'strip_path' => param('kernel.project_dir'),
+        'runtime' => 'symfony',
+        'runtime_version' => Kernel::VERSION,
+        'aws_ecs_fargate' => [
+            'meta_url' => env('ECS_CONTAINER_METADATA_URI_V4') . '/task',
+            'meta_storage_filename' => param('kernel.cache_dir') . '/aws_ecs_fargate_meta.json',
+        ],
+        'doctrine_dbal' => [
+            'connections' => [
+                'default',
+            ],
+        ],
+        'session_tracking' => [
+            'cache_directory' => param('kernel.cache_dir'),
+            'cache_expires_after' => 3600,
+            'cache_namespace' => 'easy_bugsnag_sessions',
+            'exclude_urls' => [],
+            'exclude_urls_delimiter' => '#',
+            'messenger_message_count_for_sessions' => false,
+        ],
+        'worker_info' => true,
+        'use_default_configurators' => true,
+    ],
+]);
 
 ```
 

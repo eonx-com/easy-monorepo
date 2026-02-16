@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyWebhookConfig;
-
-return static function (EasyWebhookConfig $easyWebhookConfig): void {
-    $easyWebhookConfig->signature()
-        ->enabled(true);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_webhook', [
+        'signature' => true,
+    ]);
 };

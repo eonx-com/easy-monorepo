@@ -5,15 +5,18 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Enum\ErrorCode;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
-use Symfony\Config\EasyApiPlatformConfig;
 
-return static function (EasyApiPlatformConfig $easyApiPlatformConfig): void {
-    $easyErrorHandlerConfig = $easyApiPlatformConfig->easyErrorHandler();
-
-    $easyErrorHandlerConfig->customSerializerExceptions()
-        ->class(UnexpectedValueException::class)
-        ->messagePattern('/Custom message from custom CarbonNormalizer./')
-        ->violationMessage('violations.invalid_datetime');
-
-    $easyErrorHandlerConfig->validationErrorCode(ErrorCode::ValidationError);
-};
+return App::config([
+    'easy_api_platform' => [
+        'easy_error_handler' => [
+            'custom_serializer_exceptions' => [
+                [
+                    'class' => UnexpectedValueException::class,
+                    'message_pattern' => '/Custom message from custom CarbonNormalizer./',
+                    'violation_message' => 'violations.invalid_datetime',
+                ],
+            ],
+            'validation_error_code' => ErrorCode::ValidationError,
+        ],
+    ],
+]);

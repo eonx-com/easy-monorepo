@@ -6,13 +6,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyTemplatingBlock\Bundle\Enum\ConfigTag;
 use EonX\EasyTemplatingBlock\Common\Provider\ArrayTemplatingBlockProvider;
 use EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlock;
-use Symfony\Config\EasyTemplatingBlockConfig;
 
-return static function (
-    EasyTemplatingBlockConfig $easyTemplatingBlockConfig,
-    ContainerConfigurator $containerConfigurator,
-): void {
-    $easyTemplatingBlockConfig->isDebug(false);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_templating_block', [
+        'is_debug' => false,
+    ]);
 
     $services = $containerConfigurator->services();
 

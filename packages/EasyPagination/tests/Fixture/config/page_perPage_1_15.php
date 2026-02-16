@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyPaginationConfig;
-
-return static function (EasyPaginationConfig $easyPaginationConfig): void {
-    $easyPaginationConfig->pagination()
-        ->pageAttribute('page')
-        ->pageDefault(1)
-        ->perPageAttribute('perPage')
-        ->perPageDefault(15);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_pagination', [
+        'pagination' => [
+            'page_attribute' => 'page',
+            'page_default' => 1,
+            'per_page_attribute' => 'perPage',
+            'per_page_default' => 15,
+        ],
+    ]);
 };

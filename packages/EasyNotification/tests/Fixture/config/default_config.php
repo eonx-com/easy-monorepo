@@ -5,13 +5,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyNotification\Provider\ConfigProviderInterface;
 use EonX\EasyNotification\Tests\Stub\Provider\ConfigProviderStub;
-use Symfony\Config\EasyNotificationConfig;
 
-return static function (
-    EasyNotificationConfig $easyNotificationConfig,
-    ContainerConfigurator $containerConfigurator,
-): void {
-    $easyNotificationConfig->apiUrl('http://eonx.com');
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_notification', [
+        'api_url' => 'http://eonx.com',
+    ]);
 
     $services = $containerConfigurator->services();
 
