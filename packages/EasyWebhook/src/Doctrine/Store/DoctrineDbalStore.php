@@ -21,7 +21,7 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 
 final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements StoreInterface, SendAfterStoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhooks';
+    public const string DEFAULT_TABLE = 'easy_webhooks';
 
     public function __construct(
         RandomGeneratorInterface $random,

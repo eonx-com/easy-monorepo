@@ -17,7 +17,8 @@ final class EasyRepositoryServiceProviderTest extends AbstractLumenTestCase
         /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
 
-        (new EasyRepositoryServiceProvider($app))->register();
+        new EasyRepositoryServiceProvider($app)
+            ->register();
     }
 
     public function testRegisterRepositoriesSuccessfully(): void

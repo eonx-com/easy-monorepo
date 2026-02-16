@@ -175,7 +175,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             'expectedResult' => '{"author":{"name":"John Doe"},"content":"text"}',
         ];
 
-        $comment = (new Comment())
+        $comment = new Comment()
             ->setId((string)(new NilUuid()))
             ->setMessage('some-message');
         $article = new Article();
@@ -204,7 +204,7 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             ),
         ];
 
-        $authorExtra = (new AuthorExtra())
+        $authorExtra = new AuthorExtra()
             ->setPhone('1234567890');
 
         yield 'Default config with nested object' => [

@@ -19,7 +19,7 @@ use Stringable;
 #[AsDoctrineListener(event: Events::postFlush)]
 final readonly class EntityEventListener
 {
-    private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
+    private const string DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**
      * @var class-string[] $trackableEntities
@@ -83,13 +83,10 @@ final readonly class EntityEventListener
 
     private function isEntityTrackable(object $entity): bool
     {
-        foreach ($this->trackableEntities as $trackableEntity) {
-            if (\is_a($entity, $trackableEntity)) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            $this->trackableEntities,
+            static fn ($trackableEntity): bool => \is_a($entity, $trackableEntity)
+        );
     }
 
     private function prepareDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void

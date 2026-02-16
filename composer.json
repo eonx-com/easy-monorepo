@@ -86,7 +86,7 @@
         "illuminate/routing": "^11.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "laravel/framework": "^11.44.1",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/lumen-framework": "^11.2",
         "league/commonmark": "^2.7",
         "mockery/mockery": "^1.6",
         "natepage/php-pkcs11-ide-helper": "^1.0",

@@ -16,11 +16,11 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 final class AcnValidator extends ConstraintValidator
 {
-    private const ACN_LENGTH = 9;
+    private const int ACN_LENGTH = 9;
 
-    private const MODULUS = 10;
+    private const int MODULUS = 10;
 
-    private const WEIGHTS = [8, 7, 6, 5, 4, 3, 2, 1, 0];
+    private const array WEIGHTS = [8, 7, 6, 5, 4, 3, 2, 1, 0];
 
     public function validate(mixed $value, Constraint $constraint): void
     {

@@ -12,11 +12,11 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterface
 {
-    private const EASY_LOCK_MIDDLEWARE_LIST = [
+    private const array EASY_LOCK_MIDDLEWARE_LIST = [
         ProcessWithLockMiddleware::class,
     ];
 
-    private const MESSENGER_BUS_TAG = 'messenger.bus';
+    private const string MESSENGER_BUS_TAG = 'messenger.bus';
 
     public function process(ContainerBuilder $container): void
     {

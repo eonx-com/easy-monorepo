@@ -19,7 +19,8 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
             'Expression language not set, to use it in your rules you must set it on the decision instance'
         );
 
-        (new ValueDecision())->addRule($this->createLanguageRule('value + 10'))
+        new ValueDecision()
+            ->addRule($this->createLanguageRule('value + 10'))
             ->make([
                 'value' => 1,
             ]);
@@ -28,7 +29,8 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
     public function testModifyValueInArray(): void
     {
         $rules = [$this->createLanguageRule('value + 10')];
-        $decision = (new ValueDecision())->addRules($rules);
+        $decision = new ValueDecision()
+            ->addRules($rules);
 
         $this->injectExpressionLanguage($decision);
 
@@ -51,14 +53,15 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
             $this->createLanguageRule('if(extra_param1 > 10).else(add(extra_param1))'),
         ];
 
-        $decision = (new ValueDecision())->addRules($rules);
+        $decision = new ValueDecision()
+            ->addRules($rules);
         $expressionLanguage = $this->createExpressionLanguage();
 
         $expressionLanguage->addFunction(new ExpressionFunction(
             'cap',
             fn ($arguments, $value, $max): mixed => \min($value, $max)
         ));
-        $expressionLanguage->addFunctions((new ValueExpressionFunctionProvider())->getFunctions());
+        $expressionLanguage->addFunctions(new ValueExpressionFunctionProvider()->getFunctions());
 
         $decision->setExpressionLanguage($expressionLanguage);
 

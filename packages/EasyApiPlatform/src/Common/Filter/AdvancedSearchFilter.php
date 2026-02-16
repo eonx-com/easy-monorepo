@@ -47,9 +47,9 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 {
     use SearchFilterTrait;
 
-    public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
+    public const string DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
-    private const DOCTRINE_UUID_TYPE = 'uuid';
+    private const string DOCTRINE_UUID_TYPE = 'uuid';
 
     /**
      * @param string[] $iriFields
@@ -386,7 +386,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         )),
                     ]);
 
-                    return (new NilUuid())->toString();
+                    return new NilUuid()
+                        ->toString();
                 }
 
                 return $value;
@@ -465,7 +466,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             throw new InvalidArgumentException('Composite identifiers are not supported.');
         } catch (InvalidArgumentException) {
-            return (new NilUuid())->toString();
+            return new NilUuid()
+                ->toString();
         }
     }
 

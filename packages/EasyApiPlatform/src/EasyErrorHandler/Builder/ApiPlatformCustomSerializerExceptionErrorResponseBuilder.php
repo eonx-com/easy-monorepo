@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
+use Deprecated;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -57,9 +58,7 @@ final class ApiPlatformCustomSerializerExceptionErrorResponseBuilder extends
         return [];
     }
 
-    /**
-     * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0
-     */
+    #[Deprecated(message: 'Deprecated since 6.4.0, will be moved to the parent class in 7.0')]
     protected function normalizePropertyName(string $name, ?string $class = null): string
     {
         if ($class === null) {

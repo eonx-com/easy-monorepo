@@ -23,7 +23,7 @@
         "eonx-com/easy-bugsnag": "^6.19",
         "eonx-com/easy-logging": "^6.19",
         "laravel/framework": "^11.44.1",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/lumen-framework": "^11.2",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^12.5"
     },

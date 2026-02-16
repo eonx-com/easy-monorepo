@@ -7,9 +7,9 @@ use function Symfony\Component\String\u;
 
 final class OptionHelper
 {
-    private const DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
+    private const int DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT = 10000;
 
-    private const DEFAULT_OPTIONS = [
+    private const array DEFAULT_OPTIONS = [
         'app_cache_warmup_enabled' => false,
         'cache_clear_after_tick_count' => self::DEFAULT_CACHE_CLEAR_AFTER_TICK_COUNT,
         'cache_tables' => [],
@@ -44,7 +44,7 @@ final class OptionHelper
         'worker_stop_wait_event' => true,
     ];
 
-    private const DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
+    private const string DEFAULT_PUBLIC_DIR = __DIR__ . '/../../../../../';
 
     private static array $options = [];
 

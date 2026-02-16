@@ -13,7 +13,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class Alphanumeric extends AbstractConstraint
 {
-    public const INVALID_ALPHANUMERIC_ERROR = 'INVALID_ALPHANUMERIC_ERROR';
+    public const string INVALID_ALPHANUMERIC_ERROR = 'INVALID_ALPHANUMERIC_ERROR';
 
     public string $message = 'alphanumeric.not_valid';
 }

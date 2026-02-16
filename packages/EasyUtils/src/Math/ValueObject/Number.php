@@ -8,23 +8,20 @@ use UnexpectedValueException;
 
 final readonly class Number implements Stringable
 {
-    private const DEFAULT_PRECISION = 0;
+    private const int DEFAULT_PRECISION = 0;
 
-    private const SCALE = 99;
+    private const int SCALE = 99;
 
     private int $precision;
 
+    /**
+     * @var numeric-string
+     */
     private string $value;
 
     public function __construct(int|string|self $value, ?int $precision = null)
     {
-        if (\is_string($value)) {
-            $value = \trim($value, "\s");
-        }
-        if ($value instanceof self === false && \is_numeric($value) === false) {
-            throw new UnexpectedValueException("Value must be a number but '{$value}' is given.");
-        }
-        $this->value = (string)$value;
+        $this->value = $this->normalizeToNumericString($value);
         $this->precision = $precision ?? self::DEFAULT_PRECISION;
     }
 
@@ -74,8 +71,7 @@ final readonly class Number implements Stringable
 
     public function add(int|string|float|self $addition): self
     {
-        $additionValue = $addition instanceof self ? $addition->value : (string)$addition;
-        $sum = $this->round(\bcadd($this->value, $additionValue, self::SCALE));
+        $sum = $this->round(\bcadd($this->value, $this->normalizeToNumericString($addition), self::SCALE));
 
         return new self($sum, $this->precision);
     }
@@ -85,14 +81,12 @@ final readonly class Number implements Stringable
      */
     public function compare(int|string|float|self $operand): int
     {
-        $operandValue = $operand instanceof self ? $operand->value : (string)$operand;
-
-        return \bccomp($this->value, $operandValue, self::SCALE);
+        return \bccomp($this->value, $this->normalizeToNumericString($operand), self::SCALE);
     }
 
     public function divide(int|string|float|self $divisor): self
     {
-        $quotient = $this->round(\bcdiv($this->value, (string)$divisor, self::SCALE));
+        $quotient = $this->round(\bcdiv($this->value, $this->normalizeToNumericString($divisor), self::SCALE));
 
         return new self($quotient, $this->precision);
     }
@@ -154,21 +148,22 @@ final readonly class Number implements Stringable
 
     public function multiply(int|string|float|self $multiplier): self
     {
-        $product = $this->round(\bcmul($this->value, (string)$multiplier, self::SCALE));
+        $product = $this->round(\bcmul($this->value, $this->normalizeToNumericString($multiplier), self::SCALE));
 
         return new self($product, $this->precision);
     }
 
     public function subtract(int|string|float|self $subtrahend): self
     {
-        $difference = $this->round(\bcsub($this->value, (string)$subtrahend, self::SCALE));
+        $difference = $this->round(\bcsub($this->value, $this->normalizeToNumericString($subtrahend), self::SCALE));
 
         return new self($difference, $this->precision);
     }
 
     public function toMoneyString(bool $truncateZeroCents = true): string
     {
-        $value = (string)(new self($this->value, 2))->divide(100);
+        $value = (string)new self($this->value, 2)
+            ->divide(100);
 
         if ($truncateZeroCents === true && \str_ends_with($value, '.00')) {
             return (string)(int)$value;
@@ -178,12 +173,29 @@ final readonly class Number implements Stringable
     }
 
     /**
+     * @return numeric-string
+     */
+    private function normalizeToNumericString(int|string|float|self $value): string
+    {
+        if (\is_string($value)) {
+            $value = \trim($value, "\s");
+        }
+        if ($value instanceof self === false && \is_numeric($value) === false) {
+            throw new UnexpectedValueException("Value must be a number but '{$value}' is given.");
+        }
+        /** @var numeric-string $numericValue */
+        $numericValue = (string)$value;
+
+        return $numericValue;
+    }
+
+    /**
      * @see https://stackoverflow.com/a/1653826/430062
      */
     private function round(string $value): string
     {
         if (\str_contains($value, '.') === false) {
-            return \bcadd($value, '0', $this->precision);
+            return \bcadd($this->normalizeToNumericString($value), '0', $this->precision);
         }
 
         $floatPartLength = \strlen($value) - \strpos($value, '.') - 1;
@@ -203,9 +215,17 @@ final readonly class Number implements Stringable
         }
 
         if ($value[0] !== '-') {
-            return \bcadd($value, $delta, $this->precision);
+            return \bcadd(
+                $this->normalizeToNumericString($value),
+                $this->normalizeToNumericString($delta),
+                $this->precision
+            );
         }
 
-        return \bcsub($value, $delta, $this->precision);
+        return \bcsub(
+            $this->normalizeToNumericString($value),
+            $this->normalizeToNumericString($delta),
+            $this->precision
+        );
     }
 }

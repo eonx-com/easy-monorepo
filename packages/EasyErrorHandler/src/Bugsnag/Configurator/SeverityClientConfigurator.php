@@ -15,7 +15,7 @@ use Throwable;
 
 final class SeverityClientConfigurator extends AbstractClientConfigurator
 {
-    private const MAPPING = [
+    private const array MAPPING = [
         Level::Error->value => ExceptionSeverity::Error,
         Level::Info->value => ExceptionSeverity::Info,
         Level::Warning->value => ExceptionSeverity::Warning,

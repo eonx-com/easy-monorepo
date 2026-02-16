@@ -13,7 +13,7 @@ use EonX\EasyWebhook\Common\Store\ResultStoreInterface;
 
 final class DynamoDbResultStore extends AbstractDynamoDbStore implements ResultStoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhook_results';
+    public const string DEFAULT_TABLE = 'easy_webhook_results';
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {

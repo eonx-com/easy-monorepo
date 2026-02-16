@@ -186,9 +186,6 @@ parameters:
         - message: '#Method EonX\\EasyUtils\\Common\\Helper\\EnvVarSubstitutionHelper\:\:resolveEnvVarValue\(\) should return string but returns mixed#'
           path : %currentWorkingDirectory%/packages/EasyUtils/src/Common/Helper/EnvVarSubstitutionHelper.php
 
-        - message: '#Parameter \#\d \$.* of function bc.* expects numeric\-string, .*string given#'
-          path : %currentWorkingDirectory%/packages/EasyUtils/src/Math/ValueObject/Number.php
-
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: %currentWorkingDirectory%/packages/EasyWebhook/src/Common/Entity/AbstractWebhook.php
