@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "bugsnag/bugsnag": "^3.29",
+        "bugsnag/bugsnag": "^3.29.2",
         "eonx-com/easy-utils": "^6.19",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.8.4",
@@ -29,8 +29,9 @@
         "eonx-com/easy-test": "^6.19",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
-        "phpunit/phpunit": "^12.4",
+        "phpunit/phpunit": "^12.5",
         "symfony/doctrine-bridge": "^7.4",
+        "symfony/runtime": "^7.4",
         "symfony/uid": "^7.4"
     },
     "autoload": {

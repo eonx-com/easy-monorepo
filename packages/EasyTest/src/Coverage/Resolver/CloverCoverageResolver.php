@@ -5,8 +5,8 @@ namespace EonX\EasyTest\Coverage\Resolver;
 
 use EonX\EasyTest\Coverage\Exception\UnableToResolveCoverageException;
 use EonX\EasyTest\Coverage\ValueObject\CoverageReport;
-use Exception;
 use SimpleXMLElement;
+use Throwable;
 
 final class CloverCoverageResolver implements CoverageResolverInterface
 {
@@ -24,13 +24,18 @@ final class CloverCoverageResolver implements CoverageResolverInterface
     {
         $violations = [];
 
+        $useInternalErrors = \libxml_use_internal_errors(true);
+
         try {
             $xml = new SimpleXMLElement($coverageOutput);
-        } catch (Exception) {
+        } catch (Throwable) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
                 self::class
             ));
+        } finally {
+            \libxml_clear_errors();
+            \libxml_use_internal_errors($useInternalErrors);
         }
 
         $files = $xml->xpath('//file');

@@ -23,7 +23,7 @@
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
         "eonx-com/easy-test": "^6.19",
-        "phpunit/phpunit": "^12.4",
+        "phpunit/phpunit": "^12.5",
         "symfony/framework-bundle": "^7.4"
     },
     "autoload": {

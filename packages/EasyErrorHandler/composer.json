@@ -27,7 +27,7 @@
         "eonx-com/easy-webhook": "^6.19",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.2",
-        "phpunit/phpunit": "^12.4",
+        "phpunit/phpunit": "^12.5",
         "symfony/framework-bundle": "^7.4"
     },
     "autoload": {

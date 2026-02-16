@@ -6,6 +6,8 @@ namespace EonX\EasyServerless\Laravel;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Pagination\StatelessPagination;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
+use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
+use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
@@ -32,6 +34,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-serverless.php', 'easy-serverless');
 
+        $this->registerAppMetric();
         $this->registerHealth();
 
         if (\class_exists(PaginationInterface::class)) {
@@ -54,6 +57,21 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                 partialBatchFailure: $getQueueConfig('partial_batch_failure', false),
             );
         });
+    }
+
+    private function registerAppMetric(): void
+    {
+        if (\config('easy-serverless.app_metric.enabled', true) === false) {
+            return;
+        }
+
+        $this->app->singleton(
+            AppMetricClientInterface::class,
+            static fn (Container $app): AppMetricClientInterface => new AppMetricClient(
+                $app->make(LoggerInterface::class),
+                \config('easy-serverless.app_metric.namespace')
+            )
+        );
     }
 
     private function registerHealth(): void

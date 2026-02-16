@@ -27,7 +27,9 @@ abstract class AbstractUnitTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        $this->addToAssertionCount(Mockery::getContainer()->mockery_getExpectationCount());
+        /** @var non-negative-int $expectationCount */
+        $expectationCount = Mockery::getContainer()->mockery_getExpectationCount();
+        $this->addToAssertionCount($expectationCount);
 
         Mockery::close();
 
