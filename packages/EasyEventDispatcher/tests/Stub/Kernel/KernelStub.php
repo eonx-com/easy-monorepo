@@ -24,7 +24,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         );
         $container->setDefinition(
             EventDispatcherStub::class,
-            (new Definition(EventDispatcherStub::class))
+            new Definition(EventDispatcherStub::class)
                 ->setDecoratedService(SymfonyEventDispatcherInterface::class)
                 ->setArgument('$decorated', new Reference('.inner'))
         );

@@ -14,6 +14,6 @@ final class StackTest extends AbstractUnitTestCase
         $this->expectException(InvalidStackIndexException::class);
         $this->expectExceptionMessage('Stack index must be positive, -1 given');
 
-        (new Stack([]))->rewindTo(-1);
+        new Stack([])->rewindTo(-1);
     }
 }

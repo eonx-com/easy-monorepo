@@ -41,7 +41,7 @@ final class ReplaceChannelsDefinitionCompilerPass implements CompilerPassInterfa
                     continue;
                 }
 
-                $newDefinition = (new Definition(LoggerInterface::class))
+                $newDefinition = new Definition(LoggerInterface::class)
                     ->setFactory([new Reference(LoggerFactoryInterface::class), 'create'])
                     ->setArguments([$resolvedChannel]);
 

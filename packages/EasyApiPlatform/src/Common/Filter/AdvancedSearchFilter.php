@@ -386,7 +386,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         )),
                     ]);
 
-                    return (new NilUuid())->toString();
+                    return new NilUuid()
+                        ->toString();
                 }
 
                 return $value;
@@ -465,7 +466,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
 
             throw new InvalidArgumentException('Composite identifiers are not supported.');
         } catch (InvalidArgumentException) {
-            return (new NilUuid())->toString();
+            return new NilUuid()
+                ->toString();
         }
     }
 

@@ -14,7 +14,7 @@ final class TemplateBlock extends AbstractTemplatingBlock
         string $templateName,
         ?array $templateContext = null,
     ): self {
-        return (new self($name))
+        return new self($name)
             ->setTemplateName($templateName)
             ->setTemplateContext($templateContext);
     }

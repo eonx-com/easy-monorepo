@@ -30,7 +30,8 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         foreach (Alphabet::cases() as $alphabet) {
             $alphabetMethod = \sprintf('exclude%s', $alphabet->name);
             yield \sprintf('Exclude %s', $alphabet->name) => [
-                'randomStringConfig' => (new RandomStringConfig(100))->$alphabetMethod(),
+                'randomStringConfig' => new RandomStringConfig(100)
+                    ->$alphabetMethod(),
                 'assert' => static function (string $randomString) use ($alphabet): void {
                     self::assertAlphabetExcluded($alphabet, $randomString);
                 },
@@ -38,7 +39,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
 
             $alphabetMethod = \sprintf('include%s', $alphabet->name);
             yield \sprintf('Include only %s', $alphabet->name) => [
-                'randomStringConfig' => (new RandomStringConfig(100))
+                'randomStringConfig' => new RandomStringConfig(100)
                     ->clear()
                     ->$alphabetMethod(),
                 'assert' => static function (string $randomString) use ($alphabet): void {
@@ -48,14 +49,15 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         }
 
         yield 'Override alphabet' => [
-            'randomStringConfig' => (new RandomStringConfig(100))->alphabet('EONX'),
+            'randomStringConfig' => new RandomStringConfig(100)
+                ->alphabet('EONX'),
             'assert' => static function (string $randomString): void {
                 self::assertIncludesOnly('EONX', $randomString);
             },
         ];
 
         yield 'User friendly' => [
-            'randomStringConfig' => (new RandomStringConfig(100))
+            'randomStringConfig' => new RandomStringConfig(100)
                 ->constraints([new AlwaysValidRandomStringConstraintStub()])
                 ->maxAttempts(10)
                 ->userFriendly(),
@@ -69,30 +71,30 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
         ];
 
         yield 'Prefix respect length' => [
-            'randomStringConfig' => (new RandomStringConfig(16))
+            'randomStringConfig' => new RandomStringConfig(16)
                 ->prefix('eonx_')
                 ->userFriendly(),
             'assert' => static function (string $randomString): void {
-                self::assertSame(16, (new UnicodeString($randomString))->length());
+                self::assertSame(16, new UnicodeString($randomString)->length());
             },
         ];
 
         yield 'Suffix respect length' => [
-            'randomStringConfig' => (new RandomStringConfig(16))
+            'randomStringConfig' => new RandomStringConfig(16)
                 ->suffix('_eonx')
                 ->userFriendly(),
             'assert' => static function (string $randomString): void {
-                self::assertSame(16, (new UnicodeString($randomString))->length());
+                self::assertSame(16, new UnicodeString($randomString)->length());
             },
         ];
 
         yield 'Prefix and Suffix respect length' => [
-            'randomStringConfig' => (new RandomStringConfig(16))
+            'randomStringConfig' => new RandomStringConfig(16)
                 ->prefix('eonx_')
                 ->suffix('_eonx')
                 ->userFriendly(),
             'assert' => static function (string $randomString): void {
-                self::assertSame(16, (new UnicodeString($randomString))->length());
+                self::assertSame(16, new UnicodeString($randomString)->length());
             },
         ];
     }
@@ -101,10 +103,10 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidRandomStringException::class);
         $alwaysInvalid = new CallbackRandomStringConstraint(static fn (): bool => false);
-        $randomStringConfig = (new RandomStringConfig(8))
+        $randomStringConfig = new RandomStringConfig(8)
             ->constraints([$alwaysInvalid]);
 
-        (new RandomStringGenerator())
+        new RandomStringGenerator()
             ->generate($randomStringConfig);
     }
 

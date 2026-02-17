@@ -13,7 +13,7 @@ final class CustomPaginatorTest extends AbstractApplicationTestCase
     {
         $this->initDatabase();
         $entityManager = self::getService(EntityManagerInterface::class);
-        $entityManager->persist((new Category())->setTitle('Some category'));
+        $entityManager->persist(new Category()->setTitle('Some category'));
         $entityManager->flush();
 
         $response = self::$client->request('GET', '/categories');
@@ -37,7 +37,7 @@ final class CustomPaginatorTest extends AbstractApplicationTestCase
         self::setUpClient(['environment' => 'default_paginator']);
         $this->initDatabase();
         $entityManager = self::getService(EntityManagerInterface::class);
-        $entityManager->persist((new Category())->setTitle('Some category'));
+        $entityManager->persist(new Category()->setTitle('Some category'));
         $entityManager->flush();
 
         $response = self::$client->request('GET', '/categories');
