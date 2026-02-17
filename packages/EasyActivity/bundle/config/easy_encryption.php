@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
-use EonX\EasyActivity\EasyEncryption\Serializer\EncryptableFieldMaskingSerializer;
+use EonX\EasyEncryption\EasyActivity\Serializer\EncryptableFieldMaskingSerializer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

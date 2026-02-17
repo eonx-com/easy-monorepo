@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
@@ -18,4 +20,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '../src/**/DataTransferObject',
             '../src/**/Entity',
         ]);
+
+    // Register Symfony's native PHP serializer for messenger
+    $services->set('messenger.transport.native_php_serializer', PhpSerializer::class);
 };
