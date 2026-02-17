@@ -14,7 +14,6 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.288.1",
-        "eonx-com/easy-activity": "^6.19",
         "eonx-com/easy-test": "^6.19",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
@@ -30,8 +29,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EonX\\EasyActivity\\Tests\\Fixture\\App\\": "../EasyActivity/tests/Fixture/app/src",
-            "EonX\\EasyActivity\\Tests\\Unit\\": "../EasyActivity/tests/Unit/src",
             "EonX\\EasyEncryption\\Tests\\": "tests",
             "EonX\\EasyEncryption\\Tests\\Unit\\": "tests/Unit/src",
             "EonX\\EasyEncryption\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",

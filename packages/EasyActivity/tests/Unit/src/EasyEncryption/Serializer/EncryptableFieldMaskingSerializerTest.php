@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\Tests\Unit\EasyActivity\Serializer;
+namespace EonX\EasyActivity\Tests\Unit\EasyEncryption\Serializer;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigServiceId;
 use EonX\EasyActivity\Common\Serializer\SymfonyActivitySubjectDataSerializer;
+use EonX\EasyActivity\EasyEncryption\Serializer\EncryptableFieldMaskingSerializer;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\ActivityLogEntity;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\User;
-use EonX\EasyEncryption\EasyActivity\Serializer\EncryptableFieldMaskingSerializer;
-use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyActivity\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Serializer\SerializerInterface;
 

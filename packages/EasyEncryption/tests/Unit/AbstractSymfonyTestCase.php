@@ -8,17 +8,21 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
 {
+    private ?KernelInterface $kernel = null;
+
     /**
      * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null): KernelInterface
     {
-        self::ensureKernelShutdown();
+        if ($this->kernel !== null && $configs === null) {
+            return $this->kernel;
+        }
 
-        self::$kernel = new KernelStub($configs);
-        self::$kernel->boot();
+        $this->kernel = new KernelStub($configs);
+        $this->kernel->boot();
 
-        return self::$kernel;
+        return $this->kernel;
     }
 
     protected function setAppSecret(string $secret): void

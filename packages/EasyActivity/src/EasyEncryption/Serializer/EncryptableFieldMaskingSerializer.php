@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyEncryption\EasyActivity\Serializer;
+namespace EonX\EasyActivity\EasyEncryption\Serializer;
 
 use EonX\EasyActivity\Common\Entity\ActivitySubjectInterface;
 use EonX\EasyActivity\Common\Serializer\ActivitySubjectDataSerializerInterface;
