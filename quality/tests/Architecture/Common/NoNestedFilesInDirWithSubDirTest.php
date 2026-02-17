@@ -24,7 +24,7 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
     public function testItSucceeds(SplFileInfo $subject): void
     {
         $nestedFileFinder = new Finder()
-->files()
+            ->files()
             ->in($subject->getRealPath())
             ->depth(0);
 
@@ -42,7 +42,7 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->directories()
+            ->directories()
             ->filter(static function (SplFileInfo $dir): bool {
                 foreach (self::SKIP_DIRS as $skipDir) {
                     if (\str_ends_with($dir->getRealPath(), $skipDir)) {
@@ -51,7 +51,7 @@ final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCas
                 }
 
                 $nestedDirFinder = new Finder()
-->directories()
+                    ->directories()
                     ->in($dir->getRealPath());
 
                 if ($nestedDirFinder->count() === 0) {

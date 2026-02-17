@@ -39,7 +39,7 @@ final class NonClassFileNameUseSnakeCaseTest extends AbstractArchitectureTestCas
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->files()
+            ->files()
             ->exclude(self::EXCLUDE_DIRS)
             ->filter(static function (SplFileInfo $file): bool {
                 foreach (self::SKIP_FILE_NAMES as $skipFileName) {

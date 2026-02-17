@@ -38,7 +38,7 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->files()
+            ->files()
             ->filter(static function (\SplFileInfo $file): bool {
                 foreach (self::SKIP_FILES as $skipFile) {
                     if (\str_ends_with($file->getRealPath(), $skipFile)) {

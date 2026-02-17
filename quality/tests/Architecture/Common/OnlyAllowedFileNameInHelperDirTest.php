@@ -38,7 +38,7 @@ final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestC
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->files()
+            ->files()
             ->path('/\/Helper\//');
     }
 

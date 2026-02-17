@@ -33,7 +33,7 @@ final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCas
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->files()
+            ->files()
             ->exclude(self::EXCLUDE_DIRS)
             ->filter(static function (SplFileInfo $file): bool {
                 if (

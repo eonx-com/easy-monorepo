@@ -42,7 +42,7 @@ final class ServiceProviderNamingTest extends AbstractArchitectureTestCase
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->directories()
+            ->directories()
             ->name('laravel')
             ->depth(0);
     }

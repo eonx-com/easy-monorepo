@@ -84,7 +84,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
     protected static function arrangeFinder(): Finder
     {
         return new Finder()
-->files()
+            ->files()
             ->name('*.php')
             ->notName(self::EXCLUDE_FILE_NAMES)
             ->exclude(self::EXCLUDE_DIRS)
