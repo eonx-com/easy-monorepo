@@ -16,7 +16,7 @@ abstract class AbstractFirebaseJwtTokenTestCase extends AbstractJwtTokenTestCase
 
     protected static string $defaultAlgo = 'HS256';
 
-    protected static string $key = 'key';
+    protected static string $key = '1234567890123456789012345678901234567890123456789012345678901234';
 
     protected static array $tokenPayload = [
         'iss' => 'stepthefkup.com',
