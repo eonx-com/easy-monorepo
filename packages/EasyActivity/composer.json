@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12",
+        "eonx-com/easy-encryption": "^6.19",
         "eonx-com/easy-test": "^6.19",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
         "symfony/framework-bundle": "^7.2"
