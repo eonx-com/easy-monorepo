@@ -26,7 +26,7 @@ final readonly class ReportBusDriver implements BusDriver
     /**
      * @throws \Throwable
      */
-    public function putEnvelopeOnBus(MessageBusInterface $bus, Envelope $envelope, string $transportName): Envelope
+    public function putEnvelopeOnBus(MessageBusInterface $bus, Envelope $envelope, string $transportName): ?Envelope
     {
         try {
             return $this->decorated->putEnvelopeOnBus($bus, $envelope, $transportName);
