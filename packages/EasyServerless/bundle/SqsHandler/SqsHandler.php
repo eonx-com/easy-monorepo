@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\RecoverableExceptionInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
@@ -77,6 +78,14 @@ final class SqsHandler extends AbstractSqsHandler
         }
 
         try {
+            $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
+            $this->eventDispatcher?->dispatch($event);
+            $envelope = $event->getEnvelope();
+
+            if ($event->shouldHandle() === false) {
+                return;
+            }
+
             $stamps = [
                 new AmazonSqsReceivedStamp($sqsRecord->getMessageId()),
                 new ConsumedByWorkerStamp(),
