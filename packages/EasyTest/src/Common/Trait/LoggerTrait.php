@@ -60,7 +60,7 @@ trait LoggerTrait
     private static function createNotFoundLogErrorMessage(
         string $message,
         string $level,
-        ?array $context = null
+        ?array $context = null,
     ): string {
         $error = 'The "' . \ucfirst($level) . '" log message was not found.' . \PHP_EOL;
         $error .= 'Message: ' . $message . \PHP_EOL;
