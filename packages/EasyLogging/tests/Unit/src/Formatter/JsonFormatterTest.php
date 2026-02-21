@@ -49,7 +49,8 @@ final class JsonFormatterTest extends AbstractUnitTestCase
             return;
         }
 
-        $handler = (new StreamHandler($stream))->setFormatter(new JsonFormatter());
+        $handler = new StreamHandler($stream)
+            ->setFormatter(new JsonFormatter());
         $logger = new Logger('test', [$handler]);
 
         $log($logger);

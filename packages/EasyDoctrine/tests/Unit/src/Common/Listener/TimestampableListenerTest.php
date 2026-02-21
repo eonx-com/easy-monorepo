@@ -15,7 +15,7 @@ final class TimestampableListenerTest extends AbstractUnitTestCase
         CarbonImmutable::setTestNow($now);
         self::initDatabase();
         $entityManager = self::getEntityManager();
-        $author = (new Category())
+        $author = new Category()
             ->setName('Some Name');
         $entityManager->persist($author);
 

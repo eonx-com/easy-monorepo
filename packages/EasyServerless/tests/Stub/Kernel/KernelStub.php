@@ -36,7 +36,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         $container->setDefinition(
             'kernel',
-            (new Definition(KernelInterface::class))->setSynthetic(true)
+            new Definition(KernelInterface::class)->setSynthetic(true)
         );
         $container->setAlias(KernelInterface::class, 'kernel');
         $container->setDefinition(BusDriver::class, new Definition(BusDriver::class));

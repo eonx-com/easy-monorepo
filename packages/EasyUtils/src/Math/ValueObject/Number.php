@@ -168,7 +168,8 @@ final readonly class Number implements Stringable
 
     public function toMoneyString(bool $truncateZeroCents = true): string
     {
-        $value = (string)(new self($this->value, 2))->divide(100);
+        $value = (string)new self($this->value, 2)
+            ->divide(100);
 
         if ($truncateZeroCents === true && \str_ends_with($value, '.00')) {
             return (string)(int)$value;

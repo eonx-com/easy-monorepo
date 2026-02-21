@@ -38,7 +38,8 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
 
         $result = $sut->create(
             ActivityAction::Create,
-            (new Article())->setId((string)(new NilUuid())),
+            new Article()
+                ->setId((string)(new NilUuid())),
             ['title' => [null, 'New Title']]
         );
 
@@ -95,13 +96,13 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
     {
         self::bootKernel(['environment' => 'default_subject_config']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
-        $comment1 = (new Comment())
+        $comment1 = new Comment()
             ->setId((string)(new NilUuid()))
             ->setMessage('Test 1');
-        $comment2 = (new Comment())
+        $comment2 = new Comment()
             ->setId('00000000-0000-0000-0000-000000000001')
             ->setMessage('Test 2');
-        $article = (new Article())
+        $article = new Article()
             ->setId('00000000-0000-0000-0000-000000000002')
             ->setTitle('Related objects')
             ->setContent('Content')

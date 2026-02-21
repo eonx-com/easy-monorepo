@@ -224,7 +224,8 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
     private function setDescriptiveRecordToCurrentBatch(DescriptiveRecord $header): bool
     {
         $recordProcessed = $this->currentBatch === null;
-        $this->currentBatch = (new Batch())->setDescriptiveRecord($header);
+        $this->currentBatch = new Batch()
+            ->setDescriptiveRecord($header);
 
         return $recordProcessed;
     }

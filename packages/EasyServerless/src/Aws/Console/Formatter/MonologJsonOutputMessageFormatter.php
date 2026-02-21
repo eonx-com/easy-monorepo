@@ -27,7 +27,7 @@ final class MonologJsonOutputMessageFormatter implements OutputMessageFormatterI
         $streamHandler = new StreamHandler('php://memory');
         $streamHandler->setFormatter(new JsonFormatter());
 
-        (new Logger(self::LOGGER_NAME, [$streamHandler], [new PhpSourceProcessor()]))->debug($trimmedMessage);
+        new Logger(self::LOGGER_NAME, [$streamHandler], [new PhpSourceProcessor()])->debug($trimmedMessage);
 
         $stream = $streamHandler->getStream();
         if (\is_resource($stream) === false) {

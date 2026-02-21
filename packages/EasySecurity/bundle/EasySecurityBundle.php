@@ -141,7 +141,7 @@ final class EasySecurityBundle extends AbstractBundle
 
         $builder->setDefinition(
             EasySecurityLoginController::class,
-            (new Definition(EasySecurityLoginController::class))
+            new Definition(EasySecurityLoginController::class)
                 ->setAutowired(true)
                 ->setAutoconfigured(true)
                 ->setArgument(
@@ -166,7 +166,7 @@ final class EasySecurityBundle extends AbstractBundle
                 continue;
             }
 
-            $voterDefinition = (new Definition($class))
+            $voterDefinition = new Definition($class)
                 ->setAutowired(true)
                 ->setAutoconfigured(true)
                 ->setTags([

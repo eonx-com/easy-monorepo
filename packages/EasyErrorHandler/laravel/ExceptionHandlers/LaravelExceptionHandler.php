@@ -33,7 +33,8 @@ final readonly class LaravelExceptionHandler implements IlluminateExceptionHandl
      */
     public function renderForConsole(mixed $output, Throwable $exception): void
     {
-        (new Application())->renderThrowable($exception, $output);
+        new Application()
+            ->renderThrowable($exception, $output);
 
         $this->renderTranslationToConsoleIfNeeded($output, $exception);
         $this->renderValidationFailuresToConsoleIfNeeded($output, $exception);

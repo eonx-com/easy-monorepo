@@ -50,7 +50,8 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+            ->directories()
             ->filter(static function (SplFileInfo $dir): bool {
                 foreach (self::SKIP_DIRS as $skipDir) {
                     if (\str_ends_with($dir->getRealPath(), $skipDir)) {

@@ -11,6 +11,6 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
 {
     public function testCreate(): void
     {
-        self::assertInstanceOf(HttpClientInterface::class, (new HttpClientFactory())->create());
+        self::assertInstanceOf(HttpClientInterface::class, new HttpClientFactory()->create());
     }
 }

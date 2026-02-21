@@ -58,7 +58,7 @@ final class SecretsHelper
                 continue;
             }
 
-            $files = (new Finder())
+            $files = new Finder()
                 ->in($dir)
                 ->files()
                 ->name('*.json');

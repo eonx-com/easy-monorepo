@@ -14,7 +14,8 @@ final class OutputSanitizerListenerTest extends AbstractApplicationTestCase
         self::setUpClient(['environment' => 'enable_output_sanitizer']);
         $this->initDatabase();
         $entityManager = self::getService(EntityManagerInterface::class);
-        $category = (new Category())->setTitle('<Some category>');
+        $category = new Category()
+            ->setTitle('<Some category>');
         $entityManager->persist($category);
         $entityManager->flush();
 
@@ -30,7 +31,8 @@ final class OutputSanitizerListenerTest extends AbstractApplicationTestCase
         $this->initDatabase();
         $entityManager = self::getService(EntityManagerInterface::class);
         $title = '<Some category>';
-        $category = (new Category())->setTitle($title);
+        $category = new Category()
+            ->setTitle($title);
         $entityManager->persist($category);
         $entityManager->flush();
 

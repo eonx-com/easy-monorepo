@@ -34,7 +34,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $transaction = $this->createTransaction();
         $transaction->setAttribute('transactionCode');
 
-        (new AbaGenerator($this->createDescriptiveRecord(), [$transaction]))->getContents();
+        new AbaGenerator($this->createDescriptiveRecord(), [$transaction])->getContents();
     }
 
     /**
@@ -58,7 +58,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new AbaGenerator($this->createDescriptiveRecord(), ['invalid']))->getContents();
+        new AbaGenerator($this->createDescriptiveRecord(), ['invalid'])->getContents();
     }
 
     /**
@@ -89,7 +89,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $descriptiveRecord = $this->createDescriptiveRecord();
         $descriptiveRecord->setAttribute('nameOfUserSupplyingFile', \str_pad('', 41));
 
-        (new AbaGenerator($descriptiveRecord, [$this->createTransaction()]))->getContents();
+        new AbaGenerator($descriptiveRecord, [$this->createTransaction()])->getContents();
     }
 
     /**
@@ -105,7 +105,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $transaction = $this->createTransaction();
         $transaction->setAttribute('amount', '00000012555');
 
-        (new AbaGenerator($this->createDescriptiveRecord(), [$transaction]))->getContents();
+        new AbaGenerator($this->createDescriptiveRecord(), [$transaction])->getContents();
     }
 
     /**
@@ -123,7 +123,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
             ->setAttribute('numberOfUserSupplyingFile', '49262x')
             ->setAttribute('dateToBeProcessed', '10081Q');
 
-        (new AbaGenerator($descriptiveRecord, [$this->createTransaction()]))->getContents();
+        new AbaGenerator($descriptiveRecord, [$this->createTransaction()])->getContents();
     }
 
     /**
@@ -145,7 +145,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $trans->setAttribute('bsbNumber', '1112333');
 
         try {
-            (new AbaGenerator($this->createDescriptiveRecord(), [$trans]))->getContents();
+            new AbaGenerator($this->createDescriptiveRecord(), [$trans])->getContents();
         } /** @noinspection PhpRedundantCatchClauseInspection */ catch (ValidationFailedException $exception) {
             self::assertSame($expected, $exception->getErrors()[0]);
         }
@@ -153,7 +153,7 @@ final class AbaGeneratorTest extends AbstractUnitTestCase
         $this->expectException(ValidationFailedException::class);
 
         $trans->setAttribute('bsbNumber', '111--33');
-        (new AbaGenerator($this->createDescriptiveRecord(), [$trans]))->getContents();
+        new AbaGenerator($this->createDescriptiveRecord(), [$trans])->getContents();
     }
 
     /**

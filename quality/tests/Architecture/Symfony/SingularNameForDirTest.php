@@ -48,7 +48,8 @@ final class SingularNameForDirTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+            ->directories()
             ->exclude(self::EXCLUDE_DIRS)
             ->notName(self::SKIP_DIRS);
     }

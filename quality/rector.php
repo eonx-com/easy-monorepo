@@ -17,7 +17,6 @@ use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRecto
 use Rector\Php84\Rector\Class_\DeprecatedAnnotationToDeprecatedAttributeRector;
 use Rector\Php84\Rector\Foreach_\ForeachToArrayAllRector;
 use Rector\Php84\Rector\Foreach_\ForeachToArrayAnyRector;
-use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 
 // @todo Consider PHPUnitSetList::PHPUNIT_120 and PHPUnitSetList::PHPUNIT_CODE_QUALITY
@@ -27,7 +26,6 @@ $temporaryIgnoredRectors = [
     ClosureToArrowFunctionRector::class => null,
     ForeachToArrayAllRector::class => null,
     ForeachToArrayAnyRector::class => null,
-    NewMethodCallWithoutParenthesesRector::class => null,
     NullToStrictStringFuncCallArgRector::class => null,
 ];
 

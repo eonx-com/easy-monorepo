@@ -284,7 +284,8 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
             $date->setTimezone($this->timezone);
         }
 
-        return (new CronExpression($this->expression))->isDue($date->toDateTimeString());
+        return new CronExpression($this->expression)
+            ->isDue($date->toDateTimeString());
     }
 
     protected function getExpression(): string

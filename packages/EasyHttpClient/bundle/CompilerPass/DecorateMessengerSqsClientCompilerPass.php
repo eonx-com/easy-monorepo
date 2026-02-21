@@ -24,7 +24,7 @@ final class DecorateMessengerSqsClientCompilerPass extends AbstractEasyHttpClien
             return;
         }
 
-        $def = (new Definition(AmazonSqsTransportFactory::class))
+        $def = new Definition(AmazonSqsTransportFactory::class)
             ->setAutoconfigured(true)
             ->setArgument('$httpClient', new Reference(self::DEFAULT_CLIENT_ID))
             ->setArgument('$logger', new Reference(

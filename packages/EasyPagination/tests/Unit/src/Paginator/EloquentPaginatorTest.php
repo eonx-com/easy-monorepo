@@ -48,7 +48,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
             function (Model $model): void {
                 self::createItemsTable($model);
 
-                (new ItemModel(['title' => 'my-title']))->save();
+                new ItemModel(['title' => 'my-title'])->save();
             },
             static function (EloquentPaginator $paginator): void {
                 self::assertCount(1, $paginator->getItems());
@@ -61,8 +61,8 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
             function (Model $model, EloquentPaginator $paginator): void {
                 self::createItemsTable($model);
 
-                (new ItemModel(['title' => 'my-title']))->save();
-                (new ItemModel(['title' => 'my-title-1']))->save();
+                new ItemModel(['title' => 'my-title'])->save();
+                new ItemModel(['title' => 'my-title-1'])->save();
 
                 $paginator->setFilterCriteria(static function (Builder $queryBuilder): void {
                     $queryBuilder->where('title', 'my-title-1');
@@ -79,7 +79,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
             function (Model $model): void {
                 self::createItemsTable($model);
 
-                (new ItemModel(['title' => 'my-title']))->save();
+                new ItemModel(['title' => 'my-title'])->save();
             },
             static function (EloquentPaginator $paginator): void {
                 $item = $paginator->getItems()[0] ?? null;
@@ -97,7 +97,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
             function (Model $model, EloquentPaginator $paginator): void {
                 self::createItemsTable($model);
 
-                (new ItemModel(['title' => 'my-title']))->save();
+                new ItemModel(['title' => 'my-title'])->save();
 
                 $paginator->setSelect('*');
             },
@@ -117,7 +117,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
             function (Model $model, EloquentPaginator $paginator): void {
                 self::createItemsTable($model);
 
-                (new ItemModel(['title' => 'my-title']))->save();
+                new ItemModel(['title' => 'my-title'])->save();
 
                 $paginator->setSelect('title');
             },
@@ -137,7 +137,7 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
             function (Model $model, EloquentPaginator $paginator): void {
                 self::createItemsTable($model);
 
-                (new ItemModel(['title' => 'my-title']))->save();
+                new ItemModel(['title' => 'my-title'])->save();
 
                 $paginator->setTransformer(static fn (ItemModel $item): array => [
                     'id' => $item->id,
@@ -161,11 +161,11 @@ final class EloquentPaginatorTest extends AbstractEloquentPaginatorTestCase
                 self::createItemsTable($model);
                 self::createChildItemsTable($model);
 
-                (new ItemModel(['title' => 'my-parent']))->save();
-                (new ChildItemModel([
+                new ItemModel(['title' => 'my-parent'])->save();
+                new ChildItemModel([
                     'child_title' => 'my-child',
                     'item_id' => 1,
-                ]))->save();
+                ])->save();
 
                 $paginator->hasJoinsInQuery();
                 $paginator->setCommonCriteria(static function (Builder $queryBuilder): void {
