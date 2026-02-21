@@ -17,7 +17,6 @@ final readonly class CustomPaginator implements CustomPaginatorInterface
      * @throws \Exception
      */
     #[Groups([CustomPaginatorInterface::SERIALIZER_GROUP])]
-    #[Groups([CustomPaginatorInterface::SERIALIZER_GROUP])]
     public function getItems(): array
     {
         return \iterator_to_array($this->decorated->getIterator());

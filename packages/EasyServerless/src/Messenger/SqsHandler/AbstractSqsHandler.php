@@ -34,8 +34,7 @@ abstract class AbstractSqsHandler extends SqsHandler
         protected readonly int $appMaxRetries = 3,
         protected readonly bool $partialBatchFailure = false,
         private readonly int $timeoutThresholdMilliseconds = 1000, // 1 second
-    )
-    {
+    ) {
     }
 
     /**
