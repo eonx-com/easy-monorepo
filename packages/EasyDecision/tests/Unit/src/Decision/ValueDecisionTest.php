@@ -69,7 +69,8 @@ final class ValueDecisionTest extends AbstractUnitTestCase
     {
         $this->expectException(ContextNotSetException::class);
 
-        new ValueDecision()->addRules([$this->createUnsupportedRule('whatever')])->getContext();
+        new ValueDecision()
+            ->addRules([$this->createUnsupportedRule('whatever')])->getContext();
     }
 
     public function testNonBlockingRuleErrorException(): void
