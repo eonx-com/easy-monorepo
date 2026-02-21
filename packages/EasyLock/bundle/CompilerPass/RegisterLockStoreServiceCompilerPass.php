@@ -14,7 +14,7 @@ use Symfony\Component\Lock\Store\StoreFactory;
 
 final class RegisterLockStoreServiceCompilerPass implements CompilerPassInterface
 {
-    private const DEFAULT_CONNECTION_ID = 'flock';
+    private const string DEFAULT_CONNECTION_ID = 'flock';
 
     public function process(ContainerBuilder $container): void
     {

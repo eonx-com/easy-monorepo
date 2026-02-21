@@ -5,7 +5,7 @@ namespace EonX\EasyBatch\Messenger\Message;
 
 final class UpdateBatchItemMessage
 {
-    private const ONLY = [
+    private const array ONLY = [
         'attempts',
         'finished_at',
         'started_at',

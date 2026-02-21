@@ -5,13 +5,13 @@ namespace EonX\EasyApiToken\Common\ValueObject;
 
 final readonly class HashedApiKey implements ApiTokenInterface
 {
-    public const DEFAULT_VERSION = 'v1';
+    public const string DEFAULT_VERSION = 'v1';
 
-    public const KEY_ID = 'id';
+    public const string KEY_ID = 'id';
 
-    public const KEY_SECRET = 'secret';
+    public const string KEY_SECRET = 'secret';
 
-    public const KEY_VERSION = 'version';
+    public const string KEY_VERSION = 'version';
 
     public function __construct(
         private int|string $id,

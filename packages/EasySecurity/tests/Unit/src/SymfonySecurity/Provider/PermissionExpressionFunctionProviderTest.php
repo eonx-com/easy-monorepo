@@ -9,7 +9,7 @@ use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
 
 final class PermissionExpressionFunctionProviderTest extends AbstractUnitTestCase
 {
-    public const PERMISSION_VALID = 'permission';
+    public const string PERMISSION_VALID = 'permission';
 
     public function testPermissionExpressionFunctionFoundWithConstant(): void
     {

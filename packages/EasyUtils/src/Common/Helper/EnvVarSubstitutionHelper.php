@@ -7,9 +7,9 @@ use RuntimeException;
 
 final class EnvVarSubstitutionHelper
 {
-    private const VAR_NAME_REGEX = '(?i:[A-Z][A-Z0-9_]*+)';
+    private const string VAR_NAME_REGEX = '(?i:[A-Z][A-Z0-9_]*+)';
 
-    private const VAR_REGEX = '/
+    private const string VAR_REGEX = '/
             (?<!\\\\)
             (?P<backslashes>\\\\*)              # escaped with a backslash?
             \$

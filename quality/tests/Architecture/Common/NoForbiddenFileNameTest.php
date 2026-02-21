@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
 {
-    private const FORBIDDEN_FILE_NAMES = [
+    private const array FORBIDDEN_FILE_NAMES = [
         'Decorator.php',
         'EventListener.php',
         'EventListenerInterface.php',
@@ -18,7 +18,7 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         'EventSubscriberInterface.php',
     ];
 
-    private const SKIP_FILES = [
+    private const array SKIP_FILES = [
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
     ];
 

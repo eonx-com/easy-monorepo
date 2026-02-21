@@ -12,12 +12,12 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInterface
 {
-    private const EASY_BATCH_MIDDLEWARE_LIST = [
+    private const array EASY_BATCH_MIDDLEWARE_LIST = [
         DispatchBatchMiddleware::class,
         ProcessBatchItemMiddleware::class,
     ];
 
-    private const MESSENGER_BUS_TAG = 'messenger.bus';
+    private const string MESSENGER_BUS_TAG = 'messenger.bus';
 
     public function process(ContainerBuilder $container): void
     {

@@ -15,7 +15,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
     /**
      * @deprecated Deprecated since 6.4.0, will be removed in 7.0
      */
-    private const MESSAGE_PATTERN_CLASS = '/The type of the .* attribute for class "(.*)" must be.*/';
+    private const string MESSAGE_PATTERN_CLASS = '/The type of the .* attribute for class "(.*)" must be.*/';
 
     /**
      * @deprecated Deprecated since 6.4.0, will be moved to the parent class in 7.0

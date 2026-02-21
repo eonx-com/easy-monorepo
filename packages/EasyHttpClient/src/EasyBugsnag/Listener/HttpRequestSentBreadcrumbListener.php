@@ -12,12 +12,12 @@ use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 
 final readonly class HttpRequestSentBreadcrumbListener
 {
-    private const BREADCRUMB_NAME = 'HTTP Request Sent';
+    private const string BREADCRUMB_NAME = 'HTTP Request Sent';
 
-    private const DEFAULT_TIMING_MESSAGE = 'No timing available';
+    private const string DEFAULT_TIMING_MESSAGE = 'No timing available';
 
     // The metadata attributes priority list (low to high)
-    private const METADATA_ATTRIBUTES_PRIORITY_LIST = [
+    private const array METADATA_ATTRIBUTES_PRIORITY_LIST = [
         self::METADATA_ATTRIBUTE_RESPONSE_HEADERS,
         self::METADATA_ATTRIBUTE_REQUEST_OPTIONS,
         self::METADATA_ATTRIBUTE_RESPONSE_CONTENT,
@@ -28,21 +28,21 @@ final readonly class HttpRequestSentBreadcrumbListener
         self::METADATA_ATTRIBUTE_REQUEST,
     ];
 
-    private const METADATA_ATTRIBUTE_REQUEST = 'Request';
+    private const string METADATA_ATTRIBUTE_REQUEST = 'Request';
 
-    private const METADATA_ATTRIBUTE_REQUEST_OPTIONS = 'Request Options';
+    private const string METADATA_ATTRIBUTE_REQUEST_OPTIONS = 'Request Options';
 
-    private const METADATA_ATTRIBUTE_RESPONSE_CONTENT = 'Response Content';
+    private const string METADATA_ATTRIBUTE_RESPONSE_CONTENT = 'Response Content';
 
-    private const METADATA_ATTRIBUTE_RESPONSE_HEADERS = 'Response Headers';
+    private const string METADATA_ATTRIBUTE_RESPONSE_HEADERS = 'Response Headers';
 
-    private const METADATA_ATTRIBUTE_RESPONSE_STATUS_CODE = 'Response Status Code';
+    private const string METADATA_ATTRIBUTE_RESPONSE_STATUS_CODE = 'Response Status Code';
 
-    private const METADATA_ATTRIBUTE_THROWABLE_CLASS = 'Throwable Class';
+    private const string METADATA_ATTRIBUTE_THROWABLE_CLASS = 'Throwable Class';
 
-    private const METADATA_ATTRIBUTE_THROWABLE_MESSAGE = 'Throwable Message';
+    private const string METADATA_ATTRIBUTE_THROWABLE_MESSAGE = 'Throwable Message';
 
-    private const METADATA_ATTRIBUTE_TIMING = 'Timing';
+    private const string METADATA_ATTRIBUTE_TIMING = 'Timing';
 
     public function __construct(
         private Client $client,

@@ -11,13 +11,13 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class SingularNameForDirTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'docs',
         'laravel',
         'tests/Fixture/app/config',
     ];
 
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         'Aws',
         'AwsRds',
         'CompilerPass',

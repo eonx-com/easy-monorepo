@@ -13,7 +13,7 @@ abstract class AbstractAuth0JwtTokenTestCase extends AbstractJwtTokenTestCase
      */
     protected static array $authorizedIss = ['http://localhost'];
 
-    protected static string $key = 'key';
+    protected static string $key = '1234567890123456789012345678901234567890123456789012345678901234';
 
     protected static array $tokenPayload = [
         'scopes' => [],

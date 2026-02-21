@@ -22,9 +22,9 @@ use EonX\EasyBankFiles\Generation\Common\ValueObject\AbstractObject;
  */
 final class Transaction extends AbstractObject
 {
-    private const TRANSACTION_CODE_CREDIT = 50;
+    private const int TRANSACTION_CODE_CREDIT = 50;
 
-    private const TRANSACTION_CODE_DEBIT = 13;
+    private const int TRANSACTION_CODE_DEBIT = 13;
 
     public function getValidationRules(): array
     {

@@ -18,19 +18,19 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final readonly class DefaultErrorResponseBuilderProvider implements ErrorResponseBuilderProviderInterface
 {
-    private const ERROR_RESPONSE_KEY_CODE = 'code';
+    private const string ERROR_RESPONSE_KEY_CODE = 'code';
 
-    private const ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION = 'exception';
+    private const string ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION = 'exception';
 
-    private const ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
+    private const string ERROR_RESPONSE_KEY_EXTENDED_EXCEPTION_KEYS = 'extended_exception_keys';
 
-    private const ERROR_RESPONSE_KEY_MESSAGE = 'message';
+    private const string ERROR_RESPONSE_KEY_MESSAGE = 'message';
 
-    private const ERROR_RESPONSE_KEY_SUB_CODE = 'sub_code';
+    private const string ERROR_RESPONSE_KEY_SUB_CODE = 'sub_code';
 
-    private const ERROR_RESPONSE_KEY_TIME = 'time';
+    private const string ERROR_RESPONSE_KEY_TIME = 'time';
 
-    private const ERROR_RESPONSE_KEY_VIOLATIONS = 'violations';
+    private const string ERROR_RESPONSE_KEY_VIOLATIONS = 'violations';
 
     public function __construct(
         private ErrorDetailsResolverInterface $errorDetailsResolver,

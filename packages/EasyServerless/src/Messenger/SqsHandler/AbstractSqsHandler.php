@@ -14,11 +14,11 @@ use Throwable;
 
 abstract class AbstractSqsHandler extends SqsHandler
 {
-    protected const DEFAULT_RETRY_DELAY_SECONDS = 1;
+    protected const int DEFAULT_RETRY_DELAY_SECONDS = 1;
 
-    protected const MAX_RETRY_DELAY_SECONDS = 43200; // 12 hours (SQS limit)
+    protected const int MAX_RETRY_DELAY_SECONDS = 43200; // 12 hours (SQS limit)
 
-    protected const SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
+    protected const int SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
 
     protected ?LoggerInterface $logger = null;
 

@@ -10,13 +10,13 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NonClassFileNameUseSnakeCaseTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'docs',
         'laravel',
         'tests/Fixture/Parsing',
     ];
 
-    private const SKIP_FILE_NAMES = [
+    private const array SKIP_FILE_NAMES = [
         '/EasyErrorHandler/bundle/translations/EasyErrorHandlerBundle.en.php',
         '/EasyPagination/tests/Fixture/config/page_perPage_1_15.php',
         '/EasyTest/bin/easy-test',

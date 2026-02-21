@@ -8,7 +8,7 @@ use EonX\EasyNotification\Exception\InvalidRealTimeMessageTypeException;
 
 final class RealTimeMessage extends AbstractMessage
 {
-    private const REAL_TIME_TYPES = [MessageType::Flash, MessageType::RealTime];
+    private const array REAL_TIME_TYPES = [MessageType::Flash, MessageType::RealTime];
 
     /**
      * @var string[]

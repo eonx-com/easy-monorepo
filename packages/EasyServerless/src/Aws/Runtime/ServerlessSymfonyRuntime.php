@@ -9,7 +9,7 @@ use Symfony\Component\Runtime\SymfonyRuntime;
 
 class ServerlessSymfonyRuntime extends SymfonyRuntime
 {
-    public const OPTION_AWS_HELPER_VERBOSE = 'easy_serverless.aws_helper_verbose';
+    public const string OPTION_AWS_HELPER_VERBOSE = 'easy_serverless.aws_helper_verbose';
 
     /**
      * @param array{

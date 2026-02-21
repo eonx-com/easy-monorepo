@@ -8,11 +8,11 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class Acn extends AbstractConstraint
 {
-    public const COMPLEMENT_CALCULATION_FAILED_ERROR = 'COMPLEMENT_CALCULATION_FAILED_ERROR';
+    public const string COMPLEMENT_CALCULATION_FAILED_ERROR = 'COMPLEMENT_CALCULATION_FAILED_ERROR';
 
-    public const INVALID_CHARACTERS_ERROR = 'INVALID_CHARACTERS_ERROR';
+    public const string INVALID_CHARACTERS_ERROR = 'INVALID_CHARACTERS_ERROR';
 
-    public const INVALID_LENGTH_ERROR = 'INVALID_LENGTH_ERROR';
+    public const string INVALID_LENGTH_ERROR = 'INVALID_LENGTH_ERROR';
 
     public string $message = 'acn.not_valid';
 

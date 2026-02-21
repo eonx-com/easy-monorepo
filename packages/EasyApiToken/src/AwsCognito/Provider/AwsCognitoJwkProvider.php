@@ -16,7 +16,7 @@ use UnexpectedValueException;
 
 final readonly class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInterface
 {
-    private const DEFAULT_CACHE_EXPIRY = 3600;
+    private const int DEFAULT_CACHE_EXPIRY = 3600;
 
     private HttpClientInterface $httpClient;
 

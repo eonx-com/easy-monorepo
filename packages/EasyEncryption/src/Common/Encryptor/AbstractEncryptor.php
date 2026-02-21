@@ -12,11 +12,11 @@ use Throwable;
 
 abstract class AbstractEncryptor implements EncryptorInterface
 {
-    private const DEFAULT_KEY_NAME = 'app';
+    private const string DEFAULT_KEY_NAME = 'app';
 
-    private const ENCRYPTED_KEY_NAME = 'keyName';
+    private const string ENCRYPTED_KEY_NAME = 'keyName';
 
-    private const ENCRYPTED_KEY_VALUE = 'value';
+    private const string ENCRYPTED_KEY_VALUE = 'value';
 
     public function __construct(
         private readonly ?string $defaultKeyName = null,

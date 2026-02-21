@@ -19,7 +19,7 @@ use Symfony\Component\Cache\Marshaller\MarshallerInterface;
 
 final class DynamoDbAdapter extends AbstractAdapter
 {
-    private const DEFAULT_OPTIONS = [
+    private const array DEFAULT_OPTIONS = [
         'data_attr' => 'key_data',
         'expiration_attr' => 'key_expiration',
         'id_attr' => 'key_id',

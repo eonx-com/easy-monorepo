@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoNestedFilesInDirWithSubDirTest extends AbstractArchitectureTestCase
 {
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         '/bundle',
         '/docs',
         '/laravel',

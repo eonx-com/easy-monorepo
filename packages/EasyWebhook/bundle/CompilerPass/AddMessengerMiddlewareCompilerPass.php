@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class AddMessengerMiddlewareCompilerPass implements CompilerPassInterface
 {
-    private const RETRY_LISTENER_ID = 'messenger.retry.send_failed_message_for_retry_listener';
+    private const string RETRY_LISTENER_ID = 'messenger.retry.send_failed_message_for_retry_listener';
 
     public function process(ContainerBuilder $container): void
     {

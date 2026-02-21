@@ -12,7 +12,7 @@ use Throwable;
 
 final class BatchRepository extends AbstractBatchObjectRepository implements BatchRepositoryInterface
 {
-    private const SAVEPOINT = 'easy_batch_conn_savepoint';
+    private const string SAVEPOINT = 'easy_batch_conn_savepoint';
 
     /**
      * @var \EonX\EasyBatch\Common\ValueObject\Batch[]

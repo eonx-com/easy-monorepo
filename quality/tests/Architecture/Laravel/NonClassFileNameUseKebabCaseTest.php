@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'bundle',
         'docs',
         'tests',

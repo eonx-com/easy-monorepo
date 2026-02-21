@@ -14,7 +14,7 @@ use EonX\EasyWebhook\Common\Store\AbstractStore;
 
 abstract class AbstractDynamoDbStore extends AbstractStore
 {
-    public const DEFAULT_TTL_ATTRIBUTE = 'ttl';
+    public const string DEFAULT_TTL_ATTRIBUTE = 'ttl';
 
     public function __construct(
         RandomGeneratorInterface $random,

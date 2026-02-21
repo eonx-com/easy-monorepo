@@ -12,9 +12,9 @@ use EonX\EasyBatch\Doctrine\Type\DateTimeWithMicroSecondsType;
 
 final class DoctrineDbalStatementProvider
 {
-    private const DEFAULT_BATCH_ITEM_TABLE = 'easy_batch_items';
+    private const string DEFAULT_BATCH_ITEM_TABLE = 'easy_batch_items';
 
-    private const DEFAULT_BATCH_TABLE = 'easy_batches';
+    private const string DEFAULT_BATCH_TABLE = 'easy_batches';
 
     private ?Closure $extendBatchItemsTable = null;
 

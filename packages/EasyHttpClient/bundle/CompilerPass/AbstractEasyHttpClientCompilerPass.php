@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class AbstractEasyHttpClientCompilerPass implements CompilerPassInterface
 {
-    protected const DEFAULT_CLIENT_ID = 'http_client.transport';
+    protected const string DEFAULT_CLIENT_ID = 'http_client.transport';
 
     public function process(ContainerBuilder $container): void
     {

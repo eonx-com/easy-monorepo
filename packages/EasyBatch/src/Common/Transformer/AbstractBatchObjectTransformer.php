@@ -15,7 +15,7 @@ use UnexpectedValueException;
 
 abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerInterface
 {
-    private const DATE_TIMES = [
+    private const array DATE_TIMES = [
         'cancelled_at' => 'setCancelledAt',
         'created_at' => 'setCreatedAt',
         'finished_at' => 'setFinishedAt',
