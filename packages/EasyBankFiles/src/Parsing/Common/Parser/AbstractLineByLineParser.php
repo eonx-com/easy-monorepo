@@ -5,7 +5,7 @@ namespace EonX\EasyBankFiles\Parsing\Common\Parser;
 
 abstract class AbstractLineByLineParser extends AbstractParser
 {
-    protected const EMPTY_LINE_CODE = 'empty-line';
+    protected const string EMPTY_LINE_CODE = 'empty-line';
 
     /**
      * AbstractLineByLineParser constructor.
