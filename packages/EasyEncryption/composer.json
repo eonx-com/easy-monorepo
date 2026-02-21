@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.4",
         "ext-sodium": "*",
-        "eonx-com/easy-utils": "^6.19",
+        "eonx-com/easy-utils": "^6.20",
         "paragonie/halite": "^5.1",
         "symfony/config": "^7.4",
         "symfony/dependency-injection": "^7.4",
@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.288.1",
-        "eonx-com/easy-test": "^6.19",
+        "eonx-com/easy-test": "^6.20",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^12.5",
@@ -46,7 +46,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.19-dev"
+            "dev-master": "6.20-dev"
         }
     }
 }
