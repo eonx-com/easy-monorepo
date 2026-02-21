@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "eonx-com/easy-utils": "^6.19",
+        "eonx-com/easy-utils": "^6.20",
         "symfony/config": "^7.4",
         "symfony/dependency-injection": "^7.4",
         "symfony/http-kernel": "^7.4",
@@ -29,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.19-dev"
+            "dev-master": "6.20-dev"
         }
     }
 }
