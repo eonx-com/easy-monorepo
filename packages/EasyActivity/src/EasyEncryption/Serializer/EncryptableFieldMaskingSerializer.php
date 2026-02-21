@@ -71,7 +71,7 @@ final class EncryptableFieldMaskingSerializer implements ActivitySubjectDataSeri
                 $reflectionClass = $reflectionClass->getParentClass();
             } while ($reflectionClass !== false);
 
-            $encryptableFields = \array_unique($encryptableFields);
+            $encryptableFields = \array_values(\array_unique($encryptableFields));
         } catch (ReflectionException) {
             $encryptableFields = [];
         }
