@@ -29,7 +29,7 @@ final class ActivityLogEncryptableFieldsMaskingSerializerTest extends AbstractUn
     {
         $this->setUpEncryptionEnvironment();
         $entityManager = self::getEntityManager();
-        $user = (new User())
+        $user = new User()
             ->setUsername('john_doe')
             ->setPassword('secret_password')
             ->setEmail('john@example.com')
@@ -65,7 +65,7 @@ final class ActivityLogEncryptableFieldsMaskingSerializerTest extends AbstractUn
     {
         $this->setUpEncryptionEnvironment();
         $entityManager = self::getEntityManager();
-        $user = (new User())
+        $user = new User()
             ->setUsername('jane_doe')
             ->setPassword('initial_password')
             ->setEmail('jane@example.com')
@@ -106,7 +106,7 @@ final class ActivityLogEncryptableFieldsMaskingSerializerTest extends AbstractUn
         self::bootKernel(['environment' => 'no_encryption_bundle']);
         $this->initDatabase();
         $entityManager = self::getEntityManager();
-        $user = (new User())
+        $user = new User()
             ->setUsername('test_user')
             ->setPassword('password123')
             ->setEmail('test@example.com')

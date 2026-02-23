@@ -11,7 +11,7 @@ use ReflectionException;
 
 final class EncryptableFieldMaskingSerializer implements ActivitySubjectDataSerializerInterface
 {
-    private const ENCRYPTED_MASK = '*ENCRYPTED*';
+    private const string ENCRYPTED_MASK = '*ENCRYPTED*';
 
     /**
      * @var array<class-string, list<string>>
