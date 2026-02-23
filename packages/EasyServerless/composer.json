@@ -14,7 +14,6 @@
         "bref/laravel-bridge": "^2.6",
         "bref/symfony-bridge": "^1.0.3",
         "bref/symfony-messenger": "^1.4.1",
-        "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
         "monolog/monolog": "^3.7",
         "phpunit/phpunit": "^12.5",
