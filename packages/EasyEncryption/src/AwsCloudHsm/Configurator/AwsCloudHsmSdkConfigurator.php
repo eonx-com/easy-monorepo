@@ -14,31 +14,31 @@ use Throwable;
 
 final readonly class AwsCloudHsmSdkConfigurator
 {
-    public const SUPPORTED_CLUSTER_TYPES = [
+    public const array SUPPORTED_CLUSTER_TYPES = [
         'hsm1',
         'hsm2m',
     ];
 
-    public const SUPPORTED_SERVER_PORTS = [
+    public const array SUPPORTED_SERVER_PORTS = [
         2223,
         2225,
     ];
 
-    private const API_VERSION = '2017-04-28';
+    private const string API_VERSION = '2017-04-28';
 
-    private const CONFIGURE_TOOL = '/opt/cloudhsm/bin/configure-pkcs11';
+    private const string CONFIGURE_TOOL = '/opt/cloudhsm/bin/configure-pkcs11';
 
-    private const CONFIG_FILE = '/opt/cloudhsm/etc/cloudhsm-pkcs11.cfg';
+    private const string CONFIG_FILE = '/opt/cloudhsm/etc/cloudhsm-pkcs11.cfg';
 
-    private const LOG_FILE = '/opt/cloudhsm/run/cloudhsm-pkcs11.log';
+    private const string LOG_FILE = '/opt/cloudhsm/run/cloudhsm-pkcs11.log';
 
-    private const LOG_INTERVAL = 'daily';
+    private const string LOG_INTERVAL = 'daily';
 
-    private const LOG_LEVEL = 'info';
+    private const string LOG_LEVEL = 'info';
 
-    private const LOG_TYPE = 'file';
+    private const string LOG_TYPE = 'file';
 
-    private const STS_API_VERSION = '2011-06-15';
+    private const string STS_API_VERSION = '2011-06-15';
 
     public function __construct(
         private AwsCloudHsmSdkOptionsBuilder $awsCloudHsmSdkOptionsBuilder,

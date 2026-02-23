@@ -776,7 +776,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $product->getTags()
             ->toArray();
         $entityManager->remove($tag2);
-        $tag3 = (new Tag())
+        $tag3 = new Tag()
             ->setName('Tag 3');
         $product->addTag($tag3);
         $entityManager->flush();
@@ -910,7 +910,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             $entityManager->flush();
 
             $entityManager->wrapInTransaction(function () use ($entityManager, $product): void {
-                $tag3 = (new Tag())
+                $tag3 = new Tag()
                     ->setName('Tag 3');
                 $product->addTag($tag3);
                 $entityManager->flush();

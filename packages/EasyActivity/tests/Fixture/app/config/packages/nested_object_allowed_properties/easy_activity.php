@@ -5,21 +5,25 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Author;
-use Symfony\Config\EasyActivityConfig;
 
 /**
  * @see \EonX\EasyActivity\Tests\Unit\Common\Factory\ActivityLogEntryFactoryTest::testCreateSucceedsWithRelatedObjectsWhenConfiguredNestedObjectAllowedProperties
  */
-return static function (EasyActivityConfig $easyActivityConfig): void {
-    $easyActivityConfig->subjects(Article::class)
-        ->allowedProperties([
-            'title',
-            'author',
-        ])
-        ->nestedObjectAllowedProperties([
-            Author::class => [
-                'name',
-                'position',
+return App::config([
+    'easy_activity' => [
+        'subjects' => [
+            Article::class => [
+                'allowed_properties' => [
+                    'title',
+                    'author',
+                ],
+                'nested_object_allowed_properties' => [
+                    Author::class => [
+                        'name',
+                        'position',
+                    ],
+                ],
             ],
-        ]);
-};
+        ],
+    ],
+]);

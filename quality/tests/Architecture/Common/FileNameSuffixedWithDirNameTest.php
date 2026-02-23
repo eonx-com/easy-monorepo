@@ -11,7 +11,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
 {
-    private const ALLOWED_SUFFIXES = [
+    private const array ALLOWED_SUFFIXES = [
         '',
         'AwareInterface',
         'AwareTrait',
@@ -22,7 +22,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'Trait',
     ];
 
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'bundle/config',
         'bundle/translations',
         'laravel/config',
@@ -33,13 +33,13 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'tests/Fixture/config',
     ];
 
-    private const EXCLUDE_FILE_NAMES = [
+    private const array EXCLUDE_FILE_NAMES = [
         '*BundleTest.php',
         '*ServiceProviderTest.php',
         '*TestCase.php',
     ];
 
-    private const SKIP_DIR_NAMES = [
+    private const array SKIP_DIR_NAMES = [
         'ApiResource',
         'Attribute',
         'Constraint',
@@ -53,7 +53,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'laravel',
     ];
 
-    private const SKIP_FILE_NAMES = [
+    private const array SKIP_FILE_NAMES = [
         'EasyApiPlatform/tests/Application/src/Common/Twig/TemplateOverrideTest.php',
         'EasyErrorHandler/src/Common/ErrorHandler/FormatAwareInterface.php',
         'EasyLock/src/Common/Locker/ProcessWithLockTrait.php',
@@ -83,7 +83,8 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->files()
+        return new Finder()
+            ->files()
             ->name('*.php')
             ->notName(self::EXCLUDE_FILE_NAMES)
             ->exclude(self::EXCLUDE_DIRS)

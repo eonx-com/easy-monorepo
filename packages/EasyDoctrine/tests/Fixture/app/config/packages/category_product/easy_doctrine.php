@@ -5,12 +5,12 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDoctrine\Tests\Fixture\App\Entity\Category;
 use EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product;
-use Symfony\Config\EasyDoctrineConfig;
 
-return static function (EasyDoctrineConfig $easyDoctrineConfig): void {
-    $easyDoctrineConfig
-        ->deferredDispatcherEntities([
+return App::config([
+    'easy_doctrine' => [
+        'deferred_dispatcher_entities' => [
             Category::class,
             Product::class,
-        ]);
-};
+        ],
+    ],
+]);

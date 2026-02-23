@@ -29,7 +29,7 @@ final class DecoratePathPackagesToUseUrlCompilerPass implements CompilerPassInte
                 continue;
             }
 
-            $decoratorDefinition = (new Definition(PrefixedUrlPackage::class))
+            $decoratorDefinition = new Definition(PrefixedUrlPackage::class)
                 ->setDecoratedService($id)
                 ->setArgument('$assetsUrl', $container->getParameter(ConfigParam::AssetsSeparateDomainUrl->value))
                 ->setArgument('$decorated', new Reference('.inner'));

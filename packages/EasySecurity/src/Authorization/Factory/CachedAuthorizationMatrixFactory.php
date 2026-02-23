@@ -9,7 +9,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final readonly class CachedAuthorizationMatrixFactory implements AuthorizationMatrixFactoryInterface
 {
-    private const CACHE_KEY = 'easy_security.authorization_matrix_key';
+    private const string CACHE_KEY = 'easy_security.authorization_matrix_key';
 
     private string $key;
 

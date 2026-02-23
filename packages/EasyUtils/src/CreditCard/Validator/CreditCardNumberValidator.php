@@ -5,27 +5,27 @@ namespace EonX\EasyUtils\CreditCard\Validator;
 
 final class CreditCardNumberValidator implements CreditCardNumberValidatorInterface
 {
-    private const AMEX = 'AMEX';
+    private const string AMEX = 'AMEX';
 
-    private const CHINA_UNIONPAY = 'CHINA_UNIONPAY';
+    private const string CHINA_UNIONPAY = 'CHINA_UNIONPAY';
 
-    private const DINERS = 'DINERS';
+    private const string DINERS = 'DINERS';
 
-    private const DISCOVER = 'DISCOVER';
+    private const string DISCOVER = 'DISCOVER';
 
-    private const INSTAPAYMENT = 'INSTAPAYMENT';
+    private const string INSTAPAYMENT = 'INSTAPAYMENT';
 
-    private const JCB = 'JCB';
+    private const string JCB = 'JCB';
 
-    private const LASER = 'LASER';
+    private const string LASER = 'LASER';
 
-    private const MAESTRO = 'MAESTRO';
+    private const string MAESTRO = 'MAESTRO';
 
-    private const MASTERCARD = 'MASTERCARD';
+    private const string MASTERCARD = 'MASTERCARD';
 
-    private const MIR = 'MIR';
+    private const string MIR = 'MIR';
 
-    private const SCHEMES = [
+    private const array SCHEMES = [
         // American Express card numbers start with 34 or 37 and have 15 digits
         self::AMEX => [
             '/^3[47][0-9]{13}$/',
@@ -89,9 +89,9 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
         ],
     ];
 
-    private const UATP = 'UATP';
+    private const string UATP = 'UATP';
 
-    private const VISA = 'VISA';
+    private const string VISA = 'VISA';
 
     public function isCreditCardNumberValid(string $number): bool
     {

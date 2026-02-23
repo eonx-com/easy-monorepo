@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
 {
-    private const FORBIDDEN_DIR_NAMES = [
+    private const array FORBIDDEN_DIR_NAMES = [
         'Bridge',
         'Handler',
         'Handlers',
@@ -27,7 +27,7 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         'Utils',
     ];
 
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         '/EasyBatch/src/Common/Manager',
         '/EasyTest/src/Common/Trait',
         '/EasyTest/src/HttpClient/Trait',
@@ -50,7 +50,8 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+            ->directories()
             ->filter(static function (SplFileInfo $dir): bool {
                 foreach (self::SKIP_DIRS as $skipDir) {
                     if (\str_ends_with($dir->getRealPath(), $skipDir)) {

@@ -15,13 +15,13 @@ use Doctrine\DBAL\Types\DateTimeImmutableType;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
-    private const FORMAT_DB_DATETIME = 'DATETIME(6)';
+    private const string FORMAT_DB_DATETIME = 'DATETIME(6)';
 
-    private const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+    private const string FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
 
-    private const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
+    private const string FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
 
-    private const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+    private const string FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
 
     private static ?DateTimeZone $utc = null;
 

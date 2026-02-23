@@ -14,11 +14,11 @@ use Firebase\JWT\Key;
 
 final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
 {
-    private const DEFAULT_JWK_ALGORITHM = 'RS256';
+    private const string DEFAULT_JWK_ALGORITHM = 'RS256';
 
-    private const TOKEN_TYPE_ACCESS = 'access';
+    private const string TOKEN_TYPE_ACCESS = 'access';
 
-    private const TOKEN_TYPE_ID = 'id';
+    private const string TOKEN_TYPE_ID = 'id';
 
     /**
      * @todo Rename $jwkFetcher to $jwkProvider in next major version

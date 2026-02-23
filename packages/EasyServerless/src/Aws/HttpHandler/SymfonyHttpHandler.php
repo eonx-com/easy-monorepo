@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\TerminableInterface;
  */
 final class SymfonyHttpHandler extends HttpHandler
 {
-    private const LAMBDA_REQUEST_CONTEXT_KEY = 'LAMBDA_REQUEST_CONTEXT';
+    private const string LAMBDA_REQUEST_CONTEXT_KEY = 'LAMBDA_REQUEST_CONTEXT';
 
     private readonly HttpMessageFactoryInterface $psrHttpFactory;
 

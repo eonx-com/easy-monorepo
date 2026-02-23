@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\FrameworkConfig;
-
-return static function (FrameworkConfig $frameworkConfig): void {
-    $frameworkConfig
-        ->defaultLocale('en');
-
-    $frameworkConfig->translator()
-        ->defaultPath(param('kernel.project_dir') . '/translations')
-        ->fallbacks(['en'])
-        ->cacheDir(null);
-};
+return App::config([
+    'framework' => [
+        'default_locale' => 'en',
+        'translator' => [
+            'default_path' => param('kernel.project_dir') . '/translations',
+            'fallbacks' => ['en'],
+            'cache_dir' => null,
+        ],
+    ],
+]);

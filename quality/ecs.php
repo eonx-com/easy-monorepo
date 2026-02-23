@@ -136,7 +136,7 @@ return ECSConfig::configure()
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
-        'packages/*/config/reference.php',
+        'packages/*/tests/*/config/*',
         'packages/*/var/*',
         'packages/*/vendor/*',
     ])

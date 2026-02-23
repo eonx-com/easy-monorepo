@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'bundle',
         'docs',
         'tests',
@@ -32,7 +32,8 @@ final class NonClassFileNameUseKebabCaseTest extends AbstractArchitectureTestCas
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->files()
+        return new Finder()
+            ->files()
             ->exclude(self::EXCLUDE_DIRS)
             ->filter(static function (SplFileInfo $file): bool {
                 if (

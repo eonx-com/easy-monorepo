@@ -31,7 +31,7 @@ use Throwable;
 
 final class SqsHandler extends AbstractSqsHandler
 {
-    private const SYMFONY_HEADERS_ATTRIBUTE_NAME = 'X-Symfony-Messenger';
+    private const string SYMFONY_HEADERS_ATTRIBUTE_NAME = 'X-Symfony-Messenger';
 
     public function __construct(
         private readonly MessageBusInterface $bus,
