@@ -92,6 +92,7 @@ final class ApiKeyDecoderTest extends AbstractUnitTestCase
 
     private function getDecoder(): ApiKeyDecoder
     {
-        return (new ApiKeyDecoder())->setHashedApiKeyDriver(new HashedApiKeyDriver());
+        return new ApiKeyDecoder()
+            ->setHashedApiKeyDriver(new HashedApiKeyDriver());
     }
 }

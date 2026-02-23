@@ -49,7 +49,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         /** @var string $apiPlatformBundleViewsFolder */
-        $apiPlatformBundleViewsFolder = (new FileLocator(__DIR__ . '/templates/bundles'))
+        $apiPlatformBundleViewsFolder = new FileLocator(__DIR__ . '/templates/bundles')
             ->locate('ApiPlatformBundle');
 
         $builder->prependExtensionConfig('twig', [

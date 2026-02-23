@@ -11,7 +11,8 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 {
     public function testDecisionResetItsOutputOnEachMake(): void
     {
-        $decision = (new AffirmativeDecision())->addRule(new OutputFromInputRuleStub());
+        $decision = new AffirmativeDecision()
+            ->addRule(new OutputFromInputRuleStub());
 
         self::assertTrue($decision->make(['output' => true]));
         self::assertFalse($decision->make(['output' => false]));
@@ -19,10 +20,11 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
     public function testReturnFalseWhenNoTrue(): void
     {
-        $decision = (new AffirmativeDecision())->addRules([
-            $this->createFalseRule('false-1'),
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+        $decision = new AffirmativeDecision()
+            ->addRules([
+                $this->createFalseRule('false-1'),
+                $this->createUnsupportedRule('unsupported-1'),
+            ]);
 
         $expected = [
             'false-1' => false,
@@ -35,12 +37,13 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
     public function testReturnTrueAtFirstTrue(): void
     {
-        $decision = (new AffirmativeDecision())->addRules([
-            $this->createTrueRule('true-1'),
-            $this->createTrueRule('true-2'),
-            $this->createTrueRule('true-3'),
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+        $decision = new AffirmativeDecision()
+            ->addRules([
+                $this->createTrueRule('true-1'),
+                $this->createTrueRule('true-2'),
+                $this->createTrueRule('true-3'),
+                $this->createUnsupportedRule('unsupported-1'),
+            ]);
 
         $expected = [
             'true-1' => true,
@@ -55,12 +58,13 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
     public function testReturnTrueInMiddleOfRules(): void
     {
-        $decision = (new AffirmativeDecision())->addRules([
-            $this->createFalseRule('false-1'),
-            $this->createTrueRule('true-1'),
-            $this->createTrueRule('true-2'),
-            $this->createUnsupportedRule('unsupported-1'),
-        ]);
+        $decision = new AffirmativeDecision()
+            ->addRules([
+                $this->createFalseRule('false-1'),
+                $this->createTrueRule('true-1'),
+                $this->createTrueRule('true-2'),
+                $this->createUnsupportedRule('unsupported-1'),
+            ]);
 
         $expected = [
             'false-1' => false,
@@ -75,10 +79,11 @@ final class AffirmativeDecisionTest extends AbstractUnitTestCase
 
     public function testReturnTrueWithPriorities(): void
     {
-        $decision = (new AffirmativeDecision())->addRules([
-            $this->createFalseRule('false-1', 100),
-            $this->createTrueRule('true-1'),
-        ]);
+        $decision = new AffirmativeDecision()
+            ->addRules([
+                $this->createFalseRule('false-1', 100),
+                $this->createTrueRule('true-1'),
+            ]);
 
         $expected = [
             'true-1' => true,

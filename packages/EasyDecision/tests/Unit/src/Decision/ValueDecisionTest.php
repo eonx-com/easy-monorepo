@@ -51,7 +51,7 @@ final class ValueDecisionTest extends AbstractUnitTestCase
         ?string $name = null,
         mixed $defaultOutput = null,
     ): void {
-        $decision = (new ValueDecision($name))
+        $decision = new ValueDecision($name)
             ->addRules($rules)
             ->setDefaultOutput($defaultOutput);
 
@@ -69,12 +69,14 @@ final class ValueDecisionTest extends AbstractUnitTestCase
     {
         $this->expectException(ContextNotSetException::class);
 
-        ((new ValueDecision())->addRules([$this->createUnsupportedRule('whatever')]))->getContext();
+        new ValueDecision()
+            ->addRules([$this->createUnsupportedRule('whatever')])->getContext();
     }
 
     public function testNonBlockingRuleErrorException(): void
     {
-        $decision = (new ValueDecision())->addRule(new WithNonBlockingErrorExceptionRuleStub());
+        $decision = new ValueDecision()
+            ->addRule(new WithNonBlockingErrorExceptionRuleStub());
 
         $output = $decision->make([
             'value' => 10,
@@ -91,7 +93,8 @@ final class ValueDecisionTest extends AbstractUnitTestCase
     {
         $this->expectException(MissingValueIndexException::class);
 
-        $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
+        $decision = new ValueDecision()
+            ->addRules([$this->getModifyValueRuleInArray()]);
 
         $decision->make([]);
     }
@@ -100,7 +103,8 @@ final class ValueDecisionTest extends AbstractUnitTestCase
     {
         $this->expectException(ReservedContextIndexException::class);
 
-        $decision = (new ValueDecision())->addRules([$this->getModifyValueRuleInArray()]);
+        $decision = new ValueDecision()
+            ->addRules([$this->getModifyValueRuleInArray()]);
 
         $decision->make([
             'context' => 'I know it is bad...',
@@ -112,7 +116,8 @@ final class ValueDecisionTest extends AbstractUnitTestCase
     {
         $modifyRule = $this->getModifyValueRuleInArray();
 
-        $decision = (new ValueDecision())->addRules([$this->createUnsupportedRule('unsupported-1'), $modifyRule]);
+        $decision = new ValueDecision()
+            ->addRules([$this->createUnsupportedRule('unsupported-1'), $modifyRule]);
 
         $original = [
             'value' => 0,
@@ -133,7 +138,8 @@ final class ValueDecisionTest extends AbstractUnitTestCase
     {
         $this->expectException(UnableToMakeDecisionException::class);
 
-        $decision = (new ValueDecision())->addRule($this->getExceptionRule());
+        $decision = new ValueDecision()
+            ->addRule($this->getExceptionRule());
 
         $decision->make([
             'value' => 1,

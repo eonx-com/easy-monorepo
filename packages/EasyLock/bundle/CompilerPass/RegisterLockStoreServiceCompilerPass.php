@@ -26,7 +26,7 @@ final class RegisterLockStoreServiceCompilerPass implements CompilerPassInterfac
 
         $arg = $connectionId !== null ? new Reference($connectionId) : self::DEFAULT_CONNECTION_ID;
 
-        $def = (new Definition(PersistingStoreInterface::class))
+        $def = new Definition(PersistingStoreInterface::class)
             ->setFactory([StoreFactory::class, 'createStore'])
             ->setArguments([$arg]);
 

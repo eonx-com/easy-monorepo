@@ -18,7 +18,8 @@ final class TextBlockRendererTest extends AbstractUnitTestCase
     public static function provideRenderBlockData(): iterable
     {
         yield 'Simple text' => [
-            (new TextBlock('my-text-block'))->setContents('my simple contents'),
+            new TextBlock('my-text-block')
+                ->setContents('my simple contents'),
             'my simple contents',
         ];
     }

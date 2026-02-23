@@ -86,7 +86,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         self::bootKernel();
         $this->initDatabase();
         $entityManager = self::getEntityManager();
-        $article = (new Article())
+        $article = new Article()
             ->setTitle('Resolver')
             ->setContent('Test actor resolver');
         $entityManager->persist($article);
@@ -268,10 +268,14 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         $article = new Article();
         $article->setTitle('Test collections');
         $article->setContent('Content');
-        $commentA = (new Comment())->setMessage('comment 1');
-        $commentB = (new Comment())->setMessage('comment 2');
-        $commentC = (new Comment())->setMessage('comment 3');
-        $commentD = (new Comment())->setMessage('comment 4');
+        $commentA = new Comment()
+            ->setMessage('comment 1');
+        $commentB = new Comment()
+            ->setMessage('comment 2');
+        $commentC = new Comment()
+            ->setMessage('comment 3');
+        $commentD = new Comment()
+            ->setMessage('comment 4');
         $article->addComment($commentA);
         $article->addComment($commentB);
         $article->addComment($commentC);
@@ -287,7 +291,8 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         $entityManager->flush();
         $commentA->setMessage('comment 1 updated');
         $entityManager->flush();
-        $commentE = (new Comment())->setMessage('comment 5');
+        $commentE = new Comment()
+            ->setMessage('comment 5');
         $article->addComment($commentE);
         $entityManager->flush();
 
