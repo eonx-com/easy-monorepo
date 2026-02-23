@@ -72,7 +72,7 @@ return RectorConfig::configure()
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
         ],
-        'packages/*/config/reference.php',
+        'packages/*/tests/*/config/*',
         'packages/*/var/*',
         'packages/*/vendor/*',
         ...$temporaryIgnoredRectors,

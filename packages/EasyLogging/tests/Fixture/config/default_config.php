@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyLoggingConfig;
-
-return static function (EasyLoggingConfig $easyLoggingConfig): void {
-    $easyLoggingConfig->defaultChannel('my-app');
-
-    $easyLoggingConfig->sensitiveDataSanitizer()
-        ->enabled(true);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_logging', [
+        'default_channel' => 'my-app',
+        'sensitive_data_sanitizer' => true,
+    ]);
 };

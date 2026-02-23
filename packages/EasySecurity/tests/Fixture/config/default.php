@@ -3,14 +3,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyBugsnagConfig;
-
-return static function (EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easyBugsnagConfig->apiKey('api-key');
-
-    $easyBugsnagConfig->doctrineDbal()
-        ->enabled(false);
-
-    $easyBugsnagConfig->sensitiveDataSanitizer()
-        ->enabled(false);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_bugsnag', [
+        'api_key' => 'api-key',
+        'doctrine_dbal' => false,
+        'sensitive_data_sanitizer' => false,
+    ]);
 };

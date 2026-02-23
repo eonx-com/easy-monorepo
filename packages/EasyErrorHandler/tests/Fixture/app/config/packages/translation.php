@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\FrameworkConfig;
-
-return static function (FrameworkConfig $frameworkConfig): void {
-    $frameworkConfig
-        ->defaultLocale('en');
-
-    $frameworkConfig->translator()
-        ->fallbacks(['en'])
-        ->cacheDir(null);
-};
+return App::config([
+    'framework' => [
+        'default_locale' => 'en',
+        'translator' => [
+            'fallbacks' => ['en'],
+            'cache_dir' => null,
+        ],
+    ],
+]);

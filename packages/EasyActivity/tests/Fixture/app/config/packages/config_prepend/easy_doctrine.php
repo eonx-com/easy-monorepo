@@ -5,12 +5,12 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Article;
 use EonX\EasyActivity\Tests\Fixture\App\Entity\Comment;
-use Symfony\Config\EasyDoctrineConfig;
 
-return static function (EasyDoctrineConfig $easyDoctrineConfig): void {
-    $easyDoctrineConfig
-        ->deferredDispatcherEntities([
+return App::config([
+    'easy_doctrine' => [
+        'deferred_dispatcher_entities' => [
             Article::class,
             Comment::class,
-        ]);
-};
+        ],
+    ],
+]);

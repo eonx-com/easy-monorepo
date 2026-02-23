@@ -53,30 +53,30 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyEncryptionConfig;
-
-return static function (EasyEncryptionConfig $easyEncryptionConfig): void {
-    $easyEncryptionConfig->defaultKeyName(env('ENCRYPTION_AWS_CLOUD_HSM_ENCRYPTION_KEY_NAME'));
-    $easyEncryptionConfig->maxChunkSize(env('ENCRYPTION_AWS_CLOUD_HSM_MAXIMUM_DATA_SIZE')->int());
-    $easyEncryptionConfig->fullyEncryptedMessages([
-        EmailMessage::class,
-        SendEmailMessage::class,
-        SmsMessage::class,
-    ]);
-    $easyEncryptionConfig->awsCloudHsmEncryptor()
-        ->enabled(true)
-        ->sdkOptions([
-            '--log-level' => 'warn',
-            '--log-type' => 'term',
-        ])
-        ->disableKeyAvailabilityCheck(true)
-        ->caCertFile('/var/www/var/tmp/certificates/cloudhsmca.crt')
-        ->ipAddress(env('ENCRYPTION_AWS_CLOUD_HSM_IP'))
-        ->serverClientCertFile('/var/www/var/tmp/certificates/cloudhsmclient.crt')
-        ->serverClientKeyFile('/var/www/var/tmp/certificates/cloudhsmclient.key')
-        ->useAwsCloudHsmConfigureTool(false)
-        ->userPin(env('ENCRYPTION_AWS_CLOUD_HSM_USER_PIN'));
-}
+return App::config([
+    'easy_encryption' => [
+        'default_key_name' => env('ENCRYPTION_AWS_CLOUD_HSM_ENCRYPTION_KEY_NAME'),
+        'max_chunk_size' => env('ENCRYPTION_AWS_CLOUD_HSM_MAXIMUM_DATA_SIZE')->int(),
+        'fully_encrypted_messages' => [
+            EmailMessage::class,
+            SendEmailMessage::class,
+            SmsMessage::class,
+        ],
+        'aws_cloud_hsm_encryptor' => [
+            'sdk_options' => [
+                '--log-level' => 'warn',
+                '--log-type' => 'term',
+            ],
+            'disable_key_availability_check' => true,
+            'ca_cert_file' => '/var/www/var/tmp/certificates/cloudhsmca.crt',
+            'ip_address' => env('ENCRYPTION_AWS_CLOUD_HSM_IP'),
+            'server_client_cert_file' => '/var/www/var/tmp/certificates/cloudhsmclient.crt',
+            'server_client_key_file' => '/var/www/var/tmp/certificates/cloudhsmclient.key',
+            'use_aws_cloud_hsm_configure_tool' => false,
+            'user_pin' => env('ENCRYPTION_AWS_CLOUD_HSM_USER_PIN'),
+        ],
+    ],
+]);
 ```
 
 ### Encryptable Entity

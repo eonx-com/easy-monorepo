@@ -58,15 +58,15 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Entity\SomeEntity;
 use App\Entity\AnotherEntity;
-use Symfony\Config\EasyDoctrineConfig;
 
-return static function (EasyDoctrineConfig $easyDoctrineConfig): void {
-    $easyDoctrineConfig
-        ->deferredDispatcherEntities([
+return App::config([
+    'easy_doctrine' => [
+        'deferred_dispatcher_entities' => [
             SomeEntity::class,
             AnotherEntity::class,
-        ]);
-};
+        ],
+    ],
+]);
 
 ```
 
