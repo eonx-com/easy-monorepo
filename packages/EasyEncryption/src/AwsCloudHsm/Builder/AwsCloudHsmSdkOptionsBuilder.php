@@ -8,7 +8,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final readonly class AwsCloudHsmSdkOptionsBuilder
 {
-    private const DEFAULT_REGION = 'ap-southeast-2';
+    private const string DEFAULT_REGION = 'ap-southeast-2';
 
     public function __construct(
         private string $caCertFile,

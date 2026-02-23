@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ErrorRendererCompilerPass implements CompilerPassInterface
 {
-    private const ERROR_RENDERER_ID = 'error_renderer';
+    private const string ERROR_RENDERER_ID = 'error_renderer';
 
     public function process(ContainerBuilder $container): void
     {

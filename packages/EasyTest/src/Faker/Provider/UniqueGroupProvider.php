@@ -10,7 +10,7 @@ use LogicException;
 
 final class UniqueGroupProvider extends BaseProvider
 {
-    private const ITERATIONS_LIMIT = 3000;
+    private const int ITERATIONS_LIMIT = 3000;
 
     private array $generatedUniqueGroupsValues = [];
 

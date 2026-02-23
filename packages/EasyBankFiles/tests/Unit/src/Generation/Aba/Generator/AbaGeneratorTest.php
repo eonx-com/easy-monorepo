@@ -18,9 +18,9 @@ use PHPUnit\Framework\Attributes\Group;
 #[CoversClass(AbaGenerator::class)]
 final class AbaGeneratorTest extends AbstractUnitTestCase
 {
-    private const TRANSACTION_CODE_CREDIT = 50;
+    private const int TRANSACTION_CODE_CREDIT = 50;
 
-    private const TRANSACTION_CODE_DEBIT = 13;
+    private const int TRANSACTION_CODE_DEBIT = 13;
 
     /**
      * Generator should throw exception when required attributes not set.

@@ -12,7 +12,7 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 
 final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhooks';
+    public const string DEFAULT_TABLE = 'easy_webhooks';
 
     public function find(string $id): ?WebhookInterface
     {

@@ -14,7 +14,7 @@ use UnexpectedValueException;
 
 abstract class AbstractInvalidDataMaker
 {
-    private const PLURAL_PARAM = '%count%';
+    private const string PLURAL_PARAM = '%count%';
 
     /**
      * @var string[]

@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyPipelineServiceProvider extends ServiceProvider
 {
-    public const PIPELINES_PREFIX = 'pipeline.';
+    public const string PIPELINES_PREFIX = 'pipeline.';
 
     public function boot(): void
     {

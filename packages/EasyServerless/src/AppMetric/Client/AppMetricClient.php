@@ -9,9 +9,9 @@ use Psr\Log\NullLogger;
 
 final readonly class AppMetricClient implements AppMetricClientInterface
 {
-    private const METRIC_PARAM_KEY_PATTERN = '%s_%s';
+    private const string METRIC_PARAM_KEY_PATTERN = '%s_%s';
 
-    private const PATTERN = '[appMetric][%s]';
+    private const string PATTERN = '[appMetric][%s]';
 
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),

@@ -14,7 +14,7 @@ use Throwable;
 
 final readonly class Auth0JwtDriver implements JwtDriverInterface
 {
-    private const DEFAULT_ALLOWED_ALGORITHMS = [
+    private const array DEFAULT_ALLOWED_ALGORITHMS = [
         'HS256',
         'RS256',
     ];

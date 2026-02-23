@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsTransportFac
 
 final class DecorateMessengerSqsClientCompilerPass extends AbstractEasyHttpClientCompilerPass
 {
-    private const MESSENGER_SQS_FACTORY = 'messenger.transport.sqs.factory';
+    private const string MESSENGER_SQS_FACTORY = 'messenger.transport.sqs.factory';
 
     protected function doProcess(ContainerBuilder $container): void
     {

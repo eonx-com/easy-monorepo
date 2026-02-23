@@ -11,12 +11,12 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class PluralNameForDirTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'config',
         'translations',
     ];
 
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         'Middleware',
     ];
 
