@@ -114,15 +114,12 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         $inflector = new EnglishInflector();
         $singularDirNames = $inflector->singularize($dirName);
 
-        foreach ($singularDirNames as $singularDirName) {
-            if (\array_any(
+        return \array_any(
+            $singularDirNames,
+            static fn ($singularDirName) => \array_any(
                 self::ALLOWED_SUFFIXES,
                 static fn (string $suffix): bool => \str_ends_with($fileName, $singularDirName . $suffix)
-            )) {
-                return true;
-            }
-        }
-
-        return false;
+            )
+        );
     }
 }
