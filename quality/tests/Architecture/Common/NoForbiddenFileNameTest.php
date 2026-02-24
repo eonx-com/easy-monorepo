@@ -40,22 +40,18 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         return new Finder()
             ->files()
             ->filter(static function (\SplFileInfo $file): bool {
-                $hasFileToSkip = \array_any(
+                return \array_all(
                     self::SKIP_FILES,
-                    static fn (string $skipFile): bool => \str_ends_with($file->getRealPath(), $skipFile)
+                    static fn (string $skipFile): bool => \str_ends_with($file->getRealPath(), $skipFile) === false
                 );
-
-                return $hasFileToSkip === false;
             });
     }
 
     private static function isNameAllowed(SplFileInfo $file): bool
     {
-        $hasForbiddenFileName = \array_any(
+        return \array_all(
             self::FORBIDDEN_FILE_NAMES,
-            static fn (string $forbiddenFileName): bool => \str_ends_with($file->getBasename(), $forbiddenFileName)
+            static fn (string $fileName): bool => \str_ends_with($file->getBasename(), $fileName) === false
         );
-
-        return $hasForbiddenFileName === false;
     }
 }

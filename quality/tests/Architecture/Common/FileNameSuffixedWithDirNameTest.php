@@ -95,31 +95,31 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
                     return false;
                 }
 
-                $hasFileNameToSkip = \array_any(
+                return \array_all(
                     self::SKIP_FILE_NAMES,
-                    static fn (string $skipFileName): bool => \str_ends_with($file->getRealPath(), $skipFileName)
+                    static fn (string $fileName): bool => \str_ends_with($file->getRealPath(), $fileName) === false
                 );
-
-                return $hasFileNameToSkip === false;
             });
     }
 
     private static function isNameAllowed(string $fileName, string $dirName): bool
     {
-        foreach (self::ALLOWED_SUFFIXES as $suffix) {
-            if (\str_ends_with($fileName, $dirName . $suffix)) {
-                return true;
-            }
+        if (\array_any(
+            self::ALLOWED_SUFFIXES,
+            static fn (string $suffix): bool => \str_ends_with($fileName, $dirName . $suffix)
+        )) {
+            return true;
         }
 
         $inflector = new EnglishInflector();
         $singularDirNames = $inflector->singularize($dirName);
 
         foreach ($singularDirNames as $singularDirName) {
-            foreach (self::ALLOWED_SUFFIXES as $suffix) {
-                if (\str_ends_with($fileName, $singularDirName . $suffix)) {
-                    return true;
-                }
+            if (\array_any(
+                self::ALLOWED_SUFFIXES,
+                static fn (string $suffix): bool => \str_ends_with($fileName, $singularDirName . $suffix)
+            )) {
+                return true;
             }
         }
 

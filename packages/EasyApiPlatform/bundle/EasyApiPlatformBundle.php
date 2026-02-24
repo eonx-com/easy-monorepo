@@ -63,12 +63,12 @@ final class EasyApiPlatformBundle extends AbstractBundle
         ]);
 
         if ($this->isBundleEnabled('EasyErrorHandlerBundle', $builder)) {
-            $easyErrorHandlerDisabled = \array_any(
+            $easyErrorHandlerEnabled = \array_all(
                 $builder->getExtensionConfig('easy_api_platform'),
                 // @phpstan-ignore offsetAccess.nonOffsetAccessible
-                static fn ($config): bool => ($config['easy_error_handler']['enabled'] ?? true) !== true
+                static fn ($config): bool => $config['easy_error_handler']['enabled'] ?? true
             );
-            if ($easyErrorHandlerDisabled === false) {
+            if ($easyErrorHandlerEnabled) {
                 $builder->prependExtensionConfig('api_platform', [
                     'defaults' => [
                         'denormalization_context' => [

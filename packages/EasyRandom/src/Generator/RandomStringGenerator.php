@@ -44,11 +44,9 @@ final class RandomStringGenerator implements RandomStringGeneratorInterface
 
     private function validateString(string $randomString, RandomStringConfig $randomStringConfig): bool
     {
-        $hasInvalidConstraint = \array_any(
+        return \array_all(
             $randomStringConfig->getConstraints(),
-            static fn ($constraint): bool => $constraint->isValid($randomString) === false
+            static fn ($constraint): bool => $constraint->isValid($randomString)
         );
-
-        return $hasInvalidConstraint === false;
     }
 }
