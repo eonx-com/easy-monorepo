@@ -95,13 +95,12 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
                     return false;
                 }
 
-                foreach (self::SKIP_FILE_NAMES as $skipFileName) {
-                    if (\str_ends_with($file->getRealPath(), $skipFileName)) {
-                        return false;
-                    }
-                }
+                $hasFileNameToSkip = \array_any(
+                    self::SKIP_FILE_NAMES,
+                    static fn (string $skipFileName): bool => \str_ends_with($file->getRealPath(), $skipFileName)
+                );
 
-                return true;
+                return $hasFileNameToSkip === false;
             });
     }
 

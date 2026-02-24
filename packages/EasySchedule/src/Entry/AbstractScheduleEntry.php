@@ -97,13 +97,7 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
             }
         }
 
-        foreach ($this->rejects as $reject) {
-            if ((bool)$reject() === true) {
-                return false;
-            }
-        }
-
-        return true;
+        return \array_any($this->rejects, static fn ($reject): bool => (bool)$reject() === true) === false;
     }
 
     public function fridays(): ScheduleEntryInterface
