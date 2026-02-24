@@ -44,12 +44,9 @@ final class OnlyAllowedFileNameInHelperDirTest extends AbstractArchitectureTestC
 
     private function isNameAllowed(string $name): bool
     {
-        foreach (self::ALLOWED_FILE_NAMES as $allowedFileName) {
-            if (\str_ends_with($name, $allowedFileName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            self::ALLOWED_FILE_NAMES,
+            static fn (string $allowedFileName): bool => \str_ends_with($name, $allowedFileName)
+        );
     }
 }
