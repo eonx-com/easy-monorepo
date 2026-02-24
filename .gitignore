@@ -16,3 +16,6 @@ coverage_output.txt
 
 # Symfony
 **/var
+
+# Claude
+/.claude/
