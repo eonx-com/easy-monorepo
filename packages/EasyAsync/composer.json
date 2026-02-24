@@ -19,10 +19,10 @@
     "require-dev": {
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.12",
-        "eonx-com/easy-event-dispatcher": "^6.19.2",
-        "eonx-com/easy-logging": "^6.19.2",
-        "eonx-com/easy-random": "^6.19.2",
-        "eonx-com/easy-test": "^6.19.2",
+        "eonx-com/easy-event-dispatcher": "^6.20",
+        "eonx-com/easy-logging": "^6.20",
+        "eonx-com/easy-random": "^6.20",
+        "eonx-com/easy-test": "^6.20",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
         "symfony/doctrine-bridge": "^7.2",
         "symfony/framework-bundle": "^7.2"
