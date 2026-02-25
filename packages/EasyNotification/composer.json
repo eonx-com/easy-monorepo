@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.2",
         "aws/aws-sdk-php": "^3.288.1",
-        "eonx-com/easy-utils": "^6.20",
+        "eonx-com/easy-utils": "^6.19.3",
         "nette/utils": "^4.0",
         "symfony/cache": "^7.2",
         "symfony/cache-contracts": "^3.5",
