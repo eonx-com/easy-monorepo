@@ -7,6 +7,7 @@ use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
+use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
@@ -78,14 +79,6 @@ final class SqsHandler extends AbstractSqsHandler
         }
 
         try {
-            $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
-            $this->eventDispatcher?->dispatch($event);
-            $envelope = $event->getEnvelope();
-
-            if ($event->shouldHandle() === false) {
-                return;
-            }
-
             $stamps = [
                 new AmazonSqsReceivedStamp($sqsRecord->getMessageId()),
                 new ConsumedByWorkerStamp(),
@@ -103,6 +96,15 @@ final class SqsHandler extends AbstractSqsHandler
 
             // Replacing the envelope with the containing the new stamps allows the retry strategy to work properly
             $envelope = $envelope->with(...$stamps);
+
+            $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
+            $this->eventDispatcher?->dispatch($event);
+            $envelope = $event->getEnvelope();
+
+            if ($event->shouldHandle() === false) {
+                return;
+            }
+
             $envelope = $this->bus->dispatch($envelope);
 
             $this->logger?->info('{class} was handled successfully.', [
@@ -111,8 +113,6 @@ final class SqsHandler extends AbstractSqsHandler
                 'transport' => $this->transportName,
             ]);
         } catch (Throwable $throwable) {
-            $this->errorHandler?->report($throwable);
-
             $retryStrategy = $this->getRetryStrategyForTransport($this->transportName);
             $isThrowableExplicitlyUnrecoverable = $this->isThrowableExplicitlyUnRecoverable($throwable);
             $shouldRetry = $isThrowableExplicitlyUnrecoverable === false
@@ -131,6 +131,8 @@ final class SqsHandler extends AbstractSqsHandler
                     $isThrowableExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
                 ));
             }
+
+            $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
 
             // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
             // this is why we mark the record as failed only if we want it to be retried by SQS.
