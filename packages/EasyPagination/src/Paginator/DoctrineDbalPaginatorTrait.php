@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Paginator;
 
+use BackedEnum;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
@@ -27,7 +28,10 @@ trait DoctrineDbalPaginatorTrait
     {
         return $this->connection->fetchAllAssociative(
             $queryBuilder->getSQL(),
-            $queryBuilder->getParameters(),
+            \array_map(
+                static fn (mixed $value): mixed => $value instanceof BackedEnum ? $value->value : $value,
+                $queryBuilder->getParameters()
+            ),
             $queryBuilder->getParameterTypes()
         );
     }

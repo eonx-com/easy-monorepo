@@ -10,6 +10,7 @@ use Doctrine\DBAL\Result;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineDbalLengthAwarePaginator;
+use EonX\EasyPagination\Tests\Stub\Enum\Status;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -128,6 +129,27 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                     $queryBuilder
                         ->where('title = :title')
                         ->setParameter('title', 'my-title-1');
+                });
+            },
+            static function (DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::assertCount(1, $paginator->getItems());
+                self::assertEquals(1, $paginator->getTotalItems());
+            },
+        ];
+
+        yield '2 items filter 1 with enum parameter' => [
+            Pagination::create(1, 15),
+            'items',
+            null,
+            function (Connection $connection, DoctrineDbalLengthAwarePaginator $paginator): void {
+                self::createItemsTable($connection);
+                self::addItemToTable($connection, 'my-title', Status::Active);
+                self::addItemToTable($connection, 'my-title-1', Status::Inactive);
+
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
+                    $queryBuilder
+                        ->where('status = :status')
+                        ->setParameter('status', Status::Inactive);
                 });
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {

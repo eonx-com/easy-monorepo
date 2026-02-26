@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
+use EonX\EasyPagination\Tests\Stub\Enum\Status;
 use EonX\EasyPagination\Tests\Stub\Type\SqliteStringUuidType;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 
@@ -29,10 +30,14 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $manager->flush();
     }
 
-    protected static function addItemToTable(EntityManagerInterface $manager, string $title): Item
-    {
+    protected static function addItemToTable(
+        EntityManagerInterface $manager,
+        string $title,
+        ?Status $status = null,
+    ): Item {
         $item = new Item();
         $item->setTitle($title);
+        $item->setStatus($status);
 
         $manager->persist($item);
         $manager->flush();
