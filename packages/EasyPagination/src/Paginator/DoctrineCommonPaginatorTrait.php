@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use BackedEnum;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
@@ -179,18 +180,22 @@ trait DoctrineCommonPaginatorTrait
                 ->getSQL();
 
             foreach ($queryBuilder->getParameters() as $param) {
-                $params[] = $param->getValue() instanceof BackedEnum ? $param->getValue()->value : $param->getValue();
+                $params[] = $param->getValue();
                 $paramTypes[] = $param->getType();
             }
         }
 
         if ($queryBuilder instanceof DbalQueryBuilder) {
             $sql = $queryBuilder->getSQL();
-            $params = \array_map(
-                static fn (mixed $value): mixed => $value instanceof BackedEnum ? $value->value : $value,
-                $queryBuilder->getParameters()
-            );
+            $params = $queryBuilder->getParameters();
             $paramTypes = $queryBuilder->getParameterTypes();
+        }
+
+        foreach ($params as $key => $param) {
+            if ($param instanceof BackedEnum) {
+                $params[$key] = $param->value;
+                $paramTypes[$key] = \is_int($param->value) ? ParameterType::INTEGER : ParameterType::STRING;
+            }
         }
 
         if (\is_string($sql) === false) {
