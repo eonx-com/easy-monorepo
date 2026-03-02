@@ -91,11 +91,11 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
     {
         return \array_any(
             $throwable->getTrace(),
-            static function ($trace): bool {
-                return
-                    (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
-                    || (($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide');
-            }
+            static fn ($trace): bool => isset($trace['class'])
+                && (
+                    ($trace['class'] === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
+                    || ($trace['class'] === DeserializeProvider::class && $trace['function'] === 'provide')
+                )
         );
     }
 }

@@ -116,7 +116,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
 
         return \array_any(
             $singularDirNames,
-            static fn ($singularDirName) => \array_any(
+            static fn ($singularDirName): bool => \array_any(
                 self::ALLOWED_SUFFIXES,
                 static fn (string $suffix): bool => \str_ends_with($fileName, $singularDirName . $suffix)
             )
