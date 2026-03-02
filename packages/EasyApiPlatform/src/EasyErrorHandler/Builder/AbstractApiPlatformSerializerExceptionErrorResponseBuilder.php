@@ -89,15 +89,13 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
 
     protected function isThrowableFromApiPlatformSerializer(Throwable $throwable): bool
     {
-        foreach ($throwable->getTrace() as $trace) {
-            if (
-                (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
-                || ((($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide'))
-            ) {
-                return true;
+        return \array_any(
+            $throwable->getTrace(),
+            static function ($trace): bool {
+                return
+                    (($trace['class'] ?? '') === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
+                    || (($trace['class'] ?? '') === DeserializeProvider::class && $trace['function'] === 'provide');
             }
-        }
-
-        return false;
+        );
     }
 }

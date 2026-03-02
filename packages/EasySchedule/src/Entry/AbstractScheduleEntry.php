@@ -91,19 +91,11 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
 
     public function filtersPass(): bool
     {
-        foreach ($this->filters as $filter) {
-            if ((bool)$filter() === false) {
-                return false;
-            }
+        if (\array_all($this->filters, static fn ($filter): bool => (bool)$filter()) === false) {
+            return false;
         }
 
-        foreach ($this->rejects as $reject) {
-            if ((bool)$reject() === true) {
-                return false;
-            }
-        }
-
-        return true;
+        return \array_any($this->rejects, static fn ($reject): bool => (bool)$reject()) === false;
     }
 
     public function fridays(): ScheduleEntryInterface

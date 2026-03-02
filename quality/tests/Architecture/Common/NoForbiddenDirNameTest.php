@@ -53,13 +53,10 @@ final class NoForbiddenDirNameTest extends AbstractArchitectureTestCase
         return new Finder()
             ->directories()
             ->filter(static function (SplFileInfo $dir): bool {
-                foreach (self::SKIP_DIRS as $skipDir) {
-                    if (\str_ends_with($dir->getRealPath(), $skipDir)) {
-                        return false;
-                    }
-                }
-
-                return true;
+                return \array_all(
+                    self::SKIP_DIRS,
+                    static fn (string $skipDir): bool => \str_ends_with($dir->getRealPath(), $skipDir) === false
+                );
             });
     }
 }

@@ -12,13 +12,7 @@ abstract class AbstractSimpleTemplatingBlockRenderer implements TemplatingBlockR
 
     public function supports(AbstractTemplatingBlock $block): bool
     {
-        foreach ($this->getSupportedBlockClasses() as $blockClass) {
-            if ($block instanceof $blockClass) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any($this->getSupportedBlockClasses(), static fn ($blockClass) => $block instanceof $blockClass);
     }
 
     /**
