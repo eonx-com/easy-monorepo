@@ -14,6 +14,7 @@ use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
+use EonX\EasyPagination\Tests\Stub\Enum\Status;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -85,6 +86,28 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                     $queryBuilder
                         ->where('i.title = :title')
                         ->setParameter('title', 'my-title-1');
+                });
+            },
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
+                self::assertCount(1, $paginator->getItems());
+                self::assertEquals(1, $paginator->getTotalItems());
+            },
+        ];
+
+        yield '2 items filter 1 with enum parameter' => [
+            Pagination::create(1, 15),
+            Item::class,
+            'i',
+            null,
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title', Status::Active);
+                self::addItemToTable($manager, 'my-title-1', Status::Inactive);
+
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
+                    $queryBuilder
+                        ->where('i.status = :status')
+                        ->setParameter('status', Status::Inactive);
                 });
             },
             static function (DoctrineOrmLengthAwarePaginator $paginator): void {
