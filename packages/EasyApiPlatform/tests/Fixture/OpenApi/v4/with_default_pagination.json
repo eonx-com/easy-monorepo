@@ -627,7 +627,7 @@
                                 },
                                 "example": {
                                     "@id": "string",
-                                    "type": "string",
+                                    "@type": "string",
                                     "hydra:first": "string",
                                     "hydra:last": "string",
                                     "hydra:previous": "string",
