@@ -19,6 +19,6 @@ final readonly class DefaultBugsnagExceptionIgnorer implements BugsnagExceptionI
 
     public function shouldIgnore(Throwable $throwable): bool
     {
-        return \array_any($this->ignoredExceptions, static fn ($ignoreClass) => \is_a($throwable, $ignoreClass));
+        return \array_any($this->ignoredExceptions, static fn ($ignoreClass): bool => \is_a($throwable, $ignoreClass));
     }
 }

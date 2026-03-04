@@ -83,7 +83,10 @@ final readonly class EntityEventListener
 
     private function isEntityTrackable(object $entity): bool
     {
-        return \array_any($this->trackableEntities, static fn ($trackableEntity) => \is_a($entity, $trackableEntity));
+        return \array_any(
+            $this->trackableEntities,
+            static fn ($trackableEntity): bool => \is_a($entity, $trackableEntity)
+        );
     }
 
     private function prepareDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
