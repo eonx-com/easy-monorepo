@@ -186,6 +186,12 @@ final class SqsHandler extends AbstractSqsHandler
         $this->eventDispatcher?->dispatch($failedEvent);
     }
 
+    private function dispatchWorkerMessageHandledEvent(Envelope $envelope): void
+    {
+        $handledEvent = new WorkerMessageHandledEvent($envelope, $this->transportName);
+        $this->eventDispatcher?->dispatch($handledEvent);
+    }
+
     /**
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
@@ -199,12 +205,6 @@ final class SqsHandler extends AbstractSqsHandler
         }
 
         return null;
-    }
-
-    private function dispatchWorkerMessageHandledEvent(Envelope $envelope): void
-    {
-        $handledEvent = new WorkerMessageHandledEvent($envelope, $this->transportName);
-        $this->eventDispatcher?->dispatch($handledEvent);
     }
 
     private function isThrowableExplicitlyUnRecoverable(Throwable $throwable): bool
