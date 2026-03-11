@@ -171,21 +171,6 @@ final class SqsHandler extends AbstractSqsHandler
         }
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    private function getRetryStrategyForTransport(string $alias): ?RetryStrategyInterface
-    {
-        if ($this->retryStrategyLocator->has($alias)) {
-            $retryStrategy = $this->retryStrategyLocator->get($alias);
-
-            return $retryStrategy instanceof RetryStrategyInterface ? $retryStrategy : null;
-        }
-
-        return null;
-    }
-
     private function dispatchWorkerMessageFailedEvent(Envelope $envelope, Throwable $throwable, bool $willRetry): void
     {
         if ($throwable instanceof EnvelopeAwareExceptionInterface && $throwable->getEnvelope() !== null) {
@@ -199,6 +184,21 @@ final class SqsHandler extends AbstractSqsHandler
         }
 
         $this->eventDispatcher?->dispatch($failedEvent);
+    }
+
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    private function getRetryStrategyForTransport(string $alias): ?RetryStrategyInterface
+    {
+        if ($this->retryStrategyLocator->has($alias)) {
+            $retryStrategy = $this->retryStrategyLocator->get($alias);
+
+            return $retryStrategy instanceof RetryStrategyInterface ? $retryStrategy : null;
+        }
+
+        return null;
     }
 
     private function dispatchWorkerMessageHandledEvent(Envelope $envelope): void
@@ -241,6 +241,7 @@ final class SqsHandler extends AbstractSqsHandler
 
         return false;
     }
+    
     private function resolveHeaders(SqsRecord $record): array
     {
         $headers = [];
