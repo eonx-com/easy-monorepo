@@ -12,15 +12,12 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyAsyncBundle extends AbstractBundle
 {
-    /**
-     * @var array<string, array{config_file: string}>
-     */
     private const MESSENGER_MIDDLEWARE = [
-        'doctrine_managers_sanity_check' => [
-            'config_file' => 'config/messenger_doctrine_managers_sanity_check_middleware.php',
-        ],
         'doctrine_managers_clear' => [
             'config_file' => 'config/messenger_doctrine_managers_clear_middleware.php',
+        ],
+        'doctrine_managers_sanity_check' => [
+            'config_file' => 'config/messenger_doctrine_managers_sanity_check_middleware.php',
         ],
     ];
 

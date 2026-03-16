@@ -113,7 +113,9 @@ final class ReorderMessengerMiddlewareCompilerPassTest extends TestCase
      */
     private function middlewareIds(ContainerBuilder $container): array
     {
-        $middleware = $container->getDefinition('messenger.bus.default')->getArgument(0);
+        $middleware = $container
+            ->getDefinition('messenger.bus.default')
+            ->getArgument(0);
         self::assertInstanceOf(IteratorArgument::class, $middleware);
 
         return \array_map(

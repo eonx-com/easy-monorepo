@@ -11,6 +11,28 @@ use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
 
 final class EasyAsyncBundleTest extends AbstractUnitTestCase
 {
+    /**
+     * @see packages/EasyAsync/tests/Fixture/app/config/packages/middleware_clear_disabled
+     */
+    public function testMessengerConfigWithDoctrineManagersClearMiddlewareDisabled(): void
+    {
+        self::bootKernel(['environment' => 'middleware_clear_disabled']);
+
+        self::assertFalse(self::getContainer()->has(DoctrineManagersClearMiddleware::class));
+        self::assertTrue(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
+    }
+
+    /**
+     * @see packages/EasyAsync/tests/Fixture/app/config/packages/middleware_sanity_check_disabled
+     */
+    public function testMessengerConfigWithDoctrineManagersSanityCheckMiddlewareDisabled(): void
+    {
+        self::bootKernel(['environment' => 'middleware_sanity_check_disabled']);
+
+        self::assertTrue(self::getContainer()->has(DoctrineManagersClearMiddleware::class));
+        self::assertFalse(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
+    }
+
     public function testMessengerConfigWithEmptyConfig(): void
     {
         self::bootKernel();
@@ -48,17 +70,6 @@ final class EasyAsyncBundleTest extends AbstractUnitTestCase
     }
 
     /**
-     * @see packages/EasyAsync/tests/Fixture/app/config/packages/middleware_clear_disabled
-     */
-    public function testMessengerConfigWithDoctrineManagersClearMiddlewareDisabled(): void
-    {
-        self::bootKernel(['environment' => 'middleware_clear_disabled']);
-
-        self::assertFalse(self::getContainer()->has(DoctrineManagersClearMiddleware::class));
-        self::assertTrue(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
-    }
-
-    /**
      * @see packages/EasyAsync/tests/Fixture/app/config/packages/middleware_disabled
      */
     public function testMessengerConfigWithMessengerMiddlewareDisabled(): void
@@ -77,17 +88,6 @@ final class EasyAsyncBundleTest extends AbstractUnitTestCase
         self::bootKernel(['environment' => 'middleware_disabled_with_child_enabled']);
 
         self::assertFalse(self::getContainer()->has(DoctrineManagersClearMiddleware::class));
-        self::assertFalse(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
-    }
-
-    /**
-     * @see packages/EasyAsync/tests/Fixture/app/config/packages/middleware_sanity_check_disabled
-     */
-    public function testMessengerConfigWithDoctrineManagersSanityCheckMiddlewareDisabled(): void
-    {
-        self::bootKernel(['environment' => 'middleware_sanity_check_disabled']);
-
-        self::assertTrue(self::getContainer()->has(DoctrineManagersClearMiddleware::class));
         self::assertFalse(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
     }
 
