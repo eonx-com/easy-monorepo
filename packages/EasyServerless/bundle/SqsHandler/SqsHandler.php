@@ -9,6 +9,7 @@ use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
@@ -17,7 +18,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
+use Symfony\Component\Messenger\Exception\EnvelopeAwareExceptionInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\RecoverableExceptionInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableExceptionInterface;
@@ -112,6 +115,8 @@ final class SqsHandler extends AbstractSqsHandler
                 'message_id' => $envelope->last(TransportMessageIdStamp::class)?->getId(),
                 'transport' => $this->transportName,
             ]);
+
+            $this->dispatchWorkerMessageHandledEvent($envelope);
         } catch (Throwable $throwable) {
             $retryStrategy = $this->getRetryStrategyForTransport($this->transportName);
             $isThrowableExplicitlyUnrecoverable = $this->isThrowableExplicitlyUnRecoverable($throwable);
@@ -133,6 +138,8 @@ final class SqsHandler extends AbstractSqsHandler
             }
 
             $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
+
+            $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);
 
             // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
             // this is why we mark the record as failed only if we want it to be retried by SQS.
@@ -162,6 +169,27 @@ final class SqsHandler extends AbstractSqsHandler
         } finally {
             $this->eventDispatcher?->dispatch(new EnvelopeDispatchedEvent());
         }
+    }
+
+    private function dispatchWorkerMessageFailedEvent(Envelope $envelope, Throwable $throwable, bool $willRetry): void
+    {
+        if ($throwable instanceof EnvelopeAwareExceptionInterface && $throwable->getEnvelope() !== null) {
+            $envelope = $throwable->getEnvelope();
+        }
+
+        $failedEvent = new ServerlessWorkerMessageFailedEvent($envelope, $this->transportName, $throwable);
+
+        if ($willRetry) {
+            $failedEvent->setForRetry();
+        }
+
+        $this->eventDispatcher?->dispatch($failedEvent);
+    }
+
+    private function dispatchWorkerMessageHandledEvent(Envelope $envelope): void
+    {
+        $handledEvent = new WorkerMessageHandledEvent($envelope, $this->transportName);
+        $this->eventDispatcher?->dispatch($handledEvent);
     }
 
     /**
@@ -213,7 +241,7 @@ final class SqsHandler extends AbstractSqsHandler
 
         return false;
     }
-
+    
     private function resolveHeaders(SqsRecord $record): array
     {
         $headers = [];
