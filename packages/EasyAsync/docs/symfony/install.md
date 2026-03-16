@@ -20,4 +20,39 @@ return [
 ];
 ```
 
+### Configure Messenger Middleware
+
+By default, all EasyAsync Messenger middleware are enabled.
+
+You can disable all middleware at once:
+
+```php
+use Symfony\Config\EasyAsyncConfig;
+
+return static function (EasyAsyncConfig $easyAsyncConfig): void {
+    $easyAsyncConfig
+        ->messenger()
+        ->middleware()
+        ->enabled(false);
+};
+```
+
+Or disable individual middleware while keeping the others enabled:
+
+```php
+use Symfony\Config\EasyAsyncConfig;
+
+return static function (EasyAsyncConfig $easyAsyncConfig): void {
+    $middlewareConfig = $easyAsyncConfig
+        ->messenger()
+        ->middleware();
+
+    $middlewareConfig->doctrineManagersSanityCheck()
+        ->enabled(false);
+
+    $middlewareConfig->doctrineManagersClear()
+        ->enabled(true);
+};
+```
+
 [1]: https://symfony.com/doc/current/setup/flex.html
