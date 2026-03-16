@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Messenger\Event;
+namespace EonX\EasyServerless\Event;
 
 use Symfony\Component\Messenger\Envelope;
 use Throwable;
 
-final class WorkerMessageFailedEvent extends AbstractWorkerMessageEvent
+final class ServerlessWorkerMessageFailedEvent extends AbstractServerlessWorkerMessageEvent
 {
     private bool $willRetry = false;
 

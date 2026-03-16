@@ -9,9 +9,8 @@ use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
-use EonX\EasyServerless\Messenger\Event\WorkerMessageFailedEvent;
-use EonX\EasyServerless\Messenger\Event\WorkerMessageHandledEvent;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -19,6 +18,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Messenger\Exception\EnvelopeAwareExceptionInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -177,7 +177,7 @@ final class SqsHandler extends AbstractSqsHandler
             $envelope = $throwable->getEnvelope();
         }
 
-        $failedEvent = new WorkerMessageFailedEvent($envelope, $this->transportName, $throwable);
+        $failedEvent = new ServerlessWorkerMessageFailedEvent($envelope, $this->transportName, $throwable);
 
         if ($willRetry) {
             $failedEvent->setForRetry();
