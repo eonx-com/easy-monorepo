@@ -7,13 +7,13 @@ use EonX\EasyAsync\Bundle\CompilerPass\ReorderMessengerMiddlewareCompilerPass;
 use EonX\EasyAsync\Bundle\Enum\ConfigParam;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;
-use PHPUnit\Framework\TestCase;
+use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class ReorderMessengerMiddlewareCompilerPassTest extends TestCase
+final class ReorderMessengerMiddlewareCompilerPassTest extends AbstractUnitTestCase
 {
     public function testProcessAddsEnabledMiddlewareAtTheStartOfTheBus(): void
     {
@@ -108,9 +108,6 @@ final class ReorderMessengerMiddlewareCompilerPassTest extends TestCase
         return $container;
     }
 
-    /**
-     * @return string[]
-     */
     private function middlewareIds(ContainerBuilder $container): array
     {
         $middleware = $container
