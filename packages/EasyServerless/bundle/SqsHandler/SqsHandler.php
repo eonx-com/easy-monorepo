@@ -126,7 +126,7 @@ final class SqsHandler extends AbstractSqsHandler
             // As explained in parent::shouldSkipRecord(), in some scenarios we must requeue messages even when
             // the application will not retry them so they can end up in the DLQ if configured,
             // except when the application is explicitly preventing retries using an Unrecoverable throwable
-            $shouldRequeue = $isThrowableExplicitlyUnrecoverable
+            $shouldRequeue = $isThrowableExplicitlyUnrecoverable === false
                 && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
 
             if ($shouldRetry === false) {
@@ -241,7 +241,7 @@ final class SqsHandler extends AbstractSqsHandler
 
         return false;
     }
-    
+
     private function resolveHeaders(SqsRecord $record): array
     {
         $headers = [];
