@@ -11,16 +11,15 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
     private ?KernelInterface $kernel = null;
 
     /**
-     * @param array<int, class-string<\Symfony\Component\HttpKernel\Bundle\BundleInterface>>|null $extraBundles
      * @param string[]|null $configs
      */
-    protected function getKernel(?array $configs = null, ?array $extraBundles = null): KernelInterface
+    protected function getKernel(?array $configs = null): KernelInterface
     {
-        if ($this->kernel !== null && $configs === null && $extraBundles === null) {
+        if ($this->kernel !== null && $configs === null) {
             return $this->kernel;
         }
 
-        $this->kernel = new KernelStub('test', true, $configs, $extraBundles);
+        $this->kernel = new KernelStub('test', true, $configs);
         $this->kernel->boot();
 
         return $this->kernel;
