@@ -5,12 +5,12 @@ namespace EonX\EasyServerless\Messenger\Listener;
 
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetterInterface;
+use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 
 final readonly class ResetServicesListener implements EventSubscriberInterface
 {
     public function __construct(
-        private ServicesResetterInterface $servicesResetter,
+        private ServicesResetter $servicesResetter,
     ) {
     }
 
