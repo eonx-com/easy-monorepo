@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Tests\Unit;
 
 use EonX\EasyServerless\Tests\Stub\Kernel\KernelStub;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
@@ -12,7 +11,7 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
     private ?KernelInterface $kernel = null;
 
     /**
-     * @param array<int, class-string<BundleInterface>>|null $extraBundles
+     * @param array<int, class-string<\Symfony\Component\HttpKernel\Bundle\BundleInterface>>|null $extraBundles
      * @param string[]|null $configs
      */
     protected function getKernel(?array $configs = null, ?array $extraBundles = null): KernelInterface
