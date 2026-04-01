@@ -9,6 +9,7 @@ use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Messenger\BusDriver\ReportBusDriver;
+use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -24,6 +25,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$eventDispatcher', service(EventDispatcherInterface::class)->nullOnInvalid());
 
     $services->set(SqsClient::class);
+
+    $services->set(ResetServicesListener::class)
+        ->arg('$servicesResetter', service('services_resetter'));
 
     $services->set(SqsHandler::class)
         ->arg('$errorHandler', service(ErrorHandlerInterface::class)->nullOnInvalid())
