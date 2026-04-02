@@ -15,9 +15,9 @@
     },
     "require-dev": {
         "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/dbal": "^3.8",
-        "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/orm": "^2.20",
+        "doctrine/dbal": "^4.4",
+        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/orm": "^3.6",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^12.5"

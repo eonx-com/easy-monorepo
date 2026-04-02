@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Doctrine\Factory;
 
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
-use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
@@ -12,21 +11,17 @@ use EonX\EasySwoole\Doctrine\Driver\DbalDriver;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class CoroutineConnectionFactory extends ConnectionFactory
+final readonly class CoroutineConnectionFactory
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly ConnectionFactory $factory,
-        private readonly int $defaultPoolSize,
-        private readonly bool $defaultHeartbeat,
-        private readonly float $defaultMaxIdleTime,
-        private readonly ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
-        private readonly ?LoggerInterface $logger = null,
+        private RequestStack $requestStack,
+        private ConnectionFactory $factory,
+        private int $defaultPoolSize,
+        private bool $defaultHeartbeat,
+        private float $defaultMaxIdleTime,
+        private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
+        private ?LoggerInterface $logger = null,
     ) {
-        // Call parent constructor with empty values as we only extend the factory from
-        // doctrine bundle as it does not implement an interface allowing us to have multiple decoration
-        // and inject the inner connection in the decorator
-        parent::__construct([], null);
     }
 
     /**
@@ -37,10 +32,9 @@ final class CoroutineConnectionFactory extends ConnectionFactory
     public function createConnection(
         array $params,
         ?Configuration $config = null,
-        ?EventManager $eventManager = null,
         ?array $mappingTypes = null,
     ): Connection {
-        $connection = $this->factory->createConnection($params, $config, $eventManager, $mappingTypes ?? []);
+        $connection = $this->factory->createConnection($params, $config, $mappingTypes ?? []);
 
         $driver = new DbalDriver(
             $connection->getDriver(),

@@ -158,7 +158,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    $mapping->fieldName,
                     $snapshotIds,
                     $actualIds
                 );

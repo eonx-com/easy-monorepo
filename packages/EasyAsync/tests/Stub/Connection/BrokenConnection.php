@@ -6,17 +6,16 @@ namespace EonX\EasyAsync\Tests\Stub\Connection;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\ParameterType;
 use RuntimeException;
 
 final class BrokenConnection implements Connection
 {
-    public function beginTransaction(): bool
+    public function beginTransaction(): void
     {
         throw new RuntimeException('Dummy');
     }
 
-    public function commit(): bool
+    public function commit(): void
     {
         throw new RuntimeException('Dummy');
     }
@@ -36,7 +35,7 @@ final class BrokenConnection implements Connection
         throw new RuntimeException('Dummy');
     }
 
-    public function lastInsertId($name = null): false|int|string
+    public function lastInsertId(): int|string
     {
         throw new RuntimeException('Dummy');
     }
@@ -51,12 +50,12 @@ final class BrokenConnection implements Connection
         throw new RuntimeException('Dummy');
     }
 
-    public function quote(mixed $value, $type = ParameterType::STRING): string
+    public function quote(string $value): string
     {
         throw new RuntimeException('Dummy');
     }
 
-    public function rollBack(): bool
+    public function rollBack(): void
     {
         throw new RuntimeException('Dummy');
     }

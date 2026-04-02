@@ -87,13 +87,8 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
             $connection->ensureConnectedToPrimary();
         }
 
-        // @phpstan-ignore function.alreadyNarrowedType
-        $nativeConnGetter = \method_exists($connection, 'getNativeConnection')
-            ? 'getNativeConnection'
-            : 'getWrappedConnection';
-
         /** @var \PDO|string|null $pdoOrDsn */
-        $pdoOrDsn = $connection->{$nativeConnGetter}();
+        $pdoOrDsn = $connection->getNativeConnection();
         $this->decorated = new PdoSessionHandler($pdoOrDsn, $this->options ?? []);
 
         // Restore replica connection once PdoSessionHandler instantiated for the rest of the app
