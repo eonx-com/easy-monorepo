@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyAsyncBundle extends AbstractBundle
 {
-    private const MESSENGER_MIDDLEWARE = [
+    private const array MESSENGER_MIDDLEWARE = [
         'doctrine_managers_clear' => [
             'config_file' => 'config/messenger_doctrine_managers_clear_middleware.php',
         ],

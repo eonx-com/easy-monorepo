@@ -123,6 +123,7 @@ final class ReorderMessengerMiddlewareCompilerPassTest extends AbstractUnitTestC
 
     private function process(ContainerBuilder $container): void
     {
-        (new ReorderMessengerMiddlewareCompilerPass())->process($container);
+        new ReorderMessengerMiddlewareCompilerPass()
+            ->process($container);
     }
 }
