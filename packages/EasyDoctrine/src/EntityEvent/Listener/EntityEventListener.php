@@ -158,7 +158,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    $mapping->fieldName,
                     $snapshotIds,
                     $actualIds
                 );
@@ -168,7 +168,6 @@ final readonly class EntityEventListener
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
             if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
-                /** @var array{fieldName: string} $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
                 $owner = $collection->getOwner();
@@ -176,7 +175,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    $mapping->fieldName,
                     ['Not available'],
                     ['Collection was cleared']
                 );

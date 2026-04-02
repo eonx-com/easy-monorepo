@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Result;
 use EonX\EasyPagination\Pagination\Pagination;
@@ -421,7 +421,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             ->willReturn($this->getDoctrineDbalConnection()->createQueryBuilder());
         $connection
             ->getDatabasePlatform()
-            ->willReturn(new SqlitePlatform());
+            ->willReturn(new SQLitePlatform());
         $result = $this->prophesize(Result::class);
         $connection
             ->executeQuery(Argument::any(), [], [])

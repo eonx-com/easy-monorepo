@@ -18,12 +18,9 @@ final class ManagersChecker extends AbstractAppStateChecker
 
     public function isApplicationStateCompromised(): bool
     {
-        foreach ($this->managerRegistry->getManagers() as $manager) {
-            if ($manager instanceof EntityManagerInterface && $manager->isOpen() === false) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            $this->managerRegistry->getManagers(),
+            static fn ($manager): bool => $manager instanceof EntityManagerInterface && $manager->isOpen() === false
+        );
     }
 }

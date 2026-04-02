@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Doctrine\Statement;
 
 use Doctrine\DBAL\Driver\PDO\Exception;
-use Doctrine\DBAL\Driver\PDO\ParameterTypeMap;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
 use EonX\EasySwoole\Doctrine\Result\DbalResult;
 use OpenSwoole\Core\Coroutine\Client\PDOStatementProxy;
+use PDO;
 use PDOException;
 
 final readonly class DbalStatement implements Statement
@@ -22,21 +22,10 @@ final readonly class DbalStatement implements Statement
     /**
      * {@inheritdoc}
      */
-    public function bindParam(
-        $param,
-        &$variable,
-        $type = ParameterType::STRING,
-        $length = null,
-        ?array $driverOptions = null,
-    ): bool {
+    public function bindValue(int|string $param, mixed $value, ParameterType $type): void
+    {
         try {
-            return $this->pdoStatement->bindParam(
-                $param,
-                $variable,
-                ParameterTypeMap::convertParamType($type),
-                $length ?? 0,
-                ...\array_slice(\func_get_args(), 4),
-            );
+            $this->pdoStatement->bindValue($param, $value, $this->convertParamType($type));
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
@@ -45,26 +34,27 @@ final readonly class DbalStatement implements Statement
     /**
      * {@inheritdoc}
      */
-    public function bindValue($param, $value, $type = ParameterType::STRING): bool
+    public function execute(): Result
     {
         try {
-            return $this->pdoStatement->bindValue($param, $value, ParameterTypeMap::convertParamType($type));
-        } catch (PDOException $exception) {
-            throw Exception::new($exception);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($params = null): Result
-    {
-        try {
-            $this->pdoStatement->execute($params);
+            $this->pdoStatement->execute();
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
 
         return new DbalResult($this->pdoStatement);
+    }
+
+    private function convertParamType(ParameterType $type): int
+    {
+        return match ($type) {
+            ParameterType::NULL => PDO::PARAM_NULL,
+            ParameterType::INTEGER => PDO::PARAM_INT,
+            ParameterType::STRING,
+            ParameterType::ASCII => PDO::PARAM_STR,
+            ParameterType::BINARY,
+            ParameterType::LARGE_OBJECT => PDO::PARAM_LOB,
+            ParameterType::BOOLEAN => PDO::PARAM_BOOL,
+        };
     }
 }

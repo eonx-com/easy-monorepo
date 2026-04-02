@@ -7,7 +7,6 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\ParameterType;
 use EonX\EasySwoole\Doctrine\Client\PdoClient;
 use EonX\EasySwoole\Doctrine\Pool\PdoClientPool;
 use EonX\EasySwoole\Doctrine\Result\DbalResult;
@@ -31,19 +30,19 @@ final class DbalConnection implements Connection
         }
     }
 
-    public function beginTransaction(): bool
+    public function beginTransaction(): void
     {
-        return $this->getPdo()
+        $this->getPdo()
             ->beginTransaction();
     }
 
-    public function commit(): bool
+    public function commit(): void
     {
-        return $this->getPdo()
+        $this->getPdo()
             ->commit();
     }
 
-    public function exec(string $sql): int
+    public function exec(string $sql): int|string
     {
         return $this->getPdo()
             ->exec($sql);
@@ -73,11 +72,11 @@ final class DbalConnection implements Connection
     /**
      * {@inheritdoc}
      */
-    public function lastInsertId($name = null): int|string
+    public function lastInsertId(): int|string
     {
         try {
             return $this->getPdo()
-                ->lastInsertId($name);
+                ->lastInsertId();
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
@@ -104,15 +103,15 @@ final class DbalConnection implements Connection
     /**
      * {@inheritdoc}
      */
-    public function quote($value, $type = ParameterType::STRING): mixed
+    public function quote(string $value): string
     {
         return $this->getPdo()
-            ->quote($value, $type);
+            ->quote($value);
     }
 
-    public function rollBack(): bool
+    public function rollBack(): void
     {
-        return $this->getPdo()
+        $this->getPdo()
             ->rollBack();
     }
 

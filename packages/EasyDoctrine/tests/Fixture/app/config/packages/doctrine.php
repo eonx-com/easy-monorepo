@@ -23,14 +23,13 @@ return App::config([
             ],
             'connections' => [
                 'default' => [
-                    'use_savepoints' => true,
                     'driver' => 'pdo_sqlite',
                     'url' => 'sqlite:///:memory:',
                 ],
             ],
         ],
         'orm' => [
-            'auto_generate_proxy_classes' => true,
+            'enable_native_lazy_objects' => true,
             'entity_managers' => [
                 'default' => [
                     'dql' => [

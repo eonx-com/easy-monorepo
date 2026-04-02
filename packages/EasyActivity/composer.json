@@ -5,9 +5,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/dbal": "^3.8",
-        "doctrine/orm": "^2.20",
+        "doctrine/collections": "^2.6",
+        "doctrine/dbal": "^4.4",
+        "doctrine/orm": "^3.6",
         "eonx-com/easy-doctrine": "^6.21",
         "eonx-com/easy-lock": "^6.21",
         "nesbot/carbon": "^3.8.4",
@@ -21,7 +21,7 @@
         "symfony/uid": "^7.4"
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/doctrine-bundle": "^3.2",
         "eonx-com/easy-encryption": "^6.21",
         "eonx-com/easy-test": "^6.21",
         "phpunit/phpunit": "^12.5",

@@ -14,7 +14,7 @@ return App::config([
             ],
         ],
         'orm' => [
-            'auto_generate_proxy_classes' => true,
+            'enable_native_lazy_objects' => true,
         ],
     ],
 ]);
