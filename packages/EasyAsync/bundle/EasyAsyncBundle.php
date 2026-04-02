@@ -12,6 +12,15 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyAsyncBundle extends AbstractBundle
 {
+    private const MESSENGER_MIDDLEWARE = [
+        'doctrine_managers_clear' => [
+            'config_file' => 'config/messenger_doctrine_managers_clear_middleware.php',
+        ],
+        'doctrine_managers_sanity_check' => [
+            'config_file' => 'config/messenger_doctrine_managers_sanity_check_middleware.php',
+        ],
+    ];
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -81,7 +90,13 @@ final class EasyAsyncBundle extends AbstractBundle
             return;
         }
 
-        $container->import('config/messenger_middleware.php');
+        foreach (self::MESSENGER_MIDDLEWARE as $configKey => $middlewareConfig) {
+            if ($config['messenger']['middleware'][$configKey]['enabled'] === false) {
+                continue;
+            }
+
+            $container->import($middlewareConfig['config_file']);
+        }
     }
 
     private function registerStopOnMessagesLimitConfiguration(

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyServerless\Aws\HttpHandler\SymfonyHttpHandler;
+use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -11,8 +11,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    // Bref Http Handler
-    $services
-        ->set(SymfonyHttpHandler::class)
-        ->public(); // Must be public as Bref uses the PSR container to retrieve it
+    // Default managers clearer middleware (clear all managers)
+    $services->set(DoctrineManagersClearMiddleware::class);
 };
