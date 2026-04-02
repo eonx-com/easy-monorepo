@@ -23,8 +23,9 @@
         "symfony/var-dumper": "^7.4"
     },
     "require-dev": {
+        "doctrine/collections": "^2.6",
+        "doctrine/dbal": "^4.4",
         "doctrine/doctrine-bundle": "^3.2",
-        "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/orm": "^3.6",
         "eonx-com/easy-test": "^6.21",
         "laravel/framework": "^11.44.1",
