@@ -116,8 +116,9 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert PHP type 'string' to 'jsonb', as an " .
-            "'Malformed UTF-8 characters, possibly incorrectly encoded' error was triggered by the serialization"
+            "Could not convert PHP value 'some incorrectly encoded utf string " .
+            \urldecode('%C4') . "' to type jsonb." .
+            ' Expected one of the following types: null, mixed.'
         );
 
         $type->convertToDatabaseValue($value, $platform);
@@ -140,7 +141,8 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $platform = new SQLitePlatform();
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type jsonb');
+        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type' .
+            ' EonX\EasyDoctrine\Common\Type\JsonbType. Expected format "json".');
 
         $type->convertToPHPValue($value, $platform);
     }

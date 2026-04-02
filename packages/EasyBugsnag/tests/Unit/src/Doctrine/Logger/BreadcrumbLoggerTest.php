@@ -26,7 +26,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($recoder, 'breadcrumbs');
         /** @var \Bugsnag\Breadcrumbs\Breadcrumb $breadcrumb */
-        $breadcrumb = $breadcrumbs[14];
+        $breadcrumb = $breadcrumbs[16];
         self::assertSame('SQL query | default', $breadcrumb->toArray()['name']);
         self::assertSame(
             'INSERT INTO author (id, name, position) VALUES (?, ?, ?)',

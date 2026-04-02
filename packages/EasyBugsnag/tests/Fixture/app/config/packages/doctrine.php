@@ -14,6 +14,7 @@ return App::config([
             ],
         ],
         'orm' => [
+            'enable_native_lazy_objects' => true,
             'entity_managers' => [
                 'default' => [
                     'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
