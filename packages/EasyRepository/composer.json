@@ -8,8 +8,8 @@
     },
     "require-dev": {
         "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/orm": "^3.6",
-        "doctrine/persistence": "^4.1",
+        "doctrine/orm": "^3.6.3",
+        "doctrine/persistence": "^4.1.1",
         "eonx-com/easy-pagination": "^6.21",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",

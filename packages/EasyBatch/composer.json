@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "doctrine/dbal": "^4.4",
+        "doctrine/dbal": "^4.4.3",
         "eonx-com/easy-encryption": "^6.21",
         "eonx-com/easy-event-dispatcher": "^6.21",
         "eonx-com/easy-lock": "^6.21",
