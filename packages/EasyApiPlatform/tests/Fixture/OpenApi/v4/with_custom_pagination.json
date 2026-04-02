@@ -166,7 +166,7 @@
                             "default": 1
                         },
                         "style": "form",
-                        "explode": false
+                        "explode": true
                     },
                     {
                         "name": "perPage",
@@ -181,7 +181,7 @@
                             "maximum": 50
                         },
                         "style": "form",
-                        "explode": false
+                        "explode": true
                     }
                 ]
             },
