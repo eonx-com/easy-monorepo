@@ -42,7 +42,7 @@ final class DbalConnection implements Connection
             ->commit();
     }
 
-    public function exec(string $sql): int
+    public function exec(string $sql): int|string
     {
         return $this->getPdo()
             ->exec($sql);

@@ -20,7 +20,7 @@ final class BrokenConnection implements Connection
         throw new RuntimeException('Dummy');
     }
 
-    public function exec(string $sql): int
+    public function exec(string $sql): int|string
     {
         throw new RuntimeException('Dummy');
     }
