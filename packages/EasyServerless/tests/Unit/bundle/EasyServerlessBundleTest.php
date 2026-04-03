@@ -7,46 +7,36 @@ use Bref\Symfony\Messenger\BrefMessengerBundle;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
 use EonX\EasyServerless\Monolog\Processor\PhpSourceProcessor;
-use EonX\EasyServerless\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyServerless\Tests\Unit\AbstractSymfonyTestCase;
 
 final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
 {
     public function testDisableMonologSucceeds(): void
     {
-        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/monolog_disabled.php'])
-            ->getContainer();
+        $container = $this->getKernel(
+            configs: [__DIR__ . '/../../Fixture/config/monolog_disabled.php']
+        )->getContainer();
 
         self::assertFalse($container->has(PhpSourceProcessor::class));
     }
 
     public function testDisableResetServicesSucceeds(): void
     {
-        $kernel = new KernelStub(
-            environment: 'test',
-            debug: true,
+        $container = $this->getKernel(
             configs: [__DIR__ . '/../../Fixture/config/reset_services_disabled.php'],
-            bundles: [
-                new BrefMessengerBundle(),
-            ]
-        );
-        $kernel->boot();
+            bundles: [new BrefMessengerBundle()]
+        )->getContainer();
 
-        self::assertFalse($kernel->getContainer()->has(ResetServicesListener::class));
+        self::assertFalse($container->has(ResetServicesListener::class));
     }
 
     public function testResetServicesEnabledByDefault(): void
     {
-        $kernel = new KernelStub(
-            environment: 'test',
-            debug: true,
-            bundles: [
-                new BrefMessengerBundle(),
-            ]
-        );
-        $kernel->boot();
+        $container = $this->getKernel(
+            bundles: [new BrefMessengerBundle()]
+        )->getContainer();
 
-        self::assertTrue($kernel->getContainer()->has(ResetServicesListener::class));
+        self::assertTrue($container->has(ResetServicesListener::class));
     }
 
     public function testSanity(): void

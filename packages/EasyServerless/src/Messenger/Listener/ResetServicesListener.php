@@ -7,10 +7,7 @@ use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 
-#[AsEventListener(
-    event: EnvelopeDispatchedEvent::class,
-    priority: -1024
-)]
+#[AsEventListener(priority: -1024)]
 final readonly class ResetServicesListener
 {
     public function __construct(
