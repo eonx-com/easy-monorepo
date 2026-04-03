@@ -10,8 +10,7 @@ final readonly class SimpleFormatter implements FormatterInterface
 {
     public function __construct(
         private string $prefix,
-    ) {
-    }
+    ) {}
 
     public function format(LogRecord $record): string
     {

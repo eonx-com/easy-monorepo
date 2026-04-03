@@ -30,8 +30,8 @@ final class DetailRecord extends AbstractResult
         $value = $this->data['paymentDate'];
 
         if (
-            \is_string($value) === false ||
-            \ctype_digit($value) === false
+            \is_string($value) === false
+            || \ctype_digit($value) === false
         ) {
             return null;
         }
@@ -47,8 +47,8 @@ final class DetailRecord extends AbstractResult
         $value = $this->data['settlementDate'];
 
         if (
-            \is_string($value) === false ||
-            \ctype_digit($value) === false
+            \is_string($value) === false
+            || \ctype_digit($value) === false
         ) {
             return null;
         }

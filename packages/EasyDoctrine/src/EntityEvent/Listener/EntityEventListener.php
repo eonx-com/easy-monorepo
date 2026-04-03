@@ -66,14 +66,14 @@ final readonly class EntityEventListener
     private function getClearedChangeSet(array $changeSet): array
     {
         return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
-            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
-                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
-                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
-                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface
+                && ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
+                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT)
+                    !== $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
             }
 
-            if (($changeSetItem[0] ?? null) instanceof Stringable &&
-                ($changeSetItem[1] ?? null) instanceof Stringable) {
+            if (($changeSetItem[0] ?? null) instanceof Stringable
+                && ($changeSetItem[1] ?? null) instanceof Stringable) {
                 return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
             }
 
@@ -85,7 +85,7 @@ final readonly class EntityEventListener
     {
         return \array_any(
             $this->trackableEntities,
-            static fn ($trackableEntity): bool => \is_a($entity, $trackableEntity)
+            static fn($trackableEntity): bool => \is_a($entity, $trackableEntity)
         );
     }
 
@@ -130,7 +130,7 @@ final readonly class EntityEventListener
             /** @var object $entity */
             foreach ($collection->getSnapshot() as $entity) {
                 $snapshotIds[] = $unitOfWork->getSingleIdentifierValue($entity)
-                    ?? static fn (): mixed => $unitOfWork->getSingleIdentifierValue($entity);
+                    ?? static fn(): mixed => $unitOfWork->getSingleIdentifierValue($entity);
             }
 
             $actualIds = [];
@@ -140,7 +140,7 @@ final readonly class EntityEventListener
                 }
 
                 $actualIds[] = $unitOfWork->getSingleIdentifierValue($entity)
-                    ?? static fn (): mixed => $unitOfWork->getSingleIdentifierValue($entity);
+                    ?? static fn(): mixed => $unitOfWork->getSingleIdentifierValue($entity);
             }
 
             $diff = \array_udiff($snapshotIds, $actualIds, static function (mixed $a, mixed $b): int {

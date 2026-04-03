@@ -10,8 +10,7 @@ final readonly class SomeClient
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface

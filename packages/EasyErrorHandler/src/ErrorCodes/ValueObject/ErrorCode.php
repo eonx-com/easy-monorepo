@@ -13,8 +13,7 @@ final readonly class ErrorCode
         private int $errorCode,
         private array $splitName,
         private ?string $groupSeparator = null,
-    ) {
-    }
+    ) {}
 
     public function getErrorCode(): int
     {

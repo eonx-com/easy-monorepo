@@ -30,8 +30,7 @@ final class AwsEcsFargateClientConfiguratorTest extends AbstractUnitTestCase
         new AwsEcsFargateClientConfigurator('invalid', 'invalid')
             ->configure($bugsnag);
         $bugsnag->getPipeline()
-            ->execute($report, function (): void {
-            });
+            ->execute($report, function (): void {});
 
         self::assertArrayHasKey('Error', $report->getMetaData()['aws']);
     }

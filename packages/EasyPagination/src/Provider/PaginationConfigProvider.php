@@ -10,8 +10,7 @@ final readonly class PaginationConfigProvider implements PaginationConfigProvide
         private int $pageDefault,
         private string $perPageAttribute,
         private int $perPageDefault,
-    ) {
-    }
+    ) {}
 
     public function getPageAttribute(): string
     {

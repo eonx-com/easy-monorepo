@@ -11,8 +11,7 @@ final readonly class WorkerStoppingListener implements WorkerStoppingListenerInt
 {
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function handle(WorkerStopping $event): void
     {

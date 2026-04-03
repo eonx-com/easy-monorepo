@@ -12,8 +12,7 @@ final readonly class PaginationFromRequestMiddleware
 {
     public function __construct(
         private PaginationProviderInterface $paginationProvider,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): mixed
     {

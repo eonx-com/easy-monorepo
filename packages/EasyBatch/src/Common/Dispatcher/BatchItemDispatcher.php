@@ -19,8 +19,7 @@ final readonly class BatchItemDispatcher
         private BatchItemIteratorInterface $batchItemIterator,
         private BatchItemRepositoryInterface $batchItemRepository,
         private BatchRepositoryInterface $batchRepository,
-    ) {
-    }
+    ) {}
 
     public function dispatchDependItems(
         BatchObjectManagerInterface $batchObjectManager,

@@ -17,8 +17,7 @@ final class NameRestrictedExpressionFunctionDecisionConfigurator extends Abstrac
             return;
         }
 
-        $expressionLanguage->addFunction(new ExpressionFunction('restricted', function (): void {
-        }));
+        $expressionLanguage->addFunction(new ExpressionFunction('restricted', function (): void {}));
     }
 
     protected function getNames(): array

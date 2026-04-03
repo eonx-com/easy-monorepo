@@ -12,8 +12,7 @@ final readonly class ManagersChecker implements StateCheckerInterface
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
-    ) {
-    }
+    ) {}
 
     public function check(): void
     {

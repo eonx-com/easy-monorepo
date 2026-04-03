@@ -9,8 +9,7 @@ final readonly class UuidStrategy implements BatchObjectIdStrategyInterface
 {
     public function __construct(
         private RandomGeneratorInterface $randomGenerator,
-    ) {
-    }
+    ) {}
 
     public function generateId(): string
     {

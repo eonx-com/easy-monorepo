@@ -17,8 +17,7 @@ final readonly class ManagersSanityChecker
     public function __construct(
         private ManagerRegistry $registry,
         private LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     /**
      * @param string[]|null $managers

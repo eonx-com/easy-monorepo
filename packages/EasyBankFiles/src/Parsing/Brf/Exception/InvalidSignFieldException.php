@@ -5,6 +5,4 @@ namespace EonX\EasyBankFiles\Parsing\Brf\Exception;
 
 use Exception;
 
-final class InvalidSignFieldException extends Exception
-{
-}
+final class InvalidSignFieldException extends Exception {}

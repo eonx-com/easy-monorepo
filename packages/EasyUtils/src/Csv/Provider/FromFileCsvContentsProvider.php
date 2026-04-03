@@ -9,8 +9,7 @@ final readonly class FromFileCsvContentsProvider implements CsvContentsProviderI
 {
     public function __construct(
         private string $filename,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyUtils\Csv\Exception\InvalidCsvFilenameException

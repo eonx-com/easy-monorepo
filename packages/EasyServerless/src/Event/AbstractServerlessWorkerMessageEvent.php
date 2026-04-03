@@ -5,6 +5,4 @@ namespace EonX\EasyServerless\Event;
 
 use Symfony\Component\Messenger\Event\AbstractWorkerMessageEvent as SymfonyAbstractWorkerMessageEvent;
 
-abstract class AbstractServerlessWorkerMessageEvent extends SymfonyAbstractWorkerMessageEvent
-{
-}
+abstract class AbstractServerlessWorkerMessageEvent extends SymfonyAbstractWorkerMessageEvent {}

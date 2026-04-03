@@ -23,8 +23,7 @@ final class Locker implements LockerInterface
     public function __construct(
         private readonly PersistingStoreInterface $store,
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {

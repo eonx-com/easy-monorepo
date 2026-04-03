@@ -12,8 +12,7 @@ final readonly class IgnorerHelper
      */
     public function __construct(
         private iterable $exceptionIgnorers,
-    ) {
-    }
+    ) {}
 
     public function isIgnored(Throwable $throwable): bool
     {

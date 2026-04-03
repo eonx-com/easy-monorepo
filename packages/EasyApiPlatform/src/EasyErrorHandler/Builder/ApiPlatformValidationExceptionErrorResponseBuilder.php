@@ -169,8 +169,8 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
 
         if ($hint !== null) {
             if (
-                $hint === 'The data is either not an string, an empty string, or null; you should pass a string that' .
-                ' can be parsed with the passed format or a valid DateTime string.'
+                $hint === 'The data is either not an string, an empty string, or null; you should pass a string that'
+                . ' can be parsed with the passed format or a valid DateTime string.'
                 || \preg_match('/Failed to parse time string \(.*\) at position .* \(.*\): /', $hint) === 1
                 || \preg_match(
                     '/Parsing datetime string "[^"]+" using format "[^"]+" resulted in \d error/',
@@ -183,8 +183,8 @@ final class ApiPlatformValidationExceptionErrorResponseBuilder extends AbstractA
             if (
                 \preg_match('/Nested documents for attribute "\w+" are not allowed. Use IRIs instead./', $hint)
                 || \preg_match(
-                    '/The type of the "\w+" attribute must be "array" \(nested document\) or "string"' .
-                    ' \(IRI\), "\w+" given./',
+                    '/The type of the "\w+" attribute must be "array" \(nested document\) or "string"'
+                    . ' \(IRI\), "\w+" given./',
                     $hint
                 )
             ) {

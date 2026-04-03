@@ -9,8 +9,7 @@ final readonly class ProviderStub implements ProviderInterface
 {
     public function __construct(
         private int|string $providerId,
-    ) {
-    }
+    ) {}
 
     public function getUniqueId(): int|string
     {

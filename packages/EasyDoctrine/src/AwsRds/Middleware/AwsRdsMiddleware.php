@@ -14,8 +14,7 @@ final readonly class AwsRdsMiddleware implements MiddlewareInterface
 {
     public function __construct(
         protected AwsRdsConnectionParamsResolver $connectionParamsResolver,
-    ) {
-    }
+    ) {}
 
     public function wrap(DriverInterface $driver): DriverInterface
     {

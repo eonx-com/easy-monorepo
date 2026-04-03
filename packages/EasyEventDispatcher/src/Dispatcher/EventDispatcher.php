@@ -9,8 +9,7 @@ final readonly class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private SymfonyEventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function dispatch(object $event): object
     {

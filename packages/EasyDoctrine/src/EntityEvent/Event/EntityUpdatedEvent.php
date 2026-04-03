@@ -8,8 +8,7 @@ final readonly class EntityUpdatedEvent implements EntityActionEventInterface
     public function __construct(
         private object $entity,
         private array $changeSet,
-    ) {
-    }
+    ) {}
 
     /**
      * @inheritdoc

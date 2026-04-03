@@ -75,7 +75,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ErrorDetailsResolverInterface::class,
-            static fn (Container $app): ErrorDetailsResolverInterface => new ErrorDetailsResolver(
+            static fn(Container $app): ErrorDetailsResolverInterface => new ErrorDetailsResolver(
                 $app->make(LoggerInterface::class),
                 $app->make(TranslatorInterface::class),
                 (bool)\config('easy-error-handler.translate_internal_error_messages.enabled', false),
@@ -85,7 +85,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ErrorLogLevelResolverInterface::class,
-            static fn (): ErrorLogLevelResolverInterface => new ErrorLogLevelResolver(
+            static fn(): ErrorLogLevelResolverInterface => new ErrorLogLevelResolver(
                 \config('easy-error-handler.logger.exception_log_levels')
             )
         );
@@ -94,7 +94,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             VerboseStrategyInterface::class,
-            static fn (Container $app): VerboseStrategyInterface => new ChainVerboseStrategy(
+            static fn(Container $app): VerboseStrategyInterface => new ChainVerboseStrategy(
                 $app->tagged(ConfigTag::VerboseStrategyDriver->value),
                 (bool)\config('easy-error-handler.use_extended_response', false)
             )
@@ -102,7 +102,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ErrorHandlerInterface::class,
-            static fn (Container $app): ErrorHandlerInterface => new ErrorHandler(
+            static fn(Container $app): ErrorHandlerInterface => new ErrorHandler(
                 $app->make(ErrorResponseFactoryInterface::class),
                 $app->tagged(ConfigTag::ErrorResponseBuilderProvider->value),
                 $app->tagged(ConfigTag::ErrorReporterProvider->value),
@@ -115,7 +115,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             IlluminateExceptionHandlerInterface::class,
-            static fn (Container $app): IlluminateExceptionHandlerInterface => new LaravelExceptionHandler(
+            static fn(Container $app): IlluminateExceptionHandlerInterface => new LaravelExceptionHandler(
                 $app->make(ErrorHandlerInterface::class),
                 $app->make(TranslatorInterface::class)
             )
@@ -123,13 +123,13 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             TranslatorInterface::class,
-            static fn (Container $app): TranslatorInterface => new LaravelTranslator($app->make('translator'))
+            static fn(Container $app): TranslatorInterface => new LaravelTranslator($app->make('translator'))
         );
 
         if ((bool)\config('easy-error-handler.use_default_builders', true)) {
             $this->app->singleton(
                 DefaultErrorResponseBuilderProvider::class,
-                static fn (
+                static fn(
                     Container $app,
                 ): DefaultErrorResponseBuilderProvider => new DefaultErrorResponseBuilderProvider(
                     $app->make(ErrorDetailsResolverInterface::class),
@@ -149,7 +149,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
         if ((bool)\config('easy-error-handler.use_default_reporters', true)) {
             $this->app->singleton(
                 DefaultErrorReporterProvider::class,
-                static fn (Container $app): DefaultErrorReporterProvider => new DefaultErrorReporterProvider(
+                static fn(Container $app): DefaultErrorReporterProvider => new DefaultErrorReporterProvider(
                     $app->make(ErrorDetailsResolverInterface::class),
                     $app->make(ErrorLogLevelResolverInterface::class),
                     $app->make(LoggerInterface::class),
@@ -164,7 +164,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             BugsnagExceptionIgnorerInterface::class,
-            static fn (): BugsnagExceptionIgnorerInterface => new DefaultBugsnagExceptionIgnorer(
+            static fn(): BugsnagExceptionIgnorerInterface => new DefaultBugsnagExceptionIgnorer(
                 \config('easy-error-handler.bugsnag.ignored_exceptions')
             )
         );
@@ -177,7 +177,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 BugsnagErrorReporterProvider::class,
-                static fn (Container $app): BugsnagErrorReporterProvider => new BugsnagErrorReporterProvider(
+                static fn(Container $app): BugsnagErrorReporterProvider => new BugsnagErrorReporterProvider(
                     $app->make(Client::class),
                     $app->tagged(ConfigTag::BugsnagExceptionIgnorer->value),
                     $app->make(ErrorLogLevelResolverInterface::class),
@@ -197,7 +197,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 UnhandledClientConfigurator::class,
-                static fn (): UnhandledClientConfigurator => new UnhandledClientConfigurator(
+                static fn(): UnhandledClientConfigurator => new UnhandledClientConfigurator(
                     \config('easy-error-handler.bugsnag.handled_exceptions')
                 )
             );
@@ -205,21 +205,21 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ErrorCodesFromInterfaceProvider::class,
-            static fn (): ErrorCodesProviderInterface => new ErrorCodesFromInterfaceProvider(
+            static fn(): ErrorCodesProviderInterface => new ErrorCodesFromInterfaceProvider(
                 \config('easy-error-handler.error_codes_interface')
             )
         );
 
         $this->app->singleton(
             ErrorCodesFromEnumProvider::class,
-            static fn (Application $app): ErrorCodesProviderInterface => new ErrorCodesFromEnumProvider(
+            static fn(Application $app): ErrorCodesProviderInterface => new ErrorCodesFromEnumProvider(
                 $app->basePath('app')
             )
         );
 
         $this->app->singleton(
             ErrorCodesGroupProcessorInterface::class,
-            static fn (Container $app): ErrorCodesGroupProcessorInterface => new ErrorCodesGroupProcessor(
+            static fn(Container $app): ErrorCodesGroupProcessorInterface => new ErrorCodesGroupProcessor(
                 \config('easy-error-handler.error_codes_category_size'),
                 [
                     $app->make(ErrorCodesFromInterfaceProvider::class),

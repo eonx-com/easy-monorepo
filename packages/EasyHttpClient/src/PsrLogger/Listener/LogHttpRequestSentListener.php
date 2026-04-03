@@ -11,8 +11,7 @@ final readonly class LogHttpRequestSentListener
 {
     public function __construct(
         private LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function __invoke(HttpRequestSentEvent $event): void
     {

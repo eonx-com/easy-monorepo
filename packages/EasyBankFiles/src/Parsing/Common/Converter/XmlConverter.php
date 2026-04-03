@@ -350,9 +350,9 @@ final class XmlConverter
             }
 
             // Process node
-            $node = \is_array($value) && \is_numeric(\key($value)) ?
-                $this->appendXmlAttributeArray($node, (string)$key, $value) :
-                $this->appendXmlAttribute($node, (string)$key, $value);
+            $node = \is_array($value) && \is_numeric(\key($value))
+                ? $this->appendXmlAttributeArray($node, (string)$key, $value)
+                : $this->appendXmlAttribute($node, (string)$key, $value);
 
             // Remove array key to prevent double processing
             unset($values[$key]);

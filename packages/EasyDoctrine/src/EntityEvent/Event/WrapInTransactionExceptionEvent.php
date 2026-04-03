@@ -9,8 +9,7 @@ final readonly class WrapInTransactionExceptionEvent
 {
     public function __construct(
         private Throwable $throwable,
-    ) {
-    }
+    ) {}
 
     public function getThrowable(): Throwable
     {

@@ -67,7 +67,7 @@ final class RealTimeMessage extends AbstractMessage
                 $type->name,
                 \implode(
                     '", "',
-                    \array_map(static fn (MessageType $type): string => $type->name, self::REAL_TIME_TYPES)
+                    \array_map(static fn(MessageType $type): string => $type->name, self::REAL_TIME_TYPES)
                 )
             ));
         }

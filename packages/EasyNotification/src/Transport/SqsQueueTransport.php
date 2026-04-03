@@ -11,8 +11,7 @@ final readonly class SqsQueueTransport implements QueueTransportInterface
 {
     public function __construct(
         private SqsClient $sqs,
-    ) {
-    }
+    ) {}
 
     public function send(QueueMessageInterface $queueMessage): void
     {

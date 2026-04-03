@@ -11,8 +11,7 @@ final readonly class RandomGenerator implements RandomGeneratorInterface
         private UuidGeneratorInterface $uuidGenerator,
         private RandomIntegerGeneratorInterface $randomIntegerGenerator = new RandomIntegerGenerator(),
         private RandomStringGeneratorInterface $randomStringGenerator = new RandomStringGenerator(),
-    ) {
-    }
+    ) {}
 
     public function integer(?int $min = null, ?int $max = null): int
     {

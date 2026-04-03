@@ -11,10 +11,10 @@ final class ErrorHandlerAwareTraitTest extends AbstractUnitTestCase
 {
     public function testSetErrorHandlerSucceeds(): void
     {
-        $abstractClass = new class() {
+        $abstractClass = new class {
             use ErrorHandlerAwareTrait;
         };
-        $errorHandler = $this->createMock(ErrorHandlerInterface::class);
+        $errorHandler = $this->createStub(ErrorHandlerInterface::class);
 
         $abstractClass->setErrorHandler($errorHandler);
 

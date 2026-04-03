@@ -15,8 +15,8 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
     {
         $this->expectException(UnableToMakeDecisionException::class);
         $this->expectExceptionMessage(
-            'Decision "<no-name>" of type "EonX\EasyDecision\Decision\ValueDecision": ' .
-            'Expression language not set, to use it in your rules you must set it on the decision instance'
+            'Decision "<no-name>" of type "EonX\EasyDecision\Decision\ValueDecision": '
+            . 'Expression language not set, to use it in your rules you must set it on the decision instance'
         );
 
         new ValueDecision()
@@ -59,7 +59,7 @@ final class WithExpressionLanguageDecisionTest extends AbstractUnitTestCase
 
         $expressionLanguage->addFunction(new ExpressionFunction(
             'cap',
-            fn ($arguments, $value, $max): mixed => \min($value, $max)
+            fn($arguments, $value, $max): mixed => \min($value, $max)
         ));
         $expressionLanguage->addFunctions(new ValueExpressionFunctionProvider()->getFunctions());
 

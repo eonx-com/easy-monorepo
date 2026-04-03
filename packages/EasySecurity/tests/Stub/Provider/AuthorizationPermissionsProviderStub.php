@@ -12,8 +12,7 @@ final readonly class AuthorizationPermissionsProviderStub implements Permissions
      */
     public function __construct(
         private ?array $permissions = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Permission[]

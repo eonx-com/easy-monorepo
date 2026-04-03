@@ -11,8 +11,7 @@ final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingP
 {
     public function __construct(
         private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
-    ) {
-    }
+    ) {}
 
     public function __invoke(LogRecord $record): LogRecord
     {

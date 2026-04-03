@@ -9,8 +9,7 @@ final readonly class UserStub implements UserInterface
 {
     public function __construct(
         private string $userIdentifier,
-    ) {
-    }
+    ) {}
 
     public function getUserIdentifier(): string
     {

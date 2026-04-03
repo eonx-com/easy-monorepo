@@ -8,8 +8,7 @@ final readonly class EntityDeletedEvent implements EntityActionEventInterface
     public function __construct(
         private object $entity,
         private array $changeSet,
-    ) {
-    }
+    ) {}
 
     /**
      * @inheritdoc

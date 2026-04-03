@@ -19,7 +19,7 @@ abstract class BaseException extends Exception implements
     use SubCodeAwareExceptionTrait;
     use TranslatableExceptionTrait;
 
-    public function __construct(?string $message = null, null|int|BackedEnum $code = null, ?Throwable $previous = null)
+    public function __construct(?string $message = null, int|BackedEnum|null $code = null, ?Throwable $previous = null)
     {
         $codeValue = null;
 

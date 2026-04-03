@@ -17,8 +17,7 @@ final readonly class CsvParserConfig
         private ?array $recordTransformers = null,
         private ?bool $ignoreEmptyRecordsWithRequiredHeaders = null,
         private ?bool $ignoreHeadersCase = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string[]|null $requiredHeaders

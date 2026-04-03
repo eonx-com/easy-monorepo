@@ -16,8 +16,7 @@ final class TraceableWebhookClient implements WebhookClientInterface
 
     public function __construct(
         private readonly WebhookClientInterface $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @return \EonX\EasyWebhook\Common\Middleware\MiddlewareInterface[]

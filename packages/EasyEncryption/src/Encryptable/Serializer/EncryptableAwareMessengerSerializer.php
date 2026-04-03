@@ -30,8 +30,7 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         private EncryptableMetadataInterface $encryptableMetadata,
         private SerializerInterface $serializer,
         private array $fullyEncryptedMessages,
-    ) {
-    }
+    ) {}
 
     public function decode(array $encodedEnvelope): Envelope
     {
@@ -62,8 +61,8 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         $message = $envelope->getMessage();
 
         if (
-            $message instanceof EncryptableInterface &&
-            \in_array($message::class, $this->fullyEncryptedMessages, true)
+            $message instanceof EncryptableInterface
+            && \in_array($message::class, $this->fullyEncryptedMessages, true)
         ) {
             throw new UnexpectedValueException(
                 \sprintf(

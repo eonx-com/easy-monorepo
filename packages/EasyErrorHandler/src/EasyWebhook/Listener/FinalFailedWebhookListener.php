@@ -10,8 +10,7 @@ final readonly class FinalFailedWebhookListener
 {
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function __invoke(FinalFailedWebhookEvent $event): void
     {

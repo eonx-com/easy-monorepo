@@ -18,8 +18,7 @@ final readonly class AwsRdsAuthTokenCredentialsProvider implements AwsRdsAuthTok
         private ?string $assumeRoleRegion = null,
         private ?string $assumeRoleSessionName = null,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     public function provide(string $awsRegion, array $params): callable|Credentials
     {

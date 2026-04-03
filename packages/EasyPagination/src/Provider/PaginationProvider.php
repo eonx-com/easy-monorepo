@@ -15,8 +15,7 @@ final class PaginationProvider implements PaginationProviderInterface
 
     public function __construct(
         private readonly PaginationConfigProviderInterface $paginationConfigProvider,
-    ) {
-    }
+    ) {}
 
     public function getPagination(): PaginationInterface
     {

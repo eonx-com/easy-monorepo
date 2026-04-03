@@ -12,8 +12,7 @@ final readonly class CheckStateListener
      */
     public function __construct(
         private iterable $stateCheckers,
-    ) {
-    }
+    ) {}
 
     public function __invoke(TerminateEvent $event): void
     {

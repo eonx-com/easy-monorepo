@@ -10,8 +10,7 @@ final readonly class SessionTrackingListener
 {
     public function __construct(
         private SessionTracker $sessionTracker,
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestEvent $event): void
     {

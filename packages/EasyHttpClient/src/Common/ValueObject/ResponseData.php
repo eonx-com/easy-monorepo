@@ -12,8 +12,7 @@ final readonly class ResponseData
         private array $headers,
         private DateTimeInterface $receivedAt,
         private int $statusCode,
-    ) {
-    }
+    ) {}
 
     public function getContent(): string
     {

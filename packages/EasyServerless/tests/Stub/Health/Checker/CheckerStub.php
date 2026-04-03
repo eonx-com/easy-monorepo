@@ -13,8 +13,7 @@ final readonly class CheckerStub implements HealthCheckerInterface
         private string $name,
         private ?bool $isHealthy = null,
         private ?Throwable $throwable = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Throwable

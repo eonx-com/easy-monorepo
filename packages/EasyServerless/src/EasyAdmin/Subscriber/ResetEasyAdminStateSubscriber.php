@@ -12,8 +12,7 @@ final readonly class ResetEasyAdminStateSubscriber implements EventSubscriberInt
 {
     public function __construct(
         private AdminRouterSubscriber $adminRouterSubscriber,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, array<int, int|string>|string>

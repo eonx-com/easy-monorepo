@@ -90,13 +90,12 @@ final class IntegerValidatorTest extends AbstractUnitTestCase
     public function testValidateThrowsUnexpectedTypeException(): void
     {
         $validator = new IntegerValidator();
-        $constraint = new class() extends Constraint {
-        };
+        $constraint = new class extends Constraint {};
         $value = 12345;
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyUtils\Common\Constraint\Integer", ' .
-            '"Symfony\Component\Validator\Constraint@anonymous" given'
+            'Expected argument of type "EonX\EasyUtils\Common\Constraint\Integer", '
+            . '"Symfony\Component\Validator\Constraint@anonymous" given'
         );
 
         $validator->validate($value, $constraint);

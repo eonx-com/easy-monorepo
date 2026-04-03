@@ -121,7 +121,7 @@ final class AcnValidatorTest extends AbstractUnitTestCase
 
     public function testValidateSucceedsWithObjectToString(): void
     {
-        $acn = new class() {
+        $acn = new class {
             public function __toString()
             {
                 // Valid Acn
@@ -141,8 +141,7 @@ final class AcnValidatorTest extends AbstractUnitTestCase
     public function testValidateThrowsUnexpectedTypeException(): void
     {
         $validator = new AcnValidator();
-        $constraint = new class() extends Constraint {
-        };
+        $constraint = new class extends Constraint {};
         $acn = 'some-acn';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(

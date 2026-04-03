@@ -10,8 +10,7 @@ final readonly class ChangeNameMiddlewareStub implements MiddlewareInterface
 {
     public function __construct(
         private string $changeTo,
-    ) {
-    }
+    ) {}
 
     public function handle(mixed $input, callable $next): mixed
     {

@@ -10,8 +10,7 @@ final readonly class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private IlluminateDispatcherContract $dispatcher,
-    ) {
-    }
+    ) {}
 
     public function dispatch(object $event): object
     {

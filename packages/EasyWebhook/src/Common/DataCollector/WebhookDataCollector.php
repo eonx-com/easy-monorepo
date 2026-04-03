@@ -16,8 +16,7 @@ final class WebhookDataCollector extends AbstractDataCollector
 {
     public function __construct(
         private readonly WebhookClientInterface $webhookClient,
-    ) {
-    }
+    ) {}
 
     public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
@@ -65,7 +64,7 @@ final class WebhookDataCollector extends AbstractDataCollector
             return;
         }
 
-        $map = static fn (WebhookResultInterface $result): array => [
+        $map = static fn(WebhookResultInterface $result): array => [
             'response' => $result->getResponse() !== null ? $result->getResponse()
                 ->getInfo() : null,
             'throwable' => $result->getThrowable(),

@@ -11,8 +11,7 @@ final readonly class ApiPlatformBugsnagExceptionIgnorer implements BugsnagExcept
 {
     public function __construct(
         private ApiPlatformErrorResponseBuilderProvider $apiPlatformErrorResponseBuilderProvider,
-    ) {
-    }
+    ) {}
 
     public function shouldIgnore(Throwable $throwable): bool
     {

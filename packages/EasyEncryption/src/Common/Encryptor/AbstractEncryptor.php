@@ -20,8 +20,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
 
     public function __construct(
         private readonly ?string $defaultKeyName = null,
-    ) {
-    }
+    ) {}
 
     public function decrypt(string $text): DecryptedString
     {
@@ -50,9 +49,9 @@ abstract class AbstractEncryptor implements EncryptorInterface
 
     public function decryptRaw(
         string $text,
-        null|array|string $key = null,
+        array|string|null $key = null,
     ): string {
-        return $this->execSafely(CouldNotDecryptException::class, fn (): string => $this->doDecrypt($text, $key, true));
+        return $this->execSafely(CouldNotDecryptException::class, fn(): string => $this->doDecrypt($text, $key, true));
     }
 
     public function encrypt(string $text, ?string $keyName = null): string
@@ -69,20 +68,20 @@ abstract class AbstractEncryptor implements EncryptorInterface
 
     public function encryptRaw(
         string $text,
-        null|array|string $key = null,
+        array|string|null $key = null,
     ): string {
-        return $this->execSafely(CouldNotEncryptException::class, fn (): string => $this->doEncrypt($text, $key, true));
+        return $this->execSafely(CouldNotEncryptException::class, fn(): string => $this->doEncrypt($text, $key, true));
     }
 
     abstract protected function doDecrypt(
         string $text,
-        null|array|string $key,
+        array|string|null $key,
         bool $raw,
     ): string;
 
     abstract protected function doEncrypt(
         string $text,
-        null|array|string $key,
+        array|string|null $key,
         bool $raw,
     ): string;
 

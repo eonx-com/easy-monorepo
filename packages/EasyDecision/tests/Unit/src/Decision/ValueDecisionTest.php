@@ -148,7 +148,7 @@ final class ValueDecisionTest extends AbstractUnitTestCase
 
     private function getExceptionRule(): RuleInterface
     {
-        return new class() implements RuleInterface {
+        return new class implements RuleInterface {
             public function getPriority(): int
             {
                 return 0;
@@ -173,7 +173,7 @@ final class ValueDecisionTest extends AbstractUnitTestCase
 
     private function getModifyValueRuleInArray(): RuleInterface
     {
-        return new class() implements RuleInterface {
+        return new class implements RuleInterface {
             public function getPriority(): int
             {
                 return 0;

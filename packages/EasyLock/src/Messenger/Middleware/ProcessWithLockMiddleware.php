@@ -29,7 +29,7 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
                 ->handle($envelope, $stack);
         }
 
-        $newEnvelope = $this->processWithLock($withLockData, static fn (): Envelope => $stack->next()
+        $newEnvelope = $this->processWithLock($withLockData, static fn(): Envelope => $stack->next()
             ->handle($envelope, $stack));
 
         return $newEnvelope ?? $envelope;

@@ -46,22 +46,21 @@ final readonly class AwsCloudHsmSdkConfigurator
         private bool $useConfigureTool = true,
         private string $clusterType = self::SUPPORTED_CLUSTER_TYPES[0],
         private int $serverPort = self::SUPPORTED_SERVER_PORTS[0],
-    ) {
-    }
+    ) {}
 
     public function configure(): void
     {
         $options = $this->awsCloudHsmSdkOptionsBuilder->build();
 
         if (
-            \array_key_exists('--cluster-id', $options) &&
-            $this->useConfigureTool === false &&
-            (\class_exists(CloudHSMV2Client::class) === false || \class_exists(StsClient::class) === false)
+            \array_key_exists('--cluster-id', $options)
+            && $this->useConfigureTool === false
+            && (\class_exists(CloudHSMV2Client::class) === false || \class_exists(StsClient::class) === false)
         ) {
             throw new AwsCloudHsmInvalidConfigurationException(
-                'The "aws/aws-sdk-php" package is required to configure CloudHSM without using configure-pkcs11 tool.' .
-                ' Install the package, or use the configure-pkcs11 tool, or provide the HSM IP instead of ' .
-                'the CloudHSM cluster ID'
+                'The "aws/aws-sdk-php" package is required to configure CloudHSM without using configure-pkcs11 tool.'
+                . ' Install the package, or use the configure-pkcs11 tool, or provide the HSM IP instead of '
+                . 'the CloudHSM cluster ID'
             );
         }
 

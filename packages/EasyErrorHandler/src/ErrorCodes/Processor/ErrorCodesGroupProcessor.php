@@ -14,8 +14,7 @@ final readonly class ErrorCodesGroupProcessor implements ErrorCodesGroupProcesso
     public function __construct(
         private int $categorySize,
         private array $errorCodesProviders,
-    ) {
-    }
+    ) {}
 
     public function process(): ErrorCodes
     {
@@ -53,7 +52,7 @@ final readonly class ErrorCodesGroupProcessor implements ErrorCodesGroupProcesso
 
         \usort(
             $nextGroupedErrorCodes,
-            static fn (
+            static fn(
                 ErrorCodeCategory $errorCategory1,
                 ErrorCodeCategory $errorCategory2,
             ): int => $errorCategory1->getCategoryName() <=> $errorCategory2->getCategoryName()

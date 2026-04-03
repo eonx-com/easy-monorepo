@@ -126,9 +126,9 @@ final readonly class HttpRequestSentBreadcrumbListener
         $metadataAttributes = self::METADATA_ATTRIBUTES_PRIORITY_LIST;
 
         while (
-            $this->calculateBreadcrumbSize($metadata) > Breadcrumb::MAX_SIZE &&
-            \count($metadataAttributes) !== 0 &&
-            \count($metadata) !== 0
+            $this->calculateBreadcrumbSize($metadata) > Breadcrumb::MAX_SIZE
+            && \count($metadataAttributes) !== 0
+            && \count($metadata) !== 0
         ) {
             $attributeToRemove = \array_shift($metadataAttributes);
 

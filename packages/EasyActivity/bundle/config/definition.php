@@ -44,11 +44,11 @@ return static function (DefinitionConfigurator $definition) {
                                 ->ifArray()
                                 ->then(static function (array $actions) {
                                     foreach ($actions as $action) {
-                                        if (\is_string($action) === false &&
-                                            $action instanceof ActivityAction === false
+                                        if (\is_string($action) === false
+                                            && $action instanceof ActivityAction === false
                                         ) {
-                                            $errorMessage = 'Value of allowed action should be a string type or ' .
-                                                'instance of ActivityAction.';
+                                            $errorMessage = 'Value of allowed action should be a string type or '
+                                                . 'instance of ActivityAction.';
 
                                             throw new InvalidTypeException($errorMessage);
                                         }

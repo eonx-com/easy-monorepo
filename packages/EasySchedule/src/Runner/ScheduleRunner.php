@@ -16,8 +16,7 @@ final class ScheduleRunner implements ScheduleRunnerInterface
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LockerInterface $locker,
-    ) {
-    }
+    ) {}
 
     public function run(ScheduleInterface $schedule, OutputInterface $output): void
     {

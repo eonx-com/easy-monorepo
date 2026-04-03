@@ -16,7 +16,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
 {
     public function testIntegerSucceeds(): void
     {
-        $randomIntegerGenerator = new class() implements RandomIntegerGeneratorInterface {
+        $randomIntegerGenerator = new class implements RandomIntegerGeneratorInterface {
             public function generate(?int $min = null, ?int $max = null): int
             {
                 return ($min ?? 0) + ($max ?? 0);
@@ -34,7 +34,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
 
     public function testStringSucceeds(): void
     {
-        $randomStringGenerator = new class() implements RandomStringGeneratorInterface {
+        $randomStringGenerator = new class implements RandomStringGeneratorInterface {
             public function generate(RandomStringConfig $randomStringConfig): string
             {
                 return 'some-random-string';
@@ -52,7 +52,7 @@ final class RandomGeneratorTest extends AbstractUnitTestCase
 
     public function testUuidSucceeds(): void
     {
-        $uuidGenerator = new class() implements UuidGeneratorInterface {
+        $uuidGenerator = new class implements UuidGeneratorInterface {
             public function generate(): string
             {
                 return 'some-uuid';

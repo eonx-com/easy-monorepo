@@ -21,8 +21,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
     public function __construct(
         private readonly array $locations,
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     /**
      * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction[]
@@ -32,8 +31,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
         return [
             new ExpressionFunction(
                 'permission',
-                static function (): void {
-                },
+                static function (): void {},
                 function ($params, string $permission): string {
                     if (isset($this->cached[$permission])) {
                         return $this->cached[$permission];
