@@ -21,8 +21,7 @@ final readonly class ProcessBatchForBatchItemMessageHandler
         private BatchProcessor $batchProcessor,
         private BatchRepositoryInterface $batchRepository,
         private string $dateTimeFormat,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException

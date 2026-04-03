@@ -21,8 +21,7 @@ final readonly class RetrySendWebhookMiddleware implements MiddlewareInterface
     public function __construct(
         private ContainerInterface $container,
         private WebhookRetryStrategyInterface $retryStrategy,
-    ) {
-    }
+    ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

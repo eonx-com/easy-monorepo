@@ -34,7 +34,7 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 
     private function createApplication(?bool $pretendInConsole = null): Application
     {
-        return new class(__DIR__, $pretendInConsole) extends Application {
+        return new class (__DIR__, $pretendInConsole) extends Application {
             public function __construct(
                 ?string $basePath = null,
                 private readonly ?bool $runningInConsole = null,

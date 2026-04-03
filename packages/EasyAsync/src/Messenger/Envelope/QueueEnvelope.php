@@ -9,8 +9,7 @@ final class QueueEnvelope implements QueueEnvelopeInterface
         private readonly string $originalBody,
         private array $headers,
         private readonly ?array $body = null,
-    ) {
-    }
+    ) {}
 
     public static function create(string $originalBody, array $headers, ?array $body = null): QueueEnvelopeInterface
     {

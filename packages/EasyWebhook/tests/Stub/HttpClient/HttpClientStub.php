@@ -21,8 +21,7 @@ final class HttpClientStub implements HttpClientInterface
 
     public function __construct(
         private readonly ?Throwable $throwable = null,
-    ) {
-    }
+    ) {}
 
     public function getMethod(): string
     {

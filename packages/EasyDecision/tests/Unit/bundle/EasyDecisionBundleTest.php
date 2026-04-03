@@ -157,8 +157,8 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(
-            'Invalid configuration for path "easy_decision.type_mapping.decision":' .
-            ' Class "NonExistentDecisionClass" does not exist.'
+            'Invalid configuration for path "easy_decision.type_mapping.decision":'
+            . ' Class "NonExistentDecisionClass" does not exist.'
         );
 
         $kernel = new KernelStub([
@@ -212,8 +212,8 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
     {
         $this->expectException(UnableToMakeDecisionException::class);
         $this->expectExceptionMessage(
-            'Decision "<no-name>" of type "EonX\EasyDecision\Decision\ValueDecision": ' .
-            'Expression language not set, to use it in your rules you must set it on the decision instance'
+            'Decision "<no-name>" of type "EonX\EasyDecision\Decision\ValueDecision": '
+            . 'Expression language not set, to use it in your rules you must set it on the decision instance'
         );
 
         $kernel = new KernelStub([
@@ -233,27 +233,27 @@ final class EasyDecisionBundleTest extends AbstractUnitTestCase
 
     private static function getCreateAffirmativeDecision(?string $name = null): Closure
     {
-        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createAffirmativeDecision(
+        return static fn(DecisionFactoryInterface $factory): DecisionInterface => $factory->createAffirmativeDecision(
             $name
         );
     }
 
     private static function getCreateConsensusDecision(?string $name = null): Closure
     {
-        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createConsensusDecision(
+        return static fn(DecisionFactoryInterface $factory): DecisionInterface => $factory->createConsensusDecision(
             $name
         );
     }
 
     private static function getCreateUnanimousDecision(?string $name = null): Closure
     {
-        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createUnanimousDecision(
+        return static fn(DecisionFactoryInterface $factory): DecisionInterface => $factory->createUnanimousDecision(
             $name
         );
     }
 
     private static function getCreateValueDecision(?string $name = null): Closure
     {
-        return static fn (DecisionFactoryInterface $factory): DecisionInterface => $factory->createValueDecision($name);
+        return static fn(DecisionFactoryInterface $factory): DecisionInterface => $factory->createValueDecision($name);
     }
 }

@@ -19,8 +19,7 @@ final class StaticPhpFileListener extends AbstractRequestListener
         private readonly Filesystem $filesystem,
         private readonly array $allowedDirs,
         private readonly array $allowedFilenames,
-    ) {
-    }
+    ) {}
 
     protected function doInvoke(RequestEvent $event): void
     {

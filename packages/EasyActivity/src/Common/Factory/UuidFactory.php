@@ -9,8 +9,7 @@ final readonly class UuidFactory implements IdFactoryInterface
 {
     public function __construct(
         private SymfonyUuidFactory $uuidFactory,
-    ) {
-    }
+    ) {}
 
     public function create(): string
     {

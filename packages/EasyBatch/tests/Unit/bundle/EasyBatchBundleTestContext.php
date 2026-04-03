@@ -16,8 +16,7 @@ final readonly class EasyBatchBundleTestContext
 {
     public function __construct(
         private ContainerInterface $container,
-    ) {
-    }
+    ) {}
 
     public function getBatchItemFactory(): BatchItemFactoryInterface
     {

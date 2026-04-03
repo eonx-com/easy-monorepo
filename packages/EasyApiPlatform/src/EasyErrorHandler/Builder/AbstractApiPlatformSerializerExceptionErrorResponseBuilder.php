@@ -67,12 +67,12 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
                 match (true) {
                     \array_reduce(
                         [
-                            '/The data is either not an string, an empty string, or null; you should pass a string' .
-                            ' that can be parsed with the passed format or a valid DateTime string./',
+                            '/The data is either not an string, an empty string, or null; you should pass a string'
+                            . ' that can be parsed with the passed format or a valid DateTime string./',
                             '/Failed to parse time string \(.*\) at position .* \(.*\): .*/',
                             '/Parsing datetime string "[^"]+" using format "[^"]+" resulted in [0-9] error.*/',
                         ],
-                        static fn ($carry, $regex): bool => $carry || \preg_match($regex, $throwable->getMessage()),
+                        static fn($carry, $regex): bool => $carry || \preg_match($regex, $throwable->getMessage()),
                         false
                     ) => $this->translator->trans('violations.invalid_datetime', []),
                     default => $this->translator->trans(
@@ -91,7 +91,7 @@ abstract class AbstractApiPlatformSerializerExceptionErrorResponseBuilder extend
     {
         return \array_any(
             $throwable->getTrace(),
-            static fn ($trace): bool => isset($trace['class'])
+            static fn($trace): bool => isset($trace['class'])
                 && (
                     ($trace['class'] === DeserializeListener::class && $trace['function'] === 'onKernelRequest')
                     || ($trace['class'] === DeserializeProvider::class && $trace['function'] === 'provide')

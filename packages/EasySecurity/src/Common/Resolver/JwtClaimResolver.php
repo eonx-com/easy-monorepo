@@ -12,8 +12,7 @@ final readonly class JwtClaimResolver implements JwtClaimResolverInterface
 {
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     public function getArrayClaim(Jwt $token, string $claim, ?array $default = null): array
     {

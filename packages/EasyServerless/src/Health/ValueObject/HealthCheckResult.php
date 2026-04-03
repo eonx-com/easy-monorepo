@@ -10,8 +10,7 @@ final readonly class HealthCheckResult implements JsonSerializable
     public function __construct(
         private bool $isHealthy,
         private ?string $reason = null,
-    ) {
-    }
+    ) {}
 
     public function getReason(): ?string
     {

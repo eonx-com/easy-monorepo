@@ -13,8 +13,7 @@ final readonly class ResetDecisionMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private DecisionFactoryInterface $decisionFactory,
-    ) {
-    }
+    ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

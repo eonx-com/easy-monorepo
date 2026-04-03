@@ -15,8 +15,7 @@ final readonly class AwsRdsConnectionParamsResolver
         private ?string $sslMode = null,
         private ?AwsRdsCertificateAuthorityProvider $certificateAuthorityProvider = null,
         private ?string $awsUsername = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Psr\Cache\InvalidArgumentException

@@ -15,8 +15,7 @@ final readonly class ActivityLogEntryMessage implements WithLockDataInterface
 
     public function __construct(
         private ActivityLogEntry $logEntry,
-    ) {
-    }
+    ) {}
 
     public function getLockData(): LockData
     {

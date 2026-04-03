@@ -22,8 +22,7 @@ final class TraceableSchedule implements TraceableScheduleInterface
 
     public function __construct(
         private readonly ScheduleInterface $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @param \EonX\EasySchedule\Provider\ScheduleProviderInterface[] $providers

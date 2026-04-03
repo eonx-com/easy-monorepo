@@ -148,8 +148,8 @@ abstract class AbstractGenerator implements GeneratorInterface
                 break;
 
             case ValidationRule::Date:
-                if (DateTime::createFromFormat('dmy', $value) === false &&
-                    DateTime::createFromFormat('Ymd', $value) === false) {
+                if (DateTime::createFromFormat('dmy', $value) === false
+                    && DateTime::createFromFormat('Ymd', $value) === false) {
                     $errors[] = \compact('attribute', 'value', 'rule');
                 }
 

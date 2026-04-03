@@ -16,8 +16,7 @@ final readonly class DbalStatement implements Statement
 {
     public function __construct(
         private PDOStatementProxy $pdoStatement,
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritdoc}

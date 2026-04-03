@@ -14,8 +14,7 @@ abstract class AbstractStore
     public function __construct(
         protected RandomGeneratorInterface $random,
         private readonly DataCleanerInterface $dataCleaner,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Nette\Utils\JsonException

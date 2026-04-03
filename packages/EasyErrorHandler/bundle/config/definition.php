@@ -116,7 +116,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->variablePrototype()
                     ->validate()
                         ->ifTrue(
-                            static fn ($value): bool => \is_int($value) === false
+                            static fn($value): bool => \is_int($value) === false
                                 && \is_string($value) === false
                                 && ($value instanceof BackedEnum) === false
                         )

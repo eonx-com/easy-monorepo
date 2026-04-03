@@ -15,8 +15,7 @@ final class ErrorHandlerDataCollector extends AbstractDataCollector
 {
     public function __construct(
         private readonly ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {

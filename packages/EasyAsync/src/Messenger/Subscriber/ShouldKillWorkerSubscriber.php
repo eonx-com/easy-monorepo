@@ -18,8 +18,7 @@ final class ShouldKillWorkerSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     /**
      * @return string[]

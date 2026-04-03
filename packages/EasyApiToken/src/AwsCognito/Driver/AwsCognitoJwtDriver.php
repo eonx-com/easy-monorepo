@@ -30,8 +30,7 @@ final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
         private AwsCognitoJwkProviderInterface $jwkFetcher = new AwsCognitoJwkProvider(),
         private ?int $leeway = null,
         private string $defaultJwkAlgo = self::DEFAULT_JWK_ALGORITHM,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyApiToken\Common\Exception\InvalidJwtException

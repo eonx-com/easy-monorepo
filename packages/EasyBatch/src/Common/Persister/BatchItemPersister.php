@@ -13,8 +13,7 @@ final readonly class BatchItemPersister
     public function __construct(
         private BatchItemFactoryInterface $batchItemFactory,
         private BatchItemRepositoryInterface $batchItemRepository,
-    ) {
-    }
+    ) {}
 
     public function persistBatchItem(
         int|string $batchId,

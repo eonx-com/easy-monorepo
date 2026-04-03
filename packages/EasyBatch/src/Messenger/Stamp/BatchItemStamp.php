@@ -9,8 +9,7 @@ final readonly class BatchItemStamp implements StampInterface
 {
     public function __construct(
         private int|string $batchItemId,
-    ) {
-    }
+    ) {}
 
     public function getBatchItemId(): int|string
     {

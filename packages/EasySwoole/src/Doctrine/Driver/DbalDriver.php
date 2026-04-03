@@ -32,8 +32,7 @@ final readonly class DbalDriver implements Driver
         private RequestStack $requestStack,
         private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     public function connect(#[SensitiveParameter] array $params): DriverConnection
     {

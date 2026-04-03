@@ -9,8 +9,7 @@ abstract class AbstractBatchObjectEvent
 {
     public function __construct(
         private AbstractBatchObject $batchObject,
-    ) {
-    }
+    ) {}
 
     public function getBatchObject(): AbstractBatchObject
     {

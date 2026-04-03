@@ -12,8 +12,7 @@ final readonly class ApiPlatformErrorResponseBuilderProvider implements ErrorRes
      */
     public function __construct(
         private iterable $builders,
-    ) {
-    }
+    ) {}
 
     /**
      * @return iterable<\EonX\EasyApiPlatform\EasyErrorHandler\Builder\ApiPlatformErrorResponseBuilderInterface>

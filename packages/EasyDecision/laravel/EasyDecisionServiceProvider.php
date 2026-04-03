@@ -36,14 +36,14 @@ final class EasyDecisionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ExpressionLanguageFactoryInterface::class,
-            static fn (): ExpressionLanguageFactoryInterface => new ExpressionLanguageFactory()
+            static fn(): ExpressionLanguageFactoryInterface => new ExpressionLanguageFactory()
         );
 
         $this->app->singleton(ValueExpressionFunctionProvider::class);
 
         $this->app->singleton(
             AddRulesDecisionConfigurator::class,
-            static fn (Container $app): DecisionConfiguratorInterface => new AddRulesDecisionConfigurator(
+            static fn(Container $app): DecisionConfiguratorInterface => new AddRulesDecisionConfigurator(
                 $app->tagged(ConfigTag::DecisionRule->value)
             )
         );
@@ -53,7 +53,7 @@ final class EasyDecisionServiceProvider extends ServiceProvider
         if (\config('easy-decision.use_expression_language', false)) {
             $this->app->bind(
                 SetExpressionLanguageDecisionConfigurator::class,
-                static fn (
+                static fn(
                     Container $app,
                 ): SetExpressionLanguageDecisionConfigurator => new SetExpressionLanguageDecisionConfigurator(
                     $app->make(ExpressionLanguageFactoryInterface::class)
@@ -67,14 +67,14 @@ final class EasyDecisionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             MappingProviderInterface::class,
-            static fn (): MappingProviderInterface => new ConfigMappingProvider(
+            static fn(): MappingProviderInterface => new ConfigMappingProvider(
                 \config('easy-decision.type_mapping', [])
             )
         );
 
         $this->app->singleton(
             BaseDecisionFactoryInterface::class,
-            static fn (Container $app): BaseDecisionFactoryInterface => new BaseDecisionFactory(
+            static fn(Container $app): BaseDecisionFactoryInterface => new BaseDecisionFactory(
                 $app->make(MappingProviderInterface::class),
                 $app->tagged(ConfigTag::DecisionConfigurator->value)
             )

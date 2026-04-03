@@ -97,7 +97,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
 
                 return \array_all(
                     self::SKIP_FILE_NAMES,
-                    static fn (string $fileName): bool => \str_ends_with($file->getRealPath(), $fileName) === false
+                    static fn(string $fileName): bool => \str_ends_with($file->getRealPath(), $fileName) === false
                 );
             });
     }
@@ -106,7 +106,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
     {
         if (\array_any(
             self::ALLOWED_SUFFIXES,
-            static fn (string $suffix): bool => \str_ends_with($fileName, $dirName . $suffix)
+            static fn(string $suffix): bool => \str_ends_with($fileName, $dirName . $suffix)
         )) {
             return true;
         }
@@ -116,9 +116,9 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
 
         return \array_any(
             $singularDirNames,
-            static fn ($singularDirName): bool => \array_any(
+            static fn($singularDirName): bool => \array_any(
                 self::ALLOWED_SUFFIXES,
-                static fn (string $suffix): bool => \str_ends_with($fileName, $singularDirName . $suffix)
+                static fn(string $suffix): bool => \str_ends_with($fileName, $singularDirName . $suffix)
             )
         );
     }

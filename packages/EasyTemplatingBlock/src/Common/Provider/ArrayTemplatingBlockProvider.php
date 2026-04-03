@@ -10,8 +10,7 @@ final class ArrayTemplatingBlockProvider implements TemplatingBlockProviderInter
      */
     public function __construct(
         private array $blocks,
-    ) {
-    }
+    ) {}
 
     /**
      * @return iterable<\EonX\EasyTemplatingBlock\Common\ValueObject\AbstractTemplatingBlock>

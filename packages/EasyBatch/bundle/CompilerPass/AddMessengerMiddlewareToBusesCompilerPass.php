@@ -33,14 +33,14 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
             /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
             $existingMiddlewareList = \array_filter(
                 $middleware->getValues(),
-                static fn (
+                static fn(
                     Reference $ref,
                 ): bool => \in_array((string)$ref, self::EASY_BATCH_MIDDLEWARE_LIST, true) === false
             );
 
             // Convert easy batch middleware classes to reference
             $easyBatchMiddlewareList = \array_map(
-                static fn (string $class): Reference => new Reference($class),
+                static fn(string $class): Reference => new Reference($class),
                 self::EASY_BATCH_MIDDLEWARE_LIST
             );
 

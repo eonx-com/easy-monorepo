@@ -29,8 +29,7 @@ final readonly class BatchItemExceptionHandler
         private BatchItemTransformer $batchItemTransformer,
         private ContainerInterface $container,
         private string $emergencyTransportName = 'async',
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Symfony\Component\Messenger\Exception\ExceptionInterface

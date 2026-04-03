@@ -14,8 +14,7 @@ final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
         private MessageBusInterface $bus,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemInvalidException

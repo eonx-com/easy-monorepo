@@ -8,8 +8,7 @@ final readonly class ProcessBatchForBatchItemMessage
     public function __construct(
         private int|string $batchItemId,
         private ?array $errorDetails = null,
-    ) {
-    }
+    ) {}
 
     public function getBatchItemId(): int|string
     {

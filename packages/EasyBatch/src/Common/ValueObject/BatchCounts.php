@@ -11,8 +11,7 @@ final readonly class BatchCounts
         private int $countProcessed,
         private int $countSucceeded,
         private int $countTotal,
-    ) {
-    }
+    ) {}
 
     public function countCancelled(): int
     {

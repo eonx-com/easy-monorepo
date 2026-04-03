@@ -16,8 +16,7 @@ final readonly class DefaultActivitySubjectDataResolver implements ActivitySubje
 
     public function __construct(
         private ActivitySubjectDataSerializerInterface $serializer,
-    ) {
-    }
+    ) {}
 
     public function resolve(
         ActivityAction|string $action,

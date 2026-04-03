@@ -16,8 +16,7 @@ final readonly class Config
         private ?array $requestDataModifiersWhitelist = null,
         private ?bool $isRequestDataModifiersEnabled = null,
         private ?bool $isEventsEnabled = null,
-    ) {
-    }
+    ) {}
 
     public function getHttpClientOptions(): array
     {

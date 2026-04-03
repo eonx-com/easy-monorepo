@@ -11,8 +11,7 @@ final readonly class WebhookClient implements WebhookClientInterface
 {
     public function __construct(
         private StackInterface $stack,
-    ) {
-    }
+    ) {}
 
     public function getStack(): StackInterface
     {

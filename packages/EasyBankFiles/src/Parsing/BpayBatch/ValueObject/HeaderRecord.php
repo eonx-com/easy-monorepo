@@ -23,8 +23,8 @@ final class HeaderRecord extends AbstractResult
         $value = $this->data['dateProcessed'];
 
         if (
-            \is_string($value) === false ||
-            \ctype_digit($value) === false
+            \is_string($value) === false
+            || \ctype_digit($value) === false
         ) {
             return null;
         }

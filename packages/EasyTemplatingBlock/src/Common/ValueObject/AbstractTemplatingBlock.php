@@ -14,8 +14,7 @@ abstract class AbstractTemplatingBlock implements HasPriorityInterface
 
     public function __construct(
         private string $name,
-    ) {
-    }
+    ) {}
 
     public function getContext(): ?array
     {

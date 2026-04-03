@@ -7,8 +7,7 @@ final readonly class DefaultAppNameResolver implements AppNameResolverInterface
 {
     public function __construct(
         private string $appNameEnvVar,
-    ) {
-    }
+    ) {}
 
     public function resolveAppName(): ?string
     {

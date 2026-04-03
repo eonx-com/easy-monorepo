@@ -29,8 +29,8 @@ trait EncryptableTrait
 
         foreach ($metadata->getEncryptableFieldNames(static::class) as $entityPropertyName => $fieldName) {
             if (
-                \property_exists($this, $entityPropertyName) === false ||
-                \array_key_exists($fieldName, $decryptedData) === false
+                \property_exists($this, $entityPropertyName) === false
+                || \array_key_exists($fieldName, $decryptedData) === false
             ) {
                 continue;
             }

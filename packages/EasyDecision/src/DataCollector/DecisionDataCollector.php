@@ -16,8 +16,7 @@ final class DecisionDataCollector extends AbstractDataCollector
 {
     public function __construct(
         private readonly DecisionFactoryInterface $decisionFactory,
-    ) {
-    }
+    ) {}
 
     public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {

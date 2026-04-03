@@ -31,7 +31,7 @@ final class NaiParserTest extends AbstractUnitTestCase
      */
     public function testControlTotalTraitReturnFormattedAmount(): void
     {
-        $sut = new class() {
+        $sut = new class {
             use ControlTotalTrait;
 
             public function formatAmountPublic(string $amount): float
@@ -270,7 +270,7 @@ final class NaiParserTest extends AbstractUnitTestCase
      */
     public function testTransactionCodesTraitReturnNullWhenInvalidCode(): void
     {
-        $sut = new class() {
+        $sut = new class {
             use TransactionDetailCodesTrait;
         };
 
@@ -303,7 +303,7 @@ final class NaiParserTest extends AbstractUnitTestCase
     {
         $return = [];
         $filter ??= \array_map(
-            static fn (Account $account): string => $account->getIdentifier()
+            static fn(Account $account): string => $account->getIdentifier()
                 ->getCommercialAccountNumber(),
             $accounts
         );

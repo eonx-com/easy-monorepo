@@ -9,8 +9,7 @@ abstract class AbstractDecoder implements DecoderInterface
 {
     public function __construct(
         private readonly ?string $name = null,
-    ) {
-    }
+    ) {}
 
     public function getName(): string
     {

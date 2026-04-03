@@ -9,8 +9,7 @@ final readonly class ShutdownStrategyListener
 {
     public function __construct(
         private ShutdownStrategy $shutdownStrategy,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): void
     {

@@ -26,14 +26,14 @@ final class SlackMessageTest extends AbstractUnitTestCase
     public static function provideGettersData(): iterable
     {
         yield 'Constructor' => [
-            static fn (): SlackMessage => new SlackMessage('channel', 'text', [
+            static fn(): SlackMessage => new SlackMessage('channel', 'text', [
                 'option' => 'value',
             ]),
             static::$body,
         ];
 
         yield 'Create method' => [
-            static fn (): SlackMessage => SlackMessage::create('channel', 'text', [
+            static fn(): SlackMessage => SlackMessage::create('channel', 'text', [
                 'option' => 'value',
             ]),
             static::$body,

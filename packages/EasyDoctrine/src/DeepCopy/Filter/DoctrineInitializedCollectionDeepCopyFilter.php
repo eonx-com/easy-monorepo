@@ -22,7 +22,7 @@ final class DoctrineInitializedCollectionDeepCopyFilter implements Filter
         $newCollection = new ArrayCollection();
 
         if ($oldCollection instanceof AbstractLazyCollection === false || $oldCollection->isInitialized()) {
-            $newCollection = $oldCollection->map(static fn ($item) => $objectCopier($item));
+            $newCollection = $oldCollection->map(static fn($item) => $objectCopier($item));
         }
 
         $reflectionProperty->setValue($object, $newCollection);

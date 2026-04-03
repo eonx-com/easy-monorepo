@@ -33,13 +33,9 @@ class EmbeddableDummy
     #[Orm\Column(type: Types::STRING, nullable: true)]
     private ?string $symfony = null;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
-    public static function staticMethod(): void
-    {
-    }
+    public static function staticMethod(): void {}
 
     public function getDummyDate(): ?CarbonImmutable
     {

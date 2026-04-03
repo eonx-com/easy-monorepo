@@ -19,8 +19,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
         private BatchItemRepositoryInterface $batchItemRepository,
         private Connection $connection,
         private int $batchItemsPerPage,
-    ) {
-    }
+    ) {}
 
     public function iterateThroughItems(BatchItemIteratorConfig $config): void
     {
@@ -91,7 +90,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
 
     private function processConfig(BatchItemIteratorConfig $config): void
     {
-        $quote = fn (
+        $quote = fn(
             QueryBuilder $queryBuilder,
             array $statuses,
         ): array => \array_map(

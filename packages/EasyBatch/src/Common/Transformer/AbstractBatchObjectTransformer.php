@@ -26,8 +26,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     public function __construct(
         private readonly string $class,
         private readonly string $dateTimeFormat,
-    ) {
-    }
+    ) {}
 
     public function instantiateForClass(?string $class = null): AbstractBatchObject
     {

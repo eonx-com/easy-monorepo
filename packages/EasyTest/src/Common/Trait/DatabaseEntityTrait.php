@@ -192,10 +192,10 @@ trait DatabaseEntityTrait
             \array_merge(
                 AbstractCloner::$defaultCasters,
                 [
-                    DateTimeInterface::class => static fn (DateTimeInterface $dateTime): array => [
+                    DateTimeInterface::class => static fn(DateTimeInterface $dateTime): array => [
                         'date' => $dateTime->format(DateTimeInterface::ATOM),
                     ],
-                    Uuid::class => static fn (Uuid $uid): array => ['uid' => (string)$uid],
+                    Uuid::class => static fn(Uuid $uid): array => ['uid' => (string)$uid],
                 ]
             )
         );
@@ -252,7 +252,7 @@ trait DatabaseEntityTrait
             \implode(
                 "\n\n",
                 \array_map(
-                    static fn ($entity, $index): string => \sprintf(
+                    static fn($entity, $index): string => \sprintf(
                         "#Entity %s\n%s",
                         $index,
                         $dumper->dump($cloner->cloneVar($entity), true)

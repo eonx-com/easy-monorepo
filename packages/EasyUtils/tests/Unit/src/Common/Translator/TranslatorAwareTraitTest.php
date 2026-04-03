@@ -11,7 +11,7 @@ final class TranslatorAwareTraitTest extends AbstractUnitTestCase
 {
     public function testSetTranslatorSucceeds(): void
     {
-        $abstractClass = new class() {
+        $abstractClass = new class {
             use TranslatorAwareTrait;
         };
         $translator = $this->mock(TranslatorInterface::class);

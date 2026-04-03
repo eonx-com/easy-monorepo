@@ -11,8 +11,7 @@ final readonly class MathComparisonHelper implements MathComparisonHelperInterfa
     public function __construct(
         private string $leftOperand,
         private int $scale,
-    ) {
-    }
+    ) {}
 
     public function equalTo(string $rightOperand): bool
     {

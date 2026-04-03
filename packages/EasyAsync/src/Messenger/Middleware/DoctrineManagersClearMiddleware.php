@@ -17,8 +17,7 @@ final readonly class DoctrineManagersClearMiddleware implements MiddlewareInterf
     public function __construct(
         private ManagersClearer $managersClearer,
         private ?array $managers = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException

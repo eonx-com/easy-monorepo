@@ -20,7 +20,7 @@ trait EnumTrait
      */
     public static function extractValues(array $cases): array
     {
-        return \array_map(static fn (self $enum) => $enum->value, $cases);
+        return \array_map(static fn(self $enum) => $enum->value, $cases);
     }
 
     public static function hasCase(string $case): bool

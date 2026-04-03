@@ -12,8 +12,7 @@ final readonly class AuthorizationRolesProviderStub implements RolesProviderInte
      */
     public function __construct(
         private ?array $roles = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string[]|\EonX\EasySecurity\Authorization\ValueObject\Role[]

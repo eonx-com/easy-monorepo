@@ -22,9 +22,9 @@ final class DescriptiveRecord extends AbstractResult
     {
         $value = $this->data['dateProcessed'];
 
-        if (\is_string($value) === true &&
-            \strlen($value) === 6 &&
-            \ctype_digit($value) === true
+        if (\is_string($value) === true
+            && \strlen($value) === 6
+            && \ctype_digit($value) === true
         ) {
             $dateTime = DateTimeImmutable::createFromFormat(self::DATE_STRING_PATTERN, $value);
             if ($dateTime !== false) {

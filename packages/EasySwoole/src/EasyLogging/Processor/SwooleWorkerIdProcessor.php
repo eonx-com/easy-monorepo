@@ -12,8 +12,7 @@ final class SwooleWorkerIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-    ) {
-    }
+    ) {}
 
     public function __invoke(LogRecord $record): LogRecord
     {

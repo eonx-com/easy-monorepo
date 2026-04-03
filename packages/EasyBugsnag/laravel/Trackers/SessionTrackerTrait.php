@@ -10,8 +10,7 @@ trait SessionTrackerTrait
 {
     public function __construct(
         private SessionTracker $sessionTracker,
-    ) {
-    }
+    ) {}
 
     private function trackSession(Request $request): void
     {

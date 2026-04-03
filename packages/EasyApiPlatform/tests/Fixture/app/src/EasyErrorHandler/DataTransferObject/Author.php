@@ -8,8 +8,7 @@ final readonly class Author
     public function __construct(
         private string $name,
         private int $age,
-    ) {
-    }
+    ) {}
 
     public function getAge(): int
     {

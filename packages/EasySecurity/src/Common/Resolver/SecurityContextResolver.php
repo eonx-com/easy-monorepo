@@ -22,8 +22,7 @@ final class SecurityContextResolver implements SecurityContextResolverInterface,
         private readonly AuthorizationMatrixFactoryInterface $authorizationMatrixFactory,
         private readonly SecurityContextFactoryInterface $factory,
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     public function reset(): void
     {

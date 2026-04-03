@@ -11,8 +11,7 @@ final readonly class PaginationFromRequestListener
 {
     public function __construct(
         private PaginationProviderInterface $paginationProvider,
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestEvent $event): void
     {

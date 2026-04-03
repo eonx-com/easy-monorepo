@@ -14,8 +14,7 @@ final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, 
     public function __construct(
         private SchemaFactoryInterface $decorated,
         private PaginationOptions $paginationOptions = new PaginationOptions(),
-    ) {
-    }
+    ) {}
 
     public function buildSchema(
         string $className,
