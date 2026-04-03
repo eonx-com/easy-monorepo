@@ -84,8 +84,8 @@ final class EasyServerlessBundle extends AbstractBundle
         if ($this->isBundleEnabled('BrefMessengerBundle', $builder)) {
             $container->import('config/messenger.php');
 
-            if ($config['reset_services']['enabled']) {
-                $container->import('config/reset_services.php');
+            if ($config['sqs']['reset_services']['enabled']) {
+                $container->import('config/sqs_reset_services.php');
             }
         }
 

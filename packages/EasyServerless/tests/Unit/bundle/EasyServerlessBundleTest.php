@@ -23,7 +23,7 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
     public function testDisableResetServicesSucceeds(): void
     {
         $container = $this->getKernel(
-            configs: [__DIR__ . '/../../Fixture/config/reset_services_disabled.php'],
+            configs: [__DIR__ . '/../../Fixture/config/sqs_reset_services_disabled.php'],
             bundles: [new BrefMessengerBundle()]
         )->getContainer();
 
