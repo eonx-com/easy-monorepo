@@ -14,8 +14,7 @@ final class LoggerAwareChangeNameMiddlewareStub implements MiddlewareInterface, 
 
     public function __construct(
         private ChangeNameMiddlewareStub $decorated,
-    ) {
-    }
+    ) {}
 
     public function handle(mixed $input, callable $next): mixed
     {

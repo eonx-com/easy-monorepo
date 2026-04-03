@@ -20,7 +20,7 @@ final class HttpFoundationHelper
         // Prevent issues with empty files
         $files = \array_filter(
             $request->files ?? [],
-            static fn ($file): bool => \is_array($file)
+            static fn($file): bool => \is_array($file)
                 && \is_string($file['tmp_name'] ?? null)
                 && $file['tmp_name'] !== ''
         );

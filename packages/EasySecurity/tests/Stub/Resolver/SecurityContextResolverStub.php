@@ -10,8 +10,7 @@ final readonly class SecurityContextResolverStub implements SecurityContextResol
 {
     public function __construct(
         private SecurityContextInterface $securityContext,
-    ) {
-    }
+    ) {}
 
     public function resolveContext(): SecurityContextInterface
     {

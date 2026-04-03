@@ -25,8 +25,7 @@ final readonly class MessageSerializer implements SerializerInterface
     public function __construct(
         private MessageBodyDecoderInterface $bodyDecoder,
         private MessageObjectFactoryInterface $messageFactory,
-    ) {
-    }
+    ) {}
 
     public function decode(array $encodedEnvelope): Envelope
     {

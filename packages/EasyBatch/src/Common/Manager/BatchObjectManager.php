@@ -32,8 +32,7 @@ final readonly class BatchObjectManager implements BatchObjectManagerInterface
         private BatchItemIteratorInterface $batchItemIterator,
         private BatchItemRepositoryInterface $batchItemRepository,
         private EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException

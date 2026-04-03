@@ -16,8 +16,7 @@ final readonly class AppMetricClient implements AppMetricClientInterface
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),
         private ?string $namespace = null,
-    ) {
-    }
+    ) {}
 
     public function sendMetric(AppMetricInterface $appMetric): void
     {

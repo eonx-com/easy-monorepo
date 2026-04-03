@@ -13,8 +13,7 @@ final readonly class UserPoolConfig
         private string $appClientId,
         private string $region,
         private string $userPoolId,
-    ) {
-    }
+    ) {}
 
     public function getAppClientId(): string
     {

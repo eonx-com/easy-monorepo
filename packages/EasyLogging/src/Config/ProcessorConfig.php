@@ -9,8 +9,7 @@ final class ProcessorConfig extends AbstractLoggingConfig implements ProcessorCo
 {
     public function __construct(
         private readonly ProcessorInterface $processor,
-    ) {
-    }
+    ) {}
 
     public static function create(ProcessorInterface $processor): self
     {

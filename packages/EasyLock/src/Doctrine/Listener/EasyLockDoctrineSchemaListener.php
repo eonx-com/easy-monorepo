@@ -15,8 +15,7 @@ final class EasyLockDoctrineSchemaListener extends AbstractSchemaListener
 {
     public function __construct(
         private readonly PersistingStoreInterface $persistingStore,
-    ) {
-    }
+    ) {}
 
     public function postGenerateSchema(GenerateSchemaEventArgs $event): void
     {

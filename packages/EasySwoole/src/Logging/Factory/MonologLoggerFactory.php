@@ -12,8 +12,7 @@ final readonly class MonologLoggerFactory
 {
     public function __construct(
         private string $timezone = 'UTC',
-    ) {
-    }
+    ) {}
 
     public function create(): LoggerInterface
     {

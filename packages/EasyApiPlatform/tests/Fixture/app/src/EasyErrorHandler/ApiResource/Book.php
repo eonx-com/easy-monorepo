@@ -47,6 +47,5 @@ final class Book
         public readonly string $description,
         public readonly int $weight,
         public PrintingHouse $printingHouse,
-    ) {
-    }
+    ) {}
 }

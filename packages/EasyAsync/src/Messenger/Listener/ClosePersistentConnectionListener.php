@@ -19,8 +19,7 @@ final class ClosePersistentConnectionListener
         private readonly ConnectionCloser $connectionCloser,
         private readonly float $maxIdleTime,
         private readonly ?array $managers = null,
-    ) {
-    }
+    ) {}
 
     public function __invoke(WorkerRunningEvent $event): void
     {

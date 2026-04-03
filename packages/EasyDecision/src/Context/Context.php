@@ -12,8 +12,7 @@ final class Context implements ContextInterface
     public function __construct(
         private readonly string $decisionType,
         private readonly array $input,
-    ) {
-    }
+    ) {}
 
     public function addRuleOutput(string $rule, mixed $output): ContextInterface
     {

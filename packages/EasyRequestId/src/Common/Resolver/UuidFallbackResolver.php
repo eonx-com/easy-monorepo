@@ -9,8 +9,7 @@ final readonly class UuidFallbackResolver implements FallbackResolverInterface
 {
     public function __construct(
         private RandomGeneratorInterface $randomGenerator,
-    ) {
-    }
+    ) {}
 
     public function fallbackCorrelationId(): string
     {

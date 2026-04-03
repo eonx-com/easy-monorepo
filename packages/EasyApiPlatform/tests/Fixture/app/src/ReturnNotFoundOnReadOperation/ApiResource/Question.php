@@ -11,17 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(
     operations: [
+        new Post(),
         new Post(
             uriTemplate: '/questions/{id}/mark-as-answered',
             status: 200,
-            input: false,
+            input: false
         ),
-        new Post(),
         new Put(
             uriTemplate: '/questions/{id}/mark-as-answered',
             status: 200,
             input: false,
-            allowCreate: true,
+            allowCreate: true
         ),
     ],
     openapi: false,

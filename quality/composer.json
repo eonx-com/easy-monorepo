@@ -5,8 +5,8 @@
     "license": "proprietary",
     "require": {
         "php": "^8.4",
-        "eonx-com/easy-quality": "^5.0",
-        "phpunit/phpunit": "^12.5",
+        "eonx-com/easy-quality": "^6.0",
+        "phpunit/phpunit": "^13.0",
         "symfony/finder": "^7.1",
         "symfony/string": "^7.1"
     },
@@ -24,5 +24,11 @@
         "eonx_docs": {
             "ignore": true
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/eonx-com/easy-quality"
+        }
+    ]
 }

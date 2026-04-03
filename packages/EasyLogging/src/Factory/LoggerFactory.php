@@ -170,7 +170,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
         $configs = $this->filterAndSortConfigs($this->handlerConfigs, $channel);
 
         $handlers = \array_map(
-            static fn (HandlerConfigInterface $config): HandlerInterface => $config->handler(),
+            static fn(HandlerConfigInterface $config): HandlerInterface => $config->handler(),
             $configs
         );
 
@@ -194,7 +194,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
         $configs = $this->filterAndSortConfigs($this->processorConfigs, $channel);
 
         return \array_map(
-            static fn (ProcessorConfigInterface $config): ProcessorInterface => $config->processor(),
+            static fn(ProcessorConfigInterface $config): ProcessorInterface => $config->processor(),
             $configs
         );
     }

@@ -20,8 +20,7 @@ final readonly class LaravelExceptionHandler implements IlluminateExceptionHandl
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
         private TranslatorInterface $translator,
-    ) {
-    }
+    ) {}
 
     public function render(mixed $request, Throwable $exception): Response
     {

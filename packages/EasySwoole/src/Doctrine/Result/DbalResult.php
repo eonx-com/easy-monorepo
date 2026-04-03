@@ -13,8 +13,7 @@ final readonly class DbalResult implements Result
 {
     public function __construct(
         private PDOStatementProxy $pdoStatement,
-    ) {
-    }
+    ) {}
 
     public function columnCount(): int
     {

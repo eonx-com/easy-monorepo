@@ -12,8 +12,7 @@ final readonly class PrefixedUrlPackage implements PackageInterface
     public function __construct(
         private string $assetsUrl,
         private PackageInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public function getUrl(string $path): string
     {

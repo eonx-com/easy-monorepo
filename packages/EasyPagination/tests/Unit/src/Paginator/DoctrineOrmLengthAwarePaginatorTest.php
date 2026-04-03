@@ -192,7 +192,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 self::createItemsTable($manager);
                 self::addItemToTable($manager, 'my-title');
 
-                $paginator->setTransformer(static fn (Item $item): array => [
+                $paginator->setTransformer(static fn(Item $item): array => [
                     'id' => $item->getId(),
                     'title' => $item->getTitle(),
                 ]);

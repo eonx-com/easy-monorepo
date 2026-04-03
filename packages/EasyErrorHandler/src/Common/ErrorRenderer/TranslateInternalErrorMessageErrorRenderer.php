@@ -18,8 +18,7 @@ final readonly class TranslateInternalErrorMessageErrorRenderer implements Error
     public function __construct(
         private ErrorDetailsResolverInterface $errorDetailsResolver,
         private ErrorRendererInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public function render(Throwable $exception): FlattenException
     {
@@ -40,7 +39,7 @@ final readonly class TranslateInternalErrorMessageErrorRenderer implements Error
     private function resolvePatterns(string $value): array
     {
         return \array_map(
-            static fn (string $pattern): string => \sprintf($pattern, $value),
+            static fn(string $pattern): string => \sprintf($pattern, $value),
             self::PATTERNS
         );
     }

@@ -76,7 +76,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
 
         $this->app->extend(
             EasyWebhookConfigServiceId::HttpClient->value,
-            static fn (HttpClientInterface $decorated, Container $app): HttpClientInterface => self::instantiateClient(
+            static fn(HttpClientInterface $decorated, Container $app): HttpClientInterface => self::instantiateClient(
                 $app,
                 $decorated
             )
@@ -87,7 +87,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             ConfigServiceId::HttpClient->value,
-            static fn (Container $app): HttpClientInterface => self::instantiateClient($app)
+            static fn(Container $app): HttpClientInterface => self::instantiateClient($app)
         );
     }
 }

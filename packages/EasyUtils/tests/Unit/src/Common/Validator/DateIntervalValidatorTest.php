@@ -69,8 +69,7 @@ final class DateIntervalValidatorTest extends AbstractUnitTestCase
     public function testValidateThrowsUnexpectedTypeException(): void
     {
         $validator = new DateIntervalValidator();
-        $constraint = new class() extends Constraint {
-        };
+        $constraint = new class extends Constraint {};
         $dateInterval = 'some-date-interval';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(

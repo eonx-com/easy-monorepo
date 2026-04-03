@@ -11,8 +11,7 @@ final readonly class ActivityLogEntity implements ActivitySubjectInterface
         private string $id,
         private string $subjectType,
         private array $allowedProperties,
-    ) {
-    }
+    ) {}
 
     public function getActivitySubjectId(): string
     {

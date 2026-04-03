@@ -33,7 +33,7 @@ final class Encryptor extends AbstractEncryptor
      */
     protected function doDecrypt(
         string $text,
-        null|array|string|EncryptionKey|EncryptionKeyPair $key,
+        array|string|EncryptionKey|EncryptionKeyPair|null $key,
         bool $raw,
     ): string {
         $key = $this->getKey($key, $raw === false);
@@ -64,7 +64,7 @@ final class Encryptor extends AbstractEncryptor
      */
     protected function doEncrypt(
         string $text,
-        null|array|string|EncryptionKey|EncryptionKeyPair $key,
+        array|string|EncryptionKey|EncryptionKeyPair|null $key,
         bool $raw,
     ): string {
         $key = $this->getKey($key, $raw === false);
@@ -87,7 +87,7 @@ final class Encryptor extends AbstractEncryptor
     }
 
     private function getKey(
-        null|array|string|EncryptionKey|EncryptionKeyPair $key = null,
+        array|string|EncryptionKey|EncryptionKeyPair|null $key = null,
         ?bool $forceKeyName = null,
     ): EncryptionKey|EncryptionKeyPair {
         if (($key === null || \is_string($key)) && $this->keyProvider->hasKey($this->getKeyName($key))) {

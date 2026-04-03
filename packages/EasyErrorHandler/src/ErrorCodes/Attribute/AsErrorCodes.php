@@ -6,6 +6,4 @@ namespace EonX\EasyErrorHandler\ErrorCodes\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class AsErrorCodes
-{
-}
+final class AsErrorCodes {}

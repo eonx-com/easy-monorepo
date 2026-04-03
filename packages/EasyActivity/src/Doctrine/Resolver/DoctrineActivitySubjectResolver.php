@@ -14,8 +14,7 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
     public function __construct(
         private array $subjects,
         private EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     public function resolve(object $object): ?ActivitySubjectInterface
     {

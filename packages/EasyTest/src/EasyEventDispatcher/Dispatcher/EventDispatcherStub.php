@@ -20,8 +20,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @param class-string<object> $class

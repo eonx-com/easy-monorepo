@@ -14,8 +14,7 @@ final readonly class OutputFactory implements OutputFactoryInterface
 {
     public function __construct(
         private ?OutputMessageFormatterInterface $messageFormatter = null,
-    ) {
-    }
+    ) {}
 
     public function create(?OutputInterface $output = null): OutputInterface
     {
