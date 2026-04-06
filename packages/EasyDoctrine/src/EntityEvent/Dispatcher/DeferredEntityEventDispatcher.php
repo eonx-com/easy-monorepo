@@ -255,6 +255,9 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         $this->enabled = true;
     }
 
+    /**
+     * @return \EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface<object>
+     */
     private function createEntityEvent(int $entityObjectId, array $entityChangeSet): EntityActionEventInterface
     {
         if (isset($this->createdEntities[$entityObjectId]) !== false) {
