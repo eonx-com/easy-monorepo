@@ -19,4 +19,11 @@ final readonly class EventDispatcher implements EventDispatcherInterface
 
         return $event;
     }
+
+    public function dispatchWithName(object $event, string $eventName): object
+    {
+        $this->dispatcher->dispatch($eventName, $event);
+
+        return $event;
+    }
 }

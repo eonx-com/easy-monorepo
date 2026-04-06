@@ -9,4 +9,6 @@ namespace EonX\EasyEventDispatcher\Dispatcher;
 interface EventDispatcherInterface
 {
     public function dispatch(object $event): object;
+
+    public function dispatchWithName(object $event, string $eventName): object;
 }
