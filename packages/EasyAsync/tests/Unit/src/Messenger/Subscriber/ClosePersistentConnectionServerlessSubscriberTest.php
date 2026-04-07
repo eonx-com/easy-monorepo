@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyAsync\Tests\Unit\Messenger\Subscriber;
 
-use stdClass;
 use Doctrine\ORM\EntityManagerInterface;
 use EonX\EasyAsync\Messenger\Subscriber\ClosePersistentConnectionServerlessSubscriber;
 use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
+use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
