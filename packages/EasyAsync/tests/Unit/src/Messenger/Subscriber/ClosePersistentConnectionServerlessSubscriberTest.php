@@ -17,7 +17,6 @@ final class ClosePersistentConnectionServerlessSubscriberTest extends AbstractUn
     public function testClosesConnectionOnNextMessageAfterIdlePeriod(): void
     {
         self::bootKernel(['environment' => 'serverless']);
-
         $connection = self::getService(EntityManagerInterface::class)->getConnection();
         $connection->getDatabase();
 
@@ -27,14 +26,12 @@ final class ClosePersistentConnectionServerlessSubscriberTest extends AbstractUn
         self::getService(EventDispatcherInterface::class)->dispatch(
             new WorkerMessageReceivedEvent(new Envelope(new stdClass()), 'async')
         );
-
         self::assertFalse($connection->isConnected());
     }
 
     public function testDoesNotCloseConnectionWithoutPreviousEnvelopeDispatchedEvent(): void
     {
         self::bootKernel(['environment' => 'serverless']);
-
         $connection = self::getService(EntityManagerInterface::class)->getConnection();
         $connection->getDatabase();
 
