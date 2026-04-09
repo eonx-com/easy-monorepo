@@ -5,8 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "async-aws/secrets-manager": "^2.5",
-        "symfony/http-kernel": "^7.2"
+        "async-aws/secrets-manager": "^2.5"
     },
     "require-dev": {
         "async-aws/dynamo-db": "^3.6",
@@ -19,7 +18,8 @@
         "monolog/monolog": "^3.7",
         "phpunit/phpunit": "^10.2|^11.4|^12.4",
         "symfony/cache": "^7.2",
-        "symfony/config": "^7.2"
+        "symfony/config": "^7.2",
+        "symfony/http-kernel": "^7.2"
     },
     "conflict": {
         "easycorp/easyadmin-bundle": "<4.13.1"
