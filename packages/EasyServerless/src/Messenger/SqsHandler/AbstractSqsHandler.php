@@ -59,7 +59,7 @@ abstract class AbstractSqsHandler extends SqsHandler
 
             $this->handleFailedRecords();
         } finally {
-            gc_collect_cycles();
+            \gc_collect_cycles();
         }
     }
 
