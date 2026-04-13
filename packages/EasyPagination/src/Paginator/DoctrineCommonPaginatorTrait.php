@@ -186,11 +186,14 @@ trait DoctrineCommonPaginatorTrait
                 $paramTypesMap[$param->getName()] = $param->getType();
             }
 
-            \preg_match_all('/:([a-zA-Z_][a-zA-Z0-9_]*)/', $queryBuilder->getDQL() ?? '', $dqlParamMatches);
-            foreach ($dqlParamMatches[1] as $paramName) {
-                if (\array_key_exists($paramName, $parametersMap)) {
-                    $params[] = $parametersMap[$paramName];
-                    $paramTypes[] = $paramTypesMap[$paramName];
+            $matched = \preg_match_all('/:([a-zA-Z_][a-zA-Z0-9_]*)/', $queryBuilder->getDQL(), $dqlParamMatches);
+
+            if ($matched !== false) {
+                foreach ($dqlParamMatches[1] as $paramName) {
+                    if (\array_key_exists($paramName, $parametersMap)) {
+                        $params[] = $parametersMap[$paramName];
+                        $paramTypes[] = $paramTypesMap[$paramName];
+                    }
                 }
             }
         }

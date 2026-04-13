@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Pagination\PaginationInterface;
@@ -318,7 +320,10 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn('some sql');
         $queryBuilder
             ->getParameters()
-            ->willReturn([]);
+            ->willReturn([new Parameter('baz', 'test', ParameterType::STRING)]);
+        $queryBuilder
+            ->getDQL()
+            ->willReturn('SELECT * FROM foo WHERE bar = :baz || fizz = :baz');
         $entityManager
             ->getConnection()
             ->willReturn($connection->reveal());
@@ -327,7 +332,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn(new PostgreSQLPlatform());
         $result = $this->prophesize(Result::class);
         $connection
-            ->executeQuery(Argument::any(), [], [])
+            ->executeQuery(Argument::any(), ['test', 'test'], [ParameterType::STRING, ParameterType::STRING])
             ->willReturn($result->reveal());
         $result
             ->fetchAssociative()
