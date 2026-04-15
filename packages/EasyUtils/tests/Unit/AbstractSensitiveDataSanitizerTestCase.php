@@ -43,32 +43,34 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     'maskNull' => null,
                     'maskString' => 'will be masked',
                 ],
-                'a sub-object (instance of \stdClass)' => \json_decode((string)\json_encode([
-                    'ignoreBool' => true,
-                    'ignoreDouble' => 1.23,
-                    'ignoreInteger' => 1,
-                    'ignoreNull' => null,
-                    'ignoreString' => 'will not be masked',
-                    'maskBoolean' => true,
-                    'maskDouble' => 1.23,
-                    'maskInteger' => 1,
-                    'maskNull' => null,
-                    'maskString' => 'will be masked',
-                ])),
+                'a sub-object (instance of \stdClass)' => \json_decode(
+                    (string)\json_encode([
+                        'ignoreBool' => true,
+                        'ignoreDouble' => 1.23,
+                        'ignoreInteger' => 1,
+                        'ignoreNull' => null,
+                        'ignoreString' => 'will not be masked',
+                        'maskBoolean' => true,
+                        'maskDouble' => 1.23,
+                        'maskInteger' => 1,
+                        'maskNull' => null,
+                        'maskString' => 'will be masked',
+                    ]),
+                ),
                 'a sub-object (instance of \DateTimeImmutable)' => new DateTimeImmutable('1970-01-23 01:23:45.123456'),
                 'a sub-object (instance of \Carbon\Carbon)' => Carbon::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC'
+                    'UTC',
                 ),
                 'a sub-object (instance of \Carbon\CarbonImmutable)' => CarbonImmutable::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC'
+                    'UTC',
                 ),
                 'a sub-object (instance of \EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto)'
                 => new DummyObject(
                     prop1: 'some-biller-code',
                     prop2: 'some-long-name',
-                    prop3: 'some-short-name'
+                    prop3: 'some-short-name',
                 ),
             ],
             'expectedOutput' => [
@@ -110,11 +112,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'a sub-object (instance of \DateTimeImmutable)' => new DateTimeImmutable('1970-01-23 01:23:45.123456'),
                 'a sub-object (instance of \Carbon\Carbon)' => Carbon::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC'
+                    'UTC',
                 ),
                 'a sub-object (instance of \Carbon\CarbonImmutable)' => CarbonImmutable::parse(
                     '1970-01-23 01:23:45.123456',
-                    'UTC'
+                    'UTC',
                 ),
                 'a sub-object (instance of \EonX\EasyUtils\Tests\SensitiveData\Fixtures\Dto\ObjectDto)' => [
                     'prop1' => '*REDACTED*',
