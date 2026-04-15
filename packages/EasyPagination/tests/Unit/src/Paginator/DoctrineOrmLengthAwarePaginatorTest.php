@@ -321,9 +321,22 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
         $queryBuilder
             ->getParameters()
             ->willReturn([new Parameter('baz', 'test', ParameterType::STRING)]);
-        $queryBuilder
-            ->getDQL()
-            ->willReturn('SELECT * FROM foo WHERE bar = :baz || fizz = :baz');
+        $query->getParameter('baz')
+            ->willReturn(new Parameter('baz', 'test', ParameterType::STRING));
+        $query->getDQL()
+            ->willReturn('SELECT i FROM ' . Item::class . ' i WHERE i.title LIKE :baz OR i.title LIKE :baz');
+        $query->getEntityManager()
+            ->willReturn($this->getEntityManager());
+        $query->getHints()
+            ->willReturn([]);
+        $query->hasHint(Argument::any())
+            ->willReturn(false);
+        $query->getHint(Argument::any())
+            ->willReturn(false);
+        $query->getHydrationMode()
+            ->willReturn(Query::HYDRATE_OBJECT);
+        $query->setResultSetMapping(Argument::any())
+            ->willReturn(null);
         $entityManager
             ->getConnection()
             ->willReturn($connection->reveal());
