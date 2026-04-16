@@ -13,16 +13,13 @@ final readonly class EventDispatcher implements EventDispatcherInterface
     ) {
     }
 
-    public function dispatch(object $event): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
-        $this->dispatcher->dispatch($event);
-
-        return $event;
-    }
-
-    public function dispatchWithName(object $event, string $eventName): object
-    {
-        $this->dispatcher->dispatch($eventName, $event);
+        if ($eventName !== null) {
+            $this->dispatcher->dispatch($eventName, $event);
+        } else {
+            $this->dispatcher->dispatch($event);
+        }
 
         return $event;
     }

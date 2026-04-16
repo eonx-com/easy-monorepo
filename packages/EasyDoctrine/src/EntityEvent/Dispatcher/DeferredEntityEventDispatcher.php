@@ -228,21 +228,21 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
             $this->eventDispatcher->dispatch($event);
 
             if ($event instanceof EntityDeletedEvent) {
-                $this->eventDispatcher->dispatchWithName(
+                $this->eventDispatcher->dispatch(
                     $event,
                     AsEntityDeletedEventListener::buildEventName($event->getEntity()::class)
                 );
             }
 
             if ($event instanceof EntityCreatedEvent) {
-                $this->eventDispatcher->dispatchWithName(
+                $this->eventDispatcher->dispatch(
                     $event,
                     AsEntityCreatedEventListener::buildEventName($event->getEntity()::class)
                 );
             }
 
             if ($event instanceof EntityUpdatedEvent) {
-                $this->eventDispatcher->dispatchWithName(
+                $this->eventDispatcher->dispatch(
                     $event,
                     AsEntityUpdateEventListener::buildEventName($event->getEntity()::class)
                 );
