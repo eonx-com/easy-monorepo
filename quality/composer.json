@@ -24,11 +24,5 @@
         "eonx_docs": {
             "ignore": true
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/eonx-com/easy-quality"
-        }
-    ]
+    }
 }
