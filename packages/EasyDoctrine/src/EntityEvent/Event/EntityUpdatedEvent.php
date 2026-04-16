@@ -10,6 +10,8 @@ namespace EonX\EasyDoctrine\EntityEvent\Event;
  */
 final readonly class EntityUpdatedEvent implements EntityActionEventInterface
 {
+    use EntityEventNameTrait;
+
     /**
      * @param T $entity
      */

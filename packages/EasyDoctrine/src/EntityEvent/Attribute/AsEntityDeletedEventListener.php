@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\EntityEvent\Attribute;
 
 use Attribute;
+use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 /**
@@ -24,14 +25,6 @@ final class AsEntityDeletedEventListener extends AsEventListener
         int $priority = 0,
         ?string $dispatcher = null,
     ) {
-        parent::__construct(self::buildEventName($entity), $method, $priority, $dispatcher);
-    }
-
-    /**
-     * @param class-string $entityClass
-     */
-    public static function buildEventName(string $entityClass): string
-    {
-        return 'entity.deleted.' . $entityClass;
+        parent::__construct(EntityDeletedEvent::buildEventName($entity), $method, $priority, $dispatcher);
     }
 }

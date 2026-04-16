@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\EntityEvent\Dispatcher;
 
-use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityCreatedEventListener;
-use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityDeletedEventListener;
-use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityUpdateEventListener;
 use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
@@ -226,27 +223,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         foreach ($events as $event) {
             $this->eventDispatcher->dispatch($event);
-
-            if ($event instanceof EntityDeletedEvent) {
-                $this->eventDispatcher->dispatch(
-                    $event,
-                    AsEntityDeletedEventListener::buildEventName($event->getEntity()::class)
-                );
-            }
-
-            if ($event instanceof EntityCreatedEvent) {
-                $this->eventDispatcher->dispatch(
-                    $event,
-                    AsEntityCreatedEventListener::buildEventName($event->getEntity()::class)
-                );
-            }
-
-            if ($event instanceof EntityUpdatedEvent) {
-                $this->eventDispatcher->dispatch(
-                    $event,
-                    AsEntityUpdateEventListener::buildEventName($event->getEntity()::class)
-                );
-            }
+            $this->eventDispatcher->dispatch($event, $event->getEventName());
         }
     }
 

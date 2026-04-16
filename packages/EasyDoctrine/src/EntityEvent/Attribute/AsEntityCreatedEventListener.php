@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\EntityEvent\Attribute;
 
 use Attribute;
+use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 /**
@@ -24,14 +25,6 @@ final class AsEntityCreatedEventListener extends AsEventListener
         int $priority = 0,
         ?string $dispatcher = null,
     ) {
-        parent::__construct(self::buildEventName($entity), $method, $priority, $dispatcher);
-    }
-
-    /**
-     * @param class-string $entityClass
-     */
-    public static function buildEventName(string $entityClass): string
-    {
-        return 'entity.created.' . $entityClass;
+        parent::__construct(EntityCreatedEvent::buildEventName($entity), $method, $priority, $dispatcher);
     }
 }

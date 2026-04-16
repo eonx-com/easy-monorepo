@@ -14,4 +14,6 @@ interface EntityActionEventInterface
      * @return T
      */
     public function getEntity(): object;
+
+    public function getEventName(): string;
 }
