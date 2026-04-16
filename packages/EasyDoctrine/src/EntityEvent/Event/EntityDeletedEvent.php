@@ -10,7 +10,7 @@ namespace EonX\EasyDoctrine\EntityEvent\Event;
  */
 final readonly class EntityDeletedEvent implements EntityActionEventInterface
 {
-    use EntityEventNameTrait;
+    use EntityEventTrait;
 
     /**
      * @param T $entity

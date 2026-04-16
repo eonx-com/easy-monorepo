@@ -10,7 +10,7 @@ namespace EonX\EasyDoctrine\EntityEvent\Event;
  * and `Event` suffix (e.g. `EntityCreatedEvent` → `created`), then builds the
  * event name as `entity.{action}.{entityClass}`.
  */
-trait EntityEventNameTrait
+trait EntityEventTrait
 {
     /**
      * @param class-string $entityClass

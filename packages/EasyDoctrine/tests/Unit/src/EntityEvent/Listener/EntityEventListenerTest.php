@@ -550,7 +550,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         self::assertCount(1, $dispatchedNames);
-        self::assertSame(AsEntityCreatedEventListener::buildEventName(Product::class), $dispatchedNames[0]);
+        self::assertSame(EntityCreatedEvent::buildEventName(Product::class), $dispatchedNames[0]);
     }
 
     public function testNamedEventIsDispatchedOnEntityDeleted(): void
@@ -577,7 +577,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         self::assertCount(1, $dispatchedNames);
-        self::assertSame(AsEntityDeletedEventListener::buildEventName(Product::class), $dispatchedNames[0]);
+        self::assertSame(EntityDeletedEvent::buildEventName(Product::class), $dispatchedNames[0]);
     }
 
     public function testNamedEventIsDispatchedOnEntityUpdated(): void
@@ -604,7 +604,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         self::assertCount(1, $dispatchedNames);
-        self::assertSame(AsEntityUpdateEventListener::buildEventName(Product::class), $dispatchedNames[0]);
+        self::assertSame(EntityUpdatedEvent::buildEventName(Product::class), $dispatchedNames[0]);
     }
 
     public function testOneEventIsDispatchedForDeletedEntity(): void
