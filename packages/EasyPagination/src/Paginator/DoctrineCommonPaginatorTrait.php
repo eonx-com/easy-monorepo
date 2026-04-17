@@ -188,7 +188,7 @@ trait DoctrineCommonPaginatorTrait
             }
 
             $paramMappings = (new Parser($query))->parse()
-->getParameterMappings();
+                ->getParameterMappings();
             foreach ($paramMappings as $paramName => $positions) {
                 if (\array_key_exists($paramName, $parametersMap) === false) {
                     continue;
