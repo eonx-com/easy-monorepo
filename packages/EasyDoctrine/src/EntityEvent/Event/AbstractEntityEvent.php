@@ -7,10 +7,8 @@ use ReflectionClass;
 
 /**
  * @template T of object
- *
- * @implements \EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface<T>
  */
-abstract readonly class AbstractEntityEvent implements EntityActionEventInterface
+abstract readonly class AbstractEntityEvent
 {
     /**
      * @param T $entity
