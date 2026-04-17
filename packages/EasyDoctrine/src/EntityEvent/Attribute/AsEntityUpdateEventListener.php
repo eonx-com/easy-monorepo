@@ -17,14 +17,14 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 final class AsEntityUpdateEventListener extends AsEventListener
 {
     /**
-     * @param class-string $entity The entity class to listen to
+     * @param class-string $entityClass The entity class to listen to
      */
     public function __construct(
-        string $entity,
+        string $entityClass,
         ?string $method = null,
         int $priority = 0,
         ?string $dispatcher = null,
     ) {
-        parent::__construct(EntityUpdatedEvent::buildEventName($entity), $method, $priority, $dispatcher);
+        parent::__construct(EntityUpdatedEvent::buildEventName($entityClass), $method, $priority, $dispatcher);
     }
 }

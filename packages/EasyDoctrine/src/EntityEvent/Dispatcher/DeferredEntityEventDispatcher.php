@@ -235,18 +235,18 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     /**
      * @return \EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface<object>
      */
-    private function createEntityEvent(int $entityObjectId, array $entityChangeSet): EntityActionEventInterface
+    private function createEntityEvent(int $entityId, array $entityChangeSet): EntityActionEventInterface
     {
-        if (isset($this->createdEntities[$entityObjectId]) !== false) {
-            return new EntityCreatedEvent($this->createdEntities[$entityObjectId], $entityChangeSet);
+        if (isset($this->createdEntities[$entityId]) !== false) {
+            return new EntityCreatedEvent($this->createdEntities[$entityId], $entityChangeSet);
         }
 
-        if (isset($this->updatedEntities[$entityObjectId]) !== false) {
-            return new EntityUpdatedEvent($this->updatedEntities[$entityObjectId], $entityChangeSet);
+        if (isset($this->updatedEntities[$entityId]) !== false) {
+            return new EntityUpdatedEvent($this->updatedEntities[$entityId], $entityChangeSet);
         }
 
-        if (isset($this->deletedEntities[$entityObjectId]) !== false) {
-            return new EntityDeletedEvent($this->deletedEntities[$entityObjectId], $entityChangeSet);
+        if (isset($this->deletedEntities[$entityId]) !== false) {
+            return new EntityDeletedEvent($this->deletedEntities[$entityId], $entityChangeSet);
         }
 
         // @codeCoverageIgnoreStart

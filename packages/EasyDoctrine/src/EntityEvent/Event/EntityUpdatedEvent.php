@@ -6,34 +6,8 @@ namespace EonX\EasyDoctrine\EntityEvent\Event;
 /**
  * @template T of object
  *
- * @implements \EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface<T>
+ * @extends \EonX\EasyDoctrine\EntityEvent\Event\AbstractEntityEvent<T>
  */
-final readonly class EntityUpdatedEvent implements EntityActionEventInterface
+final readonly class EntityUpdatedEvent extends AbstractEntityEvent
 {
-    use EntityEventTrait;
-
-    /**
-     * @param T $entity
-     */
-    public function __construct(
-        private object $entity,
-        private array $changeSet,
-    ) {
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getChangeSet(): array
-    {
-        return $this->changeSet;
-    }
-
-    /**
-     * @return T
-     */
-    public function getEntity(): object
-    {
-        return $this->entity;
-    }
 }
