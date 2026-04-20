@@ -6,6 +6,9 @@ namespace EonX\EasyDoctrine\Tests\Unit\EntityEvent\Listener;
 use Carbon\CarbonImmutable;
 use DateTime;
 use DateTimeZone;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityCreatedEventListener;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityDeletedEventListener;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityUpdateEventListener;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
@@ -21,6 +24,9 @@ use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
+#[CoversClass(AsEntityCreatedEventListener::class)]
+#[CoversClass(AsEntityDeletedEventListener::class)]
+#[CoversClass(AsEntityUpdateEventListener::class)]
 #[CoversClass(DeferredEntityEventDispatcher::class)]
 #[CoversClass(EntityEventListener::class)]
 final class EntityEventListenerTest extends AbstractUnitTestCase
@@ -521,6 +527,86 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         self::assertCount(0, $events);
     }
 
+    public function testNamedEventIsDispatchedOnEntityCreated(): void
+    {
+        self::bootKernel(['environment' => 'product']);
+        self::initDatabase();
+        $entityManager = self::getEntityManager();
+        $eventDispatcher = self::getService(EventDispatcherStub::class);
+        $dispatchedNames = [];
+        $eventDispatcher->addDispatchCallback(
+            EntityCreatedEvent::class,
+            static function (EntityCreatedEvent $event, ?string $eventName) use (&$dispatchedNames): void {
+                if ($eventName !== null) {
+                    $dispatchedNames[] = $eventName;
+                }
+            }
+        );
+        $product = new Product();
+        $product->setName('Test Product');
+        $product->setPrice(new Price('1000', 'USD'));
+        $entityManager->persist($product);
+
+        $entityManager->flush();
+
+        self::assertCount(1, $dispatchedNames);
+        self::assertSame(EntityCreatedEvent::buildEventName(Product::class), $dispatchedNames[0]);
+    }
+
+    public function testNamedEventIsDispatchedOnEntityDeleted(): void
+    {
+        self::bootKernel(['environment' => 'product']);
+        self::initDatabase();
+        $entityManager = self::getEntityManager();
+        $entityManager->getConnection()
+            ->insert('product', ['id' => 1, 'name' => 'Keyboard', 'price' => '1000 USD']);
+        /** @var \EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $eventDispatcher = self::getService(EventDispatcherStub::class);
+        $dispatchedNames = [];
+        $eventDispatcher->addDispatchCallback(
+            EntityDeletedEvent::class,
+            static function (EntityDeletedEvent $event, ?string $eventName) use (&$dispatchedNames): void {
+                if ($eventName !== null) {
+                    $dispatchedNames[] = $eventName;
+                }
+            }
+        );
+        $entityManager->remove($product);
+
+        $entityManager->flush();
+
+        self::assertCount(1, $dispatchedNames);
+        self::assertSame(EntityDeletedEvent::buildEventName(Product::class), $dispatchedNames[0]);
+    }
+
+    public function testNamedEventIsDispatchedOnEntityUpdated(): void
+    {
+        self::bootKernel(['environment' => 'product']);
+        self::initDatabase();
+        $entityManager = self::getEntityManager();
+        $entityManager->getConnection()
+            ->insert('product', ['id' => 1, 'name' => 'Keyboard', 'price' => '1000 USD']);
+        /** @var \EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product $product */
+        $product = $entityManager->getRepository(Product::class)->find(1);
+        $eventDispatcher = self::getService(EventDispatcherStub::class);
+        $dispatchedNames = [];
+        $eventDispatcher->addDispatchCallback(
+            EntityUpdatedEvent::class,
+            static function (EntityUpdatedEvent $event, ?string $eventName) use (&$dispatchedNames): void {
+                if ($eventName !== null) {
+                    $dispatchedNames[] = $eventName;
+                }
+            }
+        );
+        $product->setName('New Keyboard');
+
+        $entityManager->flush();
+
+        self::assertCount(1, $dispatchedNames);
+        self::assertSame(EntityUpdatedEvent::buildEventName(Product::class), $dispatchedNames[0]);
+    }
+
     public function testOneEventIsDispatchedForDeletedEntity(): void
     {
         self::bootKernel(['environment' => 'product']);
@@ -589,7 +675,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
         self::assertCount(1, $events);
-        /** @var \EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent $actualEvent */
+        /** @var \EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent<object> $actualEvent */
         $actualEvent = $events[0];
         self::assertInstanceOf(EntityDeletedEvent::class, $actualEvent);
         self::assertEquals($actualEvent->getChangeSet(), [

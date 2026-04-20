@@ -36,16 +36,25 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
         $this->enabled = true;
     }
 
+    /**
+     * @param \EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent<object> $event
+     */
     public function onCreate(EntityCreatedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityAction::Create, $event->getEntity(), $event->getChangeSet());
     }
 
+    /**
+     * @param \EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent<object> $event
+     */
     public function onDelete(EntityDeletedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityAction::Delete, $event->getEntity(), $event->getChangeSet());
     }
 
+    /**
+     * @param \EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent<object> $event
+     */
     public function onUpdate(EntityUpdatedEvent $event): void
     {
         $this->dispatchLogEntry(ActivityAction::Update, $event->getEntity(), $event->getChangeSet());
