@@ -25,6 +25,14 @@ final class AppRuntimeModeHelper
             return;
         }
 
+        foreach ([$_ENV, $_SERVER] as $scope) {
+            $current = $scope[self::APP_RUNTIME_MODE] ?? null;
+
+            if (\is_string($current) && $current !== '') {
+                return;
+            }
+        }
+
         $_ENV[self::APP_RUNTIME_MODE] = $_SERVER[self::APP_RUNTIME_MODE] = $value;
         \putenv(\sprintf('%s=%s', self::APP_RUNTIME_MODE, $value));
     }

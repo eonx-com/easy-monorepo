@@ -17,7 +17,13 @@ final class SymfonyHttpHandlerTest extends AbstractUnitTestCase
     protected function tearDown(): void
     {
         \putenv('APP_RUNTIME_MODE');
-        unset($_ENV['APP_RUNTIME_MODE'], $_SERVER['APP_RUNTIME_MODE']);
+        \putenv('LAMBDA_REQUEST_CONTEXT');
+        unset(
+            $_ENV['APP_RUNTIME_MODE'],
+            $_SERVER['APP_RUNTIME_MODE'],
+            $_ENV['LAMBDA_REQUEST_CONTEXT'],
+            $_SERVER['LAMBDA_REQUEST_CONTEXT']
+        );
 
         parent::tearDown();
     }
