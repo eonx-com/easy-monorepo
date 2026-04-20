@@ -8,6 +8,7 @@ use Bref\Event\Http\HttpHandler;
 use Bref\Event\Http\HttpRequestEvent;
 use Bref\Event\Http\HttpResponse;
 use Bref\Event\Http\Psr7Bridge;
+use EonX\EasyServerless\Aws\Helper\AppRuntimeModeHelper;
 use EonX\EasyServerless\Aws\Transformer\HttpEventTransformer;
 use EonX\EasyServerless\Aws\Transformer\HttpEventTransformerInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -76,6 +77,7 @@ final class SymfonyHttpHandler extends HttpHandler
     public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
     {
         $this->reset();
+        AppRuntimeModeHelper::ensureHttpRuntimeMode();
         $this->setRequestContext((string)\json_encode($event->getRequestContext()));
 
         $symfonyRequest = $this->httpFoundationFactory->createRequest(Psr7Bridge::convertRequest($event, $context));

@@ -9,6 +9,7 @@ use Bref\Context\Context;
 use Bref\Event\Sqs\SqsEvent;
 use Bref\Event\Sqs\SqsHandler;
 use Bref\Event\Sqs\SqsRecord;
+use EonX\EasyServerless\Aws\Helper\AppRuntimeModeHelper;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -42,6 +43,8 @@ abstract class AbstractSqsHandler extends SqsHandler
      */
     public function handleSqs(SqsEvent $event, Context $context): void
     {
+        AppRuntimeModeHelper::ensureWorkerRuntimeMode();
+
         $this->reset();
 
         foreach ($event->getRecords() as $sqsRecord) {
