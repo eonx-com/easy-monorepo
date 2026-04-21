@@ -22,7 +22,7 @@ final class SymfonyHttpHandlerTest extends AbstractUnitTestCase
             $_ENV['APP_RUNTIME_MODE'],
             $_SERVER['APP_RUNTIME_MODE'],
             $_ENV['LAMBDA_REQUEST_CONTEXT'],
-            $_SERVER['LAMBDA_REQUEST_CONTEXT']
+            $_SERVER['LAMBDA_REQUEST_CONTEXT'],
         );
 
         parent::tearDown();
@@ -38,6 +38,19 @@ final class SymfonyHttpHandlerTest extends AbstractUnitTestCase
         $sut->handleRequest($this->createHttpRequestEvent(), Context::fake());
 
         self::assertSame('custom=1', \getenv('APP_RUNTIME_MODE'));
+        self::assertSame('custom=1', $_ENV['APP_RUNTIME_MODE']);
+        self::assertSame('custom=1', $_SERVER['APP_RUNTIME_MODE']);
+    }
+
+    public function testHandleRequestDoesNotOverrideExplicitSuperglobalRuntimeMode(): void
+    {
+        $_ENV['APP_RUNTIME_MODE'] = $_SERVER['APP_RUNTIME_MODE'] = 'custom=1';
+
+        $sut = $this->createSymfonyHttpHandler();
+
+        $sut->handleRequest($this->createHttpRequestEvent(), Context::fake());
+
+        self::assertFalse(\getenv('APP_RUNTIME_MODE'));
         self::assertSame('custom=1', $_ENV['APP_RUNTIME_MODE']);
         self::assertSame('custom=1', $_SERVER['APP_RUNTIME_MODE']);
     }
