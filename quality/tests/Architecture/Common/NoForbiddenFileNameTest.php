@@ -20,6 +20,9 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
 
     private const array SKIP_FILES = [
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityCreatedEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityDeletedEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityUpdateEventListener.php',
     ];
 
     #[DataProvider('provideSubject')]

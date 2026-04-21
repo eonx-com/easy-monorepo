@@ -11,8 +11,8 @@ final readonly class EventDispatcher implements EventDispatcherInterface
         private SymfonyEventDispatcherInterface $eventDispatcher,
     ) {}
 
-    public function dispatch(object $event): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
-        return $this->eventDispatcher->dispatch($event);
+        return $this->eventDispatcher->dispatch($event, $eventName);
     }
 }
