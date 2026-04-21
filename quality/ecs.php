@@ -21,6 +21,7 @@ use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixer;
+use PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
@@ -50,7 +51,7 @@ return ECSConfig::configure()
     ->withParallel(
         ParallelSettingsHelper::getTimeoutSeconds(),
         ParallelSettingsHelper::getMaxNumberOfProcess(),
-        ParallelSettingsHelper::getJobSize()
+        ParallelSettingsHelper::getJobSize(),
     )
     ->withCache(__DIR__ . '/var/cache/ecs')
     ->withSets([
@@ -110,6 +111,9 @@ return ECSConfig::configure()
         ],
         NoExtraBlankLinesFixer::class => [
             'packages/EasyTest/.phpstorm.meta.php',
+        ],
+        OperatorLinebreakFixer::class => [
+            'packages/EasyUtils/tests/Unit/AbstractSensitiveDataSanitizerTestCase.php',
         ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
