@@ -24,6 +24,6 @@ final class EasyEventDispatcherBundleTest extends AbstractSymfonyTestCase
         self::assertInstanceOf(EventDispatcherStub::class, $symfonyDispatcher);
         self::assertNotEmpty($symfonyDispatcher->getDispatchedEvents());
         self::assertSame($event, $dispatched);
-        self::assertSame($dispatched, $symfonyDispatcher->getDispatchedEvents()[0]);
+        self::assertSame($dispatched, $symfonyDispatcher->getDispatchedEvents()[0]['event']);
     }
 }
