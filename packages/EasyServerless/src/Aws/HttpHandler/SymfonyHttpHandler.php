@@ -99,7 +99,8 @@ final class SymfonyHttpHandler extends HttpHandler
 
     private function setRequestContext(string $value): void
     {
-        $_SERVER[self::LAMBDA_REQUEST_CONTEXT_KEY] = $_ENV[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
+        $_ENV[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
+        $_SERVER[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
         \putenv(\sprintf('%s=%s', self::LAMBDA_REQUEST_CONTEXT_KEY, $value));
     }
 }

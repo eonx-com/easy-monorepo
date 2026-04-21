@@ -33,7 +33,8 @@ final class AppRuntimeModeHelper
             }
         }
 
-        $_ENV[self::APP_RUNTIME_MODE] = $_SERVER[self::APP_RUNTIME_MODE] = $value;
+        $_ENV[self::APP_RUNTIME_MODE] = $value;
+        $_SERVER[self::APP_RUNTIME_MODE] = $value;
         \putenv(\sprintf('%s=%s', self::APP_RUNTIME_MODE, $value));
     }
 }
