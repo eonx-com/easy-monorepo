@@ -31,14 +31,18 @@ class WithEventsEntityManager extends EntityManagerDecorator
         }
     }
 
+    /**
+     * @param object|array<mixed>|null $entity
+     */
     public function flush($entity = null): void
     {
+        $transactionNestingLevel = $this->getConnection()
+            ->getTransactionNestingLevel();
+
         try {
             parent::flush($entity);
         } catch (Throwable $throwable) {
-            $this->deferredEntityEventDispatcher->clear(
-                $this->getConnection()->getTransactionNestingLevel()
-            );
+            $this->deferredEntityEventDispatcher->clear($transactionNestingLevel);
 
             throw $throwable;
         }
