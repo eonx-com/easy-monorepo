@@ -32,7 +32,7 @@ class WithEventsEntityManager extends EntityManagerDecorator
     }
 
     /**
-     * @param object|array<mixed>|null $entity
+     * @param object|array|null $entity
      */
     public function flush($entity = null): void
     {
