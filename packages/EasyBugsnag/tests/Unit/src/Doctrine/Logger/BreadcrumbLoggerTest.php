@@ -26,7 +26,8 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($recoder, 'breadcrumbs');
         /** @var \Bugsnag\Breadcrumbs\Breadcrumb $breadcrumb */
-        $breadcrumb = $breadcrumbs[16];
+        // @todo Remove `14` after drop supporting Doctrine DBAL 3
+        $breadcrumb = $breadcrumbs[16] ?? $breadcrumbs[14];
         self::assertSame('SQL query | default', $breadcrumb->toArray()['name']);
         self::assertSame(
             'INSERT INTO author (id, name, position) VALUES (?, ?, ?)',

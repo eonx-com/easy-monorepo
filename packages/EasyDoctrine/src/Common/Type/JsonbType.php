@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Common\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidFormat;
-use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
+use EonX\EasyDoctrine\Common\Factory\ConversionExceptionFactory;
 use JsonException;
 
 final class JsonbType extends Type
@@ -24,7 +23,7 @@ final class JsonbType extends Type
         try {
             return \json_encode($value, \JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw InvalidType::new($value, self::NAME, ['null', 'mixed'], $exception);
+            throw ConversionExceptionFactory::invalidType($value, self::NAME, ['null', 'mixed'], $exception);
         }
     }
 
@@ -46,7 +45,7 @@ final class JsonbType extends Type
 
             return \is_array($decodedValue) ? $this->sortByKey($decodedValue) : $decodedValue;
         } catch (JsonException $exception) {
-            throw InvalidFormat::new((string)$value, self::class, 'json', $exception);
+            throw ConversionExceptionFactory::invalidFormat((string)$value, self::class, 'json', $exception);
         }
     }
 

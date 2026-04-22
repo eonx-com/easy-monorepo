@@ -14,7 +14,6 @@ return App::config([
             ],
         ],
         'orm' => [
-            'enable_native_lazy_objects' => true,
             'entity_managers' => [
                 'default' => [
                     'mappings' => [

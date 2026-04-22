@@ -70,7 +70,6 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $config->setMetadataDriverImpl(new AttributeDriver([]));
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
-        $config->enableNativeLazyObjects(true);
 
         if (Type::hasType(SqliteStringUuidType::NAME) === false) {
             Type::addType(SqliteStringUuidType::NAME, SqliteStringUuidType::class);

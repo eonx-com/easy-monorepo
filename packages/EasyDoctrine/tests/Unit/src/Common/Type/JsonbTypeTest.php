@@ -117,8 +117,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert PHP value 'some incorrectly encoded utf string " .
-            \urldecode('%C4') . "' to type jsonb." .
-            ' Expected one of the following types: null, mixed.'
+            \urldecode('%C4') . "' to type jsonb."
         );
 
         $type->convertToDatabaseValue($value, $platform);
@@ -142,7 +141,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type' .
-            ' EonX\EasyDoctrine\Common\Type\JsonbType. Expected format "json".');
+            ' EonX\EasyDoctrine\Common\Type\JsonbType.');
 
         $type->convertToPHPValue($value, $platform);
     }

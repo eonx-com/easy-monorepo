@@ -13,8 +13,6 @@ return App::config([
                 ],
             ],
         ],
-        'orm' => [
-            'enable_native_lazy_objects' => true,
-        ],
+        'orm' => [],
     ],
 ]);

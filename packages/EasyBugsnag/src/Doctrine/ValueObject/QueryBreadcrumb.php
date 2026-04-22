@@ -5,85 +5,89 @@ namespace EonX\EasyBugsnag\Doctrine\ValueObject;
 
 use Doctrine\DBAL\ParameterType;
 
-final class QueryBreadcrumb
-{
-    private ?float $queryDuration = null;
-
-    private array $queryParameters = [];
-
-    private float $queryStartTime;
-
-    /**
-     * @var array<\Doctrine\DBAL\ParameterType>
-     */
-    private array $queryTypes = [];
-
-    private array $queryValues = [];
-
-    public function __construct(
-        private readonly string $querySql,
-        private readonly string $connectionName,
-    ) {
-        $this->queryStartTime = \microtime(true);
-    }
-
-    public function __clone()
+if (\enum_exists(ParameterType::class)) {
+    final class QueryBreadcrumb
     {
-        $copy = [];
-        foreach ($this->queryParameters as $param => $valueOrVariable) {
-            $copy[$param] = $valueOrVariable;
-        }
-        $this->queryParameters = $copy;
-        $this->queryStartTime = \microtime(true);
-    }
+        private ?float $queryDuration = null;
 
-    public function getConnectionName(): string
-    {
-        return $this->connectionName;
-    }
+        private array $queryParameters = [];
 
-    /**
-     * Query duration in seconds.
-     */
-    public function getQueryDuration(): float
-    {
-        if ($this->queryDuration === null) {
-            $this->queryDuration = \microtime(true) - $this->queryStartTime;
+        private float $queryStartTime;
+
+        /**
+         * @var array<\Doctrine\DBAL\ParameterType>
+         */
+        private array $queryTypes = [];
+
+        private array $queryValues = [];
+
+        public function __construct(
+            private readonly string $querySql,
+            private readonly string $connectionName,
+        ) {
+            $this->queryStartTime = \microtime(true);
         }
 
-        return $this->queryDuration;
-    }
+        public function __clone()
+        {
+            $copy = [];
+            foreach ($this->queryParameters as $param => $valueOrVariable) {
+                $copy[$param] = $valueOrVariable;
+            }
+            $this->queryParameters = $copy;
+            $this->queryStartTime = \microtime(true);
+        }
 
-    public function getQueryParameters(): array
-    {
-        return $this->queryParameters;
-    }
+        public function getConnectionName(): string
+        {
+            return $this->connectionName;
+        }
 
-    public function getQuerySql(): string
-    {
-        return $this->querySql;
-    }
+        /**
+         * Query duration in seconds.
+         */
+        public function getQueryDuration(): float
+        {
+            if ($this->queryDuration === null) {
+                $this->queryDuration = \microtime(true) - $this->queryStartTime;
+            }
 
-    /**
-     * @return array<\Doctrine\DBAL\ParameterType>
-     */
-    public function getQueryTypes(): array
-    {
-        return $this->queryTypes;
-    }
+            return $this->queryDuration;
+        }
 
-    public function getQueryValues(): array
-    {
-        return $this->queryValues;
-    }
+        public function getQueryParameters(): array
+        {
+            return $this->queryParameters;
+        }
 
-    public function setQueryParameter(int|string $parameter, mixed $value, ParameterType $type): void
-    {
-        // Numeric indexes start at 0 in profiler
-        $index = \is_int($parameter) ? $parameter - 1 : $parameter;
+        public function getQuerySql(): string
+        {
+            return $this->querySql;
+        }
 
-        $this->queryParameters[$index] = $parameter;
-        $this->queryValues[$index] = $value;
-        $this->queryTypes[$index] = $type;
+        /**
+         * @return array<\Doctrine\DBAL\ParameterType>
+         */
+        public function getQueryTypes(): array
+        {
+            return $this->queryTypes;
+        }
+
+        public function getQueryValues(): array
+        {
+            return $this->queryValues;
+        }
+
+        public function setQueryParameter(int|string $parameter, mixed $value, ParameterType $type): void
+        {
+            // Numeric indexes start at 0 in profiler
+            $index = \is_int($parameter) ? $parameter - 1 : $parameter;
+
+            $this->queryParameters[$index] = $parameter;
+            $this->queryValues[$index] = $value;
+            $this->queryTypes[$index] = $type;
+        }
     }
+} else {
+    class_alias(QueryBreadcrumbDbal3::class, QueryBreadcrumb::class);
 }

@@ -25,11 +25,11 @@ return App::config([
                 'default' => [
                     'driver' => 'pdo_sqlite',
                     'url' => 'sqlite:///:memory:',
+                    'use_savepoints' => true,
                 ],
             ],
         ],
         'orm' => [
-            'enable_native_lazy_objects' => true,
             'entity_managers' => [
                 'default' => [
                     'dql' => [

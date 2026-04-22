@@ -129,8 +129,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            'to type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.' .
-            ' Expected one of the following types: null, DateTimeInterface.');
+            'to type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.');
 
         $type->convertToDatabaseValue($value, $platform);
     }
@@ -155,8 +154,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
-            'to Doctrine Type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.' .
-            ' Expected format "Y-m-d H:i:s.u".');
+            'to Doctrine Type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.');
 
         $type->convertToPHPValue($value, $platform);
     }
