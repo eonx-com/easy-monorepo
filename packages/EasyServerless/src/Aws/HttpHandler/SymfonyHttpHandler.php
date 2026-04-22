@@ -78,7 +78,7 @@ final class SymfonyHttpHandler extends HttpHandler
     public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
     {
         $this->reset();
-        self::ensureHttpRuntimeMode();
+        $this->ensureHttpRuntimeMode();
         $this->setRequestContext((string)\json_encode($event->getRequestContext()));
 
         $symfonyRequest = $this->httpFoundationFactory->createRequest(Psr7Bridge::convertRequest($event, $context));
@@ -90,7 +90,7 @@ final class SymfonyHttpHandler extends HttpHandler
         return Psr7Bridge::convertResponse($this->psrHttpFactory->createResponse($symfonyResponse));
     }
 
-    private static function ensureHttpRuntimeMode(): void
+    private function ensureHttpRuntimeMode(): void
     {
         $current = \getenv(self::APP_RUNTIME_MODE);
 
