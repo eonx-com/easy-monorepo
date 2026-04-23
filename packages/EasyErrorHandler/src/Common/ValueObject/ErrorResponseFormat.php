@@ -8,8 +8,7 @@ final readonly class ErrorResponseFormat
     public function __construct(
         private string $key,
         private string $value,
-    ) {
-    }
+    ) {}
 
     public static function create(string $key, string $value): self
     {

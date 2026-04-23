@@ -13,8 +13,7 @@ final class SimpleEncryptionKeyResolver extends AbstractEncryptionKeyResolver
         private readonly string $keyName,
         private readonly string $encryptionKey,
         private readonly ?string $salt = null,
-    ) {
-    }
+    ) {}
 
     public function supportsKey(string $keyName): bool
     {

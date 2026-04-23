@@ -10,7 +10,5 @@ use Doctrine\Persistence\ObjectManagerDecorator;
  */
 final class NotSupportedObjectManager extends ObjectManagerDecorator
 {
-    public function clear(): void
-    {
-    }
+    public function clear(): void {}
 }

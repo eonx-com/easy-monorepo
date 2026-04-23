@@ -12,8 +12,7 @@ final readonly class AsyncActivityLogger implements ActivityLoggerInterface
     public function __construct(
         private ActivityLogEntryFactoryInterface $activityLogEntryFactory,
         private AsyncDispatcherInterface $dispatcher,
-    ) {
-    }
+    ) {}
 
     public function addActivityLogEntry(ActivityAction|string $action, object $object, array $changeSet): void
     {

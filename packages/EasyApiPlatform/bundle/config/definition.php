@@ -58,7 +58,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->variableNode('validation_error_code')
                 ->validate()
                     ->ifTrue(
-                        static fn ($value): bool => \is_int($value) === false
+                        static fn($value): bool => \is_int($value) === false
                             && \is_string($value) === false
                             && ($value instanceof BackedEnum) === false
                     )

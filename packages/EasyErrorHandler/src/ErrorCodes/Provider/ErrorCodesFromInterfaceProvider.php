@@ -17,8 +17,7 @@ final readonly class ErrorCodesFromInterfaceProvider implements ErrorCodesProvid
      */
     public function __construct(
         private ?string $errorCodesInterface = null,
-    ) {
-    }
+    ) {}
 
     public function provide(): array
     {

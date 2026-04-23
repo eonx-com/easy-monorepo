@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
-use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
+use EonX\EasyQuality\Rector\DataProviderSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
@@ -39,7 +39,7 @@ return RectorConfig::configure()
     ])
     ->withSets([
         EasyQualitySetList::RECTOR,
-        EasyQualitySetList::RECTOR_PHPUNIT_10,
+        EasyQualitySetList::RECTOR_PHPUNIT_12,
     ])
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class => null,
@@ -61,6 +61,6 @@ return RectorConfig::configure()
         'packages/*/vendor/*',
     ])
     ->withRules([
-        AddSeeAnnotationRector::class,
+        DataProviderSeeAnnotationRector::class,
     ])
     ->withConfiguredRule(SingleLineCommentRector::class, [[]]);

@@ -140,8 +140,7 @@ final class ExpressionLanguage implements ExpressionLanguageInterface
         foreach ($this->functions as $function) {
             $expressionLanguage->register(
                 $function->getName(),
-                static function (): void {
-                },
+                static function (): void {},
                 $function->getEvaluator()
             );
         }

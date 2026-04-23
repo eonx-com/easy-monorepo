@@ -36,7 +36,7 @@ final class IterablePaginatorTest extends AbstractUnitTestCase
             static function (array $items): void {
                 self::assertEquals([1, 1], $items);
             },
-            static fn ($item) => $item ?? 1,
+            static fn($item) => $item ?? 1,
         ];
     }
 

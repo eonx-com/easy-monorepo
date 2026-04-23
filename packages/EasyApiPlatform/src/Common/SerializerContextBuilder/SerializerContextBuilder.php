@@ -12,8 +12,7 @@ final readonly class SerializerContextBuilder implements SerializerContextBuilde
 {
     public function __construct(
         private SerializerContextBuilderInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public function createFromRequest(
         Request $request,

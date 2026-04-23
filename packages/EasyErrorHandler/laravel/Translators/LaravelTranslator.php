@@ -11,8 +11,7 @@ final readonly class LaravelTranslator implements TranslatorInterface
 {
     public function __construct(
         private IlluminateTranslatorInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {

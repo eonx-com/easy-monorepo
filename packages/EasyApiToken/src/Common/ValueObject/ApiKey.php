@@ -7,8 +7,7 @@ final readonly class ApiKey implements ApiTokenInterface
 {
     public function __construct(
         private string $apiKey,
-    ) {
-    }
+    ) {}
 
     public function getApiKey(): string
     {

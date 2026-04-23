@@ -41,7 +41,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         // Queue
         // Add IDs to jobs pushed to the queue
-        Queue::createPayloadUsing(static fn (): array => [
+        Queue::createPayloadUsing(static fn(): array => [
             'easy_request_id' => [
                 $requestIdProvider->getCorrelationIdHeaderName() => $requestIdProvider->getCorrelationId(),
                 $requestIdProvider->getRequestIdHeaderName() => $requestIdProvider->getRequestId(),
@@ -83,7 +83,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             RequestIdProviderInterface::class,
-            static fn (Container $app): RequestIdProviderInterface => new RequestIdProvider(
+            static fn(Container $app): RequestIdProviderInterface => new RequestIdProvider(
                 $app->make(FallbackResolverInterface::class),
                 \config('easy-request-id.http_headers.correlation_id'),
                 \config('easy-request-id.http_headers.request_id')

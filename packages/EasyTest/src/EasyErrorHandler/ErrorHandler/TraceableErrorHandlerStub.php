@@ -26,8 +26,7 @@ final class TraceableErrorHandlerStub implements TraceableErrorHandlerInterface,
 
     public function __construct(
         private readonly TraceableErrorHandlerInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public static function getAllRenderedErrors(): array
     {

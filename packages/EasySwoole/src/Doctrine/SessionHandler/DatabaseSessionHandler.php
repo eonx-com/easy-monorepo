@@ -17,8 +17,7 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ?array $options = null,
-    ) {
-    }
+    ) {}
 
     public function close(): bool
     {

@@ -27,19 +27,19 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
     public static function provideGettersData(): iterable
     {
         yield 'Constructor' => [
-            fn (): RealTimeMessage => new RealTimeMessage(static::$body, static::$topics),
+            fn(): RealTimeMessage => new RealTimeMessage(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method' => [
-            fn (): RealTimeMessage => RealTimeMessage::create(static::$body, static::$topics),
+            fn(): RealTimeMessage => RealTimeMessage::create(static::$body, static::$topics),
             static::$body,
             static::$topics,
         ];
 
         yield 'Create method + topics' => [
-            fn (): RealTimeMessage => RealTimeMessage::create(static::$body)->setTopics(static::$topics),
+            fn(): RealTimeMessage => RealTimeMessage::create(static::$body)->setTopics(static::$topics),
             static::$body,
             static::$topics,
         ];

@@ -13,7 +13,7 @@ final class ApiKeyDecoder extends AbstractDecoder
 {
     private ?HashedApiKeyDriverInterface $hashedApiKeyDriver = null;
 
-    public function decode(Request $request): null|ApiTokenInterface|HashedApiKey
+    public function decode(Request $request): ApiTokenInterface|HashedApiKey|null
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 

@@ -11,8 +11,7 @@ final readonly class ExceptionListener
 {
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ExceptionEvent $event): void
     {
@@ -22,8 +21,8 @@ final readonly class ExceptionListener
         $this->errorHandler->report($throwable);
 
         // Skip if format not supported
-        if ($this->errorHandler instanceof FormatAwareInterface &&
-            $this->errorHandler->supportsFormat($request) === false
+        if ($this->errorHandler instanceof FormatAwareInterface
+            && $this->errorHandler->supportsFormat($request) === false
         ) {
             return;
         }

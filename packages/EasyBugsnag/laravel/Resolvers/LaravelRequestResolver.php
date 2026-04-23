@@ -12,8 +12,7 @@ final class LaravelRequestResolver extends AbstractRequestResolver
 {
     public function __construct(
         private readonly Request $request,
-    ) {
-    }
+    ) {}
 
     protected function doResolve(): RequestInterface
     {

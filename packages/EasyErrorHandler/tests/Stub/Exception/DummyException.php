@@ -5,6 +5,4 @@ namespace EonX\EasyErrorHandler\Tests\Stub\Exception;
 
 use Exception;
 
-final class DummyException extends Exception implements DummyExceptionInterface
-{
-}
+final class DummyException extends Exception implements DummyExceptionInterface {}

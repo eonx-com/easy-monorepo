@@ -18,8 +18,7 @@ final class TypeRestrictedExpressionFunctionDecisionConfigurator extends Abstrac
             return;
         }
 
-        $expressionLanguage->addFunction(new ExpressionFunction('restricted', function (): void {
-        }));
+        $expressionLanguage->addFunction(new ExpressionFunction('restricted', function (): void {}));
     }
 
     protected function getType(): string

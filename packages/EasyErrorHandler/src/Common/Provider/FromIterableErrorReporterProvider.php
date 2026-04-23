@@ -10,8 +10,7 @@ final readonly class FromIterableErrorReporterProvider implements ErrorReporterP
      */
     public function __construct(
         private iterable $reporters,
-    ) {
-    }
+    ) {}
 
     /**
      * @return iterable<\EonX\EasyErrorHandler\Common\Reporter\ErrorReporterInterface>

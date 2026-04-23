@@ -20,6 +20,5 @@ final class Note
             denormalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d|'],
         )]
         public DateTimeImmutable $publishedAt,
-    ) {
-    }
+    ) {}
 }

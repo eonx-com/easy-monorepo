@@ -151,7 +151,7 @@ trait MessengerAssertionsTrait
             );
         }
 
-        $realDelays = \array_map(static fn (int|float $value): float => $value + 0.000001, $expectedDelays ?? []);
+        $realDelays = \array_map(static fn(int|float $value): float => $value + 0.000001, $expectedDelays ?? []);
 
         self::runMessengerWorker($transports, 'default', $expectedExceptions, $realDelays);
     }
@@ -217,7 +217,7 @@ trait MessengerAssertionsTrait
     {
         return \array_reduce(
             $transports,
-            static fn (int $count, TransportInterface $transport): int => $count + \count((array)$transport->get()),
+            static fn(int $count, TransportInterface $transport): int => $count + \count((array)$transport->get()),
             0
         );
     }
@@ -313,8 +313,8 @@ trait MessengerAssertionsTrait
                 foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
                     foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
                         // If $expectedExceptionPairOrClass is a string = exceptionClass
-                        if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
-                            $errorDetailsStamp->getExceptionCode() === 0
+                        if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass()
+                            && $errorDetailsStamp->getExceptionCode() === 0
                         ) {
                             unset($expectedExceptions[$key]);
 

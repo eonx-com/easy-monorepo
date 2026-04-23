@@ -10,8 +10,7 @@ final readonly class DecryptedString implements Stringable
     public function __construct(
         private string $decryptedString,
         private string $keyName,
-    ) {
-    }
+    ) {}
 
     public function __toString(): string
     {

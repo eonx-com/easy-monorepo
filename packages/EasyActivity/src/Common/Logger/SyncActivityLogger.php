@@ -12,8 +12,7 @@ final readonly class SyncActivityLogger implements ActivityLoggerInterface
     public function __construct(
         private ActivityLogEntryFactoryInterface $activityLogEntryFactory,
         private StoreInterface $store,
-    ) {
-    }
+    ) {}
 
     public function addActivityLogEntry(ActivityAction|string $action, object $object, array $changeSet): void
     {

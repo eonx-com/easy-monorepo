@@ -72,7 +72,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ])
                     ->orderBy('created_at');
             })
-            ->setTransformer(fn (array $item): WebhookInterface => $this->instantiateWebhook($item)
+            ->setTransformer(fn(array $item): WebhookInterface => $this->instantiateWebhook($item)
                 ->bypassSendAfter(true));
 
         return $paginator;

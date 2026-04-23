@@ -107,7 +107,7 @@ final class BugsnagErrorReporterTest extends AbstractUnitTestCase
     #[DataProvider('provideDataForReportWithIgnoredExceptionsResolver')]
     public function testReportWithIgnoredExceptionsResolver(bool $shouldIgnore, Throwable $throwable): void
     {
-        $exceptionIgnorer = new class() implements BugsnagExceptionIgnorerInterface {
+        $exceptionIgnorer = new class implements BugsnagExceptionIgnorerInterface {
             public function shouldIgnore(Throwable $throwable): bool
             {
                 if ($throwable instanceof BaseExceptionStub) {

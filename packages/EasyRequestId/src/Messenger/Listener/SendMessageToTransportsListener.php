@@ -11,8 +11,7 @@ final readonly class SendMessageToTransportsListener
 {
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function __invoke(SendMessageToTransportsEvent $event): void
     {

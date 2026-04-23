@@ -14,8 +14,7 @@ final class RequestIdMiddleware
 
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): mixed
     {

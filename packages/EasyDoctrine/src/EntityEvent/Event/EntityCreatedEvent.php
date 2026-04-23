@@ -8,6 +8,4 @@ namespace EonX\EasyDoctrine\EntityEvent\Event;
  *
  * @extends \EonX\EasyDoctrine\EntityEvent\Event\AbstractEntityEvent<T>
  */
-final readonly class EntityCreatedEvent extends AbstractEntityEvent
-{
-}
+final readonly class EntityCreatedEvent extends AbstractEntityEvent {}

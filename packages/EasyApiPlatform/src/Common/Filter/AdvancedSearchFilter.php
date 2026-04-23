@@ -275,9 +275,9 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         }
 
         if (
-            $value === null ||
-            $this->isPropertyEnabled($filterParameter, $resourceClass) === false ||
-            $this->isPropertyMapped($property, $resourceClass, true) === false
+            $value === null
+            || $this->isPropertyEnabled($filterParameter, $resourceClass) === false
+            || $this->isPropertyMapped($property, $resourceClass, true) === false
         ) {
             return;
         }
@@ -395,7 +395,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         }, $values);
 
         $expected = \count($values);
-        $values = \array_filter($values, static fn (?string $value): bool => $value !== null && $value !== '');
+        $values = \array_filter($values, static fn(?string $value): bool => $value !== null && $value !== '');
         if ($expected > \count($values)) {
             /*
              * Shouldn't this actually fail harder?

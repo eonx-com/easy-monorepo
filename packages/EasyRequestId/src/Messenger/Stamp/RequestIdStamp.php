@@ -10,8 +10,7 @@ final readonly class RequestIdStamp implements StampInterface
     public function __construct(
         private ?string $correlationId = null,
         private ?string $requestId = null,
-    ) {
-    }
+    ) {}
 
     public function getCorrelationId(): ?string
     {

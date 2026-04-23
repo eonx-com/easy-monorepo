@@ -79,7 +79,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
      */
     private function formatPermissions(array $permissions): array
     {
-        $map = static fn (Permission $permission): string => (string)$permission;
+        $map = static fn(Permission $permission): string => (string)$permission;
 
         return \array_values(\array_map($map, $permissions));
     }
@@ -97,7 +97,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
      */
     private function formatRoles(array $roles): array
     {
-        $map = static fn (Role $role): string => (string)$role;
+        $map = static fn(Role $role): string => (string)$role;
 
         return \array_values(\array_map($map, $roles));
     }

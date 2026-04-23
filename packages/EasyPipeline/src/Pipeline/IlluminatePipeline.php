@@ -57,6 +57,6 @@ final class IlluminatePipeline implements PipelineInterface, MiddlewareLoggerInt
             ->send($input)
             ->through($this->middlewareList)
             ->via('handle')
-            ->then(static fn ($input) => $input);
+            ->then(static fn($input) => $input);
     }
 }

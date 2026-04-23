@@ -10,6 +10,5 @@ final class PaymentInputDtoWithConstructor
     public function __construct(
         #[SerializedName('type')]
         public string $paymentType,
-    ) {
-    }
+    ) {}
 }

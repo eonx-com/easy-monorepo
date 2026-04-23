@@ -21,8 +21,7 @@ final class DbalConnection implements Connection
 
     public function __construct(
         private readonly PdoClientPool $pool,
-    ) {
-    }
+    ) {}
 
     public function __destruct()
     {

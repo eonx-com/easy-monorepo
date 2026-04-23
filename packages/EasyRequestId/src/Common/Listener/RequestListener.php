@@ -13,8 +13,7 @@ final class RequestListener
 
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestEvent $event): void
     {

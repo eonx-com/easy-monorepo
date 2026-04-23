@@ -53,7 +53,7 @@ final class DynamoDbResultStore extends AbstractDynamoDbStore implements ResultS
         ]);
 
         return \array_map(
-            static fn ($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
+            static fn($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
             $this->formatData($data)
         );
     }

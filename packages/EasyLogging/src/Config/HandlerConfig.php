@@ -9,8 +9,7 @@ final class HandlerConfig extends AbstractLoggingConfig implements HandlerConfig
 {
     public function __construct(
         private readonly HandlerInterface $handler,
-    ) {
-    }
+    ) {}
 
     public static function create(HandlerInterface $handler): HandlerConfigInterface
     {

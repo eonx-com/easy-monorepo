@@ -11,8 +11,7 @@ final class TrustedProxiesListener extends AbstractRequestListener
 {
     public function __construct(
         private readonly ContainerInterface $container,
-    ) {
-    }
+    ) {}
 
     protected function doInvoke(RequestEvent $event): void
     {

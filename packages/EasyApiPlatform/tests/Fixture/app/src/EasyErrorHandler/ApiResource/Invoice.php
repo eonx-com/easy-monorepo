@@ -19,6 +19,5 @@ final class Invoice
 {
     public function __construct(
         public Payment $payment,
-    ) {
-    }
+    ) {}
 }

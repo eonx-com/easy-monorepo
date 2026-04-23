@@ -12,8 +12,7 @@ final readonly class LumenHttpKernel implements Kernel
 {
     public function __construct(
         private Application $app,
-    ) {
-    }
+    ) {}
 
     public function bootstrap(): void
     {

@@ -20,8 +20,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @param class-string<object> $class
@@ -37,7 +36,6 @@ final class EventDispatcherStub implements EventDispatcherInterface
             'event' => $event,
             'eventName' => $eventName,
         ];
-
         $callback = $this->dispatchCallbacks[$event::class] ?? null;
 
         if ($callback !== null) {

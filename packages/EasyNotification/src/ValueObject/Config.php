@@ -15,8 +15,7 @@ final readonly class Config
         private string $queueRegion,
         private string $queueUrl,
         private string $secret,
-    ) {
-    }
+    ) {}
 
     public static function fromArray(array $config): self
     {

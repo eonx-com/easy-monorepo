@@ -16,8 +16,7 @@ final readonly class TagVersionReleaseWorker implements ReleaseWorkerInterface
         private GitHelper $gitManager,
         private ClientInterface $httpClient,
         private ProcessRunner $processRunner,
-    ) {
-    }
+    ) {}
 
     public function getDescription(Version $version): string
     {
