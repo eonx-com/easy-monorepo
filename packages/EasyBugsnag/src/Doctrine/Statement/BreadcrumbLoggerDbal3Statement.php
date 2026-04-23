@@ -41,7 +41,7 @@ final class BreadcrumbLoggerDbal3Statement extends AbstractStatementMiddleware
         $sqlBreadcrumb = clone $this->queryBreadcrumb;
 
         try {
-            return parent::execute();
+            return parent::execute($params);
         } finally {
             $this->queryBreadcrumbLogger->log($sqlBreadcrumb);
         }

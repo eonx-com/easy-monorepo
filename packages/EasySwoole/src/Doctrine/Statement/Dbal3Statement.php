@@ -25,7 +25,7 @@ final readonly class Dbal3Statement implements Statement
     public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null): bool
     {
         try {
-            return $this->pdoStatement->bindParam($param, $variable, $this->convertParamType($type), $length);
+            return $this->pdoStatement->bindParam($param, $variable, $this->convertParamType($type), $length ?? 0);
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }

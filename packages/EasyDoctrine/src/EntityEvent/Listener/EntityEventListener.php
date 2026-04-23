@@ -151,7 +151,7 @@ final readonly class EntityEventListener
             });
 
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
-                // @todo Remove this dock block after drop supporting Doctrine DBAL 3
+                // @todo Remove this docblock after dropping support for Doctrine ORM 2
                 /** @var array{fieldName: string}|\Doctrine\ORM\Mapping\AssociationMapping $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
@@ -170,7 +170,7 @@ final readonly class EntityEventListener
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
             if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
-                // @todo Remove this dock block after drop supporting Doctrine ORM 2
+                // @todo Remove this docblock after dropping support for Doctrine ORM 2
                 /** @var array{fieldName: string}|\Doctrine\ORM\Mapping\AssociationMapping $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
