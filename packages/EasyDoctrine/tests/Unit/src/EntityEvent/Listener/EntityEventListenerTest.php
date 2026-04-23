@@ -6,6 +6,9 @@ namespace EonX\EasyDoctrine\Tests\Unit\EntityEvent\Listener;
 use Carbon\CarbonImmutable;
 use DateTime;
 use DateTimeZone;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityCreatedEventListener;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityDeletedEventListener;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityUpdateEventListener;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
@@ -21,6 +24,9 @@ use EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
+#[CoversClass(AsEntityCreatedEventListener::class)]
+#[CoversClass(AsEntityDeletedEventListener::class)]
+#[CoversClass(AsEntityUpdateEventListener::class)]
 #[CoversClass(DeferredEntityEventDispatcher::class)]
 #[CoversClass(EntityEventListener::class)]
 final class EntityEventListenerTest extends AbstractUnitTestCase
@@ -82,16 +88,17 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $category,
-                [
-                    'activeTill' => [$activeTill, $newActiveTill],
-                ]
-            ),
-            $events[0]
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityUpdatedEvent(
+            $category,
+            [
+                'activeTill' => [$activeTill, $newActiveTill],
+            ]
         );
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Category::class, $events[1]['eventName']);
     }
 
     public function testEventIsNotDispatchedForEqualObjects(): void
@@ -150,7 +157,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityCreatedEvent($product, [
+            'category' => [null, null],
+            'name' => [null, 'Description 1'],
+            'price' => [null, new Price('1000', 'USD')],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
 
     public function testEventsAreDispatchedWhenExceptionIsThrownAndCaught(): void
@@ -179,18 +195,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         });
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(2, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $product,
-                [
-                    'category' => [null, null],
-                    'name' => [null, 'Description 1'],
-                    'price' => [null, new Price('1000', 'USD')],
-                ]
-            ),
-            $events[1]
-        );
+        self::assertCount(3, $events);
+        $expectedEvent = new EntityCreatedEvent($product, [
+            'category' => [null, null],
+            'name' => [null, 'Description 1'],
+            'price' => [null, new Price('1000', 'USD')],
+        ]);
+        self::assertNull($events[1]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[2]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[2]['eventName']);
     }
 
     public function testEventsAreDispatchedWhenMultipleEntitiesAreChanged(): void
@@ -212,30 +226,26 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(2, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $category,
-                [
-                    'activeTill' => [null, null],
-                    'name' => [null, 'Computer'],
-                    'createdAt' => [null, $now],
-                    'updatedAt' => [null, $now],
-                ]
-            ),
-            $events[0]
-        );
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $product,
-                [
-                    'name' => [null, 'Keyboard'],
-                    'price' => [null, $price],
-                    'category' => [null, null],
-                ]
-            ),
-            $events[1]
-        );
+        self::assertCount(4, $events);
+        $expectedCategoryEvent = new EntityCreatedEvent($category, [
+            'activeTill' => [null, null],
+            'name' => [null, 'Computer'],
+            'createdAt' => [null, $now],
+            'updatedAt' => [null, $now],
+        ]);
+        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[1]['event']);
+        self::assertSame('entity.created.' . Category::class, $events[1]['eventName']);
+        $expectedProductEvent = new EntityCreatedEvent($product, [
+            'name' => [null, 'Keyboard'],
+            'price' => [null, $price],
+            'category' => [null, null],
+        ]);
+        self::assertEqualsCanonicalizing($expectedProductEvent, $events[2]['event']);
+        self::assertNull($events[2]['eventName']);
+        self::assertEqualsCanonicalizing($expectedProductEvent, $events[3]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[3]['eventName']);
     }
 
     public function testEventsAreDispatchedWhenMultipleEntitiesAreUpdated(): void
@@ -274,25 +284,21 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(2, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $category,
-                [
-                    'name' => ['Computer', 'Computer Peripherals'],
-                ]
-            ),
-            $events[0]
-        );
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $product,
-                [
-                    'price' => [new Price('1000', 'USD'), new Price('2000', 'USD')],
-                ]
-            ),
-            $events[1]
-        );
+        self::assertCount(4, $events);
+        $expectedCategoryEvent = new EntityUpdatedEvent($category, [
+            'name' => ['Computer', 'Computer Peripherals'],
+        ]);
+        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Category::class, $events[1]['eventName']);
+        $expectedProductEvent = new EntityUpdatedEvent($product, [
+            'price' => [new Price('1000', 'USD'), new Price('2000', 'USD')],
+        ]);
+        self::assertEqualsCanonicalizing($expectedProductEvent, $events[2]['event']);
+        self::assertNull($events[2]['eventName']);
+        self::assertEqualsCanonicalizing($expectedProductEvent, $events[3]['event']);
+        self::assertSame('entity.updated.' . Product::class, $events[3]['eventName']);
     }
 
     public function testEventsAreDispatchedWithFlushInEmbeddedEventHandler(): void
@@ -324,7 +330,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = $eventDispatcher->getDispatchedEvents();
-        self::assertCount(2, $events);
+        self::assertCount(6, $events);
         self::assertEqualsCanonicalizing(
             new EntityCreatedEvent(
                 $category,
@@ -335,21 +341,40 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
                     'updatedAt' => [null, $now],
                 ]
             ),
-            $events[0]
+            $events[0]['event']
         );
+        self::assertNull($events[0]['eventName']);
+        /** @var list<\EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product> $products */
+        $products = $entityManager->getRepository(Product::class)->findBy(['name' => 'Keyboard']);
+        self::assertCount(2, $products);
         /** @var \EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product $product */
         $product = $entityManager->getRepository(Product::class)->findOneBy(['name' => 'Keyboard']);
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $product,
-                [
-                    'name' => [null, 'Keyboard'],
-                    'price' => [null, new Price('100', 'USD')],
-                    'category' => [null, null],
-                ]
-            ),
-            $events[1]
-        );
+        $expectedCategoryEvent = new EntityCreatedEvent($category, [
+            'activeTill' => [null, null],
+            'name' => [null, 'Computer'],
+            'createdAt' => [null, $now],
+            'updatedAt' => [null, $now],
+        ]);
+        $expectedFirstProductEvent = new EntityCreatedEvent($product, [
+            'name' => [null, 'Keyboard'],
+            'price' => [null, new Price('100', 'USD')],
+            'category' => [null, null],
+        ]);
+        $expectedSecondProductEvent = new EntityCreatedEvent($products[1], [
+            'name' => [null, 'Keyboard'],
+            'price' => [null, new Price('100', 'USD')],
+            'category' => [null, null],
+        ]);
+        self::assertEqualsCanonicalizing($expectedFirstProductEvent, $events[1]['event']);
+        self::assertNull($events[1]['eventName']);
+        self::assertEqualsCanonicalizing($expectedFirstProductEvent, $events[2]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[2]['eventName']);
+        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[3]['event']);
+        self::assertSame('entity.created.' . Category::class, $events[3]['eventName']);
+        self::assertEqualsCanonicalizing($expectedSecondProductEvent, $events[4]['event']);
+        self::assertNull($events[4]['eventName']);
+        self::assertEqualsCanonicalizing($expectedSecondProductEvent, $events[5]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[5]['eventName']);
     }
 
     public function testEventsAreDispatchedWithRelatedEntityInChangeSet(): void
@@ -369,18 +394,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $product,
-                [
-                    'name' => [null, 'Keyboard'],
-                    'price' => [null, new Price('1000', 'USD')],
-                    'category' => [null, $category],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityCreatedEvent($product, [
+            'name' => [null, 'Keyboard'],
+            'price' => [null, new Price('1000', 'USD')],
+            'category' => [null, $category],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
 
     public function testEventsAreNotDispatchedForCollectionWhenItemUpdated(): void
@@ -426,16 +449,14 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $tag2,
-                [
-                    'name' => ['Tag 2', 'New Tag 2 Name'],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityUpdatedEvent($tag2, [
+            'name' => ['Tag 2', 'New Tag 2 Name'],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Tag::class, $events[1]['eventName']);
     }
 
     public function testEventsAreNotDispatchedWhenDispatcherIsDisabled(): void
@@ -588,9 +609,9 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        /** @var \EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent $actualEvent */
-        $actualEvent = $events[0];
+        self::assertCount(2, $events);
+        /** @var \EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent<object> $actualEvent */
+        $actualEvent = $events[0]['event'];
         self::assertInstanceOf(EntityDeletedEvent::class, $actualEvent);
         self::assertEquals($actualEvent->getChangeSet(), [
             'id' => [1, null],
@@ -621,6 +642,9 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         self::assertSame(2, $tag2->getId());
         self::assertSame('Tag 2', $tag2->getName());
         self::assertCount(0, $product->getOffers());
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($actualEvent, $events[1]['event']);
+        self::assertSame('entity.deleted.' . Product::class, $events[1]['eventName']);
     }
 
     public function testOneEventIsDispatchedForMultipleUpdatedEntity(): void
@@ -653,17 +677,15 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $product,
-                [
-                    'price' => [new Price('1000', 'USD'), new Price('3000', 'USD')],
-                    'name' => ['Keyboard', 'Keyboard 2'],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityUpdatedEvent($product, [
+            'price' => [new Price('1000', 'USD'), new Price('3000', 'USD')],
+            'name' => ['Keyboard', 'Keyboard 2'],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
 
     public function testOneEventIsDispatchedForNewEntity(): void
@@ -685,18 +707,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $product,
-                [
-                    'category' => [null, null],
-                    'name' => [null, 'Name 1'],
-                    'price' => [null, new Price('2000', 'USD')],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityCreatedEvent($product, [
+            'category' => [null, null],
+            'name' => [null, 'Name 1'],
+            'price' => [null, new Price('2000', 'USD')],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
 
     public function testOneEventIsDispatchedForNewEntityCreatedAndUpdatedInTransaction(): void
@@ -722,18 +742,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         });
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityCreatedEvent(
-                $product,
-                [
-                    'category' => [null, null],
-                    'name' => [null, 'Name 3'],
-                    'price' => [null, new Price('2000', 'AUD')],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityCreatedEvent($product, [
+            'category' => [null, null],
+            'name' => [null, 'Name 3'],
+            'price' => [null, new Price('2000', 'AUD')],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
 
     public function testOneEventIsDispatchedForUpdatedCollection(): void
@@ -782,19 +800,17 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $product,
-                [
-                    'tags' => [
-                        [1, 2],
-                        [1, 3],
-                    ],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityUpdatedEvent($product, [
+            'tags' => [
+                [1, 2],
+                [1, 3],
+            ],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
 
     public function testOneEventIsDispatchedForUpdatedCollectionWhenManyToMany(): void
@@ -851,19 +867,17 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         $entityManager->flush();
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $product,
-                [
-                    'offers' => [
-                        ['Not available'],
-                        ['Collection was cleared'],
-                    ],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityUpdatedEvent($product, [
+            'offers' => [
+                ['Not available'],
+                ['Collection was cleared'],
+            ],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
 
     public function testOneEventIsDispatchedForUpdatedCollectionWhenTransactional(): void
@@ -918,18 +932,16 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         });
 
         $events = self::getService(EventDispatcherStub::class)->getDispatchedEvents();
-        self::assertCount(1, $events);
-        self::assertEqualsCanonicalizing(
-            new EntityUpdatedEvent(
-                $product,
-                [
-                    'tags' => [
-                        [1, 2],
-                        [1, 3],
-                    ],
-                ]
-            ),
-            $events[0]
-        );
+        self::assertCount(2, $events);
+        $expectedEvent = new EntityUpdatedEvent($product, [
+            'tags' => [
+                [1, 2],
+                [1, 3],
+            ],
+        ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
 }
