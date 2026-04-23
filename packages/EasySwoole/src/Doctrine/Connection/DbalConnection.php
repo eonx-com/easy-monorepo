@@ -123,5 +123,5 @@ if (\enum_exists(ParameterType::class)) {
         }
     }
 } else {
-    class_alias(Dbal3Connection::class, DbalConnection::class);
+    \class_alias(Dbal3Connection::class, DbalConnection::class);
 }

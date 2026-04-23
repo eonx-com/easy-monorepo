@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyDoctrine\Tests\Unit\Common\Type;
 
-use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use EonX\EasyDoctrine\Common\Type\JsonbType;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
@@ -102,7 +101,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToDatabaseValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         $type = new JsonbType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
 
         $result = $type->convertToDatabaseValue($phpValue, $platform);
 
@@ -112,7 +111,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToDatabaseValueThrowsConversionException(): void
     {
         $type = new JsonbType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
         $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
@@ -127,7 +126,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToPhpValueSucceeds(mixed $phpValue, ?string $postgresValue = null): void
     {
         $type = new JsonbType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
 
         $result = $type->convertToPHPValue($postgresValue, $platform);
 
@@ -137,7 +136,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testConvertToPhpValueThrowsConversionException(): void
     {
         $type = new JsonbType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type' .
@@ -149,7 +148,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
     public function testGetSQLDeclaration(): void
     {
         $type = new JsonbType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
 
         $result = $type->getSQLDeclaration([], $platform);
 

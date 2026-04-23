@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Tests\Unit;
 
 use Carbon\CarbonImmutable;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\ORM\Tools\SchemaTool;
 use EonX\EasyDoctrine\Tests\Fixture\App\Kernel\ApplicationKernel;
 use EonX\EasyTest\Common\Trait\ContainerServiceTrait;
@@ -53,5 +54,17 @@ abstract class AbstractUnitTestCase extends KernelTestCase
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropSchema($metaData);
         $schemaTool->updateSchema($metaData);
+    }
+
+    /**
+     * @deprecated Remove when Doctrine DBAL 3 support is dropped.
+     */
+    protected static function makeSqlitePlatform(): AbstractPlatform
+    {
+        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+            ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+            : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
+
+        return new $sqlitePlatformClass();
     }
 }

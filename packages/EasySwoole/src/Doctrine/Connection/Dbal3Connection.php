@@ -34,13 +34,13 @@ final class Dbal3Connection implements Connection
         }
     }
 
-    public function beginTransaction()
+    public function beginTransaction(): bool
     {
         return $this->getPdo()
             ->beginTransaction();
     }
 
-    public function commit()
+    public function commit(): bool
     {
         return $this->getPdo()
             ->commit();
@@ -70,7 +70,7 @@ final class Dbal3Connection implements Connection
             ->getAttribute(PDO::ATTR_SERVER_VERSION);
     }
 
-    public function lastInsertId($name = null)
+    public function lastInsertId($name = null): false|int|string
     {
         try {
             return $this->getPdo()
@@ -98,13 +98,13 @@ final class Dbal3Connection implements Connection
         }
     }
 
-    public function quote($value, $type = ParameterType::STRING)
+    public function quote($value, $type = ParameterType::STRING): mixed
     {
         return $this->getPdo()
             ->quote($value, $type);
     }
 
-    public function rollBack()
+    public function rollBack(): bool
     {
         return $this->getPdo()
             ->rollBack();

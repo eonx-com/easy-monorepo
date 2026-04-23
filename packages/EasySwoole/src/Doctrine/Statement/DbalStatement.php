@@ -60,5 +60,5 @@ if (\enum_exists(ParameterType::class)) {
         }
     }
 } else {
-    class_alias(Dbal3Statement::class, DbalStatement::class);
+    \class_alias(Dbal3Statement::class, DbalStatement::class);
 }

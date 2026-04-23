@@ -88,5 +88,5 @@ if (\enum_exists(ParameterType::class)) {
         }
     }
 } else {
-    \class_alias(BreadcrumbLoggerConnectionDbal3::class, BreadcrumbLoggerConnection::class);
+    \class_alias(BreadcrumbLoggerDbal3Connection::class, BreadcrumbLoggerConnection::class);
 }

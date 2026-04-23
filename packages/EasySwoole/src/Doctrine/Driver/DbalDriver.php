@@ -20,7 +20,7 @@ use SensitiveParameter;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 if (\method_exists(Driver::class, 'getSchemaManager')) {
-    class_alias(Dbal3Driver::class, DbalDriver::class);
+    \class_alias(Dbal3Driver::class, DbalDriver::class);
 } else {
     final readonly class DbalDriver implements Driver
     {

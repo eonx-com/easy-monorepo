@@ -13,7 +13,7 @@ use EonX\EasyBugsnag\Doctrine\ValueObject\QueryBreadcrumb;
 /**
  * @deprecated Remove when Doctrine DBAL 3 support is dropped.
  */
-final class BreadcrumbLoggerConnectionDbal3 extends AbstractConnectionMiddleware
+final class BreadcrumbLoggerDbal3Connection extends AbstractConnectionMiddleware
 {
     public function __construct(
         ConnectionInterface $connection,
@@ -23,23 +23,23 @@ final class BreadcrumbLoggerConnectionDbal3 extends AbstractConnectionMiddleware
         parent::__construct($connection);
     }
 
-    public function beginTransaction(): void
+    public function beginTransaction(): bool
     {
         $queryBreadcrumb = new QueryBreadcrumb('"START TRANSACTION"', $this->connectionName);
 
         try {
-            parent::beginTransaction();
+            return parent::beginTransaction();
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
         $queryBreadcrumb = new QueryBreadcrumb('"COMMIT"', $this->connectionName);
 
         try {
-            parent::commit();
+            return parent::commit();
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }
@@ -77,12 +77,12 @@ final class BreadcrumbLoggerConnectionDbal3 extends AbstractConnectionMiddleware
         }
     }
 
-    public function rollBack(): void
+    public function rollBack(): bool
     {
         $queryBreadcrumb = new QueryBreadcrumb('"ROLLBACK"', $this->connectionName);
 
         try {
-            parent::rollBack();
+            return parent::rollBack();
         } finally {
             $this->queryBreadcrumbLogger->log($queryBreadcrumb);
         }

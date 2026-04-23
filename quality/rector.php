@@ -7,6 +7,7 @@ use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
@@ -44,6 +45,18 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class => null,
+        AddParamBasedOnParentClassMethodRector::class => [
+            // @todo Remove when Doctrine DBAL 3 support is dropped
+            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerDbal3Statement.php',
+            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerStatement.php',
+            'packages/EasySwoole/src/Doctrine/Connection/Dbal3Connection.php',
+            'packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php',
+            'packages/EasySwoole/src/Doctrine/Driver/Dbal3Driver.php',
+            'packages/EasySwoole/src/Doctrine/Driver/DbalDriver.php',
+            'packages/EasySwoole/src/Doctrine/Statement/Dbal3Statement.php',
+            'packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php',
+            'packages/EasyAsync/tests/Stub/Connection/BrokenConnection.php',
+        ],
         ArrayToFirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
             'packages/EasyLock/bundle/CompilerPass/RegisterLockStoreServiceCompilerPass.php',
@@ -57,20 +70,16 @@ return RectorConfig::configure()
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
         ],
+        StringClassNameToClassConstantRector::class => [
+            // @todo Remove when Doctrine DBAL 3 support is dropped
+            'packages/EasyBatch/src/Doctrine/Repository/BatchRepository.php',
+            'packages/EasyDoctrine/tests/Unit/AbstractUnitTestCase.php',
+            'packages/EasyPagination/src/Paginator/DoctrineCommonPaginatorTrait.php',
+            'packages/EasyPagination/tests/Unit/src/Paginator/DoctrineDbalLengthAwarePaginatorTest.php',
+        ],
         'packages/*/tests/*/config/*',
         'packages/*/var/*',
         'packages/*/vendor/*',
-        AddParamBasedOnParentClassMethodRector::class => [
-            // @todo Remove when Doctrine DBAL 3 support is dropped
-            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerDbal3Statement.php',
-            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerStatement.php',
-            'packages/EasySwoole/src/Doctrine/Connection/Dbal3Connection.php',
-            'packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php',
-            'packages/EasySwoole/src/Doctrine/Driver/Dbal3Driver.php',
-            'packages/EasySwoole/src/Doctrine/Driver/DbalDriver.php',
-            'packages/EasySwoole/src/Doctrine/Statement/Dbal3Statement.php',
-            'packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php',
-        ],
     ])
     ->withRules([
         AddSeeAnnotationRector::class,

@@ -9,7 +9,6 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType;
 use EonX\EasyDoctrine\Tests\Unit\AbstractUnitTestCase;
@@ -115,7 +114,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
     public function testConvertToDatabaseValueSucceeds(mixed $value, ?string $expectedValue = null): void
     {
         $type = new CarbonImmutableDateTimeMicrosecondsType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
 
         $databaseValue = $type->convertToDatabaseValue($value, $platform);
 
@@ -125,7 +124,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
     public function testConvertToDatabaseValueThrowsConversionException(): void
     {
         $type = new CarbonImmutableDateTimeMicrosecondsType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
@@ -140,7 +139,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         ?DateTimeInterface $expectedValue = null,
     ): void {
         $type = new CarbonImmutableDateTimeMicrosecondsType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
 
         $phpValue = $type->convertToPHPValue($value, $platform);
 
@@ -150,7 +149,7 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
     public function testConvertToPHPValueThrowsConversionException(): void
     {
         $type = new CarbonImmutableDateTimeMicrosecondsType();
-        $platform = new SQLitePlatform();
+        $platform = self::makeSqlitePlatform();
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
