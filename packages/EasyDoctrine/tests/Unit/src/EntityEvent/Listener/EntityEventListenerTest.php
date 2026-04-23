@@ -96,6 +96,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             ]
         );
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.updated.' . Category::class, $events[1]['eventName']);
     }
@@ -162,6 +163,8 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'name' => [null, 'Description 1'],
             'price' => [null, new Price('1000', 'USD')],
         ]);
+        self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
@@ -198,6 +201,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'name' => [null, 'Description 1'],
             'price' => [null, new Price('1000', 'USD')],
         ]);
+        self::assertNull($events[1]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[2]['event']);
         self::assertSame('entity.created.' . Product::class, $events[2]['eventName']);
@@ -230,15 +234,17 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'updatedAt' => [null, $now],
         ]);
         self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[1]['event']);
+        self::assertSame('entity.created.' . Category::class, $events[1]['eventName']);
         $expectedProductEvent = new EntityCreatedEvent($product, [
             'name' => [null, 'Keyboard'],
             'price' => [null, $price],
             'category' => [null, null],
         ]);
         self::assertEqualsCanonicalizing($expectedProductEvent, $events[2]['event']);
+        self::assertNull($events[2]['eventName']);
         self::assertEqualsCanonicalizing($expectedProductEvent, $events[3]['event']);
-        self::assertSame('entity.created.' . Category::class, $events[1]['eventName']);
         self::assertSame('entity.created.' . Product::class, $events[3]['eventName']);
     }
 
@@ -283,13 +289,15 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'name' => ['Computer', 'Computer Peripherals'],
         ]);
         self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[1]['event']);
+        self::assertSame('entity.updated.' . Category::class, $events[1]['eventName']);
         $expectedProductEvent = new EntityUpdatedEvent($product, [
             'price' => [new Price('1000', 'USD'), new Price('2000', 'USD')],
         ]);
         self::assertEqualsCanonicalizing($expectedProductEvent, $events[2]['event']);
+        self::assertNull($events[2]['eventName']);
         self::assertEqualsCanonicalizing($expectedProductEvent, $events[3]['event']);
-        self::assertSame('entity.updated.' . Category::class, $events[1]['eventName']);
         self::assertSame('entity.updated.' . Product::class, $events[3]['eventName']);
     }
 
@@ -335,6 +343,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             ),
             $events[0]['event']
         );
+        self::assertNull($events[0]['eventName']);
         /** @var list<\EonX\EasyDoctrine\Tests\Fixture\App\Entity\Product> $products */
         $products = $entityManager->getRepository(Product::class)->findBy(['name' => 'Keyboard']);
         self::assertCount(2, $products);
@@ -357,11 +366,14 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'category' => [null, null],
         ]);
         self::assertEqualsCanonicalizing($expectedFirstProductEvent, $events[1]['event']);
+        self::assertNull($events[1]['eventName']);
         self::assertEqualsCanonicalizing($expectedFirstProductEvent, $events[2]['event']);
-        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[3]['event']);
-        self::assertEqualsCanonicalizing($expectedSecondProductEvent, $events[5]['event']);
         self::assertSame('entity.created.' . Product::class, $events[2]['eventName']);
+        self::assertEqualsCanonicalizing($expectedCategoryEvent, $events[3]['event']);
         self::assertSame('entity.created.' . Category::class, $events[3]['eventName']);
+        self::assertEqualsCanonicalizing($expectedSecondProductEvent, $events[4]['event']);
+        self::assertNull($events[4]['eventName']);
+        self::assertEqualsCanonicalizing($expectedSecondProductEvent, $events[5]['event']);
         self::assertSame('entity.created.' . Product::class, $events[5]['eventName']);
     }
 
@@ -389,6 +401,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'category' => [null, $category],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
@@ -441,6 +454,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'name' => ['Tag 2', 'New Tag 2 Name'],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.updated.' . Tag::class, $events[1]['eventName']);
     }
@@ -628,6 +642,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
         self::assertSame(2, $tag2->getId());
         self::assertSame('Tag 2', $tag2->getName());
         self::assertCount(0, $product->getOffers());
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($actualEvent, $events[1]['event']);
         self::assertSame('entity.deleted.' . Product::class, $events[1]['eventName']);
     }
@@ -668,6 +683,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'name' => ['Keyboard', 'Keyboard 2'],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
@@ -698,6 +714,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'price' => [null, new Price('2000', 'USD')],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
@@ -732,6 +749,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             'price' => [null, new Price('2000', 'AUD')],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.created.' . Product::class, $events[1]['eventName']);
     }
@@ -790,6 +808,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             ],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
@@ -856,6 +875,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             ],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
@@ -920,6 +940,7 @@ final class EntityEventListenerTest extends AbstractUnitTestCase
             ],
         ]);
         self::assertEqualsCanonicalizing($expectedEvent, $events[0]['event']);
+        self::assertNull($events[0]['eventName']);
         self::assertEqualsCanonicalizing($expectedEvent, $events[1]['event']);
         self::assertSame('entity.updated.' . Product::class, $events[1]['eventName']);
     }
