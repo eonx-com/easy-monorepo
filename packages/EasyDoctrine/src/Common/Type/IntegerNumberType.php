@@ -22,7 +22,7 @@ final class IntegerNumberType extends Type
             return (string)$value;
         }
 
-        throw ConversionExceptionFactory::invalidType($value, self::NAME, ['null', Number::class]);
+        throw ConversionExceptionFactory::invalidType($value, self::class, ['null', Number::class]);
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Number

@@ -42,6 +42,12 @@ abstract class AbstractUnitTestCase extends KernelTestCase
     protected static function initDatabase(): void
     {
         $entityManager = self::getEntityManager();
+        $connection = $entityManager->getConnection();
+
+        if (\method_exists($connection, 'setNestTransactionsWithSavepoints')) {
+            $connection->setNestTransactionsWithSavepoints(true);
+        }
+
         $metaData = $entityManager->getMetadataFactory()
             ->getAllMetadata();
         $schemaTool = new SchemaTool($entityManager);

@@ -46,5 +46,5 @@ if (\enum_exists(ParameterType::class)) {
         }
     }
 } else {
-    class_alias(BreadcrumbLoggerStatementDbal3::class, BreadcrumbLoggerStatement::class);
+    \class_alias(BreadcrumbLoggerDbal3Statement::class, BreadcrumbLoggerStatement::class);
 }

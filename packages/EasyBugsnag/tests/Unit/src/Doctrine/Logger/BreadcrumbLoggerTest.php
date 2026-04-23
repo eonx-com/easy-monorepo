@@ -25,8 +25,8 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         $recoder = self::getPrivatePropertyValue($client, 'recorder');
         /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($recoder, 'breadcrumbs');
-        /** @var \Bugsnag\Breadcrumbs\Breadcrumb $breadcrumb */
         // @todo Remove `14` after drop supporting Doctrine DBAL 3
+        /** @var \Bugsnag\Breadcrumbs\Breadcrumb $breadcrumb */
         $breadcrumb = $breadcrumbs[16] ?? $breadcrumbs[14];
         self::assertSame('SQL query | default', $breadcrumb->toArray()['name']);
         self::assertSame(

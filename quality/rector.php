@@ -8,6 +8,7 @@ use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
@@ -59,6 +60,17 @@ return RectorConfig::configure()
         'packages/*/tests/*/config/*',
         'packages/*/var/*',
         'packages/*/vendor/*',
+        AddParamBasedOnParentClassMethodRector::class => [
+            // @todo Remove when Doctrine DBAL 3 support is dropped
+            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerDbal3Statement.php',
+            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerStatement.php',
+            'packages/EasySwoole/src/Doctrine/Connection/Dbal3Connection.php',
+            'packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php',
+            'packages/EasySwoole/src/Doctrine/Driver/Dbal3Driver.php',
+            'packages/EasySwoole/src/Doctrine/Driver/DbalDriver.php',
+            'packages/EasySwoole/src/Doctrine/Statement/Dbal3Statement.php',
+            'packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php',
+        ],
     ])
     ->withRules([
         AddSeeAnnotationRector::class,

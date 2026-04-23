@@ -25,7 +25,6 @@ return App::config([
                 'default' => [
                     'driver' => 'pdo_sqlite',
                     'url' => 'sqlite:///:memory:',
-                    'use_savepoints' => true,
                 ],
             ],
         ],

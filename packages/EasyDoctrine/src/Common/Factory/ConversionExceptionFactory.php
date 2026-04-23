@@ -13,6 +13,22 @@ use Throwable;
  */
 final class ConversionExceptionFactory
 {
+    public static function invalidFormat(
+        mixed $value,
+        string $toType,
+        string $expectedFormat,
+        ?Throwable $previous = null,
+    ): ConversionException {
+        if (\class_exists(InvalidFormat::class)) {
+            /** @var class-string $exceptionClass */
+            $exceptionClass = InvalidFormat::class;
+
+            return $exceptionClass::new($value, $toType, $expectedFormat, $previous);
+        }
+
+        return ConversionException::conversionFailedFormat($value, $toType, $expectedFormat, $previous);
+    }
+
     /**
      * @param array<string> $possibleTypes
      */
@@ -30,21 +46,5 @@ final class ConversionExceptionFactory
         }
 
         return ConversionException::conversionFailedInvalidType($value, $toType, $possibleTypes, $previous);
-    }
-
-    public static function invalidFormat(
-        mixed $value,
-        string $toType,
-        string $expectedFormat,
-        ?Throwable $previous = null,
-    ): ConversionException {
-        if (\class_exists(InvalidFormat::class)) {
-            /** @var class-string $exceptionClass */
-            $exceptionClass = InvalidFormat::class;
-
-            return $exceptionClass::new($value, $toType, $expectedFormat, $previous);
-        }
-
-        return ConversionException::conversionFailedFormat($value, $toType, $expectedFormat, $previous);
     }
 }

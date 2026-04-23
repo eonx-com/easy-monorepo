@@ -23,7 +23,7 @@ final class JsonbType extends Type
         try {
             return \json_encode($value, \JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw ConversionExceptionFactory::invalidType($value, self::NAME, ['null', 'mixed'], $exception);
+            throw ConversionExceptionFactory::invalidType($value, self::class, ['null', 'mixed'], $exception);
         }
     }
 

@@ -13,7 +13,7 @@ use EonX\EasyBugsnag\Doctrine\ValueObject\QueryBreadcrumb;
 /**
  * @deprecated Remove when Doctrine DBAL 3 support is dropped.
  */
-final class BreadcrumbLoggerStatementDbal3 extends AbstractStatementMiddleware
+final class BreadcrumbLoggerDbal3Statement extends AbstractStatementMiddleware
 {
     private readonly QueryBreadcrumb $queryBreadcrumb;
 

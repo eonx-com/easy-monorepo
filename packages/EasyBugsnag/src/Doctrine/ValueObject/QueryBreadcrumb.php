@@ -89,5 +89,5 @@ if (\enum_exists(ParameterType::class)) {
         }
     }
 } else {
-    class_alias(QueryBreadcrumbDbal3::class, QueryBreadcrumb::class);
+    \class_alias(QueryBreadcrumbDbal3::class, QueryBreadcrumb::class);
 }

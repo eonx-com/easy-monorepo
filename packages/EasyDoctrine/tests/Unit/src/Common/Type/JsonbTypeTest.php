@@ -117,7 +117,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert PHP value 'some incorrectly encoded utf string " .
-            \urldecode('%C4') . "' to type jsonb."
+            \urldecode('%C4') . "' to type EonX\EasyDoctrine\Common\Type\JsonbType."
         );
 
         $type->convertToDatabaseValue($value, $platform);
