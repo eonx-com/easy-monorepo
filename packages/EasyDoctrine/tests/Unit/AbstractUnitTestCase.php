@@ -61,9 +61,13 @@ abstract class AbstractUnitTestCase extends KernelTestCase
      */
     protected static function makeSqlitePlatform(): AbstractPlatform
     {
-        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform')
-            ? 'Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform'
-            : 'Doctrine\\DBAL\\Platforms\\' . 'SqlitePlatform';
+        if (\class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')) {
+            $sqlitePlatformClass = 'Doctrine\\DBAL\\Platforms\\SQLitePlatform';
+
+            return new $sqlitePlatformClass();
+        }
+
+        $sqlitePlatformClass = 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
         return new $sqlitePlatformClass();
     }

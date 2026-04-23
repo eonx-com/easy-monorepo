@@ -111,9 +111,9 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
         try {
             $queryBuilder = $this->connection->createQueryBuilder();
             // @todo Remove this compatibility layer when Doctrine DBAL 3 support is dropped
-            $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform')
-                ? 'Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform'
-                : 'Doctrine\\DBAL\\Platforms\\' . 'SqlitePlatform';
+            $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+                ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+                : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
             if ($this->connection->getDatabasePlatform() instanceof $sqlitePlatformClass === false) {
                 $queryBuilder->forUpdate();

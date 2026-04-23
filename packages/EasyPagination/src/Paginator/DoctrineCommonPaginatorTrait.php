@@ -162,9 +162,9 @@ trait DoctrineCommonPaginatorTrait
         $connection = $this->getConnection();
         $platform = $connection->getDatabasePlatform();
         // @todo Remove this compatibility layer when Doctrine DBAL 3 support is dropped
-        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform')
-            ? 'Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform'
-            : 'Doctrine\\DBAL\\Platforms\\' . 'SqlitePlatform';
+        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+            ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+            : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
         if ($platform instanceof PostgreSQLPlatform === false
             && $platform instanceof $sqlitePlatformClass === false) {

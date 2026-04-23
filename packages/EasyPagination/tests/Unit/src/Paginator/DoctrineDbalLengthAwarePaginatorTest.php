@@ -449,9 +449,9 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
 
     private static function makeSqlitePlatform(): AbstractPlatform
     {
-        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform')
-            ? 'Doctrine\\DBAL\\Platforms\\' . 'SQLitePlatform'
-            : 'Doctrine\\DBAL\\Platforms\\' . 'SqlitePlatform';
+        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+            ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+            : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
         return new $sqlitePlatformClass();
     }
