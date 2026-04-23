@@ -26,7 +26,25 @@ final class ConversionExceptionFactory
             return $exceptionClass::new($value, $toType, $expectedFormat, $previous);
         }
 
-        return ConversionException::conversionFailedFormat($value, $toType, $expectedFormat, $previous);
+        $stringValue = match (true) {
+            \is_string($value) => $value,
+            \is_int($value), \is_float($value) => (string)$value,
+            \is_bool($value) => $value ? '1' : '0',
+            $value === null => '',
+            default => \get_debug_type($value),
+        };
+        $formattedValue = \strlen($stringValue) > 32 ? \substr($stringValue, 0, 20) . '...' : $stringValue;
+
+        return new ConversionException(
+            \sprintf(
+                'Could not convert database value "%s" to Doctrine Type %s. Expected format: %s',
+                $formattedValue,
+                $toType,
+                $expectedFormat,
+            ),
+            0,
+            $previous,
+        );
     }
 
     /**
@@ -45,6 +63,28 @@ final class ConversionExceptionFactory
             return $exceptionClass::new($value, $toType, $possibleTypes, $previous);
         }
 
-        return ConversionException::conversionFailedInvalidType($value, $toType, $possibleTypes, $previous);
+        if (\is_scalar($value) || $value === null) {
+            return new ConversionException(
+                \sprintf(
+                    'Could not convert PHP value %s to type %s. Expected one of the following types: %s',
+                    \var_export($value, true),
+                    $toType,
+                    \implode(', ', $possibleTypes),
+                ),
+                0,
+                $previous,
+            );
+        }
+
+        return new ConversionException(
+            \sprintf(
+                'Could not convert PHP value of type %s to type %s. Expected one of the following types: %s',
+                \get_debug_type($value),
+                $toType,
+                \implode(', ', $possibleTypes),
+            ),
+            0,
+            $previous,
+        );
     }
 }

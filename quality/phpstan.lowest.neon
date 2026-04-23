@@ -27,6 +27,3 @@ parameters:
 
         - message: '#Access to property \$fieldName on an unknown class Doctrine\\ORM\\Mapping\\AssociationMapping#'
           path: %currentWorkingDirectory%/packages/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php
-
-        - message: '#Call to function method_exists\(\) with Doctrine\\DBAL\\Connection and .*setNestTransactions.* will always evaluate to true#'
-          path: %currentWorkingDirectory%/packages/EasyDoctrine/tests/Unit/AbstractUnitTestCase.php

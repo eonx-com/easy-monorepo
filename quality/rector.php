@@ -8,6 +8,7 @@ use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
@@ -69,6 +70,10 @@ return RectorConfig::configure()
         DeprecatedAnnotationToDeprecatedAttributeRector::class => null,
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
+        ],
+        RemoveExtraParametersRector::class => [
+            // @todo Remove when Doctrine DBAL 3 support is dropped
+            'packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionDbal3Factory.php',
         ],
         StringClassNameToClassConstantRector::class => [
             // @todo Remove when Doctrine DBAL 3 support is dropped

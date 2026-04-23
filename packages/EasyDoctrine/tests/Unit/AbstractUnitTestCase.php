@@ -44,10 +44,7 @@ abstract class AbstractUnitTestCase extends KernelTestCase
     {
         $entityManager = self::getEntityManager();
         $connection = $entityManager->getConnection();
-
-        if (\method_exists($connection, 'setNestTransactionsWithSavepoints')) {
-            $connection->setNestTransactionsWithSavepoints(true);
-        }
+        $connection->setNestTransactionsWithSavepoints(true);
 
         $metaData = $entityManager->getMetadataFactory()
             ->getAllMetadata();

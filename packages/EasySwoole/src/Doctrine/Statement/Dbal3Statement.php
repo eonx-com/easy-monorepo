@@ -22,7 +22,7 @@ final readonly class Dbal3Statement implements Statement
     ) {
     }
 
-    public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null)
+    public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null): bool
     {
         try {
             return $this->pdoStatement->bindParam($param, $variable, $this->convertParamType($type), $length);
@@ -31,7 +31,7 @@ final readonly class Dbal3Statement implements Statement
         }
     }
 
-    public function bindValue($param, $value, $type = ParameterType::STRING)
+    public function bindValue($param, $value, $type = ParameterType::STRING): bool
     {
         try {
             return $this->pdoStatement->bindValue($param, $value, $this->convertParamType($type));
