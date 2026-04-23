@@ -14,7 +14,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     private array $dispatchCallbacks = [];
 
     /**
-     * @var object[]
+     * @var array<array{event: object, eventName: string|null}>
      */
     private array $events = [];
 
@@ -32,8 +32,10 @@ final class EventDispatcherStub implements EventDispatcherInterface
 
     public function dispatch(object $event, ?string $eventName = null): object
     {
-        $this->events[] = $event;
-
+        $this->events[] = [
+            'event' => $event,
+            'eventName' => $eventName,
+        ];
         $callback = $this->dispatchCallbacks[$event::class] ?? null;
 
         if ($callback !== null) {
@@ -44,7 +46,7 @@ final class EventDispatcherStub implements EventDispatcherInterface
     }
 
     /**
-     * @return object[]
+     * @return array<array{event: object, eventName: string|null}>
      */
     public function getDispatchedEvents(): array
     {
