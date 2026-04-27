@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Doctrine\Driver;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Doctrine\DBAL\ServerVersionProvider;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use EonX\EasySwoole\Doctrine\ClientConfig\PdoClientConfig;
@@ -20,87 +19,82 @@ use Psr\Log\LoggerInterface;
 use SensitiveParameter;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final readonly class DbalDriver implements Driver
-{
-    private const string POOL_NAME_PATTERN = 'coroutine_pdo_pool_%s';
-
-    public function __construct(
-        private Driver $decorated,
-        private int $defaultPoolSize,
-        private bool $defaultHeartbeat,
-        private float $defaultMaxIdleTime,
-        private RequestStack $requestStack,
-        private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
-        private ?LoggerInterface $logger = null,
-    ) {
-    }
-
-    public function connect(#[SensitiveParameter] array $params): DriverConnection
+if (\method_exists(Driver::class, 'getSchemaManager')) {
+    \class_alias(Dbal3Driver::class, DbalDriver::class);
+} else {
+    final readonly class DbalDriver implements Driver
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request?->attributes->get(RequestAttribute::EasySwooleEnabled->value) !== true) {
-            $params = $this->connectionParamsResolver?->resolve($params) ?? $params;
+        private const string POOL_NAME_PATTERN = 'coroutine_pdo_pool_%s';
 
-            return $this->decorated->connect($params);
+        public function __construct(
+            private Driver $decorated,
+            private int $defaultPoolSize,
+            private bool $defaultHeartbeat,
+            private float $defaultMaxIdleTime,
+            private RequestStack $requestStack,
+            private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
+            private ?LoggerInterface $logger = null,
+        ) {
         }
 
-        /** @var string $poolNameOptionValue */
-        $poolNameOptionValue = $this->getOption(CoroutinePdoDriverOption::PoolName, $params);
-        $poolName = \sprintf(self::POOL_NAME_PATTERN, $poolNameOptionValue);
-        /** @var int|null $poolSize */
-        $poolSize = $this->getOption(CoroutinePdoDriverOption::PoolSize, $params);
-        /** @var bool|null $poolHeartbeat */
-        $poolHeartbeat = $this->getOption(CoroutinePdoDriverOption::PoolHeartbeat, $params);
-        /** @var float|null $poolMaxIdleTime */
-        $poolMaxIdleTime = $this->getOption(CoroutinePdoDriverOption::PoolMaxIdleTime, $params);
+        public function connect(#[SensitiveParameter] array $params): DriverConnection
+        {
+            $request = $this->requestStack->getCurrentRequest();
+            if ($request?->attributes->get(RequestAttribute::EasySwooleEnabled->value) !== true) {
+                $params = $this->connectionParamsResolver?->resolve($params) ?? $params;
 
-        unset(
-            $params['driverOptions'][CoroutinePdoDriverOption::PoolHeartbeat->value],
-            $params['driverOptions'][CoroutinePdoDriverOption::PoolMaxIdleTime->value],
-            $params['driverOptions'][CoroutinePdoDriverOption::PoolName->value],
-            $params['driverOptions'][CoroutinePdoDriverOption::PoolSize->value],
-        );
+                return $this->decorated->connect($params);
+            }
 
-        /** @var \EonX\EasySwoole\Doctrine\Pool\PdoClientPool|null $pool */
-        $pool = $_SERVER[$poolName] ?? null;
-        if ($pool === null) {
-            $this->logger?->debug(\sprintf('Coroutine PDO Pool "%s" not found, instantiating new one', $poolName));
+            /** @var string $poolNameOptionValue */
+            $poolNameOptionValue = $this->getOption(CoroutinePdoDriverOption::PoolName, $params);
+            $poolName = \sprintf(self::POOL_NAME_PATTERN, $poolNameOptionValue);
+            /** @var int|null $poolSize */
+            $poolSize = $this->getOption(CoroutinePdoDriverOption::PoolSize, $params);
+            /** @var bool|null $poolHeartbeat */
+            $poolHeartbeat = $this->getOption(CoroutinePdoDriverOption::PoolHeartbeat, $params);
+            /** @var float|null $poolMaxIdleTime */
+            $poolMaxIdleTime = $this->getOption(CoroutinePdoDriverOption::PoolMaxIdleTime, $params);
 
-            $pool = new PdoClientPool(
-                factory: new PdoClientFactory(),
-                config: new PdoClientConfig($params, $this->connectionParamsResolver, $this->logger),
-                size: $poolSize ?? $this->defaultPoolSize,
-                heartbeat: $poolHeartbeat ?? $this->defaultHeartbeat,
-                maxIdleTime: $poolMaxIdleTime ?? $this->defaultMaxIdleTime,
+            unset(
+                $params['driverOptions'][CoroutinePdoDriverOption::PoolHeartbeat->value],
+                $params['driverOptions'][CoroutinePdoDriverOption::PoolMaxIdleTime->value],
+                $params['driverOptions'][CoroutinePdoDriverOption::PoolName->value],
+                $params['driverOptions'][CoroutinePdoDriverOption::PoolSize->value],
             );
 
-            // Set pool for new requests
-            $_SERVER[$poolName] = $pool;
+            /** @var \EonX\EasySwoole\Doctrine\Pool\PdoClientPool|null $pool */
+            $pool = $_SERVER[$poolName] ?? null;
+            if ($pool === null) {
+                $this->logger?->debug(\sprintf('Coroutine PDO Pool "%s" not found, instantiating new one', $poolName));
+
+                $pool = new PdoClientPool(
+                    factory: new PdoClientFactory(),
+                    config: new PdoClientConfig($params, $this->connectionParamsResolver, $this->logger),
+                    size: $poolSize ?? $this->defaultPoolSize,
+                    heartbeat: $poolHeartbeat ?? $this->defaultHeartbeat,
+                    maxIdleTime: $poolMaxIdleTime ?? $this->defaultMaxIdleTime,
+                );
+
+                $_SERVER[$poolName] = $pool;
+            }
+
+            return new DbalConnection($pool);
         }
 
-        return new DbalConnection($pool);
-    }
+        public function getDatabasePlatform(ServerVersionProvider $versionProvider): AbstractPlatform
+        {
+            return $this->decorated->getDatabasePlatform($versionProvider);
+        }
 
-    public function getDatabasePlatform(): AbstractPlatform
-    {
-        return $this->decorated->getDatabasePlatform();
-    }
+        public function getExceptionConverter(): ExceptionConverter
+        {
+            return $this->decorated->getExceptionConverter();
+        }
 
-    public function getExceptionConverter(): ExceptionConverter
-    {
-        return $this->decorated->getExceptionConverter();
-    }
-
-    /**
-     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager<\Doctrine\DBAL\Platforms\AbstractPlatform>
-     */
-    public function getSchemaManager(Connection $conn, AbstractPlatform $platform): AbstractSchemaManager
-    {
-        return $this->decorated->getSchemaManager($conn, $platform);
-    }
-
-    private function getOption(CoroutinePdoDriverOption $driverOption, array $params): mixed
-    {
-        return $params['driverOptions'][$driverOption->value] ?? null;
+        private function getOption(CoroutinePdoDriverOption $driverOption, array $params): mixed
+        {
+            return $params['driverOptions'][$driverOption->value] ?? null;
+        }
     }
 }

@@ -2,6 +2,15 @@ includes:
     - phpstan.neon
 
 parameters:
+    excludePaths:
+        # @todo Remove when Doctrine DBAL 3 support is dropped.
+        - %currentWorkingDirectory%/packages/EasyAsync/tests/Stub/Connection/BrokenDbal3Connection.php
+        - %currentWorkingDirectory%/packages/EasyBugsnag/src/Doctrine/Connection/BreadcrumbLoggerDbal3Connection.php
+        - %currentWorkingDirectory%/packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerDbal3Statement.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection/Dbal3Connection.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Driver/Dbal3Driver.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionDbal3Factory.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/Dbal3Statement.php
     ignoreErrors:
         - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
           path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php

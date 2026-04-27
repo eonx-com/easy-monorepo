@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Doctrine\Repository;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use EonX\EasyBatch\Common\Exception\BatchNotFoundException;
 use EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
@@ -111,8 +110,12 @@ final class BatchRepository extends AbstractBatchObjectRepository implements Bat
 
         try {
             $queryBuilder = $this->connection->createQueryBuilder();
+            // @todo Remove this compatibility layer when Doctrine DBAL 3 support is dropped
+            $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+                ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+                : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
-            if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform === false) {
+            if ($this->connection->getDatabasePlatform() instanceof $sqlitePlatformClass === false) {
                 $queryBuilder->forUpdate();
             }
 

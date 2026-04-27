@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Result;
 use EonX\EasyPagination\Pagination\Pagination;
@@ -421,7 +421,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
             ->willReturn($this->getDoctrineDbalConnection()->createQueryBuilder());
         $connection
             ->getDatabasePlatform()
-            ->willReturn(new SqlitePlatform());
+            ->willReturn(self::makeSqlitePlatform());
         $result = $this->prophesize(Result::class);
         $connection
             ->executeQuery(Argument::any(), [], [])
@@ -445,5 +445,21 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
         $paginator->setLargeDatasetPaginationPreciseResultsLimit(100);
 
         self::assertEquals($expectedRowsCount, $paginator->getTotalItems());
+    }
+
+    /**
+     * @deprecated Remove when Doctrine DBAL 3 support is dropped.
+     */
+    protected static function makeSqlitePlatform(): AbstractPlatform
+    {
+        if (\class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')) {
+            $sqlitePlatformClass = 'Doctrine\\DBAL\\Platforms\\SQLitePlatform';
+
+            return new $sqlitePlatformClass();
+        }
+
+        $sqlitePlatformClass = 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
+
+        return new $sqlitePlatformClass();
     }
 }

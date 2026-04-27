@@ -9,55 +9,59 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
 use RuntimeException;
 
-final class BrokenConnection implements Connection
-{
-    public function beginTransaction(): bool
+if (\enum_exists(ParameterType::class)) {
+    final class BrokenConnection implements Connection
     {
-        throw new RuntimeException('Dummy');
-    }
+        public function beginTransaction(): void
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function commit(): bool
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function commit(): void
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function exec(string $sql): int
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function exec(string $sql): int|string
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function getNativeConnection(): mixed
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function getNativeConnection(): mixed
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function getServerVersion(): string
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function getServerVersion(): string
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function lastInsertId($name = null): false|int|string
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function lastInsertId(): string|int
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function prepare(string $sql): Statement
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function prepare(string $sql): Statement
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function query(string $sql): Result
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function query(string $sql): Result
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function quote(mixed $value, $type = ParameterType::STRING): string
-    {
-        throw new RuntimeException('Dummy');
-    }
+        public function quote(string $value): string
+        {
+            throw new RuntimeException('Dummy');
+        }
 
-    public function rollBack(): bool
-    {
-        throw new RuntimeException('Dummy');
+        public function rollBack(): void
+        {
+            throw new RuntimeException('Dummy');
+        }
     }
+} else {
+    \class_alias(BrokenDbal3Connection::class, BrokenConnection::class);
 }

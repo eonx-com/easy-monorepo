@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\Common\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
+use EonX\EasyDoctrine\Common\Factory\ConversionExceptionFactory;
 use EonX\EasyUtils\Math\ValueObject\Number;
 
 final class IntegerNumberType extends Type
@@ -22,11 +22,7 @@ final class IntegerNumberType extends Type
             return (string)$value;
         }
 
-        throw ConversionException::conversionFailedInvalidType(
-            $value,
-            $this->getName(),
-            ['null', Number::class]
-        );
+        throw ConversionExceptionFactory::invalidType($value, self::class, ['null', Number::class]);
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Number

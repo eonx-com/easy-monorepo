@@ -6,7 +6,6 @@ namespace EonX\EasyPagination\Paginator;
 use BackedEnum;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 
@@ -162,9 +161,13 @@ trait DoctrineCommonPaginatorTrait
     {
         $connection = $this->getConnection();
         $platform = $connection->getDatabasePlatform();
+        // @todo Remove this compatibility layer when Doctrine DBAL 3 support is dropped
+        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+            ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+            : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
         if ($platform instanceof PostgreSQLPlatform === false
-            && $platform instanceof SqlitePlatform === false) {
+            && $platform instanceof $sqlitePlatformClass === false) {
             return null;
         }
 
@@ -205,7 +208,7 @@ trait DoctrineCommonPaginatorTrait
         if ($platform instanceof PostgreSQLPlatform) {
             $sql = \sprintf('EXPLAIN %s', $sql);
         }
-        if ($platform instanceof SqlitePlatform) {
+        if ($platform instanceof $sqlitePlatformClass) {
             $sql = \sprintf('EXPLAIN QUERY PLAN %s', $sql);
         }
 

@@ -10,8 +10,8 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use EonX\EasyDoctrine\Common\Factory\ConversionExceptionFactory;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
@@ -35,7 +35,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return $value->setTimezone(self::getUtc())->format(self::FORMAT_PHP_DATETIME);
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTimeInterface']);
+        throw ConversionExceptionFactory::invalidType($value, self::class, ['null', DateTimeInterface::class]);
     }
 
     /**
@@ -61,7 +61,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return CarbonImmutable::instance($dateTime);
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
+        throw ConversionExceptionFactory::invalidFormat($value, self::class, self::FORMAT_PHP_DATETIME);
     }
 
     public function getSqlDeclaration(array $column, AbstractPlatform $platform): string

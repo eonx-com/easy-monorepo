@@ -13,8 +13,6 @@ return App::config([
                 ],
             ],
         ],
-        'orm' => [
-            'auto_generate_proxy_classes' => true,
-        ],
+        'orm' => [],
     ],
 ]);

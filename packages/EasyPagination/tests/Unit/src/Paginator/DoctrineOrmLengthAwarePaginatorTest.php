@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Result;
@@ -318,7 +319,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn('some sql');
         $queryBuilder
             ->getParameters()
-            ->willReturn([]);
+            ->willReturn(new ArrayCollection());
         $entityManager
             ->getConnection()
             ->willReturn($connection->reveal());
@@ -335,7 +336,8 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 'QUERY PLAN' => \sprintf('rows=%d', $approximateRowsCount),
             ]);
         $queryBuilder
-            ->select(1)
+            ->select('1')
+            ->willReturn($queryBuilder)
             ->shouldBeCalled();
         $queryBuilder
             ->select('COUNT(DISTINCT i.id) as _count_i')

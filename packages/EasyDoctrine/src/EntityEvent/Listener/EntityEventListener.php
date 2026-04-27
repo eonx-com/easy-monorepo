@@ -151,6 +151,8 @@ final readonly class EntityEventListener
             });
 
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
+                // @todo Remove this docblock after dropping support for Doctrine ORM 2
+                /** @var array{fieldName: string}|\Doctrine\ORM\Mapping\AssociationMapping $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
                 $owner = $collection->getOwner();
@@ -158,7 +160,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    \is_array($mapping) ? $mapping['fieldName'] : $mapping->fieldName,
                     $snapshotIds,
                     $actualIds
                 );
@@ -168,7 +170,8 @@ final readonly class EntityEventListener
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
             if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
-                /** @var array{fieldName: string} $mapping */
+                // @todo Remove this docblock after dropping support for Doctrine ORM 2
+                /** @var array{fieldName: string}|\Doctrine\ORM\Mapping\AssociationMapping $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
                 $owner = $collection->getOwner();
@@ -176,7 +179,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    \is_array($mapping) ? $mapping['fieldName'] : $mapping->fieldName,
                     ['Not available'],
                     ['Collection was cleared']
                 );
