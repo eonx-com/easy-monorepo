@@ -24,6 +24,12 @@ final class StringMaskHelperTest extends AbstractUnitTestCase
             'email' => 'very.long.email.address@domain.org',
             'expected' => 've*********************@domain.org',
         ];
+
+        yield 'custom masking symbol' => [
+            'email' => 'john.doe@example.com',
+            'expected' => 'jo######@example.com',
+            'maskingSymbol' => '#',
+        ];
     }
 
     /**
@@ -32,8 +38,6 @@ final class StringMaskHelperTest extends AbstractUnitTestCase
     public static function provideMaskMiddleData(): iterable
     {
         yield 'short string (length < visible * 2)' => ['value' => '1234', 'visible' => 3, 'expected' => '****'];
-
-        yield 'short string 5 chars' => ['value' => 'abcde', 'visible' => 3, 'expected' => '*****'];
 
         yield 'exact boundary (length = visible * 2)' => [
             'value' => 'abcdef',
@@ -59,6 +63,12 @@ final class StringMaskHelperTest extends AbstractUnitTestCase
             'expected' => 'abc####hij',
             'maskingSymbol' => '#',
         ];
+
+        yield 'empty string' => [
+            'value' => '',
+            'visible' => 3,
+            'expected' => '',
+        ];
     }
 
     /**
@@ -69,12 +79,14 @@ final class StringMaskHelperTest extends AbstractUnitTestCase
         yield 'typical AU mobile' => ['phoneNumber' => '+61412345678', 'expected' => '+*******5678'];
 
         yield 'nine chars' => ['phoneNumber' => '123456789', 'expected' => '1****6789'];
+
+        yield 'five chars' => ['phoneNumber' => '12345', 'expected' => '12345'];
     }
 
     #[DataProvider('provideMaskEmailData')]
-    public function testMaskEmailSucceeds(string $email, string $expected): void
+    public function testMaskEmailSucceeds(string $email, string $expected, ?string $maskingSymbol = null): void
     {
-        $result = StringMaskHelper::maskEmail($email);
+        $result = StringMaskHelper::maskEmail($email, $maskingSymbol);
 
         self::assertSame($expected, $result);
     }
