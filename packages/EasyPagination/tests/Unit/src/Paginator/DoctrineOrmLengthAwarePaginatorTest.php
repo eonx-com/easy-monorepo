@@ -4,20 +4,23 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Paginator\DoctrineOrmLengthAwarePaginator;
 use EonX\EasyPagination\Tests\Stub\Entity\ChildItem;
 use EonX\EasyPagination\Tests\Stub\Entity\Item;
+use EonX\EasyPagination\Tests\Stub\Enum\Status;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Uid\Uuid;
 
 final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPaginatorTestCase
 {
@@ -85,6 +88,28 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                     $queryBuilder
                         ->where('i.title = :title')
                         ->setParameter('title', 'my-title-1');
+                });
+            },
+            static function (DoctrineOrmLengthAwarePaginator $paginator): void {
+                self::assertCount(1, $paginator->getItems());
+                self::assertEquals(1, $paginator->getTotalItems());
+            },
+        ];
+
+        yield '2 items filter 1 with enum parameter' => [
+            Pagination::create(1, 15),
+            Item::class,
+            'i',
+            null,
+            function (EntityManagerInterface $manager, DoctrineOrmLengthAwarePaginator $paginator): void {
+                self::createItemsTable($manager);
+                self::addItemToTable($manager, 'my-title', Status::Active);
+                self::addItemToTable($manager, 'my-title-1', Status::Inactive);
+
+                $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
+                    $queryBuilder
+                        ->where('i.status = :status')
+                        ->setParameter('status', Status::Inactive);
                 });
             },
             static function (DoctrineOrmLengthAwarePaginator $paginator): void {
@@ -210,7 +235,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 self::assertEquals(1, $paginator->getTotalItems());
                 self::assertInstanceOf(ChildItem::class, $childItem);
                 self::assertInstanceOf(Item::class, $childItem->getItem());
-                self::assertInstanceOf(UuidV6::class, $childItem->getId());
+                self::assertInstanceOf(Uuid::class, $childItem->getId());
                 self::assertEquals(1, $childItem->getItem()->getId());
                 self::assertEquals('my-parent', $childItem->getItem()->getTitle());
                 self::assertEquals('my-child', $childItem->getTitle());
@@ -295,7 +320,23 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn('some sql');
         $queryBuilder
             ->getParameters()
+            ->willReturn([new Parameter('baz', 'test', ParameterType::STRING)]);
+        $query->getParameter('baz')
+            ->willReturn(new Parameter('baz', 'test', ParameterType::STRING));
+        $query->getDQL()
+            ->willReturn('SELECT i FROM ' . Item::class . ' i WHERE i.title LIKE :baz OR i.title LIKE :baz');
+        $query->getEntityManager()
+            ->willReturn($this->getEntityManager());
+        $query->getHints()
             ->willReturn([]);
+        $query->hasHint(Argument::any())
+            ->willReturn(false);
+        $query->getHint(Argument::any())
+            ->willReturn(false);
+        $query->getHydrationMode()
+            ->willReturn(Query::HYDRATE_OBJECT);
+        $query->setResultSetMapping(Argument::any())
+            ->willReturn(null);
         $entityManager
             ->getConnection()
             ->willReturn($connection->reveal());
@@ -304,7 +345,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn(new PostgreSQLPlatform());
         $result = $this->prophesize(Result::class);
         $connection
-            ->executeQuery(Argument::any(), [], [])
+            ->executeQuery(Argument::any(), ['test', 'test'], [ParameterType::STRING, ParameterType::STRING])
             ->willReturn($result->reveal());
         $result
             ->fetchAssociative()

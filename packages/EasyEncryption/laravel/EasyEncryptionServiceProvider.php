@@ -22,6 +22,7 @@ use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerInterface;
 
 final class EasyEncryptionServiceProvider extends ServiceProvider
 {
@@ -84,7 +85,8 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
                 userPin: \config('easy-encryption.aws_cloud_hsm_encryptor.user_pin'),
                 awsCloudHsmSdkConfigurator: $app->make(AwsCloudHsmSdkConfigurator::class),
                 aad: \config('easy-encryption.aws_cloud_hsm_encryptor.aad'),
-                defaultKeyName: \config('easy-encryption.default_key_name')
+                defaultKeyName: \config('easy-encryption.default_key_name'),
+                logger: $app->make(LoggerInterface::class)
             )
         );
 

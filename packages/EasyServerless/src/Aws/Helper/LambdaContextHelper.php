@@ -7,7 +7,19 @@ final class LambdaContextHelper
 {
     public static function getAbsolutePath(string $path): string
     {
-        return \sprintf('%s/%s', \getenv('LAMBDA_TASK_ROOT'), $path);
+        return \sprintf(
+            '%s%s%s',
+            self::getTaskRoot(),
+            self::inLambda() ? '/' : '',
+            $path
+        );
+    }
+
+    public static function getHandler(): ?string
+    {
+        $handler = \getenv('_HANDLER');
+
+        return \is_string($handler) && $handler !== '' ? $handler : null;
     }
 
     public static function getInvocationContext(): array
@@ -15,14 +27,26 @@ final class LambdaContextHelper
         return (array)\json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]', true);
     }
 
+    public static function getRemainingTimeInMilliseconds(): int
+    {
+        return (self::getInvocationContext()['deadlineMs'] ?? 0) - (int)(\microtime(true) * 1000);
+    }
+
     public static function getRequestContext(): array
     {
         return (array)\json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]', true);
     }
 
+    public static function getTaskRoot(): ?string
+    {
+        $taskRoot = \getenv('LAMBDA_TASK_ROOT');
+
+        return \is_string($taskRoot) && $taskRoot !== '' ? $taskRoot : null;
+    }
+
     public static function inLambda(): bool
     {
-        return \getenv('LAMBDA_TASK_ROOT') !== false;
+        return self::getTaskRoot() !== null;
     }
 
     public static function inLocalLambda(): bool

@@ -6,9 +6,9 @@ namespace EonX\EasyWebhook\Doctrine\Store;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use EonX\EasyRandom\Generator\RandomGeneratorInterface;
-use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Helper\WebhookResultHelper;
 use EonX\EasyWebhook\Common\Store\ResultStoreInterface;
 
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
@@ -24,10 +24,19 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         parent::__construct($random, $connection, $dataCleaner, $table ?? self::DEFAULT_TABLE);
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \Nette\Utils\JsonException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
         $now = Carbon::now('UTC');
-        $data = $this->getData($result, $now);
+        $data = WebhookResultHelper::getResultData($result);
+        $data['updated_at'] = $now;
 
         // New result with no id
         if ($result->getId() === null) {
@@ -57,42 +66,5 @@ final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements
         ]);
 
         return $result;
-    }
-
-    /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     */
-    private function getData(WebhookResultInterface $result, Carbon $now): array
-    {
-        $webhook = $result->getWebhook();
-        $response = $result->getResponse();
-        $throwable = $result->getThrowable();
-
-        $data = [
-            'http_options' => $webhook->getHttpClientOptions(),
-            'method' => $webhook->getMethod(),
-            'updated_at' => $now,
-            'url' => $webhook->getUrl(),
-            'webhook_class' => $webhook::class,
-            'webhook_id' => $webhook->getId(),
-        ];
-
-        if ($response !== null) {
-            $data['response'] = [
-                'content' => $response->getContent(false),
-                'headers' => $response->getHeaders(false),
-                'info' => $response->getInfo(),
-                'status_code' => $response->getStatusCode(),
-            ];
-        }
-
-        if ($throwable !== null) {
-            $data['throwable'] = ErrorDetailsHelper::resolveSimpleDetails($throwable);
-        }
-
-        return $data;
     }
 }

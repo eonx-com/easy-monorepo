@@ -12,11 +12,11 @@ use EonX\EasyDoctrine\EntityEvent\Event\WrapInTransactionExceptionEvent;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use Throwable;
 
-final class WithEventsEntityManager extends EntityManagerDecorator
+class WithEventsEntityManager extends EntityManagerDecorator
 {
     public function __construct(
-        private readonly DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private DeferredEntityEventDispatcherInterface $deferredEntityEventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $decorated,
     ) {
         parent::__construct($decorated);

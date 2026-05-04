@@ -6,9 +6,11 @@ namespace EonX\EasySwoole\Bundle;
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface;
+use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
 use EonX\EasySwoole\Bundle\CompilerPass\AddDoctrineDbalConnectionNameToParamsCompilerPass;
 use EonX\EasySwoole\Bundle\CompilerPass\EasyErrorHandlerPublicCompilerPass;
+use EonX\EasySwoole\Bundle\CompilerPass\EasyEventDispatcherPublicCompilerPass;
 use EonX\EasySwoole\Bundle\CompilerPass\ResetEasyBatchProcessorCompilerPass;
 use EonX\EasySwoole\Bundle\CompilerPass\SymfonyServicesResetCompilerPass;
 use EonX\EasySwoole\Bundle\Enum\ConfigParam;
@@ -62,6 +64,7 @@ final class EasySwooleBundle extends AbstractBundle
     {
         $container
             ->addCompilerPass(new AddDoctrineDbalConnectionNameToParamsCompilerPass())
+            ->addCompilerPass(new EasyEventDispatcherPublicCompilerPass())
             ->addCompilerPass(new EasyErrorHandlerPublicCompilerPass())
             ->addCompilerPass(new ResetEasyBatchProcessorCompilerPass())
             ->addCompilerPass(new SymfonyServicesResetCompilerPass(), priority: -33);
@@ -133,6 +136,11 @@ final class EasySwooleBundle extends AbstractBundle
         if (($config['easy_bugsnag']['enabled'] ?? true)
             && \interface_exists(ClientConfiguratorInterface::class)) {
             $container->import('config/easy_bugsnag.php');
+        }
+
+        if (($config['easy_encryption']['enabled'] ?? true)
+            && \interface_exists(EncryptorInterface::class)) {
+            $container->import('config/easy_encryption.php');
         }
 
         if (($config['easy_logging']['enabled'] ?? true)

@@ -19,8 +19,10 @@ final readonly class CachedConfigProvider implements ConfigProviderInterface
 
     public function provide(string $apiKey, string $providerExternalId): Config
     {
+        $key = \sprintf('%s_%s_%s', $this->key, $providerExternalId, $apiKey);
+
         return $this->cache->get(
-            $this->key,
+            $key,
             function (ItemInterface $item) use ($apiKey, $providerExternalId): Config {
                 $item->expiresAfter($this->expiresAfter);
 

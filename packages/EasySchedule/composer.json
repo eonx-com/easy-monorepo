@@ -6,19 +6,19 @@
     "require": {
         "php": "^8.2",
         "dragonmantank/cron-expression": "^3.3",
-        "eonx-com/easy-event-dispatcher": "^6.15",
-        "eonx-com/easy-lock": "^6.15",
-        "eonx-com/easy-utils": "^6.15",
+        "eonx-com/easy-event-dispatcher": "^6.22",
+        "eonx-com/easy-lock": "^6.22",
+        "eonx-com/easy-utils": "^6.22",
         "nesbot/carbon": "^3.8.4",
-        "symfony/config": "^7.1",
-        "symfony/console": "^7.1",
-        "symfony/dependency-injection": "^7.1",
-        "symfony/http-foundation": "^7.1.7",
-        "symfony/http-kernel": "^7.1"
+        "symfony/config": "^7.2",
+        "symfony/console": "^7.2",
+        "symfony/dependency-injection": "^7.2",
+        "symfony/http-foundation": "^7.2",
+        "symfony/http-kernel": "^7.2"
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.2"
+        "phpunit/phpunit": "^10.2|^11.4|^12.4"
     },
     "autoload": {
         "psr-4": {
@@ -37,7 +37,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.15-dev"
+            "dev-master": "6.22-dev"
         }
     }
 }

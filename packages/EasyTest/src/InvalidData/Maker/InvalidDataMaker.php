@@ -377,7 +377,7 @@ class InvalidDataMaker extends AbstractInvalidDataMaker
     {
         $value = '111-aaa';
         $message = $this->translateMessage(
-            (new Type(['type' => 'digit']))->message,
+            (new Type('digit'))->message,
             [
                 '{{ type }}' => 'digit',
             ]

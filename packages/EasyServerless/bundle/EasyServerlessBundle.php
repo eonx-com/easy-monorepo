@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Bundle;
 
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
-use EonX\EasyServerless\Bundle\CompilerPass\SymfonyServicesResetCompilerPass;
+use EonX\EasyServerless\Bundle\CompilerPass\PersistentSystemCacheCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
+use EonX\EasyServerless\Health\Checker\HealthCheckerInterface;
 use EonX\EasyServerless\State\Checker\StateCheckerInterface;
 use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -22,7 +23,7 @@ final class EasyServerlessBundle extends AbstractBundle
 
         $container
             ->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass())
-            ->addCompilerPass(new SymfonyServicesResetCompilerPass(), priority: -33);
+            ->addCompilerPass(new PersistentSystemCacheCompilerPass(), priority: -33);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -34,14 +35,31 @@ final class EasyServerlessBundle extends AbstractBundle
     {
         $container
             ->parameters()
+            ->set(ConfigParam::AppMetricNamespace->value, $config['app_metric']['namespace'])
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
             ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
+
+        $builder
+            ->registerForAutoconfiguration(HealthCheckerInterface::class)
+            ->addTag(ConfigTag::HealthChecker->value);
 
         $builder
             ->registerForAutoconfiguration(StateCheckerInterface::class)
             ->addTag(ConfigTag::StateChecker->value);
 
         $container->import('config/services.php');
+
+        if ($config['app_metric']['enabled']) {
+            $container->import('config/app_metric.php');
+        }
+
+        if ($config['console']['enabled']) {
+            $container->import('config/console.php');
+        }
+
+        if ($config['health']['enabled']) {
+            $container->import('config/health.php');
+        }
 
         if ($config['state'] && $config['state']['check']) {
             $container->import('config/state.php');
@@ -51,13 +69,24 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/easy_admin.php');
         }
 
-        if ($config['easy_error_handler']['enabled']
-            && $this->isBundleEnabled('EasyErrorHandlerBundle', $builder)) {
-            $container->import('config/easy_error_handler.php');
+        if ($this->isBundleEnabled('EasyBugsnagBundle', $builder)) {
+            $container->import('config/easy_bugsnag.php');
+        }
+
+        if ($this->isBundleEnabled('EasyPaginationBundle', $builder)) {
+            $container->import('config/easy_pagination.php');
         }
 
         if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
             $container->import('config/doctrine.php');
+        }
+
+        if ($this->isBundleEnabled('BrefMessengerBundle', $builder)) {
+            $container->import('config/messenger.php');
+
+            if ($config['sqs']['reset_services']['enabled']) {
+                $container->import('config/sqs_reset_services.php');
+            }
         }
 
         if (\class_exists(Logger::class) && $config['monolog']['enabled']) {

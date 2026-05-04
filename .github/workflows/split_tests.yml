@@ -22,7 +22,7 @@ jobs:
                 id: cache-extensions
                 uses: shivammathur/cache-extensions@v1
                 with:
-                    php-version: ${{ matrix.php }}
+                    php-version: 8.2
                     extensions: ${{ env.PHP_EXTENSIONS }}
                     key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
 
@@ -32,9 +32,8 @@ jobs:
                     path: ${{ steps.cache-extensions.outputs.dir }}
                     key: ${{ steps.cache-extensions.outputs.key }}
 
-            # TODO: Change the version of the action after 2.33 is released
             -   name: Setup PHP 8.2
-                uses: shivammathur/setup-php@297b3cde3c3c3202e03cd5e9b679a74c06f72214
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: 8.2
                     coverage: none
@@ -80,11 +79,11 @@ jobs:
                 with:
                     path: ${{ steps.cache-extensions.outputs.dir }}
                     key: ${{ steps.cache-extensions.outputs.key }}
-                    restore-keys: ${{ steps.cache-extensions.outputs.key }}
+                    restore-keys: |
+                        cache-extensions-
 
-            # TODO: Change the version of the action after 2.33 is released
             -   name: Setup PHP ${{ matrix.php }}
-                uses: shivammathur/setup-php@297b3cde3c3c3202e03cd5e9b679a74c06f72214
+                uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: pcov

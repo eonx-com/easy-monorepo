@@ -15,15 +15,15 @@ return [
         'not_valid' => 'This value is not a valid DateInterval.',
     ],
     'decimal' => [
-        'not_valid' => 'This value is not a valid decimal or integer number, has less than { minPrecision } ' .
-            'or more than { maxPrecision } digits in precision.',
+        'not_valid' => 'This value is not a valid decimal or integer number, has less than {{ minPrecision }} ' .
+            'or more than {{ maxPrecision }} digits in precision.',
     ],
     'integer' => [
         'not_valid' => 'This value should be of type integer.',
     ],
     'number' => [
-        'should_be_greater_or_equal' => 'This value should be greater than or equal to {compared_value}.',
-        'should_be_less_or_equal' => 'This value should be less than or equal to {compared_value}.',
+        'should_be_greater_or_equal' => 'This value should be greater than or equal to {{ compared_value }}.',
+        'should_be_less_or_equal' => 'This value should be less than or equal to {{ compared_value }}.',
         'should_be_positive_or_zero' => 'This value should be positive or zero.',
     ],
 ];

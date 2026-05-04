@@ -26,6 +26,7 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'bundle/config',
         'bundle/translations',
         'laravel/config',
+        'laravel/routes',
         'laravel/translations',
         'tests/Fixture/app/config',
         'tests/Fixture/app/translations',
@@ -60,6 +61,8 @@ final class FileNameSuffixedWithDirNameTest extends AbstractArchitectureTestCase
         'EasyTest/config/services.php',
         'EasyUtils/src/Common/Helper/HasPriorityInterface.php',
         'EasyUtils/src/Common/Helper/HasPriorityTrait.php',
+        'EasyUtils/src/Common/Helper/StoppableInterface.php',
+        'EasyUtils/src/Common/Helper/StoppableTrait.php',
         'EasyUtils/tests/Fixture/SensitiveData/DummyObject.php',
     ];
 

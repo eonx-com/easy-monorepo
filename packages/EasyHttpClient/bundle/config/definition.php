@@ -16,7 +16,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->canBeDisabled()
                 ->children()
                     ->arrayNode('whitelist')
-                        ->scalarPrototype()->end()
+                        ->stringPrototype()->end()
                     ->end()
                 ->end()
             ->end()

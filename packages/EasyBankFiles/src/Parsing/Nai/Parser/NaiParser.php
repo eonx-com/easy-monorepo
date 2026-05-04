@@ -41,6 +41,8 @@ final class NaiParser extends AbstractLineByLineParser
 
     private array $groups = [];
 
+    private readonly bool $isBai;
+
     private string $previousCode;
 
     private bool $previousFull = true;
@@ -48,6 +50,13 @@ final class NaiParser extends AbstractLineByLineParser
     private ResultsContext $resultsContext;
 
     private array $transactions = [];
+
+    public function __construct(string $contents, ?bool $isBai = null)
+    {
+        $this->isBai = $isBai ?? false;
+
+        parent::__construct($contents);
+    }
 
     /**
      * Get accounts.
@@ -109,7 +118,8 @@ final class NaiParser extends AbstractLineByLineParser
             $this->errors,
             $this->file,
             $this->groups,
-            $this->transactions
+            $this->transactions,
+            $this->isBai
         );
     }
 
@@ -131,7 +141,7 @@ final class NaiParser extends AbstractLineByLineParser
         }
 
         // Sanitize full lines
-        $currentLineIsFull = $this->checkFullLine($line);
+        $currentLineIsFull = $this->checkFullLine($line, $code);
         $line = $this->sanitizeFullLine($line);
 
         // If continuation, update previous and skip to next line
@@ -142,7 +152,7 @@ final class NaiParser extends AbstractLineByLineParser
             return;
         }
 
-        // Current code becomes then previous one for next continuation
+        // Current code becomes the previous one for next continuation
         $this->previousCode = $code;
         $this->previousFull = $currentLineIsFull;
 
@@ -275,10 +285,18 @@ final class NaiParser extends AbstractLineByLineParser
      * Check if this line has full contents in it. If the line ends with a /
      * it means it's a full line.
      */
-    private function checkFullLine(string $line): bool
+    private function checkFullLine(string $line, string $code): bool
     {
+        $endWithSlash = \str_ends_with($line, '/');
+
+        // In BAI files, transaction detail lines can end with a / or ,/ and be considered full,
+        // and will require adding a coma at the start of the continuation line even in the case of ,/
+        if ($this->isBai && $code === self::TRANSACTION_DETAIL && $endWithSlash) {
+            return true;
+        }
+
         // Prevent logic to add extra coma on continuation logic if already there
-        return \str_ends_with($line, '/') && \str_ends_with($line, ',/') === false;
+        return $endWithSlash && \str_ends_with($line, ',/') === false;
     }
 
     /**

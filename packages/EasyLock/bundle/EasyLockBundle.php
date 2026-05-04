@@ -40,7 +40,19 @@ final class EasyLockBundle extends AbstractBundle
 
         $container->import('config/services.php');
 
+        if ($this->isBundleEnabled('DoctrineBundle', $builder)) {
+            $container->import('config/doctrine.php');
+        }
+
         $this->registerMessengerConfiguration($config, $container, $builder);
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 
     private function registerMessengerConfiguration(

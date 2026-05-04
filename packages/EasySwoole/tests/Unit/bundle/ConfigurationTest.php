@@ -37,6 +37,9 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         'easy_bugsnag' => [
             'enabled' => true,
         ],
+        'easy_encryption' => [
+            'enabled' => true,
+        ],
         'easy_logging' => [
             'enabled' => true,
         ],

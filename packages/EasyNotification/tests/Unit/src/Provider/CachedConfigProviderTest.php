@@ -18,7 +18,8 @@ final class CachedConfigProviderTest extends AbstractUnitTestCase
 
         $cachedConfigProvider->provide('my-api-key', $defaultConfig['externalId']);
         $cachedConfigProvider->provide('my-api-key', $defaultConfig['externalId']);
+        $cachedConfigProvider->provide('my-api-key-1', $defaultConfig['externalId']);
 
-        self::assertEquals(1, $stub->getCalled());
+        self::assertEquals(2, $stub->getCalled());
     }
 }

@@ -11,6 +11,9 @@ use Pkcs11\GcmParams;
 use Pkcs11\Mechanism;
 use Pkcs11\Module;
 use Pkcs11\Session;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Throwable;
 use UnexpectedValueException;
 
 use const Pkcs11\CKA_LABEL;
@@ -23,6 +26,10 @@ use const Pkcs11\CKU_USER;
 final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHsmEncryptorInterface
 {
     private const CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
+
+    private const EXCEPTION_DEFAULT_RETRIES = 3;
+
+    private const EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
 
     private const GCM_TAG_LENGTH = 128;
 
@@ -42,8 +49,30 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         private readonly AwsCloudHsmSdkConfigurator $awsCloudHsmSdkConfigurator,
         private readonly string $aad = '',
         ?string $defaultKeyName = null,
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
         parent::__construct($defaultKeyName);
+    }
+
+    public function init(): void
+    {
+        if ($this->session !== null) {
+            return;
+        }
+
+        if ($this->cloudHsmSdkConfigured === false) {
+            $this->awsCloudHsmSdkConfigurator->configure();
+            $this->cloudHsmSdkConfigured = true;
+        }
+
+        $this->module ??= new Module(self::CLOUD_HSM_EXTENSION);
+        $slots = $this->module->getSlotList();
+        $firstSlot = $slots[0] ?? throw new UnexpectedValueException('Slot list is empty');
+
+        $session = $this->module->openSession($firstSlot, CKF_RW_SESSION);
+        $session->login(CKU_USER, $this->userPin);
+
+        $this->session = $session;
     }
 
     public function reset(): void
@@ -83,9 +112,9 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        return $this
+        return $this->execWithRetries(fn (): string => $this
             ->findKey($this->getKeyName($keyAsString))
-            ->decrypt($this->getMechanism(), (string)\hex2bin($text));
+            ->decrypt($this->getMechanism(), (string)\hex2bin($text)));
     }
 
     protected function doEncrypt(
@@ -99,11 +128,47 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        $encrypted = $this
+        $encrypted = $this->execWithRetries(fn (): string => $this
             ->findKey($this->getKeyName($keyAsString))
-            ->encrypt($this->getMechanism(), $text);
+            ->encrypt($this->getMechanism(), $text));
 
-        return \bin2hex((string)$encrypted);
+        return \bin2hex($encrypted);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    private function execWithRetries(callable $callback): string
+    {
+        $attempt = 0;
+
+        do {
+            $attempt++;
+
+            try {
+                return (string)$callback();
+            } catch (Throwable $throwable) {
+                $shouldRetry = $attempt < self::EXCEPTION_DEFAULT_RETRIES;
+
+                $this->logger->warning('AWS CloudHSM operation failed', [
+                    'exception_class' => $throwable::class,
+                    'exception_message' => $throwable->getMessage(),
+                    'shouldRetry' => $shouldRetry,
+                ]);
+
+                // Reset PKCS11 session on specific error failure
+                if (
+                    $shouldRetry &&
+                    \str_contains(\strtoupper($throwable->getMessage()), self::EXCEPTION_RETRY_MESSAGE)
+                ) {
+                    $this->logger->info('Resetting AWS CloudHSM PKCS11 session');
+
+                    $this->reinitializeSession($throwable);
+                }
+            }
+        } while ($shouldRetry);
+
+        throw $throwable;
     }
 
     /**
@@ -139,25 +204,20 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         );
     }
 
-    private function init(): void
+    private function reinitializeSession(Throwable $originalException): void
     {
-        if ($this->session !== null) {
-            return;
+        try {
+            $this->reset();
+            $this->init();
+        } catch (Throwable $initializationException) {
+            $this->logger->error('Failed to reinitialize AWS CloudHSM session', [
+                'exception_class' => $initializationException::class,
+                'exception_message' => $initializationException->getMessage(),
+            ]);
+
+            // Throw original exception to preserve the root cause
+            throw $originalException;
         }
-
-        if ($this->cloudHsmSdkConfigured === false) {
-            $this->awsCloudHsmSdkConfigurator->configure();
-            $this->cloudHsmSdkConfigured = true;
-        }
-
-        $this->module ??= new Module(self::CLOUD_HSM_EXTENSION);
-        $slots = $this->module->getSlotList();
-        $firstSlot = $slots[0] ?? throw new UnexpectedValueException('Slot list is empty');
-
-        $session = $this->module->openSession($firstSlot, CKF_RW_SESSION);
-        $session->login(CKU_USER, $this->userPin);
-
-        $this->session = $session;
     }
 
     private function validateKey(array|string|null $key = null): void

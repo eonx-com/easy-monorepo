@@ -14,9 +14,17 @@ use Throwable;
 
 final readonly class AwsCloudHsmSdkConfigurator
 {
-    private const API_VERSION = '2017-04-28';
+    public const SUPPORTED_CLUSTER_TYPES = [
+        'hsm1',
+        'hsm2m',
+    ];
 
-    private const CLUSTER_TYPE = 'hsm1';
+    public const SUPPORTED_SERVER_PORTS = [
+        2223,
+        2225,
+    ];
+
+    private const API_VERSION = '2017-04-28';
 
     private const CONFIGURE_TOOL = '/opt/cloudhsm/bin/configure-pkcs11';
 
@@ -30,14 +38,14 @@ final readonly class AwsCloudHsmSdkConfigurator
 
     private const LOG_TYPE = 'file';
 
-    private const SERVER_PORT = 2223;
-
     private const STS_API_VERSION = '2011-06-15';
 
     public function __construct(
         private AwsCloudHsmSdkOptionsBuilder $awsCloudHsmSdkOptionsBuilder,
         private ?string $roleArn = null,
         private bool $useConfigureTool = true,
+        private string $clusterType = self::SUPPORTED_CLUSTER_TYPES[0],
+        private int $serverPort = self::SUPPORTED_SERVER_PORTS[0],
     ) {
     }
 
@@ -85,7 +93,7 @@ final readonly class AwsCloudHsmSdkConfigurator
                 $servers[] = [
                     'enable' => true,
                     'hostname' => $hsmIpAddress,
-                    'port' => self::SERVER_PORT,
+                    'port' => $this->serverPort,
                 ];
             }
         }
@@ -157,7 +165,7 @@ final readonly class AwsCloudHsmSdkConfigurator
                         ?? throw new AwsCloudHsmCouldNotConfigureSdkException(
                             'No ENI IP found for the HSM'
                         ),
-                    'port' => self::SERVER_PORT,
+                    'port' => $this->serverPort,
                 ];
             }
 
@@ -169,7 +177,7 @@ final readonly class AwsCloudHsmSdkConfigurator
             'clusters' => [
                 [
                     'cluster' => $cluster,
-                    'type' => self::CLUSTER_TYPE,
+                    'type' => $this->clusterType,
                 ],
             ],
             'logging' => [

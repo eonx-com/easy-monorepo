@@ -7,5 +7,6 @@ use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $frameworkConfig): void {
     $frameworkConfig
+        ->secret('test-secret-for-testing')
         ->test(true);
 };

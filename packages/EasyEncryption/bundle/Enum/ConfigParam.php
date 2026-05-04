@@ -11,6 +11,8 @@ enum ConfigParam: string
 
     case AwsCloudHsmClusterId = 'easy_encryption.aws_cloud_hsm.cluster_id';
 
+    case AwsCloudHsmClusterType = 'easy_encryption.aws_cloud_hsm.cluster_type';
+
     case AwsCloudHsmDisableKeyAvailabilityCheck = 'easy_encryption.aws_cloud_hsm.disable_key_availability_check';
 
     case AwsCloudHsmEnabled = 'easy_encryption.aws_cloud_hsm.enabled';
@@ -26,6 +28,8 @@ enum ConfigParam: string
     case AwsCloudHsmServerClientCertFile = 'easy_encryption.aws_cloud_hsm.server_client_cert_file';
 
     case AwsCloudHsmServerClientKeyFile = 'easy_encryption.aws_cloud_hsm.server_client_key_file';
+
+    case AwsCloudHsmServerPort = 'easy_encryption.aws_cloud_hsm.server_port';
 
     case AwsCloudHsmSignKeyName = 'easy_encryption.aws_cloud_hsm.sign_key_name';
 

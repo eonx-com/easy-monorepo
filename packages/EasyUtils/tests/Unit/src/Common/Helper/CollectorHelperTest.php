@@ -72,6 +72,9 @@ final class CollectorHelperTest extends AbstractUnitTestCase
         yield 'same order when no priority' => [[$noPriority1, $noPriority2], [$noPriority1, $noPriority2]];
     }
 
+    /**
+     * @param class-string<object>|null $class
+     */
     #[DataProvider('provideEnsureClassData')]
     public function testEnsureClass(iterable $items, bool $expectException, ?string $class = null): void
     {
@@ -102,12 +105,18 @@ final class CollectorHelperTest extends AbstractUnitTestCase
         }
     }
 
+    /**
+     * @param iterable<object> $items
+     */
     #[DataProvider('provideOrderHigherPriorityFirstData')]
     public function testOrderHigherPriorityFirst(iterable $items, array $expected): void
     {
         self::assertEquals($expected, CollectorHelper::orderHigherPriorityFirstAsArray($items));
     }
 
+    /**
+     * @param iterable<object> $items
+     */
     #[DataProvider('provideOrderLowerPriorityFirstData')]
     public function testOrderLowerPriorityFirst(iterable $items, array $expected): void
     {

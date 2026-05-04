@@ -6,9 +6,9 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->scalarNode('default_channel')->defaultValue('app')->end()
+            ->stringNode('default_channel')->defaultValue('app')->end()
             ->arrayNode('lazy_loggers')
-                ->scalarPrototype()->end()
+                ->stringPrototype()->end()
             ->end()
             ->arrayNode('sensitive_data_sanitizer')
                 ->canBeEnabled()

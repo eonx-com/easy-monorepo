@@ -8,12 +8,12 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
         ->children()
-            ->scalarNode('batch_class')->defaultValue(Batch::class)->end()
-            ->scalarNode('batch_table')->defaultValue('easy_batches')->end()
-            ->scalarNode('batch_item_class')->defaultValue(BatchItem::class)->end()
+            ->stringNode('batch_class')->defaultValue(Batch::class)->end()
+            ->stringNode('batch_table')->defaultValue('easy_batches')->end()
+            ->stringNode('batch_item_class')->defaultValue(BatchItem::class)->end()
             ->integerNode('batch_item_per_page')->defaultValue(15)->end()
-            ->scalarNode('batch_item_table')->defaultValue('easy_batch_items')->end()
-            ->scalarNode('date_time_format')->defaultValue('Y-m-d H:i:s.u')->end()
+            ->stringNode('batch_item_table')->defaultValue('easy_batch_items')->end()
+            ->stringNode('date_time_format')->defaultValue('Y-m-d H:i:s.u')->end()
             ->floatNode('lock_ttl')->defaultNull()->end()
         ->end();
 };

@@ -41,9 +41,13 @@ final class Locker implements LockerInterface
         } catch (BaseLockAcquiringException $exception) {
             $previous = $exception->getPrevious();
             $easyAsyncInstalled = \interface_exists(ShouldKillWorkerExceptionInterface::class);
+            $pdoExceptionExists = \class_exists(PdoException::class);
 
             // If eonx-com/easy-async installed, and previous is because SQL connection not ok, kill worker
-            if ($easyAsyncInstalled && $previous instanceof PdoException && $previous->getCode() === 0) {
+            if ($easyAsyncInstalled
+                && $pdoExceptionExists
+                && $previous instanceof PdoException
+                && $previous->getCode() === 0) {
                 throw new LockAcquiringException($exception->getMessage(), $exception->getCode(), $previous);
             }
 

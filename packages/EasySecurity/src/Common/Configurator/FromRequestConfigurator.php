@@ -30,6 +30,10 @@ final readonly class FromRequestConfigurator
     {
         foreach ($this->configurators as $configurator) {
             $configurator->configure($securityContext, $this->request);
+
+            if ($configurator->isPropagationStopped()) {
+                break;
+            }
         }
 
         return $securityContext;

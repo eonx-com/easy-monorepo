@@ -21,6 +21,8 @@ use Symplify\SmartFileSystem\SmartFileSystem;
 require_once __DIR__ . '/vendor/autoload.php';
 
 return static function (MBConfig $monorepoBuilderConfig): void {
+    MBConfig::disableDefaultWorkers();
+
     $monorepoBuilderConfig->packageDirectories([__DIR__ . '/packages']);
     $monorepoBuilderConfig->packageDirectoriesExcludes([]);
     $monorepoBuilderConfig->workers([

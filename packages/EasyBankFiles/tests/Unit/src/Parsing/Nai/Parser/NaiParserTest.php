@@ -20,6 +20,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(TransactionDetailCodesTrait::class)]
 final class NaiParserTest extends AbstractUnitTestCase
 {
+    public function testBai2FromUSSucceeds(): void
+    {
+        $parser = new NaiParser($this->getSampleFileContents('fundsTypesCases.BAI'), true);
+
+        self::assertEquals('100', $parser->getTransactions()[0]->getImmediateAvailabilityAmount());
+        self::assertEquals('', $parser->getTransactions()[1]->getImmediateAvailabilityAmount());
+        self::assertEquals('REMARK=ACCT SERVICE FEE', $parser->getTransactions()[2]->getText());
+        self::assertCount(3, $parser->getTransactions());
+    }
+
     /**
      * ControlTotal should format amount as expected.
      */
@@ -28,13 +38,11 @@ final class NaiParserTest extends AbstractUnitTestCase
         $trait = $this->getObjectForTrait(ControlTotalTrait::class);
 
         self::assertIsFloat($this->callPrivateMethod($trait, 'formatAmount', '100000'));
-        self::assertSame((float)100, $this->callPrivateMethod($trait, 'formatAmount', '10000'));
+        self::assertSame(100.0, $this->callPrivateMethod($trait, 'formatAmount', '10000'));
     }
 
     public function testParserCanParseBaiFile(): void
     {
-        self::markTestSkipped('Until BAI sample added, however it was tested with real files');
-
         $bai = new NaiParser($this->getSampleFileContents('sample.BAI'));
         $nai = new NaiParser($this->getSampleFileContents('sample.NAI'));
 
@@ -98,6 +106,8 @@ final class NaiParserTest extends AbstractUnitTestCase
                     $baiTransactionDetails->getType(),
                     'mismatch details type'
                 );
+                self::assertNull($transaction->getCustomerReferenceNumber());
+                self::assertEquals('', $baiTransaction->getCustomerReferenceNumber());
             }
         }
     }

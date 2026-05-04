@@ -7,6 +7,8 @@ use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
 
 interface AwsCloudHsmEncryptorInterface extends EncryptorInterface
 {
+    public function init(): void;
+
     public function reset(): void;
 
     public function sign(string $text, ?string $keyName = null): string;

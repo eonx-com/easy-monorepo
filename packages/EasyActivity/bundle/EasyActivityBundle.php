@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyActivity\Bundle;
 
 use EonX\EasyActivity\Bundle\Enum\ConfigParam;
+use EonX\EasyEncryption\Encryptable\Attribute\EncryptableField;
 use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Config\Definition\Processor;
@@ -35,6 +36,7 @@ final class EasyActivityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         $this->registerEasyDoctrineConfiguration($config, $container, $builder);
+        $this->registerEasyEncryptionConfiguration($container, $builder);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -93,5 +95,20 @@ final class EasyActivityBundle extends AbstractBundle
             ->set(ConfigParam::EasyDoctrineSubscriberEnabled->value, $config['easy_doctrine']['subscriber']['enabled']);
 
         $container->import('config/easy_doctrine.php');
+    }
+
+    private function registerEasyEncryptionConfiguration(
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($this->isBundleEnabled('EasyEncryptionBundle', $builder) === false) {
+            return;
+        }
+
+        if (\class_exists(EncryptableField::class) === false) {
+            return;
+        }
+
+        $container->import('config/easy_encryption.php');
     }
 }

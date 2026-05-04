@@ -6,6 +6,7 @@ namespace EonX\EasyPagination\Tests\Unit\Paginator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
+use EonX\EasyPagination\Tests\Stub\Enum\Status;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\Uid\Uuid;
 
@@ -27,9 +28,9 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    protected static function addItemToTable(Connection $connection, string $title): void
+    protected static function addItemToTable(Connection $connection, string $title, ?Status $status = null): void
     {
-        $connection->insert('items', ['title' => $title]);
+        $connection->insert('items', ['title' => $title, 'status' => $status?->value]);
     }
 
     /**
@@ -74,6 +75,10 @@ abstract class AbstractDoctrineDbalPaginatorTestCase extends AbstractUnitTestCas
 
         $table
             ->addColumn('title', 'string', ['length' => 255])
+            ->setNotnull(false);
+
+        $table
+            ->addColumn('status', 'string', ['length' => 255])
             ->setNotnull(false);
 
         $table->setPrimaryKey(['id']);

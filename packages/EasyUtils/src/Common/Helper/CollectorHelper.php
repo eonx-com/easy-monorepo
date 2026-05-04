@@ -4,16 +4,33 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Common\Helper;
 
 use EonX\EasyUtils\Common\Exception\InvalidArgumentException;
-use Traversable;
 
 final class CollectorHelper
 {
+    /**
+     * @template TKey
+     * @template TValue
+     *
+     * @param iterable<TKey, TValue> $items
+     *
+     * @return array<TKey, TValue>|TValue[]
+     */
     public static function convertToArray(iterable $items): array
     {
-        return $items instanceof Traversable ? \iterator_to_array($items) : $items;
+        if (\is_array($items)) {
+            return $items;
+        }
+
+        return \iterator_to_array($items);
     }
 
     /**
+     * @template TValue of object
+     *
+     * @param class-string<TValue> $class
+     *
+     * @return iterable<TValue>
+     *
      * @throws \EonX\EasyUtils\Common\Exception\InvalidArgumentException
      */
     public static function ensureClass(iterable $items, string $class): iterable
@@ -32,6 +49,12 @@ final class CollectorHelper
     }
 
     /**
+     * @template TValue of object
+     *
+     * @param class-string<TValue> $class
+     *
+     * @return array<TValue>
+     *
      * @throws \EonX\EasyUtils\Common\Exception\InvalidArgumentException
      */
     public static function ensureClassAsArray(iterable $items, string $class): array
@@ -39,6 +62,13 @@ final class CollectorHelper
         return self::convertToArray(self::ensureClass($items, $class));
     }
 
+    /**
+     * @template TValue of object
+     *
+     * @param class-string<TValue> $class
+     *
+     * @return iterable<TValue>
+     */
     public static function filterByClass(iterable $items, string $class): iterable
     {
         foreach ($items as $item) {
@@ -49,13 +79,24 @@ final class CollectorHelper
     }
 
     /**
-     * @param class-string $class
+     * @template TValue of object
+     *
+     * @param class-string<TValue> $class
+     *
+     * @return array<TValue>
      */
     public static function filterByClassAsArray(iterable $items, string $class): array
     {
         return self::convertToArray(self::filterByClass($items, $class));
     }
 
+    /**
+     * @template TValue of object
+     *
+     * @param iterable<TValue> $items
+     *
+     * @return iterable<TValue>
+     */
     public static function orderHigherPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
@@ -76,11 +117,25 @@ final class CollectorHelper
         }
     }
 
+    /**
+     * @template TValue of object
+     *
+     * @param iterable<TValue> $items
+     *
+     * @return array<TValue>
+     */
     public static function orderHigherPriorityFirstAsArray(iterable $items): array
     {
         return self::convertToArray(self::orderHigherPriorityFirst($items));
     }
 
+    /**
+     * @template TValue of object
+     *
+     * @param iterable<TValue> $items
+     *
+     * @return iterable<TValue>
+     */
     public static function orderLowerPriorityFirst(iterable $items): iterable
     {
         $items = self::convertToArray($items);
@@ -101,6 +156,13 @@ final class CollectorHelper
         }
     }
 
+    /**
+     * @template TValue of object
+     *
+     * @param iterable<TValue> $items
+     *
+     * @return array<TValue>
+     */
     public static function orderLowerPriorityFirstAsArray(iterable $items): array
     {
         return self::convertToArray(self::orderLowerPriorityFirst($items));

@@ -56,9 +56,7 @@ final class WhenPutReturnNotFoundOnReadOperationTest extends AbstractApplication
                 ],
             ]
         );
-        self::assertSame(500, $response->getStatusCode());
-        /** @var array $responseData */
-        $responseData = \json_decode($response->getContent(false), true);
-        self::assertSame(403, $responseData['custom_code']);
+
+        self::assertSame(200, $response->getStatusCode());
     }
 }

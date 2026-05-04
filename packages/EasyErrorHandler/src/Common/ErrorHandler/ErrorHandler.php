@@ -164,7 +164,11 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
     }
 
     /**
-     * @param class-string $class
+     * @template TValue of object
+     *
+     * @param class-string<TValue> $class
+     *
+     * @return list<TValue>
      */
     private function filterIterable(iterable $items, string $class): array
     {

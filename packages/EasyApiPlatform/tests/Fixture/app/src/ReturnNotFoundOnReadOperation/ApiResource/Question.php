@@ -14,14 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(
             uriTemplate: '/questions/{id}/mark-as-answered',
             status: 200,
-            security: 'is_granted("SOME_NOT_EXISTING_PERMISSION")',
             input: false,
         ),
         new Post(),
         new Put(
             uriTemplate: '/questions/{id}/mark-as-answered',
             status: 200,
-            security: 'is_granted("SOME_NOT_EXISTING_PERMISSION")',
             input: false,
             allowCreate: true,
         ),

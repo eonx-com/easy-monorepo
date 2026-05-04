@@ -92,6 +92,7 @@ return ECSConfig::configure()
         FinalClassFixer::class => [
             'packages/EasyActivity/tests/Fixture/app/src/Entity/Type.php',
             'packages/EasyApiPlatform/tests/Fixture/app/src/AdvancedSearchFilter/ApiResource/EmbeddableDummy.php',
+            'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
             'packages/EasySecurity/src/Common/Context/SecurityContext.php',
             'packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php',
             'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
