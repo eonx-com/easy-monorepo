@@ -31,10 +31,6 @@ final class StringMaskHelper
      */
     public static function maskMiddle(string $value, int $visible, ?string $maskingSymbol = null): string
     {
-        if ($visible < 1) {
-            throw new UnexpectedValueException('Visible characters must be a positive integer.');
-        }
-
         $maskingSymbol ??= self::MASKING_SYMBOL_DEFAULT;
 
         $length = \mb_strlen($value);
