@@ -46,19 +46,4 @@ final class StringMaskHelper
             . \str_repeat($maskingSymbol, $length - ($visible * 2))
             . \mb_substr($value, -$visible);
     }
-
-    /**
-     * Masks a phone number, showing only the first 1 and last 4 characters. (AWS Cognito consistent)
-     */
-    public static function maskPhoneNumber(string $phoneNumber): string
-    {
-        $length = \mb_strlen($phoneNumber);
-        if ($length < 5) {
-            throw new UnexpectedValueException('Phone number must be at least 5 characters long.');
-        }
-
-        return $phoneNumber[0]
-            . \str_repeat(self::MASKING_SYMBOL_DEFAULT, $length - 5)
-            . \mb_substr($phoneNumber, -4);
-    }
 }

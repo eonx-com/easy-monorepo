@@ -71,18 +71,6 @@ final class StringMaskHelperTest extends AbstractUnitTestCase
         ];
     }
 
-    /**
-     * @see testMaskPhoneNumberSucceeds
-     */
-    public static function provideMaskPhoneNumberData(): iterable
-    {
-        yield 'typical AU mobile' => ['phoneNumber' => '+61412345678', 'expected' => '+*******5678'];
-
-        yield 'nine chars' => ['phoneNumber' => '123456789', 'expected' => '1****6789'];
-
-        yield 'five chars' => ['phoneNumber' => '12345', 'expected' => '12345'];
-    }
-
     #[DataProvider('provideMaskEmailData')]
     public function testMaskEmailSucceeds(string $email, string $expected, ?string $maskingSymbol = null): void
     {
@@ -100,14 +88,6 @@ final class StringMaskHelperTest extends AbstractUnitTestCase
         ?string $maskingSymbol = null,
     ): void {
         $result = StringMaskHelper::maskMiddle($value, $visible, $maskingSymbol);
-
-        self::assertSame($expected, $result);
-    }
-
-    #[DataProvider('provideMaskPhoneNumberData')]
-    public function testMaskPhoneNumberSucceeds(string $phoneNumber, string $expected): void
-    {
-        $result = StringMaskHelper::maskPhoneNumber($phoneNumber);
 
         self::assertSame($expected, $result);
     }
