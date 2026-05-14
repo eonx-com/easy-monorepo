@@ -601,7 +601,7 @@
                     },
                     "status": {
                         "type": [
-                            "number",
+                            "integer",
                             "null"
                         ],
                         "examples": [
