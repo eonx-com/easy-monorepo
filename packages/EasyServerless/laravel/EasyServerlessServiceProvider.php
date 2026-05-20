@@ -56,7 +56,9 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                 appMaxRetries: $getQueueConfig('max_retries', 3),
                 timeoutThresholdMilliseconds: $getQueueConfig('timeout_threshold_ms', 1000),
                 partialBatchFailure: $getQueueConfig('partial_batch_failure', false),
-                stateCheckers: $app->tagged(ConfigTag::StateChecker->value),
+                stateCheckers: \config('easy-serverless.state.check', true)
+                    ? $app->tagged(ConfigTag::StateChecker->value)
+                    : [],
             );
         });
     }

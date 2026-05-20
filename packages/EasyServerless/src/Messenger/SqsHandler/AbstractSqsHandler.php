@@ -9,6 +9,7 @@ use Bref\Context\Context;
 use Bref\Event\Sqs\SqsEvent;
 use Bref\Event\Sqs\SqsHandler;
 use Bref\Event\Sqs\SqsRecord;
+use EonX\EasyServerless\State\Checker\StateCheckerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -31,14 +32,23 @@ abstract class AbstractSqsHandler extends SqsHandler
     private array $recordsForRetry = [];
 
     /**
+     * @var array<\EonX\EasyServerless\State\Checker\StateCheckerInterface>
+     */
+    private readonly array $stateCheckers;
+
+    /**
      * @param iterable<\EonX\EasyServerless\State\Checker\StateCheckerInterface> $stateCheckers
      */
     public function __construct(
         protected readonly int $appMaxRetries = 3,
         protected readonly bool $partialBatchFailure = false,
         private readonly int $timeoutThresholdMilliseconds = 1000, // 1 second
-        private readonly iterable $stateCheckers = [],
+        iterable $stateCheckers = [],
     ) {
+        $this->stateCheckers = \array_filter(
+            \iterator_to_array($stateCheckers),
+            static fn (mixed $stateChecker): bool => $stateChecker instanceof StateCheckerInterface
+        );
     }
 
     /**
