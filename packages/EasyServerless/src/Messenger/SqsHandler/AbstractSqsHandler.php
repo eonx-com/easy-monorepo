@@ -61,6 +61,7 @@ abstract class AbstractSqsHandler extends SqsHandler
         }
 
         $this->handleFailedRecords();
+        $this->checkState();
     }
 
     abstract protected function getSqsClient(): AwsSqsClient|AsyncAwsSqsClient;
@@ -86,6 +87,13 @@ abstract class AbstractSqsHandler extends SqsHandler
         }
 
         $this->markAsFailed($sqsRecord);
+    }
+
+    private function checkState(): void
+    {
+        foreach ($this->stateCheckers as $stateChecker) {
+            $stateChecker->check();
+        }
     }
 
     private function handleFailedRecords(): void
@@ -200,9 +208,7 @@ abstract class AbstractSqsHandler extends SqsHandler
         }
 
         try {
-            foreach ($this->stateCheckers as $stateChecker) {
-                $stateChecker->check();
-            }
+            $this->checkState();
         } catch (Throwable $throwable) {
             $this->logger?->debug(
                 \sprintf(
