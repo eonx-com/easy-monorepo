@@ -11,7 +11,7 @@ return static function (EasyRequestIdConfig $easyRequestIdConfig): void {
 
     $easyRequestIdConfig->easyLogging()
         ->enabled(false);
-    
+
     $easyRequestIdConfig->easyHttpClient()
         ->enabled(false);
 
