@@ -87,6 +87,10 @@ final class EasyServerlessBundle extends AbstractBundle
             if ($config['sqs']['reset_services']['enabled']) {
                 $container->import('config/sqs_reset_services.php');
             }
+
+            if ($config['state'] && $config['state']['check']) {
+                $container->import('config/messenger_state_checker.php');
+            }
         }
 
         if (\class_exists(Logger::class) && $config['monolog']['enabled']) {

@@ -33,6 +33,7 @@ final class SqsHandler extends AbstractSqsHandler
         int $appMaxRetries = 3,
         int $timeoutThresholdMilliseconds = 1000,
         bool $partialBatchFailure = false,
+        iterable $stateCheckers = [],
     ) {
         $queue = $this->container->make(QueueManager::class)
             ->connection($this->connectionName);
@@ -45,7 +46,7 @@ final class SqsHandler extends AbstractSqsHandler
         $this->sqsClient = $queue->getSqs();
         $this->worker = $this->makeWorker();
 
-        parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds);
+        parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds, $stateCheckers);
     }
 
     protected function getSqsClient(): SqsClient
@@ -77,11 +78,13 @@ final class SqsHandler extends AbstractSqsHandler
                 && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
 
             if ($shouldRetry === false) {
-                $this->logger?->error(\sprintf(
-                    'SQS Record with MessageId "%s" failed to process but will not be retried%s',
-                    $sqsRecord->getMessageId(),
-                    $isJobExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
-                ));
+                $this->logger?->error(
+                    \sprintf(
+                        'SQS Record with MessageId "%s" failed to process but will not be retried%s',
+                        $sqsRecord->getMessageId(),
+                        $isJobExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
+                    )
+                );
             }
 
             // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,

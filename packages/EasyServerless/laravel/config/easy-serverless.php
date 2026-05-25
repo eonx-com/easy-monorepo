@@ -9,4 +9,7 @@ return [
     'health' => [
         'enabled' => true,
     ],
+    'state' => [
+        'check' => true,
+    ],
 ];
