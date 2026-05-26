@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 #[AsEventListener(event: ResponseEvent::class, priority: -10_000)]
-final readonly class SecurityHeaderResponseListener
+final readonly class SecurityHeadersResponseListener
 {
     public function __construct(
         private SecurityHeadersHydrator $securityHeaderHydrator,

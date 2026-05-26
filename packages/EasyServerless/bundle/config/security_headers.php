@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyServerless\Bundle\Listener\SecurityHeaderResponseListener;
+use EonX\EasyServerless\Bundle\Listener\SecurityHeadersResponseListener;
 use EonX\EasyServerless\SecurityHeader\Hydrator\SecurityHeadersHydrator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -14,5 +14,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(SecurityHeadersHydrator::class);
 
-    $services->set(SecurityHeaderResponseListener::class);
+    $services->set(SecurityHeadersResponseListener::class);
 };
