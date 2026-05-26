@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 final readonly class SecurityHeadersHydrator
 {
     private const HEADERS = [
-        'permissions-policy' => 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
+        'permissions-policy' => 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),'
+            . ' microphone=(), payment=(), usb=()',
         'referrer-policy' => 'strict-origin-when-cross-origin',
         'strict-transport-security' => 'max-age=86400; includeSubDomains; preload',
         'x-content-type-options' => 'nosniff',
