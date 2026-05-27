@@ -61,6 +61,10 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/health.php');
         }
 
+        if ($config['security_headers']['enabled']) {
+            $container->import('config/security_headers.php');
+        }
+
         if ($config['state'] && $config['state']['check']) {
             $container->import('config/state.php');
         }
