@@ -11,6 +11,7 @@ use Bref\Event\Http\Psr7Bridge;
 use EonX\EasyServerless\Aws\Transformer\HttpEventTransformer;
 use EonX\EasyServerless\Aws\Transformer\HttpEventTransformerInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
@@ -32,6 +33,8 @@ final class SymfonyHttpHandler extends HttpHandler
 
     private const LAMBDA_REQUEST_CONTEXT_KEY = 'LAMBDA_REQUEST_CONTEXT';
 
+    private const SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
+
     private readonly HttpMessageFactoryInterface $psrHttpFactory;
 
     private ?Request $symfonyRequest = null;
@@ -43,6 +46,8 @@ final class SymfonyHttpHandler extends HttpHandler
         private readonly HttpFoundationFactoryInterface $httpFoundationFactory = new HttpFoundationFactory(),
         private readonly HttpEventTransformerInterface $httpEventTransformer = new HttpEventTransformer(),
         ?HttpMessageFactoryInterface $psrHttpFactory = null,
+        private readonly ?LoggerInterface $logger = null,
+        private readonly int $lambdaTimeoutSeconds = 0,
     ) {
         if ($psrHttpFactory === null) {
             $psr17Factory = new Psr17Factory();
@@ -52,7 +57,7 @@ final class SymfonyHttpHandler extends HttpHandler
         $this->psrHttpFactory = $psrHttpFactory;
     }
 
-    public function afterInvoke(): void
+    public function afterInvoke(Context $context): void
     {
         if ($this->symfonyRequest === null || $this->symfonyResponse === null) {
             return;
@@ -60,6 +65,21 @@ final class SymfonyHttpHandler extends HttpHandler
 
         if ($this->kernel instanceof TerminableInterface) {
             $this->kernel->terminate($this->symfonyRequest, $this->symfonyResponse);
+        }
+
+        $remainingTimeInMilliseconds = $context->getRemainingTimeInMillis() - self::SAFETY_TIMEOUT_MARGIN_MILLISECONDS;
+        $timeoutThresholdMilliseconds = $this->lambdaTimeoutSeconds * 1000;
+
+        if ($remainingTimeInMilliseconds <= $timeoutThresholdMilliseconds) {
+            $this->logger?->debug(
+                \sprintf(
+                    'Do nothing and wait because remaining Lambda time (%d ms) is below threshold (%d ms)',
+                    $remainingTimeInMilliseconds,
+                    $timeoutThresholdMilliseconds
+                )
+            );
+
+            sleep($this->lambdaTimeoutSeconds);
         }
     }
 

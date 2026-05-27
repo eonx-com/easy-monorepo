@@ -20,7 +20,7 @@ final class InvocationLifecycleSubscriber extends BrefEventSubscriber
         ?Throwable $error = null,
     ): void {
         if ($handler instanceof SymfonyHttpHandler) {
-            $handler->afterInvoke();
+            $handler->afterInvoke($context);
         }
     }
 }

@@ -10,4 +10,6 @@ enum ConfigParam: string
     case AssetsSeparateDomainEnabled = 'easy_serverless.assets_separate_domain.enabled';
 
     case AssetsSeparateDomainUrl = 'easy_serverless.assets_separate_domain.url';
+
+    case HttpLambdaTimeout = 'easy_serverless.http.lambda_timeout';
 }

@@ -37,7 +37,8 @@ final class EasyServerlessBundle extends AbstractBundle
             ->parameters()
             ->set(ConfigParam::AppMetricNamespace->value, $config['app_metric']['namespace'])
             ->set(ConfigParam::AssetsSeparateDomainEnabled->value, $config['assets_separate_domain']['enabled'])
-            ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url']);
+            ->set(ConfigParam::AssetsSeparateDomainUrl->value, $config['assets_separate_domain']['url'])
+            ->set(ConfigParam::HttpLambdaTimeout->value, $config['http']['lambda_timeout']);
 
         $builder
             ->registerForAutoconfiguration(HealthCheckerInterface::class)
