@@ -79,7 +79,7 @@ final class SymfonyHttpHandler extends HttpHandler
                 )
             );
 
-            sleep($this->lambdaTimeoutSeconds);
+            \sleep($this->lambdaTimeoutSeconds);
         }
     }
 

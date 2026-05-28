@@ -16,7 +16,7 @@ use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
 use EonX\EasyServerless\Laravel\HttpHandlers\OctaneHttpHandler;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
-use EonX\EasyServerless\Laravel\Subscriber\InvocationLifecycleSubscriber;
+use EonX\EasyServerless\Laravel\Subscribers\InvocationLifecycleSubscriber;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -51,9 +51,9 @@ final class EasyServerlessServiceProvider extends ServiceProvider
             $connectionName = $config->get('queue.default', 'sqs');
             $getQueueConfig = static fn (string $name, mixed $default): mixed
                 => $config->get(
-                    \sprintf('queue.connections.%s.%s', $connectionName, $name),
-                    $default
-                );
+                \sprintf('queue.connections.%s.%s', $connectionName, $name),
+                $default
+            );
 
             return new SqsHandler(
                 container: $app,

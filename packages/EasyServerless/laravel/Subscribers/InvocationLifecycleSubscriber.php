@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Laravel\Subscriber;
+namespace EonX\EasyServerless\Laravel\Subscribers;
 
 use Bref\Context\Context;
 use Bref\Event\Handler;
