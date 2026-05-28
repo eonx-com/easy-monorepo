@@ -33,10 +33,10 @@ final class StringMaskHelper
     {
         $maskingSymbol ??= self::MASKING_SYMBOL_DEFAULT;
 
-        $maskLength = \min($maskLength, \strlen($value));
+        $maskLength = \min($maskLength, \mb_strlen($value));
         $mask = \str_repeat($maskingSymbol, $maskLength);
 
-        return \substr_replace($value, $mask, 0, $maskLength);
+        return $mask . \mb_substr($value, $maskLength);
     }
 
     /**
