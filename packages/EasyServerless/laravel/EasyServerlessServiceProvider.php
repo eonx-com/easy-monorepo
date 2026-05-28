@@ -3,16 +3,20 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Laravel;
 
+use Bref\Bref;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Pagination\StatelessPagination;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
+use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
+use EonX\EasyServerless\Laravel\HttpHandlers\OctaneHttpHandler;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
+use EonX\EasyServerless\Laravel\Subscriber\InvocationLifecycleSubscriber;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -36,6 +40,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
 
         $this->registerAppMetric();
         $this->registerHealth();
+        $this->registerHttp();
 
         if (\class_exists(PaginationInterface::class)) {
             $this->registerPagination();
@@ -102,6 +107,26 @@ final class EasyServerlessServiceProvider extends ServiceProvider
 
         // Controller
         $this->app->singleton(HealthCheckController::class);
+    }
+
+    private function registerHttp(): void
+    {
+        if (\config('easy-serverless.http.enabled', true) === false) {
+            return;
+        }
+
+        $this->app->singleton(
+            OctaneHttpHandler::class,
+            static fn (Container $app): OctaneHttpHandler => new OctaneHttpHandler(
+                logger: $app->make(LoggerInterface::class),
+                lambdaTimeoutSeconds: (int)\config('easy-serverless.http.lambda_timeout', 30),
+            )
+        );
+
+        if (LambdaContextHelper::inLambda()) {
+            Bref::events()
+                ->subscribe(new InvocationLifecycleSubscriber());
+        }
     }
 
     private function registerPagination(): void
