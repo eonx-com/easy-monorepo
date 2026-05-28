@@ -51,9 +51,9 @@ final class EasyServerlessServiceProvider extends ServiceProvider
             $connectionName = $config->get('queue.default', 'sqs');
             $getQueueConfig = static fn (string $name, mixed $default): mixed
                 => $config->get(
-                \sprintf('queue.connections.%s.%s', $connectionName, $name),
-                $default
-            );
+                    \sprintf('queue.connections.%s.%s', $connectionName, $name),
+                    $default
+                );
 
             return new SqsHandler(
                 container: $app,
