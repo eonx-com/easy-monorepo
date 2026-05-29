@@ -71,8 +71,8 @@ abstract class AbstractSqsHandler extends SqsHandler
                 $this->handleSqsRecords($sqsRecord, $context);
             }
 
-        $this->handleFailedRecords();
-        $this->checkState();
+            $this->handleFailedRecords();
+            $this->checkState();
         } finally {
             \gc_collect_cycles();
         }
