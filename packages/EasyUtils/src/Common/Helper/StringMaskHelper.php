@@ -27,6 +27,19 @@ final class StringMaskHelper
     }
 
     /**
+     * @param positive-int $maskLength
+     */
+    public static function maskFirst(string $value, int $maskLength, ?string $maskingSymbol = null): string
+    {
+        $maskingSymbol ??= self::MASKING_SYMBOL_DEFAULT;
+
+        $maskLength = \min($maskLength, \mb_strlen($value));
+        $mask = \str_repeat($maskingSymbol, $maskLength);
+
+        return $mask . \mb_substr($value, $maskLength);
+    }
+
+    /**
      * @param positive-int $visible
      */
     public static function maskMiddle(string $value, int $visible, ?string $maskingSymbol = null): string
