@@ -50,8 +50,9 @@ final class SqsHandler extends AbstractSqsHandler
         int $appMaxRetries = 3,
         bool $partialBatchFailure = false,
         int $timeoutThresholdMilliseconds = 1000,
+        iterable $stateCheckers = [],
     ) {
-        parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds);
+        parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds, $stateCheckers);
     }
 
     protected function getSqsClient(): SqsClient
@@ -130,11 +131,13 @@ final class SqsHandler extends AbstractSqsHandler
                 && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
 
             if ($shouldRetry === false) {
-                $this->logger?->error(\sprintf(
-                    'SQS Record with MessageId "%s" failed to process but will not be retried%s',
-                    $sqsRecord->getMessageId(),
-                    $isThrowableExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
-                ));
+                $this->logger?->error(
+                    \sprintf(
+                        'SQS Record with MessageId "%s" failed to process but will not be retried%s',
+                        $sqsRecord->getMessageId(),
+                        $isThrowableExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
+                    )
+                );
             }
 
             $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));

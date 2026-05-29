@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyPagination\Pagination\PaginationInterface;
@@ -318,7 +320,23 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn('some sql');
         $queryBuilder
             ->getParameters()
+            ->willReturn([new Parameter('baz', 'test', ParameterType::STRING)]);
+        $query->getParameter('baz')
+            ->willReturn(new Parameter('baz', 'test', ParameterType::STRING));
+        $query->getDQL()
+            ->willReturn('SELECT i FROM ' . Item::class . ' i WHERE i.title LIKE :baz OR i.title LIKE :baz');
+        $query->getEntityManager()
+            ->willReturn($this->getEntityManager());
+        $query->getHints()
             ->willReturn([]);
+        $query->hasHint(Argument::any())
+            ->willReturn(false);
+        $query->getHint(Argument::any())
+            ->willReturn(false);
+        $query->getHydrationMode()
+            ->willReturn(Query::HYDRATE_OBJECT);
+        $query->setResultSetMapping(Argument::any())
+            ->willReturn(null);
         $entityManager
             ->getConnection()
             ->willReturn($connection->reveal());
@@ -327,7 +345,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn(new PostgreSQLPlatform());
         $result = $this->prophesize(Result::class);
         $connection
-            ->executeQuery(Argument::any(), [], [])
+            ->executeQuery(Argument::any(), ['test', 'test'], [ParameterType::STRING, ParameterType::STRING])
             ->willReturn($result->reveal());
         $result
             ->fetchAssociative()
