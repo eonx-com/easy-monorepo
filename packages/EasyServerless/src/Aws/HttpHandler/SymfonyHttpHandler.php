@@ -28,6 +28,8 @@ use Symfony\Component\HttpKernel\TerminableInterface;
  */
 final class SymfonyHttpHandler extends HttpHandler
 {
+    private const APP_RUNTIME_MODE = 'APP_RUNTIME_MODE';
+
     private const LAMBDA_REQUEST_CONTEXT_KEY = 'LAMBDA_REQUEST_CONTEXT';
 
     private readonly HttpMessageFactoryInterface $psrHttpFactory;
@@ -76,6 +78,7 @@ final class SymfonyHttpHandler extends HttpHandler
     public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
     {
         $this->reset();
+        $this->ensureHttpRuntimeMode();
         $this->setRequestContext((string)\json_encode($event->getRequestContext()));
 
         $symfonyRequest = $this->httpFoundationFactory->createRequest(Psr7Bridge::convertRequest($event, $context));
@@ -85,6 +88,27 @@ final class SymfonyHttpHandler extends HttpHandler
         $this->symfonyResponse = $symfonyResponse;
 
         return Psr7Bridge::convertResponse($this->psrHttpFactory->createResponse($symfonyResponse));
+    }
+
+    private function ensureHttpRuntimeMode(): void
+    {
+        $current = \getenv(self::APP_RUNTIME_MODE);
+
+        if (\is_string($current) && $current !== '') {
+            return;
+        }
+
+        foreach ([$_ENV, $_SERVER] as $scope) {
+            $current = $scope[self::APP_RUNTIME_MODE] ?? null;
+
+            if (\is_string($current) && $current !== '') {
+                return;
+            }
+        }
+
+        $_ENV[self::APP_RUNTIME_MODE] = 'web=1&worker=1';
+        $_SERVER[self::APP_RUNTIME_MODE] = 'web=1&worker=1';
+        \putenv(\sprintf('%s=%s', self::APP_RUNTIME_MODE, 'web=1&worker=1'));
     }
 
     private function reset(): void
@@ -97,7 +121,8 @@ final class SymfonyHttpHandler extends HttpHandler
 
     private function setRequestContext(string $value): void
     {
-        $_SERVER[self::LAMBDA_REQUEST_CONTEXT_KEY] = $_ENV[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
+        $_ENV[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
+        $_SERVER[self::LAMBDA_REQUEST_CONTEXT_KEY] = $value;
         \putenv(\sprintf('%s=%s', self::LAMBDA_REQUEST_CONTEXT_KEY, $value));
     }
 }
