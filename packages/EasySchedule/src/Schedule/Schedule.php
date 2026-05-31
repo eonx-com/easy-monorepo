@@ -5,7 +5,9 @@ namespace EonX\EasySchedule\Schedule;
 
 use EonX\EasySchedule\Entry\ScheduleEntry;
 use EonX\EasySchedule\Entry\ScheduleEntryInterface;
+use ReflectionClass;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use UnexpectedValueException;
 
@@ -31,15 +33,11 @@ final class Schedule implements ScheduleInterface
     }
 
     /**
-     * @param class-string<\Symfony\Component\Console\Command\Command>|string $command
+     * @param class-string|string $command
      */
     public function command(string $command, ?array $parameters = null): ScheduleEntryInterface
     {
-        $commandName = $command;
-
-        if (\is_a($command, Command::class, true)) {
-            $commandName = $command::getDefaultName() ?? '';
-        }
+        $commandName = $this->resolveCommandName($command);
 
         if ($commandName === '') {
             throw new UnexpectedValueException('Command name cannot be empty.');
@@ -70,5 +68,29 @@ final class Schedule implements ScheduleInterface
         $this->app->setAutoExit(false);
 
         return $this;
+    }
+
+    /**
+     * Resolves the console command name from a command name string or a command class-string. The name is read from
+     * the #[AsCommand] attribute, which supports both invokable commands (classes that do not extend Command) and
+     * classes extending Command, without relying on the deprecated Command::getDefaultName() method.
+     *
+     * @param class-string|string $command
+     */
+    private function resolveCommandName(string $command): string
+    {
+        if (\class_exists($command)) {
+            $attributes = (new ReflectionClass($command))->getAttributes(AsCommand::class);
+
+            if (isset($attributes[0])) {
+                return $attributes[0]->newInstance()->name;
+            }
+
+            if (\is_a($command, Command::class, true)) {
+                return $command::getDefaultName() ?? '';
+            }
+        }
+
+        return $command;
     }
 }

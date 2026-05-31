@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace EonX\EasySchedule\Tests\Unit\Schedule;
 
 use EonX\EasySchedule\Schedule\Schedule;
+use EonX\EasySchedule\Tests\Stub\Command\CommandStub;
+use EonX\EasySchedule\Tests\Stub\Command\InvokableCommandStub;
 use EonX\EasySchedule\Tests\Stub\Provider\ScheduleProviderStub;
 use EonX\EasySchedule\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\Console\Application;
+use UnexpectedValueException;
 
 final class ScheduleTest extends AbstractUnitTestCase
 {
@@ -28,6 +31,32 @@ final class ScheduleTest extends AbstractUnitTestCase
         ]);
 
         self::assertSame("'command:foo' --foo=bar", $entry->getDescription());
+    }
+
+    public function testCommandResolvesClassNameFromAsCommandAttribute(): void
+    {
+        $schedule = new Schedule();
+        $entry = $schedule->command(CommandStub::class);
+
+        self::assertSame("'command:bar'", $entry->getDescription());
+    }
+
+    public function testCommandResolvesInvokableClassNameFromAsCommandAttribute(): void
+    {
+        $schedule = new Schedule();
+        $entry = $schedule->command(InvokableCommandStub::class);
+
+        self::assertSame("'command:invokable'", $entry->getDescription());
+    }
+
+    public function testCommandThrowsExceptionWhenNameIsEmpty(): void
+    {
+        $schedule = new Schedule();
+
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('Command name cannot be empty.');
+
+        $schedule->command('');
     }
 
     public function testGetDueEntries(): void
