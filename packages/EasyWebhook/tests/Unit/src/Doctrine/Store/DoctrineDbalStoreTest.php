@@ -40,8 +40,6 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
 
     /**
      * @param \EonX\EasyWebhook\Common\Entity\WebhookInterface[] $webhooks
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     #[DataProvider('provideFindDueWebhooksData')]
     public function testFindDueWebhooks(array $webhooks, int $expectedDue): void
@@ -54,6 +52,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
 
         $dueWebhooks = $store->findDueWebhooks(new Pagination(1, 15));
 
+        self::assertSame($expectedDue, $dueWebhooks->getTotalItems());
         self::assertCount($expectedDue, $dueWebhooks->getItems());
     }
 
