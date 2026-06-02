@@ -47,9 +47,11 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         ?DateTimeInterface $sendAfter = null,
         ?string $timezone = null,
     ): LengthAwarePaginatorInterface {
-        $sendAfter = $sendAfter !== null
-            ? Carbon::parse($sendAfter->format(self::DATETIME_FORMAT), $timezone)
-            : Carbon::now($timezone);
+        $sendAfter = $sendAfter !== null ? Carbon::instance($sendAfter) : Carbon::now($timezone);
+
+        if ($timezone !== null) {
+            $sendAfter = $sendAfter->shiftTimezone($timezone);
+        }
 
         $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->connection, $this->table);
 
