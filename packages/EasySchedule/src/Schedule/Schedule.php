@@ -8,7 +8,6 @@ use EonX\EasySchedule\Entry\ScheduleEntryInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use UnexpectedValueException;
 
 final class Schedule implements ScheduleInterface
@@ -71,10 +70,6 @@ final class Schedule implements ScheduleInterface
     }
 
     /**
-     * Resolves the console command name from a command name string or a command class-string. The name is read from
-     * the #[AsCommand] attribute, which supports both invokable commands (classes that do not extend Command) and
-     * classes extending Command, without relying on the deprecated Command::getDefaultName() method.
-     *
      * @param class-string|string $command
      */
     private function resolveCommandName(string $command): string
@@ -82,13 +77,15 @@ final class Schedule implements ScheduleInterface
         if (\class_exists($command)) {
             $attributes = (new ReflectionClass($command))->getAttributes(AsCommand::class);
 
-            if (isset($attributes[0])) {
-                return $attributes[0]->newInstance()->name;
+            if (isset($attributes[0]) === false) {
+                throw new UnexpectedValueException(\sprintf(
+                    'Command class "%s" does not have the "%s" attribute.',
+                    $command,
+                    AsCommand::class
+                ));
             }
 
-            if (\is_a($command, Command::class, true)) {
-                return $command::getDefaultName() ?? '';
-            }
+            return $attributes[0]->newInstance()->name;
         }
 
         return $command;
