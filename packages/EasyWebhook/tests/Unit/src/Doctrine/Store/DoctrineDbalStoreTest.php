@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Unit\Doctrine\Store;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use EonX\EasyPagination\Pagination\Pagination;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
@@ -39,9 +40,68 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
     }
 
     /**
+     * @see testFindDueWebhooksWithTimezone
+     */
+    public static function provideFindDueWebhooksWithTimezoneData(): iterable
+    {
+        // Pacific/Kiritimati is UTC+14: "now" there are 14 hours ahead of the UTC wall-clock
+        $sendAfter = Carbon::parse('2026-06-02 12:00:00', 'UTC');
+
+        yield 'now in UTC, send_after just ahead, not due' => [
+            self::createWebhookForSendAfter(Carbon::now('UTC')->addMinute()),
+            null,
+            'UTC',
+            0,
+        ];
+
+        yield 'now in UTC+14, send_after just ahead of UTC, due' => [
+            self::createWebhookForSendAfter(Carbon::now('UTC')->addMinute()),
+            null,
+            'Pacific/Kiritimati',
+            1,
+        ];
+
+        yield 'now in UTC+14, send_after just inside the window, due' => [
+            self::createWebhookForSendAfter(Carbon::now('UTC')->addHours(14)->subMinute()),
+            null,
+            'Pacific/Kiritimati',
+            1,
+        ];
+
+        yield 'now in UTC+14, send_after just past the window, not due' => [
+            self::createWebhookForSendAfter(Carbon::now('UTC')->addHours(14)->addMinute()),
+            null,
+            'Pacific/Kiritimati',
+            0,
+        ];
+
+        // Explicit $sendAfter: $timezone must not affect the result
+        yield 'explicit sendAfter after send_after, due' => [
+            self::createWebhookForSendAfter($sendAfter),
+            $sendAfter->copy()
+->addSecond(),
+            'Pacific/Kiritimati',
+            1,
+        ];
+
+        yield 'explicit sendAfter equal to send_after, not due' => [
+            self::createWebhookForSendAfter($sendAfter),
+            $sendAfter->copy(),
+            'Pacific/Kiritimati',
+            0,
+        ];
+
+        yield 'explicit sendAfter before send_after, not due' => [
+            self::createWebhookForSendAfter($sendAfter),
+            $sendAfter->copy()
+->subSecond(),
+            'Pacific/Kiritimati',
+            0,
+        ];
+    }
+
+    /**
      * @param \EonX\EasyWebhook\Common\Entity\WebhookInterface[] $webhooks
-     *
-     * @throws \Doctrine\DBAL\Exception
      */
     #[DataProvider('provideFindDueWebhooksData')]
     public function testFindDueWebhooks(array $webhooks, int $expectedDue): void
@@ -54,6 +114,23 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
 
         $dueWebhooks = $store->findDueWebhooks(new Pagination(1, 15));
 
+        self::assertSame($expectedDue, $dueWebhooks->getTotalItems());
+        self::assertCount($expectedDue, $dueWebhooks->getItems());
+    }
+
+    #[DataProvider('provideFindDueWebhooksWithTimezoneData')]
+    public function testFindDueWebhooksWithTimezone(
+        WebhookInterface $webhook,
+        ?DateTimeInterface $sendAfter,
+        string $timezone,
+        int $expectedDue,
+    ): void {
+        $store = $this->getStore();
+        $store->store($webhook);
+
+        $dueWebhooks = $store->findDueWebhooks(new Pagination(1, 15), $sendAfter, $timezone);
+
+        self::assertSame($expectedDue, $dueWebhooks->getTotalItems());
         self::assertCount($expectedDue, $dueWebhooks->getItems());
     }
 
@@ -83,6 +160,24 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
             self::assertArrayHasKey('extra_column', $found->getExtra() ?? []);
             self::assertEquals('value', ($found->getExtra() ?? [])['extra_column']);
         }
+    }
+
+    public function testFindWebhookWithSendAfterContainingMicroseconds(): void
+    {
+        $store = $this->getStore();
+        $webhook = self::createWebhookForSendAfter(Carbon::now('UTC'));
+        $store->store($webhook);
+        $connection = $this->getDoctrineDbalConnection();
+        $connection->update(
+            DoctrineDbalStore::DEFAULT_TABLE,
+            ['send_after' => '2026-06-02 12:00:00.123456'],
+            ['id' => $webhook->getId()]
+        );
+
+        $found = $store->find((string)$webhook->getId());
+
+        self::assertInstanceOf(WebhookInterface::class, $found);
+        self::assertSame('2026-06-02 12:00:00.123456', $found->getSendAfter()?->format('Y-m-d H:i:s.u'));
     }
 
     public function testStore(): void

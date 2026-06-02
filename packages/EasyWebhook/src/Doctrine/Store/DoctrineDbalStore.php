@@ -15,7 +15,6 @@ use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Enum\WebhookStatus;
-use EonX\EasyWebhook\Common\Exception\InvalidDateTimeException;
 use EonX\EasyWebhook\Common\Store\SendAfterStoreInterface;
 use EonX\EasyWebhook\Common\Store\StoreInterface;
 
@@ -48,16 +47,10 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         ?DateTimeInterface $sendAfter = null,
         ?string $timezone = null,
     ): LengthAwarePaginatorInterface {
-        $sendAfter = $sendAfter !== null
-            ? Carbon::createFromFormat(self::DATETIME_FORMAT, $sendAfter->format(self::DATETIME_FORMAT), $timezone)
-            : Carbon::now($timezone);
+        $sendAfter = $sendAfter !== null ? Carbon::instance($sendAfter) : Carbon::now($timezone);
 
-        if ($sendAfter instanceof Carbon === false) {
-            throw new InvalidDateTimeException(\sprintf(
-                'Could not instantiate DateTime for %s::%s',
-                self::class,
-                __METHOD__
-            ));
+        if ($timezone !== null) {
+            $sendAfter = $sendAfter->shiftTimezone($timezone);
         }
 
         $paginator = new DoctrineDbalLengthAwarePaginator($pagination, $this->connection, $this->table);
@@ -69,8 +62,10 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
                     ->setParameters([
                         'sendAfter' => $sendAfter->format(self::DATETIME_FORMAT),
                         'status' => WebhookStatus::Pending->value,
-                    ])
-                    ->orderBy('created_at');
+                    ]);
+            })
+            ->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
+                $queryBuilder->orderBy('created_at');
             })
             ->setTransformer(fn (array $item): WebhookInterface => $this->instantiateWebhook($item)
                 ->bypassSendAfter(true));
@@ -133,7 +128,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
         }
 
         if (\is_string($data['send_after'] ?? null)) {
-            $data['send_after'] = Carbon::createFromFormat(self::DATETIME_FORMAT, $data['send_after']);
+            $data['send_after'] = Carbon::parse($data['send_after']);
         }
 
         // Recover extra
