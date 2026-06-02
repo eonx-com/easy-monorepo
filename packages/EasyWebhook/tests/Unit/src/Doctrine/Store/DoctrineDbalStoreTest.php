@@ -162,6 +162,24 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
         }
     }
 
+    public function testFindWebhookWithSendAfterContainingMicroseconds(): void
+    {
+        $store = $this->getStore();
+        $webhook = self::createWebhookForSendAfter(Carbon::now('UTC'));
+        $store->store($webhook);
+        $connection = $this->getDoctrineDbalConnection();
+        $connection->update(
+            DoctrineDbalStore::DEFAULT_TABLE,
+            ['send_after' => '2026-06-02 12:00:00.123456'],
+            ['id' => $webhook->getId()]
+        );
+
+        $found = $store->find((string)$webhook->getId());
+
+        self::assertInstanceOf(WebhookInterface::class, $found);
+        self::assertSame('2026-06-02 12:00:00.123456', $found->getSendAfter()?->format('Y-m-d H:i:s.u'));
+    }
+
     public function testStore(): void
     {
         $id = 'my-id';
