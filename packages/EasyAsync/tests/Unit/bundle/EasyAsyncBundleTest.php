@@ -5,6 +5,7 @@ namespace EonX\EasyAsync\Tests\Unit\Bundle;
 
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersClearMiddleware;
 use EonX\EasyAsync\Messenger\Middleware\DoctrineManagersSanityCheckMiddleware;
+use EonX\EasyAsync\Messenger\Subscriber\ClosePersistentConnectionServerlessSubscriber;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnMessagesLimitSubscriber;
 use EonX\EasyAsync\Messenger\Subscriber\StopWorkerOnTimeLimitSubscriber;
 use EonX\EasyAsync\Tests\Unit\AbstractUnitTestCase;
@@ -39,6 +40,7 @@ final class EasyAsyncBundleTest extends AbstractUnitTestCase
 
         self::assertTrue(self::getContainer()->has(DoctrineManagersClearMiddleware::class));
         self::assertTrue(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
+        self::assertFalse(self::getContainer()->has(ClosePersistentConnectionServerlessSubscriber::class));
         self::assertFalse(self::getContainer()->has(StopWorkerOnMessagesLimitSubscriber::class));
         self::assertFalse(self::getContainer()->has(StopWorkerOnTimeLimitSubscriber::class));
     }
@@ -102,5 +104,19 @@ final class EasyAsyncBundleTest extends AbstractUnitTestCase
         self::assertTrue(self::getContainer()->has(DoctrineManagersSanityCheckMiddleware::class));
         self::assertFalse(self::getContainer()->has(StopWorkerOnMessagesLimitSubscriber::class));
         self::assertTrue(self::getContainer()->has(StopWorkerOnTimeLimitSubscriber::class));
+    }
+
+    public function testServerlessClosePersistentConnectionsDisabled(): void
+    {
+        self::bootKernel(['environment' => 'serverless_close_disabled']);
+
+        self::assertFalse(self::getContainer()->has(ClosePersistentConnectionServerlessSubscriber::class));
+    }
+
+    public function testServerlessClosePersistentConnectionsEnabled(): void
+    {
+        self::bootKernel(['environment' => 'serverless']);
+
+        self::assertTrue(self::getContainer()->has(ClosePersistentConnectionServerlessSubscriber::class));
     }
 }
