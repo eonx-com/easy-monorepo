@@ -13,10 +13,10 @@
         "symfony/http-kernel": "^7.2"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.288.1",
+        "aws/aws-sdk-php": "^3.371.4",
         "eonx-com/easy-test": "^6.23",
         "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "symfony/filesystem": "^7.2",
         "symfony/process": "^7.2"
     },
