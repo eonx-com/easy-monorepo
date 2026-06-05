@@ -16,7 +16,7 @@
         "ext-sodium": "*",
         "api-platform/core": "^3.4.17 || ^4.3.5",
         "async-aws/secrets-manager": "^2.5",
-        "aws/aws-sdk-php": "^3.288.1",
+        "aws/aws-sdk-php": "^3.371.4",
         "bugsnag/bugsnag": "^3.29",
         "doctrine/collections": "^1.7.2 || ^2.1",
         "doctrine/dbal": "^3.8",
@@ -32,7 +32,8 @@
         "nikic/php-parser": "^5.0",
         "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
-        "phpunit/phpunit": "^10.2|^11.4|^12.4",
+        "paragonie/sodium_compat": "^2.5.0",
+        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "psr/cache": "^3.0",
         "psr/log": "^3.0",
         "spatie/url": "^2.2",
@@ -66,10 +67,10 @@
         "symfony/translation": "^7.2",
         "symfony/uid": "^7.2",
         "symfony/var-dumper": "^7.2",
-        "twig/twig": "^3.14.1"
+        "twig/twig": "^3.27"
     },
     "require-dev": {
-        "auth0/auth0-php": "^8.17",
+        "auth0/auth0-php": "^8.19",
         "async-aws/dynamo-db": "^3.6",
         "async-aws/sqs": "^2.7",
         "bref/bref": "^2.3.15",
@@ -78,7 +79,7 @@
         "bref/symfony-messenger": "^1.4.1",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^3.3",
-        "easycorp/easyadmin-bundle": "^4.0",
+        "easycorp/easyadmin-bundle": "^v4.29.11",
         "fakerphp/faker": "^1.19",
         "firebase/php-jwt": "^7.0",
         "illuminate/database": "^11.15",
@@ -86,13 +87,13 @@
         "jetbrains/phpstorm-attributes": "^1.0",
         "laravel/framework": "^11.44.1",
         "laravel/lumen-framework": "^11.0",
-        "league/commonmark": "^2.7",
+        "league/commonmark": "^2.8.2",
         "mockery/mockery": "^1.6",
         "natepage/php-pkcs11-ide-helper": "^1.0",
         "nyholm/psr7": "^1.8",
         "openswoole/ide-helper": "^22.0",
         "paragonie/random_compat": "^2.0",
-        "phpseclib/phpseclib": "^3.0.36",
+        "phpseclib/phpseclib": "^3.0.52",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^1.11",
         "psr-discovery/discovery": "^1.0.2",
@@ -351,7 +352,31 @@
         "platform": {
             "ext-openswoole": "22.0"
         },
-        "process-timeout": 0
+        "process-timeout": 0,
+        "policy": {
+            "advisories": {
+                "ignore-id": {
+                    "PKSA-mdq4-51ck-6kdq": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
+                    "PKSA-z7t6-zt6p-wtng": "symfony/cache: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-5r1g-c7b7-y1zg": "symfony/dom-crawler: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-y6py-qpv1-h52p": "symfony/http-foundation: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-365x-2zjk-pt47": "symfony/http-foundation: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-28rh-rzzn-djk4": "symfony/mailer: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-wtxr-p26d-nn42": "symfony/mime: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-2n2k-66v2-bwg3": "symfony/mime: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-bf7t-jnpz-492k": "symfony/routing: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-yc7t-91v9-99xs": "symfony/routing: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-py8y-z9q7-q197": "symfony/runtime: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-c28x-6bj5-8spx": "symfony/security-http: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-tbsf-h7vc-j7hn": "symfony/security-http: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-5df2-zpfk-xgsv": "symfony/security-http: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-1g87-trgd-pt11": "symfony/ux-twig-component: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-v5yj-8nmz-sk2q": "symfony/yaml: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-ft77-7h5f-p3r6": "symfony/yaml: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-b14r-zh1d-vdrc": "symfony/yaml: fix requires Symfony upgrade, blocked by team lead"
+                }
+            }
+        }
     },
     "extra": {
         "eonx_docs": {
