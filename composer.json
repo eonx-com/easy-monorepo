@@ -79,7 +79,7 @@
         "bref/symfony-messenger": "^1.4.1",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^3.3",
-        "easycorp/easyadmin-bundle": "^v4.29.11",
+        "easycorp/easyadmin-bundle": "^4.29.11",
         "fakerphp/faker": "^1.19",
         "firebase/php-jwt": "^7.0",
         "illuminate/database": "^11.15",
