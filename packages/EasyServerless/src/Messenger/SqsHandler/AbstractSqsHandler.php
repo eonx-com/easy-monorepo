@@ -56,22 +56,26 @@ abstract class AbstractSqsHandler extends SqsHandler
      */
     public function handleSqs(SqsEvent $event, Context $context): void
     {
-        $this->reset();
+        try {
+            $this->reset();
 
-        foreach ($event->getRecords() as $sqsRecord) {
-            // In some cases we need to prevent records being processed by the current invocation,
-            // we requeue them by scheduling them for retry
-            if ($this->shouldSkipRecord($sqsRecord, $context)) {
-                $this->scheduleForRetry($sqsRecord);
+            foreach ($event->getRecords() as $sqsRecord) {
+                // In some cases we need to prevent records being processed by the current invocation,
+                // we requeue them by scheduling them for retry
+                if ($this->shouldSkipRecord($sqsRecord, $context)) {
+                    $this->scheduleForRetry($sqsRecord);
 
-                continue;
+                    continue;
+                }
+
+                $this->handleSqsRecords($sqsRecord, $context);
             }
 
-            $this->handleSqsRecords($sqsRecord, $context);
+            $this->handleFailedRecords();
+            $this->checkState();
+        } finally {
+            \gc_collect_cycles();
         }
-
-        $this->handleFailedRecords();
-        $this->checkState();
     }
 
     abstract protected function getSqsClient(): AwsSqsClient|AsyncAwsSqsClient;
