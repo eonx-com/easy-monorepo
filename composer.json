@@ -366,6 +366,7 @@
                     "PKSA-2n2k-66v2-bwg3": "symfony/mime: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-bf7t-jnpz-492k": "symfony/routing: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-yc7t-91v9-99xs": "symfony/routing: fix requires Symfony upgrade, blocked by team lead",
+                    "PKSA-xf5h-y6vg-qj98": "symfony/runtime: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-py8y-z9q7-q197": "symfony/runtime: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-c28x-6bj5-8spx": "symfony/security-http: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-tbsf-h7vc-j7hn": "symfony/security-http: fix requires Symfony upgrade, blocked by team lead",
