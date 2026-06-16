@@ -609,19 +609,31 @@
                                         "type": "string"
                                     },
                                     "hydra:first": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     },
                                     "hydra:last": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     },
                                     "hydra:previous": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     },
                                     "hydra:next": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     }
                                 },
