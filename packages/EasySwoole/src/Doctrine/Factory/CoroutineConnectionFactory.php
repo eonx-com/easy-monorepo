@@ -58,7 +58,7 @@ final class CoroutineConnectionFactory extends ConnectionFactory
             // (IAM auth token + SSL) on the original params via the injected resolver. Re-wrapping
             // with AwsRdsMiddleware would resolve a second time on already-stripped params, dropping
             // driver options such as the cross-account assume-role ARN from the pooled connection's
-            // token. Skip it when the pool can resolve params itself.
+            // token. Skip it when the pool can resolve params itself
             if ($this->connectionParamsResolver !== null && $middleware instanceof AwsRdsMiddleware) {
                 continue;
             }
