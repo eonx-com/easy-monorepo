@@ -413,6 +413,23 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'printingHouse' => [
+                    'Invalid IRI "/publishing-houses/1".',
+                ],
+            ],
+            'exceptionMessage' => 'printingHouse: This value should be of type PrintingHouse.',
+            'version' => 4,
+        ];
+
+        yield 'different object IRI when constructor parameter v3' => [
+            'url' => '/books',
+            'json' => [
+                'title' => 'some title',
+                'description' => 'some description',
+                'weight' => 11,
+                'printingHouse' => '/publishing-houses/1',
+            ],
+            'violations' => [
+                'printingHouse' => [
                     'This value should be of type /printing-houses IRI.',
                 ],
             ],
@@ -420,7 +437,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 '\\EasyErrorHandler\\ApiResource\\Book::__construct(): Argument #3 ($printingHouse) must be of type ' .
                 'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PrintingHouse, ' .
                 'EonX\\EasyApiPlatform\\Tests\\Fixture\\App\\EasyErrorHandler\\ApiResource\\PublishingHouse given',
-            'version' => null,
+            'version' => 3,
         ];
 
         yield 'date is empty string' => [
