@@ -16,6 +16,19 @@ use Throwable;
 
 final class WithEventsHttpClientTest extends AbstractApplicationTestCase
 {
+    public function testRequestDoesNotDispatchResponseEventWhenResponseCanceled(): void
+    {
+        TestResponseFactory::addResponse(new SimpleTestResponse('https://eonx.com/'));
+        $sut = self::getContainer()->get(SomeClient::class);
+
+        $sut->makeRequest()
+            ->cancel();
+
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        self::assertCount(0, $eventDispatcher->getDispatchedEvents());
+    }
+
     public function testRequestReturnsResponse(): void
     {
         TestResponseFactory::addResponse(new SimpleTestResponse('https://eonx.com/'));
