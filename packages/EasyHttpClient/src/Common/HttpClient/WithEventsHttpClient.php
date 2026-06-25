@@ -112,9 +112,8 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
                 );
             }
 
-            // Do not dispatch a response event for a canceled response (e.g. aborted before a retry),
-            // as the request errored or never completed and is already reported via the throwable event
-            if ($chunk->isLast() && $asyncContext->getInfo('error') === null) {
+            // Do not dispatch a successful response event when the AsyncContext reports an error (including cancellation
+            // or aborting a response before a retry), otherwise we can end up dispatching multiple events for one request
                 /** @var resource|string|null $content */
                 $content = $asyncContext->getInfo('temp_content');
                 $this->dispatchEvent($config, $requestData, new ResponseData(
