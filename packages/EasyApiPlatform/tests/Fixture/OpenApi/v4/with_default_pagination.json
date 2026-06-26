@@ -77,7 +77,12 @@
                                                                 "type": "string"
                                                             },
                                                             "attributes": {
-                                                                "$ref": "#/components/schemas/Category"
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
                                                             }
                                                         },
                                                         "required": [
@@ -447,7 +452,12 @@
                                 "type": "string"
                             },
                             "attributes": {
-                                "$ref": "#/components/schemas/Category"
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         },
                         "required": [
