@@ -38,8 +38,6 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
             'easy-logging.override_default_logger' => false,
         ]);
 
-        // Laravel Foundation always binds LoggerInterface to LogManager;
-        // when EasyLogging does not override it, the default LogManager is returned
         self::assertInstanceOf(LogManager::class, $app->get(LoggerInterface::class));
     }
 

@@ -20,4 +20,4 @@ not familiar with this concept make sure to have a look at the [documentation][1
 ],
 ```
 
-[1]: https://laravel.com/docs/10.x/providers
+[1]: https://laravel.com/docs/13.x/providers

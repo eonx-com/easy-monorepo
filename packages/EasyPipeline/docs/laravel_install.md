@@ -97,4 +97,4 @@ final class MyClass
 
 [3]: https://getcomposer.org/
 
-[4]: https://laravel.com/docs/10.x/providers
+[4]: https://laravel.com/docs/13.x/providers

@@ -67,7 +67,7 @@ $app->make(\App\Repositories\PostRepositoryInterface::class); // Will be your co
 
 [1]: https://laravel.com/
 
-[4]: https://laravel.com/docs/10.x/providers
+[4]: https://laravel.com/docs/13.x/providers
 
 [5]: https://en.wikipedia.org/wiki/Fully_qualified_name
 

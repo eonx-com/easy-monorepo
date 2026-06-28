@@ -71,7 +71,7 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
-        // ORM 3.x with symfony/var-exporter 8.x (no LazyGhostTrait) needs native PHP lazy objects
+        // @todo Remove when drop support Doctrine ORM 2.x
         if (\method_exists($config, 'enableNativeLazyObjects')) {
             $config->enableNativeLazyObjects(true);
         }

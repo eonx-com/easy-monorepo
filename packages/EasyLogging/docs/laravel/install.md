@@ -39,4 +39,4 @@ return [
 ];
 ```
 
-[1]: https://laravel.com/docs/10.x/providers
+[1]: https://laravel.com/docs/13.x/providers

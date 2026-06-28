@@ -8,7 +8,7 @@ section_icon: fab fa-laravel
 ### Package Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
-not familiar with this concept make sure to have a look at the [documentation](https://laravel.com/docs/10.x/providers).
+not familiar with this concept make sure to have a look at the [documentation](https://laravel.com/docs/13.x/providers).
 
 ```php
 // config/app.php

@@ -19,4 +19,4 @@ Once the package required, you must tell your application to use it. Laravel use
 ],
 ```
 
-[1]: https://laravel.com/docs/10.x/providers
+[1]: https://laravel.com/docs/13.x/providers

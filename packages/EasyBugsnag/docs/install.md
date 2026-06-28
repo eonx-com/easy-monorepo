@@ -63,4 +63,4 @@ information about configuration options.
 
 [2]: https://symfony.com/doc/current/setup/flex.html
 
-[3]: https://laravel.com/docs/10.x/providers
+[3]: https://laravel.com/docs/13.x/providers
