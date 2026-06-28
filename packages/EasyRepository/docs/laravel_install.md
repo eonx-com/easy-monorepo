@@ -1,11 +1,11 @@
 ---eonx_docs---
-title: Laravel/Lumen
+title: Laravel
 weight: 2000
 is_section: true
 section_icon: fab fa-laravel
 ---eonx_docs---
 
-This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
+This document describes the steps to install this package into a [Laravel][1] application.
 
 <br>
 
@@ -50,42 +50,6 @@ we strongly recommend you to use the [FQCN][5] of the interface your repository 
 
 <br>
 
-# Lumen Actions Required
-
-To install this package in a Lumen application the procedures are a bit different.
-
-## Register Service Provider
-
-In a Lumen application you must explicitly tell the application to register the package's service provider as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->register(\EonX\EasyRepository\Laravel\EasyRepositoryServiceProvider::class);
-```
-
-<br>
-
-## Add Config
-
-In a Lumen application you must explicitly tell the application to add the package's config as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->configure('easy-repository');
-```
-
-<br>
-
 # Usage
 
 That's it you're all setup! You're now able to use your repositories as services anywhere you want, using dependency
@@ -102,8 +66,6 @@ $app->make(\App\Repositories\PostRepositoryInterface::class); // Will be your co
 ```
 
 [1]: https://laravel.com/
-
-[2]: https://lumen.laravel.com/
 
 [4]: https://laravel.com/docs/10.x/providers
 

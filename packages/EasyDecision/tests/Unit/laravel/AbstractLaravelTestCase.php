@@ -8,9 +8,10 @@ use EonX\EasyDecision\Factory\DecisionFactoryInterface;
 use EonX\EasyDecision\Laravel\EasyDecisionServiceProvider;
 use EonX\EasyDecision\Tests\Stub\Configurator\RulesConfiguratorStub;
 use EonX\EasyDecision\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
-abstract class AbstractLumenTestCase extends AbstractUnitTestCase
+abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
@@ -21,6 +22,7 @@ abstract class AbstractLumenTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
         $this->app->register(EasyDecisionServiceProvider::class);
         $this->app->boot();
 

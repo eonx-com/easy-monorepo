@@ -8,6 +8,6 @@ weight: 0
 - [Middleware](docs/middlewares.md)
 - [MiddlewareProviders](docs/middleware_providers.md)
 
-## Laravel / Lumen
+## Laravel
 
 - [Installation](docs/laravel_install.md)

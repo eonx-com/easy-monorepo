@@ -5,7 +5,8 @@ namespace EonX\EasyLogging\Tests\Unit\Laravel;
 
 use EonX\EasyLogging\Laravel\EasyLoggingServiceProvider;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
@@ -18,6 +19,7 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
 
         if ($config !== null) {
             \config($config);

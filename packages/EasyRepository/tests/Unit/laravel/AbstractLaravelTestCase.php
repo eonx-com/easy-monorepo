@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace EonX\EasyRepository\Tests\Unit\Laravel;
 
 use EonX\EasyRepository\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
-abstract class AbstractLumenTestCase extends AbstractUnitTestCase
+abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
@@ -22,6 +23,7 @@ abstract class AbstractLumenTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
 
         return $this->app;
     }

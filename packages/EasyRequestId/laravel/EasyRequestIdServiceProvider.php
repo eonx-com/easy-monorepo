@@ -16,14 +16,12 @@ use EonX\EasyRequestId\EasyHttpClient\Modifier\RequestIdRequestDataModifier;
 use EonX\EasyRequestId\EasyLogging\Processor\RequestIdProcessor;
 use EonX\EasyRequestId\EasyWebhook\Middleware\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\Laravel\Listeners\RequestIdRouteMatchedListener;
-use EonX\EasyRequestId\Laravel\Middleware\RequestIdMiddleware;
 use EonX\EasyWebhook\Bundle\Enum\ConfigTag as EasyWebhookConfigTag;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Queue;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application as LumenApplication;
 
 final class EasyRequestIdServiceProvider extends ServiceProvider
 {
@@ -93,12 +91,6 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         // Resolve from request
         $this->app->make('events')
             ->listen(RouteMatched::class, RequestIdRouteMatchedListener::class);
-
-        if ($this->app instanceof LumenApplication) {
-            $this->app->middleware([
-                RequestIdMiddleware::class,
-            ]);
-        }
 
         // EasyErrorHandler
         if ($this->packageEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class)) {

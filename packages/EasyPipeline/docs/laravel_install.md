@@ -3,7 +3,7 @@ title: Installation
 weight: 1
 ---eonx_docs---
 
-This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
+This document describes the steps to install this package into a [Laravel][1] application.
 
 # Require package (Composer)
 
@@ -56,44 +56,6 @@ and the values the class of your middleware provider for each pipeline.
 
 <br>
 
-# Lumen Actions Required
-
-To install this package in a Lumen application the procedures are a bit different.
-
-<br>
-
-## Register Service Provider
-
-In a Lumen application you must explicitly tell the application to register the package's service provider as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->register(\EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider::class);
-```
-
-<br>
-
-## Add Config
-
-In a Lumen application you must explicitly tell the application to add the package's config as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->configure('easy-pipeline');
-```
-
-<br>
-
 # Usage
 
 Prior to be able to use the pipelines in your application you will need create your middleware providers for each
@@ -132,8 +94,6 @@ final class MyClass
 ```
 
 [1]: https://laravel.com/
-
-[2]: https://lumen.laravel.com/
 
 [3]: https://getcomposer.org/
 

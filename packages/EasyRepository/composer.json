@@ -11,8 +11,7 @@
         "doctrine/orm": "^2.20 || ^3.6",
         "doctrine/persistence": "^3.3 || ^4.1",
         "eonx-com/easy-pagination": "^6.21",
-        "laravel/framework": "^11.44.1",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/framework": "^13.0",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^12.5"
     },
@@ -36,7 +35,7 @@
         "doctrine/persistence": "To use the Doctrine ORM implementation",
         "eonx-com/easy-pagination": "To use pagination within your repositories",
         "illuminate/database": "To use the Illuminate Eloquent implementation",
-        "illuminate/support": "To use this package with Laravel/Lumen",
+        "illuminate/support": "To use this package with Laravel",
         "symfony/config": "To use this package with Symfony",
         "symfony/dependency-injection": "To use this package with Symfony",
         "symfony/http-kernel": "To use this package with Symfony"

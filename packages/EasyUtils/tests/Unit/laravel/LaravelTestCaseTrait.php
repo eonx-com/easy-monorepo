@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyUtils\Tests\Unit\Laravel;
 
 use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
 trait LaravelTestCaseTrait
 {
@@ -17,6 +18,7 @@ trait LaravelTestCaseTrait
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
 
         if ($config !== null) {
             \config($config);

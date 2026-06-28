@@ -38,8 +38,8 @@ use EonX\EasyErrorHandler\Laravel\Translators\LaravelTranslator;
 use EonX\EasyWebhook\Common\Event\FinalFailedWebhookEvent;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as IlluminateExceptionHandlerInterface;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application;
 use Psr\Log\LoggerInterface;
 
 final class EasyErrorHandlerServiceProvider extends ServiceProvider

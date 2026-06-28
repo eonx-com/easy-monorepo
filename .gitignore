@@ -17,5 +17,8 @@ coverage_output.txt
 # Symfony
 **/var
 
+# Symfony auto-generated config reference (IDE helper, for apps only)
+packages/*/tests/Fixture/app/config/reference.php
+
 # Claude
 /.claude/

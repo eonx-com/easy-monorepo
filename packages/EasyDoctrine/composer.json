@@ -53,7 +53,7 @@
         "aws/aws-sdk-php": "To use AWS RDS integration",
         "doctrine/doctrine-migrations-bundle": "To use integration with Doctrine Migrations",
         "eonx-com/easy-error-handler": "To report transactional errors",
-        "illuminate/support": "To use this package with Laravel/Lumen"
+        "illuminate/support": "To use this package with Laravel"
     },
     "extra": {
         "branch-alias": {

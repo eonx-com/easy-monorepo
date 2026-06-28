@@ -146,16 +146,13 @@ final class EasyUtilsServiceProvider extends ServiceProvider
             return;
         }
 
-        /** @var \Laravel\Lumen\Application $app */
-        $app = $this->app;
-        $app->singleton(StringTrimmerInterface::class, RecursiveStringTrimmer::class);
-        $app->singleton(
+        $this->app->singleton(StringTrimmerInterface::class, RecursiveStringTrimmer::class);
+        $this->app->singleton(
             TrimStringsMiddleware::class,
             static fn (Container $app): TrimStringsMiddleware => new TrimStringsMiddleware(
                 $app->get(StringTrimmerInterface::class),
                 \config('easy-utils.string_trimmer.except_keys', [])
             )
         );
-        $app->middleware([TrimStringsMiddleware::class]);
     }
 }

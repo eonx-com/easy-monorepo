@@ -71,6 +71,11 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
+        // ORM 3.x with symfony/var-exporter 8.x (no LazyGhostTrait) needs native PHP lazy objects
+        if (\method_exists($config, 'enableNativeLazyObjects')) {
+            $config->enableNativeLazyObjects(true);
+        }
+
         if (Type::hasType(SqliteStringUuidType::NAME) === false) {
             Type::addType(SqliteStringUuidType::NAME, SqliteStringUuidType::class);
         }

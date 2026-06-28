@@ -10,7 +10,7 @@ use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-final class EasySecurityServiceProviderTest extends AbstractLumenTestCase
+final class EasySecurityServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void
     {

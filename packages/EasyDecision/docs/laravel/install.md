@@ -1,5 +1,5 @@
 ---eonx_docs---
-title: Laravel/Lumen
+title: Laravel
 weight: 2000
 is_section: true
 section_icon: fab fa-laravel
@@ -17,28 +17,6 @@ Once the package required, you must tell your application to use it. Laravel use
 
     \EonX\EasyDecision\Laravel\EasyDecisionServiceProvider::class,
 ],
-```
-
-<br>
-
-#### Lumen Actions Required
-
-To install this package in a Lumen application the procedures are a bit different.
-
-<br>
-
-##### Register Service Provider
-
-In a Lumen application you must explicitly tell the application to register the package's service provider as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->register(\EonX\EasyDecision\Laravel\EasyDecisionServiceProvider::class);
 ```
 
 [1]: https://laravel.com/docs/10.x/providers

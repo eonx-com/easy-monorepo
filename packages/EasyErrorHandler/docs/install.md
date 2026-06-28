@@ -30,34 +30,20 @@ return [
 ];
 ```
 
-## Laravel/Lumen
+## Laravel
 
 ### Register service provider
 
-In a Lumen application you must explicitly tell the application to register the package's service provider as follows:
+In a Laravel application, you must tell your application to use the package by registering its service provider:
 
 ```php
-# bootstrap/app.php
+// config/app.php
 
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
+'providers' => [
+    // Other Service Providers...
 
-// Other actions...
-
-$app->register(\EonX\EasyErrorHandler\Laravel\EasyErrorHandlerServiceProvider::class);
-```
-
-### Add configuration
-
-In a Lumen application you must explicitly tell the application to add the package's config as following:
-
-```php
-# bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->configure('easy-error-handler');
+    \EonX\EasyErrorHandler\Laravel\EasyErrorHandlerServiceProvider::class,
+],
 ```
 
 [1]: https://getcomposer.org/

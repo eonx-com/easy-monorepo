@@ -27,3 +27,9 @@ parameters:
 
         - message: '#Access to property \$fieldName on an unknown class Doctrine\\ORM\\Mapping\\AssociationMapping#'
           path: %currentWorkingDirectory%/packages/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php
+
+        - message: '#Call to function method_exists\(\) with Doctrine\\ORM\\Configuration and .* will always evaluate to false#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/AbstractDoctrineOrmPaginatorTestCase.php
+
+        - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php

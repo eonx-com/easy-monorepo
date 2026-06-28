@@ -6,7 +6,7 @@ namespace EonX\EasyRequestId\Tests\Unit\Laravel;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use Symfony\Component\Uid\Uuid;
 
-final class EasyRequestIdServiceProviderTest extends AbstractLumenTestCase
+final class EasyRequestIdServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void
     {

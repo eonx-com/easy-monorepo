@@ -3,7 +3,7 @@ title: Doctrine ORM
 weight: 2001
 ---eonx_docs---
 
-This document describes the steps to use this package into a [Laravel][1] and/or [Lumen][2] application with the
+This document describes the steps to use this package into a [Laravel][1] application with the
 [Doctrine ORM][3] implementation.
 
 <br>
@@ -133,8 +133,6 @@ final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implem
 ```
 
 [1]: https://laravel.com/
-
-[2]: https://lumen.laravel.com/
 
 [3]: https://www.doctrine-project.org/projects/orm.html
 

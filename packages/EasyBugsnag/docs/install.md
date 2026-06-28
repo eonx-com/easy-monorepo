@@ -59,41 +59,6 @@ For example:
 The minimum configuration required is your Bugsnag Integration API key. See [Configuration](config.md) for more
 information about configuration options.
 
-## Lumen
-
-### Register service provider
-
-In a Lumen application you must explicitly tell the application to register the package's service provider as follows:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->register(\EonX\EasyBugsnag\Laravel\EasyBugsnagServiceProvider::class);
-```
-
-### Configuration
-
-In Lumen, you must explicitly call `configure()` for the package:
-
-```php
-// bootstrap/app.php
-
-$app = new \Laravel\Lumen\Application(\realpath(\dirname(__DIR__)));
-
-// ...
-
-$app->configure('easy-bugsnag');
-
-// ...
-```
-
-The minimum configuration required is your Bugsnag Integration API key. See [Configuration](config.md) for more
-information about configuration options.
-
 [1]: https://getcomposer.org/
 
 [2]: https://symfony.com/doc/current/setup/flex.html
