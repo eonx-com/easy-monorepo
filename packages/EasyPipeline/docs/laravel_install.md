@@ -7,7 +7,7 @@ This document describes the steps to install this package into a [Laravel][1] ap
 
 # Require package (Composer)
 
-Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
+Laravel uses [Composer][2] to manage its dependencies. You can require this package as following:
 
 ```bash
 $ composer require eonx/easy-pipeline
@@ -18,7 +18,7 @@ $ composer require eonx/easy-pipeline
 # Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
-not familiar with this concept make sure to have a look at the [documentation][4].
+not familiar with this concept make sure to have a look at the [documentation][3].
 
 This package provides you with a service provider which will register your pipelines into the services container
 automatically. Make sure to register it:
@@ -95,6 +95,6 @@ final class MyClass
 
 [1]: https://laravel.com/
 
-[3]: https://getcomposer.org/
+[2]: https://getcomposer.org/
 
-[4]: https://laravel.com/docs/13.x/providers
+[3]: https://laravel.com/docs/13.x/providers

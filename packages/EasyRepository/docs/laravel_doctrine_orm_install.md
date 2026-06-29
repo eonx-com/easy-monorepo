@@ -4,14 +4,14 @@ weight: 2001
 ---eonx_docs---
 
 This document describes the steps to use this package into a [Laravel][1] application with the
-[Doctrine ORM][3] implementation.
+[Doctrine ORM][2] implementation.
 
 <br>
 
 # Install With Doctrine ORM
 
 For this package install please refer to the related [documentation](laravel_install.md). Regarding Doctrine ORM, we
-strongly recommend you to use the [Laravel Doctrine ORM package][4], please refer to its documentation for its install.
+strongly recommend you to use the [Laravel Doctrine ORM package][3], please refer to its documentation for its install.
 
 <br>
 
@@ -83,7 +83,7 @@ package so to be able to use it you first need to update your project's dependen
 $ composer require eonx-com/easy-pagination
 ```
 
-And then don't forget to register the service provider into your application, please refer to the [documentation][5].
+And then don't forget to register the service provider into your application, please refer to the [documentation][4].
 
 Once everything setup, the pagination data will be resolved and injected automatically into your repositories. You will
 have access to the method `public function paginate(?PaginationInterface $pagination = null): LengthAwarePaginatorInterface`
@@ -134,8 +134,8 @@ final class PostRepository extends AbstractPaginatedDoctrineOrmRepository implem
 
 [1]: https://laravel.com/
 
-[3]: https://www.doctrine-project.org/projects/orm.html
+[2]: https://www.doctrine-project.org/projects/orm.html
 
-[4]: https://www.laraveldoctrine.org/docs/1.3/orm
+[3]: https://www.laraveldoctrine.org/docs/1.3/orm
 
-[5]: https://packages.eonx.com/packages/easy-pagination/install_laravel.html
+[4]: https://packages.eonx.com/packages/easy-pagination/install_laravel.html
