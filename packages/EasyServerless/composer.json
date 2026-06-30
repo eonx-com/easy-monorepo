@@ -10,7 +10,7 @@
     "require-dev": {
         "async-aws/dynamo-db": "^3.6",
         "async-aws/sqs": "^2.7",
-        "bref/bref": "^3.0",
+        "bref/bref": "^2 || ^3",
         "bref/laravel-bridge": "^3.0",
         "bref/symfony-bridge": "^1.0.3",
         "bref/symfony-messenger": "^1.4.1",
