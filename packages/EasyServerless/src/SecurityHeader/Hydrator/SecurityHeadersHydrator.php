@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class SecurityHeadersHydrator
 {
-    private const HEADERS = [
+    private const array HEADERS = [
         'permissions-policy' => 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),'
             . ' microphone=(), payment=(), usb=()',
         'referrer-policy' => 'strict-origin-when-cross-origin',

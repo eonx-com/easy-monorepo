@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
@@ -320,7 +321,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn('some sql');
         $queryBuilder
             ->getParameters()
-            ->willReturn([new Parameter('baz', 'test', ParameterType::STRING)]);
+            ->willReturn(new ArrayCollection([new Parameter('baz', 'test', ParameterType::STRING)]));
         $query->getParameter('baz')
             ->willReturn(new Parameter('baz', 'test', ParameterType::STRING));
         $query->getDQL()

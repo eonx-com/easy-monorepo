@@ -190,7 +190,8 @@ trait DoctrineCommonPaginatorTrait
                 $paramTypesMap[$param->getName()] = $param->getType();
             }
 
-            $paramMappings = (new Parser($query))->parse()
+            $paramMappings = new Parser($query)
+->parse()
                 ->getParameterMappings();
             foreach ($paramMappings as $paramName => $positions) {
                 if (\array_key_exists($paramName, $parametersMap) === false) {
