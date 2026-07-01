@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Doctrine\Factory;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
+use EonX\EasyDoctrine\AwsRds\Middleware\AwsRdsMiddleware;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
 use EonX\EasySwoole\Doctrine\Driver\DbalDriver;
 use Psr\Log\LoggerInterface;
@@ -51,6 +52,15 @@ if (\method_exists(Connection::class, 'getEventManager')) {
             );
 
             foreach ($config?->getMiddlewares() ?? [] as $middleware) {
+                // The Coroutine PDO pool (DbalDriver) already resolves AWS RDS connection params
+                // (IAM auth token + SSL) on the original params via the injected resolver. Re-wrapping
+                // with AwsRdsMiddleware would resolve a second time on already-stripped params, dropping
+                // driver options such as the cross-account assume-role ARN from the pooled connection's
+                // token. Skip it when the pool can resolve params itself
+                if ($this->connectionParamsResolver !== null && $middleware instanceof AwsRdsMiddleware) {
+                    continue;
+                }
+
                 $driver = $middleware->wrap($driver);
             }
 

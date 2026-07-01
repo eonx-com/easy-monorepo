@@ -24,7 +24,7 @@
         "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.288.1",
+        "aws/aws-sdk-php": "^3.371.4",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "eonx-com/easy-bugsnag": "^6.21",
         "eonx-com/easy-error-handler": "^6.21",

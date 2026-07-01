@@ -21,6 +21,7 @@
         "eonx-com/easy-event-dispatcher": "^6.21",
         "eonx-com/easy-logging": "^6.21",
         "eonx-com/easy-random": "^6.21",
+        "eonx-com/easy-serverless": "^6.21",
         "eonx-com/easy-test": "^6.21",
         "phpunit/phpunit": "^12.5",
         "symfony/doctrine-bridge": "^7.4",

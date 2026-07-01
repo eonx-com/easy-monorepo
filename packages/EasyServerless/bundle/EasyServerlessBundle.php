@@ -61,6 +61,10 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/health.php');
         }
 
+        if ($config['security_headers']['enabled']) {
+            $container->import('config/security_headers.php');
+        }
+
         if ($config['state'] && $config['state']['check']) {
             $container->import('config/state.php');
         }
@@ -83,6 +87,14 @@ final class EasyServerlessBundle extends AbstractBundle
 
         if ($this->isBundleEnabled('BrefMessengerBundle', $builder)) {
             $container->import('config/messenger.php');
+
+            if ($config['sqs']['reset_services']['enabled']) {
+                $container->import('config/sqs_reset_services.php');
+            }
+
+            if ($config['state'] && $config['state']['check']) {
+                $container->import('config/messenger_state_checker.php');
+            }
         }
 
         if (\class_exists(Logger::class) && $config['monolog']['enabled']) {

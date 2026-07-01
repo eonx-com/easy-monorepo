@@ -191,3 +191,5 @@ parameters:
         # ---- EasyWebhook ----
         - message: '#Unsafe usage of new static\(\)#' # Until we find a better design
           path: %currentWorkingDirectory%/packages/EasyWebhook/src/Common/Entity/AbstractWebhook.php
+
+        # ---- EasyServerless ----

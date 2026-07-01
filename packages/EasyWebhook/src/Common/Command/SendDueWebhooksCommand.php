@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand(
     name: 'easy-webhooks:send-due-webhooks',
@@ -70,10 +71,13 @@ final class SendDueWebhooksCommand extends Command
         $webhooksSent = 0;
 
         if ($sendAfterString !== null) {
-            $sendAfter = Carbon::createFromFormat(StoreInterface::DATETIME_FORMAT, $sendAfterString, $timezone);
-
-            if ($sendAfter instanceof Carbon === false) {
-                throw new InvalidDateTimeException(\sprintf('Invalid DateTime provided, "%s"', $sendAfterString));
+            try {
+                $sendAfter = Carbon::parse($sendAfterString, $timezone);
+            } catch (Throwable $throwable) {
+                throw new InvalidDateTimeException(
+                    \sprintf('Invalid DateTime provided, "%s"', $sendAfterString),
+                    previous: $throwable,
+                );
             }
         }
 
