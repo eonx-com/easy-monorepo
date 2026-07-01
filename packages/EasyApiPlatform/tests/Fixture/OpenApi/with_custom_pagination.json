@@ -111,7 +111,12 @@
                                                                 "type": "string"
                                                             },
                                                             "attributes": {
-                                                                "$ref": "#/components/schemas/Category"
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
                                                             }
                                                         },
                                                         "required": [
@@ -481,7 +486,12 @@
                                 "type": "string"
                             },
                             "attributes": {
-                                "$ref": "#/components/schemas/Category"
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         },
                         "required": [
@@ -601,7 +611,7 @@
                     },
                     "status": {
                         "type": [
-                            "number",
+                            "integer",
                             "null"
                         ],
                         "examples": [
@@ -643,19 +653,31 @@
                                         "type": "string"
                                     },
                                     "hydra:first": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     },
                                     "hydra:last": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     },
                                     "hydra:previous": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     },
                                     "hydra:next": {
-                                        "type": "string",
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
                                         "format": "iri-reference"
                                     }
                                 },

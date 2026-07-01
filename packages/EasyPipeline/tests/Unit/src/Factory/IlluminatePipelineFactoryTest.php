@@ -10,10 +10,10 @@ use EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider;
 use EonX\EasyPipeline\Pipeline\PipelineInterface;
 use EonX\EasyPipeline\Tests\Stub\Provider\PipelineNameAwareProviderMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Stub\Provider\ValidMiddlewareProviderStub;
-use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
+use EonX\EasyPipeline\Tests\Unit\AbstractLaravelTestCase;
 use stdClass;
 
-final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
+final class IlluminatePipelineFactoryTest extends AbstractLaravelTestCase
 {
     public function testCreatePipelineSuccessfullyWithPrefixAndCacheResolved(): void
     {

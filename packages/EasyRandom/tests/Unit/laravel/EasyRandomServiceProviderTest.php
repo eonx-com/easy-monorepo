@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Uid\UuidV4;
 use Symfony\Component\Uid\UuidV6;
 
-final class EasyRandomServiceProviderTest extends AbstractLumenTestCase
+final class EasyRandomServiceProviderTest extends AbstractLaravelTestCase
 {
     /**
      * @see testUuidGeneratorInstance

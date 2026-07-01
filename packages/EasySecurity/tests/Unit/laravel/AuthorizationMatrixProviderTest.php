@@ -6,7 +6,7 @@ namespace EonX\EasySecurity\Tests\Unit\Laravel;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Tests\Stub\ServiceProvider\RolesAndPermissionsServiceProvider;
 
-final class AuthorizationMatrixProviderTest extends AbstractLumenTestCase
+final class AuthorizationMatrixProviderTest extends AbstractLaravelTestCase
 {
     public function testRolesAndPermissionsProvidersInjected(): void
     {

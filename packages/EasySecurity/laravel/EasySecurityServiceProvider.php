@@ -20,11 +20,9 @@ use EonX\EasySecurity\Common\Resolver\SecurityContextResolver;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
 use EonX\EasySecurity\EasyBugsnag\Configurator\SecurityContextClientConfigurator;
 use EonX\EasySecurity\Laravel\Listeners\FromRequestSecurityContextConfiguratorListener;
-use EonX\EasySecurity\Laravel\Middleware\FromRequestSecurityContextConfiguratorMiddleware;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application as LumenApplication;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
@@ -137,22 +135,6 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
     private function registerRequestConfigurators(): void
     {
-        if ($this->app instanceof LumenApplication) {
-            $this->app->singleton(
-                FromRequestSecurityContextConfiguratorMiddleware::class,
-                static fn (
-                    Container $app,
-                ): FromRequestSecurityContextConfiguratorMiddleware => new
-                FromRequestSecurityContextConfiguratorMiddleware(
-                    $app->make(SecurityContextResolverInterface::class),
-                    $app->tagged(ConfigTag::ContextConfigurator->value)
-                )
-            );
-            $this->app->middleware([FromRequestSecurityContextConfiguratorMiddleware::class]);
-
-            return;
-        }
-
         $this->app->singleton(
             FromRequestSecurityContextConfiguratorListener::class,
             static fn (

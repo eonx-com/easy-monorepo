@@ -6,7 +6,7 @@ namespace EonX\EasyLogging\Tests\Unit\Laravel;
 use EonX\EasyLogging\Bundle\Enum\BundleParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Logger\LazyLogger;
-use Illuminate\Container\EntryNotFoundException;
+use Illuminate\Log\LogManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 
@@ -34,13 +34,11 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
 
     public function testDefaultLoggerNotOverriddenBecauseOfConfig(): void
     {
-        $this->expectException(EntryNotFoundException::class);
-
         $app = $this->getApp([
             'easy-logging.override_default_logger' => false,
         ]);
 
-        $app->get(LoggerInterface::class);
+        self::assertInstanceOf(LogManager::class, $app->get(LoggerInterface::class));
     }
 
     public function testLazyLogger(): void

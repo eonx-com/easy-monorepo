@@ -9,10 +9,10 @@ use EonX\EasyPipeline\Pipeline\IlluminatePipeline;
 use EonX\EasyPipeline\Tests\Stub\Input\InputStub;
 use EonX\EasyPipeline\Tests\Stub\Middleware\ChangeNameMiddlewareStub;
 use EonX\EasyPipeline\Tests\Stub\Middleware\LoggerAwareChangeNameMiddlewareStub;
-use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
+use EonX\EasyPipeline\Tests\Unit\AbstractLaravelTestCase;
 use Illuminate\Pipeline\Pipeline;
 
-final class IlluminatePipelineTest extends AbstractLumenTestCase
+final class IlluminatePipelineTest extends AbstractLaravelTestCase
 {
     public function actAsMiddleware(mixed $input, Closure $next): mixed
     {

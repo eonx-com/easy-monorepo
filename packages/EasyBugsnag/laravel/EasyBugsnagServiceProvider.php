@@ -20,7 +20,6 @@ use EonX\EasyBugsnag\Common\Tracker\SessionTracker;
 use EonX\EasyBugsnag\Laravel\Configurators\SessionTrackingClientConfigurator;
 use EonX\EasyBugsnag\Laravel\Listeners\SessionTrackingListener;
 use EonX\EasyBugsnag\Laravel\Listeners\SessionTrackingQueueListener;
-use EonX\EasyBugsnag\Laravel\Middleware\SessionTrackingMiddleware;
 use EonX\EasyBugsnag\Laravel\Resolvers\LaravelRequestResolver;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Cache\Repository;
@@ -28,8 +27,6 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Laravel\Lumen\Application as LumenApplication;
 use LogicException;
 
 final class EasyBugsnagServiceProvider extends ServiceProvider
@@ -135,9 +132,8 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
             static function (Container $app): RuntimeVersionClientConfigurator {
                 /** @var \Illuminate\Contracts\Foundation\Application $app */
                 $version = $app->version();
-                $runtime = Str::contains($version, 'Lumen') ? 'lumen' : 'laravel';
 
-                return new RuntimeVersionClientConfigurator($runtime, $version);
+                return new RuntimeVersionClientConfigurator('laravel', $version);
             }
         );
         $this->app->tag(RuntimeVersionClientConfigurator::class, [ConfigTag::ClientConfigurator->value]);
@@ -203,11 +199,6 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
                 )
             );
             $this->app->tag(SessionTrackingClientConfigurator::class, [ConfigTag::ClientConfigurator->value]);
-
-            if ($this->app instanceof LumenApplication) {
-                $this->app->singleton(SessionTrackingMiddleware::class);
-                $this->app->middleware([SessionTrackingMiddleware::class]);
-            }
 
             $events = $this->app->make('events');
 

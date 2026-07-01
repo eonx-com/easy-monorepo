@@ -5,9 +5,10 @@ namespace EonX\EasyRandom\Tests\Unit\Laravel;
 
 use EonX\EasyRandom\Laravel\EasyRandomServiceProvider;
 use EonX\EasyRandom\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
-abstract class AbstractLumenTestCase extends AbstractUnitTestCase
+abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
@@ -18,6 +19,7 @@ abstract class AbstractLumenTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
 
         if ($config !== null) {
             \config($config);

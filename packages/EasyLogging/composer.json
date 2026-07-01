@@ -15,8 +15,7 @@
     "require-dev": {
         "bugsnag/bugsnag": "^3.29.2",
         "eonx-com/easy-test": "^6.21",
-        "laravel/framework": "^11.44.1",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/framework": "^13.0",
         "phpunit/phpunit": "^12.5"
     },
     "autoload": {

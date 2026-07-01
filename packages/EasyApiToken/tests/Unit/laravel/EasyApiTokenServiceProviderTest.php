@@ -10,7 +10,7 @@ use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider;
 use EonX\EasyApiToken\Tests\Stub\Provider\DecoderProviderStub;
 
-final class EasyApiTokenServiceProviderTest extends AbstractLumenTestCase
+final class EasyApiTokenServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testRegister(): void
     {

@@ -23,6 +23,8 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\UrlStringSanitizer;
 use EonX\EasyUtils\SensitiveData\Transformer\DefaultObjectTransformer;
 use EonX\EasyUtils\SensitiveData\Transformer\ThrowableObjectTransformer;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Support\ServiceProvider;
 
 final class EasyUtilsServiceProvider extends ServiceProvider
@@ -34,6 +36,8 @@ final class EasyUtilsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/easy-utils.php' => \base_path('config/easy-utils.php'),
         ]);
+
+        $this->registerStringTrimmerMiddleware();
     }
 
     public function register(): void
@@ -60,6 +64,23 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
         $this->sensitiveData();
         $this->stringTrimmer();
+    }
+
+    private function registerStringTrimmerMiddleware(): void
+    {
+        if ((bool)\config('easy-utils.string_trimmer.enabled', false) === false) {
+            return;
+        }
+
+        if ($this->app->bound(HttpKernelContract::class) === false) {
+            return;
+        }
+
+        $kernel = $this->app->make(HttpKernelContract::class);
+
+        if ($kernel instanceof HttpKernel) {
+            $kernel->pushMiddleware(TrimStringsMiddleware::class);
+        }
     }
 
     private function sensitiveData(): void
@@ -146,16 +167,13 @@ final class EasyUtilsServiceProvider extends ServiceProvider
             return;
         }
 
-        /** @var \Laravel\Lumen\Application $app */
-        $app = $this->app;
-        $app->singleton(StringTrimmerInterface::class, RecursiveStringTrimmer::class);
-        $app->singleton(
+        $this->app->singleton(StringTrimmerInterface::class, RecursiveStringTrimmer::class);
+        $this->app->singleton(
             TrimStringsMiddleware::class,
             static fn (Container $app): TrimStringsMiddleware => new TrimStringsMiddleware(
                 $app->get(StringTrimmerInterface::class),
                 \config('easy-utils.string_trimmer.except_keys', [])
             )
         );
-        $app->middleware([TrimStringsMiddleware::class]);
     }
 }

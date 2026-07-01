@@ -3,11 +3,11 @@ title: Installation
 weight: 1
 ---eonx_docs---
 
-This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
+This document describes the steps to install this package into a [Laravel][1] application.
 
 # Require package (Composer)
 
-Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
+Laravel uses [Composer][2] to manage its dependencies. You can require this package as following:
 
 ```bash
 $ composer require eonx/easy-pipeline
@@ -18,7 +18,7 @@ $ composer require eonx/easy-pipeline
 # Service Provider
 
 Once the package required, you must tell your application to use it. Laravel uses service providers to do so, if you are
-not familiar with this concept make sure to have a look at the [documentation][4].
+not familiar with this concept make sure to have a look at the [documentation][3].
 
 This package provides you with a service provider which will register your pipelines into the services container
 automatically. Make sure to register it:
@@ -53,44 +53,6 @@ return [
 
 Pipelines list must be an associative array where the keys are the names of your pipelines
 and the values the class of your middleware provider for each pipeline.
-
-<br>
-
-# Lumen Actions Required
-
-To install this package in a Lumen application the procedures are a bit different.
-
-<br>
-
-## Register Service Provider
-
-In a Lumen application you must explicitly tell the application to register the package's service provider as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->register(\EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider::class);
-```
-
-<br>
-
-## Add Config
-
-In a Lumen application you must explicitly tell the application to add the package's config as following:
-
-```php
-// bootstrap/app.php
-
-$app = new Laravel\Lumen\Application(\dirname(__DIR__));
-
-// Other actions...
-
-$app->configure('easy-pipeline');
-```
 
 <br>
 
@@ -133,8 +95,6 @@ final class MyClass
 
 [1]: https://laravel.com/
 
-[2]: https://lumen.laravel.com/
+[2]: https://getcomposer.org/
 
-[3]: https://getcomposer.org/
-
-[4]: https://laravel.com/docs/10.x/providers
+[3]: https://laravel.com/docs/13.x/providers

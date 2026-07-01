@@ -5,7 +5,9 @@ namespace EonX\EasyBugsnag\Tests\Unit\Laravel;
 
 use EonX\EasyBugsnag\Laravel\EasyBugsnagServiceProvider;
 use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractLaravelTestCase extends TestCase
@@ -29,6 +31,15 @@ abstract class AbstractLaravelTestCase extends TestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
+        $this->app->instance('queue', new class() {
+            public function looping(callable $callback): void
+            {
+            }
+        });
+        $request = Request::create('/');
+        $this->app->instance('request', $request);
+        $this->app->instance(Request::class, $request);
 
         if ($config !== null) {
             \config($config);

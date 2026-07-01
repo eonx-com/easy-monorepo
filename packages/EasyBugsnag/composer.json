@@ -28,8 +28,7 @@
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "doctrine/orm": "^2.20 || ^3.6",
         "eonx-com/easy-test": "^6.21",
-        "laravel/framework": "^11.44.1",
-        "laravel/lumen-framework": "^11.0",
+        "laravel/framework": "^13.0",
         "phpunit/phpunit": "^12.5",
         "symfony/doctrine-bridge": "^7.4",
         "symfony/runtime": "^7.4",
@@ -54,12 +53,11 @@
     "suggest": {
         "doctrine/doctrine-bundle": "To log SQL queries in Bugsnag",
         "doctrine/orm": "To log SQL queries in Bugsnag",
-        "illuminate/contracts": "To use this package with Laravel/Lumen",
-        "illuminate/http": "To use this package with Laravel/Lumen",
-        "illuminate/queue": "To use this package with Laravel/Lumen",
-        "illuminate/routing": "To use this package with Laravel/Lumen",
-        "illuminate/support": "To use this package with Laravel/Lumen",
-        "laravel/lumen-framework": "To use this package with Lumen"
+        "illuminate/contracts": "To use this package with Laravel",
+        "illuminate/http": "To use this package with Laravel",
+        "illuminate/queue": "To use this package with Laravel",
+        "illuminate/routing": "To use this package with Laravel",
+        "illuminate/support": "To use this package with Laravel"
     },
     "extra": {
         "branch-alias": {

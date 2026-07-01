@@ -5,7 +5,7 @@ namespace EonX\EasyWebhook\Tests\Unit\Laravel;
 
 use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 
-final class EasyWebhookServiceProviderTest extends AbstractLumenTestCase
+final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void
     {

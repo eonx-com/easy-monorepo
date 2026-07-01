@@ -7,7 +7,8 @@ use EonX\EasyNotification\Laravel\EasyNotificationServiceProvider;
 use EonX\EasyNotification\Provider\ConfigProviderInterface;
 use EonX\EasyNotification\Tests\Stub\Provider\ConfigProviderStub;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
@@ -20,6 +21,7 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
         $this->app->register(EasyNotificationServiceProvider::class);
         $this->app->boot();
 

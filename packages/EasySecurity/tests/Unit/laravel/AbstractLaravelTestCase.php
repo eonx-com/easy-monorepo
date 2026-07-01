@@ -8,9 +8,10 @@ use EonX\EasyApiToken\Laravel\EasyApiTokenServiceProvider;
 use EonX\EasySecurity\Laravel\EasySecurityServiceProvider;
 use EonX\EasySecurity\Tests\Stub\Provider\ApiTokenDecoderProviderStub;
 use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
-abstract class AbstractLumenTestCase extends AbstractUnitTestCase
+abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
@@ -24,6 +25,7 @@ abstract class AbstractLumenTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
 
         if ($config !== null) {
             \config($config);
