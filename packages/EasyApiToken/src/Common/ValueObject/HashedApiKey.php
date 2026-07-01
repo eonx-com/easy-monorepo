@@ -18,8 +18,7 @@ final readonly class HashedApiKey implements ApiTokenInterface
         private string $secret,
         private string $original,
         private ?string $version = null,
-    ) {
-    }
+    ) {}
 
     public function getId(): int|string
     {

@@ -34,8 +34,7 @@ if (\method_exists(Driver::class, 'getSchemaManager')) {
             private RequestStack $requestStack,
             private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
             private ?LoggerInterface $logger = null,
-        ) {
-        }
+        ) {}
 
         public function connect(#[SensitiveParameter] array $params): DriverConnection
         {

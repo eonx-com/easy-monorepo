@@ -10,8 +10,7 @@ final readonly class OriginalMessageStamp implements NonSendableStampInterface
     public function __construct(
         private string $body,
         private array $headers,
-    ) {
-    }
+    ) {}
 
     public static function create(string $body, array $headers): self
     {

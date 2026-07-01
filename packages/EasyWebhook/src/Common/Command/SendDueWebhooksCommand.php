@@ -75,7 +75,8 @@ final class SendDueWebhooksCommand extends Command
                 $sendAfter = Carbon::parse($sendAfterString, $timezone);
             } catch (Throwable $throwable) {
                 throw new InvalidDateTimeException(
-                    \sprintf('Invalid DateTime provided, "%s"', $sendAfterString),
+                    message: \sprintf('Invalid DateTime provided, "%s"', $sendAfterString),
+                    code: $throwable->getCode(),
                     previous: $throwable,
                 );
             }

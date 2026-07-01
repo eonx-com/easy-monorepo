@@ -24,8 +24,7 @@ final readonly class CarbonImmutableNormalizer implements NormalizerInterface, D
     public function __construct(
         #[Autowire(service: 'serializer.normalizer.datetime')]
         private DateTimeNormalizer $dateTimeNormalizer,
-    ) {
-    }
+    ) {}
 
     public function denormalize(
         mixed $data,

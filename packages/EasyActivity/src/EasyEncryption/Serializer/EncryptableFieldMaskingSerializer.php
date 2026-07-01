@@ -24,8 +24,7 @@ final class EncryptableFieldMaskingSerializer implements ActivitySubjectDataSeri
     public function __construct(
         private readonly ActivitySubjectDataSerializerInterface $decorated,
         private readonly array $subjects,
-    ) {
-    }
+    ) {}
 
     public function serialize(array $data, ActivitySubjectInterface $subject, ?array $context = null): ?string
     {

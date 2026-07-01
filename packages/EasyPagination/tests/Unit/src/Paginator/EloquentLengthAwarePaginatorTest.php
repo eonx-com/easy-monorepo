@@ -153,7 +153,7 @@ final class EloquentLengthAwarePaginatorTest extends AbstractEloquentPaginatorTe
 
                 new ItemModel(['title' => 'my-title'])->save();
 
-                $paginator->setTransformer(static fn (ItemModel $item): array => [
+                $paginator->setTransformer(static fn(ItemModel $item): array => [
                     'id' => $item->id,
                     'title' => $item->title,
                 ]);

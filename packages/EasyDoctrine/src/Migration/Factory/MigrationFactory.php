@@ -15,8 +15,7 @@ final readonly class MigrationFactory implements DoctrineMigrationFactory
         private DoctrineMigrationFactory $decorated,
         private ManagerRegistry $managerRegistry,
         private string $environment,
-    ) {
-    }
+    ) {}
 
     public function createVersion(string $migrationClassName): AbstractMigration
     {

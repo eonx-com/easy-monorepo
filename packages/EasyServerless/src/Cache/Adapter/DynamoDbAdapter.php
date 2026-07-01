@@ -89,7 +89,7 @@ final class DynamoDbAdapter extends AbstractAdapter
         do {
             if ($requestItems === null) {
                 $requestItems = [
-                    $this->tableName => \array_map(fn (string $id): WriteRequest => new WriteRequest([
+                    $this->tableName => \array_map(fn(string $id): WriteRequest => new WriteRequest([
                         'DeleteRequest' => new DeleteRequest([
                             'Key' => [
                                 $this->idAttr => new AttributeValue(['S' => $id]),
@@ -124,7 +124,7 @@ final class DynamoDbAdapter extends AbstractAdapter
             'RequestItems' => [
                 $this->tableName => new KeysAndAttributes([
                     'ConsistentRead' => true,
-                    'Keys' => \array_map(fn (string $id): array => [
+                    'Keys' => \array_map(fn(string $id): array => [
                         $this->idAttr => new AttributeValue(['S' => $id]),
                     ], $ids),
                 ]),

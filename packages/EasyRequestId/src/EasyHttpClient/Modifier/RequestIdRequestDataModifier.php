@@ -11,8 +11,7 @@ final readonly class RequestIdRequestDataModifier implements RequestDataModifier
 {
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function modifyRequestData(RequestData $data): RequestData
     {

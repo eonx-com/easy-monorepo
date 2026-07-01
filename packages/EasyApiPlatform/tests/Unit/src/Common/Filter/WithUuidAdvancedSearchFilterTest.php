@@ -81,8 +81,8 @@ final class WithUuidAdvancedSearchFilterTest extends AbstractFilterTestCase
                 [
                     'relatedUuidIdentifierDummy' => 'some-invalid-uuid',
                 ],
-                'SELECT o FROM ' . UuidIdentifierDummy::class . ' o' .
-                ' WHERE o.relatedUuidIdentifierDummy = :relatedUuidIdentifierDummy_p1',
+                'SELECT o FROM ' . UuidIdentifierDummy::class . ' o'
+                . ' WHERE o.relatedUuidIdentifierDummy = :relatedUuidIdentifierDummy_p1',
                 [
                     'relatedUuidIdentifierDummy_p1' => '00000000-0000-0000-0000-000000000000',
                 ],
@@ -96,8 +96,8 @@ final class WithUuidAdvancedSearchFilterTest extends AbstractFilterTestCase
                 [
                     'relatedUuidIdentifierDummy' => $validUuid,
                 ],
-                'SELECT o FROM ' . UuidIdentifierDummy::class . ' o' .
-                ' WHERE o.relatedUuidIdentifierDummy = :relatedUuidIdentifierDummy_p1',
+                'SELECT o FROM ' . UuidIdentifierDummy::class . ' o'
+                . ' WHERE o.relatedUuidIdentifierDummy = :relatedUuidIdentifierDummy_p1',
                 ['relatedUuidIdentifierDummy_p1' => $validUuid],
                 $filterFactory,
             ],

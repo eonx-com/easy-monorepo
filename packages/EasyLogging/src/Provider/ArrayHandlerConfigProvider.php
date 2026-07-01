@@ -10,8 +10,7 @@ final readonly class ArrayHandlerConfigProvider implements HandlerConfigProvider
      */
     public function __construct(
         private array $handlers,
-    ) {
-    }
+    ) {}
 
     /**
      * @return iterable<\EonX\EasyLogging\Config\HandlerConfigInterface>

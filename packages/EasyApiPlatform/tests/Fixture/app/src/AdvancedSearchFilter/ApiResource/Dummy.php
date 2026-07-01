@@ -92,18 +92,14 @@ class Dummy
         $this->arrayData = [];
     }
 
-    public static function staticMethod(): void
-    {
-    }
+    public static function staticMethod(): void {}
 
     public function addRelatedDummy(RelatedDummy $relatedDummy): void
     {
         $this->relatedDummies->add($relatedDummy);
     }
 
-    public function fooBar(mixed $baz): void
-    {
-    }
+    public function fooBar(mixed $baz): void {}
 
     public function getAlias(): ?string
     {

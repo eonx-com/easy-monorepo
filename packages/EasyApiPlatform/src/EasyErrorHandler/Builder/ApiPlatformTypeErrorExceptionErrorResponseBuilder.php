@@ -44,8 +44,8 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
         if (
             $throwable instanceof TypeError
             && \preg_match(
-                '/(?<class>.*)::__construct\(\): Argument #\d+ \(\$(?<property>.*)\) must' .
-                ' be of type (?<expectedType>.*), .* given/',
+                '/(?<class>.*)::__construct\(\): Argument #\d+ \(\$(?<property>.*)\) must'
+                . ' be of type (?<expectedType>.*), .* given/',
                 $throwable->getMessage(),
                 $matches
             ) === 1

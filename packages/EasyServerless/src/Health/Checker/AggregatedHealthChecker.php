@@ -23,7 +23,7 @@ final readonly class AggregatedHealthChecker
     ) {
         $this->checkers = \array_filter(
             \iterator_to_array($checkers),
-            static fn (mixed $checker): bool => $checker instanceof HealthCheckerInterface
+            static fn(mixed $checker): bool => $checker instanceof HealthCheckerInterface
         );
     }
 

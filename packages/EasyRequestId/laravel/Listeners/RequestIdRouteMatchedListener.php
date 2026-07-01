@@ -13,8 +13,7 @@ final class RequestIdRouteMatchedListener
 
     public function __construct(
         private RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function handle(RouteMatched $event): void
     {

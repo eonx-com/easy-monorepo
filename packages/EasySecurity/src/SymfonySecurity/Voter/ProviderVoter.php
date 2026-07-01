@@ -15,8 +15,7 @@ final class ProviderVoter extends Voter
 {
     public function __construct(
         private readonly SecurityContextResolverInterface $securityContextResolver,
-    ) {
-    }
+    ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {

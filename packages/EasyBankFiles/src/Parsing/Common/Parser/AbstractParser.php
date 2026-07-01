@@ -7,8 +7,7 @@ abstract class AbstractParser
 {
     public function __construct(
         protected string $contents,
-    ) {
-    }
+    ) {}
 
     /**
      * Process parsing.

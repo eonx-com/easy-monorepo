@@ -13,7 +13,7 @@ final class DummyController
     #[Route('/dummy-action')]
     public function number(): never
     {
-        throw new NotNormalizableValueException('Exception supported by API Platform Builders, but thrown ' .
-            'outside API Platform denormalization logic.');
+        throw new NotNormalizableValueException('Exception supported by API Platform Builders, but thrown '
+            . 'outside API Platform denormalization logic.');
     }
 }

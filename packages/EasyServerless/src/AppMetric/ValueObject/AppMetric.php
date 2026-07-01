@@ -9,8 +9,7 @@ final readonly class AppMetric implements AppMetricInterface
         private string $name,
         private ?array $dimensions = null,
         private ?string $namespace = null,
-    ) {
-    }
+    ) {}
 
     public static function create(
         string $name,

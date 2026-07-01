@@ -22,8 +22,7 @@ if (\enum_exists(ParameterType::class)) {
 
         public function __construct(
             private readonly PdoClientPool $pool,
-        ) {
-        }
+        ) {}
 
         public function __destruct()
         {

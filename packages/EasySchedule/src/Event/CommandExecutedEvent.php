@@ -9,8 +9,7 @@ final readonly class CommandExecutedEvent
 {
     public function __construct(
         private ScheduleEntryInterface $scheduleEntry,
-    ) {
-    }
+    ) {}
 
     public function getScheduleEntry(): ScheduleEntryInterface
     {

@@ -20,7 +20,7 @@ final class ManagersChecker extends AbstractAppStateChecker
     {
         return \array_any(
             $this->managerRegistry->getManagers(),
-            static fn ($manager): bool => $manager instanceof EntityManagerInterface && $manager->isOpen() === false
+            static fn($manager): bool => $manager instanceof EntityManagerInterface && $manager->isOpen() === false
         );
     }
 }

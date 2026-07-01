@@ -15,8 +15,7 @@ final class BreadcrumbLoggerMiddleware implements MiddlewareInterface, Connectio
 
     public function __construct(
         private readonly QueryBreadcrumbLogger $queryBreadcrumbLogger,
-    ) {
-    }
+    ) {}
 
     public function setConnectionName(string $name): void
     {

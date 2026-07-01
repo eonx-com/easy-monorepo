@@ -37,14 +37,14 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         $this->registerAppMetric();
         $this->registerHealth();
 
-        if (\class_exists(PaginationInterface::class)) {
+        if (\interface_exists(PaginationInterface::class)) {
             $this->registerPagination();
         }
 
         $this->app->bind(SqsHandler::class, static function (Container $app): SqsHandler {
             $config = $app->make('config');
             $connectionName = $config->get('queue.default', 'sqs');
-            $getQueueConfig = static fn (string $name, mixed $default): mixed
+            $getQueueConfig = static fn(string $name, mixed $default): mixed
                 => $config->get(
                     \sprintf('queue.connections.%s.%s', $connectionName, $name),
                     $default
@@ -71,7 +71,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AppMetricClientInterface::class,
-            static fn (Container $app): AppMetricClientInterface => new AppMetricClient(
+            static fn(Container $app): AppMetricClientInterface => new AppMetricClient(
                 $app->make(LoggerInterface::class),
                 \config('easy-serverless.app_metric.namespace')
             )
@@ -94,7 +94,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         // Aggregated Checker
         $this->app->singleton(
             AggregatedHealthChecker::class,
-            static fn (Container $app): AggregatedHealthChecker => new AggregatedHealthChecker(
+            static fn(Container $app): AggregatedHealthChecker => new AggregatedHealthChecker(
                 $app->tagged(ConfigTag::HealthChecker->value),
                 $app->make(LoggerInterface::class)
             )
@@ -108,7 +108,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PaginationInterface::class,
-            static fn (Container $app): PaginationInterface => new StatelessPagination(
+            static fn(Container $app): PaginationInterface => new StatelessPagination(
                 $app->make(PaginationProviderInterface::class)
             )
         );

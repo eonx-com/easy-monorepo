@@ -11,8 +11,7 @@ final readonly class DoctrineDbalStatementProvider
     public function __construct(
         private Connection $connection,
         private string $activityLogsTable,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string[]

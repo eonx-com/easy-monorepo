@@ -10,8 +10,7 @@ final readonly class EncryptableField
 {
     public function __construct(
         private ?string $fieldName = null,
-    ) {
-    }
+    ) {}
 
     public function getFieldName(): ?string
     {
