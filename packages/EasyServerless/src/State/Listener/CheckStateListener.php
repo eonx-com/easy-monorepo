@@ -20,7 +20,7 @@ final readonly class CheckStateListener
         if (LambdaContextHelper::inLambda() === false) {
             return;
         }
-        
+
         foreach ($this->stateCheckers as $stateChecker) {
             $stateChecker->check();
         }

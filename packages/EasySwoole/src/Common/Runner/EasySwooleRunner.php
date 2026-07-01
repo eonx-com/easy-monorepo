@@ -74,7 +74,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
                         $hfResponse,
                         $response,
                         $responseChunkSize,
-                        \is_string($bufferedOutput) && $bufferedOutput !== '' ? $bufferedOutput : null
+                        $bufferedOutput !== '' ? $bufferedOutput : null
                     );
 
                     $responded = true;

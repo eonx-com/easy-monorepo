@@ -30,7 +30,7 @@ abstract class BaseException extends Exception implements
                 );
             }
 
-            if ($code instanceof BackedEnum && \is_int($code->value)) {
+            if ($code instanceof BackedEnum) {
                 $codeValue = $code->value;
             }
 

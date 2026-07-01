@@ -17,8 +17,7 @@ if (\enum_exists(ParameterType::class)) {
     {
         public function __construct(
             private PDOStatementProxy $pdoStatement,
-        ) {
-        }
+        ) {}
 
         /**
          * {@inheritdoc}

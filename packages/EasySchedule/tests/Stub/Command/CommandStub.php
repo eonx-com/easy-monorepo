@@ -7,6 +7,4 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'command:bar')]
-final class CommandStub extends Command
-{
-}
+final class CommandStub extends Command {}

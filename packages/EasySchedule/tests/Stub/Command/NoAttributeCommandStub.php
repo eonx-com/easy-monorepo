@@ -5,6 +5,4 @@ namespace EonX\EasySchedule\Tests\Stub\Command;
 
 use Symfony\Component\Console\Command\Command;
 
-final class NoAttributeCommandStub extends Command
-{
-}
+final class NoAttributeCommandStub extends Command {}

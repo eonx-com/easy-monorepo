@@ -43,7 +43,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             PaginationFromRequestListener::class,
-            static fn (Container $app): PaginationFromRequestListener => new PaginationFromRequestListener(
+            static fn(Container $app): PaginationFromRequestListener => new PaginationFromRequestListener(
                 $app->make(PaginationProviderInterface::class)
             )
         );
@@ -69,7 +69,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             PaginationInterface::class,
-            static fn (Container $app): PaginationInterface => $app->make(PaginationProviderInterface::class)
+            static fn(Container $app): PaginationInterface => $app->make(PaginationProviderInterface::class)
                 ->getPagination()
         );
     }
