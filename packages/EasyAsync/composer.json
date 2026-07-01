@@ -17,10 +17,14 @@
         "symfony/messenger": "^7.4"
     },
     "require-dev": {
+        "bref/bref": "^2 || ^3",
+        "bref/symfony-bridge": "^1.0.3",
+        "bref/symfony-messenger": "^1.4.1",
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "eonx-com/easy-event-dispatcher": "^6.21",
         "eonx-com/easy-logging": "^6.21",
         "eonx-com/easy-random": "^6.21",
+        "eonx-com/easy-serverless": "^6.21",
         "eonx-com/easy-test": "^6.21",
         "phpunit/phpunit": "^12.5",
         "symfony/doctrine-bridge": "^7.4",

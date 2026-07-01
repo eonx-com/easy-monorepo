@@ -30,11 +30,21 @@ abstract class AbstractSqsHandler extends SqsHandler
 
     private array $recordsForRetry = [];
 
+    /**
+     * @var array<\EonX\EasyServerless\State\Checker\StateCheckerInterface>
+     */
+    private readonly array $stateCheckers;
+
+    /**
+     * @param iterable<\EonX\EasyServerless\State\Checker\StateCheckerInterface> $stateCheckers
+     */
     public function __construct(
         protected readonly int $appMaxRetries = 3,
         protected readonly bool $partialBatchFailure = false,
         private readonly int $timeoutThresholdMilliseconds = 1000, // 1 second
+        iterable $stateCheckers = [],
     ) {
+        $this->stateCheckers = \iterator_to_array($stateCheckers);
     }
 
     /**
@@ -42,21 +52,26 @@ abstract class AbstractSqsHandler extends SqsHandler
      */
     public function handleSqs(SqsEvent $event, Context $context): void
     {
-        $this->reset();
+        try {
+            $this->reset();
 
-        foreach ($event->getRecords() as $sqsRecord) {
-            // In some cases we need to prevent records being processed by the current invocation,
-            // we requeue them by scheduling them for retry
-            if ($this->shouldSkipRecord($sqsRecord, $context)) {
-                $this->scheduleForRetry($sqsRecord);
+            foreach ($event->getRecords() as $sqsRecord) {
+                // In some cases we need to prevent records being processed by the current invocation,
+                // we requeue them by scheduling them for retry
+                if ($this->shouldSkipRecord($sqsRecord, $context)) {
+                    $this->scheduleForRetry($sqsRecord);
 
-                continue;
+                    continue;
+                }
+
+                $this->handleSqsRecords($sqsRecord, $context);
             }
 
-            $this->handleSqsRecords($sqsRecord, $context);
+            $this->handleFailedRecords();
+            $this->checkState();
+        } finally {
+            \gc_collect_cycles();
         }
-
-        $this->handleFailedRecords();
     }
 
     abstract protected function getSqsClient(): AwsSqsClient|AsyncAwsSqsClient;
@@ -82,6 +97,13 @@ abstract class AbstractSqsHandler extends SqsHandler
         }
 
         $this->markAsFailed($sqsRecord);
+    }
+
+    private function checkState(): void
+    {
+        foreach ($this->stateCheckers as $stateChecker) {
+            $stateChecker->check();
+        }
     }
 
     private function handleFailedRecords(): void
@@ -151,11 +173,13 @@ abstract class AbstractSqsHandler extends SqsHandler
         if ($this->isFifo
             && $this->hasPreviousMessageFailed
             && \in_array($messageGroupId, $this->failingMessageGroupIds, true)) {
-            $this->logger?->debug(\sprintf(
-                'Skipping MessageId "%s" from MessageGroupId "%s" due to previous failure in the same group',
-                $sqsRecord->getMessageId(),
-                $messageGroupId
-            ));
+            $this->logger?->debug(
+                \sprintf(
+                    'Skipping MessageId "%s" from MessageGroupId "%s" due to previous failure in the same group',
+                    $sqsRecord->getMessageId(),
+                    $messageGroupId
+                )
+            );
 
             return true;
         }
@@ -163,12 +187,14 @@ abstract class AbstractSqsHandler extends SqsHandler
         // If the Lambda function about to timeout we skip processing records to prevent partial processing
         $remainingTimeInMilliseconds = $context->getRemainingTimeInMillis() - self::SAFETY_TIMEOUT_MARGIN_MILLISECONDS;
         if ($remainingTimeInMilliseconds <= $this->timeoutThresholdMilliseconds) {
-            $this->logger?->debug(\sprintf(
-                'Skipping MessageId "%s" because remaining Lambda time (%d ms) is below threshold (%d ms)',
-                $sqsRecord->getMessageId(),
-                $remainingTimeInMilliseconds,
-                $this->timeoutThresholdMilliseconds
-            ));
+            $this->logger?->debug(
+                \sprintf(
+                    'Skipping MessageId "%s" because remaining Lambda time (%d ms) is below threshold (%d ms)',
+                    $sqsRecord->getMessageId(),
+                    $remainingTimeInMilliseconds,
+                    $this->timeoutThresholdMilliseconds
+                )
+            );
 
             return true;
         }
@@ -180,11 +206,27 @@ abstract class AbstractSqsHandler extends SqsHandler
         // we need to prevent processing messages that have reached their appMaxRetries while allowing SQS to
         // keep retrying them until they reach maxReceiveCount and are sent to the DLQ
         if ($sqsRecord->getApproximateReceiveCount() > $this->appMaxRetries) {
-            $this->logger?->debug(\sprintf(
-                'Skipping MessageId "%s" because it has reached the application max retries (%d)',
-                $sqsRecord->getMessageId(),
-                $this->appMaxRetries
-            ));
+            $this->logger?->debug(
+                \sprintf(
+                    'Skipping MessageId "%s" because it has reached the application max retries (%d)',
+                    $sqsRecord->getMessageId(),
+                    $this->appMaxRetries
+                )
+            );
+
+            return true;
+        }
+
+        try {
+            $this->checkState();
+        } catch (Throwable $throwable) {
+            $this->logger?->debug(
+                \sprintf(
+                    'Skipping MessageId "%s" because state check failed: %s',
+                    $sqsRecord->getMessageId(),
+                    $throwable->getMessage()
+                )
+            );
 
             return true;
         }

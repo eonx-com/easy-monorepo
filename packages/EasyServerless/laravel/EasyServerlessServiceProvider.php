@@ -44,10 +44,11 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         $this->app->bind(SqsHandler::class, static function (Container $app): SqsHandler {
             $config = $app->make('config');
             $connectionName = $config->get('queue.default', 'sqs');
-            $getQueueConfig = static fn (string $name, mixed $default): mixed => $config->get(
-                \sprintf('queue.connections.%s.%s', $connectionName, $name),
-                $default
-            );
+            $getQueueConfig = static fn (string $name, mixed $default): mixed
+                => $config->get(
+                    \sprintf('queue.connections.%s.%s', $connectionName, $name),
+                    $default
+                );
 
             return new SqsHandler(
                 container: $app,
@@ -55,6 +56,9 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                 appMaxRetries: $getQueueConfig('max_retries', 3),
                 timeoutThresholdMilliseconds: $getQueueConfig('timeout_threshold_ms', 1000),
                 partialBatchFailure: $getQueueConfig('partial_batch_failure', false),
+                stateCheckers: \config('easy-serverless.state.check', true)
+                    ? $app->tagged(ConfigTag::StateChecker->value)
+                    : [],
             );
         });
     }

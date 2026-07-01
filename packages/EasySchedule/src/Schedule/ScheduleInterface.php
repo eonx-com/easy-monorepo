@@ -14,7 +14,7 @@ interface ScheduleInterface
     public function addProviders(array $providers): self;
 
     /**
-     * @param class-string<\Symfony\Component\Console\Command\Command>|string $command
+     * @param class-string|string $command
      */
     public function command(string $command, ?array $parameters = null): ScheduleEntryInterface;
 

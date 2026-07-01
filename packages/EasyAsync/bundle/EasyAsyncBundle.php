@@ -44,6 +44,14 @@ final class EasyAsyncBundle extends AbstractBundle
         $this->registerMessengerConfiguration($config, $container, $builder);
     }
 
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
+    }
+
     private function registerDoctrineConfiguration(
         array $config,
         ContainerConfigurator $container,
@@ -58,6 +66,10 @@ final class EasyAsyncBundle extends AbstractBundle
                 );
 
             $container->import('config/doctrine_persistent_connections.php');
+
+            if ($this->isBundleEnabled('EasyServerlessBundle', $builder)) {
+                $container->import('config/doctrine_persistent_connections_serverless.php');
+            }
         }
     }
 

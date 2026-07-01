@@ -7,6 +7,7 @@ use BackedEnum;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
+use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 
 use function Symfony\Component\String\u;
@@ -179,13 +180,32 @@ trait DoctrineCommonPaginatorTrait
         $paramTypes = [];
 
         if ($queryBuilder instanceof OrmQueryBuilder) {
-            $sql = $queryBuilder->getQuery()
-                ->getSQL();
+            $query = $queryBuilder->getQuery();
+            $sql = $query->getSQL();
 
+            $parametersMap = [];
+            $paramTypesMap = [];
             foreach ($queryBuilder->getParameters() as $param) {
-                $params[] = $param->getValue();
-                $paramTypes[] = $param->getType();
+                $parametersMap[$param->getName()] = $param->getValue();
+                $paramTypesMap[$param->getName()] = $param->getType();
             }
+
+            $paramMappings = new Parser($query)
+->parse()
+                ->getParameterMappings();
+            foreach ($paramMappings as $paramName => $positions) {
+                if (\array_key_exists($paramName, $parametersMap) === false) {
+                    continue;
+                }
+                foreach ($positions as $position) {
+                    $params[$position] = $parametersMap[$paramName];
+                    $paramTypes[$position] = $paramTypesMap[$paramName];
+                }
+            }
+            \ksort($params);
+            \ksort($paramTypes);
+            $params = \array_values($params);
+            $paramTypes = \array_values($paramTypes);
         }
 
         if ($queryBuilder instanceof DbalQueryBuilder) {

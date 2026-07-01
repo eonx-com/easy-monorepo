@@ -97,7 +97,7 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
         }
 
         if (\is_string($data['send_after'] ?? null)) {
-            $data['send_after'] = CarbonImmutable::createFromFormat(self::DATETIME_FORMAT, $data['send_after']);
+            $data['send_after'] = CarbonImmutable::parse($data['send_after']);
         }
 
         if (\is_string($data['extra'] ?? null)) {
