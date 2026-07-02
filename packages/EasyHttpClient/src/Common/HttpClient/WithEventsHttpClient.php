@@ -108,11 +108,13 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
             if ($chunkContent !== '') {
                 $asyncContext->setInfo(
                     'temp_content',
-                    ($asyncContext->getInfo('temp_content') ?? '') . $chunk->getContent()
+                    ($asyncContext->getInfo('temp_content') ?? '') . $chunkContent
                 );
             }
 
-            if ($chunk->isLast()) {
+            // Do not dispatch a successful response event when the AsyncContext reports an error (including cancellation
+            // or aborting a response before a retry), otherwise we can end up dispatching multiple events for one request
+            if ($chunk->isLast() && $asyncContext->getInfo('error') === null) {
                 /** @var resource|string|null $content */
                 $content = $asyncContext->getInfo('temp_content');
                 $this->dispatchEvent($config, $requestData, new ResponseData(
