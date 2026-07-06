@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := help
+1.DEFAULT_GOAL := help
 MAKEFLAGS += --no-print-directory
 projectName = Easy Monorepo
 enableNotification = yes
