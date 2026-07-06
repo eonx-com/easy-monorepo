@@ -31,7 +31,7 @@ final class SymfonyServicesAppStateResetter implements AppStateResetterInterface
     {
         foreach ($this->resettableServices as $id => $service) {
             foreach ((array)$this->resetMethods[$id] as $resetMethod) {
-                $resetMethod = u($resetMethod);
+                $resetMethod = \u($resetMethod);
 
                 if ($resetMethod->startsWith('?')) {
                     $resetMethod = $resetMethod->trimStart('?');
