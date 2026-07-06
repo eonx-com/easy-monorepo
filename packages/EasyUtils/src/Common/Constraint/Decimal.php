@@ -58,6 +58,10 @@ final class Decimal extends AbstractConstraint
             );
         }
 
+        // Symfony 8 no longer maps the legacy $options array onto typed properties, so assign them explicitly
+        $this->minPrecision = $minPrecision;
+        $this->maxPrecision = $maxPrecision;
+
         parent::__construct($options, $groups, $payload);
     }
 

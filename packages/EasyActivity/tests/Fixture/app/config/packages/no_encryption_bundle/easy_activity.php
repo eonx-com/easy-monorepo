@@ -4,17 +4,20 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyActivity\Tests\Fixture\App\Entity\User;
-use Symfony\Config\EasyActivityConfig;
 
-return static function (EasyActivityConfig $easyActivityConfig): void {
+return static function (ContainerConfigurator $containerConfigurator): void {
     // Configuration for testing encryptable fields masking integration
-    $easyActivityConfig
-        ->disallowedProperties([
+    $containerConfigurator->extension('easy_activity', [
+        'disallowed_properties' => [
             'email',
-        ]);
-    $easyActivityConfig->subjects(User::class)
-        ->type('User')
-        ->disallowedProperties([
-            'password',
-        ]);
+        ],
+        'subjects' => [
+            User::class => [
+                'type' => 'User',
+                'disallowed_properties' => [
+                    'password',
+                ],
+            ],
+        ],
+    ]);
 };

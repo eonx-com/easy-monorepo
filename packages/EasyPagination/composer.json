@@ -10,19 +10,19 @@
         "doctrine/orm": "^2.20 || ^3.6",
         "eonx-com/easy-utils": "^6.21",
         "spatie/url": "^2.2",
-        "symfony/config": "^7.4",
-        "symfony/dependency-injection": "^7.4",
-        "symfony/http-foundation": "^7.4",
-        "symfony/http-kernel": "^7.4",
-        "symfony/string": "^7.4"
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/http-foundation": "^7.4 || ^8.0",
+        "symfony/http-kernel": "^7.4 || ^8.0",
+        "symfony/string": "^7.4 || ^8.0"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "laravel/framework": "^13.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^12.5",
-        "symfony/uid": "^7.4",
-        "symfony/var-exporter": "^7.4"
+        "symfony/uid": "^7.4 || ^8.0",
+        "symfony/var-exporter": "^7.4 || ^8.0"
     },
     "autoload": {
         "psr-4": {

@@ -10,17 +10,17 @@
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.8.4",
         "nette/utils": "^4.0",
-        "symfony/cache": "^7.4",
+        "symfony/cache": "^7.4 || ^8.0",
         "symfony/cache-contracts": "^3.5",
-        "symfony/config": "^7.4",
-        "symfony/console": "^7.4",
-        "symfony/dependency-injection": "^7.4",
-        "symfony/event-dispatcher": "^7.4",
-        "symfony/filesystem": "^7.4",
-        "symfony/http-foundation": "^7.4",
-        "symfony/http-kernel": "^7.4",
-        "symfony/messenger": "^7.4",
-        "symfony/var-dumper": "^7.4"
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/console": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/event-dispatcher": "^7.4 || ^8.0",
+        "symfony/filesystem": "^7.4 || ^8.0",
+        "symfony/http-foundation": "^7.4 || ^8.0",
+        "symfony/http-kernel": "^7.4 || ^8.0",
+        "symfony/messenger": "^7.4 || ^8.0",
+        "symfony/var-dumper": "^7.4 || ^8.0"
     },
     "require-dev": {
         "doctrine/collections": "^1.7.2 || ^2.6",
@@ -30,9 +30,9 @@
         "eonx-com/easy-test": "^6.21",
         "laravel/framework": "^13.0",
         "phpunit/phpunit": "^12.5",
-        "symfony/doctrine-bridge": "^7.4",
-        "symfony/runtime": "^7.4",
-        "symfony/uid": "^7.4"
+        "symfony/doctrine-bridge": "^7.4 || ^8.0",
+        "symfony/runtime": "^7.4 || ^8.0",
+        "symfony/uid": "^7.4 || ^8.0"
     },
     "autoload": {
         "psr-4": {

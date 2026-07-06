@@ -6,5 +6,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('easy_swoole', [
         'doctrine' => false,
+        'easy_encryption' => false,
     ]);
 };
