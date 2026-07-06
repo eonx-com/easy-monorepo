@@ -6,7 +6,6 @@ namespace EonX\EasySwoole\Common\Resetter;
 use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
 use Symfony\Contracts\Service\ResetInterface;
 use Traversable;
-use function Symfony\Component\String\u;
 
 final class SymfonyServicesAppStateResetter implements AppStateResetterInterface, ResetInterface
 {
