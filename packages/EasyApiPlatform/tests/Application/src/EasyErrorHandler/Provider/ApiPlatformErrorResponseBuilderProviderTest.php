@@ -19,16 +19,15 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
      */
     public static function provideDataForBuildErrorResponse(): iterable
     {
-        // Symfony 8 changed the backed enum denormalization violation message
-        $isSymfony8OrHigher = \version_compare(
+        $isSymfony8 = \version_compare(
             (string)InstalledVersions::getVersion('symfony/serializer'),
             '8.0.0',
             '>='
         );
-        $enumViolationMessage = $isSymfony8OrHigher
+        $enumViolationMessage = $isSymfony8
             ? 'The data must be one of the following values: "active", "inactive"'
             : 'The value should be a valid choice.';
-        $enumExceptionMessage = $isSymfony8OrHigher
+        $enumExceptionMessage = $isSymfony8
             ? 'status: The data must be one of the following values: "active", "inactive"'
             : 'status: This value should be of type int|string.';
 

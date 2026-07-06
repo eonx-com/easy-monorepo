@@ -17,11 +17,7 @@ final class CustomNameConverter extends CamelCaseToSnakeCaseNameConverter
         ?string $format = null,
         ?array $context = null,
     ): string {
-        // The parent CamelCaseToSnakeCaseNameConverter ignores $class/$format/$context for this conversion,
-        // and on Symfony 7.4 these parameters are not part of the parent signature yet, so only forward the name
-        return $propertyName === 'name_converted'
-            ? parent::denormalize($propertyName)
-            : $propertyName;
+        return $propertyName === 'name_converted' ? parent::denormalize($propertyName) : $propertyName;
     }
 
     public function normalize(
@@ -30,8 +26,6 @@ final class CustomNameConverter extends CamelCaseToSnakeCaseNameConverter
         ?string $format = null,
         ?array $context = null,
     ): string {
-        return $propertyName === 'nameConverted'
-            ? parent::normalize($propertyName)
-            : $propertyName;
+        return $propertyName === 'nameConverted' ? parent::normalize($propertyName) : $propertyName;
     }
 }

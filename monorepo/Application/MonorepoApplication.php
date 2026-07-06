@@ -16,8 +16,6 @@ final class MonorepoApplication extends Application
      */
     public function __construct(iterable $commands)
     {
-        // The parent constructor must run first: Symfony Console 8 initializes internal state (typed properties)
-        // during command registration, so adding commands before parent::__construct() triggers a fatal error
         parent::__construct('eonx-monorepo', '1.0.0');
 
         $this->addCommands(CollectorHelper::filterByClassAsArray($commands, Command::class));

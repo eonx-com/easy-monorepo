@@ -4,6 +4,16 @@
     "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
     "require": {
+        "php": "^8.4",
+        "ext-bcmath": "*",
+        "ext-ctype": "*",
+        "ext-dom": "*",
+        "ext-filter": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
+        "ext-sodium": "*",
         "api-platform/core": "^4.3.15",
         "async-aws/secrets-manager": "^2.5",
         "aws/aws-sdk-php": "^3.371.4",
@@ -14,15 +24,6 @@
         "doctrine/orm": "^2.20 || ^3.6",
         "doctrine/persistence": "^3.3 || ^4.1",
         "dragonmantank/cron-expression": "^3.3",
-        "ext-bcmath": "*",
-        "ext-ctype": "*",
-        "ext-dom": "*",
-        "ext-filter": "*",
-        "ext-libxml": "*",
-        "ext-mbstring": "*",
-        "ext-openssl": "*",
-        "ext-pdo": "*",
-        "ext-sodium": "*",
         "guzzlehttp/guzzle": "^7.0",
         "monolog/monolog": "^3.7",
         "myclabs/deep-copy": "^1.11",
@@ -32,7 +33,6 @@
         "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
         "paragonie/sodium_compat": "^2.5.0",
-        "php": "^8.4",
         "phpunit/phpunit": "^12.5",
         "psr/cache": "^3.0",
         "psr/log": "^3.0",
@@ -58,7 +58,6 @@
         "symfony/messenger": "^7.4 || ^8.0",
         "symfony/property-access": "^7.4 || ^8.0",
         "symfony/property-info": "^7.4 || ^8.0",
-        "symfony/routing": "^7.4 || ^8.0",
         "symfony/runtime": "^7.4 || ^8.0",
         "symfony/security-bundle": "^7.4 || ^8.0",
         "symfony/security-core": "^7.4 || ^8.0",
@@ -67,15 +66,14 @@
         "symfony/service-contracts": "^3.5",
         "symfony/string": "^7.4 || ^8.0",
         "symfony/translation": "^7.4 || ^8.0",
-        "symfony/translation-contracts": "^3.5",
         "symfony/uid": "^7.4 || ^8.0",
         "symfony/var-dumper": "^7.4 || ^8.0",
         "twig/twig": "^3.27"
     },
     "require-dev": {
+        "auth0/auth0-php": "^8.19",
         "async-aws/dynamo-db": "^3.6",
         "async-aws/sqs": "^2.7",
-        "auth0/auth0-php": "^8.19",
         "bref/bref": "^2 || ^3",
         "bref/laravel-bridge": "^3.0",
         "bref/symfony-bridge": "^1.0.3",
@@ -101,13 +99,16 @@
         "symfony/amazon-sqs-messenger": "^7.4 || ^8.0",
         "symfony/browser-kit": "^7.4 || ^8.0",
         "symfony/process": "^7.4 || ^8.0",
+        "symfony/routing": "^7.4 || ^8.0",
         "symfony/twig-bundle": "^7.4 || ^8.0",
         "symfony/validator": "^7.4 || ^8.0",
-        "symfony/var-exporter": "^7.4 || ^8.0",
         "symfony/yaml": "^7.4 || ^8.0",
         "symplify/monorepo-builder": "^12.4.5"
     },
     "autoload": {
+        "files": [
+            "packages/EasySwoole/src/Logging/Function/dump.php"
+        ],
         "psr-4": {
             "EonX\\EasyActivity\\": "packages/EasyActivity/src",
             "EonX\\EasyActivity\\Bundle\\": "packages/EasyActivity/bundle",
@@ -187,10 +188,7 @@
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src",
             "EonX\\EasyWebhook\\Bundle\\": "packages/EasyWebhook/bundle",
             "EonX\\EasyWebhook\\Laravel\\": "packages/EasyWebhook/laravel"
-        },
-        "files": [
-            "packages/EasySwoole/src/Logging/Function/dump.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
