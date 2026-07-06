@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Common\Resetter;
 
 use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
+use Symfony\Component\String\UnicodeString;
 use Symfony\Contracts\Service\ResetInterface;
 use Traversable;
 
@@ -31,7 +32,7 @@ final class SymfonyServicesAppStateResetter implements AppStateResetterInterface
     {
         foreach ($this->resettableServices as $id => $service) {
             foreach ((array)$this->resetMethods[$id] as $resetMethod) {
-                $resetMethod = \u($resetMethod);
+                $resetMethod = new UnicodeString($resetMethod);
 
                 if ($resetMethod->startsWith('?')) {
                     $resetMethod = $resetMethod->trimStart('?');

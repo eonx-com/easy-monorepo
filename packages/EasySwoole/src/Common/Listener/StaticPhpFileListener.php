@@ -6,8 +6,7 @@ namespace EonX\EasySwoole\Common\Listener;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 final class StaticPhpFileListener extends AbstractRequestListener
 {
@@ -27,7 +26,7 @@ final class StaticPhpFileListener extends AbstractRequestListener
         $pathInfo = $event->getRequest()
             ->getPathInfo();
 
-        if (u($pathInfo)->endsWith('.php') === false
+        if (new UnicodeString($pathInfo)->endsWith('.php') === false
             || \in_array($pathInfo, $this->allowedFilenames, true) === false) {
             return;
         }

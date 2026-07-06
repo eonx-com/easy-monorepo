@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Asset\Package;
 
 use Symfony\Component\Asset\PackageInterface;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 final readonly class PrefixedUrlPackage implements PackageInterface
 {
@@ -17,10 +16,10 @@ final readonly class PrefixedUrlPackage implements PackageInterface
 
     public function getUrl(string $path): string
     {
-        $baseUrl = u($this->assetsUrl)
+        $baseUrl = new UnicodeString($this->assetsUrl)
             ->trimEnd('/');
 
-        $path = u($this->decorated->getUrl($path))
+        $path = new UnicodeString($this->decorated->getUrl($path))
             ->trimStart('/');
 
         return \sprintf('%s/%s', $baseUrl, $path);

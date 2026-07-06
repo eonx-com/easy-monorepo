@@ -5,8 +5,7 @@ namespace EonX\EasySwoole\Common\Helper;
 
 use EonX\EasySwoole\Logging\Helper\OutputHelper;
 use EonX\EasyUtils\Common\Helper\EnvVarSubstitutionHelper;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 final class EnvVarHelper
 {
@@ -19,7 +18,7 @@ final class EnvVarHelper
         ?bool $outputEnabled = null,
     ): void {
         $jsonSecrets = \array_map(static function (string $jsonSecret): string {
-            $jsonSecret = u($jsonSecret);
+            $jsonSecret = new UnicodeString($jsonSecret);
 
             if ($jsonSecret->startsWith('/') === false) {
                 $jsonSecret = $jsonSecret
@@ -33,13 +32,13 @@ final class EnvVarHelper
 
         foreach (\array_keys($_SERVER) as $envVarName) {
             foreach ($jsonSecrets as $jsonSecret) {
-                if (u($envVarName)->ignoreCase()->match($jsonSecret)) {
+                if (new UnicodeString($envVarName)->ignoreCase()->match($jsonSecret)) {
                     /** @var string $envVarRawValue */
                     $envVarRawValue = $_SERVER[$envVarName] ?? '';
                     /** @var array|null $envVarValue */
                     $envVarValue = \json_decode($envVarRawValue, true);
                     foreach ($envVarValue ?? [] as $name => $value) {
-                        $name = u($name)
+                        $name = new UnicodeString($name)
                             ->upper()
                             ->toString();
 
