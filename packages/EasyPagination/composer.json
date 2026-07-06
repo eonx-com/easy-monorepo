@@ -20,7 +20,7 @@
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "laravel/framework": "^13.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "symfony/uid": "^7.4",
         "symfony/var-exporter": "^7.4"
     },

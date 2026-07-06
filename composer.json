@@ -33,7 +33,7 @@
         "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
         "paragonie/sodium_compat": "^2.5.0",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "psr/cache": "^3.0",
         "psr/log": "^3.0",
         "spatie/url": "^2.2",
