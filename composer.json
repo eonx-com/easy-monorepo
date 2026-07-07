@@ -1,9 +1,19 @@
 {
     "name": "eonx-com/easy-monorepo",
+    "type": "library",
     "description": "Reusable packages to make PHP projects easier to create/maintain",
     "license": "MIT",
-    "type": "library",
     "require": {
+        "php": "^8.2",
+        "ext-bcmath": "*",
+        "ext-ctype": "*",
+        "ext-dom": "*",
+        "ext-filter": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
+        "ext-sodium": "*",
         "api-platform/core": "^3.4.17 || ^4.3.15",
         "async-aws/secrets-manager": "^2.5",
         "aws/aws-sdk-php": "^3.371.4",
@@ -14,15 +24,6 @@
         "doctrine/orm": "^2.20",
         "doctrine/persistence": "^3.3",
         "dragonmantank/cron-expression": "^3.3",
-        "ext-bcmath": "*",
-        "ext-ctype": "*",
-        "ext-dom": "*",
-        "ext-filter": "*",
-        "ext-libxml": "*",
-        "ext-mbstring": "*",
-        "ext-openssl": "*",
-        "ext-pdo": "*",
-        "ext-sodium": "*",
         "guzzlehttp/guzzle": "^7.0",
         "monolog/monolog": "^3.9",
         "myclabs/deep-copy": "^1.11",
@@ -32,7 +33,6 @@
         "openswoole/core": "^22.1",
         "paragonie/halite": "^5.1",
         "paragonie/sodium_compat": "^2.5.0",
-        "php": "^8.2",
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "psr/cache": "^3.0",
         "psr/log": "^3.0",
@@ -57,7 +57,6 @@
         "symfony/lock": "^7.2",
         "symfony/messenger": "^7.2",
         "symfony/property-access": "^7.2",
-        "symfony/routing": "^7.2",
         "symfony/runtime": "^7.2",
         "symfony/security-bundle": "^7.2",
         "symfony/security-core": "^7.2",
@@ -66,15 +65,14 @@
         "symfony/service-contracts": "^3.5",
         "symfony/string": "^7.2",
         "symfony/translation": "^7.2",
-        "symfony/translation-contracts": "^3.5",
         "symfony/uid": "^7.2",
         "symfony/var-dumper": "^7.2",
         "twig/twig": "^3.27"
     },
     "require-dev": {
+        "auth0/auth0-php": "^8.19",
         "async-aws/dynamo-db": "^3.6",
         "async-aws/sqs": "^2.7",
-        "auth0/auth0-php": "^8.19",
         "bref/bref": "^2.3.15",
         "bref/laravel-bridge": "^2.6",
         "bref/symfony-bridge": "^1.0.3",
@@ -103,46 +101,19 @@
         "symfony/browser-kit": "^7.2",
         "symfony/monolog-bundle": "^3.11.1",
         "symfony/process": "^7.2",
+        "symfony/routing": "^7.2",
         "symfony/twig-bundle": "^7.2",
         "symfony/validator": "^7.2",
         "symfony/yaml": "^7.2",
         "symplify/monorepo-builder": "^11.2.22"
     },
-    "replace": {
-        "eonx-com/easy-activity": "self.version",
-        "eonx-com/easy-api-platform": "self.version",
-        "eonx-com/easy-api-token": "self.version",
-        "eonx-com/easy-async": "self.version",
-        "eonx-com/easy-bank-files": "self.version",
-        "eonx-com/easy-batch": "self.version",
-        "eonx-com/easy-bugsnag": "self.version",
-        "eonx-com/easy-decision": "self.version",
-        "eonx-com/easy-doctrine": "self.version",
-        "eonx-com/easy-encryption": "self.version",
-        "eonx-com/easy-error-handler": "self.version",
-        "eonx-com/easy-event-dispatcher": "self.version",
-        "eonx-com/easy-http-client": "self.version",
-        "eonx-com/easy-lock": "self.version",
-        "eonx-com/easy-logging": "self.version",
-        "eonx-com/easy-notification": "self.version",
-        "eonx-com/easy-pagination": "self.version",
-        "eonx-com/easy-pipeline": "self.version",
-        "eonx-com/easy-random": "self.version",
-        "eonx-com/easy-repository": "self.version",
-        "eonx-com/easy-request-id": "self.version",
-        "eonx-com/easy-schedule": "self.version",
-        "eonx-com/easy-security": "self.version",
-        "eonx-com/easy-serverless": "self.version",
-        "eonx-com/easy-swoole": "self.version",
-        "eonx-com/easy-templating-block": "self.version",
-        "eonx-com/easy-test": "self.version",
-        "eonx-com/easy-utils": "self.version",
-        "eonx-com/easy-webhook": "self.version"
-    },
     "conflict": {
         "symfony/monolog-bundle": "<3.11.1"
     },
     "autoload": {
+        "files": [
+            "packages/EasySwoole/src/Logging/Function/dump.php"
+        ],
         "psr-4": {
             "EonX\\EasyActivity\\": "packages/EasyActivity/src",
             "EonX\\EasyActivity\\Bundle\\": "packages/EasyActivity/bundle",
@@ -222,10 +193,7 @@
             "EonX\\EasyWebhook\\": "packages/EasyWebhook/src",
             "EonX\\EasyWebhook\\Bundle\\": "packages/EasyWebhook/bundle",
             "EonX\\EasyWebhook\\Laravel\\": "packages/EasyWebhook/laravel"
-        },
-        "files": [
-            "packages/EasySwoole/src/Logging/Function/dump.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -341,6 +309,42 @@
             "EonX\\EasyWebhook\\Tests\\Unit\\Laravel\\": "packages/EasyWebhook/tests/Unit/laravel"
         }
     },
+    "replace": {
+        "eonx-com/easy-activity": "self.version",
+        "eonx-com/easy-api-platform": "self.version",
+        "eonx-com/easy-api-token": "self.version",
+        "eonx-com/easy-async": "self.version",
+        "eonx-com/easy-bank-files": "self.version",
+        "eonx-com/easy-batch": "self.version",
+        "eonx-com/easy-bugsnag": "self.version",
+        "eonx-com/easy-decision": "self.version",
+        "eonx-com/easy-doctrine": "self.version",
+        "eonx-com/easy-encryption": "self.version",
+        "eonx-com/easy-error-handler": "self.version",
+        "eonx-com/easy-event-dispatcher": "self.version",
+        "eonx-com/easy-http-client": "self.version",
+        "eonx-com/easy-lock": "self.version",
+        "eonx-com/easy-logging": "self.version",
+        "eonx-com/easy-notification": "self.version",
+        "eonx-com/easy-pagination": "self.version",
+        "eonx-com/easy-pipeline": "self.version",
+        "eonx-com/easy-random": "self.version",
+        "eonx-com/easy-repository": "self.version",
+        "eonx-com/easy-request-id": "self.version",
+        "eonx-com/easy-schedule": "self.version",
+        "eonx-com/easy-security": "self.version",
+        "eonx-com/easy-serverless": "self.version",
+        "eonx-com/easy-swoole": "self.version",
+        "eonx-com/easy-templating-block": "self.version",
+        "eonx-com/easy-test": "self.version",
+        "eonx-com/easy-utils": "self.version",
+        "eonx-com/easy-webhook": "self.version"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@composer install --working-dir quality --no-dev"
+        ]
+    },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
@@ -385,10 +389,5 @@
         "eonx_docs": {
             "ignore": true
         }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "@composer install --working-dir quality --no-dev"
-        ]
     }
 }
