@@ -157,11 +157,6 @@ final class EasyDoctrineBundle extends AbstractBundle
         $container->import('config/easy_error_handler_listener.php');
     }
 
-    /**
-     * Resolves the logger service id for the AWS RDS providers. When the user has not configured an explicit logger,
-     * the dedicated "easy_doctrine" channel logger is used if symfony/monolog-bundle is enabled (see
-     * prependExtension); otherwise it falls back to the default PSR logger.
-     */
     private function resolveLoggerId(?string $configuredLogger, ContainerBuilder $builder): string
     {
         if ($configuredLogger !== null) {

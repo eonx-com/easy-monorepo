@@ -35,8 +35,6 @@ final class SensitiveDataSanitizerCompilerPass implements CompilerPassInterface
             '$sensitiveDataSanitizer' => new Reference(SensitiveDataSanitizerInterface::class),
         ]))
             ->addTag(ConfigTag::ProcessorConfigProvider->value)
-            // Registered for symfony/monolog-bundle as well; the lowest priority runs it last, after other
-            // processors have enriched the record. Ignored when symfony/monolog-bundle is not installed.
             ->addTag('monolog.processor', [
                 'priority' => -9999,
             ])

@@ -24,8 +24,6 @@ final class EasyTestBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        // The LogsCollectorProcessor is only useful together with symfony/monolog-bundle, which autoconfigures the
-        // AsMonologProcessor attribute. Guard on monolog being installed to keep it an optional dependency
         if (\class_exists(Logger::class)) {
             $container->import('config/services.php');
         }

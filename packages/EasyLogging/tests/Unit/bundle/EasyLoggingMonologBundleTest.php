@@ -21,8 +21,6 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
 
         self::assertTrue((bool)$container->getParameter(ConfigParam::UseSymfonyMonologBundle->value));
 
-        // The EasyLogging channel-replacement pass steps aside, so "logger" is the symfony/monolog-bundle logger,
-        // recognisable by the TestHandler declared in the fixture (the EasyLogging factory never uses it)
         $logger = $container->get('logger');
         self::assertInstanceOf(Logger::class, $logger);
         self::assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));
@@ -37,8 +35,6 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         }
 
         self::assertTrue($hasTestHandler, 'The "logger" service must be provided by symfony/monolog-bundle.');
-
-        // The LoggerFactory remains available (deprecated) for backward compatibility
         self::assertInstanceOf(LoggerFactoryInterface::class, $container->get(LoggerFactoryInterface::class));
     }
 }

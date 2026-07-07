@@ -8,8 +8,6 @@ use Monolog\Level;
 use PHPUnit\Framework\Attributes\Before;
 
 /**
- * Assertions on log records collected by {@see LogsCollectorProcessor} when using symfony/monolog-bundle.
- *
  * @mixin \EonX\EasyTest\Common\Trait\ContainerServiceTrait
  * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
  */

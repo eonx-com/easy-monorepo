@@ -6,10 +6,6 @@ namespace EonX\EasyTest\Monolog\Processor;
 use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
 
-/**
- * Collects every log record processed through symfony/monolog-bundle loggers so tests can assert on them via
- * {@see \EonX\EasyTest\Monolog\Trait\MonologTrait}. Registered for all channels and runs last (lowest priority).
- */
 #[AsMonologProcessor(priority: -10000)]
 final class LogsCollectorProcessor
 {

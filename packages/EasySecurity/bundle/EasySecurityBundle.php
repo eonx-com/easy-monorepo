@@ -73,7 +73,7 @@ final class EasySecurityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
-        $this->registerLoggerConfiguration($container, $builder);
+        $this->registerEasyLoggingConfiguration($container, $builder);
         $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
         $this->registerLoginFormConfiguration($config, $container, $builder);
@@ -132,20 +132,20 @@ final class EasySecurityBundle extends AbstractBundle
         $container->import('config/easy_bugsnag.php');
     }
 
-    private function registerLoggerConfiguration(
+    private function registerEasyLoggingConfiguration(
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        // When symfony/monolog-bundle is enabled, the "security" channel logger is provided by it (see
-        // prependExtension). Otherwise, fall back to the eonx-com/easy-logging LoggerFactory when available
         if ($this->isBundleEnabled('MonologBundle', $builder)) {
             $container->import('config/easy_logging_monolog.php');
 
             return;
         }
 
-        if (\interface_exists(LoggerFactoryInterface::class)
-            && $this->isBundleEnabled('EasyLoggingBundle', $builder)) {
+        if (
+            \interface_exists(LoggerFactoryInterface::class)
+            && $this->isBundleEnabled('EasyLoggingBundle', $builder)
+        ) {
             $container->import('config/easy_logging.php');
         }
     }

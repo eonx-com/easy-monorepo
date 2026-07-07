@@ -109,11 +109,13 @@ final class EasyHttpClientBundle extends AbstractBundle
 
         $container->import('config/psr_logger.php');
 
-        // When symfony/monolog-bundle is enabled, the "easy_http_client" channel logger is provided by it (see
-        // prependExtension). Otherwise, fall back to the eonx-com/easy-logging LoggerFactory when available
         if ($this->isBundleEnabled('MonologBundle', $builder)) {
             $container->import('config/psr_logger_monolog.php');
-        } elseif (\interface_exists(LoggerFactoryInterface::class)) {
+
+            return;
+        }
+
+        if (\interface_exists(LoggerFactoryInterface::class)) {
             $container->import('config/psr_logger_easy_logging.php');
         }
     }
