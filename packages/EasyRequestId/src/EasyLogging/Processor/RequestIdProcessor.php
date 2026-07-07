@@ -5,8 +5,10 @@ namespace EonX\EasyRequestId\EasyLogging\Processor;
 
 use EonX\EasyLogging\Processor\AbstractSelfConfigProvidingProcessor;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
+use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
 
+#[AsMonologProcessor]
 final class RequestIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(

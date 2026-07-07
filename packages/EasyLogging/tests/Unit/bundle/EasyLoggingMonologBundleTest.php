@@ -5,6 +5,7 @@ namespace EonX\EasyLogging\Tests\Unit\Bundle;
 
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
+use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Tests\Stub\Kernel\MonologKernelStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
 use Monolog\Handler\TestHandler;
@@ -36,5 +37,19 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
 
         self::assertTrue($hasTestHandler, 'The "logger" service must be provided by symfony/monolog-bundle.');
         self::assertInstanceOf(LoggerFactoryInterface::class, $container->get(LoggerFactoryInterface::class));
+
+        $hasSanitizerProcessor = false;
+        foreach ($logger->getProcessors() as $processor) {
+            if ($processor instanceof SensitiveDataSanitizerProcessor) {
+                $hasSanitizerProcessor = true;
+
+                break;
+            }
+        }
+
+        self::assertTrue(
+            $hasSanitizerProcessor,
+            'The SensitiveDataSanitizerProcessor must be registered as a monolog.processor.'
+        );
     }
 }

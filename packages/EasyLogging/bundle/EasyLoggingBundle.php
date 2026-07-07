@@ -5,7 +5,6 @@ namespace EonX\EasyLogging\Bundle;
 
 use EonX\EasyLogging\Bundle\CompilerPass\DefaultStreamHandlerCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ReplaceChannelsDefinitionCompilerPass;
-use EonX\EasyLogging\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
@@ -35,8 +34,7 @@ final class EasyLoggingBundle extends AbstractBundle
     {
         $container
             ->addCompilerPass(new DefaultStreamHandlerCompilerPass())
-            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10)
-            ->addCompilerPass(new SensitiveDataSanitizerCompilerPass());
+            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -66,7 +64,9 @@ final class EasyLoggingBundle extends AbstractBundle
                 ->addTag($tag->value);
         }
 
-        $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
+        if ($config['sensitive_data_sanitizer']['enabled']) {
+            $container->import('config/sensitive_data_sanitizer.php');
+        }
 
         if ($config['bugsnag_handler']) {
             $params->set(ConfigParam::BugsnagHandlerLevel->value, $config['bugsnag_handler_level']);
