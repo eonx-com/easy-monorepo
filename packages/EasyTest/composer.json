@@ -18,6 +18,7 @@
         "symfony/translation-contracts": "^3.5"
     },
     "require-dev": {
+        "monolog/monolog": "^3.9",
         "symfony/uid": "^7.2"
     },
     "autoload": {
@@ -38,6 +39,7 @@
     "suggest": {
         "ext-simplexml": "To check coverage in Clover format",
         "doctrine/collections": "To use InvalidDataMaker",
+        "monolog/monolog": "To use LoggerStub and the Monolog test helpers (LogsCollectorProcessor, MonologTrait)",
         "doctrine/orm": "To use ContainerServiceTrait",
         "fakerphp/faker": "To use UniqueGroupGenerator",
         "nesbot/carbon": "To use InvalidDataMaker",

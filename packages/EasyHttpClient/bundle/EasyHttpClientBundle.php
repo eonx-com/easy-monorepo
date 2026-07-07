@@ -6,9 +6,11 @@ namespace EonX\EasyHttpClient\Bundle;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateDefaultClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateEasyWebhookClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateMessengerSqsClientCompilerPass;
+use EonX\EasyHttpClient\Bundle\Enum\BundleParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -55,6 +57,19 @@ final class EasyHttpClientBundle extends AbstractBundle
         $this->registerPsrLoggerConfiguration($config, $container, $builder);
     }
 
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        if ($this->isBundleEnabled('MonologBundle', $builder) === false) {
+            return;
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'channels' => [
+                BundleParam::LogChannel->value,
+            ],
+        ]);
+    }
+
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
     {
         /** @var array $bundles */
@@ -93,5 +108,13 @@ final class EasyHttpClientBundle extends AbstractBundle
         }
 
         $container->import('config/psr_logger.php');
+
+        // When symfony/monolog-bundle is enabled, the "easy_http_client" channel logger is provided by it (see
+        // prependExtension). Otherwise, fall back to the eonx-com/easy-logging LoggerFactory when available
+        if ($this->isBundleEnabled('MonologBundle', $builder)) {
+            $container->import('config/psr_logger_monolog.php');
+        } elseif (\interface_exists(LoggerFactoryInterface::class)) {
+            $container->import('config/psr_logger_easy_logging.php');
+        }
     }
 }

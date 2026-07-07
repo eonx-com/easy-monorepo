@@ -11,6 +11,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * @deprecated Will be removed in 7.0, use symfony/monolog-bundle instead.
+ */
 final class ReplaceChannelsDefinitionCompilerPass implements CompilerPassInterface
 {
     private const MONOLOG_LOGGER_ID_PATTERN = 'monolog.logger.%s';
@@ -19,6 +22,13 @@ final class ReplaceChannelsDefinitionCompilerPass implements CompilerPassInterfa
 
     public function process(ContainerBuilder $container): void
     {
+        if (
+            $container->hasParameter(ConfigParam::UseSymfonyMonologBundle->value)
+            && (bool)$container->getParameter(ConfigParam::UseSymfonyMonologBundle->value) === true
+        ) {
+            return;
+        }
+
         $container->addAliases([
             'logger' => 'easy_logging.logger',
             LoggerInterface::class => 'logger',

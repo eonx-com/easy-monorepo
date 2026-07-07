@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Monolog\Processor;
 
+use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
-use Monolog\Processor\ProcessorInterface;
 
-final class PhpSourceProcessor implements ProcessorInterface
+#[AsMonologProcessor]
+final class PhpSourceProcessor
 {
     public function __invoke(LogRecord $record): LogRecord
     {

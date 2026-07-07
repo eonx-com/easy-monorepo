@@ -9,6 +9,7 @@ use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterRoleExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController;
+use EonX\EasySecurity\Bundle\Enum\BundleParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
@@ -72,10 +73,23 @@ final class EasySecurityBundle extends AbstractBundle
         $container->import('config/services.php');
 
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
-        $this->registerEasyLoggingConfiguration($container, $builder);
+        $this->registerLoggerConfiguration($container, $builder);
         $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
         $this->registerLoginFormConfiguration($config, $container, $builder);
+    }
+
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        if ($this->isBundleEnabled('MonologBundle', $builder) === false) {
+            return;
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'channels' => [
+                BundleParam::LogChannel->value,
+            ],
+        ]);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -118,16 +132,22 @@ final class EasySecurityBundle extends AbstractBundle
         $container->import('config/easy_bugsnag.php');
     }
 
-    private function registerEasyLoggingConfiguration(
+    private function registerLoggerConfiguration(
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if (\interface_exists(LoggerFactoryInterface::class) === false
-            || $this->isBundleEnabled('EasyLoggingBundle', $builder) === false) {
+        // When symfony/monolog-bundle is enabled, the "security" channel logger is provided by it (see
+        // prependExtension). Otherwise, fall back to the eonx-com/easy-logging LoggerFactory when available
+        if ($this->isBundleEnabled('MonologBundle', $builder)) {
+            $container->import('config/easy_logging_monolog.php');
+
             return;
         }
 
-        $container->import('config/easy_logging.php');
+        if (\interface_exists(LoggerFactoryInterface::class)
+            && $this->isBundleEnabled('EasyLoggingBundle', $builder)) {
+            $container->import('config/easy_logging.php');
+        }
     }
 
     private function registerLoginFormConfiguration(

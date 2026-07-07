@@ -50,6 +50,8 @@ final class EasyLoggingBundle extends AbstractBundle
 
         $params = $container->parameters();
 
+        $params->set(ConfigParam::UseSymfonyMonologBundle->value, $config['use_symfony_monolog_bundle']);
+
         $params->set(ConfigParam::LazyLoggers->value, $config['lazy_loggers']);
 
         $params->set(ConfigParam::DefaultChannel->value, $config['default_channel']);
