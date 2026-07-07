@@ -8,4 +8,7 @@ use Symfony\Config\EasySwooleConfig;
 return static function (EasySwooleConfig $easySwooleConfig): void {
     $easySwooleConfig->doctrine()
         ->enabled(false);
+
+    $easySwooleConfig->easyEncryption()
+        ->enabled(false);
 };
