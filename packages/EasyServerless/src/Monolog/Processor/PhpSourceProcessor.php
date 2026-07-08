@@ -11,9 +11,10 @@ final class PhpSourceProcessor
 {
     public function __invoke(LogRecord $record): LogRecord
     {
+        $extra = $record->extra;
         // This is helping logs processing in Datadog
-        $record->extra['source'] = 'php';
+        $extra['source'] = 'php';
 
-        return $record;
+        return $record->with(extra: $extra);
     }
 }
