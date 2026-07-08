@@ -21,6 +21,10 @@ final class EasyLockServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+            ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
+            : [];
+
         $this->app->singleton(
             ConfigServiceId::Store->value,
             static function (Container $app): PersistingStoreInterface {
@@ -35,11 +39,7 @@ final class EasyLockServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             LockFactory::class,
-            static function (Container $app): LockFactory {
-                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
-                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
-                    : [];
-
+            static function (Container $app) use ($loggerParams): LockFactory {
                 $lockFactory = new LockFactory($app->make(ConfigServiceId::Store->value));
                 $lockFactory->setLogger($app->make(LoggerInterface::class, $loggerParams));
 
@@ -49,17 +49,11 @@ final class EasyLockServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             LockerInterface::class,
-            static function (Container $app): LockerInterface {
-                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
-                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
-                    : [];
-
-                return new Locker(
-                    $app->make(ConfigServiceId::Store->value),
-                    $app->make(LoggerInterface::class, $loggerParams),
-                    $app->make(LockFactory::class)
-                );
-            }
+            static fn (Container $app): LockerInterface => new Locker(
+                $app->make(ConfigServiceId::Store->value),
+                $app->make(LoggerInterface::class, $loggerParams),
+                $app->make(LockFactory::class)
+            )
         );
     }
 }
