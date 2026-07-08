@@ -29,7 +29,7 @@
         "doctrine/orm": "^2.20 || ^3.6",
         "eonx-com/easy-test": "^6.21",
         "laravel/framework": "^13.0",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "symfony/doctrine-bridge": "^7.4",
         "symfony/runtime": "^7.4",
         "symfony/uid": "^7.4"
