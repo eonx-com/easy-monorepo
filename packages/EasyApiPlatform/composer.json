@@ -69,7 +69,7 @@
         "api-platform/symfony": "To use this package in Symfony applications with API Platform",
         "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
         "eonx-com/easy-error-handler": "To use EasyErrorHandler integration",
-        "symfony/validator": "To use EasyErrorHandler integration"
+        "symfony/validator": "To build validation error responses when EasyErrorHandler integration is enabled"
     },
     "extra": {
         "branch-alias": {
