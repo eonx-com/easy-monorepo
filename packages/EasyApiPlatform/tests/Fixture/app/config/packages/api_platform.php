@@ -27,9 +27,6 @@ return App::config([
             'jsonld' => [
                 'mime_types' => ['application/ld+json'],
             ],
-            'jsonapi' => [
-                'mime_types' => ['application/vnd.api+json'],
-            ],
             'xml' => [
                 'mime_types' => ['application/xml', 'text/xml'],
             ],

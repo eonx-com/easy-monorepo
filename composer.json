@@ -14,7 +14,6 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-sodium": "*",
-        "api-platform/core": "^4.3.15",
         "async-aws/secrets-manager": "^2.5",
         "aws/aws-sdk-php": "^3.371.4",
         "bugsnag/bugsnag": "^3.29.2",
@@ -71,6 +70,8 @@
         "twig/twig": "^3.27"
     },
     "require-dev": {
+        "api-platform/doctrine-orm": "^4.3.15",
+        "api-platform/symfony": "^4.3.15",
         "auth0/auth0-php": "^8.19",
         "async-aws/dynamo-db": "^3.6",
         "async-aws/sqs": "^2.7",
