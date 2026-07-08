@@ -7,7 +7,7 @@ use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
 
 #[AsMonologProcessor(priority: -10000)]
-final class LogsCollectorProcessor
+final class LogCollectorProcessor
 {
     /**
      * @var \Monolog\LogRecord[]

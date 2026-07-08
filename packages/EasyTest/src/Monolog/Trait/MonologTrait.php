@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Monolog\Trait;
 
-use EonX\EasyTest\Monolog\Processor\LogsCollectorProcessor;
+use EonX\EasyTest\Monolog\Processor\LogCollectorProcessor;
 use Monolog\Level;
 use PHPUnit\Framework\Attributes\Before;
 
@@ -16,13 +16,13 @@ trait MonologTrait
     #[Before]
     public function setUpMonolog(): void
     {
-        LogsCollectorProcessor::reset();
+        LogCollectorProcessor::reset();
     }
 
     protected static function assertLoggerHas(Level $level, string $message, ?array $context = null): void
     {
         $records = [];
-        foreach (LogsCollectorProcessor::getRecords() as $record) {
+        foreach (LogCollectorProcessor::getRecords() as $record) {
             if ($record->level === $level && $record->message === $message) {
                 $records[] = $record;
             }
@@ -52,7 +52,7 @@ trait MonologTrait
                 $level->getName(),
                 $message,
                 \var_export($context, true),
-                \var_export(LogsCollectorProcessor::getRecords(), true)
+                \var_export(LogCollectorProcessor::getRecords(), true)
             ));
         }
     }
@@ -64,7 +64,7 @@ trait MonologTrait
 
     protected static function assertLoggerHasRecordMatchesRegularExpression(string $pattern): void
     {
-        foreach (LogsCollectorProcessor::getRecords() as $record) {
+        foreach (LogCollectorProcessor::getRecords() as $record) {
             if (\preg_match($pattern, $record->message) === 1) {
                 return;
             }

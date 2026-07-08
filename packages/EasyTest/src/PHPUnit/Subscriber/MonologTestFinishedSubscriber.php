@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\PHPUnit\Subscriber;
 
-use EonX\EasyTest\Monolog\Processor\LogsCollectorProcessor;
+use EonX\EasyTest\Monolog\Processor\LogCollectorProcessor;
 use Monolog\Logger;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
@@ -16,6 +16,6 @@ final class MonologTestFinishedSubscriber implements FinishedSubscriber
             return;
         }
 
-        LogsCollectorProcessor::reset();
+        LogCollectorProcessor::reset();
     }
 }

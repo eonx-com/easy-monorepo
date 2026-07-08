@@ -39,7 +39,7 @@
     "suggest": {
         "ext-simplexml": "To check coverage in Clover format",
         "doctrine/collections": "To use InvalidDataMaker",
-        "monolog/monolog": "To use LoggerStub and the Monolog test helpers (LogsCollectorProcessor, MonologTrait)",
+        "monolog/monolog": "To use LoggerStub and the Monolog test helpers (LogCollectorProcessor, MonologTrait)",
         "doctrine/orm": "To use ContainerServiceTrait",
         "fakerphp/faker": "To use UniqueGroupGenerator",
         "nesbot/carbon": "To use InvalidDataMaker",
