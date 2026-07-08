@@ -89,47 +89,6 @@
                                     ]
                                 }
                             },
-                            "application/vnd.api+json": {
-                                "schema": {
-                                    "description": "Category.jsonapi collection.",
-                                    "allOf": [
-                                        {
-                                            "$ref": "#/components/schemas/JsonApiCollectionBaseSchema"
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "data": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string"
-                                                            },
-                                                            "type": {
-                                                                "type": "string"
-                                                            },
-                                                            "attributes": {
-                                                                "type": "object",
-                                                                "properties": {
-                                                                    "name": {
-                                                                        "type": "string"
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                        "required": [
-                                                            "type",
-                                                            "id"
-                                                        ]
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
                             "application/xml": {
                                 "schema": {
                                     "type": "array",
@@ -209,11 +168,6 @@
                                     "$ref": "#/components/schemas/Category.jsonld"
                                 }
                             },
-                            "application/vnd.api+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category.jsonapi"
-                                }
-                            },
                             "application/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Category.xml"
@@ -277,11 +231,6 @@
                             }
                         },
                         "application/ld+json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Category"
-                            }
-                        },
-                        "application/vnd.api+json": {
                             "schema": {
                                 "$ref": "#/components/schemas/Category"
                             }
@@ -352,11 +301,6 @@
                             "application/ld+json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Category.jsonld"
-                                }
-                            },
-                            "application/vnd.api+json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Category.jsonapi"
                                 }
                             },
                             "application/xml": {
@@ -436,11 +380,6 @@
                             "schema": {
                                 "$ref": "#/components/schemas/Category.jsonMergePatch"
                             }
-                        },
-                        "application/vnd.api+json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Category.jsonMergePatch"
-                            }
                         }
                     },
                     "required": true
@@ -471,33 +410,6 @@
                 "properties": {
                     "name": {
                         "type": "string"
-                    }
-                }
-            },
-            "Category.jsonapi": {
-                "properties": {
-                    "data": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string"
-                            },
-                            "type": {
-                                "type": "string"
-                            },
-                            "attributes": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        },
-                        "required": [
-                            "type",
-                            "id"
-                        ]
                     }
                 }
             },
@@ -779,90 +691,6 @@
                 "required": [
                     "@id",
                     "@type"
-                ]
-            },
-            "JsonApiCollectionBaseSchema": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/JsonApiCollectionBaseSchemaNoPagination"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "links": {
-                                "type": "object",
-                                "properties": {
-                                    "first": {
-                                        "type": "string",
-                                        "format": "iri-reference"
-                                    },
-                                    "prev": {
-                                        "type": "string",
-                                        "format": "iri-reference"
-                                    },
-                                    "next": {
-                                        "type": "string",
-                                        "format": "iri-reference"
-                                    },
-                                    "last": {
-                                        "type": "string",
-                                        "format": "iri-reference"
-                                    }
-                                },
-                                "example": {
-                                    "first": "string",
-                                    "prev": "string",
-                                    "next": "string",
-                                    "last": "string"
-                                }
-                            },
-                            "meta": {
-                                "type": "object",
-                                "properties": {
-                                    "itemsPerPage": {
-                                        "type": "integer",
-                                        "minimum": 0
-                                    },
-                                    "currentPage": {
-                                        "type": "integer",
-                                        "minimum": 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ]
-            },
-            "JsonApiCollectionBaseSchemaNoPagination": {
-                "type": "object",
-                "properties": {
-                    "links": {
-                        "type": "object",
-                        "properties": {
-                            "self": {
-                                "type": "string",
-                                "format": "iri-reference"
-                            }
-                        },
-                        "example": {
-                            "self": "string"
-                        }
-                    },
-                    "meta": {
-                        "type": "object",
-                        "properties": {
-                            "totalItems": {
-                                "type": "integer",
-                                "minimum": 0
-                            }
-                        }
-                    },
-                    "data": {
-                        "type": "array"
-                    }
-                },
-                "required": [
-                    "data"
                 ]
             }
         },
