@@ -14,6 +14,7 @@ use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -44,6 +45,14 @@ final class EasyLoggingBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        if ($config['use_symfony_monolog_bundle'] && $this->isBundleEnabled('MonologBundle', $builder) === false) {
+            throw new LogicException(
+                'The "easy_logging.use_symfony_monolog_bundle" option is enabled, but symfony/monolog-bundle '
+                . '(MonologBundle) is not registered. Register the bundle so it owns the "logger" service, '
+                . 'or disable the option.'
+            );
+        }
+
         $container->import('config/services.php');
 
         $params = $container->parameters();
@@ -73,5 +82,13 @@ final class EasyLoggingBundle extends AbstractBundle
 
             $container->import('config/bugsnag_handler.php');
         }
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 }
