@@ -11,6 +11,7 @@ use EonX\EasyLogging\Bundle\Enum\BundleParam as EasyLoggingBundleParam;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\PersistingStoreInterface;
 use Symfony\Component\Lock\Store\StoreFactory;
 
@@ -33,6 +34,20 @@ final class EasyLockServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
+            LockFactory::class,
+            static function (Container $app): LockFactory {
+                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
+                    : [];
+
+                $lockFactory = new LockFactory($app->make(ConfigServiceId::Store->value));
+                $lockFactory->setLogger($app->make(LoggerInterface::class, $loggerParams));
+
+                return $lockFactory;
+            }
+        );
+
+        $this->app->singleton(
             LockerInterface::class,
             static function (Container $app): LockerInterface {
                 $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
@@ -41,7 +56,8 @@ final class EasyLockServiceProvider extends ServiceProvider
 
                 return new Locker(
                     $app->make(ConfigServiceId::Store->value),
-                    $app->make(LoggerInterface::class, $loggerParams)
+                    $app->make(LoggerInterface::class, $loggerParams),
+                    $app->make(LockFactory::class)
                 );
             }
         );
