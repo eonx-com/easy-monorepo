@@ -39,7 +39,7 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         $logger = $this->container->get('logger');
 
         // The channel-replacement pass steps aside, so "logger" is the symfony/monolog-bundle logger, recognisable by
-        // the TestHandler declared in the fixture (the EasyLogging factory never uses it).
+        // the TestHandler declared in the fixture (the EasyLogging factory never uses it)
         self::assertInstanceOf(Logger::class, $logger);
         self::assertTrue(
             $this->hasInstanceOf($logger->getHandlers(), TestHandler::class),
