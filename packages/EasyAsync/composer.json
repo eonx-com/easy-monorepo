@@ -26,7 +26,7 @@
         "eonx-com/easy-random": "^6.21",
         "eonx-com/easy-serverless": "^6.21",
         "eonx-com/easy-test": "^6.21",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "symfony/doctrine-bridge": "^7.4 || ^8.0",
         "symfony/framework-bundle": "^7.4 || ^8.0"
     },

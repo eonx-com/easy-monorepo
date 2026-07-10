@@ -14,7 +14,7 @@
     "require-dev": {
         "eonx-com/easy-test": "^6.21",
         "laravel/framework": "^13.0",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "symfony/framework-bundle": "^7.4 || ^8.0"
     },
     "autoload": {
