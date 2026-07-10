@@ -11,45 +11,64 @@ use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
 {
-    public function testLoggerIsOwnedBySymfonyMonologBundle(): void
+    private ContainerInterface $container;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $kernel = new MonologKernelStub([__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php']);
         $kernel->boot();
-        $container = $kernel->getContainer();
 
-        self::assertTrue((bool)$container->getParameter(ConfigParam::UseSymfonyMonologBundle->value));
+        $this->container = $kernel->getContainer();
+    }
 
-        $logger = $container->get('logger');
+    public function testEasyLoggingStepsAsideButKeepsFactory(): void
+    {
+        self::assertTrue((bool)$this->container->getParameter(ConfigParam::UseSymfonyMonologBundle->value));
+        self::assertInstanceOf(LoggerInterface::class, $this->container->get(LoggerInterface::class));
+        self::assertInstanceOf(LoggerFactoryInterface::class, $this->container->get(LoggerFactoryInterface::class));
+    }
+
+    public function testMonologBundleOwnsLoggerService(): void
+    {
+        $logger = $this->container->get('logger');
+
+        // The channel-replacement pass steps aside, so "logger" is the symfony/monolog-bundle logger, recognisable by
+        // the TestHandler declared in the fixture (the EasyLogging factory never uses it).
         self::assertInstanceOf(Logger::class, $logger);
-        self::assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));
+        self::assertTrue(
+            $this->hasInstanceOf($logger->getHandlers(), TestHandler::class),
+            'The "logger" service must be provided by symfony/monolog-bundle.'
+        );
+    }
 
-        $hasTestHandler = false;
-        foreach ($logger->getHandlers() as $handler) {
-            if ($handler instanceof TestHandler) {
-                $hasTestHandler = true;
-
-                break;
-            }
-        }
-
-        self::assertTrue($hasTestHandler, 'The "logger" service must be provided by symfony/monolog-bundle.');
-        self::assertInstanceOf(LoggerFactoryInterface::class, $container->get(LoggerFactoryInterface::class));
-
-        $hasSanitizerProcessor = false;
-        foreach ($logger->getProcessors() as $processor) {
-            if ($processor instanceof SensitiveDataSanitizerProcessor) {
-                $hasSanitizerProcessor = true;
-
-                break;
-            }
-        }
+    public function testSensitiveDataSanitizerIsRegisteredAsMonologProcessor(): void
+    {
+        $logger = $this->container->get('logger');
 
         self::assertTrue(
-            $hasSanitizerProcessor,
+            $this->hasInstanceOf($logger->getProcessors(), SensitiveDataSanitizerProcessor::class),
             'The SensitiveDataSanitizerProcessor must be registered as a monolog.processor.'
         );
+    }
+
+    /**
+     * @param iterable<object|callable> $items
+     * @param class-string $class
+     */
+    private function hasInstanceOf(iterable $items, string $class): bool
+    {
+        foreach ($items as $item) {
+            if ($item instanceof $class) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
