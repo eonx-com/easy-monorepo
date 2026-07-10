@@ -69,6 +69,7 @@ final class Locker implements LockerInterface
         }
     }
 
+    // @todo in 7.0 make $lockFactory constructor argument required and remove this fallback
     private function getFactory(): LockFactory
     {
         if ($this->lockFactory !== null) {
