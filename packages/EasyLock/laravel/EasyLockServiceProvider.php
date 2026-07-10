@@ -22,7 +22,7 @@ final class EasyLockServiceProvider extends ServiceProvider
     public function register(): void
     {
         $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
-            ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
+            ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel->value]
             : [];
 
         $this->app->singleton(
