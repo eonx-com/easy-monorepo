@@ -18,6 +18,7 @@
         "symfony/messenger": "^7.2"
     },
     "require-dev": {
+        "eonx-com/easy-encryption": "^6.23",
         "eonx-com/easy-test": "^6.23",
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8"
     },
