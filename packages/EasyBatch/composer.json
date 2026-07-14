@@ -6,7 +6,6 @@
     "require": {
         "php": "^8.2",
         "doctrine/dbal": "^3.8",
-        "eonx-com/easy-encryption": "^6.23",
         "eonx-com/easy-event-dispatcher": "^6.23",
         "eonx-com/easy-lock": "^6.23",
         "eonx-com/easy-pagination": "^6.23",
