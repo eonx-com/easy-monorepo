@@ -1,11 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\EasyAsyncConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (EasyAsyncConfig $easyAsyncConfig): void {
-    $easyAsyncConfig
-        ->doctrine()
-        ->closePersistentConnections()
-        ->enabled(false);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_async', [
+        'doctrine' => [
+            'close_persistent_connections' => [
+                'enabled' => false,
+            ],
+        ],
+    ]);
 };

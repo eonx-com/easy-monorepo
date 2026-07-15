@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Controller;
 
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 
 #[AsController]

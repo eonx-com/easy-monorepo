@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\Tests\Application\EasyErrorHandler\Provider;
 
+use Composer\InstalledVersions;
 use EonX\EasyApiPlatform\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Exception\DummyBException;
 use EonX\EasyErrorHandler\Common\Strategy\VerboseStrategyInterface;
@@ -18,6 +19,14 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
      */
     public static function provideDataForBuildErrorResponse(): iterable
     {
+        $isSymfony8 = \version_compare((string)InstalledVersions::getVersion('symfony/serializer'), '8.0.0', '>=');
+        $enumViolationMessage = $isSymfony8
+            ? 'The data must be one of the following values: "active", "inactive"'
+            : 'The value should be a valid choice.';
+        $enumExceptionMessage = $isSymfony8
+            ? 'status: The data must be one of the following values: "active", "inactive"'
+            : 'status: This value should be of type int|string.';
+
         yield 'ValidationException' => [
             'url' => '/books',
             'json' => [
@@ -45,10 +54,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'status' => [
-                    'The value should be a valid choice.',
+                    $enumViolationMessage,
                 ],
             ],
-            'exceptionMessage' => 'status: This value should be of type int|string.',
+            'exceptionMessage' => $enumExceptionMessage,
         ];
 
         yield 'Carbon date with custom Normalizer is empty string' => [
@@ -152,10 +161,10 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
             'violations' => [
                 'status' => [
-                    'The value should be a valid choice.',
+                    $enumViolationMessage,
                 ],
             ],
-            'exceptionMessage' => 'status: This value should be of type int|string.',
+            'exceptionMessage' => $enumExceptionMessage,
         ];
 
         yield 'missing constructor argument in DTO' => [

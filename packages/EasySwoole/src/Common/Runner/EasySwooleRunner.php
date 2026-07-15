@@ -25,9 +25,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Symfony\Component\Runtime\RunnerInterface;
+use Symfony\Component\String\UnicodeString;
 use Throwable;
-
-use function Symfony\Component\String\u;
 
 final readonly class EasySwooleRunner implements RunnerInterface
 {
@@ -255,7 +254,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
                 ->setTimeout(null)
                 ->run(static function ($type, $buffer) use ($extensions, $server): void {
                     foreach (\explode(\PHP_EOL, (string)$buffer) as $line) {
-                        if (u($line)->endsWith($extensions)) {
+                        if (new UnicodeString($line)->endsWith($extensions)) {
                             OutputHelper::writeln(\sprintf('File %s updated', $line));
                             OutputHelper::writeln('Reloading server...');
 

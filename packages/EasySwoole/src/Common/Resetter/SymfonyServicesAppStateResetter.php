@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasySwoole\Common\Resetter;
 
 use EonX\EasyUtils\Common\Helper\HasPriorityTrait;
-use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
+use Symfony\Component\String\UnicodeString;
+use Symfony\Contracts\Service\ResetInterface;
 use Traversable;
 
-use function Symfony\Component\String\u;
-
-final class SymfonyServicesAppStateResetter extends ServicesResetter implements AppStateResetterInterface
+final class SymfonyServicesAppStateResetter implements AppStateResetterInterface, ResetInterface
 {
     use HasPriorityTrait;
 
@@ -21,8 +20,6 @@ final class SymfonyServicesAppStateResetter extends ServicesResetter implements 
         private array $resetMethods,
         ?int $priority = null,
     ) {
-        parent::__construct($resettableServices, $resetMethods);
-
         $this->doSetPriority($priority);
     }
 
@@ -35,7 +32,7 @@ final class SymfonyServicesAppStateResetter extends ServicesResetter implements 
     {
         foreach ($this->resettableServices as $id => $service) {
             foreach ((array)$this->resetMethods[$id] as $resetMethod) {
-                $resetMethod = u($resetMethod);
+                $resetMethod = new UnicodeString($resetMethod);
 
                 if ($resetMethod->startsWith('?')) {
                     $resetMethod = $resetMethod->trimStart('?');

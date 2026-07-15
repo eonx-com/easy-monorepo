@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\Common\Helper;
 
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 final class OptionHelper
 {
@@ -119,7 +119,7 @@ final class OptionHelper
 
     private static function getOption(string $option, ?string $env = null, ?bool $useDefault = null): mixed
     {
-        $env ??= \sprintf('SWOOLE_%s', u($option)->upper());
+        $env ??= \sprintf('SWOOLE_%s', new UnicodeString($option)->upper());
         $value = self::$options[$option] ?? $_SERVER[$env] ?? $_ENV[$env] ?? null;
 
         if (($useDefault ?? true) && $value === null) {

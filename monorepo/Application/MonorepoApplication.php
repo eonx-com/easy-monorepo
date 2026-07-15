@@ -16,8 +16,8 @@ final class MonorepoApplication extends Application
      */
     public function __construct(iterable $commands)
     {
-        $this->addCommands(CollectorHelper::filterByClassAsArray($commands, Command::class));
-
         parent::__construct('eonx-monorepo', '1.0.0');
+
+        $this->addCommands(CollectorHelper::filterByClassAsArray($commands, Command::class));
     }
 }

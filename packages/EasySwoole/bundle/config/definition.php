@@ -2,8 +2,7 @@
 declare(strict_types=1);
 
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 return static function (DefinitionConfigurator $definition) {
     $definition->rootNode()
@@ -19,7 +18,7 @@ return static function (DefinitionConfigurator $definition) {
                                 }
 
                                 return \array_map(
-                                    static fn ($mapValue): string => u((string)$mapValue)
+                                    static fn ($mapValue): string => new UnicodeString((string)$mapValue)
                                         ->ensureStart('/')
                                         ->toString(),
                                     \is_array($value) ? $value : [$value]
@@ -86,7 +85,7 @@ return static function (DefinitionConfigurator $definition) {
 
                                 // Remove trailing slashes
                                 $dirs = \array_map(static function ($mapValue): string {
-                                    $dir = u((string)$mapValue);
+                                    $dir = new UnicodeString((string)$mapValue);
 
                                     while ($dir->endsWith('/')) {
                                         $dir = $dir->trimSuffix('/');
@@ -117,7 +116,7 @@ return static function (DefinitionConfigurator $definition) {
                                 }
 
                                 return \array_map(static function ($mapValue): string {
-                                    $phpFile = u((string)$mapValue)->ensureStart('/');
+                                    $phpFile = new UnicodeString((string)$mapValue)->ensureStart('/');
 
                                     if ($phpFile->endsWith('.php') === false) {
                                         throw new InvalidArgumentException(

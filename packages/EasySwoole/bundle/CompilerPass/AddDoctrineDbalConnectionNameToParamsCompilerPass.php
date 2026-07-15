@@ -7,8 +7,7 @@ use EonX\EasySwoole\Doctrine\Enum\CoroutinePdoDriverOption;
 use EonX\EasySwoole\Doctrine\Factory\CoroutineConnectionFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 final class AddDoctrineDbalConnectionNameToParamsCompilerPass implements CompilerPassInterface
 {
@@ -21,7 +20,7 @@ final class AddDoctrineDbalConnectionNameToParamsCompilerPass implements Compile
         }
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            $matches = u($id)
+            $matches = new UnicodeString($id)
                 ->match(self::CONNECTION_REGEX);
 
             if (\is_string($matches[1] ?? null) && ($matches[0] ?? null) === $id) {
