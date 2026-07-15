@@ -86,7 +86,7 @@ final class DecimalValidatorTest extends AbstractUnitTestCase
 
     public function testValidateSucceedsWithObjectToString(): void
     {
-        $class = new class() {
+        $class = new class {
             public function __toString()
             {
                 return '0.123';
@@ -143,8 +143,7 @@ final class DecimalValidatorTest extends AbstractUnitTestCase
     public function testValidateThrowsUnexpectedTypeException(): void
     {
         $validator = new DecimalValidator();
-        $constraint = new class() extends Constraint {
-        };
+        $constraint = new class extends Constraint {};
         $value = 'some-value';
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(

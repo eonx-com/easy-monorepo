@@ -20,8 +20,7 @@ final class PrintingHouse
     public function __construct(
         private readonly string $name,
         private readonly Status $status,
-    ) {
-    }
+    ) {}
 
     public function getName(): string
     {

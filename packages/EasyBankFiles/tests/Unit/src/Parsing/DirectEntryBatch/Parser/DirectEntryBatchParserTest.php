@@ -57,15 +57,15 @@ final class DirectEntryBatchParserTest extends AbstractUnitTestCase
         yield 'Partial data, missed trailer' => [
             'fileName' => 'incorrect.missed-file-total-record.nde',
             'expectedErrorsCount' => 3,
-            'invalidLine' => '0502027019.39.52  01CRU       TEST                      123456TEST        ' .
-                '261119027019.39.52                  CUSCAL-NDE',
+            'invalidLine' => '0502027019.39.52  01CRU       TEST                      123456TEST        '
+                . '261119027019.39.52                  CUSCAL-NDE',
         ];
 
         yield 'Partial data, missed header' => [
             'fileName' => 'incorrect.missed-descriptive-record.nde',
             'expectedErrorsCount' => 2,
-            'invalidLine' => '2123-456123456789 130000080000SAMPLE                          SAMPLE' .
-                '            987-654987654321SAMPLE          00000000',
+            'invalidLine' => '2123-456123456789 130000080000SAMPLE                          SAMPLE'
+                . '            987-654987654321SAMPLE          00000000',
         ];
     }
 

@@ -97,7 +97,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             WorkerStoppingListener::class,
-            static fn (
+            static fn(
                 Container $app,
             ): WorkerStoppingListener => new WorkerStoppingListener($app->make(ErrorHandlerInterface::class))
         );
@@ -107,7 +107,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             ManagersSanityChecker::class,
-            static fn (Container $app): ManagersSanityChecker => new ManagersSanityChecker(
+            static fn(Container $app): ManagersSanityChecker => new ManagersSanityChecker(
                 $app->make(ManagerRegistry::class),
                 $app->make(ConfigServiceId::Logger->value)
             )
@@ -115,7 +115,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             DoctrineManagersClearListener::class,
-            static fn (Container $app): DoctrineManagersClearListener => new DoctrineManagersClearListener(
+            static fn(Container $app): DoctrineManagersClearListener => new DoctrineManagersClearListener(
                 $app->make(ManagersClearer::class),
                 \config('easy-async.queue.managers_to_clear'),
                 $app->make(ConfigServiceId::Logger->value)
@@ -124,7 +124,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             DoctrineManagersSanityCheckListener::class,
-            static fn (Container $app): DoctrineManagersSanityCheckListener => new DoctrineManagersSanityCheckListener(
+            static fn(Container $app): DoctrineManagersSanityCheckListener => new DoctrineManagersSanityCheckListener(
                 $app->make('cache.store'),
                 $app->make(ManagersSanityChecker::class),
                 \config('easy-async.queue.managers_to_check'),
@@ -134,7 +134,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             QueueWorkerStoppingListener::class,
-            static fn (Container $app): QueueWorkerStoppingListener => new QueueWorkerStoppingListener(
+            static fn(Container $app): QueueWorkerStoppingListener => new QueueWorkerStoppingListener(
                 $app->make(ConfigServiceId::Logger->value)
             )
         );

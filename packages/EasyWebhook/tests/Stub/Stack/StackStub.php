@@ -15,8 +15,7 @@ final class StackStub implements StackInterface
 
     public function __construct(
         private readonly StackInterface $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @return int[]

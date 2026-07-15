@@ -18,8 +18,7 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
         private array $allowedProperties,
         private array $fullySerializableProperties,
         private ?array $allowedActions = null,
-    ) {
-    }
+    ) {}
 
     public function getActivitySubjectId(): string
     {

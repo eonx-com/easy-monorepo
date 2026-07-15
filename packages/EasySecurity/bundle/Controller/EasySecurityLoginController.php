@@ -16,8 +16,7 @@ final class EasySecurityLoginController extends AbstractController
 {
     public function __construct(
         private readonly DefaultAuthenticationSuccessHandler $authenticationSuccessHandler,
-    ) {
-    }
+    ) {}
 
     #[Route('/easy-security/login', name: 'easy_security.login')]
     public function login(AuthenticationUtils $authUtils, TokenGeneratorInterface $tokenGenerator): Response

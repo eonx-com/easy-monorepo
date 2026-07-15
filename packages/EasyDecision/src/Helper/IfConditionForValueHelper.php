@@ -8,8 +8,7 @@ final class IfConditionForValueHelper
     public function __construct(
         private readonly bool $condition,
         private mixed $value,
-    ) {
-    }
+    ) {}
 
     public function else(mixed $value): self
     {

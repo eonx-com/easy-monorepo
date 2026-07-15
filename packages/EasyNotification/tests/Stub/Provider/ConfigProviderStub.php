@@ -12,8 +12,7 @@ final class ConfigProviderStub implements ConfigProviderInterface
 
     public function __construct(
         private readonly array $config,
-    ) {
-    }
+    ) {}
 
     public function getCalled(): int
     {

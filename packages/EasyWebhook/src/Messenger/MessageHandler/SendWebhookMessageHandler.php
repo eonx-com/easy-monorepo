@@ -16,8 +16,7 @@ final readonly class SendWebhookMessageHandler
     public function __construct(
         private WebhookClientInterface $client,
         private StoreInterface $store,
-    ) {
-    }
+    ) {}
 
     public function __invoke(SendWebhookMessage $message): void
     {

@@ -8,8 +8,7 @@ final readonly class RequestIdInfo
     public function __construct(
         private ?string $correlationId = null,
         private ?string $requestId = null,
-    ) {
-    }
+    ) {}
 
     public function getCorrelationId(): ?string
     {

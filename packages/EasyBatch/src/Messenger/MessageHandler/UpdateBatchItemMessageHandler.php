@@ -20,8 +20,7 @@ final readonly class UpdateBatchItemMessageHandler
         private BatchItemRepositoryInterface $batchItemRepository,
         private ProcessBatchForBatchItemMessageHandler $processBatchForBatchItemHandler,
         private string $dateTimeFormat,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException

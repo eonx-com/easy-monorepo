@@ -167,7 +167,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }
 
         $batchItemIds = \array_map(
-            static fn (BatchItem $batchItem): int|string => $batchItem->getIdOrFail(),
+            static fn(BatchItem $batchItem): int|string => $batchItem->getIdOrFail(),
             $batchItems
         );
 

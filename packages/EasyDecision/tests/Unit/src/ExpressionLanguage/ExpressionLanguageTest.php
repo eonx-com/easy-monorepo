@@ -18,8 +18,7 @@ final class ExpressionLanguageTest extends AbstractUnitTestCase
 
     public function testAddRemoveFunctions(): void
     {
-        $function = new ExpressionFunction('my-function', function (): void {
-        }, 'my-description');
+        $function = new ExpressionFunction('my-function', function (): void {}, 'my-description');
 
         $expressionLanguage = $this->getExpressionLanguage()
             ->setCache(new ArrayAdapter());

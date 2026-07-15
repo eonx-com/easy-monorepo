@@ -5,6 +5,4 @@ namespace EonX\EasyErrorHandler\Tests\Stub\Exception;
 
 use Throwable;
 
-interface DummyExceptionInterface extends Throwable
-{
-}
+interface DummyExceptionInterface extends Throwable {}

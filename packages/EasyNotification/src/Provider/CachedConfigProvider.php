@@ -14,8 +14,7 @@ final readonly class CachedConfigProvider implements ConfigProviderInterface
         private ConfigProviderInterface $decorated,
         private int $expiresAfter,
         private string $key,
-    ) {
-    }
+    ) {}
 
     public function provide(string $apiKey, string $providerExternalId): Config
     {

@@ -14,8 +14,7 @@ final class TwigBlockRenderer extends AbstractSimpleTemplatingBlockRenderer
 {
     public function __construct(
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     /**
      * @param \EonX\EasyTemplatingBlock\Common\ValueObject\TemplateBlock $block

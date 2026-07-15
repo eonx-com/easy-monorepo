@@ -11,8 +11,7 @@ final readonly class AdminContextAsTwigGlobalListener
 {
     public function __construct(
         private Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestEvent $event): void
     {

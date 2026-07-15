@@ -11,8 +11,7 @@ final readonly class QueueWorkerStoppingListener implements WorkerStoppingListen
 {
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     public function handle(WorkerStopping $event): void
     {

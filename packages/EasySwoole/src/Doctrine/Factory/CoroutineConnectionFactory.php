@@ -25,8 +25,7 @@ if (\method_exists(Connection::class, 'getEventManager')) {
             private float $defaultMaxIdleTime,
             private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
             private ?LoggerInterface $logger = null,
-        ) {
-        }
+        ) {}
 
         /**
          * @param array<string, string>|null $mappingTypes

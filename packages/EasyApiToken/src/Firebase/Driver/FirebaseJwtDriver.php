@@ -15,8 +15,7 @@ final readonly class FirebaseJwtDriver implements JwtDriverInterface
         private OpenSSLAsymmetricKey|string $publicKey,
         private OpenSSLAsymmetricKey|string $privateKey,
         private ?int $leeway = null,
-    ) {
-    }
+    ) {}
 
     public function decode(string $token): object
     {

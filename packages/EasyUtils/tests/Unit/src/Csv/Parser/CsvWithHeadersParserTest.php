@@ -36,7 +36,7 @@ final class CsvWithHeadersParserTest extends AbstractUnitTestCase
         yield 'Simple file with transformer' => [
             __DIR__ . '/../../../../Fixture/Csv/simple_file.csv',
             CsvParserConfig::create(recordTransformers: [
-                static fn (array $record): array => \array_change_key_case($record, \CASE_UPPER),
+                static fn(array $record): array => \array_change_key_case($record, \CASE_UPPER),
             ]),
             [
                 [

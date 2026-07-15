@@ -13,8 +13,7 @@ abstract class AbstractBatchObjectFactory
     public function __construct(
         protected readonly BatchObjectTransformerInterface $transformer,
         private readonly ?EventDispatcherInterface $dispatcher = null,
-    ) {
-    }
+    ) {}
 
     public function createFromArray(array $data): AbstractBatchObject
     {
