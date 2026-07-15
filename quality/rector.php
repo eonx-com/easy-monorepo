@@ -7,6 +7,7 @@ use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
@@ -42,6 +43,10 @@ return RectorConfig::configure()
         ClassPropertyAssignToConstructorPromotionRector::class => [
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
+        ],
+        ClosureToArrowFunctionRector::class => [
+            'packages/EasyEncryption/src/Encryptable/Encryptor/ObjectEncryptor.php',
+            'packages/EasyEncryption/tests/Unit/src/Encryptable/Encryptable/EncryptableTraitEncryptableTest.php',
         ],
         FirstClassCallableRector::class => [
             'packages/EasyBatch/tests/Stub/Kernel/KernelStub.php',
