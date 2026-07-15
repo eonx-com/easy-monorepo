@@ -28,9 +28,8 @@ final class EasyAsyncBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
-        // -11 to run after easy-batch pass so middleware are first in the list
-        // @todo change to -30 in 7.0 to allow adding more middleware in the middle
-        $container->addCompilerPass(new ReorderMessengerMiddlewareCompilerPass(), priority: -11);
+        // -30 to run after easy-batch pass so middleware are first in the list
+        $container->addCompilerPass(new ReorderMessengerMiddlewareCompilerPass(), priority: -30);
     }
 
     public function configure(DefinitionConfigurator $definition): void
