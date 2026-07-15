@@ -50,8 +50,6 @@ final class EasyLockServiceProvider extends ServiceProvider
         $this->app->singleton(
             LockerInterface::class,
             static fn (Container $app): LockerInterface => new Locker(
-                $app->make(ConfigServiceId::Store->value),
-                $app->make(LoggerInterface::class, $loggerParams),
                 $app->make(LockFactory::class)
             )
         );
