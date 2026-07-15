@@ -11,17 +11,18 @@ use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableEntityStub;
 use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
 
-final class EncryptableTraitTest extends AbstractUnitTestCase
+final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
 {
     public function testEncryptSucceedsWithComposedFieldOverride(): void
     {
         $calculator = new HmacSha512HashCalculator('secret');
-        // Global default is "no normalisation"; only the field-level override should apply here.
+        // Global default is "no normalisation"; only the field-level override should apply here
         $fieldHasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormaliser(), []);
         $entity = new EncryptableEntityStub(username: '  Jane.Doe  ');
 
         $entity->encrypt(...$this->closures($fieldHasher));
 
+        /** @var array<string, mixed> $rawData */
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('  Jane.Doe  ', $rawData['username']);
         self::assertSame($calculator->calculate('jane.doe'), $entity->getUsername());
@@ -40,6 +41,7 @@ final class EncryptableTraitTest extends AbstractUnitTestCase
 
         $entity->encrypt(...$this->closures($fieldHasher));
 
+        /** @var array<string, mixed> $rawData */
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('John.Doe@Example.com', $rawData['email']);
         self::assertSame($calculator->calculate('john.doe@example.com'), $entity->getEmail());
@@ -52,7 +54,7 @@ final class EncryptableTraitTest extends AbstractUnitTestCase
         $entity = new EncryptableEntityStub(username: 'Jane.Doe');
 
         $entity->encrypt(...$this->closures($fieldHasher));
-        // Simulate a repository hashing a differently-cased search term for a lookup query.
+        // Simulate a repository hashing a differently-cased search term for a lookup query
         $lookupHash = $fieldHasher->hashForField(EncryptableEntityStub::class, 'username', '  jane.doe  ');
 
         self::assertSame($lookupHash, $entity->getUsername());
@@ -70,7 +72,7 @@ final class EncryptableTraitTest extends AbstractUnitTestCase
         $entity = new EncryptableEntityStub(email: 'John.Doe@Example.com');
 
         $entity->encrypt(...$this->closures($fieldHasher));
-        // Simulate a repository hashing a differently-cased search term for a lookup query.
+        // Simulate a repository hashing a differently-cased search term for a lookup query
         $lookupHash = $fieldHasher->hashForField(EncryptableEntityStub::class, 'email', 'john.doe@example.com');
 
         self::assertSame($lookupHash, $entity->getEmail());
@@ -84,6 +86,7 @@ final class EncryptableTraitTest extends AbstractUnitTestCase
 
         $entity->encrypt(...$this->closures($fieldHasher));
 
+        /** @var array<string, mixed> $rawData */
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('John.Doe@Example.com', $rawData['email']);
         self::assertSame($calculator->calculate('John.Doe@Example.com'), $entity->getEmail());
@@ -96,8 +99,10 @@ final class EncryptableTraitTest extends AbstractUnitTestCase
     {
         return [
             static fn (string $value): EncryptedString => new EncryptedString('test-key', $value),
-            static fn (string $entityClass, string $field, string $value): string
-                => $fieldHasher->hashForField($entityClass, $field, $value),
+            static function (string $entityClass, string $field, string $value) use ($fieldHasher): string {
+                /** @var class-string $entityClass */
+                return $fieldHasher->hashForField($entityClass, $field, $value);
+            },
         ];
     }
 }

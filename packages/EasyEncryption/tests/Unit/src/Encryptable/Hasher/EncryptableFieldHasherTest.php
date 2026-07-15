@@ -17,7 +17,7 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
     public function testHashForFieldSucceedsWhenFieldOverrideOptsOutOfLowercaseDefault(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        // Global default lowercases, but "caseSensitiveCode" explicitly requests no normalisation.
+        // Global default lowercases, but "caseSensitiveCode" explicitly requests no normalisation
         $hasher = new EncryptableFieldHasher(
             $calculator,
             new EncryptableMetadata(),
@@ -54,7 +54,7 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
     public function testHashForFieldSucceedsWithFieldOverrideTakingPrecedence(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        // Global default is "no normalisation", but the "username" field overrides with lowercase + trim.
+        // Global default is "no normalisation", but the "username" field overrides with lowercase + trim
         $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormaliser(), []);
 
         $hash = $hasher->hashForField(EncryptableEntityStub::class, 'username', '  John.Doe  ');
@@ -104,7 +104,7 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
         );
 
         // A caller (e.g. a repository) only supplies entity class + field + raw value: it does not need to
-        // know or reproduce which normalisation applies to that field.
+        // know or reproduce which normalisation applies to that field
         $writeHash = $hasher->hashForField(EncryptableEntityStub::class, 'username', 'Jane.Doe');
         $lookupHash = $hasher->hashForField(EncryptableEntityStub::class, 'username', 'jane.doe');
 

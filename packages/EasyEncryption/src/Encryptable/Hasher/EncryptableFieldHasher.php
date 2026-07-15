@@ -8,20 +8,20 @@ use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
 use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliserInterface;
 
-final class EncryptableFieldHasher implements EncryptableFieldHasherInterface
+final readonly class EncryptableFieldHasher implements EncryptableFieldHasherInterface
 {
     /**
      * @var \EonX\EasyEncryption\Encryptable\Enum\HashNormalisation[]
      */
-    private readonly array $defaultHashNormalisations;
+    private array $defaultHashNormalisations;
 
     /**
      * @param string[] $defaultHashNormalisations
      */
     public function __construct(
-        private readonly HashCalculatorInterface $hashCalculator,
-        private readonly EncryptableMetadataInterface $metadata,
-        private readonly HashNormaliserInterface $hashNormaliser,
+        private HashCalculatorInterface $hashCalculator,
+        private EncryptableMetadataInterface $metadata,
+        private HashNormaliserInterface $hashNormaliser,
         array $defaultHashNormalisations = [],
     ) {
         $this->defaultHashNormalisations = \array_map(
