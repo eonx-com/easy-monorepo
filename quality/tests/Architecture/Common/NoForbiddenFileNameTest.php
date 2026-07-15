@@ -22,7 +22,7 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
         '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityCreatedEventListener.php',
         '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityDeletedEventListener.php',
-        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityUpdateEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityUpdatedEventListener.php',
     ];
 
     #[DataProvider('provideSubject')]

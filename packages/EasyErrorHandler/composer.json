@@ -26,7 +26,7 @@
         "eonx-com/easy-test": "^6.21",
         "eonx-com/easy-webhook": "^6.21",
         "laravel/framework": "^13.0",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "symfony/framework-bundle": "^7.4"
     },
     "autoload": {
@@ -47,11 +47,10 @@
         }
     },
     "suggest": {
-        "api-platform/core": "To use ApiPlatform integration",
+        "eonx-com/easy-api-platform": "To use API Platform integration",
         "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
         "eonx-com/easy-webhook": "To use EasyWebhook integration",
-        "symfony/messenger": "To use Symfony Messenger integration",
-        "symfony/validator": "To use ApiPlatform integration"
+        "symfony/messenger": "To use Symfony Messenger integration"
     },
     "extra": {
         "branch-alias": {

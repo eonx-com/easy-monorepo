@@ -5,7 +5,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "api-platform/core": "^4.3.15",
         "doctrine/collections": "^1.7.2 || ^2.6",
         "doctrine/dbal": "^3.8 || ^4.4",
         "doctrine/orm": "^2.20 || ^3.6",
@@ -22,12 +21,25 @@
         "symfony/uid": "^7.4"
     },
     "require-dev": {
+        "api-platform/doctrine-common": "^4.3.17",
+        "api-platform/doctrine-orm": "^4.3.17",
+        "api-platform/documentation": "^4.3.17",
+        "api-platform/http-cache": "^4.3.17",
+        "api-platform/hydra": "^4.3.17",
+        "api-platform/json-schema": "^4.3.17",
+        "api-platform/jsonld": "^4.3.17",
+        "api-platform/metadata": "^4.3.17",
+        "api-platform/openapi": "^4.3.17",
+        "api-platform/serializer": "^4.3.17",
+        "api-platform/state": "^4.3.17",
+        "api-platform/symfony": "^4.3.17",
+        "api-platform/validator": "^4.3.17",
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "eonx-com/easy-bugsnag": "^6.21",
         "eonx-com/easy-error-handler": "^6.21",
         "eonx-com/easy-test": "^6.21",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^12.5|^13.0",
         "symfony/browser-kit": "^7.4",
         "symfony/expression-language": "^7.4",
         "symfony/framework-bundle": "^7.4",
@@ -53,8 +65,11 @@
         }
     },
     "suggest": {
+        "api-platform/doctrine-orm": "To use Doctrine ORM related features (filters, pagination, state providers)",
+        "api-platform/symfony": "To use this package in Symfony applications with API Platform",
         "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
-        "eonx-com/easy-error-handler": "To use EasyErrorHandler integration"
+        "eonx-com/easy-error-handler": "To use EasyErrorHandler integration",
+        "symfony/validator": "To build validation error responses when EasyErrorHandler integration is enabled"
     },
     "extra": {
         "branch-alias": {

@@ -8,7 +8,7 @@ use DateTime;
 use DateTimeZone;
 use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityCreatedEventListener;
 use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityDeletedEventListener;
-use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityUpdateEventListener;
+use EonX\EasyDoctrine\EntityEvent\Attribute\AsEntityUpdatedEventListener;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
@@ -26,7 +26,7 @@ use RuntimeException;
 
 #[CoversClass(AsEntityCreatedEventListener::class)]
 #[CoversClass(AsEntityDeletedEventListener::class)]
-#[CoversClass(AsEntityUpdateEventListener::class)]
+#[CoversClass(AsEntityUpdatedEventListener::class)]
 #[CoversClass(DeferredEntityEventDispatcher::class)]
 #[CoversClass(EntityEventListener::class)]
 final class EntityEventListenerTest extends AbstractUnitTestCase

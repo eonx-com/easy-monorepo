@@ -11,6 +11,7 @@ use EonX\EasyLogging\Bundle\Enum\BundleParam as EasyLoggingBundleParam;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\PersistingStoreInterface;
 use Symfony\Component\Lock\Store\StoreFactory;
 
@@ -20,6 +21,10 @@ final class EasyLockServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
+            ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel->value]
+            : [];
+
         $this->app->singleton(
             ConfigServiceId::Store->value,
             static function (Container $app): PersistingStoreInterface {
@@ -33,17 +38,22 @@ final class EasyLockServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            LockerInterface::class,
-            static function (Container $app): LockerInterface {
-                $loggerParams = \enum_exists(EasyLoggingBundleParam::class)
-                    ? [EasyLoggingBundleParam::KeyChannel->value => BundleParam::LogChannel]
-                    : [];
+            LockFactory::class,
+            static function (Container $app) use ($loggerParams): LockFactory {
+                $lockFactory = new LockFactory($app->make(ConfigServiceId::Store->value));
+                $lockFactory->setLogger($app->make(LoggerInterface::class, $loggerParams));
 
-                return new Locker(
-                    $app->make(ConfigServiceId::Store->value),
-                    $app->make(LoggerInterface::class, $loggerParams)
-                );
+                return $lockFactory;
             }
+        );
+
+        $this->app->singleton(
+            LockerInterface::class,
+            static fn (Container $app): LockerInterface => new Locker(
+                $app->make(ConfigServiceId::Store->value),
+                $app->make(LoggerInterface::class, $loggerParams),
+                $app->make(LockFactory::class)
+            )
         );
     }
 }

@@ -18,12 +18,12 @@ use Symfony\Component\Lock\PersistingStoreInterface;
 
 final class Locker implements LockerInterface
 {
-    private ?LockFactory $factory = null;
-
     public function __construct(
         private readonly PersistingStoreInterface $store,
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {}
+        private ?LockFactory $lockFactory = null,
+    ) {
+    }
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {
@@ -69,15 +69,16 @@ final class Locker implements LockerInterface
         }
     }
 
+    // @todo in 7.0 make $lockFactory constructor argument required and remove this fallback
     private function getFactory(): LockFactory
     {
-        if ($this->factory !== null) {
-            return $this->factory;
+        if ($this->lockFactory !== null) {
+            return $this->lockFactory;
         }
 
-        $this->factory = new LockFactory($this->store);
-        $this->factory->setLogger($this->logger);
+        $this->lockFactory = new LockFactory($this->store);
+        $this->lockFactory->setLogger($this->logger);
 
-        return $this->factory;
+        return $this->lockFactory;
     }
 }
