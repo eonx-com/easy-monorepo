@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Tests\Stub\Kernel;
 
-use Bref\Symfony\Messenger\Service\BusDriver;
 use EonX\EasyServerless\Bundle\EasyServerlessBundle;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -55,7 +54,6 @@ final class KernelStub extends Kernel implements CompilerPassInterface
             new Definition(KernelInterface::class)->setSynthetic(true)
         );
         $container->setAlias(KernelInterface::class, 'kernel');
-        $container->setDefinition(BusDriver::class, new Definition(BusDriver::class));
         $container->setDefinition(NullLogger::class, new Definition(NullLogger::class));
         $container->setAlias('logger', NullLogger::class);
         $container->setDefinition(
