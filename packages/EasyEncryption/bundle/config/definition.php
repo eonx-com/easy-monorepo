@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use EonX\EasyEncryption\AwsCloudHsm\Configurator\AwsCloudHsmSdkConfigurator;
+use EonX\EasyEncryption\Encryptable\Enum\HashNormalisation;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -12,6 +13,17 @@ return static function (DefinitionConfigurator $definition) {
             ->stringNode('default_salt')->defaultNull()->end()
             ->integerNode('max_chunk_size')->defaultValue(16224)->end()
             ->booleanNode('use_default_key_resolvers')->defaultTrue()->end()
+            ->arrayNode('default_hash_normalisations')
+                ->info('Normalisation(s) applied to an encryptable field value before it is hashed.')
+                ->beforeNormalization()->castToArray()->end()
+                ->defaultValue([HashNormalisation::Lowercase->value])
+                ->enumPrototype()
+                    ->values(\array_map(
+                        static fn (HashNormalisation $case): string => $case->value,
+                        HashNormalisation::cases()
+                    ))
+                ->end()
+            ->end()
             ->arrayNode('fully_encrypted_messages')
                 ->beforeNormalization()->castToArray()->end()
                 ->stringPrototype()->end()

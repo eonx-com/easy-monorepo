@@ -20,6 +20,12 @@ use EonX\EasyEncryption\Common\Resolver\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptor;
 use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasher;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasherInterface;
+use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
+use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
+use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliser;
+use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliserInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -95,6 +101,26 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             static fn (Container $app): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
                 encryptor: $app->make(AwsCloudHsmEncryptorInterface::class),
                 signKeyName: \config('easy-encryption.default_key_name')
+            )
+        );
+
+        $this->app->singleton(
+            EncryptableMetadataInterface::class,
+            static fn (): EncryptableMetadataInterface => new EncryptableMetadata()
+        );
+
+        $this->app->singleton(
+            HashNormaliserInterface::class,
+            static fn (): HashNormaliserInterface => new HashNormaliser()
+        );
+
+        $this->app->singleton(
+            EncryptableFieldHasherInterface::class,
+            static fn (Container $app): EncryptableFieldHasherInterface => new EncryptableFieldHasher(
+                hashCalculator: $app->make(HashCalculatorInterface::class),
+                metadata: $app->make(EncryptableMetadataInterface::class),
+                hashNormaliser: $app->make(HashNormaliserInterface::class),
+                defaultHashNormalisations: \config('easy-encryption.default_hash_normalisations', [])
             )
         );
 
