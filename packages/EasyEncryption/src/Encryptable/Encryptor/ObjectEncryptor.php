@@ -24,9 +24,9 @@ final readonly class ObjectEncryptor implements ObjectEncryptorInterface
     {
         $encryptable->encrypt(
             fn (string $value): EncryptedString => $this->stringEncryptor->encrypt($value),
-            function (string $entityClass, string $field, string $value): string {
+            function (string $entityClass, string $propertyName, string $value): string {
                 /** @var class-string $entityClass */
-                return $this->fieldHasher->hashForField($entityClass, $field, $value);
+                return $this->fieldHasher->hashForField($entityClass, $propertyName, $value);
             }
         );
     }

@@ -8,5 +8,5 @@ interface EncryptableFieldHasherInterface
     /**
      * @param class-string $entityClass
      */
-    public function hashForField(string $entityClass, string $field, string $value): string;
+    public function hashForField(string $entityClass, string $propertyName, string $value): string;
 }

@@ -22,7 +22,7 @@ final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
 
         $entity->encrypt(...$this->closures($fieldHasher));
 
-        /** @var array<string, mixed> $rawData */
+        /** @var array<string, string|null> $rawData */
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('  Jane.Doe  ', $rawData['username']);
         self::assertSame($calculator->calculate('jane.doe'), $entity->getUsername());
@@ -41,7 +41,7 @@ final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
 
         $entity->encrypt(...$this->closures($fieldHasher));
 
-        /** @var array<string, mixed> $rawData */
+        /** @var array<string, string|null> $rawData */
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('John.Doe@Example.com', $rawData['email']);
         self::assertSame($calculator->calculate('john.doe@example.com'), $entity->getEmail());
@@ -86,7 +86,7 @@ final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
 
         $entity->encrypt(...$this->closures($fieldHasher));
 
-        /** @var array<string, mixed> $rawData */
+        /** @var array<string, string|null> $rawData */
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('John.Doe@Example.com', $rawData['email']);
         self::assertSame($calculator->calculate('John.Doe@Example.com'), $entity->getEmail());
@@ -99,9 +99,9 @@ final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
     {
         return [
             static fn (string $value): EncryptedString => new EncryptedString('test-key', $value),
-            static function (string $entityClass, string $field, string $value) use ($fieldHasher): string {
+            static function (string $entityClass, string $propertyName, string $value) use ($fieldHasher): string {
                 /** @var class-string $entityClass */
-                return $fieldHasher->hashForField($entityClass, $field, $value);
+                return $fieldHasher->hashForField($entityClass, $propertyName, $value);
             },
         ];
     }

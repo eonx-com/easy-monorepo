@@ -30,9 +30,9 @@ final readonly class EncryptableFieldHasher implements EncryptableFieldHasherInt
         );
     }
 
-    public function hashForField(string $entityClass, string $field, string $value): string
+    public function hashForField(string $entityClass, string $propertyName, string $value): string
     {
-        $normalisations = $this->metadata->getHashNormalisationsForField($entityClass, $field)
+        $normalisations = $this->metadata->getHashNormalisationsForField($entityClass, $propertyName)
             ?? $this->defaultHashNormalisations;
 
         foreach ($normalisations as $normalisation) {
