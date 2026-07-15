@@ -10,22 +10,11 @@ use Symfony\Component\Lock\Store\InMemoryStore;
 
 final class LockerTest extends AbstractUnitTestCase
 {
-    public function testCreateLockCreatesFactoryWhenNoLockFactoryGiven(): void
-    {
-        $locker = new Locker(new InMemoryStore());
-
-        $lock = $locker->createLock('some-resource');
-
-        self::assertTrue($lock->acquire());
-
-        $lock->release();
-    }
-
     public function testCreateLockUsesGivenLockFactory(): void
     {
         $store = new InMemoryStore();
         $lockFactory = new LockFactoryStub($store);
-        $locker = new Locker($store, lockFactory: $lockFactory);
+        $locker = new Locker($lockFactory);
 
         $lock = $locker->createLock('some-resource');
 
