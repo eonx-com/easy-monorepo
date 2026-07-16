@@ -37,8 +37,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectCopierInterface $deletedEntityCopier,
-    ) {
-    }
+    ) {}
 
     public function clear(?int $transactionNestingLevel = null): void
     {

@@ -14,22 +14,17 @@ use Firebase\JWT\Key;
 
 final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
 {
-    private const string DEFAULT_JWK_ALGORITHM = 'RS256';
+    private const string DEFAULT_JWT_ALGORITHM = 'RS256';
 
     private const string TOKEN_TYPE_ACCESS = 'access';
 
     private const string TOKEN_TYPE_ID = 'id';
 
-    /**
-     * @todo Rename $jwkFetcher to $jwkProvider in next major version
-     * @todo Rename $leeway to $jwtLeeway in next major version
-     * @todo Rename $defaultJwkAlgo to $defaultJwtAlgorithm in next major version
-     */
     public function __construct(
         private UserPoolConfig $userPoolConfig,
-        private AwsCognitoJwkProviderInterface $jwkFetcher = new AwsCognitoJwkProvider(),
-        private ?int $leeway = null,
-        private string $defaultJwkAlgo = self::DEFAULT_JWK_ALGORITHM,
+        private AwsCognitoJwkProviderInterface $jwkProvider = new AwsCognitoJwkProvider(),
+        private ?int $jwtLeeway = null,
+        private string $defaultJwtAlgorithm = self::DEFAULT_JWT_ALGORITHM,
     ) {}
 
     /**
@@ -38,14 +33,14 @@ final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
      */
     public function decode(string $token): object
     {
-        if ($this->leeway !== null) {
-            JWT::$leeway = $this->leeway;
+        if ($this->jwtLeeway !== null) {
+            JWT::$leeway = $this->jwtLeeway;
         }
 
-        $jwks = $this->jwkFetcher->getJwks($this->userPoolConfig);
+        $jwks = $this->jwkProvider->getJwks($this->userPoolConfig);
 
         foreach ($jwks as $keyId => $key) {
-            $jwks[$keyId] = new Key($key, $this->defaultJwkAlgo);
+            $jwks[$keyId] = new Key($key, $this->defaultJwtAlgorithm);
         }
 
         $decodedToken = JWT::decode($token, $jwks);
