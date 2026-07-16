@@ -6,19 +6,19 @@ namespace EonX\EasyEncryption\Tests\Stub\Entity;
 use EonX\EasyEncryption\Encryptable\Attribute\EncryptableField;
 use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface;
 use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableTrait;
-use EonX\EasyEncryption\Encryptable\Enum\HashNormalisation;
+use EonX\EasyEncryption\Encryptable\Enum\HashNormalization;
 
 final class EncryptableEntityStub implements EncryptableInterface
 {
     use EncryptableTrait;
 
-    #[EncryptableField(hashNormalisations: [])]
+    #[EncryptableField(hashNormalizations: [])]
     private ?string $caseSensitiveCode;
 
     #[EncryptableField]
     private ?string $email;
 
-    #[EncryptableField(hashNormalisations: [HashNormalisation::Lowercase, HashNormalisation::Trim])]
+    #[EncryptableField(hashNormalizations: [HashNormalization::Lowercase, HashNormalization::Trim])]
     private ?string $username;
 
     public function __construct(

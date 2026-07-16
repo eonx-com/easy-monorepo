@@ -9,11 +9,11 @@ use Attribute;
 final readonly class EncryptableField
 {
     /**
-     * @param \EonX\EasyEncryption\Encryptable\Enum\HashNormalisation[]|null $hashNormalisations
+     * @param \EonX\EasyEncryption\Encryptable\Enum\HashNormalization[]|null $hashNormalizations
      */
     public function __construct(
         private ?string $fieldName = null,
-        private ?array $hashNormalisations = null,
+        private ?array $hashNormalizations = null,
     ) {
     }
 
@@ -23,10 +23,10 @@ final readonly class EncryptableField
     }
 
     /**
-     * @return \EonX\EasyEncryption\Encryptable\Enum\HashNormalisation[]|null
+     * @return \EonX\EasyEncryption\Encryptable\Enum\HashNormalization[]|null
      */
-    public function getHashNormalisations(): ?array
+    public function getHashNormalizations(): ?array
     {
-        return $this->hashNormalisations;
+        return $this->hashNormalizations;
     }
 }

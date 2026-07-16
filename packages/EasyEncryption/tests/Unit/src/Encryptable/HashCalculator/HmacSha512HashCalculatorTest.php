@@ -17,7 +17,7 @@ final class HmacSha512HashCalculatorTest extends AbstractUnitTestCase
         self::assertSame(\hash_hmac('sha512', 'Some Value', 'secret'), $hash);
     }
 
-    public function testCalculateSucceedsWithoutNormalisingCase(): void
+    public function testCalculateSucceedsWithoutNormalizingCase(): void
     {
         $calculator = new HmacSha512HashCalculator('secret');
 

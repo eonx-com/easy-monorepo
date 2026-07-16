@@ -13,7 +13,7 @@ use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableEntityStub;
 
 final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
 {
-    public function testItSucceedsWithDefaultHashNormalisation(): void
+    public function testItSucceedsWithDefaultHashNormalization(): void
     {
         $this->setAppKey('f42a3968db6a957300c4f0c46a341c80');
         $app = $this->getApplication();
@@ -26,7 +26,7 @@ final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
         self::assertSame($hashCalculator->calculate('john.doe@example.com'), $hash);
     }
 
-    public function testItSucceedsWithDefaultHashNormalisationWithAwsCloudHsm(): void
+    public function testItSucceedsWithDefaultHashNormalizationWithAwsCloudHsm(): void
     {
         $this->setAppKey('f42a3968db6a957300c4f0c46a341c80');
         $app = $this->getApplication([

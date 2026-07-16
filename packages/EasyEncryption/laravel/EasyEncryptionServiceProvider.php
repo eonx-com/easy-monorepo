@@ -25,8 +25,8 @@ use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasher;
 use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasherInterface;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
-use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliser;
-use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliserInterface;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizer;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -147,8 +147,8 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            HashNormaliserInterface::class,
-            static fn (): HashNormaliserInterface => new HashNormaliser()
+            HashNormalizerInterface::class,
+            static fn (): HashNormalizerInterface => new HashNormalizer()
         );
 
         $this->app->singleton(
@@ -156,8 +156,8 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
             static fn (Container $app): EncryptableFieldHasherInterface => new EncryptableFieldHasher(
                 hashCalculator: $app->make(HashCalculatorInterface::class),
                 metadata: $app->make(EncryptableMetadataInterface::class),
-                hashNormaliser: $app->make(HashNormaliserInterface::class),
-                defaultHashNormalisations: \config('easy-encryption.default_hash_normalisations', [])
+                hashNormalizer: $app->make(HashNormalizerInterface::class),
+                defaultHashNormalizations: \config('easy-encryption.default_hash_normalizations', [])
             )
         );
     }

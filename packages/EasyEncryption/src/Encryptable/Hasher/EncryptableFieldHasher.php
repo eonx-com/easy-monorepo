@@ -3,40 +3,40 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Encryptable\Hasher;
 
-use EonX\EasyEncryption\Encryptable\Enum\HashNormalisation;
+use EonX\EasyEncryption\Encryptable\Enum\HashNormalization;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
-use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliserInterface;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizerInterface;
 
 final readonly class EncryptableFieldHasher implements EncryptableFieldHasherInterface
 {
     /**
-     * @var \EonX\EasyEncryption\Encryptable\Enum\HashNormalisation[]
+     * @var \EonX\EasyEncryption\Encryptable\Enum\HashNormalization[]
      */
-    private array $defaultHashNormalisations;
+    private array $defaultHashNormalizations;
 
     /**
-     * @param string[] $defaultHashNormalisations
+     * @param string[] $defaultHashNormalizations
      */
     public function __construct(
         private HashCalculatorInterface $hashCalculator,
         private EncryptableMetadataInterface $metadata,
-        private HashNormaliserInterface $hashNormaliser,
-        array $defaultHashNormalisations = [],
+        private HashNormalizerInterface $hashNormalizer,
+        array $defaultHashNormalizations = [],
     ) {
-        $this->defaultHashNormalisations = \array_map(
-            static fn (string $normalisation): HashNormalisation => HashNormalisation::from($normalisation),
-            $defaultHashNormalisations
+        $this->defaultHashNormalizations = \array_map(
+            static fn (string $normalization): HashNormalization => HashNormalization::from($normalization),
+            $defaultHashNormalizations
         );
     }
 
     public function hashForField(string $entityClass, string $propertyName, string $value): string
     {
-        $normalisations = $this->metadata->getHashNormalisationsForField($entityClass, $propertyName)
-            ?? $this->defaultHashNormalisations;
+        $normalizations = $this->metadata->getHashNormalizationsForField($entityClass, $propertyName)
+            ?? $this->defaultHashNormalizations;
 
-        foreach ($normalisations as $normalisation) {
-            $value = $this->hashNormaliser->normalise($value, $normalisation);
+        foreach ($normalizations as $normalization) {
+            $value = $this->hashNormalizer->normalize($value, $normalization);
         }
 
         return $this->hashCalculator->calculate($value);

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyEncryption\Encryptable\Enum;
 
-enum HashNormalisation: string
+enum HashNormalization: string
 {
     case Lowercase = 'lowercase';
 

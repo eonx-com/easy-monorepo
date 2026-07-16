@@ -15,7 +15,7 @@ interface EncryptableMetadataInterface
     /**
      * @param class-string|object $entity
      *
-     * @return \EonX\EasyEncryption\Encryptable\Enum\HashNormalisation[]|null
+     * @return \EonX\EasyEncryption\Encryptable\Enum\HashNormalization[]|null
      */
-    public function getHashNormalisationsForField(string|object $entity, string $propertyName): ?array;
+    public function getHashNormalizationsForField(string|object $entity, string $propertyName): ?array;
 }

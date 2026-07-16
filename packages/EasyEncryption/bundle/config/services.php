@@ -23,8 +23,8 @@ use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasherInterface;
 use EonX\EasyEncryption\Encryptable\Listener\DoctrineEncryptionListener;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
-use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliser;
-use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliserInterface;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizer;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -50,10 +50,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(EncryptableMetadataInterface::class, EncryptableMetadata::class);
 
-    $services->set(HashNormaliserInterface::class, HashNormaliser::class);
+    $services->set(HashNormalizerInterface::class, HashNormalizer::class);
 
     $services->set(EncryptableFieldHasherInterface::class, EncryptableFieldHasher::class)
-        ->arg('$defaultHashNormalisations', param(ConfigParam::DefaultHashNormalisations->value));
+        ->arg('$defaultHashNormalizations', param(ConfigParam::DefaultHashNormalizations->value));
 
     $services->set(StringEncryptorInterface::class, StringEncryptor::class)
         ->arg('$encryptor', service(EncryptorInterface::class))

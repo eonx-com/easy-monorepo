@@ -6,7 +6,7 @@ namespace EonX\EasyEncryption\Tests\Unit\Encryptable\Hasher;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HmacSha512HashCalculator;
 use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasher;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
-use EonX\EasyEncryption\Encryptable\Normaliser\HashNormaliser;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizer;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableEntityStub;
 use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
 
@@ -17,11 +17,11 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
     public function testHashForFieldSucceedsWhenFieldOverrideOptsOutOfLowercaseDefault(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        // Global default lowercases, but "caseSensitiveCode" explicitly requests no normalisation
+        // Global default lowercases, but "caseSensitiveCode" explicitly requests no normalization
         $hasher = new EncryptableFieldHasher(
             $calculator,
             new EncryptableMetadata(),
-            new HashNormaliser(),
+            new HashNormalizer(),
             ['lowercase']
         );
 
@@ -30,10 +30,10 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
         self::assertSame($calculator->calculate('AbC123'), $hash);
     }
 
-    public function testHashForFieldSucceedsWithComposedNormalisation(): void
+    public function testHashForFieldSucceedsWithComposedNormalization(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormaliser(), []);
+        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormalizer(), []);
 
         $hash = $hasher->hashForField(EncryptableEntityStub::class, 'username', "  Jane.Doe  \t");
 
@@ -43,7 +43,7 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
     public function testHashForFieldSucceedsWithDifferentHashForDifferentCaseWithoutLowercasing(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormaliser(), []);
+        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormalizer(), []);
 
         $upperCaseHash = $hasher->hashForField(EncryptableEntityStub::class, 'email', 'John@Example.com');
         $lowerCaseHash = $hasher->hashForField(EncryptableEntityStub::class, 'email', 'john@example.com');
@@ -54,8 +54,8 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
     public function testHashForFieldSucceedsWithFieldOverrideTakingPrecedence(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        // Global default is "no normalisation", but the "username" field overrides with lowercase + trim
-        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormaliser(), []);
+        // Global default is "no normalization", but the "username" field overrides with lowercase + trim
+        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormalizer(), []);
 
         $hash = $hasher->hashForField(EncryptableEntityStub::class, 'username', '  John.Doe  ');
 
@@ -68,7 +68,7 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
         $hasher = new EncryptableFieldHasher(
             $calculator,
             new EncryptableMetadata(),
-            new HashNormaliser(),
+            new HashNormalizer(),
             ['lowercase']
         );
 
@@ -83,7 +83,7 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
         $hasher = new EncryptableFieldHasher(
             $calculator,
             new EncryptableMetadata(),
-            new HashNormaliser(),
+            new HashNormalizer(),
             ['lowercase']
         );
 
@@ -93,28 +93,28 @@ final class EncryptableFieldHasherTest extends AbstractUnitTestCase
         self::assertSame($upperCaseHash, $lowerCaseHash);
     }
 
-    public function testHashForFieldSucceedsWithoutCallerReproducingNormalisation(): void
+    public function testHashForFieldSucceedsWithoutCallerReproducingNormalization(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
         $hasher = new EncryptableFieldHasher(
             $calculator,
             new EncryptableMetadata(),
-            new HashNormaliser(),
+            new HashNormalizer(),
             ['lowercase']
         );
 
         // A caller (e.g. a repository) only supplies entity class + field + raw value: it does not need to
-        // know or reproduce which normalisation applies to that field
+        // know or reproduce which normalization applies to that field
         $writeHash = $hasher->hashForField(EncryptableEntityStub::class, 'username', 'Jane.Doe');
         $lookupHash = $hasher->hashForField(EncryptableEntityStub::class, 'username', 'jane.doe');
 
         self::assertSame($writeHash, $lookupHash);
     }
 
-    public function testHashForFieldSucceedsWithoutNormalisationDefault(): void
+    public function testHashForFieldSucceedsWithoutNormalizationDefault(): void
     {
         $calculator = new HmacSha512HashCalculator(self::SECRET);
-        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormaliser(), []);
+        $hasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormalizer(), []);
 
         $hash = $hasher->hashForField(EncryptableEntityStub::class, 'email', 'John.Doe@Example.com');
 

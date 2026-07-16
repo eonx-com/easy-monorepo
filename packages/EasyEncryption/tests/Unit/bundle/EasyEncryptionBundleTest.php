@@ -12,7 +12,7 @@ use EonX\EasyEncryption\Tests\Unit\AbstractSymfonyTestCase;
 
 final class EasyEncryptionBundleTest extends AbstractSymfonyTestCase
 {
-    public function testItSucceedsWithDefaultHashNormalisation(): void
+    public function testItSucceedsWithDefaultHashNormalization(): void
     {
         $this->setAppSecret('f42a3968db6a957300c4f0c46a341c80');
         $container = $this->getKernel()

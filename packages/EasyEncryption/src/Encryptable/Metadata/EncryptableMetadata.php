@@ -37,7 +37,7 @@ final class EncryptableMetadata implements EncryptableMetadataInterface
         return $encryptedFields;
     }
 
-    public function getHashNormalisationsForField(string|object $entity, string $propertyName): ?array
+    public function getHashNormalizationsForField(string|object $entity, string $propertyName): ?array
     {
         $entityClass = \is_object($entity) ? $entity::class : $entity;
 
@@ -45,7 +45,7 @@ final class EncryptableMetadata implements EncryptableMetadataInterface
             return $this->metadata[$entityClass][__FUNCTION__][$propertyName];
         }
 
-        $hashNormalisations = null;
+        $hashNormalizations = null;
         $reflectionClass = new ReflectionClass($entityClass);
 
         if ($reflectionClass->hasProperty($propertyName)) {
@@ -54,14 +54,14 @@ final class EncryptableMetadata implements EncryptableMetadataInterface
             foreach ($reflectionProperty->getAttributes(EncryptableField::class) as $reflectionAttribute) {
                 /** @var \EonX\EasyEncryption\Encryptable\Attribute\EncryptableField $reflectionAttributeInstance */
                 $reflectionAttributeInstance = $reflectionAttribute->newInstance();
-                $hashNormalisations = $reflectionAttributeInstance->getHashNormalisations();
+                $hashNormalizations = $reflectionAttributeInstance->getHashNormalizations();
 
                 break;
             }
         }
 
-        $this->metadata[$entityClass][__FUNCTION__][$propertyName] = $hashNormalisations;
+        $this->metadata[$entityClass][__FUNCTION__][$propertyName] = $hashNormalizations;
 
-        return $hashNormalisations;
+        return $hashNormalizations;
     }
 }
