@@ -4,17 +4,18 @@ declare(strict_types=1);
 namespace EonX\EasyApiPlatform\Common\Paginator;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 final readonly class CustomPaginator implements CustomPaginatorInterface
 {
     public function __construct(
         private Paginator $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Exception
      */
+    #[Groups([CustomPaginatorInterface::SERIALIZER_GROUP])]
     public function getItems(): array
     {
         return \iterator_to_array($this->decorated->getIterator());

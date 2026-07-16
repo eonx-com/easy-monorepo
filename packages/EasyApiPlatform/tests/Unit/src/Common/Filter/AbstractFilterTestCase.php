@@ -98,14 +98,14 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
 
         self::assertCount(
             $queryBuilder->getQuery()
-->getParameters()
-->count(),
+                ->getParameters()
+                ->count(),
             $expectedParameters,
             'Please assert query parameters.'
         );
 
         foreach ($expectedParameters as $parameterName => $expectedParameterValue) {
-            /** @var \Doctrine\ORM\Query\Parameter $queryParameter */
+            /** @var \Doctrine\ORM\Query\Parameter|null $queryParameter */
             $queryParameter = $queryBuilder->getQuery()
                 ->getParameter($parameterName);
 

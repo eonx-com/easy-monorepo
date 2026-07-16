@@ -12,8 +12,7 @@ final readonly class SubscribeInfo
         private string $jwt,
         private array $topics,
         private string $url,
-    ) {
-    }
+    ) {}
 
     public static function fromArray(array $info): self
     {

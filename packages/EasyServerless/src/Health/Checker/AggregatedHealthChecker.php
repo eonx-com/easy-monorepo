@@ -15,7 +15,7 @@ final readonly class AggregatedHealthChecker
     private array $checkers;
 
     /**
-     * @param iterable<\EonX\EasyServerless\Health\Checker\HealthCheckerInterface> $checkers
+     * @param iterable<\EonX\EasyServerless\Health\Checker\HealthCheckerInterface|object> $checkers
      */
     public function __construct(
         iterable $checkers,
@@ -23,7 +23,7 @@ final readonly class AggregatedHealthChecker
     ) {
         $this->checkers = \array_filter(
             \iterator_to_array($checkers),
-            static fn (mixed $checker): bool => $checker instanceof HealthCheckerInterface
+            static fn(mixed $checker): bool => $checker instanceof HealthCheckerInterface
         );
     }
 

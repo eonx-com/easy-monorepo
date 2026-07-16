@@ -9,17 +9,16 @@ use Bref\Context\Context;
 use Bref\Event\Sqs\SqsEvent;
 use Bref\Event\Sqs\SqsHandler;
 use Bref\Event\Sqs\SqsRecord;
-use EonX\EasyServerless\State\Checker\StateCheckerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
 abstract class AbstractSqsHandler extends SqsHandler
 {
-    protected const DEFAULT_RETRY_DELAY_SECONDS = 1;
+    protected const int DEFAULT_RETRY_DELAY_SECONDS = 1;
 
-    protected const MAX_RETRY_DELAY_SECONDS = 43200; // 12 hours (SQS limit)
+    protected const int MAX_RETRY_DELAY_SECONDS = 43200; // 12 hours (SQS limit)
 
-    protected const SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
+    protected const int SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
 
     protected ?LoggerInterface $logger = null;
 
@@ -45,10 +44,7 @@ abstract class AbstractSqsHandler extends SqsHandler
         private readonly int $timeoutThresholdMilliseconds = 1000, // 1 second
         iterable $stateCheckers = [],
     ) {
-        $this->stateCheckers = \array_filter(
-            \iterator_to_array($stateCheckers),
-            static fn (mixed $stateChecker): bool => $stateChecker instanceof StateCheckerInterface
-        );
+        $this->stateCheckers = \iterator_to_array($stateCheckers);
     }
 
     /**

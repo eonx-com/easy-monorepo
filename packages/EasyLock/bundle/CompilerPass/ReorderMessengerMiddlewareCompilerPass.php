@@ -12,11 +12,11 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterface
 {
-    private const EASY_LOCK_MIDDLEWARE_LIST = [
+    private const array EASY_LOCK_MIDDLEWARE_LIST = [
         ProcessWithLockMiddleware::class,
     ];
 
-    private const MESSENGER_BUS_TAG = 'messenger.bus';
+    private const string MESSENGER_BUS_TAG = 'messenger.bus';
 
     public function process(ContainerBuilder $container): void
     {
@@ -38,7 +38,7 @@ final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterf
 
         // Convert easy lock middleware classes to reference
         $easyLockMiddlewareList = \array_map(
-            static fn (string $class): Reference => new Reference($class),
+            static fn(string $class): Reference => new Reference($class),
             $enabledMiddlewareList
         );
 
@@ -54,7 +54,7 @@ final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterf
             /** @var \Symfony\Component\DependencyInjection\Reference[] $existingMiddlewareList */
             $existingMiddlewareList = \array_filter(
                 $middleware->getValues(),
-                static fn (
+                static fn(
                     Reference $ref,
                 ): bool => \in_array((string)$ref, self::EASY_LOCK_MIDDLEWARE_LIST, true) === false
             );

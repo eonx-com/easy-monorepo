@@ -8,14 +8,13 @@ use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterf
 
 final readonly class Translator implements TranslatorInterface
 {
-    private const DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
+    private const string DEFAULT_DOMAIN = 'EasyErrorHandlerBundle';
 
     public function __construct(
         // @todo: Rename to `$translator` in next major release (7.0) as it's not a decoration
         private SymfonyTranslatorInterface&TranslatorBagInterface $decorated,
         private ?string $domain = null,
-    ) {
-    }
+    ) {}
 
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {

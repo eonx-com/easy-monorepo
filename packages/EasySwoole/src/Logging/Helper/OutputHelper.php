@@ -10,9 +10,9 @@ use Monolog\Logger;
 
 final class OutputHelper
 {
-    private const PREFIX = '[php.swoole]';
+    private const string PREFIX = '[php.swoole]';
 
-    private const STREAM = 'php://stdout';
+    private const string STREAM = 'php://stdout';
 
     private static ?Closure $writer = null;
 
@@ -32,7 +32,7 @@ final class OutputHelper
     {
         if (\class_exists(Logger::class)) {
             $logger = new Logger(self::PREFIX, [
-                (new StreamHandler(self::STREAM))->setFormatter(new SimpleFormatter(self::PREFIX)),
+                new StreamHandler(self::STREAM)->setFormatter(new SimpleFormatter(self::PREFIX)),
             ]);
 
             self::$writer = static function (string $message) use ($logger): void {

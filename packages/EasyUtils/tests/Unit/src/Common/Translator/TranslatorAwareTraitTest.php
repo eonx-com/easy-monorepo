@@ -11,10 +11,9 @@ final class TranslatorAwareTraitTest extends AbstractUnitTestCase
 {
     public function testSetTranslatorSucceeds(): void
     {
-        $abstractClass = new class() {
+        $abstractClass = new class {
             use TranslatorAwareTrait;
         };
-        /** @var \Symfony\Contracts\Translation\TranslatorInterface $translator */
         $translator = $this->mock(TranslatorInterface::class);
 
         $abstractClass->setTranslator($translator);

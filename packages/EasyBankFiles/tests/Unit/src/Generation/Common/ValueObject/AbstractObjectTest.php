@@ -22,7 +22,6 @@ final class AbstractObjectTest extends AbstractUnitTestCase
 
         $object = new ObjectStub($data);
 
-        self::assertIsArray($object->getAttributes());
         self::assertSame($data, $object->getAttributes());
     }
 }

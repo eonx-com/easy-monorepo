@@ -13,6 +13,7 @@ final class OutputHelperTest extends AbstractUnitTestCase
         $message = 'hey there!!!';
         OutputHelper::writeln($message);
 
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertTrue(true);
     }
 }

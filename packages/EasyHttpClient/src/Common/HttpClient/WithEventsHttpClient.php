@@ -106,9 +106,11 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
             }
 
             if ($chunkContent !== '') {
+                /** @var resource|string|null $content */
+                $content = $asyncContext->getInfo('temp_content');
                 $asyncContext->setInfo(
                     'temp_content',
-                    ($asyncContext->getInfo('temp_content') ?? '') . $chunkContent
+                    ($content ?? '') . $chunkContent
                 );
             }
 
@@ -167,8 +169,8 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
         $modifiers = \is_array($modifiers) ? $modifiers : \iterator_to_array($modifiers);
         $modifiers = \array_merge($modifiers, $options[HttpOption::RequestDataModifiers->value] ?? []);
 
-        $modifiersEnabled = $this->modifiersEnabled ??
-            $options[HttpOption::RequestDataModifiersEnabled->value] ?? true;
+        $modifiersEnabled = $this->modifiersEnabled
+            ?? $options[HttpOption::RequestDataModifiersEnabled->value] ?? true;
 
         $modifiersWhitelist = \array_merge(
             $this->modifiersWhitelist ?? [],

@@ -17,8 +17,7 @@ final readonly class DoctrineManagersClearListener
         private ManagersClearer $managersClearer,
         private ?array $managers = null,
         private LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyAsync\Doctrine\Exception\DoctrineConnectionNotOkException

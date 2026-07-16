@@ -177,7 +177,7 @@ abstract class AbstractTestResponse
     {
         $normalizedHeaders = [];
         foreach ($this->headers as $header => $value) {
-            $normalizedHeaders[\strtolower($header)] = [\sprintf('%s: %s', $header, $value)];
+            $normalizedHeaders[\strtolower((string)$header)] = [\sprintf('%s: %s', $header, $value)];
         }
 
         return \array_merge($options['normalized_headers'], $normalizedHeaders);

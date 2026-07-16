@@ -13,7 +13,7 @@ use EonX\EasyWebhook\Common\Store\ResultStoreInterface;
 
 final class DoctrineDbalResultStore extends AbstractDoctrineDbalStore implements ResultStoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhook_results';
+    public const string DEFAULT_TABLE = 'easy_webhook_results';
 
     public function __construct(
         RandomGeneratorInterface $random,

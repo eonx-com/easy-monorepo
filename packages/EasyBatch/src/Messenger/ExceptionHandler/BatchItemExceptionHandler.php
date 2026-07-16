@@ -23,14 +23,13 @@ use Throwable;
 
 final readonly class BatchItemExceptionHandler
 {
-    private const MESSENGER_TRANSPORT_PATTERN = 'messenger.transport.%s';
+    private const string MESSENGER_TRANSPORT_PATTERN = 'messenger.transport.%s';
 
     public function __construct(
         private BatchItemTransformer $batchItemTransformer,
         private ContainerInterface $container,
         private string $emergencyTransportName = 'async',
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Symfony\Component\Messenger\Exception\ExceptionInterface

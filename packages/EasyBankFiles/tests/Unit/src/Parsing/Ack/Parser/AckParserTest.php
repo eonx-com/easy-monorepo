@@ -72,8 +72,8 @@ final class AckParserTest extends AbstractUnitTestCase
                     ],
                 ]),
                 new Issue([
-                    'value' => 'Credit transaction 4 created due to transaction 1 having invalid account number ' .
-                        '083-163 123456789.',
+                    'value' => 'Credit transaction 4 created due to transaction 1 having invalid account number '
+                        . '083-163 123456789.',
                     'attributes' => [
                         'type' => '181016',
                     ],
@@ -127,8 +127,8 @@ final class AckParserTest extends AbstractUnitTestCase
                     ],
                 ]),
                 new Issue([
-                    'value' => 'Disbursement Report for Direct Link - Direct Credit Payment: 105205350 sent to ' .
-                        'mailbox LOYC01AU',
+                    'value' => 'Disbursement Report for Direct Link - Direct Credit Payment: 105205350 sent to '
+                        . 'mailbox LOYC01AU',
                     'attributes' => [
                         'type' => '194500',
                     ],
@@ -144,8 +144,8 @@ final class AckParserTest extends AbstractUnitTestCase
                 '@value' => 'Payment status is PROCESSED WITH INVALID TRANSACTIONS',
             ],
             'detailedMessage' => [
-                '@value' => 'Payment has been successfully processed and invalid items have been returned to your ' .
-                    'account.',
+                '@value' => 'Payment has been successfully processed and invalid items have been returned to your '
+                    . 'account.',
             ],
             'originalReference' => [
                 '@value' => 'Encrypted file',
@@ -297,7 +297,7 @@ final class AckParserTest extends AbstractUnitTestCase
         $parser = new AbaParser($content);
 
         self::assertInstanceOf(Issue::class, $parser->getIssues()[0]);
-        self::assertIsArray($parser->getIssues()[0]->getAttributes());
+        self::assertSame(['type' => '290049'], $parser->getIssues()[0]->getAttributes());
     }
 
     /**
@@ -342,10 +342,15 @@ XML;
         $parser = new AbaParser($content);
 
         self::assertInstanceOf(Issue::class, $parser->getIssues()[0]);
-        self::assertIsArray($parser->getIssues()[0]->getAttributes());
+        self::assertSame(['type' => '290049'], $parser->getIssues()[0]->getAttributes());
 
         self::assertInstanceOf(Issue::class, $parser->getPaymentAcknowledgement()->getIssues()[0]);
-        self::assertIsArray($parser->getPaymentAcknowledgement()->getIssues()[0]->getAttributes());
+        self::assertSame(
+            ['type' => '290049'],
+            $parser->getPaymentAcknowledgement()
+                ->getIssues()[0]
+                ->getAttributes()
+        );
     }
 
     private function getSampleFileContents(string $file): string

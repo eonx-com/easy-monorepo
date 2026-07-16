@@ -23,8 +23,7 @@ final class MessageWrapper
 
     public function __construct(
         private readonly object $message,
-    ) {
-    }
+    ) {}
 
     public static function wrap(object $message): self
     {

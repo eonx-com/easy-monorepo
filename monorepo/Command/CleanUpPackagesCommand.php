@@ -30,7 +30,7 @@ final class CleanUpPackagesCommand extends Command
 
     private function getComposerLockFiles(): Finder
     {
-        return (new Finder())
+        return new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->files()
             ->name('composer.lock');
@@ -38,7 +38,7 @@ final class CleanUpPackagesCommand extends Command
 
     private function getVarDirs(): Finder
     {
-        return (new Finder())
+        return new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->directories()
             ->name('var');
@@ -46,7 +46,7 @@ final class CleanUpPackagesCommand extends Command
 
     private function getVendorDirs(): Finder
     {
-        return (new Finder())
+        return new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->directories()
             ->name('vendor');

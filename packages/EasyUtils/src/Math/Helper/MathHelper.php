@@ -8,15 +8,15 @@ use EonX\EasyUtils\Math\Exception\InvalidDivisionByZeroException;
 
 final readonly class MathHelper implements MathHelperInterface
 {
-    private const ROUND_DECIMAL_SEPARATOR = '.';
+    private const string ROUND_DECIMAL_SEPARATOR = '.';
 
-    private const ROUND_MODE = \PHP_ROUND_HALF_EVEN;
+    private const int ROUND_MODE = \PHP_ROUND_HALF_EVEN;
 
-    private const ROUND_PRECISION = 0;
+    private const int ROUND_PRECISION = 0;
 
-    private const ROUND_THOUSANDS_SEPARATOR = '';
+    private const string ROUND_THOUSANDS_SEPARATOR = '';
 
-    private const SCALE = 99;
+    private const int SCALE = 99;
 
     private string $decimalSeparator;
 
@@ -69,7 +69,7 @@ final readonly class MathHelper implements MathHelperInterface
 
     public function compareThat(string $leftOperand): MathComparisonHelperInterface
     {
-        return new MathComparisonHelper($leftOperand, (int)$this->scale);
+        return new MathComparisonHelper($leftOperand, $this->scale);
     }
 
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $mode = null): string

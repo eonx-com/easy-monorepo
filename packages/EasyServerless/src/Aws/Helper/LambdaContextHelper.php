@@ -24,7 +24,10 @@ final class LambdaContextHelper
 
     public static function getInvocationContext(): array
     {
-        return (array)\json_decode($_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]', true);
+        /** @var string $lambdaInvocationContext */
+        $lambdaInvocationContext = $_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]';
+
+        return (array)\json_decode($lambdaInvocationContext, true);
     }
 
     public static function getRemainingTimeInMilliseconds(): int
@@ -34,7 +37,10 @@ final class LambdaContextHelper
 
     public static function getRequestContext(): array
     {
-        return (array)\json_decode($_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]', true);
+        /** @var string $lambdaRequestContext */
+        $lambdaRequestContext = $_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]';
+
+        return (array)\json_decode($lambdaRequestContext, true);
     }
 
     public static function getTaskRoot(): ?string

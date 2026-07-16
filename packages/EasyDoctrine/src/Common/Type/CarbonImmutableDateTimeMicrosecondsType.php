@@ -10,18 +10,18 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use EonX\EasyDoctrine\Common\Factory\ConversionExceptionFactory;
 
 final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableType
 {
-    private const FORMAT_DB_DATETIME = 'DATETIME(6)';
+    private const string FORMAT_DB_DATETIME = 'DATETIME(6)';
 
-    private const FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
+    private const string FORMAT_DB_TIMESTAMP = 'TIMESTAMP';
 
-    private const FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
+    private const string FORMAT_DB_TIMESTAMP_WO_TIMEZONE = 'TIMESTAMP(6) WITHOUT TIME ZONE';
 
-    private const FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
+    private const string FORMAT_PHP_DATETIME = 'Y-m-d H:i:s.u';
 
     private static ?DateTimeZone $utc = null;
 
@@ -35,7 +35,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return $value->setTimezone(self::getUtc())->format(self::FORMAT_PHP_DATETIME);
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTimeInterface']);
+        throw ConversionExceptionFactory::invalidType($value, self::class, ['null', DateTimeInterface::class]);
     }
 
     /**
@@ -61,7 +61,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
             return CarbonImmutable::instance($dateTime);
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT_PHP_DATETIME);
+        throw ConversionExceptionFactory::invalidFormat($value, self::class, self::FORMAT_PHP_DATETIME);
     }
 
     public function getSqlDeclaration(array $column, AbstractPlatform $platform): string

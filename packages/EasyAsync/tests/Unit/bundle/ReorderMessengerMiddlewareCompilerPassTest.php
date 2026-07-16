@@ -116,13 +116,14 @@ final class ReorderMessengerMiddlewareCompilerPassTest extends AbstractUnitTestC
         self::assertInstanceOf(IteratorArgument::class, $middleware);
 
         return \array_map(
-            static fn (Reference $reference): string => (string)$reference,
+            static fn(Reference $reference): string => (string)$reference,
             $middleware->getValues()
         );
     }
 
     private function process(ContainerBuilder $container): void
     {
-        (new ReorderMessengerMiddlewareCompilerPass())->process($container);
+        new ReorderMessengerMiddlewareCompilerPass()
+            ->process($container);
     }
 }

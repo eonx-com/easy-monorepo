@@ -20,7 +20,7 @@ final class BasicAuthDecoder extends AbstractDecoder
 
         $original = $authorization;
         $authorization = \explode(':', (string)\base64_decode($authorization, true));
-        $username = \trim($authorization[0] ?? '');
+        $username = \trim($authorization[0]);
         $password = \trim($authorization[1] ?? '');
 
         if ($username === '' || $password === '') {

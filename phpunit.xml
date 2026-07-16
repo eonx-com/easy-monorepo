@@ -3,7 +3,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     colors="true"
-    bootstrap="tests/bootstrap.php"
+    bootstrap="vendor/autoload.php"
+    failOnWarning="true"
+    failOnNotice="true"
+    displayDetailsOnAllIssues="true"
 >
     <testsuites>
         <testsuite name="EonX EasyMonorepo Test Suite">

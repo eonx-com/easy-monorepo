@@ -33,7 +33,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
         yield 'true because no filter false and no reject true' => [
             [true],
             [
-                fn (): bool => false,
+                fn(): bool => false,
             ],
             true,
         ];
@@ -122,10 +122,8 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
         ]);
 
         // Ok this is for coverage only, please don't judge me
-        $entry->before(function (): void {
-        })
-            ->then(function (): void {
-            });
+        $entry->before(function (): void {})
+            ->then(function (): void {});
 
         $params ? $entry->{$method}(...$params) : $entry->{$method}();
 
@@ -148,6 +146,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
     public function testWeekdaysHourly(): void
     {
         self::assertSame('0 * * * 1-5', $this->entry->weekdays()->hourly()->getCronExpression());
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertIsBool($this->entry->isDue());
     }
 }

@@ -6,7 +6,6 @@ namespace EonX\EasyPagination\Paginator;
 use BackedEnum;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
@@ -67,8 +66,8 @@ trait DoctrineCommonPaginatorTrait
         if ($this->isLargeDatasetEnabled()) {
             $approximateTotalItems = $this->getTotalItemsForLargeDataset($queryBuilder);
 
-            if ($approximateTotalItems !== null &&
-                $approximateTotalItems > $this->getLargeDatasetPaginationPreciseResultsLimit()
+            if ($approximateTotalItems !== null
+                && $approximateTotalItems > $this->getLargeDatasetPaginationPreciseResultsLimit()
             ) {
                 return $this->totalItems = $approximateTotalItems;
             }
@@ -129,7 +128,7 @@ trait DoctrineCommonPaginatorTrait
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
-        $primaryKeysMap = static fn (array $row): string => (string)$row[$primaryKeyIndex];
+        $primaryKeysMap = static fn(array $row): string => (string)$row[$primaryKeyIndex];
 
         /** @var string[] $primaryKeys */
         $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));
@@ -163,9 +162,13 @@ trait DoctrineCommonPaginatorTrait
     {
         $connection = $this->getConnection();
         $platform = $connection->getDatabasePlatform();
+        // @todo Remove this compatibility layer when Doctrine DBAL 3 support is dropped
+        $sqlitePlatformClass = \class_exists('Doctrine\\DBAL\\Platforms\\SQLitePlatform')
+            ? 'Doctrine\\DBAL\\Platforms\\SQLitePlatform'
+            : 'Doctrine\\DBAL\\Platforms\\SqlitePlatform';
 
         if ($platform instanceof PostgreSQLPlatform === false
-            && $platform instanceof SqlitePlatform === false) {
+            && $platform instanceof $sqlitePlatformClass === false) {
             return null;
         }
 
@@ -187,7 +190,8 @@ trait DoctrineCommonPaginatorTrait
                 $paramTypesMap[$param->getName()] = $param->getType();
             }
 
-            $paramMappings = (new Parser($query))->parse()
+            $paramMappings = new Parser($query)
+->parse()
                 ->getParameterMappings();
             foreach ($paramMappings as $paramName => $positions) {
                 if (\array_key_exists($paramName, $parametersMap) === false) {
@@ -224,7 +228,7 @@ trait DoctrineCommonPaginatorTrait
         if ($platform instanceof PostgreSQLPlatform) {
             $sql = \sprintf('EXPLAIN %s', $sql);
         }
-        if ($platform instanceof SqlitePlatform) {
+        if ($platform instanceof $sqlitePlatformClass) {
             $sql = \sprintf('EXPLAIN QUERY PLAN %s', $sql);
         }
 

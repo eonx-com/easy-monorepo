@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class DecorateDefaultClientCompilerPass extends AbstractEasyHttpClientCompilerPass
 {
-    private const DECORATION_SERVICE_ID = 'easy_http_client.decorate_default';
+    private const string DECORATION_SERVICE_ID = 'easy_http_client.decorate_default';
 
     protected function doProcess(ContainerBuilder $container): void
     {

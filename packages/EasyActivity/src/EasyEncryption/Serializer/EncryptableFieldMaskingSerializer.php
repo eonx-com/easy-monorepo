@@ -11,7 +11,7 @@ use ReflectionException;
 
 final class EncryptableFieldMaskingSerializer implements ActivitySubjectDataSerializerInterface
 {
-    private const ENCRYPTED_MASK = '*ENCRYPTED*';
+    private const string ENCRYPTED_MASK = '*ENCRYPTED*';
 
     /**
      * @var array<class-string, list<string>>
@@ -24,8 +24,7 @@ final class EncryptableFieldMaskingSerializer implements ActivitySubjectDataSeri
     public function __construct(
         private readonly ActivitySubjectDataSerializerInterface $decorated,
         private readonly array $subjects,
-    ) {
-    }
+    ) {}
 
     public function serialize(array $data, ActivitySubjectInterface $subject, ?array $context = null): ?string
     {
@@ -71,7 +70,7 @@ final class EncryptableFieldMaskingSerializer implements ActivitySubjectDataSeri
                 $reflectionClass = $reflectionClass->getParentClass();
             } while ($reflectionClass !== false);
 
-            $encryptableFields = \array_unique($encryptableFields);
+            $encryptableFields = \array_values(\array_unique($encryptableFields));
         } catch (ReflectionException) {
             $encryptableFields = [];
         }

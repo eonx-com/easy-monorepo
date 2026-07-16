@@ -29,24 +29,24 @@ enum BatchObjectStatus: string
 
     case SucceededPendingApproval = 'succeeded_pending_approval';
 
-    public const STATUSES_FOR_CANCEL = [
+    public const array STATUSES_FOR_CANCEL = [
         self::Cancelled,
         self::Failed,
     ];
 
-    public const STATUSES_FOR_COMPLETE = [
+    public const array STATUSES_FOR_COMPLETE = [
         self::Cancelled,
         self::Failed,
         self::Succeeded,
     ];
 
-    public const STATUSES_FOR_DISPATCH = [
+    public const array STATUSES_FOR_DISPATCH = [
         self::BatchPendingApproval,
         self::Created,
         self::FailedPendingRetry,
     ];
 
-    public const STATUSES_FOR_PENDING_APPROVAL = [
+    public const array STATUSES_FOR_PENDING_APPROVAL = [
         self::BatchPendingApproval,
         self::ProcessingDependentObjects,
     ];

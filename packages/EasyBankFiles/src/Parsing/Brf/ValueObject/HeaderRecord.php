@@ -6,13 +6,13 @@ namespace EonX\EasyBankFiles\Parsing\Brf\ValueObject;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getBillerCode()
- * @method string|null getBillerCreditAccount()
- * @method string|null getBillerCreditBSB()
- * @method string|null getBillerShortName()
- * @method string|null getFileCreationDate()
- * @method string|null getFileCreationTime()
- * @method string|null getFiller()
+ * @method string getBillerCode()
+ * @method string getBillerCreditAccount()
+ * @method string getBillerCreditBSB()
+ * @method string getBillerShortName()
+ * @method string getFileCreationDate()
+ * @method string getFileCreationTime()
+ * @method string getFiller()
  */
 final class HeaderRecord extends AbstractResult
 {

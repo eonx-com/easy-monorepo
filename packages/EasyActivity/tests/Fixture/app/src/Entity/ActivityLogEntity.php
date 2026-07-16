@@ -11,8 +11,7 @@ final readonly class ActivityLogEntity implements ActivitySubjectInterface
         private string $id,
         private string $subjectType,
         private array $allowedProperties,
-    ) {
-    }
+    ) {}
 
     public function getActivitySubjectId(): string
     {
@@ -29,7 +28,7 @@ final readonly class ActivityLogEntity implements ActivitySubjectInterface
         return [];
     }
 
-    public function getAllowedActivityProperties(): ?array
+    public function getAllowedActivityProperties(): array
     {
         return $this->allowedProperties;
     }

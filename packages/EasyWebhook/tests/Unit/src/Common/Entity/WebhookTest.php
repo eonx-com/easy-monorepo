@@ -55,18 +55,18 @@ final class WebhookTest extends AbstractUnitTestCase
             ->sendAfter($sendAfter)
             ->sendNow()
             ->url($url);
+        $webhook->toArray();
 
         self::assertEquals($body, $webhook->getBody());
         self::assertEquals($event, $webhook->getEvent());
         self::assertEquals($extra + [
-                'key1' => 'value1',
-            ], $webhook->getExtra());
+            'key1' => 'value1',
+        ], $webhook->getExtra());
         self::assertEquals($httpOptions, $webhook->getHttpClientOptions());
         self::assertEquals($maxAttempt, $webhook->getMaxAttempt());
         self::assertEquals($secret, $webhook->getSecret());
         self::assertEquals($sendAfter, $webhook->getSendAfter());
         self::assertTrue($webhook->isSendNow());
         self::assertEquals($url, $webhook->getUrl());
-        self::assertIsArray($webhook->toArray());
     }
 }

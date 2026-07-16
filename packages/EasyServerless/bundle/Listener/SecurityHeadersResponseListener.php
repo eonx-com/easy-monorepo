@@ -13,8 +13,7 @@ final readonly class SecurityHeadersResponseListener
 {
     public function __construct(
         private SecurityHeadersHydrator $securityHeaderHydrator,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ResponseEvent $event): void
     {

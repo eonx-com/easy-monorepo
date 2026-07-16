@@ -13,7 +13,7 @@ final class ApiKeyDecoder extends AbstractDecoder
 {
     private ?HashedApiKeyDriverInterface $hashedApiKeyDriver = null;
 
-    public function decode(Request $request): null|ApiTokenInterface|HashedApiKey
+    public function decode(Request $request): ApiTokenInterface|HashedApiKey|null
     {
         $authorization = $this->getHeaderWithoutPrefix('Authorization', 'Basic', $request);
 
@@ -23,7 +23,7 @@ final class ApiKeyDecoder extends AbstractDecoder
         }
 
         $authorization = \explode(':', (string)\base64_decode($authorization, true));
-        $username = \trim($authorization[0] ?? '');
+        $username = \trim($authorization[0]);
         $password = \trim($authorization[1] ?? '');
 
         if ($username === '' || $password !== '') {

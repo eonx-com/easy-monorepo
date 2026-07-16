@@ -37,9 +37,7 @@ abstract class AbstractMappingProvider implements MappingProviderInterface
     protected function setTypesMapping(array $decisionsConfig): void
     {
         foreach ($decisionsConfig as $name => $config) {
-            if (\is_string($name) && \is_string($config)) {
-                $this->typesMapping[$name] = $config;
-            }
+            $this->typesMapping[$name] = $config;
         }
     }
 }

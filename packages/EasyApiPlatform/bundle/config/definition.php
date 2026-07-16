@@ -40,7 +40,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->children();
 
         $easyErrorHandlerDefinition->append(
-            (new NodeBuilder())
+            new NodeBuilder()
                 ->arrayNode('custom_serializer_exceptions')
                     ->info('Custom serializer exceptions to be handled by '
                        . ApiPlatformErrorResponseBuilderInterface::class)
@@ -54,11 +54,11 @@ return static function (DefinitionConfigurator $definition) {
         );
 
         $easyErrorHandlerDefinition->append(
-            (new NodeBuilder())
+            new NodeBuilder()
                 ->variableNode('validation_error_code')
                 ->validate()
                     ->ifTrue(
-                        static fn ($value): bool => \is_int($value) === false
+                        static fn($value): bool => \is_int($value) === false
                             && \is_string($value) === false
                             && ($value instanceof BackedEnum) === false
                     )
@@ -69,7 +69,7 @@ return static function (DefinitionConfigurator $definition) {
 
         if (\class_exists(EasyBugsnagBundle::class)) {
             $easyErrorHandlerDefinition->append(
-                (new NodeBuilder())
+                new NodeBuilder()
                     ->booleanNode('report_exceptions_to_bugsnag')
                         ->info('Report exceptions handled by '
                         . ApiPlatformErrorResponseBuilderInterface::class . ' to Bugsnag')

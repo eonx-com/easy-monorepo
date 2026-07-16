@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArraySniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
-use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
+use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationsSniff;
 use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
 use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
 use EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
@@ -16,13 +16,12 @@ use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
-use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
-use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixer;
+use PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
@@ -52,7 +51,7 @@ return ECSConfig::configure()
     ->withParallel(
         ParallelSettingsHelper::getTimeoutSeconds(),
         ParallelSettingsHelper::getMaxNumberOfProcess(),
-        ParallelSettingsHelper::getJobSize()
+        ParallelSettingsHelper::getJobSize(),
     )
     ->withCache(__DIR__ . '/var/cache/ecs')
     ->withSets([
@@ -75,9 +74,6 @@ return ECSConfig::configure()
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
         BlankLineAfterOpeningTagFixer::class => null,
-        BracesFixer::class => [
-            'packages/EasyTest/.phpstorm.meta.php',
-        ],
         ClassDefinitionFixer::class => [
             'packages/EasyDecision/src/Configurator/AbstractNameRestrictedDecisionConfigurator.php',
             'packages/EasyDecision/src/Configurator/AbstractTypeRestrictedDecisionConfigurator.php',
@@ -87,6 +83,7 @@ return ECSConfig::configure()
         DisallowMixedTypeHintSniff::class => [
             'packages/EasyBankFiles/src/Parsing/Common/Converter/XmlConverter.php',
             'packages/EasySecurity/src/SymfonySecurity/Voter/*',
+            'packages/EasySwoole/src/Doctrine/Result/DbalResult.php',
         ],
         DisallowNonNullDefaultValueSniff::class => null,
         FinalClassFixer::class => [
@@ -100,6 +97,9 @@ return ECSConfig::configure()
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',
             'packages/EasyTest/src/Common/Trait/DatabaseEntityTrait.php',
+            'packages/EasyHttpClient/tests/Unit/AbstractUnitTestCase.php',
+            'packages/EasyRepository/tests/Unit/AbstractUnitTestCase.php',
+            'packages/EasyUtils/tests/Unit/AbstractUnitTestCase.php',
         ],
         FullyQualifiedGlobalFunctionsSniff::class => [
             'config/monorepo_services.php',
@@ -112,8 +112,9 @@ return ECSConfig::configure()
         NoExtraBlankLinesFixer::class => [
             'packages/EasyTest/.phpstorm.meta.php',
         ],
-        'packages/*/var/*',
-        'packages/*/vendor/*',
+        OperatorLinebreakFixer::class => [
+            'packages/EasyUtils/tests/Unit/AbstractSensitiveDataSanitizerTestCase.php',
+        ],
         PhpdocAlignFixer::class => [
             'packages/EasyUtils/src/Math/Helper/MathHelperInterface.php',
             'packages/EasyUtils/src/Math/Helper/MathHelper.php',
@@ -129,11 +130,13 @@ return ECSConfig::configure()
         Psr4Sniff::class => [
             'quality/tests/*',
         ],
-        SingleSpaceAfterConstructFixer::class => null,
         SingleSpaceAroundConstructFixer::class => null,
         StaticClosureSniff::class => [
             'packages/*/tests/*',
         ],
+        'packages/*/tests/*/config/*',
+        'packages/*/var/*',
+        'packages/*/vendor/*',
     ])
     ->withRules([
         AvoidPublicPropertiesSniff::class,
@@ -142,7 +145,7 @@ return ECSConfig::configure()
         LinebreakAfterEqualsSignSniff::class,
         MethodChainingNewlineFixer::class,
         SortAttributesAlphabeticallySniff::class,
-        SortedApiResourceOperationKeysSniff::class,
+        SortedApiResourceOperationsSniff::class,
         StandaloneLinePromotedPropertyFixer::class,
         StaticClosureSniff::class,
         UselessConstantTypeHintSniff::class,

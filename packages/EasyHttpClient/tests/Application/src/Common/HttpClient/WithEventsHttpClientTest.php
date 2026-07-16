@@ -50,10 +50,10 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
-        self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]);
+        self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]['event']);
 
         /** @var \EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent $event */
-        $event = $eventDispatcher->getDispatchedEvents()[0];
+        $event = $eventDispatcher->getDispatchedEvents()[0]['event'];
 
         self::assertInstanceOf(ResponseData::class, $event->getResponseData());
         self::assertNull($event->getThrowable());
@@ -78,10 +78,10 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
-        self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]);
+        self::assertInstanceOf(HttpRequestSentEvent::class, $eventDispatcher->getDispatchedEvents()[0]['event']);
 
         /** @var \EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent $event */
-        $event = $eventDispatcher->getDispatchedEvents()[0];
+        $event = $eventDispatcher->getDispatchedEvents()[0]['event'];
 
         self::assertNull($event->getResponseData());
         self::assertSame($throwable, $event->getThrowable());
@@ -102,7 +102,7 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         self::assertCount(1, $eventDispatcher->getDispatchedEvents());
 
         /** @var \EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent $event */
-        $event = $eventDispatcher->getDispatchedEvents()[0];
+        $event = $eventDispatcher->getDispatchedEvents()[0]['event'];
 
         self::assertInstanceOf(ResponseData::class, $event->getResponseData());
         self::assertSame($statusCode, $event->getResponseData()->getStatusCode());

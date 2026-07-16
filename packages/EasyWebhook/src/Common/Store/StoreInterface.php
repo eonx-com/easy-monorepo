@@ -7,9 +7,9 @@ use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 
 interface StoreInterface
 {
-    final public const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    final public const string DATETIME_FORMAT = 'Y-m-d H:i:s';
 
-    final public const DEFAULT_COLUMNS = [
+    final public const array DEFAULT_COLUMNS = [
         'class',
         'created_at',
         'current_attempt',
@@ -24,7 +24,7 @@ interface StoreInterface
         'url',
     ];
 
-    final public const DEFAULT_WEBHOOK_ID = 'webhook-id';
+    final public const string DEFAULT_WEBHOOK_ID = 'webhook-id';
 
     public function find(string $id): ?WebhookInterface;
 

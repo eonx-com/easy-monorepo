@@ -12,7 +12,7 @@ final class RandomStringConfigTest extends AbstractUnitTestCase
     public function testInvalidAlphabetExceptionThrown(): void
     {
         $this->expectException(InvalidAlphabetException::class);
-        $sut = (new RandomStringConfig(8))
+        $sut = new RandomStringConfig(8)
             ->alphabet('');
 
         $sut->resolveAlphabet();

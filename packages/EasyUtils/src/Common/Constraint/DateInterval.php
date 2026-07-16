@@ -13,7 +13,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class DateInterval extends AbstractConstraint
 {
-    public const INVALID_DATE_INTERVAL_ERROR = 'INVALID_DATE_INTERVAL_ERROR';
+    public const string INVALID_DATE_INTERVAL_ERROR = 'INVALID_DATE_INTERVAL_ERROR';
 
     public string $message = 'date_interval.not_valid';
 }

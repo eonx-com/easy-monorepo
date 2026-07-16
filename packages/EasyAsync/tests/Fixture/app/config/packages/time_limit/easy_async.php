@@ -3,16 +3,18 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyAsyncConfig;
-
 /**
  * @see \EonX\EasyAsync\Tests\Unit\Bundle\EasyAsyncBundleTest::testMessengerConfigWithTimeLimit
  */
-return static function (EasyAsyncConfig $easyAsyncConfig): void {
-    $messengerWorkerConfig = $easyAsyncConfig->messenger()
-        ->worker();
-
-    $messengerWorkerConfig->stopOnTimeLimit()
-        ->enabled(true)
-        ->minTime(1000);
-};
+return App::config([
+    'easy_async' => [
+        'messenger' => [
+            'worker' => [
+                'stop_on_time_limit' => [
+                    'enabled' => true,
+                    'min_time' => 1000,
+                ],
+            ],
+        ],
+    ],
+]);

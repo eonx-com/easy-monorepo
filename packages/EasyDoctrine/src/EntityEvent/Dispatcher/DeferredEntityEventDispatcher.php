@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyDoctrine\EntityEvent\Dispatcher;
 
 use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
-use EonX\EasyDoctrine\EntityEvent\Event\EntityActionEventInterface;
+use EonX\EasyDoctrine\EntityEvent\Event\AbstractEntityEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityCreatedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityDeletedEvent;
 use EonX\EasyDoctrine\EntityEvent\Event\EntityUpdatedEvent;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
-use JetBrains\PhpStorm\Deprecated;
 use LogicException;
 
 final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatcherInterface
@@ -26,9 +25,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
      */
     private array $deletedEntities = [];
 
-    private readonly ObjectCopierInterface $deletedEntityCopier;
-
-    private bool $enabled;
+    private bool $enabled = true;
 
     private array $entityChangeSets = [];
 
@@ -39,24 +36,8 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        #[Deprecated('Will be removed in 7.0, use $deletedEntityCopier instead')]
-        ?ObjectCopierInterface $objectCopier = null,
-        ?ObjectCopierInterface $deletedEntityCopier = null,
+        private readonly ObjectCopierInterface $deletedEntityCopier,
     ) {
-        $this->enabled = true;
-
-        if ($objectCopier !== null) {
-            @\trigger_error(
-                'Argument $objectCopier is deprecated and will be removed in 7.0, use $deletedEntityCopier instead.',
-                \E_USER_DEPRECATED
-            );
-        }
-
-        if ($objectCopier === null && $deletedEntityCopier === null) {
-            throw new LogicException('At least one of $objectCopier or $deletedEntityCopier must be provided.');
-        }
-
-        $this->deletedEntityCopier = $deletedEntityCopier ?? $objectCopier;
     }
 
     public function clear(?int $transactionNestingLevel = null): void
@@ -182,16 +163,16 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         try {
             $mergedEntityChangeSets = [];
             foreach ($this->entityChangeSets as $levelChangeSets) {
-                foreach ($levelChangeSets as $entityObjectId => $changeSet) {
-                    $mergedEntityChangeSets[$entityObjectId] = $this->mergeChangeSet(
-                        $mergedEntityChangeSets[$entityObjectId] ?? [],
+                foreach ($levelChangeSets as $entityId => $changeSet) {
+                    $mergedEntityChangeSets[$entityId] = $this->mergeChangeSet(
+                        $mergedEntityChangeSets[$entityId] ?? [],
                         $changeSet
                     );
                 }
             }
 
             foreach ($this->collectionChangeSets as $levelChangeSets) {
-                foreach ($levelChangeSets as $entityObjectId => $entityCollectionChangeSets) {
+                foreach ($levelChangeSets as $entityId => $entityCollectionChangeSets) {
                     foreach ($entityCollectionChangeSets as $associationName => $changeSet) {
                         $computedChangeSet = [[], []];
 
@@ -203,17 +184,17 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
                             $computedChangeSet[1][] = \is_callable($id) ? $id() : $id;
                         }
 
-                        $mergedEntityChangeSets[$entityObjectId] = $this->mergeChangeSet(
-                            $mergedEntityChangeSets[$entityObjectId] ?? [],
+                        $mergedEntityChangeSets[$entityId] = $this->mergeChangeSet(
+                            $mergedEntityChangeSets[$entityId] ?? [],
                             [$associationName => $computedChangeSet]
                         );
                     }
                 }
             }
 
-            /** @var int $entityObjectId */
-            foreach ($mergedEntityChangeSets as $entityObjectId => $entityChangeSet) {
-                $event = $this->createEntityEvent($entityObjectId, $entityChangeSet);
+            /** @var int $entityId */
+            foreach ($mergedEntityChangeSets as $entityId => $entityChangeSet) {
+                $event = $this->createEntityEvent($entityId, $entityChangeSet);
 
                 $events[] = $event;
             }
@@ -223,6 +204,7 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
 
         foreach ($events as $event) {
             $this->eventDispatcher->dispatch($event);
+            $this->eventDispatcher->dispatch($event, $event->getEventName());
         }
     }
 
@@ -231,18 +213,21 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
         $this->enabled = true;
     }
 
-    private function createEntityEvent(int $entityObjectId, array $entityChangeSet): EntityActionEventInterface
+    /**
+     * @return \EonX\EasyDoctrine\EntityEvent\Event\AbstractEntityEvent<object>
+     */
+    private function createEntityEvent(int $entityId, array $entityChangeSet): AbstractEntityEvent
     {
-        if (isset($this->createdEntities[$entityObjectId]) !== false) {
-            return new EntityCreatedEvent($this->createdEntities[$entityObjectId], $entityChangeSet);
+        if (isset($this->createdEntities[$entityId]) !== false) {
+            return new EntityCreatedEvent($this->createdEntities[$entityId], $entityChangeSet);
         }
 
-        if (isset($this->updatedEntities[$entityObjectId]) !== false) {
-            return new EntityUpdatedEvent($this->updatedEntities[$entityObjectId], $entityChangeSet);
+        if (isset($this->updatedEntities[$entityId]) !== false) {
+            return new EntityUpdatedEvent($this->updatedEntities[$entityId], $entityChangeSet);
         }
 
-        if (isset($this->deletedEntities[$entityObjectId]) !== false) {
-            return new EntityDeletedEvent($this->deletedEntities[$entityObjectId], $entityChangeSet);
+        if (isset($this->deletedEntities[$entityId]) !== false) {
+            return new EntityDeletedEvent($this->deletedEntities[$entityId], $entityChangeSet);
         }
 
         // @codeCoverageIgnoreStart

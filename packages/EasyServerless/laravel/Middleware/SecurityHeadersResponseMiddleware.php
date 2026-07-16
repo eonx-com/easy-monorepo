@@ -13,8 +13,7 @@ final readonly class SecurityHeadersResponseMiddleware
 {
     public function __construct(
         private SecurityHeadersHydrator $securityHeadersHydrator,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): mixed
     {

@@ -51,8 +51,7 @@ The default configurators are:
 - `RuntimeVersionClientConfigurator`: Sets the runtime and version in the *runtime versions* of the device data for Bugsnag:
     - For Symfony applications, sets the runtime to the value of the `runtime` configuration option (`symfony` by default)
       and sets the version to the value of the `runtime_version` configuration option (the Symfony runtime version).
-    - For Laravel/Lumen applications, sets the runtime to either `lumen` or `laravel` as applicable and sets the version
-      to the application version.
+    - For Laravel applications, sets the runtime to `laravel` and sets the version to the application version.
 - `AwsEcsFargateClientConfigurator`: If the `aws_ecs_fargate.enabled` configuration option is set to `true`, then the
   `AwsEcsFargateClientConfigurator` automatically resolves information about the AWS ECS Fargate task (`AvailabilityZone`,
   `Cluster`, `TaskARN` and `TaskDefinition`) and adds it as metadata to Bugsnag reports.
@@ -65,9 +64,9 @@ To register additional client configurators in Symfony, you simply register a ne
 `EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface`. The EasyBugsnag package registers the interface for
 auto-configuration by default, so you have nothing else to worry about.
 
-### Laravel/Lumen
+### Laravel
 
-To register additional client configurators in Laravel/Lumen, you must explicitly tag them within the service container.
+To register additional client configurators in Laravel, you must explicitly tag them within the service container.
 
 #### Example
 

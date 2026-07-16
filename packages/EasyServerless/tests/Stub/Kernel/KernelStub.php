@@ -52,7 +52,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         $container->setDefinition(
             'kernel',
-            (new Definition(KernelInterface::class))->setSynthetic(true)
+            new Definition(KernelInterface::class)->setSynthetic(true)
         );
         $container->setAlias(KernelInterface::class, 'kernel');
         $container->setDefinition(BusDriver::class, new Definition(BusDriver::class));
@@ -60,18 +60,18 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         $container->setAlias('logger', NullLogger::class);
         $container->setDefinition(
             MessageBus::class,
-            (new Definition(MessageBus::class))->setArguments([[]])
+            new Definition(MessageBus::class)->setArguments([[]])
         );
         $container->setAlias(MessageBusInterface::class, MessageBus::class);
         $container->setDefinition(PhpSerializer::class, new Definition(PhpSerializer::class));
         $container->setAlias(SerializerInterface::class, PhpSerializer::class);
         $container->setDefinition(
             'messenger.retry_strategy_locator',
-            (new Definition(ServiceLocator::class))->setArguments([[]])
+            new Definition(ServiceLocator::class)->setArguments([[]])
         );
         $container->setDefinition(
             'services_resetter',
-            (new Definition(ServicesResetter::class))->setArguments([new IteratorArgument([]), []])
+            new Definition(ServicesResetter::class)->setArguments([new IteratorArgument([]), []])
         );
 
         foreach ($container->getDefinitions() as $definition) {

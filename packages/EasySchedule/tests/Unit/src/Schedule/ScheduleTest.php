@@ -88,7 +88,8 @@ final class ScheduleTest extends AbstractUnitTestCase
     public function testSetApplication(): void
     {
         $app = new Application();
-        $schedule = (new Schedule())->setApplication($app);
+        $schedule = new Schedule()
+            ->setApplication($app);
 
         self::assertSame($app, $schedule->getApplication());
     }

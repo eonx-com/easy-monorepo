@@ -79,6 +79,6 @@ final class JwtTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new Jwt([], ''))->getClaim('invalid');
+        new Jwt([], '')->getClaim('invalid');
     }
 }

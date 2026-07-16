@@ -13,8 +13,7 @@ final readonly class DecisionConfiguratorStub implements
 {
     public function __construct(
         private string $decisionName,
-    ) {
-    }
+    ) {}
 
     public function configure(DecisionInterface $decision): void
     {

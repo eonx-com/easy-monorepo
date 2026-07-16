@@ -4,11 +4,11 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2"
+        "php": "^8.4"
     },
     "require-dev": {
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8"
+        "laravel/framework": "^13.0",
+        "phpunit/phpunit": "^12.5|^13.0"
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.23-dev"
+            "dev-master": "6.21-dev"
         }
     }
 }

@@ -7,14 +7,13 @@ use Firebase\JWT\JWT;
 
 final readonly class TokenGenerator implements TokenGeneratorInterface
 {
-    private const DEFAULT_ALGO = 'HS256';
+    private const string DEFAULT_ALGO = 'HS256';
 
     public function __construct(
         private string $audience,
         private ?string $secret = null,
         private ?string $issuer = null,
-    ) {
-    }
+    ) {}
 
     public function generate(
         array $scopes,

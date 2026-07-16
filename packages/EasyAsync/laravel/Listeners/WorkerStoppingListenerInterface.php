@@ -5,7 +5,7 @@ namespace EonX\EasyAsync\Laravel\Listeners;
 
 interface WorkerStoppingListenerInterface
 {
-    public const REASONS = [
+    public const array REASONS = [
         1 => 'Timeout',
         12 => 'Memory exceeded',
     ];

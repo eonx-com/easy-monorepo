@@ -25,13 +25,13 @@ use const Pkcs11\CKU_USER;
 
 final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHsmEncryptorInterface
 {
-    private const CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
+    private const string CLOUD_HSM_EXTENSION = '/opt/cloudhsm/lib/libcloudhsm_pkcs11.so';
 
-    private const EXCEPTION_DEFAULT_RETRIES = 3;
+    private const int EXCEPTION_DEFAULT_RETRIES = 3;
 
-    private const EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
+    private const string EXCEPTION_RETRY_MESSAGE = 'CKR_FUNCTION_FAILED';
 
-    private const GCM_TAG_LENGTH = 128;
+    private const int GCM_TAG_LENGTH = 128;
 
     private bool $cloudHsmSdkConfigured = false;
 
@@ -103,7 +103,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
 
     protected function doDecrypt(
         string $text,
-        null|array|string $key,
+        array|string|null $key,
         bool $raw,
     ): string {
         $this->validateKey($key);
@@ -112,14 +112,14 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        return $this->execWithRetries(fn (): string => $this
+        return $this->execWithRetries(fn(): string => $this
             ->findKey($this->getKeyName($keyAsString))
             ->decrypt($this->getMechanism(), (string)\hex2bin($text)));
     }
 
     protected function doEncrypt(
         string $text,
-        null|array|string $key,
+        array|string|null $key,
         bool $raw,
     ): string {
         $this->validateKey($key);
@@ -128,7 +128,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
         /** @var string|null $keyAsString */
         $keyAsString = $key;
 
-        $encrypted = $this->execWithRetries(fn (): string => $this
+        $encrypted = $this->execWithRetries(fn(): string => $this
             ->findKey($this->getKeyName($keyAsString))
             ->encrypt($this->getMechanism(), $text));
 
@@ -158,8 +158,8 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
 
                 // Reset PKCS11 session on specific error failure
                 if (
-                    $shouldRetry &&
-                    \str_contains(\strtoupper($throwable->getMessage()), self::EXCEPTION_RETRY_MESSAGE)
+                    $shouldRetry
+                    && \str_contains(\strtoupper($throwable->getMessage()), self::EXCEPTION_RETRY_MESSAGE)
                 ) {
                     $this->logger->info('Resetting AWS CloudHSM PKCS11 session');
 
@@ -182,6 +182,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
             return $this->keys[$keyName];
         }
 
+        /** @var \Pkcs11\Key[]|null $objects */
         $objects = $this->session?->findObjects([
             CKA_LABEL => $keyName,
         ]) ?? [];

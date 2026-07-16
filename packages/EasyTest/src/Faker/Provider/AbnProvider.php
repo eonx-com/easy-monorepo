@@ -7,9 +7,9 @@ use Faker\Provider\Base;
 
 final class AbnProvider extends Base
 {
-    private const MASK = 89;
+    private const int MASK = 89;
 
-    private const WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+    private const array WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
 
     /**
      * Generates Australian Business Number.

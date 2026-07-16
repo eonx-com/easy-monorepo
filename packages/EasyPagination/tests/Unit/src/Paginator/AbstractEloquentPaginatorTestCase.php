@@ -61,7 +61,7 @@ abstract class AbstractEloquentPaginatorTestCase extends AbstractUnitTestCase
         $pdo = $doctrineConnection->getNativeConnection();
 
         $this->connection = new SQLiteConnection($pdo);
-        $this->connection->setSchemaGrammar(new SQLiteGrammar());
+        $this->connection->setSchemaGrammar(new SQLiteGrammar($this->connection));
 
         return $this->connection;
     }

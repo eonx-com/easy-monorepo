@@ -16,14 +16,12 @@ use EonX\EasyRequestId\EasyHttpClient\Modifier\RequestIdRequestDataModifier;
 use EonX\EasyRequestId\EasyLogging\Processor\RequestIdProcessor;
 use EonX\EasyRequestId\EasyWebhook\Middleware\RequestIdWebhookMiddleware;
 use EonX\EasyRequestId\Laravel\Listeners\RequestIdRouteMatchedListener;
-use EonX\EasyRequestId\Laravel\Middleware\RequestIdMiddleware;
 use EonX\EasyWebhook\Bundle\Enum\ConfigTag as EasyWebhookConfigTag;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Queue;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application as LumenApplication;
 
 final class EasyRequestIdServiceProvider extends ServiceProvider
 {
@@ -41,7 +39,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         // Queue
         // Add IDs to jobs pushed to the queue
-        Queue::createPayloadUsing(static fn (): array => [
+        Queue::createPayloadUsing(static fn(): array => [
             'easy_request_id' => [
                 $requestIdProvider->getCorrelationIdHeaderName() => $requestIdProvider->getCorrelationId(),
                 $requestIdProvider->getRequestIdHeaderName() => $requestIdProvider->getRequestId(),
@@ -60,6 +58,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
                     }
 
                     $requestIdProvider->setResolver(static function () use ($body, $requestIdProvider): RequestIdInfo {
+                        /** @var string[] $ids */
                         $ids = $body['easy_request_id'] ?? [];
 
                         return new RequestIdInfo(
@@ -82,7 +81,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             RequestIdProviderInterface::class,
-            static fn (Container $app): RequestIdProviderInterface => new RequestIdProvider(
+            static fn(Container $app): RequestIdProviderInterface => new RequestIdProvider(
                 $app->make(FallbackResolverInterface::class),
                 \config('easy-request-id.http_headers.correlation_id'),
                 \config('easy-request-id.http_headers.request_id')
@@ -92,12 +91,6 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
         // Resolve from request
         $this->app->make('events')
             ->listen(RouteMatched::class, RequestIdRouteMatchedListener::class);
-
-        if ($this->app instanceof LumenApplication) {
-            $this->app->middleware([
-                RequestIdMiddleware::class,
-            ]);
-        }
 
         // EasyErrorHandler
         if ($this->packageEnabled('easy_error_handler', EasyErrorHandlerConfigTag::class)) {

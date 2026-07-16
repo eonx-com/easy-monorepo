@@ -11,9 +11,9 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final readonly class AwsRdsAuthTokenProvider implements AwsRdsAuthTokenProviderInterface
 {
-    private const CACHE_HASH_PATTERN = '%s_%s_%s_%s';
+    private const string CACHE_HASH_PATTERN = '%s_%s_%s_%s';
 
-    private const CACHE_KEY_PATTERN = 'easy_doctrine.aws_rds_token.%s';
+    private const string CACHE_KEY_PATTERN = 'easy_doctrine.aws_rds_token.%s';
 
     public function __construct(
         private string $awsRegion,
@@ -21,8 +21,7 @@ final readonly class AwsRdsAuthTokenProvider implements AwsRdsAuthTokenProviderI
         private AwsRdsAuthTokenCredentialsProviderInterface $awsRdsAuthTokenCredentialsProvider,
         private CacheInterface $cache,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     public function provide(array $params): string
     {

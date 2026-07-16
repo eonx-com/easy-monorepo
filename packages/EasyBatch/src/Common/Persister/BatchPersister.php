@@ -12,8 +12,7 @@ final readonly class BatchPersister
     public function __construct(
         private BatchRepositoryInterface $batchRepository,
         private BatchItemPersister $batchItemPersister,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchObjectIdRequiredException

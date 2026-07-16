@@ -19,7 +19,7 @@ final class WrappingProcessorTest extends AbstractUnitTestCase
     public static function provideInvokeData(): iterable
     {
         yield 'Using closure' => [
-            fn (LogRecord $record): LogRecord => $record,
+            fn(LogRecord $record): LogRecord => $record,
         ];
 
         yield 'Using object with __invoke method' => [new InvokableStub()];

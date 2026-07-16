@@ -11,7 +11,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class RerunMiddleware extends AbstractMiddleware
 {
-    private const SHOULD_NOT_RERUN = [WebhookStatus::Failed, WebhookStatus::Success];
+    private const array SHOULD_NOT_RERUN = [WebhookStatus::Failed, WebhookStatus::Success];
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {

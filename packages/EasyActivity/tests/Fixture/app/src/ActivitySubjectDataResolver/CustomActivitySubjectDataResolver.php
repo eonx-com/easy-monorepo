@@ -14,7 +14,7 @@ final readonly class CustomActivitySubjectDataResolver implements ActivitySubjec
         ActivityAction|string $action,
         ActivitySubjectInterface $subject,
         array $changeSet,
-    ): ?ActivitySubjectData {
+    ): ActivitySubjectData {
         $data = [];
         $oldData = [];
         foreach ($changeSet as $key => [$newValue, $oldValue]) {

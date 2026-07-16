@@ -4,22 +4,21 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "async-aws/secrets-manager": "^2.5"
     },
     "require-dev": {
         "async-aws/dynamo-db": "^3.6",
         "async-aws/sqs": "^2.7",
-        "bref/bref": "^2.3.15",
-        "bref/laravel-bridge": "^2.6",
+        "bref/bref": "^2 || ^3",
+        "bref/laravel-bridge": "^3.0",
         "bref/symfony-bridge": "^1.0.3",
         "bref/symfony-messenger": "^1.4.1",
-        "laravel/lumen-framework": "^11.0",
         "monolog/monolog": "^3.7",
-        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
-        "symfony/cache": "^7.2",
-        "symfony/config": "^7.2",
-        "symfony/http-kernel": "^7.2"
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/cache": "^7.4",
+        "symfony/config": "^7.4",
+        "symfony/http-kernel": "^7.4"
     },
     "conflict": {
         "easycorp/easyadmin-bundle": "<4.13.1"
@@ -35,8 +34,7 @@
         "psr-4": {
             "EonX\\EasyServerless\\Tests\\": "tests",
             "EonX\\EasyServerless\\Tests\\Unit\\": "tests/Unit/src",
-            "EonX\\EasyServerless\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle",
-            "EonX\\EasyServerless\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
+            "EonX\\EasyServerless\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
     "config": {
@@ -46,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.23-dev"
+            "dev-master": "6.21-dev"
         }
     }
 }

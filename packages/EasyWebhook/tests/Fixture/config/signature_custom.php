@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyWebhookConfig;
-
-return static function (EasyWebhookConfig $easyWebhookConfig): void {
-    $easyWebhookConfig->signature()
-        ->enabled(true)
-        ->header('X-My-Header')
-        ->secret('my-secret');
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_webhook', [
+        'signature' => [
+            'header' => 'X-My-Header',
+            'secret' => 'my-secret',
+        ],
+    ]);
 };

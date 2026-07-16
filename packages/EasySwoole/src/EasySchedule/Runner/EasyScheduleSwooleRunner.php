@@ -18,16 +18,15 @@ use Symfony\Component\Runtime\RunnerInterface;
 
 final readonly class EasyScheduleSwooleRunner implements RunnerInterface
 {
-    public const ENABLED = 'EASY_SCHEDULE_ENABLED';
+    public const string ENABLED = 'EASY_SCHEDULE_ENABLED';
 
-    private const COLUMN_NAME_LAST_RUN = 'last_run';
+    private const string COLUMN_NAME_LAST_RUN = 'last_run';
 
-    private const KEY_LAST_RUN_AT = 'last_run_at';
+    private const string KEY_LAST_RUN_AT = 'last_run_at';
 
     public function __construct(
         private Application $application,
-    ) {
-    }
+    ) {}
 
     public function run(): int
     {
@@ -39,8 +38,7 @@ final readonly class EasyScheduleSwooleRunner implements RunnerInterface
             OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
         );
 
-        $server->on(SwooleServerEvent::Request->value, static function (): void {
-        });
+        $server->on(SwooleServerEvent::Request->value, static function (): void {});
 
         $table = SwooleTableHelper::create(
             size: 1,

@@ -14,9 +14,9 @@ use Throwable;
 
 final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
 {
-    private const DEFAULT_INTERNAL_MESSAGES_LOCALE = 'en';
+    private const string DEFAULT_INTERNAL_MESSAGES_LOCALE = 'en';
 
-    private const DEFAULT_MAX_DEPTH = 10;
+    private const int DEFAULT_MAX_DEPTH = 10;
 
     /**
      * @var string[]
@@ -33,8 +33,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         private readonly TranslatorInterface $translator,
         private readonly bool $translateInternalMessages = false,
         private readonly string $internalMessagesLocale = self::DEFAULT_INTERNAL_MESSAGES_LOCALE,
-    ) {
-    }
+    ) {}
 
     public function reset(): void
     {

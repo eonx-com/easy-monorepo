@@ -14,8 +14,7 @@ final readonly class EncryptableField
     public function __construct(
         private ?string $fieldName = null,
         private ?array $hashNormalizations = null,
-    ) {
-    }
+    ) {}
 
     public function getFieldName(): ?string
     {

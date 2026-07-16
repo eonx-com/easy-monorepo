@@ -8,7 +8,7 @@ use EonX\EasyTest\Coverage\Kernel\EasyTestKernel;
 // performance boost
 \gc_disable();
 
-(new AutoloadIncluder())
+new AutoloadIncluder()
     ->includeCwdVendorAutoloadIfExists()
     ->autoloadProjectAutoloaderFile('/../../autoload.php')
     ->includeDependencyOrRepositoryVendorAutoloadIfExists();

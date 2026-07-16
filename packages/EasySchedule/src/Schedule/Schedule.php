@@ -58,7 +58,7 @@ final class Schedule implements ScheduleInterface
      */
     public function getDueEntries(): array
     {
-        return \array_filter($this->entries, static fn (ScheduleEntryInterface $entry): bool => $entry->isDue());
+        return \array_filter($this->entries, static fn(ScheduleEntryInterface $entry): bool => $entry->isDue());
     }
 
     public function setApplication(Application $app): ScheduleInterface
@@ -75,7 +75,8 @@ final class Schedule implements ScheduleInterface
     private function resolveCommandName(string $command): string
     {
         if (\class_exists($command)) {
-            $attributes = (new ReflectionClass($command))->getAttributes(AsCommand::class);
+            $attributes = new ReflectionClass($command)
+                ->getAttributes(AsCommand::class);
 
             if (isset($attributes[0]) === false) {
                 throw new UnexpectedValueException(\sprintf(

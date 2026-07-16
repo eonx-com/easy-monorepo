@@ -191,6 +191,9 @@ abstract class AbstractMathHelperTestCase extends AbstractUnitTestCase
         ];
     }
 
+    /**
+     * @param numeric-string $value
+     */
     #[DataProvider('provideAbsData')]
     public function testAbsSucceeds(string $value, string $result, ?int $precision = null): void
     {
@@ -208,6 +211,10 @@ abstract class AbstractMathHelperTestCase extends AbstractUnitTestCase
         self::assertSame('20000000000000000000', $actual);
     }
 
+    /**
+     * @param numeric-string $leftOperand
+     * @param numeric-string $rightOperand
+     */
     #[DataProvider('provideCompareThatData')]
     public function testCompareThatSucceeds(
         string $leftOperand,
@@ -224,6 +231,10 @@ abstract class AbstractMathHelperTestCase extends AbstractUnitTestCase
         self::assertSame($result, $actual);
     }
 
+    /**
+     * @param numeric-string $dividend
+     * @param numeric-string $divisor
+     */
     #[DataProvider('provideDivideData')]
     public function testDivideSucceeds(
         string $expected,

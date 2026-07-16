@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyApiPlatformConfig;
-
-return static function (EasyApiPlatformConfig $easyApiPlatformConfig): void {
-    $easyApiPlatformConfig->returnNotFoundOnReadOperations()
-        ->enabled(false);
-};
+return App::config([
+    'easy_api_platform' => [
+        'return_not_found_on_read_operations' => false,
+    ],
+]);

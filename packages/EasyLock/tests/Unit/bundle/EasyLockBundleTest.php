@@ -30,7 +30,7 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
         $locker = $container->get(LockerInterface::class);
 
         self::assertInstanceOf(LockFactory::class, $lockFactory);
-        self::assertSame($lockFactory, (new ReflectionProperty(Locker::class, 'lockFactory'))->getValue($locker));
+        self::assertSame($lockFactory, new ReflectionProperty(Locker::class, 'lockFactory')->getValue($locker));
     }
 
     /**

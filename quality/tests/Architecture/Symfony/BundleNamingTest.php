@@ -41,7 +41,8 @@ final class BundleNamingTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+            ->directories()
             ->name('bundle')
             ->depth(0);
     }

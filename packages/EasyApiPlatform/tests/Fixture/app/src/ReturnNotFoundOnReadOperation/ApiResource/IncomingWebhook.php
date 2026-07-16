@@ -25,6 +25,4 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\ReturnNotFoundOnReadOperation\Control
     ],
     openapi: false,
 )]
-final class IncomingWebhook
-{
-}
+final class IncomingWebhook {}

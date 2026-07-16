@@ -7,15 +7,14 @@ use EonX\EasyPipeline\Exception\EmptyPipelinesListException;
 use EonX\EasyPipeline\Factory\PipelineFactoryInterface;
 use EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider;
 use EonX\EasyPipeline\Tests\Stub\Provider\MiddlewareProviderStub;
-use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
+use EonX\EasyPipeline\Tests\Unit\AbstractLaravelTestCase;
 
-final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
+final class EasyPipelineServiceProviderTest extends AbstractLaravelTestCase
 {
     public function testEmptyProvidersListException(): void
     {
         $this->expectException(EmptyPipelinesListException::class);
 
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
 
         $serviceProvider = new EasyPipelineServiceProvider($app);
@@ -26,7 +25,6 @@ final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
 
     public function testRegisterPipelineFactorySuccess(): void
     {
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
         /** @var \Illuminate\Config\Repository $config */
         $config = \config();
@@ -34,14 +32,14 @@ final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
             'pipeline-1' => 'provider-1',
         ]);
 
-        (new EasyPipelineServiceProvider($app))->register();
+        new EasyPipelineServiceProvider($app)
+            ->register();
 
         self::assertInstanceOf(PipelineFactoryInterface::class, $app->get(PipelineFactoryInterface::class));
     }
 
     public function testRegisterProviderSuccess(): void
     {
-        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $app = $this->getApplication();
         /** @var \Illuminate\Config\Repository $config */
         $config = \config();
@@ -49,7 +47,8 @@ final class EasyPipelineServiceProviderTest extends AbstractLumenTestCase
             'pipeline-1' => MiddlewareProviderStub::class,
         ]);
 
-        (new EasyPipelineServiceProvider($app))->register();
+        new EasyPipelineServiceProvider($app)
+            ->register();
 
         self::assertInstanceOf(
             MiddlewareProviderStub::class,

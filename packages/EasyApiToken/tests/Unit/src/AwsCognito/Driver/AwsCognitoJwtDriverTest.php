@@ -14,6 +14,7 @@ final class AwsCognitoJwtDriverTest extends AbstractUnitTestCase
     {
         $this->expectException(MethodNotSupportedException::class);
 
-        (new AwsCognitoJwtDriver(new UserPoolConfig('app', 'region', 'user-pool-id')))->encode([]);
+        new AwsCognitoJwtDriver(new UserPoolConfig('app', 'region', 'user-pool-id'))
+            ->encode([]);
     }
 }

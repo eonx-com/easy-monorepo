@@ -26,31 +26,31 @@ use Symfony\Contracts\Service\ResetInterface;
 
 final class EasySwooleBundle extends AbstractBundle
 {
-    private const ACCESS_LOG_CONFIG = [
+    private const array ACCESS_LOG_CONFIG = [
         'do_not_log_paths' => ConfigParam::AccessLogDoNotLogPaths,
         'timezone' => ConfigParam::AccessLogTimezone,
     ];
 
-    private const DOCTRINE_CONFIG = [
+    private const array DOCTRINE_CONFIG = [
         'reset_dbal_connections' => ConfigParam::ResetDoctrineDbalConnections,
     ];
 
-    private const DOCTRINE_COROUTINE_PDO_CONFIG = [
+    private const array DOCTRINE_COROUTINE_PDO_CONFIG = [
         'default_heartbeat' => ConfigParam::DoctrineCoroutinePdoDefaultHeartbeat,
         'default_max_idle_time' => ConfigParam::DoctrineCoroutinePdoDefaultMaxIdleTime,
         'default_pool_size' => ConfigParam::DoctrineCoroutinePdoDefaultPoolSize,
     ];
 
-    private const EASY_BATCH_CONFIG = [
+    private const array EASY_BATCH_CONFIG = [
         'reset_batch_processor' => ConfigParam::ResetEasyBatchProcessor,
     ];
 
-    private const REQUEST_LIMITS_CONFIG = [
+    private const array REQUEST_LIMITS_CONFIG = [
         'max' => ConfigParam::RequestLimitsMax,
         'min' => ConfigParam::RequestLimitsMin,
     ];
 
-    private const STATIC_PHP_FILES_CONFIG = [
+    private const array STATIC_PHP_FILES_CONFIG = [
         'allowed_dirs' => ConfigParam::StaticPhpFilesAllowedDirs,
         'allowed_filenames' => ConfigParam::StaticPhpFilesAllowedFilenames,
     ];

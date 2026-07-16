@@ -71,6 +71,11 @@ abstract class AbstractDoctrineOrmPaginatorTestCase extends AbstractUnitTestCase
         $config->setProxyDir(__DIR__);
         $config->setProxyNamespace('EasyPagination\Tests\Proxy');
 
+        // @todo Remove when drop support Doctrine ORM 2.x
+        if (\method_exists($config, 'enableNativeLazyObjects')) {
+            $config->enableNativeLazyObjects(true);
+        }
+
         if (Type::hasType(SqliteStringUuidType::NAME) === false) {
             Type::addType(SqliteStringUuidType::NAME, SqliteStringUuidType::class);
         }

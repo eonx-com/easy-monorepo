@@ -5,14 +5,14 @@
 
 ---
 
-This document describes the steps to install this package into a [Laravel][1] and/or [Lumen][2] application.
+This document describes the steps to install this package into a [Laravel][1] application.
 
 # Require package (Composer)
 
-Laravel uses [Composer][3] to manage its dependencies. You can require this package as following:
+Laravel uses [Composer][2] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require eonx/easy-pagination
+$ composer require eonx-com/easy-pagination
 ```
 
 # Service Providers
@@ -33,6 +33,4 @@ You just have to register the one you want:
 
 [1]: https://laravel.com/
 
-[2]: https://lumen.laravel.com/
-
-[3]: https://getcomposer.org/
+[2]: https://getcomposer.org/

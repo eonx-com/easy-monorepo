@@ -55,14 +55,14 @@ final class EasyNotificationServiceProvider extends ServiceProvider
         // Config + ConfigFinder
         $this->app->singleton(
             ConfigProviderInterface::class,
-            static fn (): ConfigProviderInterface => new ConfigProvider(\config('easy-notification.api_url'))
+            static fn(): ConfigProviderInterface => new ConfigProvider(\config('easy-notification.api_url'))
         );
 
         $this->app->singleton(ConfigServiceId::ConfigCache->value, ArrayAdapter::class);
 
         $this->app->extend(
             ConfigProviderInterface::class,
-            static fn (
+            static fn(
                 ConfigProviderInterface $decorated,
                 Container $app,
             ): ConfigProviderInterface => new CachedConfigProvider(
@@ -76,7 +76,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
         // SubscribeInfoProvider
         $this->app->singleton(
             SubscribeInfoProviderInterface::class,
-            static fn (): SubscribeInfoProviderInterface => new SubscribeInfoProvider(
+            static fn(): SubscribeInfoProviderInterface => new SubscribeInfoProvider(
                 \config('easy-notification.api_url')
             )
         );
@@ -84,7 +84,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
         // Client
         $this->app->singleton(
             NotificationClientInterface::class,
-            static fn (Container $app): NotificationClientInterface => new NotificationClient(
+            static fn(Container $app): NotificationClientInterface => new NotificationClient(
                 $app->tagged(ConfigTag::QueueMessageConfigurator->value),
                 $app->make(QueueTransportFactoryInterface::class)
             )

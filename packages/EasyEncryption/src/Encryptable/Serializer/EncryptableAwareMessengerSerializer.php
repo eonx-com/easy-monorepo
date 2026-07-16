@@ -14,15 +14,15 @@ use UnexpectedValueException;
 
 final readonly class EncryptableAwareMessengerSerializer implements SerializerInterface
 {
-    private const ENCRYPTION_TYPE_FULL = 'full';
+    private const string ENCRYPTION_TYPE_FULL = 'full';
 
-    private const ENCRYPTION_TYPE_PARTIAL = 'partial';
+    private const string ENCRYPTION_TYPE_PARTIAL = 'partial';
 
-    private const ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES = 'encryptable_field_names';
+    private const string ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES = 'encryptable_field_names';
 
-    private const ENVELOPE_HEADER_ENCRYPTION_TYPE = 'encryption_type';
+    private const string ENVELOPE_HEADER_ENCRYPTION_TYPE = 'encryption_type';
 
-    private const ENVELOPE_HEADER_TYPE = 'type';
+    private const string ENVELOPE_HEADER_TYPE = 'type';
 
     public function __construct(
         private StringEncryptorInterface $stringEncryptor,
@@ -30,8 +30,7 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         private EncryptableMetadataInterface $encryptableMetadata,
         private SerializerInterface $serializer,
         private array $fullyEncryptedMessages,
-    ) {
-    }
+    ) {}
 
     public function decode(array $encodedEnvelope): Envelope
     {
@@ -62,8 +61,8 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         $message = $envelope->getMessage();
 
         if (
-            $message instanceof EncryptableInterface &&
-            \in_array($message::class, $this->fullyEncryptedMessages, true)
+            $message instanceof EncryptableInterface
+            && \in_array($message::class, $this->fullyEncryptedMessages, true)
         ) {
             throw new UnexpectedValueException(
                 \sprintf(

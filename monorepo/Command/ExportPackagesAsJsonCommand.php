@@ -45,7 +45,7 @@ final class ExportPackagesAsJsonCommand extends Command
 
     private function getComposerJsonFiles(): Finder
     {
-        return (new Finder())
+        return new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->name('composer.json');
     }
@@ -66,6 +66,12 @@ final class ExportPackagesAsJsonCommand extends Command
             throw new UnexpectedValueException('Invalid ' . $composerJson->getRealPath() . ' content.');
         }
 
-        return \str_replace('eonx-com/', '', (string)$json['name']);
+        if (isset($json['name']) === false || \is_string($json['name']) === false) {
+            throw new UnexpectedValueException(
+                'Missing or invalid `name` in ' . $composerJson->getRealPath() . ' content.'
+            );
+        }
+
+        return \str_replace('eonx-com/', '', $json['name']);
     }
 }

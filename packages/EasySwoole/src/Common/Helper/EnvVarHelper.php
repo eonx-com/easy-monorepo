@@ -34,8 +34,10 @@ final class EnvVarHelper
         foreach (\array_keys($_SERVER) as $envVarName) {
             foreach ($jsonSecrets as $jsonSecret) {
                 if (u($envVarName)->ignoreCase()->match($jsonSecret)) {
+                    /** @var string $envVarRawValue */
+                    $envVarRawValue = $_SERVER[$envVarName] ?? '';
                     /** @var array|null $envVarValue */
-                    $envVarValue = \json_decode($_SERVER[$envVarName] ?? '', true);
+                    $envVarValue = \json_decode($envVarRawValue, true);
                     foreach ($envVarValue ?? [] as $name => $value) {
                         $name = u($name)
                             ->upper()
@@ -64,7 +66,9 @@ final class EnvVarHelper
         }
 
         if (($outputEnabled ?? true) && $dotEnvPath !== null && isset($_SERVER['SYMFONY_DOTENV_VARS'])) {
-            foreach (\explode(',', (string)$_SERVER['SYMFONY_DOTENV_VARS']) as $name) {
+            /** @var scalar $symfonyDotEnvVars */
+            $symfonyDotEnvVars = $_SERVER['SYMFONY_DOTENV_VARS'];
+            foreach (\explode(',', (string)$symfonyDotEnvVars) as $name) {
                 OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $dotEnvPath));
             }
         }

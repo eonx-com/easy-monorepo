@@ -4,30 +4,30 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "eonx-com/easy-logging": "^6.23",
-        "eonx-com/easy-utils": "^6.23",
+        "php": "^8.4",
+        "eonx-com/easy-logging": "^6.21",
+        "eonx-com/easy-utils": "^6.21",
         "nesbot/carbon": "^3.8.4",
         "nikic/php-parser": "^5.0",
-        "symfony/config": "^7.2",
-        "symfony/console": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/error-handler": "^7.2",
-        "symfony/finder": "^7.2",
-        "symfony/http-foundation": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/property-access": "^7.2",
-        "symfony/serializer": "^7.2",
+        "symfony/config": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/error-handler": "^7.4",
+        "symfony/finder": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/property-access": "^7.4",
+        "symfony/serializer": "^7.4",
         "symfony/service-contracts": "^3.5",
-        "symfony/translation": "^7.2"
+        "symfony/translation": "^7.4"
     },
     "require-dev": {
-        "eonx-com/easy-bugsnag": "^6.23",
-        "eonx-com/easy-test": "^6.23",
-        "eonx-com/easy-webhook": "^6.23",
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
-        "symfony/framework-bundle": "^7.2"
+        "eonx-com/easy-bugsnag": "^6.21",
+        "eonx-com/easy-test": "^6.21",
+        "eonx-com/easy-webhook": "^6.21",
+        "laravel/framework": "^13.0",
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/framework-bundle": "^7.4"
     },
     "autoload": {
         "psr-4": {
@@ -47,15 +47,14 @@
         }
     },
     "suggest": {
-        "api-platform/core": "To use ApiPlatform integration",
+        "eonx-com/easy-api-platform": "To use API Platform integration",
         "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
         "eonx-com/easy-webhook": "To use EasyWebhook integration",
-        "symfony/messenger": "To use Symfony Messenger integration",
-        "symfony/validator": "To use ApiPlatform integration"
+        "symfony/messenger": "To use Symfony Messenger integration"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.23-dev"
+            "dev-master": "6.21-dev"
         }
     }
 }

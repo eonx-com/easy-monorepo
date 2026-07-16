@@ -14,6 +14,7 @@ final class EasyErrorHandlerBundleTest extends AbstractUnitTestCase
 
         self::getService(BugsnagErrorReporterProvider::class);
 
+        // @phpstan-ignore-next-line Make fake assert to mark test as used assertion
         self::assertTrue(true);
     }
 }

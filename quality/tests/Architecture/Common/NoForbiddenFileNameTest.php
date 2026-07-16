@@ -10,7 +10,7 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
 {
-    private const FORBIDDEN_FILE_NAMES = [
+    private const array FORBIDDEN_FILE_NAMES = [
         'Decorator.php',
         'EventListener.php',
         'EventListenerInterface.php',
@@ -18,8 +18,11 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         'EventSubscriberInterface.php',
     ];
 
-    private const SKIP_FILES = [
+    private const array SKIP_FILES = [
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityCreatedEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityDeletedEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityUpdatedEventListener.php',
     ];
 
     #[DataProvider('provideSubject')]
@@ -37,26 +40,19 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->files()
-            ->filter(static function (\SplFileInfo $file): bool {
-                foreach (self::SKIP_FILES as $skipFile) {
-                    if (\str_ends_with($file->getRealPath(), $skipFile)) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
+        return new Finder()
+            ->files()
+            ->filter(static fn(\SplFileInfo $file): bool => \array_all(
+                self::SKIP_FILES,
+                static fn(string $skipFile): bool => \str_ends_with($file->getRealPath(), $skipFile) === false
+            ));
     }
 
     private static function isNameAllowed(SplFileInfo $file): bool
     {
-        foreach (self::FORBIDDEN_FILE_NAMES as $forbiddenFileName) {
-            if (\str_ends_with($file->getBasename(), $forbiddenFileName)) {
-                return false;
-            }
-        }
-
-        return true;
+        return \array_all(
+            self::FORBIDDEN_FILE_NAMES,
+            static fn(string $fileName): bool => \str_ends_with($file->getBasename(), $fileName) === false
+        );
     }
 }

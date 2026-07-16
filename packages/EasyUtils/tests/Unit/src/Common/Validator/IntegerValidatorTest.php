@@ -90,13 +90,12 @@ final class IntegerValidatorTest extends AbstractUnitTestCase
     public function testValidateThrowsUnexpectedTypeException(): void
     {
         $validator = new IntegerValidator();
-        $constraint = new class() extends Constraint {
-        };
+        $constraint = new class extends Constraint {};
         $value = 12345;
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "EonX\EasyUtils\Common\Constraint\Integer", ' .
-            '"Symfony\Component\Validator\Constraint@anonymous" given'
+            'Expected argument of type "EonX\EasyUtils\Common\Constraint\Integer", '
+            . '"Symfony\Component\Validator\Constraint@anonymous" given'
         );
 
         $validator->validate($value, $constraint);
@@ -104,8 +103,7 @@ final class IntegerValidatorTest extends AbstractUnitTestCase
 
     private function mockConstraintViolationBuilder(string $code): ConstraintViolationBuilderInterface
     {
-        /** @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface $violationBuilder */
-        $violationBuilder = $this->mock(
+        return $this->mock(
             ConstraintViolationBuilderInterface::class,
             static function (MockInterface $mock) use ($code): void {
                 $mock->shouldReceive('setCode')
@@ -119,16 +117,13 @@ final class IntegerValidatorTest extends AbstractUnitTestCase
                     ->andReturnSelf();
             }
         );
-
-        return $violationBuilder;
     }
 
     private function mockExecutionContextWithBuildViolation(
         string $message,
         ConstraintViolationBuilderInterface $violationBuilder,
     ): ExecutionContextInterface {
-        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
+        return $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock) use (
             $message,
             $violationBuilder,
         ): void {
@@ -137,18 +132,13 @@ final class IntegerValidatorTest extends AbstractUnitTestCase
                 ->with($message)
                 ->andReturn($violationBuilder);
         });
-
-        return $context;
     }
 
     private function mockExecutionContextWithoutCalls(): ExecutionContextInterface
     {
-        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
-        $context = $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
+        return $this->mock(ExecutionContextInterface::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('buildViolation')
                 ->never();
         });
-
-        return $context;
     }
 }

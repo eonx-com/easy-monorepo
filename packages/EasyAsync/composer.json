@@ -4,29 +4,31 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/dbal": "^3.8",
-        "doctrine/orm": "^2.20",
-        "doctrine/persistence": "^3.3",
+        "php": "^8.4",
+        "doctrine/collections": "^1.7.2 || ^2.6",
+        "doctrine/dbal": "^3.8 || ^4.4",
+        "doctrine/orm": "^2.20 || ^3.6",
+        "doctrine/persistence": "^3.3 || ^4.1",
         "psr/log": "^3.0",
-        "symfony/config": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/event-dispatcher": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/messenger": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/event-dispatcher": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/messenger": "^7.4"
     },
     "require-dev": {
-        "doctrine/annotations": "^2.0",
-        "doctrine/doctrine-bundle": "^2.12",
-        "eonx-com/easy-event-dispatcher": "^6.23",
-        "eonx-com/easy-logging": "^6.23",
-        "eonx-com/easy-random": "^6.23",
-        "eonx-com/easy-serverless": "^6.23",
-        "eonx-com/easy-test": "^6.23",
-        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
-        "symfony/doctrine-bridge": "^7.2",
-        "symfony/framework-bundle": "^7.2"
+        "bref/bref": "^2 || ^3",
+        "bref/symfony-bridge": "^1.0.3",
+        "bref/symfony-messenger": "^1.4.1",
+        "doctrine/doctrine-bundle": "^2.12 || ^3.2",
+        "eonx-com/easy-event-dispatcher": "^6.21",
+        "eonx-com/easy-logging": "^6.21",
+        "eonx-com/easy-random": "^6.21",
+        "eonx-com/easy-serverless": "^6.21",
+        "eonx-com/easy-test": "^6.21",
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/doctrine-bridge": "^7.4",
+        "symfony/framework-bundle": "^7.4"
     },
     "autoload": {
         "psr-4": {
@@ -46,13 +48,13 @@
     "suggest": {
         "eonx-com/easy-error-handler": "To report about the Illuminate worker stopping event",
         "eonx-com/easy-logging": "To provide the logging service",
-        "illuminate/contracts": "To use this package with Laravel/Lumen",
-        "illuminate/queue": "To use this package with Laravel/Lumen",
-        "illuminate/support": "To use this package with Laravel/Lumen"
+        "illuminate/contracts": "To use this package with Laravel",
+        "illuminate/queue": "To use this package with Laravel",
+        "illuminate/support": "To use this package with Laravel"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.23-dev"
+            "dev-master": "6.21-dev"
         }
     }
 }

@@ -19,8 +19,7 @@ final class ClosePersistentConnectionServerlessSubscriber implements EventSubscr
         private readonly ConnectionCloser $connectionCloser,
         private readonly float $maxIdleTime,
         private readonly ?array $managers = null,
-    ) {
-    }
+    ) {}
 
     public static function getSubscribedEvents(): array
     {

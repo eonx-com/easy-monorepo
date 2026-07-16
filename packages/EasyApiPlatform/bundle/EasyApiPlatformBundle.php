@@ -49,7 +49,7 @@ final class EasyApiPlatformBundle extends AbstractBundle
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         /** @var string $apiPlatformBundleViewsFolder */
-        $apiPlatformBundleViewsFolder = (new FileLocator(__DIR__ . '/templates/bundles'))
+        $apiPlatformBundleViewsFolder = new FileLocator(__DIR__ . '/templates/bundles')
             ->locate('ApiPlatformBundle');
 
         $builder->prependExtensionConfig('twig', [
@@ -63,16 +63,11 @@ final class EasyApiPlatformBundle extends AbstractBundle
         ]);
 
         if ($this->isBundleEnabled('EasyErrorHandlerBundle', $builder)) {
-            $easyErrorHandlerEnabled = true;
-            /** @var array $config */
-            foreach ($builder->getExtensionConfig('easy_api_platform') as $config) {
-                if (($config['easy_error_handler']['enabled'] ?? true) !== true) {
-                    $easyErrorHandlerEnabled = false;
-
-                    break;
-                }
-            }
-
+            $easyErrorHandlerEnabled = \array_all(
+                $builder->getExtensionConfig('easy_api_platform'),
+                // @phpstan-ignore offsetAccess.nonOffsetAccessible
+                static fn(array $config): bool => ($config['easy_error_handler']['enabled'] ?? true) === true
+            );
             if ($easyErrorHandlerEnabled) {
                 $builder->prependExtensionConfig('api_platform', [
                     'defaults' => [

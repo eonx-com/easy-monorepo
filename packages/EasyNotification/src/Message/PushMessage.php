@@ -7,7 +7,7 @@ use EonX\EasyNotification\Enum\MessageType;
 
 final class PushMessage extends AbstractMessage
 {
-    private const DO_NOT_SEND_TOKEN = 'do_not_send_token';
+    private const string DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
     public function __construct(
         private ?string $device = null,

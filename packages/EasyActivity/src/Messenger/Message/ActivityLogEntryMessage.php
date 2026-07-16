@@ -9,14 +9,13 @@ use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 
 final readonly class ActivityLogEntryMessage implements WithLockDataInterface
 {
-    private const LOCK_RESOURCE = 'activity_log_%s_%s';
+    private const string LOCK_RESOURCE = 'activity_log_%s_%s';
 
-    private const LOCK_TTL_SEC = 3600.0;
+    private const float LOCK_TTL_SEC = 3600.0;
 
     public function __construct(
         private ActivityLogEntry $logEntry,
-    ) {
-    }
+    ) {}
 
     public function getLockData(): LockData
     {

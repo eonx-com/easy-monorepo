@@ -10,10 +10,10 @@ use EonX\EasyPipeline\Laravel\EasyPipelineServiceProvider;
 use EonX\EasyPipeline\Pipeline\PipelineInterface;
 use EonX\EasyPipeline\Tests\Stub\Provider\PipelineNameAwareProviderMiddlewareProviderStub;
 use EonX\EasyPipeline\Tests\Stub\Provider\ValidMiddlewareProviderStub;
-use EonX\EasyPipeline\Tests\Unit\AbstractLumenTestCase;
+use EonX\EasyPipeline\Tests\Unit\AbstractLaravelTestCase;
 use stdClass;
 
-final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
+final class IlluminatePipelineFactoryTest extends AbstractLaravelTestCase
 {
     public function testCreatePipelineSuccessfullyWithPrefixAndCacheResolved(): void
     {
@@ -36,7 +36,7 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         $app = $this->getApplication();
         $app->instance('pipeline', new stdClass());
 
-        (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
+        new IlluminatePipelineFactory($app, ['pipeline'])->create('pipeline');
     }
 
     public function testPipelineNameAwareMiddlewareSetsName(): void
@@ -44,7 +44,7 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
         $app = $this->getApplication();
         $app->instance('pipeline', new PipelineNameAwareProviderMiddlewareProviderStub());
 
-        $pipeline = (new IlluminatePipelineFactory($app, ['pipeline']))->create('pipeline');
+        $pipeline = new IlluminatePipelineFactory($app, ['pipeline'])->create('pipeline');
 
         self::assertEquals('test-pipeline', $pipeline->process('test-'));
     }
@@ -53,6 +53,6 @@ final class IlluminatePipelineFactoryTest extends AbstractLumenTestCase
     {
         $this->expectException(PipelineNotFoundException::class);
 
-        (new IlluminatePipelineFactory($this->getApplication(), []))->create('invalid');
+        new IlluminatePipelineFactory($this->getApplication(), [])->create('invalid');
     }
 }

@@ -59,31 +59,27 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyWebhook\Signers\Rs256Signer;
-use Symfony\Config\EasyWebhookConfig;
 
-return static function (EasyWebhookConfig $easyWebhookConfig): void {
-    $easyWebhookConfig
-        ->method('POST')
-        ->useDefaultMiddleware(true);
-
-    $easyWebhookConfig->async()
-        ->enabled(true)
-        ->bus('messenger.bus.custom');
-
-    $easyWebhookConfig->event()
-        ->enabled(true)
-        ->header('My-Event-Header');
-
-    $easyWebhookConfig->id()
-        ->enabled(true)
-        ->header('My-Id-Header');
-
-    $easyWebhookConfig->signature()
-        ->enabled(true)
-        ->header('My-Signature-Header')
-        ->signer(Rs256Signer::class)
-        ->secret(env('APP_SECRET'));
-};
+return App::config([
+    'easy_webhook' => [
+        'method' => 'POST',
+        'use_default_middleware' => true,
+        'async' => [
+            'bus' => 'messenger.bus.custom',
+        ],
+        'event' => [
+            'header' => 'My-Event-Header',
+        ],
+        'id' => [
+            'header' => 'My-Id-Header',
+        ],
+        'signature' => [
+            'header' => 'My-Signature-Header',
+            'signer' => Rs256Signer::class,
+            'secret' => env('APP_SECRET'),
+        ],
+    ],
+]);
 
 ```
 

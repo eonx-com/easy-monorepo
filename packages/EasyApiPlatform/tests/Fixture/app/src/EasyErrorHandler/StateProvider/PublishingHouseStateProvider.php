@@ -11,7 +11,7 @@ use LogicException;
 
 final class PublishingHouseStateProvider implements ProviderInterface
 {
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object
     {
         if ($operation instanceof Get) {
             $publishingHouse = new PublishingHouse('Some name');

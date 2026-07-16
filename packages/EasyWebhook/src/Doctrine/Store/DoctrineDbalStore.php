@@ -20,7 +20,7 @@ use EonX\EasyWebhook\Common\Store\StoreInterface;
 
 final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements StoreInterface, SendAfterStoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhooks';
+    public const string DEFAULT_TABLE = 'easy_webhooks';
 
     public function __construct(
         RandomGeneratorInterface $random,
@@ -67,7 +67,7 @@ final class DoctrineDbalStore extends AbstractDoctrineDbalStore implements Store
             ->setGetItemsCriteria(static function (QueryBuilder $queryBuilder): void {
                 $queryBuilder->orderBy('created_at');
             })
-            ->setTransformer(fn (array $item): WebhookInterface => $this->instantiateWebhook($item)
+            ->setTransformer(fn(array $item): WebhookInterface => $this->instantiateWebhook($item)
                 ->bypassSendAfter(true));
 
         return $paginator;

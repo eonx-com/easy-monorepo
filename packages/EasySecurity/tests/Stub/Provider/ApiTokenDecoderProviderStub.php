@@ -19,7 +19,7 @@ final class ApiTokenDecoderProviderStub implements DecoderProviderInterface
         yield new BasicAuthDecoder();
     }
 
-    public function getDefaultDecoder(): ?string
+    public function getDefaultDecoder(): string
     {
         return BasicAuthDecoder::class;
     }

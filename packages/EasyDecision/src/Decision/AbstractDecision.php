@@ -20,9 +20,9 @@ use Throwable;
 
 abstract class AbstractDecision implements DecisionInterface
 {
-    private const OUTPUT_SKIPPED = 'skipped';
+    private const string OUTPUT_SKIPPED = 'skipped';
 
-    private const OUTPUT_UNSUPPORTED = 'unsupported';
+    private const string OUTPUT_UNSUPPORTED = 'unsupported';
 
     protected ?ContextInterface $context = null;
 

@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyAsyncBundle extends AbstractBundle
 {
-    private const MESSENGER_MIDDLEWARE = [
+    private const array MESSENGER_MIDDLEWARE = [
         'doctrine_managers_clear' => [
             'config_file' => 'config/messenger_doctrine_managers_clear_middleware.php',
         ],
@@ -28,9 +28,8 @@ final class EasyAsyncBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
-        // -11 to run after easy-batch pass so middleware are first in the list
-        // @todo change to -30 in 7.0 to allow adding more middleware in the middle
-        $container->addCompilerPass(new ReorderMessengerMiddlewareCompilerPass(), priority: -11);
+        // -30 to run after easy-batch pass so middleware are first in the list
+        $container->addCompilerPass(new ReorderMessengerMiddlewareCompilerPass(), priority: -30);
     }
 
     public function configure(DefinitionConfigurator $definition): void

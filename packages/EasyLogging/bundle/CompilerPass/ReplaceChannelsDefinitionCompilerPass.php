@@ -13,15 +13,15 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ReplaceChannelsDefinitionCompilerPass implements CompilerPassInterface
 {
-    private const MONOLOG_LOGGER_ID_PATTERN = 'monolog.logger.%s';
+    private const string MONOLOG_LOGGER_ID_PATTERN = 'monolog.logger.%s';
 
-    private const MONOLOG_LOGGER_TAG = 'monolog.logger';
+    private const string MONOLOG_LOGGER_TAG = 'monolog.logger';
 
     public function process(ContainerBuilder $container): void
     {
         $container->addAliases([
-            'logger' => 'easy_logging.logger',
             LoggerInterface::class => 'logger',
+            'logger' => 'easy_logging.logger',
         ]);
 
         $defaultChannel = $container->getParameter(ConfigParam::DefaultChannel->value);
@@ -41,7 +41,7 @@ final class ReplaceChannelsDefinitionCompilerPass implements CompilerPassInterfa
                     continue;
                 }
 
-                $newDefinition = (new Definition(LoggerInterface::class))
+                $newDefinition = new Definition(LoggerInterface::class)
                     ->setFactory([new Reference(LoggerFactoryInterface::class), 'create'])
                     ->setArguments([$resolvedChannel]);
 

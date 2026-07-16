@@ -44,8 +44,8 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
         if (
             $throwable instanceof TypeError
             && \preg_match(
-                '/(?<class>.*)::__construct\(\): Argument #\d+ \(\$(?<property>.*)\) must' .
-                ' be of type (?<expectedType>.*), .* given/',
+                '/(?<class>.*)::__construct\(\): Argument #\d+ \(\$(?<property>.*)\) must'
+                . ' be of type (?<expectedType>.*), .* given/',
                 $throwable->getMessage(),
                 $matches
             ) === 1
@@ -80,7 +80,7 @@ final class ApiPlatformTypeErrorExceptionErrorResponseBuilder extends
             }
         }
 
-        if ($this->nameConverter !== null && $class !== null) {
+        if ($class !== null) {
             return $this->nameConverter->normalize($name, $class);
         }
 

@@ -22,14 +22,14 @@ final class SendAfterMiddlewareTest extends AbstractMiddlewareTestCase
 
         yield 'Send after passed -> should send' => [
             Webhook::fromArray([
-                WebhookOption::SendAfter->value => (new DateTime())->modify('-1 day'),
+                WebhookOption::SendAfter->value => new DateTime()->modify('-1 day'),
             ]),
             true,
         ];
 
         yield 'Send after in future -> should not send' => [
             Webhook::fromArray([
-                WebhookOption::SendAfter->value => (new DateTime())->modify('+1 day'),
+                WebhookOption::SendAfter->value => new DateTime()->modify('+1 day'),
             ]),
             false,
         ];

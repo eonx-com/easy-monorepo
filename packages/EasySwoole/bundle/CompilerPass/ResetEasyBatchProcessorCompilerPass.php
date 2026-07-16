@@ -22,7 +22,7 @@ final class ResetEasyBatchProcessorCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $def = (new Definition(BatchProcessorResetter::class))
+        $def = new Definition(BatchProcessorResetter::class)
             ->setArgument('$batchProcessor', new Reference(BatchProcessor::class))
             ->addTag(ConfigTag::AppStateResetter->value);
 

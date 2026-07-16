@@ -13,13 +13,13 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class Abn extends AbstractConstraint
 {
-    public const INVALID_CHARACTERS_ERROR = 'INVALID_CHARACTERS_ERROR';
+    public const string INVALID_CHARACTERS_ERROR = 'INVALID_CHARACTERS_ERROR';
 
-    public const INVALID_LENGTH_ERROR = 'INVALID_LENGTH_ERROR';
+    public const string INVALID_LENGTH_ERROR = 'INVALID_LENGTH_ERROR';
 
-    public const LEADING_ZERO_ERROR = 'LEADING_ZERO_ERROR';
+    public const string LEADING_ZERO_ERROR = 'LEADING_ZERO_ERROR';
 
-    public const MODULUS_CALCULATION_FAILED_ERROR = 'MODULUS_CALCULATION_FAILED_ERROR';
+    public const string MODULUS_CALCULATION_FAILED_ERROR = 'MODULUS_CALCULATION_FAILED_ERROR';
 
     public string $message = 'abn.not_valid';
 

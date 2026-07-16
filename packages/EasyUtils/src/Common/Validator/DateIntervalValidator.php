@@ -5,12 +5,11 @@ namespace EonX\EasyUtils\Common\Validator;
 
 use DateInterval;
 use EonX\EasyUtils\Common\Constraint\DateInterval as DateIntervalConstraint;
-use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use TypeError;
+use Throwable;
 
 final class DateIntervalValidator extends ConstraintValidator
 {
@@ -30,7 +29,7 @@ final class DateIntervalValidator extends ConstraintValidator
 
         try {
             new DateInterval($value);
-        } catch (Exception|TypeError) {
+        } catch (Throwable) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(DateIntervalConstraint::INVALID_DATE_INTERVAL_ERROR)
                 ->addViolation();

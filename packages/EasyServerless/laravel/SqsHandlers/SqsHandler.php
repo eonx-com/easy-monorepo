@@ -145,8 +145,8 @@ final class SqsHandler extends AbstractSqsHandler
     private function makeWorker(): Worker
     {
         $worker = $this->container->make(Worker::class, [
-            'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
-            'resetScope' => fn () => $this->resetWorkerScope(),
+            'isDownForMaintenance' => MaintenanceMode::active(...),
+            'resetScope' => $this->resetWorkerScope(...),
         ]);
 
         $worker->setCache(
@@ -188,11 +188,9 @@ final class SqsHandler extends AbstractSqsHandler
         /** @var \Illuminate\Database\DatabaseManager $db */
         $db = $this->container->make('db');
 
-        if (\method_exists($db, 'getConnections')) {
-            foreach ($db->getConnections() as $connection) {
-                $connection->resetTotalQueryDuration();
-                $connection->allowQueryDurationHandlersToRunAgain();
-            }
+        foreach ($db->getConnections() as $connection) {
+            $connection->resetTotalQueryDuration();
+            $connection->allowQueryDurationHandlersToRunAgain();
         }
 
         $this->container->forgetScopedInstances();

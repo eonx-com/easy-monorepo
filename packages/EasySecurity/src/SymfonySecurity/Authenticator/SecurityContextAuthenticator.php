@@ -24,8 +24,7 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
     public function __construct(
         private readonly SecurityContextResolverInterface $securityContextResolver,
         private readonly AuthenticationFailureResponseFactoryInterface $responseFactory,
-    ) {
-    }
+    ) {}
 
     public function authenticate(Request $request): Passport
     {
@@ -38,22 +37,19 @@ final class SecurityContextAuthenticator extends AbstractAuthenticator implement
                 throw $throwable;
             }
 
-            throw new AuthenticationException(
-                message: $throwable->getMessage(),
-                previous: $throwable,
-            );
+            throw new AuthenticationException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
 
         // From here we know we have a user, simply fake it in symfony
         return new SelfValidatingPassport(
             new UserBadge(
                 $user->getUserIdentifier(),
-                static fn (): UserInterface => $user instanceof UserInterface ? $user : new FakeUser()
+                static fn(): UserInterface => $user instanceof UserInterface ? $user : new FakeUser()
             )
         );
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         return $this->responseFactory->create($request, $exception);
     }

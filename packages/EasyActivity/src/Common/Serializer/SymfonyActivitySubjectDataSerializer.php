@@ -18,8 +18,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
         private CircularReferenceHandlerInterface $circularReferenceHandler,
         private array $disallowedProperties,
         private array $fullySerializableProperties,
-    ) {
-    }
+    ) {}
 
     public function serialize(array $data, ActivitySubjectInterface $subject, ?array $context = null): ?string
     {
@@ -57,7 +56,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
                 continue;
             }
 
-            if ($disallowedProperties !== null && \in_array($key, $disallowedProperties, true) === true) {
+            if (\in_array($key, $disallowedProperties, true)) {
                 unset($data[$key]);
 
                 continue;

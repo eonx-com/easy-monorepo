@@ -5,35 +5,46 @@ namespace EonX\EasyTest\Coverage\Resolver;
 
 use EonX\EasyTest\Coverage\Exception\UnableToResolveCoverageException;
 use EonX\EasyTest\Coverage\ValueObject\CoverageReport;
-use Exception;
 use SimpleXMLElement;
+use Throwable;
 
 final class CloverCoverageResolver implements CoverageResolverInterface
 {
-    private const ATTRIBUTE_NAME_COUNT = 'count';
+    private const string ATTRIBUTE_NAME_COUNT = 'count';
 
-    private const ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
+    private const string ATTRIBUTE_NAME_COVERED_ELEMENTS = 'coveredelements';
 
-    private const ATTRIBUTE_NAME_ELEMENTS = 'elements';
+    private const string ATTRIBUTE_NAME_ELEMENTS = 'elements';
 
-    private const ATTRIBUTE_NAME_FILE_NAME = 'name';
+    private const string ATTRIBUTE_NAME_FILE_NAME = 'name';
 
-    private const ATTRIBUTE_NAME_NUM = 'num';
+    private const string ATTRIBUTE_NAME_NUM = 'num';
 
     public function resolve(string $coverageOutput): CoverageReport
     {
         $violations = [];
 
+        $useInternalErrors = \libxml_use_internal_errors(true);
+
         try {
             $xml = new SimpleXMLElement($coverageOutput);
-        } catch (Exception) {
+        } catch (Throwable) {
+            throw new UnableToResolveCoverageException(\sprintf(
+                '[%s] Given output could not be parsed',
+                self::class
+            ));
+        } finally {
+            \libxml_clear_errors();
+            \libxml_use_internal_errors($useInternalErrors);
+        }
+
+        $files = $xml->xpath('//file');
+        if (\is_array($files) === false) {
             throw new UnableToResolveCoverageException(\sprintf(
                 '[%s] Given output could not be parsed',
                 self::class
             ));
         }
-
-        $files = $xml->xpath('//file');
 
         foreach ($files as $file) {
             $elements = (int)$this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_ELEMENTS);
@@ -52,8 +63,24 @@ final class CloverCoverageResolver implements CoverageResolverInterface
             }
         }
 
-        $totalElements = (int)$xml->xpath('//project/metrics/@elements')[0];
-        $totalCoveredElements = (int)$xml->xpath('//project/metrics/@coveredelements')[0];
+        $elements = $xml->xpath('//project/metrics/@elements');
+        if (\is_array($elements) === false || \count($elements) === 0) {
+            throw new UnableToResolveCoverageException(\sprintf(
+                '[%s] Given output could not be parsed',
+                self::class
+            ));
+        }
+
+        $coveredElements = $xml->xpath('//project/metrics/@coveredelements');
+        if (\is_array($coveredElements) === false || \count($coveredElements) === 0) {
+            throw new UnableToResolveCoverageException(\sprintf(
+                '[%s] Given output could not be parsed',
+                self::class
+            ));
+        }
+
+        $totalElements = (int)$elements[0];
+        $totalCoveredElements = (int)$coveredElements[0];
 
         $coverage = $totalElements === 0 ? 100 : ($totalCoveredElements / $totalElements) * 100;
 

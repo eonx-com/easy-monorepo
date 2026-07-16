@@ -3,20 +3,18 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyBugsnagConfig;
-use Symfony\Config\EasySecurityConfig;
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_security', [
+        'voters' => [
+            'permission_voter' => true,
+            'provider_voter' => true,
+            'role_voter' => true,
+        ],
+    ]);
 
-return static function (EasySecurityConfig $easySecurityConfig, EasyBugsnagConfig $easyBugsnagConfig): void {
-    $easySecurityConfig->voters()
-        ->permissionVoter(true)
-        ->providerVoter(true)
-        ->roleVoter(true);
-
-    $easyBugsnagConfig->apiKey('api-key');
-
-    $easyBugsnagConfig->doctrineDbal()
-        ->enabled(false);
-
-    $easyBugsnagConfig->sensitiveDataSanitizer()
-        ->enabled(false);
+    $containerConfigurator->extension('easy_bugsnag', [
+        'api_key' => 'api-key',
+        'doctrine_dbal' => false,
+        'sensitive_data_sanitizer' => false,
+    ]);
 };

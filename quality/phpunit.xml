@@ -5,6 +5,8 @@
     bootstrap="vendor/autoload.php"
     colors="true"
     failOnWarning="true"
+    failOnNotice="true"
+    displayDetailsOnAllIssues="true"
 >
     <testsuites>
         <testsuite name="Architecture">

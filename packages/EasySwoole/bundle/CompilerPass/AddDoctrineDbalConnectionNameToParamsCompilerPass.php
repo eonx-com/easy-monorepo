@@ -12,7 +12,7 @@ use function Symfony\Component\String\u;
 
 final class AddDoctrineDbalConnectionNameToParamsCompilerPass implements CompilerPassInterface
 {
-    private const CONNECTION_REGEX = '/doctrine.dbal.(.+)_connection/';
+    private const string CONNECTION_REGEX = '/doctrine.dbal.(.+)_connection/';
 
     public function process(ContainerBuilder $container): void
     {
@@ -34,8 +34,14 @@ final class AddDoctrineDbalConnectionNameToParamsCompilerPass implements Compile
 
                 if (\is_array($params['replica'] ?? null)) {
                     foreach (\array_keys($params['replica']) as $replicaName) {
+                        $replicaParams = $params['replica'][$replicaName];
+
+                        if (\is_array($replicaParams) === false) {
+                            continue;
+                        }
+
                         $params['replica'][$replicaName] = $this->setPoolName(
-                            $params['replica'][$replicaName],
+                            $replicaParams,
                             \sprintf('%s_replica_%s', $matches[1], $replicaName)
                         );
                     }

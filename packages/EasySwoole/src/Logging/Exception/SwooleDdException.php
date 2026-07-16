@@ -5,6 +5,4 @@ namespace EonX\EasySwoole\Logging\Exception;
 
 use RuntimeException;
 
-final class SwooleDdException extends RuntimeException
-{
-}
+final class SwooleDdException extends RuntimeException {}

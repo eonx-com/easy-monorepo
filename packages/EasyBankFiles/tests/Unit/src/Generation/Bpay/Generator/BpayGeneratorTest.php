@@ -59,7 +59,7 @@ final class BpayGeneratorTest extends AbstractUnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new BpayGenerator($this->createHeader(), ['invalid']))
+        new BpayGenerator($this->createHeader(), ['invalid'])
             ->setBreakLines(LineBreak::Windows)
             ->getContents();
     }

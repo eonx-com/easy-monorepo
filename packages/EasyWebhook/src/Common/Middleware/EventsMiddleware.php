@@ -14,7 +14,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class EventsMiddleware extends AbstractMiddleware
 {
-    private const EVENT_CLASSES = [
+    private const array EVENT_CLASSES = [
         WebhookStatus::FailedPendingRetry->value => FailedWebhookEvent::class,
         WebhookStatus::Failed->value => FinalFailedWebhookEvent::class,
         WebhookStatus::Success->value => SuccessWebhookEvent::class,

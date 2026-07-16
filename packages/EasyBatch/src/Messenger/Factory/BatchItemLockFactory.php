@@ -11,8 +11,7 @@ final readonly class BatchItemLockFactory implements BatchItemLockFactoryInterfa
 {
     public function __construct(
         private ?float $ttl = null,
-    ) {
-    }
+    ) {}
 
     public function createFromEnvelope(Envelope $envelope): LockData
     {

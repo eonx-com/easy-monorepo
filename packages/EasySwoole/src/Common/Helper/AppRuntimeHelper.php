@@ -9,16 +9,14 @@ use EonX\EasySwoole\EasySchedule\Runner\EasyScheduleSwooleRunner;
 
 final class AppRuntimeHelper
 {
-    private const APP_RUNTIME = 'APP_RUNTIME';
+    private const string APP_RUNTIME = 'APP_RUNTIME';
 
-    private const APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
+    private const string APP_RUNTIME_OPTIONS = 'APP_RUNTIME_OPTIONS';
 
     public static function addOptions(array $options): void
     {
-        $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge(
-            $_SERVER[self::APP_RUNTIME_OPTIONS] ?? [],
-            $options
-        );
+        // @phpstan-ignore argument.type
+        $_SERVER[self::APP_RUNTIME_OPTIONS] = \array_merge($_SERVER[self::APP_RUNTIME_OPTIONS] ?? [], $options);
     }
 
     public static function enableAppCacheWarmup(): void
@@ -38,6 +36,7 @@ final class AppRuntimeHelper
 
     public static function getOption(string $name, mixed $default = null): mixed
     {
+        // @phpstan-ignore offsetAccess.nonOffsetAccessible
         return $_SERVER[self::APP_RUNTIME_OPTIONS][$name] ?? $default;
     }
 

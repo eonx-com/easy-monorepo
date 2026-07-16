@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ErrorRendererCompilerPass implements CompilerPassInterface
 {
-    private const ERROR_RENDERER_ID = 'error_renderer';
+    private const string ERROR_RENDERER_ID = 'error_renderer';
 
     public function process(ContainerBuilder $container): void
     {
@@ -20,7 +20,7 @@ final class ErrorRendererCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $def = (new Definition(TranslateInternalErrorMessageErrorRenderer::class))
+        $def = new Definition(TranslateInternalErrorMessageErrorRenderer::class)
             ->setArgument('$errorDetailsResolver', new Reference(ErrorDetailsResolverInterface::class))
             ->setArgument('$decorated', new Reference('.inner'))
             ->setDecoratedService(self::ERROR_RENDERER_ID);

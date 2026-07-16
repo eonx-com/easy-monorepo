@@ -13,12 +13,13 @@ final class SqsQueueTransportTest extends AbstractUnitTestCase
     public function testSend(): void
     {
         $stub = new SqsClientStub();
-        $queueMessage = (new QueueMessage())
+        $queueMessage = new QueueMessage()
             ->addHeader('my-header', 'my-value')
             ->setBody('my-body')
             ->setQueueUrl(static::$defaultConfig['queueUrl']);
 
-        (new SqsQueueTransport($stub))->send($queueMessage);
+        new SqsQueueTransport($stub)
+            ->send($queueMessage);
 
         $expected = [
             'QueueUrl' => static::$defaultConfig['queueUrl'],
@@ -38,12 +39,13 @@ final class SqsQueueTransportTest extends AbstractUnitTestCase
     {
         $queueUrl = 'https://sqs.my-queue.fifo';
         $stub = new SqsClientStub();
-        $queueMessage = (new QueueMessage())
+        $queueMessage = new QueueMessage()
             ->addHeader('my-header', 'my-value')
             ->setBody('my-body')
             ->setQueueUrl($queueUrl);
 
-        (new SqsQueueTransport($stub))->send($queueMessage);
+        new SqsQueueTransport($stub)
+            ->send($queueMessage);
 
         self::assertNotNull($stub->getCalls()[0]['MessageDeduplicationId']);
         self::assertNotNull($stub->getCalls()[0]['MessageGroupId']);

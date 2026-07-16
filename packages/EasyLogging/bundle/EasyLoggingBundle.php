@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyLoggingBundle extends AbstractBundle
 {
-    private const AUTO_CONFIGS = [
+    private const array AUTO_CONFIGS = [
         HandlerConfigProviderInterface::class => ConfigTag::HandlerConfigProvider,
         LoggerConfiguratorInterface::class => ConfigTag::LoggerConfigurator,
         ProcessorConfigProviderInterface::class => ConfigTag::ProcessorConfigProvider,

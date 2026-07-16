@@ -13,7 +13,7 @@ final class FunctionHelper
             return \swoole_cpu_num();
         }
 
-        if (\class_exists(Util::class) && \method_exists(Util::class, 'getCPUNum')) {
+        if (\class_exists(Util::class)) {
             return Util::getCPUNum();
         }
 

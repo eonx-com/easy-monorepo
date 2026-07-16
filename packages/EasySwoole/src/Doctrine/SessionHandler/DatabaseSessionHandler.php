@@ -17,8 +17,7 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ?array $options = null,
-    ) {
-    }
+    ) {}
 
     public function close(): bool
     {
@@ -44,7 +43,7 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
             ->open($path, $name);
     }
 
-    public function read(string $id): string|false
+    public function read(string $id): string
     {
         return $this->getDecorated()
             ->read($id);
@@ -87,11 +86,9 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
             $connection->ensureConnectedToPrimary();
         }
 
-        $nativeConnGetter = \method_exists($connection, 'getNativeConnection')
-            ? 'getNativeConnection'
-            : 'getWrappedConnection';
-
-        $this->decorated = new PdoSessionHandler($connection->{$nativeConnGetter}(), $this->options ?? []);
+        /** @var \PDO|string|null $pdoOrDsn */
+        $pdoOrDsn = $connection->getNativeConnection();
+        $this->decorated = new PdoSessionHandler($pdoOrDsn, $this->options ?? []);
 
         // Restore replica connection once PdoSessionHandler instantiated for the rest of the app
         if ($connection instanceof PrimaryReadReplicaConnection) {

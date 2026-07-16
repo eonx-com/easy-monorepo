@@ -31,7 +31,7 @@ final class AccountTest extends AbstractUnitTestCase
 
         self::assertInstanceOf(AccountIdentifier::class, $account->getIdentifier());
         self::assertNull($account->getGroup());
-        self::assertIsArray($account->getTransactions());
+        self::assertSame([], $account->getTransactions());
         self::assertInstanceOf(AccountTrailer::class, $account->getTrailer());
     }
 }

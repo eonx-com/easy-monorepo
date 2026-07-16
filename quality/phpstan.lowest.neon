@@ -1,2 +1,35 @@
 includes:
     - phpstan.neon
+
+parameters:
+    excludePaths:
+        # @todo Remove when Doctrine DBAL 3 support is dropped.
+        - %currentWorkingDirectory%/packages/EasyAsync/tests/Stub/Connection/BrokenConnection.php
+        - %currentWorkingDirectory%/packages/EasyBugsnag/src/Doctrine/Connection/BreadcrumbLoggerConnection.php
+        - %currentWorkingDirectory%/packages/EasyBugsnag/src/Doctrine/ValueObject/QueryBreadcrumb.php
+        - %currentWorkingDirectory%/packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerStatement.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Driver/DbalDriver.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionFactory.php
+        - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php
+    ignoreErrors:
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
+
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
+
+        - message: '#Parameter \#3 \$type of method EonX\\EasyBugsnag\\Doctrine\\ValueObject\\QueryBreadcrumb\:\:setQueryParameter\(\) expects Doctrine\\DBAL\\ParameterType, int given#'
+          path: %currentWorkingDirectory%/packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerDbal3Statement.php
+
+        - message: '#PHPDoc tag @var for variable \$mapping contains unknown class Doctrine\\ORM\\Mapping\\AssociationMapping#'
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php
+
+        - message: '#Access to property \$fieldName on an unknown class Doctrine\\ORM\\Mapping\\AssociationMapping#'
+          path: %currentWorkingDirectory%/packages/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php
+
+        - message: '#Call to function method_exists\(\) with Doctrine\\ORM\\Configuration and .* will always evaluate to false#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/AbstractDoctrineOrmPaginatorTestCase.php
+
+        - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php

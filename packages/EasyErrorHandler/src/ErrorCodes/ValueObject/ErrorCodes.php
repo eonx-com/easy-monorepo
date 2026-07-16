@@ -11,8 +11,7 @@ final readonly class ErrorCodes
     public function __construct(
         private int $nextGroupErrorCode = 0,
         private array $nextGroupedErrorCodes = [],
-    ) {
-    }
+    ) {}
 
     public function getNextGroupErrorCode(): int
     {
@@ -22,7 +21,7 @@ final readonly class ErrorCodes
     public function getNextGroupedErrorCodesAsArray(): array
     {
         return \array_map(
-            static fn (ErrorCodeCategory $errorCodeCategoryDto): array => $errorCodeCategoryDto->asArray(),
+            static fn(ErrorCodeCategory $errorCodeCategoryDto): array => $errorCodeCategoryDto->asArray(),
             $this->nextGroupedErrorCodes
         );
     }

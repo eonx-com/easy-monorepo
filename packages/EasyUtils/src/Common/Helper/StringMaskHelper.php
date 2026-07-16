@@ -7,7 +7,7 @@ use UnexpectedValueException;
 
 final class StringMaskHelper
 {
-    private const MASKING_SYMBOL_DEFAULT = '*';
+    private const string MASKING_SYMBOL_DEFAULT = '*';
 
     public static function maskEmail(string $email, ?string $maskingSymbol = null): string
     {

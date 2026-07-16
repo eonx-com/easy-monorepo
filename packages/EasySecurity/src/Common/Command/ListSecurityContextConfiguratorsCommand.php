@@ -13,8 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'easy-security:configurators:list',
-    description: 'List registered security context configurators with their priority ' .
-    '(execution order = lower priority first).'
+    description: 'List registered security context configurators with their priority '
+    . '(execution order = lower priority first).'
 )]
 final class ListSecurityContextConfiguratorsCommand extends Command
 {

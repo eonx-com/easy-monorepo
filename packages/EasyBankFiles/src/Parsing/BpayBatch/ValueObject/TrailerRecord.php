@@ -6,13 +6,13 @@ namespace EonX\EasyBankFiles\Parsing\BpayBatch\ValueObject;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getAmountOfApprovals()
- * @method string|null getAmountOfDeclines()
- * @method string|null getAmountOfPayments()
- * @method string|null getRestOfRecord()
- * @method string|null getNumberOfApprovals()
- * @method string|null getNumberOfDeclines()
- * @method string|null getNumberOfPayments()
+ * @method string getAmountOfApprovals()
+ * @method string getAmountOfDeclines()
+ * @method string getAmountOfPayments()
+ * @method string getRestOfRecord()
+ * @method string getNumberOfApprovals()
+ * @method string getNumberOfDeclines()
+ * @method string getNumberOfPayments()
  */
 final class TrailerRecord extends AbstractResult
 {

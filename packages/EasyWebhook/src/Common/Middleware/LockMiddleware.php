@@ -12,7 +12,7 @@ use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class LockMiddleware extends AbstractMiddleware
 {
-    private const DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
+    private const string DEFAULT_LOCK_RESOURCE_PATTERN = 'easy_webhook_send_%s';
 
     private readonly string $resourcePattern;
 
@@ -28,7 +28,7 @@ final class LockMiddleware extends AbstractMiddleware
 
     public function process(WebhookInterface $webhook, StackInterface $stack): WebhookResultInterface
     {
-        $func = fn (): WebhookResultInterface => $this->passOn($webhook, $stack);
+        $func = fn(): WebhookResultInterface => $this->passOn($webhook, $stack);
 
         $result = $webhook->getId() !== null && $webhook->isSendNow()
             ? $this->locker->processWithLock($this->getLockData($webhook), $func)

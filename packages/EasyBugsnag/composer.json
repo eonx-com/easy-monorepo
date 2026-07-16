@@ -4,33 +4,35 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "bugsnag/bugsnag": "^3.29",
-        "eonx-com/easy-utils": "^6.23",
+        "php": "^8.4",
+        "bugsnag/bugsnag": "^3.29.2",
+        "eonx-com/easy-utils": "^6.21",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.8.4",
         "nette/utils": "^4.0",
-        "symfony/cache": "^7.2",
+        "symfony/cache": "^7.4",
         "symfony/cache-contracts": "^3.5",
-        "symfony/config": "^7.2",
-        "symfony/console": "^7.2",
-        "symfony/dependency-injection": "^7.2",
-        "symfony/event-dispatcher": "^7.2",
-        "symfony/filesystem": "^7.2",
-        "symfony/http-foundation": "^7.2",
-        "symfony/http-kernel": "^7.2",
-        "symfony/messenger": "^7.2",
-        "symfony/var-dumper": "^7.2"
+        "symfony/config": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/event-dispatcher": "^7.4",
+        "symfony/filesystem": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/messenger": "^7.4",
+        "symfony/var-dumper": "^7.4"
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/collections": "^1.7.2 || ^2.1",
-        "doctrine/orm": "^2.20",
-        "eonx-com/easy-test": "^6.23",
-        "laravel/lumen-framework": "^11.0",
-        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
-        "symfony/doctrine-bridge": "^7.2",
-        "symfony/uid": "^7.2"
+        "doctrine/collections": "^1.7.2 || ^2.6",
+        "doctrine/dbal": "^3.8 || ^4.4",
+        "doctrine/doctrine-bundle": "^2.12 || ^3.2",
+        "doctrine/orm": "^2.20 || ^3.6",
+        "eonx-com/easy-test": "^6.21",
+        "laravel/framework": "^13.0",
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/doctrine-bridge": "^7.4",
+        "symfony/runtime": "^7.4",
+        "symfony/uid": "^7.4"
     },
     "autoload": {
         "psr-4": {
@@ -51,16 +53,15 @@
     "suggest": {
         "doctrine/doctrine-bundle": "To log SQL queries in Bugsnag",
         "doctrine/orm": "To log SQL queries in Bugsnag",
-        "illuminate/contracts": "To use this package with Laravel/Lumen",
-        "illuminate/http": "To use this package with Laravel/Lumen",
-        "illuminate/queue": "To use this package with Laravel/Lumen",
-        "illuminate/routing": "To use this package with Laravel/Lumen",
-        "illuminate/support": "To use this package with Laravel/Lumen",
-        "laravel/lumen-framework": "To use this package with Lumen"
+        "illuminate/contracts": "To use this package with Laravel",
+        "illuminate/http": "To use this package with Laravel",
+        "illuminate/queue": "To use this package with Laravel",
+        "illuminate/routing": "To use this package with Laravel",
+        "illuminate/support": "To use this package with Laravel"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.23-dev"
+            "dev-master": "6.21-dev"
         }
     }
 }

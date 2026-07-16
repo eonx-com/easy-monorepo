@@ -11,8 +11,7 @@ final readonly class NotSupportedMessage
     public function __construct(
         private QueueEnvelopeInterface $envelope,
         private ?Throwable $throwable = null,
-    ) {
-    }
+    ) {}
 
     public static function create(QueueEnvelopeInterface $envelope, ?Throwable $throwable = null): self
     {

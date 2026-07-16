@@ -8,13 +8,12 @@ use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 
 final readonly class AwsCloudHsmHashCalculator implements HashCalculatorInterface
 {
-    private const DEFAULT_ENCODING = 'UTF-8';
+    private const string DEFAULT_ENCODING = 'UTF-8';
 
     public function __construct(
         private AwsCloudHsmEncryptorInterface $encryptor,
         private string $signKeyName,
-    ) {
-    }
+    ) {}
 
     public function calculate(string $value): string
     {

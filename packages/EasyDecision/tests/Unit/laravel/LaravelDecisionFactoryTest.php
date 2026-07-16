@@ -5,7 +5,7 @@ namespace EonX\EasyDecision\Tests\Unit\Laravel;
 
 use EonX\EasyDecision\Decision\AffirmativeDecision;
 
-final class LaravelDecisionFactoryTest extends AbstractLumenTestCase
+final class LaravelDecisionFactoryTest extends AbstractLaravelTestCase
 {
     public function testSanity(): void
     {

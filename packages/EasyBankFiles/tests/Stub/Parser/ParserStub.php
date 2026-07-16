@@ -10,7 +10,5 @@ final class ParserStub extends AbstractParser
     /**
      * Process parsing.
      */
-    public function process(): void
-    {
-    }
+    public function process(): void {}
 }

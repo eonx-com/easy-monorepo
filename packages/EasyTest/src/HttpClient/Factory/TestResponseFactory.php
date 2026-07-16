@@ -81,9 +81,7 @@ final class TestResponseFactory implements Iterator
         throw new RuntimeException('Method is not supported');
     }
 
-    public function next(): void
-    {
-    }
+    public function next(): void {}
 
     public function rewind(): void
     {

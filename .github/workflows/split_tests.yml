@@ -22,7 +22,7 @@ jobs:
                 id: cache-extensions
                 uses: shivammathur/cache-extensions@v1
                 with:
-                    php-version: 8.2
+                    php-version: 8.4
                     extensions: ${{ env.PHP_EXTENSIONS }}
                     key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
 
@@ -32,10 +32,10 @@ jobs:
                     path: ${{ steps.cache-extensions.outputs.dir }}
                     key: ${{ steps.cache-extensions.outputs.key }}
 
-            -   name: Setup PHP 8.2
+            -   name: Setup PHP 8.4
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.2
+                    php-version: 8.4
                     coverage: none
                     extensions:
                         ${{ env.PHP_EXTENSIONS }}
@@ -56,7 +56,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['8.2']
+                php: ['8.4']
                 dependencies: ['latest', 'lowest']
                 package: ${{ fromJson(needs.provide_packages_json.outputs.matrix) }}
 
@@ -93,10 +93,10 @@ jobs:
             -   name: Install Composer dependencies
                 uses: ramsey/composer-install@v3
                 with:
-                    composer-options: ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
+                    composer-options: ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-plugins
 
             -   run: bin/monorepo localize-monorepo-packages
 
-            -   run: cd packages/${{ matrix.package.dir }}; composer update ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-progress --ansi
+            -   run: cd packages/${{ matrix.package.dir }}; composer update ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-progress --ansi --no-plugins
 
-            -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit --coverage-text tests
+            -   run: cd packages/${{ matrix.package.dir }}; vendor/bin/phpunit --coverage-text ${{ matrix.dependencies == 'latest' && '--fail-on-deprecation' || '' }} tests

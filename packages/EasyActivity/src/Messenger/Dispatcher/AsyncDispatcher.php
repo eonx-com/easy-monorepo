@@ -12,8 +12,7 @@ final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
         private MessageBusInterface $messageBus,
-    ) {
-    }
+    ) {}
 
     public function dispatch(ActivityLogEntry $activityLogEntry): void
     {

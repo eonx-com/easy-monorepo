@@ -18,7 +18,7 @@ final class BpayGenerator extends AbstractGenerator
      */
     public function __construct(
         private readonly Header $header,
-        private array $transactions,
+        private readonly array $transactions,
         private readonly ?Trailer $trailer = null,
     ) {
         if (\count($transactions) === 0) {

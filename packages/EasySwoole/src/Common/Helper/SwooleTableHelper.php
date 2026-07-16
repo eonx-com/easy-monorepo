@@ -16,7 +16,7 @@ final class SwooleTableHelper
     private static ?string $tableClass = null;
 
     /**
-     * @param \EonX\EasySwoole\Common\ValueObject\SwooleTableColumnDefinition[] $columnDefinitions
+     * @param list<\EonX\EasySwoole\Common\ValueObject\SwooleTableColumnDefinition|object> $columnDefinitions
      */
     public static function create(int $size, array $columnDefinitions): OpenSwooleTable|SwooleTable
     {

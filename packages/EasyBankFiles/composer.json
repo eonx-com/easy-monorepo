@@ -4,18 +4,18 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "eonx-com/easy-error-handler": "^6.23",
+        "eonx-com/easy-error-handler": "^6.21",
         "nette/utils": "^4.0"
     },
     "require-dev": {
-        "eonx-com/easy-test": "^6.23",
+        "eonx-com/easy-test": "^6.21",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8"
+        "phpunit/phpunit": "^12.5|^13.0"
     },
     "autoload": {
         "psr-4": {
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.23-dev"
+            "dev-master": "6.21-dev"
         }
     }
 }

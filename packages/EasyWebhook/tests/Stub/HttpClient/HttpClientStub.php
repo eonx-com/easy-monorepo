@@ -21,10 +21,9 @@ final class HttpClientStub implements HttpClientInterface
 
     public function __construct(
         private readonly ?Throwable $throwable = null,
-    ) {
-    }
+    ) {}
 
-    public function getMethod(): ?string
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -34,7 +33,7 @@ final class HttpClientStub implements HttpClientInterface
         return $this->options;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }

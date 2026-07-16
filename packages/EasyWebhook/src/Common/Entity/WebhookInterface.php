@@ -8,15 +8,15 @@ use EonX\EasyWebhook\Common\Enum\WebhookStatus;
 
 interface WebhookInterface
 {
-    final public const DEFAULT_CURRENT_ATTEMPT = 0;
+    final public const int DEFAULT_CURRENT_ATTEMPT = 0;
 
-    final public const DEFAULT_METHOD = 'POST';
+    final public const string DEFAULT_METHOD = 'POST';
 
-    final public const HEADER_EVENT = 'X-Webhook-Event';
+    final public const string HEADER_EVENT = 'X-Webhook-Event';
 
-    final public const HEADER_ID = 'X-Webhook-Id';
+    final public const string HEADER_ID = 'X-Webhook-Id';
 
-    final public const HEADER_SIGNATURE = 'X-Webhook-Signature';
+    final public const string HEADER_SIGNATURE = 'X-Webhook-Signature';
 
     public static function fromArray(array $data): self;
 

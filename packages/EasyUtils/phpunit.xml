@@ -4,14 +4,15 @@
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     colors="true"
     bootstrap="vendor/autoload.php"
+    failOnWarning="true"
+    failOnNotice="true"
+    displayDetailsOnAllIssues="true"
 >
     <testsuites>
         <testsuite name="EonX EasyUtils Package Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-
-    <coverage/>
 
     <source>
         <include>
@@ -21,5 +22,6 @@
 
     <php>
         <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value="false"/>
     </php>
 </phpunit>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Laravel;
 
 use EonX\EasyPagination\Laravel\Listeners\PaginationFromRequestListener;
-use EonX\EasyPagination\Laravel\Middleware\PaginationFromRequestMiddleware;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use EonX\EasyPagination\Provider\PaginationProvider;
@@ -12,7 +11,6 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application as LumenApplication;
 
 final class EasyPaginationServiceProvider extends ServiceProvider
 {
@@ -43,23 +41,9 @@ final class EasyPaginationServiceProvider extends ServiceProvider
             return;
         }
 
-        // Lumen
-        if ($this->app instanceof LumenApplication) {
-            $this->app->singleton(
-                PaginationFromRequestMiddleware::class,
-                static fn (Container $app): PaginationFromRequestMiddleware => new PaginationFromRequestMiddleware(
-                    $app->make(PaginationProviderInterface::class)
-                )
-            );
-            $this->app->middleware([PaginationFromRequestMiddleware::class]);
-
-            return;
-        }
-
-        // Laravel
         $this->app->singleton(
             PaginationFromRequestListener::class,
-            static fn (Container $app): PaginationFromRequestListener => new PaginationFromRequestListener(
+            static fn(Container $app): PaginationFromRequestListener => new PaginationFromRequestListener(
                 $app->make(PaginationProviderInterface::class)
             )
         );
@@ -85,7 +69,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             PaginationInterface::class,
-            static fn (Container $app): PaginationInterface => $app->make(PaginationProviderInterface::class)
+            static fn(Container $app): PaginationInterface => $app->make(PaginationProviderInterface::class)
                 ->getPagination()
         );
     }

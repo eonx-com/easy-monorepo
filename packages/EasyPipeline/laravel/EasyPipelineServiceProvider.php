@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyPipelineServiceProvider extends ServiceProvider
 {
-    public const PIPELINES_PREFIX = 'pipeline.';
+    public const string PIPELINES_PREFIX = 'pipeline.';
 
     public function boot(): void
     {
@@ -32,7 +32,7 @@ final class EasyPipelineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PipelineFactoryInterface::class,
-            static fn (Container $app): IlluminatePipelineFactory => new IlluminatePipelineFactory(
+            static fn(Container $app): IlluminatePipelineFactory => new IlluminatePipelineFactory(
                 $app,
                 \array_keys(\config('easy-pipeline.pipelines', [])),
                 self::PIPELINES_PREFIX

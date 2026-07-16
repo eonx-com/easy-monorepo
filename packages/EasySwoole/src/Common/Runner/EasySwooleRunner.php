@@ -33,8 +33,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
 {
     public function __construct(
         private HttpKernelInterface $app,
-    ) {
-    }
+    ) {}
 
     public function run(): int
     {
@@ -130,9 +129,9 @@ final readonly class EasySwooleRunner implements RunnerInterface
     {
         try {
             if (
-                \interface_exists(ErrorHandlerInterface::class) &&
-                $app instanceof KernelInterface &&
-                $app->getContainer()
+                \interface_exists(ErrorHandlerInterface::class)
+                && $app instanceof KernelInterface
+                && $app->getContainer()
                     ->has(ErrorHandlerInterface::class)
             ) {
                 return $app->getContainer()
@@ -221,6 +220,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
 
         // Format and filter dirs
         $dirs = \array_filter(\array_map(static function (string $dir): ?string {
+            /** @var non-empty-string|false $realpath */
             $realpath = \realpath($dir);
 
             return \is_string($realpath) ? $realpath : null;
@@ -250,7 +250,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
 
             \array_push($cmd, ...$dirs);
 
-            (new SymfonyProcess($cmd))
+            new SymfonyProcess($cmd)
                 ->setTimeout(null)
                 ->run(static function ($type, $buffer) use ($extensions, $server): void {
                     foreach (\explode(\PHP_EOL, (string)$buffer) as $line) {

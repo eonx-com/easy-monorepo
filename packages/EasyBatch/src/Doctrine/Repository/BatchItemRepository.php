@@ -28,6 +28,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
             ->setParameter('batchId', $batchId, \is_string($batchId) ? Types::STRING : Types::INTEGER)
             ->groupBy('status');
 
+        /** @var array{status: string, _count: int}[] $results */
         $results = $this->connection->fetchAllAssociative(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
@@ -166,7 +167,7 @@ final class BatchItemRepository extends AbstractBatchObjectRepository implements
         }
 
         $batchItemIds = \array_map(
-            static fn (BatchItem $batchItem): int|string => $batchItem->getIdOrFail(),
+            static fn(BatchItem $batchItem): int|string => $batchItem->getIdOrFail(),
             $batchItems
         );
 

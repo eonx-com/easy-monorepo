@@ -18,8 +18,7 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
         private array $allowedProperties,
         private array $fullySerializableProperties,
         private ?array $allowedActions = null,
-    ) {
-    }
+    ) {}
 
     public function getActivitySubjectId(): string
     {
@@ -36,7 +35,7 @@ final readonly class ActivitySubject implements ActivitySubjectInterface
         return $this->allowedActions ?? [];
     }
 
-    public function getAllowedActivityProperties(): ?array
+    public function getAllowedActivityProperties(): array
     {
         return $this->allowedProperties;
     }

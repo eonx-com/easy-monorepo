@@ -101,14 +101,16 @@ final class SecurityContextTest extends AbstractUnitTestCase
     {
         $this->expectException(NoProviderInContextException::class);
 
-        (new SecurityContext())->getProviderOrFail();
+        new SecurityContext()
+            ->getProviderOrFail();
     }
 
     public function testContextGetUserOrFail(): void
     {
         $this->expectException(NoUserInContextException::class);
 
-        (new SecurityContext())->getUserOrFail();
+        new SecurityContext()
+            ->getUserOrFail();
     }
 
     #[DataProvider('gettersDataProvider')]

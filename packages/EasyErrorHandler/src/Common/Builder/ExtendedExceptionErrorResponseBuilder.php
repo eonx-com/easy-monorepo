@@ -15,15 +15,15 @@ final class ExtendedExceptionErrorResponseBuilder extends AbstractSingleKeyError
 {
     use ErrorHandlerAwareTrait;
 
-    private const EXCEPTION_KEY_CLASS = 'class';
+    private const string EXCEPTION_KEY_CLASS = 'class';
 
-    private const EXCEPTION_KEY_FILE = 'file';
+    private const string EXCEPTION_KEY_FILE = 'file';
 
-    private const EXCEPTION_KEY_LINE = 'line';
+    private const string EXCEPTION_KEY_LINE = 'line';
 
-    private const EXCEPTION_KEY_MESSAGE = 'message';
+    private const string EXCEPTION_KEY_MESSAGE = 'message';
 
-    private const EXCEPTION_KEY_TRACE = 'trace';
+    private const string EXCEPTION_KEY_TRACE = 'trace';
 
     /**
      * @param string[] $exceptionKeys

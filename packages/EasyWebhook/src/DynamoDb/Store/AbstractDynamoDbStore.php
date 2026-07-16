@@ -14,13 +14,13 @@ use EonX\EasyWebhook\Common\Store\AbstractStore;
 
 abstract class AbstractDynamoDbStore extends AbstractStore
 {
-    public const DEFAULT_TTL_ATTRIBUTE = 'ttl';
+    public const string DEFAULT_TTL_ATTRIBUTE = 'ttl';
 
     public function __construct(
         RandomGeneratorInterface $random,
         DataCleanerInterface $dataCleaner,
         private readonly DynamoDbClient $dynamoDbClient,
-        private readonly string $table,
+        private readonly ?string $table = null,
         private readonly ?string $ttl = null,
         private readonly ?string $ttlAttribute = null,
     ) {

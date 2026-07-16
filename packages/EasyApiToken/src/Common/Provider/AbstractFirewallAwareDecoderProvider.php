@@ -10,7 +10,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractFirewallAwareDecoderProvider implements DecoderProviderInterface
 {
-    private const NO_FIREWALL = 'easy_api_token_no_firewall';
+    private const string NO_FIREWALL = 'easy_api_token_no_firewall';
 
     private ?string $firewall = null;
 

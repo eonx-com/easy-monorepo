@@ -15,16 +15,11 @@ final class ProviderVoter extends Voter
 {
     public function __construct(
         private readonly SecurityContextResolverInterface $securityContextResolver,
-    ) {
-    }
+    ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if ($subject instanceof ProviderRestrictedInterface === false) {
-            return false;
-        }
-
-        return $subject->getRestrictedProviderUniqueId() !== null;
+        return $subject instanceof ProviderRestrictedInterface;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

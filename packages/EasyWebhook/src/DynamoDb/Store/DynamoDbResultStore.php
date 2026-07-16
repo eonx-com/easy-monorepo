@@ -13,7 +13,7 @@ use EonX\EasyWebhook\Common\Store\ResultStoreInterface;
 
 final class DynamoDbResultStore extends AbstractDynamoDbStore implements ResultStoreInterface
 {
-    public const DEFAULT_TABLE = 'easy_webhook_results';
+    public const string DEFAULT_TABLE = 'easy_webhook_results';
 
     public function store(WebhookResultInterface $result): WebhookResultInterface
     {
@@ -53,7 +53,7 @@ final class DynamoDbResultStore extends AbstractDynamoDbStore implements ResultS
         ]);
 
         return \array_map(
-            static fn ($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
+            static fn($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
             $this->formatData($data)
         );
     }

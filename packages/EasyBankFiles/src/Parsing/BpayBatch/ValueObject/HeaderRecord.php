@@ -8,10 +8,10 @@ use DateTimeInterface;
 use EonX\EasyBankFiles\Parsing\Common\ValueObject\AbstractResult;
 
 /**
- * @method string|null getCustomerId()
- * @method string|null getCustomerShortName()
- * @method string|null getDateProcessed()
- * @method string|null getRestOfRecord()
+ * @method string getCustomerId()
+ * @method string getCustomerShortName()
+ * @method string getDateProcessed()
+ * @method string getRestOfRecord()
  */
 final class HeaderRecord extends AbstractResult
 {
@@ -23,8 +23,8 @@ final class HeaderRecord extends AbstractResult
         $value = $this->data['dateProcessed'];
 
         if (
-            \is_string($value) === false ||
-            \ctype_digit($value) === false
+            \is_string($value) === false
+            || \ctype_digit($value) === false
         ) {
             return null;
         }

@@ -9,7 +9,7 @@ use Throwable;
 
 final class HttpExceptionErrorResponseBuilder extends AbstractErrorResponseBuilder
 {
-    private const KEY_MESSAGE = 'message';
+    private const string KEY_MESSAGE = 'message';
 
     private readonly array $keys;
 

@@ -14,7 +14,7 @@ final class ErrorResponseHelper
     {
         $response->status(
             HttpStatusCode::InternalServerError->value,
-            HttpStatusCode::InternalServerError->description()
+            HttpStatusCode::InternalServerError->description() ?? 'Internal Server Error'
         );
 
         $response->header('Content-Type', 'application/json');

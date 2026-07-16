@@ -10,7 +10,7 @@ use EonX\EasyBugsnag\Common\Enum\ServerParam;
 
 abstract class AbstractRequestResolver implements ResolverInterface
 {
-    private const IN_CLI = ['cli', 'phpdbg', 'embed'];
+    private const array IN_CLI = ['cli', 'phpdbg', 'embed'];
 
     public function resolve(): RequestInterface
     {
@@ -18,6 +18,7 @@ abstract class AbstractRequestResolver implements ResolverInterface
         $resolveInCli = (bool)($_SERVER[ServerParam::ResolveRequestInCli->value] ?? false);
 
         if ($inCli && $resolveInCli === false) {
+            /** @var string[] $argv */
             $argv = $_SERVER['argv'] ?? [];
 
             \array_shift($argv);

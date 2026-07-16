@@ -33,10 +33,7 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         ?iterable $objectTransformers = null,
         ?iterable $stringSanitizers = null,
     ) {
-        $this->keysToMask = \array_map(
-            static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
-            $keysToMask
-        );
+        $this->keysToMask = \array_map(\mb_strtolower(...), $keysToMask);
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
         );

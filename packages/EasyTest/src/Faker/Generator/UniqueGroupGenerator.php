@@ -10,8 +10,7 @@ final class UniqueGroupGenerator
     public function __construct(
         protected Generator $generator,
         protected string $groupName,
-    ) {
-    }
+    ) {}
 
     public function __call(string $name, array $arguments): UniqueGroupPropertyValueGenerator
     {

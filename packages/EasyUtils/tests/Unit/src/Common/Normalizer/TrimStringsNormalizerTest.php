@@ -93,7 +93,6 @@ final class TrimStringsNormalizerTest extends AbstractUnitTestCase
         $context = [];
         $except = ['some-key'];
         $trimmer = new RecursiveStringTrimmer();
-        /** @var \Symfony\Component\Serializer\Normalizer\DenormalizerInterface $innerDenormalizer */
         $innerDenormalizer = $this->mock(
             DenormalizerInterface::class,
             static function (MockInterface $mock) use ($expectedResult, $type, $format, $context): void {
@@ -126,7 +125,6 @@ final class TrimStringsNormalizerTest extends AbstractUnitTestCase
         ?string $format = null,
         ?array $context = null,
     ): void {
-        /** @var \EonX\EasyUtils\Common\Trimmer\StringTrimmerInterface $trimmer */
         $trimmer = $this->mock(StringTrimmerInterface::class);
         $normalizer = new TrimStringsNormalizer($trimmer);
 

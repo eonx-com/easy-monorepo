@@ -11,12 +11,12 @@ use Test\Architecture\AbstractArchitectureTestCase;
 
 final class PluralNameForDirTest extends AbstractArchitectureTestCase
 {
-    private const EXCLUDE_DIRS = [
+    private const array EXCLUDE_DIRS = [
         'config',
         'translations',
     ];
 
-    private const SKIP_DIRS = [
+    private const array SKIP_DIRS = [
         'Middleware',
     ];
 
@@ -35,7 +35,8 @@ final class PluralNameForDirTest extends AbstractArchitectureTestCase
 
     protected static function arrangeFinder(): Finder
     {
-        return (new Finder())->directories()
+        return new Finder()
+            ->directories()
             ->exclude(self::EXCLUDE_DIRS)
             ->path('/laravel\//')
             ->depth(1)

@@ -13,7 +13,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
     {
         $this->initDatabase();
         $entityManager = self::getEntityManager();
-        $author = (new Author())
+        $author = new Author()
             ->setName('Some Name')
             ->setPosition(1);
 
@@ -25,8 +25,9 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         $recoder = self::getPrivatePropertyValue($client, 'recorder');
         /** @var array $breadcrumbs */
         $breadcrumbs = self::getPrivatePropertyValue($recoder, 'breadcrumbs');
+        // @todo Remove `14` after drop supporting Doctrine DBAL 3
         /** @var \Bugsnag\Breadcrumbs\Breadcrumb $breadcrumb */
-        $breadcrumb = $breadcrumbs[14];
+        $breadcrumb = $breadcrumbs[16] ?? $breadcrumbs[14];
         self::assertSame('SQL query | default', $breadcrumb->toArray()['name']);
         self::assertSame(
             'INSERT INTO author (id, name, position) VALUES (?, ?, ?)',

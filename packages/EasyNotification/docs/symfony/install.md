@@ -34,13 +34,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyNotificationConfig;
-
-return static function (EasyNotificationConfig $easyNotificationConfig): void {
-    $easyNotificationConfig
-        ->apiUrl(env('EONX_NOTIFICATION_API_URL'))
-        ->configExpiresAfter(500); // Number of seconds
-};
+return App::config([
+    'easy_notification' => [
+        'api_url' => env('EONX_NOTIFICATION_API_URL'),
+        'config_expires_after' => 500, // Number of seconds
+    ],
+]);
 
 ```
 

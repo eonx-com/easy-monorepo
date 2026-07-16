@@ -26,7 +26,7 @@ final class GroupTest extends AbstractUnitTestCase
 
         $group = new Group(new ResultsContext([], [], [], [], []), $data);
 
-        self::assertIsArray($group->getAccounts());
+        self::assertSame([], $group->getAccounts());
         self::assertNull($group->getFile());
         self::assertInstanceOf(GroupHeader::class, $group->getHeader());
         self::assertInstanceOf(GroupTrailer::class, $group->getTrailer());

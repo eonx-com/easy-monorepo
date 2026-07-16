@@ -6,7 +6,10 @@ namespace EonX\EasyErrorHandler\Tests\Unit\Laravel;
 use Bugsnag\Client;
 use EonX\EasyErrorHandler\Laravel\EasyErrorHandlerServiceProvider;
 use EonX\EasyErrorHandler\Tests\Stub\Client\BugsnagClientStub;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Filesystem\FilesystemServiceProvider;
+use Illuminate\Foundation\Application;
+use Illuminate\Translation\TranslationServiceProvider;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractLaravelTestCase extends TestCase
@@ -20,6 +23,9 @@ abstract class AbstractLaravelTestCase extends TestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository(['app' => ['locale' => 'en', 'fallback_locale' => 'en']]));
+        $this->app->register(FilesystemServiceProvider::class);
+        $this->app->register(TranslationServiceProvider::class);
 
         $config ??= [];
         $config['easy-error-handler']['response'] = [

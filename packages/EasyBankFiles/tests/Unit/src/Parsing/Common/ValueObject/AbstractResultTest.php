@@ -36,6 +36,7 @@ final class AbstractResultTest extends AbstractUnitTestCase
 
         $result = new ResultStub($data);
 
+        // @phpstan-ignore staticMethod.impossibleType
         self::assertNull($result->getWhatAttribute());
     }
 }

@@ -5,11 +5,13 @@ namespace EonX\EasyUtils\Math\Helper;
 
 final readonly class MathComparisonHelper implements MathComparisonHelperInterface
 {
+    /**
+     * @param numeric-string $leftOperand
+     */
     public function __construct(
         private string $leftOperand,
         private int $scale,
-    ) {
-    }
+    ) {}
 
     public function equalTo(string $rightOperand): bool
     {
@@ -36,6 +38,10 @@ final readonly class MathComparisonHelper implements MathComparisonHelperInterfa
         return $this->comp($this->leftOperand, $rightOperand) === -1;
     }
 
+    /**
+     * @param numeric-string $leftOperand
+     * @param numeric-string $rightOperand
+     */
     private function comp(string $leftOperand, string $rightOperand): int
     {
         return \bccomp($leftOperand, $rightOperand, $this->scale);

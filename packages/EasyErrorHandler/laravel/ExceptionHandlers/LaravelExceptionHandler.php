@@ -20,8 +20,7 @@ final readonly class LaravelExceptionHandler implements IlluminateExceptionHandl
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
         private TranslatorInterface $translator,
-    ) {
-    }
+    ) {}
 
     public function render(mixed $request, Throwable $exception): Response
     {
@@ -33,7 +32,8 @@ final readonly class LaravelExceptionHandler implements IlluminateExceptionHandl
      */
     public function renderForConsole(mixed $output, Throwable $exception): void
     {
-        (new Application())->renderThrowable($exception, $output);
+        new Application()
+            ->renderThrowable($exception, $output);
 
         $this->renderTranslationToConsoleIfNeeded($output, $exception);
         $this->renderValidationFailuresToConsoleIfNeeded($output, $exception);

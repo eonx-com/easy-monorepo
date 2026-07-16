@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyBankFiles\Parsing\Common\Helper;
 
-use UnexpectedValueException;
-
 /**
  * A helper class that works to mitigate XML-related issues.
  */
@@ -31,17 +29,6 @@ final class XmlFailureMitigationHelper
             // Begin to iterate through each node key and value
             // We assume here that there *could* be more than one XML element in a given line
             foreach ($matches as $match) {
-                // If the match does not contain three elements, skip
-                if (\count($match) !== 3) {
-                    // @codeCoverageIgnoreStart
-                    // Sanity check only and unable to be tested
-                    throw new UnexpectedValueException(\sprintf(
-                        'Regular expression match result should have 3 children, %d found.',
-                        \count($match)
-                    ));
-                    // @codeCoverageIgnoreEnd
-                }
-
                 $matched = $match[0];
                 $value = $match[2];
 

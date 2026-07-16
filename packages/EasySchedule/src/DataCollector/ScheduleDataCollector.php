@@ -15,8 +15,7 @@ final class ScheduleDataCollector extends AbstractDataCollector
 {
     public function __construct(
         private readonly ScheduleInterface $schedule,
-    ) {
-    }
+    ) {}
 
     public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
@@ -33,7 +32,8 @@ final class ScheduleDataCollector extends AbstractDataCollector
             $this->data['providers'][$class] = [
                 'class' => $class,
                 'entries_count' => 0,
-                'file' => (new ReflectionClass($class))->getFileName(),
+                'file' => new ReflectionClass($class)
+                    ->getFileName(),
             ];
         }
 

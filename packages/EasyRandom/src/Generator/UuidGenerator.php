@@ -9,8 +9,7 @@ final readonly class UuidGenerator implements UuidGeneratorInterface
 {
     public function __construct(
         private UuidFactory $uuidFactory,
-    ) {
-    }
+    ) {}
 
     public function generate(): string
     {

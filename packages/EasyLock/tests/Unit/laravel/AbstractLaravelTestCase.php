@@ -7,7 +7,8 @@ use Doctrine\DBAL\DriverManager;
 use EonX\EasyLock\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLock\Laravel\EasyLockServiceProvider;
 use EonX\EasyLock\Tests\Unit\AbstractUnitTestCase;
-use Laravel\Lumen\Application;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 
 abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
@@ -20,6 +21,7 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
         }
 
         $this->app = new Application(__DIR__);
+        $this->app->instance('config', new ConfigRepository());
         $this->app->register(EasyLockServiceProvider::class);
         $this->app->instance(
             ConfigServiceId::Connection->value,

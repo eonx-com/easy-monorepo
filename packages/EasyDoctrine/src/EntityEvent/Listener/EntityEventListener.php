@@ -19,7 +19,7 @@ use Stringable;
 #[AsDoctrineListener(event: Events::postFlush)]
 final readonly class EntityEventListener
 {
-    private const DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
+    private const string DATETIME_COMPARISON_FORMAT = 'Y-m-d H:i:s.uP';
 
     /**
      * @var class-string[] $trackableEntities
@@ -66,14 +66,14 @@ final readonly class EntityEventListener
     private function getClearedChangeSet(array $changeSet): array
     {
         return \array_filter($changeSet, static function (array|PersistentCollection $changeSetItem): bool {
-            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface &&
-                ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
-                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT) !==
-                    $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
+            if (($changeSetItem[0] ?? null) instanceof DateTimeInterface
+                && ($changeSetItem[1] ?? null) instanceof DateTimeInterface) {
+                return $changeSetItem[0]->format(self::DATETIME_COMPARISON_FORMAT)
+                    !== $changeSetItem[1]->format(self::DATETIME_COMPARISON_FORMAT);
             }
 
-            if (($changeSetItem[0] ?? null) instanceof Stringable &&
-                ($changeSetItem[1] ?? null) instanceof Stringable) {
+            if (($changeSetItem[0] ?? null) instanceof Stringable
+                && ($changeSetItem[1] ?? null) instanceof Stringable) {
                 return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
             }
 
@@ -83,13 +83,10 @@ final readonly class EntityEventListener
 
     private function isEntityTrackable(object $entity): bool
     {
-        foreach ($this->trackableEntities as $trackableEntity) {
-            if (\is_a($entity, $trackableEntity)) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            $this->trackableEntities,
+            static fn($trackableEntity): bool => \is_a($entity, $trackableEntity)
+        );
     }
 
     private function prepareDeferredCollectionUpdates(int $transactionNestingLevel, UnitOfWork $unitOfWork): void
@@ -102,32 +99,28 @@ final readonly class EntityEventListener
             }
         }
 
-        // Handle collection deletions when ManyToMany is the owning side
-        // See https://github.com/doctrine/orm/pull/10763
-        if (\property_exists($unitOfWork, 'pendingCollectionElementRemovals')) {
-            $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
-                $unitOfWork::class,
-                'pendingCollectionElementRemovals'
-            );
-            /** @var array $pendingCollectionElementRemovals */
-            $pendingCollectionElementRemovals = $pendingCollectionElementRemovalsReflection->getValue($unitOfWork);
+        $pendingCollectionElementRemovalsReflection = new ReflectionProperty(
+            $unitOfWork::class,
+            'pendingCollectionElementRemovals'
+        );
+        /** @var array $pendingCollectionElementRemovals */
+        $pendingCollectionElementRemovals = $pendingCollectionElementRemovalsReflection->getValue($unitOfWork);
 
-            $visitedCollectionsReflection = new ReflectionProperty(
-                $unitOfWork::class,
-                'visitedCollections'
-            );
-            /** @var array<\Doctrine\ORM\PersistentCollection<int, object>> $visitedCollections */
-            $visitedCollections = $visitedCollectionsReflection->getValue($unitOfWork);
+        $visitedCollectionsReflection = new ReflectionProperty(
+            $unitOfWork::class,
+            'visitedCollections'
+        );
+        /** @var array<\Doctrine\ORM\PersistentCollection<int, object>> $visitedCollections */
+        $visitedCollections = $visitedCollectionsReflection->getValue($unitOfWork);
 
-            foreach (\array_keys($pendingCollectionElementRemovals) as $collectionObjectId) {
-                if (isset($scheduledCollectionUpdates[$collectionObjectId])) {
-                    continue;
-                }
+        foreach (\array_keys($pendingCollectionElementRemovals) as $collectionObjectId) {
+            if (isset($scheduledCollectionUpdates[$collectionObjectId])) {
+                continue;
+            }
 
-                $collection = $visitedCollections[$collectionObjectId];
-                if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
-                    $scheduledCollectionUpdates[$collectionObjectId] = $collection;
-                }
+            $collection = $visitedCollections[$collectionObjectId];
+            if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
+                $scheduledCollectionUpdates[$collectionObjectId] = $collection;
             }
         }
 
@@ -137,7 +130,7 @@ final readonly class EntityEventListener
             /** @var object $entity */
             foreach ($collection->getSnapshot() as $entity) {
                 $snapshotIds[] = $unitOfWork->getSingleIdentifierValue($entity)
-                    ?? static fn (): mixed => $unitOfWork->getSingleIdentifierValue($entity);
+                    ?? static fn(): mixed => $unitOfWork->getSingleIdentifierValue($entity);
             }
 
             $actualIds = [];
@@ -147,7 +140,7 @@ final readonly class EntityEventListener
                 }
 
                 $actualIds[] = $unitOfWork->getSingleIdentifierValue($entity)
-                    ?? static fn (): mixed => $unitOfWork->getSingleIdentifierValue($entity);
+                    ?? static fn(): mixed => $unitOfWork->getSingleIdentifierValue($entity);
             }
 
             $diff = \array_udiff($snapshotIds, $actualIds, static function (mixed $a, mixed $b): int {
@@ -158,6 +151,8 @@ final readonly class EntityEventListener
             });
 
             if (\count($diff) > 0 || \count($snapshotIds) !== \count($actualIds)) {
+                // @todo Remove this docblock after dropping support for Doctrine ORM 2
+                /** @var array{fieldName: string}|\Doctrine\ORM\Mapping\AssociationMapping $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
                 $owner = $collection->getOwner();
@@ -165,7 +160,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    \is_array($mapping) ? $mapping['fieldName'] : $mapping->fieldName,
                     $snapshotIds,
                     $actualIds
                 );
@@ -175,7 +170,8 @@ final readonly class EntityEventListener
         /** @var \Doctrine\ORM\PersistentCollection<int, object> $collection */
         foreach ($unitOfWork->getScheduledCollectionDeletions() as $collection) {
             if ($collection->getOwner() !== null && $this->isEntityTrackable($collection->getOwner())) {
-                /** @var array{fieldName: string} $mapping */
+                // @todo Remove this docblock after dropping support for Doctrine ORM 2
+                /** @var array{fieldName: string}|\Doctrine\ORM\Mapping\AssociationMapping $mapping */
                 $mapping = $collection->getMapping();
                 /** @var object $owner */
                 $owner = $collection->getOwner();
@@ -183,7 +179,7 @@ final readonly class EntityEventListener
                 $this->eventDispatcher->deferCollectionUpdate(
                     $transactionNestingLevel,
                     $owner,
-                    $mapping['fieldName'],
+                    \is_array($mapping) ? $mapping['fieldName'] : $mapping->fieldName,
                     ['Not available'],
                     ['Collection was cleared']
                 );

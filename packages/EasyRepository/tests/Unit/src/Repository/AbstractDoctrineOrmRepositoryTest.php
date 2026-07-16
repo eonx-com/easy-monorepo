@@ -16,7 +16,6 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
     {
         $expected = [new stdClass(), new stdClass()];
 
-        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($expected): void {
             $repo->shouldReceive('findAll')
                 ->once()
@@ -24,12 +23,11 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
                 ->andReturn($expected);
         });
 
-        self::assertEquals($expected, (new DoctrineOrmRepositoryStub($registry))->all());
+        self::assertEquals($expected, new DoctrineOrmRepositoryStub($registry)->all());
     }
 
     public function testCreateQueryBuilderReturnsOrmQueryBuilder(): void
     {
-        /** @var \Doctrine\Persistence\ManagerRegistry $registry */
         $registry = $this->mockRegistry(null, function (MockInterface $repo): void {
             $queryBuilder = $this->mock(QueryBuilder::class);
 
@@ -52,10 +50,10 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
         $tests = [new stdClass(), [new stdClass(), new stdClass()]];
 
         foreach ($tests as $test) {
-            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('remove', $test));
 
-            (new DoctrineOrmRepositoryStub($registry))->delete($test);
+            new DoctrineOrmRepositoryStub($registry)
+                ->delete($test);
         }
     }
 
@@ -67,7 +65,6 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
         ];
 
         foreach ($expected as $identifier => $object) {
-            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry(null, function (MockInterface $repo) use ($identifier, $object): void {
                 $repo->shouldReceive('find')
                     ->once()
@@ -75,7 +72,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
                     ->andReturn($object);
             });
 
-            self::assertEquals($object, (new DoctrineOrmRepositoryStub($registry))->find($identifier));
+            self::assertEquals($object, new DoctrineOrmRepositoryStub($registry)->find($identifier));
         }
     }
 
@@ -84,16 +81,16 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
         $tests = [new stdClass(), [new stdClass(), new stdClass()]];
 
         foreach ($tests as $test) {
-            /** @var \Doctrine\Persistence\ManagerRegistry $registry */
             $registry = $this->mockRegistry($this->getManagerExpectations('persist', $test));
 
-            (new DoctrineOrmRepositoryStub($registry))->save($test);
+            new DoctrineOrmRepositoryStub($registry)
+                ->save($test);
         }
     }
 
     private function getManagerExpectations(string $method, mixed $objects): Closure
     {
-        return function (MockInterface $manager) use ($method, $objects): void {
+        return static function (MockInterface $manager) use ($method, $objects): void {
             $times = \is_array($objects) ? \count($objects) : 1;
 
             $manager->shouldReceive($method)
@@ -101,7 +98,7 @@ final class AbstractDoctrineOrmRepositoryTest extends AbstractUnitTestCase
                 ->withArgs(function ($object): bool {
                     self::assertInstanceOf(stdClass::class, $object);
 
-                    return $object instanceof stdClass;
+                    return true;
                 });
             $manager->shouldReceive('flush')
                 ->once()

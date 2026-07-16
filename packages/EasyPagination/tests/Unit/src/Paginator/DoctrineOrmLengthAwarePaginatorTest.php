@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Paginator;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
@@ -191,7 +192,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 self::createItemsTable($manager);
                 self::addItemToTable($manager, 'my-title');
 
-                $paginator->setTransformer(static fn (Item $item): array => [
+                $paginator->setTransformer(static fn(Item $item): array => [
                     'id' => $item->getId(),
                     'title' => $item->getTitle(),
                 ]);
@@ -320,7 +321,7 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
             ->willReturn('some sql');
         $queryBuilder
             ->getParameters()
-            ->willReturn([new Parameter('baz', 'test', ParameterType::STRING)]);
+            ->willReturn(new ArrayCollection([new Parameter('baz', 'test', ParameterType::STRING)]));
         $query->getParameter('baz')
             ->willReturn(new Parameter('baz', 'test', ParameterType::STRING));
         $query->getDQL()
@@ -353,7 +354,8 @@ final class DoctrineOrmLengthAwarePaginatorTest extends AbstractDoctrineOrmPagin
                 'QUERY PLAN' => \sprintf('rows=%d', $approximateRowsCount),
             ]);
         $queryBuilder
-            ->select(1)
+            ->select('1')
+            ->willReturn($queryBuilder)
             ->shouldBeCalled();
         $queryBuilder
             ->select('COUNT(DISTINCT i.id) as _count_i')
