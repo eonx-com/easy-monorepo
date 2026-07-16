@@ -25,7 +25,7 @@ final readonly class EncryptableFieldHasher implements EncryptableFieldHasherInt
         array $defaultHashNormalizations = [],
     ) {
         $this->defaultHashNormalizations = \array_map(
-            static fn (string $normalization): HashNormalization => HashNormalization::from($normalization),
+            HashNormalization::from(...),
             $defaultHashNormalizations
         );
     }

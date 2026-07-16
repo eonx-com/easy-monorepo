@@ -19,7 +19,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->defaultValue([HashNormalization::Lowercase->value])
                 ->enumPrototype()
                     ->values(\array_map(
-                        static fn (HashNormalization $case): string => $case->value,
+                        static fn(HashNormalization $case): string => $case->value,
                         HashNormalization::cases()
                     ))
                 ->end()

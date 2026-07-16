@@ -143,17 +143,17 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             EncryptableMetadataInterface::class,
-            static fn (): EncryptableMetadataInterface => new EncryptableMetadata()
+            static fn(): EncryptableMetadataInterface => new EncryptableMetadata()
         );
 
         $this->app->singleton(
             HashNormalizerInterface::class,
-            static fn (): HashNormalizerInterface => new HashNormalizer()
+            static fn(): HashNormalizerInterface => new HashNormalizer()
         );
 
         $this->app->singleton(
             EncryptableFieldHasherInterface::class,
-            static fn (Container $app): EncryptableFieldHasherInterface => new EncryptableFieldHasher(
+            static fn(Container $app): EncryptableFieldHasherInterface => new EncryptableFieldHasher(
                 hashCalculator: $app->make(HashCalculatorInterface::class),
                 metadata: $app->make(EncryptableMetadataInterface::class),
                 hashNormalizer: $app->make(HashNormalizerInterface::class),
@@ -186,7 +186,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             HashCalculatorInterface::class,
-            static fn (): HashCalculatorInterface => new HmacSha512HashCalculator(
+            static fn(): HashCalculatorInterface => new HmacSha512HashCalculator(
                 \config('easy-encryption.default_encryption_key')
             )
         );
@@ -207,7 +207,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             StringEncryptorInterface::class,
-            static fn (Container $app): StringEncryptorInterface => new StringEncryptor(
+            static fn(Container $app): StringEncryptorInterface => new StringEncryptor(
                 encryptor: $app->make(EncryptorInterface::class),
                 encryptionKeyName: \config('easy-encryption.default_key_name'),
                 maxChunkSize: \config('easy-encryption.max_chunk_size')

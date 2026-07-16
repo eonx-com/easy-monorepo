@@ -37,7 +37,7 @@ final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
         ]);
         $app->singleton(
             AwsCloudHsmEncryptorInterface::class,
-            static fn (): AwsCloudHsmEncryptorInterface => new AwsCloudHsmEncryptorStub()
+            static fn(): AwsCloudHsmEncryptorInterface => new AwsCloudHsmEncryptorStub()
         );
         $hashCalculator = $app->make(HashCalculatorInterface::class);
 
@@ -56,7 +56,7 @@ final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
         ]);
         $app->singleton(
             AwsCloudHsmEncryptorInterface::class,
-            static fn (): AwsCloudHsmEncryptorInterface => new AwsCloudHsmEncryptorStub()
+            static fn(): AwsCloudHsmEncryptorInterface => new AwsCloudHsmEncryptorStub()
         );
         $hashCalculator = $app->make(HashCalculatorInterface::class);
 

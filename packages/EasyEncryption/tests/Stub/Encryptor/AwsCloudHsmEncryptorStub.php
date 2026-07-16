@@ -29,13 +29,9 @@ final class AwsCloudHsmEncryptorStub implements AwsCloudHsmEncryptorInterface
         throw new RuntimeException('Not implemented in stub.');
     }
 
-    public function init(): void
-    {
-    }
+    public function init(): void {}
 
-    public function reset(): void
-    {
-    }
+    public function reset(): void {}
 
     public function sign(string $text, ?string $keyName = null): string
     {

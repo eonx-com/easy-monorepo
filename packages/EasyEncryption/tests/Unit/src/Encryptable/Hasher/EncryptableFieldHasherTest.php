@@ -12,7 +12,7 @@ use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
 
 final class EncryptableFieldHasherTest extends AbstractUnitTestCase
 {
-    private const SECRET = 'test-secret';
+    private const string SECRET = 'test-secret';
 
     public function testHashForFieldSucceedsWhenFieldOverrideOptsOutOfLowercaseDefault(): void
     {

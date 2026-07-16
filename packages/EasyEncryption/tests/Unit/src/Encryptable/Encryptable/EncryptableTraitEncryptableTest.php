@@ -98,7 +98,7 @@ final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
     private function closures(EncryptableFieldHasher $fieldHasher): array
     {
         return [
-            static fn (string $value): EncryptedString => new EncryptedString('test-key', $value),
+            static fn(string $value): EncryptedString => new EncryptedString('test-key', $value),
             static function (string $entityClass, string $propertyName, string $value) use ($fieldHasher): string {
                 /** @var class-string $entityClass */
                 return $fieldHasher->hashForField($entityClass, $propertyName, $value);
