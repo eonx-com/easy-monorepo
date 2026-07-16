@@ -16,7 +16,9 @@ final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
     public function testItSucceedsWithDefaultHashNormalization(): void
     {
         $this->setAppKey('f42a3968db6a957300c4f0c46a341c80');
-        $app = $this->getApplication();
+        $app = $this->getApplication([
+            'easy-encryption.default_hash_normalizations' => ['lowercase'],
+        ]);
         $hashCalculator = $app->make(HashCalculatorInterface::class);
 
         $fieldHasher = $app->make(EncryptableFieldHasherInterface::class);
@@ -31,6 +33,7 @@ final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
         $this->setAppKey('f42a3968db6a957300c4f0c46a341c80');
         $app = $this->getApplication([
             'easy-encryption.aws_cloud_hsm_encryptor.enabled' => true,
+            'easy-encryption.default_hash_normalizations' => ['lowercase'],
         ]);
         $app->singleton(
             AwsCloudHsmEncryptorInterface::class,
@@ -49,6 +52,7 @@ final class EasyEncryptionServiceProviderTest extends AbstractLaravelTestCase
         $this->setAppKey('f42a3968db6a957300c4f0c46a341c80');
         $app = $this->getApplication([
             'easy-encryption.aws_cloud_hsm_encryptor.enabled' => true,
+            'easy-encryption.default_hash_normalizations' => ['lowercase'],
         ]);
         $app->singleton(
             AwsCloudHsmEncryptorInterface::class,

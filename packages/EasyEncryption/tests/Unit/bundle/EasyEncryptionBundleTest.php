@@ -15,7 +15,7 @@ final class EasyEncryptionBundleTest extends AbstractSymfonyTestCase
     public function testItSucceedsWithDefaultHashNormalization(): void
     {
         $this->setAppSecret('f42a3968db6a957300c4f0c46a341c80');
-        $container = $this->getKernel()
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_hash_normalizations.php'])
             ->getContainer();
         $hashCalculator = $container->get(HashCalculatorInterface::class);
 
@@ -29,14 +29,14 @@ final class EasyEncryptionBundleTest extends AbstractSymfonyTestCase
     public function testItSucceedsWithFieldOverrideRegardlessOfGlobalDefault(): void
     {
         $this->setAppSecret('f42a3968db6a957300c4f0c46a341c80');
-        $container = $this->getKernel()
+        $container = $this->getKernel([__DIR__ . '/../../Fixture/config/default_hash_normalizations.php'])
             ->getContainer();
         $hashCalculator = $container->get(HashCalculatorInterface::class);
 
         $fieldHasher = $container->get(EncryptableFieldHasherInterface::class);
-        $hash = $fieldHasher->hashForField(EncryptableEntityStub::class, 'caseSensitiveCode', 'AbC123');
+        $hash = $fieldHasher->hashForField(EncryptableEntityStub::class, 'caseSensitiveCode', ' AbC123 ');
 
-        self::assertSame($hashCalculator->calculate('AbC123'), $hash);
+        self::assertSame($hashCalculator->calculate(' AbC123 '), $hash);
     }
 
     public function testSanity(): void
