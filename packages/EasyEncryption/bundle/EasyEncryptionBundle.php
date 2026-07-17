@@ -33,6 +33,7 @@ final class EasyEncryptionBundle extends AbstractBundle
         $container
             ->parameters()
             ->set(ConfigParam::DefaultEncryptionKey->value, $config['default_encryption_key'])
+            ->set(ConfigParam::DefaultHashNormalizations->value, $config['default_hash_normalizations'])
             ->set(ConfigParam::DefaultKeyName->value, $config['default_key_name'])
             ->set(ConfigParam::DefaultSalt->value, $config['default_salt'])
             ->set(ConfigParam::FullyEncryptedMessages->value, $config['fully_encrypted_messages'])

@@ -11,6 +11,6 @@ final readonly class HmacSha512HashCalculator implements HashCalculatorInterface
 
     public function calculate(string $value): string
     {
-        return \hash_hmac('sha512', \mb_strtolower($value), $this->secret);
+        return \hash_hmac('sha512', $value, $this->secret);
     }
 }

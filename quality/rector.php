@@ -9,6 +9,7 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
@@ -66,6 +67,10 @@ return RectorConfig::configure()
         ClassPropertyAssignToConstructorPromotionRector::class => [
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
+        ],
+        ClosureToArrowFunctionRector::class => [
+            'packages/EasyEncryption/src/Encryptable/Encryptor/ObjectEncryptor.php',
+            'packages/EasyEncryption/tests/Unit/src/Encryptable/Encryptable/EncryptableTraitEncryptableTest.php',
         ],
         DeprecatedAnnotationToDeprecatedAttributeRector::class => null,
         ReadOnlyPropertyRector::class => [

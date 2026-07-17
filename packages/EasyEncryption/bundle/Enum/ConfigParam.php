@@ -39,6 +39,8 @@ enum ConfigParam: string
 
     case DefaultEncryptionKey = 'easy_encryption.default_encryption_key';
 
+    case DefaultHashNormalizations = 'easy_encryption.default_hash_normalizations';
+
     case DefaultKeyName = 'easy_encryption.default_key_name';
 
     case DefaultSalt = 'easy_encryption.default_salt';

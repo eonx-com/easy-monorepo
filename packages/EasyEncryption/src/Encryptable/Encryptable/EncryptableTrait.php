@@ -41,7 +41,7 @@ trait EncryptableTrait
 
     /**
      * @param callable(string): \EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString $encryptor
-     * @param callable(string): string $hashCalculator
+     * @param callable(string, string, string): string $hashCalculator
      */
     public function encrypt(callable $encryptor, callable $hashCalculator): void
     {
@@ -50,18 +50,24 @@ trait EncryptableTrait
 
         foreach ($metadata->getEncryptableFieldNames(static::class) as $entityPropertyName => $fieldName) {
             if ($this->{$entityPropertyName} !== null && \is_string($this->{$entityPropertyName}) === false) {
-                throw new UnexpectedValueException(\sprintf(
-                    'The value of the property "%s" in the entity "%s" must be a string or null, but it is "%s".',
-                    $entityPropertyName,
-                    static::class,
-                    \get_debug_type($this->{$entityPropertyName})
-                ));
+                throw new UnexpectedValueException(
+                    \sprintf(
+                        'The value of the property "%s" in the entity "%s" must be a string or null, but it is "%s".',
+                        $entityPropertyName,
+                        static::class,
+                        \get_debug_type($this->{$entityPropertyName})
+                    )
+                );
             }
 
             $rawData[$fieldName] = $this->{$entityPropertyName};
 
             if ($this->{$entityPropertyName} !== null) {
-                $this->{$entityPropertyName} = $hashCalculator($this->{$entityPropertyName});
+                $this->{$entityPropertyName} = $hashCalculator(
+                    static::class,
+                    $entityPropertyName,
+                    $this->{$entityPropertyName}
+                );
             }
         }
 

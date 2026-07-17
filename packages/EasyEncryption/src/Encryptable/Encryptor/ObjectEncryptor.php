@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace EonX\EasyEncryption\Encryptable\Encryptor;
 
 use EonX\EasyEncryption\Encryptable\Encryptable\EncryptableInterface;
-use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasherInterface;
 use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
 
 final readonly class ObjectEncryptor implements ObjectEncryptorInterface
 {
     public function __construct(
         private StringEncryptorInterface $stringEncryptor,
-        private HashCalculatorInterface $hashCalculator,
+        private EncryptableFieldHasherInterface $fieldHasher,
     ) {}
 
     public function decrypt(EncryptableInterface $encryptable): void
@@ -23,7 +23,10 @@ final readonly class ObjectEncryptor implements ObjectEncryptorInterface
     {
         $encryptable->encrypt(
             fn(string $value): EncryptedString => $this->stringEncryptor->encrypt($value),
-            fn(string $value): string => $this->hashCalculator->calculate($value)
+            function (string $entityClass, string $propertyName, string $value): string {
+                /** @var class-string $entityClass */
+                return $this->fieldHasher->hashForField($entityClass, $propertyName, $value);
+            }
         );
     }
 }
