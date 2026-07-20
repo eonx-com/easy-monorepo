@@ -135,8 +135,9 @@ final class SqsHandler extends AbstractSqsHandler
                     \sprintf(
                         'SQS Record failed to process but will not be retried%s',
                         $isThrowableExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
-                    ), [
-                        'message_id' => $sqsRecord->getMessageId()
+                    ),
+                    [
+                        'message_id' => $sqsRecord->getMessageId(),
                     ]
                 );
             }
