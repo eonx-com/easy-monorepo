@@ -80,10 +80,11 @@ final class SqsHandler extends AbstractSqsHandler
             if ($shouldRetry === false) {
                 $this->logger?->error(
                     \sprintf(
-                        'SQS Record with MessageId "%s" failed to process but will not be retried%s',
-                        $sqsRecord->getMessageId(),
+                        'SQS Record failed to process but will not be retried%s',
                         $isJobExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
-                    )
+                    ), [
+                        'message_id' => $sqsRecord->getMessageId()
+                    ]
                 );
             }
 
