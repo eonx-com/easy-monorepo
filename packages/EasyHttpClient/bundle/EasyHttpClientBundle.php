@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyHttpClientBundle extends AbstractBundle
 {
+    private bool $useSymfonyMonologBundle = false;
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -59,7 +61,9 @@ final class EasyHttpClientBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if ($this->isBundleEnabled('MonologBundle', $builder) === false) {
+        $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
+
+        if ($this->useSymfonyMonologBundle === false) {
             return;
         }
 
@@ -76,6 +80,19 @@ final class EasyHttpClientBundle extends AbstractBundle
         $bundles = $builder->getParameter('kernel.bundles');
 
         return isset($bundles[$bundleName]);
+    }
+
+    private function isSymfonyMonologBundleEnabled(ContainerBuilder $builder): bool
+    {
+        $enabled = false;
+
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = (bool)$config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return $enabled;
     }
 
     private function registerEasyBugsnagConfiguration(
@@ -109,7 +126,7 @@ final class EasyHttpClientBundle extends AbstractBundle
 
         $container->import('config/psr_logger.php');
 
-        if ($this->isBundleEnabled('MonologBundle', $builder)) {
+        if ($this->useSymfonyMonologBundle) {
             $container->import('config/psr_logger_monolog.php');
 
             return;

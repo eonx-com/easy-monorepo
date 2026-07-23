@@ -73,6 +73,8 @@ final class EasyLoggingBundle extends AbstractBundle
                 ->addTag($tag->value);
         }
 
+        $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
+
         if ($config['sensitive_data_sanitizer']['enabled']) {
             $container->import('config/sensitive_data_sanitizer.php');
         }

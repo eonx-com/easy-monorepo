@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyDoctrineBundle extends AbstractBundle
 {
+    private bool $useSymfonyMonologBundle = false;
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -37,7 +39,7 @@ final class EasyDoctrineBundle extends AbstractBundle
     {
         $container->import('config/services.php');
 
-        $this->registerAwsRdsConfiguration($config, $container, $builder);
+        $this->registerAwsRdsConfiguration($config, $container);
         $this->registerDeferredDispatcherConfiguration($config, $container);
         $this->registerEasyErrorHandlerConfiguration($config, $container);
 
@@ -48,7 +50,9 @@ final class EasyDoctrineBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if ($this->isBundleEnabled('MonologBundle', $builder) === false) {
+        $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
+
+        if ($this->useSymfonyMonologBundle === false) {
             return;
         }
 
@@ -59,31 +63,34 @@ final class EasyDoctrineBundle extends AbstractBundle
         ]);
     }
 
-    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    private function isSymfonyMonologBundleEnabled(ContainerBuilder $builder): bool
     {
-        /** @var array $bundles */
-        $bundles = $builder->getParameter('kernel.bundles');
+        $enabled = false;
 
-        return isset($bundles[$bundleName]);
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = (bool)$config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return $enabled;
     }
 
     private function registerAwsRdsConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         if ($config['aws_rds']['iam']['enabled'] || $config['aws_rds']['ssl']['enabled']) {
             $container->import('config/aws_rds.php');
         }
 
-        $this->registerAwsRdsIamConfiguration($config, $container, $builder);
-        $this->registerAwsRdsSslConfiguration($config, $container, $builder);
+        $this->registerAwsRdsIamConfiguration($config, $container);
+        $this->registerAwsRdsSslConfiguration($config, $container);
     }
 
     private function registerAwsRdsIamConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         $config = $config['aws_rds']['iam'];
 
@@ -93,7 +100,7 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $container
             ->services()
-            ->alias(ConfigServiceId::AwsRdsIamLogger->value, $this->resolveLoggerId($config['logger'], $builder));
+            ->alias(ConfigServiceId::AwsRdsIamLogger->value, $this->resolveLoggerId($config['logger']));
 
         $container
             ->parameters()
@@ -111,7 +118,6 @@ final class EasyDoctrineBundle extends AbstractBundle
     private function registerAwsRdsSslConfiguration(
         array $config,
         ContainerConfigurator $container,
-        ContainerBuilder $builder,
     ): void {
         $config = $config['aws_rds']['ssl'];
 
@@ -121,7 +127,7 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $container
             ->services()
-            ->alias(ConfigServiceId::AwsRdsSslLogger->value, $this->resolveLoggerId($config['logger'], $builder));
+            ->alias(ConfigServiceId::AwsRdsSslLogger->value, $this->resolveLoggerId($config['logger']));
 
         $container
             ->parameters()
@@ -157,13 +163,13 @@ final class EasyDoctrineBundle extends AbstractBundle
         $container->import('config/easy_error_handler_listener.php');
     }
 
-    private function resolveLoggerId(?string $configuredLogger, ContainerBuilder $builder): string
+    private function resolveLoggerId(?string $configuredLogger): string
     {
         if ($configuredLogger !== null) {
             return $configuredLogger;
         }
 
-        if ($this->isBundleEnabled('MonologBundle', $builder)) {
+        if ($this->useSymfonyMonologBundle) {
             return \sprintf('monolog.logger.%s', BundleParam::LogChannel->value);
         }
 
