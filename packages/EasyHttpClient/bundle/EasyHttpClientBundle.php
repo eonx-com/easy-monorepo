@@ -6,9 +6,11 @@ namespace EonX\EasyHttpClient\Bundle;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateDefaultClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateEasyWebhookClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateMessengerSqsClientCompilerPass;
+use EonX\EasyHttpClient\Bundle\Enum\BundleParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +20,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyHttpClientBundle extends AbstractBundle
 {
+    private bool $useSymfonyMonologBundle = false;
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -55,12 +59,40 @@ final class EasyHttpClientBundle extends AbstractBundle
         $this->registerPsrLoggerConfiguration($config, $container, $builder);
     }
 
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
+
+        if ($this->useSymfonyMonologBundle === false) {
+            return;
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'channels' => [
+                BundleParam::LogChannel->value,
+            ],
+        ]);
+    }
+
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
     {
         /** @var array $bundles */
         $bundles = $builder->getParameter('kernel.bundles');
 
         return isset($bundles[$bundleName]);
+    }
+
+    private function isSymfonyMonologBundleEnabled(ContainerBuilder $builder): bool
+    {
+        $enabled = false;
+
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = (bool)$config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return $enabled;
     }
 
     private function registerEasyBugsnagConfiguration(
@@ -93,5 +125,15 @@ final class EasyHttpClientBundle extends AbstractBundle
         }
 
         $container->import('config/psr_logger.php');
+
+        if ($this->useSymfonyMonologBundle) {
+            $container->import('config/psr_logger_monolog.php');
+
+            return;
+        }
+
+        if (\interface_exists(LoggerFactoryInterface::class)) {
+            $container->import('config/psr_logger_easy_logging.php');
+        }
     }
 }

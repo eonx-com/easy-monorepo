@@ -18,4 +18,6 @@ enum ConfigParam: string
     case StreamHandler = 'easy_logging.stream_handler';
 
     case StreamHandlerLevel = 'easy_logging.stream_handler_level';
+
+    case UseSymfonyMonologBundle = 'easy_logging.use_symfony_monolog_bundle';
 }
