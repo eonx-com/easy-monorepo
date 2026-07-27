@@ -142,6 +142,12 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
      */
     private function sanitizeEmbeddedJson(string $string): string
     {
+        // Nothing to scan when there is no JSON object/array opener — avoids walking the whole
+        // string and re-allocating for typical log lines
+        if (\strpbrk($string, '{[') === false) {
+            return $string;
+        }
+
         $length = \strlen($string);
         $result = '';
         $index = 0;
