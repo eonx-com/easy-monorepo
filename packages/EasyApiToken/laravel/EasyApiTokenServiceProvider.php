@@ -14,27 +14,25 @@ use Illuminate\Support\ServiceProvider;
 
 final class EasyApiTokenServiceProvider extends ServiceProvider
 {
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 
     public function register(): void
     {
         $this->app->singleton(
             HashedApiKeyDriverInterface::class,
-            static fn (): HashedApiKeyDriver => new HashedApiKeyDriver()
+            static fn(): HashedApiKeyDriver => new HashedApiKeyDriver()
         );
 
         $this->app->singleton(
             DecoderInterface::class,
-            static fn (
+            static fn(
                 Container $app,
             ): DecoderInterface => $app->make(DecoderFactoryInterface::class)->buildDefault()
         );
 
         $this->app->singleton(
             DecoderFactoryInterface::class,
-            static fn (Container $app): DecoderFactoryInterface => new ApiTokenDecoderFactory(
+            static fn(Container $app): DecoderFactoryInterface => new ApiTokenDecoderFactory(
                 $app->tagged(ConfigTag::DecoderProvider->value),
                 $app->make(HashedApiKeyDriverInterface::class)
             )

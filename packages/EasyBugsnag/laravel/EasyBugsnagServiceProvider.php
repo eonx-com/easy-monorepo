@@ -64,14 +64,14 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         if (\config('easy-bugsnag.app_name.enabled', false)) {
             $this->app->singleton(
                 AppNameResolverInterface::class,
-                static fn (): AppNameResolverInterface => new DefaultAppNameResolver(
+                static fn(): AppNameResolverInterface => new DefaultAppNameResolver(
                     \config('easy-bugsnag.app_name.env_var')
                 )
             );
 
             $this->app->singleton(
                 AppNameClientConfigurator::class,
-                static fn (Container $app): AppNameClientConfigurator => new AppNameClientConfigurator(
+                static fn(Container $app): AppNameClientConfigurator => new AppNameClientConfigurator(
                     $app->make(AppNameResolverInterface::class)
                 )
             );
@@ -84,7 +84,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         if (\config('easy-bugsnag.aws_ecs_fargate.enabled', false)) {
             $this->app->singleton(
                 AwsEcsFargateClientConfigurator::class,
-                static fn (): AwsEcsFargateClientConfigurator => new AwsEcsFargateClientConfigurator(
+                static fn(): AwsEcsFargateClientConfigurator => new AwsEcsFargateClientConfigurator(
                     \config('easy-bugsnag.aws_ecs_fargate.meta_storage_filename'),
                     \config('easy-bugsnag.aws_ecs_fargate.meta_url')
                 )
@@ -98,7 +98,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         // Client Factory + Client
         $this->app->singleton(
             ClientFactoryInterface::class,
-            static fn (Container $app): ClientFactoryInterface => new ClientFactory()
+            static fn(Container $app): ClientFactoryInterface => new ClientFactory()
                 ->setConfigurators($app->tagged(ConfigTag::ClientConfigurator->value))
                 ->setRequestResolver($app->make(ConfigServiceId::RequestResolver->value))
                 ->setShutdownStrategy($app->make(ConfigServiceId::ShutdownStrategy->value))
@@ -106,7 +106,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             Client::class,
-            static fn (Container $app): Client => $app->make(ClientFactoryInterface::class)
+            static fn(Container $app): Client => $app->make(ClientFactoryInterface::class)
                 ->create(\config('easy-bugsnag.api_key'))
         );
     }
@@ -119,7 +119,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             BasicsClientConfigurator::class,
-            static fn (): BasicsClientConfigurator => new BasicsClientConfigurator(
+            static fn(): BasicsClientConfigurator => new BasicsClientConfigurator(
                 \config('easy-bugsnag.project_root'),
                 \config('easy-bugsnag.strip_path'),
                 \config('easy-bugsnag.release_stage')
@@ -178,7 +178,7 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
         if (\config('easy-bugsnag.session_tracking.enabled', false)) {
             $this->app->singleton(
                 SessionTracker::class,
-                static fn (Container $app): SessionTracker => new SessionTracker(
+                static fn(Container $app): SessionTracker => new SessionTracker(
                     $app->make(Client::class),
                     \config('easy-bugsnag.session_tracking.exclude_urls', []),
                     \config('easy-bugsnag.session_tracking.exclude_urls_delimiter', '#')
@@ -187,13 +187,13 @@ final class EasyBugsnagServiceProvider extends ServiceProvider
 
             $this->app->singleton(
                 ConfigServiceId::SessionTrackingCache->value,
-                static fn (Container $app): Repository => $app->make('cache')
+                static fn(Container $app): Repository => $app->make('cache')
                     ->store(\config('easy-bugsnag.session_tracking.cache_store', 'file'))
             );
 
             $this->app->singleton(
                 SessionTrackingClientConfigurator::class,
-                static fn (Container $app): SessionTrackingClientConfigurator => new SessionTrackingClientConfigurator(
+                static fn(Container $app): SessionTrackingClientConfigurator => new SessionTrackingClientConfigurator(
                     $app->make(ConfigServiceId::SessionTrackingCache->value),
                     \config('easy-bugsnag.session_tracking.cache_expires_after', 3600)
                 )

@@ -15,7 +15,7 @@ final class RolesAndPermissionsServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             RolesAndPermissionsProviderStub::class,
-            static fn (): RolesAndPermissionsProviderStub => new RolesAndPermissionsProviderStub(
+            static fn(): RolesAndPermissionsProviderStub => new RolesAndPermissionsProviderStub(
                 [new Role('role')],
                 [new Permission('permission')]
             )

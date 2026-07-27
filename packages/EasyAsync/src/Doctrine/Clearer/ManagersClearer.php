@@ -9,8 +9,7 @@ final readonly class ManagersClearer
 {
     public function __construct(
         private ManagerRegistry $registry,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string[]|null $managers

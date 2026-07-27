@@ -12,8 +12,7 @@ final class RequestData
         private array $options,
         private readonly DateTimeInterface $sentAt,
         private readonly string $url,
-    ) {
-    }
+    ) {}
 
     public function getMethod(): string
     {

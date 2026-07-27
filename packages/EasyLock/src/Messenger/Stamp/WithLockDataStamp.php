@@ -12,8 +12,7 @@ final readonly class WithLockDataStamp implements StampInterface, WithLockDataIn
     public function __construct(
         private string $resource,
         private ?float $ttl = null,
-    ) {
-    }
+    ) {}
 
     public function getLockData(): LockData
     {

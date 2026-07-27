@@ -13,8 +13,7 @@ final readonly class SqsQueueTransportFactoryStub implements QueueTransportFacto
 {
     public function __construct(
         private SqsClient $sqsClient,
-    ) {
-    }
+    ) {}
 
     public function create(Config $config): QueueTransportInterface
     {

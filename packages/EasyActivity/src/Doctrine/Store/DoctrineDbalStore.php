@@ -14,8 +14,7 @@ final readonly class DoctrineDbalStore implements StoreInterface
         private IdFactoryInterface $idFactory,
         private Connection $connection,
         private string $table,
-    ) {
-    }
+    ) {}
 
     public function store(ActivityLogEntry $logEntry): ActivityLogEntry
     {

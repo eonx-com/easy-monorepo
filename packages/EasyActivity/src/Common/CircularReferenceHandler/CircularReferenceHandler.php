@@ -11,8 +11,7 @@ final readonly class CircularReferenceHandler implements CircularReferenceHandle
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     public function __invoke(object $object, string $format, array $context): string
     {

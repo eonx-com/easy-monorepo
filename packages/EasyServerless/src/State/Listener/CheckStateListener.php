@@ -13,15 +13,14 @@ final readonly class CheckStateListener
      */
     public function __construct(
         private iterable $stateCheckers,
-    ) {
-    }
+    ) {}
 
     public function __invoke(TerminateEvent $event): void
     {
         if (LambdaContextHelper::inLambda() === false) {
             return;
         }
-        
+
         foreach ($this->stateCheckers as $stateChecker) {
             $stateChecker->check();
         }

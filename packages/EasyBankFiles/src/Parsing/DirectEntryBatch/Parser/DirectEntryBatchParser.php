@@ -104,8 +104,8 @@ final class DirectEntryBatchParser extends AbstractLineByLineParser
 
     private function isFinalLine(string $line): bool
     {
-        return (\trim($line) === self::FINAL_LINE || \trim($line, '9') === '') &&
-            ($this->currentBatch === null || $this->currentBatch->hasFileTotalRecord());
+        return (\trim($line) === self::FINAL_LINE || \trim($line, '9') === '')
+            && ($this->currentBatch === null || $this->currentBatch->hasFileTotalRecord());
     }
 
     private function parseCommonRecordAttributes(string $line): array

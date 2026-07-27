@@ -23,10 +23,6 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         yield 'Current BatchItem' => [
             'class' => BatchItem::class,
         ];
-
-        yield 'Old BatchItem' => [
-            'class' => 'EonX\EasyBatch\Objects\BatchItem',
-        ];
     }
 
     /**

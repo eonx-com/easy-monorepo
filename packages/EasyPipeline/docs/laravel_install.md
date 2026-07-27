@@ -10,7 +10,7 @@ This document describes the steps to install this package into a [Laravel][1] ap
 Laravel uses [Composer][2] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require eonx/easy-pipeline
+$ composer require eonx-com/easy-pipeline
 ```
 
 <br>

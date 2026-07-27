@@ -60,8 +60,8 @@ final class WebhookTest extends AbstractUnitTestCase
         self::assertEquals($body, $webhook->getBody());
         self::assertEquals($event, $webhook->getEvent());
         self::assertEquals($extra + [
-                'key1' => 'value1',
-            ], $webhook->getExtra());
+            'key1' => 'value1',
+        ], $webhook->getExtra());
         self::assertEquals($httpOptions, $webhook->getHttpClientOptions());
         self::assertEquals($maxAttempt, $webhook->getMaxAttempt());
         self::assertEquals($secret, $webhook->getSecret());

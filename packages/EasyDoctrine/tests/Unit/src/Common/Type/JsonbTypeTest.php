@@ -32,8 +32,8 @@ final class JsonbTypeTest extends AbstractUnitTestCase
                         ],
                         'key5' => [112, 242, 309, 310],
                     ],
-                    'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
-                        '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
+                    'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,'
+                        . '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
                 ];
 
                 continue;
@@ -92,8 +92,8 @@ final class JsonbTypeTest extends AbstractUnitTestCase
                     'sub-key-3' => 42,
                 ],
             ],
-            'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,' .
-                '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
+            'postgresValue' => '{"key3":"15","key1":"value1","key4":15,"key2":false,'
+                . '"key6":{"sub-key-2":"bar","sub-key-3":42,"sub-key-1":"foo"},"key5":[112,242,309,310]}',
         ];
     }
 
@@ -115,8 +115,8 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $value = \urldecode('some incorrectly encoded utf string %C4');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert PHP value 'some incorrectly encoded utf string " .
-            \urldecode('%C4') . "' to type EonX\EasyDoctrine\Common\Type\JsonbType."
+            "Could not convert PHP value 'some incorrectly encoded utf string "
+            . \urldecode('%C4') . "' to type EonX\EasyDoctrine\Common\Type\JsonbType."
         );
 
         $type->convertToDatabaseValue($value, $platform);
@@ -139,8 +139,8 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         $platform = self::makeSqlitePlatform();
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type' .
-            ' EonX\EasyDoctrine\Common\Type\JsonbType.');
+        $this->expectExceptionMessage('Could not convert database value "ineligible-value" to Doctrine Type'
+            . ' EonX\EasyDoctrine\Common\Type\JsonbType.');
 
         $type->convertToPHPValue($value, $platform);
     }

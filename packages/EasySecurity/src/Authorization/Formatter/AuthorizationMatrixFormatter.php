@@ -15,11 +15,11 @@ final class AuthorizationMatrixFormatter
      */
     public static function formatPermissions(array $permissions): array
     {
-        $filter = static fn (
+        $filter = static fn(
             $permission,
         ): bool => \is_string($permission) || $permission instanceof Permission;
 
-        $map = static fn (
+        $map = static fn(
             $permission,
         ): Permission => \is_string($permission) ? new Permission($permission) : $permission;
 
@@ -33,8 +33,8 @@ final class AuthorizationMatrixFormatter
      */
     public static function formatRoles(array $roles): array
     {
-        $filter = static fn ($role): bool => \is_string($role) || $role instanceof Role;
-        $map = static fn ($role): Role => \is_string($role) ? new Role($role, []) : $role;
+        $filter = static fn($role): bool => \is_string($role) || $role instanceof Role;
+        $map = static fn($role): Role => \is_string($role) ? new Role($role, []) : $role;
 
         return \array_map($map, \array_filter($roles, $filter));
     }
@@ -46,8 +46,8 @@ final class AuthorizationMatrixFormatter
      */
     public static function formatRolesToIdentifiers(array $roles): array
     {
-        $filter = static fn ($role): bool => $role instanceof Role;
-        $map = static fn (Role $role): string => $role->getIdentifier();
+        $filter = static fn($role): bool => $role instanceof Role;
+        $map = static fn(Role $role): string => $role->getIdentifier();
 
         return \array_map($map, \array_filter($roles, $filter));
     }

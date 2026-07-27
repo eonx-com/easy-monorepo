@@ -506,7 +506,7 @@ final class NumberTest extends TestCase
             '\strval',
             '\intval',
             '\floatval',
-            static fn (int $a): Number => new Number($a),
+            static fn(int $a): Number => new Number($a),
         ];
         $args = \array_map($argumentCastFunctions[\random_int(0, 3)], $args);
         $objectValue = (string)$object;

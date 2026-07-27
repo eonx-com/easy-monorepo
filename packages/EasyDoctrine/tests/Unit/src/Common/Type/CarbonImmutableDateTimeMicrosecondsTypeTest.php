@@ -127,8 +127,8 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         $platform = self::makeSqlitePlatform();
         $value = 'some-ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' " .
-            'to type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.');
+        $this->expectExceptionMessage("Could not convert PHP value 'some-ineligible-value' "
+            . 'to type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.');
 
         $type->convertToDatabaseValue($value, $platform);
     }
@@ -152,8 +152,8 @@ final class CarbonImmutableDateTimeMicrosecondsTypeTest extends AbstractUnitTest
         $platform = self::makeSqlitePlatform();
         $value = 'ineligible-value';
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert database value "ineligible-value" ' .
-            'to Doctrine Type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.');
+        $this->expectExceptionMessage('Could not convert database value "ineligible-value" '
+            . 'to Doctrine Type EonX\EasyDoctrine\Common\Type\CarbonImmutableDateTimeMicrosecondsType.');
 
         $type->convertToPHPValue($value, $platform);
     }

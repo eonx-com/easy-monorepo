@@ -13,8 +13,7 @@ final readonly class PushNextDevReleaseWorker implements ReleaseWorkerInterface
     public function __construct(
         private ProcessRunner $processRunner,
         private VersionUtils $versionUtils,
-    ) {
-    }
+    ) {}
 
     public function getDescription(Version $version): string
     {

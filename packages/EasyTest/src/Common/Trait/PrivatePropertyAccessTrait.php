@@ -10,7 +10,7 @@ trait PrivatePropertyAccessTrait
 {
     public function callPrivateMethod(object $object, string $method, mixed ...$args): mixed
     {
-        return (fn () => $this->{$method}(...$args))
+        return (fn() => $this->{$method}(...$args))
             ->call($object);
     }
 

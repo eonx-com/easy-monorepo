@@ -11,8 +11,7 @@ final readonly class HandlerFailedExceptionMessageSerializer implements MessageS
 {
     public function __construct(
         private MessageSerializerInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public function serialize(object $message): string
     {

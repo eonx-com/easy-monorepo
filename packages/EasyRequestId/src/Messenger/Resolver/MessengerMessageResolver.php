@@ -12,8 +12,7 @@ final readonly class MessengerMessageResolver implements ResolverInterface
 {
     public function __construct(
         private Envelope $envelope,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): RequestIdInfo
     {

@@ -10,8 +10,7 @@ final readonly class CustomPaginator implements CustomPaginatorInterface
 {
     public function __construct(
         private Paginator $decorated,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Exception

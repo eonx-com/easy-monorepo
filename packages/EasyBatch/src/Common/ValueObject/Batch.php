@@ -11,7 +11,7 @@ final class Batch extends AbstractBatchObject
 
     private int $failed = 0;
 
-    private Closure|null $itemsProvider = null;
+    private ?Closure $itemsProvider = null;
 
     private int|string|null $parentBatchItemId = null;
 
@@ -78,7 +78,7 @@ final class Batch extends AbstractBatchObject
      */
     public function setItems(iterable $items): self
     {
-        $this->itemsProvider = static fn (): iterable => $items;
+        $this->itemsProvider = static fn(): iterable => $items;
 
         return $this;
     }

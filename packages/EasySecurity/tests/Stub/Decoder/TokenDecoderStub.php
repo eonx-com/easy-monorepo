@@ -11,8 +11,7 @@ final readonly class TokenDecoderStub implements DecoderInterface
 {
     public function __construct(
         private ?ApiTokenInterface $token = null,
-    ) {
-    }
+    ) {}
 
     public function decode(Request $request): ?ApiTokenInterface
     {

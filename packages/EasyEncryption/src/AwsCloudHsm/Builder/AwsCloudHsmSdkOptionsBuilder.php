@@ -19,8 +19,7 @@ final readonly class AwsCloudHsmSdkOptionsBuilder
         private ?string $serverClientCertFile = null,
         private ?string $serverClientKeyFile = null,
         private ?array $sdkOptions = null,
-    ) {
-    }
+    ) {}
 
     public function build(): array
     {

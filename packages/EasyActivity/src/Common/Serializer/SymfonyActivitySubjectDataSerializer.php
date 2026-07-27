@@ -18,8 +18,7 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
         private CircularReferenceHandlerInterface $circularReferenceHandler,
         private array $disallowedProperties,
         private array $fullySerializableProperties,
-    ) {
-    }
+    ) {}
 
     public function serialize(array $data, ActivitySubjectInterface $subject, ?array $context = null): ?string
     {

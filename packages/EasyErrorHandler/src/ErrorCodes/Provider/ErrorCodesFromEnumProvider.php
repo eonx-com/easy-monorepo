@@ -64,7 +64,7 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
                     $errorCodes[] = new ErrorCode(
                         originalName: $case->name,
                         errorCode: $case->value,
-                        splitName: \array_filter($splitName, static fn ($value): bool => $value !== '')
+                        splitName: \array_filter($splitName, static fn($value): bool => $value !== '')
                     );
                 }
             }

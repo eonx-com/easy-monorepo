@@ -9,8 +9,7 @@ final readonly class BasicAuth implements ApiTokenInterface
         private string $username,
         private string $password,
         private string $original,
-    ) {
-    }
+    ) {}
 
     public function getOriginalToken(): string
     {

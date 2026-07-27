@@ -18,6 +18,11 @@ return [
     'default_salt' => \env('APP_SALT'),
 
     /**
+     * Normalization(s) applied to an encryptable field value before it is hashed.
+     */
+    'default_hash_normalizations' => ['lowercase'],
+
+    /**
      * Enable key resolve for default encryption key.
      */
     'use_default_key_resolvers' => true,

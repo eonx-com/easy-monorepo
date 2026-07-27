@@ -9,8 +9,7 @@ final readonly class ProviderRestrictedStub implements ProviderRestrictedInterfa
 {
     public function __construct(
         private int|string $providerId,
-    ) {
-    }
+    ) {}
 
     public function getRestrictedProviderUniqueId(): int|string
     {

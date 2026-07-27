@@ -20,6 +20,13 @@ use EonX\EasyEncryption\Common\Resolver\SimpleEncryptionKeyResolver;
 use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptor;
 use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
+use EonX\EasyEncryption\Encryptable\HashCalculator\HmacSha512HashCalculator;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasher;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasherInterface;
+use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
+use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizer;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -40,6 +47,9 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         $this->registerFactory();
         $this->registerProvider();
         $this->registerEncryptor();
+        $this->registerHashCalculator();
+        $this->registerStringEncryptor();
+        $this->registerEncryptableFieldHasher();
         $this->registerDefaultKeyResolvers();
         $this->registerAwsCloudHsmEncryptor();
     }
@@ -55,7 +65,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AwsCloudHsmSdkOptionsBuilder::class,
-            static fn (): AwsCloudHsmSdkOptionsBuilder => new AwsCloudHsmSdkOptionsBuilder(
+            static fn(): AwsCloudHsmSdkOptionsBuilder => new AwsCloudHsmSdkOptionsBuilder(
                 caCertFile: \config('easy-encryption.aws_cloud_hsm_encryptor.ca_cert_file'),
                 disableKeyAvailabilityCheck: $disableKeyAvailabilityCheck,
                 ipAddress: \config('easy-encryption.aws_cloud_hsm_encryptor.ip_address'),
@@ -72,7 +82,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AwsCloudHsmSdkConfigurator::class,
-            static fn (Container $app): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
+            static fn(Container $app): AwsCloudHsmSdkConfigurator => new AwsCloudHsmSdkConfigurator(
                 awsCloudHsmSdkOptionsBuilder: $app->make(AwsCloudHsmSdkOptionsBuilder::class),
                 roleArn: \config('easy-encryption.aws_cloud_hsm_encryptor.role_arn'),
                 useConfigureTool: $useConfigureTool
@@ -81,7 +91,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AwsCloudHsmEncryptorInterface::class,
-            static fn (Container $app): AwsCloudHsmEncryptorInterface => new AwsCloudHsmEncryptor(
+            static fn(Container $app): AwsCloudHsmEncryptorInterface => new AwsCloudHsmEncryptor(
                 userPin: \config('easy-encryption.aws_cloud_hsm_encryptor.user_pin'),
                 awsCloudHsmSdkConfigurator: $app->make(AwsCloudHsmSdkConfigurator::class),
                 aad: \config('easy-encryption.aws_cloud_hsm_encryptor.aad'),
@@ -92,7 +102,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             HashCalculatorInterface::class,
-            static fn (Container $app): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
+            static fn(Container $app): HashCalculatorInterface => new AwsCloudHsmHashCalculator(
                 encryptor: $app->make(AwsCloudHsmEncryptorInterface::class),
                 signKeyName: \config('easy-encryption.default_key_name')
             )
@@ -100,7 +110,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             StringEncryptorInterface::class,
-            static fn (Container $app): StringEncryptorInterface => new StringEncryptor(
+            static fn(Container $app): StringEncryptorInterface => new StringEncryptor(
                 encryptor: $app->make(AwsCloudHsmEncryptorInterface::class),
                 encryptionKeyName: \config('easy-encryption.default_key_name'),
                 maxChunkSize: \config('easy-encryption.max_chunk_size')
@@ -116,7 +126,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ConfigServiceId::DefaultKeyResolver->value,
-            static fn (): SimpleEncryptionKeyResolver => new SimpleEncryptionKeyResolver(
+            static fn(): SimpleEncryptionKeyResolver => new SimpleEncryptionKeyResolver(
                 \config('easy-encryption.default_key_name'),
                 \config('easy-encryption.default_encryption_key'),
                 \config('easy-encryption.default_salt')
@@ -129,11 +139,34 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         );
     }
 
+    private function registerEncryptableFieldHasher(): void
+    {
+        $this->app->singleton(
+            EncryptableMetadataInterface::class,
+            static fn(): EncryptableMetadataInterface => new EncryptableMetadata()
+        );
+
+        $this->app->singleton(
+            HashNormalizerInterface::class,
+            static fn(): HashNormalizerInterface => new HashNormalizer()
+        );
+
+        $this->app->singleton(
+            EncryptableFieldHasherInterface::class,
+            static fn(Container $app): EncryptableFieldHasherInterface => new EncryptableFieldHasher(
+                hashCalculator: $app->make(HashCalculatorInterface::class),
+                metadata: $app->make(EncryptableMetadataInterface::class),
+                hashNormalizer: $app->make(HashNormalizerInterface::class),
+                defaultHashNormalizations: \config('easy-encryption.default_hash_normalizations', [])
+            )
+        );
+    }
+
     private function registerEncryptor(): void
     {
         $this->app->singleton(
             EncryptorInterface::class,
-            static fn (Container $app): EncryptorInterface => new Encryptor(
+            static fn(Container $app): EncryptorInterface => new Encryptor(
                 $app->make(EncryptionKeyFactoryInterface::class),
                 $app->make(EncryptionKeyProviderInterface::class),
                 \config('easy-encryption.default_key_name')
@@ -145,7 +178,17 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             EncryptionKeyFactoryInterface::class,
-            static fn (): EncryptionKeyFactoryInterface => new DefaultEncryptionKeyFactory()
+            static fn(): EncryptionKeyFactoryInterface => new DefaultEncryptionKeyFactory()
+        );
+    }
+
+    private function registerHashCalculator(): void
+    {
+        $this->app->singleton(
+            HashCalculatorInterface::class,
+            static fn(): HashCalculatorInterface => new HmacSha512HashCalculator(
+                \config('easy-encryption.default_encryption_key')
+            )
         );
     }
 
@@ -153,9 +196,21 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             EncryptionKeyProviderInterface::class,
-            static fn (Container $app): EncryptionKeyProviderInterface => new DefaultEncryptionKeyProvider(
+            static fn(Container $app): EncryptionKeyProviderInterface => new DefaultEncryptionKeyProvider(
                 $app->make(EncryptionKeyFactoryInterface::class),
                 $app->tagged(ConfigTag::EncryptionKeyResolver->value)
+            )
+        );
+    }
+
+    private function registerStringEncryptor(): void
+    {
+        $this->app->singleton(
+            StringEncryptorInterface::class,
+            static fn(Container $app): StringEncryptorInterface => new StringEncryptor(
+                encryptor: $app->make(EncryptorInterface::class),
+                encryptionKeyName: \config('easy-encryption.default_key_name'),
+                maxChunkSize: \config('easy-encryption.max_chunk_size')
             )
         );
     }

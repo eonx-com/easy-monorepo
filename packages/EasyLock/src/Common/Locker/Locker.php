@@ -22,8 +22,7 @@ final class Locker implements LockerInterface
         private readonly PersistingStoreInterface $store,
         private readonly LoggerInterface $logger = new NullLogger(),
         private ?LockFactory $lockFactory = null,
-    ) {
-    }
+    ) {}
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {

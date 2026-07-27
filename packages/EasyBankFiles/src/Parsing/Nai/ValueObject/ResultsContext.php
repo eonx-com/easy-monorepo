@@ -252,7 +252,7 @@ final class ResultsContext
 
         // Text field in BAI files can contain commas, so we need to join remaining items in the array
         if (\count($cloneLineArray) > 0) {
-            $data['text'] .= ',' . \implode(',', $cloneLineArray);
+            $data['text'] = ($data['text'] ?? '') . ',' . \implode(',', $cloneLineArray);
         }
 
         // Trim text

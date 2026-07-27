@@ -15,8 +15,7 @@ final readonly class FromRequestSecurityContextConfiguratorListener
     public function __construct(
         private SecurityContextResolverInterface $securityContextResolver,
         private iterable $configurators,
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestEvent $event): void
     {

@@ -13,8 +13,7 @@ final readonly class PdoClientConfig implements ClientConfigInterface
         private array $params,
         private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     public function getLogger(): ?LoggerInterface
     {

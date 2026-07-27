@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
  * this attribute narrows the listener to a single entity type automatically.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class AsEntityUpdateEventListener extends AsEventListener
+final class AsEntityUpdatedEventListener extends AsEventListener
 {
     /**
      * @param class-string $entityClass The entity class to listen to

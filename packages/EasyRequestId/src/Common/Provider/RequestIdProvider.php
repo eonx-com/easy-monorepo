@@ -17,8 +17,7 @@ final class RequestIdProvider implements RequestIdProviderInterface, ResetInterf
         private readonly FallbackResolverInterface $fallbackResolver,
         private readonly string $correlationIdHeaderName,
         private readonly string $requestIdHeaderName,
-    ) {
-    }
+    ) {}
 
     public function getCorrelationId(): string
     {

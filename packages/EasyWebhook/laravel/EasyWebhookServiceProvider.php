@@ -98,46 +98,46 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         // Middleware::class => Closure
         $coreMiddlewareList = [
             // BEFORE MIDDLEWARE
-            LockMiddleware::class => static fn (Container $app): LockMiddleware => new LockMiddleware(
+            LockMiddleware::class => static fn(Container $app): LockMiddleware => new LockMiddleware(
                 $app->make(LockerInterface::class),
                 null,
                 MiddlewarePriority::CoreBefore->value - 6
             ),
-            StoreMiddleware::class => static fn (Container $app): StoreMiddleware => new StoreMiddleware(
+            StoreMiddleware::class => static fn(Container $app): StoreMiddleware => new StoreMiddleware(
                 $app->make(StoreInterface::class),
                 $app->make(ResultStoreInterface::class),
                 MiddlewarePriority::CoreBefore->value - 5
             ),
-            EventsMiddleware::class => static fn (Container $app): EventsMiddleware => new EventsMiddleware(
+            EventsMiddleware::class => static fn(Container $app): EventsMiddleware => new EventsMiddleware(
                 $app->make(EventDispatcherInterface::class),
                 MiddlewarePriority::CoreBefore->value - 4
             ),
-            StatusAndAttemptMiddleware::class => static fn (
+            StatusAndAttemptMiddleware::class => static fn(
             ): StatusAndAttemptMiddleware => new StatusAndAttemptMiddleware(
                 MiddlewarePriority::CoreBefore->value - 3
             ),
-            HandleExceptionsMiddleware::class => static fn (
+            HandleExceptionsMiddleware::class => static fn(
             ): HandleExceptionsMiddleware => new HandleExceptionsMiddleware(
                 MiddlewarePriority::CoreBefore->value - 2
             ),
-            ResetStoreMiddleware::class => static fn (Container $app): ResetStoreMiddleware => new ResetStoreMiddleware(
+            ResetStoreMiddleware::class => static fn(Container $app): ResetStoreMiddleware => new ResetStoreMiddleware(
                 $app->make(StoreInterface::class),
                 $app->make(ResultStoreInterface::class),
                 MiddlewarePriority::CoreBefore->value - 1
             ),
-            RerunMiddleware::class => static fn (): RerunMiddleware => new RerunMiddleware(
+            RerunMiddleware::class => static fn(): RerunMiddleware => new RerunMiddleware(
                 MiddlewarePriority::CoreBefore->value
             ),
             // AFTER MIDDLEWARE
-            MethodMiddleware::class => static fn (): MethodMiddleware => new MethodMiddleware(
+            MethodMiddleware::class => static fn(): MethodMiddleware => new MethodMiddleware(
                 \config('easy-webhook.method'),
                 MiddlewarePriority::CoreAfter->value
             ),
-            SendAfterMiddleware::class => static fn (Container $app): SendAfterMiddleware => new SendAfterMiddleware(
+            SendAfterMiddleware::class => static fn(Container $app): SendAfterMiddleware => new SendAfterMiddleware(
                 $app->make(StoreInterface::class),
                 MiddlewarePriority::CoreAfter->value + 1
             ),
-            AsyncMiddleware::class => static fn (Container $app): AsyncMiddleware => new AsyncMiddleware(
+            AsyncMiddleware::class => static fn(Container $app): AsyncMiddleware => new AsyncMiddleware(
                 $app->make(AsyncDispatcherInterface::class),
                 $app->make(StoreInterface::class),
                 \config('easy-webhook.send_async', true),
@@ -156,7 +156,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     MiddlewarePriority::CoreAfter->value + 3
                 );
             },
-            SendWebhookMiddleware::class => static fn (
+            SendWebhookMiddleware::class => static fn(
                 Container $app,
             ): SendWebhookMiddleware => new SendWebhookMiddleware(
                 $app->make(ConfigServiceId::HttpClient->value),
@@ -196,13 +196,13 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(HttpClientFactoryInterface::class, HttpClientFactory::class);
         $this->app->singleton(
             ConfigServiceId::HttpClient->value,
-            static fn (Container $app): HttpClientInterface => $app->make(HttpClientFactoryInterface::class)->create()
+            static fn(Container $app): HttpClientInterface => $app->make(HttpClientFactoryInterface::class)->create()
         );
 
         // Stack
         $this->app->singleton(
             ConfigServiceId::Stack->value,
-            static fn (Container $app): StackInterface => new Stack(
+            static fn(Container $app): StackInterface => new Stack(
                 $app->tagged(ConfigTag::Middleware->value)
             )
         );
@@ -213,7 +213,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         // Webhook Client
         $this->app->singleton(
             WebhookClientInterface::class,
-            static fn (Container $app): WebhookClientInterface => new WebhookClient(
+            static fn(Container $app): WebhookClientInterface => new WebhookClient(
                 $app->make(ConfigServiceId::Stack->value)
             )
         );
@@ -231,7 +231,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             EventHeaderMiddleware::class,
-            static fn (): EventHeaderMiddleware => new EventHeaderMiddleware(
+            static fn(): EventHeaderMiddleware => new EventHeaderMiddleware(
                 \config('easy-webhook.event.header')
             )
         );
@@ -247,7 +247,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             IdHeaderMiddleware::class,
-            static fn (Container $app): IdHeaderMiddleware => new IdHeaderMiddleware(
+            static fn(Container $app): IdHeaderMiddleware => new IdHeaderMiddleware(
                 $app->make(StoreInterface::class),
                 \config('easy-webhook.id.header')
             )
@@ -269,7 +269,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             SignatureHeaderMiddleware::class,
-            static fn (Container $app): SignatureHeaderMiddleware => new SignatureHeaderMiddleware(
+            static fn(Container $app): SignatureHeaderMiddleware => new SignatureHeaderMiddleware(
                 $app->make(WebhookSignerInterface::class),
                 \config('easy-webhook.signature.secret'),
                 \config('easy-webhook.signature.header'),

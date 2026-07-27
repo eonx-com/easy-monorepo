@@ -28,8 +28,7 @@ abstract class AbstractOptimizedDoctrineOrmRepository implements DatabaseReposit
 
     public function __construct(
         protected ManagerRegistry $registry,
-    ) {
-    }
+    ) {}
 
     /**
      * @return object[]

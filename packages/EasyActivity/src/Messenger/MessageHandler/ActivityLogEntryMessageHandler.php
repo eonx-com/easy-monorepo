@@ -12,8 +12,7 @@ final readonly class ActivityLogEntryMessageHandler
 {
     public function __construct(
         private StoreInterface $store,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ActivityLogEntryMessage $message): void
     {

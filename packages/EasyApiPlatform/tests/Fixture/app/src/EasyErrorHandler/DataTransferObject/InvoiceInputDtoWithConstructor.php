@@ -9,8 +9,7 @@ final readonly class InvoiceInputDtoWithConstructor
 {
     public function __construct(
         private Payment $payment,
-    ) {
-    }
+    ) {}
 
     public function getPayment(): Payment
     {

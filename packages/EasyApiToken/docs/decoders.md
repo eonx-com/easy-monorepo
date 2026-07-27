@@ -50,7 +50,7 @@ By default, this package comes with 3 built-in drivers:
     - `composer require firebase/php-jwt:^7.0`
     - `composer require phpseclib/phpseclib:^3.0`
 - Auth0: Allows you to decode JWT from [Auth0][2]. The following dependencies are required and need to be installed:
-    - `composer require auth0/auth0-php:^8.17`
+    - `composer require auth0/auth0-php:^8.19`
 - Firebase: Allows you to decode JWT using the [Firebase PHP package][3]. The following dependencies are required and need to be installed:
     - `composer require firebase/php-jwt:^7.0`
 

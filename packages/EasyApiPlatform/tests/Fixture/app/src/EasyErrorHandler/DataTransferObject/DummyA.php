@@ -7,6 +7,5 @@ final class DummyA
 {
     public function __construct(
         public string $title,
-    ) {
-    }
+    ) {}
 }

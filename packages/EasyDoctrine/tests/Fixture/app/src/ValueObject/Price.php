@@ -10,8 +10,7 @@ final class Price implements Stringable
     public function __construct(
         private string $amount,
         private string $currency,
-    ) {
-    }
+    ) {}
 
     public function __toString(): string
     {

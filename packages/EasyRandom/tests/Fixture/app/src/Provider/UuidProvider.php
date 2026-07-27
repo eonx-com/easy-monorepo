@@ -9,8 +9,7 @@ final readonly class UuidProvider
 {
     public function __construct(
         private RandomGeneratorInterface $randomGenerator,
-    ) {
-    }
+    ) {}
 
     public function provide(): string
     {
