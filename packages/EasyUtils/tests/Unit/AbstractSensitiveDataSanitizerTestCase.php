@@ -139,12 +139,20 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'mask token in path' => 'some text, https://example.com/path/to/token/to-be-masked?query=1',
                 'mask token in path end with #' => 'some text, https://example.com/path/to/token/to-be-masked#query=1',
                 'mask token in both' => 'https://example.com/path/to/token/to-be-masked?token=token-to-be-masked',
+                'mask token with slash in query value (base64 can contain it)' =>
+                    'https://eonx.com/cb?token=ab/cd+ef==&next=1',
+                'mask token array style with slash' => 'https://eonx.com/cb?[token]=a/b/c&x=1',
+                'mask token in path keeps following segment' => 'https://eonx.com/token/a1b2c3/details',
             ],
             'expectedOutput' => [
                 'mask token' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
                 'mask token in path' => 'some text, https://example.com/path/to/token/*REDACTED*?query=1',
                 'mask token in path end with #' => 'some text, https://example.com/path/to/token/*REDACTED*#query=1',
                 'mask token in both' => 'https://example.com/path/to/token/*REDACTED*?token=*REDACTED*',
+                'mask token with slash in query value (base64 can contain it)' =>
+                    'https://eonx.com/cb?token=*REDACTED*&next=1',
+                'mask token array style with slash' => 'https://eonx.com/cb?[token]=*REDACTED*&x=1',
+                'mask token in path keeps following segment' => 'https://eonx.com/token/*REDACTED*/details',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [

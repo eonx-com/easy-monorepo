@@ -31,9 +31,9 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         $fullMatches = $matches[0];
 
         foreach ($fullMatches as $candidate) {
-            // The greedy pattern also swallows any separators trailing the last digit
-            // (spaces, dots, backslashes, ...). Only the digit "core" is the candidate
-            // card number and the only part we replace, so trailing characters are kept
+            // The greedy pattern also swallows separators trailing the last digit (spaces,
+            // dots, backslashes, ...). Trim only those trailing non-digits so str_replace targets
+            // the matched card (internal separators kept) and leaves characters after it untouched
             $core = (string)\preg_replace('/\D+$/', '', $candidate);
 
             if ($this->creditCardNumberValidator->isCreditCardNumberValid($core) === false) {
