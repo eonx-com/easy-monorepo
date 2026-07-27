@@ -602,12 +602,12 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             'input' => [
                 'card' => '4005 5500 0000 0001',
                 'url' => 'https://example.com?token=secret',
-                'authorization' => 'Authorization: Bearer xyz',
+                'authHeader' => 'Authorization: Bearer xyz',
             ],
             'expectedOutput' => [
                 'card' => '400555$redacted$1$0001',
                 'url' => 'https://example.com?token=$redacted$1$',
-                'authorization' => 'Authorization: $redacted$1$',
+                'authHeader' => 'Authorization: $redacted$1$',
             ],
             'maskPattern' => '$redacted$1$',
             'keysToMask' => [
