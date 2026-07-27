@@ -143,6 +143,10 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     'https://eonx.com/cb?token=ab/cd+ef==&next=1',
                 'mask token array style with slash' => 'https://eonx.com/cb?[token]=a/b/c&x=1',
                 'mask token in path keeps following segment' => 'https://eonx.com/token/a1b2c3/details',
+                'mask token whose value is a url' =>
+                    'https://app.example/cb?token=https://cb.example/a/b&next=1',
+                'mask token with slash before fragment' => 'https://app.example/cb?token=a/b#frag',
+                'mask repeated token keys with slashes' => 'https://app.example/cb?token=a/b&token=c/d',
             ],
             'expectedOutput' => [
                 'mask token' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
@@ -153,6 +157,10 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     'https://eonx.com/cb?token=*REDACTED*&next=1',
                 'mask token array style with slash' => 'https://eonx.com/cb?[token]=*REDACTED*&x=1',
                 'mask token in path keeps following segment' => 'https://eonx.com/token/*REDACTED*/details',
+                'mask token whose value is a url' => 'https://app.example/cb?token=*REDACTED*&next=1',
+                'mask token with slash before fragment' => 'https://app.example/cb?token=*REDACTED*#frag',
+                'mask repeated token keys with slashes' =>
+                    'https://app.example/cb?token=*REDACTED*&token=*REDACTED*',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [
@@ -484,6 +492,18 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'twoCardsMaskedIndependently' => 'card 4005 5500 0000 0001 or 5313 5810 0012 3430',
                 'cardAfterNonCardInUrl' =>
                     'https://eonx.com/page?ref=1234567890123456&card=4005 5500 0000 0001',
+                'thirteenDigitVisa' => '4222222222222',
+                'withDashes' => '4005-5500-0000-0001',
+                'trailingPunctuationKept' => 'pan 4005 5500 0000 0001.',
+                'twoCardsCommaSeparated' => '4005 5500 0000 0001, 5313 5810 0012 3430',
+                'cardAmongCommaSeparatedValues' => '(131, 4005550000000001, 20260702, AUD)',
+                'cardAfterAmountAndComma' => 'ref 12345678, 4005 5500 0000 0001',
+                'cardsSeparatedByNewline' => "4005 5500 0000 0001\n5313 5810 0012 3430",
+                'cardsSeparatedByTab' => "4005550000000001\t5313581000123430",
+                'cardsSeparatedBySemicolon' => '4005550000000001;5313581000123430',
+                'cardInCommaListNoSpaces' => '(131,4005550000000001,20260702,AUD)',
+                'cardAfterSlashSeparatedDigits' => '123/4005550000000001',
+                'cardAfterPlusSeparatedDigits' => '123+4005550000000001',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -513,6 +533,18 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'twoCardsMaskedIndependently' => 'card 400555*REDACTED*0001 or 531358*REDACTED*3430',
                 'cardAfterNonCardInUrl' =>
                     'https://eonx.com/page?ref=1234567890123456&card=400555*REDACTED*0001',
+                'thirteenDigitVisa' => '422222*REDACTED*2222',
+                'withDashes' => '400555*REDACTED*0001',
+                'trailingPunctuationKept' => 'pan 400555*REDACTED*0001.',
+                'twoCardsCommaSeparated' => '400555*REDACTED*0001, 531358*REDACTED*3430',
+                'cardAmongCommaSeparatedValues' => '(131, 400555*REDACTED*0001, 20260702, AUD)',
+                'cardAfterAmountAndComma' => 'ref 12345678, 400555*REDACTED*0001',
+                'cardsSeparatedByNewline' => "400555*REDACTED*0001\n531358*REDACTED*3430",
+                'cardsSeparatedByTab' => "400555*REDACTED*0001\t531358*REDACTED*3430",
+                'cardsSeparatedBySemicolon' => '400555*REDACTED*0001;531358*REDACTED*3430',
+                'cardInCommaListNoSpaces' => '(131,400555*REDACTED*0001,20260702,AUD)',
+                'cardAfterSlashSeparatedDigits' => '123/400555*REDACTED*0001',
+                'cardAfterPlusSeparatedDigits' => '123+400555*REDACTED*0001',
             ],
             'maskPattern' => '*REDACTED*',
         ];

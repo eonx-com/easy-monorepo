@@ -7,6 +7,15 @@ use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidatorInterface;
 
 final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
 {
+    /**
+     * A card candidate: >= 12 digits where the only characters allowed *between* digits are
+     * visual grouping ones (space, dot, dash, backslash). Everything else — comma, newline,
+     * tab, letters, symbols, ... — terminates the candidate, so adjacent numbers/cards/values
+     * are not merged into one long run that fails validation as a single card. The pattern
+     * also starts and ends on a digit, so a candidate never carries surrounding separators
+     */
+    private const CARD_CANDIDATE_PATTERN = '/\d(?:[ .\\\\-]*\d){11,}/';
+
     public function __construct(
         private readonly CreditCardNumberValidatorInterface $creditCardNumberValidator,
         ?int $priority = null,
@@ -17,36 +26,28 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         $matches = [];
-        $matched = \preg_match_all('/(\d[^A-Za-z&="\'<]*){12,}/', $string, $matches);
+        $matched = \preg_match_all(self::CARD_CANDIDATE_PATTERN, $string, $matches);
 
         if ($matched === 0 || $matched === false) {
             return $string;
         }
 
-        // Mask every credit card number found in the string. Iterate over the full
-        // matches ($matches[0]); each candidate is validated and masked independently,
-        // so a card is still masked when it follows a non-card digit sequence, and each
-        // card is replaced with its own masked value.
-        /** @var string[] $fullMatches */
-        $fullMatches = $matches[0];
+        // Validate and mask each candidate independently, replacing it with its own masked value
+        /** @var string[] $candidates */
+        $candidates = $matches[0];
 
-        foreach ($fullMatches as $candidate) {
-            // The greedy pattern also swallows separators trailing the last digit (spaces,
-            // dots, backslashes, ...). Trim only those trailing non-digits so str_replace targets
-            // the matched card (internal separators kept) and leaves characters after it untouched
-            $core = (string)\preg_replace('/\D+$/', '', $candidate);
-
-            if ($this->creditCardNumberValidator->isCreditCardNumberValid($core) === false) {
+        foreach ($candidates as $candidate) {
+            if ($this->creditCardNumberValidator->isCreditCardNumberValid($candidate) === false) {
                 continue;
             }
 
             $replace = \preg_replace(
                 '/^(\d{6}).+(\d{4})$/',
                 '$1' . $maskPattern . '$2',
-                (string)\preg_replace('/\D/', '', $core)
+                (string)\preg_replace('/\D/', '', $candidate)
             );
 
-            $string = \str_replace($core, (string)$replace, $string);
+            $string = \str_replace($candidate, (string)$replace, $string);
         }
 
         return $string;
