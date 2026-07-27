@@ -632,6 +632,22 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'a+b',
             ],
         ];
+        yield 'Mask pattern starting with a digit' => [
+            'input' => [
+                'card' => '4005 5500 0000 0001',
+                'url' => 'https://example.com?token=secret',
+                'authHeader' => 'Authorization: Bearer xyz',
+            ],
+            'expectedOutput' => [
+                'card' => '4005551X0001',
+                'url' => 'https://example.com?token=1X',
+                'authHeader' => 'Authorization: 1X',
+            ],
+            'maskPattern' => '1X',
+            'keysToMask' => [
+                'token',
+            ],
+        ];
     }
 
     /**

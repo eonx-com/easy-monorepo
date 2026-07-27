@@ -7,7 +7,9 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
 {
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
-        $replacement = '$1' . $this->escapeForReplacement($maskPattern);
+        // Braced back-reference (${1}) so a mask pattern that starts with a digit is not merged
+        // into a higher-numbered reference (e.g. $1 + "2" => $12)
+        $replacement = '${1}' . $this->escapeForReplacement($maskPattern);
 
         foreach ($keysToMask as $key) {
             // Keys come from configuration and are interpolated into the pattern, so escape any
