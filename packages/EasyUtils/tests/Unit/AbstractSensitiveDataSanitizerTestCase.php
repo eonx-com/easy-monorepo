@@ -548,6 +548,37 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             ],
             'maskPattern' => '*REDACTED*',
         ];
+        yield 'Mask keys embedded in free-text JSON' => [
+            'input' => [
+                'jsonInText' => 'login failed {"password":"secret","note":"ok"}',
+                'jsonPrefixed' => 'payload={"access_token":"xyz","id":7}',
+                'jsonWithTrailingText' => '{"password":"secret"} <- received',
+                'jsonBraceInStringValue' => 'log {"note":"end} x","password":"y"} tail',
+                'jsonMultipleObjects' => 'a {"password":"x"} b {"access_token":"y"} c',
+                'jsonArrayOfObjects' => 'items: [{"password":"a"},{"password":"b"}]',
+                'jsonDeeplyNested' => 'x {"a":{"b":{"password":"p"}}} y',
+                'jsonEscapedQuotesInValue' => 'v {"note":"say \"hi\"","password":"z"} w',
+                'jsonInsideJsonWholeString' => '{"payload":"{\"password\":\"secret\"}","id":1}',
+                'jsonInsideJsonInText' => 'log: {"payload":"{\"password\":\"secret\"}"} end',
+            ],
+            'expectedOutput' => [
+                'jsonInText' => 'login failed {"password":"*REDACTED*","note":"ok"}',
+                'jsonPrefixed' => 'payload={"access_token":"*REDACTED*","id":7}',
+                'jsonWithTrailingText' => '{"password":"*REDACTED*"} <- received',
+                'jsonBraceInStringValue' => 'log {"note":"end} x","password":"*REDACTED*"} tail',
+                'jsonMultipleObjects' => 'a {"password":"*REDACTED*"} b {"access_token":"*REDACTED*"} c',
+                'jsonArrayOfObjects' => 'items: [{"password":"*REDACTED*"},{"password":"*REDACTED*"}]',
+                'jsonDeeplyNested' => 'x {"a":{"b":{"password":"*REDACTED*"}}} y',
+                'jsonEscapedQuotesInValue' => 'v {"note":"say \"hi\"","password":"*REDACTED*"} w',
+                'jsonInsideJsonWholeString' => '{"payload":"{\"password\":\"*REDACTED*\"}","id":1}',
+                'jsonInsideJsonInText' => 'log: {"payload":"{\"password\":\"*REDACTED*\"}"} end',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+                'access_token',
+            ],
+        ];
     }
 
     /**

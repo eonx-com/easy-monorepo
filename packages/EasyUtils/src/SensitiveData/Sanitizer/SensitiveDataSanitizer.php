@@ -76,10 +76,52 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
                 return \json_encode($this->sanitizeArray($decodedJson), \JSON_THROW_ON_ERROR);
             }
 
-            return $this->sanitizeString($data);
+            // The string is not JSON as a whole (e.g. a log message or exception text). Mask
+            // secrets inside any JSON object/array embedded in it, then run the value-based
+            // string sanitizers over the result
+            return $this->sanitizeString($this->sanitizeEmbeddedJson($data));
         }
 
         return $data;
+    }
+
+    /**
+     * Returns the index of the bracket that closes the one at $open (respecting nesting and
+     * quoted strings with escapes), or null when the string is not balanced from that point
+     */
+    private function findMatchingBracket(string $string, int $open): ?int
+    {
+        $length = \strlen($string);
+        $depth = 0;
+        $inString = false;
+
+        for ($index = $open; $index < $length; $index++) {
+            $char = $string[$index];
+
+            if ($inString) {
+                if ($char === '\\') {
+                    $index++;
+                } elseif ($char === '"') {
+                    $inString = false;
+                }
+
+                continue;
+            }
+
+            if ($char === '"') {
+                $inString = true;
+            } elseif ($char === '{' || $char === '[') {
+                $depth++;
+            } elseif ($char === '}' || $char === ']') {
+                $depth--;
+
+                if ($depth === 0) {
+                    return $index;
+                }
+            }
+        }
+
+        return null;
     }
 
     private function sanitizeArray(array $data): array
@@ -91,6 +133,48 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         }
 
         return $data;
+    }
+
+    /**
+     * Masks sensitive keys inside every self-contained JSON object/array embedded in the string,
+     * leaving the surrounding text untouched. Fragments are decoded with a real JSON parser (not
+     * a regex), sanitized through {@see sanitizeArray()} and re-encoded in place
+     */
+    private function sanitizeEmbeddedJson(string $string): string
+    {
+        $length = \strlen($string);
+        $result = '';
+        $index = 0;
+
+        while ($index < $length) {
+            $char = $string[$index];
+
+            if ($char === '{' || $char === '[') {
+                $end = $this->findMatchingBracket($string, $index);
+
+                if ($end !== null) {
+                    $fragment = \substr($string, $index, $end - $index + 1);
+                    $decoded = \json_decode($fragment, true, 512, \JSON_BIGINT_AS_STRING);
+
+                    if (\is_array($decoded)) {
+                        $sanitized = $this->sanitizeArray($decoded);
+                        // Re-encode only when something was actually masked; otherwise keep the
+                        // original fragment verbatim so innocent JSON is not reformatted
+                        $result .= $sanitized === $decoded
+                            ? $fragment
+                            : \json_encode($sanitized, \JSON_THROW_ON_ERROR);
+                        $index = $end + 1;
+
+                        continue;
+                    }
+                }
+            }
+
+            $result .= $char;
+            $index++;
+        }
+
+        return $result;
     }
 
     /**
