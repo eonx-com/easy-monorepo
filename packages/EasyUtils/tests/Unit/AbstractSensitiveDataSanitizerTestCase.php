@@ -471,6 +471,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'inJsonWithDoubleSpacesAndEscaping' => '{\"card\"  :  \"4005 5500 0000 0001\"}',
                 'inUrl' => 'https://eonx.com/page?card=4005 5500 0000 0001',
                 'nonCardNumber' => '1234567890123456',
+                'cardAfterNonCardDigits' => 'order 1234567890123456 paid 4242 4242 4242 4242',
+                'cardAfterLongDigits' => 'ref 20260702030753654038 pan 4005 5500 0000 0001',
+                'twoCardsMaskedIndependently' => 'card 4005 5500 0000 0001 or 5313 5810 0012 3430',
+                'cardAfterNonCardInUrl' =>
+                    'https://eonx.com/page?ref=1234567890123456&card=4005 5500 0000 0001',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -478,7 +483,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'noSpace' => '512345*REDACTED*2346',
                 'withDots' => '512345*REDACTED*2346',
                 'withSlashes' => '512345*REDACTED*2346',
-                'withinSentenceWithSpace' => 'fewfewkjfewljl 512345*REDACTED*2346few wfewgew ',
+                'withinSentenceWithSpace' => 'fewfewkjfewljl 512345*REDACTED*2346 few wfewgew ',
                 'withinSentenceNoSpace' => 'fewfewkjfewljl512345*REDACTED*2346fewwfewgew',
                 'Mastercard' => '531358*REDACTED*3430',
                 'Visa' => '400555*REDACTED*0001',
@@ -495,6 +500,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'inJsonWithDoubleSpacesAndEscaping' => '{"card":"400555*REDACTED*0001"}',
                 'inUrl' => 'https://eonx.com/page?card=400555*REDACTED*0001',
                 'nonCardNumber' => '1234567890123456',
+                'cardAfterNonCardDigits' => 'order 1234567890123456 paid 424242*REDACTED*4242',
+                'cardAfterLongDigits' => 'ref 20260702030753654038 pan 400555*REDACTED*0001',
+                'twoCardsMaskedIndependently' => 'card 400555*REDACTED*0001 or 531358*REDACTED*3430',
+                'cardAfterNonCardInUrl' =>
+                    'https://eonx.com/page?ref=1234567890123456&card=400555*REDACTED*0001',
             ],
             'maskPattern' => '*REDACTED*',
         ];
