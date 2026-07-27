@@ -8,8 +8,7 @@ final readonly class ErrorCodeCategory
     public function __construct(
         private string $categoryName,
         private int $nextErrorCodeToUse,
-    ) {
-    }
+    ) {}
 
     public function asArray(): array
     {

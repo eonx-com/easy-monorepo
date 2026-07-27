@@ -14,8 +14,7 @@ final readonly class AuthenticationFailureResponseFactory implements Authenticat
 {
     public function __construct(
         private LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     public function create(Request $request, ?AuthenticationException $exception = null): Response
     {

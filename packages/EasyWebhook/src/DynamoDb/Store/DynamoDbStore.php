@@ -68,7 +68,7 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
         }
 
         return \array_map(
-            static fn ($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
+            static fn($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
             $this->formatData($data)
         );
     }
@@ -84,7 +84,7 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
     protected function instantiateFromResultItem(array $item): object
     {
         $data = \array_map(
-            static fn (AttributeValue $value): ?string => $value->getS(),
+            static fn(AttributeValue $value): ?string => $value->getS(),
             $item
         );
 

@@ -21,8 +21,7 @@ final class OrmSessionHandler implements ResetInterface, SessionHandlerInterface
         private readonly ManagerRegistry $managerRegistry,
         private readonly ?string $managerName = null,
         private readonly ?array $options = null,
-    ) {
-    }
+    ) {}
 
     public function close(): bool
     {

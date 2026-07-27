@@ -16,8 +16,7 @@ abstract readonly class AbstractEntityEvent
     public function __construct(
         protected object $entity,
         protected array $changeSet,
-    ) {
-    }
+    ) {}
 
     /**
      * @param class-string $entityClass

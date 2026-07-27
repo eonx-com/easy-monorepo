@@ -26,8 +26,7 @@ final class IlluminatePipelineFactory implements PipelineFactoryInterface
         private readonly ContainerInterface $container,
         private readonly array $pipelines,
         private readonly ?string $prefix = null,
-    ) {
-    }
+    ) {}
 
     public function create(string $pipeline): PipelineInterface
     {

@@ -11,8 +11,7 @@ final class FromArrayResolver implements ResolverInterface
     public function __construct(
         private array $array,
         private readonly RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): RequestIdInfo
     {

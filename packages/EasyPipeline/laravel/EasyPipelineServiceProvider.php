@@ -32,7 +32,7 @@ final class EasyPipelineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PipelineFactoryInterface::class,
-            static fn (Container $app): IlluminatePipelineFactory => new IlluminatePipelineFactory(
+            static fn(Container $app): IlluminatePipelineFactory => new IlluminatePipelineFactory(
                 $app,
                 \array_keys(\config('easy-pipeline.pipelines', [])),
                 self::PIPELINES_PREFIX

@@ -17,8 +17,7 @@ final readonly class Locker implements LockerInterface
 {
     public function __construct(
         private LockFactory $lockFactory,
-    ) {
-    }
+    ) {}
 
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {

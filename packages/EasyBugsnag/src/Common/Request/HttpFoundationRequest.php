@@ -10,8 +10,7 @@ final readonly class HttpFoundationRequest implements RequestInterface
 {
     public function __construct(
         private Request $request,
-    ) {
-    }
+    ) {}
 
     public function getContext(): string
     {

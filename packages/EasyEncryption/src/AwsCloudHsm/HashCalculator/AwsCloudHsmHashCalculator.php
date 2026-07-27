@@ -13,8 +13,7 @@ final readonly class AwsCloudHsmHashCalculator implements HashCalculatorInterfac
     public function __construct(
         private AwsCloudHsmEncryptorInterface $encryptor,
         private string $signKeyName,
-    ) {
-    }
+    ) {}
 
     public function calculate(string $value): string
     {

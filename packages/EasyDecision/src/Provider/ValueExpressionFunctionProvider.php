@@ -42,7 +42,7 @@ final class ValueExpressionFunctionProvider
     {
         return new ExpressionFunction(
             'equal',
-            static fn ($arguments, $target, $value): bool => $target === $value,
+            static fn($arguments, $target, $value): bool => $target === $value,
             'Check if the 2 given arguments are equal'
         );
     }

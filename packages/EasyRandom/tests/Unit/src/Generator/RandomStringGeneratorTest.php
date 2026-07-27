@@ -102,7 +102,7 @@ final class RandomStringGeneratorTest extends AbstractUnitTestCase
     public function testInvalidRandomStringExceptionThrown(): void
     {
         $this->expectException(InvalidRandomStringException::class);
-        $alwaysInvalid = new CallbackRandomStringConstraint(static fn (): bool => false);
+        $alwaysInvalid = new CallbackRandomStringConstraint(static fn(): bool => false);
         $randomStringConfig = new RandomStringConfig(8)
             ->constraints([$alwaysInvalid]);
 

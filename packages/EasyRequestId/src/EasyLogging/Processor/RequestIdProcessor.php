@@ -11,8 +11,7 @@ final class RequestIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(
         private readonly RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function __invoke(LogRecord $record): LogRecord
     {

@@ -25,8 +25,7 @@ final readonly class CoroutineConnectionDbal3Factory
         private float $defaultMaxIdleTime,
         private ?AwsRdsConnectionParamsResolver $connectionParamsResolver = null,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, string>|null $mappingTypes

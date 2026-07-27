@@ -11,8 +11,7 @@ final class RequestIdTwigExtension extends AbstractExtension
 {
     public function __construct(
         private readonly RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     /**
      * @return \Twig\TwigFunction[]
@@ -20,15 +19,15 @@ final class RequestIdTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('correlationId', fn (): string => $this->requestIdProvider->getCorrelationId()),
+            new TwigFunction('correlationId', fn(): string => $this->requestIdProvider->getCorrelationId()),
             new TwigFunction(
                 'correlationIdHeaderName',
-                fn (): string => $this->requestIdProvider->getCorrelationIdHeaderName()
+                fn(): string => $this->requestIdProvider->getCorrelationIdHeaderName()
             ),
-            new TwigFunction('requestId', fn (): string => $this->requestIdProvider->getRequestId()),
+            new TwigFunction('requestId', fn(): string => $this->requestIdProvider->getRequestId()),
             new TwigFunction(
                 'requestIdHeaderName',
-                fn (): string => $this->requestIdProvider->getRequestIdHeaderName()
+                fn(): string => $this->requestIdProvider->getRequestIdHeaderName()
             ),
         ];
     }

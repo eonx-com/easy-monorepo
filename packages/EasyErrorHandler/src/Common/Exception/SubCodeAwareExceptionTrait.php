@@ -26,15 +26,13 @@ trait SubCodeAwareExceptionTrait
             );
         }
 
-        if ($subCode instanceof BackedEnum && \is_int($subCode->value)) {
+        if ($subCode instanceof BackedEnum) {
             $this->subCode = $subCode->value;
 
             return $this;
         }
 
-        if (\is_int($subCode)) {
-            $this->subCode = $subCode;
-        }
+        $this->subCode = $subCode;
 
         return $this;
     }

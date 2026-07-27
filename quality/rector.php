@@ -2,13 +2,14 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
-use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
+use EonX\EasyQuality\Rector\DataProviderSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
@@ -42,7 +43,7 @@ return RectorConfig::configure()
     ])
     ->withSets([
         EasyQualitySetList::RECTOR,
-        EasyQualitySetList::RECTOR_PHPUNIT_10,
+        EasyQualitySetList::RECTOR_PHPUNIT_12,
     ])
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class => null,
@@ -67,6 +68,10 @@ return RectorConfig::configure()
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
         ],
+        ClosureToArrowFunctionRector::class => [
+            'packages/EasyEncryption/src/Encryptable/Encryptor/ObjectEncryptor.php',
+            'packages/EasyEncryption/tests/Unit/src/Encryptable/Encryptable/EncryptableTraitEncryptableTest.php',
+        ],
         DeprecatedAnnotationToDeprecatedAttributeRector::class => null,
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
@@ -87,6 +92,6 @@ return RectorConfig::configure()
         'packages/*/vendor/*',
     ])
     ->withRules([
-        AddSeeAnnotationRector::class,
+        DataProviderSeeAnnotationRector::class,
     ])
     ->withConfiguredRule(SingleLineCommentRector::class, [[]]);

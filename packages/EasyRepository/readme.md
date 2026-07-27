@@ -12,7 +12,7 @@ Provides an easy way to implement the Repository Design Pattern in your applicat
 Laravel uses [Composer][1] to manage its dependencies. You can require this package as following:
 
 ```bash
-$ composer require eonx/easy-repository
+$ composer require eonx-com/easy-repository
 ```
 
 [1]: https://getcomposer.org/

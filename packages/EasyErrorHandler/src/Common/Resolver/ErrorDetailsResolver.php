@@ -33,8 +33,7 @@ final class ErrorDetailsResolver implements ErrorDetailsResolverInterface
         private readonly TranslatorInterface $translator,
         private readonly bool $translateInternalMessages = false,
         private readonly string $internalMessagesLocale = self::DEFAULT_INTERNAL_MESSAGES_LOCALE,
-    ) {
-    }
+    ) {}
 
     public function reset(): void
     {

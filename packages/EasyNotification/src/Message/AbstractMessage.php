@@ -9,8 +9,7 @@ abstract class AbstractMessage implements MessageInterface
 {
     public function __construct(
         private ?array $body = null,
-    ) {
-    }
+    ) {}
 
     public function getBody(): string
     {

@@ -12,8 +12,7 @@ final readonly class ResetServicesListener
 {
     public function __construct(
         private ServicesResetter $servicesResetter,
-    ) {
-    }
+    ) {}
 
     public function __invoke(EnvelopeDispatchedEvent $event): void
     {

@@ -26,8 +26,7 @@ final readonly class EasyScheduleSwooleRunner implements RunnerInterface
 
     public function __construct(
         private Application $application,
-    ) {
-    }
+    ) {}
 
     public function run(): int
     {
@@ -39,8 +38,7 @@ final readonly class EasyScheduleSwooleRunner implements RunnerInterface
             OptionHelper::getInteger('cache_clear_after_tick_count', 'SWOOLE_CACHE_CLEAR_AFTER_TICK_COUNT'),
         );
 
-        $server->on(SwooleServerEvent::Request->value, static function (): void {
-        });
+        $server->on(SwooleServerEvent::Request->value, static function (): void {});
 
         $table = SwooleTableHelper::create(
             size: 1,

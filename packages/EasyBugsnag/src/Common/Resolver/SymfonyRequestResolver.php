@@ -12,8 +12,7 @@ final class SymfonyRequestResolver extends AbstractRequestResolver
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-    ) {
-    }
+    ) {}
 
     protected function doResolve(): RequestInterface
     {

@@ -12,8 +12,7 @@ final readonly class AsyncDispatcher implements AsyncDispatcherInterface
 {
     public function __construct(
         private MessageBusInterface $bus,
-    ) {
-    }
+    ) {}
 
     public function dispatch(WebhookInterface $webhook): void
     {

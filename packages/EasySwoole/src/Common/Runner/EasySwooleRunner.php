@@ -33,8 +33,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
 {
     public function __construct(
         private HttpKernelInterface $app,
-    ) {
-    }
+    ) {}
 
     public function run(): int
     {
@@ -130,9 +129,9 @@ final readonly class EasySwooleRunner implements RunnerInterface
     {
         try {
             if (
-                \interface_exists(ErrorHandlerInterface::class) &&
-                $app instanceof KernelInterface &&
-                $app->getContainer()
+                \interface_exists(ErrorHandlerInterface::class)
+                && $app instanceof KernelInterface
+                && $app->getContainer()
                     ->has(ErrorHandlerInterface::class)
             ) {
                 return $app->getContainer()

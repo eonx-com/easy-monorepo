@@ -27,8 +27,7 @@ final class BatchProcessor
         private readonly BatchItemRepositoryInterface $batchItemRepository,
         private readonly BatchRepositoryInterface $batchRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyBatch\Common\Exception\BatchItemNotFoundException

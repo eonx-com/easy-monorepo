@@ -5,6 +5,4 @@ namespace EonX\EasyUtils\Common\Exception;
 
 use RuntimeException;
 
-abstract class AbstractEasyUtilsException extends RuntimeException implements EasyUtilsExceptionInterface
-{
-}
+abstract class AbstractEasyUtilsException extends RuntimeException implements EasyUtilsExceptionInterface {}

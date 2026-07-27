@@ -5,6 +5,4 @@ namespace EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Exception;
 
 use RuntimeException;
 
-final class DummyBException extends RuntimeException
-{
-}
+final class DummyBException extends RuntimeException {}

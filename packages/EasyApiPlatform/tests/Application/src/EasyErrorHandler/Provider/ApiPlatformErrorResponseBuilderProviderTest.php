@@ -140,8 +140,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
-                " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
+            'exceptionMessage' => "description: This value should be of type string.\nweight: This value should"
+                . " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
         ];
 
         yield 'invalid constructor Enum argument' => [
@@ -175,8 +175,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
-                ' This value should be of type int.',
+            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:"
+                . ' This value should be of type int.',
         ];
 
         yield 'invalid constructor argument type' => [
@@ -448,8 +448,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
-                ' This value should be of type int.',
+            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:"
+                . ' This value should be of type int.',
         ];
 
         yield 'invalid IRI type' => [
@@ -608,8 +608,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'url' => '/dummy-action',
             'json' => [],
             'exceptionClass' => NotNormalizableValueException::class,
-            'exceptionMessage' => 'Exception supported by API Platform Builders, but thrown ' .
-                'outside API Platform denormalization logic.',
+            'exceptionMessage' => 'Exception supported by API Platform Builders, but thrown '
+                . 'outside API Platform denormalization logic.',
         ];
 
         yield 'default error when supported exception and unknown exception message' => [

@@ -16,8 +16,7 @@ final readonly class FromRequestSecurityContextConfiguratorMiddleware
     public function __construct(
         private SecurityContextResolverInterface $securityContextResolver,
         private iterable $configurators,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): mixed
     {

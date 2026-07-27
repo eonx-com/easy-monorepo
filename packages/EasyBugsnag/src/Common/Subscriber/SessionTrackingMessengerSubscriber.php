@@ -12,8 +12,7 @@ final readonly class SessionTrackingMessengerSubscriber implements EventSubscrib
 {
     public function __construct(
         private Client $client,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string[]

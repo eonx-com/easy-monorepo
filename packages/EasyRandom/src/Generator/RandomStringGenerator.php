@@ -46,7 +46,7 @@ final class RandomStringGenerator implements RandomStringGeneratorInterface
     {
         return \array_all(
             $randomStringConfig->getConstraints(),
-            static fn ($constraint): bool => $constraint->isValid($randomString)
+            static fn($constraint): bool => $constraint->isValid($randomString)
         );
     }
 }

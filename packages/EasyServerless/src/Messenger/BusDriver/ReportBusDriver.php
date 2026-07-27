@@ -20,8 +20,7 @@ final readonly class ReportBusDriver implements BusDriver
         private BusDriver $decorated,
         private ?ErrorHandlerInterface $errorHandler = null,
         private ?EventDispatcherInterface $eventDispatcher = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Throwable

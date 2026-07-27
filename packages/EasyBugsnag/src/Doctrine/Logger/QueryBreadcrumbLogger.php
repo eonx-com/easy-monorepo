@@ -11,8 +11,7 @@ final readonly class QueryBreadcrumbLogger
 {
     public function __construct(
         private Client $client,
-    ) {
-    }
+    ) {}
 
     public function log(QueryBreadcrumb $queryBreadcrumb): void
     {

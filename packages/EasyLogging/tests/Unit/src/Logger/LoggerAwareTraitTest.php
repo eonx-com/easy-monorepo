@@ -11,10 +11,10 @@ final class LoggerAwareTraitTest extends AbstractUnitTestCase
 {
     public function testSetLoggerSucceeds(): void
     {
-        $abstractClass = new class() {
+        $abstractClass = new class {
             use LoggerAwareTrait;
         };
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $abstractClass->setLogger($logger);
 
