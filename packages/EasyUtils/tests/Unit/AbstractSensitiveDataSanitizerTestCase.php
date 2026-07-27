@@ -579,6 +579,57 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'access_token',
             ],
         ];
+        yield 'Mask key=value in free text' => [
+            'input' => [
+                'detailList' => 'DETAIL: (password=secret, token=abc)',
+                'inSentence' => 'user password=hunter2 for id=7',
+                'semicolonSeparated' => 'password=secret;token=abc',
+                'ampSeparated' => 'password=secret&token=abc',
+            ],
+            'expectedOutput' => [
+                'detailList' => 'DETAIL: (password=*REDACTED*, token=*REDACTED*)',
+                'inSentence' => 'user password=*REDACTED* for id=7',
+                'semicolonSeparated' => 'password=*REDACTED*;token=*REDACTED*',
+                'ampSeparated' => 'password=*REDACTED*&token=*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+                'token',
+            ],
+        ];
+        yield 'Mask pattern with regex-replacement metacharacters is literal' => [
+            'input' => [
+                'card' => '4005 5500 0000 0001',
+                'url' => 'https://example.com?token=secret',
+            ],
+            'expectedOutput' => [
+                'card' => '400555$redacted$1$0001',
+                'url' => 'https://example.com?token=$redacted$1$',
+            ],
+            'maskPattern' => '$redacted$1$',
+            'keysToMask' => [
+                'token',
+            ],
+        ];
+        yield 'Mask keys containing regex-special characters' => [
+            'input' => [
+                'dotKey' => 'a.b=secret axb=keep',
+                'slashKey' => 'a/b=secret&c=keep',
+                'plusKey' => 'a+b=secret;d=keep',
+            ],
+            'expectedOutput' => [
+                'dotKey' => 'a.b=*REDACTED* axb=keep',
+                'slashKey' => 'a/b=*REDACTED*&c=keep',
+                'plusKey' => 'a+b=*REDACTED*;d=keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'a.b',
+                'a/b',
+                'a+b',
+            ],
+        ];
     }
 
     /**
