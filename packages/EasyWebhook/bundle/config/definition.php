@@ -34,6 +34,33 @@ return static function (DefinitionConfigurator $definition) {
                     ->stringNode('secret')->defaultNull()->end()
                 ->end()
             ->end()
+            ->arrayNode('request_limits')
+                ->addDefaultsIfNotSet()
+                ->info('Guards against DoS from a slow or oversized webhook response')
+                ->children()
+                    ->integerNode('timeout')
+                        ->defaultValue(10)
+                        ->info(
+                            'Idle timeout in seconds - abort when the target stalls. '
+                            . '0 keeps PHP default_socket_timeout.'
+                        )
+                    ->end()
+                    ->integerNode('max_duration')
+                        ->defaultValue(30)
+                        ->info(
+                            'Total request duration cap in seconds - guards against a slow/trickling '
+                            . 'target holding a worker open. 0 = unlimited.'
+                        )
+                    ->end()
+                    ->integerNode('max_response_bytes')
+                        ->defaultValue(10485760)
+                        ->info(
+                            'Maximum response body size in bytes before the transfer is aborted, '
+                            . 'guarding against memory/storage exhaustion. 0 = unlimited.'
+                        )
+                    ->end()
+                ->end()
+            ->end()
             ->booleanNode('use_default_middleware')->defaultTrue()->end()
         ->end();
 };

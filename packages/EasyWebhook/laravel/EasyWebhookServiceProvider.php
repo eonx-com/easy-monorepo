@@ -193,7 +193,14 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(DataCleanerInterface::class, NullDataCleaner::class);
 
         // HTTP Client
-        $this->app->singleton(HttpClientFactoryInterface::class, HttpClientFactory::class);
+        $this->app->singleton(
+            HttpClientFactoryInterface::class,
+            static fn (): HttpClientFactoryInterface => new HttpClientFactory(
+                (int)\config('easy-webhook.request_limits.timeout', 10),
+                (int)\config('easy-webhook.request_limits.max_duration', 30),
+                (int)\config('easy-webhook.request_limits.max_response_bytes', 10485760),
+            )
+        );
         $this->app->singleton(
             ConfigServiceId::HttpClient->value,
             static fn (Container $app): HttpClientInterface => $app->make(HttpClientFactoryInterface::class)->create()

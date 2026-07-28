@@ -15,6 +15,12 @@ enum ConfigParam: string
 
     case Method = 'easy_webhooks.method';
 
+    case RequestMaxDuration = 'easy_webhooks.request_max_duration';
+
+    case RequestMaxResponseBytes = 'easy_webhooks.request_max_response_bytes';
+
+    case RequestTimeout = 'easy_webhooks.request_timeout';
+
     case Secret = 'easy_webhooks.secret';
 
     case SignatureHeader = 'easy_webhooks.signature_header';

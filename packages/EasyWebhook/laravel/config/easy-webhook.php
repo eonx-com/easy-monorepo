@@ -20,5 +20,10 @@ return [
         'header' => 'X-Webhook-Signature',
         'signer' => Rs256WebhookSigner::class,
     ],
+    'request_limits' => [
+        'timeout' => 10,
+        'max_duration' => 30,
+        'max_response_bytes' => 10485760,
+    ],
     'use_default_middleware' => true,
 ];
