@@ -579,6 +579,20 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'access_token',
             ],
         ];
+        yield 'Re-encoded fragment keeps slashes and unicode unescaped' => [
+            'input' => [
+                'embedded' => 'log {"note":"привет","url":"https://a/b","password":"secret"} end',
+                'wholeString' => '{"note":"café","url":"https://a/b","password":"secret"}',
+            ],
+            'expectedOutput' => [
+                'embedded' => 'log {"note":"привет","url":"https://a/b","password":"*REDACTED*"} end',
+                'wholeString' => '{"note":"café","url":"https://a/b","password":"*REDACTED*"}',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+            ],
+        ];
         yield 'Mask key=value in free text' => [
             'input' => [
                 'detailList' => 'DETAIL: (password=secret, token=abc)',

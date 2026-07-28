@@ -63,7 +63,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             );
 
             if (\is_array($decodedJson)) {
-                return \json_encode($this->sanitizeArray($decodedJson), \JSON_THROW_ON_ERROR);
+                return \json_encode(
+                    $this->sanitizeArray($decodedJson),
+                    \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                );
             }
 
             $decodedJson = \json_decode(
@@ -73,7 +76,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             );
 
             if (\is_array($decodedJson)) {
-                return \json_encode($this->sanitizeArray($decodedJson), \JSON_THROW_ON_ERROR);
+                return \json_encode(
+                    $this->sanitizeArray($decodedJson),
+                    \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                );
             }
 
             // The string is not JSON as a whole (e.g. a log message or exception text). Mask
@@ -185,7 +191,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
 
         return $sanitized === $decoded
             ? $fragment
-            : \json_encode($sanitized, \JSON_THROW_ON_ERROR);
+            : \json_encode(
+                $sanitized,
+                \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+            );
     }
 
     /**
