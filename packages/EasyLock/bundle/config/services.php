@@ -25,9 +25,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(LockerInterface::class, Locker::class)
-        ->arg('$store', service(ConfigServiceId::Store->value))
-        ->arg('$lockFactory', service(LockFactory::class))
-        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
+        ->arg('$lockFactory', service(LockFactory::class));
 
     $services
         ->set(EasyLockDoctrineSchemaListener::class)
