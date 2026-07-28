@@ -63,7 +63,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             );
 
             if (\is_array($decodedJson)) {
-                return \json_encode($this->sanitizeArray($decodedJson), \JSON_THROW_ON_ERROR);
+                return \json_encode(
+                    $this->sanitizeArray($decodedJson),
+                    \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                );
             }
 
             $decodedJson = \json_decode(
@@ -73,10 +76,16 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             );
 
             if (\is_array($decodedJson)) {
-                return \json_encode($this->sanitizeArray($decodedJson), \JSON_THROW_ON_ERROR);
+                return \json_encode(
+                    $this->sanitizeArray($decodedJson),
+                    \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                );
             }
 
-            return $this->sanitizeString($data);
+            // The string is not JSON as a whole (e.g. a log message or exception text). Mask
+            // secrets inside any JSON object/array embedded in it, then run the value-based
+            // string sanitizers over the result
+            return $this->sanitizeString($this->sanitizeEmbeddedJson($data));
         }
 
         return $data;
@@ -91,6 +100,101 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         }
 
         return $data;
+    }
+
+    /**
+     * Masks sensitive keys inside every self-contained JSON object/array embedded in the string,
+     * leaving the surrounding text untouched. Fragments are decoded with a real JSON parser (not
+     * a regex), sanitized through {@see sanitizeArray()} and re-encoded in place
+     */
+    private function sanitizeEmbeddedJson(string $string): string
+    {
+        // Nothing to scan when there is no JSON object/array opener — avoids walking the whole
+        // string for typical log lines
+        if (\strpbrk($string, '{[') === false) {
+            return $string;
+        }
+
+        $length = \strlen($string);
+        $result = '';
+        // Start index of the current top-level {...}/[...] span, or null while in surrounding text
+        $spanStart = null;
+        $depth = 0;
+        $inString = false;
+
+        // Single left-to-right pass: surrounding text is copied verbatim; a span is tracked with a
+        // depth counter (string/escape aware) and handled once when it closes. This stays linear
+        // even for pathological input (e.g. many unmatched "{" in a truncated payload)
+        for ($index = 0; $index < $length; $index++) {
+            $char = $string[$index];
+
+            if ($spanStart === null) {
+                if ($char === '{' || $char === '[') {
+                    $spanStart = $index;
+                    $depth = 1;
+                    $inString = false;
+                } else {
+                    $result .= $char;
+                }
+
+                continue;
+            }
+
+            if ($inString) {
+                if ($char === '\\') {
+                    $index++;
+                } elseif ($char === '"') {
+                    $inString = false;
+                }
+
+                continue;
+            }
+
+            if ($char === '"') {
+                $inString = true;
+            } elseif ($char === '{' || $char === '[') {
+                $depth++;
+            } elseif ($char === '}' || $char === ']') {
+                $depth--;
+
+                if ($depth === 0) {
+                    $result .= $this->sanitizeJsonFragment(
+                        \substr($string, $spanStart, $index - $spanStart + 1)
+                    );
+                    $spanStart = null;
+                }
+            }
+        }
+
+        // An opener with no matching close (e.g. truncated JSON) — append the rest verbatim
+        if ($spanStart !== null) {
+            $result .= \substr($string, $spanStart);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Masks sensitive keys inside a single self-contained JSON fragment. Re-encodes only when
+     * something was actually masked, so a valid-but-innocent fragment is kept byte-for-byte and a
+     * balanced-but-invalid one (not real JSON) is returned unchanged
+     */
+    private function sanitizeJsonFragment(string $fragment): string
+    {
+        $decoded = \json_decode($fragment, true, 512, \JSON_BIGINT_AS_STRING);
+
+        if (\is_array($decoded) === false) {
+            return $fragment;
+        }
+
+        $sanitized = $this->sanitizeArray($decoded);
+
+        return $sanitized === $decoded
+            ? $fragment
+            : \json_encode(
+                $sanitized,
+                \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+            );
     }
 
     /**
