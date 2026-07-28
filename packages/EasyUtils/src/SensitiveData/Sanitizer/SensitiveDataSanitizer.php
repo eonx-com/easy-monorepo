@@ -85,45 +85,6 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         return $data;
     }
 
-    /**
-     * Returns the index of the bracket that closes the one at $open (respecting nesting and
-     * quoted strings with escapes), or null when the string is not balanced from that point
-     */
-    private function findMatchingBracket(string $string, int $open): ?int
-    {
-        $length = \strlen($string);
-        $depth = 0;
-        $inString = false;
-
-        for ($index = $open; $index < $length; $index++) {
-            $char = $string[$index];
-
-            if ($inString) {
-                if ($char === '\\') {
-                    $index++;
-                } elseif ($char === '"') {
-                    $inString = false;
-                }
-
-                continue;
-            }
-
-            if ($char === '"') {
-                $inString = true;
-            } elseif ($char === '{' || $char === '[') {
-                $depth++;
-            } elseif ($char === '}' || $char === ']') {
-                $depth--;
-
-                if ($depth === 0) {
-                    return $index;
-                }
-            }
-        }
-
-        return null;
-    }
-
     private function sanitizeArray(array $data): array
     {
         foreach ($data as $key => $value) {
@@ -143,44 +104,88 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
     private function sanitizeEmbeddedJson(string $string): string
     {
         // Nothing to scan when there is no JSON object/array opener — avoids walking the whole
-        // string and re-allocating for typical log lines
+        // string for typical log lines
         if (\strpbrk($string, '{[') === false) {
             return $string;
         }
 
         $length = \strlen($string);
         $result = '';
-        $index = 0;
+        // Start index of the current top-level {...}/[...] span, or null while in surrounding text
+        $spanStart = null;
+        $depth = 0;
+        $inString = false;
 
-        while ($index < $length) {
+        // Single left-to-right pass: surrounding text is copied verbatim; a span is tracked with a
+        // depth counter (string/escape aware) and handled once when it closes. This stays linear
+        // even for pathological input (e.g. many unmatched "{" in a truncated payload)
+        for ($index = 0; $index < $length; $index++) {
             $char = $string[$index];
 
-            if ($char === '{' || $char === '[') {
-                $end = $this->findMatchingBracket($string, $index);
-
-                if ($end !== null) {
-                    $fragment = \substr($string, $index, $end - $index + 1);
-                    $decoded = \json_decode($fragment, true, 512, \JSON_BIGINT_AS_STRING);
-
-                    if (\is_array($decoded)) {
-                        $sanitized = $this->sanitizeArray($decoded);
-                        // Re-encode only when something was actually masked; otherwise keep the
-                        // original fragment verbatim so innocent JSON is not reformatted
-                        $result .= $sanitized === $decoded
-                            ? $fragment
-                            : \json_encode($sanitized, \JSON_THROW_ON_ERROR);
-                        $index = $end + 1;
-
-                        continue;
-                    }
+            if ($spanStart === null) {
+                if ($char === '{' || $char === '[') {
+                    $spanStart = $index;
+                    $depth = 1;
+                    $inString = false;
+                } else {
+                    $result .= $char;
                 }
+
+                continue;
             }
 
-            $result .= $char;
-            $index++;
+            if ($inString) {
+                if ($char === '\\') {
+                    $index++;
+                } elseif ($char === '"') {
+                    $inString = false;
+                }
+
+                continue;
+            }
+
+            if ($char === '"') {
+                $inString = true;
+            } elseif ($char === '{' || $char === '[') {
+                $depth++;
+            } elseif ($char === '}' || $char === ']') {
+                $depth--;
+
+                if ($depth === 0) {
+                    $result .= $this->sanitizeJsonFragment(
+                        \substr($string, $spanStart, $index - $spanStart + 1)
+                    );
+                    $spanStart = null;
+                }
+            }
+        }
+
+        // An opener with no matching close (e.g. truncated JSON) — append the rest verbatim
+        if ($spanStart !== null) {
+            $result .= \substr($string, $spanStart);
         }
 
         return $result;
+    }
+
+    /**
+     * Masks sensitive keys inside a single self-contained JSON fragment. Re-encodes only when
+     * something was actually masked, so a valid-but-innocent fragment is kept byte-for-byte and a
+     * balanced-but-invalid one (not real JSON) is returned unchanged
+     */
+    private function sanitizeJsonFragment(string $fragment): string
+    {
+        $decoded = \json_decode($fragment, true, 512, \JSON_BIGINT_AS_STRING);
+
+        if (\is_array($decoded) === false) {
+            return $fragment;
+        }
+
+        $sanitized = $this->sanitizeArray($decoded);
+
+        return $sanitized === $decoded
+            ? $fragment
+            : \json_encode($sanitized, \JSON_THROW_ON_ERROR);
     }
 
     /**

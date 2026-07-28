@@ -648,6 +648,22 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'token',
             ],
         ];
+        yield 'Leave unbalanced or truncated JSON untouched' => [
+            'input' => [
+                'manyOpeners' => 'weird {{{{{{{{ end',
+                'truncatedNested' => 'ctx {"a":{"b": cut off',
+                'validThenTruncated' => '{"password":"secret"} then {"leftover": cut',
+            ],
+            'expectedOutput' => [
+                'manyOpeners' => 'weird {{{{{{{{ end',
+                'truncatedNested' => 'ctx {"a":{"b": cut off',
+                'validThenTruncated' => '{"password":"*REDACTED*"} then {"leftover": cut',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+            ],
+        ];
     }
 
     /**
