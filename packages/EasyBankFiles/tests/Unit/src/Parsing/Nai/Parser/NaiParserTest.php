@@ -12,6 +12,7 @@ use EonX\EasyBankFiles\Parsing\Nai\ValueObject\ResultsContext;
 use EonX\EasyBankFiles\Parsing\Nai\ValueObject\TransactionDetailCodesTrait;
 use EonX\EasyBankFiles\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(AccountSummaryCodesTrait::class)]
 #[CoversClass(ControlTotalTrait::class)]
@@ -20,6 +21,27 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(TransactionDetailCodesTrait::class)]
 final class NaiParserTest extends AbstractUnitTestCase
 {
+    /**
+     * Distinct expected values (10001 -> 100.01 vs 10010 -> 100.10) also pin down that two
+     * genuinely different control totals never collapse to the same value, which would defeat an
+     * equality-based reconciliation check.
+     *
+     * @see testControlTotalTraitReturnFormattedAmount
+     */
+    public static function provideControlTotals(): iterable
+    {
+        yield 'whole dollars' => ['amount' => '10000', 'expected' => 100.00];
+        yield 'one cent' => ['amount' => '10001', 'expected' => 100.01];
+        yield 'five cents' => ['amount' => '10005', 'expected' => 100.05];
+        yield 'nine cents' => ['amount' => '10009', 'expected' => 100.09];
+        yield 'ten cents' => ['amount' => '10010', 'expected' => 100.10];
+        yield 'ninety-nine cents' => ['amount' => '10099', 'expected' => 100.99];
+        yield 'implied cents only' => ['amount' => '1', 'expected' => 0.01];
+        yield 'negative' => ['amount' => '-13467', 'expected' => -134.67];
+        yield 'negative dollars and cents' => ['amount' => '-10001', 'expected' => -100.01];
+        yield 'small negative' => ['amount' => '-99', 'expected' => -0.99];
+    }
+
     public function testBai2FromUSSucceeds(): void
     {
         $parser = new NaiParser($this->getSampleFileContents('fundsTypesCases.BAI'), true);
@@ -31,14 +53,21 @@ final class NaiParserTest extends AbstractUnitTestCase
     }
 
     /**
-     * ControlTotal should format amount as expected.
+     * ControlTotal formats an on-file cents amount into a float, preserving leading-zero cents.
      */
-    public function testControlTotalTraitReturnFormattedAmount(): void
+    #[DataProvider('provideControlTotals')]
+    public function testControlTotalTraitReturnFormattedAmount(string $amount, float $expected): void
     {
-        $trait = $this->getObjectForTrait(ControlTotalTrait::class);
+        $trait = new class() {
+            use ControlTotalTrait;
 
-        self::assertIsFloat($this->callPrivateMethod($trait, 'formatAmount', '100000'));
-        self::assertSame(100.0, $this->callPrivateMethod($trait, 'formatAmount', '10000'));
+            public function format(string $amount): float
+            {
+                return $this->formatAmount($amount);
+            }
+        };
+
+        self::assertSame($expected, $trait->format($amount));
     }
 
     public function testParserCanParseBaiFile(): void

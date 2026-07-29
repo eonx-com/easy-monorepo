@@ -6,14 +6,11 @@ namespace EonX\EasyBankFiles\Parsing\Nai\ValueObject;
 trait ControlTotalTrait
 {
     /**
-     * Format amount/total from string to float. The last two digits are the cents and are kept
-     * as-is, including a leading zero (%02d) — dropping it (%d) both corrupts cents 01-09 and
-     * makes different totals collide (e.g. 10001 and 10010).
+     * The on-file value is an integer number of implied cents that may carry a leading sign,
+     * so the amount is that value divided by 100.
      */
     private function formatAmount(string $amount): float
     {
-        $length = \strlen($amount) - 2;
-
-        return (float)\sprintf('%d.%02d', (int)\substr($amount, 0, $length), (int)\substr($amount, $length));
+        return (float)$amount / 100;
     }
 }
