@@ -25,6 +25,18 @@ final class FileTrailerTest extends AbstractUnitTestCase
     }
 
     /**
+     * Two genuinely different control totals (e.g. $100.01 vs $100.10) must not collapse to the
+     * same value, otherwise an equality-based reconciliation check cannot tell them apart.
+     */
+    public function testDistinctCentsDoNotCollide(): void
+    {
+        $oneCent = (new FileTrailer(['fileControlTotalA' => '10001']))->getFileControlTotalA();
+        $tenCents = (new FileTrailer(['fileControlTotalA' => '10010']))->getFileControlTotalA();
+
+        self::assertNotSame($oneCent, $tenCents);
+    }
+
+    /**
      * The last two digits of a control total are the cents and must be preserved exactly,
      * including a leading zero (cents 01-09).
      */
@@ -60,17 +72,5 @@ final class FileTrailerTest extends AbstractUnitTestCase
         self::assertSame((float)100, $trailer->getFileControlTotalB());
         self::assertSame($data['numberOfGroups'], $trailer->getNumberOfGroups());
         self::assertSame($data['numberOfRecords'], $trailer->getNumberOfRecords());
-    }
-
-    /**
-     * Two genuinely different control totals (e.g. $100.01 vs $100.10) must not collapse to the
-     * same value, otherwise an equality-based reconciliation check cannot tell them apart.
-     */
-    public function testDistinctCentsDoNotCollide(): void
-    {
-        $oneCent = (new FileTrailer(['fileControlTotalA' => '10001']))->getFileControlTotalA();
-        $tenCents = (new FileTrailer(['fileControlTotalA' => '10010']))->getFileControlTotalA();
-
-        self::assertNotSame($oneCent, $tenCents);
     }
 }
