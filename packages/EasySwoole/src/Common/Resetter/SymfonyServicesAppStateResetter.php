@@ -13,7 +13,8 @@ final class SymfonyServicesAppStateResetter implements AppStateResetterInterface
     use HasPriorityTrait;
 
     /**
-     * @param string[] $resetMethods
+     * @param \Traversable<string, object> $resettableServices
+     * @param array<string, string|string[]> $resetMethods
      */
     public function __construct(
         private Traversable $resettableServices,
