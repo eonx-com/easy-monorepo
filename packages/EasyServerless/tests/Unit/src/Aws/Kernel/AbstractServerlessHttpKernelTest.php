@@ -17,7 +17,7 @@ final class AbstractServerlessHttpKernelTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        // trustApiGatewayProxy() mutates the global $_SERVER['REMOTE_ADDR']; capture its prior
+        // TrustApiGatewayProxy() mutates the global $_SERVER['REMOTE_ADDR']; capture its prior
         // state so tearDown can restore it instead of leaking a value into later tests
         $this->serverHadRemoteAddr = \array_key_exists('REMOTE_ADDR', $_SERVER);
         $this->serverRemoteAddr = $_SERVER['REMOTE_ADDR'] ?? null;
