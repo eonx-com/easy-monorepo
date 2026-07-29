@@ -15,8 +15,7 @@ final class LazyLogger implements LoggerInterface, ResettableInterface
     public function __construct(
         private readonly LazyLoggerFactoryInterface $loggerFactory,
         private readonly string $channel,
-    ) {
-    }
+    ) {}
 
     public function alert(string|Stringable $message, ?array $context = null): void
     {
@@ -72,9 +71,7 @@ final class LazyLogger implements LoggerInterface, ResettableInterface
             ->notice($message, $context ?? []);
     }
 
-    public function reset(): void
-    {
-    }
+    public function reset(): void {}
 
     public function warning(string|Stringable $message, ?array $context = null): void
     {

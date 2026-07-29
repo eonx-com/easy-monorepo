@@ -10,8 +10,7 @@ final readonly class ConsoleErrorListener
 {
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ConsoleErrorEvent $event): void
     {

@@ -19,11 +19,16 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
      */
     public static function provideDataForBuildErrorResponse(): iterable
     {
-        $isSymfony8 = \version_compare((string)InstalledVersions::getVersion('symfony/serializer'), '8.0.0', '>=');
-        $enumViolationMessage = $isSymfony8
+        // Symfony 8.1 changed the backed enum denormalization message in BackedEnumNormalizer
+        $hasNewEnumMessage = \version_compare(
+            (string)InstalledVersions::getVersion('symfony/serializer'),
+            '8.1.0',
+            '>='
+        );
+        $enumViolationMessage = $hasNewEnumMessage
             ? 'The data must be one of the following values: "active", "inactive"'
             : 'The value should be a valid choice.';
-        $enumExceptionMessage = $isSymfony8
+        $enumExceptionMessage = $hasNewEnumMessage
             ? 'status: The data must be one of the following values: "active", "inactive"'
             : 'status: This value should be of type int|string.';
 
@@ -149,8 +154,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type int.',
                 ],
             ],
-            'exceptionMessage' => "description: This value should be of type string.\nweight: This value should" .
-                " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
+            'exceptionMessage' => "description: This value should be of type string.\nweight: This value should"
+                . " be of type int.\nprintingHouse: This value should be of type PrintingHouse.",
         ];
 
         yield 'invalid constructor Enum argument' => [
@@ -184,8 +189,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
-                ' This value should be of type int.',
+            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:"
+                . ' This value should be of type int.',
         ];
 
         yield 'invalid constructor argument type' => [
@@ -379,7 +384,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value is not a valid date/time.',
                 ],
             ],
-            'exceptionMessage' => 'availableFrom: This value should be of type DateTimeImmutable|null.',
+            'exceptionMessage' => 'availableFrom: This value should be of type string|null.',
         ];
 
         yield 'date is empty string, when constructor parameter' => [
@@ -457,8 +462,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value should be of type string.',
                 ],
             ],
-            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:" .
-                ' This value should be of type int.',
+            'exceptionMessage' => "author.name: This value should be of type string.\nauthor.age:"
+                . ' This value should be of type int.',
         ];
 
         yield 'invalid IRI type' => [
@@ -617,8 +622,8 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'url' => '/dummy-action',
             'json' => [],
             'exceptionClass' => NotNormalizableValueException::class,
-            'exceptionMessage' => 'Exception supported by API Platform Builders, but thrown ' .
-                'outside API Platform denormalization logic.',
+            'exceptionMessage' => 'Exception supported by API Platform Builders, but thrown '
+                . 'outside API Platform denormalization logic.',
         ];
 
         yield 'default error when supported exception and unknown exception message' => [

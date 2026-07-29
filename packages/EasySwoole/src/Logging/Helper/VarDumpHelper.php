@@ -32,12 +32,12 @@ final class VarDumpHelper
 
             $dumper = new HtmlDumper();
 
-            self::$dumper = static fn (mixed $var): ?string => $dumper->dump($cloner->cloneVar($var), true);
+            self::$dumper = static fn(mixed $var): ?string => $dumper->dump($cloner->cloneVar($var), true);
 
             return;
         }
 
         // Fallback if symfony/var-dumper not installed
-        self::$dumper = static fn (mixed $var): string => \print_r($var, true);
+        self::$dumper = static fn(mixed $var): string => \print_r($var, true);
     }
 }

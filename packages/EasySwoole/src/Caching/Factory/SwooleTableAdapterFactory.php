@@ -20,8 +20,8 @@ final class SwooleTableAdapterFactory
     ): CacheInterface {
         if (CacheTableHelper::exists($tableName) === false) {
             OutputHelper::writeln(\sprintf(
-                'SwooleTable "%s" does not exist, make sure you have set it in your easy_swoole config. ' .
-                'The ArrayAdapter will be used instead.',
+                'SwooleTable "%s" does not exist, make sure you have set it in your easy_swoole config. '
+                . 'The ArrayAdapter will be used instead.',
                 $tableName
             ));
 

@@ -33,7 +33,7 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
         yield 'true because no filter false and no reject true' => [
             [true],
             [
-                fn (): bool => false,
+                fn(): bool => false,
             ],
             true,
         ];
@@ -122,10 +122,8 @@ final class ScheduleEntryTest extends AbstractUnitTestCase
         ]);
 
         // Ok this is for coverage only, please don't judge me
-        $entry->before(function (): void {
-        })
-            ->then(function (): void {
-            });
+        $entry->before(function (): void {})
+            ->then(function (): void {});
 
         $params ? $entry->{$method}(...$params) : $entry->{$method}();
 

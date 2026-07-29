@@ -11,8 +11,7 @@ final class TwigBlockExtension extends AbstractExtension
 {
     public function __construct(
         private readonly TemplatingEventRendererInterface $templatingEventRenderer,
-    ) {
-    }
+    ) {}
 
     /**
      * @return \Twig\TwigFunction[]

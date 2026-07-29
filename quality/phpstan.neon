@@ -71,9 +71,6 @@ parameters:
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
 
-        - identifier: trait.unused
-          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Encryptable/EncryptableTrait.php
-
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
           path: %currentWorkingDirectory%/packages/EasyErrorHandler/src/ErrorCodes/Provider/ErrorCodesFromInterfaceProvider.php
@@ -104,6 +101,11 @@ parameters:
             - %currentWorkingDirectory%/packages/EasyPagination/tests/Stub/Entity/Item.php
 
         - message: '#Parameter \#1 \$value of function count expects array\|Countable, mixed given#'
+          path: %currentWorkingDirectory%/packages/EasyPagination/src/Paginator/DoctrineCommonPaginatorTrait.php
+
+        # Doctrine ORM's Query\Parameter::getType() is declared as mixed, so the collected parameter types
+        # cannot be statically narrowed to the union DBAL's Connection::executeQuery() expects.
+        - message: '#Parameter \#3 \$types of method Doctrine\\DBAL\\Connection\:\:executeQuery\(\) expects .*, array<.*, mixed> given#'
           path: %currentWorkingDirectory%/packages/EasyPagination/src/Paginator/DoctrineCommonPaginatorTrait.php
 
         # ---- EasyPipeline ----

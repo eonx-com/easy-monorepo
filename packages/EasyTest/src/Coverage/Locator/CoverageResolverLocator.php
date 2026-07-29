@@ -14,8 +14,7 @@ final readonly class CoverageResolverLocator implements CoverageResolverLocatorI
      */
     public function __construct(
         private ServiceProviderInterface $coverageResolvers,
-    ) {
-    }
+    ) {}
 
     public function getCoverageResolver(string $filePath): CoverageResolverInterface
     {

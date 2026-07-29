@@ -14,8 +14,7 @@ abstract class AbstractWebhookResult implements WebhookResultInterface
         private readonly WebhookInterface $webhook,
         private readonly ?ResponseInterface $response = null,
         private readonly ?Throwable $throwable = null,
-    ) {
-    }
+    ) {}
 
     public function getId(): ?string
     {

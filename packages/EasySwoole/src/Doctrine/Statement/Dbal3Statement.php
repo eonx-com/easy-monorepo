@@ -19,8 +19,7 @@ final readonly class Dbal3Statement implements Statement
 {
     public function __construct(
         private PDOStatementProxy $pdoStatement,
-    ) {
-    }
+    ) {}
 
     public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null): bool
     {

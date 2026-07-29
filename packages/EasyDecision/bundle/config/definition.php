@@ -13,13 +13,13 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('type_mapping')
                 ->stringPrototype()
                 ->validate()
-                    ->ifTrue(static fn ($class): bool => \class_exists($class) === false)
+                    ->ifTrue(static fn($class): bool => \class_exists($class) === false)
                         ->thenInvalid('Class %s does not exist.')
                     ->end()
                 ->end()
                 ->info(
-                    'Decision type mapping to be used by ' .
-                    '\EonX\EasyDecision\Factory\DecisionFactoryInterface::createByName'
+                    'Decision type mapping to be used by '
+                    . '\EonX\EasyDecision\Factory\DecisionFactoryInterface::createByName'
                 )
             ->end()
         ->end();

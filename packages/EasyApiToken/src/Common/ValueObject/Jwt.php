@@ -12,8 +12,7 @@ final readonly class Jwt implements ApiTokenInterface
     public function __construct(
         private array $payload,
         private string $original,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \EonX\EasyApiToken\Common\Exception\InvalidArgumentException If claim not found on token

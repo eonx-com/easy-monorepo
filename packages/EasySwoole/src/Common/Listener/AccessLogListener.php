@@ -16,8 +16,7 @@ final class AccessLogListener extends AbstractTerminateListener
         private readonly LoggerInterface $logger,
         private readonly HttpFoundationAccessLogFormatterInterface $accessLogFormatter,
         private readonly array $doNotLogPaths,
-    ) {
-    }
+    ) {}
 
     protected function doInvoke(TerminateEvent $event): void
     {

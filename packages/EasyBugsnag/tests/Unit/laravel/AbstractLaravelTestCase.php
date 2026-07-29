@@ -32,10 +32,8 @@ abstract class AbstractLaravelTestCase extends TestCase
 
         $this->app = new Application(__DIR__);
         $this->app->instance('config', new ConfigRepository());
-        $this->app->instance('queue', new class() {
-            public function looping(callable $callback): void
-            {
-            }
+        $this->app->instance('queue', new class {
+            public function looping(callable $callback): void {}
         });
         $request = Request::create('/');
         $this->app->instance('request', $request);

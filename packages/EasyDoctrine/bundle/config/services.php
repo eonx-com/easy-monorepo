@@ -20,16 +20,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(TimestampableListener::class);
 
     $services
-        ->set(ObjectCopierInterface::class)
-        ->deprecate(
-            'eonx_com/easy-doctrine',
-            '6.0.3',
-            '"%service_id%" service is deprecated and will be removed in 7.0.'
-            . ' Use ' . ConfigServiceId::DeletedEntityCopier->value . ' instead or register your own service.'
-        )
-        ->factory([ObjectCopierFactory::class, 'create']);
-
-    $services
         ->set(ConfigServiceId::DeletedEntityCopier->value, ObjectCopierInterface::class)
         ->factory([ObjectCopierFactory::class, 'createForDeletedEntity']);
 

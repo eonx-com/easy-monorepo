@@ -12,8 +12,7 @@ final readonly class WrapInTransactionExceptionListener
 {
     public function __construct(
         private ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function __invoke(WrapInTransactionExceptionEvent $event): void
     {

@@ -43,7 +43,7 @@ final class EasyRandomServiceProvider extends ServiceProvider
         $this->app->singleton(RandomIntegerGeneratorInterface::class, RandomIntegerGenerator::class);
         $this->app->singleton(
             UuidGeneratorInterface::class,
-            static fn (): UuidGeneratorInterface => new UuidGenerator(new UuidFactory($uuidVersion))
+            static fn(): UuidGeneratorInterface => new UuidGenerator(new UuidFactory($uuidVersion))
         );
 
         $this->app->singleton(RandomGeneratorInterface::class, RandomGenerator::class);

@@ -39,8 +39,7 @@ final readonly class DefaultErrorResponseBuilderProvider implements ErrorRespons
         private ?array $exceptionToMessage = null,
         private ?array $exceptionToStatusCode = null,
         private ?array $exceptionToCode = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return iterable<\EonX\EasyErrorHandler\Common\Builder\ErrorResponseBuilderInterface>

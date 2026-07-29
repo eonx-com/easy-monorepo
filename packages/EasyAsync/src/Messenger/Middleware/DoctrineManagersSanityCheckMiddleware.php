@@ -17,8 +17,7 @@ final readonly class DoctrineManagersSanityCheckMiddleware implements Middleware
     public function __construct(
         private ManagersSanityChecker $managersSanityChecker,
         private ?array $managers = null,
-    ) {
-    }
+    ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

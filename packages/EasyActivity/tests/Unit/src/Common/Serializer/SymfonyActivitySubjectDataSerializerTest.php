@@ -106,8 +106,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             'disallowedProperties' => [],
             'fullySerializableProperties' => [],
             'expectedResult' => \sprintf(
-                '{"author":{"id":"00000000-0000-0000-0000-000000000000"},"comments":[],"content":"text",' .
-                '"createdAt":"%s","id":"00000000-0000-0000-0000-000000000000"}',
+                '{"author":{"id":"00000000-0000-0000-0000-000000000000"},"comments":[],"content":"text",'
+                . '"createdAt":"%s","id":"00000000-0000-0000-0000-000000000000"}',
                 $moment->format(DateTimeInterface::ATOM)
             ),
         ];
@@ -143,8 +143,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             'subject' => new ActivitySubject($entityId, Article::class, [], [], $allowedProperties, []),
             'disallowedProperties' => [],
             'fullySerializableProperties' => [],
-            'expectedResult' => '{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"},' .
-                '"content":"text"}',
+            'expectedResult' => '{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"},'
+                . '"content":"text"}',
         ];
 
         $allowedProperties = [
@@ -196,8 +196,8 @@ final class SymfonyActivitySubjectDataSerializerTest extends AbstractUnitTestCas
             'fullySerializableProperties' => [],
             'expectedResult' => \sprintf(
                 '{"comments":[{"article":{"author":{"id":"00000000-0000-0000-0000-000000000000","name":"John Doe"'
-                . ',"position":1},"comments":["EonX\\\EasyActivity\\\Tests\\\Fixture' .
-                '\\\App\\\Entity\\\Comment#00000000-0000-0000-0000'
+                . ',"position":1},"comments":["EonX\\\EasyActivity\\\Tests\\\Fixture'
+                . '\\\App\\\Entity\\\Comment#00000000-0000-0000-0000'
                 . '-000000000000 (circular reference)"],"createdAt":"%s","id":"00000000-0000-0000-0000-000000000001"},'
                 . '"id":"00000000-0000-0000-0000-000000000000","message":"some-message"}]}',
                 $expectedCreatedAt

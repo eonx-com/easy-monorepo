@@ -21,8 +21,7 @@ final readonly class AwsRdsAuthTokenProvider implements AwsRdsAuthTokenProviderI
         private AwsRdsAuthTokenCredentialsProviderInterface $awsRdsAuthTokenCredentialsProvider,
         private CacheInterface $cache,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     public function provide(array $params): string
     {

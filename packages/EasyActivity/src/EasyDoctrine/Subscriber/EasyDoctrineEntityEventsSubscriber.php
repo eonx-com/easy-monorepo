@@ -14,8 +14,7 @@ final class EasyDoctrineEntityEventsSubscriber implements EasyDoctrineEntityEven
     public function __construct(
         private readonly ActivityLoggerInterface $activityLogger,
         private bool $enabled,
-    ) {
-    }
+    ) {}
 
     public static function getSubscribedEvents(): array
     {

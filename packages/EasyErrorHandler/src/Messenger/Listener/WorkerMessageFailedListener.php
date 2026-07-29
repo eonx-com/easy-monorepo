@@ -13,8 +13,7 @@ final readonly class WorkerMessageFailedListener
     public function __construct(
         private ErrorDetailsResolverInterface $errorDetailsResolver,
         private ErrorHandlerInterface $errorHandler,
-    ) {
-    }
+    ) {}
 
     public function __invoke(WorkerMessageFailedEvent $event): void
     {

@@ -59,7 +59,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AuthorizationMatrixFactoryInterface::class,
-            static fn (Container $app): AuthorizationMatrixFactoryInterface => new CachedAuthorizationMatrixFactory(
+            static fn(Container $app): AuthorizationMatrixFactoryInterface => new CachedAuthorizationMatrixFactory(
                 $app->make(ConfigServiceId::AuthorizationMatrixCache->value),
                 new AuthorizationMatrixFactory(
                     $app->tagged(ConfigTag::RolesProvider->value),
@@ -70,7 +70,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             AuthorizationMatrixProviderInterface::class,
-            static fn (
+            static fn(
                 Container $app,
             ): AuthorizationMatrixProviderInterface => $app->get(AuthorizationMatrixFactoryInterface::class)->create()
         );
@@ -84,7 +84,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ApiTokenConfigurator::class,
-            static fn (Container $app): ApiTokenConfigurator => new ApiTokenConfigurator(
+            static fn(Container $app): ApiTokenConfigurator => new ApiTokenConfigurator(
                 $app->make(ApiTokenDecoderFactoryInterface::class),
                 \config('easy-security.token_decoder'),
                 \config('easy-security.default_configurators_priority')
@@ -106,7 +106,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             SecurityContextClientConfigurator::class,
-            static fn (Container $app): SecurityContextClientConfigurator => new SecurityContextClientConfigurator(
+            static fn(Container $app): SecurityContextClientConfigurator => new SecurityContextClientConfigurator(
                 $app->make(SecurityContextResolverInterface::class)
             )
         );
@@ -137,7 +137,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             FromRequestSecurityContextConfiguratorListener::class,
-            static fn (
+            static fn(
                 Container $app,
             ): FromRequestSecurityContextConfiguratorListener => new FromRequestSecurityContextConfiguratorListener(
                 $app->make(SecurityContextResolverInterface::class),
@@ -151,7 +151,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         // Resolver
         $this->app->singleton(
             SecurityContextResolverInterface::class,
-            static fn (Container $app): SecurityContextResolverInterface => new SecurityContextResolver(
+            static fn(Container $app): SecurityContextResolverInterface => new SecurityContextResolver(
                 $app->make(AuthorizationMatrixFactoryInterface::class),
                 $app->make(SecurityContextFactoryInterface::class),
                 $app->make(ConfigServiceId::Logger->value)
@@ -161,7 +161,7 @@ final class EasySecurityServiceProvider extends ServiceProvider
         // SecurityContextFactory
         $this->app->singleton(
             SecurityContextFactoryInterface::class,
-            static fn (): SecurityContextFactoryInterface => new SecurityContextFactory()
+            static fn(): SecurityContextFactoryInterface => new SecurityContextFactory()
         );
     }
 }

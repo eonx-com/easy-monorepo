@@ -31,8 +31,7 @@ final readonly class ProcessBatchItemMiddleware implements MiddlewareInterface
         private BatchItemLockFactoryInterface $batchItemLockFactory,
         private BatchProcessor $batchProcessor,
         private LockerInterface $locker,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Symfony\Component\Messenger\Exception\ExceptionInterface

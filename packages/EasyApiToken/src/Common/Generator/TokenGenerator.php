@@ -13,8 +13,7 @@ final readonly class TokenGenerator implements TokenGeneratorInterface
         private string $audience,
         private ?string $secret = null,
         private ?string $issuer = null,
-    ) {
-    }
+    ) {}
 
     public function generate(
         array $scopes,

@@ -11,8 +11,7 @@ final readonly class ReadStateProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $decorated,
-    ) {
-    }
+    ) {}
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {

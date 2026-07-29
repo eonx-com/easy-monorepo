@@ -10,8 +10,7 @@ final readonly class WorkerStartEvent
     public function __construct(
         private Server $server,
         private int $workerId,
-    ) {
-    }
+    ) {}
 
     public function getServer(): Server
     {

@@ -110,11 +110,13 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
                 $content = $asyncContext->getInfo('temp_content');
                 $asyncContext->setInfo(
                     'temp_content',
-                    ($content ?? '') . $chunk->getContent()
+                    ($content ?? '') . $chunkContent
                 );
             }
 
-            if ($chunk->isLast()) {
+            // Do not dispatch a successful response event when the AsyncContext reports an error (including cancellation
+            // or aborting a response before a retry), otherwise we can end up dispatching multiple events for one request
+            if ($chunk->isLast() && $asyncContext->getInfo('error') === null) {
                 /** @var resource|string|null $content */
                 $content = $asyncContext->getInfo('temp_content');
                 $this->dispatchEvent($config, $requestData, new ResponseData(
@@ -167,8 +169,8 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
         $modifiers = \is_array($modifiers) ? $modifiers : \iterator_to_array($modifiers);
         $modifiers = \array_merge($modifiers, $options[HttpOption::RequestDataModifiers->value] ?? []);
 
-        $modifiersEnabled = $this->modifiersEnabled ??
-            $options[HttpOption::RequestDataModifiersEnabled->value] ?? true;
+        $modifiersEnabled = $this->modifiersEnabled
+            ?? $options[HttpOption::RequestDataModifiersEnabled->value] ?? true;
 
         $modifiersWhitelist = \array_merge(
             $this->modifiersWhitelist ?? [],

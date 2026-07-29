@@ -14,8 +14,7 @@ final readonly class DispatchBatchMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private BatchObjectManagerInterface $batchObjectManager,
-    ) {
-    }
+    ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

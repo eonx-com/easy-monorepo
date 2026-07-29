@@ -5,19 +5,19 @@ namespace EonX\EasyHttpClient\Tests\Fixture\App\Client;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final readonly class SomeClient
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function makeRequest(): void
+    public function makeRequest(): ResponseInterface
     {
-        $this->httpClient->request(Request::METHOD_GET, 'https://eonx.com');
+        return $this->httpClient->request(Request::METHOD_GET, 'https://eonx.com');
     }
 }

@@ -22,8 +22,7 @@ final readonly class BatchItemProcessor
         private BatchProcessor $batchProcessor,
         private BatchItemRepositoryInterface $batchItemRepository,
         private BatchObjectManagerInterface $batchObjectManager,
-    ) {
-    }
+    ) {}
 
     /**
      * @template T

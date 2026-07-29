@@ -22,7 +22,7 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
         '/EasyDoctrine/src/EntityEvent/Listener/EntityEventListener.php',
         '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityCreatedEventListener.php',
         '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityDeletedEventListener.php',
-        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityUpdateEventListener.php',
+        '/EasyDoctrine/src/EntityEvent/Attribute/AsEntityUpdatedEventListener.php',
     ];
 
     #[DataProvider('provideSubject')]
@@ -42,9 +42,9 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
     {
         return new Finder()
             ->files()
-            ->filter(static fn (\SplFileInfo $file): bool => \array_all(
+            ->filter(static fn(\SplFileInfo $file): bool => \array_all(
                 self::SKIP_FILES,
-                static fn (string $skipFile): bool => \str_ends_with($file->getRealPath(), $skipFile) === false
+                static fn(string $skipFile): bool => \str_ends_with($file->getRealPath(), $skipFile) === false
             ));
     }
 
@@ -52,7 +52,7 @@ final class NoForbiddenFileNameTest extends AbstractArchitectureTestCase
     {
         return \array_all(
             self::FORBIDDEN_FILE_NAMES,
-            static fn (string $fileName): bool => \str_ends_with($file->getBasename(), $fileName) === false
+            static fn(string $fileName): bool => \str_ends_with($file->getBasename(), $fileName) === false
         );
     }
 }

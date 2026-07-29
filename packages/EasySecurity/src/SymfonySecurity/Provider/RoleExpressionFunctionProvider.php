@@ -24,8 +24,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
     public function __construct(
         private readonly array $locations,
         private readonly LoggerInterface $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 
     /**
      * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction[]
@@ -35,8 +34,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
         return [
             new ExpressionFunction(
                 'role',
-                static function (): void {
-                },
+                static function (): void {},
                 function ($params, string $role): string {
                     if (isset($this->cached[$role])) {
                         return $this->cached[$role];

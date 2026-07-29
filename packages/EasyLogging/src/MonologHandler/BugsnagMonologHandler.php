@@ -18,7 +18,7 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
     public function __construct(
         private readonly BugsnagSeverityResolverInterface $bugsnagSeverityResolver,
         private readonly Client $bugsnagClient,
-        int|string|null|Level $level = null,
+        int|string|Level|null $level = null,
         ?bool $bubble = null,
     ) {
         parent::__construct($level ?? Level::Warning, $bubble ?? true);

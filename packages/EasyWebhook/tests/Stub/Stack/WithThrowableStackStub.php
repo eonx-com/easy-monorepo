@@ -13,8 +13,7 @@ final class WithThrowableStackStub implements StackInterface
 
     public function __construct(
         private readonly Throwable $throwable,
-    ) {
-    }
+    ) {}
 
     public function getCurrentIndex(): int
     {

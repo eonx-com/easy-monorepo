@@ -18,7 +18,7 @@ return static function (DefinitionConfigurator $definition) {
                                 }
 
                                 return \array_map(
-                                    static fn ($mapValue): string => new UnicodeString((string)$mapValue)
+                                    static fn($mapValue): string => new UnicodeString((string)$mapValue)
                                         ->ensureStart('/')
                                         ->toString(),
                                     \is_array($value) ? $value : [$value]
@@ -97,7 +97,7 @@ return static function (DefinitionConfigurator $definition) {
                                 // Filter empty strings
                                 $dirs = \array_filter(
                                     $dirs,
-                                    static fn (
+                                    static fn(
                                         $filterValue,
                                     ): bool => \is_string($filterValue) && $filterValue !== ''
                                 );

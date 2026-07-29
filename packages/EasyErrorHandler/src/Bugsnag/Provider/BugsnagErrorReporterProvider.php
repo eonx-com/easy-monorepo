@@ -19,8 +19,7 @@ final readonly class BugsnagErrorReporterProvider implements ErrorReporterProvid
         private readonly iterable $exceptionIgnorers,
         private ErrorLogLevelResolverInterface $errorLogLevelResolver,
         private ?Level $threshold = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return iterable<\EonX\EasyErrorHandler\Common\Reporter\ErrorReporterInterface>

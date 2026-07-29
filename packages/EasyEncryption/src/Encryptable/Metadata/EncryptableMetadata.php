@@ -36,4 +36,32 @@ final class EncryptableMetadata implements EncryptableMetadataInterface
 
         return $encryptedFields;
     }
+
+    public function getHashNormalizationsForField(string|object $entity, string $propertyName): ?array
+    {
+        $entityClass = \is_object($entity) ? $entity::class : $entity;
+
+        if (\array_key_exists($propertyName, $this->metadata[$entityClass][__FUNCTION__] ?? [])) {
+            return $this->metadata[$entityClass][__FUNCTION__][$propertyName];
+        }
+
+        $hashNormalizations = null;
+        $reflectionClass = new ReflectionClass($entityClass);
+
+        if ($reflectionClass->hasProperty($propertyName)) {
+            $reflectionProperty = $reflectionClass->getProperty($propertyName);
+
+            foreach ($reflectionProperty->getAttributes(EncryptableField::class) as $reflectionAttribute) {
+                /** @var \EonX\EasyEncryption\Encryptable\Attribute\EncryptableField $reflectionAttributeInstance */
+                $reflectionAttributeInstance = $reflectionAttribute->newInstance();
+                $hashNormalizations = $reflectionAttributeInstance->getHashNormalizations();
+
+                break;
+            }
+        }
+
+        $this->metadata[$entityClass][__FUNCTION__][$propertyName] = $hashNormalizations;
+
+        return $hashNormalizations;
+    }
 }

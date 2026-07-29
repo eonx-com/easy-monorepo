@@ -10,8 +10,7 @@ final readonly class AwsRdsCertificateAuthorityCacheWarmer implements CacheWarme
 {
     public function __construct(
         private AwsRdsCertificateAuthorityProvider $certificateAuthorityProvider,
-    ) {
-    }
+    ) {}
 
     public function isOptional(): bool
     {

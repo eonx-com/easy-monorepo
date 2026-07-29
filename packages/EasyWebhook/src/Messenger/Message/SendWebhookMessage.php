@@ -11,8 +11,7 @@ final class SendWebhookMessage
 
     public function __construct(
         private readonly string $webhookId,
-    ) {
-    }
+    ) {}
 
     public function getResult(): ?WebhookResultInterface
     {

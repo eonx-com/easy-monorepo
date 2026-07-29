@@ -9,8 +9,7 @@ abstract class AbstractWebhookEvent implements WebhookEventInterface
 {
     public function __construct(
         private readonly WebhookResultInterface $result,
-    ) {
-    }
+    ) {}
 
     public function getResult(): WebhookResultInterface
     {

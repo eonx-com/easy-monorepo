@@ -25,7 +25,7 @@ final readonly class CachedAuthorizationMatrixFactory implements AuthorizationMa
     {
         return $this->cache->get(
             $this->key,
-            fn (ItemInterface $item): AuthorizationMatrixProviderInterface => $this->decorated->create()
+            fn(ItemInterface $item): AuthorizationMatrixProviderInterface => $this->decorated->create()
         );
     }
 

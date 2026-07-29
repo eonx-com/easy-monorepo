@@ -5,6 +5,4 @@ namespace EonX\EasyBankFiles\Parsing\Common\ValueObject;
 
 use EonX\EasyBankFiles\Common\ValueObject\AbstractDataBag;
 
-abstract class AbstractResult extends AbstractDataBag
-{
-}
+abstract class AbstractResult extends AbstractDataBag {}

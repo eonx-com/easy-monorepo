@@ -18,7 +18,13 @@ use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptor;
 use EonX\EasyEncryption\Encryptable\Encryptor\StringEncryptorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HashCalculatorInterface;
 use EonX\EasyEncryption\Encryptable\HashCalculator\HmacSha512HashCalculator;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasher;
+use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasherInterface;
 use EonX\EasyEncryption\Encryptable\Listener\DoctrineEncryptionListener;
+use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
+use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadataInterface;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizer;
+use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -40,7 +46,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$defaultKeyName', param(ConfigParam::DefaultKeyName->value));
 
     $services->set(HashCalculatorInterface::class, HmacSha512HashCalculator::class)
-        ->arg('$secret', env('APP_SECRET'));
+        ->arg('$secret', param(ConfigParam::DefaultEncryptionKey->value));
+
+    $services->set(EncryptableMetadataInterface::class, EncryptableMetadata::class);
+
+    $services->set(HashNormalizerInterface::class, HashNormalizer::class);
+
+    $services->set(EncryptableFieldHasherInterface::class, EncryptableFieldHasher::class)
+        ->arg('$defaultHashNormalizations', param(ConfigParam::DefaultHashNormalizations->value));
 
     $services->set(StringEncryptorInterface::class, StringEncryptor::class)
         ->arg('$encryptor', service(EncryptorInterface::class))

@@ -11,8 +11,7 @@ final readonly class InitAwsCloudHsmEncryptorListener
 {
     public function __construct(
         private EncryptorInterface $encryptor,
-    ) {
-    }
+    ) {}
 
     public function __invoke(WorkerStartEvent $event): void
     {

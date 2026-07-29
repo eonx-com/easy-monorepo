@@ -14,7 +14,7 @@ interface EncryptorInterface
 
     public function decryptRaw(
         string $text,
-        null|array|string $key = null,
+        array|string|null $key = null,
     ): string;
 
     /**
@@ -24,6 +24,6 @@ interface EncryptorInterface
 
     public function encryptRaw(
         string $text,
-        null|array|string $key = null,
+        array|string|null $key = null,
     ): string;
 }

@@ -16,7 +16,7 @@ final class WithNonBlockingErrorExceptionRuleStub implements RuleInterface
 
     public function proceed(array $input): never
     {
-        throw new class() extends Exception implements NonBlockingRuleErrorExceptionInterface {
+        throw new class extends Exception implements NonBlockingRuleErrorExceptionInterface {
             /**
              * Get error output.
              */

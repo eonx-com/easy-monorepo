@@ -16,8 +16,7 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
         private ActorResolverInterface $actorResolver,
         private ActivitySubjectResolverInterface $subjectResolver,
         private ActivitySubjectDataResolverInterface $subjectDataResolver,
-    ) {
-    }
+    ) {}
 
     public function create(ActivityAction|string $action, object $object, array $changeSet): ?ActivityLogEntry
     {
@@ -26,8 +25,8 @@ final readonly class ActivityLogEntryFactory implements ActivityLogEntryFactoryI
             return null;
         }
 
-        if (\count($subject->getAllowedActivityActions()) > 0 &&
-            \in_array($action, $subject->getAllowedActivityActions(), true) === false
+        if (\count($subject->getAllowedActivityActions()) > 0
+            && \in_array($action, $subject->getAllowedActivityActions(), true) === false
         ) {
             return null;
         }

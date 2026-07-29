@@ -22,7 +22,7 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
      */
     private array $rejects = [];
 
-    private null|DateTimeZone|string $timezone = null;
+    private DateTimeZone|string|null $timezone = null;
 
     public function at(string $time): ScheduleEntryInterface
     {
@@ -91,11 +91,11 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
 
     public function filtersPass(): bool
     {
-        if (\array_all($this->filters, static fn ($filter): bool => (bool)$filter()) === false) {
+        if (\array_all($this->filters, static fn($filter): bool => (bool)$filter()) === false) {
             return false;
         }
 
-        return \array_any($this->rejects, static fn ($reject): bool => (bool)$reject()) === false;
+        return \array_any($this->rejects, static fn($reject): bool => (bool)$reject()) === false;
     }
 
     public function fridays(): ScheduleEntryInterface
@@ -171,7 +171,7 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
     {
         $this->rejects[] = \is_callable($callback)
             ? $callback
-            : static fn (): bool => $callback;
+            : static fn(): bool => $callback;
 
         return $this;
     }
@@ -254,7 +254,7 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
     {
         $this->filters[] = \is_callable($callback)
             ? $callback
-            : static fn (): bool => $callback;
+            : static fn(): bool => $callback;
 
         return $this;
     }
@@ -287,7 +287,7 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
 
     private function inTimeInterval(string $startTime, string $endTime): Closure
     {
-        return fn (): bool => Carbon::now($this->timezone)->between(
+        return fn(): bool => Carbon::now($this->timezone)->between(
             Carbon::parse($startTime, $this->timezone),
             Carbon::parse($endTime, $this->timezone),
             true

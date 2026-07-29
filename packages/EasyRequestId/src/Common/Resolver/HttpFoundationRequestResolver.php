@@ -12,8 +12,7 @@ final readonly class HttpFoundationRequestResolver implements ResolverInterface
     public function __construct(
         private Request $request,
         private RequestIdProviderInterface $requestIdProvider,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): RequestIdInfo
     {

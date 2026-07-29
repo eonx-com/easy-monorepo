@@ -14,8 +14,7 @@ final readonly class Translator implements TranslatorInterface
         // @todo: Rename to `$translator` in next major release (7.0) as it's not a decoration
         private SymfonyTranslatorInterface&TranslatorBagInterface $decorated,
         private ?string $domain = null,
-    ) {
-    }
+    ) {}
 
     public function trans(string $message, array $parameters, ?string $locale = null): string
     {

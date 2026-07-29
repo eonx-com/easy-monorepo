@@ -12,7 +12,7 @@ interface EncryptableInterface
 
     /**
      * @param callable(string): \EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString $encryptor
-     * @param callable(string): string $hashCalculator
+     * @param callable(string, string, string): string $hashCalculator
      */
     public function encrypt(callable $encryptor, callable $hashCalculator): void;
 }
