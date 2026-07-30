@@ -32,9 +32,10 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  * NOTE: this assumes an API Gateway integration. Behind an ALB the real client IP arrives in
  * X-Forwarded-For (set by the load balancer) while REMOTE_ADDR is the balancer's address, so this
  * policy would not be correct there.
+ *
+ * The priority is well above the app and framework kernel.request listeners that resolve the client
+ * IP (the highest observed across our services sits around 20000), so the policy is set first.
  */
-// Priority is well above the app/framework kernel.request listeners that resolve the client IP
-// (the highest observed across our services sits around 20000), so the policy is set first.
 #[AsEventListener(event: RequestEvent::class, priority: 50_000)]
 final class TrustApiGatewayProxyRequestListener
 {
