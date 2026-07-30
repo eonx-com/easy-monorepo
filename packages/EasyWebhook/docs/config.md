@@ -61,13 +61,19 @@ worker or exhaust resources on the sending side:
   total time of each request.
 - **Oversized / decompression-bomb responses** — the library reads the response body
   (`getContent()`) and, when a result store is configured, persists it. A huge body can exhaust
-  memory and bloat storage. `request_limits.max_response_bytes` aborts the transfer as soon as
-  the body exceeds the limit, before it is fully buffered (this also covers chunked responses
-  with no `Content-Length`).
+  memory and bloat storage. `request_limits.max_response_bytes` counts the **decoded** body as it
+  streams and aborts the transfer as soon as it exceeds the limit, before the body is fully
+  buffered. Counting after decoding is what covers a compression bomb — a small gzipped payload
+  that inflates to a huge body — as well as chunked responses that advertise no `Content-Length`.
 
 These limits are **opt-in**: `request_limits.enabled` is `false` by default (the default will flip
 to `true` in a future major). Enable them with `request_limits.enabled: true`; set any individual
 option to `0` to disable just that limit.
+
+A webhook's own http client options (`WebhookInterface::httpClientOptions()`) cannot weaken these
+limits: `timeout` and `max_duration` are clamped so a per-webhook value may only make them stricter
+(it can never raise the ceiling, and `0` cannot disable them), and `max_response_bytes` cannot be
+overridden per request at all.
 
 Retry behaviour differs by limit type, and neither is a crash:
 - A **time**-limit abort (`timeout` / `max_duration`) is a failed webhook that **is retried** by the

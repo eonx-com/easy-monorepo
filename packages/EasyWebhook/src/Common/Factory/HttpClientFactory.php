@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\Factory;
 
-use EonX\EasyWebhook\Common\HttpClient\MaxResponseSizeHttpClient;
+use EonX\EasyWebhook\Common\HttpClient\RequestLimitsHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -27,38 +27,26 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
 
     public function create(): HttpClientInterface
     {
-        // Todo: Opt-in DoS guards, off by default (the default will flip to on in a major version)
-        if ($this->enabled === false) {
-            return HttpClient::create([
-                'http_version' => '1.1',
-            ]);
-        }
-
-        $options = [
+        $httpClient = HttpClient::create([
             'http_version' => '1.1',
-        ];
+        ]);
 
-        // Idle timeout: abort when the target stops sending data for this long. 0 keeps PHP's
-        // default_socket_timeout
-        if ($this->timeout > 0) {
-            $options['timeout'] = $this->timeout;
+        // @todo Change the default to enabled (on) in 7.x
+        // Opt-in: with the guards off, hand back the bare client
+        if ($this->enabled === false) {
+            return $httpClient;
         }
 
-        // Total-duration cap: abort the request after this many seconds regardless of activity.
-        // This is the guard against a slow/trickling target holding a worker open indefinitely
-        // (Symfony's default is 0 = unlimited). 0 keeps it unlimited
-        if ($this->maxDuration > 0) {
-            $options['max_duration'] = $this->maxDuration;
-        }
-
-        $httpClient = HttpClient::create($options);
-
-        // Cap the response body size so a huge/bomb response cannot exhaust memory (getContent)
-        // or storage (persisted webhook result). 0 disables the cap
-        if ($this->maxResponseBytes > 0) {
-            $httpClient = new MaxResponseSizeHttpClient($httpClient, $this->maxResponseBytes);
-        }
-
-        return $httpClient;
+        // Every limit is enforced inside the decorator, not as a client-default option: a webhook's
+        // own http client options are merged per request and win over client defaults, so a
+        // client-default timeout/max_duration could be silently overridden (or disabled with 0) by
+        // the webhook. RequestLimitsHttpClient clamps them per request instead. Each limit is
+        // no-op'd by the decorator when its value is 0
+        return new RequestLimitsHttpClient(
+            $httpClient,
+            $this->timeout,
+            $this->maxDuration,
+            $this->maxResponseBytes,
+        );
     }
 }
