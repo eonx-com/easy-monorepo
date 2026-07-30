@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner;
 
 return [
@@ -21,10 +22,10 @@ return [
         'signer' => Rs256WebhookSigner::class,
     ],
     'request_limits' => [
-        'enabled' => false,
-        'timeout' => 10,
-        'max_duration' => 30,
-        'max_response_bytes' => 1048576,
+        'enabled' => HttpClientFactory::DEFAULT_ENABLED,
+        'timeout' => HttpClientFactory::DEFAULT_TIMEOUT,
+        'max_duration' => HttpClientFactory::DEFAULT_MAX_DURATION,
+        'max_response_bytes' => HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES,
     ],
     'use_default_middleware' => true,
 ];

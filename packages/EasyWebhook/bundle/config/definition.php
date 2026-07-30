@@ -37,7 +37,7 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             ->arrayNode('request_limits')
                 ->canBeEnabled()
-                ->info('Guards against DoS from a slow or oversized webhook response (opt-in)')
+                ->info('Guards against DoS from a slow or oversized webhook response.')
                 ->children()
                     ->integerNode('timeout')
                         ->defaultValue(HttpClientFactory::DEFAULT_TIMEOUT)
