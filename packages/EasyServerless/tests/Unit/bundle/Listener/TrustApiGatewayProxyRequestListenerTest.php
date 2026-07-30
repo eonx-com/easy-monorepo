@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Unit\Aws\Kernel;
+namespace EonX\EasyServerless\Tests\Unit\Bundle\Listener;
 
-use EonX\EasyServerless\Tests\Stub\Kernel\ServerlessHttpKernelStub;
+use EonX\EasyServerless\Bundle\Listener\TrustApiGatewayProxyRequestListener;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-final class AbstractServerlessHttpKernelTest extends AbstractUnitTestCase
+final class TrustApiGatewayProxyRequestListenerTest extends AbstractUnitTestCase
 {
     private bool $serverHadRemoteAddr = false;
 
@@ -17,8 +17,8 @@ final class AbstractServerlessHttpKernelTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        // TrustApiGatewayProxy() mutates the global $_SERVER['REMOTE_ADDR']; capture its prior
-        // state so tearDown can restore it instead of leaking a value into later tests
+        // TrustApiGatewayProxy() mutates the global $_SERVER['REMOTE_ADDR']; capture its prior state
+        // so tearDown can restore it instead of leaking a value into later tests
         $this->serverHadRemoteAddr = \array_key_exists('REMOTE_ADDR', $_SERVER);
         $this->serverRemoteAddr = $_SERVER['REMOTE_ADDR'] ?? null;
 
@@ -39,7 +39,7 @@ final class AbstractServerlessHttpKernelTest extends AbstractUnitTestCase
         parent::tearDown();
     }
 
-    public function testTrustApiGatewayProxyHonoursForwardedProto(): void
+    public function testHonoursForwardedProto(): void
     {
         // The base request is plain http, so isSecure() is driven purely by whether
         // X-Forwarded-Proto is trusted
@@ -48,17 +48,17 @@ final class AbstractServerlessHttpKernelTest extends AbstractUnitTestCase
         // Sanity: with no trusted proxies yet, the forwarded proto is ignored
         self::assertFalse($request->isSecure());
 
-        (new ServerlessHttpKernelStub('test', false))->trustApiGatewayProxyForTest($request);
+        (new TrustApiGatewayProxyRequestListener())->trustApiGatewayProxy($request);
 
         // Only after trusting the API Gateway proxy is X-Forwarded-Proto honoured
         self::assertTrue($request->isSecure());
     }
 
-    public function testTrustApiGatewayProxyIgnoresSpoofedForwardedFor(): void
+    public function testIgnoresSpoofedForwardedFor(): void
     {
         $request = $this->createRequest();
 
-        (new ServerlessHttpKernelStub('test', false))->trustApiGatewayProxyForTest($request);
+        (new TrustApiGatewayProxyRequestListener())->trustApiGatewayProxy($request);
 
         // The caller-supplied X-Forwarded-For (9.9.9.9) is ignored: the client IP is the
         // platform-provided source IP, which cannot be spoofed via request headers
