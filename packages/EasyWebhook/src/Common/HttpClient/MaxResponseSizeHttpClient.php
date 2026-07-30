@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\HttpClient;
 
+use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
 use Symfony\Component\HttpClient\DecoratorTrait;
-use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -39,7 +39,7 @@ final class MaxResponseSizeHttpClient implements HttpClientInterface
             array $info,
         ) use ($maxResponseBytes, $innerOnProgress): void {
             if ($dlNow > $maxResponseBytes || $dlSize > $maxResponseBytes) {
-                throw new TransportException(\sprintf(
+                throw new WebhookResponseTooLargeException(\sprintf(
                     'Webhook response exceeded the maximum allowed size of %d bytes',
                     $maxResponseBytes
                 ));

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
@@ -35,11 +36,11 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->arrayNode('request_limits')
-                ->addDefaultsIfNotSet()
-                ->info('Guards against DoS from a slow or oversized webhook response')
+                ->canBeEnabled()
+                ->info('Guards against DoS from a slow or oversized webhook response (opt-in)')
                 ->children()
                     ->integerNode('timeout')
-                        ->defaultValue(10)
+                        ->defaultValue(HttpClientFactory::DEFAULT_TIMEOUT)
                         ->min(0)
                         ->info(
                             'Idle timeout in seconds - abort when the target stalls. '
@@ -47,7 +48,7 @@ return static function (DefinitionConfigurator $definition) {
                         )
                     ->end()
                     ->integerNode('max_duration')
-                        ->defaultValue(30)
+                        ->defaultValue(HttpClientFactory::DEFAULT_MAX_DURATION)
                         ->min(0)
                         ->info(
                             'Total request duration cap in seconds - guards against a slow/trickling '
@@ -55,7 +56,7 @@ return static function (DefinitionConfigurator $definition) {
                         )
                     ->end()
                     ->integerNode('max_response_bytes')
-                        ->defaultValue(10485760)
+                        ->defaultValue(HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES)
                         ->min(0)
                         ->info(
                             'Maximum response body size in bytes before the transfer is aborted, '

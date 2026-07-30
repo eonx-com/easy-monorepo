@@ -21,9 +21,10 @@ return [
         'signer' => Rs256WebhookSigner::class,
     ],
     'request_limits' => [
+        'enabled' => false,
         'timeout' => 10,
         'max_duration' => 30,
-        'max_response_bytes' => 10485760,
+        'max_response_bytes' => 1048576,
     ],
     'use_default_middleware' => true,
 ];

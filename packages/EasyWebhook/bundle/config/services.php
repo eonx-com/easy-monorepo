@@ -49,6 +49,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         // Factory
         ->set(HttpClientFactoryInterface::class, HttpClientFactory::class)
+        ->arg('$enabled', param(ConfigParam::RequestLimitsEnabled->value))
         ->arg('$timeout', param(ConfigParam::RequestTimeout->value))
         ->arg('$maxDuration', param(ConfigParam::RequestMaxDuration->value))
         ->arg('$maxResponseBytes', param(ConfigParam::RequestMaxResponseBytes->value))

@@ -15,16 +15,24 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         self::assertInstanceOf(HttpClientInterface::class, (new HttpClientFactory())->create());
     }
 
-    public function testCreateCapsResponseSizeByDefault(): void
+    public function testCreateAppliesNoLimitsWhenDisabledByDefault(): void
     {
-        self::assertInstanceOf(MaxResponseSizeHttpClient::class, (new HttpClientFactory())->create());
+        // Opt-in: disabled by default, so no response-size cap is applied
+        self::assertNotInstanceOf(MaxResponseSizeHttpClient::class, (new HttpClientFactory())->create());
     }
 
-    public function testCreateDoesNotCapResponseSizeWhenDisabled(): void
+    public function testCreateCapsResponseSizeWhenEnabled(): void
     {
-        $httpClient = (new HttpClientFactory(maxResponseBytes: 0))->create();
+        self::assertInstanceOf(
+            MaxResponseSizeHttpClient::class,
+            (new HttpClientFactory(enabled: true))->create()
+        );
+    }
 
-        self::assertInstanceOf(HttpClientInterface::class, $httpClient);
+    public function testCreateDoesNotCapResponseSizeWhenLimitIsZero(): void
+    {
+        $httpClient = (new HttpClientFactory(enabled: true, maxResponseBytes: 0))->create();
+
         self::assertNotInstanceOf(MaxResponseSizeHttpClient::class, $httpClient);
     }
 }

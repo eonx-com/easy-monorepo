@@ -9,15 +9,31 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final readonly class HttpClientFactory implements HttpClientFactoryInterface
 {
+    public const DEFAULT_ENABLED = false;
+
+    public const DEFAULT_MAX_DURATION = 30;
+
+    public const DEFAULT_MAX_RESPONSE_BYTES = 1024 * 1024;
+
+    public const DEFAULT_TIMEOUT = 10;
+
     public function __construct(
-        private int $timeout = 10,
-        private int $maxDuration = 30,
-        private int $maxResponseBytes = 10 * 1024 * 1024,
+        private bool $enabled = self::DEFAULT_ENABLED,
+        private int $timeout = self::DEFAULT_TIMEOUT,
+        private int $maxDuration = self::DEFAULT_MAX_DURATION,
+        private int $maxResponseBytes = self::DEFAULT_MAX_RESPONSE_BYTES,
     ) {
     }
 
     public function create(): HttpClientInterface
     {
+        // Todo: Opt-in DoS guards, off by default (the default will flip to on in a major version)
+        if ($this->enabled === false) {
+            return HttpClient::create([
+                'http_version' => '1.1',
+            ]);
+        }
+
         $options = [
             'http_version' => '1.1',
         ];

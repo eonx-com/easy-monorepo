@@ -31,9 +31,10 @@ The common configuration options for Laravel and Symfony are as follows:
 | `signature.header`       | `X-Webhook-Signature` | Name of the Signature header                                                                           |
 | `signature.signer`       | `Rs256Signer:class`   | Class to use for signing the webhook HTTP request body                                                 |
 | `signature.secret`       | N/A                   | Secret to use when signing the webhook HTTP request body                                               |
+| `request_limits.enabled`            | `false`    | Enable the DoS request limits below (opt-in; the default will flip to `true` in a future major) |
 | `request_limits.timeout`            | `10`       | Idle timeout in seconds — abort when the target stops sending data. `0` keeps PHP's `default_socket_timeout` |
 | `request_limits.max_duration`       | `30`       | Total request-duration cap in seconds, regardless of activity. `0` = unlimited                          |
-| `request_limits.max_response_bytes` | `10485760` | Maximum response body size in bytes before the transfer is aborted. `0` = unlimited                     |
+| `request_limits.max_response_bytes` | `1048576`  | Maximum response body size in bytes before the transfer is aborted. `0` = unlimited                     |
 | `use_default_middleware` | `true`                | Whether to use the default middleware (currently, BodyFormatterMiddleware)                             |
 
 Laravel has the following additional configuration option:
@@ -64,14 +65,15 @@ worker or exhaust resources on the sending side:
   the body exceeds the limit, before it is fully buffered (this also covers chunked responses
   with no `Content-Length`).
 
-These limits are **enabled by default** with generous values, since a webhook response is
-normally a small, fast acknowledgement. Set any option to `0` to disable that individual limit.
-A request aborted by a limit surfaces as a **failed webhook** (and is retried by the configured
-retry strategy), not as a crash.
+These limits are **opt-in**: `request_limits.enabled` is `false` by default (the default will flip
+to `true` in a future major). Enable them with `request_limits.enabled: true`; set any individual
+option to `0` to disable just that limit.
 
-> Note: enabling these by default is a behavioural change — a target that legitimately responds
-> slowly (> `max_duration`) or returns a large body (> `max_response_bytes`) will now fail. Raise
-> or disable the relevant limit if you have such a case.
+Retry behaviour differs by limit type, and neither is a crash:
+- A **time**-limit abort (`timeout` / `max_duration`) is a failed webhook that **is retried** by the
+  configured retry strategy — the target may simply have been slow.
+- A **size**-limit abort (`max_response_bytes`) is a failed webhook that is **not retried** —
+  retrying would only re-download the same oversized body.
 
 ## Example configuration files
 

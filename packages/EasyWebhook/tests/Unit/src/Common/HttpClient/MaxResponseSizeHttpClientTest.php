@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Tests\Unit\Common\HttpClient;
 
+use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
 use EonX\EasyWebhook\Common\HttpClient\MaxResponseSizeHttpClient;
 use EonX\EasyWebhook\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -18,10 +19,15 @@ final class MaxResponseSizeHttpClientTest extends AbstractUnitTestCase
             100 * 1024
         );
 
-        $this->expectException(TransportExceptionInterface::class);
-
-        $client->request('GET', 'https://example.test/big')
-            ->getContent();
+        try {
+            $client->request('GET', 'https://example.test/big')
+                ->getContent();
+            self::fail('Expected the oversized response to be aborted');
+        } catch (TransportExceptionInterface $exception) {
+            // Symfony wraps an on_progress exception in a TransportException, so the distinct
+            // marker the retry layer keys off is preserved in the chain rather than at the top
+            self::assertTrue(WebhookResponseTooLargeException::isInChain($exception));
+        }
     }
 
     public function testPassesResponseUnderLimit(): void
