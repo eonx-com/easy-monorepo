@@ -22,7 +22,7 @@ return [
         'signer' => Rs256WebhookSigner::class,
     ],
     'request_limits' => [
-        'enabled' => HttpClientFactory::DEFAULT_ENABLED,
+        'enabled' => false,
         'timeout' => HttpClientFactory::DEFAULT_TIMEOUT,
         'max_duration' => HttpClientFactory::DEFAULT_MAX_DURATION,
         'max_response_bytes' => HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES,

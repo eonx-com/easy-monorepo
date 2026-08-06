@@ -25,7 +25,7 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
     {
         self::assertInstanceOf(
             RequestLimitsHttpClient::class,
-            (new HttpClientFactory(enabled: true))->create()
+            (new HttpClientFactory(requestLimitsEnabled: true))->create()
         );
     }
 }

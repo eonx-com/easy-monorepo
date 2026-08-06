@@ -9,8 +9,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final readonly class HttpClientFactory implements HttpClientFactoryInterface
 {
-    public const DEFAULT_ENABLED = false;
-
     public const DEFAULT_MAX_DURATION = 30;
 
     public const DEFAULT_MAX_RESPONSE_BYTES = 1024 * 1024;
@@ -18,7 +16,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
     public const DEFAULT_TIMEOUT = 10;
 
     public function __construct(
-        private bool $enabled = self::DEFAULT_ENABLED,
+        private bool $requestLimitsEnabled = false,
         private int $timeout = self::DEFAULT_TIMEOUT,
         private int $maxDuration = self::DEFAULT_MAX_DURATION,
         private int $maxResponseBytes = self::DEFAULT_MAX_RESPONSE_BYTES,
@@ -33,7 +31,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
 
         // @todo Change the default to enabled (on) in 7.x
         // Opt-in: with the guards off, hand back the bare client
-        if ($this->enabled === false) {
+        if ($this->requestLimitsEnabled === false) {
             return $httpClient;
         }
 
