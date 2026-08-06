@@ -6,9 +6,9 @@
     "require": {
         "php": "^8.4",
         "eonx-com/easy-utils": "^6.21",
-        "symfony/config": "^7.4",
-        "symfony/dependency-injection": "^7.4",
-        "symfony/http-kernel": "^7.4",
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/http-kernel": "^7.4 || ^8.0",
         "twig/twig": "^3.27"
     },
     "require-dev": {

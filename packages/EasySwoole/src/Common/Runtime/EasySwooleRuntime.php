@@ -18,8 +18,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Runtime\RunnerInterface;
 use Symfony\Component\Runtime\SymfonyRuntime;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 final class EasySwooleRuntime extends SymfonyRuntime
 {
@@ -122,7 +121,7 @@ final class EasySwooleRuntime extends SymfonyRuntime
 
         /** @var array-key $constantValue */
         foreach ($constants as $constant => $constantValue) {
-            $constantName = u($constant);
+            $constantName = new UnicodeString($constant);
 
             if ($constantName->startsWith('OPTION_')) {
                 $constantName = $constantName

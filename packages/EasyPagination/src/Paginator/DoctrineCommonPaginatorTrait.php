@@ -9,8 +9,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DbalQueryBuilder;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-
-use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 trait DoctrineCommonPaginatorTrait
 {
@@ -238,7 +237,7 @@ trait DoctrineCommonPaginatorTrait
         if (\is_array($result) && isset($result['QUERY PLAN'])) {
             /** @var string $queryPlan */
             $queryPlan = $result['QUERY PLAN'];
-            $matches = u($queryPlan)
+            $matches = new UnicodeString($queryPlan)
                 ->match('/rows=(\d+)/');
 
             return isset($matches[1]) ? (int)$matches[1] : null;

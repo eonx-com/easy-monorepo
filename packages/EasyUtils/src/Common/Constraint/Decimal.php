@@ -58,6 +58,9 @@ final class Decimal extends AbstractConstraint
             );
         }
 
+        $this->minPrecision = $minPrecision;
+        $this->maxPrecision = $maxPrecision;
+
         parent::__construct($options, $groups, $payload);
     }
 

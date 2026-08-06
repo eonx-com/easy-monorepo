@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\EasyEncryptionConfig;
-
-return static function (EasyEncryptionConfig $easyEncryptionConfig): void {
-    $easyEncryptionConfig->defaultHashNormalizations(['lowercase']);
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_encryption', [
+        'default_hash_normalizations' => ['lowercase'],
+    ]);
 };
