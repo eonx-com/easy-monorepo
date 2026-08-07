@@ -15,7 +15,6 @@ use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
@@ -32,6 +31,7 @@ use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Throwable;
 
 final class SqsHandler extends AbstractSqsHandler
@@ -182,7 +182,7 @@ final class SqsHandler extends AbstractSqsHandler
 
     private function dispatchEvent(object $event): void
     {
-        if ($this->eventDispatcher) {
+        if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch($event);
 
             return;
