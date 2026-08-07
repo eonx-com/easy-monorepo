@@ -15,6 +15,7 @@ use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
@@ -51,6 +52,7 @@ final class SqsHandler extends AbstractSqsHandler
         bool $partialBatchFailure = false,
         int $timeoutThresholdMilliseconds = 1000,
         iterable $stateCheckers = [],
+        private readonly ?SymfonyEventDispatcherInterface $symfonyEventDispatcher = null,
     ) {
         parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds, $stateCheckers);
     }
@@ -142,7 +144,9 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
 
-            $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
+            if (\class_exists(RetryableException::class)) {
+                $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
+            }
 
             $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);
 
@@ -172,8 +176,19 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
         } finally {
-            $this->eventDispatcher?->dispatch(new EnvelopeDispatchedEvent());
+            $this->dispatchEvent(new EnvelopeDispatchedEvent());
         }
+    }
+
+    private function dispatchEvent(object $event): void
+    {
+        if ($this->eventDispatcher) {
+            $this->eventDispatcher->dispatch($event);
+
+            return;
+        }
+
+        $this->symfonyEventDispatcher?->dispatch($event);
     }
 
     private function dispatchWorkerMessageFailedEvent(Envelope $envelope, Throwable $throwable, bool $willRetry): void
@@ -188,13 +203,13 @@ final class SqsHandler extends AbstractSqsHandler
             $failedEvent->setForRetry();
         }
 
-        $this->eventDispatcher?->dispatch($failedEvent);
+        $this->dispatchEvent($failedEvent);
     }
 
     private function dispatchWorkerMessageHandledEvent(Envelope $envelope): void
     {
         $handledEvent = new WorkerMessageHandledEvent($envelope, $this->transportName);
-        $this->eventDispatcher?->dispatch($handledEvent);
+        $this->dispatchEvent($handledEvent);
     }
 
     /**

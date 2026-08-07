@@ -10,6 +10,7 @@ use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Messenger\BusDriver\ReportBusDriver;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -29,5 +30,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$errorHandler', service(ErrorHandlerInterface::class)->nullOnInvalid())
         ->arg('$eventDispatcher', service(EventDispatcherInterface::class)->nullOnInvalid())
         ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid())
+        ->arg('$symfonyEventDispatcher', service(SymfonyEventDispatcherInterface::class)->nullOnInvalid())
         ->public();
 };
