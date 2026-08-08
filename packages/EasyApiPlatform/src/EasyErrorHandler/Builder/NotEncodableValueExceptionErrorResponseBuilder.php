@@ -6,8 +6,7 @@ namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Throwable;
 
-final class ApiPlatformNotEncodableValueExceptionErrorResponseBuilder extends
-    AbstractApiPlatformSerializerExceptionErrorResponseBuilder
+final class NotEncodableValueExceptionErrorResponseBuilder extends AbstractDeserializationErrorResponseBuilder
 {
     protected function doBuildViolations(Throwable $throwable): array
     {
