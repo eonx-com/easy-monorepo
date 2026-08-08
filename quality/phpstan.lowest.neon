@@ -13,6 +13,9 @@ parameters:
         - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionFactory.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php
     ignoreErrors:
+        - message: '#Method Symfony\\Component\\Serializer\\NameConverter\\NameConverterInterface\:\:normalize\(\) invoked with 2 parameters, 1 required#'
+          path: %currentWorkingDirectory%/packages/EasyApiPlatform/src/EasyErrorHandler/Builder/AbstractApiPlatformErrorResponseBuilder.php
+
         - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
           path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
 
