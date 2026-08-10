@@ -31,12 +31,8 @@ final class TrustApiGatewayProxyRequestListener
             return;
         }
 
-        $this->trustApiGatewayProxy($event->getRequest());
-    }
-
-    public function trustApiGatewayProxy(Request $request): void
-    {
-        $_SERVER['REMOTE_ADDR'] = $request->server->get('REMOTE_ADDR', '127.0.0.1');
+        // Symfony resolves the 'REMOTE_ADDR' trusted proxy against the global $_SERVER value
+        $_SERVER['REMOTE_ADDR'] = $event->getRequest()->server->get('REMOTE_ADDR', '127.0.0.1');
 
         Request::setTrustedProxies(
             ['REMOTE_ADDR'],
