@@ -552,9 +552,6 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'exceptionMessage' => 'paymentType: This value should be of type string.',
         ];
 
-        // The input DTO declares #[SerializedName('payment_kind')] while the Payment resource declares
-        // #[SerializedName('type')] for the same property name, so these cases pin that violation keys are
-        // normalized against the operation's input DTO rather than against the API resource
         yield 'missing constructor argument in input DTO with serializedName attribute' => [
             'url' => '/payments-dto-with-constructor',
             'json' => [],
