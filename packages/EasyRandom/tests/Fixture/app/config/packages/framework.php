@@ -5,7 +5,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
     'framework' => [
-        'validation' => true,
         'test' => true,
         'uid' => [
             'default_uuid_version' => 7,
