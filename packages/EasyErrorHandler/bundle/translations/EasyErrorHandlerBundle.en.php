@@ -2,15 +2,14 @@
 declare(strict_types=1);
 
 return [
-    // @todo Make translations consistent with \Symfony\Component\HttpFoundation\Response::$statusTexts and \GuzzleHttp\Psr7\Response::PHRASES in 7.0
     'exceptions' => [
-        'bad_request' => 'Bad request.',
-        'conflict' => 'Conflict.',
+        'bad_request' => 'Bad Request',
+        'conflict' => 'Conflict',
         'default_user_message' => 'Oops, something went wrong.',
-        'forbidden' => 'Forbidden.',
-        'not_found' => 'Not found.',
+        'forbidden' => 'Forbidden',
+        'not_found' => 'Not Found',
         'not_valid' => 'Validation failed.',
-        'unauthorized' => 'Unauthorized.',
+        'unauthorized' => 'Unauthorized',
     ],
     'violations' => [
         'invalid_datetime' => 'This value is not a valid date/time.',

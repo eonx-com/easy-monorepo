@@ -144,7 +144,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 /** @var array $content */
                 $content = \json_decode((string)$response->getContent(), true);
                 TestCase::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-                TestCase::assertSame('Not found.', $content['custom_message']);
+                TestCase::assertSame('Not Found', $content['custom_message']);
                 TestCase::assertSame(1, $content['custom_code']);
             },
             'translations' => null,
