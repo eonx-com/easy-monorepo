@@ -49,6 +49,9 @@ return static function (ContainerConfigurator $container): void {
     $services
         // Factory
         ->set(HttpClientFactoryInterface::class, HttpClientFactory::class)
+        ->arg('$blockPrivateNetworks', param(ConfigParam::SsrfProtectionEnabled->value))
+        ->arg('$extraBlockedRanges', param(ConfigParam::SsrfProtectionExtraBlockedRanges->value))
+        ->arg('$allowedRanges', param(ConfigParam::SsrfProtectionAllowedRanges->value))
         ->arg('$requestLimitsEnabled', param(ConfigParam::RequestLimitsEnabled->value))
         ->arg('$timeout', param(ConfigParam::RequestTimeout->value))
         ->arg('$maxDuration', param(ConfigParam::RequestMaxDuration->value))
