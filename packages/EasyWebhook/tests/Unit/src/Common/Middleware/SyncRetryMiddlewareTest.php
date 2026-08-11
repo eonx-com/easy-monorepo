@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Tests\Unit\Common\Middleware;
 
 use EonX\EasyWebhook\Common\Entity\Webhook;
+use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
 use EonX\EasyWebhook\Common\Middleware\MethodMiddleware;
 use EonX\EasyWebhook\Common\Middleware\StatusAndAttemptMiddleware;
 use EonX\EasyWebhook\Common\Middleware\StoreMiddleware;
@@ -45,6 +46,38 @@ final class SyncRetryMiddlewareTest extends AbstractMiddlewareTestCase
             ->process($webhook, $stack);
 
         $expectedStackCalls = [
+            SyncRetryMiddleware::class => 1,
+            MiddlewareStub::class => 1,
+        ];
+
+        self::assertFalse($result->isSuccessful());
+        self::assertEquals($expectedStackCalls, $stack->getCalls());
+    }
+
+    public function testDoNotRetryWhenResponseTooLarge(): void
+    {
+        $webhook = Webhook::create('https://eonx.com')->maxAttempt(3);
+        $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
+        $resultsStore = new ArrayResultStore(self::getRandomGenerator(), $this->getDataCleaner());
+
+        // An oversized-response abort must not be retried, even with maxAttempt > 1: retrying would
+        // only re-download the same body. The stub must therefore run exactly once
+        $stack = new StackStub(new Stack([
+            new StoreMiddleware($store, $resultsStore),
+            new StatusAndAttemptMiddleware(),
+            new MethodMiddleware('POST'),
+            new SyncRetryMiddleware($resultsStore, new MultiplierWebhookRetryStrategy(), false),
+            new MiddlewareStub(null, new WebhookResponseTooLargeException('too large')),
+        ]));
+
+        $result = $stack
+            ->next()
+            ->process($webhook, $stack);
+
+        $expectedStackCalls = [
+            StoreMiddleware::class => 1,
+            StatusAndAttemptMiddleware::class => 1,
+            MethodMiddleware::class => 1,
             SyncRetryMiddleware::class => 1,
             MiddlewareStub::class => 1,
         ];

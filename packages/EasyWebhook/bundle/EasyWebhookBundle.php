@@ -40,7 +40,11 @@ final class EasyWebhookBundle extends AbstractBundle
 
         $container
             ->parameters()
-            ->set(ConfigParam::Method->value, $config['method']);
+            ->set(ConfigParam::Method->value, $config['method'])
+            ->set(ConfigParam::RequestLimitsEnabled->value, $config['request_limits']['enabled'])
+            ->set(ConfigParam::RequestTimeout->value, $config['request_limits']['timeout'])
+            ->set(ConfigParam::RequestMaxDuration->value, $config['request_limits']['max_duration'])
+            ->set(ConfigParam::RequestMaxResponseBytes->value, $config['request_limits']['max_response_bytes']);
 
         $container->import('config/services.php');
         $container->import('config/core_middleware.php');
