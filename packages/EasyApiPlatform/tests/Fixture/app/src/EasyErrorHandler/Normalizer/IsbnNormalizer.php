@@ -13,12 +13,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 final class IsbnNormalizer implements DenormalizerInterface
 {
-    /**
-     * @param string $data
-     */
     public function denormalize(mixed $data, string $type, ?string $format = null, ?array $context = null): Isbn
     {
-        if (\preg_match('/^\d{13}$/', $data) === 1) {
+        if (\is_string($data) && \preg_match('/^\d{13}$/', $data) === 1) {
             return new Isbn($data);
         }
 
