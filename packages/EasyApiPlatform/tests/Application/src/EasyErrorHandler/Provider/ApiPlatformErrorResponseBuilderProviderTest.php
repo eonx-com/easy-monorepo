@@ -75,9 +75,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'This value is not a valid date/time.',
+                'someCarbonImmutableDate' => [
+                    'This value is not a valid date/time.',
+                ],
             ],
-            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
+            'exceptionMessage' => 'someCarbonImmutableDate: This value should be of type CarbonImmutable.',
         ];
 
         yield 'Carbon date with custom Normalizer is NULL' => [
@@ -89,9 +91,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'This value is not a valid date/time.',
+                'someCarbonImmutableDate' => [
+                    'This value is not a valid date/time.',
+                ],
             ],
-            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
+            'exceptionMessage' => 'someCarbonImmutableDate: This value should be of type CarbonImmutable.',
         ];
 
         yield 'invalid Carbon date format with custom Normalizer' => [
@@ -103,9 +107,28 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'This value is not a valid date/time.',
+                'someCarbonImmutableDate' => [
+                    'This value is not a valid date/time.',
+                ],
             ],
-            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
+            'exceptionMessage' => 'someCarbonImmutableDate: This value should be of type CarbonImmutable.',
+        ];
+
+        yield 'custom Normalizer throwing without a deserialization path' => [
+            'url' => '/books',
+            'json' => [
+                'title' => 'some title',
+                'description' => 'some description',
+                'weight' => 11,
+                'isbn' => 'not-an-isbn',
+                'printingHouse' => '/printing-houses/1',
+            ],
+            'violations' => [
+                '' => [
+                    'The input data is misformatted.',
+                ],
+            ],
+            'exceptionMessage' => 'Custom message from custom IsbnNormalizer.',
         ];
 
         yield 'invalid argument type' => [
@@ -717,7 +740,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'custom_code' => 123,
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => [
-                    'The input data is misformatted.',
+                    '' => [
+                        'The input data is misformatted.',
+                    ],
                 ],
             ],
             $responseData
@@ -808,7 +833,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => [
-                    'The input data is misformatted.',
+                    '' => [
+                        'The input data is misformatted.',
+                    ],
                 ],
             ],
             $responseData

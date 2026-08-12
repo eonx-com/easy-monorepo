@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\Author;
+use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\Isbn;
 use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Enum\Status;
 use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -27,6 +28,8 @@ final class Book
     public ?DateTimeImmutable $availableFrom = null;
 
     public Category $category;
+
+    public ?Isbn $isbn = null;
 
     public int $pageCount;
 
