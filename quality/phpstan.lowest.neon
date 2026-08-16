@@ -1,2 +1,6 @@
 includes:
     - phpstan.neon
+
+parameters:
+    ignoreErrors:
+        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
