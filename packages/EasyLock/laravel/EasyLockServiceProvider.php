@@ -38,7 +38,7 @@ final class EasyLockServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            LockFactory::class,
+            ConfigServiceId::LockFactory->value,
             static function (Container $app) use ($loggerParams): LockFactory {
                 $lockFactory = new LockFactory($app->make(ConfigServiceId::Store->value));
                 $lockFactory->setLogger($app->make(LoggerInterface::class, $loggerParams));
@@ -47,12 +47,14 @@ final class EasyLockServiceProvider extends ServiceProvider
             }
         );
 
+        $this->app->alias(ConfigServiceId::LockFactory->value, LockFactory::class);
+
         $this->app->singleton(
             LockerInterface::class,
             static fn (Container $app): LockerInterface => new Locker(
                 $app->make(ConfigServiceId::Store->value),
                 $app->make(LoggerInterface::class, $loggerParams),
-                $app->make(LockFactory::class)
+                $app->make(ConfigServiceId::LockFactory->value)
             )
         );
     }

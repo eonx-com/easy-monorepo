@@ -34,9 +34,9 @@ the `easy_lock.store` id.
 
 ###### Lock factory
 
-The package registers `Symfony\Component\Lock\LockFactory` as a service, configured with the package's store and
-logger, so there is no need to create your own instance of the lock factory. You can simply inject it into your
-services:
+The package registers a `Symfony\Component\Lock\LockFactory` built on its own store and logger under the
+`easy_lock.lock_factory` id, so there is no need to create your own instance of the lock factory. Wire it explicitly
+where you need it:
 
 ```php
 use Symfony\Component\Lock\LockFactory;
@@ -57,7 +57,18 @@ final readonly class MyService
 }
 ```
 
+```php
+// config/services.php
+$services->set(MyService::class)
+    ->arg('$lockFactory', service('easy_lock.lock_factory'));
+```
+
 The same lock factory instance is used by `EonX\EasyLock\Common\Locker\LockerInterface` internally.
+
+Nothing is registered under the `Symfony\Component\Lock\LockFactory` class name on purpose. FrameworkBundle claims
+that name as soon as `framework.lock` is enabled, which is the default once `symfony/lock` is installed, and its
+default factory uses a **flock** store that does not lock across application instances. A plain `LockFactory`
+type-hint therefore resolves to whatever the application configured, which is why the wiring above is explicit.
 
 [1]: https://getcomposer.org/
 [2]: https://symfony.com/doc/current/components/lock.html
