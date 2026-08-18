@@ -47,8 +47,6 @@ final class EasyLockServiceProvider extends ServiceProvider
             }
         );
 
-        $this->app->alias(ConfigServiceId::LockFactory->value, LockFactory::class);
-
         $this->app->singleton(
             LockerInterface::class,
             static fn (Container $app): LockerInterface => new Locker(

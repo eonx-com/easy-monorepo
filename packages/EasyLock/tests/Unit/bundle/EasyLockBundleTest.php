@@ -31,8 +31,6 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
         $locker = $container->get(LockerInterface::class);
 
         self::assertInstanceOf(LockFactory::class, $lockFactory);
-        // The locker must always use the factory built on the package's store, never the one the
-        // LockFactory class name happens to point at
         self::assertSame($lockFactory, (new ReflectionProperty(Locker::class, 'lockFactory'))->getValue($locker));
         self::assertSame(
             $container->get(ConfigServiceId::Store->value),
