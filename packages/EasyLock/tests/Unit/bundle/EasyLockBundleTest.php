@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Unit\Bundle;
 
+use EonX\EasyLock\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLock\Common\Locker\Locker;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -26,11 +27,15 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel()
             ->getContainer();
 
-        $lockFactory = $container->get(LockFactory::class);
+        $lockFactory = $container->get(ConfigServiceId::LockFactory->value);
         $locker = $container->get(LockerInterface::class);
 
         self::assertInstanceOf(LockFactory::class, $lockFactory);
         self::assertSame($lockFactory, (new ReflectionProperty(Locker::class, 'lockFactory'))->getValue($locker));
+        self::assertSame(
+            $container->get(ConfigServiceId::Store->value),
+            (new ReflectionProperty(LockFactory::class, 'store'))->getValue($lockFactory)
+        );
     }
 
     /**

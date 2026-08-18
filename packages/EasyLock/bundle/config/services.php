@@ -18,7 +18,7 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure();
 
     $services
-        ->set(LockFactory::class)
+        ->set(ConfigServiceId::LockFactory->value, LockFactory::class)
         ->arg('$store', service(ConfigServiceId::Store->value))
         ->call('setLogger', [service('logger')->ignoreOnInvalid()])
         ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
@@ -26,7 +26,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(LockerInterface::class, Locker::class)
         ->arg('$store', service(ConfigServiceId::Store->value))
-        ->arg('$lockFactory', service(LockFactory::class))
+        ->arg('$lockFactory', service(ConfigServiceId::LockFactory->value))
         ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 
     $services
