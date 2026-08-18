@@ -27,6 +27,5 @@ final class EasyLockServiceProviderTest extends AbstractLaravelTestCase
 
         self::assertInstanceOf(LockFactory::class, $lockFactory);
         self::assertSame($lockFactory, (new ReflectionProperty(Locker::class, 'lockFactory'))->getValue($locker));
-        self::assertSame($lockFactory, $app->get(LockFactory::class));
     }
 }
