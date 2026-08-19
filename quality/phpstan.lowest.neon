@@ -36,3 +36,5 @@ parameters:
 
         - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
+
+        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'

@@ -13,4 +13,13 @@ abstract class AbstractStringSanitizer implements StringSanitizerInterface
     {
         $this->doSetPriority($priority);
     }
+
+    /**
+     * Escapes the mask pattern for safe use inside a preg_replace() replacement string, where
+     * "$" and "\" would otherwise be interpreted as back-references / escapes
+     */
+    protected function escapeForReplacement(string $maskPattern): string
+    {
+        return \strtr($maskPattern, ['\\' => '\\\\', '$' => '\\$']);
+    }
 }

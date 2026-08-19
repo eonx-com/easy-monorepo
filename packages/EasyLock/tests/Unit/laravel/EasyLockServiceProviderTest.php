@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Unit\Laravel;
 
+use EonX\EasyLock\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLock\Common\Locker\Locker;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use ReflectionProperty;
@@ -21,7 +22,7 @@ final class EasyLockServiceProviderTest extends AbstractLaravelTestCase
     {
         $app = $this->getApp();
 
-        $lockFactory = $app->get(LockFactory::class);
+        $lockFactory = $app->get(ConfigServiceId::LockFactory->value);
         $locker = $app->get(LockerInterface::class);
 
         self::assertInstanceOf(LockFactory::class, $lockFactory);

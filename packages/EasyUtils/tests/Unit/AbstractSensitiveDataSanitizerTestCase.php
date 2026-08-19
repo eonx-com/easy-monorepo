@@ -139,12 +139,28 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'mask token in path' => 'some text, https://example.com/path/to/token/to-be-masked?query=1',
                 'mask token in path end with #' => 'some text, https://example.com/path/to/token/to-be-masked#query=1',
                 'mask token in both' => 'https://example.com/path/to/token/to-be-masked?token=token-to-be-masked',
+                'mask token with slash in query value (base64 can contain it)' =>
+                    'https://eonx.com/cb?token=ab/cd+ef==&next=1',
+                'mask token array style with slash' => 'https://eonx.com/cb?[token]=a/b/c&x=1',
+                'mask token in path keeps following segment' => 'https://eonx.com/token/a1b2c3/details',
+                'mask token whose value is a url' =>
+                    'https://app.example/cb?token=https://cb.example/a/b&next=1',
+                'mask token with slash before fragment' => 'https://app.example/cb?token=a/b#frag',
+                'mask repeated token keys with slashes' => 'https://app.example/cb?token=a/b&token=c/d',
             ],
             'expectedOutput' => [
                 'mask token' => 'tcp://my-name@yeah?token=*REDACTED*&PhoneNumber=*REDACTED*&test=1',
                 'mask token in path' => 'some text, https://example.com/path/to/token/*REDACTED*?query=1',
                 'mask token in path end with #' => 'some text, https://example.com/path/to/token/*REDACTED*#query=1',
                 'mask token in both' => 'https://example.com/path/to/token/*REDACTED*?token=*REDACTED*',
+                'mask token with slash in query value (base64 can contain it)' =>
+                    'https://eonx.com/cb?token=*REDACTED*&next=1',
+                'mask token array style with slash' => 'https://eonx.com/cb?[token]=*REDACTED*&x=1',
+                'mask token in path keeps following segment' => 'https://eonx.com/token/*REDACTED*/details',
+                'mask token whose value is a url' => 'https://app.example/cb?token=*REDACTED*&next=1',
+                'mask token with slash before fragment' => 'https://app.example/cb?token=*REDACTED*#frag',
+                'mask repeated token keys with slashes' =>
+                    'https://app.example/cb?token=*REDACTED*&token=*REDACTED*',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [
@@ -471,6 +487,23 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'inJsonWithDoubleSpacesAndEscaping' => '{\"card\"  :  \"4005 5500 0000 0001\"}',
                 'inUrl' => 'https://eonx.com/page?card=4005 5500 0000 0001',
                 'nonCardNumber' => '1234567890123456',
+                'cardAfterNonCardDigits' => 'order 1234567890123456 paid 4242 4242 4242 4242',
+                'cardAfterLongDigits' => 'ref 20260702030753654038 pan 4005 5500 0000 0001',
+                'twoCardsMaskedIndependently' => 'card 4005 5500 0000 0001 or 5313 5810 0012 3430',
+                'cardAfterNonCardInUrl' =>
+                    'https://eonx.com/page?ref=1234567890123456&card=4005 5500 0000 0001',
+                'thirteenDigitVisa' => '4222222222222',
+                'withDashes' => '4005-5500-0000-0001',
+                'trailingPunctuationKept' => 'pan 4005 5500 0000 0001.',
+                'twoCardsCommaSeparated' => '4005 5500 0000 0001, 5313 5810 0012 3430',
+                'cardAmongCommaSeparatedValues' => '(131, 4005550000000001, 20260702, AUD)',
+                'cardAfterAmountAndComma' => 'ref 12345678, 4005 5500 0000 0001',
+                'cardsSeparatedByNewline' => "4005 5500 0000 0001\n5313 5810 0012 3430",
+                'cardsSeparatedByTab' => "4005550000000001\t5313581000123430",
+                'cardsSeparatedBySemicolon' => '4005550000000001;5313581000123430',
+                'cardInCommaListNoSpaces' => '(131,4005550000000001,20260702,AUD)',
+                'cardAfterSlashSeparatedDigits' => '123/4005550000000001',
+                'cardAfterPlusSeparatedDigits' => '123+4005550000000001',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -478,7 +511,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'noSpace' => '512345*REDACTED*2346',
                 'withDots' => '512345*REDACTED*2346',
                 'withSlashes' => '512345*REDACTED*2346',
-                'withinSentenceWithSpace' => 'fewfewkjfewljl 512345*REDACTED*2346few wfewgew ',
+                'withinSentenceWithSpace' => 'fewfewkjfewljl 512345*REDACTED*2346 few wfewgew ',
                 'withinSentenceNoSpace' => 'fewfewkjfewljl512345*REDACTED*2346fewwfewgew',
                 'Mastercard' => '531358*REDACTED*3430',
                 'Visa' => '400555*REDACTED*0001',
@@ -495,8 +528,155 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'inJsonWithDoubleSpacesAndEscaping' => '{"card":"400555*REDACTED*0001"}',
                 'inUrl' => 'https://eonx.com/page?card=400555*REDACTED*0001',
                 'nonCardNumber' => '1234567890123456',
+                'cardAfterNonCardDigits' => 'order 1234567890123456 paid 424242*REDACTED*4242',
+                'cardAfterLongDigits' => 'ref 20260702030753654038 pan 400555*REDACTED*0001',
+                'twoCardsMaskedIndependently' => 'card 400555*REDACTED*0001 or 531358*REDACTED*3430',
+                'cardAfterNonCardInUrl' =>
+                    'https://eonx.com/page?ref=1234567890123456&card=400555*REDACTED*0001',
+                'thirteenDigitVisa' => '422222*REDACTED*2222',
+                'withDashes' => '400555*REDACTED*0001',
+                'trailingPunctuationKept' => 'pan 400555*REDACTED*0001.',
+                'twoCardsCommaSeparated' => '400555*REDACTED*0001, 531358*REDACTED*3430',
+                'cardAmongCommaSeparatedValues' => '(131, 400555*REDACTED*0001, 20260702, AUD)',
+                'cardAfterAmountAndComma' => 'ref 12345678, 400555*REDACTED*0001',
+                'cardsSeparatedByNewline' => "400555*REDACTED*0001\n531358*REDACTED*3430",
+                'cardsSeparatedByTab' => "400555*REDACTED*0001\t531358*REDACTED*3430",
+                'cardsSeparatedBySemicolon' => '400555*REDACTED*0001;531358*REDACTED*3430',
+                'cardInCommaListNoSpaces' => '(131,400555*REDACTED*0001,20260702,AUD)',
+                'cardAfterSlashSeparatedDigits' => '123/400555*REDACTED*0001',
+                'cardAfterPlusSeparatedDigits' => '123+400555*REDACTED*0001',
             ],
             'maskPattern' => '*REDACTED*',
+        ];
+        yield 'Mask keys embedded in free-text JSON' => [
+            'input' => [
+                'jsonInText' => 'login failed {"password":"secret","note":"ok"}',
+                'jsonPrefixed' => 'payload={"access_token":"xyz","id":7}',
+                'jsonWithTrailingText' => '{"password":"secret"} <- received',
+                'jsonBraceInStringValue' => 'log {"note":"end} x","password":"y"} tail',
+                'jsonMultipleObjects' => 'a {"password":"x"} b {"access_token":"y"} c',
+                'jsonArrayOfObjects' => 'items: [{"password":"a"},{"password":"b"}]',
+                'jsonDeeplyNested' => 'x {"a":{"b":{"password":"p"}}} y',
+                'jsonEscapedQuotesInValue' => 'v {"note":"say \"hi\"","password":"z"} w',
+                'jsonInsideJsonWholeString' => '{"payload":"{\"password\":\"secret\"}","id":1}',
+                'jsonInsideJsonInText' => 'log: {"payload":"{\"password\":\"secret\"}"} end',
+            ],
+            'expectedOutput' => [
+                'jsonInText' => 'login failed {"password":"*REDACTED*","note":"ok"}',
+                'jsonPrefixed' => 'payload={"access_token":"*REDACTED*","id":7}',
+                'jsonWithTrailingText' => '{"password":"*REDACTED*"} <- received',
+                'jsonBraceInStringValue' => 'log {"note":"end} x","password":"*REDACTED*"} tail',
+                'jsonMultipleObjects' => 'a {"password":"*REDACTED*"} b {"access_token":"*REDACTED*"} c',
+                'jsonArrayOfObjects' => 'items: [{"password":"*REDACTED*"},{"password":"*REDACTED*"}]',
+                'jsonDeeplyNested' => 'x {"a":{"b":{"password":"*REDACTED*"}}} y',
+                'jsonEscapedQuotesInValue' => 'v {"note":"say \"hi\"","password":"*REDACTED*"} w',
+                'jsonInsideJsonWholeString' => '{"payload":"{\"password\":\"*REDACTED*\"}","id":1}',
+                'jsonInsideJsonInText' => 'log: {"payload":"{\"password\":\"*REDACTED*\"}"} end',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+                'access_token',
+            ],
+        ];
+        yield 'Re-encoded fragment keeps slashes and unicode unescaped' => [
+            'input' => [
+                'embedded' => 'log {"note":"привет","url":"https://a/b","password":"secret"} end',
+                'wholeString' => '{"note":"café","url":"https://a/b","password":"secret"}',
+            ],
+            'expectedOutput' => [
+                'embedded' => 'log {"note":"привет","url":"https://a/b","password":"*REDACTED*"} end',
+                'wholeString' => '{"note":"café","url":"https://a/b","password":"*REDACTED*"}',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+            ],
+        ];
+        yield 'Mask key=value in free text' => [
+            'input' => [
+                'detailList' => 'DETAIL: (password=secret, token=abc)',
+                'inSentence' => 'user password=hunter2 for id=7',
+                'semicolonSeparated' => 'password=secret;token=abc',
+                'ampSeparated' => 'password=secret&token=abc',
+            ],
+            'expectedOutput' => [
+                'detailList' => 'DETAIL: (password=*REDACTED*, token=*REDACTED*)',
+                'inSentence' => 'user password=*REDACTED* for id=7',
+                'semicolonSeparated' => 'password=*REDACTED*;token=*REDACTED*',
+                'ampSeparated' => 'password=*REDACTED*&token=*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+                'token',
+            ],
+        ];
+        yield 'Mask pattern with regex-replacement metacharacters is literal' => [
+            'input' => [
+                'card' => '4005 5500 0000 0001',
+                'url' => 'https://example.com?token=secret',
+                'authHeader' => 'Authorization: Bearer xyz',
+            ],
+            'expectedOutput' => [
+                'card' => '400555$redacted$1$0001',
+                'url' => 'https://example.com?token=$redacted$1$',
+                'authHeader' => 'Authorization: $redacted$1$',
+            ],
+            'maskPattern' => '$redacted$1$',
+            'keysToMask' => [
+                'token',
+            ],
+        ];
+        yield 'Mask keys containing regex-special characters' => [
+            'input' => [
+                'dotKey' => 'a.b=secret axb=keep',
+                'slashKey' => 'a/b=secret&c=keep',
+                'plusKey' => 'a+b=secret;d=keep',
+            ],
+            'expectedOutput' => [
+                'dotKey' => 'a.b=*REDACTED* axb=keep',
+                'slashKey' => 'a/b=*REDACTED*&c=keep',
+                'plusKey' => 'a+b=*REDACTED*;d=keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'a.b',
+                'a/b',
+                'a+b',
+            ],
+        ];
+        yield 'Mask pattern starting with a digit' => [
+            'input' => [
+                'card' => '4005 5500 0000 0001',
+                'url' => 'https://example.com?token=secret',
+                'authHeader' => 'Authorization: Bearer xyz',
+            ],
+            'expectedOutput' => [
+                'card' => '4005551X0001',
+                'url' => 'https://example.com?token=1X',
+                'authHeader' => 'Authorization: 1X',
+            ],
+            'maskPattern' => '1X',
+            'keysToMask' => [
+                'token',
+            ],
+        ];
+        yield 'Leave unbalanced or truncated JSON untouched' => [
+            'input' => [
+                'manyOpeners' => 'weird {{{{{{{{ end',
+                'truncatedNested' => 'ctx {"a":{"b": cut off',
+                'validThenTruncated' => '{"password":"secret"} then {"leftover": cut',
+            ],
+            'expectedOutput' => [
+                'manyOpeners' => 'weird {{{{{{{{ end',
+                'truncatedNested' => 'ctx {"a":{"b": cut off',
+                'validThenTruncated' => '{"password":"*REDACTED*"} then {"leftover": cut',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'password',
+            ],
         ];
     }
 
