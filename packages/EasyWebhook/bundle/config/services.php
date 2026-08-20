@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyWebhook\Bundle\Enum\ConfigParam;
 use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId;
 use EonX\EasyWebhook\Bundle\Enum\ConfigTag;
 use EonX\EasyWebhook\Common\Cleaner\DataCleanerInterface;
@@ -48,6 +49,13 @@ return static function (ContainerConfigurator $container): void {
     $services
         // Factory
         ->set(HttpClientFactoryInterface::class, HttpClientFactory::class)
+        ->arg('$blockPrivateNetworks', param(ConfigParam::SsrfProtectionEnabled->value))
+        ->arg('$extraBlockedRanges', param(ConfigParam::SsrfProtectionExtraBlockedRanges->value))
+        ->arg('$allowedRanges', param(ConfigParam::SsrfProtectionAllowedRanges->value))
+        ->arg('$requestLimitsEnabled', param(ConfigParam::RequestLimitsEnabled->value))
+        ->arg('$timeout', param(ConfigParam::RequestTimeout->value))
+        ->arg('$maxDuration', param(ConfigParam::RequestMaxDuration->value))
+        ->arg('$maxResponseBytes', param(ConfigParam::RequestMaxResponseBytes->value))
         // Client
         ->set(ConfigServiceId::HttpClient->value, HttpClientInterface::class)
         ->factory([service(HttpClientFactoryInterface::class), 'create']);
