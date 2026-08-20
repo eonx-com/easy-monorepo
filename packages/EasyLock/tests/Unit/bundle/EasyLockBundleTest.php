@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Unit\Bundle;
 
+use EonX\EasyLock\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLock\Common\Locker\Locker;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use ReflectionProperty;
+use Symfony\Component\Lock\LockFactory;
 
 final class EasyLockBundleTest extends AbstractSymfonyTestCase
 {
@@ -17,6 +20,22 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
         yield 'default config, no connection' => [null];
 
         yield 'in memory connection' => [[__DIR__ . '/../../Fixture/config/in_memory_connection.php']];
+    }
+
+    public function testLockFactoryIsRegisteredAndSharedWithLocker(): void
+    {
+        $container = $this->getKernel()
+            ->getContainer();
+
+        $lockFactory = $container->get(ConfigServiceId::LockFactory->value);
+        $locker = $container->get(LockerInterface::class);
+
+        self::assertInstanceOf(LockFactory::class, $lockFactory);
+        self::assertSame($lockFactory, (new ReflectionProperty(Locker::class, 'lockFactory'))->getValue($locker));
+        self::assertSame(
+            $container->get(ConfigServiceId::Store->value),
+            (new ReflectionProperty(LockFactory::class, 'store'))->getValue($lockFactory)
+        );
     }
 
     /**

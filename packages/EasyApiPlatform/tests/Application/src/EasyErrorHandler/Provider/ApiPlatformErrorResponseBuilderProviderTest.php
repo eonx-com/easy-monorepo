@@ -521,7 +521,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                     'This value is not a valid date/time.',
                 ],
             ],
-            'exceptionMessage' => 'availableFrom: This value should be of type DateTimeImmutable|null.',
+            'exceptionMessage' => 'availableFrom: This value should be of type string|null.',
             'version' => 4,
         ];
 

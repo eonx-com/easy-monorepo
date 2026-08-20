@@ -7,10 +7,19 @@ use Bref\Bref;
 use Bref\SymfonyBridge\BrefKernel;
 use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use EonX\EasyServerless\Aws\Subscriber\InvocationLifecycleSubscriber;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * Base HTTP kernel for serverless (Bref / AWS Lambda) applications; serverless projects extend it.
+ *
+ * Its responsibility is to wire Bref's invocation lifecycle: inside a Lambda it subscribes
+ * InvocationLifecycleSubscriber, which resets the Symfony HTTP handler after each invocation so
+ * state does not leak between warm invocations.
+ *
+ * Trusted-proxy handling for the API Gateway context is intentionally NOT here: it must run after
+ * Symfony's Kernel::preBoot() (which re-applies the app's trusted-proxy config on a cold start and
+ * would override an earlier setting), so it lives in the high-priority kernel.request listener
+ * TrustApiGatewayProxyRequestListener instead.
+ */
 abstract class AbstractServerlessHttpKernel extends BrefKernel
 {
     public function __construct(string $environment, bool $debug)
@@ -20,24 +29,5 @@ abstract class AbstractServerlessHttpKernel extends BrefKernel
         if (LambdaContextHelper::inLambda()) {
             Bref::events()->subscribe(new InvocationLifecycleSubscriber());
         }
-    }
-
-    public function handle(
-        Request $request,
-        int $type = HttpKernelInterface::MAIN_REQUEST,
-        bool $catch = true,
-    ): Response {
-        // Symfony requires $_SERVER['REMOTE_ADDR'] to be set in order to set trusted proxies properly
-        // Because we are within the Lambda context behind ApiGateway, we can safely trust the one from the request
-        if (LambdaContextHelper::inRemoteLambda()) {
-            $_SERVER['REMOTE_ADDR'] = $request->server->get('REMOTE_ADDR', '127.0.0.1');
-
-            Request::setTrustedProxies(
-                ['REMOTE_ADDR'],
-                Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO
-            );
-        }
-
-        return parent::handle($request, $type, $catch);
     }
 }

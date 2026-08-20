@@ -31,6 +31,7 @@ use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Throwable;
 
 final class SqsHandler extends AbstractSqsHandler
@@ -51,6 +52,7 @@ final class SqsHandler extends AbstractSqsHandler
         bool $partialBatchFailure = false,
         int $timeoutThresholdMilliseconds = 1000,
         iterable $stateCheckers = [],
+        private readonly ?SymfonyEventDispatcherInterface $symfonyEventDispatcher = null,
     ) {
         parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds, $stateCheckers);
     }
@@ -133,14 +135,18 @@ final class SqsHandler extends AbstractSqsHandler
             if ($shouldRetry === false) {
                 $this->logger?->error(
                     \sprintf(
-                        'SQS Record with MessageId "%s" failed to process but will not be retried%s',
-                        $sqsRecord->getMessageId(),
+                        'SQS Record failed to process but will not be retried%s',
                         $isThrowableExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
-                    )
+                    ),
+                    [
+                        'message_id' => $sqsRecord->getMessageId(),
+                    ]
                 );
             }
 
-            $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
+            if (\class_exists(RetryableException::class)) {
+                $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
+            }
 
             $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);
 
@@ -170,8 +176,19 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
         } finally {
-            $this->eventDispatcher?->dispatch(new EnvelopeDispatchedEvent());
+            $this->dispatchEvent(new EnvelopeDispatchedEvent());
         }
+    }
+
+    private function dispatchEvent(object $event): void
+    {
+        if ($this->eventDispatcher !== null) {
+            $this->eventDispatcher->dispatch($event);
+
+            return;
+        }
+
+        $this->symfonyEventDispatcher?->dispatch($event);
     }
 
     private function dispatchWorkerMessageFailedEvent(Envelope $envelope, Throwable $throwable, bool $willRetry): void
@@ -186,13 +203,13 @@ final class SqsHandler extends AbstractSqsHandler
             $failedEvent->setForRetry();
         }
 
-        $this->eventDispatcher?->dispatch($failedEvent);
+        $this->dispatchEvent($failedEvent);
     }
 
     private function dispatchWorkerMessageHandledEvent(Envelope $envelope): void
     {
         $handledEvent = new WorkerMessageHandledEvent($envelope, $this->transportName);
-        $this->eventDispatcher?->dispatch($handledEvent);
+        $this->dispatchEvent($handledEvent);
     }
 
     /**
