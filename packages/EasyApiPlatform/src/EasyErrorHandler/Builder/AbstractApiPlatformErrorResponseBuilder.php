@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyApiPlatform\EasyErrorHandler\Builder;
 
+use ApiPlatform\Metadata\Metadata;
 use BackedEnum;
 use EonX\EasyErrorHandler\Common\Builder\AbstractErrorResponseBuilder;
 use EonX\EasyErrorHandler\Common\Translator\TranslatorInterface;
@@ -86,20 +87,42 @@ abstract class AbstractApiPlatformErrorResponseBuilder extends AbstractErrorResp
      */
     protected function normalizePropertyName(string $name, ?string $class = null): string
     {
-        if ($class === null) {
-            $mainRequest = $this->requestStack->getMainRequest();
-
-            if ($mainRequest !== null) {
-                /** @var class-string|null $apiResourceClass */
-                $apiResourceClass = $mainRequest->attributes->get('_api_resource_class');
-                $class = $apiResourceClass;
-            }
-        }
+        $class ??= $this->resolveClassFromMainRequest();
 
         if ($class !== null && $this->nameConverter !== null) {
             return $this->nameConverter->normalize($name, $class);
         }
 
         return $name;
+    }
+
+    /**
+     * @return class-string|null
+     */
+    private function resolveClassFromMainRequest(): ?string
+    {
+        $mainRequest = $this->requestStack->getMainRequest();
+
+        if ($mainRequest === null) {
+            return null;
+        }
+
+        $operation = $mainRequest->attributes->get('_api_operation');
+
+        if ($operation instanceof Metadata) {
+            $input = $operation->getInput();
+
+            /** @var class-string|null $inputClass */
+            $inputClass = \is_array($input) ? ($input['class'] ?? null) : null;
+
+            if ($inputClass !== null && \class_exists($inputClass)) {
+                return $inputClass;
+            }
+        }
+
+        /** @var class-string|null $apiResourceClass */
+        $apiResourceClass = $mainRequest->attributes->get('_api_resource_class');
+
+        return $apiResourceClass;
     }
 }
