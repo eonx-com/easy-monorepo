@@ -46,3 +46,69 @@ return App::config([
 
 
 ```
+
+## Attributing a violation to a field
+
+Violations are keyed by property path, so a response looks like this:
+
+```json
+{
+    "violations": {
+        "someCarbonImmutableDate": ["This value is not a valid date/time."]
+    }
+}
+```
+
+When the property path cannot be determined, the violation is reported against the **root property path**
+- the empty string - because the payload as a whole is at fault:
+
+```json
+{
+    "violations": {
+        "": ["The input data is misformatted."]
+    }
+}
+```
+
+This is what you get for a malformed request body, and it is also what you get from a custom denormalizer
+that throws an exception carrying no path.
+
+### Write custom denormalizers so the field is preserved
+
+Symfony puts the current field in `$context['deserialization_path']` while denormalizing an attribute, but
+it only propagates that path for `NotNormalizableValueException`. Any other exception loses it, and the
+violation ends up under the root property path. The path cannot be recovered afterwards - it is only
+present in the stack trace arguments, which PHP discards whenever `zend.exception_ignore_args` is enabled,
+as it is in `php.ini-production`.
+
+So throw `NotNormalizableValueException` and pass the path along:
+
+```php
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+
+public function denormalize(mixed $data, string $type, ?string $format = null, ?array $context = null): CarbonImmutable
+{
+    if (Carbon::canBeCreatedFromFormat($data, 'Y-m-d')) {
+        return new CarbonImmutable($data);
+    }
+
+    /** @var string|null $deserializationPath */
+    $deserializationPath = $context['deserialization_path'] ?? null;
+
+    throw NotNormalizableValueException::createForUnexpectedDataType(
+        'Custom message from custom CarbonNormalizer.',
+        $data,
+        [CarbonImmutable::class],
+        $deserializationPath
+    );
+}
+```
+
+Nested paths are handled for you - denormalizing `{"author": {"bornAt": "nonsense"}}` yields
+`author.bornAt`.
+
+Note that passing the expected types also changes which message the client sees. API Platform turns the
+collected error into a violation reading `This value should be of type CarbonImmutable.`, which
+EasyApiPlatform then translates to `violations.invalid_datetime`. You therefore no longer need a
+`custom_serializer_exceptions` entry for it - that config is for exceptions you cannot change, such as
+those thrown by third-party normalizers.
