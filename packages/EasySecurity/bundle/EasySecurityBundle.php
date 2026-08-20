@@ -9,6 +9,7 @@ use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterRoleExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController;
+use EonX\EasySecurity\Bundle\Enum\BundleParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
@@ -36,6 +37,8 @@ final class EasySecurityBundle extends AbstractBundle
         'provider' => ProviderVoter::class,
         'role' => RoleVoter::class,
     ];
+
+    private bool $useSymfonyMonologBundle = false;
 
     public function __construct()
     {
@@ -78,12 +81,40 @@ final class EasySecurityBundle extends AbstractBundle
         $this->registerLoginFormConfiguration($config, $container, $builder);
     }
 
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
+
+        if ($this->useSymfonyMonologBundle === false) {
+            return;
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'channels' => [
+                BundleParam::LogChannel->value,
+            ],
+        ]);
+    }
+
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
     {
         /** @var array $bundles */
         $bundles = $builder->getParameter('kernel.bundles');
 
         return isset($bundles[$bundleName]);
+    }
+
+    private function isSymfonyMonologBundleEnabled(ContainerBuilder $builder): bool
+    {
+        $enabled = false;
+
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = (bool)$config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return $enabled;
     }
 
     private function registerDefaultConfiguratorsConfiguration(
@@ -122,12 +153,18 @@ final class EasySecurityBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if (\interface_exists(LoggerFactoryInterface::class) === false
-            || $this->isBundleEnabled('EasyLoggingBundle', $builder) === false) {
+        if ($this->useSymfonyMonologBundle) {
+            $container->import('config/easy_logging_monolog.php');
+
             return;
         }
 
-        $container->import('config/easy_logging.php');
+        if (
+            \interface_exists(LoggerFactoryInterface::class)
+            && $this->isBundleEnabled('EasyLoggingBundle', $builder)
+        ) {
+            $container->import('config/easy_logging.php');
+        }
     }
 
     private function registerLoginFormConfiguration(

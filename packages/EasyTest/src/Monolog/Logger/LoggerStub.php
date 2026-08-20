@@ -10,6 +10,8 @@ use Monolog\Level;
 use Monolog\Logger;
 
 /**
+ * @deprecated Will be removed in 7.0, use \EonX\EasyTest\Monolog\Trait\MonologTrait instead.
+ *
  * @method bool hasRecord($record, $level)
  * @method bool hasInfo($record)
  * @method bool hasWarning($record)

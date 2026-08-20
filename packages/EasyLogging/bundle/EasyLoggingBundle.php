@@ -5,7 +5,6 @@ namespace EonX\EasyLogging\Bundle;
 
 use EonX\EasyLogging\Bundle\CompilerPass\DefaultStreamHandlerCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ReplaceChannelsDefinitionCompilerPass;
-use EonX\EasyLogging\Bundle\CompilerPass\SensitiveDataSanitizerCompilerPass;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
@@ -15,6 +14,7 @@ use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -35,8 +35,7 @@ final class EasyLoggingBundle extends AbstractBundle
     {
         $container
             ->addCompilerPass(new DefaultStreamHandlerCompilerPass())
-            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10)
-            ->addCompilerPass(new SensitiveDataSanitizerCompilerPass());
+            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -46,9 +45,19 @@ final class EasyLoggingBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        if ($config['use_symfony_monolog_bundle'] && $this->isBundleEnabled('MonologBundle', $builder) === false) {
+            throw new LogicException(
+                'The "easy_logging.use_symfony_monolog_bundle" option is enabled, but symfony/monolog-bundle '
+                . '(MonologBundle) is not registered. Register the bundle so it owns the "logger" service, '
+                . 'or disable the option.'
+            );
+        }
+
         $container->import('config/services.php');
 
         $params = $container->parameters();
+
+        $params->set(ConfigParam::UseSymfonyMonologBundle->value, $config['use_symfony_monolog_bundle']);
 
         $params->set(ConfigParam::LazyLoggers->value, $config['lazy_loggers']);
 
@@ -66,10 +75,22 @@ final class EasyLoggingBundle extends AbstractBundle
 
         $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
 
+        if ($config['sensitive_data_sanitizer']['enabled']) {
+            $container->import('config/sensitive_data_sanitizer.php');
+        }
+
         if ($config['bugsnag_handler']) {
             $params->set(ConfigParam::BugsnagHandlerLevel->value, $config['bugsnag_handler_level']);
 
             $container->import('config/bugsnag_handler.php');
         }
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 }

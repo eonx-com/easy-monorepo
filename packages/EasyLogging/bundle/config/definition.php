@@ -17,5 +17,6 @@ return static function (DefinitionConfigurator $definition) {
             ->integerNode('stream_handler_level')->defaultNull()->end()
             ->booleanNode('bugsnag_handler')->defaultFalse()->end()
             ->integerNode('bugsnag_handler_level')->defaultNull()->end()
+            ->booleanNode('use_symfony_monolog_bundle')->defaultFalse()->end()
         ->end();
 };

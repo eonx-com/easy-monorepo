@@ -25,7 +25,7 @@
         "doctrine/persistence": "^3.3",
         "dragonmantank/cron-expression": "^3.3",
         "guzzlehttp/guzzle": "^7.0",
-        "monolog/monolog": "^3.7",
+        "monolog/monolog": "^3.9",
         "myclabs/deep-copy": "^1.11",
         "nesbot/carbon": "^3.8.4",
         "nette/utils": "^4.0",
@@ -99,12 +99,16 @@
         "psr-discovery/discovery": "^1.0.2",
         "symfony/amazon-sqs-messenger": "^7.2",
         "symfony/browser-kit": "^7.2",
+        "symfony/monolog-bundle": "^3.11.1",
         "symfony/process": "^7.2",
         "symfony/routing": "^7.2",
         "symfony/twig-bundle": "^7.2",
         "symfony/validator": "^7.2",
         "symfony/yaml": "^7.2",
         "symplify/monorepo-builder": "^11.2.22"
+    },
+    "conflict": {
+        "symfony/monolog-bundle": "<3.11.1"
     },
     "autoload": {
         "files": [
