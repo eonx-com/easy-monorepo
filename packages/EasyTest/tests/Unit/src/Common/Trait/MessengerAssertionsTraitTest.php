@@ -1,0 +1,314 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasyTest\Tests\Unit\Common\Trait;
+
+use EonX\EasyTest\Common\Trait\MessengerAssertionsTrait;
+use EonX\EasyTest\Tests\Fixture\Message\DummyMessage;
+use LogicException;
+use PHPUnit\Framework\AssertionFailedError;
+use RuntimeException;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Clock\MockClock;
+use Symfony\Component\Clock\NativeClock;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
+
+final class MessengerAssertionsTraitTest extends KernelTestCase
+{
+    use MessengerAssertionsTrait;
+
+    public function testItCountsEveryAvailableMessageNotJustTheFirst(): void
+    {
+        $transport = new InMemoryTransport();
+        $transport->send(new Envelope(new DummyMessage('first')));
+        $transport->send(new Envelope(new DummyMessage('second')));
+        $transport->send(new Envelope(new DummyMessage('third')));
+
+        $count = self::countAvailableMessages($transport);
+
+        self::assertSame(3, $count);
+    }
+
+    public function testItDoesNotCountMessagesWaitingOnADelay(): void
+    {
+        $clock = new MockClock();
+        $transport = new InMemoryTransport(null, $clock);
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
+
+        $count = self::countAvailableMessages($transport);
+
+        self::assertSame(0, $count);
+        self::assertCount(1, self::getUnhandledEnvelopes($transport));
+    }
+
+    public function testItFailsWhenExpectedExceptionCarriesAnotherCode(): void
+    {
+        $expectedFailures = [
+            RuntimeException::class => 42,
+        ];
+        $actualFailures = [new ErrorDetailsStamp(RuntimeException::class, 13, 'Something went wrong')];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('carries an unexpected code, 42 expected');
+
+        self::assertMessageFailures($expectedFailures, $actualFailures);
+    }
+
+    public function testItFailsWhenExpectedExceptionWasNeverThrown(): void
+    {
+        $expectedFailures = [
+            RuntimeException::class => null,
+        ];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The following exceptions were expected but never thrown:\n - RuntimeException");
+
+        self::assertMessageFailures($expectedFailures, []);
+    }
+
+    public function testItFailsWhenExpectedFailuresUseTheLegacyListFormat(): void
+    {
+        $expectedFailures = [RuntimeException::class, [LogicException::class => 42]];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('formats of EasyTest 6.x are no longer supported');
+
+        // @phpstan-ignore argument.type (deliberately passes the removed EasyTest 6.x format)
+        self::assertMessageFailures($expectedFailures, []);
+    }
+
+    public function testItFailsWhenMessagesAreDelayedButTheClockIsNotMocked(): void
+    {
+        $transport = new InMemoryTransport();
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('the clock is not mocked');
+
+        self::advanceClockToNextDelayedMessage($transport, new NativeClock());
+    }
+
+    public function testItFailsWhenUnexpectedExceptionWasThrown(): void
+    {
+        $actualFailures = [new ErrorDetailsStamp(RuntimeException::class, 0, 'Something went wrong')];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('RuntimeException (code: 0): Something went wrong');
+
+        self::assertMessageFailures([], $actualFailures);
+    }
+
+    public function testItFailsWhenUnexpectedExceptionWasThrownAlongsideExpectedOne(): void
+    {
+        $expectedFailures = [
+            RuntimeException::class => null,
+        ];
+        $actualFailures = [
+            new ErrorDetailsStamp(RuntimeException::class, 0, 'Expected'),
+            new ErrorDetailsStamp(LogicException::class, 0, 'Unexpected'),
+        ];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('LogicException (code: 0): Unexpected');
+
+        self::assertMessageFailures($expectedFailures, $actualFailures);
+    }
+
+    public function testItMakesADelayedMessageAvailableByMovingTheClock(): void
+    {
+        $clock = new MockClock();
+        $transport = new InMemoryTransport(null, $clock);
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
+
+        $advanced = self::advanceClockToNextDelayedMessage($transport, $clock);
+
+        self::assertTrue($advanced);
+        self::assertSame(1, self::countAvailableMessages($transport));
+    }
+
+    public function testItMakesAZeroDelayMessageAvailableByMovingTheClock(): void
+    {
+        $clock = new MockClock();
+        $transport = new InMemoryTransport(null, $clock);
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(0)]));
+
+        $advanced = self::advanceClockToNextDelayedMessage($transport, $clock);
+
+        self::assertTrue($advanced);
+        self::assertSame(1, self::countAvailableMessages($transport));
+    }
+
+    public function testItMovesTheClockToTheShortestDelayOnly(): void
+    {
+        $clock = new MockClock();
+        $transport = new InMemoryTransport(null, $clock);
+        $transport->send(new Envelope(new DummyMessage('soon'), [new DelayStamp(10_000)]));
+        $transport->send(new Envelope(new DummyMessage('later'), [new DelayStamp(640_000)]));
+
+        self::advanceClockToNextDelayedMessage($transport, $clock);
+
+        self::assertSame(1, self::countAvailableMessages($transport));
+    }
+
+    public function testItReportsNothingToWaitForWhenTransportIsDrained(): void
+    {
+        $transport = new InMemoryTransport();
+        $envelope = $transport->send(new Envelope(new DummyMessage()));
+        $transport->ack($envelope);
+
+        $advanced = self::advanceClockToNextDelayedMessage($transport, new MockClock());
+
+        self::assertFalse($advanced);
+        self::assertSame([], self::getUnhandledEnvelopes($transport));
+    }
+
+    public function testItReportsNothingToWaitForWhenUnhandledMessageHasNoDelay(): void
+    {
+        $transport = new InMemoryTransport();
+        $transport->send(new Envelope(new DummyMessage()));
+
+        $advanced = self::advanceClockToNextDelayedMessage($transport, new MockClock());
+
+        self::assertFalse($advanced);
+    }
+
+    public function testItReportsOneFailurePerDeliveryAttempt(): void
+    {
+        $transport = new InMemoryTransport();
+        $firstException = new RuntimeException('Attempt 1', 42);
+        $firstAttempt = $transport->send(new Envelope(new DummyMessage(), [
+            ErrorDetailsStamp::create($firstException),
+        ]));
+        $secondAttempt = $transport->send(new Envelope(new DummyMessage(), [
+            ErrorDetailsStamp::create($firstException),
+            ErrorDetailsStamp::create(new RuntimeException('Attempt 2', 42)),
+        ]));
+        $transport->reject($firstAttempt);
+        $transport->reject($secondAttempt);
+
+        $messageFailures = self::getMessageFailures($transport);
+
+        self::assertCount(2, $messageFailures);
+        self::assertSame(RuntimeException::class, $messageFailures[0]->getExceptionClass());
+        self::assertSame(42, $messageFailures[0]->getExceptionCode());
+        self::assertSame('Attempt 1', $messageFailures[0]->getExceptionMessage());
+        $flattenException = $messageFailures[0]->getFlattenException();
+        self::assertNotNull($flattenException);
+        self::assertSame($firstException->getFile(), $flattenException->getFile());
+        self::assertSame($firstException->getLine(), $flattenException->getLine());
+        self::assertSame('Attempt 2', $messageFailures[1]->getExceptionMessage());
+    }
+
+    public function testItReportsStackTraceOfUnexpectedException(): void
+    {
+        $actualFailures = [ErrorDetailsStamp::create(new RuntimeException('Boom'))];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("Stack trace:\n#0 ");
+
+        self::assertMessageFailures([], $actualFailures);
+    }
+
+    public function testItReportsThePreviousExceptionChainOfUnexpectedException(): void
+    {
+        $rootCause = new LogicException('The actual root cause');
+        $actualFailures = [ErrorDetailsStamp::create(new RuntimeException('Wrapper', 0, $rootCause))];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The actual root cause');
+
+        self::assertMessageFailures([], $actualFailures);
+    }
+
+    public function testItSkipsTheGivenCountOfRejectedEnvelopes(): void
+    {
+        $transport = new InMemoryTransport();
+        $staleAttempt = $transport->send(new Envelope(new DummyMessage(), [
+            ErrorDetailsStamp::create(new RuntimeException('Stale', 42)),
+        ]));
+        $freshAttempt = $transport->send(new Envelope(new DummyMessage(), [
+            ErrorDetailsStamp::create(new RuntimeException('Fresh', 42)),
+        ]));
+        $transport->reject($staleAttempt);
+        $transport->reject($freshAttempt);
+
+        $messageFailures = self::getMessageFailures($transport, 1);
+
+        self::assertCount(1, $messageFailures);
+        self::assertSame('Fresh', $messageFailures[0]->getExceptionMessage());
+    }
+
+    public function testItSucceedsWhenNothingFailedAndNothingWasExpected(): void
+    {
+        $actualFailures = [];
+
+        self::assertMessageFailures([], $actualFailures);
+
+        self::assertCount(0, $actualFailures);
+    }
+
+    public function testItSucceedsWhenTheSameExceptionWasThrownByEveryRetry(): void
+    {
+        $expectedFailures = [
+            RuntimeException::class => 13603,
+        ];
+        $actualFailures = [
+            new ErrorDetailsStamp(RuntimeException::class, 13603, 'Attempt 1'),
+            new ErrorDetailsStamp(RuntimeException::class, 13603, 'Attempt 2'),
+            new ErrorDetailsStamp(RuntimeException::class, 13603, 'Attempt 3'),
+            new ErrorDetailsStamp(RuntimeException::class, 13603, 'Attempt 4'),
+        ];
+
+        self::assertMessageFailures($expectedFailures, $actualFailures);
+
+        self::assertCount(4, $actualFailures);
+    }
+
+    public function testItSucceedsWhenTwoDifferentExceptionsWereExpected(): void
+    {
+        $expectedFailures = [
+            LogicException::class => null,
+            RuntimeException::class => 42,
+        ];
+        $actualFailures = [
+            new ErrorDetailsStamp(RuntimeException::class, 42, 'First'),
+            new ErrorDetailsStamp(LogicException::class, 7, 'Second'),
+        ];
+
+        self::assertMessageFailures($expectedFailures, $actualFailures);
+
+        self::assertCount(2, $actualFailures);
+    }
+
+    public function testItSucceedsWithoutCheckingCodeWhenNullExpected(): void
+    {
+        $expectedFailures = [
+            RuntimeException::class => null,
+        ];
+        $actualFailures = [new ErrorDetailsStamp(RuntimeException::class, 999, 'Any code goes')];
+
+        self::assertMessageFailures($expectedFailures, $actualFailures);
+
+        self::assertCount(1, $actualFailures);
+    }
+
+    public function testItTreatsRejectedMessagesAsHandled(): void
+    {
+        $transport = new InMemoryTransport();
+        $acknowledged = $transport->send(new Envelope(new DummyMessage('acknowledged')));
+        $rejected = $transport->send(new Envelope(new DummyMessage('rejected')));
+        $transport->send(new Envelope(new DummyMessage('still waiting')));
+        $transport->ack($acknowledged);
+        $transport->reject($rejected);
+
+        $unhandledEnvelopes = self::getUnhandledEnvelopes($transport);
+
+        self::assertCount(1, $unhandledEnvelopes);
+        /** @var \EonX\EasyTest\Tests\Fixture\Message\DummyMessage $message */
+        $message = $unhandledEnvelopes[0]->getMessage();
+        self::assertSame('still waiting', $message->getName());
+    }
+}

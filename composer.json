@@ -110,6 +110,7 @@
         "psr-discovery/discovery": "^1.0.2",
         "symfony/amazon-sqs-messenger": "^7.4 || ^8.0",
         "symfony/browser-kit": "^7.4 || ^8.0",
+        "symfony/clock": "^7.4 || ^8.0",
         "symfony/process": "^7.4 || ^8.0",
         "symfony/routing": "^7.4 || ^8.0",
         "symfony/twig-bundle": "^7.4 || ^8.0",

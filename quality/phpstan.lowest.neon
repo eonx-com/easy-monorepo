@@ -37,4 +37,7 @@ parameters:
         - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
 
+        - message: '#Method Symfony\\Component\\Messenger\\Transport\\InMemory\\InMemoryTransport\:\:get\(\) invoked with 1 parameter, 0 required#'
+          path: %currentWorkingDirectory%/packages/EasyTest/src/Common/Trait/MessengerAssertionsTrait.php
+
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'

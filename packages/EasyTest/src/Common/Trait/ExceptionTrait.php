@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Common\Trait;
 
 use Closure;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Util\Color;
 use RuntimeException;
 use Throwable;
@@ -13,8 +14,6 @@ use Throwable;
  */
 trait ExceptionTrait
 {
-    protected static bool $isInsideSafeCall = false;
-
     protected ?Throwable $thrownException = null;
 
     private bool $isThrownExceptionAssertionNeeded = false;
@@ -66,16 +65,16 @@ trait ExceptionTrait
 
     protected function safeCall(Closure $func): void
     {
-        self::$isInsideSafeCall = true;
-
         try {
             $this->isThrownExceptionAssertionNeeded = true;
             $func();
+        } catch (AssertionFailedError $exception) {
+            $this->isThrownExceptionAssertionNeeded = false;
+
+            throw $exception;
         } catch (Throwable $exception) {
             $this->thrownException = $exception;
         }
-
-        self::$isInsideSafeCall = false;
     }
 
     /**
