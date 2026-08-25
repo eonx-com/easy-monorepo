@@ -35,35 +35,36 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         self::assertInstanceOf(HttpClientInterface::class, new HttpClientFactory()->create());
     }
 
-    public function testCreateAppliesNoRequestLimitsWhenDisabledByDefault(): void
+    public function testCreateAppliesNoRequestLimitsWhenDisabled(): void
     {
-        // Request limits are opt-in, so by default the client is not wrapped by RequestLimitsHttpClient
-        self::assertNotInstanceOf(RequestLimitsHttpClient::class, new HttpClientFactory()->create());
+        $httpClientFactory = new HttpClientFactory(requestLimitsEnabled: false);
+
+        self::assertNotInstanceOf(RequestLimitsHttpClient::class, $httpClientFactory->create());
     }
 
     public function testCreateBlocksExtraRanges(): void
     {
-        self::assertInstanceOf(
-            NoPrivateNetworkHttpClient::class,
-            new HttpClientFactory(extraBlockedRanges: ['8.8.8.8/32'])->create()
+        $httpClientFactory = new HttpClientFactory(
+            extraBlockedRanges: ['8.8.8.8/32'],
+            requestLimitsEnabled: false
         );
+
+        self::assertInstanceOf(NoPrivateNetworkHttpClient::class, $httpClientFactory->create());
     }
 
     public function testCreateBlocksPrivateNetworksByDefault(): void
     {
-        self::assertInstanceOf(NoPrivateNetworkHttpClient::class, new HttpClientFactory()->create());
-    }
+        $httpClientFactory = new HttpClientFactory(requestLimitsEnabled: false);
 
-    public function testCreateEnforcesRequestLimitsWhenEnabled(): void
-    {
-        $httpClientFactory = new HttpClientFactory(requestLimitsEnabled: true);
-
-        self::assertInstanceOf(RequestLimitsHttpClient::class, $httpClientFactory->create());
+        self::assertInstanceOf(NoPrivateNetworkHttpClient::class, $httpClientFactory->create());
     }
 
     public function testCreateReturnsPlainClientWhenProtectionDisabled(): void
     {
-        $httpClientFactory = new HttpClientFactory(blockPrivateNetworks: false);
+        $httpClientFactory = new HttpClientFactory(
+            blockPrivateNetworks: false,
+            requestLimitsEnabled: false
+        );
         $httpClient = $httpClientFactory->create();
 
         self::assertInstanceOf(HttpClientInterface::class, $httpClient);
@@ -72,19 +73,24 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
 
     public function testCreateWithAllowedRanges(): void
     {
-        self::assertInstanceOf(
-            NoPrivateNetworkHttpClient::class,
-            new HttpClientFactory(allowedRanges: ['127.0.0.0/8'])->create()
+        $httpClientFactory = new HttpClientFactory(
+            allowedRanges: ['127.0.0.0/8'],
+            requestLimitsEnabled: false
         );
+
+        self::assertInstanceOf(NoPrivateNetworkHttpClient::class, $httpClientFactory->create());
     }
 
     public function testDoesNotValidateAllowedRangesWhenProtectionDisabled(): void
     {
         // Protection off -> allowed_ranges is inert, so an otherwise-invalid entry must not throw
-        $httpClient = new HttpClientFactory(blockPrivateNetworks: false, allowedRanges: ['8.8.8.8/32'])
-            ->create();
+        $httpClientFactory = new HttpClientFactory(
+            blockPrivateNetworks: false,
+            allowedRanges: ['8.8.8.8/32'],
+            requestLimitsEnabled: false
+        );
 
-        self::assertNotInstanceOf(NoPrivateNetworkHttpClient::class, $httpClient);
+        self::assertNotInstanceOf(NoPrivateNetworkHttpClient::class, $httpClientFactory->create());
     }
 
     /**

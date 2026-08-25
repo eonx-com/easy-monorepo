@@ -88,7 +88,7 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
             ->end()
             ->arrayNode('request_limits')
-                ->canBeEnabled()
+                ->canBeDisabled()
                 ->info('Guards against DoS from a slow or oversized webhook response.')
                 ->children()
                     ->integerNode('timeout')
