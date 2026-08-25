@@ -138,7 +138,7 @@ trait MessengerAssertionsTrait
         }
 
         $dueAtTimestamps = \array_map(
-            static fn (DateTimeImmutable $dueAt): float => (float)$dueAt->format('U.u'),
+            static fn(DateTimeImmutable $dueAt): float => (float)$dueAt->format('U.u'),
             \array_values($availableAt)
         );
         $nowTimestamp = (float)$clock->now()
