@@ -65,6 +65,7 @@
         "symfony/service-contracts": "^3.5",
         "symfony/string": "^7.4 || ^8.0",
         "symfony/translation": "^7.4 || ^8.0",
+        "symfony/translation-contracts": "^3.5",
         "symfony/uid": "^7.4 || ^8.0",
         "symfony/var-dumper": "^7.4 || ^8.0",
         "twig/twig": "^3.27"
@@ -98,7 +99,6 @@
         "illuminate/routing": "^13.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "laravel/framework": "^13.0",
-        "league/commonmark": "^2.8.2",
         "mockery/mockery": "^1.6",
         "natepage/php-pkcs11-ide-helper": "^1.0",
         "nyholm/psr7": "^1.8",
