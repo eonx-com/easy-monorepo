@@ -3,14 +3,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyTest\Common\Trait;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\Constraint\IsEqual;
+use ReflectionProperty;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Clock\MockClock;
+use Symfony\Component\Clock\Test\ClockSensitiveTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
@@ -25,8 +27,6 @@ trait MessengerAssertionsTrait
     private const string ASYNC_TRANSPORT_NAME = 'async';
 
     private const float CLOCK_OVERSHOOT_IN_SECONDS = 0.000001;
-
-    private const string DEFAULT_BUS_NAME = 'default';
 
     private const string FAILED_TRANSPORT_NAME = 'failed';
 
@@ -122,43 +122,50 @@ trait MessengerAssertionsTrait
         InMemoryTransport $transport,
         ClockInterface $clock,
     ): bool {
-        $delaysInSeconds = [];
+        /** @var array<\DateTimeImmutable> $availableAt */
+        $availableAt = new ReflectionProperty(InMemoryTransport::class, 'availableAt')->getValue($transport);
 
-        foreach (self::getUnhandledEnvelopes($transport) as $envelope) {
-            $delay = $envelope->last(DelayStamp::class)
-                ?->getDelay();
-
-            if ($delay !== null) {
-                $delaysInSeconds[] = $delay / 1000;
-            }
-        }
-
-        if ($delaysInSeconds === []) {
+        if ($availableAt === []) {
             return false;
         }
 
         if ($clock instanceof MockClock === false) {
             self::fail(\sprintf(
                 'Messages are waiting on a delay, but the clock is not mocked, so waiting the delays out would'
-                . ' really sleep. Make the application run on a mock clock, e.g. Clock::set(new %s()).',
-                MockClock::class
+                . ' really sleep. Run the test on a mock clock, e.g. via %s::mockTime().',
+                ClockSensitiveTrait::class
             ));
         }
 
-        $shortestDelayInSeconds = \min($delaysInSeconds);
-        $clock->sleep($shortestDelayInSeconds + self::CLOCK_OVERSHOOT_IN_SECONDS);
+        $dueAtTimestamps = \array_map(
+            static fn (DateTimeImmutable $dueAt): float => (float)$dueAt->format('U.u'),
+            \array_values($availableAt)
+        );
+        $nowTimestamp = (float)$clock->now()
+            ->format('U.u');
+
+        $clock->sleep(\max(0, \min($dueAtTimestamps) - $nowTimestamp) + self::CLOCK_OVERSHOOT_IN_SECONDS);
+
+        if (self::countAvailableMessages($transport) === 0) {
+            self::fail(
+                'The clock was advanced past the next delay, but no message became available. The messenger'
+                . ' transport computes availability from the container "clock" service, while the test advanced'
+                . ' the global clock - make both use the same mock clock.'
+            );
+        }
 
         return true;
     }
 
-    private static function assertExpectedFailuresShape(mixed $expectedFailures): void
+    private static function assertExpectedFailuresShape(array $expectedFailures): void
     {
-        foreach (\array_keys((array)$expectedFailures) as $exceptionClass) {
+        foreach (\array_keys($expectedFailures) as $exceptionClass) {
             if (\is_string($exceptionClass) === false) {
                 self::fail(\sprintf(
                     'Expected failures must map an exception class to a code, or to null to accept any code,'
                     . ' %s given as a key. The [SomeException::class] and [[SomeException::class => 42]] formats'
-                    . ' of EasyTest 6.x are no longer supported.',
+                    . ' of EasyTest 6.x are no longer supported. The bare-class format matched only code 0, so'
+                    . ' its exact replacement is [SomeException::class => 0].',
                     \var_export($exceptionClass, true)
                 ));
             }
@@ -201,10 +208,7 @@ trait MessengerAssertionsTrait
 
         self::assertSame([], \array_keys($missingFailures), \sprintf(
             "The following exceptions were expected but never thrown:\n%s",
-            \implode(
-                \PHP_EOL,
-                \array_map(static fn(string $class): string => ' - ' . $class, \array_keys($missingFailures))
-            )
+            self::describeExpectedFailures($missingFailures)
         ));
     }
 
@@ -270,8 +274,15 @@ trait MessengerAssertionsTrait
 
     private static function getTransport(string $transportName): InMemoryTransport
     {
-        /** @var \Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport $transport */
         $transport = self::getContainer()->get('messenger.transport.' . $transportName);
+
+        if ($transport instanceof InMemoryTransport === false) {
+            self::fail(\sprintf(
+                'The "%s" transport must use an in-memory DSN in the test environment, got %s.',
+                $transportName,
+                \get_debug_type($transport)
+            ));
+        }
 
         return $transport;
     }
@@ -281,6 +292,13 @@ trait MessengerAssertionsTrait
      */
     private static function getUnhandledEnvelopes(InMemoryTransport $transport): array
     {
+        $sentEnvelopes = $transport->getSent();
+        $handledCount = \count($transport->getAcknowledged()) + \count($transport->getRejected());
+
+        if (\count($sentEnvelopes) === $handledCount) {
+            return [];
+        }
+
         $handledIds = [];
         foreach ([...$transport->getAcknowledged(), ...$transport->getRejected()] as $envelope) {
             $id = $envelope->last(TransportMessageIdStamp::class)
@@ -292,7 +310,7 @@ trait MessengerAssertionsTrait
         }
 
         $unhandledEnvelopes = [];
-        foreach ($transport->getSent() as $envelope) {
+        foreach ($sentEnvelopes as $envelope) {
             $id = $envelope->last(TransportMessageIdStamp::class)
                 ?->getId();
 
@@ -309,7 +327,7 @@ trait MessengerAssertionsTrait
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         /** @var \Symfony\Component\Messenger\MessageBusInterface $messageBus */
-        $messageBus = self::getContainer()->get('messenger.bus.' . self::DEFAULT_BUS_NAME);
+        $messageBus = self::getContainer()->get('messenger.routable_message_bus');
         /** @var \Symfony\Component\Messenger\EventListener\ResetServicesListener $resetServicesListener */
         $resetServicesListener = self::getContainer()->get('messenger.listener.reset_services');
 
@@ -322,14 +340,14 @@ trait MessengerAssertionsTrait
         $eventDispatcher->addListener(WorkerRunningEvent::class, $stopWorkerOnIdleListener);
         $eventDispatcher->addSubscriber($resetServicesListener);
 
-        $receivers = [self::ASYNC_TRANSPORT_NAME => $transport];
+        $sentCountBeforeRun = \count($transport->getSent());
         $clock = Clock::get();
         $messageLimitListener = null;
-        $iteration = 0;
+
+        $run = 0;
 
         try {
-            while ($iteration < self::MAX_WORKER_RUNS) {
-                $iteration++;
+            while ($run < self::MAX_WORKER_RUNS) {
                 $availableMessagesCount = self::countAvailableMessages($transport);
 
                 if ($availableMessagesCount === 0) {
@@ -342,6 +360,8 @@ trait MessengerAssertionsTrait
                     continue;
                 }
 
+                $run++;
+
                 if ($messageLimitListener !== null) {
                     $eventDispatcher->removeSubscriber($messageLimitListener);
                 }
@@ -349,8 +369,13 @@ trait MessengerAssertionsTrait
                 $messageLimitListener = new StopWorkerOnMessageLimitListener($availableMessagesCount);
                 $eventDispatcher->addSubscriber($messageLimitListener);
 
-                $worker = new Worker($receivers, $messageBus, $eventDispatcher, clock: $clock);
-                $worker->run();
+                $worker = new Worker(
+                    [self::ASYNC_TRANSPORT_NAME => $transport],
+                    $messageBus,
+                    $eventDispatcher,
+                    clock: $clock
+                );
+                $worker->run(['fetch_size' => $availableMessagesCount]);
             }
         } finally {
             $eventDispatcher->removeListener(WorkerRunningEvent::class, $stopWorkerOnIdleListener);
@@ -361,14 +386,22 @@ trait MessengerAssertionsTrait
             }
         }
 
+        if (\count($transport->getSent()) < $sentCountBeforeRun) {
+            self::fail(
+                'The in-memory transport was reset while consuming messages, so messages were silently lost.'
+                . ' The test transport must survive service resets, e.g. via a transport factory that keeps'
+                . ' its transports across resets.'
+            );
+        }
+
         $leftoverMessageClasses = [];
         foreach (self::getUnhandledEnvelopes($transport) as $envelope) {
             $leftoverMessageClasses[] = $envelope->getMessage()::class;
         }
 
         self::assertSame([], $leftoverMessageClasses, \sprintf(
-            'Unable to consume all messages from the "%s" transport within %d worker runs. When messages are'
-            . ' stuck waiting on a delay, make sure the application and the test share the same mock clock.',
+            'Unable to consume all messages from the "%s" transport within %d worker runs. Either a handler'
+            . ' keeps dispatching new messages forever, or the workload needs more waves than the budget allows.',
             self::ASYNC_TRANSPORT_NAME,
             self::MAX_WORKER_RUNS
         ));

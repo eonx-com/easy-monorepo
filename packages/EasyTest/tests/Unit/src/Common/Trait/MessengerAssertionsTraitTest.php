@@ -91,6 +91,18 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         self::advanceClockToNextDelayedMessage($transport, new NativeClock());
     }
 
+    public function testItFailsWhenTransportRunsOnAnotherClockThanTheTest(): void
+    {
+        $transportClock = new MockClock();
+        $transport = new InMemoryTransport(null, $transportClock);
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('no message became available');
+
+        self::advanceClockToNextDelayedMessage($transport, new MockClock('2020-01-01 00:00:00'));
+    }
+
     public function testItFailsWhenUnexpectedExceptionWasThrown(): void
     {
         $actualFailures = [new ErrorDetailsStamp(RuntimeException::class, 0, 'Something went wrong')];
@@ -138,6 +150,23 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $advanced = self::advanceClockToNextDelayedMessage($transport, $clock);
 
         self::assertTrue($advanced);
+        self::assertSame(1, self::countAvailableMessages($transport));
+    }
+
+    public function testItMovesTheClockExactlyToTheDueTimeOfTheDelayedMessage(): void
+    {
+        $clock = new MockClock();
+        $startTimestamp = (float)$clock->now()
+            ->format('U.u');
+        $transport = new InMemoryTransport(null, $clock);
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
+        $clock->sleep(3);
+
+        self::advanceClockToNextDelayedMessage($transport, $clock);
+
+        $nowTimestamp = (float)$clock->now()
+            ->format('U.u');
+        self::assertEqualsWithDelta(10.0, $nowTimestamp - $startTimestamp, 0.001);
         self::assertSame(1, self::countAvailableMessages($transport));
     }
 
@@ -246,8 +275,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $actualFailures = [];
 
         self::assertMessageFailures([], $actualFailures);
-
-        self::assertCount(0, $actualFailures);
     }
 
     public function testItSucceedsWhenTheSameExceptionWasThrownByEveryRetry(): void
@@ -263,8 +290,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         ];
 
         self::assertMessageFailures($expectedFailures, $actualFailures);
-
-        self::assertCount(4, $actualFailures);
     }
 
     public function testItSucceedsWhenTwoDifferentExceptionsWereExpected(): void
@@ -279,8 +304,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         ];
 
         self::assertMessageFailures($expectedFailures, $actualFailures);
-
-        self::assertCount(2, $actualFailures);
     }
 
     public function testItSucceedsWithoutCheckingCodeWhenNullExpected(): void
@@ -291,8 +314,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $actualFailures = [new ErrorDetailsStamp(RuntimeException::class, 999, 'Any code goes')];
 
         self::assertMessageFailures($expectedFailures, $actualFailures);
-
-        self::assertCount(1, $actualFailures);
     }
 
     public function testItTreatsRejectedMessagesAsHandled(): void

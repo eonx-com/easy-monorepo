@@ -19,6 +19,7 @@
     },
     "require-dev": {
         "symfony/clock": "^7.4 || ^8.0",
+        "symfony/error-handler": "^7.4 || ^8.0",
         "symfony/framework-bundle": "^7.4 || ^8.0",
         "symfony/messenger": "^7.4 || ^8.0",
         "symfony/uid": "^7.4 || ^8.0"
