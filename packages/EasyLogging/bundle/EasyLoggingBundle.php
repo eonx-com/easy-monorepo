@@ -10,6 +10,7 @@ use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -76,6 +77,16 @@ final class EasyLoggingBundle extends AbstractBundle
         $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
 
         if ($config['sensitive_data_sanitizer']['enabled']) {
+            if (
+                \interface_exists(SensitiveDataSanitizerInterface::class) === false
+                || $this->isBundleEnabled('EasyUtilsBundle', $builder) === false
+            ) {
+                throw new LogicException(
+                    'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed, '
+                    . 'and its bundle must be enabled.'
+                );
+            }
+
             $container->import('config/sensitive_data_sanitizer.php');
         }
 

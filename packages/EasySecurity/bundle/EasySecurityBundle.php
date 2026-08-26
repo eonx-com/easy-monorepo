@@ -9,7 +9,6 @@ use EonX\EasySecurity\Authorization\Provider\RolesProviderInterface;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterRoleExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController;
-use EonX\EasySecurity\Bundle\Enum\BundleParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
@@ -83,17 +82,9 @@ final class EasySecurityBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        // Resolved here because extension configs are only available during the prepend phase: loadExtension()
+        // receives a temporary container without them. All prepend hooks run before any loadExtension() call
         $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
-
-        if ($this->useSymfonyMonologBundle === false) {
-            return;
-        }
-
-        $builder->prependExtensionConfig('monolog', [
-            'channels' => [
-                BundleParam::LogChannel->value,
-            ],
-        ]);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -154,8 +145,6 @@ final class EasySecurityBundle extends AbstractBundle
         ContainerBuilder $builder,
     ): void {
         if ($this->useSymfonyMonologBundle) {
-            $container->import('config/easy_logging_monolog.php');
-
             return;
         }
 

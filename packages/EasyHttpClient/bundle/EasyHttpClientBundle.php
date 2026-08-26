@@ -6,7 +6,6 @@ namespace EonX\EasyHttpClient\Bundle;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateDefaultClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateEasyWebhookClientCompilerPass;
 use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateMessengerSqsClientCompilerPass;
-use EonX\EasyHttpClient\Bundle\Enum\BundleParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
@@ -62,16 +61,6 @@ final class EasyHttpClientBundle extends AbstractBundle
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
-
-        if ($this->useSymfonyMonologBundle === false) {
-            return;
-        }
-
-        $builder->prependExtensionConfig('monolog', [
-            'channels' => [
-                BundleParam::LogChannel->value,
-            ],
-        ]);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -127,8 +116,6 @@ final class EasyHttpClientBundle extends AbstractBundle
         $container->import('config/psr_logger.php');
 
         if ($this->useSymfonyMonologBundle) {
-            $container->import('config/psr_logger_monolog.php');
-
             return;
         }
 

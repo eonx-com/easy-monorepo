@@ -13,18 +13,25 @@ use Symfony\Component\HttpKernel\Kernel;
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
     /**
+     * @var \Symfony\Component\HttpKernel\Bundle\BundleInterface[]
+     */
+    private readonly array $bundleList;
+
+    /**
      * @var string[]
      */
     private readonly array $configs;
 
     /**
      * @param string[]|null $configs
+     * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface[]|null $bundles
      */
-    public function __construct(?array $configs = null)
+    public function __construct(?array $configs = null, ?array $bundles = null, ?string $environment = null)
     {
         $this->configs = $configs ?? [];
+        $this->bundleList = $bundles ?? [new EasyLoggingBundle(), new EasyUtilsBundle()];
 
-        parent::__construct('test', true);
+        parent::__construct($environment ?? 'test', true);
     }
 
     public function process(ContainerBuilder $container): void
@@ -43,8 +50,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
      */
     public function registerBundles(): iterable
     {
-        yield new EasyLoggingBundle();
-        yield new EasyUtilsBundle();
+        yield from $this->bundleList;
     }
 
     /**

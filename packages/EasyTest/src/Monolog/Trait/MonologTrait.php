@@ -5,6 +5,7 @@ namespace EonX\EasyTest\Monolog\Trait;
 
 use EonX\EasyTest\Monolog\Processor\LogCollectorProcessor;
 use Monolog\Level;
+use Monolog\LogRecord;
 use PHPUnit\Framework\Attributes\Before;
 
 /**
@@ -51,8 +52,14 @@ trait MonologTrait
                 . 'Existing records:' . \PHP_EOL . '%s',
                 $level->getName(),
                 $message,
-                \var_export($context, true),
-                \var_export(LogCollectorProcessor::getRecords(), true)
+                \json_encode($context, \JSON_PRETTY_PRINT),
+                \json_encode(
+                    \array_map(
+                        static fn (LogRecord $record): array => $record->toArray(),
+                        LogCollectorProcessor::getRecords()
+                    ),
+                    \JSON_PRETTY_PRINT
+                )
             ));
         }
     }

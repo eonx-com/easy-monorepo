@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Unit\Bundle;
 
+use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
-use EonX\EasyLogging\Tests\Stub\Kernel\MonologKernelStub;
+use EonX\EasyLogging\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
 {
@@ -21,7 +25,11 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $kernel = new MonologKernelStub([__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php']);
+        $kernel = new KernelStub(
+            [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php'],
+            [new MonologBundle(), new EasyUtilsBundle(), new EasyLoggingBundle()],
+            'test_monolog'
+        );
         $kernel->boot();
 
         $this->container = $kernel->getContainer();
@@ -55,6 +63,19 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
             $this->hasInstanceOf($logger->getProcessors(), SensitiveDataSanitizerProcessor::class),
             'The SensitiveDataSanitizerProcessor must be registered as a monolog.processor.'
         );
+    }
+
+    public function testThrowsWhenMonologBundleIsNotRegistered(): void
+    {
+        $kernel = new KernelStub(
+            [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_without_monolog_bundle.php'],
+            environment: 'test_monolog_missing'
+        );
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('use_symfony_monolog_bundle');
+
+        $kernel->boot();
     }
 
     /**
