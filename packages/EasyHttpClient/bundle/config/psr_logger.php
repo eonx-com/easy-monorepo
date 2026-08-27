@@ -15,7 +15,5 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(LogHttpRequestSentListener::class)
         ->tag('kernel.event_listener')
-        ->tag('monolog.logger', [
-            'channel' => BundleParam::LogChannel->value,
-        ]);
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 };

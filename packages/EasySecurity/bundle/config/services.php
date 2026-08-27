@@ -54,18 +54,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Resolver
     $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class)
-        ->tag('monolog.logger', [
-            'channel' => BundleParam::LogChannel->value,
-        ]);
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 
     // SecurityContextFactory
     $services->set(SecurityContextFactoryInterface::class, SecurityContextFactory::class);
 
     // Symfony Security
     $services->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class)
-        ->tag('monolog.logger', [
-            'channel' => BundleParam::LogChannel->value,
-        ]);
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
     $services->set(SecurityContextAuthenticator::class);
 
     // Command

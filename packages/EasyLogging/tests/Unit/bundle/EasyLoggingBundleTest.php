@@ -5,7 +5,9 @@ namespace EonX\EasyLogging\Tests\Unit\Bundle;
 
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Logger\LazyLogger;
+use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Tests\Unit\AbstractSymfonyTestCase;
+use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,6 +53,31 @@ final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
             },
             'configs' => [
                 __DIR__ . '/../../Fixture/config/lazy_logger.php',
+            ],
+        ];
+
+        yield 'Sensitive data sanitizer for the LoggerFactory' => [
+            'assertion' => function (ContainerInterface $container): void {
+                $logger = $container->get(LoggerFactoryInterface::class)->create('app');
+
+                self::assertInstanceOf(Logger::class, $logger);
+
+                $hasSanitizerProcessor = false;
+                foreach ($logger->getProcessors() as $processor) {
+                    if ($processor instanceof SensitiveDataSanitizerProcessor) {
+                        $hasSanitizerProcessor = true;
+
+                        break;
+                    }
+                }
+
+                self::assertTrue(
+                    $hasSanitizerProcessor,
+                    'The SensitiveDataSanitizerProcessor must be registered as a processor config provider.'
+                );
+            },
+            'configs' => [
+                __DIR__ . '/../../Fixture/config/sensitive_data_sanitizer.php',
             ],
         ];
     }

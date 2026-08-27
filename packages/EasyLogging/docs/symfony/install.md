@@ -77,6 +77,26 @@ When enabled:
 - eonx-com packages that log to a dedicated channel (e.g. `easy_http_client`, `security`, `easy_doctrine`) register that
   channel with monolog-bundle automatically and resolve their logger from it.
 
+Configuring the monolog handlers becomes the application's responsibility — without any handler, records go to a
+`NullHandler` and are silently dropped. A minimal configuration:
+
+```php
+# config/packages/monolog.php
+
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\MonologConfig;
+
+return static function (MonologConfig $monologConfig): void {
+    $monologConfig->handler('main')
+        ->type('stream')
+        ->path('php://stderr');
+};
+```
+
 > The `LoggerFactory` and the config-provider mechanism remain available but are deprecated and will be removed in `7.0`
 > in favour of symfony/monolog-bundle.
 

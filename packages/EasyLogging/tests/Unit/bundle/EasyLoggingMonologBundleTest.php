@@ -81,7 +81,7 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
     public function testThrowsWhenSensitiveDataSanitizerIsNotAvailable(): void
     {
         $kernel = new KernelStub(
-            configs: [__DIR__ . '/../../Fixture/config/sensitive_data_sanitizer_without_easy_utils_bundle.php'],
+            configs: [__DIR__ . '/../../Fixture/config/sensitive_data_sanitizer.php'],
             bundles: [new EasyLoggingBundle()],
             environment: 'test_sanitizer_missing'
         );

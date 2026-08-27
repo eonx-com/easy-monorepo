@@ -65,6 +65,10 @@ final class EasyDoctrineBundle extends AbstractBundle
         ]);
     }
 
+    /**
+     * Reads the "easy_logging.use_symfony_monolog_bundle" option rather than checking that MonologBundle is
+     * registered: another package may enable the bundle without the user opting into the integration.
+     */
     private function isSymfonyMonologBundleEnabled(ContainerBuilder $builder): bool
     {
         $enabled = false;
