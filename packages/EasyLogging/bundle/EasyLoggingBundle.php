@@ -5,12 +5,12 @@ namespace EonX\EasyLogging\Bundle;
 
 use EonX\EasyLogging\Bundle\CompilerPass\DefaultStreamHandlerCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ReplaceChannelsDefinitionCompilerPass;
+use EonX\EasyLogging\Bundle\CompilerPass\ValidateSensitiveDataSanitizerCompilerPass;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
 use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
-use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -36,7 +36,8 @@ final class EasyLoggingBundle extends AbstractBundle
     {
         $container
             ->addCompilerPass(new DefaultStreamHandlerCompilerPass())
-            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
+            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10)
+            ->addCompilerPass(new ValidateSensitiveDataSanitizerCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -77,16 +78,8 @@ final class EasyLoggingBundle extends AbstractBundle
         $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
 
         if ($config['sensitive_data_sanitizer']['enabled']) {
-            if (
-                \interface_exists(SensitiveDataSanitizerInterface::class) === false
-                || $this->isBundleEnabled('EasyUtilsBundle', $builder) === false
-            ) {
-                throw new LogicException(
-                    'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed, '
-                    . 'and its bundle must be enabled.'
-                );
-            }
-
+            // The sanitizer service itself is validated by ValidateSensitiveDataSanitizerCompilerPass once all
+            // extensions are loaded
             $container->import('config/sensitive_data_sanitizer.php');
         }
 

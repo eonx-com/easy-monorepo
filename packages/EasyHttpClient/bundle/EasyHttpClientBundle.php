@@ -60,6 +60,8 @@ final class EasyHttpClientBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        // Resolved here because extension configs are only available during the prepend phase: loadExtension()
+        // receives a temporary container without them. All prepend hooks run before any loadExtension() call
         $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
     }
 

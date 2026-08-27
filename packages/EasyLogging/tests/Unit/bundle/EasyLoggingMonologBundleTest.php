@@ -26,9 +26,9 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         parent::setUp();
 
         $kernel = new KernelStub(
-            [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php'],
-            [new MonologBundle(), new EasyUtilsBundle(), new EasyLoggingBundle()],
-            'test_monolog'
+            configs: [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php'],
+            bundles: [new MonologBundle(), new EasyUtilsBundle(), new EasyLoggingBundle()],
+            environment: 'test_monolog'
         );
         $kernel->boot();
 
@@ -68,12 +68,26 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
     public function testThrowsWhenMonologBundleIsNotRegistered(): void
     {
         $kernel = new KernelStub(
-            [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_without_monolog_bundle.php'],
+            configs: [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_without_monolog_bundle.php'],
             environment: 'test_monolog_missing'
         );
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('use_symfony_monolog_bundle');
+
+        $kernel->boot();
+    }
+
+    public function testThrowsWhenSensitiveDataSanitizerIsNotAvailable(): void
+    {
+        $kernel = new KernelStub(
+            configs: [__DIR__ . '/../../Fixture/config/sensitive_data_sanitizer_without_easy_utils_bundle.php'],
+            bundles: [new EasyLoggingBundle()],
+            environment: 'test_sanitizer_missing'
+        );
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('eonx-com/easy-utils');
 
         $kernel->boot();
     }
