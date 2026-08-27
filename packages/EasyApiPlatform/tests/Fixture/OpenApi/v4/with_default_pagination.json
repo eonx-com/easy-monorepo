@@ -412,6 +412,122 @@
                     "required": true
                 }
             }
+        },
+        "/open-api-categories-without-pagination": {
+            "get": {
+                "operationId": "api_open-api-categories-without-pagination_get_collection",
+                "tags": [
+                    "CategoryWithoutPagination"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CategoryWithoutPagination collection",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryWithoutPagination"
+                                    }
+                                }
+                            },
+                            "application/ld+json": {
+                                "schema": {
+                                    "type": "object",
+                                    "description": "CategoryWithoutPagination.jsonld collection.",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/HydraCollectionBaseSchemaNoPagination"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "required": [
+                                                "hydra:member"
+                                            ],
+                                            "properties": {
+                                                "hydra:member": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/CategoryWithoutPagination.jsonld"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/vnd.api+json": {
+                                "schema": {
+                                    "description": "CategoryWithoutPagination.jsonapi collection.",
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/JsonApiCollectionBaseSchemaNoPagination"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string"
+                                                            },
+                                                            "attributes": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "type",
+                                                            "id"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryWithoutPagination.xml"
+                                    }
+                                }
+                            },
+                            "text/xml": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryWithoutPagination.xml"
+                                    }
+                                }
+                            },
+                            "text/html": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryWithoutPagination.html"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Retrieves the collection of CategoryWithoutPagination resources.",
+                "description": "Retrieves the collection of CategoryWithoutPagination resources.",
+                "parameters": []
+            }
         }
     },
     "components": {
@@ -483,6 +599,45 @@
                 ]
             },
             "Category.xml": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CategoryWithoutPagination": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CategoryWithoutPagination.html": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CategoryWithoutPagination.jsonld": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/HydraItemBaseSchema"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            },
+            "CategoryWithoutPagination.xml": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -855,6 +1010,10 @@
         {
             "name": "Category",
             "description": "Resource 'Category' operations."
+        },
+        {
+            "name": "CategoryWithoutPagination",
+            "description": "Resource 'CategoryWithoutPagination' operations."
         }
     ],
     "webhooks": {}

@@ -40,7 +40,10 @@ final readonly class PaginationSchemaFactory implements SchemaFactoryInterface, 
             return $schema;
         }
 
-        if ($forceCollection) {
+        $paginationEnabled = $operation?->getPaginationEnabled()
+            ?? $this->paginationOptions->isPaginationEnabled();
+
+        if ($forceCollection && $paginationEnabled) {
             $itemsPerPageSchema = [
                 'default' => $operation?->getPaginationItemsPerPage() ?? $this->paginationOptions->getItemsPerPage(),
                 'minimum' => 0,
