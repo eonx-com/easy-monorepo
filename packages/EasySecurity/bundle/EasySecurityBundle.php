@@ -82,9 +82,7 @@ final class EasySecurityBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        // Resolved here because extension configs are only available during the prepend phase: loadExtension()
-        // receives a temporary container without them. All prepend hooks run before any loadExtension() call
-        $this->useSymfonyMonologBundle = $this->isSymfonyMonologBundleEnabled($builder);
+        $this->useSymfonyMonologBundle = $this->shouldUseSymfonyMonologBundle($builder);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -93,23 +91,6 @@ final class EasySecurityBundle extends AbstractBundle
         $bundles = $builder->getParameter('kernel.bundles');
 
         return isset($bundles[$bundleName]);
-    }
-
-    /**
-     * Reads the "easy_logging.use_symfony_monolog_bundle" option rather than checking that MonologBundle is
-     * registered: another package may enable the bundle without the user opting into the integration.
-     */
-    private function isSymfonyMonologBundleEnabled(ContainerBuilder $builder): bool
-    {
-        $enabled = false;
-
-        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
-            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
-                $enabled = (bool)$config['use_symfony_monolog_bundle'];
-            }
-        }
-
-        return $enabled;
     }
 
     private function registerDefaultConfiguratorsConfiguration(
@@ -209,5 +190,19 @@ final class EasySecurityBundle extends AbstractBundle
 
             $builder->setDefinition($class, $voterDefinition);
         }
+    }
+
+    private function shouldUseSymfonyMonologBundle(ContainerBuilder $builder): bool
+    {
+        $enabled = false;
+
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = $config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return (bool)$builder->getParameterBag()
+            ->resolveValue($enabled);
     }
 }

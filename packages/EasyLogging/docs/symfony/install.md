@@ -69,6 +69,9 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
 };
 ```
 
+> The option must be a compile-time value — a literal boolean or a container parameter. It cannot depend on runtime
+> environment variables because it switches how the container is wired.
+
 When enabled:
 
 - the channel-replacement and default stream-handler compiler passes of this package step aside so that
