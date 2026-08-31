@@ -20,6 +20,19 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
 {
     use MessengerAssertionsTrait;
 
+    public function testItCountsAvailableMessagesAcrossAllTransports(): void
+    {
+        $asyncTransport = new InMemoryTransport();
+        $asyncTransport->send(new Envelope(new DummyMessage('first')));
+        $asyncTransport->send(new Envelope(new DummyMessage('second')));
+        $emailTransport = new InMemoryTransport();
+        $emailTransport->send(new Envelope(new DummyMessage('third')));
+
+        $count = self::countAvailableMessages(['async' => $asyncTransport, 'email_delivery' => $emailTransport]);
+
+        self::assertSame(3, $count);
+    }
+
     public function testItCountsEveryAvailableMessageNotJustTheFirst(): void
     {
         $transport = new InMemoryTransport();
@@ -27,7 +40,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport->send(new Envelope(new DummyMessage('second')));
         $transport->send(new Envelope(new DummyMessage('third')));
 
-        $count = self::countAvailableMessages($transport);
+        $count = self::countAvailableMessages(['async' => $transport]);
 
         self::assertSame(3, $count);
     }
@@ -38,7 +51,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport = new InMemoryTransport(null, $clock);
         $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
 
-        $count = self::countAvailableMessages($transport);
+        $count = self::countAvailableMessages(['async' => $transport]);
 
         self::assertSame(0, $count);
         self::assertCount(1, self::getUnhandledEnvelopes($transport));
@@ -88,7 +101,15 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('the clock is not mocked');
 
-        self::advanceClockToNextDelayedMessage($transport, new NativeClock());
+        self::advanceClockToNextDelayedMessage(['async' => $transport], new NativeClock());
+    }
+
+    public function testItFailsWhenNoTransportNamesAreGiven(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('At least one transport name is required');
+
+        self::consumeAsyncMessages(transportNames: []);
     }
 
     public function testItFailsWhenTransportRunsOnAnotherClockThanTheTest(): void
@@ -100,7 +121,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('no message became available');
 
-        self::advanceClockToNextDelayedMessage($transport, new MockClock('2020-01-01 00:00:00'));
+        self::advanceClockToNextDelayedMessage(['async' => $transport], new MockClock('2020-01-01 00:00:00'));
     }
 
     public function testItFailsWhenUnexpectedExceptionWasThrown(): void
@@ -135,10 +156,10 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport = new InMemoryTransport(null, $clock);
         $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
 
-        $advanced = self::advanceClockToNextDelayedMessage($transport, $clock);
+        $advanced = self::advanceClockToNextDelayedMessage(['async' => $transport], $clock);
 
         self::assertTrue($advanced);
-        self::assertSame(1, self::countAvailableMessages($transport));
+        self::assertSame(1, self::countAvailableMessages(['async' => $transport]));
     }
 
     public function testItMakesAZeroDelayMessageAvailableByMovingTheClock(): void
@@ -147,10 +168,10 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport = new InMemoryTransport(null, $clock);
         $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(0)]));
 
-        $advanced = self::advanceClockToNextDelayedMessage($transport, $clock);
+        $advanced = self::advanceClockToNextDelayedMessage(['async' => $transport], $clock);
 
         self::assertTrue($advanced);
-        self::assertSame(1, self::countAvailableMessages($transport));
+        self::assertSame(1, self::countAvailableMessages(['async' => $transport]));
     }
 
     public function testItMovesTheClockExactlyToTheDueTimeOfTheDelayedMessage(): void
@@ -162,12 +183,30 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
         $clock->sleep(3);
 
-        self::advanceClockToNextDelayedMessage($transport, $clock);
+        self::advanceClockToNextDelayedMessage(['async' => $transport], $clock);
 
         $nowTimestamp = (float)$clock->now()
             ->format('U.u');
         self::assertEqualsWithDelta(10.0, $nowTimestamp - $startTimestamp, 0.001);
-        self::assertSame(1, self::countAvailableMessages($transport));
+        self::assertSame(1, self::countAvailableMessages(['async' => $transport]));
+    }
+
+    public function testItMovesTheClockToTheShortestDelayAcrossAllTransports(): void
+    {
+        $clock = new MockClock();
+        $asyncTransport = new InMemoryTransport(null, $clock);
+        $asyncTransport->send(new Envelope(new DummyMessage('later'), [new DelayStamp(640_000)]));
+        $emailTransport = new InMemoryTransport(null, $clock);
+        $emailTransport->send(new Envelope(new DummyMessage('soon'), [new DelayStamp(10_000)]));
+
+        $advanced = self::advanceClockToNextDelayedMessage(
+            ['async' => $asyncTransport, 'email_delivery' => $emailTransport],
+            $clock
+        );
+
+        self::assertTrue($advanced);
+        self::assertSame(0, self::countAvailableMessages(['async' => $asyncTransport]));
+        self::assertSame(1, self::countAvailableMessages(['email_delivery' => $emailTransport]));
     }
 
     public function testItMovesTheClockToTheShortestDelayOnly(): void
@@ -177,9 +216,9 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport->send(new Envelope(new DummyMessage('soon'), [new DelayStamp(10_000)]));
         $transport->send(new Envelope(new DummyMessage('later'), [new DelayStamp(640_000)]));
 
-        self::advanceClockToNextDelayedMessage($transport, $clock);
+        self::advanceClockToNextDelayedMessage(['async' => $transport], $clock);
 
-        self::assertSame(1, self::countAvailableMessages($transport));
+        self::assertSame(1, self::countAvailableMessages(['async' => $transport]));
     }
 
     public function testItReportsNothingToWaitForWhenTransportIsDrained(): void
@@ -188,7 +227,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $envelope = $transport->send(new Envelope(new DummyMessage()));
         $transport->ack($envelope);
 
-        $advanced = self::advanceClockToNextDelayedMessage($transport, new MockClock());
+        $advanced = self::advanceClockToNextDelayedMessage(['async' => $transport], new MockClock());
 
         self::assertFalse($advanced);
         self::assertSame([], self::getUnhandledEnvelopes($transport));
@@ -199,7 +238,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $transport = new InMemoryTransport();
         $transport->send(new Envelope(new DummyMessage()));
 
-        $advanced = self::advanceClockToNextDelayedMessage($transport, new MockClock());
+        $advanced = self::advanceClockToNextDelayedMessage(['async' => $transport], new MockClock());
 
         self::assertFalse($advanced);
     }
