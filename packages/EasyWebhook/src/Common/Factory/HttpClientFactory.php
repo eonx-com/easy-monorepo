@@ -26,7 +26,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         private bool $blockPrivateNetworks = true,
         private array $extraBlockedRanges = [],
         private array $allowedRanges = [],
-        private bool $requestLimitsEnabled = false,
+        private bool $requestLimitsEnabled = true,
         private int $timeout = self::DEFAULT_TIMEOUT,
         private int $maxDuration = self::DEFAULT_MAX_DURATION,
         private int $maxResponseBytes = self::DEFAULT_MAX_RESPONSE_BYTES,
@@ -106,9 +106,6 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
             $httpClient = new NoPrivateNetworkHttpClient($httpClient, $subnets);
         }
 
-        // DoS request limits (opt-in): enforced inside the decorator, not as client-default options,
-        // so a per-webhook http client option cannot silently raise or disable them.
-        // @todo Change the default to enabled (on) in 7.x
         if ($this->requestLimitsEnabled) {
             $httpClient = new RequestLimitsHttpClient(
                 $httpClient,

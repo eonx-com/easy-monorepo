@@ -38,7 +38,7 @@ return [
         'allowed_ranges' => [],
     ],
     'request_limits' => [
-        'enabled' => false,
+        'enabled' => true,
         'timeout' => HttpClientFactory::DEFAULT_TIMEOUT,
         'max_duration' => HttpClientFactory::DEFAULT_MAX_DURATION,
         'max_response_bytes' => HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES,
