@@ -11,10 +11,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Parameter;
 
+/**
+ * @deprecated Will be removed in 7.0, use symfony/monolog-bundle instead.
+ */
 final class DefaultStreamHandlerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
+        if (
+            $container->hasParameter(ConfigParam::UseSymfonyMonologBundle->value)
+            && (bool)$container->getParameter(ConfigParam::UseSymfonyMonologBundle->value) === true
+        ) {
+            return;
+        }
+
         // If disabled explicitly, skip
         if ($this->isEnabled($container) === false) {
             return;

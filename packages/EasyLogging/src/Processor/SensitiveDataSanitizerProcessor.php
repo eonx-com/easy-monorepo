@@ -5,8 +5,10 @@ namespace EonX\EasyLogging\Processor;
 
 use EonX\EasyLogging\Config\ProcessorConfigInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
+use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
 
+#[AsMonologProcessor(priority: -9999)]
 final class SensitiveDataSanitizerProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(

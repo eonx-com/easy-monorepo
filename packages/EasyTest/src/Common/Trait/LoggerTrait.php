@@ -8,6 +8,8 @@ use EonX\EasyTest\Monolog\Logger\LoggerStub;
 use Psr\Log\LoggerInterface;
 
 /**
+ * @deprecated Will be removed in 7.0, use \EonX\EasyTest\Monolog\Trait\MonologTrait instead.
+ *
  * @mixin \EonX\EasyTest\Common\Trait\ContainerServiceTrait
  * @mixin \Symfony\Bundle\FrameworkBundle\Test\KernelTestCase
  */
