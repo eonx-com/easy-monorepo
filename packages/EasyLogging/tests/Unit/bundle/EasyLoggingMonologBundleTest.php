@@ -6,6 +6,7 @@ namespace EonX\EasyLogging\Tests\Unit\Bundle;
 use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
+use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
@@ -25,14 +26,48 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $kernel = new KernelStub(
-            configs: [__DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php'],
-            bundles: [new MonologBundle(), new EasyUtilsBundle(), new EasyLoggingBundle()],
-            environment: 'test_monolog'
+        $this->container = $this->bootMonologKernel(
+            __DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle.php',
+            'test_monolog'
         );
-        $kernel->boot();
+    }
 
-        $this->container = $kernel->getContainer();
+    public function testBugsnagHandlerIsRegisteredForAllChannelsByDefault(): void
+    {
+        $container = $this->bootMonologKernel(
+            __DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_with_bugsnag_handler_all_channels.php',
+            'test_monolog_bugsnag_all_channels'
+        );
+
+        /** @var \Monolog\Logger $appLogger */
+        $appLogger = $container->get('logger');
+        /** @var \Monolog\Logger $otherLogger */
+        $otherLogger = $container->get('monolog.logger.other');
+
+        self::assertTrue($this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class));
+        self::assertTrue($this->hasInstanceOf($otherLogger->getHandlers(), BugsnagMonologHandler::class));
+    }
+
+    public function testBugsnagHandlerIsRegisteredForConfiguredChannelsOnly(): void
+    {
+        $container = $this->bootMonologKernel(
+            __DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_with_bugsnag_handler.php',
+            'test_monolog_bugsnag'
+        );
+
+        /** @var \Monolog\Logger $appLogger */
+        $appLogger = $container->get('logger');
+        /** @var \Monolog\Logger $otherLogger */
+        $otherLogger = $container->get('monolog.logger.other');
+
+        self::assertTrue(
+            $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
+            'The Bugsnag handler must be attached to the configured "app" channel.'
+        );
+        self::assertFalse(
+            $this->hasInstanceOf($otherLogger->getHandlers(), BugsnagMonologHandler::class),
+            'The Bugsnag handler must not be attached to channels outside "bugsnag_handler_channels".'
+        );
     }
 
     public function testEasyLoggingStepsAsideButKeepsFactory(): void
@@ -90,6 +125,18 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         $this->expectExceptionMessage('eonx-com/easy-utils');
 
         $kernel->boot();
+    }
+
+    private function bootMonologKernel(string $fixture, string $environment): ContainerInterface
+    {
+        $kernel = new KernelStub(
+            configs: [$fixture],
+            bundles: [new MonologBundle(), new EasyUtilsBundle(), new EasyLoggingBundle()],
+            environment: $environment
+        );
+        $kernel->boot();
+
+        return $kernel->getContainer();
     }
 
     /**

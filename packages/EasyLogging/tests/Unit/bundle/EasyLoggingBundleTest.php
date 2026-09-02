@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Unit\Bundle;
 
+use EonX\EasyLogging\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
+use EonX\EasyLogging\Formatter\JsonFormatter;
 use EonX\EasyLogging\Logger\LazyLogger;
 use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Tests\Unit\AbstractSymfonyTestCase;
@@ -27,6 +29,10 @@ final class EasyLoggingBundleTest extends AbstractSymfonyTestCase
                 self::assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));
                 self::assertInstanceOf(LoggerInterface::class, $container->get('logger'));
                 self::assertInstanceOf(LoggerInterface::class, $container->get('easy_logging.logger'));
+                self::assertInstanceOf(
+                    JsonFormatter::class,
+                    $container->get(ConfigServiceId::JsonFormatter->value)
+                );
             },
             'configs' => [
                 __DIR__ . '/../../Fixture/config/default_config.php',
