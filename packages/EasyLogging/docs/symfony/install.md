@@ -144,15 +144,26 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
   over the bundle ones) and call `setFormatter()` on it:
 
   ```php
-  # config/services.php
+  # config/packages/easy_logging_bugsnag.php
 
-  // "%" must be doubled in PHP config files, otherwise the string is treated as a parameter placeholder
-  $services->set(BugsnagMonologHandler::class)
-      ->autowire()
-      ->arg('$level', param('easy_logging.bugsnag_handler_level'))
-      ->call('setFormatter', [
-          inline_service(LineFormatter::class)->args(['[%%datetime%%] %%channel%%.%%level_name%%: %%message%%']),
-      ]);
+  <?php
+  declare(strict_types=1);
+
+  namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+  use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
+  use Monolog\Formatter\LineFormatter;
+
+  return static function (ContainerConfigurator $containerConfigurator): void {
+      // "%" must be doubled in PHP config files, otherwise the string is treated as a parameter placeholder
+      $containerConfigurator->services()
+          ->set(BugsnagMonologHandler::class)
+          ->autowire()
+          ->arg('$level', param('easy_logging.bugsnag_handler_level'))
+          ->call('setFormatter', [
+              inline_service(LineFormatter::class)->args(['[%%datetime%%] %%channel%%.%%level_name%%: %%message%%']),
+          ]);
+  };
   ```
 
 The severity sent to Bugsnag is resolved by `\EonX\EasyLogging\Resolver\BugsnagSeverityResolverInterface`, whose
