@@ -234,7 +234,8 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         $blocked = false;
 
         try {
-            $httpClient->request('GET', $url, $options);
+            $httpClient->request('GET', $url, $options)
+                ->cancel();
         } catch (TransportExceptionInterface) {
             $blocked = true;
         }

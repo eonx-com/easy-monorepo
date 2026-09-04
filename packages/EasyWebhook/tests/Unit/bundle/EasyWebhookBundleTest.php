@@ -122,8 +122,8 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
         }
 
         self::assertSame($expectAllowed, $allowed);
-        $this->assertRequestBlocked($httpClient, 'https://other.example/webhooks', [
-            'resolve' => ['other.example' => '10.24.80.5'],
+        $this->assertRequestBlocked($httpClient, 'https://not-allowed.example/webhooks', [
+            'resolve' => ['not-allowed.example' => '10.24.80.5'],
         ]);
     }
 
@@ -132,7 +132,8 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
         $blocked = false;
 
         try {
-            $httpClient->request('GET', $url, $options);
+            $httpClient->request('GET', $url, $options)
+                ->cancel();
         } catch (TransportExceptionInterface) {
             $blocked = true;
         }

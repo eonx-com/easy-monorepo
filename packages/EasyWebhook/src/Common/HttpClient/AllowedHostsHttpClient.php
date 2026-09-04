@@ -96,7 +96,11 @@ final class AllowedHostsHttpClient implements HttpClientInterface, LoggerAwareIn
             return $options;
         }
 
-        foreach (\array_keys(\is_array($options['resolve'] ?? null) ? $options['resolve'] : []) as $pinnedHost) {
+        if (\is_array($options['resolve'] ?? null) === false) {
+            $options['resolve'] = [];
+        }
+
+        foreach (\array_keys($options['resolve']) as $pinnedHost) {
             if (\mb_strtolower((string)$pinnedHost) === $host) {
                 return $options;
             }
