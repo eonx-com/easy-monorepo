@@ -83,26 +83,70 @@ trait MessengerAssertionsTrait
     /**
      * Transports are polled in the listed order, earlier ones first, like messenger:consume.
      *
-     * @param array<class-string<\Throwable>, int|string|null> $expectedFailures
+     * Expected failures accept three spellings:
+     * - [SomeException::class => 42]: every listed exception must be thrown at least once and nothing
+     *   else may fail; how many times it was thrown is not asserted
+     * - [SomeException::class]: same as [SomeException::class => 0]
+     * - [[SomeException::class => 42], [SomeException::class => 42]]: the thrown exceptions must match
+     *   the list exactly, count included
+     * A null code accepts any code; bare classes and single-pair maps cannot be mixed in one list.
+     *
+     * Expected delays are the exact clock moves, in seconds, the consuming must perform to deliver
+     * delayed messages, e.g. [10, 1, 30, 60]; null skips the check, [] asserts the clock never moved.
+     *
+     * @param array<class-string<\Throwable>, int|string|null>|list<class-string<\Throwable>|array<class-string<\Throwable>, int|string|null>> $expectedFailures
+     * @param list<int|float>|null $expectedDelays
      * @param string[] $transportNames
      */
     public static function consumeAsyncMessages(
         array $expectedFailures = [],
+        ?array $expectedDelays = null,
         array $transportNames = [self::ASYNC_TRANSPORT_NAME],
     ): void {
         self::assertNotSame([], $transportNames, 'At least one transport name is required to consume messages.');
 
+        if (\in_array(self::FAILED_TRANSPORT_NAME, $transportNames, true)) {
+            self::fail(\sprintf(
+                'The "%s" transport must not be consumed - it would re-handle dead-lettered messages. Assert its'
+                . ' content instead, e.g. via assertCountOfMessagesSentToFailedTransport().',
+                self::FAILED_TRANSPORT_NAME
+            ));
+        }
+
+        self::assertExpectedFailuresShape($expectedFailures);
+        self::assertExpectedDelaysShape($expectedDelays);
+
+        $isBareClassList = \array_is_list($expectedFailures)
+            && $expectedFailures !== []
+            && \array_all($expectedFailures, static fn (mixed $entry): bool => \is_string($entry));
+
+        if ($isBareClassList) {
+            /** @var list<class-string<\Throwable>> $bareExceptionClasses */
+            $bareExceptionClasses = $expectedFailures;
+            $expectedFailures = \array_fill_keys($bareExceptionClasses, 0);
+        }
+
         $transports = [];
         foreach ($transportNames as $transportName) {
-            $transports[$transportName] = self::getTransport($transportName);
+            $transport = self::getTransport($transportName);
+
+            if (\in_array($transport, $transports, true)) {
+                self::fail(\sprintf(
+                    'The "%s" transport resolves to the same transport instance as another listed transport'
+                    . ' name, which would double-count its messages and failures.',
+                    $transportName
+                ));
+            }
+
+            $transports[$transportName] = $transport;
         }
 
         $alreadyRejectedCounts = \array_map(
-            static fn(InMemoryTransport $transport): int => \count($transport->getRejected()),
+            static fn (InMemoryTransport $transport): int => \count($transport->getRejected()),
             $transports
         );
 
-        self::runMessengerWorker($transports);
+        $clockAdvances = self::runMessengerWorker($transports);
 
         $messageFailures = [];
         foreach ($transports as $transportName => $transport) {
@@ -111,7 +155,19 @@ trait MessengerAssertionsTrait
             }
         }
 
-        self::assertMessageFailures($expectedFailures, $messageFailures);
+        if (\array_is_list($expectedFailures) && $expectedFailures !== []) {
+            /** @var list<array<class-string<\Throwable>, int|string|null>> $exactExpectedFailures */
+            $exactExpectedFailures = $expectedFailures;
+            self::assertMessageFailuresExactly($exactExpectedFailures, $messageFailures);
+        } else {
+            /** @var array<class-string<\Throwable>, int|string|null> $leastOnceExpectedFailures */
+            $leastOnceExpectedFailures = $expectedFailures;
+            self::assertMessageFailures($leastOnceExpectedFailures, $messageFailures);
+        }
+
+        if ($expectedDelays !== null) {
+            self::assertClockAdvances($expectedDelays, $clockAdvances);
+        }
     }
 
     /**
@@ -139,7 +195,7 @@ trait MessengerAssertionsTrait
     /**
      * @param array<string, \Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport> $transports
      */
-    private static function advanceClockToNextDelayedMessage(array $transports, ClockInterface $clock): bool
+    private static function advanceClockToNextDelayedMessage(array $transports, ClockInterface $clock): ?float
     {
         $dueAtTimestamps = [];
 
@@ -153,7 +209,7 @@ trait MessengerAssertionsTrait
         }
 
         if ($dueAtTimestamps === []) {
-            return false;
+            return null;
         }
 
         if ($clock instanceof MockClock === false) {
@@ -166,8 +222,9 @@ trait MessengerAssertionsTrait
 
         $nowTimestamp = (float)$clock->now()
             ->format('U.u');
+        $advanceBySeconds = (float)\max(0, \min($dueAtTimestamps) - $nowTimestamp);
 
-        $clock->sleep(\max(0, \min($dueAtTimestamps) - $nowTimestamp) + self::CLOCK_OVERSHOOT_IN_SECONDS);
+        $clock->sleep($advanceBySeconds + self::CLOCK_OVERSHOOT_IN_SECONDS);
 
         if (self::countAvailableMessages($transports) === 0) {
             self::fail(
@@ -177,21 +234,119 @@ trait MessengerAssertionsTrait
             );
         }
 
-        return true;
+        return $advanceBySeconds;
+    }
+
+    /**
+     * @param list<int|float> $expectedDelays
+     * @param list<float> $actualAdvances
+     */
+    private static function assertClockAdvances(array $expectedDelays, array $actualAdvances): void
+    {
+        $toMilliseconds = static fn (int|float $seconds): int => (int)\round($seconds * 1000);
+        $expectedMilliseconds = \array_map($toMilliseconds, $expectedDelays);
+        $actualMilliseconds = \array_map($toMilliseconds, $actualAdvances);
+
+        if ($expectedMilliseconds === $actualMilliseconds) {
+            return;
+        }
+
+        $format = static fn (int $milliseconds): string => \rtrim(\rtrim(\number_format($milliseconds / 1000, 3, '.',
+            ''), '0'), '.');
+
+        self::fail(\sprintf(
+            'Consuming was expected to move the clock by [%s] second(s), but it moved by [%s].',
+            \implode(', ', \array_map($format, $expectedMilliseconds)),
+            \implode(', ', \array_map($format, $actualMilliseconds))
+        ));
+    }
+
+    private static function assertExpectedDelaysShape(?array $expectedDelays): void
+    {
+        if ($expectedDelays === null) {
+            return;
+        }
+
+        if (\array_is_list($expectedDelays) === false) {
+            self::fail('Expected delays must be a list of seconds, e.g. [10, 1, 30, 60].');
+        }
+
+        foreach ($expectedDelays as $delay) {
+            if ((\is_int($delay) || \is_float($delay)) === false || \is_finite($delay) === false || $delay < 0) {
+                self::fail(\sprintf(
+                    'Expected delays must be non-negative numbers of seconds, %s given.',
+                    \var_export($delay, true)
+                ));
+            }
+        }
+    }
+
+    private static function assertExpectedFailureCodeShape(string $exceptionClass, mixed $expectedCode): void
+    {
+        if ($expectedCode !== null && \is_int($expectedCode) === false && \is_string($expectedCode) === false) {
+            self::fail(\sprintf(
+                'An expected exception code must be an integer, a string, or null to accept any code, %s given'
+                . ' for %s.',
+                \get_debug_type($expectedCode),
+                $exceptionClass
+            ));
+        }
     }
 
     private static function assertExpectedFailuresShape(array $expectedFailures): void
     {
-        foreach (\array_keys($expectedFailures) as $exceptionClass) {
+        if (\array_is_list($expectedFailures)) {
+            $hasBareClasses = false;
+            $hasPairs = false;
+
+            foreach ($expectedFailures as $index => $expectedFailure) {
+                if (\is_string($expectedFailure)) {
+                    $hasBareClasses = true;
+
+                    continue;
+                }
+
+                if (\is_array($expectedFailure) === false
+                    || \count($expectedFailure) !== 1
+                    || \is_string(\array_key_first($expectedFailure)) === false) {
+                    self::fail(\sprintf(
+                        'In a list of expected failures every entry must be an exception class, which is short'
+                        . ' for [SomeException::class => 0], or a single-pair map of an exception class to a'
+                        . ' code, e.g. [SomeException::class => 42], %s given at index %d.',
+                        \is_array($expectedFailure)
+                            ? \sprintf('an array of %d entries', \count($expectedFailure))
+                            : \get_debug_type($expectedFailure),
+                        $index
+                    ));
+                }
+
+                $exceptionClass = (string)\array_key_first($expectedFailure);
+                self::assertExpectedFailureCodeShape($exceptionClass, $expectedFailure[$exceptionClass]);
+                $hasPairs = true;
+            }
+
+            if ($hasBareClasses && $hasPairs) {
+                self::fail(
+                    'A list of expected failures must be either all bare exception classes (asserted as thrown'
+                    . ' at least once) or all single-pair maps (asserted as the exact list of thrown'
+                    . ' exceptions). To keep the exact mode, write a bare class as [SomeException::class => 0].'
+                );
+            }
+
+            return;
+        }
+
+        foreach ($expectedFailures as $exceptionClass => $expectedCode) {
             if (\is_string($exceptionClass) === false) {
                 self::fail(\sprintf(
-                    'Expected failures must map an exception class to a code, or to null to accept any code,'
-                    . ' %s given as a key. The [SomeException::class] and [[SomeException::class => 42]] formats'
-                    . ' of EasyTest 6.x are no longer supported. The bare-class format matched only code 0, so'
-                    . ' its exact replacement is [SomeException::class => 0].',
+                    'Expected failures must map an exception class to a code (or to null to accept any code),'
+                    . ' or be a list of such single-pair maps to assert the exact failures, %s given as a key.'
+                    . ' Mixing the two shapes is not supported.',
                     \var_export($exceptionClass, true)
                 ));
             }
+
+            self::assertExpectedFailureCodeShape($exceptionClass, $expectedCode);
         }
     }
 
@@ -201,8 +356,6 @@ trait MessengerAssertionsTrait
      */
     private static function assertMessageFailures(array $expectedFailures, array $actualFailures): void
     {
-        self::assertExpectedFailuresShape($expectedFailures);
-
         $missingFailures = $expectedFailures;
 
         foreach ($actualFailures as $actualFailure) {
@@ -236,6 +389,65 @@ trait MessengerAssertionsTrait
     }
 
     /**
+     * @param list<array<class-string<\Throwable>, int|string|null>> $expectedFailures
+     * @param \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp[] $actualFailures
+     */
+    private static function assertMessageFailuresExactly(array $expectedFailures, array $actualFailures): void
+    {
+        $expectedCodesByClass = [];
+        foreach ($expectedFailures as $expectedFailure) {
+            foreach ($expectedFailure as $exceptionClass => $expectedCode) {
+                $expectedCodesByClass[$exceptionClass][] = $expectedCode;
+            }
+        }
+
+        $unexpectedFailures = [];
+        foreach ($actualFailures as $actualFailure) {
+            $exceptionClass = $actualFailure->getExceptionClass();
+            $expectedCodes = $expectedCodesByClass[$exceptionClass] ?? [];
+            $matchedKey = \array_search($actualFailure->getExceptionCode(), $expectedCodes, true);
+
+            if ($matchedKey === false) {
+                $matchedKey = \array_search(null, $expectedCodes, true);
+            }
+
+            if ($matchedKey === false) {
+                $unexpectedFailures[] = $actualFailure;
+
+                continue;
+            }
+
+            unset($expectedCodesByClass[$exceptionClass][$matchedKey]);
+        }
+
+        $missingFailures = [];
+        foreach ($expectedCodesByClass as $exceptionClass => $expectedCodes) {
+            foreach ($expectedCodes as $expectedCode) {
+                $missingFailures[] = self::describeExpectedFailure($exceptionClass, $expectedCode);
+            }
+        }
+
+        if ($missingFailures === [] && $unexpectedFailures === []) {
+            return;
+        }
+
+        $problems = [];
+
+        if ($missingFailures !== []) {
+            $problems[] = "Expected but never thrown:\n" . \implode("\n", $missingFailures);
+        }
+
+        if ($unexpectedFailures !== []) {
+            $problems[] = "Thrown but not expected:\n\n"
+                . \implode("\n\n", \array_map(self::describeFailure(...), $unexpectedFailures));
+        }
+
+        self::fail(
+            "The thrown exceptions do not match the expected list exactly.\n\n" . \implode("\n\n", $problems)
+        );
+    }
+
+    /**
      * @param array<string, \Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport> $transports
      */
     private static function countAvailableMessages(array $transports): int
@@ -249,6 +461,13 @@ trait MessengerAssertionsTrait
         return $availableMessagesCount;
     }
 
+    private static function describeExpectedFailure(string $exceptionClass, int|string|null $expectedCode): string
+    {
+        return $expectedCode === null
+            ? \sprintf(' - %s (any code)', $exceptionClass)
+            : \sprintf(' - %s (code: %s)', $exceptionClass, \var_export($expectedCode, true));
+    }
+
     /**
      * @param array<class-string<\Throwable>, int|string|null> $expectedFailures
      */
@@ -260,12 +479,10 @@ trait MessengerAssertionsTrait
 
         $descriptions = [];
         foreach ($expectedFailures as $exceptionClass => $exceptionCode) {
-            $descriptions[] = $exceptionCode === null
-                ? ' - ' . $exceptionClass
-                : \sprintf(' - %s (code: %s)', $exceptionClass, \var_export($exceptionCode, true));
+            $descriptions[] = self::describeExpectedFailure($exceptionClass, $exceptionCode);
         }
 
-        return \implode(\PHP_EOL, $descriptions);
+        return \implode("\n", $descriptions);
     }
 
     private static function describeFailure(ErrorDetailsStamp $errorDetailsStamp): string
@@ -302,6 +519,14 @@ trait MessengerAssertionsTrait
         }
 
         return $messageFailures;
+    }
+
+    private static function getNextId(InMemoryTransport $transport): int
+    {
+        /** @var int $nextId */
+        $nextId = new ReflectionProperty(InMemoryTransport::class, 'nextId')->getValue($transport);
+
+        return $nextId;
     }
 
     private static function getTransport(string $transportName): InMemoryTransport
@@ -356,8 +581,10 @@ trait MessengerAssertionsTrait
 
     /**
      * @param array<string, \Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport> $transports
+     *
+     * @return list<float>
      */
-    private static function runMessengerWorker(array $transports): void
+    private static function runMessengerWorker(array $transports): array
     {
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
@@ -375,11 +602,13 @@ trait MessengerAssertionsTrait
         $eventDispatcher->addListener(WorkerRunningEvent::class, $stopWorkerOnIdleListener);
         $eventDispatcher->addSubscriber($resetServicesListener);
 
-        $sentCountsBeforeRun = \array_map(
-            static fn(InMemoryTransport $transport): int => \count($transport->getSent()),
+        $expectedSentCounts = \array_map(
+            static fn (InMemoryTransport $transport
+            ): int => \count($transport->getSent()) - self::getNextId($transport),
             $transports
         );
         $clock = Clock::get();
+        $clockAdvances = [];
         $messageLimitListener = null;
 
         $run = 0;
@@ -389,11 +618,13 @@ trait MessengerAssertionsTrait
                 $availableMessagesCount = self::countAvailableMessages($transports);
 
                 if ($availableMessagesCount === 0) {
-                    $retryIsDue = self::advanceClockToNextDelayedMessage($transports, $clock);
+                    $advancedBySeconds = self::advanceClockToNextDelayedMessage($transports, $clock);
 
-                    if ($retryIsDue === false) {
+                    if ($advancedBySeconds === null) {
                         break;
                     }
+
+                    $clockAdvances[] = $advancedBySeconds;
 
                     continue;
                 }
@@ -420,7 +651,9 @@ trait MessengerAssertionsTrait
         }
 
         foreach ($transports as $transportName => $transport) {
-            if (\count($transport->getSent()) < $sentCountsBeforeRun[$transportName]) {
+            $expectedSentCount = $expectedSentCounts[$transportName] + self::getNextId($transport);
+
+            if (\count($transport->getSent()) !== $expectedSentCount) {
                 self::fail(\sprintf(
                     'The "%s" in-memory transport was reset while consuming messages, so messages were silently'
                     . ' lost. The test transport must survive service resets, e.g. via a transport factory that'
@@ -443,5 +676,7 @@ trait MessengerAssertionsTrait
             \implode('", "', \array_keys($leftoverMessageClasses)),
             self::MAX_WORKER_RUNS
         ));
+
+        return $clockAdvances;
     }
 }
