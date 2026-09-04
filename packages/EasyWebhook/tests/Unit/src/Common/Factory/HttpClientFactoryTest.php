@@ -5,15 +5,49 @@ namespace EonX\EasyWebhook\Tests\Unit\Common\Factory;
 
 use EonX\EasyWebhook\Common\Exception\InvalidSsrfProtectionConfigException;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
+use EonX\EasyWebhook\Common\HttpClient\AllowedHostsHttpClient;
 use EonX\EasyWebhook\Common\HttpClient\RequestLimitsHttpClient;
 use EonX\EasyWebhook\Tests\Unit\AbstractUnitTestCase;
-use Symfony\Component\HttpClient\NoPrivateNetworkHttpClient;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class HttpClientFactoryTest extends AbstractUnitTestCase
 {
+    /**
+     * @see testRejectsAllowedHostThatIsNotABareHostname
+     */
+    public static function provideInvalidAllowedHosts(): iterable
+    {
+        yield 'Scheme' => ['https://api.example.com'];
+
+        yield 'Path' => ['api.example.com/webhooks'];
+
+        yield 'Port' => ['api.example.com:443'];
+
+        yield 'Inner whitespace' => ['api. example.com'];
+
+        yield 'IPv4 literal' => ['10.24.80.5'];
+
+        yield 'IPv6 literal' => ['::1'];
+    }
+
+    public function testAllowedHostBypassesGuardButOtherHostsStayBlocked(): void
+    {
+        $httpClient = (new HttpClientFactory(allowedHosts: ['internal.example.com']))->create();
+
+        $response = $httpClient->request('GET', 'http://internal.example.com/', [
+            'resolve' => ['internal.example.com' => '10.24.80.5'],
+        ]);
+        $response->cancel();
+
+        self::assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertRequestBlocked($httpClient, 'http://other.example.com/', [
+            'resolve' => ['other.example.com' => '10.24.80.5'],
+        ]);
+    }
+
     /**
      * allowed_ranges must carve out only the range it removes: after allowing IPv4 localhost, a
      * loopback request passes the SSRF gate while the cloud metadata endpoint stays blocked. The
@@ -44,14 +78,14 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
     public function testCreateBlocksExtraRanges(): void
     {
         self::assertInstanceOf(
-            NoPrivateNetworkHttpClient::class,
+            AllowedHostsHttpClient::class,
             (new HttpClientFactory(extraBlockedRanges: ['8.8.8.8/32']))->create()
         );
     }
 
     public function testCreateBlocksPrivateNetworksByDefault(): void
     {
-        self::assertInstanceOf(NoPrivateNetworkHttpClient::class, (new HttpClientFactory())->create());
+        self::assertInstanceOf(AllowedHostsHttpClient::class, (new HttpClientFactory())->create());
     }
 
     public function testCreateEnforcesRequestLimitsWhenEnabled(): void
@@ -67,15 +101,23 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         $httpClient = (new HttpClientFactory(blockPrivateNetworks: false))->create();
 
         self::assertInstanceOf(HttpClientInterface::class, $httpClient);
-        self::assertNotInstanceOf(NoPrivateNetworkHttpClient::class, $httpClient);
+        self::assertNotInstanceOf(AllowedHostsHttpClient::class, $httpClient);
     }
 
     public function testCreateWithAllowedRanges(): void
     {
         self::assertInstanceOf(
-            NoPrivateNetworkHttpClient::class,
+            AllowedHostsHttpClient::class,
             (new HttpClientFactory(allowedRanges: ['127.0.0.0/8']))->create()
         );
+    }
+
+    public function testDoesNotValidateAllowedHostsWhenProtectionDisabled(): void
+    {
+        $httpClient = (new HttpClientFactory(blockPrivateNetworks: false, allowedHosts: ['https://api.example.com']))
+            ->create();
+
+        self::assertNotInstanceOf(AllowedHostsHttpClient::class, $httpClient);
     }
 
     public function testDoesNotValidateAllowedRangesWhenProtectionDisabled(): void
@@ -84,7 +126,17 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         $httpClient = (new HttpClientFactory(blockPrivateNetworks: false, allowedRanges: ['8.8.8.8/32']))
             ->create();
 
-        self::assertNotInstanceOf(NoPrivateNetworkHttpClient::class, $httpClient);
+        self::assertNotInstanceOf(AllowedHostsHttpClient::class, $httpClient);
+    }
+
+    public function testEmptyAllowedHostEntriesMeanEmptyAllowlist(): void
+    {
+        self::assertSame([], HttpClientFactory::normalizeAllowedHosts(['']));
+        self::assertSame([], HttpClientFactory::normalizeAllowedHosts([null]));
+
+        $httpClient = (new HttpClientFactory(allowedHosts: ['']))->create();
+
+        $this->assertRequestBlocked($httpClient, 'http://169.254.169.254/latest/meta-data/');
     }
 
     /**
@@ -97,6 +149,31 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
 
         $this->assertRequestBlocked($httpClient, 'http://8.8.8.8/');
         $this->assertRequestBlocked($httpClient, 'http://169.254.169.254/latest/meta-data/');
+    }
+
+    public function testNormalizesAllowedHosts(): void
+    {
+        self::assertSame(
+            ['api.ahi.example', 'other.example'],
+            HttpClientFactory::normalizeAllowedHosts([' Api.AHI.Example ', '', 'other.example', 'API.ahi.example'])
+        );
+
+        $httpClient = (new HttpClientFactory(allowedHosts: [' Api.AHI.Example ']))->create();
+
+        $response = $httpClient->request('GET', 'http://api.ahi.example/', [
+            'resolve' => ['api.ahi.example' => '10.24.80.5'],
+        ]);
+        $response->cancel();
+
+        self::assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    #[DataProvider('provideInvalidAllowedHosts')]
+    public function testRejectsAllowedHostThatIsNotABareHostname(string $allowedHost): void
+    {
+        $this->expectException(InvalidSsrfProtectionConfigException::class);
+
+        new HttpClientFactory(allowedHosts: [$allowedHost]);
     }
 
     public function testRejectsAllowedRangeCoveredByBroaderRange(): void
@@ -152,12 +229,12 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         ]);
     }
 
-    private function assertRequestBlocked(HttpClientInterface $httpClient, string $url): void
+    private function assertRequestBlocked(HttpClientInterface $httpClient, string $url, array $options = []): void
     {
         $blocked = false;
 
         try {
-            $httpClient->request('GET', $url);
+            $httpClient->request('GET', $url, $options);
         } catch (TransportExceptionInterface) {
             $blocked = true;
         }
