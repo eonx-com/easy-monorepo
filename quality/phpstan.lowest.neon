@@ -40,4 +40,7 @@ parameters:
         - message: '#Method Symfony\\Component\\Messenger\\Transport\\InMemory\\InMemoryTransport\:\:get\(\) invoked with 1 parameter, 0 required#'
           path: %currentWorkingDirectory%/packages/EasyTest/src/Common/Trait/MessengerAssertionsTrait.php
 
+        - message: '#Method Symfony\\Component\\Messenger\\Transport\\InMemory\\InMemoryTransport\:\:get\(\) invoked with 1 parameter, 0 required#'
+          path: %currentWorkingDirectory%/packages/EasyTest/tests/Unit/src/Messenger/Factory/InMemoryPersistentTransportFactoryTest.php
+
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'

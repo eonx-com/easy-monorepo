@@ -118,7 +118,7 @@ trait MessengerAssertionsTrait
 
         $isBareClassList = \array_is_list($expectedFailures)
             && $expectedFailures !== []
-            && \array_all($expectedFailures, static fn (mixed $entry): bool => \is_string($entry));
+            && \array_all($expectedFailures, static fn(mixed $entry): bool => \is_string($entry));
 
         if ($isBareClassList) {
             /** @var list<class-string<\Throwable>> $bareExceptionClasses */
@@ -142,7 +142,7 @@ trait MessengerAssertionsTrait
         }
 
         $alreadyRejectedCounts = \array_map(
-            static fn (InMemoryTransport $transport): int => \count($transport->getRejected()),
+            static fn(InMemoryTransport $transport): int => \count($transport->getRejected()),
             $transports
         );
 
@@ -243,22 +243,22 @@ trait MessengerAssertionsTrait
      */
     private static function assertClockAdvances(array $expectedDelays, array $actualAdvances): void
     {
-        $toMilliseconds = static fn (int|float $seconds): int => (int)\round($seconds * 1000);
+        $toMilliseconds = static fn(int|float $seconds): int => (int)\round($seconds * 1000);
         $expectedMilliseconds = \array_map($toMilliseconds, $expectedDelays);
         $actualMilliseconds = \array_map($toMilliseconds, $actualAdvances);
+        $message = '';
 
-        if ($expectedMilliseconds === $actualMilliseconds) {
-            return;
+        if ($expectedMilliseconds !== $actualMilliseconds) {
+            $toSeconds = static fn(int $milliseconds): string
+                => \rtrim(\rtrim(\number_format($milliseconds / 1000, 3, '.', ''), '0'), '.');
+            $message = \sprintf(
+                'Consuming was expected to move the clock by [%s] second(s), but it moved by [%s].',
+                \implode(', ', \array_map($toSeconds, $expectedMilliseconds)),
+                \implode(', ', \array_map($toSeconds, $actualMilliseconds))
+            );
         }
 
-        $format = static fn (int $milliseconds): string => \rtrim(\rtrim(\number_format($milliseconds / 1000, 3, '.',
-            ''), '0'), '.');
-
-        self::fail(\sprintf(
-            'Consuming was expected to move the clock by [%s] second(s), but it moved by [%s].',
-            \implode(', ', \array_map($format, $expectedMilliseconds)),
-            \implode(', ', \array_map($format, $actualMilliseconds))
-        ));
+        self::assertSame($expectedMilliseconds, $actualMilliseconds, $message);
     }
 
     private static function assertExpectedDelaysShape(?array $expectedDelays): void
@@ -603,7 +603,8 @@ trait MessengerAssertionsTrait
         $eventDispatcher->addSubscriber($resetServicesListener);
 
         $expectedSentCounts = \array_map(
-            static fn (InMemoryTransport $transport
+            static fn(
+                InMemoryTransport $transport,
             ): int => \count($transport->getSent()) - self::getNextId($transport),
             $transports
         );
@@ -639,7 +640,9 @@ trait MessengerAssertionsTrait
                 $eventDispatcher->addSubscriber($messageLimitListener);
 
                 $worker = new Worker($transports, $messageBus, $eventDispatcher, clock: $clock);
-                $worker->run(['fetch_size' => $availableMessagesCount]);
+                // The idle sleep is unreachable while the stop-on-idle listener is armed; 0 keeps it that way
+                // even if the Worker ever reorders its idle handling, so the mock clock never drifts
+                $worker->run(['fetch_size' => $availableMessagesCount, 'sleep' => 0]);
             }
         } finally {
             $eventDispatcher->removeListener(WorkerRunningEvent::class, $stopWorkerOnIdleListener);

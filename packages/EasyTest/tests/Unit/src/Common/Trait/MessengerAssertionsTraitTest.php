@@ -66,8 +66,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
 
     public function testItComparesClockAdvancesAtMillisecondPrecision(): void
     {
-        $this->expectNotToPerformAssertions();
-
         self::assertClockAdvances([1, 30.5], [1.0000004, 30.499999]);
     }
 

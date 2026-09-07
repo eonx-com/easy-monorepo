@@ -81,6 +81,7 @@ return RectorConfig::configure()
             'packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionDbal3Factory.php',
             // @todo Remove after drop Symfony 7 support
             'packages/EasyTest/src/Common/Trait/MessengerAssertionsTrait.php',
+            'packages/EasyTest/tests/Unit/src/Messenger/Factory/InMemoryPersistentTransportFactoryTest.php',
         ],
         StringClassNameToClassConstantRector::class => [
             // @todo Remove when Doctrine DBAL 3 support is dropped

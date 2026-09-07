@@ -12,8 +12,26 @@ by moving a mock clock — and then assert what happened.
 ## Requirements
 
 - The asserted transports must use an in-memory DSN in the test environment, registered via a factory that keeps its
-  transports across service resets (e.g. `in-memory-persistent://`). A plain `in-memory://` transport is wiped by
-  `messenger.listener.reset_services` in the middle of consuming, and the trait fails the test when it detects that.
+  transports across service resets. A plain `in-memory://` transport is wiped by `messenger.listener.reset_services`
+  in the middle of consuming, and the trait fails the test when it detects that. The package ships such a factory —
+  register `\EonX\EasyTest\Messenger\Factory\InMemoryPersistentTransportFactory` in the test services (it tags itself
+  as a `messenger.transport_factory` when autoconfiguration is on) and point the transports at
+  `in-memory-persistent://`:
+
+  ```php
+  // config/packages/test/messenger.php
+  'transports' => [
+      'async' => [
+          'dsn' => 'in-memory-persistent://',
+          'retry_strategy' => [
+              'jitter' => 0,
+          ],
+      ],
+      'failed' => [
+          'dsn' => 'in-memory-persistent://',
+      ],
+  ],
+  ```
 - Delayed messages (retries or an explicit `DelayStamp`) require a mocked clock. Add
   `\Symfony\Component\Clock\Test\ClockSensitiveTrait` to the test case and call `self::mockTime()` at the start of
   every test whose flow hits a delay: it swaps the global clock for a `MockClock` and automatically restores the real
