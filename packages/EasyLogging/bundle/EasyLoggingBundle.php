@@ -6,9 +6,11 @@ namespace EonX\EasyLogging\Bundle;
 use EonX\EasyLogging\Bundle\CompilerPass\DefaultStreamHandlerCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ReplaceChannelsDefinitionCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ValidateSensitiveDataSanitizerCompilerPass;
+use EonX\EasyLogging\Bundle\Enum\BundleParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
+use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
 use Monolog\Logger;
@@ -88,6 +90,48 @@ final class EasyLoggingBundle extends AbstractBundle
 
             $container->import('config/bugsnag_handler.php');
         }
+    }
+
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        if (
+            (bool)$this->getRawConfigValue($builder, 'use_symfony_monolog_bundle', false) === false
+            || (bool)$this->getRawConfigValue($builder, 'bugsnag_handler', false) === false
+        ) {
+            return;
+        }
+
+        $handler = [
+            'id' => BugsnagMonologHandler::class,
+            'type' => 'service',
+        ];
+
+        /** @var string[] $channels */
+        $channels = (array)$this->getRawConfigValue($builder, 'bugsnag_handler_channels', []);
+
+        if (\count($channels) > 0) {
+            $handler['channels'] = $channels;
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'handlers' => [
+                BundleParam::BugsnagHandlerName->value => $handler,
+            ],
+        ]);
+    }
+
+    private function getRawConfigValue(ContainerBuilder $builder, string $option, mixed $default): mixed
+    {
+        $value = $default;
+
+        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
+            if (\array_key_exists($option, $config)) {
+                $value = $config[$option];
+            }
+        }
+
+        return $builder->getParameterBag()
+            ->resolveValue($value);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool

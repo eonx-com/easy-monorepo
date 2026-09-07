@@ -17,6 +17,10 @@ return static function (DefinitionConfigurator $definition) {
             ->integerNode('stream_handler_level')->defaultNull()->end()
             ->booleanNode('bugsnag_handler')->defaultFalse()->end()
             ->integerNode('bugsnag_handler_level')->defaultNull()->end()
+            ->arrayNode('bugsnag_handler_channels')
+                ->info('Channels the Bugsnag handler is attached to when using symfony/monolog-bundle (all if empty)')
+                ->stringPrototype()->end()
+            ->end()
             ->booleanNode('use_symfony_monolog_bundle')->defaultFalse()->end()
         ->end();
 };
