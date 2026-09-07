@@ -18,6 +18,11 @@
         "symfony/translation-contracts": "^3.5"
     },
     "require-dev": {
+        "symfony/clock": "^7.4 || ^8.0",
+        "symfony/error-handler": "^7.4 || ^8.0",
+        "symfony/event-dispatcher": "^7.4 || ^8.0",
+        "symfony/framework-bundle": "^7.4 || ^8.0",
+        "symfony/messenger": "^7.4 || ^8.0",
         "symfony/uid": "^7.4 || ^8.0"
     },
     "autoload": {
@@ -29,7 +34,8 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyTest\\Tests\\": "tests",
-            "EonX\\EasyTest\\Tests\\Unit\\": "tests/Unit/src"
+            "EonX\\EasyTest\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyTest\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
     "bin": [
