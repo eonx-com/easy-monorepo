@@ -13,10 +13,10 @@ by moving a mock clock — and then assert what happened.
 
 - The asserted transports must use an in-memory DSN in the test environment, registered via a factory that keeps its
   transports across service resets. A plain `in-memory://` transport is wiped by `messenger.listener.reset_services`
-  in the middle of consuming, and the trait fails the test when it detects that. The package ships such a factory —
-  register `\EonX\EasyTest\Messenger\Factory\InMemoryPersistentTransportFactory` in the test services (it tags itself
-  as a `messenger.transport_factory` when autoconfiguration is on) and point the transports at
-  `in-memory-persistent://`:
+  in the middle of consuming, and the trait fails the test when it detects that. The package ships such a factory,
+  and enabling `EasyTestBundle` in the test environment registers it automatically (when the bundle is not enabled,
+  register `\EonX\EasyTest\Messenger\Factory\InMemoryPersistentTransportFactory` in the test services yourself), so
+  the transports can point at `in-memory-persistent://`:
 
   ```php
   // config/packages/test/messenger.php
