@@ -44,14 +44,20 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         /** @var \Monolog\Logger $otherLogger */
         $otherLogger = $container->get('monolog.logger.other');
 
-        self::assertTrue($this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class));
-        self::assertTrue($this->hasInstanceOf($otherLogger->getHandlers(), BugsnagMonologHandler::class));
+        self::assertTrue(
+            $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
+            'The Bugsnag handler must be attached to the default "app" channel.'
+        );
+        self::assertTrue(
+            $this->hasInstanceOf($otherLogger->getHandlers(), BugsnagMonologHandler::class),
+            'The Bugsnag handler must be attached to every channel when "bugsnag_handler_channels" is empty.'
+        );
     }
 
     public function testBugsnagHandlerIsRegisteredForConfiguredChannelsOnly(): void
     {
         $container = $this->bootMonologKernel(
-            __DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_with_bugsnag_handler.php',
+            __DIR__ . '/../../Fixture/config/use_symfony_monolog_bundle_with_bugsnag_handler_channels.php',
             'test_monolog_bugsnag'
         );
 
