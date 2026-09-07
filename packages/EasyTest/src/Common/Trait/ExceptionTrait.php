@@ -27,6 +27,7 @@ trait ExceptionTrait
         string $expectedException,
         ?int $code = null,
         ?string $previousException = null,
+        ?string $expectedMessage = null,
     ): void {
         $this->isThrownExceptionAssertionNeeded = false;
 
@@ -61,6 +62,10 @@ trait ExceptionTrait
 
         if ($previousException !== null) {
             self::assertInstanceOf($previousException, $this->thrownException?->getPrevious());
+        }
+
+        if ($expectedMessage !== null) {
+            self::assertSame($expectedMessage, $this->thrownException?->getMessage());
         }
     }
 
