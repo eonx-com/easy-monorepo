@@ -97,7 +97,7 @@ trait QueuedEmailAssertionTrait
 
         return \array_all(
             $constraints,
-            static fn(Constraint $constraint): bool => $constraint->evaluate($email, '', true)
+            static fn(Constraint $constraint): bool => $constraint->evaluate($email, '', true) === true
         );
     }
 }
