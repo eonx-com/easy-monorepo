@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\HttpClient;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -13,7 +10,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
-final class AllowedHostsHttpClient implements HttpClientInterface, LoggerAwareInterface, ResetInterface
+final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterface
 {
     public function __construct(
         private HttpClientInterface $protectedClient,
@@ -32,10 +29,6 @@ final class AllowedHostsHttpClient implements HttpClientInterface, LoggerAwareIn
             return new AsyncResponse($this->unprotectedClient, $method, $url, $options);
         }
 
-        if ($host !== null) {
-            $options = self::pinResolvedIp($host, $url, $options);
-        }
-
         return new AsyncResponse($this->protectedClient, $method, $url, $options);
     }
 
@@ -47,17 +40,6 @@ final class AllowedHostsHttpClient implements HttpClientInterface, LoggerAwareIn
 
         if ($this->unprotectedClient instanceof ResetInterface) {
             $this->unprotectedClient->reset();
-        }
-    }
-
-    public function setLogger(LoggerInterface $logger): void
-    {
-        if ($this->protectedClient instanceof LoggerAwareInterface) {
-            $this->protectedClient->setLogger($logger);
-        }
-
-        if ($this->unprotectedClient instanceof LoggerAwareInterface) {
-            $this->unprotectedClient->setLogger($logger);
         }
     }
 
@@ -88,39 +70,6 @@ final class AllowedHostsHttpClient implements HttpClientInterface, LoggerAwareIn
         }
 
         return \mb_strtolower(\trim($host, '[]'));
-    }
-
-    private static function pinResolvedIp(string $host, string $url, array $options): array
-    {
-        if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
-            return $options;
-        }
-
-        if (\is_array($options['resolve'] ?? null) === false) {
-            $options['resolve'] = [];
-        }
-
-        foreach (\array_keys($options['resolve']) as $pinnedHost) {
-            if (\mb_strtolower((string)$pinnedHost) === $host) {
-                return $options;
-            }
-        }
-
-        $ipv4 = \gethostbynamel($host);
-        $ip = \is_array($ipv4) ? ($ipv4[0] ?? null) : null;
-
-        if ($ip === null) {
-            $ipv6 = \dns_get_record($host, \DNS_AAAA);
-            $ip = \is_array($ipv6) ? ($ipv6[0]['ipv6'] ?? null) : null;
-        }
-
-        if (\is_string($ip) === false) {
-            throw new TransportException(\sprintf('Host "%s" could not be resolved for "%s".', $host, $url));
-        }
-
-        $options['resolve'][$host] = $ip;
-
-        return $options;
     }
 
     private function isAllowedHost(string $host): bool

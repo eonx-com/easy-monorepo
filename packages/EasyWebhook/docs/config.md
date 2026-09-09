@@ -140,10 +140,6 @@ $container->extension('easy_webhook', [
 An empty `OUTGOING_WEBHOOK_SSRF_ALLOWED_HOSTS` means an empty allowlist. An entry that could never
 match (not a bare hostname, or an IP address) is **rejected at startup**.
 
-A webhook whose hostname does not resolve at all fails with `Host "…" could not be resolved for "…"`,
-distinct from the `Host "…" is blocked for "…"` message of an actual SSRF block, so a DNS problem is
-not mistaken for a blocked private address.
-
 > Note: enabling this by default is a behavioural change — webhooks whose URL resolves to a
 > private or reserved IP are now rejected out of the box (surfaced as a failed webhook, not a
 > crash). Set `ssrf_protection.enabled` to `false` to restore the previous behaviour.

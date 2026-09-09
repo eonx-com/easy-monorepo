@@ -130,47 +130,12 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         $unprotectedClient = new MockHttpClient(new MockResponse('unprotected'));
         $client = new AllowedHostsHttpClient($protectedClient, $unprotectedClient, ['api.ahi.example']);
 
-        $content = $client->request('POST', 'https://api.other.example/webhooks', [
-            'resolve' => ['api.other.example' => '203.0.113.10'],
-        ])->getContent();
+        $content = $client->request('POST', 'https://api.other.example/webhooks')
+            ->getContent();
 
         self::assertSame('protected', $content);
         self::assertNull($captured['max_redirects'] ?? null);
         self::assertSame(0, $unprotectedClient->getRequestsCount());
-    }
-
-    public function testPinsResolvedIpForProtectedClient(): void
-    {
-        $captured = [];
-        $protectedClient = new MockHttpClient(
-            static function (string $method, string $url, array $options) use (&$captured): MockResponse {
-                $captured = $options;
-
-                return new MockResponse('ok');
-            }
-        );
-        $client = new AllowedHostsHttpClient($protectedClient, new MockHttpClient(), ['api.ahi.example']);
-
-        $client->request('GET', 'http://localhost/webhooks')
-            ->getContent();
-
-        self::assertSame('127.0.0.1', $captured['resolve']['localhost'] ?? null);
-    }
-
-    public function testUnresolvableHostFailsWithResolutionMessageNotBlockedMessage(): void
-    {
-        $client = new AllowedHostsHttpClient(
-            new NoPrivateNetworkHttpClient(new MockHttpClient(new MockResponse('ok'))),
-            new MockHttpClient(new MockResponse('unprotected')),
-            ['api.ahi.example']
-        );
-
-        $this->expectException(TransportExceptionInterface::class);
-        $this->expectExceptionMessage(
-            'Host "nonexistent.invalid" could not be resolved for "http://nonexistent.invalid/webhooks".'
-        );
-
-        $client->request('POST', 'http://nonexistent.invalid/webhooks');
     }
 
     public function testWithOptionsKeepsRoutingOnBothClients(): void
@@ -181,8 +146,6 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
             ->withOptions(['headers' => ['X-Test' => '1']]);
 
         self::assertSame('unprotected', $client->request('GET', 'https://api.ahi.example/')->getContent());
-        self::assertSame('protected', $client->request('GET', 'https://api.other.example/', [
-            'resolve' => ['api.other.example' => '203.0.113.10'],
-        ])->getContent());
+        self::assertSame('protected', $client->request('GET', 'https://api.other.example/')->getContent());
     }
 }
