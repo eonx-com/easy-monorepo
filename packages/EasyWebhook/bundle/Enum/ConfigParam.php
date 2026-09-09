@@ -27,6 +27,8 @@ enum ConfigParam: string
 
     case SignatureHeader = 'easy_webhooks.signature_header';
 
+    case SsrfProtectionAllowedHosts = 'easy_webhooks.ssrf_protection.allowed_hosts';
+
     case SsrfProtectionAllowedRanges = 'easy_webhooks.ssrf_protection.allowed_ranges';
 
     case SsrfProtectionEnabled = 'easy_webhooks.ssrf_protection.enabled';

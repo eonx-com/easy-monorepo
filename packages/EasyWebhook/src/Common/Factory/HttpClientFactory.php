@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Common\Factory;
 
 use EonX\EasyWebhook\Common\Exception\InvalidSsrfProtectionConfigException;
+use EonX\EasyWebhook\Common\HttpClient\AllowedHostsHttpClient;
 use EonX\EasyWebhook\Common\HttpClient\RequestLimitsHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\NoPrivateNetworkHttpClient;
@@ -18,6 +19,8 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
 
     public const DEFAULT_TIMEOUT = 10;
 
+    private array $allowedHosts;
+
     /**
      * @param string[] $extraBlockedRanges
      * @param string[] $allowedRanges
@@ -26,14 +29,60 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         private bool $blockPrivateNetworks = true,
         private array $extraBlockedRanges = [],
         private array $allowedRanges = [],
+        array $allowedHosts = [],
         private bool $requestLimitsEnabled = false,
         private int $timeout = self::DEFAULT_TIMEOUT,
         private int $maxDuration = self::DEFAULT_MAX_DURATION,
         private int $maxResponseBytes = self::DEFAULT_MAX_RESPONSE_BYTES,
     ) {
         // Only when protection is on; disabled means allowed_ranges is inert, so don't reject it
+        $this->allowedHosts = self::normalizeAllowedHosts($allowedHosts);
+
         if ($blockPrivateNetworks) {
             self::validateAllowedRanges($extraBlockedRanges, $allowedRanges);
+            self::validateAllowedHosts($this->allowedHosts);
+        }
+    }
+
+    public static function normalizeAllowedHosts(array $allowedHosts): array
+    {
+        $normalized = [];
+
+        foreach ($allowedHosts as $host) {
+            if (\is_string($host) === false) {
+                continue;
+            }
+
+            $host = \mb_strtolower(\trim($host));
+
+            if ($host !== '') {
+                $normalized[] = $host;
+            }
+        }
+
+        return \array_values(\array_unique($normalized));
+    }
+
+    public static function validateAllowedHosts(array $allowedHosts): void
+    {
+        foreach ($allowedHosts as $host) {
+            if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+                throw new InvalidSsrfProtectionConfigException(\sprintf(
+                    'SSRF "allowed_hosts" entry "%s" is an IP address, but only hostnames can be allowed: '
+                    . 'an IP literal in a webhook URL is always subject to the SSRF check. Use '
+                    . '"allowed_ranges" or "ssrf_protection.enabled: false" to reach it.',
+                    $host
+                ));
+            }
+
+            if (\filter_var($host, \FILTER_VALIDATE_DOMAIN, \FILTER_FLAG_HOSTNAME) === false) {
+                throw new InvalidSsrfProtectionConfigException(\sprintf(
+                    'SSRF "allowed_hosts" entry "%s" is not a bare hostname. It must be written without '
+                    . 'scheme, port, path or whitespace (e.g. "api.example.com"), otherwise it would never '
+                    . 'match a webhook URL.',
+                    $host
+                ));
+            }
         }
     }
 
@@ -103,7 +152,11 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
                     $this->allowedRanges
                 ));
 
-            $httpClient = new NoPrivateNetworkHttpClient($httpClient, $subnets);
+            $httpClient = new AllowedHostsHttpClient(
+                new NoPrivateNetworkHttpClient($httpClient, $subnets),
+                $httpClient,
+                $this->allowedHosts
+            );
         }
 
         // DoS request limits (opt-in): enforced inside the decorator, not as client-default options,

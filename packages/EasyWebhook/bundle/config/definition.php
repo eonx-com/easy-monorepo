@@ -48,10 +48,18 @@ return static function (DefinitionConfigurator $definition) {
 
                         // Fail at container build on an allowed_ranges entry that would do nothing
                         try {
-                            HttpClientFactory::validateAllowedRanges(
-                                $v['extra_blocked_ranges'],
-                                $v['allowed_ranges']
-                            );
+                            if (\is_array($v['extra_blocked_ranges']) && \is_array($v['allowed_ranges'])) {
+                                HttpClientFactory::validateAllowedRanges(
+                                    $v['extra_blocked_ranges'],
+                                    $v['allowed_ranges']
+                                );
+                            }
+
+                            if (\is_array($v['allowed_hosts'])) {
+                                HttpClientFactory::validateAllowedHosts(
+                                    HttpClientFactory::normalizeAllowedHosts($v['allowed_hosts'])
+                                );
+                            }
                         } catch (InvalidSsrfProtectionConfigException $exception) {
                             throw new InvalidConfigurationException($exception->getMessage(), previous: $exception);
                         }
@@ -80,6 +88,31 @@ return static function (DefinitionConfigurator $definition) {
                         )
                         ->defaultValue([])
                         ->stringPrototype()->end()
+                    ->end()
+                    ->variableNode('allowed_hosts')
+                        ->info(
+                            'Hostnames whose requests bypass the SSRF check entirely, for a legitimate '
+                            . 'private target such as an internal load balancer published in public DNS '
+                            . 'with private addresses. Bare hostnames only (no scheme, port, path or '
+                            . 'wildcard), matched case-insensitively against the webhook URL host; an IP '
+                            . 'literal in a URL never matches. Redirects from an allowed host are not '
+                            . 'followed unless the webhook sets max_redirects. All other hosts stay fully '
+                            . 'protected. Accepts an env placeholder such as env(csv:VAR); an empty variable '
+                            . 'means an empty list.'
+                        )
+                        ->defaultValue([])
+                        ->validate()
+                            ->always(static function (mixed $v): array {
+                                if (\is_array($v) === false || \array_filter($v, \is_string(...)) !== $v) {
+                                    throw new InvalidConfigurationException(
+                                        'The "easy_webhook.ssrf_protection.allowed_hosts" option must be a list '
+                                        . 'of hostnames, or an env placeholder such as env(csv:VAR).'
+                                    );
+                                }
+
+                                return $v;
+                            })
+                        ->end()
                     ->end()
                 ->end()
             ->end()

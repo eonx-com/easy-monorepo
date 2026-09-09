@@ -34,6 +34,7 @@ The common configuration options for Laravel and Symfony are as follows:
 | `ssrf_protection.enabled`        | `true`        | Whether outgoing webhook requests are blocked from reaching private/reserved IP ranges (SSRF protection) |
 | `ssrf_protection.extra_blocked_ranges` | `[]`    | Additional CIDR ranges to reject **on top of** the standard private + reserved defaults (incl. link-local `169.254.0.0/16`) |
 | `ssrf_protection.allowed_ranges` | `[]`          | CIDR ranges to unblock by **removing a matching entry** from the default block list (e.g. `127.0.0.0/8` for IPv4 localhost). Must match a default verbatim and not be covered by another default (e.g. `::1/128` is inside `::/96`), else rejected at startup |
+| `ssrf_protection.allowed_hosts`  | `[]`          | Hostnames whose requests **bypass the SSRF check entirely** (bare hostname, exact case-insensitive match, no wildcards; an IP literal in a URL never matches). Redirects from an allowed host are not followed unless the webhook sets `max_redirects`. Accepts `%env(csv:VAR)%`; an empty variable means an empty list |
 | `request_limits.enabled`            | `false`    | Enable the DoS request limits below (opt-in; the default will flip to `true` in a future major) |
 | `request_limits.timeout`            | `10`       | Idle timeout in seconds — abort when the target stops sending data. `0` keeps PHP's `default_socket_timeout` |
 | `request_limits.max_duration`       | `30`       | Total request-duration cap in seconds, regardless of activity. `0` = unlimited                          |
@@ -115,6 +116,29 @@ address only when no other default range also covers it — for example `::1/128
 (an entry that is not a default, or one still covered by a broader default) is **rejected at
 startup** rather than silently ignored. To reach hosts this cannot express, turn the protection off
 with `ssrf_protection.enabled: false`.
+
+Use `ssrf_protection.allowed_hosts` when a specific host is a **legitimate private target** — for
+example an internal load balancer published in public DNS with private addresses that you reach over
+VPC peering on purpose. `allowed_ranges` cannot express this without opening a whole default range
+(`10.0.0.0/8` would unblock every peered VPC). Requests whose URL hostname is in the list skip the
+SSRF check entirely; every other request keeps the full protection, including the DNS-rebinding and
+redirect checks. The match is an exact, case-insensitive comparison of the bare hostname: no scheme,
+port, path or wildcard, and an IP literal in a webhook URL never matches. Because redirects from an
+allowed host are not IP-checked, they are not followed (`max_redirects: 0`) unless the webhook sets
+its own `max_redirects`. Entries are trimmed and empty ones dropped, so the list can come straight
+from an environment variable:
+
+```php
+// config/packages/easy_webhook.php
+$container->extension('easy_webhook', [
+    'ssrf_protection' => [
+        'allowed_hosts' => env('csv:OUTGOING_WEBHOOK_SSRF_ALLOWED_HOSTS'),
+    ],
+]);
+```
+
+An empty `OUTGOING_WEBHOOK_SSRF_ALLOWED_HOSTS` means an empty allowlist. An entry that could never
+match (not a bare hostname, or an IP address) is **rejected at startup**.
 
 > Note: enabling this by default is a behavioural change — webhooks whose URL resolves to a
 > private or reserved IP are now rejected out of the box (surfaced as a failed webhook, not a

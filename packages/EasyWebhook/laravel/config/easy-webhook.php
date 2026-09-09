@@ -36,6 +36,7 @@ return [
          * it is rejected at startup. To reach hosts this cannot express, use "enabled" => false.
          */
         'allowed_ranges' => [],
+        'allowed_hosts' => [],
     ],
     'request_limits' => [
         'enabled' => false,
