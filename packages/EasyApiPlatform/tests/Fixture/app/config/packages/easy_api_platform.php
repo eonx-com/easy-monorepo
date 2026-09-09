@@ -12,8 +12,8 @@ return App::config([
             'custom_serializer_exceptions' => [
                 [
                     'class' => UnexpectedValueException::class,
-                    'message_pattern' => '/Custom message from custom CarbonNormalizer./',
-                    'violation_message' => 'violations.invalid_datetime',
+                    'message_pattern' => '/Custom message from custom IsbnNormalizer./',
+                    'violation_message' => 'violations.not_encodable',
                 ],
             ],
             'validation_error_code' => ErrorCode::ValidationError,

@@ -32,17 +32,14 @@ final class CustomSerializerExceptionErrorResponseBuilder extends AbstractDeseri
 
             if (\preg_match($exception['message_pattern'], $throwable->getMessage()) === 1) {
                 $violation = $this->translator->trans($exception['violation_message'], []);
-
-                if ($throwable instanceof NotNormalizableValueException && $throwable->getPath() !== null) {
-                    return [
-                        $this->normalizePropertyName($throwable->getPath()) => [
-                            $violation,
-                        ],
-                    ];
-                }
+                $propertyPath = $throwable instanceof NotNormalizableValueException && $throwable->getPath() !== null
+                    ? $this->normalizePropertyName($throwable->getPath())
+                    : '';
 
                 return [
-                    $violation,
+                    $propertyPath => [
+                        $violation,
+                    ],
                 ];
             }
         }

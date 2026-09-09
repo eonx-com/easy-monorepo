@@ -14,7 +14,9 @@ final class NotEncodableValueExceptionErrorResponseBuilder extends AbstractDeser
 
         if ($throwable instanceof NotEncodableValueException) {
             $violations = [
-                $this->translator->trans('violations.not_encodable', []),
+                '' => [
+                    $this->translator->trans('violations.not_encodable', []),
+                ],
             ];
         }
 

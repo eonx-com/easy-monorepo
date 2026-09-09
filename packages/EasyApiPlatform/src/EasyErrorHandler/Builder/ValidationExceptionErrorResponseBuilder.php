@@ -128,11 +128,16 @@ final class ValidationExceptionErrorResponseBuilder extends AbstractApiPlatformE
             return $this->translator->trans('violations.invalid_iri', []);
         }
 
-        if (
-            \preg_match('/Item not found for "(.+)"./', $hint) === 1
-            || \preg_match('/Invalid IRI "(.+)"./', $hint) === 1
-        ) {
-            return $hint;
+        if (\preg_match('/^Item not found for "(.+)"\.$/', $hint, $matches) === 1) {
+            return $this->translator->trans('violations.item_not_found', [
+                '%iri%' => $matches[1],
+            ]);
+        }
+
+        if (\preg_match('/^Invalid IRI "(.+)"\.$/', $hint, $matches) === 1) {
+            return $this->translator->trans('violations.invalid_iri_value', [
+                '%iri%' => $matches[1],
+            ]);
         }
 
         if (\preg_match('/The data must belong to a backed enumeration of type (.+)/', $hint) === 1) {
