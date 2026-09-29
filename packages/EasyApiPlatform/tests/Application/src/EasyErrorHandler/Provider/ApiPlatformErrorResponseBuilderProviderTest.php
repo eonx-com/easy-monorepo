@@ -75,9 +75,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'This value is not a valid date/time.',
+                'someCarbonImmutableDate' => [
+                    'This value is not a valid date/time.',
+                ],
             ],
-            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
+            'exceptionMessage' => 'someCarbonImmutableDate: This value should be of type CarbonImmutable.',
         ];
 
         yield 'Carbon date with custom Normalizer is NULL' => [
@@ -89,9 +91,11 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'This value is not a valid date/time.',
+                'someCarbonImmutableDate' => [
+                    'This value is not a valid date/time.',
+                ],
             ],
-            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
+            'exceptionMessage' => 'someCarbonImmutableDate: This value should be of type CarbonImmutable.',
         ];
 
         yield 'invalid Carbon date format with custom Normalizer' => [
@@ -103,9 +107,45 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'printingHouse' => '/printing-houses/1',
             ],
             'violations' => [
-                'This value is not a valid date/time.',
+                'someCarbonImmutableDate' => [
+                    'This value is not a valid date/time.',
+                ],
             ],
-            'exceptionMessage' => 'Custom message from custom CarbonNormalizer.',
+            'exceptionMessage' => 'someCarbonImmutableDate: This value should be of type CarbonImmutable.',
+        ];
+
+        yield 'custom Normalizer throwing without a deserialization path' => [
+            'url' => '/books',
+            'json' => [
+                'title' => 'some title',
+                'description' => 'some description',
+                'weight' => 11,
+                'isbn' => 'not-an-isbn',
+                'printingHouse' => '/printing-houses/1',
+            ],
+            'violations' => [
+                '' => [
+                    'The input data is misformatted.',
+                ],
+            ],
+            'exceptionMessage' => 'Custom message from custom IsbnNormalizer.',
+        ];
+
+        yield 'custom Normalizer receiving a non-string value' => [
+            'url' => '/books',
+            'json' => [
+                'title' => 'some title',
+                'description' => 'some description',
+                'weight' => 11,
+                'isbn' => ['some' => 'object'],
+                'printingHouse' => '/printing-houses/1',
+            ],
+            'violations' => [
+                '' => [
+                    'The input data is misformatted.',
+                ],
+            ],
+            'exceptionMessage' => 'Custom message from custom IsbnNormalizer.',
         ];
 
         yield 'invalid argument type' => [
@@ -690,6 +730,66 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         );
     }
 
+    public function testBuildErrorResponseTranslatesInvalidIriHint(): void
+    {
+        self::setUpClient(['environment' => 'overridden_violation_messages']);
+
+        $response = self::$client->request('POST', '/books', [
+            'json' => [
+                'category' => 'some invalid IRI',
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/1',
+                'title' => 'some title',
+                'weight' => 11,
+            ],
+        ]);
+
+        $responseData = $response->toArray(false);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertArraySubset(
+            [
+                'custom_violations' => [
+                    'category' => [
+                        'Overridden: some invalid IRI is not a valid IRI.',
+                    ],
+                ],
+            ],
+            $responseData
+        );
+    }
+
+    /**
+     * The default catalogue renders these two hints exactly as Symfony phrases them, so asserting the
+     * English output cannot tell a translated message apart from the raw hint. Overriding the catalogue
+     * proves the value goes through the translator and that %iri% is substituted.
+     */
+    public function testBuildErrorResponseTranslatesIriHints(): void
+    {
+        self::setUpClient(['environment' => 'overridden_violation_messages']);
+
+        $response = self::$client->request('POST', '/books', [
+            'json' => [
+                'description' => 'some description',
+                'printingHouse' => '/printing-houses/2',
+                'title' => 'some title',
+                'weight' => 11,
+            ],
+        ]);
+
+        $responseData = $response->toArray(false);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertArraySubset(
+            [
+                'custom_violations' => [
+                    'printingHouse' => [
+                        'Overridden: nothing found at /printing-houses/2.',
+                    ],
+                ],
+            ],
+            $responseData
+        );
+    }
+
     #[DataProvider('provideDataForBuildErrorResponseWhenInvalidFormat')]
     public function testBuildErrorResponseWhenInvalidFormat(mixed $body): void
     {
@@ -717,7 +817,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 'custom_code' => 123,
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => [
-                    'The input data is misformatted.',
+                    '' => [
+                        'The input data is misformatted.',
+                    ],
                 ],
             ],
             $responseData
@@ -808,7 +910,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
                 ],
                 'custom_message' => 'Validation failed.',
                 'custom_violations' => [
-                    'The input data is misformatted.',
+                    '' => [
+                        'The input data is misformatted.',
+                    ],
                 ],
             ],
             $responseData
