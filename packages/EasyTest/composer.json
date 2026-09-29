@@ -22,7 +22,9 @@
         "symfony/error-handler": "^7.4 || ^8.0",
         "symfony/event-dispatcher": "^7.4 || ^8.0",
         "symfony/framework-bundle": "^7.4 || ^8.0",
+        "symfony/mailer": "^7.4 || ^8.0",
         "symfony/messenger": "^7.4 || ^8.0",
+        "symfony/mime": "^7.4 || ^8.0",
         "symfony/uid": "^7.4 || ^8.0"
     },
     "autoload": {
@@ -52,7 +54,9 @@
         "symfony/framework-bundle": "To use ContainerServiceTrait, HttpClientAssertionTrait and MessengerAssertionsTrait",
         "symfony/http-client": "To use HttpClientStub",
         "symfony/http-foundation": "To use HttpClientStub",
+        "symfony/mailer": "To use QueuedEmailAssertionTrait",
         "symfony/messenger": "To use MessengerAssertionsTrait",
+        "symfony/mime": "To use QueuedEmailAssertionTrait",
         "symfony/property-access": "To use MessengerAssertionsTrait",
         "symfony/serializer": "To use DatabaseEntityTrait",
         "symfony/translation": "To use InvalidDataMaker",

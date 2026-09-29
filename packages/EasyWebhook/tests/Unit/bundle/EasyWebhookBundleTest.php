@@ -29,6 +29,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
                     $container->get(BodyFormatterMiddleware::class)
                 );
                 self::assertInstanceOf(MethodMiddleware::class, $container->get(MethodMiddleware::class));
+                self::assertTrue($container->getParameter(ConfigParam::RequestLimitsEnabled->value));
             },
         ];
 
@@ -56,6 +57,13 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
             [__DIR__ . '/../../Fixture/config/no_default_middleware.php'],
             static function (ContainerInterface $container): void {
                 self::assertFalse($container->has(BodyFormatterMiddleware::class));
+            },
+        ];
+
+        yield 'Request limits disabled' => [
+            [__DIR__ . '/../../Fixture/config/request_limits_disabled.php'],
+            static function (ContainerInterface $container): void {
+                self::assertFalse($container->getParameter(ConfigParam::RequestLimitsEnabled->value));
             },
         ];
     }

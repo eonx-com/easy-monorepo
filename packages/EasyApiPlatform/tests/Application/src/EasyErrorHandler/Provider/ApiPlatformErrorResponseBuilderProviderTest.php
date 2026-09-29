@@ -556,7 +556,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'url' => '/payments-dto-with-constructor',
             'json' => [],
             'violations' => [
-                'type' => [
+                'payment_kind' => [
                     'This value should be of type string.',
                 ],
             ],
@@ -565,9 +565,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
 
         yield 'null constructor argument in input DTO with serializedName attribute' => [
             'url' => '/payments-dto-with-constructor',
-            'json' => ['type' => null],
+            'json' => ['payment_kind' => null],
             'violations' => [
-                'type' => [
+                'payment_kind' => [
                     'This value should be of type string.',
                 ],
             ],
@@ -576,9 +576,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
 
         yield 'constructor argument of a wrong type in input DTO with serializedName attribute' => [
             'url' => '/payments-dto-with-constructor',
-            'json' => ['type' => 123],
+            'json' => ['payment_kind' => 123],
             'violations' => [
-                'type' => [
+                'payment_kind' => [
                     'This value should be of type string.',
                 ],
             ],

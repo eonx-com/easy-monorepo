@@ -34,7 +34,7 @@ The common configuration options for Laravel and Symfony are as follows:
 | `ssrf_protection.enabled`        | `true`        | Whether outgoing webhook requests are blocked from reaching private/reserved IP ranges (SSRF protection) |
 | `ssrf_protection.extra_blocked_ranges` | `[]`    | Additional CIDR ranges to reject **on top of** the standard private + reserved defaults (incl. link-local `169.254.0.0/16`) |
 | `ssrf_protection.allowed_ranges` | `[]`          | CIDR ranges to unblock by **removing a matching entry** from the default block list (e.g. `127.0.0.0/8` for IPv4 localhost). Must match a default verbatim and not be covered by another default (e.g. `::1/128` is inside `::/96`), else rejected at startup |
-| `request_limits.enabled`            | `false`    | Enable the DoS request limits below (opt-in; the default will flip to `true` in a future major) |
+| `request_limits.enabled`            | `true`     | Whether the DoS request limits below are enforced (idle timeout, total request duration, response body size) |
 | `request_limits.timeout`            | `10`       | Idle timeout in seconds — abort when the target stops sending data. `0` keeps PHP's `default_socket_timeout` |
 | `request_limits.max_duration`       | `30`       | Total request-duration cap in seconds, regardless of activity. `0` = unlimited                          |
 | `request_limits.max_response_bytes` | `1048576`  | Maximum response body size in bytes before the transfer is aborted. `0` = unlimited                     |
@@ -69,9 +69,8 @@ worker or exhaust resources on the sending side:
   buffered. Counting after decoding is what covers a compression bomb — a small gzipped payload
   that inflates to a huge body — as well as chunked responses that advertise no `Content-Length`.
 
-These limits are **opt-in**: `request_limits.enabled` is `false` by default (the default will flip
-to `true` in a future major). Enable them with `request_limits.enabled: true`; set any individual
-option to `0` to disable just that limit.
+These limits are **enabled by default**. Turn them off entirely with
+`request_limits.enabled: false`, or set any individual option to `0` to disable just that limit.
 
 A webhook's own http client options (`WebhookInterface::httpClientOptions()`) cannot weaken these
 limits: `timeout` and `max_duration` are clamped so a per-webhook value may only make them stricter
@@ -83,6 +82,11 @@ Retry behaviour differs by limit type, and neither is a crash:
   configured retry strategy — the target may simply have been slow.
 - A **size**-limit abort (`max_response_bytes`) is a failed webhook that is **not retried** —
   retrying would only re-download the same oversized body.
+
+> Note: these limits are enabled by default from 7.0 (they were opt-in in 6.x) — a webhook whose
+> target stalls, runs past the duration cap, or returns an oversized body is now aborted out of the
+> box (surfaced as a failed webhook, not a crash). Set `request_limits.enabled` to `false` to
+> restore the previous behaviour.
 
 ## SSRF protection
 
