@@ -26,7 +26,8 @@ final class HmacMessengerEnvelopeSignerTest extends AbstractUnitTestCase
 
     public function testVerifyAcceptsAnyKeyInTheList(): void
     {
-        $signedWithOld = (new HmacMessengerEnvelopeSigner('old-key'))->sign('payload');
+        $signedWithOld = new HmacMessengerEnvelopeSigner('old-key')
+->sign('payload');
         $sut = new HmacMessengerEnvelopeSigner(['new-key', 'old-key']);
 
         self::assertTrue($sut->verify('payload', $sut->sign('payload')));
@@ -35,7 +36,8 @@ final class HmacMessengerEnvelopeSignerTest extends AbstractUnitTestCase
 
     public function testVerifyRejectsAKeyOutsideTheList(): void
     {
-        $signedWithRemovedKey = (new HmacMessengerEnvelopeSigner('removed-key'))->sign('payload');
+        $signedWithRemovedKey = new HmacMessengerEnvelopeSigner('removed-key')
+->sign('payload');
         $sut = new HmacMessengerEnvelopeSigner(['new-key']);
 
         self::assertFalse($sut->verify('payload', $signedWithRemovedKey));

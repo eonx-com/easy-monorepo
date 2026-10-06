@@ -53,7 +53,7 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         $signature = $encodedEnvelope['headers'][self::ENVELOPE_HEADER_SIGNATURE] ?? null;
 
         // The signature must be verified before the body reaches the inner serializer's native unserialize(),
-        // which is what keeps a forged transport payload from reaching a gadget chain.
+        // which is what keeps a forged transport payload from reaching a gadget chain
         if (\is_string($signature)) {
             if ($this->signer->verify($this->signedPayload($encodedEnvelope), $signature) === false) {
                 throw new MessageDecodingFailedException('Message signature is invalid.');
@@ -119,6 +119,9 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         return $encodedEnvelope;
     }
 
+    /**
+     * @param array{body: string, headers?: array<string, string>} $encodedEnvelope
+     */
     private function doDecode(array $encodedEnvelope): Envelope
     {
         $encryptionType = $encodedEnvelope['headers'][self::ENVELOPE_HEADER_ENCRYPTION_TYPE] ?? null;
@@ -129,7 +132,6 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
             $encodedEnvelope['body'] = $this->stringEncryptor->decrypt($encryptedBody);
         }
 
-        /** @var array{body: string, headers?: array<string, string>} $encodedEnvelope */
         $envelope = $this->serializer->decode($encodedEnvelope);
         $message = $envelope->getMessage();
 

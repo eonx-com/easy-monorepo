@@ -14,7 +14,7 @@ final readonly class HmacMessengerEnvelopeSigner implements MessengerEnvelopeSig
 
     /**
      * @param string|string[] $signingKeys One or more keys. The first signs; every key verifies, so an old key
-     *        kept last keeps accepting messages queued before a rotation until they drain.
+     *                                     kept last keeps accepting messages queued before a rotation until they drain.
      */
     public function __construct(
         string|array $signingKeys,
@@ -36,12 +36,9 @@ final readonly class HmacMessengerEnvelopeSigner implements MessengerEnvelopeSig
 
     public function verify(string $payload, string $signature): bool
     {
-        foreach ($this->signingKeys as $key) {
-            if (\hash_equals(\hash_hmac($this->algorithm, $payload, $key), $signature)) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            $this->signingKeys,
+            fn(string $key): bool => \hash_equals(\hash_hmac($this->algorithm, $payload, $key), $signature)
+        );
     }
 }

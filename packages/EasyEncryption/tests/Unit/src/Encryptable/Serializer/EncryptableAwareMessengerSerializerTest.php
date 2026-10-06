@@ -62,7 +62,8 @@ final class EncryptableAwareMessengerSerializerTest extends AbstractSymfonyTestC
     public function testDecodeFailsWhenSignatureIsMissingAndUnsignedAreRejected(): void
     {
         $sut = $this->createSerializer(allowUnsignedMessages: false);
-        $encoded = (new PhpSerializer())->encode(new Envelope(new MessageStub()));
+        $encoded = new PhpSerializer()
+->encode(new Envelope(new MessageStub()));
 
         $this->expectException(MessageDecodingFailedException::class);
         $this->expectExceptionMessage('Message signature is missing.');
@@ -96,7 +97,8 @@ final class EncryptableAwareMessengerSerializerTest extends AbstractSymfonyTestC
 
     public function testDecodeSucceedsWithUnsignedMessageWhenAllowed(): void
     {
-        $encoded = (new PhpSerializer())->encode(new Envelope(new MessageStub(content: 'drained')));
+        $encoded = new PhpSerializer()
+->encode(new Envelope(new MessageStub(content: 'drained')));
         $sut = $this->createSerializer(allowUnsignedMessages: true);
 
         $message = $sut->decode($encoded)
@@ -110,7 +112,7 @@ final class EncryptableAwareMessengerSerializerTest extends AbstractSymfonyTestC
     {
         $encodedWithOldKey = $this->createSerializer(signer: new HmacMessengerEnvelopeSigner(self::OLD_KEY))
             ->encode(new Envelope(new MessageStub(content: 'queued-before-rotation')));
-        // During rotation the new key signs, but the old key is kept last so in-flight messages still verify.
+        // During rotation the new key signs, but the old key is kept last so in-flight messages still verify
         $sut = $this->createSerializer(signer: new HmacMessengerEnvelopeSigner([self::NEW_KEY, self::OLD_KEY]));
 
         $message = $sut->decode($encodedWithOldKey)
