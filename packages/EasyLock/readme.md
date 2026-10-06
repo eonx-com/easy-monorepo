@@ -70,6 +70,59 @@ that name as soon as `framework.lock` is enabled, which is the default once `sym
 default factory uses a **flock** store that does not lock across application instances. A plain `LockFactory`
 type-hint therefore resolves to whatever the application configured, which is why the wiring above is explicit.
 
+### Messenger middleware and busy locks
+
+`EonX\EasyLock\Messenger\Middleware\ProcessWithLockMiddleware` handles messages consumed by a worker when the
+message implements `EonX\EasyLock\Common\ValueObject\WithLockDataInterface` or the envelope has
+`EonX\EasyLock\Messenger\Stamp\WithLockDataStamp`. The middleware acquires the lock before it calls the handler and
+releases the lock after the handler returns.
+
+When another process holds the lock, the result depends on the `retry` value of the lock data:
+
+- `retry` is `false` (default): the handler is not called and the message is **removed from the transport**. The
+  worker acknowledges the message as if it was handled. The middleware:
+  - writes a log record to the `lock` channel with the message class, the lock resource, the lock TTL,
+    the transport message ID and the transport name
+  - adds `EonX\EasyLock\Messenger\Stamp\LockNotAcquiredStamp` to the returned envelope, so the code that dispatched
+    the message can see that the handler was not called
+- `retry` is `true`: the middleware throws `EonX\EasyLock\Common\Exception\ShouldRetryException`. The retry
+  strategy of the transport decides if the message is retried. No log record is written by the middleware.
+
+Removing the message is correct only when the process that holds the lock does the same work, for example when the
+transport delivers the same message two times. If different messages use the same lock resource, the work of the
+removed message is lost.
+
+The log level is `warning` by default because many applications ignore records below `warning` for channels other than
+their own. You can change it:
+
+```php
+// config/packages/easy_lock.php
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Psr\Log\LogLevel;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_lock', [
+        'messenger' => [
+            'middleware' => [
+                'lock_not_acquired_log_level' => LogLevel::INFO,
+            ],
+        ],
+    ]);
+};
+```
+
+###### Lock TTL
+
+The lock TTL is `300` seconds when the lock data does not set it. If a worker stops before it releases the lock (the
+process is killed, the Lambda function times out), the lock stays until the TTL expires. Choose the TTL as follows:
+
+- Make it longer than the longest time the handler can run. If the lock expires while the handler runs, another
+  worker can handle the same message at the same time.
+- Make it shorter than the time after which the transport delivers an unacknowledged message again: the visibility
+  timeout for SQS, `redeliver_timeout` for the Doctrine transport. If the TTL is longer, the next delivery after a
+  worker failure finds the old lock and the message is removed without being handled.
+
 [1]: https://getcomposer.org/
 [2]: https://symfony.com/doc/current/components/lock.html
 [3]: https://github.com/symfony/symfony/blob/master/src/Symfony/Component/Lock/Store/StoreFactory.php
