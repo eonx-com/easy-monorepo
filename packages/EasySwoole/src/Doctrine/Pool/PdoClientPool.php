@@ -53,6 +53,21 @@ final class PdoClientPool
 
     public function put(PdoClient $client): void
     {
+        // A connection handed back with an open transaction would leak its locks and uncommitted writes
+        // into whichever coroutine borrows it next (the pool outlives individual requests). Roll back any
+        // in-flight transaction before the client re-enters the pool so each borrower starts clean
+        try {
+            if ($client->inTransaction()) {
+                $client->rollBack();
+            }
+        } catch (Throwable) {
+            // The connection is unusable (e.g. lost mid-transaction); drop it instead of pooling a broken
+            // client, mirroring how heartbeat() discards compromised connections
+            $this->connectionCount--;
+
+            return;
+        }
+
         $this->pool->push($client);
     }
 
