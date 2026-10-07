@@ -22,6 +22,7 @@ final class PersistentSystemCacheCompilerPassTest extends AbstractUnitTestCase
         'cache.app_alias_child',
         'cache.app_child',
         'cache.app_grandchild',
+        'cache.app_tagged_grandchild',
         'cache.system',
         'cache.system_child',
         'cache.system_grandchild',

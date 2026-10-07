@@ -24,6 +24,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                     'adapter' => 'cache.app_child',
                     'public' => true,
                 ],
+                'cache.app_tagged_grandchild' => [
+                    'adapter' => 'cache.app_child',
+                    'public' => true,
+                    'tags' => true,
+                ],
                 'cache.chain' => [
                     'adapters' => ['cache.app', 'cache.adapter.array'],
                     'public' => true,
