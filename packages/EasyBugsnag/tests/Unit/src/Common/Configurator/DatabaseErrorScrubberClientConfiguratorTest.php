@@ -35,6 +35,50 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertStringContainsString("for key 'users.email_unique'", (string)$report->getMessage());
     }
 
+    public function testItMasksMysqlIncorrectValue(): void
+    {
+        $client = self::getService(Client::class);
+
+        $client->notifyError(
+            'PDOException',
+            "SQLSTATE[HY000]: 1366 Incorrect integer value: 'abc' for column 'age' at row 1"
+        );
+
+        $report = $this->getFirstReport($client);
+        self::assertStringNotContainsString("'abc'", (string)$report->getMessage());
+        // The type and column name are not sensitive and must be preserved for debugging
+        self::assertStringContainsString(
+            "Incorrect integer value: '*REDACTED*' for column",
+            (string)$report->getMessage()
+        );
+    }
+
+    public function testItMasksMysqlTruncatedValue(): void
+    {
+        $client = self::getService(Client::class);
+
+        $client->notifyError('PDOException', "SQLSTATE[22007]: 1292 Truncated incorrect DATE value: '2021-13-45'");
+
+        $report = $this->getFirstReport($client);
+        self::assertStringNotContainsString('2021-13-45', (string)$report->getMessage());
+        self::assertStringContainsString("Truncated incorrect DATE value: '*REDACTED*'", (string)$report->getMessage());
+    }
+
+    public function testItMasksPostgresInvalidInputValue(): void
+    {
+        $client = self::getService(Client::class);
+
+        $client->notifyError('PDOException', 'SQLSTATE[22P02]: invalid input syntax for type integer: "abc"');
+
+        $report = $this->getFirstReport($client);
+        self::assertStringNotContainsString('"abc"', (string)$report->getMessage());
+        // The type is not sensitive and must be preserved for debugging
+        self::assertStringContainsString(
+            'invalid input syntax for type integer: "*REDACTED*"',
+            (string)$report->getMessage()
+        );
+    }
+
     public function testItStripsPostgresDetailLine(): void
     {
         $client = self::getService(Client::class);
