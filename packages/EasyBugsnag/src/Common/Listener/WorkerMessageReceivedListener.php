@@ -8,6 +8,7 @@ use Bugsnag\Middleware\CallbackBridge;
 use Bugsnag\Report;
 use Carbon\Carbon;
 use DateTimeInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
@@ -26,6 +27,7 @@ final class WorkerMessageReceivedListener
 
     public function __construct(
         private readonly Client $client,
+        private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
     ) {}
 
     public function __invoke(WorkerMessageReceivedEvent $event): void
@@ -59,8 +61,10 @@ final class WorkerMessageReceivedListener
 
     private function dump(mixed $var): string
     {
-        return (string)$this->getDumper()
+        $dump = (string)$this->getDumper()
             ->dump($this->getCloner()->cloneVar($var), true);
+
+        return $this->sensitiveDataSanitizer->sanitize($dump);
     }
 
     private function getCloner(): VarCloner
