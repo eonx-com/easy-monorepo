@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Bundle;
 
+use EasyCorp\Bundle\EasyAdminBundle\EventListener\AdminRouterSubscriber;
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
 use EonX\EasyServerless\Bundle\CompilerPass\PersistentSystemCacheCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
@@ -23,7 +24,9 @@ final class EasyServerlessBundle extends AbstractBundle
 
         $container
             ->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass())
-            ->addCompilerPass(new PersistentSystemCacheCompilerPass(), priority: -33);
+            // Must run after CachePoolPass (32) adds the "kernel.reset" tags, and before ResettableServicePass (-32)
+            // collects them into "services_resetter"
+            ->addCompilerPass(new PersistentSystemCacheCompilerPass(), priority: -31);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -69,7 +72,9 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/state.php');
         }
 
-        if ($this->isBundleEnabled('EasyAdminBundle', $builder)) {
+        // Only EasyAdmin 4.21+ keeps the pretty URLs state in AdminRouterSubscriber, it is stateless since 5.0
+        if ($this->isBundleEnabled('EasyAdminBundle', $builder)
+            && \property_exists(AdminRouterSubscriber::class, 'requestAlreadyProcessedAsPrettyUrl')) {
             $container->import('config/easy_admin.php');
         }
 
