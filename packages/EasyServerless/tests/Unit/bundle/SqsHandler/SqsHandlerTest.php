@@ -12,6 +12,7 @@ use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Tests\Stub\ErrorHandler\ErrorHandler\ErrorHandlerStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\MessageBus\MessageBusStub;
+use EonX\EasyServerless\Tests\Stub\Messenger\RetryStrategy\RetryStrategyStub;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
@@ -26,7 +27,6 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Retry\MultiplierRetryStrategy;
 use Symfony\Component\Messenger\Retry\RetryStrategyInterface;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
@@ -339,14 +339,11 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         $retryStrategies = [];
 
         if ($maxRetries !== null) {
-            $retryStrategies[self::TRANSPORT_NAME] = static fn (): RetryStrategyInterface
-                => new MultiplierRetryStrategy(
-                    maxRetries: $maxRetries,
-                    delayMilliseconds: 10000,
-                    multiplier: 8,
-                    maxDelayMilliseconds: 0,
-                    jitter: 0
-                );
+            $retryStrategies[self::TRANSPORT_NAME] = static fn (): RetryStrategyInterface => new RetryStrategyStub(
+                maxRetries: $maxRetries,
+                delayMilliseconds: 10000,
+                multiplier: 8
+            );
         }
 
         $httpClient = new MockHttpClient(

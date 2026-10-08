@@ -20,7 +20,7 @@ final class SqsQueueJob extends SqsJob
         array $job,
         string $connectionName,
         string $queue,
-        private readonly int $appMaxRetries,
+        private readonly int $appMaxRetries = 3,
     ) {
         parent::__construct($container, $sqs, $job, $connectionName, $queue);
     }
