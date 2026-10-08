@@ -35,22 +35,24 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
         $factory = self::getService('api_platform.openapi.factory');
 
         $data = $normalizer->normalize($factory(), 'json', ['spec_version' => '3']);
-        // The OpenAPI version depends on the API Platform version (3.1.0 before 4.4, 3.2.0 since)
-        unset($data['openapi']);
 
         return \json_encode($data, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
     }
 
-    private static function getApiPlatformVersion(): int
+    private static function getApiPlatformVersion(): string
     {
         if (\class_exists(InstalledVersions::class)) {
             $installedVersion = InstalledVersions::getVersion('api-platform/core');
 
+            if ($installedVersion !== null && \version_compare($installedVersion, '4.4', '>=')) {
+                return '4.4';
+            }
+
             if ($installedVersion !== null && \version_compare($installedVersion, '4', '>=')) {
-                return 4;
+                return '4';
             }
         }
 
-        return 3;
+        return '3';
     }
 }
