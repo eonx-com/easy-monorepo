@@ -19,6 +19,10 @@ abstract class AbstractSqsHandler extends SqsHandler
 
     protected const MAX_RETRY_DELAY_SECONDS = 43200; // 12 hours (SQS limit)
 
+    protected const RETRY_STOP_REASON_APP_MAX_RETRIES = 'app_max_retries';
+
+    protected const RETRY_STOP_REASON_UNRECOVERABLE = 'unrecoverable';
+
     protected const SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
 
     protected ?LoggerInterface $logger = null;
