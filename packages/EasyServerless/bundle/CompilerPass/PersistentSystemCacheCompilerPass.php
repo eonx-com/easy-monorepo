@@ -25,6 +25,8 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
             return;
         }
 
+        $systemCacheDefinitions = [];
+
         foreach (self::SYSTEM_CACHES as $serviceId) {
             if ($container->hasDefinition($serviceId) === false) {
                 continue;
@@ -49,20 +51,44 @@ final class PersistentSystemCacheCompilerPass implements CompilerPassInterface
             }
 
             $this->removeKernelResetTag($definition);
+            $systemCacheDefinitions[] = $definition;
         }
 
+        // Pools with multiple adapters are ChainAdapter definitions and are still reset, as resetting a ChainAdapter
+        // resets all its adapters, including the ones not extending a system cache
         $serviceIds = $container->findTaggedServiceIds('cache.pool');
         foreach ($serviceIds as $serviceId => $tags) {
             $definition = $container->getDefinition($serviceId);
 
-            if ($definition instanceof ChildDefinition === false) {
+            // CachePoolPass does not add the "kernel.reset" tag to abstract pools
+            if ($definition->isAbstract()) {
                 continue;
             }
 
-            if (\in_array($definition->getParent(), self::SYSTEM_CACHES, true)) {
+            if ($this->extendsSystemCache($container, $definition, $systemCacheDefinitions)) {
                 $this->removeKernelResetTag($definition);
             }
         }
+    }
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\Definition[] $systemCacheDefinitions
+     */
+    private function extendsSystemCache(
+        ContainerBuilder $container,
+        Definition $definition,
+        array $systemCacheDefinitions,
+    ): bool {
+        // Walk up all the parents, as CachePoolPass does when adding the "kernel.reset" tag
+        while ($definition instanceof ChildDefinition) {
+            $definition = $container->findDefinition($definition->getParent());
+
+            if (\in_array($definition, $systemCacheDefinitions, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function removeKernelResetTag(Definition $definition): void
