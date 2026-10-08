@@ -9,6 +9,7 @@ use EonX\EasyHttpClient\Bundle\CompilerPass\DecorateMessengerSqsClientCompilerPa
 use EonX\EasyHttpClient\Bundle\Enum\ConfigParam;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Modifier\RequestDataModifierInterface;
+use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +19,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyHttpClientBundle extends AbstractBundle
 {
+    private bool $useSymfonyMonologBundle = false;
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -53,6 +56,13 @@ final class EasyHttpClientBundle extends AbstractBundle
 
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
         $this->registerPsrLoggerConfiguration($config, $container, $builder);
+    }
+
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        // Resolved here because extension configs are only available during the prepend phase: loadExtension()
+        // receives a temporary container without them. All prepend hooks run before any loadExtension() call
+        $this->useSymfonyMonologBundle = $this->shouldUseSymfonyMonologBundle($builder);
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
@@ -93,5 +103,27 @@ final class EasyHttpClientBundle extends AbstractBundle
         }
 
         $container->import('config/psr_logger.php');
+
+        if ($this->useSymfonyMonologBundle) {
+            return;
+        }
+
+        if (\interface_exists(LoggerFactoryInterface::class)) {
+            $container->import('config/psr_logger_easy_logging.php');
+        }
+    }
+
+    private function shouldUseSymfonyMonologBundle(ContainerBuilder $builder): bool
+    {
+        $enabled = false;
+
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = $config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return (bool)$builder->getParameterBag()
+            ->resolveValue($enabled);
     }
 }
