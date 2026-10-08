@@ -7,6 +7,7 @@ use Bugsnag\Client;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigParam;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigServiceId;
 use EonX\EasyBugsnag\Bundle\Enum\ConfigTag;
+use EonX\EasyBugsnag\Common\Configurator\DatabaseErrorScrubberClientConfigurator;
 use EonX\EasyBugsnag\Common\Factory\ClientFactory;
 use EonX\EasyBugsnag\Common\Factory\ClientFactoryInterface;
 use EonX\EasyBugsnag\Common\Listener\ShutdownStrategyListener;
@@ -39,6 +40,9 @@ return static function (ContainerConfigurator $container): void {
 
     // Shutdown Strategy
     $services->set(ConfigServiceId::ShutdownStrategy->value, ShutdownStrategy::class);
+
+    // Database Error Scrubber
+    $services->set(DatabaseErrorScrubberClientConfigurator::class);
 
     $services
         ->set(ShutdownStrategyListener::class)

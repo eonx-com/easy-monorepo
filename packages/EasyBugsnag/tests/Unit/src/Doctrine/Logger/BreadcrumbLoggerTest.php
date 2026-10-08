@@ -9,6 +9,30 @@ use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 
 final class BreadcrumbLoggerTest extends AbstractUnitTestCase
 {
+    public function testItSanitizesSensitiveParameterValues(): void
+    {
+        $this->initDatabase();
+        $entityManager = self::getEntityManager();
+        $author = new Author()
+            // Luhn-valid test card — the sanitizer detects it by value, not by key
+            ->setName('4111111111111111')
+            ->setPosition(1);
+
+        $entityManager->persist($author);
+        $entityManager->flush();
+
+        $client = self::getService(Client::class);
+        /** @var object $recoder */
+        $recoder = self::getPrivatePropertyValue($client, 'recorder');
+        /** @var array $breadcrumbs */
+        $breadcrumbs = self::getPrivatePropertyValue($recoder, 'breadcrumbs');
+        // @todo Remove `14` after drop supporting Doctrine DBAL 3
+        /** @var \Bugsnag\Breadcrumbs\Breadcrumb $breadcrumb */
+        $breadcrumb = $breadcrumbs[16] ?? $breadcrumbs[14];
+        $values = $breadcrumb->getMetaData()['Values'];
+        self::assertStringNotContainsString('4111111111111111', $values);
+    }
+
     public function testItSucceeds(): void
     {
         $this->initDatabase();
