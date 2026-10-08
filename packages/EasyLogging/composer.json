@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.4",
         "eonx-com/easy-utils": "^6.21",
-        "monolog/monolog": "^3.7",
+        "monolog/monolog": "^3.9",
         "symfony/config": "^7.4 || ^8.0",
         "symfony/dependency-injection": "^7.4 || ^8.0",
         "symfony/http-kernel": "^7.4 || ^8.0",
@@ -16,7 +16,11 @@
         "bugsnag/bugsnag": "^3.29.2",
         "eonx-com/easy-test": "^6.21",
         "laravel/framework": "^13.0",
-        "phpunit/phpunit": "^12.5|^13.0"
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/monolog-bundle": "^3.11.1 || ^4.0"
+    },
+    "conflict": {
+        "symfony/monolog-bundle": "<3.11.1"
     },
     "autoload": {
         "psr-4": {
@@ -34,7 +38,8 @@
         }
     },
     "suggest": {
-        "bugsnag/bugsnag": "For Bugsnag integration"
+        "bugsnag/bugsnag": "For Bugsnag integration",
+        "symfony/monolog-bundle": "To use the symfony/monolog-bundle integration"
     },
     "extra": {
         "branch-alias": {

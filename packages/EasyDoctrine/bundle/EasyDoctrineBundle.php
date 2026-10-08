@@ -5,6 +5,7 @@ namespace EonX\EasyDoctrine\Bundle;
 
 use EonX\EasyDoctrine\Bundle\CompilerPass\MigrationsFactoryCompilerPass;
 use EonX\EasyDoctrine\Bundle\CompilerPass\WithEventsEntityManagerCompilerPass;
+use EonX\EasyDoctrine\Bundle\Enum\BundleParam;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigParam;
 use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
 use Psr\Log\LoggerInterface;
@@ -15,6 +16,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyDoctrineBundle extends AbstractBundle
 {
+    private bool $useSymfonyMonologBundle = false;
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -45,6 +48,23 @@ final class EasyDoctrineBundle extends AbstractBundle
             ->set(ConfigParam::EntityManagerLazy->value, $config['entity_manager']['lazy']);
     }
 
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        // Resolved here because extension configs are only available during the prepend phase: loadExtension()
+        // receives a temporary container without them. All prepend hooks run before any loadExtension() call
+        $this->useSymfonyMonologBundle = $this->shouldUseSymfonyMonologBundle($builder);
+
+        if ($this->useSymfonyMonologBundle === false) {
+            return;
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'channels' => [
+                BundleParam::LogChannel->value,
+            ],
+        ]);
+    }
+
     private function registerAwsRdsConfiguration(
         array $config,
         ContainerConfigurator $container,
@@ -69,7 +89,7 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $container
             ->services()
-            ->alias(ConfigServiceId::AwsRdsIamLogger->value, $config['logger'] ?? LoggerInterface::class);
+            ->alias(ConfigServiceId::AwsRdsIamLogger->value, $this->resolveLoggerId($config['logger']));
 
         $container
             ->parameters()
@@ -96,7 +116,7 @@ final class EasyDoctrineBundle extends AbstractBundle
 
         $container
             ->services()
-            ->alias(ConfigServiceId::AwsRdsSslLogger->value, $config['logger'] ?? LoggerInterface::class);
+            ->alias(ConfigServiceId::AwsRdsSslLogger->value, $this->resolveLoggerId($config['logger']));
 
         $container
             ->parameters()
@@ -130,5 +150,32 @@ final class EasyDoctrineBundle extends AbstractBundle
         }
 
         $container->import('config/easy_error_handler_listener.php');
+    }
+
+    private function resolveLoggerId(?string $configuredLogger): string
+    {
+        if ($configuredLogger !== null) {
+            return $configuredLogger;
+        }
+
+        if ($this->useSymfonyMonologBundle) {
+            return \sprintf('monolog.logger.%s', BundleParam::LogChannel->value);
+        }
+
+        return LoggerInterface::class;
+    }
+
+    private function shouldUseSymfonyMonologBundle(ContainerBuilder $builder): bool
+    {
+        $enabled = false;
+
+        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
+            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
+                $enabled = $config['use_symfony_monolog_bundle'];
+            }
+        }
+
+        return (bool)$builder->getParameterBag()
+            ->resolveValue($enabled);
     }
 }
