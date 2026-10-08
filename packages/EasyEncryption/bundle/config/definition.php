@@ -28,6 +28,29 @@ return static function (DefinitionConfigurator $definition) {
                 ->beforeNormalization()->castToArray()->end()
                 ->stringPrototype()->end()
             ->end()
+            ->arrayNode('messenger')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('signing_keys')
+                        ->info(
+                            'Keys used to sign Messenger envelopes. The first key signs; every key verifies, so a '
+                            . 'rotated-out key kept last keeps accepting messages queued before the rotation until '
+                            . 'they drain. Defaults to the package encryption key.'
+                        )
+                        ->beforeNormalization()->castToArray()->end()
+                        ->scalarPrototype()->end()
+                    ->end()
+                    ->booleanNode('allow_unsigned_messages')
+                        ->defaultTrue()
+                        ->info(
+                            'Accept Messenger envelopes without a valid HMAC signature. Defaults to true during the '
+                            . 'signing roll-out so pre-upgrade messages keep decoding; set to false once every queue '
+                            . 'holds only signed messages to fully close the legacy native-unserialize path. A future '
+                            . 'major will default this to false.'
+                        )
+                    ->end()
+                ->end()
+            ->end()
             ->arrayNode('aws_cloud_hsm_encryptor')
                 ->canBeEnabled()
                 ->children()
