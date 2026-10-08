@@ -672,7 +672,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     public static function provideDataForDoNotBuildErrorResponse(): iterable
     {
         yield 'exception not supported by builders' => [
-            'url' => '/dummies',
+            'url' => '/error-handler-dummies',
             'json' => [
                 'dummyB' => 'some string',
             ],
@@ -689,7 +689,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         ];
 
         yield 'default error when supported exception and unknown exception message' => [
-            'url' => '/dummies',
+            'url' => '/error-handler-dummies',
             'json' => [
                 'dummyA' => 'some string',
             ],

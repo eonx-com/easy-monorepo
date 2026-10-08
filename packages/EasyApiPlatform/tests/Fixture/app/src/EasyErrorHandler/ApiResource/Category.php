@@ -11,8 +11,10 @@ use EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\DataTransferObject\C
 
 #[ApiResource(
     operations: [
-        new Post(),
         new GetCollection(
+            uriTemplate: 'book-categories'
+        ),
+        new Post(
             uriTemplate: 'book-categories'
         ),
         new Post(
