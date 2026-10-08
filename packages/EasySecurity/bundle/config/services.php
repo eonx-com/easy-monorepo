@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactory;
 use EonX\EasySecurity\Authorization\Factory\AuthorizationMatrixFactoryInterface;
 use EonX\EasySecurity\Authorization\Factory\CachedAuthorizationMatrixFactory;
+use EonX\EasySecurity\Bundle\Enum\BundleParam;
 use EonX\EasySecurity\Bundle\Enum\ConfigServiceId;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Command\ListSecurityContextConfiguratorsCommand;
@@ -51,13 +52,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('kernel.event_listener', ['priority' => 9990]);
 
     // Resolver
-    $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class);
+    $services->set(SecurityContextResolverInterface::class, SecurityContextResolver::class)
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
 
     // SecurityContextFactory
     $services->set(SecurityContextFactoryInterface::class, SecurityContextFactory::class);
 
     // Symfony Security
-    $services->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class);
+    $services->set(AuthenticationFailureResponseFactoryInterface::class, AuthenticationFailureResponseFactory::class)
+        ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
     $services->set(SecurityContextAuthenticator::class);
 
     // Command

@@ -6,6 +6,7 @@ namespace EonX\EasyTest\PHPUnit\Extension;
 use EonX\EasyTest\PHPUnit\Subscriber\EasyErrorHandlerTestFailedSubscriber;
 use EonX\EasyTest\PHPUnit\Subscriber\EasyErrorHandlerTestFinishedSubscriber;
 use EonX\EasyTest\PHPUnit\Subscriber\HttpClientTestFailedSubscriber;
+use EonX\EasyTest\PHPUnit\Subscriber\MonologTestFinishedSubscriber;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
@@ -21,5 +22,6 @@ final class EasyTestExtension implements Extension
 
         // Reset stubs here to do this in the same place
         $facade->registerSubscriber(new EasyErrorHandlerTestFinishedSubscriber());
+        $facade->registerSubscriber(new MonologTestFinishedSubscriber());
     }
 }
