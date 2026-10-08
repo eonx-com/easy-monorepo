@@ -81,10 +81,12 @@ When another process holds the lock, the result depends on the `retry` value of 
 
 - `retry` is `false` (default): the handler is not called and the message is **removed from the transport**. The
   worker acknowledges the message as if it was handled. The middleware:
-  - writes a log record to the `lock` channel with the message class, the lock resource, the lock TTL,
-    the transport message ID and the transport name
-  - adds `EonX\EasyLock\Messenger\Stamp\LockNotAcquiredStamp` to the returned envelope, so the code that dispatched
-    the message can see that the handler was not called
+  - writes a log record to the `lock` channel with the message class, the lock resource, the lock TTL
+    (`300` seconds when the lock data does not set it), the transport message ID and the transport name
+  - adds `EonX\EasyLock\Messenger\Stamp\LockNotAcquiredStamp` to the envelope that the bus returns to the worker.
+    Only worker-side code can see this stamp: the code that receives the result of the bus dispatch in the worker
+    (for example a custom SQS handler) and listeners of `WorkerMessageHandledEvent`. The code that sent the message
+    to the transport does not get this envelope
 - `retry` is `true`: the middleware throws `EonX\EasyLock\Common\Exception\ShouldRetryException`. The retry
   strategy of the transport decides if the message is retried. No log record is written by the middleware.
 

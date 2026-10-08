@@ -13,7 +13,7 @@ final readonly class LockNotAcquiredStamp implements NonSendableStampInterface
 {
     public function __construct(
         private string $resource,
-        private ?float $ttl = null,
+        private float $ttl,
     ) {
     }
 
@@ -22,7 +22,7 @@ final readonly class LockNotAcquiredStamp implements NonSendableStampInterface
         return $this->resource;
     }
 
-    public function getTtl(): ?float
+    public function getTtl(): float
     {
         return $this->ttl;
     }

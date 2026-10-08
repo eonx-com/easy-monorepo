@@ -49,9 +49,11 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
 
         // The closure always returns an envelope, so null means the lock was not acquired
         if ($newEnvelope === null) {
-            $this->logLockNotAcquired($envelope, $lockData);
+            $ttl = $lockData->getTtl() ?? LockData::DEFAULT_TTL;
 
-            return $envelope->with(new LockNotAcquiredStamp($lockData->getResource(), $lockData->getTtl()));
+            $this->logLockNotAcquired($envelope, $lockData->getResource(), $ttl);
+
+            return $envelope->with(new LockNotAcquiredStamp($lockData->getResource(), $ttl));
         }
 
         return $newEnvelope;
@@ -68,7 +70,7 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
         return $envelope->last(WithLockDataStamp::class);
     }
 
-    private function logLockNotAcquired(Envelope $envelope, LockData $lockData): void
+    private function logLockNotAcquired(Envelope $envelope, string $resource, float $ttl): void
     {
         $this->logger->log(
             $this->lockNotAcquiredLogLevel,
@@ -77,9 +79,9 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
             [
                 'class' => $envelope->getMessage()::class,
                 'message_id' => $envelope->last(TransportMessageIdStamp::class)?->getId(),
-                'resource' => $lockData->getResource(),
+                'resource' => $resource,
                 'transport' => $envelope->last(ReceivedStamp::class)?->getTransportName(),
-                'ttl' => $lockData->getTtl(),
+                'ttl' => $ttl,
             ]
         );
     }

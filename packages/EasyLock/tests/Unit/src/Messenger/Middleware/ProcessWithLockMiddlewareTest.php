@@ -145,7 +145,7 @@ final class ProcessWithLockMiddlewareTest extends AbstractUnitTestCase
             'message_id' => null,
             'resource' => self::RESOURCE,
             'transport' => null,
-            'ttl' => null,
+            'ttl' => LockData::DEFAULT_TTL,
         ], $records[0]['context']);
 
         $lock->release();
