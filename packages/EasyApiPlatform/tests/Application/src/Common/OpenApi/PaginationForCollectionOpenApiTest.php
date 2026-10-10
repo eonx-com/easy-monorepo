@@ -9,7 +9,7 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
 {
     public function testWithCustomPaginator(): void
     {
-        $filename = __DIR__ . '/../../../../Fixture/OpenApi/v4.4/with_custom_pagination.json';
+        $filename = __DIR__ . '/../../../../Fixture/OpenApi/with_custom_pagination.json';
 
         $result = self::generateOpenApiJson();
         self::assertStringEqualsFile($filename, $result . "\n");
@@ -18,7 +18,7 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
     public function testWithDefaultPaginator(): void
     {
         self::setUpClient(['environment' => 'default_paginator']);
-        $filename = __DIR__ . '/../../../../Fixture/OpenApi/v4.4/with_default_pagination.json';
+        $filename = __DIR__ . '/../../../../Fixture/OpenApi/with_default_pagination.json';
 
         $result = self::generateOpenApiJson();
         self::assertStringEqualsFile($filename, $result . "\n");
