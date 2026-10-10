@@ -137,9 +137,10 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
 - `bugsnag_handler` and `bugsnag_handler_channels` are read while the container is being wired, so, like
   `use_symfony_monolog_bundle`, they must be compile-time values (literals or container parameters, not env vars).
 - `bugsnag_handler_level` keeps working: the handler service is still owned by this package.
-- `bugsnag_handler_channels` accepts the same channel list as monolog-bundle handlers. Keep in mind that an
-  exclusion such as `['!app']` excludes only `app` — records from any other channel that already has a dedicated
-  handler will reach both handlers.
+- `bugsnag_handler_channels` accepts the same channel list as monolog-bundle handlers; lists split across several
+  config files (e.g. `config/packages/` and `config/packages/prod/`) are merged. Keep in mind that an exclusion
+  such as `['!app']` excludes only `app` — records from any other channel that already has a dedicated handler will
+  reach both handlers.
 - The application may override the generated handler by declaring a handler with the same name
   (`easy_logging_bugsnag`) in its own `monolog` configuration.
 - symfony/monolog-bundle does not allow configuring a `formatter` on `service` handlers, so the handler uses its

@@ -106,8 +106,7 @@ final class EasyLoggingBundle extends AbstractBundle
             'type' => 'service',
         ];
 
-        /** @var string[] $channels */
-        $channels = (array)$this->getRawConfigValue($builder, 'bugsnag_handler_channels', []);
+        $channels = $this->getRawConfigList($builder, 'bugsnag_handler_channels');
 
         if (\count($channels) > 0) {
             $handler['channels'] = $channels;
@@ -118,6 +117,24 @@ final class EasyLoggingBundle extends AbstractBundle
                 BundleParam::BugsnagHandlerName->value => $handler,
             ],
         ]);
+    }
+
+    /**
+     * Lists are merged across the config files, as Symfony does for prototyped array nodes.
+     */
+    private function getRawConfigList(ContainerBuilder $builder, string $option): array
+    {
+        $values = [];
+
+        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
+            /** @var array|scalar $resolved */
+            $resolved = $builder->getParameterBag()
+                ->resolveValue($config[$option] ?? []);
+
+            $values = [...$values, ...(array)$resolved];
+        }
+
+        return \array_values(\array_unique($values));
     }
 
     private function getRawConfigValue(ContainerBuilder $builder, string $option, mixed $default): mixed
