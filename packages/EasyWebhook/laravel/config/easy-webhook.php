@@ -36,6 +36,16 @@ return [
          * it is rejected at startup. To reach hosts this cannot express, use "enabled" => false.
          */
         'allowed_ranges' => [],
+
+        /**
+         * Hostnames whose requests bypass the SSRF check entirely, for a legitimate private target
+         * such as an internal load balancer published in public DNS with private addresses. Entries
+         * are "host" (any port) or "host:port", matched case-insensitively against the webhook URL;
+         * no scheme, path or wildcard, and an IP literal in a URL never matches. Redirects from an
+         * allowed host are never followed. All other hosts stay fully protected. Entries are trimmed
+         * and empty ones dropped, so an empty env var means an empty list.
+         */
+        'allowed_hosts' => [],
     ],
     'request_limits' => [
         'enabled' => false,

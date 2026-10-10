@@ -52,6 +52,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$blockPrivateNetworks', param(ConfigParam::SsrfProtectionEnabled->value))
         ->arg('$extraBlockedRanges', param(ConfigParam::SsrfProtectionExtraBlockedRanges->value))
         ->arg('$allowedRanges', param(ConfigParam::SsrfProtectionAllowedRanges->value))
+        ->arg('$allowedHosts', param(ConfigParam::SsrfProtectionAllowedHosts->value))
         ->arg('$requestLimitsEnabled', param(ConfigParam::RequestLimitsEnabled->value))
         ->arg('$timeout', param(ConfigParam::RequestTimeout->value))
         ->arg('$maxDuration', param(ConfigParam::RequestMaxDuration->value))

@@ -50,6 +50,10 @@ final class EasyWebhookBundle extends AbstractBundle
                 ConfigParam::SsrfProtectionAllowedRanges->value,
                 $config['ssrf_protection']['allowed_ranges']
             )
+            ->set(
+                ConfigParam::SsrfProtectionAllowedHosts->value,
+                $config['ssrf_protection']['allowed_hosts']
+            )
             ->set(ConfigParam::RequestLimitsEnabled->value, $config['request_limits']['enabled'])
             ->set(ConfigParam::RequestTimeout->value, $config['request_limits']['timeout'])
             ->set(ConfigParam::RequestMaxDuration->value, $config['request_limits']['max_duration'])

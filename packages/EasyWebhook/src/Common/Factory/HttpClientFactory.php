@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Common\Factory;
 
 use EonX\EasyWebhook\Common\Exception\InvalidSsrfProtectionConfigException;
+use EonX\EasyWebhook\Common\HttpClient\AllowedHostsHttpClient;
 use EonX\EasyWebhook\Common\HttpClient\RequestLimitsHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\NoPrivateNetworkHttpClient;
@@ -18,6 +19,8 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
 
     public const DEFAULT_TIMEOUT = 10;
 
+    private array $allowedHosts;
+
     /**
      * @param string[] $extraBlockedRanges
      * @param string[] $allowedRanges
@@ -26,14 +29,75 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         private bool $blockPrivateNetworks = true,
         private array $extraBlockedRanges = [],
         private array $allowedRanges = [],
+        array $allowedHosts = [],
         private bool $requestLimitsEnabled = false,
         private int $timeout = self::DEFAULT_TIMEOUT,
         private int $maxDuration = self::DEFAULT_MAX_DURATION,
         private int $maxResponseBytes = self::DEFAULT_MAX_RESPONSE_BYTES,
     ) {
+        $this->allowedHosts = self::normalizeAllowedHosts($allowedHosts);
+
         // Only when protection is on; disabled means allowed_ranges is inert, so don't reject it
         if ($blockPrivateNetworks) {
             self::validateAllowedRanges($extraBlockedRanges, $allowedRanges);
+            self::validateAllowedHosts($this->allowedHosts);
+        }
+    }
+
+    public static function normalizeAllowedHosts(array $allowedHosts): array
+    {
+        $normalized = [];
+
+        foreach ($allowedHosts as $host) {
+            if (\is_string($host) === false) {
+                continue;
+            }
+
+            $host = \mb_strtolower(\trim($host));
+
+            if ($host !== '') {
+                $normalized[] = $host;
+            }
+        }
+
+        return \array_values(\array_unique($normalized));
+    }
+
+    /**
+     * @param string[] $allowedHosts
+     */
+    public static function validateAllowedHosts(array $allowedHosts): void
+    {
+        foreach ($allowedHosts as $entry) {
+            $parts = \explode(':', $entry, 2);
+            $host = $parts[0];
+            $port = $parts[1] ?? null;
+
+            if ($port !== null && (\ctype_digit($port) === false || (int)$port < 1 || (int)$port > 65535)) {
+                throw new InvalidSsrfProtectionConfigException(\sprintf(
+                    'SSRF "allowed_hosts" entry "%s" has an invalid port. Use "host" or "host:port" '
+                    . 'with a port between 1 and 65535.',
+                    $entry
+                ));
+            }
+
+            if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+                throw new InvalidSsrfProtectionConfigException(\sprintf(
+                    'SSRF "allowed_hosts" entry "%s" is an IP address, but only hostnames can be allowed: '
+                    . 'an IP literal in a webhook URL is always subject to the SSRF check. Use '
+                    . '"allowed_ranges" or "ssrf_protection.enabled: false" to reach it.',
+                    $entry
+                ));
+            }
+
+            if (\filter_var($host, \FILTER_VALIDATE_DOMAIN, \FILTER_FLAG_HOSTNAME) === false) {
+                throw new InvalidSsrfProtectionConfigException(\sprintf(
+                    'SSRF "allowed_hosts" entry "%s" is not a hostname. It must be written as "host" or '
+                    . '"host:port" without scheme, path or whitespace (e.g. "api.example.com" or '
+                    . '"api.example.com:8443"), otherwise it would never match a webhook URL.',
+                    $entry
+                ));
+            }
         }
     }
 
@@ -103,7 +167,11 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
                     $this->allowedRanges
                 ));
 
-            $httpClient = new NoPrivateNetworkHttpClient($httpClient, $subnets);
+            $httpClient = new AllowedHostsHttpClient(
+                new NoPrivateNetworkHttpClient($httpClient, $subnets),
+                $httpClient,
+                $this->allowedHosts
+            );
         }
 
         // DoS request limits (opt-in): enforced inside the decorator, not as client-default options,
