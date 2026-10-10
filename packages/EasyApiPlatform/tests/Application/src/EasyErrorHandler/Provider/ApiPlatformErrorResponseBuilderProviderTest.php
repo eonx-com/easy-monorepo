@@ -706,9 +706,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         array $violations,
         string $exceptionMessage,
     ): void {
-        $response = self::$client->request('POST', $url, ['json' => $json]);
+        $response = self::request('POST', $url, ['json' => $json]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(400, $response->getStatusCode());
         self::assertArrayStructure(
             [
@@ -734,7 +734,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     {
         self::setUpClient(['environment' => 'overridden_violation_messages']);
 
-        $response = self::$client->request('POST', '/books', [
+        $response = self::request('POST', '/books', [
             'json' => [
                 'category' => 'some invalid IRI',
                 'description' => 'some description',
@@ -744,7 +744,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
         ]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(400, $response->getStatusCode());
         self::assertArraySubset(
             [
@@ -767,7 +767,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     {
         self::setUpClient(['environment' => 'overridden_violation_messages']);
 
-        $response = self::$client->request('POST', '/books', [
+        $response = self::request('POST', '/books', [
             'json' => [
                 'description' => 'some description',
                 'printingHouse' => '/printing-houses/2',
@@ -776,7 +776,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             ],
         ]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(400, $response->getStatusCode());
         self::assertArraySubset(
             [
@@ -791,9 +791,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     }
 
     #[DataProvider('provideDataForBuildErrorResponseWhenInvalidFormat')]
-    public function testBuildErrorResponseWhenInvalidFormat(mixed $body): void
+    public function testBuildErrorResponseWhenInvalidFormat(?string $body): void
     {
-        $response = self::$client->request('POST', '/books', [
+        $response = self::request('POST', '/books', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -801,7 +801,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'body' => $body,
         ]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(400, $response->getStatusCode());
         self::assertArrayStructure(
             [
@@ -836,9 +836,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
         self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
 
-        $response = self::$client->request('POST', $url, ['json' => $json]);
+        $response = self::request('POST', $url, ['json' => $json]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(400, $response->getStatusCode());
         self::assertArrayStructure(
             [
@@ -871,12 +871,12 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     }
 
     #[DataProvider('provideDataForBuildErrorResponseWhenInvalidFormat')]
-    public function testBuildExtendedErrorResponseWhenInvalidFormat(mixed $body): void
+    public function testBuildExtendedErrorResponseWhenInvalidFormat(?string $body): void
     {
         $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
         self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
 
-        $response = self::$client->request('POST', '/books', [
+        $response = self::request('POST', '/books', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -884,7 +884,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
             'body' => $body,
         ]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(400, $response->getStatusCode());
         self::assertArrayStructure(
             [
@@ -929,9 +929,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         string $exceptionClass,
         string $exceptionMessage,
     ): void {
-        $response = self::$client->request('POST', $url, ['json' => $json]);
+        $response = self::request('POST', $url, ['json' => $json]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(500, $response->getStatusCode());
         self::assertArrayStructure(
             [
@@ -964,9 +964,9 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
         $chainVerboseStrategy = self::getService(VerboseStrategyInterface::class);
         self::setPrivatePropertyValue($chainVerboseStrategy, 'verbose', true);
 
-        $response = self::$client->request('POST', $url, ['json' => $json]);
+        $response = self::request('POST', $url, ['json' => $json]);
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(500, $response->getStatusCode());
         self::assertArrayStructure(
             [
