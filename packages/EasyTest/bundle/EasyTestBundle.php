@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Bundle;
 
 use EonX\EasyTest\Bundle\CompilerPass\RegisterTraceableErrorHandlerStubCompilerPass;
+use Monolog\LogRecord;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -24,10 +25,12 @@ final class EasyTestBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if (\interface_exists(TransportFactoryInterface::class) === false) {
-            return;
+        if (\class_exists(LogRecord::class)) {
+            $container->import('config/services.php');
         }
 
-        $container->import('config/messenger.php');
+        if (\interface_exists(TransportFactoryInterface::class)) {
+            $container->import('config/messenger.php');
+        }
     }
 }

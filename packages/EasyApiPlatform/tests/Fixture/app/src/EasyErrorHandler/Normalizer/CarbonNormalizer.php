@@ -5,7 +5,7 @@ namespace EonX\EasyApiPlatform\Tests\Fixture\App\EasyErrorHandler\Normalizer;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class CarbonNormalizer implements DenormalizerInterface
@@ -25,7 +25,15 @@ final class CarbonNormalizer implements DenormalizerInterface
             return new CarbonImmutable($data);
         }
 
-        throw new UnexpectedValueException('Custom message from custom CarbonNormalizer.');
+        /** @var string|null $deserializationPath */
+        $deserializationPath = $context['deserialization_path'] ?? null;
+
+        throw NotNormalizableValueException::createForUnexpectedDataType(
+            'Custom message from custom CarbonNormalizer.',
+            $data,
+            [CarbonImmutable::class],
+            $deserializationPath
+        );
     }
 
     public function getSupportedTypes(?string $format): array

@@ -5,9 +5,11 @@ namespace EonX\EasySwoole\EasyLogging\Processor;
 
 use EonX\EasyLogging\Processor\AbstractSelfConfigProvidingProcessor;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
+use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+#[AsMonologProcessor]
 final class SwooleWorkerIdProcessor extends AbstractSelfConfigProvidingProcessor
 {
     public function __construct(
