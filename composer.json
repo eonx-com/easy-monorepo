@@ -363,6 +363,7 @@
                     "PKSA-mdq4-51ck-6kdq": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
                     "PKSA-m5cs-t1y6-qpcs": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
                     "PKSA-3r5d-mb8f-1qw9": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
+                    "PKSA-d5tc-s1qs-h781": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
                     "PKSA-z7t6-zt6p-wtng": "symfony/cache: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-5r1g-c7b7-y1zg": "symfony/dom-crawler: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-y6py-qpv1-h52p": "symfony/http-foundation: fix requires Symfony upgrade, blocked by team lead",

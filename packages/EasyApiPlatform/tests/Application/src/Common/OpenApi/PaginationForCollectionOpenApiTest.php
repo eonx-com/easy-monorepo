@@ -39,16 +39,20 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
         return \json_encode($data, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
     }
 
-    private static function getApiPlatformVersion(): int
+    private static function getApiPlatformVersion(): string
     {
         if (\class_exists(InstalledVersions::class)) {
             $installedVersion = InstalledVersions::getVersion('api-platform/core');
 
+            if ($installedVersion !== null && \version_compare($installedVersion, '4.4', '>=')) {
+                return '4.4';
+            }
+
             if ($installedVersion !== null && \version_compare($installedVersion, '4', '>=')) {
-                return 4;
+                return '4';
             }
         }
 
-        return 3;
+        return '3';
     }
 }
