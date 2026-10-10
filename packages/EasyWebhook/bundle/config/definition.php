@@ -93,12 +93,11 @@ return static function (DefinitionConfigurator $definition) {
                         ->info(
                             'Hostnames whose requests bypass the SSRF check entirely, for a legitimate '
                             . 'private target such as an internal load balancer published in public DNS '
-                            . 'with private addresses. Bare hostnames only (no scheme, port, path or '
-                            . 'wildcard), matched case-insensitively against the webhook URL host; an IP '
-                            . 'literal in a URL never matches. Redirects from an allowed host are not '
-                            . 'followed unless the webhook sets max_redirects. All other hosts stay fully '
-                            . 'protected. Accepts an env placeholder such as env(csv:VAR); an empty variable '
-                            . 'means an empty list.'
+                            . 'with private addresses. Entries are "host" (any port) or "host:port", '
+                            . 'matched case-insensitively against the webhook URL; no scheme, path or '
+                            . 'wildcard, and an IP literal in a URL never matches. Redirects from an allowed '
+                            . 'host are never followed. All other hosts stay fully protected. Accepts an env '
+                            . 'placeholder such as env(csv:VAR); an empty variable means an empty list.'
                         )
                         ->defaultValue([])
                         ->validate()

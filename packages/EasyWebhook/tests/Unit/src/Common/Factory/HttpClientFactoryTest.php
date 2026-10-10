@@ -24,13 +24,34 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
 
         yield 'Path' => ['api.example.com/webhooks'];
 
-        yield 'Port' => ['api.example.com:443'];
+        yield 'Port zero' => ['api.example.com:0'];
+
+        yield 'Port out of range' => ['api.example.com:65536'];
+
+        yield 'Port not numeric' => ['api.example.com:https'];
+
+        yield 'Scheme and port' => ['https://api.example.com:443'];
 
         yield 'Inner whitespace' => ['api. example.com'];
 
         yield 'IPv4 literal' => ['10.24.80.5'];
 
         yield 'IPv6 literal' => ['::1'];
+    }
+
+    public function testAcceptsAllowedHostWithPort(): void
+    {
+        $httpClient = (new HttpClientFactory(allowedHosts: ['internal.example.com:8443']))->create();
+
+        $response = $httpClient->request('GET', 'https://internal.example.com:8443/', [
+            'resolve' => ['internal.example.com' => '10.24.80.5'],
+        ]);
+        $response->cancel();
+
+        self::assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertRequestBlocked($httpClient, 'https://internal.example.com/', [
+            'resolve' => ['internal.example.com' => '10.24.80.5'],
+        ]);
     }
 
     public function testAllowedHostBypassesGuardButOtherHostsStayBlocked(): void

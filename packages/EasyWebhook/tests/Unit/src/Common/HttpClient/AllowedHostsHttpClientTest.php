@@ -35,6 +35,28 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         yield 'IPv6' => ['http://[fd00::1]/webhooks'];
     }
 
+    /**
+     * @see testMatchesPortWhenAllowlistEntryHasOne
+     */
+    public static function providePortUrls(): iterable
+    {
+        yield 'Explicit matching port' => ['https://api.ahi.example:8443/webhooks', ['api.ahi.example:8443'], true];
+
+        yield 'Explicit other port' => ['https://api.ahi.example:6379/webhooks', ['api.ahi.example:8443'], false];
+
+        yield 'Implicit https port' => ['https://api.ahi.example/webhooks', ['api.ahi.example:443'], true];
+
+        yield 'Implicit http port' => ['http://api.ahi.example/webhooks', ['api.ahi.example:80'], true];
+
+        yield 'Implicit https port vs 80' => ['https://api.ahi.example/webhooks', ['api.ahi.example:80'], false];
+
+        yield 'Host without port matches any port' => [
+            'https://api.ahi.example:6379/webhooks',
+            ['api.ahi.example'],
+            true,
+        ];
+    }
+
     #[DataProvider('provideAllowedHostUrls')]
     public function testAllowedHostGoesToUnprotectedClientRegardlessOfCase(string $url): void
     {
@@ -63,6 +85,24 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         $client = new AllowedHostsHttpClient(new MockHttpClient(), $unprotectedClient, ['api.ahi.example']);
 
         $client->request('POST', 'https://api.ahi.example/webhooks')
+            ->getContent();
+
+        self::assertSame(0, $captured['max_redirects']);
+    }
+
+    public function testForcesMaxRedirectsToZeroForAllowedHostEvenWhenWebhookSetsIt(): void
+    {
+        $captured = [];
+        $unprotectedClient = new MockHttpClient(
+            static function (string $method, string $url, array $options) use (&$captured): MockResponse {
+                $captured = $options;
+
+                return new MockResponse('ok');
+            }
+        );
+        $client = new AllowedHostsHttpClient(new MockHttpClient(), $unprotectedClient, ['api.ahi.example']);
+
+        $client->request('POST', 'https://api.ahi.example/webhooks', ['max_redirects' => 3])
             ->getContent();
 
         self::assertSame(0, $captured['max_redirects']);
@@ -99,22 +139,17 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         self::assertSame(0, $unprotectedClient->getRequestsCount());
     }
 
-    public function testKeepsWebhookMaxRedirectsForAllowedHost(): void
+    #[DataProvider('providePortUrls')]
+    public function testMatchesPortWhenAllowlistEntryHasOne(string $url, array $allowedHosts, bool $expectAllowed): void
     {
-        $captured = [];
-        $unprotectedClient = new MockHttpClient(
-            static function (string $method, string $url, array $options) use (&$captured): MockResponse {
-                $captured = $options;
+        $protectedClient = new MockHttpClient(new MockResponse('protected'));
+        $unprotectedClient = new MockHttpClient(new MockResponse('unprotected'));
+        $client = new AllowedHostsHttpClient($protectedClient, $unprotectedClient, $allowedHosts);
 
-                return new MockResponse('ok');
-            }
-        );
-        $client = new AllowedHostsHttpClient(new MockHttpClient(), $unprotectedClient, ['api.ahi.example']);
-
-        $client->request('POST', 'https://api.ahi.example/webhooks', ['max_redirects' => 3])
+        $content = $client->request('POST', $url)
             ->getContent();
 
-        self::assertSame(3, $captured['max_redirects']);
+        self::assertSame($expectAllowed ? 'unprotected' : 'protected', $content);
     }
 
     public function testNonAllowedHostGoesToProtectedClientWithOptionsUntouched(): void
@@ -136,6 +171,31 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         self::assertSame('protected', $content);
         self::assertNull($captured['max_redirects'] ?? null);
         self::assertSame(0, $unprotectedClient->getRequestsCount());
+    }
+
+    public function testStreamsAllowedAndProtectedResponsesTogether(): void
+    {
+        $baseClient = new MockHttpClient([new MockResponse('first'), new MockResponse('second')]);
+        $client = new AllowedHostsHttpClient(
+            new NoPrivateNetworkHttpClient($baseClient),
+            $baseClient,
+            ['api.ahi.example']
+        );
+
+        $allowed = $client->request('GET', 'https://api.ahi.example/');
+        $protected = $client->request('GET', 'https://api.other.example/', [
+            'resolve' => ['api.other.example' => '8.8.8.8'],
+        ]);
+
+        $contents = [];
+
+        foreach ($client->stream([$allowed, $protected]) as $response => $chunk) {
+            if ($chunk->isLast()) {
+                $contents[] = $response->getContent();
+            }
+        }
+
+        self::assertSame(['first', 'second'], $contents);
     }
 
     public function testWithOptionsKeepsRoutingOnBothClients(): void

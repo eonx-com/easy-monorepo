@@ -21,15 +21,13 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
 
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
-        $host = self::parseHost($url);
-
-        if ($host !== null && $this->isAllowedHost($host)) {
-            $options['max_redirects'] ??= 0;
+        if ($this->isAllowedUrl($url)) {
+            $options['max_redirects'] = 0;
 
             return new AsyncResponse($this->unprotectedClient, $method, $url, $options);
         }
 
-        return new AsyncResponse($this->protectedClient, $method, $url, $options);
+        return $this->protectedClient->request($method, $url, $options);
     }
 
     public function reset(): void
@@ -61,27 +59,28 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
         return $clone;
     }
 
-    private static function parseHost(string $url): ?string
-    {
-        $host = \parse_url($url, \PHP_URL_HOST);
-
-        if (\is_string($host) === false || $host === '') {
-            return null;
-        }
-
-        return \mb_strtolower(\trim($host, '[]'));
-    }
-
-    private function isAllowedHost(string $host): bool
+    private function isAllowedUrl(string $url): bool
     {
         if ($this->allowedHosts === []) {
             return false;
         }
 
+        $host = \parse_url($url, \PHP_URL_HOST);
+
+        if (\is_string($host) === false || $host === '') {
+            return false;
+        }
+
+        $host = \mb_strtolower(\trim($host, '[]'));
+
         if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
             return false;
         }
 
-        return \in_array($host, $this->allowedHosts, true);
+        $port = \parse_url($url, \PHP_URL_PORT)
+            ?? (\mb_strtolower((string)\parse_url($url, \PHP_URL_SCHEME)) === 'https' ? 443 : 80);
+
+        return \in_array($host, $this->allowedHosts, true)
+            || \in_array($host . ':' . $port, $this->allowedHosts, true);
     }
 }
