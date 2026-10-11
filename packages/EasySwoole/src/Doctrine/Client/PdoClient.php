@@ -10,6 +10,11 @@ use PDO;
 use ReflectionMethod;
 use RuntimeException;
 
+/**
+ * @method bool beginTransaction()
+ * @method bool commit()
+ * @method bool rollBack()
+ */
 final class PdoClient extends BasePDOClient
 {
     private const array DRIVER_MAPPING = [

@@ -156,9 +156,7 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/
 
         - message: '#Call to an undefined method EonX\\EasySwoole\\Doctrine\\Client\\PdoClient\:\:.*\(\)#'
-          paths:
-            - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection
-            - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Pool
+          path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Connection
 
         - message: '#While loop condition is always true#'
           path: %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Pool/PdoClientPool.php
