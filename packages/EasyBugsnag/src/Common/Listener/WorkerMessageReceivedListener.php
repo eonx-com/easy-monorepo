@@ -27,7 +27,7 @@ final class WorkerMessageReceivedListener
 
     public function __construct(
         private readonly Client $client,
-        private readonly SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
+        private readonly ?SensitiveDataSanitizerInterface $sensitiveDataSanitizer = null,
     ) {}
 
     public function __invoke(WorkerMessageReceivedEvent $event): void
@@ -61,10 +61,13 @@ final class WorkerMessageReceivedListener
 
     private function dump(mixed $var): string
     {
-        $dump = (string)$this->getDumper()
-            ->dump($this->getCloner()->cloneVar($var), true);
+        // Mask while the value is still structured; key-based masking cannot work on the dumped string
+        if ($this->sensitiveDataSanitizer !== null) {
+            $var = $this->sensitiveDataSanitizer->sanitize($var);
+        }
 
-        return $this->sensitiveDataSanitizer->sanitize($dump);
+        return (string)$this->getDumper()
+            ->dump($this->getCloner()->cloneVar($var), true);
     }
 
     private function getCloner(): VarCloner

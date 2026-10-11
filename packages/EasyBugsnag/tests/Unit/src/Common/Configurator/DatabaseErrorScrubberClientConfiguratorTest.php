@@ -5,93 +5,90 @@ namespace EonX\EasyBugsnag\Tests\Unit\Common\Configurator;
 
 use Bugsnag\Client;
 use Bugsnag\Report;
+use Doctrine\DBAL\Driver\Exception as DriverException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
+use RuntimeException;
 
 final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTestCase
 {
-    public function testItKeepsMessagesWithoutLeakUntouched(): void
+    public function testItLeavesNonDatabaseExceptionUntouched(): void
     {
         $client = self::getService(Client::class);
 
-        $client->notifyError('PDOException', 'SQLSTATE[23505]: Unique violation');
+        $client->notifyException(new RuntimeException('Something failed for john@example.com'));
 
         $report = $this->getFirstReport($client);
-        self::assertSame('SQLSTATE[23505]: Unique violation', $report->getMessage());
+        self::assertSame('Something failed for john@example.com', $report->getMessage());
     }
 
-    public function testItMasksMysqlDuplicateEntryValue(): void
+    public function testItReducesDbalExceptionInThePreviousChain(): void
     {
         $client = self::getService(Client::class);
 
-        $client->notifyError(
-            'PDOException',
-            'SQLSTATE[23000]: Integrity constraint violation: 1062 '
-            . "Duplicate entry 'john@example.com' for key 'users.email_unique'"
+        $driverException = self::driverException(
+            "1062 Duplicate entry 'john@example.com' for key 'users.email_unique'",
+            '23000'
         );
+        $client->notifyException(new RuntimeException('Checkout failed', 0, $driverException));
 
         $report = $this->getFirstReport($client);
+        self::assertSame('Checkout failed', $report->getMessage());
+
+        /** @var \Bugsnag\Report|null $previous */
+        $previous = self::getPrivatePropertyValue($report, 'previous');
+        self::assertInstanceOf(Report::class, $previous);
+        self::assertStringStartsWith('SQLSTATE[23000] ', (string)$previous->getMessage());
+        self::assertStringNotContainsString('john@example.com', (string)$previous->getMessage());
+    }
+
+    public function testItReducesRawDriverException(): void
+    {
+        $client = self::getService(Client::class);
+
+        $client->notifyException(self::driverException(
+            "1062 Duplicate entry 'john@example.com' for key 'users.email_unique'",
+            '23000'
+        ));
+
+        $report = $this->getFirstReport($client);
+        self::assertStringStartsWith('SQLSTATE[23000] ', (string)$report->getMessage());
         self::assertStringNotContainsString('john@example.com', (string)$report->getMessage());
-        // The key name is not sensitive and must be preserved for debugging
-        self::assertStringContainsString("for key 'users.email_unique'", (string)$report->getMessage());
     }
 
-    public function testItMasksMysqlIncorrectValue(): void
+    public function testItReducesWrappedDbalExceptionToSkeleton(): void
     {
         $client = self::getService(Client::class);
 
-        $client->notifyError(
-            'PDOException',
-            "SQLSTATE[HY000]: 1366 Incorrect integer value: 'abc' for column 'age' at row 1"
-        );
+        $client->notifyException(new UniqueConstraintViolationException(
+            self::driverException(
+                "SQLSTATE[23505]: Unique violation: 7 ERROR: duplicate key value\n"
+                . 'DETAIL:  Key (email)=(john@example.com) already exists.',
+                '23505'
+            ),
+            null
+        ));
 
         $report = $this->getFirstReport($client);
-        self::assertStringNotContainsString("'abc'", (string)$report->getMessage());
-        // The type and column name are not sensitive and must be preserved for debugging
-        self::assertStringContainsString(
-            "Incorrect integer value: '*REDACTED*' for column",
-            (string)$report->getMessage()
-        );
-    }
-
-    public function testItMasksMysqlTruncatedValue(): void
-    {
-        $client = self::getService(Client::class);
-
-        $client->notifyError('PDOException', "SQLSTATE[22007]: 1292 Truncated incorrect DATE value: '2021-13-45'");
-
-        $report = $this->getFirstReport($client);
-        self::assertStringNotContainsString('2021-13-45', (string)$report->getMessage());
-        self::assertStringContainsString("Truncated incorrect DATE value: '*REDACTED*'", (string)$report->getMessage());
-    }
-
-    public function testItMasksPostgresInvalidInputValue(): void
-    {
-        $client = self::getService(Client::class);
-
-        $client->notifyError('PDOException', 'SQLSTATE[22P02]: invalid input syntax for type integer: "abc"');
-
-        $report = $this->getFirstReport($client);
-        self::assertStringNotContainsString('"abc"', (string)$report->getMessage());
-        // The type is not sensitive and must be preserved for debugging
-        self::assertStringContainsString(
-            'invalid input syntax for type integer: "*REDACTED*"',
-            (string)$report->getMessage()
-        );
-    }
-
-    public function testItStripsPostgresDetailLine(): void
-    {
-        $client = self::getService(Client::class);
-
-        $client->notifyError(
-            'PDOException',
-            "SQLSTATE[23505]: Unique violation\nDETAIL:  Failing row contains (1, john@example.com, 1990-01-01)."
-        );
-
-        $report = $this->getFirstReport($client);
-        self::assertSame('SQLSTATE[23505]: Unique violation', $report->getMessage());
-        self::assertStringNotContainsString('DETAIL:', (string)$report->getMessage());
+        self::assertSame('SQLSTATE[23505] ' . UniqueConstraintViolationException::class, $report->getMessage());
         self::assertStringNotContainsString('john@example.com', (string)$report->getMessage());
+    }
+
+    private static function driverException(string $message, ?string $sqlState): DriverException
+    {
+        return new class ($message, $sqlState) extends RuntimeException implements DriverException {
+            public function __construct(
+                string $message,
+                private readonly ?string $sqlState,
+            ) {
+                parent::__construct($message);
+            }
+
+            public function getSQLState(): ?string
+            {
+                return $this->sqlState;
+            }
+        };
     }
 
     private function getFirstReport(Client $client): Report

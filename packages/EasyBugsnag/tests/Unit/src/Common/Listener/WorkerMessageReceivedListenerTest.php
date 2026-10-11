@@ -13,29 +13,63 @@ use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 
 final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
 {
-    public function testItSanitizesDumpedMessageMetadata(): void
+    public function testItDumpsWithoutMaskingWhenSanitizerIsNull(): void
     {
         $client = self::getService(Client::class);
-        $sanitizer = self::getService(SensitiveDataSanitizerInterface::class);
-
-        $listener = new WorkerMessageReceivedListener($client, $sanitizer);
+        $listener = new WorkerMessageReceivedListener($client);
 
         $message = new stdClass();
-        // Luhn-valid test card — the sanitizer detects it by value, not by key
-        $message->card = '4111111111111111';
-        $event = new WorkerMessageReceivedEvent(new Envelope($message), 'async');
+        $message->password = 'super-secret';
+        $listener(new WorkerMessageReceivedEvent(new Envelope($message), 'async'));
 
-        $listener($event);
+        $worker = $this->getWorkerMetadata($client);
+        self::assertStringContainsString('super-secret', $worker['Message']);
+        self::assertSame('async', $worker['Receiver Name']);
+    }
 
+    public function testItMasksCardNumberByValue(): void
+    {
+        $client = self::getService(Client::class);
+        $listener = new WorkerMessageReceivedListener(
+            $client,
+            self::getService(SensitiveDataSanitizerInterface::class)
+        );
+
+        $message = new stdClass();
+        // Luhn-valid test card — masked by value, not by key
+        $message->reference = '4111111111111111';
+        $listener(new WorkerMessageReceivedEvent(new Envelope($message), 'async'));
+
+        self::assertStringNotContainsString('4111111111111111', $this->getWorkerMetadata($client)['Message']);
+    }
+
+    public function testItMasksSensitiveKeysInDumpedMessage(): void
+    {
+        $client = self::getService(Client::class);
+        $listener = new WorkerMessageReceivedListener(
+            $client,
+            self::getService(SensitiveDataSanitizerInterface::class)
+        );
+
+        $message = new stdClass();
+        $message->password = 'super-secret';
+        $listener(new WorkerMessageReceivedEvent(new Envelope($message), 'async'));
+
+        self::assertStringNotContainsString('super-secret', $this->getWorkerMetadata($client)['Message']);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getWorkerMetadata(Client $client): array
+    {
         $client->notifyError('test', 'test');
 
         /** @var \Bugsnag\HttpClient $httpClient */
         $httpClient = self::getPrivatePropertyValue($client, 'http');
         /** @var \Bugsnag\Report[] $reports */
         $reports = self::getPrivatePropertyValue($httpClient, 'queue');
-        $worker = $reports[0]->getMetaData()['worker'];
 
-        self::assertStringNotContainsString('4111111111111111', $worker['Message']);
-        self::assertSame('async', $worker['Receiver Name']);
+        return $reports[0]->getMetaData()['worker'];
     }
 }
