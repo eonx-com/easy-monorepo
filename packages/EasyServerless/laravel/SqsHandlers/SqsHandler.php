@@ -7,8 +7,8 @@ use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
-use Bref\LaravelBridge\Queue\Worker;
 use EonX\EasyServerless\Laravel\Jobs\SqsQueueJob;
+use EonX\EasyServerless\Laravel\Workers\SqsWorker;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -22,7 +22,7 @@ final class SqsHandler extends AbstractSqsHandler
 {
     private readonly SqsClient $sqsClient;
 
-    private readonly Worker $worker;
+    private readonly SqsWorker $worker;
 
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -61,21 +61,52 @@ final class SqsHandler extends AbstractSqsHandler
     {
         $timeout = $this->calculateJobTimeout($context->getRemainingTimeInMillis());
         $job = $this->makeSqsQueueJob($sqsRecord);
+        $receiveCount = $sqsRecord->getApproximateReceiveCount();
+        $jobMaxTries = $job->maxTries();
+        // The application can explicitly prevent retries by setting maxTries to 1
+        $isJobExplicitlyUnrecoverable = $jobMaxTries === 1;
+        // Like Laravel's worker, a non-positive job maxTries means unlimited, in which case only the application
+        // max retries caps the processing. A missing job maxTries falls back on the application max retries
+        $maxTries = match (true) {
+            $jobMaxTries === null => $this->appMaxRetries,
+            $jobMaxTries < 1 => \PHP_INT_MAX,
+            default => $jobMaxTries,
+        };
+
+        // Parent::shouldSkipRecord() only knows about the application max retries. When the job-specific limit
+        // is lower and already exhausted, requeue the message without running the job so it keeps cycling
+        // until SQS moves it to the DLQ, without marking the job as failed a second time
+        if ($isJobExplicitlyUnrecoverable === false && $receiveCount > $maxTries) {
+            $this->logger?->debug(
+                \sprintf(
+                    'Skipping MessageId "%s" because it has reached the job max tries (%d)',
+                    $sqsRecord->getMessageId(),
+                    $maxTries
+                )
+            );
+
+            // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
+            $this->scheduleForRetry($sqsRecord, forFailure: true);
+
+            return;
+        }
+
         $workerOptions = $this->makeWorkerOptions($timeout);
 
         $this->worker->runSqsJob($job, $this->connectionName, $workerOptions);
 
-        if ($job->hasFailed()) {
-            // The application can explicitly prevent retries by setting maxTries to 1
-            $isJobExplicitlyUnrecoverable = $job->maxTries() === 1;
-            $shouldRetry = $isJobExplicitlyUnrecoverable === false
-                && $sqsRecord->getApproximateReceiveCount() < ($job->maxTries() ?? $this->appMaxRetries);
+        // Laravel marks the job as failed only when it has exceeded its max attempts, otherwise it releases it.
+        // Since release is disabled on the job to let SQS retry the message, a released job must be handled
+        // like a failed one, otherwise the record is acknowledged and the message is deleted without retry
+        if ($job->hasFailed() || $job->isReleased()) {
+            $shouldRetry = $isJobExplicitlyUnrecoverable === false && $receiveCount < $maxTries;
 
             // As explained in parent::shouldSkipRecord(), in some scenarios we must requeue messages even when
             // the application will not retry them so they can end up in the DLQ if configured,
-            // except when the application is explicitly preventing retries
+            // except when the application is explicitly preventing retries.
+            // The same applies when the job-specific max tries is lower than the application one and exhausted
             $shouldRequeue = $isJobExplicitlyUnrecoverable === false
-                && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
+                && ($receiveCount >= $this->appMaxRetries || $receiveCount >= $maxTries);
 
             if ($shouldRetry === false) {
                 $this->logger?->error(
@@ -101,7 +132,8 @@ final class SqsHandler extends AbstractSqsHandler
                 }
 
                 if ($shouldRequeue) {
-                    $this->scheduleForRetry($sqsRecord);
+                    // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
+                    $this->scheduleForRetry($sqsRecord, forFailure: true);
 
                     return;
                 }
@@ -144,9 +176,9 @@ final class SqsHandler extends AbstractSqsHandler
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function makeWorker(): Worker
+    private function makeWorker(): SqsWorker
     {
-        $worker = $this->container->make(Worker::class, [
+        $worker = $this->container->make(SqsWorker::class, [
             'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
             'resetScope' => fn () => $this->resetWorkerScope(),
         ]);
