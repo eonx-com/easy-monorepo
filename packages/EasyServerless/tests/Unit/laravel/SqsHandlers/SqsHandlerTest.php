@@ -22,7 +22,7 @@ use RuntimeException;
 
 final class SqsHandlerTest extends AbstractLumenTestCase
 {
-    private const int APP_MAX_RETRIES = 3;
+    private const APP_MAX_RETRIES = 3;
 
     private const string QUEUE_PREFIX = 'https://sqs.ap-southeast-2.amazonaws.com/123456789012';
 
