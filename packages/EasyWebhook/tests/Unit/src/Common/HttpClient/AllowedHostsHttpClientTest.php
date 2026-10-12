@@ -209,6 +209,41 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         );
     }
 
+    public function testStreamsEachPathThroughItsOwnClient(): void
+    {
+        $protectedBaseClient = new MockHttpClient([new MockResponse('protected-1'), new MockResponse('protected-2')]);
+        $unprotectedClient = new MockHttpClient([new MockResponse('unprotected')]);
+        $client = new AllowedHostsHttpClient(
+            new NoPrivateNetworkHttpClient($protectedBaseClient),
+            $unprotectedClient,
+            ['api.ahi.example']
+        );
+        $options = [
+            'resolve' => ['api.other.example' => '8.8.8.8'],
+        ];
+
+        $protectedResponses = [
+            $client->request('GET', 'https://api.other.example/1', $options),
+            $client->request('GET', 'https://api.other.example/2', $options),
+        ];
+        $protectedContent = '';
+
+        foreach ($client->stream($protectedResponses) as $chunk) {
+            $protectedContent .= $chunk->getContent();
+        }
+
+        $allowedContent = '';
+
+        foreach ($client->stream($client->request('GET', 'https://api.ahi.example/')) as $chunk) {
+            $allowedContent .= $chunk->getContent();
+        }
+
+        self::assertSame('protected-1protected-2', $protectedContent);
+        self::assertSame('unprotected', $allowedContent);
+        self::assertSame(2, $protectedBaseClient->getRequestsCount());
+        self::assertSame(1, $unprotectedClient->getRequestsCount());
+    }
+
     public function testWithOptionsKeepsRoutingOnBothClients(): void
     {
         $protectedClient = new MockHttpClient(new MockResponse('protected'));
