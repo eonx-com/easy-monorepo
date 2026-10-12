@@ -130,12 +130,18 @@ request is sent with `max_redirects: 0` regardless of the webhook's own HTTP cli
 are trimmed and empty ones dropped, so the list can come straight from an environment variable:
 
 ```php
-// config/packages/easy_webhook.php
-$container->extension('easy_webhook', [
-    'ssrf_protection' => [
-        'allowed_hosts' => env('csv:OUTGOING_WEBHOOK_SSRF_ALLOWED_HOSTS'),
-    ],
-]);
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_webhook', [
+        'ssrf_protection' => [
+            'allowed_hosts' => env('csv:OUTGOING_WEBHOOK_SSRF_ALLOWED_HOSTS'),
+        ],
+    ]);
+};
 ```
 
 An empty `OUTGOING_WEBHOOK_SSRF_ALLOWED_HOSTS` means an empty allowlist. An entry that could never
