@@ -22,7 +22,7 @@ final class SecurityContextClientConfiguratorTest extends AbstractUnitTestCase
         $context->setToken(new ApiKey($rawToken));
 
         $client = new Client(new Configuration('my-api-key'));
-        (new SecurityContextClientConfigurator(new SecurityContextResolverStub($context)))
+        new SecurityContextClientConfigurator(new SecurityContextResolverStub($context))
             ->configure($client);
 
         $client->notifyError('test', 'test');
