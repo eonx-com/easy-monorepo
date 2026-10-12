@@ -8,6 +8,7 @@ use Monolog\LogRecord;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 
 final class EasyTestBundle extends AbstractBundle
 {
@@ -26,6 +27,10 @@ final class EasyTestBundle extends AbstractBundle
     {
         if (\class_exists(LogRecord::class)) {
             $container->import('config/services.php');
+        }
+
+        if (\interface_exists(TransportFactoryInterface::class)) {
+            $container->import('config/messenger.php');
         }
     }
 }
