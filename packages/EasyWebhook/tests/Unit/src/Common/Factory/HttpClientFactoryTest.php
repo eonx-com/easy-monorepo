@@ -37,6 +37,16 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         yield 'IPv4 literal' => ['10.24.80.5'];
 
         yield 'IPv6 literal' => ['::1'];
+
+        yield 'Short IPv4' => ['127.1'];
+
+        yield 'Decimal IPv4' => ['2130706433'];
+
+        yield 'Octal IPv4' => ['017700000001'];
+
+        yield 'Hex IPv4' => ['0x7f000001'];
+
+        yield 'Mixed hex IPv4' => ['0x7f.1'];
     }
 
     public function testAcceptsAllowedHostWithPort(): void

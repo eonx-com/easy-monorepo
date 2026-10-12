@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\HttpClient;
 
+use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -73,7 +74,7 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
 
         $host = \mb_strtolower(\trim($host, '[]'));
 
-        if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+        if (HttpClientFactory::isIpLiteral($host)) {
             return false;
         }
 

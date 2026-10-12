@@ -44,6 +44,17 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         }
     }
 
+    public static function isIpLiteral(string $host): bool
+    {
+        if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+            return true;
+        }
+
+        $lastLabel = \mb_strtolower((string)\strrchr('.' . $host, '.'));
+
+        return \preg_match('/^\.(0x[0-9a-f]+|[0-9]+)$/', $lastLabel) === 1;
+    }
+
     public static function normalizeAllowedHosts(array $allowedHosts): array
     {
         $normalized = [];
@@ -89,7 +100,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
                 ));
             }
 
-            if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+            if (self::isIpLiteral($host)) {
                 throw new InvalidSsrfProtectionConfigException(\sprintf(
                     'SSRF "allowed_hosts" entry "%s" is an IP address, but only hostnames can be allowed: '
                     . 'an IP literal in a webhook URL is always subject to the SSRF check. Use '

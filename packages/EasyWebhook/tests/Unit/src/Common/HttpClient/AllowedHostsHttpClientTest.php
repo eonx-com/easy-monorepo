@@ -33,6 +33,12 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         yield 'IPv4' => ['http://10.24.80.5/webhooks'];
 
         yield 'IPv6' => ['http://[fd00::1]/webhooks'];
+
+        yield 'Short IPv4' => ['http://127.1/webhooks'];
+
+        yield 'Decimal IPv4' => ['http://2130706433/webhooks'];
+
+        yield 'Hex IPv4' => ['http://0x7f000001/webhooks'];
     }
 
     /**
@@ -129,7 +135,11 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
     {
         $protectedClient = new MockHttpClient(new MockResponse('protected'));
         $unprotectedClient = new MockHttpClient(new MockResponse('unprotected'));
-        $client = new AllowedHostsHttpClient($protectedClient, $unprotectedClient, ['10.24.80.5', 'fd00::1']);
+        $client = new AllowedHostsHttpClient(
+            $protectedClient,
+            $unprotectedClient,
+            ['10.24.80.5', 'fd00::1', '127.1', '2130706433', '0x7f000001']
+        );
 
         $content = $client->request('GET', $url)
             ->getContent();
