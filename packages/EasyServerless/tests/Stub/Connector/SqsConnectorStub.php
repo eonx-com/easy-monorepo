@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Stub\Queue;
+namespace EonX\EasyServerless\Tests\Stub\Connector;
 
 use Aws\Sqs\SqsClient;
 use Illuminate\Contracts\Queue\Queue;

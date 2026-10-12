@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Stub\Job;
+namespace EonX\EasyServerless\Tests\Stub\JobHandler;
 
 use Illuminate\Contracts\Queue\Job;
 use RuntimeException;
