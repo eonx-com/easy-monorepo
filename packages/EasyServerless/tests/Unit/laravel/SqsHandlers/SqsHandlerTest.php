@@ -45,6 +45,27 @@ final class SqsHandlerTest extends AbstractLumenTestCase
     }
 
     /**
+     * @see testHandleSqsFifoBatchSkipsMessageGroupAfterRequeue
+     */
+    public static function provideHandleSqsFifoBatchCases(): iterable
+    {
+        yield 'Failed job reaching app max retries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'maxTries' => null,
+        ];
+
+        yield 'Failed job reaching its own max tries' => [
+            'receiveCount' => 2,
+            'maxTries' => 2,
+        ];
+
+        yield 'Job exceeding its own max tries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'maxTries' => 2,
+        ];
+    }
+
+    /**
      * @see testHandleSqsRecord
      */
     public static function provideHandleSqsRecordCases(): iterable
@@ -174,6 +195,43 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         self::assertSame(['first', 'third'], \array_column($entries, 'Id'));
     }
 
+    #[DataProvider('provideHandleSqsFifoBatchCases')]
+    public function testHandleSqsFifoBatchSkipsMessageGroupAfterRequeue(int $receiveCount, ?int $maxTries): void
+    {
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'first',
+                    receiveCount: $receiveCount,
+                    exception: 'boom',
+                    maxTries: $maxTries,
+                    messageGroupId: 'group-1'
+                ),
+                self::createSqsRecord(messageId: 'second', receiveCount: 1, messageGroupId: 'group-1'),
+                self::createSqsRecord(messageId: 'third', receiveCount: 1, messageGroupId: 'group-2'),
+            ]),
+            self::createContext()
+        );
+
+        // The requeued record and the following one from the same group are both reported to preserve order
+        self::assertSame(
+            ['batchItemFailures' => [['itemIdentifier' => 'first'], ['itemIdentifier' => 'second']]],
+            $result
+        );
+        self::assertCount(1, $this->sqsCommands);
+        $command = $this->sqsCommands[0];
+        self::assertSame(self::QUEUE_PREFIX . '/test.fifo', $command['QueueUrl']);
+        self::assertSame(
+            [
+                ['Id' => 'first', 'ReceiptHandle' => 'receipt-first', 'VisibilityTimeout' => 1],
+                ['Id' => 'second', 'ReceiptHandle' => 'receipt-second', 'VisibilityTimeout' => 1],
+            ],
+            $command['Entries']
+        );
+    }
+
     #[DataProvider('provideHandleSqsRecordCases')]
     public function testHandleSqsRecord(
         int $receiveCount,
@@ -260,6 +318,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         ?string $exception = null,
         ?int $maxTries = null,
         ?int $backoff = null,
+        ?string $messageGroupId = null,
     ): array {
         $body = \json_encode([
             'attempts' => 0,
@@ -274,17 +333,27 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'uuid' => $messageId,
         ], \JSON_THROW_ON_ERROR);
 
+        $attributes = [
+            'ApproximateFirstReceiveTimestamp' => '0',
+            'ApproximateReceiveCount' => (string)$receiveCount,
+            'SenderId' => 'sender-id',
+            'SentTimestamp' => '0',
+        ];
+
+        $queueName = 'test';
+
+        if ($messageGroupId !== null) {
+            $attributes['MessageDeduplicationId'] = 'dedup-' . $messageId;
+            $attributes['MessageGroupId'] = $messageGroupId;
+            $queueName = 'test.fifo';
+        }
+
         return [
-            'attributes' => [
-                'ApproximateFirstReceiveTimestamp' => '0',
-                'ApproximateReceiveCount' => (string)$receiveCount,
-                'SenderId' => 'sender-id',
-                'SentTimestamp' => '0',
-            ],
+            'attributes' => $attributes,
             'awsRegion' => 'ap-southeast-2',
             'body' => $body,
             'eventSource' => 'aws:sqs',
-            'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:test',
+            'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:' . $queueName,
             'md5OfBody' => \md5($body),
             'messageAttributes' => [],
             'messageId' => $messageId,

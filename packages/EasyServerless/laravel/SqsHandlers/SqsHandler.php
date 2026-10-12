@@ -85,7 +85,8 @@ final class SqsHandler extends AbstractSqsHandler
                 )
             );
 
-            $this->scheduleForRetry($sqsRecord);
+            // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
+            $this->scheduleForRetry($sqsRecord, forFailure: true);
 
             return;
         }
@@ -131,7 +132,8 @@ final class SqsHandler extends AbstractSqsHandler
                 }
 
                 if ($shouldRequeue) {
-                    $this->scheduleForRetry($sqsRecord);
+                    // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
+                    $this->scheduleForRetry($sqsRecord, forFailure: true);
 
                     return;
                 }
