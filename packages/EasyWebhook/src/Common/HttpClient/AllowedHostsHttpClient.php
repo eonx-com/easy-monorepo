@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\HttpClient;
 
+use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\Response\AsyncResponse;
-use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
-use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
 final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterface
 {
+    use AsyncDecoratorTrait;
+
     public function __construct(
         private HttpClientInterface $protectedClient,
-        private HttpClientInterface $unprotectedClient,
+        HttpClientInterface $unprotectedClient,
         private readonly array $allowedHosts,
     ) {
+        $this->client = $unprotectedClient;
     }
 
     public function request(string $method, string $url, array $options = []): ResponseInterface
@@ -24,7 +26,7 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
         if ($this->isAllowedUrl($url)) {
             $options['max_redirects'] = 0;
 
-            return new AsyncResponse($this->unprotectedClient, $method, $url, $options);
+            return new AsyncResponse($this->client, $method, $url, $options);
         }
 
         return $this->protectedClient->request($method, $url, $options);
@@ -36,25 +38,16 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
             $this->protectedClient->reset();
         }
 
-        if ($this->unprotectedClient instanceof ResetInterface) {
-            $this->unprotectedClient->reset();
+        if ($this->client instanceof ResetInterface) {
+            $this->client->reset();
         }
-    }
-
-    public function stream(ResponseInterface|iterable $responses, ?float $timeout = null): ResponseStreamInterface
-    {
-        if ($responses instanceof ResponseInterface) {
-            $responses = [$responses];
-        }
-
-        return new ResponseStream(AsyncResponse::stream($responses, $timeout, self::class));
     }
 
     public function withOptions(array $options): static
     {
         $clone = clone $this;
         $clone->protectedClient = $this->protectedClient->withOptions($options);
-        $clone->unprotectedClient = $this->unprotectedClient->withOptions($options);
+        $clone->client = $this->client->withOptions($options);
 
         return $clone;
     }

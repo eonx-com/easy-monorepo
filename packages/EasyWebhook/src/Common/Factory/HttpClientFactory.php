@@ -77,6 +77,15 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
     public static function validateAllowedHosts(array $allowedHosts): void
     {
         foreach ($allowedHosts as $entry) {
+            if (self::isIpLiteral(\trim($entry, '[]'))) {
+                throw new InvalidSsrfProtectionConfigException(\sprintf(
+                    'SSRF "allowed_hosts" entry "%s" is an IP address, but only hostnames can be allowed: '
+                    . 'an IP literal in a webhook URL is always subject to the SSRF check. Use '
+                    . '"allowed_ranges" or "ssrf_protection.enabled: false" to reach it.',
+                    $entry
+                ));
+            }
+
             $parts = \explode(':', $entry, 2);
             $host = $parts[0];
             $port = $parts[1] ?? null;

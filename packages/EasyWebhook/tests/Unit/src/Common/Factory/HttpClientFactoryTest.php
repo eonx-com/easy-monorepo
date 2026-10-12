@@ -49,6 +49,21 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         yield 'Mixed hex IPv4' => ['0x7f.1'];
     }
 
+    /**
+     * @see testRejectsAllowedHostThatIsNotABareHostname
+     * @see testRejectsIpLiteralAllowedHostAsIpAddress
+     */
+    public static function provideIpLiteralAllowedHosts(): iterable
+    {
+        yield 'IPv6 loopback' => ['::1'];
+
+        yield 'Bracketed IPv6' => ['[::1]'];
+
+        yield 'IPv6 ULA' => ['fd00::1'];
+
+        yield 'Short IPv4 with port' => ['127.1:443'];
+    }
+
     public function testAcceptsAllowedHostWithPort(): void
     {
         $httpClient = (new HttpClientFactory(allowedHosts: ['internal.example.com:8443']))->create();
@@ -233,6 +248,15 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         $this->expectException(InvalidSsrfProtectionConfigException::class);
 
         new HttpClientFactory(allowedRanges: ['8.8.8.8/32']);
+    }
+
+    #[DataProvider('provideIpLiteralAllowedHosts')]
+    public function testRejectsIpLiteralAllowedHostAsIpAddress(string $allowedHost): void
+    {
+        $this->expectException(InvalidSsrfProtectionConfigException::class);
+        $this->expectExceptionMessage('is an IP address');
+
+        new HttpClientFactory(allowedHosts: [$allowedHost]);
     }
 
     /**
