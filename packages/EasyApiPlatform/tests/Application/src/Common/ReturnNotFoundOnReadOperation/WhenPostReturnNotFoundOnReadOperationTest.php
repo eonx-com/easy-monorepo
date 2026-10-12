@@ -11,7 +11,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
     {
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'POST',
             '/questions/1/mark-as-answered',
             [
@@ -28,7 +28,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
     {
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'POST',
             '/incoming-webhooks/some-value',
             [
@@ -47,7 +47,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
         self::setUpClient(['environment' => 'disable_return_not_found_on_read_operations']);
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'POST',
             '/questions/1/mark-as-answered',
             [
@@ -64,7 +64,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
     {
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'POST',
             '/questions',
             [
@@ -76,8 +76,7 @@ final class WhenPostReturnNotFoundOnReadOperationTest extends AbstractApplicatio
         );
 
         self::assertSame(201, $response->getStatusCode());
-        /** @var array $responseData */
-        $responseData = \json_decode($response->getContent(false), true);
+        $responseData = self::getResponseData($response);
         self::assertSame(1, $responseData['id']);
     }
 }

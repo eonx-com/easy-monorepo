@@ -16,9 +16,9 @@ final class CustomPaginatorTest extends AbstractApplicationTestCase
         $entityManager->persist(new Category()->setTitle('Some category'));
         $entityManager->flush();
 
-        $response = self::$client->request('GET', '/categories');
+        $response = self::request('GET', '/categories');
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertSame(
             [
                 'currentPage' => 1,
@@ -40,9 +40,9 @@ final class CustomPaginatorTest extends AbstractApplicationTestCase
         $entityManager->persist(new Category()->setTitle('Some category'));
         $entityManager->flush();
 
-        $response = self::$client->request('GET', '/categories');
+        $response = self::request('GET', '/categories');
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
         self::assertFalse(isset($responseData['pagination']));
     }
 }

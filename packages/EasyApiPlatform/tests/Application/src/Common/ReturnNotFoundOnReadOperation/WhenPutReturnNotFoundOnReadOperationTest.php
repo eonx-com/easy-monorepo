@@ -11,7 +11,7 @@ final class WhenPutReturnNotFoundOnReadOperationTest extends AbstractApplication
     {
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'PUT',
             '/questions/1/mark-as-answered',
             [
@@ -28,7 +28,7 @@ final class WhenPutReturnNotFoundOnReadOperationTest extends AbstractApplication
     {
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'PUT',
             '/incoming-webhooks/some-value',
             [
@@ -47,7 +47,7 @@ final class WhenPutReturnNotFoundOnReadOperationTest extends AbstractApplication
         self::setUpClient(['environment' => 'disable_return_not_found_on_read_operations']);
         $this->initDatabase();
 
-        $response = self::$client->request(
+        $response = self::request(
             'PUT',
             '/questions/1/mark-as-answered',
             [

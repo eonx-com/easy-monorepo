@@ -75,7 +75,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     {
         $description = [];
 
-        $properties = $this->getProperties();
+        $properties = $this->properties;
         if ($properties === null) {
             $properties = \array_fill_keys($this->getClassMetadata($resourceClass)->getFieldNames(), null);
         }

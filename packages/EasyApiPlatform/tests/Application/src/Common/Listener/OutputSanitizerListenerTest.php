@@ -19,9 +19,9 @@ final class OutputSanitizerListenerTest extends AbstractApplicationTestCase
         $entityManager->persist($category);
         $entityManager->flush();
 
-        $response = self::$client->request('GET', '/categories/' . $category->getId());
+        $response = self::request('GET', '/categories/' . $category->getId());
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
 
         self::assertSame('&lt;Some category&gt;', $responseData['title']);
     }
@@ -36,9 +36,9 @@ final class OutputSanitizerListenerTest extends AbstractApplicationTestCase
         $entityManager->persist($category);
         $entityManager->flush();
 
-        $response = self::$client->request('GET', '/categories/' . $category->getId());
+        $response = self::request('GET', '/categories/' . $category->getId());
 
-        $responseData = $response->toArray(false);
+        $responseData = self::getResponseData($response);
 
         self::assertSame($title, $responseData['title']);
     }
