@@ -29,11 +29,11 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         private bool $blockPrivateNetworks = true,
         private array $extraBlockedRanges = [],
         private array $allowedRanges = [],
-        array $allowedHosts = [],
         private bool $requestLimitsEnabled = false,
         private int $timeout = self::DEFAULT_TIMEOUT,
         private int $maxDuration = self::DEFAULT_MAX_DURATION,
         private int $maxResponseBytes = self::DEFAULT_MAX_RESPONSE_BYTES,
+        array $allowedHosts = [],
     ) {
         $this->allowedHosts = self::normalizeAllowedHosts($allowedHosts);
 
@@ -55,9 +55,17 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
 
             $host = \mb_strtolower(\trim($host));
 
-            if ($host !== '') {
-                $normalized[] = $host;
+            if ($host === '') {
+                continue;
             }
+
+            $parts = \explode(':', $host, 2);
+
+            if (isset($parts[1]) && \ctype_digit($parts[1])) {
+                $host = $parts[0] . ':' . (int)$parts[1];
+            }
+
+            $normalized[] = $host;
         }
 
         return \array_values(\array_unique($normalized));

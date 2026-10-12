@@ -190,12 +190,13 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         $contents = [];
 
         foreach ($client->stream([$allowed, $protected]) as $response => $chunk) {
-            if ($chunk->isLast()) {
-                $contents[] = $response->getContent();
-            }
+            $contents[\spl_object_id($response)] = ($contents[\spl_object_id($response)] ?? '') . $chunk->getContent();
         }
 
-        self::assertSame(['first', 'second'], $contents);
+        self::assertSame(
+            ['first', 'second'],
+            [$contents[\spl_object_id($allowed)], $contents[\spl_object_id($protected)]]
+        );
     }
 
     public function testWithOptionsKeepsRoutingOnBothClients(): void

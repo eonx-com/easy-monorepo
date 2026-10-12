@@ -175,8 +175,14 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
     public function testNormalizesAllowedHosts(): void
     {
         self::assertSame(
-            ['api.ahi.example', 'other.example'],
-            HttpClientFactory::normalizeAllowedHosts([' Api.AHI.Example ', '', 'other.example', 'API.ahi.example'])
+            ['api.ahi.example', 'other.example', 'padded.example:80'],
+            HttpClientFactory::normalizeAllowedHosts([
+                ' Api.AHI.Example ',
+                '',
+                'other.example',
+                'API.ahi.example',
+                'padded.example:00080',
+            ])
         );
 
         $httpClient = (new HttpClientFactory(allowedHosts: [' Api.AHI.Example ']))->create();

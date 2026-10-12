@@ -199,7 +199,6 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 (bool)\config('easy-webhook.ssrf_protection.enabled', true),
                 (array)\config('easy-webhook.ssrf_protection.extra_blocked_ranges', []),
                 (array)\config('easy-webhook.ssrf_protection.allowed_ranges', []),
-                (array)\config('easy-webhook.ssrf_protection.allowed_hosts', []),
                 (bool)\config('easy-webhook.request_limits.enabled', false),
                 // ?? keeps a present-but-null value (e.g. an unset env() override) falling back to
                 // the intended default instead of casting to 0, which would silently disable the limit
@@ -211,6 +210,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     'easy-webhook.request_limits.max_response_bytes',
                     HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES
                 ) ?? HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES),
+                (array)\config('easy-webhook.ssrf_protection.allowed_hosts', []),
             )
         );
         $this->app->singleton(
