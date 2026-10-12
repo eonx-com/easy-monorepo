@@ -112,6 +112,35 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'expectedJobFailedCount' => 0,
         ];
 
+        yield 'Job with unlimited max tries is retried with its backoff' => [
+            'receiveCount' => 2,
+            'exception' => 'boom',
+            'maxTries' => 0,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        // Laravel fails a job with a negative maxTries before running it, but it must still be retried
+        // until the application max retries caps it instead of being requeued forever without running
+        yield 'Job with negative max tries is retried with its backoff' => [
+            'receiveCount' => 2,
+            'exception' => 'boom',
+            'maxTries' => -1,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 1,
+        ];
+
+        yield 'Job with unlimited max tries is requeued at app max retries without failing' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'exception' => 'boom',
+            'maxTries' => 0,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
+        ];
+
         yield 'Explicitly unrecoverable job is not retried' => [
             'receiveCount' => 1,
             'exception' => 'boom',

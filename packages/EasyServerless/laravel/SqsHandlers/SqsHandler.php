@@ -62,9 +62,16 @@ final class SqsHandler extends AbstractSqsHandler
         $timeout = $this->calculateJobTimeout($context->getRemainingTimeInMillis());
         $job = $this->makeSqsQueueJob($sqsRecord);
         $receiveCount = $sqsRecord->getApproximateReceiveCount();
+        $jobMaxTries = $job->maxTries();
         // The application can explicitly prevent retries by setting maxTries to 1
-        $isJobExplicitlyUnrecoverable = $job->maxTries() === 1;
-        $maxTries = $job->maxTries() ?? $this->appMaxRetries;
+        $isJobExplicitlyUnrecoverable = $jobMaxTries === 1;
+        // Like Laravel's worker, a non-positive job maxTries means unlimited, in which case only the application
+        // max retries caps the processing. A missing job maxTries falls back on the application max retries
+        $maxTries = match (true) {
+            $jobMaxTries === null => $this->appMaxRetries,
+            $jobMaxTries < 1 => \PHP_INT_MAX,
+            default => $jobMaxTries,
+        };
 
         // parent::shouldSkipRecord() only knows about the application max retries. When the job-specific limit
         // is lower and already exhausted, requeue the message without running the job so it keeps cycling
