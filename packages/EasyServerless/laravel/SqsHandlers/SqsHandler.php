@@ -73,7 +73,7 @@ final class SqsHandler extends AbstractSqsHandler
             default => $jobMaxTries,
         };
 
-        // parent::shouldSkipRecord() only knows about the application max retries. When the job-specific limit
+        // Parent::shouldSkipRecord() only knows about the application max retries. When the job-specific limit
         // is lower and already exhausted, requeue the message without running the job so it keeps cycling
         // until SQS moves it to the DLQ, without marking the job as failed a second time
         if ($isJobExplicitlyUnrecoverable === false && $receiveCount > $maxTries) {
