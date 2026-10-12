@@ -13,6 +13,8 @@ use EonX\EasyServerless\Tests\Stub\Connector\SqsConnectorStub;
 use EonX\EasyServerless\Tests\Stub\JobHandler\JobHandlerStub;
 use EonX\EasyServerless\Tests\Unit\Laravel\AbstractLumenTestCase;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\QueueManager;
 use Laravel\Lumen\Exceptions\Handler;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -25,6 +27,8 @@ final class SqsHandlerTest extends AbstractLumenTestCase
     private const APP_MAX_RETRIES = 3;
 
     private const QUEUE_PREFIX = 'https://sqs.ap-southeast-2.amazonaws.com/123456789012';
+
+    private int $jobFailedCount = 0;
 
     /**
      * @var array<int, \Aws\CommandInterface>
@@ -51,6 +55,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'maxTries' => null,
             'backoff' => null,
             'expectedVisibilityTimeout' => null,
+            'expectedJobFailedCount' => 0,
         ];
 
         yield 'Failed job is retried on first attempt' => [
@@ -59,6 +64,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'maxTries' => null,
             'backoff' => null,
             'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
         ];
 
         yield 'Failed job is retried with its backoff' => [
@@ -67,6 +73,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'maxTries' => null,
             'backoff' => 30,
             'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 0,
         ];
 
         yield 'Failed job reaching app max retries is requeued without backoff' => [
@@ -75,14 +82,34 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'maxTries' => null,
             'backoff' => 30,
             'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
         ];
 
-        yield 'Failed job reaching its own max tries is requeued without backoff' => [
+        yield 'Failed job reaching its own max tries below app max retries is requeued without backoff' => [
+            'receiveCount' => 2,
+            'exception' => 'boom',
+            'maxTries' => 2,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+        ];
+
+        yield 'Job exceeding its own max tries is requeued without running nor failing again' => [
             'receiveCount' => self::APP_MAX_RETRIES,
             'exception' => 'boom',
             'maxTries' => 2,
             'backoff' => 30,
             'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Job with max tries above app max retries is requeued at app max retries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'exception' => 'boom',
+            'maxTries' => 5,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
         ];
 
         yield 'Explicitly unrecoverable job is not retried' => [
@@ -91,6 +118,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'maxTries' => 1,
             'backoff' => null,
             'expectedVisibilityTimeout' => null,
+            'expectedJobFailedCount' => 1,
         ];
     }
 
@@ -124,6 +152,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         ?int $maxTries,
         ?int $backoff,
         ?int $expectedVisibilityTimeout,
+        int $expectedJobFailedCount,
     ): void {
         $handler = $this->createHandler();
 
@@ -139,6 +168,8 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             ]),
             self::createContext()
         );
+
+        self::assertSame($expectedJobFailedCount, $this->jobFailedCount);
 
         if ($expectedVisibilityTimeout === null) {
             self::assertNull($result);
@@ -252,6 +283,10 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         $app->bind(ExceptionHandler::class, Handler::class);
         $app->instance('log', new NullLogger());
         $app->instance(LoggerInterface::class, new NullLogger());
+        $app->make(Dispatcher::class)
+            ->listen(JobFailed::class, function (): void {
+                $this->jobFailedCount++;
+            });
 
         $recordCommand = function (CommandInterface $command): Result {
             $this->sqsCommands[] = $command;

@@ -61,6 +61,28 @@ final class SqsHandler extends AbstractSqsHandler
     {
         $timeout = $this->calculateJobTimeout($context->getRemainingTimeInMillis());
         $job = $this->makeSqsQueueJob($sqsRecord);
+        $receiveCount = $sqsRecord->getApproximateReceiveCount();
+        // The application can explicitly prevent retries by setting maxTries to 1
+        $isJobExplicitlyUnrecoverable = $job->maxTries() === 1;
+        $maxTries = $job->maxTries() ?? $this->appMaxRetries;
+
+        // parent::shouldSkipRecord() only knows about the application max retries. When the job-specific limit
+        // is lower and already exhausted, requeue the message without running the job so it keeps cycling
+        // until SQS moves it to the DLQ, without marking the job as failed a second time
+        if ($isJobExplicitlyUnrecoverable === false && $receiveCount > $maxTries) {
+            $this->logger?->debug(
+                \sprintf(
+                    'Skipping MessageId "%s" because it has reached the job max tries (%d)',
+                    $sqsRecord->getMessageId(),
+                    $maxTries
+                )
+            );
+
+            $this->scheduleForRetry($sqsRecord);
+
+            return;
+        }
+
         $workerOptions = $this->makeWorkerOptions($timeout);
 
         $this->worker->runSqsJob($job, $this->connectionName, $workerOptions);
@@ -69,16 +91,14 @@ final class SqsHandler extends AbstractSqsHandler
         // Since release is disabled on the job to let SQS retry the message, a released job must be handled
         // like a failed one, otherwise the record is acknowledged and the message is deleted without retry
         if ($job->hasFailed() || $job->isReleased()) {
-            // The application can explicitly prevent retries by setting maxTries to 1
-            $isJobExplicitlyUnrecoverable = $job->maxTries() === 1;
-            $shouldRetry = $isJobExplicitlyUnrecoverable === false
-                && $sqsRecord->getApproximateReceiveCount() < ($job->maxTries() ?? $this->appMaxRetries);
+            $shouldRetry = $isJobExplicitlyUnrecoverable === false && $receiveCount < $maxTries;
 
             // As explained in parent::shouldSkipRecord(), in some scenarios we must requeue messages even when
             // the application will not retry them so they can end up in the DLQ if configured,
-            // except when the application is explicitly preventing retries
+            // except when the application is explicitly preventing retries.
+            // The same applies when the job-specific max tries is lower than the application one and exhausted
             $shouldRequeue = $isJobExplicitlyUnrecoverable === false
-                && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
+                && ($receiveCount >= $this->appMaxRetries || $receiveCount >= $maxTries);
 
             if ($shouldRetry === false) {
                 $this->logger?->error(
