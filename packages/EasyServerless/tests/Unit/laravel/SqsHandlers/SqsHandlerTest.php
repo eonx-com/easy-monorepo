@@ -1,0 +1,278 @@
+<?php
+declare(strict_types=1);
+
+namespace EonX\EasyServerless\Tests\Unit\Laravel\SqsHandlers;
+
+use Aws\CommandInterface;
+use Aws\MockHandler;
+use Aws\Result;
+use Aws\Sqs\SqsClient;
+use Bref\Context\Context;
+use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
+use EonX\EasyServerless\Tests\Stub\Job\JobHandlerStub;
+use EonX\EasyServerless\Tests\Stub\Queue\SqsConnectorStub;
+use EonX\EasyServerless\Tests\Unit\Laravel\AbstractLumenTestCase;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Queue\QueueManager;
+use Laravel\Lumen\Exceptions\Handler;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use RuntimeException;
+
+final class SqsHandlerTest extends AbstractLumenTestCase
+{
+    private const int APP_MAX_RETRIES = 3;
+
+    private const string QUEUE_PREFIX = 'https://sqs.ap-southeast-2.amazonaws.com/123456789012';
+
+    /**
+     * @var array<int, \Aws\CommandInterface>
+     */
+    private array $sqsCommands = [];
+
+    protected function tearDown(): void
+    {
+        // Lumen application registers its own error and exception handlers on construction
+        \restore_error_handler();
+        \restore_exception_handler();
+
+        parent::tearDown();
+    }
+
+    /**
+     * @see testHandleSqsRecord
+     */
+    public static function provideHandleSqsRecordCases(): iterable
+    {
+        yield 'Successful job is acknowledged' => [
+            'receiveCount' => 1,
+            'exception' => null,
+            'maxTries' => null,
+            'backoff' => null,
+            'expectedVisibilityTimeout' => null,
+        ];
+
+        yield 'Failed job is retried on first attempt' => [
+            'receiveCount' => 1,
+            'exception' => 'boom',
+            'maxTries' => null,
+            'backoff' => null,
+            'expectedVisibilityTimeout' => 1,
+        ];
+
+        yield 'Failed job is retried with its backoff' => [
+            'receiveCount' => 2,
+            'exception' => 'boom',
+            'maxTries' => null,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+        ];
+
+        yield 'Failed job reaching app max retries is requeued without backoff' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'exception' => 'boom',
+            'maxTries' => null,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+        ];
+
+        yield 'Failed job reaching its own max tries is requeued without backoff' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'exception' => 'boom',
+            'maxTries' => 2,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+        ];
+
+        yield 'Explicitly unrecoverable job is not retried' => [
+            'receiveCount' => 1,
+            'exception' => 'boom',
+            'maxTries' => 1,
+            'backoff' => null,
+            'expectedVisibilityTimeout' => null,
+        ];
+    }
+
+    public function testHandleSqsBatchOnlyReportsFailedRecords(): void
+    {
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(messageId: 'first', receiveCount: 1, exception: 'boom'),
+                self::createSqsRecord(messageId: 'second', receiveCount: 1),
+                self::createSqsRecord(messageId: 'third', receiveCount: 1, exception: 'boom'),
+            ]),
+            self::createContext()
+        );
+
+        self::assertSame(
+            ['batchItemFailures' => [['itemIdentifier' => 'first'], ['itemIdentifier' => 'third']]],
+            $result
+        );
+        self::assertCount(1, $this->sqsCommands);
+        $entries = $this->sqsCommands[0]['Entries'];
+        self::assertIsArray($entries);
+        self::assertSame(['first', 'third'], \array_column($entries, 'Id'));
+    }
+
+    #[DataProvider('provideHandleSqsRecordCases')]
+    public function testHandleSqsRecord(
+        int $receiveCount,
+        ?string $exception,
+        ?int $maxTries,
+        ?int $backoff,
+        ?int $expectedVisibilityTimeout,
+    ): void {
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: $receiveCount,
+                    exception: $exception,
+                    maxTries: $maxTries,
+                    backoff: $backoff
+                ),
+            ]),
+            self::createContext()
+        );
+
+        if ($expectedVisibilityTimeout === null) {
+            self::assertNull($result);
+            self::assertSame([], $this->sqsCommands);
+
+            return;
+        }
+
+        self::assertSame(['batchItemFailures' => [['itemIdentifier' => 'message-id']]], $result);
+        self::assertCount(1, $this->sqsCommands);
+        $command = $this->sqsCommands[0];
+        self::assertSame('ChangeMessageVisibilityBatch', $command->getName());
+        self::assertSame(self::QUEUE_PREFIX . '/test', $command['QueueUrl']);
+        self::assertSame(
+            [
+                [
+                    'Id' => 'message-id',
+                    'ReceiptHandle' => 'receipt-message-id',
+                    'VisibilityTimeout' => $expectedVisibilityTimeout,
+                ],
+            ],
+            $command['Entries']
+        );
+    }
+
+    public function testHandleSqsRecordThrowsJobExceptionWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('boom');
+
+        $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(messageId: 'message-id', receiveCount: 1, exception: 'boom'),
+            ]),
+            self::createContext()
+        );
+    }
+
+    private static function createContext(): Context
+    {
+        return new Context(
+            'aws-request-id',
+            (int)(\microtime(true) * 1000) + 60000,
+            'arn:aws:lambda:ap-southeast-2:123456789012:function:test',
+            'trace-id'
+        );
+    }
+
+    private static function createSqsEvent(array $records): array
+    {
+        return ['Records' => $records];
+    }
+
+    private static function createSqsRecord(
+        string $messageId,
+        int $receiveCount,
+        ?string $exception = null,
+        ?int $maxTries = null,
+        ?int $backoff = null,
+    ): array {
+        $body = \json_encode([
+            'attempts' => 0,
+            'backoff' => $backoff,
+            'data' => ['exception' => $exception],
+            'displayName' => JobHandlerStub::class,
+            'job' => JobHandlerStub::class . '@fire',
+            'maxExceptions' => null,
+            'maxTries' => $maxTries,
+            'retryUntil' => null,
+            'timeout' => null,
+            'uuid' => $messageId,
+        ], \JSON_THROW_ON_ERROR);
+
+        return [
+            'attributes' => [
+                'ApproximateFirstReceiveTimestamp' => '0',
+                'ApproximateReceiveCount' => (string)$receiveCount,
+                'SenderId' => 'sender-id',
+                'SentTimestamp' => '0',
+            ],
+            'awsRegion' => 'ap-southeast-2',
+            'body' => $body,
+            'eventSource' => 'aws:sqs',
+            'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:test',
+            'md5OfBody' => \md5($body),
+            'messageAttributes' => [],
+            'messageId' => $messageId,
+            'receiptHandle' => 'receipt-' . $messageId,
+        ];
+    }
+
+    private function createHandler(bool $partialBatchFailure = true): SqsHandler
+    {
+        $app = $this->getApplication([]);
+        $app->configure('cache');
+        $app->configure('queue');
+
+        \config([
+            'cache.default' => 'array',
+            'queue.connections.sqs' => [
+                'driver' => 'sqs',
+                'prefix' => self::QUEUE_PREFIX,
+                'queue' => 'test',
+            ],
+            'queue.default' => 'sqs',
+        ]);
+
+        $app->alias('queue', QueueManager::class);
+        $app->bind(ExceptionHandler::class, Handler::class);
+        $app->instance('log', new NullLogger());
+        $app->instance(LoggerInterface::class, new NullLogger());
+
+        $recordCommand = function (CommandInterface $command): Result {
+            $this->sqsCommands[] = $command;
+
+            return new Result();
+        };
+        $sqsClient = new SqsClient([
+            'credentials' => false,
+            'handler' => new MockHandler(\array_fill(0, 10, $recordCommand)),
+            'region' => 'ap-southeast-2',
+            'version' => 'latest',
+        ]);
+
+        $app->make(QueueManager::class)
+            ->extend('sqs', static fn (): SqsConnectorStub => new SqsConnectorStub($sqsClient));
+
+        return new SqsHandler(
+            container: $app,
+            connectionName: 'sqs',
+            appMaxRetries: self::APP_MAX_RETRIES,
+            partialBatchFailure: $partialBatchFailure,
+        );
+    }
+}

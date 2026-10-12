@@ -7,8 +7,8 @@ use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use Bref\LaravelBridge\MaintenanceMode;
-use Bref\LaravelBridge\Queue\Worker;
 use EonX\EasyServerless\Laravel\Jobs\SqsQueueJob;
+use EonX\EasyServerless\Laravel\Workers\SqsWorker;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -22,7 +22,7 @@ final class SqsHandler extends AbstractSqsHandler
 {
     private readonly SqsClient $sqsClient;
 
-    private readonly Worker $worker;
+    private readonly SqsWorker $worker;
 
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -65,7 +65,10 @@ final class SqsHandler extends AbstractSqsHandler
 
         $this->worker->runSqsJob($job, $this->connectionName, $workerOptions);
 
-        if ($job->hasFailed()) {
+        // Laravel marks the job as failed only when it has exceeded its max attempts, otherwise it releases it.
+        // Since release is disabled on the job to let SQS retry the message, a released job must be handled
+        // like a failed one, otherwise the record is acknowledged and the message is deleted without retry
+        if ($job->hasFailed() || $job->isReleased()) {
             // The application can explicitly prevent retries by setting maxTries to 1
             $isJobExplicitlyUnrecoverable = $job->maxTries() === 1;
             $shouldRetry = $isJobExplicitlyUnrecoverable === false
@@ -144,9 +147,9 @@ final class SqsHandler extends AbstractSqsHandler
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    private function makeWorker(): Worker
+    private function makeWorker(): SqsWorker
     {
-        $worker = $this->container->make(Worker::class, [
+        $worker = $this->container->make(SqsWorker::class, [
             'isDownForMaintenance' => static fn (): bool => MaintenanceMode::active(),
             'resetScope' => fn () => $this->resetWorkerScope(),
         ]);
