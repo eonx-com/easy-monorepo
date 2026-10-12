@@ -12,9 +12,12 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Throwable;
 
 final class WorkerMessageReceivedListener
 {
+    private const int MAX_EXPAND_DEPTH = 10;
+
     private WorkerMessageReceivedEvent $event;
 
     private bool $isSetup = false;
@@ -59,11 +62,35 @@ final class WorkerMessageReceivedListener
         $this->isSetup = true;
     }
 
+    private static function expand(mixed $value, int $depth = 0): mixed
+    {
+        if ($depth >= self::MAX_EXPAND_DEPTH) {
+            return \is_object($value) ? \get_debug_type($value) : $value;
+        }
+
+        if (\is_array($value)) {
+            return \array_map(static fn(mixed $item): mixed => self::expand($item, $depth + 1), $value);
+        }
+
+        if (\is_object($value) === false || $value instanceof DateTimeInterface || $value instanceof Throwable) {
+            return $value;
+        }
+
+        $expanded = ['@class' => \get_debug_type($value)];
+
+        foreach ((array)$value as $key => $item) {
+            $expanded[\substr((string)\strrchr("\0" . $key, "\0"), 1)] = self::expand($item, $depth + 1);
+        }
+
+        return $expanded;
+    }
+
     private function dump(mixed $var): string
     {
-        // Mask while the value is still structured; key-based masking cannot work on the dumped string
+        // Expand objects before masking: the sanitizer's generic transformer (json_encode) keeps neither
+        // non-public properties nor the class; key-based masking cannot work on the dumped string
         if ($this->sensitiveDataSanitizer !== null) {
-            $var = $this->sensitiveDataSanitizer->sanitize($var);
+            $var = $this->sensitiveDataSanitizer->sanitize(self::expand($var));
         }
 
         return (string)$this->getDumper()

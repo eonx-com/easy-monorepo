@@ -10,6 +10,7 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
+use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 
 final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
 {
@@ -25,6 +26,36 @@ final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
         $worker = $this->getWorkerMetadata($client);
         self::assertStringContainsString('super-secret', $worker['Message']);
         self::assertSame('async', $worker['Receiver Name']);
+    }
+
+    public function testItKeepsPrivatePropertiesAndClassNameWhenMasking(): void
+    {
+        $client = self::getService(Client::class);
+        $listener = new WorkerMessageReceivedListener(
+            $client,
+            self::getService(SensitiveDataSanitizerInterface::class)
+        );
+
+        $message = new readonly class ('super-secret') {
+            public function __construct(
+                private string $password,
+            ) {}
+
+            public function getPassword(): string
+            {
+                return $this->password;
+            }
+        };
+        $listener(new WorkerMessageReceivedEvent(
+            new Envelope($message, [new TransportMessageIdStamp('9001')]),
+            'async'
+        ));
+
+        $worker = $this->getWorkerMetadata($client);
+        self::assertStringContainsString('@class', $worker['Message']);
+        self::assertStringContainsString('password', $worker['Message']);
+        self::assertStringNotContainsString('super-secret', $worker['Message']);
+        self::assertStringContainsString('9001', $worker['Stamps']);
     }
 
     public function testItMasksCardNumberByValue(): void

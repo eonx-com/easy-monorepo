@@ -13,34 +13,29 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
     public function configure(Client $bugsnag): void
     {
         $bugsnag->registerCallback(static function (Report $report): void {
-            // Driver errors embed row/column values in the message (format varies per engine); keep only
-            // the value-free skeleton instead of matching every format
-            $reduce = static function (Report $report): void {
-                $error = $report->getOriginalError();
+            // Driver errors embed values in the message (format varies per engine) and the native PDO/mysqli
+            // exception below repeats it: from the first driver exception down, keep only SQLSTATE + class
+            $reduceChain = Closure::bind(
+                static function (Report $report): void {
+                    $sqlState = null;
 
-                if ($error instanceof DriverException) {
-                    $report->setMessage(
-                        \sprintf('SQLSTATE[%s] %s', $error->getSQLState() ?? 'unknown', $error::class)
-                    );
-                }
-            };
+                    for ($current = $report; $current instanceof Report; $current = $current->previous ?? null) {
+                        $error = $current->getOriginalError();
 
-            $reduce($report);
+                        if ($error instanceof DriverException) {
+                            $sqlState = $error->getSQLState() ?? 'unknown';
+                        }
 
-            $reducePreviousChain = Closure::bind(
-                static function (Report $report) use ($reduce): void {
-                    $previous = $report->previous ?? null;
-
-                    while ($previous instanceof Report) {
-                        $reduce($previous);
-                        $previous = $previous->previous ?? null;
+                        if ($sqlState !== null) {
+                            $current->setMessage(\sprintf('SQLSTATE[%s] %s', $sqlState, \get_debug_type($error)));
+                        }
                     }
                 },
                 null,
                 Report::class
             );
 
-            $reducePreviousChain($report);
+            $reduceChain($report);
         });
     }
 }

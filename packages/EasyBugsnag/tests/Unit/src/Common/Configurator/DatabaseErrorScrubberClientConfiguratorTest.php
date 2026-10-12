@@ -8,7 +8,9 @@ use Bugsnag\Report;
 use Doctrine\DBAL\Driver\Exception as DriverException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
+use PDOException;
 use RuntimeException;
+use Throwable;
 
 final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTestCase
 {
@@ -40,6 +42,27 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertInstanceOf(Report::class, $previous);
         self::assertStringStartsWith('SQLSTATE[23000] ', (string)$previous->getMessage());
         self::assertStringNotContainsString('john@example.com', (string)$previous->getMessage());
+    }
+
+    public function testItReducesNativeExceptionBelowDriverException(): void
+    {
+        $client = self::getService(Client::class);
+        $message = "SQLSTATE[23505]: Unique violation: 7 ERROR: duplicate key value\n"
+            . 'DETAIL:  Key (email)=(john@example.com) already exists.';
+
+        $client->notifyException(new UniqueConstraintViolationException(
+            self::driverException($message, '23505', new PDOException($message)),
+            null
+        ));
+
+        $report = $this->getFirstReport($client);
+        /** @var \Bugsnag\Report|null $driverReport */
+        $driverReport = self::getPrivatePropertyValue($report, 'previous');
+        self::assertInstanceOf(Report::class, $driverReport);
+        /** @var \Bugsnag\Report|null $nativeReport */
+        $nativeReport = self::getPrivatePropertyValue($driverReport, 'previous');
+        self::assertInstanceOf(Report::class, $nativeReport);
+        self::assertSame('SQLSTATE[23505] ' . PDOException::class, $nativeReport->getMessage());
     }
 
     public function testItReducesRawDriverException(): void
@@ -74,14 +97,18 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertStringNotContainsString('john@example.com', (string)$report->getMessage());
     }
 
-    private static function driverException(string $message, ?string $sqlState): DriverException
-    {
-        return new class ($message, $sqlState) extends RuntimeException implements DriverException {
+    private static function driverException(
+        string $message,
+        ?string $sqlState,
+        ?Throwable $previous = null,
+    ): DriverException {
+        return new class ($message, $sqlState, $previous) extends RuntimeException implements DriverException {
             public function __construct(
                 string $message,
                 private readonly ?string $sqlState,
+                ?Throwable $previous,
             ) {
-                parent::__construct($message);
+                parent::__construct($message, 0, $previous);
             }
 
             public function getSQLState(): ?string
