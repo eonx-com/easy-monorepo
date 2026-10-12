@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyWebhook\Common\HttpClient;
 
-use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -74,7 +73,7 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
 
         $host = \mb_strtolower(\trim($host, '[]'));
 
-        if (HttpClientFactory::isIpLiteral($host)) {
+        if ($this->isIpLiteral($host)) {
             return false;
         }
 
@@ -83,5 +82,16 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
 
         return \in_array($host, $this->allowedHosts, true)
             || \in_array($host . ':' . $port, $this->allowedHosts, true);
+    }
+
+    private function isIpLiteral(string $host): bool
+    {
+        if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+            return true;
+        }
+
+        $lastLabel = \mb_strtolower((string)\strrchr('.' . $host, '.'));
+
+        return \preg_match('/^\.(0x[0-9a-f]+|[0-9]+)$/', $lastLabel) === 1;
     }
 }

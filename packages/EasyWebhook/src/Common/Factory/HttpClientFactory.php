@@ -44,17 +44,6 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         }
     }
 
-    public static function isIpLiteral(string $host): bool
-    {
-        if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
-            return true;
-        }
-
-        $lastLabel = \mb_strtolower((string)\strrchr('.' . $host, '.'));
-
-        return \preg_match('/^\.(0x[0-9a-f]+|[0-9]+)$/', $lastLabel) === 1;
-    }
-
     public static function normalizeAllowedHosts(array $allowedHosts): array
     {
         $normalized = [];
@@ -206,5 +195,16 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
         }
 
         return $httpClient;
+    }
+
+    private static function isIpLiteral(string $host): bool
+    {
+        if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+            return true;
+        }
+
+        $lastLabel = \mb_strtolower((string)\strrchr('.' . $host, '.'));
+
+        return \preg_match('/^\.(0x[0-9a-f]+|[0-9]+)$/', $lastLabel) === 1;
     }
 }
