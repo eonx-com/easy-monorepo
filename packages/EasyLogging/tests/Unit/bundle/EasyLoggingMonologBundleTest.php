@@ -185,7 +185,7 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
     public function testMonologBundleOwnsLoggerService(): void
     {
         $logger = $this->getContainer()
-->get('logger');
+            ->get('logger');
 
         // The channel-replacement pass steps aside, so "logger" is the symfony/monolog-bundle logger, recognisable by
         // the TestHandler declared in the fixture (the EasyLogging factory never uses it)
@@ -199,7 +199,7 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
     public function testSensitiveDataSanitizerIsRegisteredAsMonologProcessor(): void
     {
         $logger = $this->getContainer()
-->get('logger');
+            ->get('logger');
 
         self::assertTrue(
             $this->hasInstanceOf($logger->getProcessors(), SensitiveDataSanitizerProcessor::class),
