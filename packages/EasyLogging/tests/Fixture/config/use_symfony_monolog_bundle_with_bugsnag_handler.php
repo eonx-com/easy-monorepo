@@ -23,5 +23,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
         ->set(Client::class)
         ->factory([Client::class, 'make'])
-        ->args(['00000000000000000000000000000000']);
+        ->args(['some-api-key']);
 };

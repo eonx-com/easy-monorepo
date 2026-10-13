@@ -18,7 +18,7 @@ return static function (DefinitionConfigurator $definition) {
             ->booleanNode('bugsnag_handler')->defaultFalse()->end()
             ->integerNode('bugsnag_handler_level')->defaultNull()->end()
             ->arrayNode('bugsnag_handler_channels')
-                ->info('Channels the Bugsnag handler is attached to when using symfony/monolog-bundle (all if empty)')
+                ->info('Channels of the Bugsnag handler with symfony/monolog-bundle (the default channel if empty)')
                 ->stringPrototype()->end()
             ->end()
             ->booleanNode('use_symfony_monolog_bundle')->defaultFalse()->end()

@@ -29,6 +29,8 @@ final class EasyLoggingBundle extends AbstractBundle
         ProcessorConfigProviderInterface::class => ConfigTag::ProcessorConfigProvider,
     ];
 
+    private const DEFAULT_CHANNEL = 'app';
+
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
@@ -97,24 +99,29 @@ final class EasyLoggingBundle extends AbstractBundle
         if (
             (bool)$this->getRawConfigValue($builder, 'use_symfony_monolog_bundle', false) === false
             || (bool)$this->getRawConfigValue($builder, 'bugsnag_handler', false) === false
+            || $this->isBugsnagHandlerDeclaredByApplication($builder)
         ) {
             return;
         }
 
-        $handler = [
-            'id' => BugsnagMonologHandler::class,
-            'type' => 'service',
-        ];
-
         $channels = $this->getRawConfigList($builder, 'bugsnag_handler_channels');
 
-        if (\count($channels) > 0) {
-            $handler['channels'] = $channels;
+        if (\count($channels) === 0) {
+            // Not all channels on purpose: e.g. the "request" channel logs every uncaught exception at error/critical
+            // level, which would duplicate the EasyErrorHandler reports and report the ignored 4xx exceptions
+            /** @var string $defaultChannel */
+            $defaultChannel = $this->getRawConfigValue($builder, 'default_channel', self::DEFAULT_CHANNEL);
+
+            $channels = [$defaultChannel];
         }
 
         $builder->prependExtensionConfig('monolog', [
             'handlers' => [
-                BundleParam::BugsnagHandlerName->value => $handler,
+                BundleParam::BugsnagHandlerName->value => [
+                    'channels' => $channels,
+                    'id' => BugsnagMonologHandler::class,
+                    'type' => 'service',
+                ],
             ],
         ]);
     }
@@ -149,6 +156,28 @@ final class EasyLoggingBundle extends AbstractBundle
 
         return $builder->getParameterBag()
             ->resolveValue($value);
+    }
+
+    /**
+     * Whether the application already attaches the handler itself (as a "service" handler), so that it is not
+     * registered a second time
+     */
+    private function isBugsnagHandlerDeclaredByApplication(ContainerBuilder $builder): bool
+    {
+        /** @var array $config */
+        foreach ($builder->getExtensionConfig('monolog') as $config) {
+            /** @var array $handler */
+            foreach ($config['handlers'] ?? [] as $handler) {
+                if (
+                    ($handler['type'] ?? null) === 'service'
+                    && ($handler['id'] ?? null) === BugsnagMonologHandler::class
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool

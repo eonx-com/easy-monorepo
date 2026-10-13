@@ -102,9 +102,9 @@ return static function (MonologConfig $monologConfig): void {
 };
 ```
 
-The `easy_logging.formatter.json` service is this package's `\EonX\EasyLogging\Formatter\JsonFormatter`: unlike
-Monolog's own `monolog.formatter.json`, it normalises `DateTimeInterface` values inside `context`/`extra` (as
-`Y-m-d\TH:i:sP`). Use it to keep the log shape you had with the `LoggerFactory`.
+The `easy_logging.formatter.json` service is this package's `\EonX\EasyLogging\Formatter\JsonFormatter`. The only
+difference from Monolog's own `monolog.formatter.json` is the record `datetime`: it is formatted without microseconds
+(`Y-m-d\TH:i:sP`), matching the log shape produced with the `LoggerFactory`. Use it if your log pipeline relies on it.
 
 <br>
 
@@ -138,11 +138,14 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
   `use_symfony_monolog_bundle`, they must be compile-time values (literals or container parameters, not env vars).
 - `bugsnag_handler_level` keeps working: the handler service is still owned by this package.
 - `bugsnag_handler_channels` accepts the same channel list as monolog-bundle handlers; lists split across several
-  config files (e.g. `config/packages/` and `config/packages/prod/`) are merged. Keep in mind that an exclusion
-  such as `['!app']` excludes only `app` — records from any other channel that already has a dedicated handler will
-  reach both handlers.
-- The application may override the generated handler by declaring a handler with the same name
-  (`easy_logging_bugsnag`) in its own `monolog` configuration.
+  config files (e.g. `config/packages/` and `config/packages/prod/`) are merged. When empty, the handler is attached
+  to the `default_channel` only (`app` by default) — not to every channel on purpose: for instance the `request`
+  channel logs every uncaught exception at `error`/`critical` level, which would duplicate the reports sent by
+  EasyErrorHandler and report the 4xx exceptions it ignores. To attach the handler to more channels list them
+  explicitly, or use an exclusion list such as `['!request']`.
+- If the application already declares a `service` handler for `BugsnagMonologHandler` in its `monolog`
+  configuration, the bundle does not register a second one. The application may also override the generated handler
+  by declaring a handler with the same name (`easy_logging_bugsnag`).
 - symfony/monolog-bundle does not allow configuring a `formatter` on `service` handlers, so the handler uses its
   default formatter. To customise it, re-declare the handler service in the application (application definitions win
   over the bundle ones) and call `setFormatter()` on it:
