@@ -26,6 +26,10 @@ final readonly class CarbonClock implements ClockInterface
 
     public function sleep(float|int $seconds): void
     {
+        if ($seconds <= 0) {
+            return;
+        }
+
         CarbonImmutable::sleep($seconds);
     }
 

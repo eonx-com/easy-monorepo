@@ -40,6 +40,17 @@ final class CarbonClockTest extends TestCase
         self::assertSame('2035-01-01 00:00:10.000001', CarbonImmutable::now()->format('Y-m-d H:i:s.u'));
     }
 
+    public function testItNeverMovesTheCarbonTestTimeBackwards(): void
+    {
+        $clock = new CarbonClock();
+        CarbonImmutable::setTestNow('2035-01-01 00:00:00');
+
+        $clock->sleep(-10);
+        $clock->sleep(0);
+
+        self::assertSame('2035-01-01 00:00:00.000000', CarbonImmutable::now()->format('Y-m-d H:i:s.u'));
+    }
+
     public function testItSharesTheCarbonTestTimeAcrossTimeZones(): void
     {
         $clock = new CarbonClock();

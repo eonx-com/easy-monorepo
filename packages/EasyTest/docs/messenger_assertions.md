@@ -7,7 +7,7 @@ weight: 1002
 
 `EonX\EasyTest\Common\Trait\MessengerAssertionsTrait` lets a test consume Symfony Messenger messages the same way
 `messenger:consume` does — through a real `Worker`, with retries running to exhaustion and delayed messages delivered
-by moving a mock clock — and then assert what happened.
+by sleeping the clock until they are due (instantly on a mocked clock) — and then assert what happened.
 
 ## Requirements
 
