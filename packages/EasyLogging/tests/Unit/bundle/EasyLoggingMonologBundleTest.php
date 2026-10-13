@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Tests\Unit\Bundle;
 
+use DateTimeImmutable;
 use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
@@ -11,9 +12,11 @@ use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
 use EonX\EasyLogging\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyUtils\Bundle\EasyUtilsBundle;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,6 +51,38 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         self::assertTrue(
             $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
             'The channels of the following config files must be merged with the ones of the first config file.'
+        );
+    }
+
+    public function testBugsnagHandlerFormatterCanBeOverriddenByApplication(): void
+    {
+        $container = $this->bootMonologKernel(
+            [
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler.php',
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler_formatter.php',
+            ],
+            'test_monolog_bugsnag_formatter'
+        );
+
+        /** @var \Monolog\Logger $appLogger */
+        $appLogger = $container->get('logger');
+        $bugsnagHandler = null;
+
+        foreach ($appLogger->getHandlers() as $handler) {
+            if ($handler instanceof BugsnagMonologHandler) {
+                $bugsnagHandler = $handler;
+
+                break;
+            }
+        }
+
+        self::assertInstanceOf(BugsnagMonologHandler::class, $bugsnagHandler);
+        self::assertInstanceOf(LineFormatter::class, $bugsnagHandler->getFormatter());
+        self::assertSame(
+            'Some message',
+            $bugsnagHandler->getFormatter()
+                ->format(new LogRecord(new DateTimeImmutable(), 'app', Level::Error, 'Some message')),
+            'The application definition of the handler (with its formatter) must win over the bundle one.'
         );
     }
 
