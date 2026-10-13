@@ -52,7 +52,7 @@
         "fakerphp/faker": "To use UniqueGroupGenerator",
         "monolog/monolog": "To use the Monolog test helpers (LogCollectorProcessor, MonologTrait)",
         "nesbot/carbon": "To use InvalidDataMaker and CarbonClock",
-        "symfony/clock": "To use MessengerAssertionsTrait",
+        "symfony/clock": "To use CarbonClock and MessengerAssertionsTrait",
         "symfony/event-dispatcher": "To use MessengerAssertionsTrait",
         "symfony/framework-bundle": "To use ContainerServiceTrait, HttpClientAssertionTrait and MessengerAssertionsTrait",
         "symfony/http-client": "To use HttpClientStub",
