@@ -12,6 +12,7 @@ use EonX\EasyLogging\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Monolog\Handler\TestHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -139,6 +140,36 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         self::assertTrue(
             $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
             'A custom "default_channel" (a LoggerFactory option) must not move the handler away from the "app" channel.'
+        );
+    }
+
+    public function testBugsnagHandlerUsesConfiguredLevel(): void
+    {
+        $container = $this->bootMonologKernel(
+            [
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler.php',
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler_level.php',
+            ],
+            'test_monolog_bugsnag_level'
+        );
+
+        /** @var \Monolog\Logger $appLogger */
+        $appLogger = $container->get('logger');
+        $bugsnagHandler = null;
+
+        foreach ($appLogger->getHandlers() as $handler) {
+            if ($handler instanceof BugsnagMonologHandler) {
+                $bugsnagHandler = $handler;
+
+                break;
+            }
+        }
+
+        self::assertInstanceOf(BugsnagMonologHandler::class, $bugsnagHandler);
+        self::assertSame(
+            Level::Error,
+            $bugsnagHandler->getLevel(),
+            'The "bugsnag_handler_level" option must apply to the handler attached through symfony/monolog-bundle.'
         );
     }
 
