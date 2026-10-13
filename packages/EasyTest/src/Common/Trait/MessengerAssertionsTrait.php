@@ -7,8 +7,6 @@ use PHPUnit\Framework\Constraint\IsEqual;
 use ReflectionProperty;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\ClockInterface;
-use Symfony\Component\Clock\MockClock;
-use Symfony\Component\Clock\Test\ClockSensitiveTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
@@ -212,14 +210,6 @@ trait MessengerAssertionsTrait
             return null;
         }
 
-        if ($clock instanceof MockClock === false) {
-            self::fail(\sprintf(
-                'Messages are waiting on a delay, but the clock is not mocked, so waiting the delays out would'
-                . ' really sleep. Run the test on a mock clock, e.g. via %s::mockTime().',
-                ClockSensitiveTrait::class
-            ));
-        }
-
         $nowTimestamp = (float)$clock->now()
             ->format('U.u');
         $advanceBySeconds = (float)\max(0, \min($dueAtTimestamps) - $nowTimestamp);
@@ -230,7 +220,7 @@ trait MessengerAssertionsTrait
             self::fail(
                 'The clock was advanced past the next delay, but no message became available. The messenger'
                 . ' transport computes availability from the container "clock" service, while the test advanced'
-                . ' the global clock - make both use the same mock clock.'
+                . ' the global clock - make both use the same clock.'
             );
         }
 

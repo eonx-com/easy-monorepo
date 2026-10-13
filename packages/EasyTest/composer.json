@@ -19,6 +19,7 @@
     },
     "require-dev": {
         "monolog/monolog": "^3.9",
+        "nesbot/carbon": "^3.8.4",
         "symfony/clock": "^7.4 || ^8.0",
         "symfony/error-handler": "^7.4 || ^8.0",
         "symfony/event-dispatcher": "^7.4 || ^8.0",
@@ -50,7 +51,7 @@
         "doctrine/orm": "To use ContainerServiceTrait",
         "fakerphp/faker": "To use UniqueGroupGenerator",
         "monolog/monolog": "To use the Monolog test helpers (LogCollectorProcessor, MonologTrait)",
-        "nesbot/carbon": "To use InvalidDataMaker",
+        "nesbot/carbon": "To use InvalidDataMaker and CarbonClock",
         "symfony/clock": "To use MessengerAssertionsTrait",
         "symfony/event-dispatcher": "To use MessengerAssertionsTrait",
         "symfony/framework-bundle": "To use ContainerServiceTrait, HttpClientAssertionTrait and MessengerAssertionsTrait",

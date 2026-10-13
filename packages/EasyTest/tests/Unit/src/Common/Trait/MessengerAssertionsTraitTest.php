@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyTest\Tests\Unit\Common\Trait;
 
 use ArrayObject;
+use Carbon\Carbon;
+use EonX\EasyTest\Common\Clock\CarbonClock;
 use EonX\EasyTest\Common\Trait\MessengerAssertionsTrait;
 use EonX\EasyTest\Tests\Fixture\Message\DummyMessage;
 use EonX\EasyTest\Tests\Fixture\Message\FailingDummyMessage;
@@ -11,9 +13,9 @@ use LogicException;
 use PHPUnit\Framework\AssertionFailedError;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Clock\MockClock;
-use Symfony\Component\Clock\NativeClock;
 use Symfony\Component\Clock\Test\ClockSensitiveTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -44,6 +46,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
     protected function tearDown(): void
     {
         self::$containerStub = null;
+        Carbon::setTestNow();
 
         parent::tearDown();
     }
@@ -67,6 +70,29 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
     public function testItComparesClockAdvancesAtMillisecondPrecision(): void
     {
         self::assertClockAdvances([1, 30.5], [1.0000004, 30.499999]);
+    }
+
+    public function testItConsumesDelayedRetriesOnTheCarbonClock(): void
+    {
+        Carbon::setTestNow('2035-01-01 00:00:00');
+        $clock = new CarbonClock();
+        Clock::set($clock);
+        // Built on the container "clock" service, which follows the global clock
+        [$messageBus, , $failingHandledAtLog] = $this->arrangeTwoTransportMessenger(new Clock());
+        $messageBus->dispatch(new DummyMessage());
+
+        self::consumeAsyncMessages(
+            [RuntimeException::class => 77],
+            expectedDelays: [1, 2, 4],
+            transportNames: ['async', 'email_delivery'],
+        );
+
+        self::assertSame(
+            ['2035-01-01 00:00:00', '2035-01-01 00:00:01', '2035-01-01 00:00:03', '2035-01-01 00:00:07'],
+            \iterator_to_array($failingHandledAtLog)
+        );
+        self::assertSame('2035-01-01 00:00:07', $clock->now()->format('Y-m-d H:i:s'));
+        self::assertSame('2035-01-01 00:00:07', Carbon::now()->format('Y-m-d H:i:s'));
     }
 
     public function testItConsumesWithExactFailuresDelaysAndTransportsTogether(): void
@@ -296,17 +322,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         self::assertExpectedFailuresShape([LogicException::class => 42, RuntimeException::class]);
     }
 
-    public function testItFailsWhenMessagesAreDelayedButTheClockIsNotMocked(): void
-    {
-        $transport = new InMemoryTransport();
-        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
-
-        $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('the clock is not mocked');
-
-        self::advanceClockToNextDelayedMessage(['async' => $transport], new NativeClock());
-    }
-
     public function testItFailsWhenNoTransportNamesAreGiven(): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -373,6 +388,20 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $this->expectExceptionMessage('LogicException (code: 0): Unexpected');
 
         self::assertMessageFailures($expectedFailures, $actualFailures);
+    }
+
+    public function testItMakesADelayedMessageAvailableByMovingTheCarbonClock(): void
+    {
+        Carbon::setTestNow('2035-01-01 00:00:00');
+        $clock = new CarbonClock();
+        $transport = new InMemoryTransport(null, $clock);
+        $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
+
+        $advanced = self::advanceClockToNextDelayedMessage(['async' => $transport], $clock);
+
+        self::assertEqualsWithDelta(10.0, $advanced, 0.001);
+        self::assertSame(1, self::countAvailableMessages(['async' => $transport]));
+        self::assertSame('2035-01-01 00:00:10', Carbon::now()->format('Y-m-d H:i:s'));
     }
 
     public function testItMakesADelayedMessageAvailableByMovingTheClock(): void
@@ -654,7 +683,11 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
     }
 
     /**
-     * @return array{0: \Symfony\Component\Messenger\MessageBus, 1: \ArrayObject<int, string>}
+     * @return array{
+     *     0: \Symfony\Component\Messenger\MessageBus,
+     *     1: \ArrayObject<int, string>,
+     *     2: \ArrayObject<int, string>,
+     * }
      */
     private function arrangeTwoTransportMessenger(ClockInterface $clock): array
     {
@@ -662,6 +695,8 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $emailTransport = new InMemoryTransport(null, $clock);
         /** @var \ArrayObject<int, string> $handledLog */
         $handledLog = new ArrayObject();
+        /** @var \ArrayObject<int, string> $failingHandledAtLog */
+        $failingHandledAtLog = new ArrayObject();
         /** @var \Symfony\Component\Messenger\MessageBus|null $messageBus */
         $messageBus = null;
 
@@ -670,8 +705,12 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
                 $handledLog->append($message::class);
                 $messageBus?->dispatch(new FailingDummyMessage());
             }],
-            FailingDummyMessage::class => [static function (FailingDummyMessage $message) use ($handledLog): void {
+            FailingDummyMessage::class => [static function (FailingDummyMessage $message) use (
+                $handledLog,
+                $failingHandledAtLog,
+            ): void {
                 $handledLog->append($message::class);
+                $failingHandledAtLog->append(Carbon::now()->format('Y-m-d H:i:s'));
 
                 throw new RuntimeException('boom', 77);
             }],
@@ -715,6 +754,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
             }
         });
 
-        return [$messageBus, $handledLog];
+        return [$messageBus, $handledLog, $failingHandledAtLog];
     }
 }
