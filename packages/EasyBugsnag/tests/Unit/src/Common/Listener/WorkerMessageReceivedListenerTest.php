@@ -14,6 +14,21 @@ use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 
 final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
 {
+    public function testItCapsExpandedItems(): void
+    {
+        $client = self::getService(Client::class);
+        $listener = new WorkerMessageReceivedListener(
+            $client,
+            self::getService(SensitiveDataSanitizerInterface::class)
+        );
+
+        $message = new stdClass();
+        $message->items = \array_fill(0, 3000, ['id' => 1]);
+        $listener(new WorkerMessageReceivedEvent(new Envelope($message), 'async'));
+
+        self::assertStringContainsString('truncated', $this->getWorkerMetadata($client)['Message']);
+    }
+
     public function testItDumpsWithoutMaskingWhenSanitizerIsNull(): void
     {
         $client = self::getService(Client::class);
@@ -26,6 +41,24 @@ final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
         $worker = $this->getWorkerMetadata($client);
         self::assertStringContainsString('super-secret', $worker['Message']);
         self::assertSame('async', $worker['Receiver Name']);
+    }
+
+    public function testItExpandsEachObjectOnce(): void
+    {
+        $client = self::getService(Client::class);
+        $listener = new WorkerMessageReceivedListener(
+            $client,
+            self::getService(SensitiveDataSanitizerInterface::class)
+        );
+
+        $message = new stdClass();
+        $message->self = $message;
+        $message->password = 'super-secret';
+        $listener(new WorkerMessageReceivedEvent(new Envelope($message), 'async'));
+
+        $dump = $this->getWorkerMetadata($client)['Message'];
+        self::assertSame(1, \substr_count($dump, '@class'));
+        self::assertStringNotContainsString('super-secret', $dump);
     }
 
     public function testItKeepsPrivatePropertiesAndClassNameWhenMasking(): void

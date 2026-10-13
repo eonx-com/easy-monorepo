@@ -18,6 +18,8 @@ final class WorkerMessageReceivedListener
 {
     private const int MAX_EXPAND_DEPTH = 10;
 
+    private const int MAX_EXPAND_ITEMS = 2500;
+
     private WorkerMessageReceivedEvent $event;
 
     private bool $isSetup = false;
@@ -62,24 +64,38 @@ final class WorkerMessageReceivedListener
         $this->isSetup = true;
     }
 
-    private static function expand(mixed $value, int $depth = 0): mixed
+    /**
+     * @param array<int, true> $visited
+     */
+    private static function expand(mixed $value, int $depth, array &$visited, int &$budget): mixed
     {
-        if ($depth >= self::MAX_EXPAND_DEPTH) {
-            return \is_object($value) ? \get_debug_type($value) : $value;
-        }
-
-        if (\is_array($value)) {
-            return \array_map(static fn(mixed $item): mixed => self::expand($item, $depth + 1), $value);
-        }
-
-        if (\is_object($value) === false || $value instanceof DateTimeInterface || $value instanceof Throwable) {
+        if ((\is_array($value) === false && \is_object($value) === false)
+            || $value instanceof DateTimeInterface
+            || $value instanceof Throwable
+        ) {
             return $value;
         }
 
-        $expanded = ['@class' => \get_debug_type($value)];
+        if ($depth >= self::MAX_EXPAND_DEPTH || (\is_object($value) && isset($visited[\spl_object_id($value)]))) {
+            return \get_debug_type($value);
+        }
+
+        $expanded = [];
+
+        if (\is_object($value)) {
+            $visited[\spl_object_id($value)] = true;
+            $expanded['@class'] = \get_debug_type($value);
+        }
 
         foreach ((array)$value as $key => $item) {
-            $expanded[\substr((string)\strrchr("\0" . $key, "\0"), 1)] = self::expand($item, $depth + 1);
+            if (--$budget < 0) {
+                $expanded['...'] = 'truncated';
+
+                break;
+            }
+
+            $name = \is_object($value) ? \substr((string)\strrchr("\0" . $key, "\0"), 1) : $key;
+            $expanded[$name] = self::expand($item, $depth + 1, $visited, $budget);
         }
 
         return $expanded;
@@ -90,7 +106,9 @@ final class WorkerMessageReceivedListener
         // Expand objects before masking: the sanitizer's generic transformer (json_encode) keeps neither
         // non-public properties nor the class; key-based masking cannot work on the dumped string
         if ($this->sensitiveDataSanitizer !== null) {
-            $var = $this->sensitiveDataSanitizer->sanitize(self::expand($var));
+            $budget = self::MAX_EXPAND_ITEMS;
+            $visited = [];
+            $var = $this->sensitiveDataSanitizer->sanitize(self::expand($var, 0, $visited, $budget));
         }
 
         return (string)$this->getDumper()
