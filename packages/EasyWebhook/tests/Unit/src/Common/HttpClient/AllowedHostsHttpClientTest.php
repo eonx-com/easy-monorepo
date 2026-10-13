@@ -22,7 +22,7 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
 
         yield 'Mixed case' => ['https://Api.AHI.Example/webhooks'];
 
-        yield 'Upper case with port' => ['https://API.AHI.EXAMPLE:8443/webhooks'];
+        yield 'Upper case with default port' => ['https://API.AHI.EXAMPLE:443/webhooks'];
     }
 
     /**
@@ -39,6 +39,10 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         yield 'Decimal IPv4' => ['http://2130706433/webhooks'];
 
         yield 'Hex IPv4' => ['http://0x7f000001/webhooks'];
+
+        yield 'IPv4 with trailing dot' => ['http://127.0.0.1./webhooks'];
+
+        yield 'Short IPv4 with trailing dot' => ['http://127.1./webhooks'];
     }
 
     /**
@@ -56,10 +60,28 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
 
         yield 'Implicit https port vs 80' => ['https://api.ahi.example/webhooks', ['api.ahi.example:80'], false];
 
-        yield 'Host without port matches any port' => [
-            'https://api.ahi.example:6379/webhooks',
+        yield 'Host without port matches default https port' => [
+            'https://api.ahi.example/webhooks',
             ['api.ahi.example'],
             true,
+        ];
+
+        yield 'Host without port matches default http port' => [
+            'http://api.ahi.example/webhooks',
+            ['api.ahi.example'],
+            true,
+        ];
+
+        yield 'Host without port does not match other port' => [
+            'http://api.ahi.example:6379/webhooks',
+            ['api.ahi.example'],
+            false,
+        ];
+
+        yield 'Host without port does not match https on port 80' => [
+            'https://api.ahi.example:80/webhooks',
+            ['api.ahi.example'],
+            false,
         ];
     }
 
@@ -138,7 +160,7 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         $client = new AllowedHostsHttpClient(
             $protectedClient,
             $unprotectedClient,
-            ['10.24.80.5', 'fd00::1', '127.1', '2130706433', '0x7f000001']
+            ['10.24.80.5', 'fd00::1', '127.1', '2130706433', '0x7f000001', '127.0.0.1.', '127.1.']
         );
 
         $content = $client->request('GET', $url)
@@ -242,6 +264,29 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         self::assertSame('unprotected', $allowedContent);
         self::assertSame(2, $protectedBaseClient->getRequestsCount());
         self::assertSame(1, $unprotectedClient->getRequestsCount());
+    }
+
+    public function testWithOptionsCannotStreamAllowedAndProtectedResponsesTogether(): void
+    {
+        $baseClient = new MockHttpClient(static fn (): MockResponse => new MockResponse('ok'));
+        $client = (new AllowedHostsHttpClient(
+            new NoPrivateNetworkHttpClient($baseClient),
+            $baseClient,
+            ['api.ahi.example']
+        ))->withOptions(['headers' => ['X-Test' => '1']]);
+        $responses = [
+            $client->request('GET', 'https://api.ahi.example/'),
+            $client->request('GET', 'https://api.other.example/', [
+                'resolve' => ['api.other.example' => '8.8.8.8'],
+            ]),
+        ];
+
+        $this->expectException(TransportExceptionInterface::class);
+        $this->expectExceptionMessage('Cannot stream AsyncResponse objects with many clients.');
+
+        foreach ($client->stream($responses) as $chunk) {
+            $chunk->getContent();
+        }
     }
 
     public function testWithOptionsKeepsRoutingOnBothClients(): void

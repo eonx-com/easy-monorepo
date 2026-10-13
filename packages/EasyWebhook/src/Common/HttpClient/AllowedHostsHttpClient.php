@@ -70,15 +70,17 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
             return false;
         }
 
-        $port = \parse_url($url, \PHP_URL_PORT)
-            ?? (\mb_strtolower((string)\parse_url($url, \PHP_URL_SCHEME)) === 'https' ? 443 : 80);
+        $defaultPort = \mb_strtolower((string)\parse_url($url, \PHP_URL_SCHEME)) === 'https' ? 443 : 80;
+        $port = \parse_url($url, \PHP_URL_PORT) ?? $defaultPort;
 
-        return \in_array($host, $this->allowedHosts, true)
+        return (\in_array($host, $this->allowedHosts, true) && $port === $defaultPort)
             || \in_array($host . ':' . $port, $this->allowedHosts, true);
     }
 
     private function isIpLiteral(string $host): bool
     {
+        $host = \rtrim($host, '.');
+
         if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
             return true;
         }

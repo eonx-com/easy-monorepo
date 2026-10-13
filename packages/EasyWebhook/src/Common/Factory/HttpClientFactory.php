@@ -208,6 +208,8 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
 
     private static function isIpLiteral(string $host): bool
     {
+        $host = \rtrim($host, '.');
+
         if (\filter_var($host, \FILTER_VALIDATE_IP) !== false) {
             return true;
         }

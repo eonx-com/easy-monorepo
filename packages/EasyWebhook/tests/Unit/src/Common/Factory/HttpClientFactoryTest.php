@@ -62,6 +62,14 @@ final class HttpClientFactoryTest extends AbstractUnitTestCase
         yield 'IPv6 ULA' => ['fd00::1'];
 
         yield 'Short IPv4 with port' => ['127.1:443'];
+
+        yield 'IPv4 with trailing dot' => ['127.0.0.1.'];
+
+        yield 'Short IPv4 with trailing dot' => ['127.1.'];
+
+        yield 'Decimal IPv4 with trailing dot' => ['2130706433.'];
+
+        yield 'Hex IPv4 with trailing dot' => ['0x7f000001.'];
     }
 
     public function testAcceptsAllowedHostWithPort(): void
