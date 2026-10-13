@@ -101,7 +101,7 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         );
     }
 
-    public function testBugsnagHandlerIsRegisteredForDefaultChannelByDefault(): void
+    public function testBugsnagHandlerIsRegisteredForMainChannelByDefault(): void
     {
         $container = $this->bootMonologKernel(
             [self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler.php'],
@@ -115,11 +115,30 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
 
         self::assertTrue(
             $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
-            'The Bugsnag handler must be attached to the default channel when "bugsnag_handler_channels" is empty.'
+            'The Bugsnag handler must be attached to the main "app" channel when "bugsnag_handler_channels" is empty.'
         );
         self::assertFalse(
             $this->hasInstanceOf($otherLogger->getHandlers(), BugsnagMonologHandler::class),
             'The Bugsnag handler must not be attached to other channels when "bugsnag_handler_channels" is empty.'
+        );
+    }
+
+    public function testBugsnagHandlerIsRegisteredForMainChannelWhenDefaultChannelIsCustom(): void
+    {
+        $container = $this->bootMonologKernel(
+            [
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler.php',
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler_custom_default_channel.php',
+            ],
+            'test_monolog_bugsnag_custom_default_channel'
+        );
+
+        /** @var \Monolog\Logger $appLogger */
+        $appLogger = $container->get('logger');
+
+        self::assertTrue(
+            $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
+            'A custom "default_channel" (a LoggerFactory option) must not move the handler away from the "app" channel.'
         );
     }
 

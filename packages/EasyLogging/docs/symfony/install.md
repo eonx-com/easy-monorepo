@@ -129,7 +129,7 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
     $easyLoggingConfig->useSymfonyMonologBundle(true);
     $easyLoggingConfig->bugsnagHandler(true);
     $easyLoggingConfig->bugsnagHandlerLevel(Level::Error->value);
-    // Optional: restrict the handler to some channels (attached to all channels when empty)
+    // Optional: the channels to attach the handler to (the main "app" channel only when empty)
     $easyLoggingConfig->bugsnagHandlerChannels(['app', 'easy_http_client']);
 };
 ```
@@ -139,10 +139,11 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
 - `bugsnag_handler_level` keeps working: the handler service is still owned by this package.
 - `bugsnag_handler_channels` accepts the same channel list as monolog-bundle handlers; lists split across several
   config files (e.g. `config/packages/` and `config/packages/prod/`) are merged. When empty, the handler is attached
-  to the `default_channel` only (`app` by default) — not to every channel on purpose: for instance the `request`
-  channel logs every uncaught exception at `error`/`critical` level, which would duplicate the reports sent by
-  EasyErrorHandler and report the 4xx exceptions it ignores. To attach the handler to more channels list them
-  explicitly, or use an exclusion list such as `['!request']`.
+  to the main `app` channel only — not to every channel on purpose: for instance the `request` channel logs every
+  uncaught exception at `error`/`critical` level, which would duplicate the reports sent by EasyErrorHandler and
+  report the 4xx exceptions it ignores. To attach the handler to more channels list them explicitly (as with any
+  monolog-bundle handler, a listed channel must exist: declare it under `monolog.channels` or via a `monolog.logger`
+  tag), or use an exclusion list such as `['!request']`.
 - If the application already declares a `service` handler for `BugsnagMonologHandler` in its `monolog`
   configuration, the bundle does not register a second one. The application may also override the generated handler
   by declaring a handler with the same name (`easy_logging_bugsnag`).

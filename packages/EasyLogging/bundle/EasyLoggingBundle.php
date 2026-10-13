@@ -29,7 +29,7 @@ final class EasyLoggingBundle extends AbstractBundle
         ProcessorConfigProviderInterface::class => ConfigTag::ProcessorConfigProvider,
     ];
 
-    private const DEFAULT_CHANNEL = 'app';
+    private const MONOLOG_MAIN_CHANNEL = 'app';
 
     public function __construct()
     {
@@ -107,12 +107,10 @@ final class EasyLoggingBundle extends AbstractBundle
         $channels = $this->getRawConfigList($builder, 'bugsnag_handler_channels');
 
         if (\count($channels) === 0) {
+            // The main channel of symfony/monolog-bundle only ("easy_logging.default_channel" is a LoggerFactory concept).
             // Not all channels on purpose: e.g. the "request" channel logs every uncaught exception at error/critical
             // level, which would duplicate the EasyErrorHandler reports and report the ignored 4xx exceptions
-            /** @var string $defaultChannel */
-            $defaultChannel = $this->getRawConfigValue($builder, 'default_channel', self::DEFAULT_CHANNEL);
-
-            $channels = [$defaultChannel];
+            $channels = [self::MONOLOG_MAIN_CHANNEL];
         }
 
         $builder->prependExtensionConfig('monolog', [
