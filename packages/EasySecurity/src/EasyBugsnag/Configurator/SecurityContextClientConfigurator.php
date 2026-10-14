@@ -106,7 +106,7 @@ final class SecurityContextClientConfigurator extends AbstractClientConfigurator
     {
         return [
             'class' => $apiToken::class,
-            'original' => $apiToken->getOriginalToken(),
+            'original_hash' => \hash('sha256', $apiToken->getOriginalToken()),
         ];
     }
 
