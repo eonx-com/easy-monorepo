@@ -7,7 +7,7 @@
         "php": "^8.4",
         "eonx-com/easy-event-dispatcher": "^6.21",
         "eonx-com/easy-utils": "^6.21",
-        "nesbot/carbon": "^3.8.4",
+        "nesbot/carbon": "^3.12",
         "openswoole/core": "^22.1",
         "symfony/cache": "^7.4 || ^8.0",
         "symfony/cache-contracts": "^3.5",
