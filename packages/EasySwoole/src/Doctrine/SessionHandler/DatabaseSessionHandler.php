@@ -43,7 +43,7 @@ final class DatabaseSessionHandler implements ResetInterface, SessionHandlerInte
             ->open($path, $name);
     }
 
-    public function read(string $id): string
+    public function read(string $id): string|false
     {
         return $this->getDecorated()
             ->read($id);
