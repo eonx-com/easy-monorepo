@@ -107,9 +107,6 @@ final class EasyLoggingBundle extends AbstractBundle
         $channels = $this->getRawConfigList($builder, 'bugsnag_handler_channels');
 
         if (\count($channels) === 0) {
-            // The main channel of symfony/monolog-bundle only ("easy_logging.default_channel" is a LoggerFactory concept).
-            // Not all channels on purpose: e.g. the "request" channel logs every uncaught exception at error/critical
-            // level, which would duplicate the EasyErrorHandler reports and report the ignored 4xx exceptions
             $channels = [self::MONOLOG_MAIN_CHANNEL];
         }
 
@@ -124,9 +121,6 @@ final class EasyLoggingBundle extends AbstractBundle
         ]);
     }
 
-    /**
-     * Lists are merged across the config files, as Symfony does for prototyped array nodes.
-     */
     private function getRawConfigList(ContainerBuilder $builder, string $option): array
     {
         $values = [];
@@ -156,10 +150,6 @@ final class EasyLoggingBundle extends AbstractBundle
             ->resolveValue($value);
     }
 
-    /**
-     * Whether the application already attaches the handler itself (as a "service" handler), so that it is not
-     * registered a second time
-     */
     private function isBugsnagHandlerDeclaredByApplication(ContainerBuilder $builder): bool
     {
         /** @var array $config */
