@@ -29,6 +29,9 @@
         "symfony/mime": "^7.4 || ^8.0",
         "symfony/uid": "^7.4 || ^8.0"
     },
+    "conflict": {
+        "nesbot/carbon": "<3.12"
+    },
     "autoload": {
         "psr-4": {
             "EonX\\EasyTest\\": "src",

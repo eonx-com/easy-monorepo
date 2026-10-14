@@ -120,6 +120,7 @@
         "symplify/monorepo-builder": "^12.4.5"
     },
     "conflict": {
+        "nesbot/carbon": "<3.12",
         "symfony/monolog-bundle": "<3.11.1"
     },
     "autoload": {
