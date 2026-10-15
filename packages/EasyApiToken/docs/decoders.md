@@ -48,7 +48,7 @@ By default, this package comes with 3 built-in drivers:
 
 - Amazon Cognito: Allows you to decode JWT from [Amazon Cognito][1]. The following dependencies are required and need to be installed:
     - `composer require firebase/php-jwt:^7.0`
-    - `composer require phpseclib/phpseclib:^3.0`
+    - `composer require "phpseclib/phpseclib:^3.0 || ^4.0"` (both 3.x and 4.x are supported)
 - Auth0: Allows you to decode JWT from [Auth0][2]. The following dependencies are required and need to be installed:
     - `composer require auth0/auth0-php:^8.17`
 - Firebase: Allows you to decode JWT using the [Firebase PHP package][3]. The following dependencies are required and need to be installed:

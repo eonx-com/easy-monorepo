@@ -22,7 +22,7 @@
         "laravel/lumen-framework": "^11.0",
         "nyholm/psr7": "^1.8",
         "paragonie/random_compat": "^2.0",
-        "phpseclib/phpseclib": "^3.0.52",
+        "phpseclib/phpseclib": "^3.0.57 || ^4.0.1",
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "psr-discovery/discovery": "^1.0.2",
         "symfony/cache": "^7.2",
