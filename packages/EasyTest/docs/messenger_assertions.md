@@ -7,7 +7,7 @@ weight: 1002
 
 `EonX\EasyTest\Common\Trait\MessengerAssertionsTrait` lets a test consume Symfony Messenger messages the same way
 `messenger:consume` does — through a real `Worker`, with retries running to exhaustion and delayed messages delivered
-by moving a mock clock — and then assert what happened.
+by sleeping the clock until they are due (instantly on a mocked clock) — and then assert what happened.
 
 ## Requirements
 
@@ -32,13 +32,29 @@ by moving a mock clock — and then assert what happened.
       ],
   ],
   ```
-- Delayed messages (retries or an explicit `DelayStamp`) require a mocked clock. Add
-  `\Symfony\Component\Clock\Test\ClockSensitiveTrait` to the test case and call `self::mockTime()` at the start of
-  every test whose flow hits a delay: it swaps the global clock for a `MockClock` and automatically restores the real
-  one after the test. Instead of sleeping, the trait moves that clock straight to the due time of the next delayed
-  message, so a test with 10-minute retry delays still runs in milliseconds. The in-memory transports must be built
-  on the same mocked clock: when the clock is not mocked, or the transports watch a different clock than the test
-  moves, the trait fails with an explanation instead of really sleeping.
+- Delayed messages (retries or an explicit `DelayStamp`) are delivered by sleeping the global clock until the due time
+  of the next delayed message. On a mocked clock that is instant, so a test with 10-minute retry delays still runs in
+  milliseconds; on the real clock the test really waits the delays out. The in-memory transports must watch the same
+  clock (the container `clock` service follows the global clock, so this holds by default), otherwise the trait fails
+  with an explanation.
+
+  When the application reads the time through Carbon, run the global clock on
+  `\EonX\EasyTest\Common\Clock\CarbonClock`: it reads the Carbon test time and moves it on sleep, so Carbon, the
+  global clock and the container `clock` service are one clock, and `Carbon::now()` in the handlers sees every move.
+  Without a Carbon test time it is the real clock, so it can stay global for the whole run: set it once in the PHPUnit
+  bootstrap, and set the Carbon test time in the tests (or the base test case `setUp()`) as usual:
+
+  ```php
+  // tests/bootstrap.php
+  \Symfony\Component\Clock\Clock::set(new \EonX\EasyTest\Common\Clock\CarbonClock());
+
+  // the test
+  CarbonImmutable::setTestNow('2035-01-01 00:00:00');
+  ```
+
+  Without a Carbon test time the delays are really waited out. Tests that do not use Carbon can use
+  `\Symfony\Component\Clock\Test\ClockSensitiveTrait::mockTime()` instead, which mocks the global clock with a
+  `MockClock`; Carbon time does not move then.
 
 ## Consume messages
 
