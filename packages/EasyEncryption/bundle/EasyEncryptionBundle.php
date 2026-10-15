@@ -37,7 +37,15 @@ final class EasyEncryptionBundle extends AbstractBundle
             ->set(ConfigParam::DefaultKeyName->value, $config['default_key_name'])
             ->set(ConfigParam::DefaultSalt->value, $config['default_salt'])
             ->set(ConfigParam::FullyEncryptedMessages->value, $config['fully_encrypted_messages'])
-            ->set(ConfigParam::MaxChunkSize->value, $config['max_chunk_size']);
+            ->set(ConfigParam::MaxChunkSize->value, $config['max_chunk_size'])
+            ->set(
+                ConfigParam::MessengerAllowUnsignedMessages->value,
+                $config['messenger']['allow_unsigned_messages']
+            )
+            ->set(
+                ConfigParam::MessengerSigningKeys->value,
+                $config['messenger']['signing_keys'] ?: [$config['default_encryption_key']]
+            );
 
         $container->import('config/services.php');
 
