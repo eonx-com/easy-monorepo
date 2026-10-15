@@ -156,10 +156,20 @@ final class EasyLoggingBundle extends AbstractBundle
         foreach ($builder->getExtensionConfig('monolog') as $config) {
             /** @var array $handler */
             foreach ($config['handlers'] ?? [] as $handler) {
-                if (
-                    ($handler['type'] ?? null) === 'service'
-                    && ($handler['id'] ?? null) === BugsnagMonologHandler::class
-                ) {
+                $serviceId = $handler['id'] ?? null;
+
+                if (($handler['type'] ?? null) !== 'service' || \is_string($serviceId) === false) {
+                    continue;
+                }
+
+                $class = $serviceId;
+
+                if ($builder->has($serviceId)) {
+                    $definition = $builder->findDefinition($serviceId);
+                    $class = $definition->getClass() ?? $serviceId;
+                }
+
+                if ($class === BugsnagMonologHandler::class) {
                     return true;
                 }
             }

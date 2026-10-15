@@ -144,9 +144,8 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
   report the 4xx exceptions it ignores. To attach the handler to more channels list them explicitly (as with any
   monolog-bundle handler, a listed channel must exist: declare it under `monolog.channels` or via a `monolog.logger`
   tag), or use an exclusion list such as `['!request']`.
-- If the application already declares a `service` handler for `BugsnagMonologHandler` in its `monolog`
-  configuration, the bundle does not register a second one. The application may also override the generated handler
-  by declaring a handler with the same name (`easy_logging_bugsnag`).
+- If the application already attaches a `BugsnagMonologHandler` service itself (a `service` handler in its `monolog`
+  configuration, whatever the service id), the bundle does not register a second one.
 - symfony/monolog-bundle does not allow configuring a `formatter` on `service` handlers, so the handler uses its
   default formatter. To customise it, re-declare the handler service in the application (application definitions win
   over the bundle ones) and call `setFormatter()` on it:
