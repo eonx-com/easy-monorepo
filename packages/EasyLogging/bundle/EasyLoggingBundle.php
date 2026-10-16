@@ -6,9 +6,11 @@ namespace EonX\EasyLogging\Bundle;
 use EonX\EasyLogging\Bundle\CompilerPass\DefaultStreamHandlerCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ReplaceChannelsDefinitionCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ValidateSensitiveDataSanitizerCompilerPass;
+use EonX\EasyLogging\Bundle\Enum\BundleParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
+use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
 use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
 use Monolog\Logger;
@@ -26,6 +28,8 @@ final class EasyLoggingBundle extends AbstractBundle
         LoggerConfiguratorInterface::class => ConfigTag::LoggerConfigurator,
         ProcessorConfigProviderInterface::class => ConfigTag::ProcessorConfigProvider,
     ];
+
+    private const MONOLOG_MAIN_CHANNEL = 'app';
 
     public function __construct()
     {
@@ -88,6 +92,90 @@ final class EasyLoggingBundle extends AbstractBundle
 
             $container->import('config/bugsnag_handler.php');
         }
+    }
+
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        if (
+            (bool)$this->getRawConfigValue($builder, 'use_symfony_monolog_bundle', false) === false
+            || (bool)$this->getRawConfigValue($builder, 'bugsnag_handler', false) === false
+            || $this->isBugsnagHandlerDeclaredByApplication($builder)
+        ) {
+            return;
+        }
+
+        $channels = $this->getRawConfigList($builder, 'bugsnag_handler_channels');
+
+        if (\count($channels) === 0) {
+            $channels = [self::MONOLOG_MAIN_CHANNEL];
+        }
+
+        $builder->prependExtensionConfig('monolog', [
+            'handlers' => [
+                BundleParam::BugsnagHandlerName->value => [
+                    'channels' => $channels,
+                    'id' => BugsnagMonologHandler::class,
+                    'type' => 'service',
+                ],
+            ],
+        ]);
+    }
+
+    private function getRawConfigList(ContainerBuilder $builder, string $option): array
+    {
+        $values = [];
+
+        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
+            /** @var array|scalar $resolved */
+            $resolved = $builder->getParameterBag()
+                ->resolveValue($config[$option] ?? []);
+
+            $values = [...$values, ...(array)$resolved];
+        }
+
+        return \array_values(\array_unique($values));
+    }
+
+    private function getRawConfigValue(ContainerBuilder $builder, string $option, mixed $default): mixed
+    {
+        $value = $default;
+
+        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
+            if (\array_key_exists($option, $config)) {
+                $value = $config[$option];
+            }
+        }
+
+        return $builder->getParameterBag()
+            ->resolveValue($value);
+    }
+
+    private function isBugsnagHandlerDeclaredByApplication(ContainerBuilder $builder): bool
+    {
+        /** @var array $config */
+        foreach ($builder->getExtensionConfig('monolog') as $config) {
+            /** @var array $handler */
+            foreach ($config['handlers'] ?? [] as $handler) {
+                $serviceId = $handler['id'] ?? null;
+
+                if (($handler['type'] ?? null) !== 'service' || \is_string($serviceId) === false) {
+                    continue;
+                }
+
+                $class = $serviceId;
+
+                if ($builder->has($serviceId)) {
+                    $definition = $builder->findDefinition($serviceId);
+                    $class = $definition->getClass() ?? $serviceId;
+                }
+
+                if ($class === BugsnagMonologHandler::class) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
