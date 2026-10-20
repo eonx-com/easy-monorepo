@@ -53,13 +53,13 @@ return App::config([
 ]);
 ```
 
-Register `EonX\EasyTest\PHPUnit\Extension\EasyTestExtension` in PHPUnit configuration.
+Register `EonX\EasyTest\PhpUnit\Extension\EasyTestExtension` in PHPUnit configuration.
 
 ```xml
 <!-- phpunit.xml.dist -->
     ...
 <extensions>
-    <bootstrap class="EonX\EasyTest\PHPUnit\Extension\EasyTestExtension"/>
+    <bootstrap class="EonX\EasyTest\PhpUnit\Extension\EasyTestExtension"/>
 </extensions>
     ...
 ```

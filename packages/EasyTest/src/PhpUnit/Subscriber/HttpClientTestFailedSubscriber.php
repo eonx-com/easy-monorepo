@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\PHPUnit\Subscriber;
+namespace EonX\EasyTest\PhpUnit\Subscriber;
 
 use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 use PHPUnit\Event\Test\Failed;

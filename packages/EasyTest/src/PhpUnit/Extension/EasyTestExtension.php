@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyTest\PHPUnit\Extension;
+namespace EonX\EasyTest\PhpUnit\Extension;
 
-use EonX\EasyTest\PHPUnit\Subscriber\EasyErrorHandlerTestFailedSubscriber;
-use EonX\EasyTest\PHPUnit\Subscriber\EasyErrorHandlerTestFinishedSubscriber;
-use EonX\EasyTest\PHPUnit\Subscriber\HttpClientTestFailedSubscriber;
-use EonX\EasyTest\PHPUnit\Subscriber\MonologTestFinishedSubscriber;
+use EonX\EasyTest\PhpUnit\Subscriber\EasyErrorHandlerTestFailedSubscriber;
+use EonX\EasyTest\PhpUnit\Subscriber\EasyErrorHandlerTestFinishedSubscriber;
+use EonX\EasyTest\PhpUnit\Subscriber\HttpClientTestFailedSubscriber;
+use EonX\EasyTest\PhpUnit\Subscriber\MonologTestFinishedSubscriber;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
