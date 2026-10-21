@@ -133,6 +133,11 @@ return static function (MonologConfig $monologConfig): void {
 };
 ```
 
+With PHP-FPM, a record written to `stdout`/`stderr` which is longer than the `log_limit` pool setting (default 1024
+bytes) is split into several lines, so a log collector cannot parse it as one JSON record. One record can contain both
+bodies of up to `max_body_size` bytes each, plus headers. Set `log_limit` to a value bigger than the biggest record, or
+decrease `max_body_size`.
+
 #### 5. Check the result
 
 Send a request to the application. One record is written for each request, with the `Request: "<METHOD> <path>" ->
