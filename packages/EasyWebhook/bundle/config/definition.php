@@ -48,10 +48,18 @@ return static function (DefinitionConfigurator $definition) {
 
                         // Fail at container build on an allowed_ranges entry that would do nothing
                         try {
-                            HttpClientFactory::validateAllowedRanges(
-                                $v['extra_blocked_ranges'],
-                                $v['allowed_ranges']
-                            );
+                            if (\is_array($v['extra_blocked_ranges']) && \is_array($v['allowed_ranges'])) {
+                                HttpClientFactory::validateAllowedRanges(
+                                    $v['extra_blocked_ranges'],
+                                    $v['allowed_ranges']
+                                );
+                            }
+
+                            if (\is_array($v['allowed_hosts'])) {
+                                HttpClientFactory::validateAllowedHosts(
+                                    HttpClientFactory::normalizeAllowedHosts($v['allowed_hosts'])
+                                );
+                            }
                         } catch (InvalidSsrfProtectionConfigException $exception) {
                             throw new InvalidConfigurationException(
                                 message: $exception->getMessage(),
@@ -84,6 +92,31 @@ return static function (DefinitionConfigurator $definition) {
                         )
                         ->defaultValue([])
                         ->stringPrototype()->end()
+                    ->end()
+                    ->variableNode('allowed_hosts')
+                        ->info(
+                            'Hostnames whose requests bypass the SSRF check entirely, for a legitimate '
+                            . 'private target such as an internal load balancer published in public DNS '
+                            . 'with private addresses. An entry is "host", which matches the default port of '
+                            . 'the URL scheme only (443 for https, 80 for http), or "host:port" for any other '
+                            . 'port. Matching is case-insensitive; no scheme, path or wildcard, and an IP '
+                            . 'literal in a URL never matches. Redirects from an allowed host are never '
+                            . 'followed. All other hosts stay fully protected. Accepts an env placeholder '
+                            . 'such as env(csv:VAR); an empty variable means an empty list.'
+                        )
+                        ->defaultValue([])
+                        ->validate()
+                            ->always(static function (mixed $v): array {
+                                if (\is_array($v) === false || \array_filter($v, \is_string(...)) !== $v) {
+                                    throw new InvalidConfigurationException(
+                                        'The "easy_webhook.ssrf_protection.allowed_hosts" option must be a list '
+                                        . 'of hostnames, or an env placeholder such as env(csv:VAR).'
+                                    );
+                                }
+
+                                return $v;
+                            })
+                        ->end()
                     ->end()
                 ->end()
             ->end()

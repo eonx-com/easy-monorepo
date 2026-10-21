@@ -48,6 +48,11 @@ parameters:
         # ---- EasyActivity ----
         # ---- EasyApiPlatform ----
         # ---- EasyApiToken ----
+        # Supports phpseclib 3.x and 4.x, only one of them is installed at a time
+        - message: '#Instantiated class phpseclib[34]\\Math\\BigInteger not found#'
+          path: %currentWorkingDirectory%/packages/EasyApiToken/src/AwsCognito/Provider/AwsCognitoJwkProvider.php
+          reportUnmatched: false
+
         # ---- EasyAsync ----
         # ---- EasyBankFiles ----
         # ---- EasyBatch ----
