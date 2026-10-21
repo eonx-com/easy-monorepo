@@ -84,226 +84,226 @@ final class SqsHandlerTest extends AbstractLumenTestCase
      */
     public static function provideHandleSqsRecordCases(): iterable
     {
-        yield 'Successful job is acknowledged' => [
-            'receiveCount' => 1,
-            'data' => [],
-            'expectedVisibilityTimeout' => null,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Successful job is acknowledged' => self::createRecordCase(
+            receiveCount: 1,
+            data: [],
+            expectedVisibilityTimeout: null,
+            expectedJobFailedCount: 0,
+        );
 
         // Retries with the delay given to release(), computed by the worker from the backoff of the job
-        yield 'Failed job is retried on first attempt' => [
-            'receiveCount' => 1,
-            'data' => ['exception' => 'boom'],
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Failed job is retried on first attempt' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['exception' => 'boom'],
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Failed job is retried with its backoff' => [
-            'receiveCount' => 2,
-            'data' => ['exception' => 'boom'],
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 30,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Failed job is retried with its backoff' => self::createRecordCase(
+            receiveCount: 2,
+            data: ['exception' => 'boom'],
+            backoff: 30,
+            expectedVisibilityTimeout: 30,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Failed job is retried with the backoff of its attempt (attempt 1)' => [
-            'receiveCount' => 1,
-            'appMaxRetries' => 5,
-            'data' => ['exception' => 'boom'],
-            'backoff' => '10,80,640',
-            'expectedVisibilityTimeout' => 10,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Failed job is retried with the backoff of its attempt (attempt 1)' => self::createRecordCase(
+            receiveCount: 1,
+            appMaxRetries: 5,
+            data: ['exception' => 'boom'],
+            backoff: '10,80,640',
+            expectedVisibilityTimeout: 10,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Failed job is retried with the backoff of its attempt (attempt 3)' => [
-            'receiveCount' => 3,
-            'appMaxRetries' => 5,
-            'data' => ['exception' => 'boom'],
-            'backoff' => '10,80,640',
-            'expectedVisibilityTimeout' => 640,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Failed job is retried with the backoff of its attempt (attempt 3)' => self::createRecordCase(
+            receiveCount: 3,
+            appMaxRetries: 5,
+            data: ['exception' => 'boom'],
+            backoff: '10,80,640',
+            expectedVisibilityTimeout: 640,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Failed job is retried with the last backoff after the list' => [
-            'receiveCount' => 4,
-            'appMaxRetries' => 5,
-            'data' => ['exception' => 'boom'],
-            'backoff' => '10,80,640',
-            'expectedVisibilityTimeout' => 640,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Failed job is retried with the last backoff after the list' => self::createRecordCase(
+            receiveCount: 4,
+            appMaxRetries: 5,
+            data: ['exception' => 'boom'],
+            backoff: '10,80,640',
+            expectedVisibilityTimeout: 640,
+            expectedJobFailedCount: 0,
+        );
 
         // Explicit release delay
-        yield 'Job released with a delay is retried after it' => [
-            'receiveCount' => 1,
-            'data' => ['release' => 60],
-            'expectedVisibilityTimeout' => 60,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Job released with a delay is retried after it' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['release' => 60],
+            expectedVisibilityTimeout: 60,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Job released without delay is retried after the minimum delay' => [
-            'receiveCount' => 1,
-            'data' => ['release' => 0],
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Job released without delay is retried after the minimum delay' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['release' => 0],
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Job released with a delay above the SQS limit is retried after the SQS limit' => [
-            'receiveCount' => 1,
-            'data' => ['release' => 100000],
-            'expectedVisibilityTimeout' => 43200,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Job released with a delay above the SQS limit is retried after the SQS limit' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['release' => 100000],
+            expectedVisibilityTimeout: 43200,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Explicit release delay wins over the backoff of the job' => [
-            'receiveCount' => 1,
-            'data' => ['release' => 60],
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 60,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Explicit release delay wins over the backoff of the job' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['release' => 60],
+            backoff: 30,
+            expectedVisibilityTimeout: 60,
+            expectedJobFailedCount: 0,
+        );
 
         // Last attempt: the job is failed and the message is requeued for the DLQ
-        yield 'Failed job reaching app max retries is requeued without backoff' => [
-            'receiveCount' => self::APP_MAX_RETRIES,
-            'data' => ['exception' => 'boom'],
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'app_max_retries',
-        ];
+        yield 'Failed job reaching app max retries is requeued without backoff' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['exception' => 'boom'],
+            backoff: 30,
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'app_max_retries',
+        );
 
-        yield 'Failed job reaching app max retries of 1 is requeued' => [
-            'receiveCount' => 1,
-            'appMaxRetries' => 1,
-            'data' => ['exception' => 'boom'],
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'app_max_retries',
-        ];
+        yield 'Failed job reaching app max retries of 1 is requeued' => self::createRecordCase(
+            receiveCount: 1,
+            appMaxRetries: 1,
+            data: ['exception' => 'boom'],
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'app_max_retries',
+        );
 
-        yield 'Failed job reaching its own max tries below app max retries is requeued without backoff' => [
-            'receiveCount' => 2,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 2,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'job_max_tries',
-        ];
+        yield 'Failed job reaching its own max tries below app max retries is requeued' => self::createRecordCase(
+            receiveCount: 2,
+            data: ['exception' => 'boom'],
+            maxTries: 2,
+            backoff: 30,
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'job_max_tries',
+        );
 
-        yield 'Failed job reaching its own max tries equal to app max retries is requeued' => [
-            'receiveCount' => self::APP_MAX_RETRIES,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => self::APP_MAX_RETRIES,
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'job_max_tries',
-        ];
+        yield 'Failed job reaching its own max tries equal to app max retries is requeued' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['exception' => 'boom'],
+            maxTries: self::APP_MAX_RETRIES,
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'job_max_tries',
+        );
 
-        yield 'Job released on its last attempt is failed and requeued' => [
-            'receiveCount' => self::APP_MAX_RETRIES,
-            'data' => ['release' => 60],
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'app_max_retries',
-        ];
+        yield 'Job released on its last attempt is failed and requeued' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['release' => 60],
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'app_max_retries',
+        );
 
         // Job max tries above app max retries or unlimited: app max retries caps the attempts
-        yield 'Job with max tries above app max retries is retried before app max retries' => [
-            'receiveCount' => 2,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 5,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 30,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Job with max tries above app max retries is retried before app max retries' => self::createRecordCase(
+            receiveCount: 2,
+            data: ['exception' => 'boom'],
+            maxTries: 5,
+            backoff: 30,
+            expectedVisibilityTimeout: 30,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Job with max tries above app max retries is failed and requeued at app max retries' => [
-            'receiveCount' => self::APP_MAX_RETRIES,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 5,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'app_max_retries',
-        ];
+        yield 'Job with max tries above app max retries is failed at app max retries' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['exception' => 'boom'],
+            maxTries: 5,
+            backoff: 30,
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'app_max_retries',
+        );
 
-        yield 'Job with unlimited max tries is retried with its backoff' => [
-            'receiveCount' => 2,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 0,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 30,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Job with unlimited max tries is retried with its backoff' => self::createRecordCase(
+            receiveCount: 2,
+            data: ['exception' => 'boom'],
+            maxTries: 0,
+            backoff: 30,
+            expectedVisibilityTimeout: 30,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Job with negative max tries is run and retried with its backoff' => [
-            'receiveCount' => 2,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => -1,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 30,
-            'expectedJobFailedCount' => 0,
-        ];
+        yield 'Job with negative max tries is run and retried with its backoff' => self::createRecordCase(
+            receiveCount: 2,
+            data: ['exception' => 'boom'],
+            maxTries: -1,
+            backoff: 30,
+            expectedVisibilityTimeout: 30,
+            expectedJobFailedCount: 0,
+        );
 
-        yield 'Job with unlimited max tries is failed and requeued at app max retries' => [
-            'receiveCount' => self::APP_MAX_RETRIES,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 0,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'app_max_retries',
-        ];
+        yield 'Job with unlimited max tries is failed and requeued at app max retries' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['exception' => 'boom'],
+            maxTries: 0,
+            backoff: 30,
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'app_max_retries',
+        );
 
         // Requeued without running
-        yield 'Job exceeding its own max tries is requeued without running nor failing again' => [
-            'receiveCount' => self::APP_MAX_RETRIES,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 2,
-            'backoff' => 30,
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 0,
-            'expectedFired' => false,
-        ];
+        yield 'Job exceeding its own max tries is requeued without running nor failing again' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['exception' => 'boom'],
+            maxTries: 2,
+            backoff: 30,
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 0,
+            expectedFired: false,
+        );
 
-        yield 'Job exceeding app max retries is requeued without running' => [
-            'receiveCount' => self::APP_MAX_RETRIES + 1,
-            'data' => ['exception' => 'boom'],
-            'expectedVisibilityTimeout' => 1,
-            'expectedJobFailedCount' => 0,
-            'expectedFired' => false,
-        ];
+        yield 'Job exceeding app max retries is requeued without running' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES + 1,
+            data: ['exception' => 'boom'],
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 0,
+            expectedFired: false,
+        );
 
         // Not requeued: SQS deletes the message
-        yield 'Explicitly unrecoverable job is not retried' => [
-            'receiveCount' => 1,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 1,
-            'expectedVisibilityTimeout' => null,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'unrecoverable',
-        ];
+        yield 'Explicitly unrecoverable job is not retried' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['exception' => 'boom'],
+            maxTries: 1,
+            expectedVisibilityTimeout: null,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'unrecoverable',
+        );
 
-        yield 'Explicitly unrecoverable job received again is failed without running' => [
-            'receiveCount' => 2,
-            'data' => ['exception' => 'boom'],
-            'maxTries' => 1,
-            'expectedVisibilityTimeout' => null,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'unrecoverable',
-            'expectedFired' => false,
-        ];
+        yield 'Explicitly unrecoverable job received again is failed without running' => self::createRecordCase(
+            receiveCount: 2,
+            data: ['exception' => 'boom'],
+            maxTries: 1,
+            expectedVisibilityTimeout: null,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'unrecoverable',
+            expectedFired: false,
+        );
 
-        yield 'Job failing itself before its last attempt is not requeued' => [
-            'receiveCount' => 1,
-            'data' => ['fail' => true],
-            'expectedVisibilityTimeout' => null,
-            'expectedJobFailedCount' => 1,
-            'expectedRetryStopReason' => 'job_failed',
-        ];
+        yield 'Job failing itself before its last attempt is not requeued' => self::createRecordCase(
+            receiveCount: 1,
+            data: ['fail' => true],
+            expectedVisibilityTimeout: null,
+            expectedJobFailedCount: 1,
+            expectedRetryStopReason: 'job_failed',
+        );
     }
 
     /**
@@ -600,6 +600,33 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'arn:aws:lambda:ap-southeast-2:123456789012:function:test',
             'trace-id'
         );
+    }
+
+    /**
+     * Returns the arguments in the order of testHandleSqsRecord(), as PHPUnit 10 ignores the data set keys.
+     */
+    private static function createRecordCase(
+        int $receiveCount,
+        array $data,
+        ?int $expectedVisibilityTimeout,
+        int $expectedJobFailedCount,
+        ?int $appMaxRetries = null,
+        ?int $maxTries = null,
+        int|string|null $backoff = null,
+        ?string $expectedRetryStopReason = null,
+        bool $expectedFired = true,
+    ): array {
+        return [
+            $receiveCount,
+            $data,
+            $expectedVisibilityTimeout,
+            $expectedJobFailedCount,
+            $appMaxRetries,
+            $maxTries,
+            $backoff,
+            $expectedRetryStopReason,
+            $expectedFired,
+        ];
     }
 
     private static function createSqsEvent(array $records): array
