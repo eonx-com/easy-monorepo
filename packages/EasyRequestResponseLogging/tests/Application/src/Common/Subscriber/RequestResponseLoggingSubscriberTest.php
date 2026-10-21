@@ -35,6 +35,16 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
     }
 
     /**
+     * @see testOnKernelTerminateSucceedsAndDoesNotLogNonSanitizableBody
+     */
+    public static function provideNonSanitizableBodies(): iterable
+    {
+        yield 'malformed json' => ['{"password":"some-password"'];
+
+        yield 'number out of range' => ['{"password":"some-password","amount":1e400}'];
+    }
+
+    /**
      * @see testOnKernelTerminateSucceedsWithSanitizedPath
      */
     public static function provideSensitivePaths(): iterable
@@ -139,7 +149,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertFalse($requestContext['body_truncated']);
     }
 
-    public function testOnKernelTerminateSucceedsAndDoesNotLogNonSanitizableBody(): void
+    #[DataProvider('provideNonSanitizableBodies')]
+    public function testOnKernelTerminateSucceedsAndDoesNotLogNonSanitizableBody(string $content): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
         $kernel = self::bootKernel();
@@ -149,7 +160,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             server: [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            content: '{"password":"some-password","amount":1e400}'
+            content: $content
         );
 
         $response = $kernel->handle($request);

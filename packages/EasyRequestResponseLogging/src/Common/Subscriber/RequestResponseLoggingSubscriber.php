@@ -210,6 +210,10 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
     private function sanitizeBody(string $body, string $mimeType): string
     {
         if ($mimeType !== self::FORM_CONTENT_TYPE) {
+            // The sanitizer falls back to free-text sanitization for invalid JSON, which does not mask keys, so an
+            // invalid JSON body must throw and be omitted instead
+            \json_decode(json: $body, flags: \JSON_THROW_ON_ERROR);
+
             return $this->sensitiveDataSanitizer->sanitize($body);
         }
 
