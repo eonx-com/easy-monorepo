@@ -59,6 +59,18 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
 
         yield 'literal ampersand in value' => ['/token/first&second', '/token/*REDACTED*'];
 
+        yield 'literal key=value segment' => ['/token=some-token', '/token=*REDACTED*'];
+
+        yield 'percent-encoded slash after segment name' => ['/token%2Fsome-token', '/token/*REDACTED*'];
+
+        yield 'percent-encoded equals after segment name' => ['/token%3Dsome-token', '/token=*REDACTED*'];
+
+        yield 'percent-encoded nested segments' => ['/some%2Ftoken%2Fsome-token', '/some/token/*REDACTED*'];
+
+        yield 'query-like segment' => ['/some/name=John&token=first,second', '/some/name=John&token=*REDACTED*'];
+
+        yield 'uppercase segment name' => ['/TOKEN/some-token', '/TOKEN/*REDACTED*'];
+
         yield 'literal delimiters in key=value segment' => [
             "/some/token=first,second;third'fourth",
             '/some/token=*REDACTED*',

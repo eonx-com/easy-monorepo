@@ -27,8 +27,6 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private const JSON_CONTENT_TYPE_SUFFIX = '+json';
 
-    private const PATH_VALUE_DELIMITERS_PATTERN = '/[\s&?#,;"\')\]}<>]/';
-
     private const STARTED_AT_ATTRIBUTE = '_easy_request_response_logging_started_at';
 
     /**
@@ -167,11 +165,34 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         );
     }
 
+    private function getKeyMask(string $key): ?string
+    {
+        // The sanitizer is asked directly, so the path is masked with its own keys and mask pattern
+        $sanitized = $this->sensitiveDataSanitizer->sanitize([$key => true]);
+        $value = $sanitized[$key] ?? true;
+
+        return \is_string($value) ? $value : null;
+    }
+
     private function isLoggableMimeType(string $mimeType): bool
     {
         return $mimeType === self::FORM_CONTENT_TYPE
             || $mimeType === self::JSON_CONTENT_TYPE
             || \str_ends_with($mimeType, self::JSON_CONTENT_TYPE_SUFFIX);
+    }
+
+    private function normalizePathSegment(string $segment): string
+    {
+        // Only unreserved characters are decoded (RFC 3986 normalization), e.g. "%74oken" becomes "token"
+        return (string)\preg_replace_callback(
+            '/%([0-9A-Fa-f]{2})/',
+            static function (array $matches): string {
+                $char = \chr((int)\hexdec($matches[1]));
+
+                return \preg_match('/^[A-Za-z0-9._~-]$/', $char) === 1 ? $char : \strtoupper($matches[0]);
+            },
+            $segment
+        );
     }
 
     /**
@@ -228,27 +249,42 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private function sanitizePath(string $path): string
     {
-        // The path info keeps its percent-encoding, so a sensitive segment name could be encoded (e.g. "/%74oken/").
-        // Only unreserved characters are decoded (RFC 3986 normalization): encoded delimiters such as "%2F" or "%26"
-        // stay encoded and cannot split a sensitive value
-        $normalizedPath = (string)\preg_replace_callback(
-            '/%([0-9A-Fa-f]{2})/',
-            static function (array $matches): string {
-                $char = \chr((int)\hexdec($matches[1]));
+        // The router decodes the whole path (e.g. "%2F" is a separator for it) while the path info keeps its
+        // percent-encoding. Each raw segment is decoded on its own and a sensitive value is masked up to the end of
+        // its raw segment, so neither an encoded key nor an encoded delimiter can leave part of the value unmasked
+        $segments = \explode('/', $path);
+        $nextSegmentMask = null;
 
-                return \preg_match('/^[A-Za-z0-9._~-]$/', $char) === 1 ? $char : \strtoupper($matches[0]);
-            },
-            $path
-        );
+        foreach ($segments as $index => $segment) {
+            if ($nextSegmentMask !== null) {
+                $segments[$index] = $nextSegmentMask;
+                $nextSegmentMask = null;
 
-        // Characters allowed unencoded in a path segment (e.g. "&", ",", ";") end a value for the URL string
-        // sanitizer, so they are encoded to have the whole segment masked instead of only its first part
-        $normalizedPath = (string)\preg_replace_callback(
-            self::PATH_VALUE_DELIMITERS_PATTERN,
-            static fn (array $matches): string => \rawurlencode($matches[0]),
-            $normalizedPath
-        );
+                continue;
+            }
 
-        return $this->sensitiveDataSanitizer->sanitize($normalizedPath);
+            $decodedSegment = \rawurldecode($segment);
+
+            // A key followed by "/" or "=" inside the segment, e.g. "token=<value>" or "token%2F<value>"
+            \preg_match_all('/([^\/=&;,]*)[\/=]/', $decodedSegment, $matches, \PREG_SET_ORDER | \PREG_OFFSET_CAPTURE);
+
+            foreach ($matches as $match) {
+                $mask = $this->getKeyMask($match[1][0]);
+
+                if ($mask !== null) {
+                    $segments[$index] = \substr($decodedSegment, 0, $match[0][1] + \strlen($match[0][0])) . $mask;
+
+                    continue 2;
+                }
+            }
+
+            $segments[$index] = $this->normalizePathSegment($segment);
+
+            // A key ending the segment, e.g. "/token/<value>", masks the whole next segment
+            $nextSegmentMask = $this->getKeyMask((string)\preg_replace('/^.*[\/=&;,]/s', '', $decodedSegment));
+        }
+
+        // Value-based sanitizers (e.g. card numbers) still apply to the whole path
+        return $this->sensitiveDataSanitizer->sanitize(\implode('/', $segments));
     }
 }
