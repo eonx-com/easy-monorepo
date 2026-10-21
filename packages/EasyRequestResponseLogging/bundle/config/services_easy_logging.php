@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyRequestResponseLogging\Bundle\Enum\BundleParam;
 use EonX\EasyRequestResponseLogging\Bundle\Enum\ConfigServiceId;
-use EonX\EasyRequestResponseLogging\Common\Listener\RequestResponseLoggingListener;
+use EonX\EasyRequestResponseLogging\Common\Subscriber\RequestResponseLoggingSubscriber;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -21,6 +21,6 @@ return static function (ContainerConfigurator $container): void {
         ->args([BundleParam::LogChannel->value]);
 
     $services
-        ->get(RequestResponseLoggingListener::class)
+        ->get(RequestResponseLoggingSubscriber::class)
         ->arg('$logger', service(ConfigServiceId::Logger->value));
 };

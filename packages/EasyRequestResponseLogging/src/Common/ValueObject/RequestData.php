@@ -11,6 +11,7 @@ final readonly class RequestData
         private array $query,
         private array $headers,
         private ?string $body,
+        private bool $bodyOmitted,
         private bool $bodyTruncated,
         private string $requestId,
         private string $correlationId,
@@ -50,6 +51,11 @@ final readonly class RequestData
     public function getUri(): string
     {
         return $this->uri;
+    }
+
+    public function isBodyOmitted(): bool
+    {
+        return $this->bodyOmitted;
     }
 
     public function isBodyTruncated(): bool

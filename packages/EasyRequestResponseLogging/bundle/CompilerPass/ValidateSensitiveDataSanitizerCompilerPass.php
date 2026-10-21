@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestResponseLogging\Bundle\CompilerPass;
 
-use EonX\EasyRequestResponseLogging\Common\Listener\RequestResponseLoggingListener;
+use EonX\EasyRequestResponseLogging\Common\Subscriber\RequestResponseLoggingSubscriber;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +13,7 @@ final class ValidateSensitiveDataSanitizerCompilerPass implements CompilerPassIn
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->has(RequestResponseLoggingListener::class) === false) {
+        if ($container->has(RequestResponseLoggingSubscriber::class) === false) {
             return;
         }
 

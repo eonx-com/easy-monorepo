@@ -1,20 +1,38 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRequestResponseLogging\Tests\Application\Common\Listener;
+namespace EonX\EasyRequestResponseLogging\Tests\Application\Common\Subscriber;
 
 use EonX\EasyRequestResponseLogging\Bundle\Enum\BundleParam;
 use EonX\EasyRequestResponseLogging\Tests\Application\AbstractApplicationTestCase;
+use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\EarlyResponseListener;
 use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\SlowTerminateListener;
 use EonX\EasyTest\Monolog\Processor\LogCollectorProcessor;
 use EonX\EasyTest\Monolog\Trait\MonologTrait;
 use Monolog\Level;
 use Monolog\LogRecord;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
-final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCase
+final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTestCase
 {
     use MonologTrait;
+
+    /**
+     * @see testOnKernelTerminateSucceedsAndDoesNotLogNonLoggableContentTypeBody
+     */
+    public static function provideNonLoggableContentTypeBodies(): iterable
+    {
+        yield 'multipart' => ['multipart/form-data; boundary=some-boundary', 'some-binary-content'];
+
+        yield 'plain text' => ['text/plain', 'password: some-password'];
+
+        yield 'xml' => ['application/xml', '<password>some-password</password>'];
+
+        yield 'xml suffix' => ['application/soap+xml', '<password>some-password</password>'];
+
+        yield 'text xml' => ['text/xml', '<password>some-password</password>'];
+    }
 
     public function testOnKernelTerminateSucceeds(): void
     {
@@ -48,6 +66,7 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         self::assertSame('some-correlation-id', $record->context['correlation_id']);
         self::assertSame('some-request-id', $record->context['request_id']);
         self::assertSame('{"name":"John","note":"411111*REDACTED*1111"}', $requestContext['body']);
+        self::assertFalse($requestContext['body_omitted']);
         self::assertFalse($requestContext['body_truncated']);
         self::assertSame('*REDACTED*', $requestContext['headers']['authorization']);
         self::assertSame('*REDACTED*', $requestContext['headers']['cookie']);
@@ -62,8 +81,9 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         );
         self::assertSame('/response', $requestContext['uri']);
         self::assertSame('{"card_token":"*REDACTED*","name":"John"}', $responseContext['body']);
+        self::assertFalse($responseContext['body_omitted']);
         self::assertFalse($responseContext['body_truncated']);
-        self::assertGreaterThanOrEqual(0.0, $responseContext['duration_ms']);
+        self::assertGreaterThan(0.0, $responseContext['duration_ms']);
         self::assertSame(200, $responseContext['status_code']);
     }
 
@@ -79,17 +99,20 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         self::assertSame([], self::getRecords());
     }
 
-    public function testOnKernelTerminateSucceedsAndDoesNotLogNonLoggableContentTypeBody(): void
-    {
+    #[DataProvider('provideNonLoggableContentTypeBodies')]
+    public function testOnKernelTerminateSucceedsAndDoesNotLogNonLoggableContentTypeBody(
+        string $contentType,
+        string $content,
+    ): void {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
         $kernel = self::bootKernel();
         $request = Request::create(
             uri: '/response',
             method: 'POST',
             server: [
-                'CONTENT_TYPE' => 'multipart/form-data; boundary=some-boundary',
+                'CONTENT_TYPE' => $contentType,
             ],
-            content: 'some-binary-content'
+            content: $content
         );
 
         $response = $kernel->handle($request);
@@ -98,6 +121,7 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertNull($requestContext['body']);
+        self::assertFalse($requestContext['body_omitted']);
         self::assertFalse($requestContext['body_truncated']);
     }
 
@@ -120,7 +144,8 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertNull($requestContext['body']);
-        self::assertTrue($requestContext['body_truncated']);
+        self::assertTrue($requestContext['body_omitted']);
+        self::assertFalse($requestContext['body_truncated']);
     }
 
     public function testOnKernelTerminateSucceedsAndDoesNotLogTooBigBody(): void
@@ -145,7 +170,8 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertNull($requestContext['body']);
-        self::assertTrue($requestContext['body_truncated']);
+        self::assertTrue($requestContext['body_omitted']);
+        self::assertFalse($requestContext['body_truncated']);
     }
 
     public function testOnKernelTerminateSucceedsAndExcludesOtherTerminateListenersFromDuration(): void
@@ -167,6 +193,62 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         self::assertLessThan(300.0, $responseContext['duration_ms']);
     }
 
+    public function testOnKernelTerminateSucceedsWithBodiesDisabled(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel([
+            'environment' => 'test_bodies_disabled',
+        ]);
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: '{"name":"John"}'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $record = self::getSingleRecord();
+        $requestContext = $record->context['request'];
+        $responseContext = $record->context['response'];
+        self::assertIsArray($requestContext);
+        self::assertIsArray($responseContext);
+        self::assertNull($requestContext['body']);
+        self::assertFalse($requestContext['body_omitted']);
+        self::assertFalse($requestContext['body_truncated']);
+        self::assertNull($responseContext['body']);
+        self::assertFalse($responseContext['body_omitted']);
+        self::assertFalse($responseContext['body_truncated']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithFormBody(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            ],
+            content: 'user%5Bname%5D=John&user%5Bpassword%5D=some-password&password=some-password'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame(
+            'user[name]=John&user[password]=*REDACTED*&password=*REDACTED*',
+            $requestContext['body']
+        );
+        self::assertFalse($requestContext['body_truncated']);
+    }
+
     public function testOnKernelTerminateSucceedsWithJsonSuffixContentTypeBody(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
@@ -186,6 +268,41 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertSame('{"password":"*REDACTED*"}', $requestContext['body']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithNullDurationWhenResponseIsReturnedEarly(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            server: [
+                'HTTP_' . \strtoupper(\str_replace('-', '_', EarlyResponseListener::HEADER)) => '1',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $responseContext = self::getSingleRecord()->context['response'];
+        self::assertIsArray($responseContext);
+        self::assertNull($responseContext['duration_ms']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithSanitizedPath(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create('/token/some-token');
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $record = self::getSingleRecord();
+        $requestContext = $record->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('Request: "GET /token/*REDACTED*" -> 404', $record->message);
+        self::assertSame('/token/*REDACTED*', $requestContext['uri']);
     }
 
     public function testOnKernelTerminateSucceedsWithSanitizedTruncatedBody(): void
@@ -210,6 +327,7 @@ final class RequestResponseLoggingListenerTest extends AbstractApplicationTestCa
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertIsString($requestContext['body']);
+        self::assertFalse($requestContext['body_omitted']);
         self::assertTrue($requestContext['body_truncated']);
         self::assertSame(1024, \strlen($requestContext['body']));
         self::assertStringStartsWith('{"password":"*REDACTED*","description":"aaa', $requestContext['body']);

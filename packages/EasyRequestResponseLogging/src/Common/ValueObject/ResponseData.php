@@ -9,8 +9,9 @@ final readonly class ResponseData
         private int $statusCode,
         private array $headers,
         private ?string $body,
+        private bool $bodyOmitted,
         private bool $bodyTruncated,
-        private float $durationMs,
+        private ?float $durationMs,
     ) {
     }
 
@@ -19,7 +20,7 @@ final readonly class ResponseData
         return $this->body;
     }
 
-    public function getDurationMs(): float
+    public function getDurationMs(): ?float
     {
         return $this->durationMs;
     }
@@ -32,6 +33,11 @@ final readonly class ResponseData
     public function getStatusCode(): int
     {
         return $this->statusCode;
+    }
+
+    public function isBodyOmitted(): bool
+    {
+        return $this->bodyOmitted;
     }
 
     public function isBodyTruncated(): bool

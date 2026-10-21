@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyRequestResponseLogging\Common\Listener;
+namespace EonX\EasyRequestResponseLogging\Common\Subscriber;
 
 use Closure;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
@@ -9,6 +9,7 @@ use EonX\EasyRequestResponseLogging\Common\ValueObject\RequestData;
 use EonX\EasyRequestResponseLogging\Common\ValueObject\ResponseData;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -16,19 +17,15 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Throwable;
 
-final readonly class RequestResponseLoggingListener
+final readonly class RequestResponseLoggingSubscriber implements EventSubscriberInterface
 {
     private const DURATION_MS_ATTRIBUTE = '_easy_request_response_logging_duration_ms';
 
-    private const LOGGABLE_CONTENT_TYPES = [
-        'application/json',
-        'application/x-www-form-urlencoded',
-        'application/xml',
-        'text/plain',
-        'text/xml',
-    ];
+    private const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded';
 
-    private const LOGGABLE_CONTENT_TYPE_SUFFIXES = ['+json', '+xml'];
+    private const JSON_CONTENT_TYPE = 'application/json';
+
+    private const JSON_CONTENT_TYPE_SUFFIX = '+json';
 
     private const STARTED_AT_ATTRIBUTE = '_easy_request_response_logging_started_at';
 
@@ -45,6 +42,18 @@ final readonly class RequestResponseLoggingListener
         private int $maxBodySize,
         private int $maxRawBodySize,
     ) {
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: int}>
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            RequestEvent::class => ['onKernelRequest', 1024],
+            ResponseEvent::class => ['onKernelResponse', -1024],
+            TerminateEvent::class => ['onKernelTerminate', -1024],
+        ];
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -95,6 +104,7 @@ final readonly class RequestResponseLoggingListener
                 'correlation_id' => $requestData->getCorrelationId(),
                 'request' => [
                     'body' => $requestData->getBody(),
+                    'body_omitted' => $requestData->isBodyOmitted(),
                     'body_truncated' => $requestData->isBodyTruncated(),
                     'headers' => $requestData->getHeaders(),
                     'method' => $requestData->getMethod(),
@@ -104,6 +114,7 @@ final readonly class RequestResponseLoggingListener
                 'request_id' => $requestData->getRequestId(),
                 'response' => [
                     'body' => $responseData->getBody(),
+                    'body_omitted' => $responseData->isBodyOmitted(),
                     'body_truncated' => $responseData->isBodyTruncated(),
                     'duration_ms' => $responseData->getDurationMs(),
                     'headers' => $responseData->getHeaders(),
@@ -115,7 +126,7 @@ final readonly class RequestResponseLoggingListener
 
     private function createRequestData(Request $request): RequestData
     {
-        [$body, $bodyTruncated] = $this->prepareBody(
+        [$body, $bodyOmitted, $bodyTruncated] = $this->prepareBody(
             $this->logRequestBody,
             $request->headers->get('Content-Type'),
             static fn (): string => $request->getContent()
@@ -123,10 +134,11 @@ final readonly class RequestResponseLoggingListener
 
         return new RequestData(
             method: $request->getMethod(),
-            uri: $request->getPathInfo(),
+            uri: $this->sensitiveDataSanitizer->sanitize($request->getPathInfo()),
             query: $this->sensitiveDataSanitizer->sanitize($request->query->all()),
             headers: $this->sensitiveDataSanitizer->sanitize($request->headers->all()),
             body: $body,
+            bodyOmitted: $bodyOmitted,
             bodyTruncated: $bodyTruncated,
             requestId: $this->requestIdProvider->getRequestId(),
             correlationId: $this->requestIdProvider->getCorrelationId()
@@ -135,7 +147,7 @@ final readonly class RequestResponseLoggingListener
 
     private function createResponseData(Request $request, Response $response): ResponseData
     {
-        [$body, $bodyTruncated] = $this->prepareBody(
+        [$body, $bodyOmitted, $bodyTruncated] = $this->prepareBody(
             $this->logResponseBody,
             $response->headers->get('Content-Type'),
             static fn (): ?string => $response->getContent() === false ? null : $response->getContent()
@@ -147,62 +159,64 @@ final readonly class RequestResponseLoggingListener
             statusCode: $response->getStatusCode(),
             headers: $this->sensitiveDataSanitizer->sanitize($response->headers->all()),
             body: $body,
+            bodyOmitted: $bodyOmitted,
             bodyTruncated: $bodyTruncated,
-            durationMs: \is_float($durationMs) ? $durationMs : 0.0
+            durationMs: \is_float($durationMs) ? $durationMs : null
         );
     }
 
-    private function isLoggableContentType(?string $contentType): bool
+    private function isLoggableMimeType(string $mimeType): bool
     {
-        if ($contentType === null) {
-            return false;
-        }
-
-        $mimeType = \strtolower(\trim(\explode(';', $contentType)[0]));
-
-        if (\in_array($mimeType, self::LOGGABLE_CONTENT_TYPES, true)) {
-            return true;
-        }
-
-        foreach (self::LOGGABLE_CONTENT_TYPE_SUFFIXES as $suffix) {
-            if (\str_ends_with($mimeType, $suffix)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $mimeType === self::FORM_CONTENT_TYPE
+            || $mimeType === self::JSON_CONTENT_TYPE
+            || \str_ends_with($mimeType, self::JSON_CONTENT_TYPE_SUFFIX);
     }
 
     /**
-     * @return array{0: string|null, 1: bool}
+     * @return array{0: string|null, 1: bool, 2: bool}
      */
     private function prepareBody(bool $logBody, ?string $contentType, Closure $bodyResolver): array
     {
-        if ($logBody === false || $this->isLoggableContentType($contentType) === false) {
-            return [null, false];
+        $mimeType = \strtolower(\trim(\explode(';', $contentType ?? '')[0]));
+
+        if ($logBody === false || $this->isLoggableMimeType($mimeType) === false) {
+            return [null, false, false];
         }
 
         /** @var string|null $body */
         $body = $bodyResolver();
 
         if ($body !== null && \strlen($body) > $this->maxRawBodySize) {
-            return [null, true];
+            return [null, true, false];
         }
 
         if ($body === null || $body === '') {
-            return [$body, false];
+            return [$body, false, false];
         }
 
         try {
-            $body = $this->sensitiveDataSanitizer->sanitize($body);
+            $body = $this->sanitizeBody($body, $mimeType);
         } catch (Throwable) {
-            return [null, true];
+            return [null, true, false];
         }
 
         if (\strlen($body) <= $this->maxBodySize) {
-            return [$body, false];
+            return [$body, false, false];
         }
 
-        return [\substr($body, 0, $this->maxBodySize), true];
+        return [\substr($body, 0, $this->maxBodySize), false, true];
+    }
+
+    private function sanitizeBody(string $body, string $mimeType): string
+    {
+        if ($mimeType !== self::FORM_CONTENT_TYPE) {
+            return $this->sensitiveDataSanitizer->sanitize($body);
+        }
+
+        // Nested fields are percent-encoded on the wire (e.g. "user%5Bpassword%5D"), so the fields are
+        // sanitized once parsed and decoded back for readability
+        \parse_str($body, $fields);
+
+        return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
     }
 }
