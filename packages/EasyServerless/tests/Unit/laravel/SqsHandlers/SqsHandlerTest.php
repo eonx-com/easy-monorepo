@@ -34,6 +34,11 @@ final class SqsHandlerTest extends AbstractLumenTestCase
 
     private int $jobFailedCount = 0;
 
+    /**
+     * @var string[]
+     */
+    private array $jobFailedExceptionMessages = [];
+
     private TestHandler $logHandler;
 
     /**
@@ -328,6 +333,51 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         yield 'Below app max retries, last attempt' => [2, 2, null];
         yield 'Not set, last attempt' => [self::APP_MAX_RETRIES, null, null];
         yield 'Explicitly unrecoverable' => [1, 1, null];
+    }
+
+    public function testHandleJobReleasedBeforeRetryUntilIsFailedWithItsException(): void
+    {
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: self::APP_MAX_RETRIES,
+                    data: ['exception' => 'boom'],
+                    retryUntil: \time() + 3600
+                ),
+            ]),
+            self::createContext()
+        );
+
+        // Laravel releases the job as retryUntil is in the future, the handler fails it on its last attempt
+        self::assertSame(['batchItemFailures' => [['itemIdentifier' => 'message-id']]], $result);
+        self::assertSame([1], $this->getVisibilityTimeouts());
+        self::assertSame(['boom'], $this->jobFailedExceptionMessages);
+    }
+
+    public function testHandleJobReleasedBeforeRetryUntilThrowsItsExceptionWithoutPartialBatchFailure(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('boom');
+
+        try {
+            $handler->handle(
+                self::createSqsEvent([
+                    self::createSqsRecord(
+                        messageId: 'message-id',
+                        receiveCount: self::APP_MAX_RETRIES,
+                        data: ['exception' => 'boom'],
+                        retryUntil: \time() + 3600
+                    ),
+                ]),
+                self::createContext()
+            );
+        } finally {
+            self::assertSame(['boom'], $this->jobFailedExceptionMessages);
+        }
     }
 
     public function testHandleReleasedJobOnLastAttemptWhenFailedMethodThrows(): void
@@ -651,6 +701,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         ?int $maxTries = null,
         int|string|null $backoff = null,
         ?string $messageGroupId = null,
+        ?int $retryUntil = null,
     ): array {
         $body = \json_encode([
             'attempts' => 0,
@@ -660,7 +711,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             'job' => JobHandlerStub::class . '@fire',
             'maxExceptions' => null,
             'maxTries' => $maxTries,
-            'retryUntil' => null,
+            'retryUntil' => $retryUntil,
             'timeout' => null,
             'uuid' => $messageId,
         ], \JSON_THROW_ON_ERROR);
@@ -717,8 +768,9 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         $app->instance('log', new Logger('test', [$this->logHandler]));
         $app->instance(LoggerInterface::class, new NullLogger());
         $app->make(Dispatcher::class)
-            ->listen(JobFailed::class, function (): void {
+            ->listen(JobFailed::class, function (JobFailed $event): void {
                 $this->jobFailedCount++;
+                $this->jobFailedExceptionMessages[] = $event->exception->getMessage();
             });
 
         $recordCommand = function (CommandInterface $command): Result {

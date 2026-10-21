@@ -193,7 +193,8 @@ final class SqsHandler extends AbstractSqsHandler
     private function failJob(SqsQueueJob $job): void
     {
         try {
-            $job->fail(MaxAttemptsExceededException::forJob($job));
+            // Like the worker, fail the job with the exception of this attempt when there is one
+            $job->fail($job->getThrowable() ?? MaxAttemptsExceededException::forJob($job));
         } catch (Throwable $throwable) {
             $this->logger?->error('Error while failing the job', [
                 'error' => $throwable->getMessage(),
