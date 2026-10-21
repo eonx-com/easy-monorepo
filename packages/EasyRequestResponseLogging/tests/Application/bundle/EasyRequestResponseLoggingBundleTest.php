@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 final class EasyRequestResponseLoggingBundleTest extends AbstractApplicationTestCase
 {
-    public function testDisabledByDefault(): void
+    public function testListenerIsNotRegisteredByDefault(): void
     {
         self::bootKernel([
             'environment' => 'test_disabled',
@@ -18,7 +18,7 @@ final class EasyRequestResponseLoggingBundleTest extends AbstractApplicationTest
         self::assertFalse(self::getContainer()->has(RequestResponseLoggingListener::class));
     }
 
-    public function testEnabled(): void
+    public function testListenerIsRegisteredWhenEnabled(): void
     {
         self::bootKernel();
 
